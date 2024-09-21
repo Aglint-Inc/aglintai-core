@@ -1,13 +1,13 @@
 import { getFullName } from '@aglint/shared-utils';
 
 import { useTeamMembers } from '@/company/components/TeamManagement';
-import EditMember from '@/company/components/TeamManagement/EditMemberDialog';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useMemberList } from '@/hooks/useMemberList';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 
 import { useInterviewer } from '../../hooks/useInterviewer';
+import EditMember from './EditMember';
 import { EditProfileDialog } from './EditProfileDialog';
 
 export const EditUserDialog = ({ isOpen, setIsOpen }) => {

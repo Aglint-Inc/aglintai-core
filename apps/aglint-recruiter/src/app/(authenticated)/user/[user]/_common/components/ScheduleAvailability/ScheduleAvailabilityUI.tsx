@@ -1,3 +1,4 @@
+import { type schedulingSettingType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils';
 import {
   Table,
@@ -11,12 +12,20 @@ import { capitalize } from 'lodash';
 
 import UITypography from '@/components/Common/UITypography';
 
+import { type InterviewLoadItemType, type ScheduleKeywordType } from '.';
+
+type Props = {
+  interviewLoads: InterviewLoadItemType[];
+  timeZone: string;
+  workingHours: schedulingSettingType['workingHours'];
+  scheduleKeywords: ScheduleKeywordType[];
+};
 export const ScheduleAvailabilityUI = ({
   timeZone,
   interviewLoads,
   workingHours,
   scheduleKeywords,
-}) => {
+}: Props) => {
   return (
     <>
       <SectionSubCard title='Time Zone'>
@@ -99,10 +108,7 @@ const WorkHourList = ({ day }) => {
 
 const LoadCard = ({ load }) => {
   return (
-    <div
-      key={load.type}
-      className='h-fit min-w-[150px] rounded-sm border-[1px]'
-    >
+    <div className='h-fit min-w-[150px] rounded-sm border-[1px]'>
       <UITypography className='bg-gray-100 px-4 py-2 text-lg font-semibold'>
         {load.title}
       </UITypography>

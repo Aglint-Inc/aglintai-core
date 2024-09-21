@@ -28,7 +28,7 @@ import { supabase } from '@/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 
-import { useRolesOptions } from '../hooks';
+import { useRolesOptions } from '../../../../../company/_common/components/TeamManagement/hooks';
 
 const EditMember = ({
   open,

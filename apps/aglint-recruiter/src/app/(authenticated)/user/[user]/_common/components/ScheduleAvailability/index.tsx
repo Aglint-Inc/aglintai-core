@@ -1,3 +1,4 @@
+import { type schedulingSettingType } from '@aglint/shared-types';
 import { Pencil } from 'lucide-react';
 import { useState } from 'react';
 
@@ -6,8 +7,21 @@ import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 
 import { type useInterviewer } from '../../hooks/useInterviewer';
-import { EditAvailabiity } from '../Dialogs/EditAvailabiity';
+import { EditAvailabiityDialog } from './EditAvailabiityDialog';
 import { ScheduleAvailabilityUI } from './ScheduleAvailabilityUI';
+
+export type InterviewLoadItemType = {
+  title: string;
+  type: string;
+  count: string | number;
+};
+
+export type ScheduleKeywordType = {
+  title: string;
+  description: string;
+  keywords: string[];
+};
+
 export default function ScheduleAvailability({
   schedulingSettings,
   interviewTodayWeek,
@@ -27,7 +41,7 @@ export default function ScheduleAvailability({
     total_interviews_today,
   } = interviewTodayWeek;
 
-  const interviewLoads = [
+  const interviewLoads: InterviewLoadItemType[] = [
     {
       title: 'Week',
       type:
@@ -60,7 +74,7 @@ export default function ScheduleAvailability({
     },
   ];
 
-  const scheduleKeywords = [
+  const scheduleKeywords: ScheduleKeywordType[] = [
     {
       title: 'Free',
       description:
@@ -87,6 +101,10 @@ export default function ScheduleAvailability({
     },
   ];
 
+  const workingHours = schedulingSettings.workingHours.filter(
+    (day) => day.isWorkDay,
+  ) as schedulingSettingType['workingHours'];
+
   return (
     <>
       <SectionCard
@@ -103,9 +121,7 @@ export default function ScheduleAvailability({
         <ScheduleAvailabilityUI
           interviewLoads={interviewLoads}
           timeZone={schedulingSettings?.timeZone?.label || ' - '}
-          workingHours={schedulingSettings.workingHours.filter(
-            (day) => day.isWorkDay,
-          )}
+          workingHours={workingHours}
           scheduleKeywords={scheduleKeywords}
         />
       </SectionCard>
@@ -118,7 +134,7 @@ export default function ScheduleAvailability({
         onClose={() => setIsEditOpen(false)}
         slotButtons={<></>}
       >
-        <EditAvailabiity
+        <EditAvailabiityDialog
           schedulingSettings={schedulingSettings}
           setIsEditOpen={setIsEditOpen}
         />

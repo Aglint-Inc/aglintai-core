@@ -9,12 +9,10 @@ import CalendarComp from '@/components/Common/Calendar/Calendar';
 import Heatmap from '@/components/Common/Heatmap/HeatmapUser';
 import { Loader } from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useRouterPro } from '@/hooks/useRouterPro';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { useInterviewer } from '../hooks/useInterviewer';
 import { BreadCrumb, SideBar, Top } from './Components';
-import { EditUserDialog } from './Dialogs/EditUser';
 import { Feedback } from './FeedbackCard';
 import { Header } from './Header';
 import { KeyMatrics } from './KeyMatrix';
@@ -65,8 +63,6 @@ export default function InterviewerDetailsPage() {
   };
 
   //----------------------- page data
-  const router = useRouterPro();
-  const [isOpen, setIsOpen] = useState(router.queryParams.edit_enable || false);
 
   const { data: interviewerDetails, isLoading } = useInterviewer();
 
@@ -98,15 +94,13 @@ export default function InterviewerDetailsPage() {
 
   return (
     <div className='container mx-auto py-8'>
-      <EditUserDialog isOpen={isOpen} setIsOpen={setIsOpen} />
       <Top interviewer={interviewer} isTopBarVisible={isTopBarVisible} />
       <div className=''>
         <div className='sticky top-0 z-10 bg-neutral-50'>
           <BreadCrumb name={interviewerDetails?.first_name} />
-          <div className=''>
+          <div>
             <Header
               avatar={interviewerDetails?.avatar}
-              setIsOpen={setIsOpen}
               name={getFullName(
                 interviewerDetails.first_name,
                 interviewerDetails.last_name,
@@ -192,6 +186,7 @@ export default function InterviewerDetailsPage() {
   );
 }
 
+//for feature use
 {
   /* 
           <section ref={sectionRefs.performance}>

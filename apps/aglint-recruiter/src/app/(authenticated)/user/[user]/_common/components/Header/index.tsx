@@ -1,8 +1,12 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Card, CardContent } from '@components/ui/card';
 import { Clock, Mail, MapPin, Phone, User } from 'lucide-react';
+import { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
+import { useRouterPro } from '@/hooks/useRouterPro';
+
+import { EditUserDialog } from './EditUser';
 
 export const Header = ({
   avatar,
@@ -13,11 +17,14 @@ export const Header = ({
   timeZone,
   email,
   phone,
-  setIsOpen,
   userCardRef,
 }) => {
+  const router = useRouterPro();
+  const [isOpen, setIsOpen] = useState(router.queryParams.edit_enable || false);
+
   return (
     <>
+      <EditUserDialog isOpen={isOpen} setIsOpen={setIsOpen} />
       <Card className='mb-8' ref={userCardRef}>
         <CardContent className='p-6'>
           <div className='flex justify-between'>

@@ -18,9 +18,9 @@ import {
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
+import InterviewLimitInput from '../../../../_common/components/InterviewLoad';
 import { LoadMax } from '../Holidays';
 import DebriefDefaults from './DebriefDefaults';
-import InterviewLimitInput from './InterviewLoad';
 import KeywordSection from './KeywordSection';
 
 let schedulingSettingObj = {};
