@@ -30,7 +30,7 @@ import toast from '@/utils/toast';
 
 import { useRolesOptions } from '../../../../../company/_common/components/TeamManagement/hooks';
 
-const EditMember = ({
+const EditAdminDialog = ({
   open,
   member,
   refetch,
@@ -483,4 +483,4 @@ const EditMember = ({
   );
 };
 
-export default EditMember;
+export default EditAdminDialog;

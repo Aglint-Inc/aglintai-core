@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
-import { EditUserDialog } from './EditUser';
+import { EditUser } from './EditUser';
 
 export const Header = ({
   avatar,
@@ -24,7 +24,8 @@ export const Header = ({
 
   return (
     <>
-      <EditUserDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+      {/* Eidt Dialog  */}
+      <EditUser isOpen={isOpen} setIsOpen={setIsOpen} />
       <Card className='mb-8' ref={userCardRef}>
         <CardContent className='p-6'>
           <div className='flex justify-between'>

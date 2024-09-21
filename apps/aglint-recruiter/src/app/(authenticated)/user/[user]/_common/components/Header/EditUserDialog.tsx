@@ -41,7 +41,7 @@ const initialFormValues: FormValues = {
   modal: false,
 };
 
-export const EditProfileDialog = ({
+export const EditUserDialog = ({
   isOpen,
   setIsOpen,
   interviewerDetailsRefetch,

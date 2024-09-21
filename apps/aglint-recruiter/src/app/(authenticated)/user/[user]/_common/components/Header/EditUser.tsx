@@ -7,10 +7,10 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 
 import { useInterviewer } from '../../hooks/useInterviewer';
-import EditMember from './EditMember';
-import { EditProfileDialog } from './EditProfileDialog';
+import EditAdminDialog from './EditAdminDialog';
+import { EditUserDialog } from './EditUserDialog';
 
-export const EditUserDialog = ({ isOpen, setIsOpen }) => {
+export const EditUser = ({ isOpen, setIsOpen }) => {
   const router = useRouterPro();
   const { recruiterUser } = useAuthDetails();
   const { activeMembers } = useTeamMembers();
@@ -22,8 +22,9 @@ export const EditUserDialog = ({ isOpen, setIsOpen }) => {
 
   return (
     <>
+      button
       {recruiterUser.role === 'admin' ? (
-        <EditMember
+        <EditAdminDialog
           open={Boolean(isOpen)}
           memberList={activeMembers
             .map((mem) => ({
@@ -47,7 +48,7 @@ export const EditUserDialog = ({ isOpen, setIsOpen }) => {
           }}
         />
       ) : (
-        <EditProfileDialog
+        <EditUserDialog
           isOpen={isOpen}
           setIsOpen={setIsOpen}
           interviewerDetailsRefetch={interviewerDetailsRefetch}
