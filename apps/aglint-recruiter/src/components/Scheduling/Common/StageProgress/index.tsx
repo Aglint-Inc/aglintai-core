@@ -24,8 +24,14 @@ const StageProgress = forwardRef(
 
     return (
       <div ref={ref} className='flex flex-col space-y-2'>
-        <div className='flex flex-row items-center overflow-hidden rounded-md shadow-sm'>
-          {pills.length ? pills : <div className='bg-gray-100 p-2'>---</div>}
+        <div className='flex w-full flex-row items-center overflow-hidden rounded-md shadow-sm'>
+          {pills.length ? (
+            pills
+          ) : (
+            <div className='flex w-full items-center'>
+              <div className='mx-auto p-2 px-10'>-</div>
+            </div>
+          )}
         </div>
       </div>
     );

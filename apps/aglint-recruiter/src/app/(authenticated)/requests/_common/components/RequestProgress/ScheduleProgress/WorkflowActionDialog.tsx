@@ -13,10 +13,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@components/ui/card';
+import { ScrollArea } from '@components/ui/scroll-area';
 import get from 'lodash/get';
 import { Terminal } from 'lucide-react';
 import React, { useState } from 'react';
 
+import { UIDivider } from '@/components/Common/UIDivider';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
@@ -156,15 +158,17 @@ const WorkflowActionDialog = () => {
   };
   return (
     <Card className='border-0 shadow-none'>
-      <CardHeader>
+      <CardHeader className="p-4">
         <CardTitle className='flex text-lg'>
           <Terminal width={24} height={24} className='mr-4' />
           Action
         </CardTitle>
         <CardDescription>An action to be performed</CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className='space-y-4'>
+      <UIDivider/>
+      <CardContent className='p-0'> 
+        <ScrollArea className='h-96'>
+        <div className='space-y-4 p-6'>
           <UISelectDropDown
             label='Do this'
             onValueChange={(value) => {
@@ -198,8 +202,14 @@ const WorkflowActionDialog = () => {
           )}
           <TargetAPIBody action={selectedActionsDetails} />
         </div>
+        </ScrollArea>
       </CardContent>
-      <CardFooter className='flex justify-end'>
+      <UIDivider/>
+      <CardFooter className='flex justify-end p-4 gap-2'>
+        <Button
+        variant="outline"
+        onClick={() => setShowEditDialog(false)} 
+        >Cancel</Button>
         <Button
           variant='default'
           onClick={() => {

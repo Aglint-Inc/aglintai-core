@@ -267,6 +267,7 @@ const EditMember = ({
                 <Label htmlFor='first_name'>First Name</Label>
                 <Input
                   id='first_name'
+                  placeholder='Enter first name'
                   value={form.first_name}
                   onChange={(e) =>
                     setForm({ ...form, first_name: e.target.value })
@@ -278,6 +279,7 @@ const EditMember = ({
                 <Label htmlFor='last_name'>Last Name</Label>
                 <Input
                   id='last_name'
+                  placeholder='Enter last name'
                   value={form.last_name}
                   onChange={(e) =>
                     setForm({ ...form, last_name: e.target.value })
@@ -290,6 +292,7 @@ const EditMember = ({
               <Label htmlFor='linked_in'>LinkedIn</Label>
               <Input
                 id='linked_in'
+                placeholder='Enter linkedin url'
                 value={form.linked_in}
                 onChange={(e) =>
                   setForm({ ...form, linked_in: e.target.value.trim() })
@@ -304,6 +307,7 @@ const EditMember = ({
                 <Input
                   id='position'
                   value={form.position}
+                  placeholder='Enter position'
                   onChange={(e) =>
                     setForm({ ...form, position: e.target.value })
                   }
@@ -353,9 +357,12 @@ const EditMember = ({
                         key={location.id}
                         value={location.id.toString()}
                       >
-                        {capitalizeFirstLetter(
-                          `${location.city}, ${location.region}, ${location.country}`,
-                        )}
+                        {[location.city, location.region, location.country]
+                          .filter((location) => location)
+                          .map((location) =>
+                            capitalizeFirstLetter(location).trim(),
+                          )
+                          .join(', ')}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -442,6 +449,7 @@ const EditMember = ({
                     <Label htmlFor='phone'>Phone</Label>
                     <Input
                       id='phone'
+                      placeholder='Enter phone number'
                       value={form.phone}
                       onChange={(e) =>
                         setForm({ ...form, phone: e.target.value })
