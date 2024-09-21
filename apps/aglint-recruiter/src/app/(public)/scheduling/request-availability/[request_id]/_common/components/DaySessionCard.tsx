@@ -147,7 +147,7 @@ export function MultiDayCard({
   slotSelected,
 }: MultiDayCardCardProps) {
   return (
-    <div className='w-full max-w-2xl overflow-hidden rounded-lg border border-neutral-200'>
+    <div className='w-full max-w-2xl rounded-lg border border-neutral-200'>
       <div className='space-y-4 p-4'>
         <div className='flex items-start justify-between'>
           <div>

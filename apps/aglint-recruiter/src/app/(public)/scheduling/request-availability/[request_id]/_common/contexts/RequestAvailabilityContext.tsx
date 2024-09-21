@@ -333,6 +333,7 @@ function RequestAvailabilityProvider({ children }) {
         },
       );
       setCandidateRequestAvailability(requestData);
+      setDaySlots(requestData?.slots);
     } else {
       const { data: requestData } = await axios.post(
         `/api/scheduling/request_availability/updateRequestAvailability`,
@@ -345,6 +346,7 @@ function RequestAvailabilityProvider({ children }) {
         },
       );
       setCandidateRequestAvailability(requestData);
+      setDaySlots(requestData?.slots);
     }
 
     setIsSubmitted(true);
