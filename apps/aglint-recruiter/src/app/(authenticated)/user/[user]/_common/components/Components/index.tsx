@@ -58,11 +58,7 @@ export const Top = ({ interviewer, isTopBarVisible }) => {
 
               <div className='flex items-center space-x-4'>
                 <div className='flex items-center space-x-2'>
-                  <Badge
-                  //   variant={
-                  //     interviewer.calendarConnected ? 'success' : 'secondary'
-                  //   }
-                  >
+                  <Badge>
                     {interviewer.calendarConnected ? (
                       <CheckCircle className='mr-1 h-4 w-4' />
                     ) : (
@@ -70,9 +66,7 @@ export const Top = ({ interviewer, isTopBarVisible }) => {
                     )}
                     Calendar
                   </Badge>
-                  <Badge
-                  //   variant={interviewer.gmailConnected ? 'success' : 'secondary'}
-                  >
+                  <Badge>
                     {interviewer.gmailConnected ? (
                       <CheckCircle className='mr-1 h-4 w-4' />
                     ) : (

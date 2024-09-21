@@ -31,7 +31,7 @@ type interviewLoadType = {
 
 type TimeZoneType = (typeof timeZones)[number];
 
-export const EditForm = ({
+export const EditAvailabiity = ({
   schedulingSettings,
   setIsEditOpen,
 }: {

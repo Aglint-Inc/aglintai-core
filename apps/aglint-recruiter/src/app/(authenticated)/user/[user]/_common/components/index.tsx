@@ -1,18 +1,22 @@
+import { type schedulingSettingType } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
+import { useInterviewsByUserId } from '@interviews/hooks/useInterviewsByUserId';
+import { useParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
+import { SectionCard } from '@/authenticated/components/SectionCard';
+import CalendarComp from '@/components/Common/Calendar/Calendar';
+import Heatmap from '@/components/Common/Heatmap/HeatmapUser';
 import { Loader } from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { useInterviewer } from '../hooks/useInterviewer';
-import { Calendar } from './Calendar';
 import { BreadCrumb, SideBar, Top } from './Components';
 import { EditUserDialog } from './Dialogs/EditUser';
 import { Feedback } from './FeedbackCard';
 import { Header } from './Header';
-import { HeatmapUser } from './Heatmap';
 import { KeyMatrics } from './KeyMatrix';
 import { Qualifications } from './Qualification';
 import { RecentInterviews } from './RecentInterviewCard';
@@ -60,11 +64,23 @@ export default function InterviewerDetailsPage() {
     sectionRefs[sectionKey].current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  //-----------------------
+  //----------------------- page data
   const router = useRouterPro();
   const [isOpen, setIsOpen] = useState(router.queryParams.edit_enable || false);
 
   const { data: interviewerDetails, isLoading } = useInterviewer();
+
+  //------------------------ calendar data
+  const user_id = useParams().user as string;
+
+  const [filter, setFilter] = useState([]);
+  const {
+    data: { schedules: allSchedules },
+    isLoading: iscalendarLoading,
+  } = useInterviewsByUserId({
+    filter: filter.length === 0 ? null : filter,
+    member_id: user_id,
+  });
 
   //--------------------------------------
   if (isLoading)
@@ -74,7 +90,11 @@ export default function InterviewerDetailsPage() {
       </div>
     );
 
+  // ---------------- data
+
   const interviewer = null;
+  const interviewLoad = interviewerDetails?.scheduling_settings
+    ?.interviewLoad as schedulingSettingType['interviewLoad'];
 
   return (
     <div className='container mx-auto py-8'>
@@ -114,7 +134,6 @@ export default function InterviewerDetailsPage() {
                 <KeyMatrics
                   declineCount={interviewerDetails.meeting_count.cancelled}
                   completedCount={interviewerDetails.meeting_count.completed}
-                  // upcomingCount={interviewerDetails.meeting_count.upcoming}
                   totalHour={interviewerDetails.meeting_count.completed_hour}
                 />
               </section>
@@ -143,12 +162,11 @@ export default function InterviewerDetailsPage() {
               <section ref={sectionRefs.interviewFeedback}>
                 <Feedback feedbacks={interviewerDetails.feedbacks} />
               </section>
+
               <section ref={sectionRefs.meetingOverview}>
-                <HeatmapUser
-                  loadSetting={
-                    interviewerDetails?.scheduling_settings?.interviewLoad
-                  }
-                />
+                <SectionCard title='Meetings overview'>
+                  <Heatmap loadSetting={interviewLoad} />
+                </SectionCard>
               </section>
               <section ref={sectionRefs.scheduleAvailabilityRef}>
                 <ScheduleAvailability
@@ -157,29 +175,44 @@ export default function InterviewerDetailsPage() {
                 />
               </section>
               <section ref={sectionRefs.calendar}>
-                <Calendar />
+                <SectionCard title='Schedule Calendar'>
+                  <CalendarComp
+                    allSchedules={allSchedules}
+                    isLoading={iscalendarLoading}
+                    filter={filter}
+                    setFilter={setFilter}
+                  />
+                </SectionCard>
               </section>
-
-              {/* 
-          <section ref={sectionRefs.performance}>
-            <Performance interviewer={interviewer} />
-          </section> */}
-
-              {/* <section ref={sectionRefs.availability}>
-            <Availability interviewer={interviewer} />
-          </section> */}
-
-              {/* <section ref={sectionRefs.pendingActions}>
-            <PendingActions interviewer={interviewer} />
-          </section> */}
-
-              {/* <section ref={sectionRefs.recentActivity}>
-            <RecentActivity interviewer={interviewer} />
-          </section> */}
             </main>
           </div>
         )}
       </div>
     </div>
   );
+}
+
+{
+  /* 
+          <section ref={sectionRefs.performance}>
+            <Performance interviewer={interviewer} />
+          </section> */
+}
+
+{
+  /* <section ref={sectionRefs.availability}>
+            <Availability interviewer={interviewer} />
+          </section> */
+}
+
+{
+  /* <section ref={sectionRefs.pendingActions}>
+            <PendingActions interviewer={interviewer} />
+          </section> */
+}
+
+{
+  /* <section ref={sectionRefs.recentActivity}>
+            <RecentActivity interviewer={interviewer} />
+          </section> */
 }

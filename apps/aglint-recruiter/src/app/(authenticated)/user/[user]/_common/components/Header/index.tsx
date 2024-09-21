@@ -29,18 +29,6 @@ export const Header = ({
                 </AvatarFallback>
               </Avatar>
 
-              {/* <Avatar className='h-[32px] w-[32px] cursor-pointer rounded-[4px]'>
-                        <AvatarImage
-                          src={
-                            userDetails?.profile_image || defaultProfileImage
-                          }
-                          alt='@shadcn'
-                        />
-                        <AvatarFallback className='rounded-[4px]'>
-                          <User className='text-gray-700' />
-                        </AvatarFallback>
-                      </Avatar> */}
-
               <div>
                 <h2 className='text-2xl font-bold text-gray-900'>{name}</h2>
                 <p className='text-gray-600'>
@@ -69,7 +57,6 @@ export const Header = ({
               </div>
             </div>
             <div className='flex flex-col items-end space-y-2'>
-              {/* <UIButton>Schedule Interview</UIButton> */}
               <UIButton
                 variant='outline'
                 onClick={() => {
