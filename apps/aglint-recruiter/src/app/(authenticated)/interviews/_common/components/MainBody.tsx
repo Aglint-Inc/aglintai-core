@@ -14,7 +14,7 @@ function Interviews() {
       <header>
         <div className='mb-4 flex items-center justify-between'>
           <div>
-            <h1 className='text-3xl font-semibold'>All Interviews</h1>
+            <h1 className='text-3xl font-semibold'>Interviews</h1>
             <p className='mb-4 text-gray-600'>
               Connect your favorite tools to streamline your recruitment
               process.
