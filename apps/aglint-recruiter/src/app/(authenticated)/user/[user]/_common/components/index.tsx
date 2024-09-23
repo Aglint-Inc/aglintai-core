@@ -78,6 +78,12 @@ export default function InterviewerDetailsPage() {
     member_id: user_id,
   });
 
+  // ---------------- data
+
+  const interviewer = null;
+  const interviewLoad = interviewerDetails?.scheduling_settings
+    ?.interviewLoad as schedulingSettingType['interviewLoad'];
+
   //--------------------------------------
   if (isLoading)
     return (
@@ -85,13 +91,6 @@ export default function InterviewerDetailsPage() {
         <Loader />
       </div>
     );
-
-  // ---------------- data
-
-  const interviewer = null;
-  const interviewLoad = interviewerDetails?.scheduling_settings
-    ?.interviewLoad as schedulingSettingType['interviewLoad'];
-
   return (
     <div className='container mx-auto py-8'>
       <Top interviewer={interviewer} isTopBarVisible={isTopBarVisible} />

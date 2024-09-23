@@ -4,10 +4,9 @@ import { useState } from 'react';
 
 import { SectionCard } from '@/authenticated/components/SectionCard';
 import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
 
 import { type useInterviewer } from '../../hooks/useInterviewer';
-import { EditAvailabiityDialog } from './EditAvailabiityDialog';
+import { EditAvailabiityDialog } from './Dialog/EditAvailabiityDialog';
 import { ScheduleAvailabilityUI } from './ScheduleAvailabilityUI';
 
 export type InterviewLoadItemType = {
@@ -107,6 +106,12 @@ export default function ScheduleAvailability({
 
   return (
     <>
+      {/* edit availability dialog */}
+      <EditAvailabiityDialog
+        schedulingSettings={schedulingSettings}
+        setIsEditOpen={setIsEditOpen}
+        isEditOpen={isEditOpen}
+      />
       <SectionCard
         title='Availability'
         topAction={
@@ -125,20 +130,6 @@ export default function ScheduleAvailability({
           scheduleKeywords={scheduleKeywords}
         />
       </SectionCard>
-
-      {/* edit availability dialog */}
-      <UIDialog
-        open={isEditOpen}
-        title='Update Availability'
-        size='xl'
-        onClose={() => setIsEditOpen(false)}
-        slotButtons={<></>}
-      >
-        <EditAvailabiityDialog
-          schedulingSettings={schedulingSettings}
-          setIsEditOpen={setIsEditOpen}
-        />
-      </UIDialog>
     </>
   );
 }

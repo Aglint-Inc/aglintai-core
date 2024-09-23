@@ -51,7 +51,7 @@ export const EditAvailabilityForm = ({
 }: FormProp) => {
   return (
     <ScrollArea className='h-[500px] w-full'>
-      <div className='mb-4 flex flex-col gap-4'>
+      <div className='mb-4 flex w-fit flex-col gap-4'>
         <Label htmlFor='zipcode' className='text-left'>
           Time Zone
         </Label>

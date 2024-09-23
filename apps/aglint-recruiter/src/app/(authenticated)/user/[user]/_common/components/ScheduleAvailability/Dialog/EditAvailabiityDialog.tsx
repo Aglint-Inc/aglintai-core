@@ -3,15 +3,17 @@ import {
   type schedulingSettingType,
 } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
+import { ScrollArea } from '@components/ui/scroll-area';
 import cloneDeep from 'lodash/cloneDeep';
 import { useParams } from 'next/navigation';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import { supabase } from '@/utils/supabase/client';
 import { type timeZone as timeZones } from '@/utils/timeZone';
 
-import { useInterviewer } from '../../hooks/useInterviewer';
+import { useInterviewer } from '../../../hooks/useInterviewer';
 import { EditAvailabilityForm } from './EditAvailabilityFormUI';
 
 export const LoadMax = {
@@ -26,8 +28,10 @@ type TimeZoneType = (typeof timeZones)[number];
 export const EditAvailabiityDialog = ({
   schedulingSettings,
   setIsEditOpen,
+  isEditOpen,
 }: {
   setIsEditOpen: Dispatch<SetStateAction<boolean>>;
+  isEditOpen: boolean;
   schedulingSettings: ReturnType<
     typeof useInterviewer
   >['data']['scheduling_settings'];
@@ -218,35 +222,46 @@ export const EditAvailabiityDialog = ({
 
   return (
     <>
-      <EditAvailabilityForm
-        dailyLimit={dailyLmit}
-        handleDailyValue={handleDailyValue}
-        handleType={handleType}
-        handleWeeklyValue={handleWeeklyValue}
-        keywords={keywords}
-        setTimeZone={setTimeZone}
-        setWorkingHours={setWorkingHours}
-        timeZone={timeZone}
-        weeklyLmit={weeklyLmit}
-        workingHours={workingHours}
-      />
-      <div className='flex w-full justify-end gap-4'>
-        <UIButton
-          variant='secondary'
-          onClick={() => {
-            if (!isSaving) setIsEditOpen(false);
-          }}
-        >
-          Cancel
-        </UIButton>
-        <UIButton
-          isLoading={isSaving}
-          disabled={isSaving}
-          onClick={updateHandle}
-        >
-          Update
-        </UIButton>
-      </div>
+      <UIDialog
+        open={isEditOpen}
+        title='Update Availability'
+        size='xl'
+        onClose={() => setIsEditOpen(false)}
+        slotButtons={
+          <>
+            <UIButton
+              variant='secondary'
+              onClick={() => {
+                if (!isSaving) setIsEditOpen(false);
+              }}
+            >
+              Cancel
+            </UIButton>
+            <UIButton
+              isLoading={isSaving}
+              disabled={isSaving}
+              onClick={updateHandle}
+            >
+              Update
+            </UIButton>
+          </>
+        }
+      >
+        <ScrollArea>
+          <EditAvailabilityForm
+            dailyLimit={dailyLmit}
+            handleDailyValue={handleDailyValue}
+            handleType={handleType}
+            handleWeeklyValue={handleWeeklyValue}
+            keywords={keywords}
+            setTimeZone={setTimeZone}
+            setWorkingHours={setWorkingHours}
+            timeZone={timeZone}
+            weeklyLmit={weeklyLmit}
+            workingHours={workingHours}
+          />
+        </ScrollArea>
+      </UIDialog>
     </>
   );
 };
