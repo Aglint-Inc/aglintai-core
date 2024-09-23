@@ -15,7 +15,7 @@ import {
   getScheduleBgcolor,
   getScheduleTextcolor,
   getScheduleType,
-} from '../../../../../utils/scheduling/colors_and_enums';
+} from '../../../../../../utils/scheduling/colors_and_enums';
 import InterviewerUserDetail from './InterviewerUserDetails';
 import { MyScheduleSubCard } from './MyScheduleSubCard';
 

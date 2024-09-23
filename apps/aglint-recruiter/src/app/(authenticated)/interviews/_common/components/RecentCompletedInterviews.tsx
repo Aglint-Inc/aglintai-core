@@ -3,7 +3,7 @@ import React from 'react';
 import { Loader } from '@/components/Common/Loader';
 
 import { useAllInterviews } from '../hooks/useAllInterviews';
-import ScheduleMeetingList from './ScheduleMeetingList';
+import ScheduleMeetingList from './ui/ScheduleMeetingList';
 
 function RecentCompletedInterviews() {
   const { data: schedules, isFetched } = useAllInterviews({

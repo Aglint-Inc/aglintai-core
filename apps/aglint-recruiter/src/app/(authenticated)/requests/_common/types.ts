@@ -1,4 +1,5 @@
 import type { RequestResponse } from '@/queries/requests/types';
+import type { Request as RequestType } from '@/queries/requests/types';
 
 export type barChartDataType = {
   name: string;
@@ -17,6 +18,10 @@ export type progressDataType = {
   all_request: number;
 };
 
+export interface RequestProps extends RequestType {
+  isExpanded?: boolean;
+  mode?: 'expanded' | 'compact' | 'column-view' | 'compact-list';
+}
 export type responseCreatedCompletedType = {
   value: {
     data: {

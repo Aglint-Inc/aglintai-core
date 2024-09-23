@@ -7,6 +7,7 @@ import {
   type ProgressLoggerType,
   ScheduleUtils,
 } from '@aglint/shared-utils';
+import { toast } from '@components/hooks/use-toast';
 import { Card, CardContent } from '@components/ui/card';
 import { Label } from '@components/ui/label';
 import { SelectItem } from '@components/ui/select';
@@ -29,15 +30,14 @@ import dayjs from '@/utils/dayjs';
 import { mailSender } from '@/utils/mailSender';
 import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsertMeetingsWithOrganizerId';
 import { supabase } from '@/utils/supabase/client';
-import toast from '@/utils/toast';
 
-import EmailTemplate from './Components/EmailTemplate';
+import EmailTemplate from './_common/components/EmailTemplate';
 import {
   setCandidateAvailabilityDrawerOpen,
   setCandidateAvailabilityIdForReRequest,
   setReRequestAvailability,
   useCandidateAvailabilitySchedulingFlowStore,
-} from './store';
+} from './_common/contexts/CandidateAvailabilityFlowStore';
 
 function CandidateAvailability({
   selectedRequest,
@@ -115,10 +115,12 @@ function CandidateAvailability({
           payload: payload,
         });
       } catch (error) {
-        toast.message('Failed to send email');
+        toast({ variant: 'destructive', title: 'Failed to send email' });
       }
 
-      toast.success('Request availability has been re-requested successfully');
+      toast({
+        title: 'Request availability has been re-requested successfully',
+      });
       setSubmitting(false);
       setCandidateAvailabilityDrawerOpen(false);
       return;
@@ -192,10 +194,10 @@ function CandidateAvailability({
         },
       });
     } catch (error) {
-      toast.message('Failed to send email');
+      toast({variant:'destructive',title:'Failed to send email'});
     }
 
-    toast.success('Request availability created successfully');
+    toast({title:'Request availability created successfully'});
     setSubmitting(false);
     setCandidateAvailabilityDrawerOpen(false);
   }
