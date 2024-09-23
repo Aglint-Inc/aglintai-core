@@ -37,7 +37,7 @@ function CandidateAvailability() {
     const {
       data: { meetings },
     } = await axios.post(
-      '/api/scheduling/request_availability/candidateAvailability/getMeetings',
+      '/api/scheduling/request_avai lability/candidateAvailability/getMeetings',
       {
         session_ids,
       },
@@ -109,7 +109,11 @@ function CandidateAvailability() {
     );
   }
   if (loading) {
-    return <Loader />;
+    return(
+      <div className="w-full h-[100vh] flex items-center justify-center">
+        <Loader />
+      </div>
+    ) ;
   }
 
   if (!candidateRequestAvailability) {
