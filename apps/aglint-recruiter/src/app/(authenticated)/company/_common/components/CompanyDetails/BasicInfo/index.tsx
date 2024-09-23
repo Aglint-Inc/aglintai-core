@@ -6,7 +6,7 @@ import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 
-import EditBasicInfoDialog from './Dialog';
+import EditBasicInfoDialog from './EditBasicInfoDialog';
 import { BasicInfoUI } from './ui/BasicInfoUI';
 
 export const BasicInfo = () => {

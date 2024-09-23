@@ -8,7 +8,7 @@ import { type FiltersTypes } from '@/components/Common/FilterHeader/filters';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import dayjs from '@/utils/dayjs';
 
-import AddMember from './Dialog/AddMemberDialog';
+import AddMember from './AddMemberDialog';
 import { TeamManagementUI } from './ui/TeamManagementUI';
 
 type ItemType = string;

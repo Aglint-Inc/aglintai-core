@@ -6,7 +6,7 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import dayjs from '@/utils/dayjs';
 
 import { useCompanyDetailComp } from '../../hooks/hook';
-import { AddHolidayDialog } from './Dialog/AddHolidayDialog';
+import { AddHolidayDialog } from './AddHolidayDialog';
 import { HolidaysUI } from './ui/HolidaysUI';
 
 export const LoadMax = {

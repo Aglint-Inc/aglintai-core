@@ -9,9 +9,7 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 
 interface LocationCardProps {
   id: number;
-  city: string;
-  region: string;
-  country: string;
+  location: string;
   address: string;
   timeZone: string;
   isHeadquarter: boolean;
@@ -21,9 +19,7 @@ interface LocationCardProps {
 
 function LocationCard({
   id,
-  city,
-  region,
-  country,
+  location,
   address,
   timeZone,
   isHeadquarter,
@@ -33,7 +29,6 @@ function LocationCard({
   const { checkPermissions } = useRolesAndPermissions();
   const isFormDisabled = !checkPermissions(['manage_company']);
   const [isHovered, setIsHovered] = useState(false);
-  const location = [city, region, country].filter(Boolean).join(', ');
 
   return (
     <Card

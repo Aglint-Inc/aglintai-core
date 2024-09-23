@@ -1,3 +1,4 @@
+import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
 import {
@@ -10,6 +11,7 @@ import {
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
+import axios from 'axios';
 import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -19,7 +21,6 @@ import { manageOfficeLocation } from '@/context/AuthContext/utils';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
 import timeZone from '@/utils/timeZone';
 
-import { geoCodeLocation, handleValidate } from './until';
 type TimeZoneType = (typeof timeZone)[number];
 
 type initialValueType = {
@@ -40,7 +41,7 @@ interface LocationProps {
   edit: number;
 }
 
-const AddAndEditLocation: React.FC<LocationProps> = ({
+const AddAndEditLocationDialog: React.FC<LocationProps> = ({
   handleClose,
   open,
   edit,
@@ -267,4 +268,86 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
   );
 };
 
-export default AddAndEditLocation;
+export default AddAndEditLocationDialog;
+
+const handleValidate = () => {
+  return Object.entries(location).reduce(
+    (acc, [key, curr]) => {
+      let value = curr.value as any;
+      let error = false;
+      switch (curr.validation) {
+        case 'string':
+          {
+            if (curr.required && value.trim().length === 0) {
+              error = true;
+            } else {
+              value = value.trim();
+            }
+          }
+          break;
+        case 'boolean': {
+          if (typeof value !== 'boolean') {
+            error = true;
+          }
+        }
+      }
+      return {
+        newLocation: {
+          ...acc.newLocation,
+          [key]: { ...acc.newLocation[key], value, error },
+        },
+        error: error && !acc.error ? true : acc.error,
+      };
+    },
+    { newLocation: location, error: false },
+  );
+};
+
+const geoCodeLocation = async (address: string) => {
+  if (address.length > 3) {
+    const apiKey = 'AIzaSyDO-310g2JDNPmN3miVdhXl2gJtsBRYUrI';
+    let locationData = null;
+    try {
+      locationData = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`,
+      );
+    } catch (error) {
+      toast({ title: 'Please give proper location' });
+    }
+    const result = (locationData as any)?.data?.results[0];
+
+    let add = null;
+    if (result?.address_components[4]) {
+      add = {
+        region: result?.address_components[3]?.long_name ?? '',
+        country: result?.address_components[4]?.long_name ?? '',
+      };
+    } else if (result?.address_components[3]) {
+      add = {
+        region: result?.address_components[2]?.long_name ?? '',
+        country: result?.address_components[3]?.long_name ?? '',
+      };
+    } else {
+      add = {
+        region: result?.address_components[1]?.long_name ?? '',
+        country: result?.address_components[2]?.long_name ?? '',
+      };
+    }
+
+    const geo = {
+      lat: result?.geometry.location.lat ?? '',
+      lang: result?.geometry.location.lng ?? '',
+    };
+    let timezone = null;
+    try {
+      timezone = await axios.get(
+        `https://maps.googleapis.com/maps/api/timezone/json?location=${geo.lat},${geo.lang}&timestamp=1331161200&key=${apiKey}`,
+      );
+    } catch (error) {
+      toast({ title: 'Failed to fetch timezone' });
+    }
+
+    const timeZoneId = timezone && timezone?.data.timeZoneId;
+    return { add, timeZoneId };
+  }
+};

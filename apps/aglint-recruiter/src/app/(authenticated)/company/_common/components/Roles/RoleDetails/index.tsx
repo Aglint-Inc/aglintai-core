@@ -15,7 +15,7 @@ import { type GetRoleAndPermissionsAPI } from '@/pages/api/getRoleAndPermissions
 import { useAllMembers } from '@/queries/members';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import RoleEditDialog from './Dialog/RoleEditDialog';
+import RoleEditDialog from './RoleEditDialog';
 import { BreadCrumb } from './ui/BreadCrumb';
 import { RoleUserWidget } from './ui/RoleUserWidget';
 

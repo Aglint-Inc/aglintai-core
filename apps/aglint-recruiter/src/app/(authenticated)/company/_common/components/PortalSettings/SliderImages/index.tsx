@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 import { usePortalSettings } from '../../../hooks/hook';
-import { SliderImageUploadDialog } from './Dialog/SliderImageUploadDialog';
+import { SliderImageUploadDialog } from './SliderImageUploadDialog';
 
 export function SliderImages() {
   const { data, deleteImages, isImageRemoving } = usePortalSettings();

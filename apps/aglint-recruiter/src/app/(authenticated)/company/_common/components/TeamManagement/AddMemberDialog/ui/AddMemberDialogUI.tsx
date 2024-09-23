@@ -24,10 +24,7 @@ import { type useAllOfficeLocations } from '@/queries/officeLocations';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { reinviteUser } from '../../utils';
-import {
-  type InviteUserFormErrorType,
-  type InviteUserFormType,
-} from '../AddMemberDialog';
+import { type InviteUserFormErrorType, type InviteUserFormType } from '..';
 
 type Props = {
   form: InviteUserFormType;

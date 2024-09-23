@@ -11,7 +11,7 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { manageDepartments } from '@/context/AuthContext/utils';
 import { useAllDepartments } from '@/queries/departments';
 
-import DeleteDepartmentsDialog from './Dialog/DeleteDepartmentDialog';
+import DeleteDepartmentsDialog from './DeleteDepartmentDialog';
 
 export default function Departments() {
   const { data: departments, refetch: refetchDepartments } =

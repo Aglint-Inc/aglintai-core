@@ -6,8 +6,8 @@ import { UIButton } from '@/components/Common/UIButton';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
 import timeZone from '@/utils/timeZone';
 
-import AddAndEditLocation from './Dialog/AddAndEditLocationDialog';
-import DeleteLocationDialog from './Dialog/DeleteLocationDialog';
+import AddAndEditLocationDialog from './AddAndEditLocationDialog';
+import DeleteLocationDialog from './DeleteLocationDialog';
 import LocationCard from './ui/LocationCard';
 
 export const Location = () => {
@@ -23,7 +23,7 @@ export const Location = () => {
 
   return (
     <>
-      <AddAndEditLocation
+      <AddAndEditLocationDialog
         open={AddEditDialog.open}
         edit={AddEditDialog.edit}
         handleClose={() => {
@@ -53,13 +53,14 @@ export const Location = () => {
             const selectedTimeZone = timeZone.find(
               (item) => item.tzCode === loc.timezone,
             );
+            const location = [loc.city, loc.region, loc.country]
+              .filter(Boolean)
+              .join(', ');
             return (
               <LocationCard
                 key={loc.id}
                 id={loc.id}
-                city={loc.city}
-                region={loc.region}
-                country={loc.country}
+                location={location}
                 address={loc.line1}
                 timeZone={selectedTimeZone?.label}
                 isHeadquarter={loc.is_headquarter}

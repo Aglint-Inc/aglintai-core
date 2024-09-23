@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 import { SectionCard } from '@/authenticated/components/SectionCard';
 
-import { DeleteReasonDialog } from './Dialog/DeleteReasonDialog';
+import { DeleteReasonDialog } from './DeleteReasonDialog';
 import { ReasonCardUI } from './ui/ReasonCardUI';
 
 interface ReasonSectionProps {

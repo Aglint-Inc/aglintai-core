@@ -3,7 +3,7 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { useState } from 'react';
 
 import { usePortalSettings } from '../../../hooks/hook';
-import { GreetingEditDialog } from './Dialog/GreetingEditDialog';
+import { GreetingEditDialog } from './GreetingEditDialog';
 
 export default function CandidateGreeting() {
   const { data } = usePortalSettings();

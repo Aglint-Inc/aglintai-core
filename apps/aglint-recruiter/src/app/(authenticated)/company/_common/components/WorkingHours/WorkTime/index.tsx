@@ -12,8 +12,8 @@ import {
 import { SectionCard } from '@/authenticated/components/SectionCard';
 import { UIButton } from '@/components/Common/UIButton';
 
-import { WorkTimeEditDialog } from './Dialog/WorkTimeEditDialog';
 import { WorkTimeUI } from './ui/WorkTimeUI';
+import { WorkTimeEditDialog } from './WorkTimeEditDialog';
 
 // Define types for the component props
 interface TimeRange {
