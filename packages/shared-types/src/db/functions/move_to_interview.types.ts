@@ -9,8 +9,9 @@ export type CustomMoveToInterview = FunctionType<
   Custom<
     Database["public"]["Functions"]["move_to_interview"]["Args"],
     {
-      requests?: (CustomRequestPayload &
-        Pick<CustomRequestType, "application_id">)[];
+      requests?: Partial<
+        CustomRequestPayload & Pick<CustomRequestType, "application_id">
+      >[];
     }
   >,
   {}

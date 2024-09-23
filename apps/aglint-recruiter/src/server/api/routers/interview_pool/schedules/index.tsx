@@ -2,6 +2,7 @@ import { schedulesSupabase } from 'src/app/_common/utils/schedules-query';
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import { createPrivateClient } from '@/server/db';
 
 const schedulesPoolSchema = z.object({
   module_id: z.string().uuid(),
@@ -9,9 +10,9 @@ const schedulesPoolSchema = z.object({
 });
 
 const query = async ({
-  ctx: { db },
   input: { module_id, filter },
 }: PrivateProcedure<typeof schedulesPoolSchema>) => {
+  const db = createPrivateClient();
   const query = schedulesSupabase(db)
     .eq('module_id', module_id)
     .eq('meeting_interviewers.is_confirmed', true);

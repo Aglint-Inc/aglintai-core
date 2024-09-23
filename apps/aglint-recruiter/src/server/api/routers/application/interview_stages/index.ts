@@ -2,6 +2,7 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import { createPrivateClient } from '@/server/db';
 import { interviewCancelReasons, userDetails } from '@/utils/scheduling/const';
 
 const interviewStagesSchema = z.object({ application_id: z.string().uuid() });
@@ -45,8 +46,8 @@ const fetchDetails = async (
 const fetchSessionDetails = async (
   ctx: PrivateProcedure<typeof interviewStagesSchema>,
 ) => {
+  const db = createPrivateClient();
   const {
-    ctx: { db },
     input: { application_id },
   } = ctx;
   const { data } = await db
