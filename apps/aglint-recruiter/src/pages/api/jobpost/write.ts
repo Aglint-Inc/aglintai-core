@@ -10,7 +10,7 @@ import { fillEmailTemplate } from '@/utils/support/supportUtils';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
+  process.env.SUPABASE_SERVICE_ROLE_KEY,
 );
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

@@ -4,5 +4,5 @@ import {DB} from '@aglint/shared-types';
 
 export const supabaseAdmin = createClient<DB>(
   envConfig.SUPABASE_URL,
-  envConfig.SUPABASE_SERVICE_KEY
+  envConfig.SUPABASE_SERVICE_ROLE_KEY
 );
