@@ -2,7 +2,7 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { deleteRequestWorkflowAction } from '@requests/components/RequestProgress/utils';
-import { useMeetingList, useRequestAvailabilityDetails } from '@requests/hooks';
+import { useRequestAvailabilityDetails } from '@requests/hooks';
 import React, { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -30,10 +30,7 @@ import {
 
 const ScheduleOptions = () => {
   const [isProceeding, setIsProceeding] = React.useState(false);
-  const { refetch: refetchMeetings } = useMeetingList();
-  const { findAvailibility } = useSelfSchedulingDrawer({
-    refetch: refetchMeetings,
-  });
+  const { findAvailibility } = useSelfSchedulingDrawer();
   const { fetchingPlan } = useSelfSchedulingFlowStore();
   const { request_workflow, requestDetails, request_progress } = useRequest();
   const { handleAsyncUpdateRequest } = useRequests();
@@ -122,7 +119,7 @@ const ScheduleOptions = () => {
           </UIButton>
         </>
       </ShowCode.When>
-      <ShowCode.When
+      {/* <ShowCode.When
         isTrue={
           (!scheduleWorkflowAction && !lastEvent) ||
           (lastEvent &&
@@ -130,7 +127,7 @@ const ScheduleOptions = () => {
               lastEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK') &&
             lastEvent.status === 'failed')
         }
-      >
+      > */}
         <>
           <UIButton
             onClick={async () => {
@@ -170,7 +167,7 @@ const ScheduleOptions = () => {
             Send Self Scheduling
           </UIButton>
         </>
-      </ShowCode.When>
+      {/* </ShowCode.When> */}
       <ShowCode.When
         isTrue={
           lastEvent &&

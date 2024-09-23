@@ -8,6 +8,7 @@ import React, { type Dispatch, useEffect, useMemo, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';
+import toast from '@/utils/toast';
 
 import { DayCard } from '../../../ui/DayCard';
 import { EmptySlotReason } from '../../../ui/EmptySlotReason';
@@ -148,6 +149,11 @@ function DayCardWrapper({
                 : isSelected
             }
             onClick={() => {
+              const slotsNo = slotsWithDaySessions.length;
+              if (slotsNo > 100) {
+                toast.error('It has more slots');
+                return;
+              }
               setSelectedCombIds(
                 isSelected
                   ? selectedCombIds.filter((id) =>

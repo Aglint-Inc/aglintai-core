@@ -116,7 +116,7 @@ export default function ViewRequestDetails() {
         </AvailabilityProvider>
         <SideDrawerEdit refetch={refetchMeetings} />
         {/* {selectedRequest?.status === 'to_do' && ( */}
-        <SelfSchedulingDrawer refetch={refetchMeetings} />
+        <SelfSchedulingDrawer />
         {/* )} */}
         <div className='space-y-8'>
           <Breadcrumb>

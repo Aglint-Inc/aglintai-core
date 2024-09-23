@@ -2,8 +2,10 @@ import { getFullName } from '@aglint/shared-utils';
 import { useMemo } from 'react';
 import { getStringColor } from 'src/app/_common/utils/getColorForText';
 
+import { transformWorkHours } from '@/authenticated/utils/transformWorkHours';
 import CalendarResourceView from '@/components/Common/CalendarResourceView';
 import { type EventCalendar } from '@/components/Common/CalendarResourceView/types';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import { setCalendarDate, useSelfSchedulingFlowStore } from '../store/store';
 
@@ -23,6 +25,8 @@ function Calendar() {
     fetchingPlan: state.fetchingPlan,
     calendarDate: state.calendarDate,
   }));
+
+  const { recruiter } = useAuthDetails();
 
   const memoizedSelectedEvents = useMemo(() => {
     const selectedSessions = filteredSchedulingOptions
@@ -80,6 +84,9 @@ function Calendar() {
           currentDate={calendarDate}
           setCurrentDate={setCalendarDate}
           isLoading={fetchingPlan}
+          businessHours={transformWorkHours(
+            recruiter.scheduling_settings.workingHours,
+          )}
         />
       )}
     </>

@@ -31,7 +31,7 @@ function DateRangeField() {
   }>(null);
 
   return (
-    <div className='flex flex-col space-y-0.5'>
+    <div className='flex flex-col space-y-2'>
       <span className='text-base font-medium'>Preferred Date Ranges</span>
       <TimeRangeSelector
         slotButton={
@@ -80,12 +80,12 @@ function DateRangeField() {
                   <Badge
                     key={index}
                     variant='secondary'
-                    className='flex items-center gap-1'
+                    className='flex items-center gap-1 p-2 text-sm'
                   >
                     {`${dayjs(dateRange.startTime).format('hh:mm A')} - ${dayjs(dateRange.endTime).format('hh:mm A')}`}
                     <Button
                       variant='ghost'
-                      size='sm'
+                      size='md'
                       className='h-auto p-0 text-muted-foreground hover:text-foreground'
                       onClick={() => {
                         setLocalFilters({

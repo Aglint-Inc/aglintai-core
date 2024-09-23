@@ -35,11 +35,7 @@ import {
 } from '../store/store';
 import { transformAvailability } from '../utils/utils';
 
-export const useSelfSchedulingDrawer = ({
-  refetch,
-}: {
-  refetch: () => void;
-}) => {
+export const useSelfSchedulingDrawer = () => {
   const query = useParams();
   const { recruiter, recruiterUser } = useAuthDetails();
   const request_id = (query?.id || '') as string;
@@ -217,7 +213,6 @@ export const useSelfSchedulingDrawer = ({
         const resObj = res?.data?.data as ApiResponseSelfSchedule['data'];
         setResSendToCandidate(resObj);
         setStepScheduling('success_screen');
-        refetch();
       } else {
         throw new Error('Error sending to candidate.');
       }
