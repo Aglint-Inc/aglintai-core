@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import { type MemberType } from 'src/app/_common/types/memberType';
 
+import { useRolesOptions } from '@/authenticated/hooks/useRolesOptions';
 import axios from '@/client/axios';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
@@ -13,7 +14,6 @@ import { useAllOfficeLocations } from '@/queries/officeLocations';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import { useRolesOptions } from '../../../../../../company/_common/components/TeamManagement/hooks';
 import { Form } from './EditAdminDialogUI';
 
 export type EditAdminFormType = {

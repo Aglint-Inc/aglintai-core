@@ -7,7 +7,7 @@ import { Loader } from '@/components/Common/Loader';
 
 import { usePortalSettings } from '../../../hooks/hook';
 
-export function ConfigureCoverImage() {
+export function CoverImage() {
   const { data, removeCover, updateCover, isCoverUploading, isCoverRemoving } =
     usePortalSettings();
   const fileInputRef = useRef<HTMLInputElement>(null);

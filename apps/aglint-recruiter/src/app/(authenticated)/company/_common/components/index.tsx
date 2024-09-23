@@ -27,18 +27,18 @@ const CompanyDetailComp = () => {
         </div>
         <div className='w-3/4'>
           {tab === settingSubNavItem['COMPANYINFO'] && <CompanyInfoComp />}
+          {tab === settingSubNavItem['WORKINGHOURS'] && (
+            <WorkingHour
+              initialData={recruiter.scheduling_settings}
+              updateSettings={updateSettings}
+            />
+          )}
           {tab === settingSubNavItem['USERS'] && <TeamManagement />}
           {tab === settingSubNavItem['ROLES'] && (
             <RolesAndPermissionsComponent />
           )}
           {tab === settingSubNavItem['SCHEDULING_REASONS'] && (
             <SchedulingReasons />
-          )}
-          {tab === settingSubNavItem['WORKINGHOURS'] && (
-            <WorkingHour
-              initialData={recruiter.scheduling_settings}
-              updateSettings={updateSettings}
-            />
           )}
           {tab === settingSubNavItem.HOLIDAYS && <Holidays />}
           {tab === settingSubNavItem.SCHEDULING && (

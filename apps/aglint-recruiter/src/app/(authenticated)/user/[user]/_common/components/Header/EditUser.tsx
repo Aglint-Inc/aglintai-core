@@ -1,6 +1,6 @@
 import { getFullName } from '@aglint/shared-utils';
 
-import { useTeamMembers } from '@/company/components/TeamManagement';
+import { useTeamMembers } from '@/company/hooks/useTeamMembers';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useMemberList } from '@/hooks/useMemberList';
 import { useRouterPro } from '@/hooks/useRouterPro';

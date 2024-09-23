@@ -1,12 +1,6 @@
 /* eslint-disable no-unused-vars */
+import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@components/ui/card';
 import { Label } from '@components/ui/label';
 import {
   Popover,
@@ -14,7 +8,7 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { PopoverClose } from '@radix-ui/react-popover';
-import { Coffee, Edit, Loader2 } from 'lucide-react';
+import { Coffee, Edit } from 'lucide-react';
 import {
   type Dispatch,
   type FC,
@@ -24,6 +18,7 @@ import {
   useState,
 } from 'react';
 
+import { SectionCard } from '@/authenticated/components/SectionCard';
 import TimePicker from '@/components/Common/TimePicker';
 import dayjs from '@/utils/dayjs';
 
@@ -48,19 +43,21 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
     setSelectedHourBreak(newBreaktime);
   };
 
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   return (
-    <Card className='group relative'>
-      <CardHeader className='relative'>
-        <CardTitle className='text-lg font-semibold'>Break Time</CardTitle>
-        <CardDescription className='text-sm text-gray-500'>
-          Set the default break time for your company&apos;s working hours.
-        </CardDescription>
-        <Popover>
+    <SectionCard
+      title='Break Time'
+      description=" Set the default break time for your company's working hours."
+      isTopActionStick={isPopoverOpen}
+      topAction={
+        <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
           <PopoverTrigger asChild>
             <Button
               variant='outline'
               size='sm'
-              className='absolute right-2 top-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100'
+              onClick={() => {
+                setIsPopoverOpen(true);
+              }}
             >
               <Edit className='h-3 w-3' />
               <span className='sr-only'>Edit Break Time</span>
@@ -73,29 +70,28 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
             />
           </PopoverContent>
         </Popover>
-      </CardHeader>
-      <CardContent>
-        <div className='flex items-center space-x-2'>
-          <div>
-            <p className='text-sm font-medium'>Default Break Times</p>
-            <div className='flex items-center space-x-2'>
-              <Coffee className='h-4 w-4 text-muted-foreground' />
-              <p>
-                {dayjs()
-                  .set('hour', parseInt(breaktime?.start_time?.split(':')[0]))
-                  .set('minute', parseInt(breaktime?.start_time?.split(':')[1]))
-                  .format('hh:mm A')}
-                {' - '}
-                {dayjs()
-                  .set('hour', parseInt(breaktime?.end_time?.split(':')[0]))
-                  .set('minute', parseInt(breaktime?.end_time?.split(':')[1]))
-                  .format('hh:mm A')}
-              </p>
-            </div>
+      }
+    >
+      <div className='flex items-center space-x-2'>
+        <div>
+          <p className='text-sm font-medium'>Default Break Times</p>
+          <div className='flex items-center space-x-2'>
+            <Coffee className='h-4 w-4 text-muted-foreground' />
+            <p>
+              {dayjs()
+                .set('hour', parseInt(breaktime?.start_time?.split(':')[0]))
+                .set('minute', parseInt(breaktime?.start_time?.split(':')[1]))
+                .format('hh:mm A')}
+              {' - '}
+              {dayjs()
+                .set('hour', parseInt(breaktime?.end_time?.split(':')[0]))
+                .set('minute', parseInt(breaktime?.end_time?.split(':')[1]))
+                .format('hh:mm A')}
+            </p>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </SectionCard>
   );
 };
 
@@ -174,9 +170,14 @@ const EditBreakTime = ({
       <PopoverClose>
         <Button
           className='w-full'
-          onClick={() => {
+          onClick={async () => {
             if (isStartTimeLessThanEndTime(localBreakTime)) {
-              handleUpdateAndClose(localBreakTime);
+              await handleUpdateAndClose(localBreakTime);
+            } else {
+              toast({
+                variant: 'destructive',
+                title: 'End time must greater than start time',
+              });
             }
           }}
         >

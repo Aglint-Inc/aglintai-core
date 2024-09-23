@@ -16,7 +16,7 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 import { type API_reset_password } from '@/pages/api/reset_password/type';
 
 import { reinviteUser } from '../utils';
-import DeleteMemberDialog from './DeleteMemberDialog';
+import DeleteMemberDialog from './Dialog/DeleteMemberDialog';
 
 export const UserListThreeDot = ({ member }) => {
   const { toast } = useToast();

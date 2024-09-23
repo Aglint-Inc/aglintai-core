@@ -15,11 +15,13 @@ interface SectionCardProps {
   description?: string;
   topAction?: React.ReactNode;
   bottomAction?: React.ReactNode;
+  isTopActionStick?: boolean;
 }
 
 export const SectionCard: React.FC<SectionCardProps> = ({
   title,
   description,
+  isTopActionStick = false,
   children,
   topAction,
   bottomAction,
@@ -44,7 +46,7 @@ export const SectionCard: React.FC<SectionCardProps> = ({
               </UITypography>
             )}
           </div>
-          {isHover && topAction}
+          {(isHover || isTopActionStick) && topAction}
         </CardTitle>
         {}
       </CardHeader>

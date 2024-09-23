@@ -1,12 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { Button } from '@components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@components/ui/card';
 import { Label } from '@components/ui/label';
 import {
   Popover,
@@ -14,9 +7,10 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { PopoverClose } from '@radix-ui/react-popover';
-import { Clock, Edit, Loader2 } from 'lucide-react';
+import { Clock, Edit } from 'lucide-react';
 import { type FC, useEffect, useRef, useState } from 'react';
 
+import { SectionCard } from '@/authenticated/components/SectionCard';
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import { type TimezoneObj } from '@/utils/timeZone';
 
@@ -39,6 +33,7 @@ const TimeZone: FC<TimeZoneProps> = ({
 
   const handleUpdateAndClose = async () => {
     await handleUpdate({ timeZone: selectedTimeZone });
+    setIsPopoverOpen(false);
   };
 
   useEffect(() => {
@@ -49,20 +44,17 @@ const TimeZone: FC<TimeZoneProps> = ({
     };
   }, []);
 
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
   return (
-    <Card className='group relative'>
-      <CardHeader className='relative'>
-        <CardTitle className='text-lg font-semibold'>Time Zone</CardTitle>
-        <CardDescription className='text-sm text-gray-500'>
-          Set the default time zone for your company.
-        </CardDescription>
-        <Popover>
+    <SectionCard
+      title='Time Zone'
+      description='Set the default time zone for your company.'
+      isTopActionStick={isPopoverOpen}
+      topAction={
+        <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
           <PopoverTrigger asChild>
-            <Button
-              variant='outline'
-              size='sm'
-              className='absolute right-2 top-1 opacity-0 transition-opacity duration-200 group-hover:opacity-100'
-            >
+            <Button variant='outline' size='sm' className=''>
               <Edit className='h-3 w-3' />
               <span className='sr-only'>Edit Time Zone</span>
             </Button>
@@ -75,7 +67,7 @@ const TimeZone: FC<TimeZoneProps> = ({
                 onChange={(value) => setSelectedTimeZone(value)}
                 width={'300'}
               />
-              <PopoverClose>
+              <PopoverClose asChild>
                 <Button className='w-full' onClick={handleUpdateAndClose}>
                   Update
                 </Button>
@@ -83,19 +75,18 @@ const TimeZone: FC<TimeZoneProps> = ({
             </div>
           </PopoverContent>
         </Popover>
-      </CardHeader>
-      <CardContent>
-        <div className='flex items-center space-x-2'>
-          <div>
-            <p className='text-sm font-medium'>Current Time Zone</p>
-            <div className='flex items-center space-x-2'>
-              <Clock className='h-4 w-4 text-muted-foreground' />
-              <p>{timeZone}</p>
-            </div>
+      }
+    >
+      <div className='flex items-center space-x-2'>
+        <div>
+          <p className='text-sm font-medium'>Current Time Zone</p>
+          <div className='flex items-center space-x-2'>
+            <Clock className='h-4 w-4 text-muted-foreground' />
+            <p>{timeZone}</p>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </SectionCard>
   );
 };
 
