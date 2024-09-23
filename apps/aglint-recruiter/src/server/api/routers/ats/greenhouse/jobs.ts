@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 import { syncGreenhouseJob } from '@/api/sync/greenhouse/jobs/process';
 import { type ATSProcedure, atsProcedure } from '@/server/api/trpc';
+import { createPublicClient } from '@/server/db';
 
 type Params = Pick<Parameters<typeof syncGreenhouseJob>[0], 'recruiter_id'>;
 
@@ -14,10 +15,11 @@ export const greenhouseJobsMutation = async ({
   ctx,
   input,
 }: ATSProcedure<typeof schema>) => {
+  const adminDb = createPublicClient();
   return await syncGreenhouseJob({
     decryptKey: ctx.decryptKey,
     recruiter_id: input.recruiter_id,
-    supabaseAdmin: ctx.adminDb,
+    supabaseAdmin: adminDb,
     last_sync: ctx.greenhouse_metadata?.last_sync?.jobs ?? null,
   });
 };

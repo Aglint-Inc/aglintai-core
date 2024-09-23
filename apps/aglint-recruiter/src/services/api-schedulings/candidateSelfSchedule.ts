@@ -1,6 +1,11 @@
-import { type PlanCombinationRespType } from '@aglint/shared-types';
+import {
+  type CustomAgentInstructionPayload,
+  type PlanCombinationRespType,
+} from '@aglint/shared-types';
 import {
   CApiError,
+  DAYJS_FORMATS,
+  dayjsLocal,
   type ProgressLoggerType,
   supabaseWrap,
 } from '@aglint/shared-utils';
@@ -18,6 +23,8 @@ export const candidateSelfSchedule = async ({
   start_date_str,
   reqProgressLogger,
   mail_payload,
+  agent_payload,
+  req_assignee_tz,
 }: {
   cloned_sessn_ids: string[];
   organizer_id: string;
@@ -28,11 +35,13 @@ export const candidateSelfSchedule = async ({
   request_id: string;
   reqProgressLogger: ProgressLoggerType;
   mail_payload: any;
+  agent_payload: CustomAgentInstructionPayload['agent']['ai_response'];
+  req_assignee_tz: string;
 }) => {
   if (plans.length === 0) {
     throw new CApiError('CLIENT', 'No plans matched');
   }
-
+  const candidate_slots = plans.slice(0, agent_payload.maxTotalSlots);
   const [filter_json] = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')
@@ -42,7 +51,7 @@ export const candidateSelfSchedule = async ({
           start_date: start_date_str,
           end_date: end_date_str,
         },
-        selected_options: [...plans.slice(0, 15)], //TODO: fix this later
+        selected_options: candidate_slots, //TODO: fix this later
         request_id: request_id,
         application_id,
       })
@@ -60,6 +69,34 @@ export const candidateSelfSchedule = async ({
     },
   });
 
+  const slots: Record<string, number> = {};
+  candidate_slots.forEach((plan) => {
+    const starting_sesn = plan.sessions[0].start_time;
+    if (!slots[starting_sesn]) {
+      slots[starting_sesn] = 1;
+    }
+  });
+  const total_slots = Object.values(slots).reduce((acc, val) => acc + val, 0);
+  let prog_log = '';
+  const cand_avail_date = {
+    startDate:
+      Number(agent_payload.candidateAvailability.prefferredDate.startDate) *
+      1000,
+    endDate:
+      Number(agent_payload.candidateAvailability.prefferredDate.endDate) * 1000,
+  };
+
+  if (cand_avail_date.startDate !== cand_avail_date.endDate) {
+    prog_log = `Sent total ${total_slots} slots to the candidate from ${dayjsLocal(cand_avail_date.startDate).tz(req_assignee_tz).format(DAYJS_FORMATS.DATE_FORMAT)} - ${dayjsLocal(cand_avail_date.endDate).tz(req_assignee_tz).format(DAYJS_FORMATS.DATE_FORMATZ)}`;
+  } else {
+    prog_log = `Sent total ${total_slots} slots to the candidate on ${dayjsLocal(cand_avail_date.startDate).tz(req_assignee_tz).format(DAYJS_FORMATS.DATE_FORMATZ)}`;
+  }
+
+  await reqProgressLogger({
+    log: prog_log,
+    status: 'completed',
+    is_progress_step: true,
+  });
   await reqProgressLogger({
     is_progress_step: true,
     status: 'completed',

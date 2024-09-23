@@ -2,12 +2,13 @@ import { getFullName } from '@aglint/shared-utils';
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import { createPrivateClient } from '@/server/db';
 
 export const interviewerSchema = z.object({ recruiter_id: z.string().uuid() });
 const query = async ({
-  ctx: { db },
   input: { recruiter_id },
 }: PrivateProcedure<typeof interviewerSchema>) => {
+  const db = createPrivateClient();
   const data = (
     await db
       .from('all_interviewers')
