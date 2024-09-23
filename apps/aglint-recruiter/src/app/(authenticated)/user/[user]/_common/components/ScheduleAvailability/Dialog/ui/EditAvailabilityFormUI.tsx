@@ -8,7 +8,7 @@ import { ScrollArea } from '@radix-ui/react-scroll-area';
 import { type Dispatch, type SetStateAction } from 'react';
 
 import InterviewLimitInput from '@/authenticated/components/InterviewLoad';
-import KeywordSection from '@/company/components/Scheduling/KeywordSection';
+import KeywordSection from '@/authenticated/components/KeywordSection';
 import DayWithTime from '@/company/components/WorkingHours/WorkTime/Dialog/ui/DayWithTime';
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import UITypography from '@/components/Common/UITypography';
