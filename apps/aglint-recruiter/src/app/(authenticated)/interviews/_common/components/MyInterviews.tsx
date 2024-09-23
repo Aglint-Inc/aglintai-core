@@ -16,9 +16,9 @@ import {
   getInterviewsCountByUserId,
   useInterviewsByUserId,
 } from '../hooks/useInterviewsByUserId';
-import { InterviewMemberSide } from './InterviewMemberSide';
-import { NewMyScheduleCard } from './NewMyScheduleCard';
-import ScheduleMeetingCard from './ScheduleMeetingCard';
+import { InterviewMemberSide } from './ui/InterviewMemberSide';
+import { NewMyScheduleCard } from './ui/NewMyScheduleCard';
+import ScheduleMeetingCard from './ui/ScheduleMeetingCard';
 
 function MyInterviews() {
   const { toast } = useToast();
