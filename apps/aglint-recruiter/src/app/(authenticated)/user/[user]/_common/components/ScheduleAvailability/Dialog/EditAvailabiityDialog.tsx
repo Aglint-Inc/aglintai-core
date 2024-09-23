@@ -14,7 +14,7 @@ import { supabase } from '@/utils/supabase/client';
 import { type timeZone as timeZones } from '@/utils/timeZone';
 
 import { useInterviewer } from '../../../hooks/useInterviewer';
-import { EditAvailabilityForm } from './EditAvailabilityFormUI';
+import { EditAvailabilityForm } from './ui/EditAvailabilityFormUI';
 
 export const LoadMax = {
   dailyHours: 8,

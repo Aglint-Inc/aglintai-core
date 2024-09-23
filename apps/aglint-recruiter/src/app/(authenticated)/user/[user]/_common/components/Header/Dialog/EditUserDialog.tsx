@@ -17,7 +17,7 @@ import { supabase } from '@/utils/supabase/client';
 import type timeZone from '@/utils/timeZone';
 import toast from '@/utils/toast';
 
-import { ProfileForms } from './ProfileForms';
+import { ProfileForms } from './EditUserDialogUI';
 
 const initialFormValues: FormValues = {
   value: null,

@@ -12,13 +12,15 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { useInterviewer } from '../hooks/useInterviewer';
-import { BreadCrumb, SideBar, Top } from './Components';
+import { BreadCrumb } from './BreadCrumb';
+import { Top } from './Components';
 import { Feedback } from './FeedbackCard';
 import { Header } from './Header';
 import { KeyMatrics } from './KeyMatrix';
 import { Qualifications } from './Qualification';
 import { RecentInterviews } from './RecentInterviewCard';
 import ScheduleAvailability from './ScheduleAvailability';
+import { SideBar } from './SideBar';
 import { UpcomingInterview } from './UpcomingInterviews';
 
 export default function InterviewerDetailsPage() {
@@ -101,8 +103,8 @@ export default function InterviewerDetailsPage() {
             <Header
               avatar={interviewerDetails?.avatar}
               name={getFullName(
-                interviewerDetails.first_name,
-                interviewerDetails.last_name,
+                interviewerDetails?.first_name,
+                interviewerDetails?.last_name,
               )}
               role={capitalizeAll(interviewerDetails?.role || ' - ')}
               department={interviewerDetails?.department || ' - '}

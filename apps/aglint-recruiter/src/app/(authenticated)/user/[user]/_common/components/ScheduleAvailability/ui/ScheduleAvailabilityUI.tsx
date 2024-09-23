@@ -12,7 +12,7 @@ import { capitalize } from 'lodash';
 
 import UITypography from '@/components/Common/UITypography';
 
-import { type InterviewLoadItemType, type ScheduleKeywordType } from '.';
+import { type InterviewLoadItemType, type ScheduleKeywordType } from '..';
 
 type Props = {
   interviewLoads: InterviewLoadItemType[];

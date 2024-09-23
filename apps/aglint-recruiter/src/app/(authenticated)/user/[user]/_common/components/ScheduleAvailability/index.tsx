@@ -7,7 +7,7 @@ import { UIButton } from '@/components/Common/UIButton';
 
 import { type useInterviewer } from '../../hooks/useInterviewer';
 import { EditAvailabiityDialog } from './Dialog/EditAvailabiityDialog';
-import { ScheduleAvailabilityUI } from './ScheduleAvailabilityUI';
+import { ScheduleAvailabilityUI } from './ui/ScheduleAvailabilityUI';
 
 export type InterviewLoadItemType = {
   title: string;
