@@ -11,7 +11,7 @@ type RequestParams = Parameters<(typeof requestQueries)['request_progress']>[0];
 export const useRequestActions = ({ request_id }: RequestParams) => {
   const { pathName } = useRouterPro();
   const isRequestPage = useMemo(() => {
-    return !!request_id && pathName === '/requests/[id]';
+    return !!request_id && pathName === '/requests/[request]';
   }, [pathName, request_id]);
   const [collapse, setCollapse] = useState(false);
 

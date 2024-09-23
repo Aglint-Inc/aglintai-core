@@ -31,7 +31,7 @@ function MultiDaySessions() {
         <SlotsPicker singleDay={false} />
       </UIDialog>
       <div className='flex w-full flex-col items-center space-y-4'>
-        <div className='mx-auto flex w-full max-w-3xl flex-col space-y-4'>
+        <div className='mx-auto flex max-h-[500px] w-full max-w-3xl flex-col space-y-4 overflow-auto'>
           {multiDaySessions.map((sessions, i) => {
             const totalSessionMinutes = sessions.reduce(
               (accumulator, session) => accumulator + session.session_duration,

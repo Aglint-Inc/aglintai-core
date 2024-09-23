@@ -18,11 +18,13 @@ function CalendarResourceView({
   currentDate,
   setCurrentDate,
   isLoading = false,
-  businessHours = {
-    daysOfWeek: [1, 2, 3, 4, 5, 6, 7],
-    startTime: '00:00',
-    endTime: '24:00',
-  },
+  businessHours = [
+    {
+      daysOfWeek: [1, 2, 3, 4, 5, 6, 7],
+      startTime: '00:00',
+      endTime: '24:00',
+    },
+  ],
 }: {
   events: EventCalendar[];
   resources: Resource[];
@@ -37,7 +39,7 @@ function CalendarResourceView({
     daysOfWeek: number[];
     startTime: string;
     endTime: string;
-  };
+  }[];
 }) {
   const calendarRef = useRef<FullCalendar>(null);
   const calendarApi = calendarRef.current?.getApi();

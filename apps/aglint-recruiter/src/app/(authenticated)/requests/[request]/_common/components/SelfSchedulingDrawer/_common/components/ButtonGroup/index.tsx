@@ -6,7 +6,7 @@ import {
   useSelfSchedulingFlowStore,
 } from '../../store/store';
 
-function ButtonMain({ refetch }: { refetch: () => void }) {
+function ButtonMain() {
   const { stepScheduling, isSendingToCandidate, fetchingPlan } =
     useSelfSchedulingFlowStore((state) => ({
       stepScheduling: state.stepScheduling,
@@ -14,9 +14,8 @@ function ButtonMain({ refetch }: { refetch: () => void }) {
       fetchingPlan: state.fetchingPlan,
     }));
 
-  const { resetStateSelfScheduling, onClickPrimary } = useSelfSchedulingDrawer({
-    refetch,
-  });
+  const { resetStateSelfScheduling, onClickPrimary } =
+    useSelfSchedulingDrawer();
 
   const primaryButtonText = () => {
     if (stepScheduling === 'slot_options') {
