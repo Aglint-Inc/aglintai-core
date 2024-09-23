@@ -119,7 +119,7 @@ const ScheduleOptions = () => {
           </UIButton>
         </>
       </ShowCode.When>
-      <ShowCode.When
+      {/* <ShowCode.When
         isTrue={
           (!scheduleWorkflowAction && !lastEvent) ||
           (lastEvent &&
@@ -127,7 +127,7 @@ const ScheduleOptions = () => {
               lastEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK') &&
             lastEvent.status === 'failed')
         }
-      >
+      > */}
         <>
           <UIButton
             onClick={async () => {
@@ -167,7 +167,7 @@ const ScheduleOptions = () => {
             Send Self Scheduling
           </UIButton>
         </>
-      </ShowCode.When>
+      {/* </ShowCode.When> */}
       <ShowCode.When
         isTrue={
           lastEvent &&
