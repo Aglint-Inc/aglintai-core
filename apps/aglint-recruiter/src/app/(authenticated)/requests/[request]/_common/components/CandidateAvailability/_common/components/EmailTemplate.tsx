@@ -10,7 +10,7 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { mailSender } from '@/utils/mailSender';
 import toast from '@/utils/toast';
 
-import { useCandidateAvailabilitySchedulingFlowStore } from '../store';
+import { useCandidateAvailabilitySchedulingFlowStore } from '../contexts/CandidateAvailabilityFlowStore';
 
 function EmailTemplate({ application_id }: { application_id?: string }) {
   const { recruiterUser } = useAuthDetails();

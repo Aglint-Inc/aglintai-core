@@ -15,7 +15,7 @@ import {
   setCandidateAvailabilityDrawerOpen,
   setCandidateAvailabilityIdForReRequest,
   setReRequestAvailability,
-} from '../CandidateAvailability/store';
+} from '../CandidateAvailability/_common/contexts/CandidateAvailabilityFlowStore';
 import {
   setApplicationIdForConfirmAvailability,
   setCandidateAvailabilityId,
