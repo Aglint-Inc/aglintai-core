@@ -47,6 +47,7 @@ const EventNode = ({
     );
     tense = progressStatusToTense(headingEvent?.status);
   }
+
   const eventSubProgress = (eventProg ?? []).filter(
     (prg) => prg.is_progress_step === true,
   );
