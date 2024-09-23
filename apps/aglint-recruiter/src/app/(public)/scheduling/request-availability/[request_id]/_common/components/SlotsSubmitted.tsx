@@ -7,6 +7,7 @@ import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityCo
 function SlotsSubmitted() {
   const { daySlots } = useRequestAvailabilityContext();
   return (
+
     <div className='rounded-lg border border-gray-200 p-4 w-full flex flex-col gap-4'>
       {daySlots.map((daySlot) => (
         <div key={daySlot.round} className='flex flex-col gap-2'>
