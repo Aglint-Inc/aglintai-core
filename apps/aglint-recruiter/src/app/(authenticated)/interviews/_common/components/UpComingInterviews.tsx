@@ -5,7 +5,7 @@ import { Loader } from '@/components/Common/Loader';
 import { useScheduleStatesContext } from '../contexts/ScheduleStatesContext';
 import { useAllInterviews } from '../hooks/useAllInterviews';
 import UpComingInterviewFilters from './Filters/upComingFilter';
-import ScheduleMeetingList from './ScheduleMeetingList';
+import ScheduleMeetingList from './ui/ScheduleMeetingList';
 
 function UpComingInterviews() {
   const { upcomingFilterState } = useScheduleStatesContext();

@@ -1,3 +1,4 @@
+import { toast } from '@components/hooks/use-toast';
 import {
   Popover,
   PopoverContent,
@@ -13,7 +14,6 @@ import { UIButton } from '@/components/Common/UIButton';
 import { useRequests } from '@/context/RequestsContext';
 import { type Request } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import toast from '@/utils/toast';
 
 function PriorityList({ selectedFilter }: { selectedFilter: string }) {
   const { handleAsyncUpdateRequest } = useRequests();
@@ -54,7 +54,7 @@ function PriorityList({ selectedFilter }: { selectedFilter: string }) {
                         loading: false,
                         toast: false,
                       });
-                      toast.success('Request priority updated successfully');
+                      toast({ title: 'Request priority updated successfully' });
                     }
                   }}
                 >

@@ -1,4 +1,5 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { toast } from '@components/hooks/use-toast';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
@@ -12,7 +13,6 @@ import { ClockIcon, X } from 'lucide-react';
 import React from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
-import toast from '@/utils/toast';
 
 import {
   setLocalFilters,
@@ -40,16 +40,19 @@ function DateRangeField() {
             disabled={!value?.startTime || !value?.endTime}
             onClick={() => {
               if (!value) {
-                toast.error('Choose start time and end time then add');
+                toast({
+                  title: 'Choose start time and end time then add',
+                });
                 return;
               }
               if (
                 dayjsLocal(value.startTime).valueOf() >=
                 dayjsLocal(value.endTime).valueOf()
               ) {
-                toast.error(
-                  'Start time End time cannot be same and End time must be greater than start time',
-                );
+                toast({
+                  title:
+                    'Start time End time cannot be same and End time must be greater than start time',
+                });
                 return;
               }
 

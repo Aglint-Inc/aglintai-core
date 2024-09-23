@@ -1,4 +1,4 @@
-import { NewMyScheduleCard } from '@interviews/components/NewMyScheduleCard';
+import { NewMyScheduleCard } from '@interviews/components/ui/NewMyScheduleCard';
 import dayjs from 'dayjs';
 import { CalendarClock } from 'lucide-react';
 import {

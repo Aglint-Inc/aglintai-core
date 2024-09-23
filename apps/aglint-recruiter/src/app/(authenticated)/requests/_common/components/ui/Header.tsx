@@ -4,8 +4,8 @@ import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { formatRequestHeadingText } from '@requests/utils/formatRequestHeadingText';
 import { Columns, LayoutList } from 'lucide-react';
 
-import { CreateRequestWidget } from './createRequestWidget';
-import RequestListFilter from './RequestListFilter';
+import { CreateRequestWidget } from '../createRequestWidget';
+import RequestListFilter from '../RequestListFilter';
 
 function Header({
   recruiterUser,

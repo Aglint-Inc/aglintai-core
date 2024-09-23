@@ -1,4 +1,3 @@
-
 import { Button } from '@components/ui/button';
 import AgentChats from '@requests/components/AgentChats';
 import { AgentIEditorProvider } from '@requests/components/AgentChats/AgentEditorContext';
@@ -13,9 +12,9 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
 import { SafeObject } from '@/utils/safeObject';
 
-import Header from './Header';
-import { RequestEmpty } from './RequestEmpty';
 import RequestListContent from './RequestListContent';
+import Header from './ui/Header';
+import { RequestEmpty } from './ui/RequestEmpty';
 
 const MainBody = () => {
   const {
@@ -107,7 +106,7 @@ const MainBody = () => {
 
       {/* Main Content */}
       <div
-        className={`z-10 flex-1  overflow-x-hidden pt-0 ${
+        className={`z-10 flex-1 overflow-x-hidden pt-0 ${
           openChat ? 'w-[calc(100%-450px)]' : ''
         }`}
       >
