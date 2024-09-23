@@ -35,8 +35,8 @@ function Requests({ session_id }) {
               className='cursor-pointer border-none p-3 shadow-none hover:bg-gray-50'
               onClick={() => {
                 router.push(
-                  ROUTES['/requests/[id]']({
-                    id: request.id,
+                  ROUTES['/requests/[request]']({
+                    request: request.id,
                   }),
                 );
               }}

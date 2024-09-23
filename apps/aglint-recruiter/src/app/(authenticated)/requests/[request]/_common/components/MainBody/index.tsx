@@ -1,4 +1,4 @@
-import { getFullName } from '@aglint/shared-utils';
+import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
@@ -185,13 +185,22 @@ export default function ViewRequestDetails() {
               </div>
             </div>
             <div className='flex flex-col items-end gap-4 space-x-2'>
-              <div className='flex flex-row gap-2'>
-                <Badge variant='destructive'>
-                  {capitalizeFirstLetter(selectedRequest?.type)}
-                </Badge>
-                <Badge variant='outline' className='bg-green-50 text-green-700'>
-                  {capitalizeFirstLetter(selectedRequest?.status)}
-                </Badge>
+              <div className='flex flex-row items-center gap-2'>
+                {selectedRequest.status === 'completed' ? (
+                  <>
+                    <h3 className='text-sm font-medium text-gray-500'>
+                      Completed at:
+                    </h3>
+                    <p>{dayjsLocal(selectedRequest?.completed_at).fromNow()}</p>
+                  </>
+                ) : (
+                  <>
+                    <h3 className='text-sm font-medium text-gray-500'>
+                      Created at:
+                    </h3>
+                    <p>{dayjsLocal(selectedRequest?.created_at).fromNow()}</p>
+                  </>
+                )}
               </div>
               <div className='flex-center flex items-center gap-2'>
                 <h3 className='text-sm font-medium text-gray-500'>
@@ -264,8 +273,15 @@ export default function ViewRequestDetails() {
                             </div>
                           </div>
                           <Badge
-                            variant='outline'
-                            className='bg-green-50 text-green-700'
+                            variant={
+                              selectedRequest?.status === 'to_do'
+                                ? 'secondary'
+                                : selectedRequest?.status === 'in_progress'
+                                  ? 'in_progress'
+                                  : selectedRequest?.status === 'completed'
+                                    ? 'completed'
+                                    : 'destructive'
+                            }
                           >
                             {capitalizeFirstLetter(selectedRequest?.status)}
                           </Badge>
@@ -405,10 +421,19 @@ export default function ViewRequestDetails() {
                           </div>
                         </div>
                         <div className='flex items-center space-x-2'>
-                          <Calendar className='h-4 w-4 text-gray-500' />
-                          <span className='text-sm'>
-                            {capitalizeFirstLetter(selectedRequest?.type)}
-                          </span>
+                          <Badge
+                            variant={
+                              selectedRequest?.type === 'decline_request'
+                                ? 'destructive'
+                                : 'secondary'
+                            }
+                            className='gap-1'
+                          >
+                            <Calendar className='h-4 w-4 text-gray-500' />
+                            <p>
+                              {capitalizeFirstLetter(selectedRequest?.type)}
+                            </p>
+                          </Badge>
                         </div>
                       </div>
                     </div>
