@@ -6,15 +6,10 @@ import {
   type SessionCombinationRespType,
   type SessionsCombType,
 } from '@aglint/shared-types';
-import {
-  ScheduleUtils,
-  scheduling_options_schema,
-  supabaseWrap,
-} from '@aglint/shared-utils';
+import { ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { nanoid } from 'nanoid';
 import { type NextApiRequest, type NextApiResponse } from 'next';
-import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { planCombineSlots } from '@/services/CandidateScheduleV2/utils/planCombine';
@@ -22,8 +17,7 @@ import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { api_options, candidate_tz } =
-    req.body as APIVerifyRecruiterSelectedSlots;
+  const { candidate_tz } = req.body as APIVerifyRecruiterSelectedSlots;
   try {
     const {
       filter_json_data,
@@ -34,17 +28,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     } = await fetch_details_from_db(req.body);
     const selected_options = filered_selected_options;
 
-    let zod_options = v.parse(scheduling_options_schema, {
-      ...api_options,
-      include_conflicting_slots: api_options?.include_conflicting_slots || {},
+    const cand_schedule = new CandidatesSchedulingV2({
+      include_conflicting_slots: {
+        out_of_office: true,
+        out_of_working_hrs: true,
+        show_soft_conflicts: true,
+      },
     });
-
-    if (is_link_from_email_agent) {
-      zod_options = v.parse(scheduling_options_schema, {
-        include_conflicting_slots: {},
-      });
-    }
-    const cand_schedule = new CandidatesSchedulingV2(zod_options);
     await cand_schedule.fetchDetails({
       params: {
         req_user_tz: candidate_tz,

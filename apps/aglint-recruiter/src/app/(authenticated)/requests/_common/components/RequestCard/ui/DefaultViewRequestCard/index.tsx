@@ -10,7 +10,6 @@ import {
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import { cn } from '@lib/utils';
-import { getStatusColor } from '@requests/utils';
 import {
   Calendar,
   ChevronDown,
@@ -98,41 +97,24 @@ function DefaultViewRequestCard({
             <div className='space-y-3'>
               <div className='flex gap-2'>
                 <Badge
-                  variant='secondary'
-                  className={cn(
-                    'px-3 py-0.5 text-xs capitalize',
-                    mode === 'compact-list' && 'px-1.5 py-0.5 text-xs',
-                    {
-                      'border-purple-300 bg-purple-100/50 text-purple-800/90':
-                        props.type === 'schedule_request',
-                      'border-orange-300 bg-orange-100/50 text-orange-800/90':
-                        props.type === 'cancel_schedule_request',
-                      'border-pink-300 bg-pink-100/50 text-pink-800/90':
-                        props.type === 'decline_request',
-                      'border-indigo-300 bg-indigo-100/50 text-indigo-800/90':
-                        props.type === 'reschedule_request',
-                    },
-                  )}
+                  variant={
+                    props?.type === 'decline_request'
+                      ? 'destructive'
+                      : 'secondary'
+                  }
                 >
                   {capitalizeFirstLetter(props.type)}
                 </Badge>
                 <Badge
-                  variant='outline'
-                  className={cn(
-                    'px-3 py-0.5 text-xs capitalize',
-                    getStatusColor({ status: props.status }),
-                    mode === 'compact-list' && 'px-1.5 py-0.5 text-xs',
-                    {
-                      'border-yellow-300 bg-yellow-100/50 text-yellow-800/90':
-                        props.status === 'to_do',
-                      'border-blue-300 bg-blue-100/50 text-blue-800/90':
-                        props.status === 'in_progress',
-                      'border-red-300 bg-red-100/50 text-red-800/90':
-                        props.status === 'blocked',
-                      'border-green-300 bg-green-100/50 text-green-800/90':
-                        props.status === 'completed',
-                    },
-                  )}
+                  variant={
+                    props?.status === 'to_do'
+                      ? 'secondary'
+                      : props?.status === 'in_progress'
+                        ? 'in_progress'
+                        : props?.status === 'completed'
+                          ? 'completed'
+                          : 'destructive'
+                  }
                 >
                   {capitalizeFirstLetter(props.status)}
                 </Badge>

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { type ATSProcedure, atsProcedure } from '@/server/api/trpc';
+import { createPublicClient } from '@/server/db';
 
 const schema = z.object({
   recruiter_id: z.string().uuid(),
@@ -8,10 +9,10 @@ const schema = z.object({
 
 export const leverJobsMutation = async ({
   input,
-  ctx,
 }: ATSProcedure<typeof schema>) => {
+  const adminDb = createPublicClient();
   const jobs = (
-    await ctx.adminDb
+    await adminDb
       .from('public_jobs')
       .select('id')
       .eq('recruiter_id', input.recruiter_id)

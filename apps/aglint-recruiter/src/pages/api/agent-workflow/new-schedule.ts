@@ -10,9 +10,9 @@ import {
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { apiTargetToEvents } from '@requests/components/RequestProgress/utils/progressMaps';
 import { type NextApiRequest, type NextApiResponse } from 'next';
+import { v4 as uuidv4 } from 'uuid';
 import * as v from 'valibot';
 
-// import { apiTargetToEvents } from '@/components/Requests/_common/components/RequestProgress/utils/progressMaps';
 import { candidateAvailRequest } from '@/services/api-schedulings/candidateAvailRequest';
 import { candidateAvailReRequest } from '@/services/api-schedulings/candidateAvailReRequest';
 import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfSchedule';
@@ -22,7 +22,6 @@ import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const {
-      api_options,
       application_id,
       session_ids,
       target_api,
@@ -30,6 +29,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       request_id,
       event_run_id,
     } = v.parse(candidate_new_schedule_schema, req.body);
+    const event_log_id = uuidv4();
     const eventAction = apiTargetToEvents[target_api];
 
     const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
@@ -74,14 +74,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const plans = await executeWorkflowAction(
       findPlanCombs,
       {
-        api_options,
         date_range: date_range,
         recruiter_id,
         session_ids,
         reqProgressLogger,
         time_zone: request_assignee_tz,
+        agent_payload: req.body.payload.agent.ai_response,
       },
       reqProgressLogger,
+      event_log_id,
     );
 
     let meeting_flow: DatabaseTable['interview_meeting']['meeting_flow'] =
@@ -102,8 +103,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           reqProgressLogger,
           application_id,
           mail_payload: req.body.payload?.email,
+          agent_payload: req.body.payload.agent.ai_response,
+          req_assignee_tz: request_assignee_tz,
         },
         reqProgressLogger,
+        event_log_id,
       );
     } else if (
       api_target === 'onRequestSchedule_emailLink_getCandidateAvailability'

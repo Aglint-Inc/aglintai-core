@@ -1,4 +1,4 @@
-import type { APIOptions } from '@aglint/shared-types';
+import type { CustomAgentInstructionPayload } from '@aglint/shared-types';
 import type { ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
 import { filterSchedulingOptionsArray } from '@request/components/SelfSchedulingDrawer/_common/components/BodyDrawer/ScheduleFilter/utils';
 
@@ -9,19 +9,25 @@ export const findPlanCombs = async ({
   date_range,
   recruiter_id,
   session_ids,
-  api_options,
   reqProgressLogger,
   time_zone,
+  agent_payload,
 }: {
   recruiter_id: string;
   date_range: { start_date_str: string; end_date_str: string };
   session_ids: string[];
-  api_options: APIOptions;
   reqProgressLogger: ProgressLoggerType;
   time_zone: string;
+  agent_payload: CustomAgentInstructionPayload['agent']['ai_response'];
 }) => {
-  api_options.return_empty_slots_err = true;
-  const cand_schedule = new CandidatesSchedulingV2(api_options);
+  const cand_schedule = new CandidatesSchedulingV2({
+    include_conflicting_slots: {
+      out_of_office: true,
+      out_of_working_hrs: true,
+      show_soft_conflicts: true,
+    },
+    return_empty_slots_err: true,
+  });
   await cand_schedule.fetchDetails({
     params: {
       company_id: recruiter_id,
@@ -38,10 +44,8 @@ export const findPlanCombs = async ({
     filters: {
       isHardConflicts: false,
       isNoConflicts: true,
-      isOutSideWorkHours:
-        api_options.include_conflicting_slots.out_of_working_hrs,
-      isSoftConflicts:
-        api_options.include_conflicting_slots.show_soft_conflicts,
+      isOutSideWorkHours: true,
+      isSoftConflicts: agent_payload.includeAllSoftConflictSlots,
       isWorkLoad: true,
       preferredDateRanges: [],
       preferredInterviewers: [],
@@ -64,10 +68,6 @@ export const findPlanCombs = async ({
     });
     return [];
   }
-  await reqProgressLogger({
-    log: `Found ${plans.length} slots within ${schedule_dates.user_start_date_js.format('DD, MMMM')} - ${schedule_dates.user_end_date_js.format('DD, MMMM YYYY')}`,
-    status: 'completed',
-    is_progress_step: true,
-  });
+
   return plans;
 };

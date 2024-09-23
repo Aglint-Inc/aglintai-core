@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import { createPrivateClient } from '@/server/db';
 
 export const schema = z.object({
   application_id: z.string().uuid(),
@@ -11,9 +12,10 @@ export const schema = z.object({
 
 const pageSize = 9;
 
-const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
+const query = async ({ input }: PrivateProcedure<typeof schema>) => {
+  const db = createPrivateClient();
   const cursor = input?.cursor ?? 0;
-  const query = ctx.db
+  const query = db
     .from('meeting_details')
     .select('session_id, session_name', {
       count: 'exact',
