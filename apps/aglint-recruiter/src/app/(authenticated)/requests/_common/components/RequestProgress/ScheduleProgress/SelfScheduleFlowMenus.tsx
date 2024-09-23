@@ -54,7 +54,11 @@ const SelfScheduleFlowMenus = ({
     <>
       <ShowCode.When isTrue={isManualSchedule}>
         {scheduleFlowProg
-          .filter((s) => s.is_progress_step === false)
+          .filter(
+            (s) =>
+              s.is_progress_step === false &&
+              s.event_type === 'SELF_SCHEDULE_LINK',
+          )
           .map((prog) => {
             return (
               <>

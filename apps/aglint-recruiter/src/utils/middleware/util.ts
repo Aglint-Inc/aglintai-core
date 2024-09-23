@@ -6,7 +6,7 @@ import { type EventSessionType } from './type';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
+  process.env.SUPABASE_SERVICE_ROLE_KEY,
 );
 
 export const server_check_permissions = async ({
@@ -26,7 +26,7 @@ export const server_check_permissions = async ({
 
     const { payload } = await jwtVerify(
       token,
-      new TextEncoder().encode(process.env.SUPABASE_SECRET_KEY),
+      new TextEncoder().encode(process.env.SUPABASE_JWT_SECRET),
     );
 
     const tokenData = payload as unknown as EventSessionType;
