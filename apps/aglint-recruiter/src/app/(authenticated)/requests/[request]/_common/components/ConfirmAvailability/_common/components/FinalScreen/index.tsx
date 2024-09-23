@@ -3,6 +3,8 @@ import type {
   TargetApiPayloadType,
 } from '@aglint/shared-types';
 import { ScrollArea } from '@components/ui/scroll-area';
+import { useAvailabilityContext } from '@request/components/ConfirmAvailability/_common/contexts/RequestAvailabilityContext';
+import DayCardWrapper from '@request/components/SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import { RotateCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -11,9 +13,7 @@ import { ShowCode } from '@/components/Common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
 import { mailSender } from '@/utils/mailSender';
 
-import DayCardWrapper from '../../SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
-import { useAvailabilityContext } from '../RequestAvailabilityContext';
-import { useConfirmAvailabilitySchedulingFlowStore } from '../store';
+import { useConfirmAvailabilitySchedulingFlowStore } from '../../contexts/AvailabilitySchedulingStore';
 
 function FinalScreen() {
   const { selectedDateSlots } = useAvailabilityContext();

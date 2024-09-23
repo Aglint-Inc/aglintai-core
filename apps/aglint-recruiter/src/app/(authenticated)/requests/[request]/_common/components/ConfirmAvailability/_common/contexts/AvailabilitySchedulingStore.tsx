@@ -2,20 +2,20 @@ import { create } from 'zustand';
 
 import dayjs from '@/utils/dayjs';
 
-export interface SelfSchedulingFlow {
+export interface AvailabilitySchedulingFlow {
   candidateAvailabilityId: string;
   applicationIdForConfirmAvailability: string;
   calendarDate: string;
 }
 
-const initialState: SelfSchedulingFlow = {
+const initialState: AvailabilitySchedulingFlow = {
   candidateAvailabilityId: '',
   applicationIdForConfirmAvailability: '',
   calendarDate: dayjs().toISOString(),
 };
 
 export const useConfirmAvailabilitySchedulingFlowStore =
-  create<SelfSchedulingFlow>()(() => ({
+  create<AvailabilitySchedulingFlow>()(() => ({
     ...initialState,
   }));
 

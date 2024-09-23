@@ -58,7 +58,7 @@ import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import { updateInterviewSessionsDurations } from '../../functions';
 import CandidateAvailability from '../CandidateAvailability';
 import ConfirmAvailability from '../ConfirmAvailability';
-import { AvailabilityProvider } from '../ConfirmAvailability/RequestAvailabilityContext';
+import { AvailabilityProvider } from '../ConfirmAvailability/_common/contexts/RequestAvailabilityContext';
 import RecentRequests from '../RecentRequests';
 import CandidateCancelRequest from '../RequestNextSteps/CandidateCancelRequest';
 import RequestDecline from '../RequestNextSteps/RequestDecline';
