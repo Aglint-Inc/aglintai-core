@@ -1,4 +1,7 @@
-import { type PlanCombinationRespType } from '@aglint/shared-types';
+import {
+  type CustomAgentInstructionPayload,
+  type PlanCombinationRespType,
+} from '@aglint/shared-types';
 import {
   CApiError,
   type ProgressLoggerType,
@@ -18,6 +21,7 @@ export const candidateSelfSchedule = async ({
   start_date_str,
   reqProgressLogger,
   mail_payload,
+  agent_payload,
 }: {
   cloned_sessn_ids: string[];
   organizer_id: string;
@@ -28,6 +32,7 @@ export const candidateSelfSchedule = async ({
   request_id: string;
   reqProgressLogger: ProgressLoggerType;
   mail_payload: any;
+  agent_payload: CustomAgentInstructionPayload['agent']['ai_response'];
 }) => {
   if (plans.length === 0) {
     throw new CApiError('CLIENT', 'No plans matched');
@@ -42,7 +47,7 @@ export const candidateSelfSchedule = async ({
           start_date: start_date_str,
           end_date: end_date_str,
         },
-        selected_options: [...plans.slice(0, 15)], //TODO: fix this later
+        selected_options: [...plans.slice(0, agent_payload.maxTotalSlots)], //TODO: fix this later
         request_id: request_id,
         application_id,
       })
