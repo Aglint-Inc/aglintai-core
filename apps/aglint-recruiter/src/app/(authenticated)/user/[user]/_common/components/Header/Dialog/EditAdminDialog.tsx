@@ -13,7 +13,7 @@ import { useAllOfficeLocations } from '@/queries/officeLocations';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import { useRolesOptions } from '../../../../../company/_common/components/TeamManagement/hooks';
+import { useRolesOptions } from '../../../../../../company/_common/components/TeamManagement/hooks';
 import { Form } from './EditAdminDialogUI';
 
 export type EditAdminFormType = {

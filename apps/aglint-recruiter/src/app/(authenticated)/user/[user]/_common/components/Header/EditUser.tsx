@@ -7,8 +7,8 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 
 import { useInterviewer } from '../../hooks/useInterviewer';
-import EditAdminDialog from './EditAdminDialog';
-import { EditUserDialog } from './EditUserDialog';
+import EditAdminDialog from './Dialog/EditAdminDialog';
+import { EditUserDialog } from './Dialog/EditUserDialog';
 
 export const EditUser = ({ isOpen, setIsOpen }) => {
   const router = useRouterPro();
