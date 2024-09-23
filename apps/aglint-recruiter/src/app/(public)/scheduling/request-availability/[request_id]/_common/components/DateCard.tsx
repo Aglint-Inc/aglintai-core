@@ -34,7 +34,7 @@ export function DateCard({
       <span className='text-3xl font-semibold leading-none'>{textDate}</span>
       <span className='text-xs'>{textDay}</span>
       {isActive && (
-        <div className='absolute -right-1 -top-1 rounded-full bg-green-500 p-1'>
+        <div className='absolute -right-1 -top-1 rounded-full bg-green-500 p-1 opacity-0'>
           <Check className='h-3 w-3 text-white' />
         </div>
       )}

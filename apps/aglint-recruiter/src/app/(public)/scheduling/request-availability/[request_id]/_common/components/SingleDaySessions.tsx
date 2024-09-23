@@ -3,7 +3,7 @@ import SlotsPicker from './SlotsPicker';
 function SingleDaySessions() {
   return (
     <>
-      <div className='max-w-2xl'>
+      <div className='w-full'>
         <SlotsPicker singleDay={true} />
       </div>
     </>

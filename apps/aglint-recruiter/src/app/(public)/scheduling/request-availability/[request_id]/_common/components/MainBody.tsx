@@ -2,7 +2,7 @@ import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { AlertCircle, Calendar, CheckCircle } from 'lucide-react';
+import { AlertCircle, CheckCircle } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { ConfirmedInvitePage } from 'src/app/(public)/scheduling/invite/[id]/_common/components/CandidateConfirm';
 
@@ -132,8 +132,8 @@ function CandidateAvailability() {
 
   return (
     <>
-      <div className='w-ful h-[calc(100vh-50px)] py-10'>
-        <div className='mx-auto flex max-w-3xl flex-col items-center gap-4 rounded-lg border border-neutral-200 bg-white p-4'>
+      <div className='w-full  py-10 px-10 bg-gray-50' style={{ minHeight: 'calc(100vh - 50px)' }}>
+        <div className='mx-auto flex max-w-4xl w-full flex-col items-center gap-4 rounded-lg border border-neutral-200 bg-white p-4'>
           <Header
             candidateRequestAvailability={candidateRequestAvailability}
             isSubmitted={isSubmitted}
@@ -145,7 +145,7 @@ function CandidateAvailability() {
           {!isSubmitted && multiDaySessions.length > 1 && <MultiDaySessions />}
         </div>
       </div>
-      <div className='h-[50px]'>
+      <div className='h-[50px] bg-gray-50'>
         <Footer brand={true} />
       </div>
     </>
@@ -169,7 +169,7 @@ function Header({ candidateRequestAvailability, isSubmitted }) {
         ) : null}
       </div>
       <div
-        className={`mb-2 flex items-center gap-2 ${isSubmitted ? 'text-green-500' : 'text-neutral-500'}'} `}
+        className={`mb-8 flex items-center gap-2 ${isSubmitted ? 'text-green-500' : 'text-neutral-500'}'} `}
       >
         {isSubmitted ? (
           <>
@@ -180,15 +180,15 @@ function Header({ candidateRequestAvailability, isSubmitted }) {
           </>
         ) : (
           <>
-            <Calendar className='h-6 w-6 text-neutral-800' />
-            <p className='text-lg font-semibold'>Your Availability Requested</p>
+            
+            <p className='text-2xl font-semibold'>Your Availability Requested</p>
           </>
         )}
       </div>
       <p className='text-center text-neutral-600'>
         {isSubmitted
           ? 'Please wait as we finalize the schedule. One of the selected time slots from each day will be chosen, and you will receive a confirmation email shortly.'
-          : 'Please confirm your availability for the upcoming interview by selecting a suitable time slot from the options provided.'}
+          : ''}
       </p>
     </div>
   );
