@@ -1,4 +1,5 @@
 import { type TargetApiPayloadType } from '@aglint/shared-types';
+import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { Info } from 'lucide-react';
@@ -8,7 +9,6 @@ import { Loader } from '@/components/Common/Loader';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { mailSender } from '@/utils/mailSender';
-import toast from '@/utils/toast';
 
 import { useCandidateAvailabilitySchedulingFlowStore } from '../store';
 
@@ -47,7 +47,10 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
           setFetching(false);
         })
         .catch(() => {
-          toast.error('Fail to fetch email preview');
+          toast({
+            variant: 'destructive',
+            title: 'Fail to fetch email preview',
+          });
           setFetching(false);
         });
     } else {
@@ -60,7 +63,10 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
           setFetching(false);
         })
         .catch(() => {
-          toast.error('Fail to fetch email preview');
+          toast({
+            variant: 'destructive',
+            title: 'Fail to fetch email preview',
+          });
           setFetching(false);
         });
     }

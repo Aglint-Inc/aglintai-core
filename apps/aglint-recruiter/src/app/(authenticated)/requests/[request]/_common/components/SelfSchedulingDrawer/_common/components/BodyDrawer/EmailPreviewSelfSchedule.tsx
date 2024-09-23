@@ -1,4 +1,5 @@
 import type { TargetApiPayloadType } from '@aglint/shared-types';
+import { toast } from '@components/hooks/use-toast';
 import { RefreshCcw } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
@@ -10,7 +11,6 @@ import UITypography from '@/components/Common/UITypography';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
 import { mailSender } from '@/utils/mailSender';
-import toast from '@/utils/toast';
 
 import { setEmailData, useSelfSchedulingFlowStore } from '../../store/store';
 import DayCardWrapper from './StepSlotOptions/DayCardWrapper';
@@ -66,7 +66,7 @@ function EmailPreviewSelfSchedule() {
         setFetching(false);
       })
       .catch(() => {
-        toast.error('Fail to fetch email preview');
+        toast({ variant: 'destructive', title: 'Fail to fetch email preview' });
         setFetching(false);
       });
   };
