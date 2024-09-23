@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 
+import { useInvalidateJobQueries } from '@/queries/job';
 import { api, type Unvoid } from '@/trpc/client';
 import toast from '@/utils/toast';
 
@@ -9,19 +10,21 @@ import { useCurrentJob } from './useCurrentJob';
 
 export const useApplicationsMove = () => {
   const { job_id } = useCurrentJob();
-  const utils = api.useUtils();
-  const status = useApplicationsStore((state) => state.status);
+  // const utils = api.useUtils();
+  // const status = useApplicationsStore((state) => state.status);
+  const { revalidateJobQueries } = useInvalidateJobQueries();
   const checklist = useApplicationsStore((state) => state.checklist);
   const { resetChecklist, resetActionPopup } = useApplicationsActions();
   const mutation = api.jobs.job.applications.move.useMutation({
     onSuccess: (_, data) => {
       if (data) {
         toast.success('Moved application/s successfully');
-        utils.jobs.job.applications.read.invalidate({ status, job_id });
-        utils.jobs.job.applications.read.refetch({
-          status: data.status,
-          job_id,
-        });
+        // utils.jobs.job.applications.read.invalidate({ status, job_id });
+        // utils.jobs.job.applications.read.refetch({
+        //   status: data.status,
+        //   job_id,
+        // });
+        revalidateJobQueries(job_id);
         resetChecklist();
         resetActionPopup();
       }
