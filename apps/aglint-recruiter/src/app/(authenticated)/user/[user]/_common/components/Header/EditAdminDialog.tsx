@@ -1,34 +1,46 @@
 import { type employmentTypeEnum } from '@aglint/shared-types';
-import { Button } from '@components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@components/ui/dialog';
-import { Input } from '@components/ui/input';
-import { Label } from '@components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@components/ui/select';
+import _ from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import { type MemberType } from 'src/app/_common/types/memberType';
 
 import axios from '@/client/axios';
-import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
+import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type API_setMembersWithRole } from '@/pages/api/setMembersWithRole/type';
 import { useAllDepartments } from '@/queries/departments';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
 import { supabase } from '@/utils/supabase/client';
-import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 
 import { useRolesOptions } from '../../../../../company/_common/components/TeamManagement/hooks';
+import { Form } from './EditAdminDialogUI';
+
+export type EditAdminFormType = {
+  first_name: string;
+  last_name: string;
+  linked_in: string;
+  location_id: number;
+  employment: employmentTypeEnum;
+  position: string;
+  department_id: number;
+  role: string;
+  role_id: string;
+  manager_id: string;
+  phone: string;
+  profile_image: string;
+};
+export type EditAdminFormErrorType = {
+  first_name: boolean;
+  department: boolean;
+  linked_in: boolean;
+  location: boolean;
+  employment: boolean;
+  position: boolean;
+  phone: boolean;
+  role: boolean;
+  manager: boolean;
+};
 
 const EditAdminDialog = ({
   open,
@@ -47,23 +59,35 @@ const EditAdminDialog = ({
   const { recruiterUser } = useAuthDetails();
   const { data: departments } = useAllDepartments();
   const { data: officeLocations } = useAllOfficeLocations();
+  const [isUpdating, setIsUpdating] = useState(false);
+  const imageFile = useRef<File>(null);
+  const [form, setForm] = useState<EditAdminFormType | null>(null);
+  const [isImageChanged, setIsImageChanged] = useState(false);
+  const [isProfileChanged, setIsProfileChanged] = useState(false);
 
-  const [form, setForm] = useState<{
-    first_name: string;
-    last_name: string;
-    linked_in: string;
-    location_id: number;
-    employment: employmentTypeEnum;
-    position: string;
-    department_id: number;
-    role: string;
-    role_id: string;
-    manager_id: string;
-    phone: string;
-    profile_image: string;
-  } | null>(null);
+  const initForm = {
+    first_name: member.first_name,
+    last_name: member.last_name,
+    phone: member.phone,
+    linked_in: member.linked_in,
+    location_id: member.office_location_id,
+    employment: member.employment,
+    profile_image: member.profile_image,
+    department_id: member.department_id,
+    position: member.position,
+    role: member?.role,
+    role_id: member?.role_id,
+    manager_id: member?.manager_id,
+  };
+  useEffect(() => {
+    if (_.isEqual(initForm, form)) {
+      setIsProfileChanged(false);
+    } else {
+      setIsProfileChanged(true);
+    }
+  }, [form]);
 
-  const [formError, setFormError] = useState({
+  const [formError, setFormError] = useState<EditAdminFormErrorType>({
     first_name: false,
     department: false,
     linked_in: false,
@@ -76,24 +100,8 @@ const EditAdminDialog = ({
   });
 
   useEffect(() => {
-    if (member?.user_id)
-      setForm({
-        first_name: member.first_name,
-        last_name: member.last_name,
-        phone: member.phone,
-        linked_in: member.linked_in,
-        location_id: member.office_location_id,
-        employment: member.employment,
-        profile_image: member.profile_image,
-        department_id: member.department_id,
-        position: member.position,
-        role: member?.role,
-        role_id: member?.role_id,
-        manager_id: member?.manager_id,
-      });
+    if (member?.user_id) setForm(initForm);
   }, [member?.user_id]);
-
-  const [isUpdating, setIsUpdating] = useState(false);
 
   const checkValidation = () => {
     const temp = { ...formError };
@@ -157,9 +165,6 @@ const EditAdminDialog = ({
     return false;
   }
 
-  const imageFile = useRef(null);
-  const [isImageChanged, setIsImageChanged] = useState(false);
-
   const updateHandle = async () => {
     try {
       setIsUpdating(true);
@@ -211,275 +216,49 @@ const EditAdminDialog = ({
   };
 
   return (
-    <Dialog
+    <UIDialog
       open={open}
-      onOpenChange={() => {
-        if (member?.user_id)
-          setForm({
-            first_name: member.first_name,
-            last_name: member.last_name,
-            phone: member.phone,
-            linked_in: member.linked_in,
-            location_id: member.office_location_id,
-            employment: member.employment,
-            profile_image: member.profile_image,
-            department_id: member.department_id,
-            position: member.position,
-            role: member?.role,
-            role_id: member?.role_id,
-            manager_id: member?.manager_id,
-          });
+      title='Update Details'
+      onClose={() => {
+        if (member?.user_id) setForm(initForm);
         onClose();
       }}
+      slotButtons={
+        <>
+          <UIButton variant='outline' onClick={onClose}>
+            Cancel
+          </UIButton>
+          <UIButton
+            onClick={() => {
+              if (checkValidation()) {
+                updateHandle();
+              }
+            }}
+            disabled={
+              recruiterUser.role !== 'admin' || isUpdating || !isProfileChanged
+            }
+          >
+            {isUpdating ? 'Updating...' : 'Update'}
+          </UIButton>
+        </>
+      }
     >
-      <DialogContent className='sm:max-w-[600px]'>
-        <DialogHeader>
-          <DialogTitle>Update Details</DialogTitle>
-        </DialogHeader>
-        {form && (
-          <div className='mt-4 space-y-4'>
-            <div className='flex items-center space-x-4'>
-              <div className='max-w-[64px]'>
-                <ImageUploadManual
-                  image={form.profile_image}
-                  size={64}
-                  imageFile={imageFile}
-                  setChanges={() => {
-                    setIsImageChanged(true);
-                  }}
-                />
-              </div>
-
-              <div>
-                <p className='text-sm font-medium'>
-                  <span className='text-red-500'>Change profile photo</span>{' '}
-                  (optional)
-                </p>
-                <p className='text-sm text-gray-500'>
-                  Upload a square profile image (PNG or JPEG). Maximum size: 5
-                  MB.
-                </p>
-              </div>
-            </div>
-
-            <div className='grid grid-cols-2 gap-4'>
-              <div className='space-y-2'>
-                <Label htmlFor='first_name'>First Name</Label>
-                <Input
-                  id='first_name'
-                  placeholder='Enter first name'
-                  value={form.first_name}
-                  onChange={(e) =>
-                    setForm({ ...form, first_name: e.target.value })
-                  }
-                  className={formError.first_name ? 'border-red-500' : ''}
-                />
-              </div>
-              <div className='space-y-2'>
-                <Label htmlFor='last_name'>Last Name</Label>
-                <Input
-                  id='last_name'
-                  placeholder='Enter last name'
-                  value={form.last_name}
-                  onChange={(e) =>
-                    setForm({ ...form, last_name: e.target.value })
-                  }
-                />
-              </div>
-            </div>
-
-            <div className='space-y-2'>
-              <Label htmlFor='linked_in'>LinkedIn</Label>
-              <Input
-                id='linked_in'
-                placeholder='Enter linkedin url'
-                value={form.linked_in}
-                onChange={(e) =>
-                  setForm({ ...form, linked_in: e.target.value.trim() })
-                }
-                className={formError.linked_in ? 'border-red-500' : ''}
-              />
-            </div>
-
-            <div className='grid grid-cols-2 gap-4'>
-              <div className='space-y-2'>
-                <Label htmlFor='position'>Title</Label>
-                <Input
-                  id='position'
-                  value={form.position}
-                  placeholder='Enter position'
-                  onChange={(e) =>
-                    setForm({ ...form, position: e.target.value })
-                  }
-                  className={formError.position ? 'border-red-500' : ''}
-                />
-              </div>
-              <div className='space-y-2'>
-                <Label htmlFor='employment'>Employment</Label>
-                <Select
-                  value={form.employment}
-                  onValueChange={(value) =>
-                    setForm({
-                      ...form,
-                      employment: value as employmentTypeEnum,
-                    })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder='Select employment type' />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {['contractor', 'fulltime', 'parttime'].map((type) => (
-                      <SelectItem key={type} value={type}>
-                        {capitalizeFirstLetter(type)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-
-            <div className='grid grid-cols-2 gap-4'>
-              <div className='space-y-2'>
-                <Label htmlFor='location'>Location</Label>
-                <Select
-                  value={form.location_id?.toString()}
-                  onValueChange={(value) =>
-                    setForm({ ...form, location_id: parseInt(value) })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder='Choose Location' />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {officeLocations.map((location) => (
-                      <SelectItem
-                        key={location.id}
-                        value={location.id.toString()}
-                      >
-                        {[location.city, location.region, location.country]
-                          .filter((location) => location)
-                          .map((location) =>
-                            capitalizeFirstLetter(location).trim(),
-                          )
-                          .join(', ')}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className='space-y-2'>
-                <Label htmlFor='department'>Department</Label>
-                <Select
-                  value={form.department_id?.toString()}
-                  onValueChange={(value) =>
-                    setForm({ ...form, department_id: parseInt(value) })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder='Select Department' />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {departments.map((department) => (
-                      <SelectItem
-                        key={department.id}
-                        value={department.id.toString()}
-                      >
-                        {capitalizeFirstLetter(department.name)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              {(member.role !== 'admin' ||
-                member.created_by === recruiterUser.user_id ||
-                member.user_id !== recruiterUser.user_id) && (
-                <>
-                  <div className='space-y-2'>
-                    <Label htmlFor='role'>Role</Label>
-                    <Select
-                      value={form.role_id}
-                      onValueChange={(value) => {
-                        const selectedRole = roleOptions.find(
-                          (role) => role.id === value,
-                        );
-                        setForm({
-                          ...form,
-                          role: selectedRole.name,
-                          role_id: value,
-                        });
-                      }}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder='Choose Role' />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {roleOptions.map((role) => (
-                          <SelectItem key={role.id} value={role.id}>
-                            {capitalizeFirstLetter(role.name)}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  {form.role !== 'admin' && (
-                    <div className='space-y-2'>
-                      <Label htmlFor='manager'>Manager</Label>
-                      <Select
-                        value={form.manager_id}
-                        onValueChange={(value) =>
-                          setForm({ ...form, manager_id: value })
-                        }
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder='Select Manager' />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {memberList.map((member) => (
-                            <SelectItem key={member.id} value={member.id}>
-                              {capitalizeFirstLetter(member.name)}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  )}
-
-                  <div className='space-y-2'>
-                    <Label htmlFor='phone'>Phone</Label>
-                    <Input
-                      id='phone'
-                      placeholder='Enter phone number'
-                      value={form.phone}
-                      onChange={(e) =>
-                        setForm({ ...form, phone: e.target.value })
-                      }
-                      className={formError.phone ? 'border-red-500' : ''}
-                    />
-                  </div>
-                </>
-              )}
-            </div>
-
-            <div className='mt-6 flex justify-end space-x-2'>
-              <Button variant='outline' onClick={onClose}>
-                Cancel
-              </Button>
-              <Button
-                onClick={() => {
-                  if (checkValidation()) {
-                    updateHandle();
-                  }
-                }}
-                disabled={recruiterUser.role !== 'admin' || isUpdating}
-              >
-                {isUpdating ? 'Updating...' : 'Update'}
-              </Button>
-            </div>
-          </div>
-        )}
-      </DialogContent>
-    </Dialog>
+      {form && (
+        <Form
+          form={form}
+          imageFile={imageFile}
+          setIsImageChanged={setIsImageChanged}
+          setForm={setForm}
+          formError={formError}
+          officeLocations={officeLocations}
+          member={member}
+          recruiterUser={recruiterUser}
+          departments={departments}
+          roleOptions={roleOptions}
+          memberList={memberList}
+        />
+      )}
+    </UIDialog>
   );
 };
 

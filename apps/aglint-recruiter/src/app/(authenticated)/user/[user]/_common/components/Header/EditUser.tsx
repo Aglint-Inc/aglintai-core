@@ -20,10 +20,11 @@ export const EditUser = ({ isOpen, setIsOpen }) => {
   const { data: members, refetch: memberListRefetch } = useMemberList();
   const details = members?.find((member) => member.user_id === user_id);
 
+  const isAdmin = recruiterUser.role === 'admin';
+
   return (
     <>
-      button
-      {recruiterUser.role === 'admin' ? (
+      {isAdmin ? (
         <EditAdminDialog
           open={Boolean(isOpen)}
           memberList={activeMembers

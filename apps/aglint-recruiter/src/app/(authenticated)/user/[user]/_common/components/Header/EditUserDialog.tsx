@@ -1,10 +1,3 @@
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@components/ui/dialog';
-import { X } from 'lucide-react';
 import { useRef, useState } from 'react';
 import {
   type FormFields,
@@ -12,15 +5,16 @@ import {
   type PreferenceFormFields,
   validateLinkedIn,
   validateMail,
-  validatePhone,
   validateString,
 } from 'src/app/_common/components/Profile/uitls';
 
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
+import UIDialog from '@/components/Common/UIDialog';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { supabase } from '@/utils/supabase/client';
+import type timeZone from '@/utils/timeZone';
 import toast from '@/utils/toast';
 
 import { ProfileForms } from './ProfileForms';
@@ -108,11 +102,11 @@ export const EditUserDialog = ({
                 if (!validateMail(value)) error = true;
               }
               break;
-            case 'phone':
-              {
-                if (!validatePhone(value)) error = true;
-              }
-              break;
+            // case 'phone':
+            //   {
+            //     if (!validatePhone(value)) error = true;
+            //   }
+            //   break;
             case 'linkedIn': {
               if (!validateLinkedIn(value)) error = true;
             }
@@ -139,6 +133,7 @@ export const EditUserDialog = ({
         toast.error('No changes.');
       } else {
         const { error } = handleValidate(profile);
+
         if (error) return;
         let profile_image = recruiterUser.profile_image;
         setLoading(true);
@@ -198,63 +193,19 @@ export const EditUserDialog = ({
     }
   }
 
+  const selectedTzCode =
+    selectedTimeZone.tzCode as (typeof timeZone)[number]['tzCode'];
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className='sm:max-w-[425px]'>
-        <DialogHeader>
-          <DialogTitle className='text-2xl font-semibold'>
-            Edit Profile
-          </DialogTitle>
-          <UIButton
-            variant='ghost'
-            size='sm'
-            onClick={() => {
-              setProfile(structuredClone(initialProfileFormFields));
-              setIsOpen(false);
-            }}
-          >
-            <X className='h-4 w-4' />
-          </UIButton>
-        </DialogHeader>
-        <div className='space-y-4'>
-          <ImageUploadManual
-            image={recruiterUser.profile_image}
-            size={64}
-            imageFile={imageFile}
-            setChanges={() => {
-              setIsImageChanged(true);
-            }}
-          />
-
-          {isError && (
-            <p className='text-sm text-red-500'>
-              The file you uploaded exceeds the maximum allowed size. Please
-              ensure that the file size is less than 5 MB
-            </p>
-          )}
-
-          <ProfileForms
-            profile={profile}
-            setProfile={setProfile}
-            setChanges={() => setProfileChange(true)}
-          />
-
-          <div className='space-y-2'>
-            <p className='text-sm font-medium'>Time Zone</p>
-            <TimezonePicker
-              // @ts-ignore
-              value={selectedTimeZone}
-              onChange={(value) => {
-                if (value) {
-                  setSelectedTimeZone(value);
-                }
-              }}
-              width='420'
-            />
-          </div>
-        </div>
-
-        <div className='flex justify-end space-x-2'>
+    <UIDialog
+      open={isOpen}
+      title='Edit Profile'
+      onClose={() => {
+        setProfile(structuredClone(initialProfileFormFields));
+        setSelectedTimeZone(recruiterUser.scheduling_settings.timeZone);
+        setIsOpen(false);
+      }}
+      slotButtons={
+        <>
           <UIButton
             variant='secondary'
             onClick={() => {
@@ -275,8 +226,59 @@ export const EditUserDialog = ({
           >
             Update
           </UIButton>
+        </>
+      }
+    >
+      <div className='space-y-4'>
+        <div className='flex items-center space-x-4'>
+          <div className='max-w-[64px]'>
+            <ImageUploadManual
+              image={recruiterUser.profile_image}
+              size={64}
+              imageFile={imageFile}
+              setChanges={() => {
+                setIsImageChanged(true);
+              }}
+            />
+          </div>
+
+          <div>
+            <p className='text-sm font-medium'>
+              <span className='text-red-500'>Change profile photo</span>{' '}
+              (optional)
+            </p>
+            <p className='text-sm text-gray-500'>
+              Upload a square profile image (PNG or JPEG). Maximum size: 5 MB.
+            </p>
+            {isError && (
+              <p className='text-sm text-red-500'>
+                The file you uploaded exceeds the maximum allowed size. Please
+                ensure that the file size is less than 5 MB
+              </p>
+            )}
+          </div>
         </div>
-      </DialogContent>
-    </Dialog>
+
+        <ProfileForms
+          profile={profile}
+          setProfile={setProfile}
+          setChanges={() => setProfileChange(true)}
+        />
+
+        <div className='space-y-2'>
+          <p className='text-sm font-medium'>Time Zone</p>
+          <TimezonePicker
+            value={selectedTzCode}
+            onChange={(value) => {
+              if (value) {
+                setSelectedTimeZone(value);
+                setProfileChange(true);
+              }
+            }}
+            width='420'
+          />
+        </div>
+      </div>
+    </UIDialog>
   );
 };
