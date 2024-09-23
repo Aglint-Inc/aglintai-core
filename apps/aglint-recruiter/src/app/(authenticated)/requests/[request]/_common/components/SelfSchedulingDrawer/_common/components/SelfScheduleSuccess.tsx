@@ -1,6 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { useMeetingList } from '@requests/hooks';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, Copy } from 'lucide-react';
 import React from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -27,7 +27,7 @@ function SelfScheduleSuccess() {
   };
 
   return (
-    <div className='flex w-full flex-row items-center justify-center'>
+    <div className='flex w-full flex-row items-center justify-center p-4'>
       <Alert variant='success'>
         <CheckCircle2 className='h-4 w-4' />
         <AlertTitle>Self scheduling link sent successfully</AlertTitle>
@@ -42,6 +42,7 @@ function SelfScheduleSuccess() {
           className='mt-3'
           onClick={() => handleCopyLink()}
         >
+          <Copy className='mr-2 h-4 w-4' />
           {isCopied ? 'Copied' : 'Copy Link'}
         </UIButton>
       </Alert>

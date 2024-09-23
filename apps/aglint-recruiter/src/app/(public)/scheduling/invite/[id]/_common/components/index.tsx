@@ -2,7 +2,9 @@
 /* eslint-disable security/detect-object-injection */
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import { Coffee } from 'lucide-react';
+import { Skeleton } from '@components/ui/skeleton';
+import { Building2, Coffee } from 'lucide-react';
+import Image from 'next/image';
 import React, { useEffect } from 'react';
 
 import { NotFound } from '@/components/Common/404';
@@ -14,7 +16,6 @@ import { useInviteSlots } from '@/queries/candidate-invite';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import toast from '@/utils/toast';
 
-import CompanyLogo from '../../../../../../../components/Common/CompanyLogo';
 import IconScheduleType from '../../../../../../../components/Common/Icons/IconScheduleType';
 import { Loader } from '../../../../../../../components/Common/Loader';
 import { SessionIcon } from '../../../../../../../components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
@@ -40,13 +41,9 @@ const CandidateInviteNew = () => {
     <div className='h-screen'>
       <div className='w-full py-10'>
         {load === undefined ? (
-          <div className='flex h-screen w-full items-center justify-center'>
-            <Loader />
-          </div>
+          <LoadingState />
         ) : load === null ? (
-          <div className='flex h-screen w-full items-center justify-center'>
-            <NotFound />
-          </div>
+          <ErrorState />
         ) : (
           <>
             <CandidateInvitePlanPage key={load.timezone.tzCode} />
@@ -54,11 +51,43 @@ const CandidateInviteNew = () => {
           </>
         )}
       </div>
-      
     </div>
   );
 };
 export default CandidateInviteNew;
+
+const LoadingState = () => (
+  <div
+    className='flex h-screen w-full items-center justify-center'
+    aria-live='polite'
+    aria-busy='true'
+  >
+    <div className='space-y-4'>
+      <Loader className='mx-auto h-12 w-12' />
+      <p className='text-center text-gray-600'>
+        Loading your interview details...
+      </p>
+    </div>
+  </div>
+);
+
+const ErrorState = () => (
+  <div className='flex h-screen w-full items-center justify-center'>
+    <div className='text-center'>
+      <NotFound />
+      <p className='mt-4 text-gray-600'>
+        We couldn&apos;t load your interview details.
+      </p>
+      <UIButton
+        variant='default'
+        className='mt-4'
+        onClick={() => window.location.reload()}
+      >
+        Try Again
+      </UIButton>
+    </div>
+  </div>
+);
 
 const CandidateInvitePlanPage = () => {
   const {
@@ -228,10 +257,19 @@ const SingleDayError = () => {
 
 const SingleDayLoading = () => {
   return (
-    <div className={'flex justify-center'}>
-      <div className={'w-[120px]'}>
-        <Loader />
-      </div>
+    <div className='space-y-4'>
+      {[1, 2, 3].map((index) => (
+        <Card key={index}>
+          <CardHeader className='space-y-2'>
+            <Skeleton className='h-4 w-1/4' />
+          </CardHeader>
+          <CardContent className='space-y-2'>
+            <Skeleton className='h-4 w-full' />
+            <Skeleton className='h-4 w-4/5' />
+            <Skeleton className='h-4 w-3/5' />
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 };
@@ -334,7 +372,27 @@ const BreakCard = ({ break_duration }: { break_duration: number }) => {
 const Logo = ({ companyName, logo }: { companyName: string; logo: string }) => {
   return (
     <div className={'relative max-h-[60px] max-w-[60px]'}>
-      <CompanyLogo companyName={companyName} companyLogo={logo} />
+      <div className='relative h-[60px] w-[60px]'>
+        <Image
+          src={logo}
+          alt={companyName}
+          width={60}
+          height={60}
+          className='object-contain'
+          onError={(e) => {
+            if (e.currentTarget instanceof HTMLImageElement) {
+              e.currentTarget.style.display = 'none';
+              const fallback =
+                e.currentTarget.parentElement?.querySelector('.fallback');
+              if (fallback instanceof HTMLElement)
+                fallback.style.display = 'flex';
+            }
+          }}
+        />
+        <div className='fallback absolute inset-0 hidden items-center justify-center'>
+          <Building2 className='h-10 w-10 text-neutral-400' />
+        </div>
+      </div>
     </div>
   );
 };
