@@ -31,13 +31,13 @@ import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsert
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import EmailTemplate from './Components/EmailTemplate';
+import EmailTemplate from './_common/components/EmailTemplate';
 import {
   setCandidateAvailabilityDrawerOpen,
   setCandidateAvailabilityIdForReRequest,
   setReRequestAvailability,
   useCandidateAvailabilitySchedulingFlowStore,
-} from './store';
+} from './_common/contexts/CandidateAvailabilityFlowStore';
 
 function CandidateAvailability({
   selectedRequest,

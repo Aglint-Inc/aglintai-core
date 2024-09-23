@@ -1,9 +1,9 @@
 import { Skeleton } from '@components/ui/skeleton';
 import { useState } from 'react';
 
-import KanbanSection from './KanbanSection';
-import ListSection from './ListSection';
-import ScrollableSection from './ScrollableSection';
+import KanbanSection from './ui/KanbanSection';
+import ListSection from './ui/ListSection';
+import ScrollableSection from './ui/ScrollableSection';
 
 function RequestListContent({
   view,
