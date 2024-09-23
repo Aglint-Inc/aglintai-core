@@ -24,7 +24,7 @@ export function ApplicantDetailStage({
   isScheduleButtonVisible = false,
 }: ApplicantDetailStageProps) {
   return (
-    <Card className='items-center justify-between rounded-md bg-neutral-100 p-4'>
+    <Card className='h-full items-center justify-between rounded-md bg-neutral-100 p-4'>
       <div className='flex h-10 items-center justify-between'>
         <div>
           <UITypography type='medium' fontBold='normal'>
