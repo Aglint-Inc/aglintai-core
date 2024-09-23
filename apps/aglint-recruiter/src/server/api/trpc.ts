@@ -31,8 +31,7 @@ import { authorize } from '../utils';
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const adminDb = createPublicClient();
-  return { ...opts, adminDb };
+  return { ...opts };
 };
 
 /**
@@ -100,6 +99,7 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
 });
 
 const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
+  const adminDb = createPublicClient();
   const input = await getRawInput();
   const recruiter_id = (input as any)
     .recruiter_id as DatabaseTable['recruiter']['id'];
@@ -109,7 +109,7 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
       message: 'Invalid payload',
     });
   const { ats } = (
-    await ctx.adminDb
+    await adminDb
       .from('recruiter_preferences')
       .select('ats')
       .eq('recruiter_id', recruiter_id)
@@ -123,7 +123,7 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
     });
   let decryptKey: string;
   const { greenhouse_key, greenhouse_metadata, ashby_key, lever_key } = (
-    await ctx.adminDb
+    await adminDb
       .from('integrations')
       .select('greenhouse_key, greenhouse_metadata, lever_key, ashby_key')
       .eq('recruiter_id', recruiter_id)
@@ -204,7 +204,6 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
   return await next({
     ctx: {
       ...ctx,
-      db,
       user,
       recruiter_id,
     },

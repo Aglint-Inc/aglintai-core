@@ -2,6 +2,7 @@ import type { DatabaseFunctions, ZodTypeToSchema } from '@aglint/shared-types';
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import { createPrivateClient } from '@/server/db';
 import { formatSessions } from '@/utils/formatSessions';
 
 type SchemaType = ZodTypeToSchema<
@@ -30,26 +31,27 @@ const mutation = async ({
   ctx,
   input,
 }: PrivateProcedure<typeof createRequestSchema>) => {
+  const db = createPrivateClient();
   const [
     {
       data: { name },
     },
     { data: session_names },
   ] = await Promise.all([
-    ctx.db
+    db
       .from('application_view')
       .select('name')
       .eq('id', input.application)
       .single()
       .throwOnError(),
-    ctx.db
+    db
       .from('interview_session')
       .select('name')
       .in('id', input.sessions)
       .throwOnError(),
   ]);
   const sessions = formatSessions(session_names.map(({ name }) => name));
-  await ctx.db
+  await db
     .rpc('create_session_request', {
       ...input,
       request: {

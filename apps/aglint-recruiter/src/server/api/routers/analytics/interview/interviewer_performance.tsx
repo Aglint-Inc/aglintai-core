@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { createPublicClient } from '@/server/db';
+
 import { privateProcedure } from '../../../trpc';
 
 const body = z.object({
@@ -8,8 +10,9 @@ const body = z.object({
 
 export const interviewer_performance = privateProcedure
   .input(body)
-  .query(async ({ input, ctx: { adminDb } }) => {
-    const {  module_id } = input;
+  .query(async ({ input }) => {
+    const adminDb = createPublicClient();
+    const { module_id } = input;
     const data = (
       await adminDb
         .rpc('per_module_interviewer_performance', {
