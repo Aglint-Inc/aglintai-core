@@ -6,7 +6,7 @@ import Calendar from './_common/components/Calendar';
 import { useSelfSchedulingDrawer } from './_common/hooks/hooks';
 import { useSelfSchedulingFlowStore } from './_common/store/store';
 
-function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
+function SelfSchedulingDrawer() {
   const {
     isSelfScheduleDrawerOpen,
     stepScheduling,
@@ -19,9 +19,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
     isSendingToCandidate: state.isSendingToCandidate,
   }));
 
-  const { resetStateSelfScheduling } = useSelfSchedulingDrawer({
-    refetch,
-  });
+  const { resetStateSelfScheduling } = useSelfSchedulingDrawer();
 
   return (
     <>
@@ -35,7 +33,7 @@ function SelfSchedulingDrawer({ refetch }: { refetch: () => void }) {
         title={'Self Scheduling Request'}
         slotBottom={
           !fetchingPlan && stepScheduling !== 'success_screen' ? (
-            <ButtonMain refetch={refetch} />
+            <ButtonMain />
           ) : (
             <></>
           )

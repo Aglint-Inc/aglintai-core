@@ -10,7 +10,7 @@ const app = express();
 const PORT = 3000;
 
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SECRET_KEY;
+const supabaseKey = process.env.SUPABASE_JWT_SECRET;
 const openaiApiKey = process.env.OPENAI_API_KEY;
 const backendApiUrl = process.env.BACKEND_API_URL;
 

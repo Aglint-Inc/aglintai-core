@@ -16,11 +16,7 @@ function ScheduleFilter() {
     localFilters: state.localFilters,
   }));
 
-  const { filterSlots } = useSelfSchedulingDrawer({
-    refetch: () => {
-      //
-    },
-  });
+  const { filterSlots } = useSelfSchedulingDrawer();
 
   return (
     <div className='space-y-2'>

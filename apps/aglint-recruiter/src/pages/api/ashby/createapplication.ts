@@ -11,7 +11,7 @@ import { splitFullName } from '@/jobs/components/AddJobWithIntegrations/utils';
 import { decrypt } from '../decryptApiKey';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.SUPABASE_SERVICE_KEY || '';
+const supabaseAnonKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
 const supabase = createClient<DB>(supabaseUrl, supabaseAnonKey);
 

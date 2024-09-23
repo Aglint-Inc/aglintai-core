@@ -5,10 +5,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 const nextConfig = {
   reactStrictMode: false,
-  assetPrefix:
-    process.env.NODE_ENV === 'production'
-      ? process.env.NEXT_PUBLIC_HOST_NAME
-      : '', //need for reverse proxy for job preview link
   eslint: {
     dirs: ['src'],
     ignoreDuringBuilds: true,

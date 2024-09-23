@@ -15,7 +15,7 @@ export const envConfig = {
   RETELL_API_KEY: process.env.RETELL_API_KEY ?? '',
   NGROK_IP_ADDRESS: process.env.NGROK_IP_ADDRESS ?? '',
   SUPABASE_URL: process.env.SUPABASE_URL ?? '',
-  SUPABASE_SERVICE_KEY: process.env.SUPABASE_SERVICE_KEY ?? '',
+  SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY ?? '',
   MAPS_API_KEY: process.env.MAPS_API_KEY ?? '',
   CLIENT_APP_URL: process.env.CLIENT_APP_URL ?? '',
   GOOGLE_AI: process.env.GOOGLE_AI ?? '',
