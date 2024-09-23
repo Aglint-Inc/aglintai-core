@@ -5,14 +5,20 @@ import UIDialog from '@/components/Common/UIDialog';
 import { manageOfficeLocation } from '@/context/AuthContext/utils';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
 
-import type { DialogState } from '../types';
-
-function DeleteLocation({
+function DeleteLocationDialog({
   dialog,
   setDialog,
 }: {
-  dialog: DialogState;
-  setDialog: Dispatch<SetStateAction<DialogState>>;
+  dialog: {
+    open: boolean;
+    id: number;
+  };
+  setDialog: Dispatch<
+    SetStateAction<{
+      open: boolean;
+      id: number;
+    }>
+  >;
 }) {
   const { refetch: refetchLocations } = useAllOfficeLocations();
   const handleDeleteLocation = async (id: number) => {
@@ -22,12 +28,9 @@ function DeleteLocation({
 
   return (
     <UIDialog
-      open={dialog.deletelocation.open}
+      open={dialog.open}
       onClose={() => {
-        setDialog({
-          ...dialog,
-          deletelocation: { open: false, edit: -1 },
-        });
+        setDialog({ open: false, id: null });
       }}
       title='Delete Office Location'
       slotButtons={
@@ -36,10 +39,7 @@ function DeleteLocation({
             variant='secondary'
             size='sm'
             onClick={() => {
-              setDialog({
-                ...dialog,
-                deletelocation: { open: false, edit: -1 },
-              });
+              setDialog({ open: false, id: null });
             }}
           >
             Cancel
@@ -48,11 +48,8 @@ function DeleteLocation({
             variant='destructive'
             size='sm'
             onClick={() => {
-              handleDeleteLocation(dialog.deletelocation.edit);
-              setDialog({
-                ...dialog,
-                deletelocation: { open: false, edit: -1 },
-              });
+              handleDeleteLocation(dialog.id);
+              setDialog({ open: false, id: null });
             }}
           >
             Delete
@@ -68,4 +65,4 @@ function DeleteLocation({
   );
 }
 
-export default DeleteLocation;
+export default DeleteLocationDialog;

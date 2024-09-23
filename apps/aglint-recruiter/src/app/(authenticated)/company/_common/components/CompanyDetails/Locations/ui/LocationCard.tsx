@@ -7,24 +7,6 @@ import React, { useState } from 'react';
 
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 
-export type DialogState = {
-  deletelocation: { open: boolean; edit: number };
-  location: { open: boolean; edit: number };
-  roles: boolean;
-  departments: boolean;
-  stacks: boolean;
-};
-
-export const initialDialog = (): DialogState => {
-  return {
-    deletelocation: { open: false, edit: -1 },
-    location: { open: false, edit: -1 },
-    roles: false,
-    departments: false,
-    stacks: false,
-  };
-};
-
 interface LocationCardProps {
   id: number;
   city: string;
@@ -51,7 +33,6 @@ function LocationCard({
   const { checkPermissions } = useRolesAndPermissions();
   const isFormDisabled = !checkPermissions(['manage_company']);
   const [isHovered, setIsHovered] = useState(false);
-
   const location = [city, region, country].filter(Boolean).join(', ');
 
   return (
