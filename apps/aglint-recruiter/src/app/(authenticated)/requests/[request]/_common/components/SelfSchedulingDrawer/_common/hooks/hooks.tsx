@@ -2,7 +2,7 @@ import { type APIFindAvailability } from '@aglint/shared-types';
 import { useMeetingList } from '@requests/hooks';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { useParams } from 'next/navigation';
+import { useParams } from 'next/navigation'; 
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import type {
@@ -35,11 +35,7 @@ import {
 } from '../store/store';
 import { transformAvailability } from '../utils/utils';
 
-export const useSelfSchedulingDrawer = ({
-  refetch,
-}: {
-  refetch: () => void;
-}) => {
+export const useSelfSchedulingDrawer = () => {
   const params = useParams();
   const requestId = params?.request as string;
 
@@ -219,7 +215,6 @@ export const useSelfSchedulingDrawer = ({
         const resObj = res?.data?.data as ApiResponseSelfSchedule['data'];
         setResSendToCandidate(resObj);
         setStepScheduling('success_screen');
-        refetch();
       } else {
         throw new Error('Error sending to candidate.');
       }
