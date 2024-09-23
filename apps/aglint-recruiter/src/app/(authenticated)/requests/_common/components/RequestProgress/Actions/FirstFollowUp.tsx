@@ -54,9 +54,6 @@ const FirstFollowUp = (rowData: DatabaseTable['request_progress']) => {
       </div>
       {!isTimePast && (
         <div className='flex gap-2'>
-          <Button variant='outline' size='sm'>
-            Edit Email
-          </Button>
           <Button
             variant='outline'
             size='sm'

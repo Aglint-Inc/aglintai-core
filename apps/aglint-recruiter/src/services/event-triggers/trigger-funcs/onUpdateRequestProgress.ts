@@ -21,7 +21,6 @@ export const onUpdateRequestProgress = async ({
   old_data: DatabaseTable['request_progress'];
 }) => {
   const supabase = getSupabaseServer();
-  await updateRequestStatus({ new_data });
   if (
     new_data.event_type === 'SELF_SCHEDULE_LINK' &&
     new_data.is_progress_step === false &&
@@ -36,24 +35,6 @@ export const onUpdateRequestProgress = async ({
     new_data.status === 'completed'
   ) {
     await availReminder({ request_id: new_data.request_id, supabase });
-  }
-};
-
-const updateRequestStatus = async ({
-  new_data,
-}: {
-  new_data: DatabaseTable['request_progress'];
-}) => {
-  try {
-    supabaseWrap(
-      await getSupabaseServer()
-        .from('request')
-        .update({ status: 'in_progress' })
-        .eq('id', new_data.request_id)
-        .eq('status', 'to_do'),
-    );
-  } catch (error) {
-    console.error('Failed updateRequestStatus', error);
   }
 };
 
