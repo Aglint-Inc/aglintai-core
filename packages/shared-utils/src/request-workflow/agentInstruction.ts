@@ -23,4 +23,5 @@ export const agentSelfScheduleInstruction = z.object({
   maxTotalSlots: z.number(),
   includeAllSoftConflictSlots: z.boolean(),
   overrideSoftConflicts: z.array(z.string()),
+  include_outside_working_hours: z.boolean(),
 });
