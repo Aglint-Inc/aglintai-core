@@ -68,10 +68,6 @@ export const findPlanCombs = async ({
     });
     return [];
   }
-  await reqProgressLogger({
-    log: `Found ${plans.length} slots within ${schedule_dates.user_start_date_js.format('DD, MMMM')} - ${schedule_dates.user_end_date_js.format('DD, MMMM YYYY')}`,
-    status: 'completed',
-    is_progress_step: true,
-  });
+
   return plans;
 };

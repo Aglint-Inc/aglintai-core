@@ -104,6 +104,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           application_id,
           mail_payload: req.body.payload?.email,
           agent_payload: req.body.payload.agent.ai_response,
+          req_assignee_tz: request_assignee_tz,
         },
         reqProgressLogger,
         event_log_id,
