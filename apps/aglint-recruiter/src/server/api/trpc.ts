@@ -6,7 +6,7 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import type { DatabaseTable, RecursiveRequired } from '@aglint/shared-types';
+import type { DatabaseTable } from '@aglint/shared-types';
 import { initTRPC, TRPCError } from '@trpc/server';
 import type { ProcedureBuilder } from '@trpc/server/unstable-core-do-not-import';
 import superjson from 'superjson';
@@ -255,7 +255,7 @@ type Procedure<
     >
     ? {
         ctx: TContext & TContextOverrides;
-        input: RecursiveRequired<TypeOf<T>>;
+        input: Required<TypeOf<T>>;
       }
     : never
   : never;
