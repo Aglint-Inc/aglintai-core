@@ -1,12 +1,12 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { DAYJS_FORMATS, dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
+import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import axios from 'axios';
 import { CheckIcon } from 'lucide-react';
 import { useState } from 'react';
 
 import { supabase } from '@/utils/supabase/client';
-import toast from '@/utils/toast';
 
 const FirstFollowUp = (rowData: DatabaseTable['request_progress']) => {
   const [isLoading, setLoading] = useState(false);
@@ -33,7 +33,7 @@ const FirstFollowUp = (rowData: DatabaseTable['request_progress']) => {
       );
       setScheduledDate(dayjsLocal().toISOString());
     } catch (err) {
-      toast.error('Failed to Execute');
+      toast({ variant: 'destructive', title: 'Failed to Execute' });
     } finally {
       setLoading(false);
     }
@@ -54,9 +54,6 @@ const FirstFollowUp = (rowData: DatabaseTable['request_progress']) => {
       </div>
       {!isTimePast && (
         <div className='flex gap-2'>
-          <Button variant='outline' size='sm'>
-            Edit Email
-          </Button>
           <Button
             variant='outline'
             size='sm'

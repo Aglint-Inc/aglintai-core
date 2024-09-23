@@ -1,5 +1,6 @@
+import { toast } from '@components/hooks/use-toast';
+
 import { api, type RouterInputs, type Unvoid } from '@/trpc/client';
-import toast from '@/utils/toast';
 
 import { useCreateRequest } from './useCreateRequest';
 import { useCreateRequestActions } from './useCreateRequestActions';
@@ -11,9 +12,10 @@ export const useCreateRequestMutation = () => {
   const selections = useCreateRequest((state) => state.selections);
   const { onOpenChange } = useCreateRequestActions();
   const mutation = api.requests.create.create_request.useMutation({
-    onError: () => toast.error('Unable to create request'),
+    onError: () =>
+      toast({ title: 'Unable to create request', variant: 'destructive' }),
     onSuccess: () => {
-      toast.success('Successfully created request');
+      toast({ title: 'Successfully created request' });
       onOpenChange(false);
     },
   });

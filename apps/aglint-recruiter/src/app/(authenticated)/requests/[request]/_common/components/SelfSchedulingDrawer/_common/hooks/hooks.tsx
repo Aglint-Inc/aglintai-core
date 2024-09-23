@@ -1,4 +1,5 @@
 import { type APIFindAvailability } from '@aglint/shared-types';
+import { toast } from '@components/hooks/use-toast';
 import { useMeetingList } from '@requests/hooks';
 import axios from 'axios';
 import dayjs from 'dayjs';
@@ -10,7 +11,6 @@ import type {
   ApiResponseSelfSchedule,
 } from '@/pages/api/scheduling/application/sendselfschedule';
 import { type ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
-import toast from '@/utils/toast';
 
 import { filterSchedulingOptionsArray } from '../components/BodyDrawer/ScheduleFilter/utils';
 import {
@@ -35,11 +35,7 @@ import {
 } from '../store/store';
 import { transformAvailability } from '../utils/utils';
 
-export const useSelfSchedulingDrawer = ({
-  refetch,
-}: {
-  refetch: () => void;
-}) => {
+export const useSelfSchedulingDrawer = () => {
   const params = useParams();
   const requestId = params?.request as string;
 
@@ -182,7 +178,7 @@ export const useSelfSchedulingDrawer = ({
     if (stepScheduling === 'slot_options') {
       // if it normal session then user has to select atleast 5 combinations
       if (selectedCombIds.length < 5) {
-        toast.warning('Please select at least 5 time slots to schedule.');
+        toast({ title: 'Please select at least 5 time slots to schedule.' });
         return;
       }
       setStepScheduling('self_scheduling_email_preview');
@@ -219,12 +215,11 @@ export const useSelfSchedulingDrawer = ({
         const resObj = res?.data?.data as ApiResponseSelfSchedule['data'];
         setResSendToCandidate(resObj);
         setStepScheduling('success_screen');
-        refetch();
       } else {
         throw new Error('Error sending to candidate.');
       }
     } catch (e) {
-      toast.error('Error sending to candidate.');
+      toast({ variant: 'destructive', title: 'Error sending to candidate.' });
     } finally {
       setIsSendingToCandidate(false);
     }
@@ -275,7 +270,10 @@ export const useSelfSchedulingDrawer = ({
         throw new Error();
       }
     } catch (error) {
-      toast.error('Error retrieving availability.');
+      toast({
+        variant: 'destructive',
+        title: 'Error retrieving availability.',
+      });
       return null;
     } finally {
       setFetchingPlan(false);

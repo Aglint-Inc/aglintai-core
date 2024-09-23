@@ -2,7 +2,7 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { deleteRequestWorkflowAction } from '@requests/components/RequestProgress/utils';
-import { useMeetingList, useRequestAvailabilityDetails } from '@requests/hooks';
+import { useRequestAvailabilityDetails } from '@requests/hooks';
 import React, { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -15,12 +15,12 @@ import {
   setCandidateAvailabilityDrawerOpen,
   setCandidateAvailabilityIdForReRequest,
   setReRequestAvailability,
-} from '../CandidateAvailability/store';
+} from '../CandidateAvailability/_common/contexts/CandidateAvailabilityFlowStore';
 import {
   setApplicationIdForConfirmAvailability,
   setCandidateAvailabilityId,
   useConfirmAvailabilitySchedulingFlowStore,
-} from '../ConfirmAvailability/store';
+} from '../ConfirmAvailability/_common/contexts/AvailabilitySchedulingStore';
 import { useSelfSchedulingDrawer } from '../SelfSchedulingDrawer/_common/hooks/hooks';
 import {
   initialFilters,
@@ -30,10 +30,7 @@ import {
 
 const ScheduleOptions = () => {
   const [isProceeding, setIsProceeding] = React.useState(false);
-  const { refetch: refetchMeetings } = useMeetingList();
-  const { findAvailibility } = useSelfSchedulingDrawer({
-    refetch: refetchMeetings,
-  });
+  const { findAvailibility } = useSelfSchedulingDrawer();
   const { fetchingPlan } = useSelfSchedulingFlowStore();
   const { request_workflow, requestDetails, request_progress } = useRequest();
   const { handleAsyncUpdateRequest } = useRequests();

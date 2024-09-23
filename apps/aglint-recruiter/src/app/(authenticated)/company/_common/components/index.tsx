@@ -8,15 +8,15 @@ import RolesAndPermissionsComponent from './Roles';
 import SchedulingSettings from './Scheduling';
 import SchedulingReasons from './SchedulingReason';
 import SettingsSubNabItem from './SideNav';
-import { settingSubNavItem } from './SideNav/utils';
+import type { companySettingTabsType } from './SideNav/utils';
 import TeamManagement from './TeamManagement';
 import SchedulerEmailTemps from './Templates';
 import WorkingHour from './WorkingHours';
 
 const CompanyDetailComp = () => {
   const { recruiter } = useAuthDetails();
-  const { updateSettings, tab, setIsSaving } = useCompanyDetailComp();
-
+  const { updateSettings, tab: tempTab, setIsSaving } = useCompanyDetailComp();
+  const tab = tempTab as unknown as companySettingTabsType;
   return (
     <div className='container mx-auto'>
       <div className='mb-6 flex gap-6'>
@@ -26,29 +26,25 @@ const CompanyDetailComp = () => {
           </div>
         </div>
         <div className='w-3/4'>
-          {tab === settingSubNavItem['COMPANYINFO'] && <CompanyInfoComp />}
-          {tab === settingSubNavItem['WORKINGHOURS'] && (
+          {tab === 'company-info' && <CompanyInfoComp />}
+          {tab === 'team' && <TeamManagement />}
+          {tab === 'roles' && <RolesAndPermissionsComponent />}
+          {tab === 'schedulingReasons' && <SchedulingReasons />}
+          {tab === 'workingHours' && (
             <WorkingHour
               initialData={recruiter.scheduling_settings}
               updateSettings={updateSettings}
             />
           )}
-          {tab === settingSubNavItem['USERS'] && <TeamManagement />}
-          {tab === settingSubNavItem['ROLES'] && (
-            <RolesAndPermissionsComponent />
-          )}
-          {tab === settingSubNavItem['SCHEDULING_REASONS'] && (
-            <SchedulingReasons />
-          )}
-          {tab === settingSubNavItem.HOLIDAYS && <Holidays />}
-          {tab === settingSubNavItem.SCHEDULING && (
+          {tab === 'holidays' && <Holidays />}
+          {tab === 'scheduling' && (
             <SchedulingSettings updateSettings={updateSettings} />
           )}
-          {tab === settingSubNavItem.PORTAL_SETTINGS && <PortalSettings />}
-          {(tab === settingSubNavItem.EMAILTEMPLATE ||
-            tab === settingSubNavItem.SLACKTEMPLATE ||
-            tab === settingSubNavItem.AGENTTEMPLATE ||
-            tab === settingSubNavItem.CALENDERTEMPLATE) && (
+          {tab === 'portalSettings' && <PortalSettings />}
+          {(tab === 'emailTemplate' ||
+            tab === 'slackTemplate' ||
+            tab === 'agentTemplate' ||
+            tab === 'calenderTemplate') && (
             <SchedulerEmailTemps setSaving={setIsSaving} />
           )}
         </div>

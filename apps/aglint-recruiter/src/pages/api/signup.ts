@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
+  process.env.SUPABASE_SERVICE_ROLE_KEY,
 );
 
 export type ApiBodyParamsSignup = {

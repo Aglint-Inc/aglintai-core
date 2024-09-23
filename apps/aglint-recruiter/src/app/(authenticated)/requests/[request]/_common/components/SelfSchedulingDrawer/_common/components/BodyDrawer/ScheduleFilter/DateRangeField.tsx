@@ -1,4 +1,5 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { toast } from '@components/hooks/use-toast';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
@@ -12,7 +13,6 @@ import { ClockIcon, X } from 'lucide-react';
 import React from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
-import toast from '@/utils/toast';
 
 import {
   setLocalFilters,
@@ -31,7 +31,7 @@ function DateRangeField() {
   }>(null);
 
   return (
-    <div className='flex flex-col space-y-0.5'>
+    <div className='flex flex-col space-y-2'>
       <span className='text-base font-medium'>Preferred Date Ranges</span>
       <TimeRangeSelector
         slotButton={
@@ -40,16 +40,19 @@ function DateRangeField() {
             disabled={!value?.startTime || !value?.endTime}
             onClick={() => {
               if (!value) {
-                toast.error('Choose start time and end time then add');
+                toast({
+                  title: 'Choose start time and end time then add',
+                });
                 return;
               }
               if (
                 dayjsLocal(value.startTime).valueOf() >=
                 dayjsLocal(value.endTime).valueOf()
               ) {
-                toast.error(
-                  'Start time End time cannot be same and End time must be greater than start time',
-                );
+                toast({
+                  title:
+                    'Start time End time cannot be same and End time must be greater than start time',
+                });
                 return;
               }
 
@@ -80,12 +83,12 @@ function DateRangeField() {
                   <Badge
                     key={index}
                     variant='secondary'
-                    className='flex items-center gap-1'
+                    className='flex items-center gap-1 p-2 text-sm'
                   >
                     {`${dayjs(dateRange.startTime).format('hh:mm A')} - ${dayjs(dateRange.endTime).format('hh:mm A')}`}
                     <Button
                       variant='ghost'
-                      size='sm'
+                      size='md'
                       className='h-auto p-0 text-muted-foreground hover:text-foreground'
                       onClick={() => {
                         setLocalFilters({

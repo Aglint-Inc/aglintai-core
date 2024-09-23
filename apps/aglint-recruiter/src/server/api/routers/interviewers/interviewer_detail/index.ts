@@ -1,13 +1,14 @@
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import { createPrivateClient } from '@/server/db';
 
 const userSchema = z.object({ user_id: z.string().uuid() });
 
 const query = async ({
-  ctx: { db },
   input: { user_id },
 }: PrivateProcedure<typeof userSchema>) => {
+  const db = createPrivateClient();
   const user = (
     await db
       .from('recruiter_user')

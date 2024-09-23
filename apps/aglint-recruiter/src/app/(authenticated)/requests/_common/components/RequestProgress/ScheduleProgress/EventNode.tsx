@@ -1,12 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
+import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
 import { Edit, Loader, Trash } from 'lucide-react';
 import React from 'react';
 
 import { useRequest } from '@/context/RequestContext';
-import toast from '@/utils/toast';
 
 import { useRequestProgressProvider } from '../progressCtx';
 import ScheduleProgressTracker from '../ScheduleProgressTracker';
@@ -47,6 +47,7 @@ const EventNode = ({
     );
     tense = progressStatusToTense(headingEvent?.status);
   }
+
   const eventSubProgress = (eventProg ?? []).filter(
     (prg) => prg.is_progress_step === true,
   );
@@ -55,7 +56,7 @@ const EventNode = ({
       await deleteRequestWorkflowAction(currWAction.id);
       await request_workflow.refetch();
     } catch (err) {
-      toast.error('Failed to remove action');
+      toast({ title: 'Failed to remove action', variant: 'destructive' });
     }
   };
   return (

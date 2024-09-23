@@ -1,4 +1,5 @@
 import { type MultiDayPlanType } from '@aglint/shared-types';
+import { toast } from '@components/hooks/use-toast';
 import { Checkbox } from '@components/ui/checkbox';
 import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
@@ -148,6 +149,11 @@ function DayCardWrapper({
                 : isSelected
             }
             onClick={() => {
+              const slotsNo = slotsWithDaySessions.length;
+              if (slotsNo > 100) {
+                toast({ title: 'It has more slots' });
+                return;
+              }
               setSelectedCombIds(
                 isSelected
                   ? selectedCombIds.filter((id) =>

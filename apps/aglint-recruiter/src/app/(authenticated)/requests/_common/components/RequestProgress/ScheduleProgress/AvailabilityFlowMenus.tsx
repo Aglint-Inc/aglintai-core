@@ -59,7 +59,11 @@ const AvailabilityFlowMenus = ({
       <ShowCode.When isTrue={isManualSchedule}>
         <>
           {availFlowProg
-            .filter((s) => s.is_progress_step === false)
+            .filter(
+              (s) =>
+                s.is_progress_step === false &&
+                s.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK',
+            )
             .map((prog) => {
               return (
                 <>

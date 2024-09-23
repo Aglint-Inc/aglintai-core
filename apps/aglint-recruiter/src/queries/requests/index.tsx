@@ -5,6 +5,7 @@ import type {
   DatabaseTableUpdate,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { toast as specialToast } from '@components/hooks/use-toast';
 import { type RealtimePostgresInsertPayload } from '@supabase/supabase-js';
 import {
   type MutationFilters,
@@ -18,7 +19,6 @@ import {
 import { useCallback } from 'react';
 
 import { supabase } from '@/utils/supabase/client';
-import aglintToast from '@/utils/toast';
 
 import { appKey, GC_TIME } from '..';
 import {
@@ -47,6 +47,8 @@ export const requestQueries = {
       queryKey: [...requestQueries.requests_queryKey(), { filters }, { sort }],
       queryFn: async () =>
         getRequests(await getUnfilteredRequests({ payload, sort, filters })),
+      refetchInterval:
+        process.env.NODE_ENV === 'development' ? 1000 : undefined, //NOTE: only required in local db
       placeholderData: {
         urgent_request: [],
         schedule_request: [],
@@ -178,9 +180,13 @@ export const useRequestsCreate = () => {
         ),
       ]);
     },
-    onError: () => aglintToast.error('Unable to create requests'),
+    onError: () =>
+      specialToast({
+        variant: 'destructive',
+        title: 'Unable to create requests',
+      }),
     onSuccess: (_, { toast = true }) =>
-      toast && aglintToast.success('Requests created successfully'),
+      toast && specialToast({ title: 'Requests created successfully' }),
   });
   const mutationState = useMutationState(
     requestQueries.requests_mutationOptions('create'),
@@ -210,9 +216,13 @@ export const useRequestsUpdate = () => {
         ),
       ]);
     },
-    onError: () => aglintToast.error('Unable to update request'),
+    onError: () =>
+      specialToast({
+        variant: 'destructive',
+        title: 'Unable to update request',
+      }),
     onSuccess: (_, { toast = true }) =>
-      toast && aglintToast.success('Request updated successfully'),
+      toast && specialToast({ title: 'Request updated successfully' }),
   });
   const mutationState = useMutationState(
     requestQueries.requests_mutationOptions('update'),
@@ -242,9 +252,13 @@ export const useRequestsDelete = () => {
         ),
       ]);
     },
-    onError: () => aglintToast.error('Unable to delete request'),
+    onError: () =>
+      specialToast({
+        variant: 'destructive',
+        title: 'Unable to delete request',
+      }),
     onSuccess: (_, { toast = true }) =>
-      toast && aglintToast.success('Request deleted successfully'),
+      toast && specialToast({ title: 'Request deleted successfully' }),
   });
   const mutationState = useMutationState(
     requestQueries.requests_mutationOptions('delete'),

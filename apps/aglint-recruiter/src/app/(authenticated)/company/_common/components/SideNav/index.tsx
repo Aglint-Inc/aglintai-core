@@ -2,14 +2,15 @@ import { type permissionsEnum } from '@aglint/shared-types/src/db/tables/permiss
 import { Button } from '@components/ui/button';
 import { cn } from '@lib/utils';
 import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useRouterPro } from '@/hooks/useRouterPro';
+import { getUrlPro, useRouterPro } from '@/hooks/useRouterPro';
 import { emailTemplateQueries } from '@/queries/email-templates';
 
-import { settingSubNavItem } from './utils';
+import type { companySettingTabsType } from './utils';
 
 function VerticalNav() {
   const router = useRouterPro();
@@ -27,76 +28,68 @@ function VerticalNav() {
       );
     }
   }, [emailTemplates.isFetched, router.queryParams.email]);
-
-  const handleNavClick = (value: string) => {
-    let url = `/company?tab=${value}`;
-    if (value === settingSubNavItem['EMAILTEMPLATE']) {
-      url += `&email=${firstTemplate}`;
-    }
-    router.replace(url);
-  };
   const { isShowFeature } = useAuthDetails();
 
   const settingsItems = [
     {
       label: 'Company Details',
-      value: settingSubNavItem['COMPANYINFO'],
+      value: 'company-info',
       icon: 'Building',
       show: true,
     },
     {
       label: 'Working Hours',
-      value: settingSubNavItem['WORKINGHOURS'],
+      value: 'workingHours',
       icon: 'Clock',
       show: true,
     },
     {
       label: 'Holidays',
-      value: settingSubNavItem['HOLIDAYS'],
+      value: 'holidays',
       icon: 'Calendar',
       show: true,
     },
     {
       label: 'User',
-      value: settingSubNavItem['USERS'],
+      value: 'team',
       permission: 'view_users',
       icon: 'Users',
       show: true,
     },
     {
       label: 'Roles',
-      value: settingSubNavItem['ROLES'],
+      value: 'roles',
       permission: 'view_roles',
       icon: 'Shield',
       show: isShowFeature('ROLES'),
     },
     {
       label: 'Templates',
-      value: settingSubNavItem['EMAILTEMPLATE'],
+      value: 'emailTemplate',
       icon: 'FileText',
       show: isShowFeature('SCHEDULING'),
     },
     {
       label: 'Scheduling',
-      value: settingSubNavItem['SCHEDULING'],
+      value: 'scheduling',
       icon: 'CalendarDays',
       show: isShowFeature('SCHEDULING'),
     },
     {
       label: 'Reasons',
-      value: settingSubNavItem['SCHEDULING_REASONS'],
+      value: 'schedulingReasons',
       icon: 'List',
       show: isShowFeature('SCHEDULING'),
     },
     {
       label: 'Candidate Portal',
-      value: settingSubNavItem['PORTAL_SETTINGS'],
+      value: 'portalSettings',
       icon: 'Globe',
       show: isShowFeature('CANDIDATE_PORTAL'),
     },
   ] as {
     label: string;
-    value: string;
+    value: companySettingTabsType;
     permission?: permissionsEnum | 'authorized';
     icon: string;
     show: boolean;
@@ -111,18 +104,29 @@ function VerticalNav() {
             // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
             const Icon = item.icon ? require('lucide-react')[item.icon] : null;
             const NavButton = (
-              <Button
+              <Link
+                href={getUrlPro('/company', {
+                  searchParams: {
+                    tab: item.value,
+                    email:
+                      item.value === 'emailTemplate'
+                        ? firstTemplate
+                        : undefined,
+                  },
+                })}
                 key={i}
-                variant='ghost'
-                className={cn(
-                  'justify-start',
-                  router.queryParams.tab === item.value && 'bg-muted',
-                )}
-                onClick={() => handleNavClick(item.value)}
               >
-                {Icon && <Icon className='mr-2 h-4 w-4' />}
-                {item.label}
-              </Button>
+                <Button
+                  variant='ghost'
+                  className={cn(
+                    'justify-start',
+                    router.queryParams.tab === item.value && 'bg-muted',
+                  )}
+                >
+                  {Icon && <Icon className='mr-2 h-4 w-4' />}
+                  {item.label}
+                </Button>
+              </Link>
             );
 
             return item?.permission

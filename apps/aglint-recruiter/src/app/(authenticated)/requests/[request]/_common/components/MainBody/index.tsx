@@ -58,7 +58,7 @@ import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import { updateInterviewSessionsDurations } from '../../functions';
 import CandidateAvailability from '../CandidateAvailability';
 import ConfirmAvailability from '../ConfirmAvailability';
-import { AvailabilityProvider } from '../ConfirmAvailability/RequestAvailabilityContext';
+import { AvailabilityProvider } from '../ConfirmAvailability/_common/contexts/RequestAvailabilityContext';
 import RecentRequests from '../RecentRequests';
 import CandidateCancelRequest from '../RequestNextSteps/CandidateCancelRequest';
 import RequestDecline from '../RequestNextSteps/RequestDecline';
@@ -118,7 +118,7 @@ export default function ViewRequestDetails() {
         </AvailabilityProvider>
         <SideDrawerEdit refetch={refetchMeetings} />
         {/* {selectedRequest?.status === 'to_do' && ( */}
-        <SelfSchedulingDrawer refetch={refetchMeetings} />
+        <SelfSchedulingDrawer />
         {/* )} */}
         <div className='space-y-8'>
           <Breadcrumb>

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "npm run get-path && npm run dev:build && next dev --turbo",
+    "dev": "npm run gen_path && npm run dev:build && next dev --turbo",
     "build": "next build",
     "start": "next start",
     "dev:build": "npm run build --workspace=@aglint/shared-utils",
@@ -18,10 +18,11 @@
     "pull": "git pull origin development --no-rebase",
     "test": "jest",
     "test:watch": "npm run dev:build && jest --watch",
-    "get-path": "npx tsc script/path_gen.ts --skipLibCheck && node script/path_gen.js",
+    "gen_path": "npx tsc script/path_gen.ts --skipLibCheck && node script/path_gen.js && npm run script_cleanup",
     "gen_types": "npx tsc script/genTypesFromDB.ts --skipLibCheck && node script/genTypesFromDB.js",
     "shadcn": "npx shadcn-ui@latest add",
-    "v0": "npx v0@latest add"
+    "v0": "npx v0@latest add",
+    "script_cleanup": "npx tsc script/cleanup.ts --skipLibCheck && node script/cleanup.js"
   },
   "dependencies": {
     "@aglint/shared-utils": "*",
@@ -135,6 +136,7 @@
     "recharts": "^2.12.7",
     "resend": "^4.0.0",
     "sass": "1.78.0",
+    "server-only": "^0.0.1",
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.5.2",
     "use-deep-compare-effect": "^1.8.1",

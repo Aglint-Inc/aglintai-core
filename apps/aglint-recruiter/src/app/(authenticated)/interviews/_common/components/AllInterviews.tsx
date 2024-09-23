@@ -11,7 +11,7 @@ import { Loader } from '@/components/Common/Loader';
 import { useScheduleStatesContext } from '../contexts/ScheduleStatesContext';
 import { useAllInterviews } from '../hooks/useAllInterviews';
 import AllInterviewFilters from './Filters/AllInterviewFilters';
-import ScheduleMeetingList from './ScheduleMeetingList';
+import ScheduleMeetingList from './ui/ScheduleMeetingList';
 
 function AllInterviews() {
   const { filterState } = useScheduleStatesContext();
