@@ -17,7 +17,6 @@ export const deleteJsFilesInDir = (dir: string) => {
     files.forEach((file) => {
       if (file.endsWith('.js')) {
         const filePath = join(dir, file);
-
         // eslint-disable-next-line security/detect-non-literal-fs-filename
         unlink(filePath, (err) => {
           if (err) {
