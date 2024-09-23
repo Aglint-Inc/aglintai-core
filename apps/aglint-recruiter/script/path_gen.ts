@@ -1,8 +1,6 @@
 /* eslint-disable security/detect-non-literal-regexp */
-import * as fs from 'fs';
+import { readdirSync, writeFileSync } from 'fs';
 import * as path from 'path';
-
-import { deleteJsFilesInDir } from './utils';
 
 const skipFiles = ['/_app', '/_document', '/api'];
 
@@ -31,7 +29,7 @@ function processDirectory(
     } = {},
   ) {
     // eslint-disable-next-line security/detect-non-literal-fs-filename
-    const entries = fs.readdirSync(dir, { withFileTypes: true });
+    const entries = readdirSync(dir, { withFileTypes: true });
 
     for (const entry of entries) {
       const fullPath = path.join(dir, entry.name);
@@ -90,7 +88,7 @@ function processDirectory(
     );
 
     // eslint-disable-next-line security/detect-non-literal-fs-filename
-    fs.writeFileSync(
+    writeFileSync(
       item.path,
       `export const ${item.objectName} = ${JSON.stringify(tempResult, null, 2).replace(/"/g, "'")} as const`,
       'utf-8',
@@ -101,11 +99,6 @@ function processDirectory(
     //     .join(',\n')}\n]
   });
 }
-
-// const args = process.argv.slice(2);
-
-// const rootDirectory = args[0].split(',') || ['.'];
-// const outputFile = args[1] || 'script/paths.ts';
 
 const rootDirectory = {
   [path.join('src', 'pages')]: {
@@ -121,6 +114,7 @@ const rootDirectory = {
     appRouter: true,
   },
 };
+
 const allPathOutputFile = path.join('src/constant', 'allPaths.ts');
 const apiPathOutputFile = path.join('src/constant', 'apiPaths.ts');
 
@@ -133,5 +127,15 @@ processDirectory(rootDirectory, [
   },
 ]);
 
-// deleted compiled file
-deleteJsFilesInDir(__filename);
+import { generateSaveTypeSafePath } from './gen_type_path';
+
+const outputTypeSafePathFile = path.join('src/constant', 'typeSafeParams.ts');
+
+generateSaveTypeSafePath().then((data) => {
+  const updatedFileContent = `export const TYPE_SAFE_PARAMS = ${JSON.stringify(
+    data,
+    null,
+    2,
+  ).replace(/"/g, "'")} as const\n`;
+  writeFileSync(outputTypeSafePathFile, updatedFileContent, 'utf-8');
+});
