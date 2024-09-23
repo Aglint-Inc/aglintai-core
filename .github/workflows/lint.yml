@@ -11,6 +11,7 @@ on:
 permissions:
   checks: write
   contents: read
+  pull-requests: write
 
 jobs:
   lint:
@@ -18,11 +19,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the repository
+      # Check out the repository code
       - name: Check out Git repository
         uses: actions/checkout@v4
 
-      # Step 2: Set up Node.js environment
+      # Set up Node.js environment with caching for npm
       - name: Setup Node.js environment
         uses: actions/setup-node@v4.0.4
         with:
@@ -30,11 +31,11 @@ jobs:
           cache: "npm"
           cache-dependency-path: "**/package-lock.json"
 
-      # Step 3: Install project dependencies
+      # Install project dependencies
       - name: Install Dependencies
         run: npm ci
 
-      # Step 4: Cache Turborepo for faster subsequent runs
+      # Cache Turborepo for faster subsequent runs
       - name: Cache Turborepo
         uses: actions/cache@v4
         with:
@@ -43,7 +44,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-turbo-
 
-      # Step 5: Run the linter for all workspaces
+      # Run linters for all workspaces and specifically for aglint-recruiter
       - name: Run Linter
         run: |
           npx turbo run lint --cache-dir=.turbo
@@ -53,53 +54,32 @@ jobs:
 
   preview-deploy:
     name: Preview Deploy to Vercel
-    needs: lint # This job will only run if the lint job succeeds
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/development' # Only run on pushes to development branch
+    needs: lint # This job will only run if the lint job succeeds
+    if: github.event_name == 'push' && github.ref == 'refs/heads/development'
 
     steps:
-      # Step 1: Check out the repository
+      # Check out the repository code
       - name: Check out Git repository
         uses: actions/checkout@v4
 
-      # Step 2: Install Vercel CLI globally
+      # Install Vercel CLI globally
       - name: Install Vercel CLI
         run: npm install -g vercel
 
-      # Step 3: Pull Vercel environment information
-      - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }}
-
-      # Step 4: Deploy to Vercel
+      # Deploy to Vercel using environment secrets
       - name: Deploy to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
         run: |
           echo "Attempting to deploy..."
-          # Deploy to Vercel with --no-wait option and save stdout and stderr to files
-          vercel deploy --token=${{ secrets.VERCEL_TOKEN }} --scope=${{ secrets.VERCEL_ORG_ID }} --project-id=${{ secrets.VERCEL_PROJECT_ID }} --yes --no-wait >deployment-url.txt 2>error.txt
-
-          # Extract the deployment URL from the output file
-          DEPLOYMENT_URL=$(grep -oP 'https:\/\/[^ ]+' deployment-url.txt | head -n1)
-
-          if [ -n "$DEPLOYMENT_URL" ]; then
-            echo "DEPLOYMENT_URL=$DEPLOYMENT_URL" >> $GITHUB_ENV
-            echo "Deployment URL found: $DEPLOYMENT_URL"
-          else
-            echo "Failed to extract deployment URL. Deployment output:"
-            cat deployment-url.txt
-            echo "Error output:"
-            cat error.txt
-            exit 1
-          fi
-
-      # Step 5: Comment the deployment URL on the commit
-      - name: Comment Deployment URL
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            github.rest.repos.createCommitComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              commit_sha: context.sha,
-              body: 'Preview deployed to: ${{ env.DEPLOYMENT_URL }}'
-            })
+          # Link the project to Vercel
+          vercel link --yes --project $VERCEL_PROJECT_ID --token=$VERCEL_TOKEN --scope=$VERCEL_ORG_ID
+          # Pull environment variables
+          vercel env pull --token=$VERCEL_TOKEN --scope=$VERCEL_ORG_ID --environment=preview --git-branch=development
+          # Move the environment file to the correct location
+          mv .env.local apps/aglint-recruiter/.env
+          # Deploy to Vercel without waiting for completion
+          vercel deploy --token=$VERCEL_TOKEN --scope=$VERCEL_ORG_ID --yes --no-wait

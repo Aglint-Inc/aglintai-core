@@ -111,7 +111,7 @@ export default function AppLayout({ children, appRouter = false }) {
       )}
       <div className='flex flex-1'>
         {!isHorizontalNav && (
-          <nav className='fixed flex h-[100vh] w-16 flex-col justify-between border-r bg-white'>
+          <nav className='fixed z-20 flex h-[100vh] w-16 flex-col justify-between border-r bg-white'>
             <div className='flex flex-grow flex-col items-center py-3'>
               <Button variant='link' className='mt-4' asChild>
                 <Link href='/jobs'>
@@ -127,7 +127,7 @@ export default function AppLayout({ children, appRouter = false }) {
               </Button>
               <SideNavbar />
             </div>
-            <div className='mb-3 flex flex-col items-center space-y-3'>
+            <div className='mb-3 flex flex-col items-center'>
               <Tooltip>
                 <TooltipTrigger>
                   <Button variant='link' asChild>
@@ -153,7 +153,7 @@ export default function AppLayout({ children, appRouter = false }) {
                     </Link>
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent align='center' side='right'>
+                <TooltipContent align='start' side='right'>
                   <p>
                     {capitalizeAll(userDetails?.first_name) || 'Your profile'}
                   </p>

@@ -8,13 +8,14 @@ import { useState } from 'react';
 import { useRequests } from '@/context/RequestsContext';
 
 const SelfScheduleLinkSent = (args: DatabaseTable['request_progress']) => {
-  const query = useParams();
+  const params = useParams();
+  const requestId = params?.request as string;
   const {
     requests: { data: requestList },
   } = useRequests();
   const selectedRequest = Object.values(requestList)
     .flat()
-    .find((request) => request?.id === query?.id);
+    .find((request) => request?.id === requestId);
   const [isCopied, setIsCopied] = useState(false);
   return (
     <>

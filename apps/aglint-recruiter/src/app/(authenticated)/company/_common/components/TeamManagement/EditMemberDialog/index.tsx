@@ -267,6 +267,7 @@ const EditMember = ({
                 <Label htmlFor='first_name'>First Name</Label>
                 <Input
                   id='first_name'
+                  placeholder='Enter first name'
                   value={form.first_name}
                   onChange={(e) =>
                     setForm({ ...form, first_name: e.target.value })
@@ -278,6 +279,7 @@ const EditMember = ({
                 <Label htmlFor='last_name'>Last Name</Label>
                 <Input
                   id='last_name'
+                  placeholder='Enter last name'
                   value={form.last_name}
                   onChange={(e) =>
                     setForm({ ...form, last_name: e.target.value })
@@ -290,6 +292,7 @@ const EditMember = ({
               <Label htmlFor='linked_in'>LinkedIn</Label>
               <Input
                 id='linked_in'
+                placeholder='Enter linkedin url'
                 value={form.linked_in}
                 onChange={(e) =>
                   setForm({ ...form, linked_in: e.target.value.trim() })
@@ -304,6 +307,7 @@ const EditMember = ({
                 <Input
                   id='position'
                   value={form.position}
+                  placeholder='Enter position'
                   onChange={(e) =>
                     setForm({ ...form, position: e.target.value })
                   }
@@ -353,9 +357,12 @@ const EditMember = ({
                         key={location.id}
                         value={location.id.toString()}
                       >
-                        {capitalizeFirstLetter(
-                          `${location.city}, ${location.region}, ${location.country}`,
-                        )}
+                        {[location.city, location.region, location.country]
+                          .filter((location) => location)
+                          .map((location) =>
+                            capitalizeFirstLetter(location).trim(),
+                          )
+                          .join(', ')}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -384,13 +391,10 @@ const EditMember = ({
                   </SelectContent>
                 </Select>
               </div>
-            </div>
-
-            {(member.role !== 'admin' ||
-              member.created_by === recruiterUser.user_id ||
-              member.user_id !== recruiterUser.user_id) && (
-              <>
-                <div className='grid grid-cols-2 gap-4'>
+              {(member.role !== 'admin' ||
+                member.created_by === recruiterUser.user_id ||
+                member.user_id !== recruiterUser.user_id) && (
+                <>
                   <div className='space-y-2'>
                     <Label htmlFor='role'>Role</Label>
                     <Select
@@ -440,21 +444,22 @@ const EditMember = ({
                       </Select>
                     </div>
                   )}
-                </div>
 
-                <div className='space-y-2'>
-                  <Label htmlFor='phone'>Phone</Label>
-                  <Input
-                    id='phone'
-                    value={form.phone}
-                    onChange={(e) =>
-                      setForm({ ...form, phone: e.target.value })
-                    }
-                    className={formError.phone ? 'border-red-500' : ''}
-                  />
-                </div>
-              </>
-            )}
+                  <div className='space-y-2'>
+                    <Label htmlFor='phone'>Phone</Label>
+                    <Input
+                      id='phone'
+                      placeholder='Enter phone number'
+                      value={form.phone}
+                      onChange={(e) =>
+                        setForm({ ...form, phone: e.target.value })
+                      }
+                      className={formError.phone ? 'border-red-500' : ''}
+                    />
+                  </div>
+                </>
+              )}
+            </div>
 
             <div className='mt-6 flex justify-end space-x-2'>
               <Button variant='outline' onClick={onClose}>

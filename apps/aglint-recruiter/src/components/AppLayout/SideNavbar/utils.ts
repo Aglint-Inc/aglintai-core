@@ -109,7 +109,7 @@ export const navList: {
   {
     text: 'Company Settings',
     SubComponents: null,
-    route: ROUTES['/company'](),
+    route: ROUTES['/company']() + '?tab=company-info',
     comingSoon: false,
     isVisible: true,
     permission: ['company_settings_module'],

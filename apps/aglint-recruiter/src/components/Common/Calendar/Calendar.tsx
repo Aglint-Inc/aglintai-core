@@ -7,6 +7,7 @@ import listPlugin from '@fullcalendar/list';
 import FullCalendar from '@fullcalendar/react';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import { Calendar } from 'lucide-react';
 import {
   type Dispatch,
   type SetStateAction,
@@ -18,6 +19,7 @@ import {
 import { Loader } from '@/components/Common/Loader';
 
 import { type SchedulesSupabase } from '../../../app/_common/utils/schedules-query';
+import UITypography from '../UITypography';
 import CalendarHeader from './CalendarHeader';
 import { type event, type Modes, type Types } from './calendarTypes';
 import CalendarFilter from './Filter';
@@ -118,9 +120,11 @@ function CalendarComp({
               initialView={view[viewMode][viewType]}
               initialEvents={events}
               eventContent={renderEventContent}
+              noEventsContent={onEventContent}
               nowIndicator={true}
               editable={true}
               selectable={false}
+              aspectRatio={1.0}
               selectMirror={true}
               allDaySlot={false}
               resources={events}
@@ -141,6 +145,17 @@ function CalendarComp({
 }
 
 export default CalendarComp;
+
+function onEventContent() {
+  return (
+    <div className='flex flex-col items-center gap-3'>
+      <Calendar size={30} className='text-gray-400' />
+      <UITypography type='small' variant='p' className='text-gray-500'>
+        No events
+      </UITypography>
+    </div>
+  );
+}
 
 function renderEventContent(eventInfo) {
   const { data, color } = eventInfo.event.extendedProps;
