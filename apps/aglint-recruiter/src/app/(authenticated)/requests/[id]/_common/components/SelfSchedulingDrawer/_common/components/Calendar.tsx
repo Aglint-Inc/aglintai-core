@@ -86,6 +86,7 @@ function Calendar() {
           isLoading={fetchingPlan}
           businessHours={transformWorkHours(
             recruiter.scheduling_settings.workingHours,
+            recruiter.scheduling_settings.timeZone.tzCode,
           )}
         />
       )}
