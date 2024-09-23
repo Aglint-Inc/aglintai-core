@@ -13,7 +13,6 @@ import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { useInterviewer } from '../hooks/useInterviewer';
 import { BreadCrumb } from './BreadCrumb';
-import { Top } from './Components';
 import { Feedback } from './FeedbackCard';
 import { Header } from './Header';
 import { KeyMatrics } from './KeyMatrix';
@@ -21,6 +20,7 @@ import { Qualifications } from './Qualification';
 import { RecentInterviews } from './RecentInterviewCard';
 import ScheduleAvailability from './ScheduleAvailability';
 import { SideBar } from './SideBar';
+import { Top } from './Top';
 import { UpcomingInterview } from './UpcomingInterviews';
 
 export default function InterviewerDetailsPage() {
