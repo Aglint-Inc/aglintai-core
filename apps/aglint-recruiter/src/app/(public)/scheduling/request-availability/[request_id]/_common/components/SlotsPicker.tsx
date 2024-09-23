@@ -139,7 +139,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
                   )}
                 </div>
                 <div className="flex flex-col">
-                <div className="text-lg font-semibold">Select available dates</div>
+                <div className="text-lg font-medium">Select available dates</div>
                 <span className='text-sm'> {`Select ${candidateRequestAvailability.number_of_days} or more days.`}</span>
                 </div>
               </div>
@@ -306,7 +306,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
                       )}
                     </div>
                     <div className="flex flex-col">
-                    <div className="text-lg font-semibold">Choose time slots</div>
+                    <div className="text-lg font-medium">Choose time slots</div>
                     <span className='text-sm'>{`Choose ${candidateRequestAvailability.number_of_slots} or more slots per day.`}</span>
                     </div>
                   </div>
