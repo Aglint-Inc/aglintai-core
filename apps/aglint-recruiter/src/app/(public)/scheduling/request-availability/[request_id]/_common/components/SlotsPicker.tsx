@@ -1,15 +1,16 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
-import { Badge } from '@components/ui/badge';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@components/ui/carousel';
+// import { Badge } from '@components/ui/badge';
+// import {
+//   Carousel,
+//   CarouselContent,
+//   CarouselItem,
+//   CarouselNext,
+//   CarouselPrevious,
+// } from '@components/ui/carousel';
+// import { ScrollArea } from '@components/ui/scroll-area';
 import dayjs from 'dayjs';
-import {  CheckCircle, X } from 'lucide-react';
+import {  CheckCircle } from 'lucide-react';
 import { useEffect } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -19,7 +20,6 @@ import toast from '@/utils/toast';
 import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityContext';
 import { DateCard } from './DateCard';
 import TimeSlotsColumn from './TimeSlotsColumn';
-import { ScrollArea } from '@components/ui/scroll-area';
 
 export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
   const {
@@ -366,146 +366,146 @@ function TimeSlotsWrapper() {
     </div>
   );
 }
-function DaysWrapInWeek({ isSingleDay }: { isSingleDay: boolean }) {
-  const {
-    multiDaySessions,
-    dateSlots,
-    handleClickDate,
-    selectedDateSlots,
-    openDaySlotPopup: day,
-  } = useRequestAvailabilityContext();
-  const dates = dateSlots?.find((slot) => slot.round === day || 1)?.dates || [];
-  const weeks: DatabaseTable['candidate_request_availability']['slots'][number]['dates'][] =
-    [];
-  for (let i = 0; i < dates.length; i += 7) {
-    weeks.push(dates.slice(i, i + 7));
-  }
+// function DaysWrapInWeek({ isSingleDay }: { isSingleDay: boolean }) {
+//   const {
+//     multiDaySessions,
+//     dateSlots,
+//     handleClickDate,
+//     selectedDateSlots,
+//     openDaySlotPopup: day,
+//   } = useRequestAvailabilityContext();
+//   const dates = dateSlots?.find((slot) => slot.round === day || 1)?.dates || [];
+//   const weeks: DatabaseTable['candidate_request_availability']['slots'][number]['dates'][] =
+//     [];
+//   for (let i = 0; i < dates.length; i += 7) {
+//     weeks.push(dates.slice(i, i + 7));
+//   }
 
-  return (
-    <>
-      {weeks.map((week, weekIndex) => {
-        return (
-          <CarouselItem key={weekIndex}>
-            <div className='flex justify-center space-x-2 p-2'>
-              {isSingleDay
-                ? week.map((dateSlot, i) => {
-                    return (
-                      <DateCard
-                        isDisable={dateSlot.slots.length === 0}
-                        isActive={selectedDateSlots
-                          .find((ele) => ele.round === day || 1)
-                          ?.dates.map((ele) => ele.curr_day)
-                          .includes(dateSlot.curr_day)}
-                        key={i}
-                        textDate={dayjs(dateSlot.curr_day).format('DD')}
-                        textDay={dayjs(dateSlot.curr_day).format('dddd')}
-                        textMonth={dayjs(dateSlot.curr_day).format('MMM')}
-                        onClickDate={() => {
-                          handleClickDate({ selectedDate: dateSlot, day });
-                        }}
-                      />
-                    );
-                  })
-                : week.map((dateSlot, i) => {
-                    let enable = false;
-                    const justPrevDay =
-                      day > 1 &&
-                      multiDaySessions[day - 2][0].break_duration / 1440;
-                    const dates = dateSlots
-                      .find((ele) => ele.round === day || 1)
-                      ?.dates.filter((ele) => ele.slots.length);
-                    const prevSelectedDates = selectedDateSlots
-                      .filter((ele) => ele.round === day - 1)
-                      .map((ele) => ele.dates)
-                      .flat()
-                      ?.map((ele) => ele.curr_day.split('T')[0]);
+//   return (
+//     <>
+//       {weeks.map((week, weekIndex) => {
+//         return (
+//           <CarouselItem key={weekIndex}>
+//             <div className='flex justify-center space-x-2 p-2'>
+//               {isSingleDay
+//                 ? week.map((dateSlot, i) => {
+//                     return (
+//                       <DateCard
+//                         isDisable={dateSlot.slots.length === 0}
+//                         isActive={selectedDateSlots
+//                           .find((ele) => ele.round === day || 1)
+//                           ?.dates.map((ele) => ele.curr_day)
+//                           .includes(dateSlot.curr_day)}
+//                         key={i}
+//                         textDate={dayjs(dateSlot.curr_day).format('DD')}
+//                         textDay={dayjs(dateSlot.curr_day).format('dddd')}
+//                         textMonth={dayjs(dateSlot.curr_day).format('MMM')}
+//                         onClickDate={() => {
+//                           handleClickDate({ selectedDate: dateSlot, day });
+//                         }}
+//                       />
+//                     );
+//                   })
+//                 : week.map((dateSlot, i) => {
+//                     let enable = false;
+//                     const justPrevDay =
+//                       day > 1 &&
+//                       multiDaySessions[day - 2][0].break_duration / 1440;
+//                     const dates = dateSlots
+//                       .find((ele) => ele.round === day || 1)
+//                       ?.dates.filter((ele) => ele.slots.length);
+//                     const prevSelectedDates = selectedDateSlots
+//                       .filter((ele) => ele.round === day - 1)
+//                       .map((ele) => ele.dates)
+//                       .flat()
+//                       ?.map((ele) => ele.curr_day.split('T')[0]);
 
-                    const totalDayDurations = multiDaySessions.reduce(
-                      (accumulator, sessions) => {
-                        const breakDurations = sessions.filter(
-                          (session) => session.break_duration >= 1440,
-                        );
-                        return (
-                          accumulator +
-                          breakDurations.reduce(
-                            (acc, session) => acc + session.break_duration,
-                            0,
-                          )
-                        );
-                      },
-                      0,
-                    );
-                    const prevDayDurations = multiDaySessions
-                      .slice(0, day - 1)
-                      .reduce((accumulator, sessions) => {
-                        const breakDurations = sessions.filter(
-                          (session) => session.break_duration >= 1440,
-                        );
-                        return (
-                          accumulator +
-                          breakDurations.reduce(
-                            (acc, session) => acc + session.break_duration,
-                            0,
-                          )
-                        );
-                      }, 0);
+//                     const totalDayDurations = multiDaySessions.reduce(
+//                       (accumulator, sessions) => {
+//                         const breakDurations = sessions.filter(
+//                           (session) => session.break_duration >= 1440,
+//                         );
+//                         return (
+//                           accumulator +
+//                           breakDurations.reduce(
+//                             (acc, session) => acc + session.break_duration,
+//                             0,
+//                           )
+//                         );
+//                       },
+//                       0,
+//                     );
+//                     const prevDayDurations = multiDaySessions
+//                       .slice(0, day - 1)
+//                       .reduce((accumulator, sessions) => {
+//                         const breakDurations = sessions.filter(
+//                           (session) => session.break_duration >= 1440,
+//                         );
+//                         return (
+//                           accumulator +
+//                           breakDurations.reduce(
+//                             (acc, session) => acc + session.break_duration,
+//                             0,
+//                           )
+//                         );
+//                       }, 0);
 
-                    const prevNumberOfDay = prevDayDurations / 1440;
+//                     const prevNumberOfDay = prevDayDurations / 1440;
 
-                    const numberOfDay =
-                      totalDayDurations / 1440 - prevNumberOfDay;
+//                     const numberOfDay =
+//                       totalDayDurations / 1440 - prevNumberOfDay;
 
-                    if (i >= dates.length - numberOfDay) {
-                      enable = true;
-                    }
+//                     if (i >= dates.length - numberOfDay) {
+//                       enable = true;
+//                     }
 
-                    if (
-                      day > 1 &&
-                      dayjs(prevSelectedDates[justPrevDay]).isAfter(
-                        dayjs(dateSlot.curr_day),
-                        'day',
-                      )
-                    ) {
-                      enable = true;
-                    }
+//                     if (
+//                       day > 1 &&
+//                       dayjs(prevSelectedDates[justPrevDay]).isAfter(
+//                         dayjs(dateSlot.curr_day),
+//                         'day',
+//                       )
+//                     ) {
+//                       enable = true;
+//                     }
 
-                    if (
-                      dayjs(dayjs(dateSlot.curr_day)).isAfter(
-                        prevSelectedDates[0],
-                        'day',
-                      ) &&
-                      dayjs(dayjs(dateSlot.curr_day)).isBefore(
-                        prevSelectedDates[prevSelectedDates.length - 1],
-                        'day',
-                      ) &&
-                      !prevSelectedDates.includes(
-                        dateSlot.curr_day.split('T')[0],
-                      )
-                    ) {
-                      enable = false;
-                    }
+//                     if (
+//                       dayjs(dayjs(dateSlot.curr_day)).isAfter(
+//                         prevSelectedDates[0],
+//                         'day',
+//                       ) &&
+//                       dayjs(dayjs(dateSlot.curr_day)).isBefore(
+//                         prevSelectedDates[prevSelectedDates.length - 1],
+//                         'day',
+//                       ) &&
+//                       !prevSelectedDates.includes(
+//                         dateSlot.curr_day.split('T')[0],
+//                       )
+//                     ) {
+//                       enable = false;
+//                     }
 
-                    return (
-                      <DateCard
-                        isDisable={enable || dateSlot.slots.length === 0}
-                        isActive={selectedDateSlots
-                          .find((ele) => ele.round === day)
-                          ?.dates.map((ele) => ele.curr_day)
-                          .includes(dateSlot.curr_day)}
-                        key={i}
-                        textDate={dayjs(dateSlot.curr_day).format('DD')}
-                        textDay={dayjs(dateSlot.curr_day).format('dddd')}
-                        textMonth={dayjs(dateSlot.curr_day).format('MMM')}
-                        onClickDate={() => {
-                          handleClickDate({ selectedDate: dateSlot, day });
-                        }}
-                      />
-                    );
-                  })}
-            </div>
-          </CarouselItem>
-        );
-      })}
-    </>
-  );
-}
+//                     return (
+//                       <DateCard
+//                         isDisable={enable || dateSlot.slots.length === 0}
+//                         isActive={selectedDateSlots
+//                           .find((ele) => ele.round === day)
+//                           ?.dates.map((ele) => ele.curr_day)
+//                           .includes(dateSlot.curr_day)}
+//                         key={i}
+//                         textDate={dayjs(dateSlot.curr_day).format('DD')}
+//                         textDay={dayjs(dateSlot.curr_day).format('dddd')}
+//                         textMonth={dayjs(dateSlot.curr_day).format('MMM')}
+//                         onClickDate={() => {
+//                           handleClickDate({ selectedDate: dateSlot, day });
+//                         }}
+//                       />
+//                     );
+//                   })}
+//             </div>
+//           </CarouselItem>
+//         );
+//       })}
+//     </>
+//   );
+// }

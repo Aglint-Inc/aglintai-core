@@ -113,7 +113,7 @@ function TimeSlotsColumn({
             <X className='h-5 w-5 text-neutral-600' />
           </span>
         )}
-        <div className='flex w-full flex-row flex-wrap gap-2 p-2 pt-0'>
+        <div className='flex w-full flex-row flex-wrap gap-2 p-3 pt-0'>
           {slotTime.slots.map((slot, ind) => {
             const isSelected =
               (!isSubmitted &&

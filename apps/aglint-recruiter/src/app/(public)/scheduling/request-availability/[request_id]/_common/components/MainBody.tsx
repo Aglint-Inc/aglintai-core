@@ -133,7 +133,7 @@ function CandidateAvailability() {
   return (
     <>
       <div className='w-full  py-10 px-10 bg-gray-50' style={{ minHeight: 'calc(100vh - 50px)' }}>
-        <div className='mx-auto flex max-w-4xl w-full flex-col items-center gap-4 rounded-lg border border-neutral-200 bg-white p-4'>
+        <div className='mx-auto flex max-w-4xl w-full flex-col items-center gap-4 rounded-lg border border-neutral-200 bg-white p-6'>
           <Header
             candidateRequestAvailability={candidateRequestAvailability}
             isSubmitted={isSubmitted}
@@ -156,7 +156,7 @@ export default CandidateAvailability;
 
 function Header({ candidateRequestAvailability, isSubmitted }) {
   return (
-    <div className='w-lg flex flex-col items-center'>
+    <div className='w-lg flex flex-col items-center w-full'>
       <div className='mb-4 flex items-center justify-center'>
         {candidateRequestAvailability?.recruiter.logo ? (
           <Avatar className='h-[100px] w-[100px]'>
@@ -185,11 +185,12 @@ function Header({ candidateRequestAvailability, isSubmitted }) {
           </>
         )}
       </div>
-      <p className='text-center text-neutral-600'>
-        {isSubmitted
-          ? 'Please wait as we finalize the schedule. One of the selected time slots from each day will be chosen, and you will receive a confirmation email shortly.'
-          : ''}
-      </p>
+      {isSubmitted && (
+    <div className='w-full'>
+      Please wait as we finalize the schedule.<br />
+      One of the selected time slots from each day will be chosen, and you will receive a confirmation email shortly.
+    </div>
+  )}
     </div>
   );
 }

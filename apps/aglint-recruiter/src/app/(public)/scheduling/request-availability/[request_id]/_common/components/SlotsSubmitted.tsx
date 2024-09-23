@@ -1,3 +1,5 @@
+import { Badge } from '@components/ui/badge';
+
 import dayjs from '@/utils/dayjs';
 
 import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityContext';
@@ -5,24 +7,28 @@ import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityCo
 function SlotsSubmitted() {
   const { daySlots } = useRequestAvailabilityContext();
   return (
-    <div className='rounded-lg border border-gray-200 p-4'>
-      <h3 className='mb-4 text-lg font-semibold'>Submitted Availability</h3>
+    <div className='rounded-lg border border-gray-200 p-4 w-full flex flex-col gap-4'>
       {daySlots.map((daySlot) => (
-        <div key={daySlot.round} className='mb-4'>
+        <div key={daySlot.round} className='flex flex-col gap-2'>
           <h4 className='font-medium'>Day {daySlot.round}</h4>
+          <div className='flex flex-col gap-4  rounded-sm w-full'>
           {daySlot.dates.map((date) => (
-            <div key={date.curr_day} className='ml-4'>
-              <p>{dayjs(date.curr_day).format('MMMM D, YYYY')}</p>
-              <ul className='ml-4 list-disc'>
+            <div key={date.curr_day} className='flex flex-col gap-1'>
+              <p className='text-sm'>{dayjs(date.curr_day).format('MMMM D, YYYY')}</p>
+              <div className='flex flex-row flex-wrap gap-2'>
                 {date.slots.map((slot, index) => (
-                  <li key={index}>
-                    {dayjs(slot.startTime).format('h:mm A')} -{' '}
+                  <div key={index}>
+                  <Badge className='rounded-sm bg-green-100 ' variant='secondary'>
+                    {dayjs(slot.startTime).format('h:mm A')} -{''}
                     {dayjs(slot.endTime).format('h:mm A')}
-                  </li>
+                  </Badge>
+                  </div>
+                  
                 ))}
-              </ul>
+              </div>
             </div>
           ))}
+          </div>
         </div>
       ))}
     </div>
