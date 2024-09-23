@@ -23,7 +23,7 @@ export function DateCard({
     <Button
       variant={isActive ? 'default' : 'outline'}
       className={cn(
-        'relative flex h-24 min-w-24 flex-col items-center justify-center rounded-lg p-2',
+        'relative flex h-20 w-20 flex-col gap-1 items-center justify-center rounded-lg p-2',
         isDisable && 'cursor-not-allowed opacity-60',
         isActive && 'bg-blue-500 text-white hover:bg-blue-600',
       )}
@@ -31,8 +31,8 @@ export function DateCard({
       disabled={isDisable}
     >
       <span className='text-sm'>{textMonth}</span>
-      <span className='text-3xl font-semibold leading-none'>{textDate}</span>
-      <span className='text-xs'>{textDay}</span>
+      <span className='text-xl font-medium leading-none'>{textDate}</span>
+      <span className='text-xs font-normal'>{textDay}</span>
       {isActive && (
         <div className='absolute -right-1 -top-1 rounded-full bg-green-500 p-1 opacity-0'>
           <Check className='h-3 w-3 text-white' />
