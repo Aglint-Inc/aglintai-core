@@ -28,19 +28,8 @@ export const createRequestProgressLogger = ({
     >
   ) => {
     let progress_id = uuidv4();
-    if (payload.is_progress_step === false) {
-      const [progress] = supabaseWrap(
-        await supabaseAdmin
-          .from('request_progress')
-          .select()
-          .eq('event_type', event_type)
-          .eq('is_progress_step', false)
-          .eq('request_id', request_id),
-        false
-      );
-      if (progress) {
-        progress_id = progress.id;
-      }
+    if (payload?.id) {
+      progress_id = payload.id;
     }
     const [rec] = await supabaseWrap(
       await supabaseAdmin

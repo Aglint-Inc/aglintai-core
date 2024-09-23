@@ -97,8 +97,7 @@ export const useJobSync = () => {
 
 export const useInvalidateJobQueries = () => {
   const queryClient = useQueryClient();
-  const applicationsInvalidate =
-    api.useUtils().jobs.job.applications.invalidate;
+  const utils = api.useUtils();
   const predicateFn = useCallback(
     (id): QueryFilters['predicate'] =>
       (query) =>
@@ -109,7 +108,7 @@ export const useInvalidateJobQueries = () => {
   );
   const revalidateJobQueries = async (id: Job['id']) =>
     await Promise.allSettled([
-      queryClient.refetchQueries({
+      queryClient.invalidateQueries({
         type: 'active',
         predicate: predicateFn(id),
       }),
@@ -117,7 +116,7 @@ export const useInvalidateJobQueries = () => {
         type: 'inactive',
         predicate: predicateFn(id),
       }),
-      applicationsInvalidate(),
+      utils.jobs.job.applications.read.invalidate({ job_id: id }),
     ]);
 
   return { revalidateJobQueries };

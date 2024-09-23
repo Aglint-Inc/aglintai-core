@@ -64,7 +64,6 @@ const CandidateAvailReceive = () => {
     lastEvent =
       request_progress.data[request_progress.data.length - 1].event_type;
   }
-
   return (
     <div className='gap-1'>
       <ShowCode.When isTrue={availRecivedProgEvents.length === 0}>
@@ -111,7 +110,7 @@ const RequestEvents = ({
     };
   }, [currProgress]);
 
-  let isManual = false;
+  let isManual = true;
   if (
     reqTriggerActionsMap['onReceivingAvailReq'] &&
     reqTriggerActionsMap['onReceivingAvailReq'].length > 0

@@ -314,26 +314,24 @@ const geAllIntsFromModules = async (session_ids: string[]) => {
         sesn_data.map((s) => s.module_id),
       ),
   );
-  const sesn_ints: SessionInterviewerType[] = module_ints
-    .filter((i) => i.training_status === 'qualified')
-    .map((m) => {
-      return {
-        email: m.recruiter_user.email,
-        first_name: m.recruiter_user.first_name,
-        last_name: m.recruiter_user.last_name,
-        profile_image: m.recruiter_user.profile_image,
-        user_id: m.recruiter_user.user_id,
-        session_id: sesn_data.find((s) => s.module_id === m.module_id).id,
-        interviewer_type: 'qualified',
-        training_type: 'qualified',
-        position: m.recruiter_user.position,
-        int_tz: m.recruiter_user.scheduling_settings.timeZone.tzCode,
-        scheduling_settings: m.recruiter_user.scheduling_settings,
-        interview_module_relation_id: m.id,
-        pause_json: m.pause_json,
-        schedule_auth: m.recruiter_user.schedule_auth,
-      };
-    });
+  const sesn_ints: SessionInterviewerType[] = module_ints.map((m) => {
+    return {
+      email: m.recruiter_user.email,
+      first_name: m.recruiter_user.first_name,
+      last_name: m.recruiter_user.last_name,
+      profile_image: m.recruiter_user.profile_image,
+      user_id: m.recruiter_user.user_id,
+      session_id: sesn_data.find((s) => s.module_id === m.module_id).id,
+      interviewer_type: 'qualified',
+      training_type: 'qualified',
+      position: m.recruiter_user.position,
+      int_tz: m.recruiter_user.scheduling_settings.timeZone.tzCode,
+      scheduling_settings: m.recruiter_user.scheduling_settings,
+      interview_module_relation_id: m.id,
+      pause_json: m.pause_json,
+      schedule_auth: m.recruiter_user.schedule_auth,
+    };
+  });
 
   return sesn_ints;
 };

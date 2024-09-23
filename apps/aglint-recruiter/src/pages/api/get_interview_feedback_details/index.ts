@@ -6,7 +6,7 @@ import { type API_get_interview_feedback_details } from './types';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
+  process.env.SUPABASE_SERVICE_ROLE_KEY,
 );
 
 export default async function handler(
