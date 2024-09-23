@@ -5,7 +5,7 @@ import { type API_reset_password } from './type';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_KEY,
+  process.env.SUPABASE_SERVICE_ROLE_KEY,
 );
 
 const redirectTo = `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`;
