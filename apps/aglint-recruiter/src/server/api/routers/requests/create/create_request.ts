@@ -56,7 +56,7 @@ const mutation = async ({
       ...input,
       request: {
         ...input.request,
-        assigner_id: ctx.user.id,
+        assigner_id: ctx.user_id,
         status: 'to_do',
         title: `Schedule ${sessions} for ${name}`,
       },

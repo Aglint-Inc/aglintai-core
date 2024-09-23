@@ -31,7 +31,7 @@ import { authorize } from '../utils';
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  return { ...opts };
+  return opts;
 };
 
 /**
@@ -173,6 +173,8 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
     throw new TRPCError({ code: 'FORBIDDEN', message: UNAUTHENTICATED });
   }
 
+  const user_id = user.id;
+
   const { data } = await db
     .from('recruiter_relation')
     .select(
@@ -204,7 +206,7 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
   return await next({
     ctx: {
       ...ctx,
-      user,
+      user_id,
       recruiter_id,
     },
   });

@@ -64,7 +64,7 @@ const moveToInterview = async ({
       application_id,
       title: `Schedule ${sessions} for ${name}`,
       status: 'to_do',
-      assigner_id: ctx.user.id,
+      assigner_id: ctx.user_id,
       ...input.request,
     }));
   return await db
