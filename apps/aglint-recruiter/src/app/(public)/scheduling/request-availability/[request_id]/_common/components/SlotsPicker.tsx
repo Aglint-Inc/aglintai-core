@@ -188,7 +188,7 @@ function TimeSlotsWrapper() {
   } = useRequestAvailabilityContext();
   return (
     <div className='flex max-w-2xl flex-col items-start space-x-2'>
-      <div className='scrollbar-hide flex h-[360px] max-w-[900px] space-x-4 overflow-x-auto p-4 py-2'>
+      <div className='scrollbar-hide flex h-[360px] max-w-[600px] space-x-4 overflow-x-auto p-4 py-2'>
         {selectedDateSlots
           .find((ele) => ele.round === day)
           ?.dates.sort((a, b) =>
@@ -235,7 +235,7 @@ function DaysWrapInWeek({ isSingleDay }: { isSingleDay: boolean }) {
                 ? week.map((dateSlot, i) => {
                     return (
                       <DateCard
-                        // isDisable={day > 1}
+                        isDisable={dateSlot.slots.length === 0}
                         isActive={selectedDateSlots
                           .find((ele) => ele.round === day || 1)
                           ?.dates.map((ele) => ele.curr_day)
@@ -331,7 +331,7 @@ function DaysWrapInWeek({ isSingleDay }: { isSingleDay: boolean }) {
 
                     return (
                       <DateCard
-                        isDisable={enable}
+                        isDisable={enable || dateSlot.slots.length === 0}
                         isActive={selectedDateSlots
                           .find((ele) => ele.round === day)
                           ?.dates.map((ele) => ele.curr_day)
