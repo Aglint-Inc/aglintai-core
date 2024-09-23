@@ -17,6 +17,7 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
+      "@/definitions/*": ["./src/definitions/*"],
       "@/api/*": ["./src/app/api/*"],
       "@/authenticated/*": ["./src/app/(authenticated)/_common/*"],
       "@/company/*": ["./src/app/(authenticated)/company/_common/*"],

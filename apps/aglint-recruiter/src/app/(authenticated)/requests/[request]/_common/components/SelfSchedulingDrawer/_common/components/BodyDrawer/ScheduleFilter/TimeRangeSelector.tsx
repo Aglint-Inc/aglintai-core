@@ -21,7 +21,7 @@ export function TimeRangeSelector({
   slotButton,
 }: TimeRangeSelectorProps) {
   return (
-    <Component className='flex flex-col gap-4'>
+    <Component className='flex flex-col gap-2'>
       {isMultiDay && (
         <div>
           <UITypography variant='p' type='small'>
@@ -30,8 +30,8 @@ export function TimeRangeSelector({
         </div>
       )}
       <div className='mb-1'>{slotSelectedTime}</div>
-      <div className='flex gap-4'>
-        <div className='grid w-full grid-cols-2 gap-4'>{slotTimeinputs}</div>
+      <div className='flex gap-2'>
+        <div className='grid w-full grid-cols-2 gap-2'>{slotTimeinputs}</div>
         <div>{slotButton}</div>
       </div>
     </Component>
