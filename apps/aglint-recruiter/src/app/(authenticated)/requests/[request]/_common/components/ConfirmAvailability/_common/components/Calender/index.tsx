@@ -6,12 +6,12 @@ import { getStringColor } from 'src/app/_common/utils/getColorForText';
 import CalendarResourceView from '@/components/Common/CalendarResourceView';
 import { type EventCalendar } from '@/components/Common/CalendarResourceView/types';
 
-import { transformAvailability } from '../SelfSchedulingDrawer/_common/utils/utils';
-import { useAvailabilityContext } from './RequestAvailabilityContext';
+import { transformAvailability } from '../../../../SelfSchedulingDrawer/_common/utils/utils';
 import {
   setCalendarDate,
   useConfirmAvailabilitySchedulingFlowStore,
-} from './store';
+} from '../../contexts/AvailabilitySchedulingStore';
+import { useAvailabilityContext } from '../../contexts/RequestAvailabilityContext';
 
 function Calendar() {
   const { candidateAvailabilityId, calendarDate } =

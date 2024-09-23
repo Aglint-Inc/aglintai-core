@@ -19,14 +19,14 @@ import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 import toast from '@/utils/toast';
 
 import DayCardWrapper from '../SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
-import Calendar from './Calendar';
-import { useAvailabilityContext } from './RequestAvailabilityContext';
-import SelectAvailableOption from './SelectAvailableOption';
+import Calendar from './_common/components/Calender';
+import SelectAvailableOption from './_common/components/SelectAvailableOption';
 import {
   setApplicationIdForConfirmAvailability,
   setCandidateAvailabilityId,
   useConfirmAvailabilitySchedulingFlowStore,
-} from './store';
+} from './_common/contexts/AvailabilitySchedulingStore';
+import { useAvailabilityContext } from './_common/contexts/RequestAvailabilityContext';
 
 function ConfirmAvailability() {
   const params = useParams();

@@ -20,7 +20,7 @@ import {
   setApplicationIdForConfirmAvailability,
   setCandidateAvailabilityId,
   useConfirmAvailabilitySchedulingFlowStore,
-} from '../ConfirmAvailability/store';
+} from '../ConfirmAvailability/_common/contexts/AvailabilitySchedulingStore';
 import { useSelfSchedulingDrawer } from '../SelfSchedulingDrawer/_common/hooks/hooks';
 import {
   initialFilters,
