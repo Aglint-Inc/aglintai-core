@@ -1,3 +1,4 @@
+import { dayjsLocal } from '@aglint/shared-utils';
 import {
   Accordion,
   AccordionContent,
@@ -23,7 +24,6 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { RequestProvider } from '@/context/RequestContext';
 import type { Request } from '@/queries/requests/types';
-import dayjs from '@/utils/dayjs';
 
 function CompletedRequests() {
   const { completedFilters } = useCompletedRequestsStore();
@@ -144,7 +144,8 @@ function CompletedRequests() {
                     >
                       <AccordionItem value={date}>
                         <AccordionTrigger className='text-md py-4 font-semibold'>
-                          {dayjs(date).fromNow()} ({requests.length} requests)
+                          {dayjsLocal(date).fromNow()} ({requests.length}{' '}
+                          requests)
                         </AccordionTrigger>
                         <AccordionContent>
                           <div className='flex flex-col overflow-hidden rounded-lg border'>

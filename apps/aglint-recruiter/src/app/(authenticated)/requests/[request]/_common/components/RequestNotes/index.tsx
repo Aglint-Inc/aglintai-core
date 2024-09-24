@@ -1,3 +1,4 @@
+import { dayjsLocal } from '@aglint/shared-utils';
 import { Card } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import { Textarea } from '@components/ui/textarea';
@@ -9,7 +10,6 @@ import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
-import dayjs from '@/utils/dayjs';
 
 function RequestNotes() {
   const params = useParams();
@@ -39,7 +39,7 @@ function RequestNotes() {
         id: request_id as string,
         note: noteValue,
         request_id: requestId,
-        updated_at: dayjs().toISOString(),
+        updated_at: dayjsLocal().toISOString(),
       });
       setSaving(false);
       refetch();
@@ -113,7 +113,9 @@ function RequestNotes() {
             {!requestNotes?.[0]?.note
               ? 'Notes will remain here until you clear it.'
               : 'Last edited on ' +
-                dayjs(requestNotes?.[0]?.updated_at).format('hh:mm A, MMM DD')}
+                dayjsLocal(requestNotes?.[0]?.updated_at).format(
+                  'hh:mm A, MMM DD',
+                )}
           </p>
           {saving && <p className='text-xs text-neutral-500'>Saving...</p>}
         </div>
