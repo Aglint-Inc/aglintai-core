@@ -1,5 +1,6 @@
 'use client';
 
+import { dayjsLocal } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
 import {
@@ -25,7 +26,6 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
-import dayjs from '@/utils/dayjs';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
@@ -263,7 +263,7 @@ export default function ReorderableInterviewPlan({
         .from('interview_progress')
         .update({
           is_completed: status,
-          update_at: dayjs().toISOString(),
+          update_at: dayjsLocal().toISOString(),
         })
         .eq('id', id);
 

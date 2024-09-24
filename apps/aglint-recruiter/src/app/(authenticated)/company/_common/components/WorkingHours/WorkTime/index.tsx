@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { dayjsLocal } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
 import {
   Card,
@@ -32,8 +33,6 @@ import {
   useRef,
   useState,
 } from 'react';
-
-import dayjs from '@/utils/dayjs';
 
 import DayWithTime from './DayWithTime';
 
@@ -96,7 +95,7 @@ const WorkTime: FC<WorkTimeProps> = ({
             <div className='flex flex-col gap-4'>
               <Label>Edit Working Hours</Label>
               {workingHours.map((day, i) => {
-                const startTime = dayjs()
+                const startTime = dayjsLocal()
                   .set(
                     'hour',
                     parseInt(day.timeRange.startTime?.split(':')[0] || '0'),
@@ -107,7 +106,7 @@ const WorkTime: FC<WorkTimeProps> = ({
                   )
                   .toISOString();
 
-                const endTime = dayjs()
+                const endTime = dayjsLocal()
                   .set(
                     'hour',
                     parseInt(day.timeRange.endTime?.split(':')[0] || '0'),
@@ -129,7 +128,7 @@ const WorkTime: FC<WorkTimeProps> = ({
                       setWorkingHours((pre) => {
                         const data = [...pre];
                         data[i].timeRange.startTime =
-                          dayjs(value).format('HH:mm');
+                          dayjsLocal(value).format('HH:mm');
                         return data;
                       });
                     }}
@@ -137,7 +136,7 @@ const WorkTime: FC<WorkTimeProps> = ({
                       setWorkingHours((pre) => {
                         const data = [...pre];
                         data[i].timeRange.endTime =
-                          dayjs(value).format('HH:mm');
+                          dayjsLocal(value).format('HH:mm');
                         return data;
                       });
                     }}
@@ -177,7 +176,7 @@ const WorkTime: FC<WorkTimeProps> = ({
                         {capitalize(day.day)}
                       </TableCell>
                       <TableCell>
-                        {dayjs()
+                        {dayjsLocal()
                           .set(
                             'hour',
                             parseInt(day?.timeRange.startTime?.split(':')[0]),
@@ -188,7 +187,7 @@ const WorkTime: FC<WorkTimeProps> = ({
                           )
                           .format('hh:mm A')}
                         {' - '}
-                        {dayjs()
+                        {dayjsLocal()
                           .set(
                             'hour',
                             parseInt(day?.timeRange.endTime?.split(':')[0]),

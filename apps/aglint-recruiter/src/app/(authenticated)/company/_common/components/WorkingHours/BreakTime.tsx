@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { dayjsLocal } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
 import {
   Card,
@@ -25,7 +26,6 @@ import {
 } from 'react';
 
 import TimePicker from '@/components/Common/TimePicker';
-import dayjs from '@/utils/dayjs';
 
 interface BreakTime {
   start_time: string;
@@ -81,12 +81,12 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
             <div className='flex items-center space-x-2'>
               <Coffee className='h-4 w-4 text-muted-foreground' />
               <p>
-                {dayjs()
+                {dayjsLocal()
                   .set('hour', parseInt(breaktime?.start_time?.split(':')[0]))
                   .set('minute', parseInt(breaktime?.start_time?.split(':')[1]))
                   .format('hh:mm A')}
                 {' - '}
-                {dayjs()
+                {dayjsLocal()
                   .set('hour', parseInt(breaktime?.end_time?.split(':')[0]))
                   .set('minute', parseInt(breaktime?.end_time?.split(':')[1]))
                   .format('hh:mm A')}
@@ -127,12 +127,12 @@ const EditBreakTime = ({
           onChange={(value) => {
             setLocalBreakTime((pre) => ({
               ...pre,
-              start_time: dayjs(value).format('HH:mm'),
+              start_time: dayjsLocal(value).format('HH:mm'),
             }));
           }}
           value={
             new Date(
-              dayjs()
+              dayjsLocal()
                 .set(
                   'hour',
                   parseInt(localBreakTime?.start_time?.split(':')[0] || '0'),
@@ -152,12 +152,12 @@ const EditBreakTime = ({
           onChange={(value) => {
             setLocalBreakTime((pre) => ({
               ...pre,
-              end_time: dayjs(value).format('HH:mm'),
+              end_time: dayjsLocal(value).format('HH:mm'),
             }));
           }}
           value={
             new Date(
-              dayjs()
+              dayjsLocal()
                 .set(
                   'hour',
                   parseInt(localBreakTime?.end_time?.split(':')[0] || '0'),
@@ -189,10 +189,10 @@ const EditBreakTime = ({
 
 function isStartTimeLessThanEndTime(breakTime: BreakTime) {
   const { start_time, end_time } = breakTime;
-  const start = dayjs()
+  const start = dayjsLocal()
     .set('hour', parseInt(start_time.split(':')[0]))
     .set('minute', parseInt(start_time.split(':')[1]));
-  const end = dayjs()
+  const end = dayjsLocal()
     .set('hour', parseInt(end_time.split(':')[0]))
     .set('minute', parseInt(end_time.split(':')[1]));
 

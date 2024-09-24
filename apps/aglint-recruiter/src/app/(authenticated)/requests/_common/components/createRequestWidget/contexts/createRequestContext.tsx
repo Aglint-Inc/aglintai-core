@@ -1,8 +1,7 @@
 import type { DatabaseTable } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 import { createContext, memo, type PropsWithChildren, useState } from 'react';
 import { createStore } from 'zustand';
-
-import dayjs from '@/utils/dayjs';
 
 import { STEPS } from '../constants';
 import type { Menus } from '../types';
@@ -113,8 +112,8 @@ const initial = Object.freeze<States>({
     },
   },
   dates: {
-    start_date: dayjs().toISOString(),
-    end_date: dayjs().add(7, 'day').toISOString(),
+    start_date: dayjsLocal().toISOString(),
+    end_date: dayjsLocal().add(7, 'day').toISOString(),
   },
   note: '',
   priority: 'standard',
