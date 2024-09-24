@@ -34,7 +34,7 @@ const Content = () => {
 
   if (!data?.badges) return null;
 
-  const badges = getAllBadges(data.badges);
+  const badges = getAllBadges(data.badges as CustomApplicationBadges);
 
   return badges.length > 0 ? (
     badges.map((badge, index) => (
