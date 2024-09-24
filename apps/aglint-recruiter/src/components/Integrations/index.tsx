@@ -2,7 +2,7 @@
 import { Send } from 'lucide-react';
 import { useState } from 'react';
 
-import { useAllIntegrations } from '@/queries/intergrations';
+import { useAllIntegrations } from '@/authenticated/hooks';
 
 import { UIButton } from '../Common/UIButton';
 import ATSTools from './ATSTools';
@@ -11,7 +11,7 @@ import RequestNew from './RequestNewPopUp';
 import Scheduling from './SchedulingTools';
 
 function Integrations() {
-  const { data: allIntegrations, refetch } = useAllIntegrations();
+  const { data, invalidate } = useAllIntegrations();
   const [isRequestNewOpen, setIsRequestNewOpen] = useState(false);
 
   return (
@@ -48,7 +48,7 @@ function Integrations() {
               your preferred ATS.
             </p>
             <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
-              <ATSTools integrations={allIntegrations} refetch={refetch} />
+              <ATSTools data={data} invalidate={invalidate} />
             </div>
           </section>
 
@@ -59,7 +59,7 @@ function Integrations() {
               interview scheduling.
             </p>
             <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
-              <Scheduling allIntegrations={allIntegrations} />
+              <Scheduling allIntegrations={data} />
             </div>
           </section>
 

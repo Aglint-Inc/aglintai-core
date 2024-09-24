@@ -2,7 +2,7 @@ import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { AlertCircle, Calendar, CheckCircle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { ConfirmedInvitePage } from 'src/app/(public)/scheduling/invite/[id]/_common/components/CandidateConfirm';
 
@@ -37,7 +37,7 @@ function CandidateAvailability() {
     const {
       data: { meetings },
     } = await axios.post(
-      '/api/scheduling/request_availability/candidateAvailability/getMeetings',
+      '/api/scheduling/request_avai lability/candidateAvailability/getMeetings',
       {
         session_ids,
       },
@@ -109,7 +109,11 @@ function CandidateAvailability() {
     );
   }
   if (loading) {
-    return <Loader />;
+    return (
+      <div className='flex h-[100vh] w-full items-center justify-center'>
+        <Loader />
+      </div>
+    );
   }
 
   if (!candidateRequestAvailability) {
@@ -128,8 +132,11 @@ function CandidateAvailability() {
 
   return (
     <>
-      <div className='w-ful h-[calc(100vh-50px)] py-10'>
-        <div className='mx-auto flex max-w-3xl flex-col items-center gap-4 rounded-lg border border-neutral-200 bg-white p-4'>
+      <div
+        className='w-full bg-gray-50 px-10 py-10'
+        style={{ minHeight: 'calc(100vh - 50px)' }}
+      >
+        <div className='mx-auto flex w-full max-w-4xl flex-col items-center gap-4 rounded-lg border border-neutral-200 bg-white p-6'>
           <Header
             candidateRequestAvailability={candidateRequestAvailability}
             isSubmitted={isSubmitted}
@@ -141,7 +148,7 @@ function CandidateAvailability() {
           {!isSubmitted && multiDaySessions.length > 1 && <MultiDaySessions />}
         </div>
       </div>
-      <div className='h-[50px]'>
+      <div className='h-[50px] bg-gray-50'>
         <Footer brand={true} />
       </div>
     </>
@@ -152,7 +159,7 @@ export default CandidateAvailability;
 
 function Header({ candidateRequestAvailability, isSubmitted }) {
   return (
-    <div className='w-lg flex flex-col items-center'>
+    <div className='w-lg flex w-full flex-col items-center'>
       <div className='mb-4 flex items-center justify-center'>
         {candidateRequestAvailability?.recruiter.logo ? (
           <Avatar className='h-[100px] w-[100px]'>
@@ -165,27 +172,32 @@ function Header({ candidateRequestAvailability, isSubmitted }) {
         ) : null}
       </div>
       <div
-        className={`mb-2 flex items-center gap-2 ${isSubmitted ? 'text-green-500' : 'text-neutral-500'}'} `}
+        className={`mb-8 flex items-center gap-2 ${isSubmitted ? 'text-green-500' : 'text-neutral-500'}'} `}
       >
         {isSubmitted ? (
-          <>
-            <CheckCircle className='h-6 w-6 text-green-600' />
-            <p className='text-lg font-semibold'>
-              Availability Submitted successfully
-            </p>
-          </>
+          <></>
         ) : (
           <>
-            <Calendar className='h-6 w-6 text-neutral-800' />
-            <p className='text-lg font-semibold'>Your Availability Requested</p>
+            <p className='text-2xl font-semibold'>
+              Your Availability Requested
+            </p>
           </>
         )}
       </div>
-      <p className='text-center text-neutral-600'>
-        {isSubmitted
-          ? 'Please wait as we finalize the schedule. One of the selected time slots from each day will be chosen, and you will receive a confirmation email shortly.'
-          : 'Please confirm your availability for the upcoming interview by selecting a suitable time slot from the options provided.'}
-      </p>
+      {isSubmitted && (
+        <div className='w-full'>
+          <div className='flex w-full flex-col gap-2 rounded-md bg-green-100 p-4'>
+            <div className='text-lg font-medium text-green-700'>
+              Availability Submitted successfully
+            </div>
+            <div className='text-md font-normal text-gray-600'>
+              Thank you for submitting your availability.We will review the
+              selected time slots and confirm the schedule soon. You will
+              recieve a confirmation shortly.
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

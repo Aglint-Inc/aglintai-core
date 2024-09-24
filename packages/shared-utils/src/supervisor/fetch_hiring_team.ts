@@ -1,4 +1,4 @@
-import { SupabaseType } from "@aglint/shared-types";
+import { SupabaseType } from '@aglint/shared-types';
 
 export const fetchJobHiringTeam = async ({
   supabase,
@@ -13,17 +13,17 @@ export const fetchJobHiringTeam = async ({
 }) => {
   const userQuery = `user_id,first_name,last_name,profile_image,position`;
   const query = supabase
-    .from("public_jobs")
+    .from('public_jobs')
     .select(
       `id,job_title,hir_man:recruiter_user!public_jobs_hiring_manager_fkey(${userQuery}),rec:recruiter_user!public_jobs_recruiter_fkey(${userQuery}),recruiting_coordinator:recruiter_user!public_jobs_recruiting_coordinator_fkey(${userQuery}),sourcer:recruiter_user!public_jobs_sourcer_fkey(${userQuery})`
     )
-    .eq("recruiter_id", recruiter_id);
+    .eq('recruiter_id', recruiter_id);
 
   if (job_id) {
-    query.eq("id", job_id);
+    query.eq('id', job_id);
   } else if (job_title) {
-    query.ilike("job_title", `%${job_title}%`);
+    query.ilike('job_title', `%${job_title}%`);
   }
 
-  return (await query.throwOnError()).data[0];
+  return await query.throwOnError().single();
 };

@@ -1,3 +1,4 @@
+import { dayjsLocal } from '@aglint/shared-utils';
 import isBetween from 'dayjs/plugin/isBetween';
 import { z } from 'zod';
 
@@ -8,9 +9,8 @@ import {
   publicProcedure,
 } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
-import dayjs from '@/utils/dayjs';
 
-dayjs.extend(isBetween);
+dayjsLocal.extend(isBetween);
 
 export const interviewPoolModuleSchema = z.object({
   recruiter_id: z.string().uuid(),

@@ -101,8 +101,8 @@ const fetchSessionDetails = async (
                 return {
                   interview_session_cancel: interview_session_cancel,
                   recruiter_user: cancel.interview_session_relation
-                    ? cancel.interview_session_relation
-                        .interview_module_relation.recruiter_user
+                    ? cancel?.interview_session_relation
+                        ?.interview_module_relation?.recruiter_user
                     : cancel.admin,
                 };
               }),
@@ -111,7 +111,7 @@ const fetchSessionDetails = async (
               interview_session_relation: sesitem,
               interview_module_relation: sesitem.interview_module_relation,
               user_details: sesitem.interview_module_relation_id
-                ? sesitem.interview_module_relation.recruiter_user
+                ? sesitem?.interview_module_relation?.recruiter_user
                 : sesitem.debrief_user,
             })),
           };

@@ -1,4 +1,4 @@
-import { getFullName } from '@aglint/shared-utils';
+import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Building, CircleDot, Locate, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -6,7 +6,6 @@ import { useTeamMembers } from '@/company/hooks/useTeamMembers';
 import FilterHeader from '@/components/Common/FilterHeader';
 import { type FiltersTypes } from '@/components/Common/FilterHeader/filters';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import dayjs from '@/utils/dayjs';
 
 import AddMember from './AddMemberDialog';
 import { TeamManagementUI } from './ui/TeamManagementUI';
@@ -18,7 +17,7 @@ const TeamManagement = () => {
   const { data: members, isPending, remote_sync } = useTeamMembers();
 
   const timeStamp = remote_sync?.lastSync;
-  const last_sync = timeStamp ? dayjs(timeStamp).fromNow() : 'Never';
+  const last_sync = timeStamp ? dayjsLocal(timeStamp).fromNow() : 'Never';
 
   // filter members
   const [searchText, setSearchText] = useState('');

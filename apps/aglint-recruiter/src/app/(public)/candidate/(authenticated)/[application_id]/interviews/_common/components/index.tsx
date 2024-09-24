@@ -1,12 +1,11 @@
 'use client';
-import { getFullName } from '@aglint/shared-utils';
+import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
 import { Calendar, Linkedin } from 'lucide-react';
 
 import EmptyState from '@/candidate/authenticated/components/EmptyState';
-import dayjs from '@/utils/dayjs';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { useCandidatePortalInterviews } from '../hooks';
@@ -68,19 +67,19 @@ function InterviewCard({
           <div className='flex items-center'>
             <div className='mr-3 flex h-16 w-16 flex-col justify-center rounded-md bg-primary/10 p-2 text-center text-primary'>
               <span className='text-xs'>
-                {dayjs(interview.start_time).format('dddd')}
+                {dayjsLocal(interview.start_time).format('dddd')}
               </span>
               <span className='text-lg font-semibold'>
-                {dayjs(interview.start_time).format('DD')}
+                {dayjsLocal(interview.start_time).format('DD')}
               </span>
               <span className='text-xs'>
-                {dayjs(interview.start_time).format('MMM')}
+                {dayjsLocal(interview.start_time).format('MMM')}
               </span>
             </div>
             <div>
               <p className='text-sm font-semibold'>
-                {dayjs(interview.start_time).format('hh:mm A  - ')}
-                {dayjs(interview.end_time).format('hh:mm A ')}
+                {dayjsLocal(interview.start_time).format('hh:mm A  - ')}
+                {dayjsLocal(interview.end_time).format('hh:mm A ')}
               </p>
               <p className='text-xs text-gray-500'>
                 {capitalizeAll(interview.schedule_type)}

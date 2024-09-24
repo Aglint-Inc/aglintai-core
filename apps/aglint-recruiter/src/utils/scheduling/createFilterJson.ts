@@ -1,6 +1,5 @@
 import type { SupabaseType } from '@aglint/shared-types';
-
-import dayjs from '../dayjs';
+import { dayjsLocal } from '@aglint/shared-utils';
 
 export const createFilterJson = async ({
   sessions_ids,
@@ -24,8 +23,8 @@ export const createFilterJson = async ({
     .from('interview_filter_json')
     .insert({
       filter_json: {
-        start_date: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
-        end_date: dayjs(dateRange.end_date).format('DD/MM/YYYY'),
+        start_date: dayjsLocal(dateRange.start_date).format('DD/MM/YYYY'),
+        end_date: dayjsLocal(dateRange.end_date).format('DD/MM/YYYY'),
         organizer_name: organizer_name,
       },
       session_ids: sessions_ids,

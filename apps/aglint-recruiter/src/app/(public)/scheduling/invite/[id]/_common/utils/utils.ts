@@ -2,9 +2,9 @@ import {
   type APICreateCandidateRequest,
   type DatabaseTable,
 } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 import axios from 'axios';
 
-import dayjs from '@/utils/dayjs';
 import timeZones, { type TimezoneObj } from '@/utils/timeZone';
 
 export const getDurationText = (duration: number) => {
@@ -19,11 +19,11 @@ export const getDurationText = (duration: number) => {
 };
 
 export const dayJS = (timestamp: string, tz: TimezoneObj['tzCode']) => {
-  return dayjs(timestamp).tz(tz);
+  return dayjsLocal(timestamp).tz(tz);
 };
 
 const getLocalIANATimezone = () => {
-  const tz = dayjs.tz.guess();
+  const tz = dayjsLocal.tz.guess();
   return timeZones.find(({ tzCode }) => tzCode === tz).tzCode;
 };
 

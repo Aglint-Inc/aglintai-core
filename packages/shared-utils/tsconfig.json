@@ -1,12 +1,12 @@
 {
   "extends": "@aglint/typescript-config/base.json",
   "compilerOptions": {
+    "strict": true,
     "lib": ["ES2020"],
     "target": "ESNext",
     "module": "ESNext",
     "outDir": "./dist",
     "types": ["node"],
-    "strictNullChecks": false,
     "noImplicitAny": false
   },
   "include": ["."],

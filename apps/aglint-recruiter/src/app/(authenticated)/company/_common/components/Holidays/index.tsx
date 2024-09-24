@@ -1,9 +1,9 @@
 import type { holidayType, schedulingSettingType } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 import cloneDeep from 'lodash/cloneDeep';
 import { useEffect, useRef, useState } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import dayjs from '@/utils/dayjs';
 
 import { useCompanyDetailComp } from '../../hooks/hook';
 import { AddHolidayDialog } from './AddHolidayDialog';
@@ -31,7 +31,7 @@ function Holidays() {
     useState<specificLocationType>('all_locations');
 
   function getDate(e: any) {
-    setSelectedDate(dayjs(e).format('DD MMM YYYY'));
+    setSelectedDate(dayjsLocal(e).format('DD MMM YYYY'));
     // dateRef.current.value = String(new Date(e.$d));
   }
 

@@ -101,8 +101,8 @@ function TimeSlotsColumn({
 
   return (
     <>
-      <div className='relative w-[237px] flex-1 rounded-lg border border-gray-200'>
-        <div className='flex h-10 items-center justify-center rounded-t-lg bg-gray-50 px-2.5'>
+      <div className='relative w-full flex-1 rounded-lg border-none bg-blue-100'>
+        <div className='flex h-12 items-center justify-start rounded-t-lg px-4'>
           <div>{dayjs(slotTime.curr_day).format('dddd DD, MMMM')}</div>
         </div>
         {day === 1 && (
@@ -113,7 +113,7 @@ function TimeSlotsColumn({
             <X className='h-5 w-5 text-neutral-600' />
           </span>
         )}
-        <div className='flex h-[300px] flex-col gap-2 overflow-auto p-2.5'>
+        <div className='flex w-full flex-row flex-wrap gap-2 p-3 pt-0'>
           {slotTime.slots.map((slot, ind) => {
             const isSelected =
               (!isSubmitted &&
