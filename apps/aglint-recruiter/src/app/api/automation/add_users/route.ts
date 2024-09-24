@@ -138,7 +138,7 @@ export async function POST(req) {
     });
 
     return NextResponse.json(
-      { message: 'success', data: 'addedUserEmails' },
+      { message: 'success', data: addedUserEmails },
       { status: 200 },
     );
   } catch (e) {

@@ -7,6 +7,7 @@ import { Extension } from "./Extension";
 const appContainer = document.getElementById("aglilntai-test-suite-app");
 
 if (appContainer) {
+  appContainer.style.zIndex = "1000";
   const root = ReactDOM.createRoot(appContainer);
   root.render(
     <AppProvider>
