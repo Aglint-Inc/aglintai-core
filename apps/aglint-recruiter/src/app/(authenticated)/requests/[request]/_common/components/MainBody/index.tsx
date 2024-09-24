@@ -48,7 +48,6 @@ import CollapseContent from '@/jobs/job/application/components/InterviewStage/In
 import { useEditSession } from '@/jobs/job/application/components/InterviewTab/hooks/useEditSession';
 import { type ApiInterviewSessionRequest } from '@/pages/api/scheduling/application/fetchInterviewSessionByRequest';
 import { type Request } from '@/queries/requests/types';
-import dayjs from '@/utils/dayjs';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import ROUTES from '@/utils/routing/routes';
 import { breakDurations } from '@/utils/scheduling/const';
@@ -335,10 +334,10 @@ export default function ViewRequestDetails() {
                                       payload: {
                                         requestId: selectedRequest.id,
                                         requestPayload: {
-                                          schedule_start_date: dayjs(
+                                          schedule_start_date: dayjsLocal(
                                             dates.from,
                                           ).toISOString(),
-                                          schedule_end_date: dayjs(
+                                          schedule_end_date: dayjsLocal(
                                             dates.to,
                                           ).toISOString(),
                                         },
@@ -354,13 +353,13 @@ export default function ViewRequestDetails() {
                             </div>
                           </div>
                           <span className='text-sm'>
-                            {dayjs(selectedRequest?.schedule_start_date).format(
-                              'DD MMM, YYYY',
-                            ) +
+                            {dayjsLocal(
+                              selectedRequest?.schedule_start_date,
+                            ).format('DD MMM, YYYY') +
                               ' - ' +
-                              dayjs(selectedRequest?.schedule_end_date).format(
-                                'DD MMM, YYYY',
-                              )}
+                              dayjsLocal(
+                                selectedRequest?.schedule_end_date,
+                              ).format('DD MMM, YYYY')}
                           </span>
                         </div>
                         <div className='group relative space-y-2'>

@@ -10,11 +10,11 @@ import axios from 'axios';
 import { CloudUpload, Loader2, Trash } from 'lucide-react';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
+import { errorMessages } from 'src/app/_common/utils/errorMessages';
 import { v4 as uuidv4 } from 'uuid';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type PublicJobAPI } from '@/pages/api/jobpost/read';
-import { errorMessages } from '@/utils/errorMessages';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 

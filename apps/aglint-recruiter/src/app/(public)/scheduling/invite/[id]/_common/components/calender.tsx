@@ -1,9 +1,9 @@
+import { dayjsLocal } from '@aglint/shared-utils';
 import { Calendar } from 'lucide-react';
 
 import { UITimeRangeCard } from '@/components/Common/UITimeRangeCard';
 import { type useCandidateInvite } from '@/context/CandidateInviteContext';
 import { type useInviteSlots } from '@/queries/candidate-invite';
-import dayjs from '@/utils/dayjs';
 
 import { dayJS } from '../utils/utils';
 
@@ -94,7 +94,7 @@ const Column = (props: ColumnType) => {
   return (
     <div className='relative min-w-[237px] max-w-[237px] flex-1 rounded-lg border border-gray-200'>
       <div className='flex h-10 items-center justify-center rounded-t-lg bg-gray-50 px-2.5'>
-        <div>{dayjs(date).format('dddd DD, MMMM')}</div>
+        <div>{dayjsLocal(date).format('dddd DD, MMMM')}</div>
       </div>
 
       <div className='flex h-[390px] flex-col gap-2 overflow-auto p-2.5'>

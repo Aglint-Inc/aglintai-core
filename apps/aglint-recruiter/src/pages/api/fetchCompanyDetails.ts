@@ -1,27 +1,7 @@
-// import axios from 'axios';
-
-// export default async function handler(req, res) {
-//   let company_domain = req.body.domain_name;
-//   if (company_domain) {
-//     try {
-//       const { data } = await axios.get(
-//         `https://api.thecompaniesapi.com/v1/companies/${company_domain}?token=${process.env.THE_COMPANIES_API}`,
-//       );
-//       res.status(200).send(data);
-//     } catch (error) {
-//       res.status(500).send({ data: null, error: error });
-//     }
-//   } else {
-//     res.status(200).send({ data: null, error: 'url is required in body' });
-//   }
-// }
-
 import { type DB } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
-
-import { addHttps, getUrlHost } from '@/utils/fetchCompDetails';
 
 const supabaseAdmin = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL || '',
@@ -64,3 +44,26 @@ export default async function handler(req, res) {
 //   let url = new URL(addHttps(website_url));
 //   return url.host;
 // };
+
+const addHttps = (url = '') => {
+  if (url.endsWith('/')) {
+    url = url.slice(0, -1);
+  }
+  if (url.includes('www.')) {
+    url = url.replace('www.', '');
+  }
+  if (url.startsWith('http://')) {
+    url = url.replace('http://', 'https://');
+  }
+
+  if (url.startsWith('https://')) {
+    return url;
+  } else {
+    return 'https://' + url;
+  }
+};
+
+const getUrlHost = (website_url) => {
+  const url = new URL(website_url);
+  return url.origin;
+};

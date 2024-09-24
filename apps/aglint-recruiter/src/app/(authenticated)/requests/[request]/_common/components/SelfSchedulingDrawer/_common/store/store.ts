@@ -1,4 +1,5 @@
 import { type MultiDayPlanType } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 import { create } from 'zustand';
 
 import {
@@ -7,7 +8,6 @@ import {
 } from '@/components/Common/CalendarResourceView/types';
 import type { ApiResponseSelfSchedule } from '@/pages/api/scheduling/application/sendselfschedule';
 import type { ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
-import dayjs from '@/utils/dayjs';
 
 import { type filterSchedulingOptionsArray } from '../components/BodyDrawer/ScheduleFilter/utils';
 
@@ -89,8 +89,8 @@ export const initialFilters = {
 const initialState: SelfSchedulingFlow = {
   isSelfScheduleDrawerOpen: false, //scheduling drawer open
   dateRange: {
-    start_date: dayjs().toISOString(),
-    end_date: dayjs().add(7, 'day').toISOString(),
+    start_date: dayjsLocal().toISOString(),
+    end_date: dayjsLocal().add(7, 'day').toISOString(),
   },
   schedulingOptions: [], // find availability api response
   filteredSchedulingOptions: [], // filtered options based on filters self scheduling flow
@@ -108,13 +108,13 @@ const initialState: SelfSchedulingFlow = {
   localFilters: {
     ...initialFilters,
     dateRange: {
-      start: dayjs().toISOString(),
-      end: dayjs().add(7, 'day').toISOString(),
+      start: dayjsLocal().toISOString(),
+      end: dayjsLocal().add(7, 'day').toISOString(),
     },
   },
   filterLoading: false,
   anchorEl: null,
-  calendarDate: dayjs().toISOString(),
+  calendarDate: dayjsLocal().toISOString(),
 };
 
 export const useSelfSchedulingFlowStore = create<SelfSchedulingFlow>()(() => ({

@@ -1,11 +1,10 @@
-import { getFullName } from '@aglint/shared-utils';
+import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Send } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
-import dayjs from '@/utils/dayjs';
 
 import { type selectedItemsType } from '../utils';
 import SelectScheduleDate from './SelectScheduleDate';
@@ -23,8 +22,8 @@ function CreateSchedulePopUp({
   const { recruiterUser } = useAuthDetails();
   const [loading, setLoading] = useState(false);
   const [selectedDateRange, setSelectedDateRange] = useState({
-    start_date: dayjs().toString(),
-    end_date: dayjs().add(7, 'day').toString(),
+    start_date: dayjsLocal().toString(),
+    end_date: dayjsLocal().add(7, 'day').toString(),
   });
   const assigner = 'user';
   const assignerText =
