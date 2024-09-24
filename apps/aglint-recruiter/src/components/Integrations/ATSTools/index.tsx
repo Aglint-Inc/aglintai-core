@@ -1,5 +1,4 @@
 'use client';
-import type { DatabaseTable } from '@aglint/shared-types';
 import { useToast } from '@components/hooks/use-toast';
 import { Input } from '@components/ui/input';
 import axios from 'axios';
@@ -18,10 +17,7 @@ import { updateIntegrations } from '../utils';
 function ATSTools({
   data,
   invalidate,
-  recruiter_preferences,
-}: Pick<ReturnType<typeof useAllIntegrations>, 'data' | 'invalidate'> & {
-  recruiter_preferences: DatabaseTable['recruiter_preferences'];
-}) {
+}: Pick<ReturnType<typeof useAllIntegrations>, 'data' | 'invalidate'>) {
   const { toast } = useToast();
   const router = useRouterPro();
   const { recruiter } = useAuthDetails();
@@ -304,7 +300,7 @@ function ATSTools({
     {
       name: 'greenhouse' as ATSType,
       url: 'greenhouse.com',
-      isVisibile: recruiter_preferences.ats === 'Greenhouse',
+      isVisibile: recruiter.recruiter_preferences.ats === 'Greenhouse',
       isConnected: Boolean(data?.greenhouse_key),
       logo: <></>,
       primaryText: data?.greenhouse_key ? 'Settings' : 'Connect',
@@ -324,7 +320,7 @@ function ATSTools({
     {
       name: 'lever' as ATSType,
       url: 'lever.co',
-      isVisibile: recruiter_preferences.ats === 'Lever',
+      isVisibile: recruiter.recruiter_preferences.ats === 'Lever',
       isConnected: Boolean(data?.lever_key),
       logo: <></>,
       primaryText: data?.lever_key ? 'Settings' : 'Connect',
@@ -344,7 +340,7 @@ function ATSTools({
     {
       name: 'ashby' as ATSType,
       url: 'ashbyhq.com',
-      isVisibile: recruiter_preferences.ats === 'Ashby',
+      isVisibile: recruiter.recruiter_preferences.ats === 'Ashby',
       isConnected: Boolean(data?.ashby_key),
       logo: <></>,
       primaryText: data?.ashby_key ? 'Settings' : 'Connect',

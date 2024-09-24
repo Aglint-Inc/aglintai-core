@@ -3,7 +3,6 @@ import { Send } from 'lucide-react';
 import { useState } from 'react';
 
 import { useAllIntegrations } from '@/authenticated/hooks';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import { UIButton } from '../Common/UIButton';
 import ATSTools from './ATSTools';
@@ -13,9 +12,6 @@ import Scheduling from './SchedulingTools';
 
 function Integrations() {
   const { data, invalidate } = useAllIntegrations();
-  const {
-    recruiter: { recruiter_preferences },
-  } = useAuthDetails();
   const [isRequestNewOpen, setIsRequestNewOpen] = useState(false);
 
   return (
@@ -52,11 +48,7 @@ function Integrations() {
               your preferred ATS.
             </p>
             <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
-              <ATSTools
-                data={data}
-                invalidate={invalidate}
-                recruiter_preferences={recruiter_preferences}
-              />
+              <ATSTools data={data} invalidate={invalidate} />
             </div>
           </section>
 
