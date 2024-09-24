@@ -77,12 +77,14 @@ export default function InterviewerDetailsPage() {
   const interviewer = null;
 
   return (
-    <div className='container mx-auto py-8'>
+    <div className='container mx-auto'>
       <EditUserDialog isOpen={isOpen} setIsOpen={setIsOpen} />
       <Top interviewer={interviewer} isTopBarVisible={isTopBarVisible} />
       <div className=''>
-        <div className='sticky top-0 z-10 bg-neutral-50'>
+        <div className=''>
           <BreadCrumb name={interviewerDetails?.first_name} />
+        </div>
+        <div>
           <div className=''>
             <Header
               avatar={interviewerDetails?.avatar}
@@ -100,85 +102,89 @@ export default function InterviewerDetailsPage() {
               userCardRef={userCardRef}
             />
           </div>
-        </div>
-        {isShowFeature('SCHEDULING') && (
-          <div className='flex gap-8'>
-            <aside className='sticky top-[255px] w-64 flex-shrink-0 self-start'>
-              <SideBar
-                activeSection={activeSection}
-                scrollToSection={scrollToSection}
-              />
-            </aside>
-            <main className='relative z-0 flex-1 space-y-6'>
-              <section ref={sectionRefs.overview}>
-                <KeyMatrics
-                  declineCount={interviewerDetails.meeting_count.cancelled}
-                  completedCount={interviewerDetails.meeting_count.completed}
-                  // upcomingCount={interviewerDetails.meeting_count.upcoming}
-                  totalHour={interviewerDetails.meeting_count.completed_hour}
+          <div className=''>
+          {isShowFeature('SCHEDULING') && (
+            <div className='flex gap-8  justify-start items-start relative'>
+             <aside className='sticky top-16 pt-8'>
+                <SideBar
+                  activeSection={activeSection}
+                  scrollToSection={scrollToSection}
                 />
-              </section>
+              </aside>
 
-              <section ref={sectionRefs.qualifications}>
-                <Qualifications
-                  interview_types={interviewerDetails.interview_type}
-                />
-              </section>
+             
+              <main className='relative z-0 '>
+                <section ref={sectionRefs.overview} className='pt-8'>
+                  <KeyMatrics
+                    declineCount={interviewerDetails.meeting_count.cancelled}
+                    completedCount={interviewerDetails.meeting_count.completed}
+                    // upcomingCount={interviewerDetails.meeting_count.upcoming}
+                    totalHour={interviewerDetails.meeting_count.completed_hour}
+                  />
+                </section>
 
-              <section ref={sectionRefs.upcomingInterviews}>
-                <UpcomingInterview
-                  interviews={interviewerDetails.all_meetings.filter(
-                    (meeting) => meeting.status === 'confirmed',
-                  )}
-                />
-              </section>
+                <section ref={sectionRefs.qualifications} className='pt-8'>
+                  <Qualifications
+                    interview_types={interviewerDetails.interview_type}
+                  />
+                </section>
 
-              <section ref={sectionRefs.recentInterviews}>
-                <RecentInterviews
-                  interviews={interviewerDetails.all_meetings.filter(
-                    (meeting) => meeting.status === 'completed',
-                  )}
-                />
-              </section>
-              <section ref={sectionRefs.interviewFeedback}>
-                <Feedback feedbacks={interviewerDetails.feedbacks} />
-              </section>
-              <section ref={sectionRefs.meetingOverview}>
-                <HeatmapUser
-                  loadSetting={
-                    interviewerDetails?.scheduling_settings?.interviewLoad
-                  }
-                />
-              </section>
-              <section ref={sectionRefs.scheduleAvailabilityRef}>
-                <ScheduleAvailability
-                  schedulingSettings={interviewerDetails.scheduling_settings}
-                  interviewTodayWeek={interviewerDetails.interview_week_today}
-                />
-              </section>
-              <section ref={sectionRefs.calendar}>
-                <Calendar />
-              </section>
+                <section ref={sectionRefs.upcomingInterviews} className='pt-8'>
+                  <UpcomingInterview
+                    interviews={interviewerDetails.all_meetings.filter(
+                      (meeting) => meeting.status === 'confirmed',
+                    )}
+                  />
+                </section>
 
-              {/* 
+                <section ref={sectionRefs.recentInterviews} className='pt-8'>
+                  <RecentInterviews
+                    interviews={interviewerDetails.all_meetings.filter(
+                      (meeting) => meeting.status === 'completed',
+                    )}
+                  />
+                </section>
+                <section ref={sectionRefs.interviewFeedback} className='pt-8'>
+                  <Feedback feedbacks={interviewerDetails.feedbacks} />
+                </section>
+                <section ref={sectionRefs.meetingOverview} className='pt-8'>
+                  <HeatmapUser
+                    loadSetting={
+                      interviewerDetails?.scheduling_settings?.interviewLoad
+                    }
+                  />
+                </section>
+                <section ref={sectionRefs.scheduleAvailabilityRef} className='pt-8'>
+                  <ScheduleAvailability
+                    schedulingSettings={interviewerDetails.scheduling_settings}
+                    interviewTodayWeek={interviewerDetails.interview_week_today}
+                  />
+                </section>
+                <section ref={sectionRefs.calendar} className='pt-8'>
+                  <Calendar />
+                </section>
+
+                {/* 
           <section ref={sectionRefs.performance}>
             <Performance interviewer={interviewer} />
           </section> */}
 
-              {/* <section ref={sectionRefs.availability}>
+                {/* <section ref={sectionRefs.availability}>
             <Availability interviewer={interviewer} />
           </section> */}
 
-              {/* <section ref={sectionRefs.pendingActions}>
+                {/* <section ref={sectionRefs.pendingActions}>
             <PendingActions interviewer={interviewer} />
           </section> */}
 
-              {/* <section ref={sectionRefs.recentActivity}>
+                {/* <section ref={sectionRefs.recentActivity}>
             <RecentActivity interviewer={interviewer} />
           </section> */}
-            </main>
+              </main>
+            </div>
+          )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

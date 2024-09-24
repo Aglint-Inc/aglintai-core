@@ -21,7 +21,7 @@ export const Header = ({
       <Card className='mb-8' ref={userCardRef}>
         <CardContent className='p-6'>
           <div className='flex justify-between'>
-            <div className='flex items-center space-x-4'>
+            <div className='flex flex-col items-start gap-2'>
               <Avatar className='h-24 w-24'>
                 <AvatarImage src={avatar} alt={name} />
                 <AvatarFallback>
@@ -41,12 +41,13 @@ export const Header = ({
                         </AvatarFallback>
                       </Avatar> */}
 
-              <div>
-                <h2 className='text-2xl font-bold text-gray-900'>{name}</h2>
+              <div className="flex flex-col gap-2">
+                <h2 className='text-lg font-semibold capitalize text-gray-900'>{name}</h2>
                 <p className='text-gray-600'>
                   {role} - {department}
                 </p>
-                <div className='mt-2 flex items-center space-x-4'>
+                <div className="flex flex-col gap-2">
+                <div className='flex items-start flex-col gap-2'>
                   <span className='flex items-center text-sm text-gray-500'>
                     <MapPin className='mr-1 h-4 w-4' />
                     {location}
@@ -56,7 +57,7 @@ export const Header = ({
                     {timeZone}
                   </span>
                 </div>
-                <div className='mt-2 flex items-center space-x-4'>
+                <div className='flex items-start flex-col gap-2'>
                   <span className='flex items-center text-sm text-gray-500'>
                     <Mail className='mr-1 h-4 w-4' />
                     {email}
@@ -65,6 +66,7 @@ export const Header = ({
                     <Phone className='mr-1 h-4 w-4' />
                     {phone}
                   </span>
+                </div>
                 </div>
               </div>
             </div>
