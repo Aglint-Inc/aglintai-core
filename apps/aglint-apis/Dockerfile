@@ -1,4 +1,4 @@
-FROM node:18-alpine AS base
+FROM node:lts-alpine AS base
 
 # The web Dockerfile is copy-pasted into our main docs at /docs/handbook/deploying-with-docker.
 # Make sure you update this Dockerfile, the Dockerfile in the web workspace and copy that over to Dockerfile in the docs.
@@ -29,8 +29,6 @@ COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/package-lock.json ./package-lock.json
 
 
-# Install all dependencies including workspace packages
-RUN npm install
 # Use npm ci for a clean install
 RUN npm ci
 
