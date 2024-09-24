@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import { createPublicClient } from '@/server/db';
 
 export const schema = z.object({
   recruiter_id: z.string().uuid(),
@@ -11,9 +12,10 @@ export const schema = z.object({
 
 const pageSize = 9;
 
-const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
+const query = async ({ input }: PrivateProcedure<typeof schema>) => {
+  const adminDb = createPublicClient();
   const cursor = input?.cursor ?? 0;
-  const query = ctx.adminDb
+  const query = adminDb
     .from('recruiter_relation')
     .select(
       `recruiter_user!public_recruiter_relation_user_id_fkey(user_id, first_name, last_name)`,

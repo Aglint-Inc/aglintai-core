@@ -6,6 +6,7 @@ import type {
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import { createPrivateClient } from '@/server/db';
 import { formatSessions } from '@/utils/formatSessions';
 
 import { createRequestSchema } from '../../../requests/create/create_request';
@@ -44,13 +45,14 @@ const moveToInterview = async ({
   ctx,
   input,
 }: PrivateProcedure<typeof interviewSchema>) => {
+  const db = createPrivateClient();
   const [{ data }, { data: session_names }] = await Promise.all([
-    ctx.db
+    db
       .from('application_view')
       .select('id, name')
       .in('id', input.applications)
       .throwOnError(),
-    ctx.db
+    db
       .from('interview_session')
       .select('name')
       .in('id', input.sessions)
@@ -62,10 +64,10 @@ const moveToInterview = async ({
       application_id,
       title: `Schedule ${sessions} for ${name}`,
       status: 'to_do',
-      assigner_id: ctx.user.id,
+      assigner_id: ctx.user_id,
       ...input.request,
     }));
-  return await ctx.db
+  return await db
     .rpc('move_to_interview', {
       applications: input.applications,
       sessions: input.sessions,
@@ -78,13 +80,14 @@ const moveToNonInterview = async ({
   ctx,
   input,
 }: PrivateProcedure<typeof nonInterviewSchema>) => {
+  const db = createPrivateClient();
   const { applications, ...rest } = input;
   const payload = applications.map((id) => ({
     id,
     recruiter_id: ctx.recruiter_id,
     ...rest,
   }));
-  return await ctx.db.from('applications').upsert(payload).throwOnError();
+  return await db.from('applications').upsert(payload).throwOnError();
 };
 
 const mutation = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {

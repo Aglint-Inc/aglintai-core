@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { createPublicClient } from '@/server/db';
+
 import { privateProcedure } from '../../trpc';
 
 const body = z.object({
@@ -19,7 +21,8 @@ const body = z.object({
 
 export const request_metrics = privateProcedure
   .input(body)
-  .query(async ({ input, ctx: { adminDb } }) => {
+  .query(async ({ input }) => {
+    const adminDb = createPublicClient();
     const { recruiter_id, data_range, departments, job_id, locations } = input;
     return (
       await adminDb

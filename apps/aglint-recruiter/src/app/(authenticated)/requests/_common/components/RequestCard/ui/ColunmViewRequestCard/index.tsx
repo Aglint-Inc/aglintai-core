@@ -2,9 +2,7 @@ import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Badge } from '@components/ui/badge';
 import { Card } from '@components/ui/card';
 import { Label } from '@components/ui/label';
-import { cn } from '@lib/utils';
 import { type RequestProps } from '@requests/types';
-import { getStatusColor } from '@requests/utils';
 import { Calendar, User } from 'lucide-react';
 import Link from 'next/link';
 
@@ -23,26 +21,22 @@ const ColumnViewRequestCard = ({ ...props }: RequestProps) => {
           </div>
           <div className='flex flex-wrap gap-1'>
             <Badge
-              variant='secondary'
-              className={cn('px-1 py-0.5 text-xs capitalize', {
-                'border-purple-300 bg-purple-100/50 text-purple-800/90':
-                  props.type === 'schedule_request',
-                'border-orange-300 bg-orange-100/50 text-orange-800/90':
-                  props.type === 'cancel_schedule_request',
-                'border-pink-300 bg-pink-100/50 text-pink-800/90':
-                  props.type === 'decline_request',
-                'border-indigo-300 bg-indigo-100/50 text-indigo-800/90':
-                  props.type === 'reschedule_request',
-              })}
+              variant={
+                props?.type === 'decline_request' ? 'destructive' : 'secondary'
+              }
             >
               {capitalizeFirstLetter(props.type)}
             </Badge>
             <Badge
-              variant='outline'
-              className={cn(
-                'px-1 py-0.5 text-xs capitalize',
-                getStatusColor({ status: props.status }),
-              )}
+              variant={
+                props?.status === 'to_do'
+                  ? 'secondary'
+                  : props?.status === 'in_progress'
+                    ? 'in_progress'
+                    : props?.status === 'completed'
+                      ? 'completed'
+                      : 'destructive'
+              }
             >
               {capitalizeFirstLetter(props.status)}
             </Badge>

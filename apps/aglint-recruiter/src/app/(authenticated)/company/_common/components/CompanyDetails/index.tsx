@@ -214,7 +214,6 @@ const CompanyInfoComp = () => {
         </Card>
       </div>
       <AddAndEditLocation
-        key={Math.random()}
         handleClose={handleClose}
         open={dialog.location.open}
         edit={dialog.location.edit}
