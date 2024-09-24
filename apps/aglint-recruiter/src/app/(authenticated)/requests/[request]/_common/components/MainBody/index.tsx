@@ -77,9 +77,12 @@ export default function ViewRequestDetails() {
 
   const { data: members } = useMemberList();
 
-  const [dateRange, setDateRange] = useState({ from: null, to: null });
+  const [dateRange, setDateRange] = useState<{
+    from: Date | undefined;
+    to: Date | undefined;
+  }>({ from: new Date(), to: new Date() });
 
-  const selectedRequest = Object.values(requestList)
+  const selectedRequest = Object.values(requestList ?? [])
     .flat()
     .find((request) => request?.id === requestId);
   const candidateDetails = selectedRequest?.applications?.candidates;
@@ -91,8 +94,8 @@ export default function ViewRequestDetails() {
   useEffect(() => {
     if (!isPlaceholderData && status === 'success' && selectedRequest) {
       setDateRange({
-        from: new Date(selectedRequest.schedule_start_date).toISOString(),
-        to: new Date(selectedRequest.schedule_end_date).toISOString(),
+        from: new Date(selectedRequest?.schedule_start_date ?? ''),
+        to: new Date(selectedRequest?.schedule_end_date ?? ''),
       });
     }
   }, [isPlaceholderData]);
@@ -139,7 +142,7 @@ export default function ViewRequestDetails() {
           <div className='flex flex-row items-start justify-between pb-2'>
             <div>
               <h1 className='mb-2 text-2xl text-gray-900'>
-                {capitalizeFirstLetter(selectedRequest?.title)}
+                {capitalizeFirstLetter(selectedRequest?.title ?? '')}
               </h1>
               <div className='flex items-center space-x-4 text-sm text-gray-500'>
                 <div className='flex items-center space-x-1'>
@@ -147,15 +150,15 @@ export default function ViewRequestDetails() {
                   <Link
                     href={
                       ROUTES['/jobs/[job]/[application]']({
-                        job: jobDetails?.id,
-                        application_id: selectedRequest?.application_id,
+                        job: jobDetails?.id ?? '',
+                        application_id: selectedRequest?.application_id ?? '',
                       }) + '?tab=scoring'
                     }
                   >
                     <span>
                       {getFullName(
-                        candidateDetails?.first_name,
-                        candidateDetails?.last_name,
+                        candidateDetails?.first_name ?? '',
+                        candidateDetails?.last_name ?? '',
                       )}
                     </span>
                   </Link>
@@ -165,7 +168,9 @@ export default function ViewRequestDetails() {
                 <span>•</span> */}
                 <div className='flex items-center space-x-1'>
                   <Briefcase className='h-4 w-4' />
-                  <Link href={ROUTES['/jobs/[job]']({ job: jobDetails?.id })}>
+                  <Link
+                    href={ROUTES['/jobs/[job]']({ job: jobDetails?.id ?? '' })}
+                  >
                     <span>{jobDetails?.job_title}</span>
                   </Link>
                 </div>
@@ -206,7 +211,7 @@ export default function ViewRequestDetails() {
                 </h3>
                 <Link
                   href={ROUTES['/user/[user]']({
-                    user_id: selectedMember?.user_id,
+                    user_id: selectedMember?.user_id ?? '',
                   })}
                   className='flex flex-row items-center gap-2'
                 >
@@ -222,8 +227,8 @@ export default function ViewRequestDetails() {
                   </Avatar>
                   <p className='font-medium'>
                     {getFullName(
-                      selectedMember?.first_name,
-                      selectedMember?.last_name,
+                      selectedMember?.first_name ?? '',
+                      selectedMember?.last_name ?? '',
                     )}
                   </p>
                 </Link>
@@ -328,7 +333,10 @@ export default function ViewRequestDetails() {
                               <UIDateRangePicker
                                 value={dateRange}
                                 onAccept={(dates) => {
-                                  setDateRange(dates);
+                                  setDateRange({
+                                    from: dates.from ?? new Date(),
+                                    to: dates.to ?? new Date(),
+                                  });
                                   if (dates) {
                                     handleAsyncUpdateRequest({
                                       payload: {
@@ -383,11 +391,19 @@ export default function ViewRequestDetails() {
                                 updateButton={
                                   <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                                 }
-                                members={members}
+                                members={members ?? []}
                               />
                             </div>
                           </div>
-                          <MemberCard selectedMember={selectedMember} />
+                          <MemberCard
+                            selectedMember={{
+                              first_name: selectedMember?.first_name ?? '',
+                              last_name: selectedMember?.last_name ?? '',
+                              profile_image:
+                                selectedMember?.profile_image ?? '',
+                              role: selectedMember?.role ?? '',
+                            }}
+                          />
                         </div>
                       </div>
                     </div>
@@ -440,11 +456,13 @@ export default function ViewRequestDetails() {
 
                   <SessionCards
                     refetchMeetings={refetchMeetings}
-                    sessions={sessions}
+                    sessions={sessions ?? []}
                   />
                 </CardContent>
               </Card>
-              <RecentRequests applicationId={selectedRequest?.application_id} />
+              <RecentRequests
+                applicationId={selectedRequest?.application_id ?? ''}
+              />
             </div>
             <div className='flex w-4/12 flex-col space-y-4'>
               <ShowCode.When isTrue={selectedRequest.status !== 'completed'}>
@@ -571,12 +589,14 @@ function SessionCards({
                 >
                   <div className='flex items-center justify-between'>
                     <CardTitle className='flex-1 truncate text-sm font-medium'>
-                      {capitalizeFirstLetter(session.interview_session.name)}
+                      {capitalizeFirstLetter(
+                        session?.interview_session?.name ?? '',
+                      )}
                     </CardTitle>
                     <div className='flex items-center space-x-2'>
                       <Badge variant='outline' className='text-xs'>
                         {capitalizeFirstLetter(
-                          session.interview_meeting.status,
+                          session?.interview_meeting?.status ?? '',
                         )}
                       </Badge>
                       <Button
@@ -594,7 +614,7 @@ function SessionCards({
                         onClick={(e) => {
                           e.stopPropagation();
                           window.open(
-                            `/interviews/view?meeting_id=${session.interview_meeting.id}&tab=job_details`,
+                            `/interviews/view?meeting_id=${session?.interview_meeting?.id}&tab=job_details`,
                             '_blank',
                           );
                         }}
@@ -637,7 +657,7 @@ function SessionCards({
                           value={session.interview_session.break_duration.toString()}
                           onValueChange={(value) => {
                             updateInterviewSessionsDurations(
-                              session.interview_session.id,
+                              session?.interview_session?.id ?? '',
                               parseInt(value),
                             ).then(() => refetchMeetings());
                           }}
