@@ -24,7 +24,7 @@ export const Resume = () => {
     return (
       <>
         <embed
-          src={`https://view.officeapps.live.com/op/embed.aspx?src=${url}`}
+          src={`https://docs.google.com/gview?url=${url}&embedded=true`}
           title='resume'
           width='1000px'
           height='1000px'
@@ -45,6 +45,8 @@ const getExtension = (url: string) => {
   return url.slice(url.lastIndexOf('.'), url.length);
 };
 
+// src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}`}
+// src={`https://view.officeapps.live.com/op/embed.aspx?src=${url}`}
 // src={`https://docs.google.com/gview?url=${url}&embedded=true`}
 // import '@react-pdf-viewer/core/lib/styles/index.css';
 // import '@react-pdf-viewer/default-layout/lib/styles/index.css';
