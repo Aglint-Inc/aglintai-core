@@ -11,9 +11,8 @@ export const useCompletedRequests = ({
 }: {
   completedFilters: CompletedRequests['completedFilters'];
 }) => {
-  const {
-    recruiterUser: { user_id },
-  } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
+  const user_id = recruiterUser?.user_id ?? '';
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ['get_Completed_Requests', user_id, completedFilters],
@@ -42,7 +41,7 @@ export const getCompletedRequests = async ({
   completedFilters: CompletedRequests['completedFilters'];
 }) => {
   const { type, applications, jobs, assigneeList, assignerList, title, date } =
-    completedFilters;
+    completedFilters ?? {};
 
   const query = supabase
     .from('request')
@@ -68,10 +67,10 @@ export const getCompletedRequests = async ({
     query.ilike('title', `%${title}%`);
   }
 
-  if (date.length > 0) {
-    let selectedDate = null;
+  if (date && date.length > 0) {
+    let selectedDate: null | string = null;
     if (date[0] === 'today') {
-      selectedDate = dayjsLocal().format('YYYY-MM-DD');
+      selectedDate = dayjsLocal().format('YYYY-MM-DD') ?? null;
       query.gte('completed_at', selectedDate);
       query.lt('completed_at', dayjsLocal().add(1, 'day').format('YYYY-MM-DD'));
     }

@@ -24,7 +24,7 @@ export const RequestCard = ({ ...props }: RequestProps) => {
       props={props}
       isExpanded={isExpanded}
       setIsExpanded={setIsExpanded}
-      currentUserId={recruiterUser.user_id}
+      currentUserId={recruiterUser?.user_id}
     />
   );
 };
