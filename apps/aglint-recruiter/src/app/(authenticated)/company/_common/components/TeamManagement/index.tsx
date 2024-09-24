@@ -1,3 +1,4 @@
+import { dayjsLocal } from '@aglint/shared-utils';
 import { Skeleton } from '@components/ui/skeleton';
 import {
   Table,
@@ -28,7 +29,6 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { type API_get_last_login } from '@/pages/api/get_last_login/types';
 import { useGreenhouseDetails } from '@/queries/greenhouse';
 import { useAllMembers } from '@/queries/members';
-import dayjs from '@/utils/dayjs';
 
 import AddMember from './AddMemberDialog';
 import Member from './MemberList';
@@ -40,7 +40,7 @@ const TeamManagement = () => {
   const { data: members, isPending, remote_sync } = useTeamMembers();
 
   const timeStamp = remote_sync?.lastSync;
-  const last_sync = timeStamp ? dayjs(timeStamp).fromNow() : 'Never';
+  const last_sync = timeStamp ? dayjsLocal(timeStamp).fromNow() : 'Never';
 
   // filter members
   const [searchText, setSearchText] = useState('');
