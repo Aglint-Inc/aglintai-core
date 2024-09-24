@@ -57,7 +57,7 @@ ${fieldStrings.map((requirement, i) => `${i + 1}) ${requirement}`).join('\n')}
 const getRequirementLevel = (type: RequirementType) => {
   switch (type) {
     case 'Primary':
-      return `Must have`;
+      return 'Must have';
     case 'Secondary':
       return 'Nice to have';
   }

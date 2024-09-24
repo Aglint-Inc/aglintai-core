@@ -2,7 +2,7 @@ import {supabase} from './config';
 import {PromptResponse, PromptSkillResponse} from './types';
 
 export const arrayToPrompt = (header: string, content: string[]) => {
-  return `${content.map((c, i) => `${header} ${i + 1}. ${c}`).join(`\n`)}`;
+  return `${content.map((c, i) => `${header} ${i + 1}. ${c}`).join('\n')}`;
 };
 
 export const rejectAfterDelay = (ms: number) =>
@@ -121,15 +121,15 @@ export const saveToDB = async (data: any, id: string) => {
   return !error;
 };
 
-export const updateResumeJsonDB = async (json_resume: any, id: string) => {
-  if (id.trim() === '') return false;
-  const {error} = await supabase
-    .from('applications')
-    .update({json_resume})
-    .eq('application_id', id);
-  // error && console.error('error', error);
-  return !error;
-};
+// export const updateResumeJsonDB = async (json_resume: any, id: string) => {
+//   if (id.trim() === '') return false;
+//   const {error} = await supabase
+//     .from('applications')
+//     .update({json_resume})
+//     .eq('application_id', id);
+//   // error && console.error('error', error);
+//   return !error;
+// };
 
 export const getOverallResumeScore = (scores: any, parameter_weights: any) => {
   return parameter_weights
