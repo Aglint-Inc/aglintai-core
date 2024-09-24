@@ -221,12 +221,12 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
  */
 
 export const publicProcedure = t.procedure.use(timingMiddleware);
-export type PublicProcedure<T> = Procedure<T, typeof publicProcedure>;
+export type PublicProcedure<T = unknown> = Procedure<typeof publicProcedure, T>;
 
 export const atsProcedure = t.procedure
   .use(timingMiddleware)
   .use(atsMiddleware);
-export type ATSProcedure<T> = Procedure<T, typeof atsProcedure>;
+export type ATSProcedure<T = unknown> = Procedure<typeof atsProcedure, T>;
 
 /**
  * Private (authenticated) procedure
@@ -239,11 +239,14 @@ export type ATSProcedure<T> = Procedure<T, typeof atsProcedure>;
 export const privateProcedure = t.procedure
   .use(timingMiddleware)
   .use(authMiddleware);
-export type PrivateProcedure<T> = Procedure<T, typeof privateProcedure>;
+export type PrivateProcedure<T = unknown> = Procedure<
+  typeof privateProcedure,
+  T
+>;
 
 type Procedure<
-  T,
   U extends ProcedureBuilder<any, any, any, any, any, any, any, any>,
+  T = unknown,
 > = T extends ZodSchema
   ? U extends ProcedureBuilder<
       infer TContext,
@@ -260,4 +263,18 @@ type Procedure<
         input: Required<TypeOf<T>>;
       }
     : never
-  : never;
+  : U extends ProcedureBuilder<
+        infer TContext,
+        any,
+        infer TContextOverrides,
+        any,
+        any,
+        any,
+        any,
+        any
+      >
+    ? {
+        ctx: TContext & TContextOverrides;
+        input: undefined;
+      }
+    : never;

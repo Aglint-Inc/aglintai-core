@@ -2,7 +2,7 @@ import { type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { interviewPlanRecruiterUserQuery } from '@/utils/Constants';
+import { interviewPlanRecruiterUserQuery } from '@/constant/interviewPlanRecruiterUserQuery';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
