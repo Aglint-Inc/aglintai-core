@@ -166,7 +166,9 @@ export default function ViewRequestDetails() {
                 <div className='flex items-center space-x-1'>
                   <Briefcase className='h-4 w-4' />
                   <Link href={ROUTES['/jobs/[job]']({ job: jobDetails?.id })}>
+                  <div className="hover:underline hover:text-black duration-300">
                     <span>{jobDetails?.job_title}</span>
+                    </div>
                   </Link>
                 </div>
                 {/* <span>•</span> */}
