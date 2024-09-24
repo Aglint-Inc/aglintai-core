@@ -43,7 +43,15 @@ export const candidateSelfSchedule = async ({
     session_ids: parsed_body.session_ids,
     reqProgressLogger,
     time_zone: req_assignee_tz,
-    agent_instruction: job_payload.agent.instruction,
+    schedule_filters: {
+      isHardConflicts: false,
+      isNoConflicts: true,
+      isOutSideWorkHours: ai_resp_json.include_outside_working_hours,
+      isSoftConflicts: ai_resp_json.includeAllSoftConflictSlots,
+      preferredDateRanges: [],
+      preferredInterviewers: [],
+      isWorkLoad: true,
+    },
   });
   if (plans.length === 0) {
     throw new CApiError('CLIENT', 'No plans matched');

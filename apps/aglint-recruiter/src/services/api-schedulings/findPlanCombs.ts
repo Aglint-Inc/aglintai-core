@@ -1,7 +1,6 @@
 import type { ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
 import { filterSchedulingOptionsArray } from '@request/components/SelfSchedulingDrawer/_common/components/BodyDrawer/ScheduleFilter/utils';
-
-import { api } from '@/trpc/server';
+import { type SelfSchedulingFlow } from '@request/components/SelfSchedulingDrawer/_common/store/store';
 
 // import { filterSchedulingOptionsArray } from '@/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/_common/components/BodyDrawer/ScheduleFilter/utils';
 import { CandidatesSchedulingV2 } from '../CandidateScheduleV2/CandidatesSchedulingV2';
@@ -12,14 +11,14 @@ export const findPlanCombs = async ({
   session_ids,
   reqProgressLogger,
   time_zone,
-  agent_instruction,
+  schedule_filters,
 }: {
   recruiter_id: string;
   date_range: { start_date_str: string; end_date_str: string };
   session_ids: string[];
   reqProgressLogger: ProgressLoggerType;
   time_zone: string;
-  agent_instruction: ;
+  schedule_filters: SelfSchedulingFlow['filters'];
 }) => {
   const cand_schedule = new CandidatesSchedulingV2({
     include_conflicting_slots: {
@@ -43,13 +42,7 @@ export const findPlanCombs = async ({
   const filtered_slot_info = filterSchedulingOptionsArray({
     schedulingOptions: slots,
     filters: {
-      isHardConflicts: false,
-      isNoConflicts: true,
-      isOutSideWorkHours: true,
-      isSoftConflicts: ai_resp_json.includeAllSoftConflictSlots,
-      isWorkLoad: true,
-      preferredDateRanges: [],
-      preferredInterviewers: [],
+      ...schedule_filters,
     },
   });
   const plans = filtered_slot_info.combs
