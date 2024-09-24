@@ -12,7 +12,7 @@ function ButtonGroupRight({
   isEditIconVisible,
   isViewDetailVisible,
 }: {
-  currentSession: StageWithSessions[0]['sessions'][0];
+  currentSession: NonNullable<StageWithSessions>[0]['sessions'][0];
   isEditIconVisible: boolean;
   isViewDetailVisible: boolean;
 }) {

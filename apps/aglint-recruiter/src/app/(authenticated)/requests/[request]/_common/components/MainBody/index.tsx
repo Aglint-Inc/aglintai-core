@@ -12,7 +12,6 @@ import {
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
-import { Switch } from '@components/ui/switch';
 import RequestProgress from '@requests/components/RequestProgress';
 import {
   REQUEST_STATUS_LIST,
@@ -486,18 +485,7 @@ export default function ViewRequestDetails() {
                 <CardHeader className='flex items-center justify-between'>
                   <div className='flex w-full flex-row items-center justify-between'>
                     <CardTitle className='text-lg'>Request Progress</CardTitle>
-                    <div className='flex items-center space-x-2'>
-                      {/* {reqTriggerActionsMap && Object.keys(reqTriggerActionsMap).length > 0 && ( */}
-                      {/* <Button size='sm'>
-                        <WandSparkles className='h-4 w-4 mr-2' />
-                        Proceed with Aglint AI
-                      </Button> */}
-                      {/* )} */}
-                      <div className='flex items-center space-x-2'>
-                        <span className='text-sm'>Automaton</span>
-                        <Switch />
-                      </div>
-                    </div>
+                    <div className='flex items-center space-x-2'></div>
                   </div>
                 </CardHeader>
                 <CardContent>

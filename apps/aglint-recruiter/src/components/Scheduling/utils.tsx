@@ -9,22 +9,24 @@ export function getLastDayOfMonth(date: string) {
   return dayjs(date).endOf('month').date();
 }
 
-export function convertTimeZoneToAbbreviation(sourceTimeZone) {
+export function convertTimeZoneToAbbreviation(sourceTimeZone: string) {
   const date = new Date();
   const formatter = new Intl.DateTimeFormat('en-US', {
     timeZone: sourceTimeZone,
     timeZoneName: 'short',
   });
   const timeZoneAbbreviation = formatter
-    .formatToParts(date)
-    .find((part) => part.type === 'timeZoneName').value;
+    ?.formatToParts(date)
+    ?.find((part) => part.type === 'timeZoneName')?.value;
 
   const abbreviationMapping = {
     'GMT+5:30': 'IST',
     'GMT+9:30': 'ACST',
   };
 
-  return abbreviationMapping[timeZoneAbbreviation] || timeZoneAbbreviation;
+  return timeZoneAbbreviation
+    ? abbreviationMapping[timeZoneAbbreviation]
+    : timeZoneAbbreviation;
 }
 
 export const getScheduleName = ({
@@ -45,7 +47,7 @@ export const formatTimeWithTimeZone = ({
   timeZone, // send time zone like Asia/Calcutta
 }: {
   start_time: string;
-  end_time: string;
+  end_time: string | null;
   timeZone?: string;
 }) => {
   const tZTime = dayjsLocal(end_time)

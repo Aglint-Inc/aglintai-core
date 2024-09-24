@@ -39,7 +39,18 @@ export const useAllInterviews = (filters: ScheduleFilerType) => {
     enabled: !!recruiter_id,
   });
   const refetch = () =>
-    queryClient.invalidateQueries({ queryKey: ['get_All_Interviews'] });
+    queryClient.invalidateQueries({
+      queryKey: [
+        'get_All_Interviews',
+        ...status,
+        ...jobs,
+        ...schedule_types,
+        ...interviewers,
+        ...date,
+        ...session_types,
+        searchText,
+      ],
+    });
   return { ...query, refetch };
 };
 
