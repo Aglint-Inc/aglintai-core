@@ -1,6 +1,9 @@
 'use client';
 import { useToast } from '@components/hooks/use-toast';
 import { Input } from '@components/ui/input';
+import AshbyLogo from '@public/images/svg/ashby-logo.svg';
+import GreenHouseLogo from '@public/images/svg/greenhouse-logo.svg';
+import LeverLogo from '@public/images/svg/lever-logo.svg';
 import axios from 'axios';
 import capitalize from 'lodash/capitalize';
 import { useRef, useState } from 'react';
@@ -12,9 +15,6 @@ import ATSPopUps from '../ATSPopUps';
 import { IntegrationCard } from '../components/IntegrationCard';
 import { type ATSType, type PopUpReasonTypes } from '../types';
 import { updateIntegrations } from '../utils';
-// import GreenHouseLogo from '@public/images/svg/greenhouse-logo.svg';
-// import LeverLogo from '@public/images/svg/lever-logo.svg';
-// import AshbyLogo from '@public/images/svg/ashby-logo.svg';
 
 function ATSTools({ integrations, refetch }) {
   const { toast } = useToast();
@@ -301,8 +301,7 @@ function ATSTools({ integrations, refetch }) {
       name: 'greenhouse' as ATSType,
       url: 'greenhouse.com',
       isConnected: integrations?.greenhouse_key,
-      logo: <></>,
-      // logo: <GreenHouseLogo />,
+      logo: <GreenHouseLogo />,
       primaryText: integrations?.greenhouse_key ? 'Settings' : 'Connect',
       secondaryText: integrations?.greenhouse_key ? 'Disconnect' : 'Learn How',
       primaryAction: () => {
@@ -322,8 +321,8 @@ function ATSTools({ integrations, refetch }) {
       name: 'lever' as ATSType,
       url: 'lever.co',
       isConnected: integrations?.lever_key,
-      logo: <></>,
-      // logo: <LeverLogo />,
+      // logo: <></>,
+      logo: <LeverLogo />,
       primaryText: integrations?.lever_key ? 'Settings' : 'Connect',
       secondaryText: integrations?.lever_key ? 'Disconnect' : 'Learn How',
       primaryAction: () => {
@@ -342,8 +341,7 @@ function ATSTools({ integrations, refetch }) {
       name: 'ashby' as ATSType,
       url: 'ashbyhq.com',
       isConnected: integrations?.ashby_key,
-      logo: <></>,
-      // logo: <AshbyLogo />,
+      logo: <AshbyLogo />,
       primaryText: integrations?.ashby_key ? 'Settings' : 'Connect',
       secondaryText: integrations?.ashby_key ? 'Disconnect' : 'Learn How',
       primaryAction: () => {
