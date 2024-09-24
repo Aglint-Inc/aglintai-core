@@ -2,7 +2,7 @@
   "name": "@aglint/shared-utils",
   "scripts": {
     "build": "tsup",
-    "lint": "tsup",
+    "lint": "tsup&& tsc",
     "dev": "tsup --watch"
   },
   "version": "0.0.1",
