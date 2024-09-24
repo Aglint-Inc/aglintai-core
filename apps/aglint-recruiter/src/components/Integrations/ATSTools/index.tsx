@@ -198,19 +198,6 @@ function ATSTools({
     setIsOpen(false);
   }
 
-  function disConnectApi(source: ATSType) {
-    setIsOpen(true);
-    if (source === 'greenhouse') {
-      setReason('disconnect_greenhouse');
-    }
-    if (source === 'ashby') {
-      setReason('disconnect_ashby');
-    }
-    if (source === 'lever') {
-      setReason('disconnect_lever');
-    }
-  }
-
   function connectApi(source: ATSType) {
     setIsOpen(true);
     if (source === 'greenhouse') {
@@ -307,7 +294,7 @@ function ATSTools({
       isConnected: Boolean(data?.greenhouse_key),
       logo: <GreenHouseLogo />,
       primaryText: data?.greenhouse_key ? 'Settings' : 'Connect',
-      secondaryText: data?.greenhouse_key ? 'Disconnect' : 'Learn How',
+      secondaryText: data?.greenhouse_key ? null : 'Learn How',
       primaryAction: () => {
         setLoading(false);
         if (data.greenhouse_key) router.push('/integrations/greenhouse');
@@ -315,8 +302,7 @@ function ATSTools({
       },
       secondaryAction: () => {
         setLoading(false);
-        if (data.greenhouse_key) disConnectApi('greenhouse');
-        else readDocs('greenhouse');
+        readDocs('greenhouse');
       },
       learnHowLink: 'https://developers.greenhouse.io/harvest.html',
     },
@@ -327,7 +313,7 @@ function ATSTools({
       isConnected: Boolean(data?.lever_key),
       logo: <LeverLogo />,
       primaryText: data?.lever_key ? 'Settings' : 'Connect',
-      secondaryText: data?.lever_key ? 'Disconnect' : 'Learn How',
+      secondaryText: data?.lever_key ? null : 'Learn How',
       primaryAction: () => {
         setLoading(false);
         if (data.lever_key) updateApi('lever');
@@ -335,8 +321,7 @@ function ATSTools({
       },
       secondaryAction: () => {
         setLoading(false);
-        if (data.lever_key) disConnectApi('lever');
-        else readDocs('lever');
+        readDocs('lever');
       },
       learnHowLink: 'https://hire.lever.co/developer/documentation',
     },
@@ -347,7 +332,7 @@ function ATSTools({
       isConnected: Boolean(data?.ashby_key),
       logo: <AshbyLogo />,
       primaryText: data?.ashby_key ? 'Settings' : 'Connect',
-      secondaryText: data?.ashby_key ? 'Disconnect' : 'Learn How',
+      secondaryText: data?.ashby_key ? null : 'Learn How',
       primaryAction: () => {
         setLoading(false);
         if (data.ashby_key) updateApi('ashby');
@@ -355,8 +340,7 @@ function ATSTools({
       },
       secondaryAction: () => {
         setLoading(false);
-        if (data.ashby_key) disConnectApi('ashby');
-        else readDocs('ashby');
+        readDocs('ashby');
       },
       learnHowLink: 'https://developers.ashbyhq.com/',
     },
