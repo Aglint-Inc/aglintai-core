@@ -79,17 +79,18 @@ export const useScheduleRequest = () => {
       const selectedAssignee = members?.find(
         (member) => member.user_id === String(optionsAssignees[0].value),
       );
-      setSelectedAssignee(selectedAssignee);
+      if (selectedAssignee) setSelectedAssignee(selectedAssignee);
     }
   }, [optionsAssignees?.length, membersStatus]);
 
   const handleCreateRequest = async () => {
+    if (!selectedAssignee || !recruiterUser) return;
     const sel_user_id = selectedAssignee.user_id;
     const assigned_user_id = recruiterUser.user_id;
 
-    const sessionNames = sessions.map(
-      (session) => session.interview_session.name,
-    );
+    const sessionNames: string[] = sessions
+      .map((session) => session?.interview_session?.name)
+      .filter((name): name is string => Boolean(name));
 
     try {
       if (!sel_user_id) return;

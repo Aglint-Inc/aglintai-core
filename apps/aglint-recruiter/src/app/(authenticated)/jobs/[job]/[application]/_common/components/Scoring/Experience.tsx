@@ -163,7 +163,7 @@ const Experiences = () => {
               </TableCell>
               <TableCell className='w-1/4'>
                 {calculateDuration(start, end)} (
-                {timeRange(timeFormat(start as any), timeFormat(end as any))})
+                {timeRange(String(timeFormat(start)), String(timeFormat(end)))})
               </TableCell>
             </TableRow>
           ))}

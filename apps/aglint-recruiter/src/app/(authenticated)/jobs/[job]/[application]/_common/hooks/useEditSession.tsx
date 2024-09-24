@@ -1,3 +1,4 @@
+import { type DatabaseTable } from '@aglint/shared-types';
 import { useEffect } from 'react';
 
 import {
@@ -59,10 +60,14 @@ export const useEditSession = ({ refetch }: { refetch: () => void }) => {
           return;
         }
       }
+      if (!editSession) return;
       setSaving(editSession.interview_session.id);
-
       if (editSession.interview_session.session_type !== 'debrief') {
-        const interview_module_relation_entries = [];
+        const interview_module_relation_entries: {
+          interviewer_type: DatabaseTable['interview_session_relation']['interviewer_type'];
+          id: string;
+          training_type: DatabaseTable['interview_session_relation']['training_type'];
+        }[] = [];
         selectedInterviewers.forEach((interviewer) => {
           interview_module_relation_entries.push({
             interviewer_type: 'qualified',
@@ -79,34 +84,45 @@ export const useEditSession = ({ refetch }: { refetch: () => void }) => {
           });
         });
 
+        if (
+          !editSession ||
+          !editSession?.interview_session?.name ||
+          !editSession?.interview_session.interview_plan_id ||
+          !editSession?.interview_session.module_id
+        )
+          return;
+
         const editInterviewSessionParams: EditInterviewSession = {
-          break_duration: editSession.interview_session.break_duration,
-          interviewer_cnt: editSession.interview_session.interviewer_cnt || 1,
-          location: editSession.interview_session.location,
-          module_id: editSession.interview_session.module_id,
-          name: editSession.interview_session.name,
-          schedule_type: editSession.interview_session.schedule_type,
-          session_duration: editSession.interview_session.session_duration,
-          session_id: editSession.interview_session.id,
-          session_type: editSession.interview_session.session_type,
+          break_duration: Number(editSession?.interview_session.break_duration),
+          interviewer_cnt: editSession?.interview_session.interviewer_cnt || 1,
+          location: editSession?.interview_session.location as string,
+          module_id: editSession?.interview_session.module_id,
+          name: editSession?.interview_session.name,
+          schedule_type: editSession?.interview_session.schedule_type,
+          session_duration: editSession?.interview_session.session_duration,
+          session_id: editSession?.interview_session.id,
+          session_type: editSession?.interview_session.session_type,
           interview_module_relation_entries: interview_module_relation_entries,
-          interview_plan_id: editSession.interview_session.interview_plan_id,
-          session_order: editSession.interview_session.session_order,
+          interview_plan_id: editSession?.interview_session.interview_plan_id,
+          session_order: editSession?.interview_session.session_order,
         };
 
         await editInterviewSession(editInterviewSessionParams);
       } else {
+        if (!editSession || !editSession?.interview_session?.name) return;
+
         const updateDebriefParams: UpdateDebriefSession = {
-          break_duration: editSession.interview_session.break_duration,
-          location: editSession.interview_session.location,
-          name: editSession.interview_session.name,
-          schedule_type: editSession.interview_session.schedule_type,
-          session_duration: editSession.interview_session.session_duration,
-          session_id: editSession.interview_session.id,
+          break_duration: Number(editSession?.interview_session.break_duration),
+          location: editSession?.interview_session.location as string,
+          name: editSession?.interview_session.name,
+          schedule_type: editSession?.interview_session.schedule_type,
+          session_duration: editSession?.interview_session.session_duration,
+          session_id: editSession?.interview_session.id,
           members: debriefMembers.map((member) => ({
             id: member.user_id,
           })),
-          members_meta: editSession.interview_session.members_meta as UpdateDebriefSession['members_meta'],
+          members_meta: editSession?.interview_session
+            .members_meta as UpdateDebriefSession['members_meta'],
         };
         await updateDebriefSession(updateDebriefParams);
       }
@@ -122,7 +138,7 @@ export const useEditSession = ({ refetch }: { refetch: () => void }) => {
   const validate = () => {
     let isError = false;
 
-    if (!editSession.interview_session.name) {
+    if (!editSession?.interview_session.name) {
       errorValidation[0].error = true;
       isError = true;
     } else {
@@ -130,13 +146,13 @@ export const useEditSession = ({ refetch }: { refetch: () => void }) => {
     }
 
     if (
-      editSession.interview_session.session_type === 'debrief' &&
+      editSession?.interview_session.session_type === 'debrief' &&
       debriefMembers.length === 0
     ) {
       errorValidation[1].error = true;
       isError = true;
     } else if (
-      editSession.interview_session.session_type !== 'debrief' &&
+      editSession?.interview_session.session_type !== 'debrief' &&
       selectedInterviewers.length === 0
     ) {
       errorValidation[1].error = true;
