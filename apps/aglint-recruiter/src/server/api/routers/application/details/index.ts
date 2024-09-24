@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import { createPrivateClient } from '@/server/db';
 
 const applicationDetailsSchema = z.object({
   application_id: z.string().uuid(),
@@ -19,8 +20,8 @@ export const applicationDetails = privateProcedure
 const getApplicationDetails = async (
   ctx: PrivateProcedure<typeof applicationDetailsSchema>,
 ) => {
+  const db = createPrivateClient();
   const {
-    ctx: { db },
     input: { application_id },
   } = ctx;
   const resp = (

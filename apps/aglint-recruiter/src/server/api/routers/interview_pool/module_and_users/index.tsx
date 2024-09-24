@@ -3,15 +3,16 @@ import { getFullName } from '@aglint/shared-utils';
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import { createPrivateClient } from '@/server/db';
 
 export const interviewPoolUsersSchema = z.object({
   module_id: z.string().uuid(),
 });
 
 const query = async ({
-  ctx: { db },
   input: { module_id },
 }: PrivateProcedure<typeof interviewPoolUsersSchema>) => {
+  const db = createPrivateClient();
   const { data: dataModule } = await db
     .from('interview_module')
     .select(

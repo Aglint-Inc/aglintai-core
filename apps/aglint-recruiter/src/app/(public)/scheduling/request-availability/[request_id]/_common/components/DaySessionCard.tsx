@@ -1,8 +1,6 @@
 import { Button } from '@components/ui/button';
 import {
-  Calendar,
   CheckCircle,
-  Clock,
   MapPin,
   Timer,
   Users,
@@ -147,11 +145,11 @@ export function MultiDayCard({
   slotSelected,
 }: MultiDayCardCardProps) {
   return (
-    <div className='w-full max-w-2xl rounded-lg border border-neutral-200'>
+    <div className='w-full rounded-lg border border-neutral-200'>
       <div className='space-y-4 p-4'>
         <div className='flex items-start justify-between'>
           <div>
-            <h1 className='text-black'>{textDayCount}</h1>
+            <h1 className='text-black mb-2'>{textDayCount}</h1>
             <div className='flex items-center space-x-2 text-sm text-neutral-600'>
               <Timer className='h-5 w-5 text-neutral-500' />
               <span>Total Duration: {textTotalDuration}</span>
@@ -174,7 +172,7 @@ export function MultiDayCard({
               </div>
               {slotChangeButton}
             </div>
-            <div className='space-y-4'>{slotSelected}</div>
+            <div className='flex flex-col'>{slotSelected}</div>
           </div>
         </>
       ) : null}
@@ -189,13 +187,10 @@ export function SelectedSlot({
   slotBadge: React.ReactNode;
 }) {
   return (
-    <div className='flex w-full flex-row gap-4'>
-      <div className='flex min-w-[200px] items-start space-x-2'>
-        <Calendar className='h-4 w-4 text-gray-500' />
-        <span className='text-sm text-gray-700'>{textDate}</span>
-      </div>
-      <div className='mt-1 flex items-start space-x-2'>
-        <Clock className='max-h-4 min-h-4 min-w-4 max-w-4 text-gray-500' />
+    <div className='flex w-full flex-row gap-4 mb-4'>
+      <div className='flex gap-2 flex-col items-start'>
+        {/* <Calendar className='h-4 w-4 text-gray-500' /> */}
+        <span className='text-sm font-medium text-gray-700'>{textDate}</span>
         <div className='flex flex-wrap gap-1'>{slotBadge}</div>
       </div>
     </div>

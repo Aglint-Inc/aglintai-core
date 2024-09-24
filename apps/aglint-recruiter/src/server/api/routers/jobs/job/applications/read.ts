@@ -6,6 +6,7 @@ import type {
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import { createPrivateClient } from '@/server/db';
 
 type Application = DatabaseView['application_view'];
 
@@ -71,9 +72,10 @@ export const schema = z.object({
 
 const pageSize = 29;
 
-const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
+const query = async ({ input }: PrivateProcedure<typeof schema>) => {
+  const db = createPrivateClient();
   const cursor = input?.cursor ?? 0;
-  const query = ctx.db
+  const query = db
     .from('application_view')
     .select('*', { count: 'exact' })
     .range(cursor, cursor + pageSize)

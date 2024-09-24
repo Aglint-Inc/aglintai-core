@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 import { syncDepartments } from '@/api/sync/greenhouse/departments/process';
 import { type ATSProcedure, atsProcedure } from '@/server/api/trpc';
+import { createPublicClient } from '@/server/db';
 
 type Params = Pick<Parameters<typeof syncDepartments>[0], 'recruiter_id'>;
 
@@ -12,10 +13,11 @@ const schema = z.object({
 }) satisfies ZodTypeToSchema<Params>;
 
 const mutation = async ({ ctx, input }: ATSProcedure<typeof schema>) => {
+  const adminDb = createPublicClient();
   return await syncDepartments({
     decryptKey: ctx.decryptKey,
     recruiter_id: input.recruiter_id,
-    supabaseAdmin: ctx.adminDb,
+    supabaseAdmin: adminDb,
   });
 };
 

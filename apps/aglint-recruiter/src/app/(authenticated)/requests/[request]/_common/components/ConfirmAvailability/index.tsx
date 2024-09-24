@@ -3,6 +3,7 @@ import {
   type CandReqSlotsType,
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
+import { toast } from '@components/hooks/use-toast';
 import { updateCandidateRequestAvailability } from '@requests/functions';
 import { useRequestAvailabilityDetails } from '@requests/hooks';
 import axios from 'axios';
@@ -16,7 +17,6 @@ import { ShowCode } from '@/components/Common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDrawer from '@/components/Common/UIDrawer';
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
-import toast from '@/utils/toast';
 
 import DayCardWrapper from '../SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import Calendar from './_common/components/Calender';
@@ -109,7 +109,7 @@ function ConfirmAvailability() {
           throw new Error('Booking failed');
         }
       } catch (error) {
-        toast.error(error.message);
+        toast({ variant: 'destructive', title: error.message });
       }
       setLoading(false);
       setSelectedIndex((pre) => pre + 1);

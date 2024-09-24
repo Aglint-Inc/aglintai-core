@@ -41,7 +41,8 @@ const mutation = async ({
           "prefferredInterviewers": [],
           "maxTotalSlots": 5,
           "includeAllSoftConflictSlots": false,
-          "overrideSoftConflicts": []
+          "overrideSoftConflicts": [],
+          include_outside_working_hours: false
       }
           `,
       },

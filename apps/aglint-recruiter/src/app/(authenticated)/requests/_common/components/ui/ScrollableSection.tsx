@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { RequestProvider } from '@/context/RequestContext';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import { RequestCard } from './RequestCard';
+import { RequestCard } from '../RequestCard';
 
 function ScrollableSection({
   section,

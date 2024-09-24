@@ -13,7 +13,7 @@ import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerA
 import InterviewerTrainingTypeIcon from '@/components/Common/Icons/InterviewerTrainingTypeIcon';
 import { UIBadge } from '@/components/Common/UIBadge';
 
-import { formatTimeWithTimeZone, getShortTimeZone } from '../utils';
+import { formatTimeWithTimeZone, getShortTimeZone } from '../../utils';
 
 function InterviewerUserDetail({
   interview_meeting,

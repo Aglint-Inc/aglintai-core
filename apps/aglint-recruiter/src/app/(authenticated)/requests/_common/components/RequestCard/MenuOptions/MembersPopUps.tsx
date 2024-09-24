@@ -1,4 +1,5 @@
 import { getFullName } from '@aglint/shared-utils';
+import { toast } from '@components/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import {
@@ -19,7 +20,6 @@ import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useRequests } from '@/context/RequestsContext';
 import { type Request } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import toast from '@/utils/toast';
 
 function MembersPopUps({
   setOpenAssigneePopup,
@@ -54,11 +54,11 @@ function MembersPopUps({
         loading: false,
         toast: false,
       });
-      toast.success(
-        `Request reassigned to ${getFullName(selectedMember.first_name, selectedMember.last_name)}`,
-      );
+      toast({
+        title: `Request reassigned to ${getFullName(selectedMember.first_name, selectedMember.last_name)}`,
+      });
     } else {
-      toast.message('Please select a member');
+      toast({ title: 'Please select a member' });
     }
   };
 

@@ -7,6 +7,7 @@ import {
   type PublicProcedure,
   publicProcedure,
 } from '@/server/api/trpc';
+import { createPublicClient } from '@/server/db';
 import dayjs from '@/utils/dayjs';
 
 dayjs.extend(isBetween);
@@ -16,9 +17,9 @@ export const interviewPoolModuleSchema = z.object({
 });
 
 const query = async ({
-  ctx: { adminDb },
   input: { recruiter_id },
 }: PublicProcedure<typeof interviewPoolModuleSchema>) => {
+  const adminDb = createPublicClient();
   const interview_types = (
     await adminDb
       .from('interview_types_view')
