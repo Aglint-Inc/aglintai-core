@@ -8,6 +8,7 @@ import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
+import { useAllIntegrations } from '@/authenticated/hooks';
 import axios from '@/client/axios';
 import UIDialog from '@/components/Common/UIDialog';
 import UITypography from '@/components/Common/UITypography';
@@ -20,7 +21,6 @@ import {
   useJobs,
 } from '@/jobs/hooks';
 import { type ApiLeverCreateJob } from '@/pages/api/lever/createjob';
-import { useAllIntegrations } from '@/queries/intergrations';
 import ROUTES from '@/utils/routing/routes';
 import toast from '@/utils/toast';
 
