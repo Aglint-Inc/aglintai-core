@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Building2, Loader2, Trash2, Upload, UserCircle } from 'lucide-react';
-import { useState } from 'react';
+import { type MutableRefObject, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -14,7 +14,7 @@ function ImageUploadManual({
 }: {
   image: string;
   size: number;
-  imageFile: any;
+  imageFile: MutableRefObject<File>;
   setChanges?: () => void;
 }) {
   const router = useRouterPro();
@@ -74,7 +74,7 @@ function ImageUploadManual({
             >
               <div className='focus:outline-none'>
                 <Upload
-                  className={`h-5 w-5 ${isStackHovered ? 'opacity-100' : 'opacity-0'} bg-red-300 focus:border-none focus:outline-none`}
+                  className={`h-5 w-5 ${isStackHovered ? 'opacity-100' : 'opacity-0'} focus:border-none focus:outline-none`}
                 />
               </div>
             </FileUploader>

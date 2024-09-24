@@ -1,3 +1,4 @@
+import { type schedulingSettingType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Skeleton } from '@components/ui/skeleton';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -17,10 +18,7 @@ import {
 export default function Heatmap({
   loadSetting,
 }: {
-  loadSetting: {
-    dailyLimit: { value: number; type: string };
-    weeklyLimit: { value: number; type: string };
-  };
+  loadSetting: schedulingSettingType['interviewLoad'];
 }) {
   const [arrayDates, setArrayDates] = useState([]);
   const [dayCount, setDayCount] = useState<{ start: number; end: number }>({
