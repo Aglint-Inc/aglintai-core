@@ -4,7 +4,6 @@ import {
 } from '@aglint/shared-types';
 import {
   createRequestProgressLogger,
-  type Dayjs,
   dayjsLocal,
   type ProgressLoggerType,
   ScheduleUtils,
@@ -19,6 +18,7 @@ import {
   updateCandidateRequestAvailability,
 } from '@requests/functions';
 import { useCandidateAvailability, useMeetingList } from '@requests/hooks';
+import { type Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
