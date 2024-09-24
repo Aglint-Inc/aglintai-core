@@ -118,6 +118,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           plans: cand_picked_slots,
           reqProgressLogger,
           mail_payload: payload?.email,
+          agent_payload: payload.agent.ai_response,
+          req_assignee_tz: request_assignee_tz,
         },
         reqProgressLogger,
       );

@@ -2,6 +2,7 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import { createPrivateClient } from '@/server/db';
 import { interviewCancelReasons, userDetails } from '@/utils/scheduling/const';
 
 const interviewStagesSchema = z.object({ application_id: z.string().uuid() });
@@ -45,8 +46,8 @@ const fetchDetails = async (
 const fetchSessionDetails = async (
   ctx: PrivateProcedure<typeof interviewStagesSchema>,
 ) => {
+  const db = createPrivateClient();
   const {
-    ctx: { db },
     input: { application_id },
   } = ctx;
   const { data } = await db
@@ -100,8 +101,8 @@ const fetchSessionDetails = async (
                 return {
                   interview_session_cancel: interview_session_cancel,
                   recruiter_user: cancel.interview_session_relation
-                    ? cancel.interview_session_relation
-                        .interview_module_relation.recruiter_user
+                    ? cancel?.interview_session_relation
+                        ?.interview_module_relation?.recruiter_user
                     : cancel.admin,
                 };
               }),
@@ -110,7 +111,7 @@ const fetchSessionDetails = async (
               interview_session_relation: sesitem,
               interview_module_relation: sesitem.interview_module_relation,
               user_details: sesitem.interview_module_relation_id
-                ? sesitem.interview_module_relation.recruiter_user
+                ? sesitem?.interview_module_relation?.recruiter_user
                 : sesitem.debrief_user,
             })),
           };

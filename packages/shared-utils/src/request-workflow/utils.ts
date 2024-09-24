@@ -73,21 +73,21 @@ export async function executeWorkflowAction<T1 extends any, U extends unknown>(
   callback1: AsyncCallbackFunction<T1, U>,
   args: T1,
   logger: ProgressLoggerType,
+  log_id = uuidv4(),
   logger_args?: Pick<DatabaseTableInsert['request_progress'], 'meta'>
 ): Promise<U> {
-  let progress_id = uuidv4();
   try {
     await logger({
       ...(logger_args ?? {}),
       status: 'in_progress',
       is_progress_step: false,
-      id: progress_id,
+      id: log_id,
     });
     const res = await callback1(args);
     await logger({
       ...(logger_args ?? {}),
       status: 'completed',
-      id: progress_id,
+      id: log_id,
       is_progress_step: false,
     });
     return res;
@@ -98,7 +98,7 @@ export async function executeWorkflowAction<T1 extends any, U extends unknown>(
       await logger({
         ...(logger_args ?? {}),
         status: 'failed',
-        id: progress_id,
+        id: log_id,
         log: err_log,
         is_progress_step: false,
       });

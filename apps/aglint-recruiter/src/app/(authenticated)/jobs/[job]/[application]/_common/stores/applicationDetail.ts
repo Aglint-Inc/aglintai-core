@@ -17,7 +17,7 @@ export interface ApplicationDetail {
   selectedSessionIds: string[];
   isScheduleOpen: boolean;
   note: string;
-  selectedAssignee: MemberType;
+  selectedAssignee: MemberType | null;
   requestType: DatabaseTable['request']['priority'];
   dateRange: { start: string; end: string };
 }

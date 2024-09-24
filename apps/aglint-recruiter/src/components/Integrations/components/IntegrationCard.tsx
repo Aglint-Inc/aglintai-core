@@ -86,9 +86,11 @@ export function IntegrationCard({
             </Button>
           </Link>
         ) : (
-          <Button variant='outline' onClick={secondaryAction}>
-            {secondaryText || 'Disconnect'}
-          </Button>
+          Boolean(secondaryText) && (
+            <Button variant='outline' onClick={secondaryAction}>
+              {secondaryText}
+            </Button>
+          )
         )}
         <Button
           variant={

@@ -1,16 +1,15 @@
+import SlackLogo from '@public/images/svg/slack-logo.svg';
 import capitalize from 'lodash/capitalize';
 
 import { IntegrationCard } from '../components/IntegrationCard';
 import { type MessagingToolsType } from '../types';
-// import SlackLogo from '@public/images/svg/slack-logo.svg';
 
 function MessagingTools() {
   const messagingTools = [
     {
       name: 'slack' as MessagingToolsType,
       url: 'slack.com',
-      // logo: <SlackLogo />,
-      logo: <></>,
+      logo: <SlackLogo />,
     },
     // {
     //   name: 'teams' as MessagingToolsType,

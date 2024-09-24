@@ -3,13 +3,11 @@ import { ScoreTag } from '@/job/components/Common/ResumeScoreNew/ScoreTag';
 import { useApplicationMeta } from '../../../hooks/useApplicationMeta';
 
 export const Badge = () => {
-  const {
-    data, status
-  } = useApplicationMeta();
+  const { data, status } = useApplicationMeta();
 
   if (status === 'pending') return null;
   if (data?.processing_status !== 'success' || data?.resume_score === undefined)
     return null;
 
-  return <ScoreTag score={data.resume_score} />;
+  return <ScoreTag score={Number(data?.activity_count)} />;
 };
