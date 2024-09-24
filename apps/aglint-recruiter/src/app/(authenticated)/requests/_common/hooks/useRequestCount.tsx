@@ -2,7 +2,6 @@ import { dayjsLocal } from '@aglint/shared-utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import dayjs from '@/utils/dayjs';
 import { supabase } from '@/utils/supabase/client';
 
 import type { responseCreatedCompletedType, SectionRequests } from '../types';
@@ -46,7 +45,7 @@ export async function getRequestsCount({
     createdCompletedRequestCount as responseCreatedCompletedType
   ).value.data.map((ele) => {
     return {
-      name: dayjs(ele.date).format('MMM DD'),
+      name: dayjsLocal(ele.date).format('MMM DD'),
       count: ele.created,
     };
   });
@@ -55,7 +54,7 @@ export async function getRequestsCount({
     createdCompletedRequestCount as responseCreatedCompletedType
   ).value.data.map((ele) => {
     return {
-      name: dayjs(ele.date).format('MMM DD'),
+      name: dayjsLocal(ele.date).format('MMM DD'),
       count: ele.completed,
     };
   });
@@ -63,7 +62,7 @@ export async function getRequestsCount({
     createdCompletedRequestCount as responseCreatedCompletedType
   ).value.data.map((ele) => {
     return {
-      name: dayjs(ele.date).format('MMM DD'),
+      name: dayjsLocal(ele.date).format('MMM DD'),
       count: ele.on_going,
     };
   });

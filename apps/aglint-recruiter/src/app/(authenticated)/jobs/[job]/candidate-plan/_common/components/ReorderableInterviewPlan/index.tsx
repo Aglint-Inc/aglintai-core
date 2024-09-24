@@ -1,3 +1,4 @@
+import { dayjsLocal } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import {
   AlertDialog,
@@ -34,7 +35,6 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
-import dayjs from '@/utils/dayjs';
 import { supabase } from '@/utils/supabase/client';
 
 import { type ProgressSteps, useInterviewPlanProgress } from '../../hooks';
@@ -203,7 +203,7 @@ export default function ReorderableInterviewPlan({
         .from('interview_progress')
         .update({
           is_completed: status,
-          update_at: dayjs().toISOString(),
+          update_at: dayjsLocal().toISOString(),
         })
         .eq('id', id);
 

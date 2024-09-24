@@ -1,6 +1,5 @@
+import { dayjsLocal } from '@aglint/shared-utils';
 import { create } from 'zustand';
-
-import dayjs from '@/utils/dayjs';
 
 export interface AvailabilitySchedulingFlow {
   candidateAvailabilityId: string;
@@ -11,7 +10,7 @@ export interface AvailabilitySchedulingFlow {
 const initialState: AvailabilitySchedulingFlow = {
   candidateAvailabilityId: '',
   applicationIdForConfirmAvailability: '',
-  calendarDate: dayjs().toISOString(),
+  calendarDate: dayjsLocal().toISOString(),
 };
 
 export const useConfirmAvailabilitySchedulingFlowStore =

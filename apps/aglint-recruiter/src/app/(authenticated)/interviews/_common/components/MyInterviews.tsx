@@ -1,9 +1,15 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Calendar, Loader2 } from 'lucide-react';
+import { EmptyState } from '@components/empty-state';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { AlertTriangle, Calendar } from 'lucide-react';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { transformDataSchedules } from 'src/app/_common/utils/schedules-query';
 
+import { useAllIntegrations } from '@/authenticated/hooks';
+import { Loader } from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import {
@@ -34,20 +40,18 @@ function MyInterviews() {
 
   const {
     data: { schedules: allSchedules },
-    isLoading: scheduleLoading,
+    isFetched: scheduleFetched,
   } = useInterviewsByUserId({
     filter,
     member_id: recruiterUser.user_id,
   });
+  const { data: allIntegrations, isLoading: integrationLoading } =
+    useAllIntegrations();
 
-  if (scheduleLoading)
-    return (
-      <div className='flex h-screen w-full items-center justify-center'>
-        <Loader2 className='h-8 w-8 animate-spin' />
-      </div>
-    );
-
-  return (
+  return (!!allIntegrations?.service_json &&
+    allIntegrations?.google_workspace_domain?.split('//')[1] ===
+      recruiterUser.email.split('@')[1]) ||
+    !!(recruiterUser.schedule_auth as any)?.access_token ? (
     <>
       <InterviewMemberSide
         propsGrids={{ style: { maxWidth: 'none' } }}
@@ -79,63 +83,96 @@ function MyInterviews() {
         }}
         slotInterviewCard={
           <>
-            {scheduleLoading ? (
-              ''
-            ) : allSchedules.length === 0 ? (
-              <div className='flex flex-col items-center justify-center p-8 text-center'>
-                <Calendar className='mb-2 h-12 w-12 text-gray-400' />
-                <h3 className='mb-1 text-lg font-medium text-gray-900'>
-                  No schedule found
-                </h3>
-                <p className='text-sm text-gray-500'>
-                  There are no schedules available at the moment.
-                </p>
+            {!scheduleFetched && (
+              <div className='flex h-20 items-center justify-center'>
+                <Loader className='h-8 w-8 animate-spin' />
               </div>
-            ) : (
-              <>
-                {transformDataSchedules(allSchedules).map((sch, ind) => {
-                  const date = Object.keys(sch)[0];
-                  const schedules = sch[String(date)];
-                  return (
-                    <NewMyScheduleCard
-                      key={ind}
-                      textDate={
-                        date != 'undefined'
-                          ? dayjsLocal(date).format('DD')
-                          : null
-                      }
-                      textDay={
-                        date != 'undefined'
-                          ? dayjsLocal(date).format('ddd')
-                          : null
-                      }
-                      textMonth={
-                        date != 'undefined' ? (
-                          dayjsLocal(date).format('MMM')
-                        ) : (
-                          <Calendar size={20} />
-                        )
-                      }
-                      slotMyScheduleSubCard={schedules.map(
-                        (meetingDetails, i) => {
-                          return (
-                            <ScheduleMeetingCard
-                              key={i}
-                              meetingDetails={meetingDetails}
-                            />
-                          );
-                        },
-                      )}
-                    />
-                  );
-                })}
-              </>
+            )}
+            {scheduleFetched &&
+              allSchedules.length > 0 &&
+              transformDataSchedules(allSchedules).map((sch, ind) => {
+                const date = Object.keys(sch)[0];
+                const schedules = sch[String(date)];
+                return (
+                  <NewMyScheduleCard
+                    key={ind}
+                    textDate={
+                      date != 'undefined' ? dayjsLocal(date).format('DD') : null
+                    }
+                    textDay={
+                      date != 'undefined'
+                        ? dayjsLocal(date).format('ddd')
+                        : null
+                    }
+                    textMonth={
+                      date != 'undefined' ? (
+                        dayjsLocal(date).format('MMM')
+                      ) : (
+                        <Calendar size={20} />
+                      )
+                    }
+                    slotMyScheduleSubCard={schedules.map(
+                      (meetingDetails, i) => {
+                        return (
+                          <ScheduleMeetingCard
+                            key={i}
+                            meetingDetails={meetingDetails}
+                          />
+                        );
+                      },
+                    )}
+                  />
+                );
+              })}
+            {scheduleFetched && allSchedules.length === 0 && (
+              <EmptyState
+                module='interviews'
+                title='No interviews found'
+                description='There are no upcoming interviews.'
+              />
             )}
           </>
         }
       />
     </>
+  ) : (
+    <IntegrationNotFound loading={integrationLoading} />
   );
 }
 
 export default MyInterviews;
+
+function IntegrationNotFound({ loading }: { loading: boolean }) {
+  const { recruiterUser } = useAuthDetails();
+  return (
+    <Card className='mb-6'>
+      <CardHeader>
+        <div className='flex items-center justify-between'>
+          <CardTitle className='text-lg font-semibold'>My Interviews</CardTitle>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className='flex h-full flex-col'>
+          <div className='max-w-900px flex h-full flex-col gap-2.5 overflow-auto'>
+            {loading ? (
+              <div className='flex h-20 w-full items-center justify-center'>
+                <Loader className='h-8 w-8 animate-spin' />
+              </div>
+            ) : (
+              <Alert variant='warning'>
+                <AlertTriangle className='h-4 w-4' />
+                <AlertTitle>Warning</AlertTitle>
+                <AlertDescription>
+                  Your calendar is not connected to the scheduling app. Please
+                  <Link href={`/user/${recruiterUser.user_id}`}>
+                    connect it in your profile settings.
+                  </Link>
+                </AlertDescription>
+              </Alert>
+            )}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}

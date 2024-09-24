@@ -3,6 +3,7 @@ import { application } from './routers/application';
 import { ats } from './routers/ats';
 import { candidatePortal } from './routers/candidatePortal';
 import { example, exampleSchema } from './routers/example';
+import { integrations } from './routers/integrations';
 import { interview_pool } from './routers/interview_pool';
 import { interviewers } from './routers/interviewers';
 import { jobs } from './routers/jobs';
@@ -21,6 +22,7 @@ export const appRouter = createTRPCRouter({
   analytics,
   candidatePortal,
   example,
+  integrations,
   interviewers,
   interview_pool,
   jobs,

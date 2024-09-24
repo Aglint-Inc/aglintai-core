@@ -4,6 +4,8 @@ import {
 } from '@aglint/shared-types';
 import {
   createRequestProgressLogger,
+  type Dayjs,
+  dayjsLocal,
   type ProgressLoggerType,
   ScheduleUtils,
 } from '@aglint/shared-utils';
@@ -26,7 +28,6 @@ import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type Request as RequestType } from '@/queries/requests/types';
 import { getCompanyDaysCnt } from '@/services/CandidateScheduleV2/utils/companyWorkingDays';
-import dayjs from '@/utils/dayjs';
 import { mailSender } from '@/utils/mailSender';
 import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsertMeetingsWithOrganizerId';
 import { supabase } from '@/utils/supabase/client';
@@ -55,14 +56,17 @@ function CandidateAvailability({
   const [selectedDays, setSelectedDays] = useState(DAYS_LIST[1]);
   const [selectedSlots, setSelectedSlots] = useState(SLOTS_LIST[1]);
   const [selectedDate, setSelectedDate] = useState<{
-    start_date: dayjs.Dayjs;
-    end_date: dayjs.Dayjs;
+    start_date: Dayjs;
+    end_date: Dayjs;
   } | null>({
-    start_date: dayjs(
-      selectedRequest?.schedule_start_date || dayjs().toISOString(),
+    start_date: dayjsLocal(
+      selectedRequest?.schedule_start_date || dayjsLocal().toISOString(),
     ),
-    end_date: dayjs(selectedRequest.schedule_end_date || dayjs().toISOString()),
+    end_date: dayjsLocal(
+      selectedRequest.schedule_end_date || dayjsLocal().toISOString(),
+    ),
   });
+  dayjsLocal;
   const [submitting, setSubmitting] = useState(false);
   const { data: sessions } = useMeetingList();
 
@@ -83,8 +87,8 @@ function CandidateAvailability({
         label: `${candidateAvailability.number_of_slots} Slots`,
       });
       setSelectedDate({
-        start_date: dayjs(startDate),
-        end_date: dayjs(endDate),
+        start_date: dayjsLocal(startDate),
+        end_date: dayjsLocal(endDate),
       });
     }
   }, [candidateAvailability]);
@@ -194,10 +198,10 @@ function CandidateAvailability({
         },
       });
     } catch (error) {
-      toast({variant:'destructive',title:'Failed to send email'});
+      toast({ variant: 'destructive', title: 'Failed to send email' });
     }
 
-    toast({title:'Request availability created successfully'});
+    toast({ title: 'Request availability created successfully' });
     setSubmitting(false);
     setCandidateAvailabilityDrawerOpen(false);
   }
@@ -267,7 +271,7 @@ function CandidateAvailability({
               value={new Date(selectedDate.start_date.toISOString())}
               onAccept={(value: Date) => {
                 setSelectedDate({
-                  start_date: dayjs(value),
+                  start_date: dayjsLocal(value),
                   end_date: selectedDate?.end_date,
                 });
               }}
@@ -280,7 +284,7 @@ function CandidateAvailability({
               onAccept={(value: Date) => {
                 setSelectedDate({
                   start_date: selectedDate?.start_date,
-                  end_date: dayjs(value),
+                  end_date: dayjsLocal(value),
                 });
               }}
             />

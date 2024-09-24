@@ -12,7 +12,6 @@ import {
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
-import { Switch } from '@components/ui/switch';
 import RequestProgress from '@requests/components/RequestProgress';
 import {
   REQUEST_STATUS_LIST,
@@ -49,7 +48,6 @@ import CollapseContent from '@/jobs/job/application/components/InterviewStage/In
 import { useEditSession } from '@/jobs/job/application/components/InterviewTab/hooks/useEditSession';
 import { type ApiInterviewSessionRequest } from '@/pages/api/scheduling/application/fetchInterviewSessionByRequest';
 import { type Request } from '@/queries/requests/types';
-import dayjs from '@/utils/dayjs';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import ROUTES from '@/utils/routing/routes';
 import { breakDurations } from '@/utils/scheduling/const';
@@ -336,10 +334,10 @@ export default function ViewRequestDetails() {
                                       payload: {
                                         requestId: selectedRequest.id,
                                         requestPayload: {
-                                          schedule_start_date: dayjs(
+                                          schedule_start_date: dayjsLocal(
                                             dates.from,
                                           ).toISOString(),
-                                          schedule_end_date: dayjs(
+                                          schedule_end_date: dayjsLocal(
                                             dates.to,
                                           ).toISOString(),
                                         },
@@ -355,13 +353,13 @@ export default function ViewRequestDetails() {
                             </div>
                           </div>
                           <span className='text-sm'>
-                            {dayjs(selectedRequest?.schedule_start_date).format(
-                              'DD MMM, YYYY',
-                            ) +
+                            {dayjsLocal(
+                              selectedRequest?.schedule_start_date,
+                            ).format('DD MMM, YYYY') +
                               ' - ' +
-                              dayjs(selectedRequest?.schedule_end_date).format(
-                                'DD MMM, YYYY',
-                              )}
+                              dayjsLocal(
+                                selectedRequest?.schedule_end_date,
+                              ).format('DD MMM, YYYY')}
                           </span>
                         </div>
                         <div className='group relative space-y-2'>
@@ -486,18 +484,7 @@ export default function ViewRequestDetails() {
                 <CardHeader className='flex items-center justify-between'>
                   <div className='flex w-full flex-row items-center justify-between'>
                     <CardTitle className='text-lg'>Request Progress</CardTitle>
-                    <div className='flex items-center space-x-2'>
-                      {/* {reqTriggerActionsMap && Object.keys(reqTriggerActionsMap).length > 0 && ( */}
-                      {/* <Button size='sm'>
-                        <WandSparkles className='h-4 w-4 mr-2' />
-                        Proceed with Aglint AI
-                      </Button> */}
-                      {/* )} */}
-                      <div className='flex items-center space-x-2'>
-                        <span className='text-sm'>Automaton</span>
-                        <Switch />
-                      </div>
-                    </div>
+                    <div className='flex items-center space-x-2'></div>
                   </div>
                 </CardHeader>
                 <CardContent>

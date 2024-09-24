@@ -13,7 +13,7 @@ export interface EditSessionDrawer {
   debriefMembers: MemberTypeAutoComplete[];
   trainingToggle: boolean;
   saving: string | null;
-  editSession: StageWithSessions[0]['sessions'][0];
+  editSession: NonNullable<StageWithSessions>[0]['sessions'][0] | null;
   errorValidation: {
     field: 'session_name' | 'qualified_interviewers' | 'training_interviewers';
     error: boolean;
@@ -89,11 +89,14 @@ export const setSelectedInterviewers = (
 export const setEditSession = (
   editSession: Partial<EditSessionDrawer['editSession']> | null,
 ) =>
-  useEditSessionDrawerStore.setState((state) => ({
-    editSession: editSession
-      ? { ...state.editSession, ...editSession }
-      : state.editSession,
-  }));
+  useEditSessionDrawerStore.setState(
+    (state) =>
+      ({
+        editSession: editSession
+          ? { ...state.editSession, ...editSession }
+          : state.editSession,
+      }) as EditSessionDrawer,
+  );
 
 export const resetEditSessionDrawerState = () =>
   useEditSessionDrawerStore.setState({ ...initialState });

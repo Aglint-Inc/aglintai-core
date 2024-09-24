@@ -11,7 +11,6 @@ import {
   useInviteMeta,
   type useInviteSlots,
 } from '@/queries/candidate-invite';
-import dayjs from '@/utils/dayjs';
 import timeZones, { type TimezoneObj } from '@/utils/timeZone';
 import toast from '@/utils/toast';
 
@@ -22,7 +21,7 @@ const useInviteActions = () => {
   const { mutateAsync, isPending } = useConfirmSlots();
 
   const initialTimezone = useMemo(() => {
-    const tz = dayjs.tz.guess();
+    const tz = dayjsLocal.tz.guess();
     return timeZones.find(({ tzCode }) => tzCode === tz);
   }, []);
 
