@@ -46,23 +46,23 @@ function Requests() {
               <div className='flex items-center space-x-2'>
                 <Avatar className='h-5 w-5'>
                   <AvatarImage
-                    src={req.assignee_details.profile_image}
+                    src={req?.assignee_details?.profile_image ?? ''}
                     alt={getFullName(
-                      req.assignee_details.first_name,
-                      req.assignee_details.last_name,
+                      req?.assignee_details?.first_name ?? '',
+                      req?.assignee_details?.last_name ?? '',
                     )}
                   />
                   <AvatarFallback>
                     {getFullName(
-                      req.assignee_details.first_name,
-                      req.assignee_details.last_name,
+                      req?.assignee_details?.first_name ?? '',
+                      req?.assignee_details?.last_name ?? '',
                     ).charAt(0)}
                   </AvatarFallback>
                 </Avatar>
                 <span className='text-xs'>
                   {getFullName(
-                    req.assignee_details.first_name,
-                    req.assignee_details.last_name,
+                    req?.assignee_details?.first_name ?? '',
+                    req?.assignee_details?.last_name ?? '',
                   )}
                 </span>
               </div>

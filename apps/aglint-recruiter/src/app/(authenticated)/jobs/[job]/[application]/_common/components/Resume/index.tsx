@@ -17,7 +17,7 @@ export const Resume = () => {
   if (status === 'success' && typeof file_url !== 'string') return 'Not Found';
   if (status === 'error') return <>Something went wrong</>;
 
-  const url = data?.file_url;
+  const url = data?.file_url ?? '';
   const exten = getExtension(url);
 
   if (exten === '.docx' || exten === '.doc' || exten === '.pdf')

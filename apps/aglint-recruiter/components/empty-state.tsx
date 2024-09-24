@@ -4,6 +4,7 @@ import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
 import {
   Briefcase,
+  Calendar,
   CalendarClock,
   FileBarChart,
   FileText,
@@ -20,7 +21,9 @@ interface EmptyStateProps {
     | 'applications'
     | 'candidates'
     | 'interviewReports'
-    | 'dashboard';
+    | 'dashboard'
+    | 'interviews';
+
   title: string;
   description?: string; // Made optional
   actionLabel?: string; // Made optional
@@ -34,6 +37,7 @@ const moduleIcons: Record<EmptyStateProps['module'], LucideIcon> = {
   candidates: Users,
   interviewReports: FileBarChart,
   dashboard: LayoutDashboard,
+  interviews: Calendar,
 };
 
 export function EmptyState({

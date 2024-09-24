@@ -3,12 +3,14 @@ import { useEffect, useState } from 'react';
 import MembersAutoComplete, {
   type MemberTypeAutoComplete,
 } from 'src/app/_common/components/MembersTextField';
-import { type MemberType } from 'src/app/_common/types/memberType';
 
 import UITextField from '@/components/Common/UITextField';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { ScheduleTypeField } from '@/job/interview-plan/components/sessionForms';
-import { type BodyParamsFetchUserDetails } from '@/pages/api/scheduling/fetchUserDetails';
+import {
+  type BodyParamsFetchUserDetails,
+  type CompanyMembersAPI,
+} from '@/pages/api/scheduling/fetchUserDetails';
 
 import {
   setDebriefMembers,
@@ -19,7 +21,7 @@ import SessionDuration from '../DurationDropdown';
 
 function DebriedForm() {
   const { recruiter } = useAuthDetails();
-  const [members, setMembers] = useState([]);
+  const [members, setMembers] = useState<CompanyMembersAPI>([]);
   const { editSession, debriefMembers, errorValidation } =
     useEditSessionDrawerStore((state) => ({
       editSession: state.editSession,
@@ -28,12 +30,12 @@ function DebriedForm() {
     }));
 
   const optionMembers: MemberTypeAutoComplete[] = members.map((member) => ({
-    email: member.email,
-    user_id: member.module_relation_id,
-    profile_image: member.profile_image,
-    position: member.position,
-    first_name: member.first_name,
-    last_name: member.last_name,
+    email: member?.email || '',
+    user_id: member?.user_id || '',
+    profile_image: member?.profile_image || '',
+    position: member?.position || '',
+    first_name: member?.first_name || '',
+    last_name: member?.last_name || '',
   }));
 
   useEffect(() => {
@@ -42,17 +44,17 @@ function DebriedForm() {
 
   const fetchAllMembers = async () => {
     const bodyParams: BodyParamsFetchUserDetails = {
-      recruiter_id: recruiter.id,
+      recruiter_id: recruiter?.id || '',
       includeSupended: false,
       isCalendar: true,
     };
-    const resMem = (await axios.post(
+    const resMem = await axios.post(
       '/api/scheduling/fetchUserDetails',
       bodyParams,
-    )) as { data: MemberType[] };
+    );
 
     if (resMem?.data?.length > 0) {
-      setMembers(resMem.data);
+      setMembers(resMem.data as CompanyMembersAPI);
     }
   };
 
@@ -107,12 +109,12 @@ function DebriedForm() {
             error={
               errorValidation.find(
                 (err) => err.field === 'qualified_interviewers',
-              ).error
+              )?.error
             }
             helperText={
               errorValidation.find(
                 (err) => err.field === 'qualified_interviewers',
-              ).message
+              )?.message
             }
           />
         </div>

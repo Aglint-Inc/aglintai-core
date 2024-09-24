@@ -10,7 +10,9 @@ import { StageListCard } from '../ui/StageListCard';
 function Progress() {
   const router = useRouterPro();
 
-  const { data: stages } = useInterviewStages();
+  const { data } = useInterviewStages();
+
+  const stages = data || [];
 
   const selectedStageId = router.queryParams.stage as string;
 
