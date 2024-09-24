@@ -11,6 +11,7 @@ import { MoreHorizontal, PlusCircle, RefreshCw } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
+import { useAllIntegrations } from '@/authenticated/hooks';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -19,7 +20,6 @@ import {
   useIntegrationStore,
   useJobs,
 } from '@/jobs/hooks';
-import { useAllIntegrations } from '@/queries/intergrations';
 import ROUTES from '@/utils/routing/routes';
 
 import { STATE_LEVER_DIALOG } from '../constants';
