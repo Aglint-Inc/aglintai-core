@@ -17,7 +17,11 @@ import { ApplicantDetailStage } from '../../ui/ApplicationDetailStage';
 import BreakCard from '../../ui/BreakCard';
 import ScheduleIndividualCard from '../IndividualSession';
 
-function StageIndividual({ stage }: { stage: StageWithSessions[0] }) {
+function StageIndividual({
+  stage,
+}: {
+  stage: NonNullable<StageWithSessions>[0];
+}) {
   const router = useRouterPro();
   const selectedStageId = router.queryParams.stage as string;
   const { selectedSessionIds } = useApplicationDetailStore((state) => ({
@@ -25,9 +29,7 @@ function StageIndividual({ stage }: { stage: StageWithSessions[0] }) {
   }));
   const { refetch } = useInterviewStages();
   const { data: meta } = useApplicationMeta();
-  const {
-    data: { job_status, status },
-  } = useApplicationDetails();
+  const { data } = useApplicationDetails();
 
   const sessions = stage.sessions;
   const isStageSelected = selectedStageId === stage.interview_plan.id;
@@ -69,17 +71,17 @@ function StageIndividual({ stage }: { stage: StageWithSessions[0] }) {
                     selectedSessionIds={selectedSessionIds}
                     onClickCheckBox={onClickCheckBox}
                     isCheckboxVisible={
-                      job_status === 'published' &&
-                      status === 'interview' &&
+                      data?.job_status === 'published' &&
+                      data?.status === 'interview' &&
                       (!interview_meeting ||
                         interview_meeting.status === 'not_scheduled' ||
                         interview_meeting.status === 'cancelled' ||
                         interview_meeting.status === 'reschedule')
                     }
                     candidate={{
-                      name: meta?.name,
-                      current_job_title: meta?.current_job_title,
-                      timezone: meta?.timezone,
+                      name: meta?.name ?? '',
+                      current_job_title: meta?.current_job_title ?? '',
+                      timezone: meta?.timezone ?? '',
                     }}
                     isEditIconVisible={true}
                     isViewDetailVisible={true}

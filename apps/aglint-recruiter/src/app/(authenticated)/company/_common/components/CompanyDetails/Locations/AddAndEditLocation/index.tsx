@@ -1,4 +1,4 @@
-import { Button } from '@components/ui/button';
+import { toast } from '@components/hooks/use-toast';
 import { Checkbox } from '@components/ui/checkbox';
 import {
   Dialog,
@@ -14,6 +14,7 @@ import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import TimezonePicker from '@/components/Common/TimezonePicker';
+import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { manageOfficeLocation } from '@/context/AuthContext/utils';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
@@ -56,20 +57,30 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
 
   const [selectedTimeZone, setSelectedTimeZone] = useState<TimeZoneType>(null);
   const [loading, setLoading] = useState(false);
-
-  const initialValue = office_locations.find((item) => item.id === edit);
+  const [initialValue, setInitialValue] = useState<initialValueType | null>(
+    null,
+  );
 
   const hasHeadquarter = (office_locations as initialValueType[]).some(
     (location) => location.is_headquarter === true,
   );
 
-  const [isHeadQ, setHeadQ] = useState(
-    initialValue?.is_headquarter ? true : false,
-  );
+  const [isHeadQ, setHeadQ] = useState(false);
 
   const handleAddLocation = async () => {
     setLoading(true);
-
+    if (
+      !address1Ref.current.value ||
+      !cityRef.current.value ||
+      !regionRef.current.value ||
+      !countryRef.current.value ||
+      !zipRef.current.value ||
+      !selectedTimeZone
+    ) {
+      toast({ title: 'Please fill in all required fields.' });
+      setLoading(false);
+      return;
+    }
     const { error } = handleValidate();
     if (!error) {
       await manageOfficeLocation({
@@ -94,17 +105,18 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
     setLoading(false);
   };
   useEffect(() => {
-    if (recruiter) {
+    if (recruiter && office_locations.length) {
+      const initialValue = office_locations.find((item) => item.id === edit);
       setHeadQ(initialValue?.is_headquarter);
       const initialTimeZone = timeZone.find(
         (item) => item.tzCode === initialValue?.timezone,
       );
+      setInitialValue(initialValue);
       setSelectedTimeZone(initialTimeZone);
     }
-  }, [recruiter]);
+  }, [recruiter, office_locations, edit]);
 
-  const isCheckboxVisiable =
-    hasHeadquarter && initialValue?.is_headquarter ? true : !hasHeadquarter;
+  const isCheckboxVisiable = hasHeadquarter && isHeadQ ? true : !hasHeadquarter;
 
   const getCountryAndRegion = async (city: string) => {
     const result = await geoCodeLocation(city);
@@ -120,6 +132,10 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
       countryRef.current.value =
         result?.add?.country || countryRef.current.value;
     }
+
+    if (result?.add?.zipcode) {
+      zipRef.current.value = result?.add?.zipcode || zipRef.current.value;
+    }
   };
 
   const debouncedUpsertRequestNotes = useCallback(
@@ -131,7 +147,6 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      {/* <DialogTrigger asChild>{<Button>asdda</Button>}</DialogTrigger> */}
       <DialogContent className='sm:max-w-[500px]'>
         <DialogHeader>
           <DialogTitle>
@@ -255,12 +270,12 @@ const AddAndEditLocation: React.FC<LocationProps> = ({
           )}
         </div>
         <DialogFooter>
-          <Button variant='outline' onClick={handleClose}>
+          <UIButton variant='outline' onClick={handleClose}>
             Cancel
-          </Button>
-          <Button onClick={handleAddLocation} disabled={loading}>
+          </UIButton>
+          <UIButton onClick={handleAddLocation} isLoading={loading}>
             {edit === -1 ? 'Add' : 'Save'}
-          </Button>
+          </UIButton>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -24,7 +24,7 @@ const getApplicationDetails = async (
   const {
     input: { application_id },
   } = ctx;
-  const { candidate_files, score_json, public_jobs, status } = (
+  const resp = (
     await db
       .from('applications')
       .select(
@@ -35,10 +35,13 @@ const getApplicationDetails = async (
       .single()
       .throwOnError()
   ).data;
-  return {
-    score_json,
-    resume_json: candidate_files?.resume_json,
-    status,
-    job_status: public_jobs?.status,
-  };
+
+  return resp && resp?.public_jobs?.status && resp?.candidate_files?.resume_json
+    ? {
+        score_json: resp?.score_json,
+        resume_json: resp?.candidate_files?.resume_json,
+        status: resp?.status,
+        job_status: resp?.public_jobs?.status,
+      }
+    : null;
 };
