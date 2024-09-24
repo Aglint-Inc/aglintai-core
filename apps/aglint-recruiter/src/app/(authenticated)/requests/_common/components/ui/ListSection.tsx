@@ -6,13 +6,11 @@ import {
 } from '@components/ui/accordion';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@components/ui/collapsible';
+import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
 import { cn } from '@lib/utils';
+import { type REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { useState } from 'react';
 
 import { RequestProvider } from '@/context/RequestContext';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
@@ -24,14 +22,27 @@ function ListSection({
   requests,
   expandedSections,
   setExpandedSections,
+  collapseScheduleRequestSections,
 }: {
-  sectionName: string;
+  sectionName: (typeof REQUEST_SESSIONS_DEFAULT_DATA)[number]['sectionName'];
   requests: any[];
   expandedSections: string[];
   setExpandedSections: React.Dispatch<React.SetStateAction<string[]>>;
+  collapseScheduleRequestSections: boolean;
 }) {
-  const isExpanded = expandedSections.includes(sectionName);
-
+  const isExpanded =
+    expandedSections.includes(sectionName) ||
+    (sectionName === 'schedule_request' && collapseScheduleRequestSections);
+  const [slicedRequests, setSlicedRequests] = useState<any[]>(
+    requests.slice(0, 5),
+  );
+  const viewMore = () => {
+    if (slicedRequests.length === requests.length) {
+      if (isExpanded) {
+        setExpandedSections(expandedSections.filter((s) => s !== sectionName));
+      }
+    } else setSlicedRequests(requests.slice(0, slicedRequests.length + 5));
+  };
   return (
     <Accordion
       type='single'
@@ -80,7 +91,7 @@ function ListSection({
         <AccordionContent>
           {requests.length > 0 ? (
             <div className='flex flex-col gap-4'>
-              {requests.slice(0, 5).map((props, i) => (
+              {slicedRequests.map((props, i) => (
                 <RequestProvider key={props.id ?? i} request_id={props.id}>
                   <RequestCard {...{ ...props, isExpanded: false }} />
                 </RequestProvider>
@@ -99,31 +110,26 @@ function ListSection({
                       ))}
                     </div>
                   </CollapsibleContent>
-                  <CollapsibleTrigger asChild className='mt-4 w-full'>
-                    <Button
-                      variant='outline'
-                      className='w-full'
-                      onClick={() => {
-                        if (isExpanded) {
-                          setExpandedSections(
-                            expandedSections.filter((s) => s !== sectionName),
-                          );
-                        }
-                      }}
-                    >
-                      {isExpanded ? (
-                        <>
-                          <ChevronUp className='mr-2 h-4 w-4' />
-                          Show Less
-                        </>
-                      ) : (
-                        <>
-                          <ChevronDown className='mr-2 h-4 w-4' />
-                          Show More ({requests.length - 5} more)
-                        </>
-                      )}
-                    </Button>
-                  </CollapsibleTrigger>
+
+                  <Button
+                    variant='outline'
+                    className='w-full'
+                    onClick={viewMore}
+                  >
+                    {slicedRequests.length === requests.length ? (
+                      <>
+                        <ChevronUp className='mr-2 h-4 w-4' />
+                        Collapse
+                      </>
+                    ) : (
+                      <>
+                        <ChevronDown className='mr-2 h-4 w-4' />
+                        Show More ({requests.length -
+                          slicedRequests.length}{' '}
+                        more)
+                      </>
+                    )}
+                  </Button>
                 </Collapsible>
               )}
             </div>
