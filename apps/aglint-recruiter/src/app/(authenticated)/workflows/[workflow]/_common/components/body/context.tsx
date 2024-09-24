@@ -64,6 +64,7 @@ const useActionsContext = () => {
                   subject: emailTemplate?.subject ?? '',
                 },
               },
+              workflow_id: null,
             });
           }
           break;
@@ -75,6 +76,7 @@ const useActionsContext = () => {
               target_api,
               order,
               payload: null,
+              workflow_id: null,
             });
           }
           break;
@@ -86,6 +88,7 @@ const useActionsContext = () => {
               target_api,
               order,
               payload: null,
+              workflow_id: null,
             });
           }
           break;
@@ -96,6 +99,8 @@ const useActionsContext = () => {
               action_type,
               target_api,
               order,
+              workflow_id: null,
+
               payload: {
                 agent: {
                   instruction: '',
