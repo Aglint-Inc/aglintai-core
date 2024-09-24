@@ -1,6 +1,8 @@
 import { useToast } from '@components/hooks/use-toast';
 import { Input } from '@components/ui/input';
 import { Toggle } from '@components/ui/toggle';
+import GoogleLogo from '@public/images/svg/google-logo.svg';
+import ZoomLogo from '@public/images/svg/zoom-logo.svg';
 import axios from 'axios';
 import { Loader2, Upload } from 'lucide-react';
 import { useRef, useState } from 'react';
@@ -9,8 +11,6 @@ import { useDropzone } from 'react-dropzone';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
-// import GoogleLogo from '@public/images/svg/google-logo.svg';
-// import ZoomLogo from '@public/images/svg/zoom-logo.svg';
 import { IntegrationCard } from '../components/IntegrationCard';
 import SchedulingPopUps from '../SchedulingToolPopUps';
 import { type SchedulingReasonTypes, type schedulingToolsType } from '../types';
@@ -157,8 +157,7 @@ function Scheduling({ allIntegrations }) {
       name: 'Google Workspace',
       url: 'workspace.google.com',
       isConnected: allIntegrations?.service_json,
-      // logo: <GoogleLogo />,
-      logo: <></>,
+      logo: <GoogleLogo />,
       primaryText: allIntegrations?.service_json ? 'Re-Upload' : 'Connect',
       secondaryText: allIntegrations?.service_json ? 'Disconnect' : 'Learn How',
       primaryAction: () => {
@@ -176,8 +175,7 @@ function Scheduling({ allIntegrations }) {
     {
       name: 'Zoom',
       url: 'zoom.com',
-      // logo: <ZoomLogo />,
-      logo: <></>,
+      logo: <ZoomLogo />,
       isConnected: allIntegrations?.zoom_auth,
       primaryText: allIntegrations?.zoom_auth ? 'Re-Connect' : 'Connect',
       secondaryText: allIntegrations?.zoom_auth ? 'Disconnect' : 'Learn How',
