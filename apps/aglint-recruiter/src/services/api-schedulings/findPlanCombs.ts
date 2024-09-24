@@ -19,7 +19,7 @@ export const findPlanCombs = async ({
   session_ids: string[];
   reqProgressLogger: ProgressLoggerType;
   time_zone: string;
-  agent_instruction: string;
+  agent_instruction: ;
 }) => {
   const cand_schedule = new CandidatesSchedulingV2({
     include_conflicting_slots: {
