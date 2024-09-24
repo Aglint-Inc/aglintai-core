@@ -19,7 +19,7 @@ import toast from '@/utils/toast';
 import IconScheduleType from '../../../../../../../components/Common/Icons/IconScheduleType';
 import { Loader } from '../../../../../../../components/Common/Loader';
 import { SessionIcon } from '../../../../../../../components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
-import { getScheduleType } from '../../../../../../../utils/scheduling/colors_and_enums';
+import { getScheduleType } from '../../../../../../_common/utils/sessionScheduleType';
 import {
   type ScheduleCardProps,
   type ScheduleCardsProps,

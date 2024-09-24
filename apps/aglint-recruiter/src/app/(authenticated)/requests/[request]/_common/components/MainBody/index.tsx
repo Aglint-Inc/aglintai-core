@@ -33,6 +33,7 @@ import {
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { breakDurations } from 'src/app/_common/utils/const';
 
 import MemberCard from '@/components/Common/MemberCard';
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -50,7 +51,6 @@ import { type ApiInterviewSessionRequest } from '@/pages/api/scheduling/applicat
 import { type Request } from '@/queries/requests/types';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import ROUTES from '@/utils/routing/routes';
-import { breakDurations } from '@/utils/scheduling/const';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { updateInterviewSessionsDurations } from '../../functions';

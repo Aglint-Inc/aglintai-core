@@ -5,12 +5,12 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
+import { breakDurations } from 'src/app/_common/utils/const';
 
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { type UpdateInterviewSession } from '@/queries/interview-plans';
 import { type InterviewSessionType } from '@/queries/interview-plans/types';
 import { getBreakLabel } from '@/utils/getBreakLabel';
-import { breakDurations } from '@/utils/scheduling/const';
 
 type BreakFormProps = Pick<InterviewSessionType, 'break_duration'>;
 

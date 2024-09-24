@@ -17,7 +17,7 @@ import { getBreakLabel } from '@/utils/getBreakLabel';
 import toast from '@/utils/toast';
 
 import { SessionIcon } from '../../../../../../../../components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
-import { getScheduleType } from '../../../../../../../../utils/scheduling/colors_and_enums';
+import { getScheduleType } from '../../../../../../../_common/utils/sessionScheduleType';
 import {
   type ScheduleCardProps,
   type ScheduleCardsProps,

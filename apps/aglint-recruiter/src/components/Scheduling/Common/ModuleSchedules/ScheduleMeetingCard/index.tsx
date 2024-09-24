@@ -14,7 +14,7 @@ import {
   getScheduleBgcolor,
   getScheduleTextcolor,
   getScheduleType,
-} from '../../../../../utils/scheduling/colors_and_enums';
+} from '../../../../../app/_common/utils/sessionScheduleType';
 import { convertTimeZoneToAbbreviation } from '../../../utils';
 import InterviewerUserDetail from '../../InterviewerUserDetail';
 import { MyScheduleSubCard } from './MyScheduleSubCard';

@@ -1,6 +1,7 @@
+import { sessionDurations } from 'src/app/_common/utils/const';
+
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { getBreakLabel } from '@/utils/getBreakLabel';
-import { sessionDurations } from '@/utils/scheduling/const';
 
 import {
   setEditSession,

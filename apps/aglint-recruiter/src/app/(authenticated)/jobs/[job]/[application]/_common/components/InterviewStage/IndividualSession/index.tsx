@@ -5,6 +5,7 @@ import { Checkbox } from '@components/ui/checkbox';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { MeetingStatusBadge } from 'src/app/_common/components/MeetingStatusBadge';
+import { getScheduleType } from 'src/app/_common/utils/sessionScheduleType';
 
 import { useAllIntegrations } from '@/authenticated/hooks';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
@@ -12,7 +13,6 @@ import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerAcceptDeclineIcon';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
 import { getBreakLabel } from '@/utils/getBreakLabel';
-import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
 import { type StageWithSessions } from '../../../hooks/useInterviewStages';
 import { GlobalScheduleCard } from '../../ui/GlobalScheduleCard';

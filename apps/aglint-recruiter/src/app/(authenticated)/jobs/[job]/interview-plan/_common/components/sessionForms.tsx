@@ -15,6 +15,7 @@ import React, {
 import MembersAutoComplete, {
   type MemberTypeAutoComplete,
 } from 'src/app/_common/components/MembersTextField';
+import { sessionDurations } from 'src/app/_common/utils/const';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { UIButton } from '@/components/Common/UIButton';
@@ -27,7 +28,6 @@ import { type CreateInterviewSession } from '@/queries/interview-plans';
 import { type InterviewSessionType } from '@/queries/interview-plans/types';
 import { getBreakLabelV2 } from '@/utils/getBreakLabelV2';
 import ROUTES from '@/utils/routing/routes';
-import { sessionDurations } from '@/utils/scheduling/const';
 import { validateString } from '@/utils/validateString';
 
 import { type CompanyMember } from '.';

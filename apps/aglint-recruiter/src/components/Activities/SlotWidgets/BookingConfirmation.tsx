@@ -5,7 +5,7 @@ import { Calendar, Clock } from 'lucide-react';
 
 import { getBreakLabel } from '@/utils/getBreakLabel';
 
-import { getScheduleType } from '../../../utils/scheduling/colors_and_enums';
+import { getScheduleType } from '../../../app/_common/utils/sessionScheduleType';
 import IconScheduleType from '../../Common/Icons/IconScheduleType';
 import IconSessionType from '../../Common/Icons/IconSessionType';
 import { formatTimeWithTimeZone } from '../../Scheduling/utils';

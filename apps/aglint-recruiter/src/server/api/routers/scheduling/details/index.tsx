@@ -1,8 +1,11 @@
+import {
+  interviewCancelReasons,
+  userDetails,
+} from 'src/app/_common/utils/const';
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
-import { interviewCancelReasons, userDetails } from '@/utils/scheduling/const';
 
 export const scheduleDetailsSchema = z.object({
   meeting_id: z.string().uuid(),

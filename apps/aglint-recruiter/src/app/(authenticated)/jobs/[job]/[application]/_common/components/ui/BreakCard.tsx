@@ -1,11 +1,11 @@
 import { Card } from '@components/ui/card';
 import { Coffee } from 'lucide-react';
 import React from 'react';
+import { breakDurations } from 'src/app/_common/utils/const';
 
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITypography from '@/components/Common/UITypography';
 import { getBreakLabel } from '@/utils/getBreakLabel';
-import { breakDurations } from '@/utils/scheduling/const';
 
 import { type StageWithSessions } from '../../hooks/useInterviewStages';
 

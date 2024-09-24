@@ -29,6 +29,7 @@ import {
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { breakDurations } from 'src/app/_common/utils/const';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { Loader } from '@/components/Common/Loader';
@@ -51,7 +52,6 @@ import {
 import { jobQueries } from '@/queries/job';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import ROUTES from '@/utils/routing/routes';
-import { breakDurations } from '@/utils/scheduling/const';
 import {
   capitalizeAll,
   capitalizeFirstLetter,

@@ -1,9 +1,12 @@
 /* eslint-disable no-console */
 import { type DatabaseTable, type SupabaseType } from '@aglint/shared-types';
 import { type NextApiRequest, type NextApiResponse } from 'next';
+import {
+  interviewCancelReasons,
+  userDetails,
+} from 'src/app/_common/utils/const';
 
 import { apiRequestHandlerFactory } from '@/utils/apiUtils/responseFactory';
-import { interviewCancelReasons, userDetails } from '@/utils/scheduling/const';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export type ApiInterviewStages = {

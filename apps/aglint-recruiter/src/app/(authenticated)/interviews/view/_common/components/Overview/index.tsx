@@ -14,8 +14,8 @@ import {
   formatTimeWithTimeZone,
   getShortTimeZone,
 } from '../../../../../../../components/Scheduling/utils';
-import { getScheduleType } from '../../../../../../../utils/scheduling/colors_and_enums';
 import { MeetingStatusBadge } from '../../../../../../_common/components/MeetingStatusBadge';
+import { getScheduleType } from '../../../../../../_common/utils/sessionScheduleType';
 import { useScheduleDetails } from '../../hooks/useScheduleDetails';
 import { NewScheduleDetail } from '../ui/NewScheduleDetails';
 import AllRolesMeetings from './AllRolesMeetings';
