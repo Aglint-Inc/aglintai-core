@@ -1,59 +1,62 @@
+import { type ActionPayloadType } from '@aglint/shared-types';
 import {
-  type CustomAgentInstructionPayload,
-  type PlanCombinationRespType,
-} from '@aglint/shared-types';
-import {
+  type candidate_new_schedule_schema,
   CApiError,
   DAYJS_FORMATS,
   dayjsLocal,
   type ProgressLoggerType,
   supabaseWrap,
 } from '@aglint/shared-utils';
+import type * as v from 'valibot';
 
 import { mailSender } from '@/utils/mailSender';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
+import { findPlanCombs } from './findPlanCombs';
+
 export const candidateSelfSchedule = async ({
-  cloned_sessn_ids,
-  end_date_str,
-  organizer_id,
-  plans,
-  request_id,
-  application_id,
-  start_date_str,
+  parsed_body,
+  date_range,
   reqProgressLogger,
-  mail_payload,
-  agent_payload,
+  job_payload,
   req_assignee_tz,
+  organizer_id,
 }: {
-  cloned_sessn_ids: string[];
-  organizer_id: string;
-  application_id: string;
-  plans: PlanCombinationRespType[];
-  start_date_str: string;
-  end_date_str: string;
-  request_id: string;
+  parsed_body: v.InferInput<typeof candidate_new_schedule_schema>;
+  date_range: {
+    start_date_str: string;
+    end_date_str: string;
+  };
   reqProgressLogger: ProgressLoggerType;
-  mail_payload: any;
-  agent_payload: CustomAgentInstructionPayload['agent']['ai_response'];
+  job_payload: ActionPayloadType['agent_instruction'];
   req_assignee_tz: string;
+  organizer_id: string;
 }) => {
+  const plans = await findPlanCombs({
+    date_range: date_range,
+    recruiter_id: parsed_body.recruiter_id,
+    session_ids: parsed_body.session_ids,
+    reqProgressLogger,
+    time_zone: req_assignee_tz,
+    agent_payload: job_payload.agent.ai_response,
+  });
   if (plans.length === 0) {
     throw new CApiError('CLIENT', 'No plans matched');
   }
+  const agent_payload = job_payload.agent.ai_response;
   const candidate_slots = plans.slice(0, agent_payload.maxTotalSlots);
   const [filter_json] = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')
       .insert({
-        session_ids: cloned_sessn_ids,
+        session_ids: parsed_body.session_ids,
         filter_json: {
-          start_date: start_date_str,
-          end_date: end_date_str,
+          start_date: date_range.start_date_str,
+          end_date: date_range.end_date_str,
         },
         selected_options: candidate_slots, //TODO: fix this later
-        request_id: request_id,
-        application_id,
+        request_id: parsed_body.request_id,
+        application_id: parsed_body.application_id,
       })
       .select(),
   );
@@ -61,11 +64,11 @@ export const candidateSelfSchedule = async ({
   await mailSender({
     target_api: 'sendSelfScheduleRequest_email_applicant',
     payload: {
-      application_id,
+      application_id: parsed_body.application_id,
       is_preview: false,
-      organizer_id,
-      overridedMailSubBody: mail_payload,
-      request_id,
+      organizer_id: organizer_id,
+      overridedMailSubBody: job_payload.email,
+      request_id: parsed_body.request_id,
     },
   });
 
