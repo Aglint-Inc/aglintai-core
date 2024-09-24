@@ -13,11 +13,11 @@ function StageSessions() {
 
   const selectedStageId = router.queryParams.stage as string;
 
-  const filteredStages = stages.filter(
+  const filteredStages = (stages || []).filter(
     (stage) => selectedStageId === stage.interview_plan.id,
   );
 
-  const sections = stages.map((item) => item.interview_plan.id);
+  const sections = (stages || []).map((item) => item.interview_plan.id);
   const tabCount: number = sections.length - 1;
   const currentIndex: number = sections.indexOf(selectedStageId);
 

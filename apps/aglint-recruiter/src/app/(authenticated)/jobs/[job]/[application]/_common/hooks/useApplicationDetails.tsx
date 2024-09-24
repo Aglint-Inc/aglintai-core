@@ -6,9 +6,10 @@ export const useApplicationDetails = () => {
   const utils = api.useUtils();
   const application_id = router.params.application;
   const query = api.application.applicationDetails.useQuery({ application_id });
+  const data = query.data!;
   const refetch = () =>
     utils.application.applicationDetails.invalidate({ application_id });
-  return { ...query, refetch, application_id };
+  return { ...query, data, refetch, application_id };
 };
 
 export type ApplicationDetails = ReturnType<
