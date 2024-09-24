@@ -1,39 +1,39 @@
 import { dayjsLocal } from '@aglint/shared-utils';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+
+import { SectionCard } from '@/authenticated/components/SectionCard';
 
 export const KeyMatrics = ({ totalHour, completedCount, declineCount }) => {
   const completedHour = dayjsLocal.duration(totalHour, 'minutes').asHours();
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className='text-xl'>Key Metrics</CardTitle>
-      </CardHeader>
-      <CardContent>
+    <>
+      <SectionCard title='Key Metrics'>
         <div className='grid grid-cols-2 gap-4 sm:grid-cols-4'>
-          <div className='text-center'>
-            <div className='text-xl font-bold text-green-600'>
-              {completedHour}
-            </div>
-            <div className='text-sm text-gray-500'>Interview Hours</div>
-          </div>
-          <div className='text-center'>
-            <div className='text-xl font-bold text-green-600'>
-              {completedCount}
-            </div>
-            <div className='text-sm text-gray-500'>Interviews Completed</div>
-          </div>
-          {/* <div className='text-center'>
-            <div className='text-xl font-bold text-yellow-600'>
-              {upcomingCount}
-            </div>
-            <div className='text-sm text-gray-500'>Average Rating</div>
-          </div> */}
-          <div className='text-center'>
-            <div className='text-xl font-bold text-red-600'>{declineCount}</div>
-            <div className='text-sm text-gray-500'>Declines</div>
-          </div>
+          <Card color='green' title='Interview Hours' value={completedHour} />
+          <Card
+            color='green'
+            title='Interviews Completed'
+            value={completedCount}
+          />
+          <Card color='red' title='Declines' value={declineCount} />
         </div>
-      </CardContent>
-    </Card>
+      </SectionCard>
+    </>
+  );
+};
+
+const Card = ({
+  title,
+  value,
+  color,
+}: {
+  title: string;
+  value: string | number;
+  color: 'green' | 'red' | 'blue';
+}) => {
+  return (
+    <div className='text-center'>
+      <p className={`text-xl font-bold text-${color}-600`}>{value}</p>
+      <div className='text-sm text-gray-500'>{title}</div>
+    </div>
   );
 };

@@ -4,10 +4,13 @@ import { Card, CardContent } from '@components/ui/card';
 import axios from 'axios';
 import { Clock, Mail, MapPin, Phone, User } from 'lucide-react';
 import { useParams } from 'next/navigation';
+import { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
+
+import { EditUser } from './EditUser';
 
 export const Header = ({
   avatar,
@@ -18,10 +21,10 @@ export const Header = ({
   timeZone,
   email,
   phone,
-  setIsOpen,
   userCardRef,
 }) => {
   const router = useRouterPro();
+  const [isOpen, setIsOpen] = useState(router.queryParams.edit_enable || false);
 
   const { recruiterUser } = useAuthDetails();
   const user_id = useParams().user as string;
@@ -40,6 +43,8 @@ export const Header = ({
 
   return (
     <>
+      {/* Eidt Dialog  */}
+      <EditUser isOpen={isOpen} setIsOpen={setIsOpen} />
       <Card className='mb-8' ref={userCardRef}>
         <CardContent className='p-6'>
           <div className='flex justify-between'>
@@ -50,18 +55,6 @@ export const Header = ({
                   <User className='text-gray-700' size={40} strokeWidth={1} />
                 </AvatarFallback>
               </Avatar>
-
-              {/* <Avatar className='h-[32px] w-[32px] cursor-pointer rounded-[4px]'>
-                        <AvatarImage
-                          src={
-                            userDetails?.profile_image || defaultProfileImage
-                          }
-                          alt='@shadcn'
-                        />
-                        <AvatarFallback className='rounded-[4px]'>
-                          <User className='text-gray-700' />
-                        </AvatarFallback>
-                      </Avatar> */}
 
               <div>
                 <h2 className='text-2xl font-bold text-gray-900'>{name}</h2>

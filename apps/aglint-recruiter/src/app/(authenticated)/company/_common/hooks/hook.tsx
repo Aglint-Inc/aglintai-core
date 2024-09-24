@@ -110,6 +110,7 @@ export const usePortalSettings = () => {
   const [isCoverUploading, setIsCoverUploading] = useState<boolean>(false);
   const [isCoverRemoving, setIsCoverRemoving] = useState<boolean>(false);
   const [isImageRemoving, setIsImageRemoving] = useState<string>(null);
+  const [isPortalUpdating, setIsPortalUpdating] = useState<boolean>(false);
   const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
   const queryClient = useQueryClient();
   const {
@@ -136,6 +137,7 @@ export const usePortalSettings = () => {
   const updatePortalSetting = async (
     arg: Awaited<ReturnType<typeof fetchPortalSettings>>,
   ) => {
+    setIsPortalUpdating(true);
     const { error } = await supabase
       .from('recruiter_preferences')
       .update(arg)
@@ -148,7 +150,7 @@ export const usePortalSettings = () => {
     await queryClient.invalidateQueries({
       queryKey: ['portalSettings'],
     });
-    setIsDialogOpen(null);
+    setIsPortalUpdating(false);
   };
 
   const updateImages = async (
@@ -312,6 +314,7 @@ export const usePortalSettings = () => {
     isCoverRemoving,
     isImageUploading,
     isImageRemoving,
+    isPortalUpdating,
   };
 };
 
