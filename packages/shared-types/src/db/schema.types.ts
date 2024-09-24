@@ -1685,16 +1685,16 @@ export type Database = {
       }
       interview_session: {
         Row: {
-          break_duration: number
+          break_duration: number | null
           created_at: string
           id: string
           interview_plan_id: string | null
-          interviewer_cnt: number
+          interviewer_cnt: number | null
           location: string | null
           meeting_id: string | null
           members_meta: Json
           module_id: string | null
-          name: string
+          name: string | null
           parent_session_id: string | null
           recruiter_id: string
           schedule_type: Database["public"]["Enums"]["interview_schedule_type"]
@@ -1703,16 +1703,16 @@ export type Database = {
           session_type: Database["public"]["Enums"]["session_type"]
         }
         Insert: {
-          break_duration?: number
+          break_duration?: number | null
           created_at?: string
           id?: string
           interview_plan_id?: string | null
-          interviewer_cnt?: number
+          interviewer_cnt?: number | null
           location?: string | null
           meeting_id?: string | null
           members_meta?: Json
           module_id?: string | null
-          name?: string
+          name?: string | null
           parent_session_id?: string | null
           recruiter_id: string
           schedule_type?: Database["public"]["Enums"]["interview_schedule_type"]
@@ -1721,16 +1721,16 @@ export type Database = {
           session_type?: Database["public"]["Enums"]["session_type"]
         }
         Update: {
-          break_duration?: number
+          break_duration?: number | null
           created_at?: string
           id?: string
           interview_plan_id?: string | null
-          interviewer_cnt?: number
+          interviewer_cnt?: number | null
           location?: string | null
           meeting_id?: string | null
           members_meta?: Json
           module_id?: string | null
-          name?: string
+          name?: string | null
           parent_session_id?: string | null
           recruiter_id?: string
           schedule_type?: Database["public"]["Enums"]["interview_schedule_type"]
@@ -4691,6 +4691,7 @@ export type Database = {
           section_count: Json | null
           sourcer: string | null
           status: Database["public"]["Enums"]["public_job_status"] | null
+          syncable: boolean | null
           workplace_type:
             | Database["public"]["Enums"]["public_job_workplace"]
             | null
@@ -6919,4 +6920,3 @@ export type Enums<
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
     : never
-
