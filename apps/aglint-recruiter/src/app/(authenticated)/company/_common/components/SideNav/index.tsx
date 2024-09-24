@@ -119,7 +119,7 @@ function VerticalNav() {
                 <Button
                   variant='ghost'
                   className={cn(
-                    'justify-start',
+                    'w-full justify-start',
                     router.queryParams.tab === item.value && 'bg-muted',
                   )}
                 >
