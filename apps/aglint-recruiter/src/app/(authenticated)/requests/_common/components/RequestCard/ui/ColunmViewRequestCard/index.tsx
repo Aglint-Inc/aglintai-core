@@ -49,8 +49,8 @@ const ColumnViewRequestCard = ({ ...props }: RequestProps) => {
             <div className='mt-1 flex items-center'>
               <User className='mr-1 h-3 w-3' />
               {getFullName(
-                props.applications.candidates.first_name,
-                props.applications.candidates.last_name,
+                props.applications?.candidates?.first_name ?? '',
+                props.applications?.candidates?.last_name ?? '',
               )}
             </div>
           </div>

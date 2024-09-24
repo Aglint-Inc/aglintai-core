@@ -1,58 +1,39 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Progress } from '@components/ui/progress';
 
+import { SectionCard } from '@/authenticated/components/SectionCard';
+
 export const Performance = ({ interviewer }) => {
+  const performances = [
+    {
+      title: 'Candidate Satisfaction',
+      percentage: interviewer.performanceMetrics.candidateSatisfaction,
+    },
+    {
+      title: 'Hiring Manager Satisfaction',
+      percentage: interviewer.performanceMetrics.hiringManagerSatisfaction,
+    },
+    {
+      title: 'Candidate Satisfaction',
+      percentage: interviewer.performanceMetrics.decisionAccuracy,
+    },
+  ];
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className='text-xl'>Performance Metrics</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className='space-y-4'>
-          <div>
+    <SectionCard title='Performance Metrics'>
+      <div className='space-y-4'>
+        {performances.map((performance) => (
+          <div key={performance.title}>
             <div className='mb-1 flex justify-between'>
               <span className='text-sm font-medium text-gray-700'>
-                Candidate Satisfaction
+                {performance.title}
               </span>
               <span className='text-sm font-medium text-gray-700'>
-                {interviewer.performanceMetrics.candidateSatisfaction}%
+                {performance.percentage}%
               </span>
             </div>
-            <Progress
-              value={interviewer.performanceMetrics.candidateSatisfaction}
-              className='h-2'
-            />
+            <Progress value={performance.percentage} className='h-2' />
           </div>
-          <div>
-            <div className='mb-1 flex justify-between'>
-              <span className='text-sm font-medium text-gray-700'>
-                Hiring Manager Satisfaction
-              </span>
-              <span className='text-sm font-medium text-gray-700'>
-                {interviewer.performanceMetrics.hiringManagerSatisfaction}%
-              </span>
-            </div>
-            <Progress
-              value={interviewer.performanceMetrics.hiringManagerSatisfaction}
-              className='h-2'
-            />
-          </div>
-          <div>
-            <div className='mb-1 flex justify-between'>
-              <span className='text-sm font-medium text-gray-700'>
-                Decision Accuracy
-              </span>
-              <span className='text-sm font-medium text-gray-700'>
-                {interviewer.performanceMetrics.decisionAccuracy}%
-              </span>
-            </div>
-            <Progress
-              value={interviewer.performanceMetrics.decisionAccuracy}
-              className='h-2'
-            />
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+        ))}
+      </div>
+    </SectionCard>
   );
 };

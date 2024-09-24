@@ -58,7 +58,7 @@ export const useRequestsActions = () => {
 
   const requests = useQuery(
     requestQueries.requests({
-      payload: { assigner_id },
+      payload: { assigner_id: assigner_id ?? '' },
       filters,
       sort,
     }),
@@ -129,7 +129,7 @@ export const useRequestsActions = () => {
 
   const requestIds = useMemo(
     () =>
-      (SafeObject.values(requests?.data) ?? [])
+      (SafeObject.values(requests?.data ?? []) ?? [])
         .flatMap((request) => request)
         .map(({ id }) => id)
         .toSorted((a, z) => (a > z ? 1 : z > a ? -1 : 0))

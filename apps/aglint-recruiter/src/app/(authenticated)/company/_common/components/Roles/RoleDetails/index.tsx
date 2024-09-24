@@ -1,41 +1,23 @@
 import { Alert, AlertDescription } from '@components/ui/alert';
-import {
-  Breadcrumb,
-  BreadcrumbEllipsis,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from '@components/ui/breadcrumb';
 import { Button } from '@components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@components/ui/card';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@components/ui/dropdown-menu';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Switch } from '@components/ui/switch';
 import { CirclePlus, Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import { SectionCard } from '@/authenticated/components/SectionCard';
+import { type useRoleAndPermissionsHook } from '@/company/hooks/useRoleAndPermissionsHook';
 import { allPermissions } from '@/constant/role_and_permissions';
 import { useRolesAndPermissions as useRolesAndPermissionsContext } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSearchQuery } from '@/hooks/useSearchQuery';
 import { type GetRoleAndPermissionsAPI } from '@/pages/api/getRoleAndPermissions/type';
 import { useAllMembers } from '@/queries/members';
-import { type useRoleAndPermissionsHook } from '@/queries/RolesSettings';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import RoleEditMember from './RoleEditMember';
-import { RoleUserWidget } from './RoleUserWidget';
+import RoleEditDialog from './RoleEditDialog';
+import { BreadCrumb } from './ui/BreadCrumb';
+import { RoleUserWidget } from './ui/RoleUserWidget';
 
 function RoleDetails({
   role,
@@ -87,30 +69,12 @@ function RoleDetails({
   const userLength = roleUsers.length;
   return (
     <div className='container mx-auto py-6'>
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href='/roles'>Roles</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger className='flex items-center gap-1'>
-                <span>{capitalizeFirstLetter(role.name)}</span>
-                {/* <ChevronDownCircle size={12}> */}
-                <BreadcrumbEllipsis className='h-4 w-4' />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align='start'>
-                {AllRoles.map((item) => (
-                  <DropdownMenuItem key={item.id} onClick={item.switchRole}>
-                    {capitalizeFirstLetter(item.role)}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <RoleEditDialog
+        isOpen={editUser}
+        close={() => setEditUser(false)}
+        role={{ id: role.id, role: role.name, assignedTo: role.assignedTo }}
+      />
+      <BreadCrumb AllRoles={AllRoles} name={role.name} />
       <div className='mb-6 flex items-center justify-between'>
         <h1 className='text-lg font-bold'>
           {capitalizeFirstLetter(role.name)} Role
@@ -141,59 +105,53 @@ function RoleDetails({
           <div className='space-y-6'>
             {Object.entries(roleDetails || {}).map(
               ([module, { description, permissions }]) => (
-                <Card key={module}>
-                  <CardHeader>
-                    <CardTitle className='text-lg'>
-                      {capitalizeFirstLetter(module)}
-                    </CardTitle>
-                    <CardDescription>
-                      {description.replace(
-                        '[role_name]',
-                        capitalizeFirstLetter(role.name),
-                      )}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    {permissions?.map((permission) => {
-                      if (!permission) return null;
-                      return (
-                        <div
-                          key={permission.id}
-                          className='flex items-center justify-between py-2'
-                        >
-                          <div className='flex flex-col'>
-                            <span className='text-sm font-medium'>
-                              {permission.title}
+                <SectionCard
+                  key={module}
+                  title={capitalizeFirstLetter(module)}
+                  description={description.replace(
+                    '[role_name]',
+                    capitalizeFirstLetter(role.name),
+                  )}
+                >
+                  {permissions?.map((permission) => {
+                    if (!permission) return null;
+                    return (
+                      <div
+                        key={permission.id}
+                        className='flex items-center justify-between py-2'
+                      >
+                        <div className='flex flex-col'>
+                          <span className='text-sm font-medium'>
+                            {permission.title}
+                          </span>
+                          {permission.description && (
+                            <span className='text-sm text-gray-500'>
+                              {permission.description}
                             </span>
-                            {permission.description && (
-                              <span className='text-sm text-gray-500'>
-                                {permission.description}
-                              </span>
-                            )}
-                          </div>
-                          <Switch
-                            checked={permission.isActive}
-                            disabled={editDisabled || !role.isEditable}
-                            onCheckedChange={(checked) => {
-                              const data = {
-                                add: null,
-                                delete: null,
-                                role_id: role.id,
-                              };
-
-                              if (!checked) {
-                                data.delete = permission.relation_id;
-                              } else {
-                                data.add = permission.id;
-                              }
-                              updateRoles(data);
-                            }}
-                          />
+                          )}
                         </div>
-                      );
-                    })}
-                  </CardContent>
-                </Card>
+                        <Switch
+                          checked={permission.isActive}
+                          disabled={editDisabled || !role.isEditable}
+                          onCheckedChange={(checked) => {
+                            const data = {
+                              add: null,
+                              delete: null,
+                              role_id: role.id,
+                            };
+
+                            if (!checked) {
+                              data.delete = permission.relation_id;
+                            } else {
+                              data.add = permission.id;
+                            }
+                            updateRoles(data);
+                          }}
+                        />
+                      </div>
+                    );
+                  })}
+                </SectionCard>
               ),
             )}
           </div>
@@ -225,13 +183,6 @@ function RoleDetails({
           </Card>
         </div>
       </div>
-
-      {editUser && (
-        <RoleEditMember
-          close={() => setEditUser(false)}
-          role={{ id: role.id, role: role.name, assignedTo: role.assignedTo }}
-        />
-      )}
     </div>
   );
 }
