@@ -1,4 +1,4 @@
-import { getFullName } from '@aglint/shared-utils';
+import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import { Card } from '@components/ui/card';
@@ -7,7 +7,6 @@ import Link from 'next/link';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import dayjs from '@/utils/dayjs';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 
 import IconSessionType from '../../../../../../../components/Common/Icons/IconSessionType';
@@ -110,7 +109,7 @@ function Overview() {
       }
       textDate={
         schedule.interview_meeting.end_time
-          ? dayjs(schedule.interview_meeting.end_time).format('DD')
+          ? dayjsLocal(schedule.interview_meeting.end_time).format('DD')
           : '--'
       }
       textTime={
@@ -124,12 +123,12 @@ function Overview() {
       }
       textDay={
         schedule.interview_meeting.end_time
-          ? dayjs(schedule.interview_meeting.end_time).format('dddd')
+          ? dayjsLocal(schedule.interview_meeting.end_time).format('dddd')
           : '--'
       }
       textMonth={
         schedule.interview_meeting.end_time
-          ? dayjs(schedule.interview_meeting.end_time).format('MMMM')
+          ? dayjsLocal(schedule.interview_meeting.end_time).format('MMMM')
           : '--'
       }
       textPanelName={schedule.interview_session.name}

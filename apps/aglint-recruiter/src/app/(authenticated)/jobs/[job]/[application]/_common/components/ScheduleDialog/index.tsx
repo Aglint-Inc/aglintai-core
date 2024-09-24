@@ -1,4 +1,5 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { Calendar } from '@components/ui/calendar';
@@ -20,7 +21,6 @@ import UIDialog from '@/components/Common/UIDialog';
 import UITextField from '@/components/Common/UITextField';
 import UpdateMembers from '@/components/Common/UpdateMembers';
 import { useMemberList } from '@/hooks/useMemberList';
-import dayjs from '@/utils/dayjs';
 
 import { useApplicationMeta } from '../../hooks/useApplicationMeta';
 import { useScheduleRequest } from '../../hooks/useScheduleRequest';
@@ -197,8 +197,8 @@ export const RangePicker = ({
 
   useEffect(() => {
     setDateRange({
-      start: dayjs(date?.from).toISOString(),
-      end: dayjs(date?.to).toISOString(),
+      start: dayjsLocal(date?.from).toISOString(),
+      end: dayjsLocal(date?.to).toISOString(),
     });
   }, [date]);
 

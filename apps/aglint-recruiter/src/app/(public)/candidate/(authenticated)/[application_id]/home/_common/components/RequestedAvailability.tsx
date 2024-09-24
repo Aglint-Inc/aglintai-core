@@ -8,7 +8,6 @@ import {
   type apiHomepageResponse,
   type availability,
 } from '@/api/candidate_portal/home_page/route';
-import dayjs from '@/utils/dayjs';
 
 function RequestedAvailability({
   availabilityData,
@@ -69,7 +68,9 @@ const AvailabilityCard = ({
 
         <p className='text-sm text-gray-600'>
           Requested on{' '}
-          {dayjs(latestavailability.created_at).format('MMM DD YYYY, hh:mm A')}
+          {dayjsLocal(latestavailability.created_at).format(
+            'MMM DD YYYY, hh:mm A',
+          )}
         </p>
         {/* <p className='text-sm text-gray-600'>Requested on Aug 22, 05:00 PM</p> */}
       </CardHeader>
