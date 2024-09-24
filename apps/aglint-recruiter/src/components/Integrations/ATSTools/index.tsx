@@ -1,6 +1,9 @@
 'use client';
 import { useToast } from '@components/hooks/use-toast';
 import { Input } from '@components/ui/input';
+import AshbyLogo from '@public/images/svg/ashby-logo.svg';
+import GreenHouseLogo from '@public/images/svg/greenhouse-logo.svg';
+import LeverLogo from '@public/images/svg/lever-logo.svg';
 import axios from 'axios';
 import capitalize from 'lodash/capitalize';
 import { useRef, useState } from 'react';
@@ -302,7 +305,7 @@ function ATSTools({
       url: 'greenhouse.com',
       isVisibile: recruiter.recruiter_preferences.ats === 'Greenhouse',
       isConnected: Boolean(data?.greenhouse_key),
-      logo: <></>,
+      logo: <GreenHouseLogo />,
       primaryText: data?.greenhouse_key ? 'Settings' : 'Connect',
       secondaryText: data?.greenhouse_key ? 'Disconnect' : 'Learn How',
       primaryAction: () => {
@@ -322,7 +325,7 @@ function ATSTools({
       url: 'lever.co',
       isVisibile: recruiter.recruiter_preferences.ats === 'Lever',
       isConnected: Boolean(data?.lever_key),
-      logo: <></>,
+      logo: <LeverLogo />,
       primaryText: data?.lever_key ? 'Settings' : 'Connect',
       secondaryText: data?.lever_key ? 'Disconnect' : 'Learn How',
       primaryAction: () => {
@@ -342,7 +345,7 @@ function ATSTools({
       url: 'ashbyhq.com',
       isVisibile: recruiter.recruiter_preferences.ats === 'Ashby',
       isConnected: Boolean(data?.ashby_key),
-      logo: <></>,
+      logo: <AshbyLogo />,
       primaryText: data?.ashby_key ? 'Settings' : 'Connect',
       secondaryText: data?.ashby_key ? 'Disconnect' : 'Learn How',
       primaryAction: () => {

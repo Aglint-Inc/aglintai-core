@@ -173,7 +173,7 @@ export default function AppLayout({ children, appRouter = false }) {
           </nav>
         )}
         <main
-          className={`flex min-h-screen w-full bg-gray-50 pt-8 ${
+          className={`flex min-h-screen w-full bg-gray-50 py-8 ${
             isHorizontalNav ? '' : 'ml-16'
           }`}
         >
