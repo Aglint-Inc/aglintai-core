@@ -6,11 +6,11 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 import { MeetingStatusBadge } from 'src/app/_common/components/MeetingStatusBadge';
 
+import { useAllIntegrations } from '@/authenticated/hooks';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerAcceptDeclineIcon';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
-import { useAllIntegrations } from '@/queries/intergrations';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 

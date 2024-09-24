@@ -5,13 +5,13 @@ import { Dialog, DialogContent } from '@components/ui/dialog';
 import { Skeleton } from '@components/ui/skeleton';
 import { useEffect, useState } from 'react';
 
+import { useAllIntegrations } from '@/authenticated/hooks';
 import { STATE_GREENHOUSE_DIALOG } from '@/jobs/constants';
 import {
   useIntegrationActions,
   useIntegrationStore,
   useJobs,
 } from '@/jobs/hooks';
-import { useAllIntegrations } from '@/queries/intergrations';
 import toast from '@/utils/toast';
 
 import NoAtsResult from '../NoAtsResult';

@@ -1,7 +1,7 @@
 import { Button } from '@components/ui/button';
 
+import { useAllIntegrations } from '@/authenticated/hooks';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { useAllIntegrations } from '@/queries/intergrations';
 import ROUTES from '@/utils/routing/routes';
 
 export default function EmptyJobDashboard({
