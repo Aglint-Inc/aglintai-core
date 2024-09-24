@@ -12,8 +12,8 @@ export function checkFiltersApplied({
     filters.title ||
     filters.created_at ||
     filters.jobs.length ||
-    filters.applications.length ||
-    filters.assigneeList.length ||
-    filters.assignerList.length
+    filters.applications?.length ||
+    filters.assigneeList?.length ||
+    filters.assignerList?.length
   );
 }

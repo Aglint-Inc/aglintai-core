@@ -43,8 +43,9 @@ const MainBody = () => {
     !isPlaceholderData &&
     !checkFiltersApplied({ filters }) &&
     Boolean(
-      !(SafeObject.values(requestList) ?? []).flatMap((requests) => requests)
-        .length,
+      !(SafeObject.values(requestList ?? []) ?? []).flatMap(
+        (requests) => requests,
+      ).length,
     );
 
   const isRequestListEmpty =
@@ -53,11 +54,10 @@ const MainBody = () => {
     defaults.flatMap((d) => d.requests).length === 0;
 
   const open_request = requestCount?.all_open_request || 0;
+  const completed_request = requestCount?.card.completed_request || 0;
   const completed_percentage =
     Math.floor(
-      (requestCount?.card.completed_request /
-        (open_request + requestCount?.card.completed_request)) *
-        100,
+      (completed_request / (open_request + completed_request)) * 100,
     ) || 0;
 
   useEffect(() => {
@@ -124,12 +124,12 @@ const MainBody = () => {
             />
 
             {isRequestListEmpty ? (
-              <div className="px-12 py-8 container-lg mx-auto w-full">
-              <GlobalEmpty
-              height='300px'
-                text={'No requests found'}
-                iconSlot={<Info className='text-gray-500' />}
-              />
+              <div className='container-lg mx-auto w-full px-12 py-8'>
+                <GlobalEmpty
+                  height='300px'
+                  text={'No requests found'}
+                  iconSlot={<Info className='text-gray-500' />}
+                />
               </div>
             ) : (
               <RequestListContent

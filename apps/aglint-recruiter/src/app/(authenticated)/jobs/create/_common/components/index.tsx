@@ -287,26 +287,26 @@ const JobForms = ({
   return (
     <div className='space-y-6'>
       <div className='rounded-md border bg-white p-4'>
-        <h2 className='mb-1 text-lg font-medium'>Job Details</h2>
-        <div className='text-sm text-gray-500 mb-2'>
+        <h2 className='mb-4 text-lg font-semibold'>Job Details</h2>
+        <div className='text-sm text-gray-500'>
           Add job details to help candidates understand the role and apply.
         </div>
         {forms}
       </div>
       <div className='rounded-md border bg-white p-4'>
-        <h2 className='mb-1 text-lg font-medium'>Hiring Team</h2>
-        <div className='text-sm mb-2 text-gray-500'>
+        <h2 className='mb-4 text-lg font-semibold'>Hiring Team</h2>
+        <div className='text-sm text-gray-500'>
           Add the hiring team so they can manage the job.
         </div>
         {roleForms}
       </div>
       <div className='rounded-md border bg-white p-4'>
-        <h2 className='mb-1 text-lg font-medium'>Job Description</h2>
-        <div className='text-sm text-gray-500 mb-2'>
+        <h2 className='mb-4 text-lg font-semibold'>Job Description</h2>
+        <div className='text-sm text-gray-500'>
           Add a detailed job description to help candidates understand the role
           and apply.
         </div>
-        <div className='mt-4'>{description}</div>
+        <div className='mt-4 rounded-md border p-4'>{description}</div>
         {fields.description.error.value && (
           <div className='mt-2 flex items-center text-red-500'>
             <AlertTriangle className='mr-2' />

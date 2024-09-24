@@ -1,14 +1,14 @@
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
+import { type PublicProcedure, publicProcedure } from '@/server/api/trpc';
+import { createPublicClient } from '@/server/db';
 
 const userSchema = z.object({ user_id: z.string().uuid() });
 
 const query = async ({
   input: { user_id },
-}: PrivateProcedure<typeof userSchema>) => {
-  const db = createPrivateClient();
+}: PublicProcedure<typeof userSchema>) => {
+  const db = createPublicClient();
   const user = (
     await db
       .from('recruiter_user')
@@ -43,25 +43,29 @@ const query = async ({
 
   // --------------- meetings
 
-  const { data: meeting_interviewers } = await db
-    .from('meeting_interviewers')
-    .select(
-      'meeting_id,interview_session_relation(feedback,interview_session(name,interview_meeting(applications(candidates(first_name,last_name)))))',
-    )
-    .eq('user_id', user_id)
-    .eq('is_confirmed', true)
-    .throwOnError();
+  const meeting_interviewers = (
+    await db
+      .from('meeting_interviewers')
+      .select(
+        'meeting_id,interview_session_relation(feedback,interview_session(name,interview_meeting(applications(candidates(first_name,last_name)))))',
+      )
+      .eq('user_id', user_id)
+      .eq('is_confirmed', true)
+      .throwOnError()
+  ).data;
 
-  const { data: all_user_meetings } = await db
-    .from('meeting_details')
-    .select(
-      'id,session_name,session_duration,start_time,end_time,status,applications(candidates(first_name,last_name)),public_jobs(job_title)',
-    )
-    .in(
-      'id',
-      meeting_interviewers.map((i) => i.meeting_id),
-    )
-    .throwOnError();
+  const all_user_meetings = (
+    await db
+      .from('meeting_details')
+      .select(
+        'id,session_name,session_duration,start_time,end_time,status,applications(candidates(first_name,last_name)),public_jobs(job_title)',
+      )
+      .in(
+        'id',
+        meeting_interviewers.map((i) => i.meeting_id),
+      )
+      .throwOnError()
+  ).data;
 
   const allMeetingDetails = all_user_meetings.map((meeting) => {
     const { applications, public_jobs, ...details } = meeting;
@@ -99,7 +103,9 @@ const query = async ({
     empolyment: user.employment,
     Linkedin: user.linked_in,
     department: user.departments?.name,
+    user_id: user.user_id,
     scheduling_settings: user.scheduling_settings,
+    schedule_auth: user.schedule_auth,
     interview_week_today: interview,
     location: [
       user.office_locations?.city,
@@ -131,6 +137,6 @@ const query = async ({
   return structuredData;
 };
 
-export const getInterviewerDetails = privateProcedure
+export const getInterviewerDetails = publicProcedure
   .input(userSchema)
   .query(query);

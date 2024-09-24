@@ -4,7 +4,7 @@ import React, {
   useEffect,
   ReactNode,
   useContext,
-} from 'react';
+} from "react";
 
 // Define types for the context values
 interface AppContextType {
@@ -15,6 +15,7 @@ interface AppContextType {
   session: any; // Replace `any` with the actual type if known
   companyName: string | null;
   recruiterId: string;
+  getSupabaseSession: () => void;
   userId: string | null;
 }
 
@@ -34,73 +35,73 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [requestIds, setRequestIds] = useState<number[]>([]);
   const [session, setSession] = useState<any>(null); // State to hold the Supabase session
   const [companyName, setCompanyName] = useState<string | null>(null); // State to hold the company name
-  const [recruiterId, setRecruiterId] = useState<string>('');
+  const [recruiterId, setRecruiterId] = useState<string>("");
   const [userId, setUserId] = useState<string | null>(null); // State to hold the user_id
   const supabase = window.supabase;
-  useEffect(() => {
-    async function getSupabaseSession() {
-      const { data, error } = await supabase.auth.getSession();
 
-      if (error) {
-        console.error(
-          'Unable to login. Please try again later:',
-          error.message
-        );
-      } else if (data?.session) {
-        setSession(data.session);
-        const currentUserId = data.session.user.id;
-        setUserId(currentUserId);
-        fetchRecruiterInfo(currentUserId);
-      } else {
-        console.error('Session not found');
-      }
+  async function getSupabaseSession() {
+    const supabase = window.supabase;
+    if (!supabase) return;
+    const { data, error } = await supabase.auth.getSession();
+
+    if (error) {
+      console.error("Unable to login. Please try again later:", error.message);
+    } else if (data?.session) {
+      setSession(data.session);
+      const currentUserId = data.session.user.id;
+      setUserId(currentUserId);
+      fetchRecruiterInfo(currentUserId);
+    } else {
+      console.error("Session not found");
     }
+  }
 
-    async function fetchRecruiterInfo(user_id: string) {
-      try {
-        const { data: relationData, error: relationError } = await supabase
-          .from('recruiter_relation')
-          .select('recruiter_id')
-          .eq('user_id', user_id)
-          .single();
+  async function fetchRecruiterInfo(user_id: string) {
+    try {
+      const { data: relationData, error: relationError } = await supabase
+        .from("recruiter_relation")
+        .select("recruiter_id")
+        .eq("user_id", user_id)
+        .single();
 
-        if (relationError) {
-          throw new Error(relationError.message);
+      if (relationError) {
+        throw new Error(relationError.message);
+      }
+
+      if (relationData) {
+        const recruiter_id = relationData.recruiter_id;
+
+        setRecruiterId(recruiter_id);
+
+        const { data: recruiterData, error: recruiterError } = await supabase
+          .from("recruiter")
+          .select("name")
+          .eq("id", recruiter_id)
+          .single(); // Assuming recruiter_id is unique
+
+        if (recruiterError) {
+          throw new Error(recruiterError.message);
         }
 
-        if (relationData) {
-          const recruiter_id = relationData.recruiter_id;
-          setRecruiterId(recruiter_id);
-
-          const { data: recruiterData, error: recruiterError } = await supabase
-            .from('recruiter')
-            .select('name')
-            .eq('id', recruiter_id)
-            .single(); // Assuming recruiter_id is unique
-
-          if (recruiterError) {
-            throw new Error(recruiterError.message);
-          }
-
-          if (recruiterData) {
-            setCompanyName(recruiterData.name);
-          } else {
-            setCompanyName(null);
-          }
+        if (recruiterData) {
+          setCompanyName(recruiterData.name);
         } else {
           setCompanyName(null);
         }
-      } catch (error) {
-        console.error(
-          'Error fetching recruiter info:',
-          (error as Error).message
-        );
+      } else {
+        setCompanyName(null);
       }
+    } catch (error) {
+      console.error("Error fetching recruiter info:", (error as Error).message);
     }
+  }
+  useEffect(() => {
     if (supabase) {
       getSupabaseSession();
     }
   }, [supabase]);
+
+  // if (!window.supabase) return <>Supabase is not there</>;
 
   return (
     <AppContext.Provider
@@ -113,6 +114,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
         companyName,
         recruiterId,
         userId,
+        getSupabaseSession,
       }}
     >
       {children}
@@ -122,7 +124,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
 
 export const useAppContext = () => {
   const value = useContext(AppContext);
-  if (!value) throw new Error('Tour Provider not found');
+  if (!value) throw new Error("Tour Provider not found");
   return value;
 };
 
