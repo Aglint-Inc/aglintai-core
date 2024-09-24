@@ -68,7 +68,7 @@ export const getSkillScore = (promptResponse: PromptSkillResponse) => {
 export const getFinalScore = (
   score: number,
   count: number,
-  rFactor: number = 0.25 //Inversely proportional to effectiveness of count
+  rFactor = 0.25 //Inversely proportional to effectiveness of count
 ) => {
   return getCappedFactor(count, rFactor) * getLogarithmicScore(score);
 };

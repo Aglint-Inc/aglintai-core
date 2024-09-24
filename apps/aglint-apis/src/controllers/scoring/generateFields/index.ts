@@ -1,26 +1,26 @@
-import { JobFields, JobJson, Section } from "../types";
+import {JobFields, JobJson, Section} from '../types';
 
 export const getRequirements = (jobJson: JobJson, tags: Section[]) => {
-  return `${tags.map((tag) => getRequirement(jobJson, tag)).join("\n")}`;
+  return `${tags.map(tag => getRequirement(jobJson, tag)).join('\n')}`;
 };
 
 export const getRequirement = (jobJson: JobJson, tag: Section) => {
   switch (tag) {
-    case "positions":
-      return generateFields(jobJson.rolesResponsibilities, "positions");
-    case "schools":
-      return generateFields(jobJson.educations, "schools");
-    case "skills":
-      return generateFields(jobJson.skills, "skills");
+    case 'positions':
+      return generateFields(jobJson.rolesResponsibilities, 'positions');
+    case 'schools':
+      return generateFields(jobJson.educations, 'schools');
+    case 'skills':
+      return generateFields(jobJson.skills, 'skills');
   }
 };
 
 const generateFields = (fields: JobFields[], section: Section) => {
-  const { primary, secondary } = fields.reduce(
+  const {primary, secondary} = fields.reduce(
     (acc, curr) => {
       if (
         curr.field &&
-        typeof curr.field === "string" &&
+        typeof curr.field === 'string' &&
         curr.field.trim().length !== 0
       ) {
         if (curr.isMustHave) acc.primary.push(curr.field.trim());
@@ -33,15 +33,15 @@ const generateFields = (fields: JobFields[], section: Section) => {
       secondary: [] as string[],
     }
   );
-  const primiaryReq = generateFieldText(primary, section, "Primary");
-  const secondaryReq = generateFieldText(secondary, section, "Secondary");
+  const primiaryReq = generateFieldText(primary, section, 'Primary');
+  const secondaryReq = generateFieldText(secondary, section, 'Secondary');
 
-  return `${primiaryReq ? primiaryReq : ""}\n${
-    secondaryReq ? secondaryReq : ""
+  return `${primiaryReq ? primiaryReq : ''}\n${
+    secondaryReq ? secondaryReq : ''
   }`;
 };
 
-type RequirementType = "Primary" | "Secondary";
+type RequirementType = 'Primary' | 'Secondary';
 
 const generateFieldText = (
   fieldStrings: string[],
@@ -51,14 +51,14 @@ const generateFieldText = (
   return fieldStrings.length === 0
     ? null
     : `${getRequirementLevel(type)} / ${type} ${section} requirements :
-${fieldStrings.map((requirement, i) => `${i + 1}) ${requirement}`).join("\n")}
+${fieldStrings.map((requirement, i) => `${i + 1}) ${requirement}`).join('\n')}
 `;
 };
 const getRequirementLevel = (type: RequirementType) => {
   switch (type) {
-    case "Primary":
+    case 'Primary':
       return `Must have`;
-    case "Secondary":
-      return "Nice to have";
+    case 'Secondary':
+      return 'Nice to have';
   }
 };

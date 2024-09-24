@@ -1,4 +1,4 @@
-import { CompletionUsage } from "openai/resources";
+import type {CompletionUsage} from 'openai/resources';
 
 import {
   AnthropicPromptBuilderResponse,
@@ -6,7 +6,7 @@ import {
   OpenAiPromptBuilderResponse,
   PromptResponse,
   PromptSkillResponse,
-} from "../types";
+} from '../types';
 
 export const openAiRatingResultParser = (
   results: OpenAiPromptBuilderResponse
@@ -14,11 +14,11 @@ export const openAiRatingResultParser = (
   return results.reduce(
     (acc, curr) => {
       if (curr.data.response) {
-        if (curr.data.tag === "skills") {
+        if (curr.data.tag === 'skills') {
           return {
             ...acc,
             skills: {
-              list: { ...curr.data.response },
+              list: {...curr.data.response},
               index: curr.data.index,
               tries: curr.data.tries,
               tokens: curr.data.tokens,
@@ -42,7 +42,7 @@ export const openAiRatingResultParser = (
         return acc;
       }
     },
-    { schools: [], positions: [], skills: {} } as unknown as ScoringParam
+    {schools: [], positions: [], skills: {}} as unknown as ScoringParam
   );
 };
 
@@ -52,11 +52,11 @@ export const geminiRatingResultParser = (
   return results.reduce(
     (acc, curr) => {
       if (curr.data.response) {
-        if (curr.data.tag === "skills") {
+        if (curr.data.tag === 'skills') {
           return {
             ...acc,
             skills: {
-              list: { ...curr.data.response },
+              list: {...curr.data.response},
               index: curr.data.index,
               tries: curr.data.tries,
               tokens: curr.data.tokens,
@@ -80,7 +80,7 @@ export const geminiRatingResultParser = (
         return acc;
       }
     },
-    { schools: [], positions: [], skills: {} } as unknown as ScoringParam
+    {schools: [], positions: [], skills: {}} as unknown as ScoringParam
   );
 };
 
@@ -116,11 +116,11 @@ export const anthropicResultParser = (
   return obj
     ? Object.entries(obj).reduce(
         (acc, [key, value]) => {
-          if (key === "skills") {
+          if (key === 'skills') {
             return {
               ...acc,
               skills: {
-                list: { ...(value as any) } as PromptSkillResponse,
+                list: {...(value as any)} as PromptSkillResponse,
                 index: 0,
                 tries: tries,
                 tokens: {
@@ -150,14 +150,14 @@ export const anthropicResultParser = (
             };
           }
         },
-        { schools: [], positions: [], skills: {} } as unknown as ScoringParam
+        {schools: [], positions: [], skills: {}} as unknown as ScoringParam
       )
-    : ({ schools: [], positions: [], skills: {} } as unknown as ScoringParam);
+    : ({schools: [], positions: [], skills: {}} as unknown as ScoringParam);
 };
 
 export type ScoringParam = {
-  schools: ScoringObj["list"];
-  positions: ScoringObj["list"];
+  schools: ScoringObj['list'];
+  positions: ScoringObj['list'];
   skills: {
     list: PromptSkillResponse;
     index: number;
@@ -172,4 +172,4 @@ export type ScoringParam = {
       | undefined;
   };
 };
-type ScoringObj = { score: number; list: PromptResponse[] };
+type ScoringObj = {score: number; list: PromptResponse[]};

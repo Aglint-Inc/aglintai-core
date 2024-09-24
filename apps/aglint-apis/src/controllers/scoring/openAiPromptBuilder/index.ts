@@ -15,7 +15,7 @@ import {rejectAfterDelay} from '../util';
 
 const TIMEOUT = 20000; // 20 sec
 const RETRY_LIMIT = 3;
-type PromptType = 'rating' | 'reasoning';
+// type PromptType = 'rating' | 'reasoning';
 
 export const openAiRatingPromptBuilder = async (
   jobJson: JobJson,

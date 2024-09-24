@@ -3,7 +3,7 @@ export type Json =
   | number
   | boolean
   | null
-  | { [key: string]: Json | undefined }
+  | {[key: string]: Json | undefined}
   | Json[];
 
 export interface Database {
@@ -78,12 +78,12 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: "candidate_search_history_recruiter_id_fkey";
-            columns: ["recruiter_id"];
+            foreignKeyName: 'candidate_search_history_recruiter_id_fkey';
+            columns: ['recruiter_id'];
             isOneToOne: false;
-            referencedRelation: "recruiter";
-            referencedColumns: ["id"];
-          }
+            referencedRelation: 'recruiter';
+            referencedColumns: ['id'];
+          },
         ];
       };
       candidates: {
@@ -134,12 +134,12 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: "candidates_recruiter_id_fkey";
-            columns: ["recruiter_id"];
+            foreignKeyName: 'candidates_recruiter_id_fkey';
+            columns: ['recruiter_id'];
             isOneToOne: false;
-            referencedRelation: "recruiter";
-            referencedColumns: ["id"];
-          }
+            referencedRelation: 'recruiter';
+            referencedColumns: ['id'];
+          },
         ];
       };
       documents: {
@@ -229,12 +229,12 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: "greenhouse_reference_application_id_fkey";
-            columns: ["application_id"];
+            foreignKeyName: 'greenhouse_reference_application_id_fkey';
+            columns: ['application_id'];
             isOneToOne: false;
-            referencedRelation: "job_applications";
-            referencedColumns: ["application_id"];
-          }
+            referencedRelation: 'job_applications';
+            referencedColumns: ['application_id'];
+          },
         ];
       };
       job_applications: {
@@ -327,19 +327,19 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: "job_applications_candidate_id_fkey";
-            columns: ["candidate_id"];
+            foreignKeyName: 'job_applications_candidate_id_fkey';
+            columns: ['candidate_id'];
             isOneToOne: false;
-            referencedRelation: "candidates";
-            referencedColumns: ["id"];
+            referencedRelation: 'candidates';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "job_applications_job_id_fkey";
-            columns: ["job_id"];
+            foreignKeyName: 'job_applications_job_id_fkey';
+            columns: ['job_id'];
             isOneToOne: false;
-            referencedRelation: "public_jobs";
-            referencedColumns: ["id"];
-          }
+            referencedRelation: 'public_jobs';
+            referencedColumns: ['id'];
+          },
         ];
       };
       lever_job_reference: {
@@ -369,19 +369,19 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: "lever_job_reference_job_id_fkey";
-            columns: ["job_id"];
+            foreignKeyName: 'lever_job_reference_job_id_fkey';
+            columns: ['job_id'];
             isOneToOne: false;
-            referencedRelation: "public_jobs";
-            referencedColumns: ["id"];
+            referencedRelation: 'public_jobs';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "lever_job_reference_recruiter_id_fkey";
-            columns: ["recruiter_id"];
+            foreignKeyName: 'lever_job_reference_recruiter_id_fkey';
+            columns: ['recruiter_id'];
             isOneToOne: false;
-            referencedRelation: "recruiter";
-            referencedColumns: ["id"];
-          }
+            referencedRelation: 'recruiter';
+            referencedColumns: ['id'];
+          },
         ];
       };
       lever_reference: {
@@ -417,12 +417,12 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: "lever_reference_public_job_id_fkey";
-            columns: ["public_job_id"];
+            foreignKeyName: 'lever_reference_public_job_id_fkey';
+            columns: ['public_job_id'];
             isOneToOne: false;
-            referencedRelation: "public_jobs";
-            referencedColumns: ["id"];
-          }
+            referencedRelation: 'public_jobs';
+            referencedColumns: ['id'];
+          },
         ];
       };
       notify_me: {
@@ -557,12 +557,12 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: "public_jobs_recruiter_id_fkey";
-            columns: ["recruiter_id"];
+            foreignKeyName: 'public_jobs_recruiter_id_fkey';
+            columns: ['recruiter_id'];
             isOneToOne: false;
-            referencedRelation: "recruiter";
-            referencedColumns: ["id"];
-          }
+            referencedRelation: 'recruiter';
+            referencedColumns: ['id'];
+          },
         ];
       };
       recruiter: {
@@ -730,19 +730,19 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: "recruiter_user_recruiter_id_fkey";
-            columns: ["recruiter_id"];
+            foreignKeyName: 'recruiter_user_recruiter_id_fkey';
+            columns: ['recruiter_id'];
             isOneToOne: false;
-            referencedRelation: "recruiter";
-            referencedColumns: ["id"];
+            referencedRelation: 'recruiter';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "recruiter_user_user_id_fkey";
-            columns: ["user_id"];
+            foreignKeyName: 'recruiter_user_user_id_fkey';
+            columns: ['user_id'];
             isOneToOne: true;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          }
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
         ];
       };
       result: {
@@ -829,12 +829,12 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: "support_groups_company_id_fkey";
-            columns: ["company_id"];
+            foreignKeyName: 'support_groups_company_id_fkey';
+            columns: ['company_id'];
             isOneToOne: false;
-            referencedRelation: "recruiter";
-            referencedColumns: ["id"];
-          }
+            referencedRelation: 'recruiter';
+            referencedColumns: ['id'];
+          },
         ];
       };
       support_ticket: {
@@ -906,26 +906,26 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: "support_ticket_company_id_fkey";
-            columns: ["company_id"];
+            foreignKeyName: 'support_ticket_company_id_fkey';
+            columns: ['company_id'];
             isOneToOne: false;
-            referencedRelation: "recruiter";
-            referencedColumns: ["id"];
+            referencedRelation: 'recruiter';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "support_ticket_job_id_fkey";
-            columns: ["job_id"];
+            foreignKeyName: 'support_ticket_job_id_fkey';
+            columns: ['job_id'];
             isOneToOne: false;
-            referencedRelation: "public_jobs";
-            referencedColumns: ["id"];
+            referencedRelation: 'public_jobs';
+            referencedColumns: ['id'];
           },
           {
-            foreignKeyName: "support_ticket_user_id_fkey";
-            columns: ["user_id"];
+            foreignKeyName: 'support_ticket_user_id_fkey';
+            columns: ['user_id'];
             isOneToOne: false;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          }
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          },
         ];
       };
       threads: {
@@ -1056,49 +1056,49 @@ export interface Database {
       citext:
         | {
             Args: {
-              "": boolean;
+              '': boolean;
             };
             Returns: string;
           }
         | {
             Args: {
-              "": string;
+              '': string;
             };
             Returns: string;
           }
         | {
             Args: {
-              "": unknown;
+              '': unknown;
             };
             Returns: string;
           };
       citext_hash: {
         Args: {
-          "": string;
+          '': string;
         };
         Returns: number;
       };
       citextin: {
         Args: {
-          "": unknown;
+          '': unknown;
         };
         Returns: string;
       };
       citextout: {
         Args: {
-          "": string;
+          '': string;
         };
         Returns: unknown;
       };
       citextrecv: {
         Args: {
-          "": unknown;
+          '': unknown;
         };
         Returns: string;
       };
       citextsend: {
         Args: {
-          "": string;
+          '': string;
         };
         Returns: string;
       };

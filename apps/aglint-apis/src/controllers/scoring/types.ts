@@ -1,6 +1,6 @@
-import OpenAI from "openai";
+import OpenAI from 'openai';
 
-export type Section = "positions" | "schools" | "skills";
+export type Section = 'positions' | 'schools' | 'skills';
 
 export type OpenAIPrompt = {
   messages: {
@@ -130,14 +130,14 @@ export type GeminiPromptBuilderResponse = {
   data: {
     response: any;
     index: number;
-    tag: GeminiPrompt["tag"];
+    tag: GeminiPrompt['tag'];
     tries: number;
-    tokens: OpenAiPromptBuilderResponse[number]["data"]["tokens"];
+    tokens: OpenAiPromptBuilderResponse[number]['data']['tokens'];
   };
   error: any;
 }[];
 
-export type PromptEnum = "low" | "medium" | "high";
+export type PromptEnum = 'low' | 'medium' | 'high';
 
 export type PromptResponse = {
   rating: PromptEnum;

@@ -1,5 +1,5 @@
-import { PromptResponse, PromptSkillResponse } from "../types";
-import { getScore, getSkillScore } from "../util";
+import {PromptResponse, PromptSkillResponse} from '../types';
+import {getScore, getSkillScore} from '../util';
 
 export const scoring = (resultObj: ScoringParam) => {
   const schoolsScore = getScore(resultObj.schools);
@@ -7,8 +7,8 @@ export const scoring = (resultObj: ScoringParam) => {
   const skillsScore = getSkillScore(resultObj.skills.list);
 
   return {
-    schools: { score: schoolsScore, list: resultObj.schools },
-    positions: { score: positionsScore, list: resultObj.positions },
+    schools: {score: schoolsScore, list: resultObj.schools},
+    positions: {score: positionsScore, list: resultObj.positions},
     skills: {
       score: skillsScore,
       list: resultObj.skills.list,
@@ -20,8 +20,8 @@ export const scoring = (resultObj: ScoringParam) => {
 };
 
 type ScoringParam = {
-  schools: ScoringObj["list"];
-  positions: ScoringObj["list"];
+  schools: ScoringObj['list'];
+  positions: ScoringObj['list'];
   skills: {
     list: PromptSkillResponse;
     index: number;
@@ -29,4 +29,4 @@ type ScoringParam = {
     tokens: any;
   };
 };
-type ScoringObj = { score: number; list: PromptResponse[] };
+type ScoringObj = {score: number; list: PromptResponse[]};

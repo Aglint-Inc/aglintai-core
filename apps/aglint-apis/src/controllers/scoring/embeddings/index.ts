@@ -1,5 +1,5 @@
-require("@tensorflow/tfjs");
-const use = require("@tensorflow-models/universal-sentence-encoder");
+require('@tensorflow/tfjs');
+const use = require('@tensorflow-models/universal-sentence-encoder');
 
 async function createEmbeddings(sentencesA: string, sentencesB: string) {
   const model = await use.load();
@@ -36,8 +36,8 @@ export const processSkills = async (
   resumeSkills: string[]
 ) => {
   const [x, y] = await createEmbeddings(
-    jdSkills.join(" "),
-    resumeSkills.join(" ")
+    jdSkills.join(' '),
+    resumeSkills.join(' ')
   );
   return cosineSimilarity(x, y);
 };
