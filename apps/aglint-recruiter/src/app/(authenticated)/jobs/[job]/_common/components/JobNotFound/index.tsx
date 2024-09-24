@@ -9,7 +9,7 @@ export const JobNotFound = () => {
         <div className='flex justify-center'>
           <FileQuestion stroke='1' className='h-24 w-24' />
         </div>
-        <h1 className='font-medium text-gray-800 mb-2 ' style={{fontSize:'100px' , lineHeight:'1'}} >404</h1>
+        <h1 className='text-4xl font-medium text-gray-800 mb-2 ' >404</h1>
         <h2 className='text-xl font-medium text-gray-600 mt-0 mb-2'>Job Not Found</h2>
         <p className='text-gray-500'>
           Oops! The Job you&apos;re looking for doesn&apos;t exist or has been
