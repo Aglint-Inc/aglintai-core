@@ -1,8 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Check, Inbox } from 'lucide-react';
 
-import { CreateRequestWidget } from '../createRequestWidget';
-
 export const RequestEmpty = () => {
   return (
     <div className='grid grid-cols-1 gap-4 p-4 md:grid-cols-2'>
@@ -21,7 +19,6 @@ export const RequestEmpty = () => {
               <br />
               Start by creating a new request to get things rolling!
             </p>
-            <CreateRequestWidget />
             </div>
           </CardContent>
         </Card>
