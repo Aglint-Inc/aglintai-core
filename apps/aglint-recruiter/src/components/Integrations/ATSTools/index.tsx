@@ -1,10 +1,12 @@
 'use client';
+import type { DatabaseTable } from '@aglint/shared-types';
 import { useToast } from '@components/hooks/use-toast';
 import { Input } from '@components/ui/input';
 import axios from 'axios';
 import capitalize from 'lodash/capitalize';
 import { useRef, useState } from 'react';
 
+import type { useAllIntegrations } from '@/authenticated/hooks';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
@@ -12,11 +14,14 @@ import ATSPopUps from '../ATSPopUps';
 import { IntegrationCard } from '../components/IntegrationCard';
 import { type ATSType, type PopUpReasonTypes } from '../types';
 import { updateIntegrations } from '../utils';
-// import GreenHouseLogo from '@public/images/svg/greenhouse-logo.svg';
-// import LeverLogo from '@public/images/svg/lever-logo.svg';
-// import AshbyLogo from '@public/images/svg/ashby-logo.svg';
 
-function ATSTools({ integrations, invalidate }) {
+function ATSTools({
+  data,
+  invalidate,
+  recruiter_preferences,
+}: Pick<ReturnType<typeof useAllIntegrations>, 'data' | 'invalidate'> & {
+  recruiter_preferences: DatabaseTable['recruiter_preferences'];
+}) {
   const { toast } = useToast();
   const router = useRouterPro();
   const { recruiter } = useAuthDetails();
@@ -229,7 +234,7 @@ function ATSTools({ integrations, invalidate }) {
       try {
         await axios
           .post(`/api/decryptApiKey`, {
-            encryptData: integrations.greenhouse_key,
+            encryptData: data.greenhouse_key,
           })
           .then(({ data }) => {
             if (data) {
@@ -252,7 +257,7 @@ function ATSTools({ integrations, invalidate }) {
       setReason('update_ashby');
       await axios
         .post(`/api/decryptApiKey`, {
-          encryptData: integrations.ashby_key,
+          encryptData: data.ashby_key,
         })
         .then(({ data }) => {
           if (data) {
@@ -269,7 +274,7 @@ function ATSTools({ integrations, invalidate }) {
       setReason('update_lever');
       await axios
         .post(`/api/decryptApiKey`, {
-          encryptData: integrations.lever_key,
+          encryptData: data.lever_key,
         })
         .then(({ data }) => {
           if (data) {
@@ -299,20 +304,19 @@ function ATSTools({ integrations, invalidate }) {
     {
       name: 'greenhouse' as ATSType,
       url: 'greenhouse.com',
-      isConnected: integrations?.greenhouse_key,
+      isVisibile: recruiter_preferences.ats === 'Greenhouse',
+      isConnected: Boolean(data?.greenhouse_key),
       logo: <></>,
-      // logo: <GreenHouseLogo />,
-      primaryText: integrations?.greenhouse_key ? 'Settings' : 'Connect',
-      secondaryText: integrations?.greenhouse_key ? 'Disconnect' : 'Learn How',
+      primaryText: data?.greenhouse_key ? 'Settings' : 'Connect',
+      secondaryText: data?.greenhouse_key ? 'Disconnect' : 'Learn How',
       primaryAction: () => {
         setLoading(false);
-        if (integrations.greenhouse_key)
-          router.push('/integrations/greenhouse');
+        if (data.greenhouse_key) router.push('/integrations/greenhouse');
         else connectApi('greenhouse');
       },
       secondaryAction: () => {
         setLoading(false);
-        if (integrations.greenhouse_key) disConnectApi('greenhouse');
+        if (data.greenhouse_key) disConnectApi('greenhouse');
         else readDocs('greenhouse');
       },
       learnHowLink: 'https://developers.greenhouse.io/harvest.html',
@@ -320,19 +324,19 @@ function ATSTools({ integrations, invalidate }) {
     {
       name: 'lever' as ATSType,
       url: 'lever.co',
-      isConnected: integrations?.lever_key,
+      isVisibile: recruiter_preferences.ats === 'Lever',
+      isConnected: Boolean(data?.lever_key),
       logo: <></>,
-      // logo: <LeverLogo />,
-      primaryText: integrations?.lever_key ? 'Settings' : 'Connect',
-      secondaryText: integrations?.lever_key ? 'Disconnect' : 'Learn How',
+      primaryText: data?.lever_key ? 'Settings' : 'Connect',
+      secondaryText: data?.lever_key ? 'Disconnect' : 'Learn How',
       primaryAction: () => {
         setLoading(false);
-        if (integrations.lever_key) updateApi('lever');
+        if (data.lever_key) updateApi('lever');
         else connectApi('lever');
       },
       secondaryAction: () => {
         setLoading(false);
-        if (integrations.lever_key) disConnectApi('lever');
+        if (data.lever_key) disConnectApi('lever');
         else readDocs('lever');
       },
       learnHowLink: 'https://hire.lever.co/developer/documentation',
@@ -340,19 +344,19 @@ function ATSTools({ integrations, invalidate }) {
     {
       name: 'ashby' as ATSType,
       url: 'ashbyhq.com',
-      isConnected: integrations?.ashby_key,
+      isVisibile: recruiter_preferences.ats === 'Ashby',
+      isConnected: Boolean(data?.ashby_key),
       logo: <></>,
-      // logo: <AshbyLogo />,
-      primaryText: integrations?.ashby_key ? 'Settings' : 'Connect',
-      secondaryText: integrations?.ashby_key ? 'Disconnect' : 'Learn How',
+      primaryText: data?.ashby_key ? 'Settings' : 'Connect',
+      secondaryText: data?.ashby_key ? 'Disconnect' : 'Learn How',
       primaryAction: () => {
         setLoading(false);
-        if (integrations.ashby_key) updateApi('ashby');
+        if (data.ashby_key) updateApi('ashby');
         else connectApi('ashby');
       },
       secondaryAction: () => {
         setLoading(false);
-        if (integrations.ashby_key) disConnectApi('ashby');
+        if (data.ashby_key) disConnectApi('ashby');
         else readDocs('ashby');
       },
       learnHowLink: 'https://developers.ashbyhq.com/',
@@ -361,23 +365,25 @@ function ATSTools({ integrations, invalidate }) {
   return (
     <>
       <>
-        {atsTools.map((item, i) => {
-          return (
-            <IntegrationCard
-              key={i}
-              slotLogo={item.logo}
-              textName={capitalize(item.name)}
-              textLink={item.url}
-              isConnected={item.isConnected}
-              primaryText={item.primaryText}
-              secondaryText={item.secondaryText}
-              primaryAction={item.primaryAction}
-              secondaryAction={item.secondaryAction}
-              learnHowLink={item.learnHowLink}
-              onClick={() => window.open('https://' + item.url)}
-            />
-          );
-        })}
+        {atsTools
+          .filter(({ isVisibile }) => isVisibile)
+          .map((item, i) => {
+            return (
+              <IntegrationCard
+                key={i}
+                slotLogo={item.logo}
+                textName={capitalize(item.name)}
+                textLink={item.url}
+                isConnected={item.isConnected}
+                primaryText={item.primaryText}
+                secondaryText={item.secondaryText}
+                primaryAction={item.primaryAction}
+                secondaryAction={item.secondaryAction}
+                learnHowLink={item.learnHowLink}
+                onClick={() => window.open('https://' + item.url)}
+              />
+            );
+          })}
       </>
       <ATSPopUps // popup for Hr tools
         popUpBody={<Input ref={inputRef} placeholder='Enter API Key' />}
