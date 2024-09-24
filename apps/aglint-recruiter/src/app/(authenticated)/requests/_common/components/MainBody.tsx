@@ -124,10 +124,13 @@ const MainBody = () => {
             />
 
             {isRequestListEmpty ? (
+              <div className="px-12 py-8 container-lg mx-auto w-full">
               <GlobalEmpty
+              height='300px'
                 text={'No requests found'}
                 iconSlot={<Info className='text-gray-500' />}
               />
+              </div>
             ) : (
               <RequestListContent
                 view={view}
