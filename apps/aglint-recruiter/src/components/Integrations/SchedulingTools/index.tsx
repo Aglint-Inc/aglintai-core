@@ -35,7 +35,6 @@ function Scheduling({ allIntegrations }) {
   const clientIdRef = useRef<HTMLInputElement>(null);
   const clientSecretRef = useRef<HTMLInputElement>(null);
   const domainRef = useRef<HTMLInputElement>(null);
-  // const { data: allIntegrations } = useAllIntegrations();
 
   async function action() {
     const google_workspace_domain = domainRef.current?.value;

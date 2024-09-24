@@ -16,7 +16,7 @@ import { updateIntegrations } from '../utils';
 // import LeverLogo from '@public/images/svg/lever-logo.svg';
 // import AshbyLogo from '@public/images/svg/ashby-logo.svg';
 
-function ATSTools({ integrations, refetch }) {
+function ATSTools({ integrations, invalidate }) {
   const { toast } = useToast();
   const router = useRouterPro();
   const { recruiter } = useAuthDetails();
@@ -25,7 +25,6 @@ function ATSTools({ integrations, refetch }) {
   const [reason, setReason] = useState<PopUpReasonTypes>();
   const [isLoading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState(null);
-  // const { data: integrations, refetch } = useAllIntegrations();
 
   async function action(): Promise<boolean> {
     try {
@@ -182,7 +181,7 @@ function ATSTools({ integrations, refetch }) {
           return false;
         }
       }
-      refetch();
+      invalidate();
       close();
       return true;
     } catch (error) {
