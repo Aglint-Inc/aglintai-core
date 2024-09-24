@@ -171,7 +171,9 @@ export default function ViewRequestDetails() {
                   <Link
                     href={ROUTES['/jobs/[job]']({ job: jobDetails?.id ?? '' })}
                   >
+                  <div className="hover:underline hover:text-black duration-300">
                     <span>{jobDetails?.job_title}</span>
+                    </div>
                   </Link>
                 </div>
                 {/* <span>•</span> */}

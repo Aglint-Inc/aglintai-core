@@ -94,12 +94,13 @@ export default function InterviewerDetailsPage() {
       </div>
     );
   return (
-    <div className='container mx-auto py-8'>
+    <div className='container mx-auto'>
       <Top interviewer={interviewer} isTopBarVisible={isTopBarVisible} />
-      <div className=''>
-        <div className='sticky top-0 z-10 bg-neutral-50'>
+      <div className='relative'>
+        <div className='sticky top-0 z-10 bg-gray-50'>
           <BreadCrumb name={interviewerDetails?.first_name} />
-          <div>
+        </div>
+        <div>
             <Header
               avatar={interviewerDetails?.avatar}
               name={getFullName(
@@ -115,16 +116,17 @@ export default function InterviewerDetailsPage() {
               userCardRef={userCardRef}
             />
           </div>
-        </div>
         {isShowFeature('SCHEDULING') && (
-          <div className='flex gap-8'>
-            <aside className='sticky top-[255px] w-64 flex-shrink-0 self-start'>
+          <div className='flex gap-8 relative'>
+            <div className='sticky top-20 self-start' style={{top:'90px'}}>
+            <aside >
               <SideBar
                 activeSection={activeSection}
                 scrollToSection={scrollToSection}
               />
             </aside>
-            <main className='relative z-0 flex-1 space-y-6'>
+            </div>
+            <main className='relative z-0 space-y-6'>
               <section ref={sectionRefs.overview}>
                 <KeyMatrics
                   declineCount={interviewerDetails.meeting_count.cancelled}
