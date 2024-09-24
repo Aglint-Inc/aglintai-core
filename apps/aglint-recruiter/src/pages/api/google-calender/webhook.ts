@@ -3,10 +3,10 @@ import {
   type DatabaseTableInsert,
   type ScheduleAuthType,
 } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
-import dayjs from '@/utils/dayjs';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -73,7 +73,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
                   : 'waiting') as DatabaseTable['interview_session_relation']['accepted_status'],
               email: interviewer.email,
               name: meet.interview_session[0].name,
-              start_time: dayjs(meet.start_time).format('MMM DD HH:mm:ss'),
+              start_time: dayjsLocal(meet.start_time).format('MMM DD HH:mm:ss'),
               session_id: meet.interview_session[0].id,
               cancel_reasons: cancelReasons,
             };

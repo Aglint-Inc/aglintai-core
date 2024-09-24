@@ -1,3 +1,4 @@
+import { dayjsLocal } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
 import { Calendar } from '@components/ui/calendar';
 import {
@@ -20,7 +21,6 @@ import {
 import React, { useRef } from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import dayjs from '@/utils/dayjs';
 import toast from '@/utils/toast';
 
 interface CompanyDayOffSectionProps {
@@ -67,7 +67,7 @@ const CompanyDayOffSection: React.FC<CompanyDayOffSectionProps> = ({
   );
 
   const getDate = (e: any) => {
-    setSelectedDate(dayjs(e).format('DD MMM YYYY'));
+    setSelectedDate(dayjsLocal(e).format('DD MMM YYYY'));
   };
 
   return (
@@ -237,7 +237,7 @@ const CompanyDayOffSection: React.FC<CompanyDayOffSectionProps> = ({
                 ]);
                 handleClose();
                 toast.success(
-                  `Holiday added on ${dayjs(selectedDate).format(
+                  `Holiday added on ${dayjsLocal(selectedDate).format(
                     'DD-MMM-YYYY',
                   )} ${eventRef.current?.value ? 'for' : ''} ${
                     eventRef.current?.value
