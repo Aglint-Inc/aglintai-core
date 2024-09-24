@@ -24,7 +24,8 @@ export const InterviewModules = () => {
       //current modules
       const { data }: { data: interviewType[] } = await supabase
         .from("interview_module")
-        .select("*");
+        .select("*")
+        .eq("recruiter_id", recruiter_id);
 
       const currentModules = data.filter((d) => !d.is_archived);
       setNewModules(newModules);

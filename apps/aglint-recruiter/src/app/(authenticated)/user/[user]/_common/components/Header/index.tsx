@@ -1,8 +1,13 @@
+import { toast } from '@components/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Card, CardContent } from '@components/ui/card';
+import axios from 'axios';
 import { Clock, Mail, MapPin, Phone, User } from 'lucide-react';
+import { useParams } from 'next/navigation';
 
 import { UIButton } from '@/components/Common/UIButton';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 
 export const Header = ({
   avatar,
@@ -16,6 +21,23 @@ export const Header = ({
   setIsOpen,
   userCardRef,
 }) => {
+  const router = useRouterPro();
+
+  const { recruiterUser } = useAuthDetails();
+  const user_id = useParams().user as string;
+  const getConsent = async () => {
+    try {
+      localStorage.setItem(
+        'gmail-redirect-path',
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/user/${user_id}`,
+      );
+      const { data } = await axios.get('/api/scheduling/google-consent');
+      return router.push(data);
+    } catch (error) {
+      toast({ title: 'Something went wrong. Please try again.' });
+    }
+  };
+
   return (
     <>
       <Card className='mb-8' ref={userCardRef}>
@@ -68,8 +90,11 @@ export const Header = ({
                 </div>
               </div>
             </div>
-            <div className='flex flex-col items-end space-y-2'>
-              {/* <UIButton>Schedule Interview</UIButton> */}
+            <div className='flex gap-3'>
+              {recruiterUser.user_id === user_id &&
+                !recruiterUser.is_calendar_connected && (
+                  <UIButton onClick={getConsent}>Connect Calendar</UIButton>
+                )}
               <UIButton
                 variant='outline'
                 onClick={() => {
