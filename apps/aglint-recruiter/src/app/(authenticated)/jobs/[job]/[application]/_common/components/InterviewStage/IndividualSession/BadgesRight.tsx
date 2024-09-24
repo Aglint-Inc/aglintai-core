@@ -12,7 +12,7 @@ import { type StageWithSessions } from '../../../hooks/useInterviewStages';
 function BadgesRight({
   session,
 }: {
-  session: StageWithSessions[0]['sessions'][0];
+  session: NonNullable<StageWithSessions>[0]['sessions'][0];
 }) {
   let allUsers = session.users;
   const interview_meeting = session.interview_meeting;

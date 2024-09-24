@@ -1,5 +1,6 @@
 'use strict';
 
+import { type DatabaseTable } from '@aglint/shared-types';
 import { Checkbox } from '@components/ui/checkbox';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -31,7 +32,7 @@ function ScheduleIndividualCard({
   isStatusVisible = true,
   hideDateAndTime = false,
 }: {
-  session: StageWithSessions[0]['sessions'][0];
+  session: NonNullable<StageWithSessions>[0]['sessions'][0];
   selectedSessionIds: string[];
   // eslint-disable-next-line no-unused-vars
   onClickCheckBox: ({ session_id }: { session_id: string }) => void;
@@ -110,7 +111,10 @@ function ScheduleIndividualCard({
       slotGlobalBadge={
         isStatusVisible && (
           <MeetingStatusBadge
-            status={interview_session.interview_meeting.status}
+            status={
+              interview_session?.interview_meeting
+                ?.status as DatabaseTable['interview_meeting']['status']
+            }
           />
         )
       }
@@ -134,15 +138,14 @@ function ScheduleIndividualCard({
           ? formatTimeWithTimeZone({
               start_time: interview_meeting.start_time,
               end_time: interview_meeting.end_time,
-              timeZone: null,
             })
           : '--'
       }
       textCandidateName={candidate?.name}
       textDuration={getBreakLabel(interview_session.session_duration)}
       textPlatformName={getScheduleType(interview_session.schedule_type)}
-      textRole={candidate?.current_job_title || '--'}
-      textPanelName={interview_session.name}
+      textRole={candidate?.current_job_title ?? '--'}
+      textPanelName={interview_session?.name ?? ''}
       onClickDropdown={(e) => {
         e.stopPropagation();
         setCollapsed(!collapsed);

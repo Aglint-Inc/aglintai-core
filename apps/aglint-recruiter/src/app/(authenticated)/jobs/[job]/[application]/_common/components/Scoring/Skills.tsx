@@ -53,7 +53,9 @@ const Skills = () => {
 
 export { Skills };
 
-const getHighRelevanceSkills = (data) => {
+const getHighRelevanceSkills = (
+  data: ReturnType<typeof useApplicationDetails>['data'],
+) => {
   if (!data?.resume_json?.skills || !data?.score_json?.relevance?.skills)
     return [];
   const relevance = data.score_json.relevance.skills;

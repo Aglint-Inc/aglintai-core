@@ -1,3 +1,4 @@
+import { EmptyState } from '@components/empty-state';
 import React from 'react';
 
 import { Loader } from '@/components/Common/Loader';
@@ -18,8 +19,16 @@ function RecentCompletedInterviews() {
   return (
     <>
       {!isFetched && <Loader />}
-      {isFetched && schedules?.length === 0 && <div>No schedules found</div>}
-      {isFetched && (
+      {isFetched && schedules?.length === 0 && (
+        <div>
+          <EmptyState
+            title='No interviews found'
+            description='There are no completed interviews.'
+            module='interviews'
+          />
+        </div>
+      )}
+      {isFetched && schedules?.length > 0 && (
         <ScheduleMeetingList filterSchedules={schedules.slice(0, 5)} />
       )}
     </>

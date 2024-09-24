@@ -1,4 +1,3 @@
-
 import { useApplicationDetails } from '../../hooks/useApplicationDetails';
 import { useApplicationMeta } from '../../hooks/useApplicationMeta';
 import { ApplicantInfoBox } from '../ui/ApplicationInfo';
@@ -14,19 +13,19 @@ function CandidateInfo() {
         <>
           <ApplicantInfoBox
             isDepartmentVisible={false}
-            textEmail={applicationDetail.email}
-            isRoleVisible={Boolean(applicationDetail.current_job_title)}
-            textRole={applicationDetail.current_job_title || '--'}
-            isLinkedInVisible={!!resume.resume_json?.basics.linkedIn}
+            textEmail={applicationDetail?.email || ''}
+            isRoleVisible={Boolean(applicationDetail?.current_job_title)}
+            textRole={applicationDetail?.current_job_title || '--'}
+            isLinkedInVisible={!!resume?.resume_json?.basics.linkedIn}
             onClickLinkedIn={() => {
               window.open(
-                `https://${resume.resume_json?.basics.linkedIn}`,
+                `https://${resume?.resume_json?.basics.linkedIn}`,
                 '_blank',
               );
             }}
-            textLocation={applicationDetail.city || '--'}
+            textLocation={applicationDetail?.city || '--'}
             textDepartment={'--'}
-            textPhone={applicationDetail.phone || '--'}
+            textPhone={applicationDetail?.phone || '--'}
           />
         </>
       )}
