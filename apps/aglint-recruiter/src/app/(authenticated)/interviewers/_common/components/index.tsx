@@ -6,8 +6,10 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
+import { Users } from 'lucide-react';
 import { useState } from 'react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 
 import { useAllInterviewers } from '../hooks/useAllInterviewers';
@@ -83,7 +85,7 @@ function Interviewers() {
         />
 
         <Card>
-          <CardContent className='p-6'>
+          <CardContent className='p-0'>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -106,8 +108,8 @@ function Interviewers() {
               </TableBody>
             </Table>
             {filteredInterviewers?.length === 0 ? (
-              <div className='flex h-[200px] w-full items-center justify-center'>
-                No Interviewers found
+              <div className='flex w-full items-center justify-center'>
+               <GlobalEmpty iconSlot={<Users strokeWidth={1} className="w-10 h-10" />} text={'No Interviewers found'} height='400px'/>
               </div>
             ) : (
               <></>
