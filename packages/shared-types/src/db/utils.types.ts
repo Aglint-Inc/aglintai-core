@@ -74,7 +74,7 @@ type TimeRange = { startTime: Timestamp; endTime: Timestamp }[];
 export type CustomAgentInstructionPayload = {
   agent: {
     instruction: string;
-    ai_response: z.infer<typeof agentSelfScheduleInstruction>;
+    // ai_response: z.infer<typeof agentSelfScheduleInstruction>;
   };
   email?: CustomEmailPayload['email'];
 };

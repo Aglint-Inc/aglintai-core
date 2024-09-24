@@ -9,6 +9,7 @@ import {
 } from '@aglint/shared-utils';
 import type * as v from 'valibot';
 
+import { api } from '@/trpc/server';
 import { mailSender } from '@/utils/mailSender';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
@@ -32,19 +33,22 @@ export const candidateSelfSchedule = async ({
   req_assignee_tz: string;
   organizer_id: string;
 }) => {
+  const ai_resp_json = await api.textTransform.selfScheduleInstruction({
+    instruction: job_payload.agent.instruction,
+    user_tz: job_payload.agent.instruction,
+  });
   const plans = await findPlanCombs({
     date_range: date_range,
     recruiter_id: parsed_body.recruiter_id,
     session_ids: parsed_body.session_ids,
     reqProgressLogger,
     time_zone: req_assignee_tz,
-    agent_payload: job_payload.agent.ai_response,
+    agent_instruction: job_payload.agent.instruction,
   });
   if (plans.length === 0) {
     throw new CApiError('CLIENT', 'No plans matched');
   }
-  const agent_payload = job_payload.agent.ai_response;
-  const candidate_slots = plans.slice(0, agent_payload.maxTotalSlots);
+  const candidate_slots = plans.slice(0, ai_resp_json.maxTotalSlots);
   const [filter_json] = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')
@@ -83,10 +87,10 @@ export const candidateSelfSchedule = async ({
   let prog_log = '';
   const cand_avail_date = {
     startDate:
-      Number(agent_payload.candidateAvailability.prefferredDate.startDate) *
+      Number(ai_resp_json.candidateAvailability.prefferredDate.startDate) *
       1000,
     endDate:
-      Number(agent_payload.candidateAvailability.prefferredDate.endDate) * 1000,
+      Number(ai_resp_json.candidateAvailability.prefferredDate.endDate) * 1000,
   };
 
   if (cand_avail_date.startDate !== cand_avail_date.endDate) {
