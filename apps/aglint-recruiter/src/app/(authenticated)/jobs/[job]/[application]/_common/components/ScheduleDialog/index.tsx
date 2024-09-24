@@ -111,7 +111,7 @@ function DialogSchedule() {
           )}
 
           <ScheduleInterviewPop
-            textName={candidate.name}
+            textName={candidate?.name ?? ''}
             slotStagePill={
               <>
                 {sessions.map((session) => {
@@ -143,7 +143,14 @@ function DialogSchedule() {
             slotAssignedInput={
               <div className='flex items-center justify-between pr-2'>
                 {selectedAssignee && (
-                  <MemberCard selectedMember={selectedAssignee} />
+                  <MemberCard
+                    selectedMember={{
+                      first_name: selectedAssignee?.first_name,
+                      last_name: selectedAssignee?.last_name,
+                      profile_image: selectedAssignee?.profile_image,
+                      role: selectedAssignee?.role,
+                    }}
+                  />
                 )}
                 <UpdateMembers
                   handleChange={(assignee) => {
@@ -152,7 +159,7 @@ function DialogSchedule() {
                   updateButton={
                     <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                   }
-                  members={members}
+                  members={members || []}
                 />
               </div>
             }

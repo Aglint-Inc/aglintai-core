@@ -46,7 +46,7 @@ function InterviewTabContent() {
     );
   }
 
-  if (stages.length === 0)
+  if (stages?.length === 0)
     return (
       <div className='p-4'>
         <UIAlert title={'No Stages Found'} />

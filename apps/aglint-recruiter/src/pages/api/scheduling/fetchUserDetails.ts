@@ -23,7 +23,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const {
       recruiter_id,
-      includeSupended,
+      includeSupended = false,
       isCalendar = null,
     } = req.body as BodyParamsFetchUserDetails;
 
@@ -69,10 +69,24 @@ export const fetchUsers = async (
       .filter((item) => Boolean(item.recruiter_user))
       .map((item) => ({
         ...item.recruiter_user,
-        role: item.roles.name,
-        role_id: item.roles.id,
-        manager_id: item.manager_id,
-        created_by: item.created_by,
+        department_id: item?.recruiter_user?.departments?.id ?? null,
+        departments: item?.recruiter_user?.departments || [],
+        email: item?.recruiter_user?.email ?? '',
+        first_name: item?.recruiter_user?.first_name ?? '',
+        last_name: item?.recruiter_user?.last_name ?? '',
+        profile_image: item?.recruiter_user?.profile_image ?? '',
+        employment: item?.recruiter_user?.employment ?? 'fulltime',
+        linked_in: item?.recruiter_user?.linked_in ?? '',
+        office_location_id: item?.recruiter_user?.office_locations?.id ?? null,
+        office_locations: item?.recruiter_user?.office_locations || [],
+        user_id: item?.recruiter_user?.user_id ?? '',
+        phone: item?.recruiter_user?.phone ?? '',
+        position: item?.recruiter_user?.position ?? '',
+        status: item?.recruiter_user?.status ?? 'active',
+        role: item?.roles?.name ?? '',
+        role_id: item?.roles?.id ?? '',
+        manager_id: item?.manager_id ?? '',
+        created_by: item?.created_by ?? '',
       }));
 
     return resAlter;
