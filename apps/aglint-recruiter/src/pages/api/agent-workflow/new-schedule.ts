@@ -23,11 +23,18 @@ import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfS
 import { getOrganizerId } from '@/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 const schedule_wf = async (req_body) => {
-  const parsed_body = v.parse(candidate_new_schedule_schema, req_body);
+  const {
+    parsed_body,
+    api_target,
+    date_range,
+    meeting_details,
+    organizer_id,
+    request_assignee_tz,
+    job_payload,
+  } = await fetchUtil(req_body);
   const event_log_id = uuidv4();
   const eventAction = apiTargetToEvents[parsed_body.target_api];
-  const job_payload =
-    req_body.payload as ActionPayloadType['agent_instruction'];
+
   const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
     request_id: parsed_body.request_id,
     supabaseAdmin,
@@ -35,41 +42,6 @@ const schedule_wf = async (req_body) => {
     event_type: eventAction,
   });
   await reqProgressLogger.resetEventProgress();
-  const [request_rec] = supabaseWrap(
-    await supabaseAdmin
-      .from('request')
-      .select('*,recruiter_user!request_assignee_id_fkey(*)')
-      .eq('id', parsed_body.request_id),
-  );
-  const request_assignee_tz =
-    request_rec.recruiter_user.scheduling_settings.timeZone.tzCode;
-  const date_range = {
-    start_date_str: dayjsLocal().format('DD/MM/YYYY'),
-    end_date_str: dayjsLocal().add(7, 'day').format('DD/MM/YYYY'),
-  };
-  if (request_rec.schedule_start_date && request_rec.schedule_end_date) {
-    date_range.start_date_str = dayjsLocal(request_rec.schedule_start_date)
-      .tz(request_assignee_tz)
-      .format('DD/MM/YYYY');
-    date_range.end_date_str = dayjsLocal(request_rec.schedule_end_date)
-      .tz(request_assignee_tz)
-      .format('DD/MM/YYYY');
-  }
-  const api_target =
-    parsed_body.target_api as DatabaseEnums['email_slack_types'];
-  const organizer_id = await getOrganizerId(
-    parsed_body.application_id,
-    supabaseAdmin,
-  );
-  const meeting_details = supabaseWrap(
-    await supabaseAdmin
-      .from('meeting_details')
-      .select()
-      .in('session_id', parsed_body.session_ids),
-  );
-  if (meeting_details.length === 0) {
-    throw new CApiError('SERVER_ERROR', 'invalid session id');
-  }
 
   let meeting_flow: DatabaseTable['interview_meeting']['meeting_flow'] =
     'self_scheduling';
@@ -127,6 +99,7 @@ const schedule_wf = async (req_body) => {
     throw new CApiError('SERVER_ERROR', 'new-schedule not found');
   }
 
+  // update meeting details
   supabaseWrap(
     await supabaseAdmin
       .from('interview_meeting')
@@ -148,3 +121,53 @@ const schedule_wf = async (req_body) => {
 const handler = createPageApiPostRoute(null, schedule_wf);
 
 export default handler;
+
+const fetchUtil = async (req_body: any) => {
+  const parsed_body = v.parse(candidate_new_schedule_schema, req_body);
+  const [request_rec] = supabaseWrap(
+    await supabaseAdmin
+      .from('request')
+      .select('*,recruiter_user!request_assignee_id_fkey(*)')
+      .eq('id', parsed_body.request_id),
+  );
+  const request_assignee_tz =
+    request_rec.recruiter_user.scheduling_settings.timeZone.tzCode;
+  const date_range = {
+    start_date_str: dayjsLocal().format('DD/MM/YYYY'),
+    end_date_str: dayjsLocal().add(7, 'day').format('DD/MM/YYYY'),
+  };
+  if (request_rec.schedule_start_date && request_rec.schedule_end_date) {
+    date_range.start_date_str = dayjsLocal(request_rec.schedule_start_date)
+      .tz(request_assignee_tz)
+      .format('DD/MM/YYYY');
+    date_range.end_date_str = dayjsLocal(request_rec.schedule_end_date)
+      .tz(request_assignee_tz)
+      .format('DD/MM/YYYY');
+  }
+  const api_target =
+    parsed_body.target_api as DatabaseEnums['email_slack_types'];
+  const organizer_id = await getOrganizerId(
+    parsed_body.application_id,
+    supabaseAdmin,
+  );
+  const meeting_details = supabaseWrap(
+    await supabaseAdmin
+      .from('meeting_details')
+      .select()
+      .in('session_id', parsed_body.session_ids),
+  );
+  if (meeting_details.length === 0) {
+    throw new CApiError('SERVER_ERROR', 'invalid session id');
+  }
+  const job_payload =
+    req_body.payload as ActionPayloadType['agent_instruction'];
+  return {
+    parsed_body,
+    date_range,
+    api_target,
+    organizer_id,
+    meeting_details,
+    request_assignee_tz,
+    job_payload,
+  };
+};
