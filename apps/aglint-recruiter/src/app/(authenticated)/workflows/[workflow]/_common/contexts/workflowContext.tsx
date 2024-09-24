@@ -68,7 +68,7 @@ const useWorkflowContext = () => {
     (payload: Parameters<typeof createActionMutation>[0]) => {
       const id = uuidv4();
       createActionMutation({
-        workflow_id: workflow?.id,
+        workflow_id: workflow.id,
         ...payload,
         id,
       });

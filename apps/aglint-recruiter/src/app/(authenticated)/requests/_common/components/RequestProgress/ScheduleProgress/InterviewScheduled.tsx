@@ -51,6 +51,7 @@ const InterviewScheduled = () => {
             target_api: target_api as any,
             order: 0,
             action_type: 'slack',
+            workflow_id: null,
           },
         ],
         recruiter_id: recruiter.id,

@@ -10,7 +10,7 @@ import { supabase } from '@/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 
-import { ScheduleReason } from './ScheduleReason';
+import { ScheduleReasonCard } from './ScheduleReasonCard';
 
 const initialReasons: DatabaseTable['recruiter']['scheduling_reason'] = {
   candidate: {
@@ -122,7 +122,7 @@ const SchedulingReasons = () => {
           ) as (keyof DatabaseTable['recruiter']['scheduling_reason'])[]
         ).map((tabKey) => (
           <TabsContent key={tabKey} value={tabKey} className='mt-0'>
-            <ScheduleReason
+            <ScheduleReasonCard
               isMainHeadingVisible={true}
               textMainHeading={
                 <span className='font-semibold'>

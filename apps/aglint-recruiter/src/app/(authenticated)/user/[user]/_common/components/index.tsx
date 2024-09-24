@@ -1,22 +1,26 @@
+import { type schedulingSettingType } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
+import { useInterviewsByUserId } from '@interviews/hooks/useInterviewsByUserId';
+import { useParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
+import { SectionCard } from '@/authenticated/components/SectionCard';
+import CalendarComp from '@/components/Common/Calendar/Calendar';
+import Heatmap from '@/components/Common/Heatmap/HeatmapUser';
 import { Loader } from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useRouterPro } from '@/hooks/useRouterPro';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { useInterviewer } from '../hooks/useInterviewer';
-import { Calendar } from './Calendar';
-import { BreadCrumb, SideBar, Top } from './Components';
-import { EditUserDialog } from './Dialogs/EditUser';
+import { BreadCrumb } from './BreadCrumb';
 import { Feedback } from './FeedbackCard';
 import { Header } from './Header';
-import { HeatmapUser } from './Heatmap';
 import { KeyMatrics } from './KeyMatrix';
 import { Qualifications } from './Qualification';
 import { RecentInterviews } from './RecentInterviewCard';
 import ScheduleAvailability from './ScheduleAvailability';
+import { SideBar } from './SideBar';
+import { Top } from './Top';
 import { UpcomingInterview } from './UpcomingInterviews';
 
 export default function InterviewerDetailsPage() {
@@ -60,11 +64,27 @@ export default function InterviewerDetailsPage() {
     sectionRefs[sectionKey].current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  //-----------------------
-  const router = useRouterPro();
-  const [isOpen, setIsOpen] = useState(router.queryParams.edit_enable || false);
+  //----------------------- page data
 
   const { data: interviewerDetails, isLoading } = useInterviewer();
+
+  //------------------------ calendar data
+  const user_id = useParams().user as string;
+
+  const [filter, setFilter] = useState([]);
+  const {
+    data: { schedules: allSchedules },
+    isLoading: iscalendarLoading,
+  } = useInterviewsByUserId({
+    filter: filter.length === 0 ? null : filter,
+    member_id: user_id,
+  });
+
+  // ---------------- data
+
+  const interviewer = null;
+  const interviewLoad = interviewerDetails?.scheduling_settings
+    ?.interviewLoad as schedulingSettingType['interviewLoad'];
 
   //--------------------------------------
   if (isLoading)
@@ -73,23 +93,18 @@ export default function InterviewerDetailsPage() {
         <Loader />
       </div>
     );
-
-  const interviewer = null;
-
   return (
     <div className='container mx-auto py-8'>
-      <EditUserDialog isOpen={isOpen} setIsOpen={setIsOpen} />
       <Top interviewer={interviewer} isTopBarVisible={isTopBarVisible} />
       <div className=''>
         <div className='sticky top-0 z-10 bg-neutral-50'>
           <BreadCrumb name={interviewerDetails?.first_name} />
-          <div className=''>
+          <div>
             <Header
               avatar={interviewerDetails?.avatar}
-              setIsOpen={setIsOpen}
               name={getFullName(
-                interviewerDetails.first_name,
-                interviewerDetails.last_name,
+                interviewerDetails?.first_name,
+                interviewerDetails?.last_name,
               )}
               role={capitalizeAll(interviewerDetails?.role || ' - ')}
               department={interviewerDetails?.department || ' - '}
@@ -114,7 +129,6 @@ export default function InterviewerDetailsPage() {
                 <KeyMatrics
                   declineCount={interviewerDetails.meeting_count.cancelled}
                   completedCount={interviewerDetails.meeting_count.completed}
-                  // upcomingCount={interviewerDetails.meeting_count.upcoming}
                   totalHour={interviewerDetails.meeting_count.completed_hour}
                 />
               </section>
@@ -143,12 +157,11 @@ export default function InterviewerDetailsPage() {
               <section ref={sectionRefs.interviewFeedback}>
                 <Feedback feedbacks={interviewerDetails.feedbacks} />
               </section>
+
               <section ref={sectionRefs.meetingOverview}>
-                <HeatmapUser
-                  loadSetting={
-                    interviewerDetails?.scheduling_settings?.interviewLoad
-                  }
-                />
+                <SectionCard title='Meetings overview'>
+                  <Heatmap loadSetting={interviewLoad} />
+                </SectionCard>
               </section>
               <section ref={sectionRefs.scheduleAvailabilityRef}>
                 <ScheduleAvailability
@@ -157,29 +170,45 @@ export default function InterviewerDetailsPage() {
                 />
               </section>
               <section ref={sectionRefs.calendar}>
-                <Calendar />
+                <SectionCard title='Schedule Calendar'>
+                  <CalendarComp
+                    allSchedules={allSchedules}
+                    isLoading={iscalendarLoading}
+                    filter={filter}
+                    setFilter={setFilter}
+                  />
+                </SectionCard>
               </section>
-
-              {/* 
-          <section ref={sectionRefs.performance}>
-            <Performance interviewer={interviewer} />
-          </section> */}
-
-              {/* <section ref={sectionRefs.availability}>
-            <Availability interviewer={interviewer} />
-          </section> */}
-
-              {/* <section ref={sectionRefs.pendingActions}>
-            <PendingActions interviewer={interviewer} />
-          </section> */}
-
-              {/* <section ref={sectionRefs.recentActivity}>
-            <RecentActivity interviewer={interviewer} />
-          </section> */}
             </main>
           </div>
         )}
       </div>
     </div>
   );
+}
+
+//for feature use
+{
+  /* 
+          <section ref={sectionRefs.performance}>
+            <Performance interviewer={interviewer} />
+          </section> */
+}
+
+{
+  /* <section ref={sectionRefs.availability}>
+            <Availability interviewer={interviewer} />
+          </section> */
+}
+
+{
+  /* <section ref={sectionRefs.pendingActions}>
+            <PendingActions interviewer={interviewer} />
+          </section> */
+}
+
+{
+  /* <section ref={sectionRefs.recentActivity}>
+            <RecentActivity interviewer={interviewer} />
+          </section> */
 }

@@ -31,7 +31,7 @@ export const createRequestProgressLogger = ({
     if (payload?.id) {
       progress_id = payload.id;
     }
-    const [rec] = await supabaseWrap(
+    const rec = await supabaseWrap(
       await supabaseAdmin
         .from('request_progress')
         .upsert({
@@ -39,15 +39,16 @@ export const createRequestProgressLogger = ({
           created_at: dayjsLocal().toISOString(),
           meta: {
             event_run_id,
-            ...(payload.meta ?? {}),
+            ...(payload?.meta ?? {}),
           },
-          log: payload.log,
+          log: payload?.log,
           id: progress_id,
           event_type: event_type,
-          status: payload.status,
-          is_progress_step: payload.is_progress_step,
+          status: payload?.status,
+          is_progress_step: payload?.is_progress_step,
         })
         .select()
+        .single()
     );
     return rec;
   };
@@ -75,7 +76,7 @@ export async function executeWorkflowAction<T1 extends any, U extends unknown>(
   logger: ProgressLoggerType,
   log_id = uuidv4(),
   logger_args?: Pick<DatabaseTableInsert['request_progress'], 'meta'>
-): Promise<U> {
+): Promise<U | null> {
   try {
     await logger({
       ...(logger_args ?? {}),
@@ -102,6 +103,7 @@ export async function executeWorkflowAction<T1 extends any, U extends unknown>(
         log: err_log,
         is_progress_step: false,
       });
+      return null;
     } else {
       throw new CApiError('WORKFLOW_ACTION', err.message, 500);
     }

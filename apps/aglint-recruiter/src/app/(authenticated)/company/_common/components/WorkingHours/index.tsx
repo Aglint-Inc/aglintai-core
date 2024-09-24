@@ -63,7 +63,7 @@ export default function WorkingHour({
           List company holidays to exclude them from scheduling.
         </p>
       </div>
-      <div className='flex flex-col gap-6'>
+      <div className='flex flex-col'>
         <TimeZone
           timeZone={initialData?.timeZone?.label}
           selectedTimeZone={selectedTimeZone}
