@@ -66,7 +66,7 @@ function ConfirmAvailability() {
   }, [availableSlots, selectedIndex]);
 
   async function handleContinue() {
-    if (selectedIndex !== availableSlots.slots.length) {
+    if (selectedIndex !== availableSlots?.slots.length) {
       setSelectedIndex((pre) => pre + 1);
       return null;
     }
@@ -124,7 +124,7 @@ function ConfirmAvailability() {
       onClose={closeDrawer}
       open={openAvailabilityDrawer && isFetched}
       slotBottom={
-        selectedIndex !== availableSlots?.slots.length + 1 && (
+        selectedIndex !== (availableSlots?.slots ?? []).length + 1 && (
           <>
             <UIButton
               variant='outline'
@@ -161,7 +161,9 @@ function ConfirmAvailability() {
         <div>
           <ShowCode>
             <ShowCode.When
-              isTrue={selectedIndex === availableSlots?.slots.length + 1}
+              isTrue={
+                selectedIndex === (availableSlots?.slots ?? []).length + 1
+              }
             >
               <div
                 className={

@@ -8,7 +8,7 @@ export type CustomRequestProgress = TableType<
     status: EventStatusType;
     event_type: EventNodeType;
     meta: {
-      event_run_id?: number;
+      event_run_id?: number | null;
       workflow_action_id?: string;
       scheduled_time?: string;
       [key: string]: any;
