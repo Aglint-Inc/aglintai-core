@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { CApiError } from '@aglint/shared-utils';
+import { AxiosError } from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import * as v from 'valibot';
 export const createPageApiPostRoute = (
@@ -31,6 +32,11 @@ export const createPageApiPostRoute = (
             .status(500)
             .json({ type: error.type, error: error.message });
         }
+      }
+      if (error instanceof AxiosError) {
+        return res
+          .status(500)
+          .json({ type: 'AXIOS_ERROR', error: error.response.data });
       }
       return res.status(500).json({ type: 'UNKNOWN', error: error.message });
     }

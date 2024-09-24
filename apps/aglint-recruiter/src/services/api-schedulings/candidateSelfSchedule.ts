@@ -37,6 +37,7 @@ export const candidateSelfSchedule = async ({
     instruction: job_payload.agent.instruction,
     user_tz: job_payload.agent.instruction,
   });
+
   const plans = await findPlanCombs({
     date_range: date_range,
     recruiter_id: parsed_body.recruiter_id,
@@ -48,7 +49,23 @@ export const candidateSelfSchedule = async ({
       isNoConflicts: true,
       isOutSideWorkHours: ai_resp_json.include_outside_working_hours,
       isSoftConflicts: ai_resp_json.includeAllSoftConflictSlots,
-      preferredDateRanges: [],
+      preferredDateRanges: [
+        {
+          startTime: dayjsLocal(
+            Number(
+              ai_resp_json.candidateAvailability.prefferredDate.startDate,
+            ) * 1000,
+          )
+            .tz(req_assignee_tz)
+            .format(),
+          endTime: dayjsLocal(
+            Number(ai_resp_json.candidateAvailability.prefferredDate.endDate) *
+              1000,
+          )
+            .tz(req_assignee_tz)
+            .format(),
+        },
+      ],
       preferredInterviewers: [],
       isWorkLoad: true,
     },

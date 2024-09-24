@@ -1,12 +1,15 @@
 import {
-  type CustomAgentInstructionPayload,
   type DatabaseTable,
   type PlanCombinationRespType,
   type TimeDurationDayjsType,
 } from '@aglint/shared-types';
-import { CApiError } from '@aglint/shared-utils';
+import {
+  type agentSelfScheduleInstruction,
+  CApiError,
+} from '@aglint/shared-utils';
 import { type ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { type z } from 'zod';
 
 import type { CandidatesSchedulingV2 } from '../CandidateScheduleV2/CandidatesSchedulingV2';
 
@@ -21,7 +24,7 @@ export const findCandSelectedSlots = async ({
   request_assignee_tz: string;
   cand_schedule: CandidatesSchedulingV2;
 }) => {
-  const ai_response: CustomAgentInstructionPayload['agent']['ai_response'] = {
+  const ai_response: z.infer<typeof agentSelfScheduleInstruction> = {
     candidateAvailability: {
       prefferredDate: null,
 
