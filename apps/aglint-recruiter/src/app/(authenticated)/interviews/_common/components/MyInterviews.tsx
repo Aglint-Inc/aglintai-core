@@ -8,9 +8,9 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { transformDataSchedules } from 'src/app/_common/utils/schedules-query';
 
+import { useAllIntegrations } from '@/authenticated/hooks';
 import { Loader } from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useAllIntegrations } from '@/queries/intergrations';
 
 import {
   getInterviewsCountByUserId,
