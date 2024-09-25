@@ -16,7 +16,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { useRequestSetupProgress } from '@requests/hooks/useRequestSetupProgress';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   Edit,
