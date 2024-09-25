@@ -1,8 +1,8 @@
+import { cn } from '@lib/utils';
+import React from 'react';
+
 import ReverseShadowIcon from '@/authenticated/components/ReverseShadowIcon';
 import ShadowIcon from '@/authenticated/components/ShadowIcon';
-import { cn } from '@lib/utils';
-import { RefreshCcw, RefreshCw } from 'lucide-react';
-import React from 'react';
 
 interface HistoryPillProps {
   isReverseShadow?: boolean;
