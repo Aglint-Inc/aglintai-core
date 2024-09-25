@@ -20,7 +20,7 @@ const CompanyDetailComp = () => {
   return (
     <div className='container mx-auto'>
       <div className='mb-6 flex gap-6'>
-        <div className='w-1/5'>
+        <div className='w-1/4'>
           <div className='sticky top-[32px]'>
             <SettingsSubNabItem />
           </div>

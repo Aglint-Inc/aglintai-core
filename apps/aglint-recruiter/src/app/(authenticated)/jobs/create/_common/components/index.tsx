@@ -9,6 +9,7 @@ import {
 } from '@components/ui/breadcrumb';
 import { Button } from '@components/ui/button';
 import { Dialog, DialogContent } from '@components/ui/dialog';
+import { useRequestSetupProgress } from '@requests/hooks/useRequestSetupProgress';
 import { AlertTriangle, Loader2 } from 'lucide-react';
 import {
   type Dispatch,
@@ -181,26 +182,29 @@ const JobCreateForm = ({
   setFields: Dispatch<SetStateAction<Form>>;
 }) => {
   const [modal, setModal] = useState(false);
+  const { refetch } = useRequestSetupProgress();
   const { handleJobCreate } = useJobs();
   const { push } = useRouterPro();
 
   const handleCreate = async () => {
     const newFields = validateForms(fields);
     if (enableCreation(newFields)) {
+      setModal(true);
       const newJob = Object.entries(fields).reduce((acc, [key, { value }]) => {
         acc[key] = value;
         return acc;
       }, {} as Payload);
-      setModal(true);
 
       const { id } = await handleJobCreate({
         ...newJob,
       });
+
+      await refetch();
+      setModal(false);
       push(ROUTES['/jobs/[job]']({ job: id }));
     } else {
       setFields(newFields);
     }
-    setModal(false);
   };
 
   const handleChange = useCallback(
