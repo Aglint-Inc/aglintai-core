@@ -19,7 +19,7 @@ function RecentCompletedInterviews() {
   return (
     <>
       {!isFetched && <Loader />}
-      {isFetched && schedules?.length === 0 && (
+      {isFetched && (schedules ?? [])?.length === 0 && (
         <div>
           <EmptyState
             title='No interviews found'
@@ -28,8 +28,8 @@ function RecentCompletedInterviews() {
           />
         </div>
       )}
-      {isFetched && schedules?.length > 0 && (
-        <ScheduleMeetingList filterSchedules={schedules.slice(0, 5)} />
+      {isFetched && (schedules ?? [])?.length > 0 && (
+        <ScheduleMeetingList filterSchedules={(schedules ?? []).slice(0, 5)} />
       )}
     </>
   );

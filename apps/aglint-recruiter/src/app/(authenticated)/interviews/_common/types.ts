@@ -28,7 +28,7 @@ export const initialFilterState: ScheduleFilerType = {
   schedule_types: [],
   date: [],
   session_types: [],
-  searchText: null,
+  searchText: '',
 };
 export const upComingInitialFilterState: ScheduleFilerType = {
   status: ['confirmed'],
@@ -37,7 +37,7 @@ export const upComingInitialFilterState: ScheduleFilerType = {
   schedule_types: [],
   date: [],
   session_types: [],
-  searchText: null,
+  searchText: '',
 };
 
 import { type ReactNode } from 'react';
