@@ -9,11 +9,11 @@ import {
 } from '@aglint/shared-utils';
 import type * as v from 'valibot';
 
-import { api } from '@/trpc/server';
 import { mailSender } from '@/utils/mailSender';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 import { findPlanCombs } from './findPlanCombs';
+import { selfScheduleLinkInstruction } from './utils/selfScheduleLinkInstruction';
 
 export const candidateSelfSchedule = async ({
   parsed_body,
@@ -33,9 +33,11 @@ export const candidateSelfSchedule = async ({
   req_assignee_tz: string;
   organizer_id: string;
 }) => {
-  const ai_resp_json = await api.textTransform.selfScheduleInstruction({
-    instruction: job_payload.agent.instruction,
-    user_tz: job_payload.agent.instruction,
+  const ai_resp_json = await selfScheduleLinkInstruction({
+    input: {
+      instruction: job_payload.agent.instruction,
+      user_tz: req_assignee_tz,
+    },
   });
 
   const plans = await findPlanCombs({

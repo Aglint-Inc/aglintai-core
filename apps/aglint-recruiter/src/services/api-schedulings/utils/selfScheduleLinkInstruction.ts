@@ -1,22 +1,17 @@
-/* eslint-disable no-console */
-import type { ZodInferSchema } from '@aglint/shared-types';
+import { type ZodInferSchema } from '@aglint/shared-types';
 import { agentSelfScheduleInstruction, dayjsLocal } from '@aglint/shared-utils';
 import OpenAI from 'openai';
 import { zodResponseFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
-
-import { privateProcedure } from '@/server/api/trpc';
-
-import { type PrivateProcedure } from '../../trpc';
 
 export const schema = z.object({
   instruction: z.string(),
   user_tz: z.string(),
 });
 
-const mutation = async ({
+export const selfScheduleLinkInstruction = async ({
   input: { instruction, user_tz },
-}: PrivateProcedure<typeof schema>) => {
+}) => {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_KEY,
   });
@@ -60,9 +55,5 @@ const mutation = async ({
 
   const availability = completion.choices[0].message.parsed;
 
-  return availability as ZodInferSchema<typeof agentSelfScheduleInstruction>; // choose either type or schema
+  return availability as ZodInferSchema<typeof agentSelfScheduleInstruction>;
 };
-
-export const selfScheduleInstruction = privateProcedure
-  .input(schema)
-  .mutation(mutation);
