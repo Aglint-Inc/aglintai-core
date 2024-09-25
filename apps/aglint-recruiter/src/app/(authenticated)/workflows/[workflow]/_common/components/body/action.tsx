@@ -330,7 +330,7 @@ const WorkflowConnector = () => {
   return (
     <div className={'flex w-full items-center justify-center text-neutral-600'}>
       <Image
-        src='/images/workflows/connector.svg'
+        src='/images/workflow/connector.svg'
         alt='Workflow Connector'
         width={16}
         height={45}
