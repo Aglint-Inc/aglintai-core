@@ -26,13 +26,8 @@ export const candidateAvailRequest = async ({
   reqProgressLogger: ProgressLoggerType;
   mail_payload: any;
 }) => {
-  const {
-    application_id,
-    number_of_days,
-    number_of_slots,
-    recruiter_id,
-    api_options,
-  } = v.parse(candidate_avail_request_schema, req_body);
+  const { application_id, number_of_days, number_of_slots, recruiter_id } =
+    v.parse(candidate_avail_request_schema, req_body);
 
   supabaseWrap(
     await supabaseAdmin
@@ -52,11 +47,10 @@ export const candidateAvailRequest = async ({
         date_range: [start_date_str, end_date_str],
         total_slots: null,
         availability: {
-          day_offs: api_options.include_conflicting_slots.day_off,
-          free_keywords: api_options.include_free_time,
-          outside_work_hours:
-            api_options.include_conflicting_slots.out_of_working_hrs,
-          recruiting_block_keywords: api_options.use_recruiting_blocks,
+          day_offs: true,
+          free_keywords: true,
+          outside_work_hours: true,
+          recruiting_block_keywords: true,
         },
         request_id: request_id,
       })
