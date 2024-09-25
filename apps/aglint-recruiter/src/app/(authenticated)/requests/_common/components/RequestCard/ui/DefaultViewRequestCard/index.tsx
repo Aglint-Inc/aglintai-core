@@ -49,9 +49,9 @@ function DefaultViewRequestCard({
           <div className='flex items-center space-x-2 cursor-pointer hover:underline'>
             <Label
               className={cn(
-                'line-clamp-1 flex-grow whitespace-normal cursor-pointer break-words text-base ',
+                'line-clamp-1 flex-grow whitespace-normal cursor-pointer break-words text-md ',
                 {
-                  'font-semibold': !isCompactList,
+                  'font-medium': !isCompactList,
                   'text-sm font-normal': isCompactList,
                 },
               )}
@@ -96,16 +96,7 @@ function DefaultViewRequestCard({
           >
             <div className='space-y-3'>
               <div className='flex gap-2'>
-                <Badge
-                  variant={
-                    props?.type === 'decline_request'
-                      ? 'destructive'
-                      : 'secondary'
-                  }
-                >
-                  {capitalizeFirstLetter(props.type)}
-                </Badge>
-                <Badge
+              <Badge
                   variant={
                     props?.status === 'to_do'
                       ? 'secondary'
@@ -118,6 +109,16 @@ function DefaultViewRequestCard({
                 >
                   {capitalizeFirstLetter(props.status)}
                 </Badge>
+                <Badge
+                  variant={
+                    props?.type === 'decline_request'
+                      ? 'destructive'
+                      : 'secondary'
+                  }
+                >
+                  {capitalizeFirstLetter(props.type)}
+                </Badge>
+              
                 {props?.request_note[0]?.note && (
                   <TooltipProvider>
                     <Tooltip>
@@ -253,7 +254,7 @@ const InfoItem = ({
               className: 'w-3 h-3',
             })}
           </div>
-          <p className='text-2xs text-gray-500'>{label}</p>
+          <p className='text-sm text-gray-500'>{label}</p>
         </div>
         <div className='flex flex-row items-start gap-1 pl-2'>
           {typeof value === 'string' ? (

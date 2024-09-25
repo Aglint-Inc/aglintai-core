@@ -10,24 +10,17 @@ import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 const ColumnViewRequestCard = ({ ...props }: RequestProps) => {
   return (
-    <Card className='group w-full cursor-pointer p-2 transition-shadow duration-300'>
+    <Card className='group w-full cursor-pointer p-3 transition-shadow duration-300'>
       <Link href={`/requests/${props.id}`} passHref>
         <div className='space-y-2'>
           <div className='flex items-center justify-between'>
-            <Label className='line-clamp-1 text-xs font-semibold'>
+            <Label className='line-clamp-1 text-xs font-medium'>
               {props.title}
             </Label>
             {/* <RequestOverflowMenu request_id={props.id} /> */}
           </div>
           <div className='flex flex-wrap gap-1'>
-            <Badge
-              variant={
-                props?.type === 'decline_request' ? 'destructive' : 'secondary'
-              }
-            >
-              {capitalizeFirstLetter(props.type)}
-            </Badge>
-            <Badge
+          <Badge
               variant={
                 props?.status === 'to_do'
                   ? 'secondary'
@@ -37,16 +30,26 @@ const ColumnViewRequestCard = ({ ...props }: RequestProps) => {
                       ? 'completed'
                       : 'destructive'
               }
+              className='text-xs font-medium'
             >
               {capitalizeFirstLetter(props.status)}
             </Badge>
+            <Badge
+             className='text-xs font-medium'
+              variant={
+                props?.type === 'decline_request' ? 'destructive' : 'secondary'
+              }
+            >
+              {capitalizeFirstLetter(props.type)}
+            </Badge>
+           
           </div>
-          <div className='text-xs'>
+          <div className='text-xs flex items-center gap-2'>
             <div className='flex items-center'>
               <Calendar className='mr-1 h-3 w-3' />
               {dayjsLocal(props.schedule_start_date).format('MMM D, YYYY')}
             </div>
-            <div className='mt-1 flex items-center'>
+            <div className='flex items-center'>
               <User className='mr-1 h-3 w-3' />
               {getFullName(
                 props.applications?.candidates?.first_name ?? '',
