@@ -4,7 +4,7 @@ import type { getGreenhouseMeta } from './process';
 
 export type GreenhouseAPI = {
   GET: {
-    request: object;
+    request: null;
     response: Awaited<ReturnType<typeof getGreenhouseMeta>>;
   };
   POST: {

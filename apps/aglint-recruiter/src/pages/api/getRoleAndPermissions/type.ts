@@ -9,14 +9,14 @@ export type GetRoleAndPermissionsAPI = {
         name: string;
         isEditable: boolean;
         assignedTo: string[];
-        description: string;
+        description: string | null;
         permissions: {
-          relation_id: string;
+          relation_id: string | null;
           id: number;
-          name: DatabaseTable['permissions']['name'];
-          title: string;
-          description: string;
-          meta: DatabaseTable['permissions']['meta'];
+          title: string | null;
+          name: DatabaseTable['permissions']['name'] | null;
+          description: string | null;
+          meta: DatabaseTable['permissions']['meta'] | null;
           isActive: boolean;
         }[];
       };
@@ -26,7 +26,7 @@ export type GetRoleAndPermissionsAPI = {
         id: number;
         name: DatabaseTable['permissions']['name'];
         title: string;
-        description: string;
+        description: string | null;
         meta: DatabaseTable['permissions']['meta'];
         isActive: boolean;
       };
