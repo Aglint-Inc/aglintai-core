@@ -1,5 +1,6 @@
 import { SelectiveNotNullViews } from "../..";
 
+//@ts-expect-error
 export type NotNullViews = SelectiveNotNullViews<{
   all_interviewers:
     | "completed_meeting_count"
