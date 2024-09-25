@@ -1,6 +1,6 @@
 import { SelectiveNotNullTables } from "../..";
 
-//@ts-expect-error
+//@ts-ignore
 export type NotNullTables = SelectiveNotNullTables<{
   aglint_candidates:
     | "city"
