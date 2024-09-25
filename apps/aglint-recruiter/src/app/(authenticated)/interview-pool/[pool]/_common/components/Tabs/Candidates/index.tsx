@@ -104,9 +104,7 @@ function Candidates() {
                           icon={<ArrowRight className='h-4 w-4' />}
                           onClick={() => {
                             router.push(
-                              ROUTES[
-                                '/jobs/[job]/application/[application_id]'
-                              ]({
+                              ROUTES['/jobs/[job]/[application]']({
                                 job: app.job_id,
                                 application_id: app.id,
                               }) + '?tab=interview',
