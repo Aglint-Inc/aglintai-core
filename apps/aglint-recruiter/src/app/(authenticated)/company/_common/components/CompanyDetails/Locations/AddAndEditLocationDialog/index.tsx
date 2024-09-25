@@ -14,9 +14,9 @@ import axios from 'axios';
 import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { manageOfficeLocation } from '@/context/AuthContext/utils';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
 import timeZone from '@/utils/timeZone';
@@ -46,7 +46,7 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
   open,
   edit,
 }) => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { data: office_locations, refetch } = useAllOfficeLocations();
   const address1Ref = useRef<HTMLInputElement>(null);
   const address2Ref = useRef<HTMLInputElement>(null);
