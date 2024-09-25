@@ -26,6 +26,7 @@ export type ViewType<
   DatabaseViews[T],
   //@ts-expect-error
   {
+    //@ts-expect-error
     Row: Custom<DatabaseViewRow<T>, U>;
     Relationships: DatabaseViewRelationships<T>;
   }

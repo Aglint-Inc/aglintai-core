@@ -42,17 +42,18 @@ export type TableType<
   U extends DatabaseTableRow<T> extends CustomizableTypes<"Array">
     ? { [id in keyof Partial<DatabaseTableRow<T>[number]>]: any }
     : { [id in keyof Partial<DatabaseTableRow<T>>]: any },
-> = Required<
-  Custom<
-    DatabaseTables[T],
+> = Custom<
+  DatabaseTables[T],
+  //@ts-expect-error
+  {
     //@ts-expect-error
-    {
-      Row: Custom<DatabaseTableRow<T>, U>;
-      Insert: Custom<DatabaseTableInsert<T>, U>;
-      Update: Custom<DatabaseTableUpdate<T>, U>;
-      Relationships: DatabaseTableRelationships<T>;
-    }
-  >
+    Row: Custom<DatabaseTableRow<T>, U>;
+    //@ts-expect-error
+    Insert: Custom<DatabaseTableInsert<T>, Partial<U>>;
+    //@ts-expect-error
+    Update: Custom<DatabaseTableUpdate<T>, Partial<U>>;
+    Relationships: DatabaseTableRelationships<T>;
+  }
 >;
 
 // TODO: REMOVE PARTIALS AND TS_EXPECT_ERROR AFTER STRICT NULL CHECK IS TURNED ON

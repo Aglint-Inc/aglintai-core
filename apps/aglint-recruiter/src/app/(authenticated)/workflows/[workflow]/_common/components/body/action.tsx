@@ -149,24 +149,24 @@ const ActionForm = ({ action }: ActionProps) => {
   );
 
   return (
-    <div className="mb-4">
-    <UISelect
-      label='Do this'
-      value={currentOption.target_api}
-      disabled={!manageWorkflow}
-      menuOptions={options}
-      onValueChange={(value) => {
-        const { action_type, target_api, payload } = options.find(
-          ({ target_api }) => value === target_api,
-        );
-        selectAction({
-          ...action,
-          action_type,
-          target_api,
-          payload,
-        } as WorkflowAction);
-      }}
-    />
+    <div className='mb-4'>
+      <UISelect
+        label='Do this'
+        value={currentOption.target_api}
+        disabled={!manageWorkflow}
+        menuOptions={options}
+        onValueChange={(value) => {
+          const { action_type, target_api, payload } = options.find(
+            ({ target_api }) => value === target_api,
+          );
+          selectAction({
+            ...action,
+            action_type,
+            target_api,
+            payload,
+          } as WorkflowAction);
+        }}
+      />
     </div>
   );
 };
@@ -313,7 +313,7 @@ const AgentInstructionBody: React.FC<
           toolbar={false}
           disabled={disabled}
           editor_type='regular'
-          initialValue={payload.agent?.instruction}
+          initialValue={(payload as any).agent?.instruction}
           handleChange={(newInstruction) => setInstruction(newInstruction)}
           placeholder='Provide the instructions to guide the agent through this action.'
         />

@@ -42,6 +42,7 @@ export type FunctionType<
     DatabaseFunctions[T],
     //@ts-expect-error
     {
+      //@ts-expect-error
       Args: Custom<DatabaseFunctionArgs<T>, U>;
       Returns: V extends never
         ? DatabaseFunctionReturns<T>
