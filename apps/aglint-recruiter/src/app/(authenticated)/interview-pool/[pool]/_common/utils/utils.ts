@@ -18,6 +18,14 @@ export const fetchSchedulesCountByModule = async (module_id: string) => {
     .select()
     .eq('module_id', module_id);
 
+  if (!data) {
+    return {
+      upcomingCount: 0,
+      completedCount: 0,
+      cancelledCount: 0,
+    };
+  }
+
   const upcomingCount = data.reduce(
     (acc, cur) => (cur.status === 'confirmed' ? acc + 1 : acc),
     0,
@@ -82,36 +90,49 @@ export const fetchProgress = async ({
     .order('created_at', { ascending: false })
     .not('interview_session_relation', 'is', null)
     .throwOnError();
+
+  if (!data) {
+    return [];
+  }
+
   const resRel = data
     .filter(
-      (ses) =>
-        ses.interview_session_relation.interview_session.interview_meeting
-          .status === 'completed',
+      (sesRel) =>
+        sesRel?.interview_session_relation?.interview_session?.interview_meeting
+          ?.status === 'completed',
     )
     .map((sesRel) => {
-      const interview_session_relation: DatabaseTable['interview_session_relation'] =
-        {
-          feedback: sesRel.interview_session_relation.feedback,
-          accepted_status: sesRel.interview_session_relation.accepted_status,
-          id: sesRel.interview_session_relation.id,
-          interview_module_relation_id:
-            sesRel.interview_session_relation.interview_module_relation_id,
-          interviewer_type: sesRel.interview_session_relation.interviewer_type,
-          is_confirmed: sesRel.interview_session_relation.is_confirmed,
-          session_id: sesRel.interview_session_relation.session_id,
-          training_type: sesRel.interview_session_relation.training_type,
-          user_id: sesRel.interview_session_relation.user_id,
-        };
+      const interview_session_relation = sesRel?.interview_session_relation;
+      if (!interview_session_relation) return null;
+      const interview_meeting =
+        interview_session_relation?.interview_session?.interview_meeting;
+      if (!interview_meeting) return null;
+      const interview_module_relation =
+        interview_session_relation.interview_module_relation;
+      if (!interview_module_relation) return null;
+      const interview_session = interview_session_relation.interview_session;
+      if (!interview_session) return;
+
       return {
         ...sesRel,
-        interview_meeting:
-          sesRel.interview_session_relation.interview_session.interview_meeting,
-        interview_session_relation,
-        interview_module_relation:
-          sesRel.interview_session_relation.interview_module_relation,
-        interview_session: sesRel.interview_session_relation.interview_session,
+        interview_meeting,
+        interview_session_relation: {
+          feedback: interview_session_relation.feedback,
+          accepted_status: interview_session_relation.accepted_status,
+          id: interview_session_relation.id,
+          interview_module_relation_id:
+            interview_session_relation.interview_module_relation_id,
+          interviewer_type: interview_session_relation.interviewer_type,
+          is_confirmed: interview_session_relation.is_confirmed,
+          session_id: interview_session_relation.session_id,
+          training_type: interview_session_relation.training_type,
+          user_id: interview_session_relation.user_id,
+        } as DatabaseTable['interview_session_relation'],
+        interview_module_relation,
+        interview_session,
       };
-    });
+    })
+    .filter(Boolean);
 
   return resRel;
 };
@@ -219,7 +240,7 @@ export const addMemberbyUserIds = async ({
 };
 
 export const updateRelations = async (
-  archivedRelations: ReturnType<typeof useModuleAndUsers>['data']['relations'],
+  archivedRelations: ReturnType<typeof useModuleAndUsers>[0]['relations'],
   training_status: DatabaseTable['interview_module_relation']['training_status'],
 ) => {
   const upsertRelations: DatabaseTableInsert['interview_module_relation'][] =
