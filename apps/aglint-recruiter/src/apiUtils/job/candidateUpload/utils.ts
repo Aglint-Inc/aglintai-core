@@ -35,7 +35,7 @@ export const supportedTypes = {
   'text/plain': '.txt',
 };
 
-export const verifyCandidate = async (
+const verifyCandidate = async (
   supabase: Supabase,
   email: CandidateDuplicationCheckAction['request']['inputData']['email'],
   recruiter_id: CandidateDuplicationCheckAction['request']['inputData']['recruiter_id'],
@@ -76,7 +76,7 @@ export const verifyCandidate = async (
   // console.log('NEW CANDIDATE VERIFIED');
 };
 
-export const createCandidate = async (
+const createCandidate = async (
   supabase: Supabase,
   candidate: CandidateCreateAction['request']['inputData'],
   tries: CandidateCreateAction['request']['tries'] = 0,
@@ -418,37 +418,6 @@ export const reProcessApplication = async (
   return data[0];
 };
 
-export const deleteApplication = async (
-  supabase: Supabase,
-  application_id: string,
-  tries = 0,
-  prev_error?: PostgrestError,
-  signal?: CandidateCreateAction['request']['signal'],
-): Promise<void> => {
-  if (tries++ === MAX_TRIES) throw new Error(prev_error.message);
-  const timerSignal = new AbortController();
-  const timeout = setTimeout(() => timerSignal.abort(), 15000);
-  const { error } = await supabase
-    .from('applications')
-    .delete()
-    .eq('id', application_id)
-    .abortSignal(signal)
-    .abortSignal(timerSignal.signal);
-  clearTimeout(timeout);
-  if (error) {
-    if (tries < MAX_TRIES)
-      return await deleteApplication(
-        supabase,
-        application_id,
-        tries,
-        error,
-        signal,
-      );
-    throw new Error(`Application deletion: ${error.message}`);
-  }
-  // console.log('NEW CANDIDATE APPLICATION DELETED');
-};
-
 export const uploadResume = async (
   supabase: Supabase,
   file: fs.ReadStream,
@@ -542,7 +511,7 @@ const sha256 = async (message) => {
   return hashHex;
 };
 
-export const verifyCandidateInJob = async (
+const verifyCandidateInJob = async (
   supabase: Supabase,
   candidateId: CandidateCreateAction['request']['inputData']['id'],
   jobId: string,

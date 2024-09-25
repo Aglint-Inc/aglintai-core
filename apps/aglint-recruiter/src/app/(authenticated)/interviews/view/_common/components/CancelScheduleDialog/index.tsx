@@ -43,7 +43,7 @@ function CancelScheduleDialog({
   const [reason, setReason] = useState('');
   const [notes, setNotes] = useState('');
   const [isSaving, setIsSaving] = useState(false);
-  const reasons = recruiter.scheduling_reason?.internal?.cancellation || [
+  const reasons = recruiter?.scheduling_reason?.internal?.cancellation || [
     'Too Many Interviews',
     'Out of the office',
     'Scheduling conflicts',
@@ -59,7 +59,7 @@ function CancelScheduleDialog({
       setIsSaving(true);
       const promises = metaDetails.map(async (meta) => {
         const req_body: ApiBodyParamsCancelSchedule = {
-          cancel_user_id: recruiterUser.user_id,
+          cancel_user_id: recruiterUser?.user_id ?? '',
           meeting_id: meta.meeting_id,
           session_id: meta.session_id,
           notes,

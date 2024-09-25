@@ -8,18 +8,20 @@ import CancelScheduleDialog from './CancelScheduleDialog';
 
 function ButtonGroup() {
   const { recruiterUser } = useAuthDetails();
+  const userId = recruiterUser?.user_id ?? '';
   const { checkPermissions } = useRolesAndPermissions();
   const { isCancelDialogOpen } = useScheduleDetailsStore();
   const { data, refetch } = useScheduleDetails();
   const schedule = data?.schedule_data;
 
   const isMeetingJobHiringTeam =
-    schedule?.hiring_manager?.user_id === recruiterUser.user_id ||
-    schedule?.organizer?.user_id === recruiterUser.user_id ||
-    schedule?.recruiter?.user_id === recruiterUser.user_id;
+    schedule?.hiring_manager?.user_id === userId ||
+    schedule?.organizer?.user_id === userId ||
+    schedule?.recruiter?.user_id === userId;
 
   const isCancelButtonVisible =
-    (checkPermissions(['scheduling_actions']) || isMeetingJobHiringTeam) &&
+    ((checkPermissions && checkPermissions(['scheduling_actions'])) ||
+      isMeetingJobHiringTeam) &&
     schedule?.interview_meeting?.status === 'confirmed';
 
   return (
@@ -30,10 +32,10 @@ function ButtonGroup() {
         refetch={refetch}
         metaDetails={[
           {
-            application_id: schedule.application_id,
-            meeting_id: schedule.interview_meeting.id,
-            session_name: schedule.interview_session.name,
-            session_id: schedule.interview_session.id,
+            application_id: schedule?.application_id ?? '',
+            meeting_id: schedule?.interview_meeting.id ?? '',
+            session_name: schedule?.interview_session.name ?? '',
+            session_id: schedule?.interview_session.id ?? '',
           },
         ]}
         closeDialog={() => {}}

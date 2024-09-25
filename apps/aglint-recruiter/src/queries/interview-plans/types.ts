@@ -9,9 +9,5 @@ export type InterviewSessionType =
 export type InterviewSessionRelationType =
   InterviewPlansType[number]['interview_session'][number]['interview_session_relation'];
 
-export type AddCompanyMember = {
-  plan_id: string;
-};
-
 export type InterviewSessionUpdate =
   DB['public']['Tables']['interview_session']['Update'];

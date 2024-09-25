@@ -613,14 +613,14 @@ export const getRequestProgress = async ({ request_id }: GetRequestProgress) =>
   ).data;
 
 type CreateRequests = DatabaseFunctions['create_session_request']['Args'];
-export const createRequests = async (requestPayload: CreateRequests) =>
+const createRequests = async (requestPayload: CreateRequests) =>
   await supabase.rpc('create_session_request', requestPayload).throwOnError();
 
 type UpdateRequest = {
   requestId: DatabaseTable['request']['id'];
   requestPayload: Omit<DatabaseTableUpdate['request'], 'id'>;
 };
-export const updateRequest = async ({
+const updateRequest = async ({
   requestId,
   requestPayload,
 }: UpdateRequest) =>
@@ -633,5 +633,5 @@ export const updateRequest = async ({
 type DeleteRequest = {
   requestId: DatabaseTable['request']['id'];
 };
-export const deleteRequest = async ({ requestId }: DeleteRequest) =>
+const deleteRequest = async ({ requestId }: DeleteRequest) =>
   await supabase.from('request').delete().eq('id', requestId).throwOnError();

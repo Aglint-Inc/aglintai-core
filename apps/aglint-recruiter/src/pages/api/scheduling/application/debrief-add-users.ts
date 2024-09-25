@@ -7,7 +7,10 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
-import { type ApiBodyParamTaskCreate } from '../debrief/task_create';
+export type ApiBodyParamTaskCreate = {
+  schedule_id: string;
+  application_id: string;
+};
 
 export type ApiDebriefAddUsers = {
   filter_id: string;

@@ -35,7 +35,7 @@ function InterviewerUserDetail({
   accepted_status: DatabaseTable['interview_session_relation']['accepted_status'];
   isCalendarConnected: boolean;
   isPaused: boolean;
-  pause_json: DatabaseTable['interview_module_relation']['pause_json'];
+  pause_json: DatabaseTable['interview_module_relation']['pause_json'] | null;
   userDetails: {
     profile_image: string;
     position: string;

@@ -2,14 +2,8 @@ import { supportedTypes } from '@/apiUtils/job/candidateUpload/utils';
 import { supabase } from '@/utils/supabase/client';
 
 import {
-  type CandidateResumesContext,
   type CandidateResumesCreateAction,
 } from './types';
-
-export const initialCandidateResumesContext: CandidateResumesContext = {
-  handleCandidateResumesCreate: undefined,
-  handleCandidateResumesDelete: undefined,
-};
 
 export const createCandidateResumeDbAction = async (
   inputData: CandidateResumesCreateAction['request']['inputData'],

@@ -9,4 +9,3 @@ export default function GlobalEmpty({ iconSlot, text, height = 'auto' }) {
     </div>
   );
 }
-

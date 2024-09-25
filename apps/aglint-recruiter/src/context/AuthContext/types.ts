@@ -28,7 +28,7 @@ export interface Session {
   user: User;
 }
 
-export interface User {
+interface User {
   id: string;
   app_metadata: UserAppMetadata;
   user_metadata: UserMetadata;
@@ -53,7 +53,7 @@ export interface User {
   factors?: Factor[];
 }
 
-export interface UserIdentity {
+interface UserIdentity {
   id: string;
   user_id: string;
   identity_data?: {
@@ -65,16 +65,16 @@ export interface UserIdentity {
   updated_at?: string;
 }
 
-export interface UserAppMetadata {
+interface UserAppMetadata {
   provider?: string;
   [key: string]: any;
 }
 
-export interface UserMetadata {
+interface UserMetadata {
   [key: string]: any;
 }
 
-export interface Factor {
+interface Factor {
   /** ID of the factor. */
   id: string;
 

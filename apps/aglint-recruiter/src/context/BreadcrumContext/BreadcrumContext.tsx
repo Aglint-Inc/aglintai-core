@@ -1,5 +1,4 @@
 'use client';
-import { type DatabaseEnums } from '@aglint/shared-types';
 import {
   BreadcrumbItem,
   BreadcrumbLink,
@@ -15,17 +14,9 @@ import {
   useEffect,
   useState,
 } from 'react';
-export type taskFilterType = {
-  Job: string[];
-  Status: DatabaseEnums['task_status'][];
-  Priority: DatabaseEnums['task_priority'][];
-  Assignee: string[];
-  Type: DatabaseEnums['task_type_enum'][];
-  Candidate: string[];
-};
 
 /* eslint-disable no-unused-vars */
-export type BreadcrumContextType = {
+type BreadcrumContextType = {
   breadcrum: ReactNode[];
   setBreadcrum: Dispatch<SetStateAction<{ name: string; route?: string }[]>>;
 };
@@ -89,7 +80,7 @@ export const useBreadcrumContext = () => {
 
 import { useRouter } from 'next/navigation';
 
-export const getBreadcrum = (
+const getBreadcrum = (
   paths: { name: string; onClick?: () => void }[],
 ) => {
   if (!paths?.length) {

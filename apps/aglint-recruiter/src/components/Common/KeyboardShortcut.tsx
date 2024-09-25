@@ -30,12 +30,3 @@ export default function KeyboardShortcut({ keys }: KeyboardShortcutProps) {
 }
 
 // Example usage
-export function Example() {
-  return (
-    <div className='space-y-4 p-4'>
-      <KeyboardShortcut keys={['⌘', 'K']} />
-      <KeyboardShortcut keys={['Ctrl', 'Shift', 'P']} />
-      <KeyboardShortcut keys={['Alt', 'F4']} />
-    </div>
-  );
-}

@@ -35,25 +35,28 @@ function AllRolesMeetings() {
           <div key={item.type} className='flex items-center space-x-2'>
             <Avatar className='h-6 w-6'>
               <AvatarImage
-                src={item.details.profile_image}
+                src={item?.details?.profile_image ?? 'avatar.png'}
                 alt={getFullName(
-                  item.details.first_name,
-                  item.details.last_name,
+                  item?.details?.first_name ?? '',
+                  item?.details?.last_name ?? '',
                 )}
               />
               <AvatarFallback>
                 {getFullName(
-                  item.details.first_name,
-                  item.details.last_name,
+                  item?.details?.first_name ?? '',
+                  item?.details?.last_name ?? '',
                 ).charAt(0)}
               </AvatarFallback>
             </Avatar>
             <div>
               <Link
-                href={`/user/${item.details.user_id}`}
+                href={`/user/${item?.details?.user_id}`}
                 className='text-xs font-medium hover:underline'
               >
-                {getFullName(item.details.first_name, item.details.last_name)}
+                {getFullName(
+                  item?.details?.first_name ?? '',
+                  item?.details?.last_name ?? '',
+                )}
               </Link>
               <p className='text-xs text-gray-500'>{item.label}</p>
             </div>
