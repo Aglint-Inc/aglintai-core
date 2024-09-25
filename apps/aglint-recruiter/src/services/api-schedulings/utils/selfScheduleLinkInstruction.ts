@@ -1,8 +1,24 @@
-import { type ZodInferSchema } from '@aglint/shared-types';
-import { agentSelfScheduleInstruction, dayjsLocal } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils';
 import OpenAI from 'openai';
 import { zodResponseFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
+
+const TimeSchema = z.object({
+  startTime: z.string().describe('24 hour HH:MM format'),
+  endTime: z.string().describe('24 hour HH:MM format'),
+});
+
+const candidateAvailabilitySchema = z.object({
+  prefferredTime: TimeSchema,
+});
+
+export const agentSelfScheduleInstruction = z.object({
+  candidateAvailability: candidateAvailabilitySchema,
+  maxTotalSlots: z.number(),
+  includeAllSoftConflictSlots: z.boolean(),
+  overrideSoftConflicts: z.array(z.string()),
+  include_outside_working_hours: z.boolean(),
+});
 
 export const schema = z.object({
   instruction: z.string(),
@@ -55,5 +71,48 @@ export const selfScheduleLinkInstruction = async ({
 
   const availability = completion.choices[0].message.parsed;
 
-  return availability as ZodInferSchema<typeof agentSelfScheduleInstruction>;
+  const formatOutput: z.infer<typeof agentSelfScheduleInstruction> = {
+    ...availability,
+    candidateAvailability: {
+      prefferredTime: {
+        startTime: dayjsLocal()
+          .set(
+            'hour',
+            Number(
+              availability.candidateAvailability.prefferredTime.startTime.split(
+                ':',
+              )[0],
+            ),
+          )
+          .set(
+            'minute',
+            Number(
+              availability.candidateAvailability.prefferredTime.startTime.split(
+                ':',
+              )[1],
+            ),
+          )
+          .format(),
+        endTime: dayjsLocal()
+          .set(
+            'hour',
+            Number(
+              availability.candidateAvailability.prefferredTime.endTime.split(
+                ':',
+              )[0],
+            ),
+          )
+          .set(
+            'minute',
+            Number(
+              availability.candidateAvailability.prefferredTime.endTime.split(
+                ':',
+              )[1],
+            ),
+          )
+          .format(),
+      },
+    },
+  };
+  return formatOutput;
 };

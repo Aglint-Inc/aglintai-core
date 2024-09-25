@@ -23,7 +23,7 @@ export const findPlanCombs = async ({
   const cand_schedule = new CandidatesSchedulingV2({
     include_conflicting_slots: {
       out_of_office: false,
-      out_of_working_hrs: schedule_filters.isOutSideWorkHours,
+      out_of_working_hrs: true,
       show_soft_conflicts: schedule_filters.isSoftConflicts,
     },
     return_empty_slots_err: true,
@@ -42,7 +42,13 @@ export const findPlanCombs = async ({
   const filtered_slot_info = filterSchedulingOptionsArray({
     schedulingOptions: slots,
     filters: {
-      ...schedule_filters,
+      isNoConflicts: true,
+      isSoftConflicts: true,
+      isHardConflicts: true,
+      isOutSideWorkHours: true,
+      preferredInterviewers: [],
+      preferredDateRanges: [],
+      isWorkLoad: true,
     },
   });
   const plans = filtered_slot_info.combs

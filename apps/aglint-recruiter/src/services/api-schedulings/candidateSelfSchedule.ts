@@ -33,7 +33,7 @@ export const candidateSelfSchedule = async ({
   req_assignee_tz: string;
   organizer_id: string;
 }) => {
-  const ai_resp_json = await selfScheduleLinkInstruction({
+  const formatted_ai_reponse = await selfScheduleLinkInstruction({
     input: {
       instruction: job_payload.agent.instruction,
       user_tz: req_assignee_tz,
@@ -49,23 +49,14 @@ export const candidateSelfSchedule = async ({
     schedule_filters: {
       isHardConflicts: false,
       isNoConflicts: true,
-      isOutSideWorkHours: ai_resp_json.include_outside_working_hours,
-      isSoftConflicts: ai_resp_json.includeAllSoftConflictSlots,
+      isOutSideWorkHours: formatted_ai_reponse.include_outside_working_hours,
+      isSoftConflicts: formatted_ai_reponse.includeAllSoftConflictSlots,
       preferredDateRanges: [
         {
-          startTime: dayjsLocal(
-            Number(
-              ai_resp_json.candidateAvailability.prefferredDate.startDate,
-            ) * 1000,
-          )
-            .tz(req_assignee_tz)
-            .format(),
-          endTime: dayjsLocal(
-            Number(ai_resp_json.candidateAvailability.prefferredDate.endDate) *
-              1000,
-          )
-            .tz(req_assignee_tz)
-            .format(),
+          startTime:
+            formatted_ai_reponse.candidateAvailability.prefferredTime.startTime,
+          endTime:
+            formatted_ai_reponse.candidateAvailability.prefferredTime.endTime,
         },
       ],
       preferredInterviewers: [],
@@ -75,7 +66,14 @@ export const candidateSelfSchedule = async ({
   if (plans.length === 0) {
     throw new CApiError('CLIENT', 'No plans matched');
   }
-  const candidate_slots = plans.slice(0, ai_resp_json.maxTotalSlots);
+  const candidate_slots = plans
+    .slice(0, formatted_ai_reponse.maxTotalSlots)
+    .sort((s1, s2) => {
+      return dayjsLocal(s1.sessions[0].start_time).diff(
+        dayjsLocal(s2.sessions[0].start_time),
+      );
+    });
+  //
   const [filter_json] = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')
@@ -91,7 +89,7 @@ export const candidateSelfSchedule = async ({
       })
       .select(),
   );
-
+  //
   await mailSender({
     target_api: 'sendSelfScheduleRequest_email_applicant',
     payload: {
@@ -113,11 +111,8 @@ export const candidateSelfSchedule = async ({
   const total_slots = Object.values(slots).reduce((acc, val) => acc + val, 0);
   let prog_log = '';
   const cand_avail_date = {
-    startDate:
-      Number(ai_resp_json.candidateAvailability.prefferredDate.startDate) *
-      1000,
-    endDate:
-      Number(ai_resp_json.candidateAvailability.prefferredDate.endDate) * 1000,
+    startDate: candidate_slots[0].sessions[0].start_time,
+    endDate: candidate_slots[candidate_slots.length - 1].sessions[0].start_time,
   };
 
   if (cand_avail_date.startDate !== cand_avail_date.endDate) {
