@@ -1273,7 +1273,7 @@ export type Database = {
           end_time: string | null
           id: number
           meeting_flow: string | null
-          meeting_id: string | null
+          meeting_id: string
           organizer_id: string | null
           start_time: string | null
           status: string | null
@@ -1284,7 +1284,7 @@ export type Database = {
           end_time?: string | null
           id?: number
           meeting_flow?: string | null
-          meeting_id?: string | null
+          meeting_id: string
           organizer_id?: string | null
           start_time?: string | null
           status?: string | null
@@ -1295,7 +1295,7 @@ export type Database = {
           end_time?: string | null
           id?: number
           meeting_flow?: string | null
-          meeting_id?: string | null
+          meeting_id?: string
           organizer_id?: string | null
           start_time?: string | null
           status?: string | null
@@ -1313,6 +1313,13 @@ export type Database = {
             columns: ["meeting_id"]
             isOneToOne: false
             referencedRelation: "meeting_details"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_meeting_log_meeting_id_fkey"
+            columns: ["meeting_id"]
+            isOneToOne: false
+            referencedRelation: "view_interview_meeting"
             referencedColumns: ["id"]
           },
         ]
@@ -1793,6 +1800,13 @@ export type Database = {
             columns: ["meeting_id"]
             isOneToOne: false
             referencedRelation: "meeting_details"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_interview_session_meeting_id_fkey"
+            columns: ["meeting_id"]
+            isOneToOne: false
+            referencedRelation: "view_interview_meeting"
             referencedColumns: ["id"]
           },
           {
@@ -4184,7 +4198,7 @@ export type Database = {
           order: number
           payload?: Json
           target_api: Database["public"]["Enums"]["email_slack_types"]
-          workflow_id: string
+          workflow_id?: string
         }
         Update: {
           action_type?: string
@@ -4595,6 +4609,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "public_interview_session_meeting_id_fkey"
+            columns: ["meeting_id"]
+            isOneToOne: false
+            referencedRelation: "view_interview_meeting"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "recruiter_user_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: true
@@ -4691,7 +4712,6 @@ export type Database = {
           section_count: Json | null
           sourcer: string | null
           status: Database["public"]["Enums"]["public_job_status"] | null
-          syncable: boolean | null
           workplace_type:
             | Database["public"]["Enums"]["public_job_workplace"]
             | null
@@ -5038,6 +5058,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "public_interview_session_meeting_id_fkey"
+            columns: ["meeting_id"]
+            isOneToOne: false
+            referencedRelation: "view_interview_meeting"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "public_interview_session_relation_interview_module_relation_id_"
             columns: ["interview_module_relation_id"]
             isOneToOne: false
@@ -5210,6 +5237,146 @@ export type Database = {
           },
         ]
       }
+      view_interview_meeting: {
+        Row: {
+          application_id: string | null
+          cal_event_id: string | null
+          candidate_feedback: Json | null
+          confirmed_candidate_tz: string | null
+          confirmed_date: string | null
+          created_at: string | null
+          end_time: string | null
+          id: string | null
+          instructions: string | null
+          job_id: string | null
+          meeting_flow: Database["public"]["Enums"]["meeting_flow"] | null
+          meeting_json: Json | null
+          meeting_link: string | null
+          organizer_id: string | null
+          recruiter_id: string | null
+          schedule_request_id: string | null
+          start_time: string | null
+          status:
+            | Database["public"]["Enums"]["interview_schedule_status"]
+            | null
+        }
+        Insert: {
+          application_id?: string | null
+          cal_event_id?: string | null
+          candidate_feedback?: Json | null
+          confirmed_candidate_tz?: string | null
+          confirmed_date?: string | null
+          created_at?: string | null
+          end_time?: string | null
+          id?: string | null
+          instructions?: string | null
+          job_id?: string | null
+          meeting_flow?: Database["public"]["Enums"]["meeting_flow"] | null
+          meeting_json?: Json | null
+          meeting_link?: string | null
+          organizer_id?: string | null
+          recruiter_id?: string | null
+          schedule_request_id?: string | null
+          start_time?: string | null
+          status?:
+            | Database["public"]["Enums"]["interview_schedule_status"]
+            | null
+        }
+        Update: {
+          application_id?: string | null
+          cal_event_id?: string | null
+          candidate_feedback?: Json | null
+          confirmed_candidate_tz?: string | null
+          confirmed_date?: string | null
+          created_at?: string | null
+          end_time?: string | null
+          id?: string | null
+          instructions?: string | null
+          job_id?: string | null
+          meeting_flow?: Database["public"]["Enums"]["meeting_flow"] | null
+          meeting_json?: Json | null
+          meeting_link?: string | null
+          organizer_id?: string | null
+          recruiter_id?: string | null
+          schedule_request_id?: string | null
+          start_time?: string | null
+          status?:
+            | Database["public"]["Enums"]["interview_schedule_status"]
+            | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "interview_meeting_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_meeting_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_status_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_meeting_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "application_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_meeting_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "candidate_applications_view"
+            referencedColumns: ["application_id"]
+          },
+          {
+            foreignKeyName: "interview_meeting_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "public_jobs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_meeting_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "job_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "interview_meeting_organizer_id_fkey"
+            columns: ["organizer_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter_user"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "interview_meeting_organizer_id_fkey"
+            columns: ["organizer_id"]
+            isOneToOne: false
+            referencedRelation: "all_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "interview_meeting_organizer_id_fkey"
+            columns: ["organizer_id"]
+            isOneToOne: false
+            referencedRelation: "debreif_meeting_interviewers"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "interview_meeting_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       workflow_view: {
         Row: {
           auto_connect: boolean | null
@@ -5247,7 +5414,7 @@ export type Database = {
     }
     Functions: {
       ashbyapplicationsync: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: Json
       }
       ashbyjobreference: {
@@ -5257,11 +5424,11 @@ export type Database = {
         Returns: Json[]
       }
       ashbysync: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: Json
       }
       batchcalcresumejdscore: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: Json[]
       }
       batchscorecron: {
@@ -5271,7 +5438,7 @@ export type Database = {
         Returns: Json
       }
       batchtriggergreenhouse: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: Json
       }
       calc_sim_score3: {
@@ -5349,7 +5516,7 @@ export type Database = {
         }[]
       }
       check_user_auth: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: undefined
       }
       count_candidates: {
@@ -5361,7 +5528,7 @@ export type Database = {
         }[]
       }
       count_requests: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: {
           date: string
           created_at_count: number
@@ -5431,23 +5598,23 @@ export type Database = {
         Returns: undefined
       }
       emailcroncandidatedb: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: Json
       }
       emailhandlercandidatedb: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: Json[]
       }
       expire_new_applications: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: undefined
       }
       expire_new_requests: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: undefined
       }
       fail_processing_applications: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: undefined
       }
       fetch_interview_data: {
@@ -5774,7 +5941,7 @@ export type Database = {
         }[]
       }
       get_present_scheduled_jobs: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: Json[]
       }
       get_recruiter_name_id: {
@@ -5940,7 +6107,7 @@ export type Database = {
         Returns: Json
       }
       getoutreachemails: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: Json[]
       }
       getrecruiterscreeningdata: {
@@ -5963,7 +6130,7 @@ export type Database = {
         Returns: Json
       }
       greenhouse_sync: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: undefined
       }
       insert_debrief_session: {
@@ -6064,7 +6231,7 @@ export type Database = {
         }[]
       }
       interviewing_state_active: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: undefined
       }
       jobs_locations_count: {
@@ -6084,11 +6251,11 @@ export type Database = {
         }[]
       }
       lever_resume_save: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: undefined
       }
       levercandidatesync: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: Json
       }
       match_documents: {
@@ -6106,7 +6273,7 @@ export type Database = {
         }[]
       }
       move_scheduled_jobs_sourcing_to_active: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: undefined
       }
       move_to_interview: {
@@ -6134,11 +6301,11 @@ export type Database = {
         }[]
       }
       outreachhandler: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: Json
       }
       overviewgenerate: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: Json
       }
       per_module_candidate_pipeline: {
@@ -6213,11 +6380,11 @@ export type Database = {
         Returns: undefined
       }
       resync_calendar: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: undefined
       }
       retrybatchcalcresumejdscore: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: Json[]
       }
       run_workflow_action: {
@@ -6227,7 +6394,7 @@ export type Database = {
         Returns: boolean
       }
       schedulercron: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: Json
       }
       scheduling_analytics_completed_interviews: {
@@ -6391,7 +6558,7 @@ export type Database = {
         }[]
       }
       secondretrybatchcalcresumejdscore: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: Json[]
       }
       set_active_rec: {
@@ -6479,7 +6646,7 @@ export type Database = {
         Returns: undefined
       }
       update_meeting_status: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: undefined
       }
       update_or_delete_filter_json: {
@@ -6502,11 +6669,11 @@ export type Database = {
         Returns: undefined
       }
       workflow_action_log_cron: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: boolean
       }
       workflow_action_log_set_fail_cron: {
-        Args: Record<PropertyKey, never>
+        Args: {}
         Returns: boolean
       }
     }
@@ -6920,3 +7087,4 @@ export type Enums<
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
     : never
+
