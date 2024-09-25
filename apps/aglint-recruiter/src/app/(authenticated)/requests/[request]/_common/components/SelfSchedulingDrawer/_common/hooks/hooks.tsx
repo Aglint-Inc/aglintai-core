@@ -219,7 +219,10 @@ export const useSelfSchedulingDrawer = () => {
         throw new Error('Error sending to candidate.');
       }
     } catch (e) {
-      toast({ variant: 'destructive', title: 'Error sending to candidate.' });
+      toast({
+        variant: 'destructive',
+        title: 'Error sending to candidate. Please contact support.',
+      });
     } finally {
       setIsSendingToCandidate(false);
     }
@@ -272,7 +275,9 @@ export const useSelfSchedulingDrawer = () => {
     } catch (error) {
       toast({
         variant: 'destructive',
-        title: 'Error retrieving availability.',
+        title: error?.message
+          ? error.message
+          : 'Error retrieving availability.',
       });
       return null;
     } finally {

@@ -72,7 +72,7 @@ function EmailPreviewSelfSchedule() {
   };
 
   return (
-    <div className='flex h-[calc(100vh-96px)] flex-col gap-2 overflow-scroll p-4'>
+    <div className='flex h-[calc(100vh-98px)] flex-col gap-2 overflow-auto p-4'>
       <UITypography type='small'>
         You have selected {selectedCombIds.length} slots across {numberOfDays}
         days.

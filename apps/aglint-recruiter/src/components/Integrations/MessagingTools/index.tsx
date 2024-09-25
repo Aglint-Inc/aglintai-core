@@ -1,4 +1,4 @@
-import SlackLogo from '@public/images/svg/slack-logo.svg';
+import SlackLogo from '@public/images/integration/slack-logo.svg';
 import capitalize from 'lodash/capitalize';
 
 import { IntegrationCard } from '../components/IntegrationCard';
