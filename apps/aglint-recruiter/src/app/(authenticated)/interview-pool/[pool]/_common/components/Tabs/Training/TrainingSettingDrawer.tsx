@@ -220,7 +220,7 @@ function TrainingSettingDrawer(
                     variant='destructive'
                     onClick={() => {
                       if (
-                        localModule.relations.filter(
+                        editModule.relations.filter(
                           (relation) =>
                             relation.training_status === 'training' &&
                             !relation.is_archived,

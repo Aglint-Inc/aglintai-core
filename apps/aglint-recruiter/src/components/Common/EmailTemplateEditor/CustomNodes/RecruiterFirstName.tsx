@@ -6,6 +6,7 @@ import {
 } from '@tiptap/pm/model';
 import { NodeViewWrapper, ReactNodeViewRenderer } from '@tiptap/react';
 import { type SuggestionOptions } from '@tiptap/suggestion';
+import { File } from 'lucide-react';
 import Image from 'next/image';
 
 export type MentionOptions = {
@@ -70,14 +71,7 @@ const Label = (props) => {
           gap: 5,
         }}
       >
-        <Image
-          style={{ marginBottom: '2px', marginRight: '5px' }}
-          src={'/images/svg/text.svg'}
-          width={15}
-          height={15}
-          alt=''
-          unoptimized
-        />
+        <File size={16} />
         <span>{props.node.attrs.label}</span>
       </span>
     </NodeViewWrapper>
