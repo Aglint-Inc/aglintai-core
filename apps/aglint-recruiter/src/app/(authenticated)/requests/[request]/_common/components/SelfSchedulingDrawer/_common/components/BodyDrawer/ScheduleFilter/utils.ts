@@ -4,8 +4,8 @@ import {
   type PlanCombinationRespType,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils';
+import { type ApiResponseFindAvailability } from '@requests/types';
 
-import type { ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
 import { createCombsForMultiDaySlots } from '@/services/CandidateScheduleV2/utils/createCombsForMultiDaySlots';
 import { compareTimes } from '@/services/CandidateScheduleV2/utils/time_range_utils';
 
