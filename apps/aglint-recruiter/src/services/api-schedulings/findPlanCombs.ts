@@ -45,11 +45,17 @@ export const findPlanCombs = async ({
       isNoConflicts: true,
       isSoftConflicts: true,
       isHardConflicts: true,
-      isOutSideWorkHours: true,
+      isOutSideWorkHours: schedule_filters.isOutSideWorkHours,
       preferredInterviewers: [],
-      preferredDateRanges: [],
+      preferredDateRanges: [
+        {
+          startTime: schedule_filters.preferredDateRanges[0].startTime,
+          endTime: schedule_filters.preferredDateRanges[0].endTime,
+        },
+      ],
       isWorkLoad: true,
     },
+    user_tz: time_zone,
   });
   const plans = filtered_slot_info.combs
     .flatMap((c) => c.plans)

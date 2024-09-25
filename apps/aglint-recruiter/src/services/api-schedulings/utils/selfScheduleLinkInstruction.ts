@@ -76,6 +76,7 @@ export const selfScheduleLinkInstruction = async ({
     candidateAvailability: {
       prefferredTime: {
         startTime: dayjsLocal()
+          .tz(user_tz)
           .set(
             'hour',
             Number(
@@ -94,6 +95,7 @@ export const selfScheduleLinkInstruction = async ({
           )
           .format(),
         endTime: dayjsLocal()
+          .tz(user_tz)
           .set(
             'hour',
             Number(

@@ -73,7 +73,6 @@ export const candidateSelfSchedule = async ({
         dayjsLocal(s2.sessions[0].start_time),
       );
     });
-  //
   const [filter_json] = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')
@@ -89,7 +88,6 @@ export const candidateSelfSchedule = async ({
       })
       .select(),
   );
-  //
   await mailSender({
     target_api: 'sendSelfScheduleRequest_email_applicant',
     payload: {
