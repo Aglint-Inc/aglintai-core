@@ -38,7 +38,7 @@ function ScheduleDetailInstructions() {
         instruction={schedule?.interview_meeting.instructions as string}
         setTextValue={setTextValue}
         showEditButton={
-          recruiterUser.role === 'admin' || recruiterUser.role === 'recruiter'
+          recruiterUser?.role === 'admin' || recruiterUser?.role === 'recruiter'
         }
         updateInstruction={updateInstruction}
       />

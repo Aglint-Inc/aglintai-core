@@ -29,16 +29,17 @@ function SchedulingViewComp() {
   const schedule = data?.schedule_data;
   const job = schedule?.job;
 
-  const confirmedUsers = schedule?.users?.filter(
-    (user) => user.interview_session_relation.is_confirmed,
-  );
+  const confirmedUsers =
+    schedule?.users?.filter(
+      (user) => user.interview_session_relation.is_confirmed,
+    ) ?? [];
 
   useEffect(() => {
     if (confirmedUsers?.length > 0) {
       setSessionUser(
         confirmedUsers.find(
-          (user) => user.user_details.email === recruiterUser.email,
-        ),
+          (user) => user?.user_details?.email === recruiterUser?.email,
+        ) ?? null,
       );
     }
   }, [confirmedUsers]);
@@ -69,7 +70,7 @@ function SchedulingViewComp() {
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
                   <BreadcrumbLink href='#'>
-                    {schedule.interview_session.name}
+                    {schedule?.interview_session?.name}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
               </BreadcrumbList>
@@ -77,37 +78,37 @@ function SchedulingViewComp() {
             <div className='w-fullflex-row flex justify-between pr-6'>
               <div>
                 <h1 className='text-3xl font-bold text-gray-900'>
-                  {schedule.interview_session.name}
+                  {schedule?.interview_session.name}
                 </h1>
                 <p className='text-md mt-2 pb-2 text-gray-600'>
                   Interview for{' '}
                   <a
-                    href={`/jobs/${job.id}`}
+                    href={`/jobs/${job?.id}`}
                     target='_blank'
                     rel='noopener noreferrer'
                     className='hover:underline'
                   >
-                    {job.job_title}
+                    {job?.job_title}
                   </a>{' '}
-                  - {capitalizeFirstLetter(job?.departments?.name)}
+                  - {capitalizeFirstLetter(job?.departments?.name ?? '')}
                 </p>
                 <div className='flex items-center text-sm text-gray-500'>
                   <User className='mr-2 h-4 w-4' />
                   <span>
-                    {schedule.candidates?.first_name}{' '}
-                    {schedule.candidates?.last_name}
+                    {schedule?.candidates?.first_name}{' '}
+                    {schedule?.candidates?.last_name}
                   </span>
-                  {schedule.candidates?.current_job_title && (
+                  {schedule?.candidates?.current_job_title && (
                     <span className='ml-2'>
-                      • {schedule.candidates.current_job_title}
+                      • {schedule?.candidates?.current_job_title}
                     </span>
                   )}
-                  {schedule.candidates?.city && (
-                    <span className='ml-2'>• {schedule.candidates.city}</span>
+                  {schedule?.candidates?.city && (
+                    <span className='ml-2'>• {schedule?.candidates.city}</span>
                   )}
-                  {schedule.candidates?.timezone && (
+                  {schedule?.candidates?.timezone && (
                     <span className='ml-2'>
-                      • {schedule.candidates.timezone}
+                      • {schedule?.candidates.timezone}
                     </span>
                   )}
                 </div>
@@ -131,10 +132,11 @@ function SchedulingViewComp() {
             )}
           </div>
 
-          {checkPermissions(['scheduling_actions']) && (
-            <div className='w-4/12'>
-              <div className='p-11'></div>
-              {/* <div className='flex flex-col space-y-2'>
+          {checkPermissions
+            ? checkPermissions(['scheduling_actions']) && (
+                <div className='w-4/12'>
+                  <div className='p-11'></div>
+                  {/* <div className='flex flex-col space-y-2'>
                 <p className='font-medium'>Job</p>
 
                 <WorkflowConnectedCard
@@ -154,9 +156,10 @@ function SchedulingViewComp() {
                   }}
                 />
               </div> */}
-              <Requests session_id={schedule?.interview_session?.id} />
-            </div>
-          )}
+                  <Requests session_id={schedule?.interview_session?.id} />
+                </div>
+              )
+            : null}
         </div>
       </div>
     </>
