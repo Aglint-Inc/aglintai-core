@@ -1,5 +1,3 @@
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-
 import { useCompanyDetailComp } from '../hooks/hook';
 import CompanyInfoComp from './CompanyDetails';
 import Holidays from './Holidays';
@@ -14,7 +12,6 @@ import SchedulerEmailTemps from './Templates';
 import WorkingHour from './WorkingHours';
 
 const CompanyDetailComp = () => {
-  const { recruiter } = useAuthDetails();
   const { updateSettings, tab: tempTab, setIsSaving } = useCompanyDetailComp();
   const tab = tempTab as unknown as companySettingTabsType;
   return (
@@ -31,10 +28,7 @@ const CompanyDetailComp = () => {
           {tab === 'roles' && <RolesAndPermissionsComponent />}
           {tab === 'schedulingReasons' && <SchedulingReasons />}
           {tab === 'workingHours' && (
-            <WorkingHour
-              initialData={recruiter.scheduling_settings}
-              updateSettings={updateSettings}
-            />
+            <WorkingHour updateSettings={updateSettings} />
           )}
           {tab === 'holidays' && <Holidays />}
           {tab === 'scheduling' && (

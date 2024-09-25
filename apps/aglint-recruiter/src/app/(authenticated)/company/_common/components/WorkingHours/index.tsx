@@ -3,6 +3,7 @@ import { toast } from '@components/hooks/use-toast';
 import cloneDeep from 'lodash/cloneDeep';
 import { useEffect, useState } from 'react';
 
+import { useTenant } from '@/authenticated/hooks';
 import { type TimezoneObj } from '@/utils/timeZone';
 
 import BreakTimeCard from './BreakTime';
@@ -11,11 +12,11 @@ import WorkTime from './WorkTime';
 
 export default function WorkingHour({
   updateSettings,
-  initialData,
 }: {
   updateSettings: any;
-  initialData: schedulingSettingType;
 }) {
+  const { recruiter } = useTenant();
+  const initialData = recruiter.scheduling_settings;
   const [workingHours, setWorkingHours] = useState([]);
   const [selectedTimeZone, setSelectedTimeZone] = useState<TimezoneObj>(null);
   const [selectedHourBreak, setSelectedHourBreak] = useState<{
