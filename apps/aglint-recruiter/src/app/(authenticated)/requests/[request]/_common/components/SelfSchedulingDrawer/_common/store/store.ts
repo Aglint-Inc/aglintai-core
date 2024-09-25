@@ -1,5 +1,6 @@
 import { type MultiDayPlanType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils';
+import { type ApiResponseFindAvailability } from '@requests/types';
 import { create } from 'zustand';
 
 import {
@@ -7,7 +8,6 @@ import {
   type Resource,
 } from '@/components/Common/CalendarResourceView/types';
 import type { ApiResponseSelfSchedule } from '@/pages/api/scheduling/application/sendselfschedule';
-import type { ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
 
 import { type filterSchedulingOptionsArray } from '../components/BodyDrawer/ScheduleFilter/utils';
 

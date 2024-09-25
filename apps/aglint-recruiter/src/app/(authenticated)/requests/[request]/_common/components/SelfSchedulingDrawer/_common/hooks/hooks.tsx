@@ -1,6 +1,7 @@
 import { type APIFindAvailability } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
 import { useMeetingList } from '@requests/hooks';
+// import { type ApiResponseFindAvailability } from '@requests/types';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useParams } from 'next/navigation';
