@@ -8,7 +8,7 @@ import { List } from './ui/List';
 export const Feedback = ({
   feedbacks,
 }: {
-  feedbacks: InterviewerDetailType['feedbacks'];
+  feedbacks: NonNullable<InterviewerDetailType>['feedbacks'];
 }) => {
   return (
     <>

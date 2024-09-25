@@ -1,4 +1,4 @@
-import { getFullName } from '@aglint/shared-utils';
+import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { useRequestAvailabilityDetails } from '@requests/hooks';
 import { useEffect, useMemo } from 'react';
 import { getStringColor } from 'src/app/_common/utils/getColorForText';
@@ -28,7 +28,7 @@ function Calendar() {
   }, [selectedDayAvailableBlocks]);
 
   const { events, resources } = transformAvailability(
-    availableSlots?.availabilities,
+    availableSlots?.availabilities || {},
   );
 
   const selectedIds = selectedDateSlots
@@ -80,11 +80,21 @@ function Calendar() {
     return convertSelectedSessionsToEvents;
   }, [selectedIds]);
 
-  const dateRange = {
-    start: selectedDayAvailableBlocks[0]?.curr_date,
-    end: selectedDayAvailableBlocks[selectedDayAvailableBlocks.length - 1]
-      ?.curr_date,
+  let dateRange: {
+    start: string;
+    end: string;
+  } = {
+    start: dayjsLocal().toISOString(),
+    end: dayjsLocal().add(7, 'day').toISOString(),
   };
+
+  if (selectedDayAvailableBlocks) {
+    dateRange = {
+      start: selectedDayAvailableBlocks[0]?.curr_date,
+      end: selectedDayAvailableBlocks[selectedDayAvailableBlocks.length - 1]
+        ?.curr_date,
+    };
+  }
 
   return (
     <>

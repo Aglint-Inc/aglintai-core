@@ -4,7 +4,7 @@ import { Card, CardContent } from '@components/ui/card';
 import axios from 'axios';
 import { Clock, Mail, MapPin, Phone, User } from 'lucide-react';
 import { useParams } from 'next/navigation';
-import { useState } from 'react';
+import { type RefObject, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -22,12 +22,24 @@ export const Header = ({
   email,
   phone,
   userCardRef,
+}: {
+  avatar: string;
+  name: string;
+  role: string;
+  department: string;
+  location: string;
+  timeZone: string;
+  email: string;
+  phone: string;
+  userCardRef: RefObject<HTMLDivElement>;
 }) => {
   const router = useRouterPro();
-  const [isOpen, setIsOpen] = useState(router.queryParams.edit_enable || false);
+  const isInitalOpen = router.queryParams.edit_enable as unknown as boolean;
+  const [isOpen, setIsOpen] = useState<boolean>(isInitalOpen || false);
 
   const { recruiterUser } = useAuthDetails();
-  const user_id = useParams().user as string;
+  const param = useParams() as { user: string };
+  const user_id = param.user as string;
   const getConsent = async () => {
     try {
       localStorage.setItem(
@@ -84,7 +96,7 @@ export const Header = ({
               </div>
             </div>
             <div className='flex gap-3'>
-              {recruiterUser.user_id === user_id &&
+              {recruiterUser?.user_id === user_id &&
                 !recruiterUser.is_calendar_connected && (
                   <UIButton onClick={getConsent}>Connect Calendar</UIButton>
                 )}

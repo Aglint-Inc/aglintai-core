@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import axios from 'axios';
 import { useParams } from 'next/navigation';
 
-import axios from '@/client/axios';
 import { type ApiInterviewSessionRequest } from '@/pages/api/scheduling/application/fetchInterviewSessionByRequest';
 
 export const useMeetingList = () => {
@@ -26,12 +26,16 @@ export const useMeetingList = () => {
 };
 
 export async function getMeetingsList({ request_id }: { request_id: string }) {
-  const res = await axios.call<ApiInterviewSessionRequest>(
-    'POST',
+  const res = await axios.post(
     '/api/scheduling/application/fetchInterviewSessionByRequest',
     {
       request_id,
     },
   );
-  return res.sessions;
+
+  if (res.status !== 200) {
+    throw new Error('Failed to fetch meeting list');
+  }
+
+  return (res?.data?.sessions || []) as ApiInterviewSessionRequest['response']['sessions'];
 }

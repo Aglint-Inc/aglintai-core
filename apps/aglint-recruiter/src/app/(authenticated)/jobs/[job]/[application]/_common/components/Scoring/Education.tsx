@@ -56,8 +56,8 @@ const getSchoolLogos = (data) => {
     <ImageWithFallback
       key={i}
       src={`https://logo.clearbit.com/${school.institution?.toLowerCase().replace(/\s+/g, '')}.com`}
-      alt={`${school?.institution || 'Company'} logo`}
-      fallbackSrc={'/images/logo/education.png'}
+      alt={`${school?.institution || 'Institution'} logo`}
+      fallbackSrc={'/images/scoring/education.svg'}
     />
   ));
 };
@@ -156,7 +156,7 @@ const Schools = () => {
                 <ImageWithFallback
                   src={`https://logo.clearbit.com/${institution.toLowerCase().replace(/\s+/g, '')}.com`}
                   alt={`${institution} logo`}
-                  fallbackSrc={'/images/logo/education.png'}
+                  fallbackSrc={'/images/de/education.png'}
                 />
                 <span>{capitalize(institution, conjunctions)}</span>
               </TableCell>
