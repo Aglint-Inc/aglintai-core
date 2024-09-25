@@ -1,4 +1,4 @@
-import { dayjsLocal } from '@aglint/shared-utils';
+import { dayjsLocal, ScheduleUtils } from '@aglint/shared-utils';
 import OpenAI from 'openai';
 import { zodResponseFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
@@ -8,9 +8,15 @@ const TimeSchema = z.object({
   endTime: z.string().describe('24 hour HH:MM format'),
 });
 
-const candidateAvailabilitySchema = z.object({
-  prefferredTime: TimeSchema,
-});
+const candidateAvailabilitySchema = z
+  .object({
+    prefferredTime: TimeSchema,
+    preferredDates: z.object({
+      startDate: z.string().describe('date in DD/MM/YYYY'),
+      endDate: z.string().describe('date in DD/MM/YYYY'),
+    }),
+  })
+  .nullable();
 
 export const agentSelfScheduleInstruction = z.object({
   candidateAvailability: candidateAvailabilitySchema,
@@ -26,7 +32,16 @@ export const schema = z.object({
 });
 
 export const selfScheduleLinkInstruction = async ({
-  input: { instruction, user_tz },
+  instruction,
+  user_tz,
+  default_preferred_dates,
+}: {
+  instruction: string;
+  user_tz: string;
+  default_preferred_dates: {
+    startDate: string;
+    endDate: string;
+  };
 }) => {
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_KEY,
@@ -40,21 +55,19 @@ export const selfScheduleLinkInstruction = async ({
           `Extract the candidate availability information from the given below candidate availability [ do not include placeholder information], current date time is ${dayjsLocal().tz(user_tz).format('DD MMM YYYY HH:mm')}\n` +
           `
             if any of the information is missing use information from below
-      {
-        "candidateAvailability": {
-            "prefferredDate": null,
-          },
-          "prefferredTime": {
-            "startTime": "09:00",
-            "endTime": "17:00"
+            {
+              "candidateAvailability": {
+                "prefferredTime": {
+                  "startTime": "09:00",
+                  "endTime": "17:00"
+                },
+                "preferredDates": null
+              },
+              "maxTotalSlots": 10,
+              "includeAllSoftConflictSlots": true,
+              "overrideSoftConflicts": [],
+              "include_outside_working_hours": false
             }
-          },
-          "prefferredInterviewers": [],
-          "maxTotalSlots": 5,
-          "includeAllSoftConflictSlots": false,
-          "overrideSoftConflicts": [],
-          include_outside_working_hours: false
-      }
           `,
       },
       {
@@ -70,7 +83,9 @@ export const selfScheduleLinkInstruction = async ({
   });
 
   const availability = completion.choices[0].message.parsed;
-
+  const pref_dates =
+    availability.candidateAvailability.preferredDates ??
+    default_preferred_dates;
   const formatOutput: z.infer<typeof agentSelfScheduleInstruction> = {
     ...availability,
     candidateAvailability: {
@@ -113,6 +128,16 @@ export const selfScheduleLinkInstruction = async ({
             ),
           )
           .format(),
+      },
+      preferredDates: {
+        startDate: ScheduleUtils.convertDateFormatToDayjs(
+          pref_dates.startDate,
+          user_tz,
+        ).format(),
+        endDate: ScheduleUtils.convertDateFormatToDayjs(
+          pref_dates.endDate,
+          user_tz,
+        ).format(),
       },
     },
   };

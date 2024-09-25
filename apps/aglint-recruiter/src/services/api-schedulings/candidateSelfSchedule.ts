@@ -37,13 +37,15 @@ export const candidateSelfSchedule = async ({
   organizer_id: string;
 }) => {
   const formatted_ai_reponse = await selfScheduleLinkInstruction({
-    input: {
-      instruction: job_payload.agent.instruction,
-      user_tz: req_assignee_tz,
+    instruction: job_payload.agent.instruction,
+    user_tz: req_assignee_tz,
+    default_preferred_dates: {
+      startDate: date_range.start_date_str,
+      endDate: date_range.end_date_str,
     },
   });
 
-  const plans = await findPlanCombs({
+  const planCombs = await findPlanCombs({
     date_range: date_range,
     recruiter_id: parsed_body.recruiter_id,
     session_ids: parsed_body.session_ids,
@@ -61,15 +63,29 @@ export const candidateSelfSchedule = async ({
           endTime:
             formatted_ai_reponse.candidateAvailability.prefferredTime.endTime,
         },
-      ],
+      ], // its time
       preferredInterviewers: [],
       isWorkLoad: true,
     },
   });
-  if (plans.length === 0) {
+
+  if (planCombs.length === 0) {
     throw new CApiError('CLIENT', 'No plans matched');
   }
-  const candidate_slots = getNSlots(plans, formatted_ai_reponse.maxTotalSlots);
+  const date_filtered_slots = getPrefferredDateSlots(
+    planCombs,
+    {
+      startDate:
+        formatted_ai_reponse.candidateAvailability.preferredDates.startDate,
+      endDate:
+        formatted_ai_reponse.candidateAvailability.preferredDates.endDate,
+    },
+    req_assignee_tz,
+  );
+  const candidate_slots = getNSlots(
+    date_filtered_slots,
+    formatted_ai_reponse.maxTotalSlots,
+  );
   const [filter_json] = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')
@@ -148,5 +164,31 @@ const getNSlots = (
       added_slots_cnt++;
     }
   }
+  return filtered_slots;
+};
+
+// supports only single round
+const getPrefferredDateSlots = (
+  slots: PlanCombinationRespType[],
+  preferred_dates: {
+    startDate: string;
+    endDate: string;
+  },
+  tz: string,
+): PlanCombinationRespType[] => {
+  const preferred_dates_dayjs = {
+    startDate: dayjsLocal(preferred_dates.startDate).tz(tz),
+    endDate: dayjsLocal(preferred_dates.endDate).tz(tz),
+  };
+  const filtered_slots: PlanCombinationRespType[] = slots.filter((slot) => {
+    return (
+      dayjsLocal(slot.sessions[0].start_time)
+        .tz(tz)
+        .isSameOrAfter(preferred_dates_dayjs.startDate, 'date') &&
+      dayjsLocal(slot.sessions[0].start_time)
+        .tz(tz)
+        .isSameOrBefore(preferred_dates_dayjs.endDate, 'date')
+    );
+  });
   return filtered_slots;
 };
