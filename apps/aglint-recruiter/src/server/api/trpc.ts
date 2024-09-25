@@ -163,8 +163,8 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
 });
 
 const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
+  throw new TRPCError(ERRORS.UNAUTHORIZED);
   const db = createPrivateClient();
-
   const {
     data: { user },
   } = await db.auth.getUser();

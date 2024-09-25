@@ -8,6 +8,8 @@ import {
 import { loggerLink } from '@trpc/client/links/loggerLink';
 import { createTRPCReact } from '@trpc/react-query';
 import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server';
+import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import superjson from 'superjson';
 
@@ -20,13 +22,13 @@ import { createQueryClient } from './query-client';
 // import { splitLink } from '@trpc/client/links/splitLink';
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined;
-const getQueryClient = () => {
+const getQueryClient = (router?: AppRouterInstance) => {
   if (typeof window === 'undefined') {
     // Server: always make a new query client
     return createQueryClient();
   }
   // Browser: use singleton pattern to keep the same query client
-  return (clientQueryClientSingleton ??= createQueryClient());
+  return (clientQueryClientSingleton ??= createQueryClient(router));
 };
 
 // export const api = createTRPCClient<AppRouter>({
@@ -67,7 +69,8 @@ export type RouterOutputs = inferRouterOutputs<AppRouter>;
 export type Unvoid<T> = T extends void ? never : T;
 
 export function TRPCReactProvider(props: { children: React.ReactNode }) {
-  const queryClient = getQueryClient();
+  const router = useRouter();
+  const queryClient = getQueryClient(router);
 
   const url = getBaseUrl();
 
