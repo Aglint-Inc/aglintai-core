@@ -20,7 +20,7 @@ function RecentCompletedInterviews() {
   return (
     <>
       {/* {!isFetched && <Loader />} */}
-      {isFetched && schedules?.length > 1 && (
+      {isFetched && (schedules ?? [])?.length > 1 && (
         <Card>
           <CardHeader>
             <CardTitle className='text-lg font-semibold'>
@@ -35,7 +35,7 @@ function RecentCompletedInterviews() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <ScheduleMeetingList filterSchedules={schedules.slice(0, 5)} />
+            <ScheduleMeetingList filterSchedules={(schedules??[]).slice(0, 5)} />
           </CardContent>
         </Card>
       )}

@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import { type TargetApiPayloadType } from '@aglint/shared-types';
-import axios from 'axios';
 
 import { mailSender } from '../mailSender';
 
@@ -23,36 +22,6 @@ export const selfScheduleMailToCandidate = async ({
     });
 
     return true;
-  } catch (e) {
-    console.log(e);
-  }
-};
-
-export const selfScheduleReminderMailToCandidate = async ({
-  filter_id,
-  task_id,
-}: {
-  filter_id: string;
-  task_id?: string;
-}) => {
-  try {
-    const bodyParams: TargetApiPayloadType<'selfScheduleReminder_email_applicant'> =
-      {
-        filter_id: filter_id,
-        task_id: task_id,
-      };
-
-    const res = await axios.post(
-      `${process.env.NEXT_PUBLIC_HOST_NAME}/api/emails/selfScheduleReminder_email_applicant`,
-      {
-        ...bodyParams,
-      },
-    );
-    if (res.status === 200) {
-      return true;
-    } else {
-      return false;
-    }
   } catch (e) {
     console.log(e);
   }

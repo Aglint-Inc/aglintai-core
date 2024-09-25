@@ -14,7 +14,7 @@ import {
 } from './customExtns/extns/getRegularEditorConfigs';
 import MenuBtns from './MenuBtns';
 
-export type TipTapAIEditorParams = {
+type TipTapAIEditorParams = {
   placeholder?: string;
   initialValue?: string | undefined;
   enablAI?: boolean;

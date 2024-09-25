@@ -46,7 +46,7 @@ function ImageUploadManual({
       >
         <Avatar className={`w-[${size}px] h-[${size}px] rounded-lg`}>
           <AvatarImage
-            src={initImage || '/images/emptyProfile.jpg'}
+            src={initImage || '/images/default/user.png'}
             alt='Profile'
             className='object-cover'
           />

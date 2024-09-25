@@ -1,5 +1,4 @@
 import { type DB } from '@aglint/shared-types';
-import dayjs from 'dayjs';
 import {
   Calendar,
   CalendarClock,
@@ -16,7 +15,7 @@ import { StatusBadge } from './StatusBadge';
 
 type Enums = DB['public']['Enums'];
 
-export type ScheduleProgressPillProps = {
+type ScheduleProgressPillProps = {
   session_name: string;
   session_duration: number;
   status: Enums['interview_schedule_status'];
@@ -44,7 +43,7 @@ const ScheduleStatus = memo(
 );
 ScheduleStatus.displayName = 'ScheduleStatus';
 
-export const ProgressIcon = ({
+const ProgressIcon = ({
   status,
 }: Pick<ScheduleProgressPillProps, 'status'>) => {
   switch (status) {
@@ -126,34 +125,4 @@ const PanelSessionIcon = () => {
 
 const DebriefSessionIcon = () => {
   return <FileText size={6} />;
-};
-
-export const statusToColor = (status: ScheduleProgressPillProps['status']) => {
-  switch (status) {
-    case 'waiting':
-      return 'var(--warning-4)';
-    case 'confirmed':
-      return 'var(--blue-4)';
-    case 'completed':
-      return 'var(--success-4)';
-    case 'cancelled':
-      return 'var(--error-4)';
-    default:
-      return 'var(--neutral-4)';
-  }
-};
-
-export const getScheduleDate = (date: ScheduleProgressPillProps['date']) => {
-  if (!date) return '---';
-  const start_time = `${dayjs(date.start_time).format('MMM')} ${dayjs(
-    date.start_time,
-  ).format('DD')}, ${dayjs(date.start_time).format('YYYY')}, ${dayjs(
-    date.start_time,
-  ).format('hh:mm A')}`;
-  const end_time = `${dayjs(date.end_time).format('MMM')} ${dayjs(
-    date.end_time,
-  ).format('DD')}, ${dayjs(date.end_time).format('YYYY')}, ${dayjs(
-    date.end_time,
-  ).format('hh:mm A')}`;
-  return `${start_time} - ${end_time}`;
 };

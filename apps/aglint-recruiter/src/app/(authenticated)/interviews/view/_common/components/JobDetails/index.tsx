@@ -10,7 +10,7 @@ function JobDetails() {
   } = useScheduleDetails();
   const editor = useEditor({
     editable: false,
-    content: schedule?.job.description,
+    content: schedule?.job?.description ?? '',
     extensions: [StarterKit],
   });
   return (

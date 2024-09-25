@@ -2,7 +2,6 @@ import {
   type DatabaseEnums,
   type DatabaseTableInsert,
 } from '@aglint/shared-types';
-import { dayjsLocal } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import {
@@ -26,7 +25,6 @@ import {
   availReminder,
   selfScheduleReminder,
 } from '@/services/event-triggers/trigger-funcs/onUpdateRequestProgress';
-import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
@@ -103,8 +101,7 @@ const WorkflowActionDialog = () => {
 
     setTiptapLoadStatus({ email: false, agent: false });
   };
-  const { mutateAsync } =
-    api.textTransform.selfScheduleInstruction.useMutation();
+
   let isDialogEdit = false;
   if (selectedActionsDetails?.id && selectedActionsDetails.id.length > 0) {
     isDialogEdit = true;
@@ -128,10 +125,6 @@ const WorkflowActionDialog = () => {
       }
       setIsSaving(true);
       if (agentInstructions.length > 0) {
-        const availabilityResp = await mutateAsync({
-          instruction: agentInstructions,
-          user_tz: dayjsLocal.tz.guess(),
-        });
         wAction.payload = {
           email: {
             body: emailTemplate.body,
@@ -139,7 +132,6 @@ const WorkflowActionDialog = () => {
           },
           agent: {
             instruction: agentInstructions,
-            ai_response: availabilityResp,
           },
         };
       }

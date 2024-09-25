@@ -58,7 +58,7 @@ export const BasicInfoUI = ({ recruiter }) => {
                 onClick={(e) => e.stopPropagation()}
               >
                 <Image
-                  src={`/images/logo/${key}.svg`}
+                  src={`/images/social/${key}.svg`}
                   height={14}
                   width={14}
                   alt=''

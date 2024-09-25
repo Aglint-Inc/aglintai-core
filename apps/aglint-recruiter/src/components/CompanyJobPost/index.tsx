@@ -65,7 +65,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
                         onClick={() => window.open(link as string, '_blank')}
                       >
                         <Image
-                          src={`/images/logo/${platform}.svg`}
+                          src={`/images/social/${platform}.svg`}
                           height={16}
                           width={16}
                           alt={platform}

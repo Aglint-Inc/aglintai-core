@@ -2,7 +2,7 @@ import { type SchedulesSupabase } from '../../../app/_common/utils/schedules-que
 
 export type Modes = 'list' | 'calendar';
 export type Types = 'day' | 'week' | 'month';
-export type colorType = { bg: string; pri: string } | null;
+type colorType = { bg: string; pri: string } | null;
 export type event = {
   title: string;
   start: string;

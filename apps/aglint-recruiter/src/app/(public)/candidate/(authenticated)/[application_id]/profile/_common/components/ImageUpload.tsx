@@ -38,7 +38,7 @@ function ImageUploadManual({
       <div className='relative'>
         <Avatar className={`w-${size} h-${size} overflow-hidden rounded-lg`}>
           <AvatarImage
-            src={initImage || '/images/emptyProfile.jpg'}
+            src={initImage || '/images/default/user.svg'}
             alt='Profile'
           />
           <AvatarFallback>Profile</AvatarFallback>

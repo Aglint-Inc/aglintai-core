@@ -314,7 +314,7 @@ const AgentInstructionBody: React.FC<
           toolbar={false}
           disabled={disabled}
           editor_type='regular'
-          initialValue={payload.agent?.instruction}
+          initialValue={(payload as any).agent?.instruction}
           handleChange={(newInstruction) => setInstruction(newInstruction)}
           placeholder='Provide the instructions to guide the agent through this action.'
         />
@@ -330,7 +330,7 @@ const WorkflowConnector = () => {
   return (
     <div className={'flex w-full items-center justify-center text-neutral-600'}>
       <Image
-        src='/images/workflows/connector.svg'
+        src='/images/workflow/connector.svg'
         alt='Workflow Connector'
         width={16}
         height={45}
