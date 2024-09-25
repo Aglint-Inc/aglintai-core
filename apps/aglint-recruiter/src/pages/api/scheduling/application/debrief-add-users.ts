@@ -99,7 +99,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       allUserIds.push(filterJson.applications.public_jobs.sourcer);
     }
 
-    const eligibleUserIds = [...new Set(allUserIds)];
+    const eligibleUserIds: string[] = [...new Set(allUserIds)];
 
     const existingUserIds = (intMeetSessions || [])
       .find((meet) => meet.interview_session[0].id === debriefSessionId)
@@ -108,7 +108,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       );
 
     const insertTableUserIds = eligibleUserIds.filter(
-      (userId) => !existingUserIds.includes(userId),
+      (userId) => !existingUserIds?.includes(userId),
     );
 
     if (insertTableUserIds.length === 0) {
@@ -182,7 +182,7 @@ function findSessionRelations({
 }) {
   const allPreviousMeetings: Awaited<ReturnType<typeof fetchMeetingsSessions>> =
     [];
-  const user_ids = [];
+  const user_ids: string[] = [];
   let previousDebriefIndex = -1;
   let selectedDebriefIndex = -1;
 
@@ -208,7 +208,7 @@ function findSessionRelations({
     const session = sessions[i];
 
     session.interview_session[0].interview_session_relation.map((sesrel) => {
-      if (sesrel.is_confirmed)
+      if (sesrel.is_confirmed && sesrel?.interview_module_relation?.user_id)
         user_ids.push(sesrel.interview_module_relation.user_id);
     });
 
