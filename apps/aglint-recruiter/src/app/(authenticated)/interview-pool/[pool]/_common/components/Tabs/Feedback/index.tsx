@@ -3,11 +3,11 @@ import { Card, CardContent } from '@components/ui/card';
 import { MessageSquare, Star } from 'lucide-react';
 import { useState } from 'react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 import UITextField from '@/components/Common/UITextField';
 
 import { usePoolFeedbacks } from '../../../hooks/usePoolFeedback';
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 
 function Feedback() {
   const { data, isLoading } = usePoolFeedbacks();

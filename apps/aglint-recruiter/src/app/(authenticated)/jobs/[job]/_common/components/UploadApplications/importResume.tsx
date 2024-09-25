@@ -136,7 +136,7 @@ export const ImportResume = () => {
 
   return (
     <div className='flex h-[500px] flex-col'>
-      <div className='flex-grow overflow-auto mb-4 '>
+      <div className='mb-4 flex-grow overflow-auto'>
         {selectedFiles.length === 0 ? renderFileUploader() : renderFileList()}
       </div>
       <div className=''>
