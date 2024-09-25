@@ -23,7 +23,6 @@ import {
   useJobWorkflowDisconnect,
   useJobWorkflowMutations,
 } from '@/queries/job-workflow';
-import { useWorkflowQuery } from '@/queries/workflow';
 import { type Workflow } from '@/types/workflow.types';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
@@ -32,7 +31,7 @@ import {
   getFilteredWorkflows,
   useWorkflowFilterOptions,
 } from '@/workflows/components/body/filters';
-import { useWorkflows } from '@/workflows/hooks';
+import { useWorkflows, useWorkflowsRead } from '@/workflows/hooks';
 import { getTriggerOption } from '@/workflows/utils';
 
 import { WorkflowCard } from './WorkflowCard';
@@ -166,7 +165,7 @@ const JobWorkflows = () => {
 
 const WorkflowBrowser = () => {
   const { workflows, handleConnect } = useJobWorkflows();
-  const { data, status } = useWorkflowQuery();
+  const { data, status } = useWorkflowsRead();
   const open = useWorkflowsStore((state) => state.open);
   const selections = useWorkflowsStore((state) => state.selections);
   const search = useWorkflowsStore((state) => state.search);
@@ -197,9 +196,10 @@ const WorkflowBrowser = () => {
   const filteredWorkflows = (data ?? []).filter(
     ({ id }) => !workflowIds.includes(id),
   );
+
   const cards = getFilteredWorkflows(
     { search, job, tags },
-    filteredWorkflows,
+    filteredWorkflows as Workflow[],
   ).map(({ id, title, trigger, phase, jobs }) => {
     const checked = selections.includes(id);
     const jobCount = (jobs ?? []).length;

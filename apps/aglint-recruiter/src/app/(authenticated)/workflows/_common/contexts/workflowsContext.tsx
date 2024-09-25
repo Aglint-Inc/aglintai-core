@@ -12,18 +12,19 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import {
   useWorkflowCreate,
   useWorkflowDelete,
-  useWorkflowJobFilter,
   useWorkflowMutations,
-  useWorkflowQuery,
   useWorkflowUpdate,
 } from '@/queries/workflow';
 import { SafeObject } from '@/utils/safeObject';
 
+import { useWorkflowsJobFilter } from '../hooks/useWorkflowsJobFilter';
+import { useWorkflowsRead } from '../hooks/useWorkflowsRead';
+
 const useWorkflowsContext = () => {
   const { recruiter_id } = useAuthDetails();
-  const workflows = useWorkflowQuery();
+  const workflows = useWorkflowsRead();
   const { mutate: createWorkflowMutation } = useWorkflowCreate();
-  const workflowJobFilter = useWorkflowJobFilter();
+  const workflowJobFilter = useWorkflowsJobFilter();
   const { mutate: deleteWorkflowMutation } = useWorkflowDelete();
   const workflowUpdate = useWorkflowUpdate();
   const workflowMutations = useWorkflowMutations();

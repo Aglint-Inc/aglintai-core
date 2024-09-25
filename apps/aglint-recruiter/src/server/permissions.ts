@@ -3,6 +3,7 @@ import type { ApiPermissions } from './utils';
 export const API_PERMISSIONS: ApiPermissions = {
   ats: [],
   tenant: [],
+  workflows: [],
   jobs: ['job_module'],
   scheduling: ['scheduling_module'],
   integrations: ['integrations_module'],

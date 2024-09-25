@@ -10,6 +10,7 @@ import { jobs } from './routers/jobs';
 import { requests } from './routers/requests';
 import { scheduling } from './routers/scheduling';
 import { tenant } from './routers/tenant';
+import { workflows } from './routers/workflows';
 import { createCallerFactory, createTRPCRouter } from './trpc';
 
 /**
@@ -30,6 +31,7 @@ export const appRouter = createTRPCRouter({
   requests,
   scheduling,
   application,
+  workflows,
 });
 
 export const appRouterSchema = {

@@ -61,7 +61,7 @@ const Cards = (props: {
   const filters = useWorkflowsFilters();
   const { setDeletion } = useWorkflowsActions();
   const { workflowMutations: mutations } = useWorkflows();
-  const cards = getFilteredWorkflows(filters, props.data).map(
+  const cards = getFilteredWorkflows(filters, props.data as Workflow[]).map(
     ({ id, title, trigger, phase, jobs, tags }) => {
       const loading = !!mutations.find((mutationId) => mutationId === id);
       const jobCount = (jobs ?? []).length;
