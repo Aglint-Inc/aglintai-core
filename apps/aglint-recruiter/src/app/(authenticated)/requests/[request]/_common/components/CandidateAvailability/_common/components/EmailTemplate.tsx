@@ -17,7 +17,10 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
   const { reRequestAvailability, candidateAvailabilityIdForReRequest } =
     useCandidateAvailabilitySchedulingFlowStore();
   const [emailData, setEmailData] = useState<{ html: string; subject: string }>(
-    null,
+    {
+      html: '',
+      subject: '',
+    },
   );
   const [fetching, setFetching] = useState(false);
   const payload: TargetApiPayloadType<'sendAvailabilityRequest_email_applicant'> =
@@ -25,7 +28,7 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
       preview_details: {
         application_id: application_id,
       },
-      organizer_user_id: recruiterUser.user_id,
+      organizer_user_id: recruiterUser?.user_id ?? '',
       is_preview: true,
     };
 
@@ -36,7 +39,7 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
         {
           is_preview: true,
           avail_req_id: candidateAvailabilityIdForReRequest,
-          recruiter_user_id: recruiterUser.user_id,
+          recruiter_user_id: recruiterUser?.user_id ?? '',
         };
       mailSender({
         target_api: 'availabilityReqResend_email_candidate',
@@ -72,7 +75,7 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
     }
   }
   useEffect(() => {
-    if (!emailData) {
+    if (!emailData.html) {
       getEmail();
     }
   }, []);

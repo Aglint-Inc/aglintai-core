@@ -18,4 +18,3 @@ dayjs.extend(duration);
 dayjs.extend(isBetween);
 
 export const dayjsLocal = dayjs;
-export type { Dayjs } from "dayjs";

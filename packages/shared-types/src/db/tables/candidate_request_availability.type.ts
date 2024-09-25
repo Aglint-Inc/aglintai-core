@@ -5,7 +5,7 @@ export type CandidateRequestAvailability = TableType<
   {
     availability: AvailabilityType;
     date_range: DateRange;
-    slots: dateSlotsType[];
+    slots: dateSlotsType[] | null;
   }
 >;
 

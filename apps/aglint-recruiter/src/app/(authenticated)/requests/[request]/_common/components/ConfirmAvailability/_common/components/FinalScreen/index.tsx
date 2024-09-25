@@ -21,7 +21,10 @@ function FinalScreen() {
     useConfirmAvailabilitySchedulingFlowStore();
 
   const [emailData, setEmailData] = useState<{ html: string; subject: string }>(
-    null,
+    {
+      html: '',
+      subject: '',
+    },
   );
   const [fetching, setFetching] = useState(true);
   const allSessions: SessionCombinationRespType[] = selectedDateSlots
@@ -58,7 +61,7 @@ function FinalScreen() {
       });
   }
   useEffect(() => {
-    if (!emailData) {
+    if (!emailData.html) {
       getEmail();
     }
   }, []);

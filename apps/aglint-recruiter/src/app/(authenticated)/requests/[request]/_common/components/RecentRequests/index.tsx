@@ -18,11 +18,11 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
   });
   const recentRequests =
     status === 'success'
-      ? requestList.filter((item) => item.id !== requestId)
+      ? (requestList ?? []).filter((item) => item.id !== requestId)
       : [];
   if (status === 'pending') {
     return (
-      <Card className='bg-white shadow-sm min-h-[500] '>
+      <Card className='min-h-[500] bg-white shadow-sm'>
         <CardHeader>
           <CardTitle className='text-xl font-semibold'>
             Recent Requests
@@ -35,7 +35,7 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
     );
   } else
     return (
-      <Card className='bg-white shadow-sm mb-10 min-h-[200px]'>
+      <Card className='mb-10 min-h-[200px] bg-white shadow-sm'>
         <CardHeader>
           <CardTitle className='text-xl font-semibold'>
             Recent Requests
@@ -52,7 +52,7 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
               </div>
             ) : (
               recentRequests.map((request, index) => {
-                const jobDetails = request.applications.public_jobs;
+                const jobDetails = request?.applications?.public_jobs;
                 const sessions = request.request_relation.map(
                   (item) => item.interview_session,
                 );
@@ -68,9 +68,9 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
                       }
                     >
                       <div>
-                        <h3 className='font-medium'>{jobDetails.job_title}</h3>
+                        <h3 className='font-medium'>{jobDetails?.job_title}</h3>
                         <p className='text-sm text-gray-500'>
-                          {jobDetails.departments.name}
+                          {jobDetails?.departments?.name}
                         </p>
                       </div>
                       <div className='flex items-center space-x-2 text-right'>
@@ -105,7 +105,7 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
                         <ul className='list-disc space-y-1 pl-5'>
                           {sessions.map((session, sessionIndex) => (
                             <li key={sessionIndex} className='text-sm'>
-                              {session.name}
+                              {session?.name}
                             </li>
                           ))}
                         </ul>

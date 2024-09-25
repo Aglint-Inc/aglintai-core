@@ -34,7 +34,7 @@ function DefaultViewRequestCard({
   return (
     <Card
       className={cn(
-        'group cursor-pointer transition-shadow duration-300',
+        'group transition-shadow duration-300',
         isCompactList &&
           'rounded-none border-none shadow-none hover:bg-gray-50',
       )}
@@ -45,11 +45,11 @@ function DefaultViewRequestCard({
           isCompactList && 'px-2 py-3',
         )}
       >
-        <Link href={`/requests/${props.id}`} passHref className='flex-grow'>
-          <div className='flex items-center space-x-2'>
+        <Link href={`/requests/${props.id}`} passHref className='flex-grow cursor-pointer '>
+          <div className='flex items-center space-x-2 cursor-pointer hover:underline'>
             <Label
               className={cn(
-                'line-clamp-1 flex-grow whitespace-normal break-words text-base',
+                'line-clamp-1 flex-grow whitespace-normal cursor-pointer break-words text-base ',
                 {
                   'font-semibold': !isCompactList,
                   'text-sm font-normal': isCompactList,

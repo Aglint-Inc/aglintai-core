@@ -1,4 +1,5 @@
 import { Skeleton } from '@components/ui/skeleton';
+import { type REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
 import { useState } from 'react';
 
 import KanbanSection from './ui/KanbanSection';
@@ -11,7 +12,7 @@ function RequestListContent({
   isFetched,
 }: {
   view: 'list' | 'kanban';
-  defaults: any[];
+  defaults: typeof REQUEST_SESSIONS_DEFAULT_DATA;
   isFetched: boolean;
 }) {
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
@@ -46,6 +47,9 @@ function RequestListContent({
               {isFetched ? (
                 view === 'list' ? (
                   <ListSection
+                    collapseScheduleRequestSections={
+                      urgentRequests && !!urgentRequests.requests.length
+                    }
                     sectionName={sectionName}
                     requests={requests}
                     expandedSections={expandedSections}
