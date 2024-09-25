@@ -95,11 +95,11 @@ export const schema_send_avail_req_link = v.object({
 export const candidate_new_schedule_schema = v.object({
   application_id: v.string(),
   recruiter_id: v.string(),
-  api_options: v.nullish(scheduling_options_schema, {}),
   session_ids: v.array(v.string()),
   target_api: v.any(),
   request_id: v.string(),
   event_run_id: v.number(),
+  payload: v.any(),
 });
 
 export const candidate_avail_request_schema = v.intersect([
