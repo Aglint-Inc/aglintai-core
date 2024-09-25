@@ -28,7 +28,7 @@ export const Filters = () => {
   const filterBadges = useJobFilterBadges();
 
   const badges = useApplicationsStore((state) => state.badges);
-  const bookmarked = useApplicationsStore((state) => state.bookmarked);
+  // const bookmarked = useApplicationsStore((state) => state.bookmarked);
   const locations = useApplicationsStore((state) => state.locations);
   const application_match = useApplicationsStore(
     (state) => state.application_match,
