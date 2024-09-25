@@ -10,7 +10,14 @@ import { createCombsForMultiDaySlots } from '@/services/CandidateScheduleV2/util
 import { compareTimes } from '@/services/CandidateScheduleV2/utils/time_range_utils';
 
 import { type SelfSchedulingFlow } from '../../../store/store';
-
+type PlanFilterType = Omit<
+  SelfSchedulingFlow['filters'],
+  'preferredInterviewers'
+> & {
+  preferredInterviewers: {
+    user_id: string;
+  }[];
+};
 export const filterByDateRanges = ({
   schedulingOptions,
   preferredDateRanges,
@@ -52,11 +59,7 @@ export function filterSchedulingOptionsArray({
   user_tz = dayjsLocal.tz.guess(),
 }: {
   schedulingOptions: ApiResponseFindAvailability['slots'];
-  filters: Omit<SelfSchedulingFlow['filters'], 'preferredInterviewers'> & {
-    preferredInterviewers: {
-      user_id: string;
-    }[];
-  };
+  filters: PlanFilterType;
   user_tz?: string;
 }) {
   const allFilteredOptions: ApiResponseFindAvailability['slots'] = (
@@ -238,7 +241,7 @@ export const hasPreferredInterviewers = ({
   filters,
 }: {
   session: PlanCombinationRespType['sessions'][0];
-  filters: SelfSchedulingFlow['filters'];
+  filters: PlanFilterType;
 }) => {
   return (
     filters.preferredInterviewers.length === 0 ||
