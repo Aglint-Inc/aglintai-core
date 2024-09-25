@@ -1,18 +1,5 @@
 import { DatabaseEnums } from '@aglint/shared-types';
 
-type TagType =
-  | 'Aglint Ai'
-  | 'Candidate'
-  | 'Self Schedule'
-  | 'Availability'
-  | 'Cancel Interview'
-  | 'Reschedule Interview'
-  | 'Reminder Interview'
-  | 'Cancel Interview'
-  | 'Confirm Interview'
-  | 'Debreif'
-  | 'Email Agent'
-  | 'Slack';
 type EmailTemplatType = {
   heading: string;
   description: string;

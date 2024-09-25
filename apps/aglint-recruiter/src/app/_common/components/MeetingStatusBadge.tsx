@@ -7,7 +7,7 @@ import { UIBadge } from '@/components/Common/UIBadge';
 export function MeetingStatusBadge({
   status,
 }: {
-  status: DatabaseTable['interview_meeting']['status'];
+  status: DatabaseTable['interview_meeting']['status'] | null;
 }) {
   return (
     <>

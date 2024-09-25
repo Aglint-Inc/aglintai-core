@@ -33,25 +33,26 @@ function MyInterviews() {
 
   useEffect(() => {
     (async () => {
-      const res = await getInterviewsCountByUserId(recruiterUser.user_id);
+      const res = await getInterviewsCountByUserId(
+        recruiterUser?.user_id ?? '',
+      );
       setCounts(res);
     })();
   }, []);
 
-  const {
-    data: { schedules: allSchedules },
-    isFetched: scheduleFetched,
-  } = useInterviewsByUserId({
+  const { data, isFetched: scheduleFetched } = useInterviewsByUserId({
     filter,
-    member_id: recruiterUser.user_id,
+    member_id: recruiterUser?.user_id ?? '',
   });
+  const schedules = data?.schedules ?? [];
+  const allSchedules = schedules;
   const { data: allIntegrations, isLoading: integrationLoading } =
     useAllIntegrations();
 
   return (!!allIntegrations?.service_json &&
     allIntegrations?.google_workspace_domain?.split('//')[1] ===
-      recruiterUser.email.split('@')[1]) ||
-    !!(recruiterUser.schedule_auth as any)?.access_token ? (
+      recruiterUser?.email.split('@')[1]) ||
+    !!(recruiterUser?.schedule_auth as any)?.access_token ? (
     <>
       <InterviewMemberSide
         propsGrids={{ style: { maxWidth: 'none' } }}
@@ -97,12 +98,10 @@ function MyInterviews() {
                   <NewMyScheduleCard
                     key={ind}
                     textDate={
-                      date != 'undefined' ? dayjsLocal(date).format('DD') : null
+                      date != 'undefined' ? dayjsLocal(date).format('DD') : ''
                     }
                     textDay={
-                      date != 'undefined'
-                        ? dayjsLocal(date).format('ddd')
-                        : null
+                      date != 'undefined' ? dayjsLocal(date).format('ddd') : ''
                     }
                     textMonth={
                       date != 'undefined' ? (
@@ -164,7 +163,7 @@ function IntegrationNotFound({ loading }: { loading: boolean }) {
                 <AlertTitle>Warning</AlertTitle>
                 <AlertDescription>
                   Your calendar is not connected to the scheduling app. Please
-                  <Link href={`/user/${recruiterUser.user_id}`}>
+                  <Link href={`/user/${recruiterUser?.user_id}`}>
                     connect it in your profile settings.
                   </Link>
                 </AlertDescription>

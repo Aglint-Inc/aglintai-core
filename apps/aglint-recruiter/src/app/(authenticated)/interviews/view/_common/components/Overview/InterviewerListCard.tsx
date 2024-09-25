@@ -28,14 +28,14 @@ function InterviewerListCard({
       accepted_status={item.interview_session_relation.accepted_status}
       cancelReason={cancelReason as DatabaseTable['interview_session_cancel']}
       userDetails={{
-        first_name: item.user_details.first_name,
-        last_name: item.user_details.last_name,
-        position: item.user_details.position,
-        user_id: item.user_details.user_id,
-        profile_image: item.user_details.profile_image,
+        first_name: item?.user_details?.first_name ?? '',
+        last_name: item?.user_details?.last_name ?? '',
+        position: item?.user_details?.position ?? '',
+        user_id: item?.user_details?.user_id ?? '',
+        profile_image: item?.user_details?.profile_image ?? 'avatar.png',
       }}
       interviewerTimeZone={
-        item.user_details.scheduling_settings?.timeZone?.tzCode
+        item?.user_details?.scheduling_settings?.timeZone?.tzCode ?? '--'
       }
       isCalendarConnected={true}
       isPaused={false}

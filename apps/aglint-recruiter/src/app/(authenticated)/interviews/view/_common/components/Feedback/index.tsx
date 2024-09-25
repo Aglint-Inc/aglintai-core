@@ -94,8 +94,8 @@ const FeedbackWindow = () => {
     },
   ];
   const candidate = {
-    email: schedule?.candidates.email,
-    name: `${schedule?.candidates.first_name || ''} ${schedule?.candidates.last_name || ''}`.trim(),
+    email: schedule?.candidates?.email,
+    name: `${schedule?.candidates?.first_name || ''} ${schedule?.candidates?.last_name || ''}`.trim(),
     job_id: schedule?.job?.id,
     application_id: schedule?.application_id,
   };
@@ -157,7 +157,17 @@ const FeedbackWindow = () => {
             ...(interviewers[String(session.id)] || []),
             {
               user_id: tempMem.user_id,
-              session,
+              session: {
+                created_at: session.created_at,
+                id: session.id,
+                title: session.title ?? '',
+                session_type: session.session_type,
+                status: session.status,
+                time: {
+                  start: session.time.start ?? '',
+                  end: session.time.end ?? '',
+                },
+              },
               relation_id: memRelation.relation_id,
               first_name: tempMem.first_name,
               last_name: tempMem.last_name,
@@ -207,18 +217,32 @@ const FeedbackWindow = () => {
             <Loader2 className='h-8 w-8 animate-spin text-primary' />
           </div>
         </ShowCode.When>
-        <ShowCode.When isTrue={checkPermissions(['scheduling_actions'])}>
+        <ShowCode.When
+          isTrue={Boolean(
+            checkPermissions && checkPermissions(['scheduling_actions']),
+          )}
+        >
           <AdminFeedback
-            {...{
-              user_id,
-              isAdmin,
-
-              interviewers: Object.keys(interviewers)
-                .map((key) => interviewers[String(key)])
-                .flat(),
-              handelSubmit,
-              candidate,
+            candidate={{
+              application_id: candidate.application_id,
+              email: candidate?.email ?? '',
+              job_id: candidate?.job_id ?? '',
+              name: candidate.name,
             }}
+            isAdmin={isAdmin}
+            handelSubmit={async ({ session_id, relation_id, feedback }) => {
+              return handelSubmit({
+                session_id: session_id,
+                relation_id: relation_id,
+                feedback: feedback,
+              }).then(() => {
+                return true;
+              });
+            }}
+            interviewers={Object.keys(interviewers)
+              .map((key) => interviewers[String(key)])
+              .flat()}
+            user_id={user_id ?? ''}
           />
         </ShowCode.When>
         <ShowCode.Else>
@@ -227,7 +251,13 @@ const FeedbackWindow = () => {
               .map((key) => interviewers[String(key)])
               .flat()
               .filter((item) => item.user_id === user_id)}
-            handelSubmit={handelSubmit}
+            handelSubmit={({ feedback, relation_id, session_id }) => {
+              handelSubmit({
+                feedback,
+                relation_id,
+                session_id,
+              });
+            }}
           />
         </ShowCode.Else>
       </ShowCode>
@@ -268,8 +298,8 @@ const AdminFeedback = ({
   };
 }) => {
   const [selectedInterviewer, setSelectedInterviewer] = useState<{
-    index: number;
-    interviewer: (typeof interviewers)[number];
+    index: number | null;
+    interviewer: (typeof interviewers)[number] | null;
   }>({ index: null, interviewer: null });
 
   const handelFeedbackRequest = async ({
@@ -297,7 +327,7 @@ const AdminFeedback = ({
     return handelSubmit({
       session_id: session_id,
       relation_id: relation_id,
-      feedback: { recommendation: null, objective: null },
+      feedback: { recommendation: 0, objective: '' },
     }).then(() => {
       toast.success(`Feedback request sent to ${tool} successfully.`);
       return true;
@@ -411,11 +441,11 @@ const InterviewerFeedback = ({
     session_id: string;
     relation_id: string;
     feedback: DatabaseTable['interview_session_relation']['feedback'];
-  }) => Promise<boolean>;
+  }) => void;
 }) => {
   const [selectedInterviewer, setSelectedInterviewer] = useState<{
-    index: number;
-    interviewer: (typeof interviewers)[number];
+    index: number | null;
+    interviewer: (typeof interviewers)[number] | null;
   }>({ index: null, interviewer: null });
 
   const sessions: { [key: string]: typeof interviewers } = {};

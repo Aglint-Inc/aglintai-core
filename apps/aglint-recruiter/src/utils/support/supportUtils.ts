@@ -1,36 +1,9 @@
 /* eslint-disable security/detect-object-injection */
-import { type DatabaseTable } from '@aglint/shared-types';
 
-import { type Job } from '@/queries/jobs/types';
-
-const Priority = {
-  low: '#467B7C',
-
-  medium: '#467B7C',
-
-  high: '#F79A3E',
-
-  highest: '#D93F4C',
-};
 // export const mapPriority = (level: string) => {
 //   return Priority[String(level.toLocaleLowerCase())]?.text;
 // };
-export const mapPriorityColor = (level: string) => {
-  return Priority[String(level.toLocaleLowerCase())];
-};
 
-const Status = {
-  open: '#3498DB',
-  pending: '#F1C40F',
-  'on hold': '#95A5A6',
-  resolved: '#228F67',
-  escalated: '#9B59B6',
-  canceled: '#34495E',
-  reopened: '#E74C3C',
-};
-export const mapStatusColor = (status: string) => {
-  return Status[String(status.toLocaleLowerCase())];
-};
 // export const mapPriorityColor = (level: string) => {
 //   return Priority[String(level.toLocaleLowerCase())];
 // };
@@ -47,18 +20,6 @@ export const mapStatusColor = (status: string) => {
 // export const mapStatusColor = (status: string) => {
 //   return Status[String(status.toLocaleLowerCase())];
 // };
-
-export const allPriority = ['low', 'medium', 'high', 'highest'];
-export const allStatus = [
-  // 'open',
-  'pending',
-  'in progress',
-  'on hold',
-  'resolved',
-  'escalated',
-  'canceled',
-  'reopened',
-];
 
 export function fillEmailTemplate(
   template: string,
@@ -117,76 +78,3 @@ export function fillEmailTemplate(
 
   return filledTemplate;
 }
-
-const allCandidateStatusColor = {
-  'invitation not sent': {
-    color: 'text-red-700',
-    backgroundColor: 'bg-red-200',
-  },
-  'invitation sent': {
-    color: 'text-yellow-700',
-    backgroundColor: 'bg-yellow-100',
-  },
-  'invitation accepted': {
-    color: 'text-green-700',
-    backgroundColor: 'bg-green-200',
-  },
-  'invitation rejected': {
-    color: 'text-red-700',
-    backgroundColor: 'bg-red-200',
-  },
-  'invitation expired': {
-    color: 'text-red-700',
-    backgroundColor: 'bg-red-200',
-  },
-  'invitation completed': {
-    color: 'text-accent-700',
-    backgroundColor: 'bg-accent-100',
-  },
-  'invitation incomplete': {
-    color: 'text-neutral-700',
-    backgroundColor: 'bg-neutral-200',
-  },
-};
-export const getCandidateStatusColor = (key: string) => {
-  return (
-    allCandidateStatusColor[String(key).toLocaleLowerCase()] || {
-      color: 'text-neutral-700',
-      backgroundColor: 'bg-neutral-200',
-    }
-  );
-};
-export const priorityOrder = {
-  low: 0,
-  medium: 1,
-  high: 2,
-  highest: 3,
-};
-export const statusOrder = {
-  created: -1,
-  open: 0,
-  pending: 1,
-  'in progress': 2,
-  'on hold': 3,
-  resolved: 4,
-  escalated: 5,
-  canceled: 6,
-  reopened: 7,
-};
-
-export type QualificationRelevance =
-  | 'less match'
-  | 'average match'
-  | 'more match';
-
-export const getOverallResumeScore = (
-  scores: DatabaseTable['applications']['score_json']['scores'],
-  parameter_weights: Job['parameter_weights'],
-) => {
-  return Math.trunc(
-    Object.keys(parameter_weights).reduce((acc, curr) => {
-      acc += (scores[curr] * parameter_weights[curr]) / 100;
-      return acc;
-    }, 0),
-  );
-};

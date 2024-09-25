@@ -65,7 +65,7 @@ const useActionsContext = () => {
                 },
               },
               workflow_id: null,
-            });
+            } as any);
           }
           break;
         case 'slack':
@@ -77,7 +77,7 @@ const useActionsContext = () => {
               order,
               payload: null,
               workflow_id: null,
-            });
+            } as any);
           }
           break;
         case 'end_point':
@@ -107,7 +107,7 @@ const useActionsContext = () => {
                   ai_response: AI_RESPONSE_PLACEHOLDER,
                 },
               },
-            });
+            } as any);
           }
           break;
       }

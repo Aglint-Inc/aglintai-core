@@ -1,9 +1,6 @@
 'use client';
 
 export const GC_TIME = 5 * 60 * 1000;
-export const STALE_TIME = 0;
-export const REFETCH_ON_MOUNT = false;
-export const REFETCH_ON_WINDOW_FOCUS = false;
 export const REFETCH_INTERVAL = 30_000;
 
 export const appKey = 'app';

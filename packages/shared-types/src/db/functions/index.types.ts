@@ -37,17 +37,20 @@ export type FunctionType<
     : DatabaseFunctionReturns<T> extends CustomizableTypes<"Object">
       ? { [id in keyof Partial<DatabaseFunctionReturns<T>>]: any }
       : any = never,
-> = Custom<
-  DatabaseFunctions[T],
-  //@ts-expect-error
-  {
-    Args: Custom<DatabaseFunctionArgs<T>, U>;
-    Returns: V extends never
-      ? DatabaseFunctionReturns<T>
-      : DatabaseFunctionReturns<T> extends CustomizableTypes<"Array">
-        ? V[]
-        : V;
-  }
+> = Required<
+  Custom<
+    DatabaseFunctions[T],
+    //@ts-expect-error
+    {
+      //@ts-expect-error
+      Args: Custom<DatabaseFunctionArgs<T>, U>;
+      Returns: V extends never
+        ? DatabaseFunctionReturns<T>
+        : DatabaseFunctionReturns<T> extends CustomizableTypes<"Array">
+          ? V[]
+          : V;
+    }
+  >
 >;
 
 export type Functions = Custom<

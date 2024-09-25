@@ -16,7 +16,7 @@ function UpComingInterviews() {
     <>
       <UpComingInterviewFilters />
       {!isFetched && <Loader />}
-      {isFetched && schedules?.length === 0 && (
+      {isFetched && (schedules ?? [])?.length === 0 && (
         <div className='mt-4 flex min-h-[500px] items-center justify-center'>
           <div className='mx-auto flex w-full max-w-md flex-col items-center border-none px-6 pb-8 pt-6 text-center shadow-none'>
             <div className='mb-4 flex items-center justify-center'>
@@ -33,8 +33,8 @@ function UpComingInterviews() {
           </div>
         </div>
       )}
-      {isFetched && schedules?.length > 0 && (
-        <ScheduleMeetingList filterSchedules={schedules} />
+      {isFetched && (schedules ?? [])?.length > 0 && (
+        <ScheduleMeetingList filterSchedules={schedules ?? []} />
       )}
     </>
   );

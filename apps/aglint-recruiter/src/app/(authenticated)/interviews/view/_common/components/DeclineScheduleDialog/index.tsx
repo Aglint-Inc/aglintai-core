@@ -26,7 +26,7 @@ function DeclineScheduleDialog() {
   const [reason, setReason] = useState('');
   const [notes, setNotes] = useState('');
 
-  const reasons = recruiter.scheduling_reason?.internal?.decline || [
+  const reasons = recruiter?.scheduling_reason?.internal?.decline || [
     'Too Many Interviews',
     'Out of the office',
     'Scheduling conflicts',
@@ -58,7 +58,6 @@ function DeclineScheduleDialog() {
             type: 'declined',
             session_id: schedule.interview_session.id,
             other_details: {
-              dateRange: null,
               note: notes,
             },
           });
@@ -68,8 +67,7 @@ function DeclineScheduleDialog() {
           meeting_id: schedule.interview_meeting.id,
           reason,
           other_details: {
-            dateRange: null,
-            note: notes,
+            note: notes ?? '',
           },
           response_type: 'cancel',
           type: 'interviewer_decline',
@@ -81,7 +79,7 @@ function DeclineScheduleDialog() {
           application_id: schedule.application_id,
           logged_by: 'user',
           supabase: supabase,
-          created_by: recruiterUser.user_id,
+          created_by: recruiterUser?.user_id ?? '',
           metadata,
         });
 
