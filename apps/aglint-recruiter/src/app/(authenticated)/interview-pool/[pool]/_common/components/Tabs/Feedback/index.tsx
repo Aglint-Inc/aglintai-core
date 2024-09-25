@@ -1,12 +1,13 @@
 import { dayjsLocal } from '@aglint/shared-utils';
 import { Card, CardContent } from '@components/ui/card';
-import { Star } from 'lucide-react';
+import { MessageSquare, Star } from 'lucide-react';
 import { useState } from 'react';
 
 import { Loader } from '@/components/Common/Loader';
 import UITextField from '@/components/Common/UITextField';
 
 import { usePoolFeedbacks } from '../../../hooks/usePoolFeedback';
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 
 function Feedback() {
   const { data, isLoading } = usePoolFeedbacks();
@@ -30,16 +31,16 @@ function Feedback() {
       <div className='flex justify-between'>
         <UITextField
           placeholder='Search Candidates...'
-          className='max-w-sm bg-white'
+          className='w-64 bg-white'
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
       <Card>
         <CardContent className='p-0'>
-          <table className='w-full'>
+          <table className='w-full overflow-hidden'>
             <thead>
-              <tr className='border-b bg-gray-50'>
+              <tr className='border-b'>
                 {Object.keys(headers).map((key) => (
                   <th
                     key={key}
@@ -64,7 +65,7 @@ function Feedback() {
                   {filteredData.length === 0 && (
                     <tr>
                       <td colSpan={5} className='p-4'>
-                        No data found
+                      <GlobalEmpty iconSlot={<MessageSquare strokeWidth={1.5} className='mb-2 h-10 w-10 text-muted-foreground'/>} text={'No feedback found'} height='250px'/>
                       </td>
                     </tr>
                   )}
