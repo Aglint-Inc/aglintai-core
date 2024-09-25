@@ -59,7 +59,7 @@ function UpdateMembers({
                     ' ' +
                     member.role
                   }
-                  onSelect={(currentValue) => {
+                  onSelect={() => {
                     handleChange(member);
                     setOpen(false);
                   }}

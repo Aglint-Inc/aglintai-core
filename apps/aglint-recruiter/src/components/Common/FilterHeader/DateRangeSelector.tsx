@@ -13,7 +13,7 @@ import React, { useState } from 'react';
 import DateRange from '../DateRange';
 import { ShowCode } from '../ShowCode';
 
-export type DateRangeSelectorType = {
+type DateRangeSelectorType = {
   name: string;
   values: string[];
   // eslint-disable-next-line no-unused-vars

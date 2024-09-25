@@ -343,4 +343,4 @@ function UploadDB({
 
 export default UploadDB;
 
-export const fileTypes = ['PDF', 'DOCX', 'TXT'];
+const fileTypes = ['PDF', 'DOCX', 'TXT'];
