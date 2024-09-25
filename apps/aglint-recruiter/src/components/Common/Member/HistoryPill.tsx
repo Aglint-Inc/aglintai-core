@@ -1,3 +1,5 @@
+import ReverseShadowIcon from '@/authenticated/components/ReverseShadowIcon';
+import ShadowIcon from '@/authenticated/components/ShadowIcon';
 import { cn } from '@lib/utils';
 import { RefreshCcw, RefreshCw } from 'lucide-react';
 import React from 'react';
@@ -30,19 +32,19 @@ export function HistoryPillShadcn({
               position === 'end' && 'rounded-r-md',
             )}
           >
-            {isShadow && <RefreshCw size={6} />}
-            {isReverseShadow && <RefreshCcw size={6} />}
+            {isShadow && <ShadowIcon className="w-5 h-5"/>}
+            {isReverseShadow && <ReverseShadowIcon className="w-3 h-3 text-muted-foreground"/>}
           </div>
         ) : (
           <div
             className={cn(
-              'flex h-[26px] w-[60px] items-center justify-center bg-neutral-300 text-neutral-900',
+              'flex h-[26px] w-[60px] items-center justify-center bg-neutral-200 text-neutral-900',
               position === 'start' && 'rounded-l-md',
               position === 'end' && 'rounded-r-md',
             )}
           >
-            {isShadow && <RefreshCw size={6} />}
-            {isReverseShadow && <RefreshCcw size={6} />}
+            {isShadow && <ShadowIcon className="w-3 h-3 text-muted-foreground"/>}
+            {isReverseShadow && <ReverseShadowIcon className="w-3 h-3 text-muted-foreground"/>}
           </div>
         )}
       </div>

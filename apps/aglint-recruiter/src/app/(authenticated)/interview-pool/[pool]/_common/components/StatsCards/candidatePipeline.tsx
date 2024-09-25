@@ -10,7 +10,7 @@ function CandidatePipeline({module_id}:{module_id:string}) {
     const divider = (data?.applied||0)/100;
   return <Card className='border-t-4 border-t-purple-500 bg-white shadow-md'>
         <CardHeader>
-          <CardTitle className='text-gray-800'>Candidate Pipeline</CardTitle>
+          <CardTitle className='text-gray-800 text-lg font-medium'>Candidate Pipeline</CardTitle>
         </CardHeader>
         <CardContent>
           <div className='space-y-2'>

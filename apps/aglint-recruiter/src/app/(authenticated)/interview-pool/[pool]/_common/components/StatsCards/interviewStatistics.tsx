@@ -9,7 +9,7 @@ function InterviewStatistics({ module_id }: { module_id: string }) {
   return (
     <Card className='border-t-4 border-t-blue-500 bg-white shadow-md'>
       <CardHeader>
-        <CardTitle className='text-gray-800'>Interview Statistics</CardTitle>
+        <CardTitle className='text-gray-800 text-lg font-medium'>Interview Statistics</CardTitle>
       </CardHeader>
       <CardContent>
         <div className='space-y-2'>
