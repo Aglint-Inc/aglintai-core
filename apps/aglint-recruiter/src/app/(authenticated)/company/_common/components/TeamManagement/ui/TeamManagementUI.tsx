@@ -8,7 +8,9 @@ import {
   TableRow,
 } from '@components/ui/table';
 import { RefreshCw, Send, Users } from 'lucide-react';
+import type { Dispatch, ReactNode, SetStateAction } from 'react';
 
+import type { useTeamMembers } from '@/company/hooks/useTeamMembers';
 import { UIButton } from '@/components/Common/UIButton';
 
 import Member from '../MemberList';
@@ -22,6 +24,15 @@ export const TeamManagementUI = ({
   filter,
   filteredMembers,
   isTableLoading,
+}: {
+  canManage: boolean;
+  isRemoteSync: boolean;
+  remote_sync: () => Promise<void>;
+  last_sync: string;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+  filter: ReactNode;
+  filteredMembers: ReturnType<typeof useTeamMembers>['data'];
+  isTableLoading: boolean;
 }) => {
   return (
     <div className='flex flex-col'>

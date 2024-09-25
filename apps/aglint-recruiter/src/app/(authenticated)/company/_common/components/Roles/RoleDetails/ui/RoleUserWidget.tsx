@@ -1,10 +1,10 @@
-import { type RecruiterUserType } from '@aglint/shared-types';
 import { Alert, AlertDescription } from '@components/ui/alert';
 import { Badge } from '@components/ui/badge';
 import Link from 'next/link';
 import React from 'react';
 
 import { type GetRoleAndPermissionsAPI } from '@/pages/api/getRoleAndPermissions/type';
+import type { useAllMembers } from '@/queries/members';
 
 export const RoleUserWidget = ({
   role,
@@ -15,7 +15,7 @@ export const RoleUserWidget = ({
   >['rolesAndPermissions'][string] & {
     name: string;
   };
-  members: RecruiterUserType[];
+  members: ReturnType<typeof useAllMembers>['members'];
 }) => {
   return (
     <>
