@@ -1,3 +1,4 @@
+import { createBrowserClient } from "@supabase/ssr";
 import type { Functions } from "./functions/index.types";
 import type { Database } from "./schema.types";
 import type { Tables } from "./tables/index.types";
@@ -9,7 +10,7 @@ export type DB = Custom<
   {
     public: Custom<
       Database["public"],
-      { Tables: Tables; Views: Views; Functions: Functions }
+      { Tables: Tables; Functions: Functions; Views: Views }
     >;
   }
 >;

@@ -14,6 +14,8 @@ import type { CustomWorkflowView } from "./workflow_view.types";
 
 type DatabaseViews = Database["public"]["Views"];
 type DatabaseViewRow<T extends keyof DatabaseViews> = DatabaseViews[T]["Row"];
+type DatabaseViewRelationships<T extends keyof DatabaseViews> =
+  DatabaseViews[T]["Relationships"];
 
 export type ViewType<
   T extends keyof DatabaseViews,
@@ -24,8 +26,8 @@ export type ViewType<
   DatabaseViews[T],
   //@ts-expect-error
   {
-    //@ts-expect-error
     Row: Custom<DatabaseViewRow<T>, U>;
+    Relationships: DatabaseViewRelationships<T>;
   }
 >;
 

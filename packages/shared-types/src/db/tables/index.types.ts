@@ -1,5 +1,5 @@
 import type { Database } from "../schema.types";
-import type { Custom, CustomizableTypes, Type } from "../utils.types";
+import type { Custom, CustomizableTypes } from "../utils.types";
 import type { CustomApplicationLogs } from "./application_logs.types";
 import type { CustomApplications } from "./applications.types";
 import type { CustomCandidateFiles } from "./candidate_files";
@@ -34,6 +34,8 @@ type DatabaseTableRow<T extends keyof DatabaseTables> =
   DatabaseTables[T]["Row"];
 type DatabaseTableUpdate<T extends keyof DatabaseTables> =
   DatabaseTables[T]["Update"];
+type DatabaseTableRelationships<T extends keyof DatabaseTables> =
+  DatabaseTables[T]["Relationships"];
 
 export type TableType<
   T extends keyof DatabaseTables,
@@ -45,12 +47,10 @@ export type TableType<
     DatabaseTables[T],
     //@ts-expect-error
     {
-      //@ts-expect-error
       Row: Custom<DatabaseTableRow<T>, U>;
-      //@ts-expect-error
-      Insert: Custom<DatabaseTableInsert<T>, Partial<U>>;
-      //@ts-expect-error
-      Update: Custom<DatabaseTableUpdate<T>, Partial<U>>;
+      Insert: Custom<DatabaseTableInsert<T>, U>;
+      Update: Custom<DatabaseTableUpdate<T>, U>;
+      Relationships: DatabaseTableRelationships<T>;
     }
   >
 >;
