@@ -18,8 +18,8 @@ function Requests() {
         requests?.map((req) => (
           <Link
             key={req.id}
-            href={ROUTES['/requests/[id]']({
-              id: req.id,
+            href={ROUTES['/requests/[request]']({
+              request: req.id,
             })}
           >
             <div className='mb-2 flex justify-between gap-1'>
