@@ -35,19 +35,9 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      # Cache Turborepo for faster subsequent runs
-      - name: Cache Turborepo
-        uses: actions/cache@v4
-        with:
-          path: .turbo
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-turbo-
-
       # Run linters for all workspaces and specifically for aglint-recruiter
       - name: Run Linter
         run: |
-          npx turbo run lint --cache-dir=.turbo
           cd apps/aglint-recruiter && npm run lint
         env:
           NODE_OPTIONS: --max-old-space-size=4096
