@@ -15,7 +15,7 @@ import {
 } from 'react';
 import { type MemberType } from 'src/app/_common/types/memberType';
 
-import type { useTenantRoles } from '@/authenticated/hooks/useTenantRoles';
+import type { useTenantRoles } from '@/company/hooks';
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
 import { type useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type useAllDepartments } from '@/queries/departments';

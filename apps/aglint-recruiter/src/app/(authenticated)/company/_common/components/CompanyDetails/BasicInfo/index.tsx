@@ -2,8 +2,8 @@ import { PencilIcon } from 'lucide-react';
 import { useState } from 'react';
 
 import { SectionCard } from '@/authenticated/components/SectionCard';
+import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 
 import EditBasicInfoDialog from './EditBasicInfoDialog';
@@ -11,8 +11,8 @@ import { BasicInfoUI } from './ui/BasicInfoUI';
 
 export const BasicInfo = () => {
   const [editDrawer, setEditDrawer] = useState(false);
+  const { recruiter } = useTenant();
   const { checkPermissions } = useRolesAndPermissions();
-  const { recruiter } = useAuthDetails();
   const isFormDisabled = !checkPermissions(['manage_company']);
 
   return (

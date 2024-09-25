@@ -6,7 +6,7 @@ import {
 import { useToast } from '@components/hooks/use-toast';
 import { useState } from 'react';
 
-import { useTenantRoles } from '@/authenticated/hooks/useTenantRoles';
+import { useTenantRoles } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';

@@ -13,13 +13,12 @@ import {
 } from 'react';
 import { toast } from 'sonner';
 
+import { useTenant } from '@/company/hooks';
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
 import UIDialog from '@/components/Common/UIDialog';
 // import ImageUpload from '@/components/Common/ImageUpload';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { supabase } from '@/utils/supabase/client';
 
 import SocialComp from './SocialComp';
 
@@ -41,8 +40,8 @@ const EditBasicInfoDialog = ({
   editDialog: boolean;
   setEditDialog: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { recruiter, setRecruiter, recruiterUser } = useAuthDetails();
-  const [isError, setError] = useState(false);
+  const { recruiter } = useTenant();
+  const [isError] = useState(false);
   const [IsLoading, setIsLoading] = useState(false);
   const [logo, setLogo] = useState(null);
   const [nameError, setNameError] = useState(false);
@@ -88,48 +87,44 @@ const EditBasicInfoDialog = ({
     if (!isValidation()) return;
 
     try {
-      setIsLoading(true);
-
-      let logo = recruiter.logo;
-
-      if (isImageChanged) {
-        const { data } = await supabase.storage
-          .from('recruiter-user')
-          .upload(`public/${recruiterUser.user_id}`, imageFile.current, {
-            cacheControl: '3600',
-            upsert: true,
-          });
-
-        if (data?.path && imageFile?.current?.size) {
-          logo = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/recruiter-user/${data?.path}?t=${new Date().toISOString()}`;
-          setError(false);
-        } else {
-          logo = null;
-        }
-        setIsImageChanged(false);
-      }
-
-      const { error } = await supabase
-        .from('recruiter')
-        .update({
-          ...recruiterLocal,
-          name: recruiterLocal.name ? recruiterLocal.name : recruiter?.name,
-          departments: undefined,
-          office_locations: undefined,
-          logo: logo,
-        })
-        .eq('id', recruiter.id)
-        .select()
-        .throwOnError();
-
-      if (!error) {
-        setRecruiter({
-          ...recruiterLocal,
-          logo: logo,
-          name: recruiterLocal.name ? recruiterLocal.name : recruiter?.name,
-        });
-        setEditDialog(false);
-      }
+      // TODO: CONVERT ALL OF THESE TO A TRPC PRIVATE PROCEDURE
+      // setIsLoading(true);
+      // let logo = recruiter.logo;
+      // if (isImageChanged) {
+      //   const { data } = await supabase.storage
+      //     .from('recruiter-user')
+      //     .upload(`public/${recruiterUser.user_id}`, imageFile.current, {
+      //       cacheControl: '3600',
+      //       upsert: true,
+      //     });
+      //   if (data?.path && imageFile?.current?.size) {
+      //     logo = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/recruiter-user/${data?.path}?t=${new Date().toISOString()}`;
+      //     setError(false);
+      //   } else {
+      //     logo = null;
+      //   }
+      //   setIsImageChanged(false);
+      // }
+      // const { error } = await supabase
+      //   .from('recruiter')
+      //   .update({
+      //     ...recruiterLocal,
+      //     name: recruiterLocal.name ? recruiterLocal.name : recruiter?.name,
+      //     departments: undefined,
+      //     office_locations: undefined,
+      //     logo: logo,
+      //   })
+      //   .eq('id', recruiter.id)
+      //   .select()
+      //   .throwOnError();
+      // if (!error) {
+      //   setRecruiter({
+      //     ...recruiterLocal,
+      //     logo: logo,
+      //     name: recruiterLocal.name ? recruiterLocal.name : recruiter?.name,
+      //   });
+      //   setEditDialog(false);
+      // }
     } catch (e) {
       toast.error(e.message);
     } finally {

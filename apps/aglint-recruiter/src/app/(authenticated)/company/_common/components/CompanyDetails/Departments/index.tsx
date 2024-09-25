@@ -6,18 +6,18 @@ import { Plus } from 'lucide-react';
 import * as React from 'react';
 
 import { SectionCard } from '@/authenticated/components/SectionCard';
+import { useTenant } from '@/company/hooks';
 import AddChip from '@/components/Common/AddChip';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { manageDepartments } from '@/context/AuthContext/utils';
 import { useAllDepartments } from '@/queries/departments';
 
 import DeleteDepartmentsDialog from './DeleteDepartmentDialog';
 
 export default function Departments() {
+  const { recruiter } = useTenant();
   const { data: departments, refetch: refetchDepartments } =
     useAllDepartments();
 
-  const { recruiter } = useAuthDetails();
   const { toast } = useToast();
   const handleRemoveKeyword = async (id) => {
     setDeleteDialog({

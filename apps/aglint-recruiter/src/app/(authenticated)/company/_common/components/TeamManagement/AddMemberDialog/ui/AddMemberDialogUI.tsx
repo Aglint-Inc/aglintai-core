@@ -16,7 +16,7 @@ import {
 import converter from 'number-to-words';
 import { type Dispatch, type SetStateAction } from 'react';
 
-import type { useTenantRoles } from '@/authenticated/hooks/useTenantRoles';
+import type { useTenantRoles } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { type useAllDepartments } from '@/queries/departments';

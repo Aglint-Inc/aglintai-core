@@ -3,8 +3,8 @@ import _ from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import { type MemberType } from 'src/app/_common/types/memberType';
 
-import { useTenantRoles } from '@/authenticated/hooks/useTenantRoles';
 import axios from '@/client/axios';
+import { useTenantRoles } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
