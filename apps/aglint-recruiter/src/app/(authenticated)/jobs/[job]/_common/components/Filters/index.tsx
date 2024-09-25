@@ -88,7 +88,7 @@ export const Filters = () => {
 
   const badgesFilter: Parameters<typeof FilterHeader>[0]['filters'][number] =
     isScoringEnabled && {
-      name: 'Schedule Status',
+      name: 'Badges',
       value: badges,
       type: 'filter',
       icon: <></>,
@@ -96,15 +96,15 @@ export const Filters = () => {
       options: badgesOptions,
     };
 
-  const bookmarkedButton: Parameters<
-    typeof FilterHeader
-  >[0]['filters'][number] = {
-    type: 'button',
-    isActive: bookmarked,
-    isVisible: true,
-    name: 'Bookmarked',
-    onClick: () => actions.setBookmarked(!bookmarked),
-  };
+  // const bookmarkedButton: Parameters<
+  //   typeof FilterHeader
+  // >[0]['filters'][number] = {
+  //   type: 'button',
+  //   isActive: bookmarked,
+  //   isVisible: true,
+  //   name: 'Bookmarked',
+  //   onClick: () => actions.setBookmarked(!bookmarked),
+  // };
   const Locations: Parameters<typeof FilterHeader>[0]['filters'][number] = {
     type: 'nested-filter',
     name: 'Locations',
@@ -165,7 +165,7 @@ export const Filters = () => {
   return (
     <FilterHeader
       filters={[
-        ...(isShowFeature('SCHEDULING') ? [bookmarkedButton] : []),
+        // ...(isShowFeature('SCHEDULING') ? [bookmarkedButton] : []),
         resumeMatchFilter,
         Locations,
         ...(isShowFeature('SCHEDULING') ? [badgesFilter, interviewPlan] : []),
