@@ -7,11 +7,9 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog';
-import { useQuery } from '@tanstack/react-query';
 
+import { useDepartmentsUsage } from '@/company/hooks';
 import { Loader } from '@/components/Common/Loader';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 function DeleteDepartmentsDialog({
@@ -25,7 +23,7 @@ function DeleteDepartmentsDialog({
   id: number;
   handleDelete: () => void;
 }) {
-  const { data: usage, isPending } = useDepartmentsUsage(id);
+  const { data: usage, isPending } = useDepartmentsUsage({ id });
 
   const isJobEmpty = usage?.jobUsage.length === 0;
   const isUserEmpty = usage?.userUsage.length === 0;
@@ -113,43 +111,3 @@ function DeleteDepartmentsDialog({
 }
 
 export default DeleteDepartmentsDialog;
-
-function useDepartmentsUsage(id: number) {
-  const { recruiter } = useAuthDetails();
-  return useQuery({
-    queryKey: ['departmentsUsage', id],
-    queryFn: () => checkDepartmentsUsage({ id, recruiter_id: recruiter.id }),
-    enabled: Boolean(recruiter.id),
-  });
-}
-
-async function checkDepartmentsUsage({
-  id,
-  recruiter_id,
-}: {
-  id: number;
-  recruiter_id: string;
-}) {
-  const temp_user = (
-    await supabase
-      .from('departments')
-      .select('name, recruiter_user(first_name,last_name)')
-      .eq('id', id)
-      .eq('recruiter_id', recruiter_id)
-      .single()
-      .throwOnError()
-  ).data;
-
-  const jobs = (
-    await supabase
-      .from('public_jobs')
-      .select('job_title,departments!inner(name)')
-      .eq('departments.name', temp_user.name)
-      .throwOnError()
-  ).data;
-
-  const jobUsage = jobs.map((job) => job.job_title);
-  const userUsage = temp_user.recruiter_user;
-
-  return { name: temp_user.name, jobUsage, userUsage };
-}
