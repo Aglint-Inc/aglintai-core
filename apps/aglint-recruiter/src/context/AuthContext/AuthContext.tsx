@@ -80,6 +80,7 @@ const defaultProvider: ContextValue = {
 };
 
 export const useAuthDetails = () => useContext(AuthContext);
+
 const AuthContext = createContext<ContextValue>(defaultProvider);
 const AuthProvider = ({ children }) => {
   const queryClient = useQueryClient();

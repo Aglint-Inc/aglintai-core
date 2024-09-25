@@ -1,6 +1,7 @@
 import { analytics } from './routers/analytics';
 import { application } from './routers/application';
 import { ats } from './routers/ats';
+import { auth } from './routers/auth';
 import { candidatePortal } from './routers/candidatePortal';
 import { example, exampleSchema } from './routers/example';
 import { integrations } from './routers/integrations';
@@ -19,6 +20,7 @@ import { createCallerFactory, createTRPCRouter } from './trpc';
  */
 export const appRouter = createTRPCRouter({
   ats,
+  auth,
   analytics,
   candidatePortal,
   example,
