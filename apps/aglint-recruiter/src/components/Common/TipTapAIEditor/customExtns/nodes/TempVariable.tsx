@@ -12,7 +12,7 @@ interface CustomSuggestionOptions extends SuggestionOptions {
   end_char?: string;
 }
 
-export type MentionOptions = {
+type MentionOptions = {
   /**
    * The HTML attributes for a mention node.
    * @default {}
@@ -72,7 +72,7 @@ export type MentionOptions = {
  * The plugin key for the mention plugin.
  * @default 'mention'
  */
-export const MentionPluginKey = new PluginKey('mention');
+const MentionPluginKey = new PluginKey('mention');
 
 /**
  * This extension allows you to insert mentions into the editor.

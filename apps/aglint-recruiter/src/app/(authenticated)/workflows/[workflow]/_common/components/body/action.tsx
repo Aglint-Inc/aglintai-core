@@ -8,6 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { CardContent } from '@components/ui/card';
 import { Terminal } from 'lucide-react';
+import Image from 'next/image';
 import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 
 import { Loader } from '@/components/Common/Loader';
@@ -149,24 +150,24 @@ const ActionForm = ({ action }: ActionProps) => {
   );
 
   return (
-    <div className="mb-4">
-    <UISelect
-      label='Do this'
-      value={currentOption.target_api}
-      disabled={!manageWorkflow}
-      menuOptions={options}
-      onValueChange={(value) => {
-        const { action_type, target_api, payload } = options.find(
-          ({ target_api }) => value === target_api,
-        );
-        selectAction({
-          ...action,
-          action_type,
-          target_api,
-          payload,
-        } as WorkflowAction);
-      }}
-    />
+    <div className='mb-4'>
+      <UISelect
+        label='Do this'
+        value={currentOption.target_api}
+        disabled={!manageWorkflow}
+        menuOptions={options}
+        onValueChange={(value) => {
+          const { action_type, target_api, payload } = options.find(
+            ({ target_api }) => value === target_api,
+          );
+          selectAction({
+            ...action,
+            action_type,
+            target_api,
+            payload,
+          } as WorkflowAction);
+        }}
+      />
     </div>
   );
 };
@@ -313,7 +314,7 @@ const AgentInstructionBody: React.FC<
           toolbar={false}
           disabled={disabled}
           editor_type='regular'
-          initialValue={payload.agent?.instruction}
+          initialValue={(payload as any).agent?.instruction}
           handleChange={(newInstruction) => setInstruction(newInstruction)}
           placeholder='Provide the instructions to guide the agent through this action.'
         />
@@ -328,19 +329,13 @@ AgentInstructionBody.displayName = 'AgentInstructionBody';
 const WorkflowConnector = () => {
   return (
     <div className={'flex w-full items-center justify-center text-neutral-600'}>
-      <svg
+      <Image
+        src='/images/workflow/connector.svg'
+        alt='Workflow Connector'
+        width={16}
+        height={45}
         className='flex items-center justify-center'
-        width='16'
-        height='45'
-        viewBox='0 0 16 45'
-        fill='none'
-        xmlns='http://www.w3.org/2000/svg'
-      >
-        <path
-          d='M7.29289 44.7071C7.68342 45.0976 8.31658 45.0976 8.70711 44.7071L15.0711 38.3431C15.4616 37.9526 15.4616 37.3195 15.0711 36.9289C14.6805 36.5384 14.0474 36.5384 13.6569 36.9289L8 42.5858L2.34315 36.9289C1.95262 36.5384 1.31946 36.5384 0.928932 36.9289C0.538408 37.3195 0.538408 37.9526 0.928932 38.3431L7.29289 44.7071ZM7 0L7 44H9L9 0L7 0Z'
-          fill='currentColor'
-        />
-      </svg>
+      />
     </div>
   );
 };

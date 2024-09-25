@@ -140,7 +140,7 @@ export const useSelfSchedulingDrawer = () => {
       isHardConflicts: localFilters.isHardConflicts,
       isOutSideWorkHours: localFilters.isOutSideWorkHours,
       preferredInterviewers: localFilters.preferredInterviewers,
-      preferredDateRanges: localFilters.preferredDateRanges,
+      preferredTimeRanges: localFilters.preferredTimeRanges,
       isWorkLoad: localFilters.isWorkLoad,
     };
     setFilters(newFilters);

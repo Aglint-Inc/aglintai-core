@@ -41,7 +41,7 @@ const badgeVariants = cva(
   },
 );
 
-export interface UIBadgeProps {
+interface UIBadgeProps {
   iconName?: keyof typeof Icons | null;
   iconSize?: number;
   textBadge?: string | number;

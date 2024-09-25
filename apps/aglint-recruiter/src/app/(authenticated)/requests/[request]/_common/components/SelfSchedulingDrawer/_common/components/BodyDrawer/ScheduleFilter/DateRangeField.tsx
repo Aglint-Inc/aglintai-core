@@ -58,8 +58,8 @@ function DateRangeField() {
 
               if (!value?.startTime || !value?.endTime) return;
               setLocalFilters({
-                preferredDateRanges: [
-                  ...localFilters.preferredDateRanges,
+                preferredTimeRanges: [
+                  ...localFilters.preferredTimeRanges,
                   {
                     startTime: dayjs(value.startTime)?.toISOString(),
                     endTime: dayjs(value.endTime)?.toISOString(),
@@ -73,9 +73,9 @@ function DateRangeField() {
           </UIButton>
         }
         slotSelectedTime={
-          localFilters.preferredDateRanges.length > 0 && (
+          localFilters.preferredTimeRanges.length > 0 && (
             <div className='flex flex-wrap gap-1'>
-              {localFilters.preferredDateRanges.map((dateRange, index) => {
+              {localFilters.preferredTimeRanges.map((dateRange, index) => {
                 return (
                   <Badge
                     key={index}
@@ -89,8 +89,8 @@ function DateRangeField() {
                       className='h-auto p-0 text-muted-foreground hover:text-foreground'
                       onClick={() => {
                         setLocalFilters({
-                          preferredDateRanges:
-                            localFilters.preferredDateRanges.filter(
+                          preferredTimeRanges:
+                            localFilters.preferredTimeRanges.filter(
                               (range) =>
                                 range.startTime !== dateRange.startTime,
                             ),

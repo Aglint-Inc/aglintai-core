@@ -49,7 +49,8 @@ export const getInterviewsBYUserId = async ({
   }
 
   const { data } = await query.throwOnError();
-  if (data.length === 0) {
+  const interviews = data ?? [];
+  if (interviews.length === 0) {
     return {
       schedules: [],
       totalInterviewsToday: 0,
@@ -59,7 +60,7 @@ export const getInterviewsBYUserId = async ({
     };
   }
   // TODO: fix
-  const user = (data[0]?.meeting_interviewers as any)?.find(
+  const user = (interviews[0]?.meeting_interviewers as any)?.find(
     (interviewer) => interviewer.user_id === member_id,
   );
 
@@ -77,18 +78,18 @@ export const getInterviewsCountByUserId = async (user_id: string) => {
     .from('meeting_details')
     .select()
     .contains('confirmed_user_ids', [user_id]);
-
-  const upcomingCount = data.reduce(
+  const meetingDetails = data ?? [];
+  const upcomingCount = meetingDetails.reduce(
     (acc, cur) => (cur.status === 'confirmed' ? acc + 1 : acc),
     0,
   );
 
-  const completedCount = data.reduce(
+  const completedCount = meetingDetails.reduce(
     (acc, cur) => (cur.status === 'completed' ? acc + 1 : acc),
     0,
   );
 
-  const cancelledCount = data.reduce(
+  const cancelledCount = meetingDetails.reduce(
     (acc, cur) => (cur.status === 'cancelled' ? acc + 1 : acc),
     0,
   );

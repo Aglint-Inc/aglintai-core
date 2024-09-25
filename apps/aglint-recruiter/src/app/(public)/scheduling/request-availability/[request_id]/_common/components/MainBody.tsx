@@ -37,7 +37,7 @@ function CandidateAvailability() {
     const {
       data: { meetings },
     } = await axios.post(
-      '/api/scheduling/request_avai lability/candidateAvailability/getMeetings',
+      '/api/scheduling/request_availability/candidateAvailability/getMeetings',
       {
         session_ids,
       },

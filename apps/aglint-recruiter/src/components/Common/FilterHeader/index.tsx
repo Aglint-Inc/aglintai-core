@@ -101,7 +101,7 @@ export default function FilterHeader({
   );
 }
 
-export type FilterHeaderType = {
+type FilterHeaderType = {
   handelResetAll?: () => void;
   search?: {
     value: string;

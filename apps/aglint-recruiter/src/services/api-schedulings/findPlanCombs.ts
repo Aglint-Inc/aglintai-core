@@ -1,9 +1,12 @@
-import type { CustomAgentInstructionPayload } from '@aglint/shared-types';
+import { type SessionInterviewerType } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
 import type { ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
 import { filterSchedulingOptionsArray } from '@request/components/SelfSchedulingDrawer/_common/components/BodyDrawer/ScheduleFilter/utils';
+import { type SelfSchedulingFlow } from '@request/components/SelfSchedulingDrawer/_common/store/store';
 
 // import { filterSchedulingOptionsArray } from '@/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/_common/components/BodyDrawer/ScheduleFilter/utils';
 import { CandidatesSchedulingV2 } from '../CandidateScheduleV2/CandidatesSchedulingV2';
+import { extractPreferredInterviewers } from './textTransforms/extractPreferredInterviewers';
 
 export const findPlanCombs = async ({
   date_range,
@@ -11,20 +14,22 @@ export const findPlanCombs = async ({
   session_ids,
   reqProgressLogger,
   time_zone,
-  agent_payload,
+  schedule_filters,
+  agent_instruction,
 }: {
   recruiter_id: string;
   date_range: { start_date_str: string; end_date_str: string };
   session_ids: string[];
   reqProgressLogger: ProgressLoggerType;
   time_zone: string;
-  agent_payload: CustomAgentInstructionPayload['agent']['ai_response'];
+  schedule_filters: SelfSchedulingFlow['filters'];
+  agent_instruction: string;
 }) => {
   const cand_schedule = new CandidatesSchedulingV2({
     include_conflicting_slots: {
-      out_of_office: true,
+      out_of_office: false,
       out_of_working_hrs: true,
-      show_soft_conflicts: true,
+      show_soft_conflicts: schedule_filters.isSoftConflicts,
     },
     return_empty_slots_err: true,
   });
@@ -37,19 +42,40 @@ export const findPlanCombs = async ({
       session_ids: session_ids,
     },
   });
-  const slots = cand_schedule.findAvailabilitySlotsDateRange();
+  const all_inters: (Pick<SessionInterviewerType, 'user_id'> & {
+    full_name: string;
+  })[] = cand_schedule.db_details.all_inters.map((int) => ({
+    user_id: int.user_id,
+    full_name: getFullName(int.first_name, int.last_name),
+  }));
 
+  const preferredInterviewers = await extractPreferredInterviewers({
+    agent_instruction: agent_instruction,
+    interviewer: {
+      interviewers: all_inters,
+    },
+  });
+
+  const slots = cand_schedule.findAvailabilitySlotsDateRange();
   const filtered_slot_info = filterSchedulingOptionsArray({
     schedulingOptions: slots,
     filters: {
-      isHardConflicts: false,
       isNoConflicts: true,
-      isOutSideWorkHours: true,
-      isSoftConflicts: agent_payload.includeAllSoftConflictSlots,
+      isSoftConflicts: true,
+      isHardConflicts: true,
+      isOutSideWorkHours: schedule_filters.isOutSideWorkHours,
+      preferredInterviewers: preferredInterviewers.interviewers.map((i) => ({
+        user_id: i.user_id,
+      })),
+      preferredTimeRanges: [
+        {
+          startTime: schedule_filters.preferredTimeRanges[0].startTime,
+          endTime: schedule_filters.preferredTimeRanges[0].endTime,
+        },
+      ],
       isWorkLoad: true,
-      preferredDateRanges: [],
-      preferredInterviewers: [],
     },
+    user_tz: time_zone,
   });
   const plans = filtered_slot_info.combs
     .flatMap((c) => c.plans)
@@ -61,8 +87,9 @@ export const findPlanCombs = async ({
       .map((p) => p.no_slot_reasons)
       .map((p) => p.map((r) => r.reason))
       .flat();
+    const unique_conflicts = [...new Set(conflicts)];
     await reqProgressLogger({
-      log: `No slots found within ${schedule_dates.user_start_date_js.format('DD, MMMM')} - ${schedule_dates.user_end_date_js.format('DD, MMMM YYYY')} due to ${conflicts.join(', ')}`,
+      log: `No slots found within ${schedule_dates.user_start_date_js.format('DD, MMMM')} - ${schedule_dates.user_end_date_js.format('DD, MMMM YYYY')} due to ${unique_conflicts.join(', ')}`,
       status: 'completed',
       is_progress_step: true,
     });

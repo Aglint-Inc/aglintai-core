@@ -3,24 +3,36 @@ import {
   type MultiDayPlanType,
   type PlanCombinationRespType,
 } from '@aglint/shared-types';
-import dayjs from 'dayjs';
+import { dayjsLocal } from '@aglint/shared-utils';
 
 import type { ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
 import { createCombsForMultiDaySlots } from '@/services/CandidateScheduleV2/utils/createCombsForMultiDaySlots';
+import { compareTimes } from '@/services/CandidateScheduleV2/utils/time_range_utils';
 
 import { type SelfSchedulingFlow } from '../../../store/store';
 
+type PlanFilterType = Omit<
+  SelfSchedulingFlow['filters'],
+  'preferredInterviewers'
+> & {
+  preferredInterviewers: {
+    user_id: string;
+  }[];
+};
+
 export const filterByDateRanges = ({
   schedulingOptions,
-  preferredDateRanges,
+  preferredTimeRanges,
+  user_tz,
 }: {
   schedulingOptions: {
     curr_date: string;
     plans: PlanCombinationRespType[];
   };
-  preferredDateRanges: SelfSchedulingFlow['filters']['preferredDateRanges'];
+  preferredTimeRanges: SelfSchedulingFlow['filters']['preferredTimeRanges'];
+  user_tz: string;
 }) => {
-  if (preferredDateRanges.length === 0) {
+  if (preferredTimeRanges.length === 0) {
     return schedulingOptions;
   }
 
@@ -28,30 +40,29 @@ export const filterByDateRanges = ({
     ...schedulingOptions,
     plans: schedulingOptions.plans.filter((option) => {
       return option.sessions.every((session) => {
-        return preferredDateRanges.some((dateRange) => {
-          const sessionStartTime = extractTime(session.start_time);
-          const sessionEndTime = extractTime(session.end_time);
-          return (
-            sessionStartTime >= extractTime(dateRange.startTime) &&
-            sessionEndTime <= extractTime(dateRange.endTime)
+        return preferredTimeRanges.some((dateRange) => {
+          const l1 = compareTimes(
+            session.start_time,
+            dateRange.startTime,
+            user_tz,
           );
+          const l2 = compareTimes(session.end_time, dateRange.endTime, user_tz);
+          return l1 >= 0 && l2 <= 0;
         });
       });
     }),
   };
 };
 
-const extractTime = (datetime) => {
-  return dayjs(datetime).format('HH:mm');
-};
-
 // actual function which generates slots
 export function filterSchedulingOptionsArray({
   schedulingOptions,
   filters,
+  user_tz = dayjsLocal.tz.guess(),
 }: {
-  schedulingOptions: ApiResponseFindAvailability['slots'] | [];
-  filters: SelfSchedulingFlow['filters'];
+  schedulingOptions: ApiResponseFindAvailability['slots'];
+  filters: PlanFilterType;
+  user_tz?: string;
 }) {
   const allFilteredOptions: ApiResponseFindAvailability['slots'] = (
     schedulingOptions || []
@@ -60,10 +71,11 @@ export function filterSchedulingOptionsArray({
     interview_rounds: option.interview_rounds.map((items) => {
       let allOptions = items;
 
-      if (filters.preferredDateRanges.length > 0) {
+      if (filters.preferredTimeRanges.length > 0) {
         allOptions = filterByDateRanges({
           schedulingOptions: allOptions,
-          preferredDateRanges: filters.preferredDateRanges,
+          preferredTimeRanges: filters.preferredTimeRanges,
+          user_tz,
         });
       }
 
@@ -231,7 +243,7 @@ export const hasPreferredInterviewers = ({
   filters,
 }: {
   session: PlanCombinationRespType['sessions'][0];
-  filters: SelfSchedulingFlow['filters'];
+  filters: PlanFilterType;
 }) => {
   return (
     filters.preferredInterviewers.length === 0 ||

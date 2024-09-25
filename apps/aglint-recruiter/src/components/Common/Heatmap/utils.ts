@@ -6,8 +6,6 @@ import { supabase } from '@/utils/supabase/client';
 
 import { type Meeting, type Meetings } from './type';
 
-export type useUserSchedulesType = Awaited<ReturnType<typeof useUserSchedules>>;
-
 export function useUserSchedules(user_id: string) {
   return useQuery({
     queryKey: ['user_id', user_id],

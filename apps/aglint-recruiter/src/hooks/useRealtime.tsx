@@ -20,7 +20,7 @@ type Filter<
     : never
   : never;
 
-export type Entry<T = Tables, U = Event> = T extends Tables
+type Entry<T = Tables, U = Event> = T extends Tables
   ? U extends 'DELETE'
     ? {
         table: T;

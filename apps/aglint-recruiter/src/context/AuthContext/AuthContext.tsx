@@ -43,7 +43,7 @@ type Features =
   | 'REPORTS'
   | 'AGENT'
   | 'THEMES';
-export interface ContextValue {
+interface ContextValue {
   userCountry: string | null;
   recruiter: GetUserDetailsAPI['response']['recruiter'];
   userPermissions: {
@@ -224,7 +224,7 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-export { AuthContext, AuthProvider };
+export { AuthProvider };
 
 const AuthLoader = () => {
   return (

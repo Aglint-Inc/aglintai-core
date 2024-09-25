@@ -1,12 +1,5 @@
-import { appKey, noPollingKey } from '..';
+import { appKey } from '..';
 import type { JobRequisite } from '../job';
-import { jobQueries } from '../job';
-
-export const jobWorkflowQueryKeys = {
-  workflow: (args: JobRequisite) => ({
-    queryKey: [...jobQueries.job(args).queryKey, 'workflow', noPollingKey],
-  }),
-} as const;
 
 export const jobWorkflowMutationKeys = {
   job: (args: JobRequisite) => ({

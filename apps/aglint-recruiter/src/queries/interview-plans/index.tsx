@@ -291,7 +291,7 @@ export type DeleteInterviewSession = Parameters<
   typeof deleteInterviewSession
 >[0];
 
-export const deleteInterviewSession = async ({
+const deleteInterviewSession = async ({
   session_id,
   interview_plan_id,
 }: {
@@ -309,7 +309,7 @@ export type UpdateInterviewSession = Parameters<
   typeof updateInterviewSession
 >[0];
 
-export const updateInterviewSession = async ({
+const updateInterviewSession = async ({
   session,
   session_id,
 }: {
@@ -323,7 +323,7 @@ export const updateInterviewSession = async ({
   if (error) throw new Error(error.message);
 };
 
-export const createInterviewPlan = async (
+const createInterviewPlan = async (
   name: string,
   job_id: string,
   recruiter_id: string,
@@ -337,7 +337,7 @@ export const createInterviewPlan = async (
   return data[0];
 };
 
-export const updateInterviewPlan = async (
+const updateInterviewPlan = async (
   id: string,
   { name, order }: { name?: string; order?: number },
 ) => {
@@ -350,7 +350,7 @@ export const updateInterviewPlan = async (
   return data[0];
 };
 
-export const deleteInterviewPlan = async (id: string) => {
+const deleteInterviewPlan = async (id: string) => {
   const { data, error } = await supabase
     .from('interview_plan')
     .delete()
@@ -369,7 +369,7 @@ export type CreateInterviewSession = Omit<
     'id' | 'interviewer_type' | 'training_type'
   >[];
 };
-export const createInterviewSession = async (args: CreateInterviewSession) => {
+const createInterviewSession = async (args: CreateInterviewSession) => {
   const { error } = await supabase.rpc('insert_interview_session', args);
   if (error) throw new Error(error.message);
 };
@@ -391,7 +391,7 @@ export const editInterviewSession = async (args: EditInterviewSession) => {
 export type CreateDebriefSession =
   DB['public']['Functions']['insert_debrief_session']['Args'];
 
-export const createDebriefSession = async (args: CreateDebriefSession) => {
+const createDebriefSession = async (args: CreateDebriefSession) => {
   const { error } = await supabase.rpc('insert_debrief_session', args);
   if (error) throw new Error(error.message);
 };
@@ -404,14 +404,14 @@ export const updateDebriefSession = async (args: UpdateDebriefSession) => {
   if (error) throw new Error(error.message);
 };
 
-export type ReorderSessions = Omit<
+type ReorderSessions = Omit<
   DB['public']['Functions']['reorder_sessions']['Args'],
   'sessions'
 > & {
   sessions: { id: string; session_order: number }[];
 };
 
-export const reorderSessions = async (args: ReorderSessions) => {
+const reorderSessions = async (args: ReorderSessions) => {
   const { error } = await supabase.rpc('reorder_sessions', args);
   if (error) throw new Error(error.message);
 };

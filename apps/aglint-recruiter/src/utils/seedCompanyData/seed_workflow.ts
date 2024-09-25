@@ -73,13 +73,6 @@ export const modified_seed_workflow_actions: {
         action_type: 'agent_instruction',
         payload: {
           agent: {
-            ai_response: {
-              candidateAvailability: null,
-              prefferredInterviewers: [],
-              maxTotalSlots: 10,
-              includeAllSoftConflictSlots: true,
-              overrideSoftConflicts: [],
-            },
             instruction: null,
           },
         },

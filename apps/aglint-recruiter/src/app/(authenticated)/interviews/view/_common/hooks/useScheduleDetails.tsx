@@ -5,7 +5,7 @@ export const useScheduleDetails = () => {
   const utils = api.useUtils();
   const router = useRouterPro();
   const meeting_id = router.queryParams.meeting_id as string;
-  const query = api.scheduling.details.useQuery({
+  const { data, ...query } = api.scheduling.details.useQuery({
     meeting_id,
   });
   const refetch = () => {
@@ -13,7 +13,7 @@ export const useScheduleDetails = () => {
       meeting_id,
     });
   };
-  return { ...query, refetch };
+  return { data: data!, ...query, refetch };
 };
 
 export type ScheduleDetailsType = Awaited<
