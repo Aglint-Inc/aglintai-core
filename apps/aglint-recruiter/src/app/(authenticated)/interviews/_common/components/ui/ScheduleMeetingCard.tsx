@@ -26,7 +26,7 @@ function ScheduleMeetingCard({
 }) {
   const [collapseOpen, setCollapseOpen] = useState(false);
   const router = useRouterPro();
-  const interviewers = meetingDetails.meeting_interviewers as any; // TODO: fix
+  const interviewers = meetingDetails.meeting_interviewers; // TODO: fix
 
   return (
     <>
@@ -52,12 +52,13 @@ function ScheduleMeetingCard({
                   <MembersList
                     slotImage={<User size={40} />}
                     textName={getFullName(
-                      meetingDetails.applications.candidates.first_name,
-                      meetingDetails.applications.candidates.last_name,
+                      meetingDetails?.applications?.candidates?.first_name ??
+                        '',
+                      meetingDetails?.applications?.candidates?.last_name ?? '',
                     )}
                     isDesignationVisible={true}
                     textDesignation={'Candidate'}
-                    textTime={null}
+                    textTime={''}
                   />
                   {interviewers.map((user) => {
                     return (
@@ -67,27 +68,33 @@ function ScheduleMeetingCard({
                           interview_meeting={{
                             end_time: meetingDetails.end_time,
                             start_time: meetingDetails.start_time,
-                            status: meetingDetails.status,
+                            status: meetingDetails?.status ?? 'not_scheduled',
                           }}
-                          accepted_status={user.accepted_status}
-                          cancelReason={user.cancel_reasons?.find(
-                            (can) =>
-                              can.session_relation_id ===
-                              user.session_relation_id,
-                          )}
+                          accepted_status={
+                            user?.accepted_status ?? 'request_reschedule'
+                          }
+                          cancelReason={
+                            user.cancel_reasons?.find(
+                              (can) =>
+                                can.session_relation_id ===
+                                user.session_relation_id,
+                            ) ?? null
+                          }
                           userDetails={{
-                            first_name: user.first_name,
-                            last_name: user.last_name,
-                            user_id: user.user_id,
-                            position: user.position,
-                            profile_image: user.profile_image,
+                            first_name: user?.first_name ?? '',
+                            last_name: user?.last_name ?? '',
+                            user_id: user?.user_id ?? '',
+                            position: user?.position ?? '',
+                            profile_image: user?.profile_image ?? '',
                           }}
-                          interviewerTimeZone={user.tz_code}
+                          interviewerTimeZone={user?.tz_code ?? ''}
                           isCalendarConnected={true}
                           isPaused={false}
                           pause_json={null}
                           trainingType={user.training_type}
-                          interviewerType={user.interviewer_type}
+                          interviewerType={
+                            user?.interviewer_type ?? 'qualified'
+                          }
                         />
                       </>
                     );
@@ -97,8 +104,10 @@ function ScheduleMeetingCard({
             </>
           }
           textTime={`${dayjs(meetingDetails?.start_time).format('hh:mm A')} - ${dayjs(meetingDetails?.end_time).format('hh:mm A')}  ${convertTimeZoneToAbbreviation(dayjs.tz.guess())}`}
-          textMeetingPlatform={getScheduleType(meetingDetails?.schedule_type)}
-          textMeetingTitle={meetingDetails?.session_name}
+          textMeetingPlatform={getScheduleType(
+            meetingDetails?.schedule_type ?? 'google_meet',
+          )}
+          textMeetingTitle={meetingDetails?.session_name ?? ''}
           slotMeetingIcon={
             <IconScheduleType type={meetingDetails?.schedule_type} />
           }
@@ -111,14 +120,14 @@ function ScheduleMeetingCard({
           isTimeVisible={Boolean(meetingDetails?.start_time)}
           slotStatus={<MeetingStatusBadge status={meetingDetails.status} />}
           isLocationVisible={false}
-          textDuration={getBreakLabel(meetingDetails.session_duration)}
+          textDuration={getBreakLabel(meetingDetails?.session_duration ?? 0)}
           slotAvatarWithName={
             <div className='flex items-center space-x-2'>
               <User className='h-4 w-4' />
               <span className='text-sm font-medium'>
                 {getFullName(
-                  meetingDetails.applications.candidates.first_name,
-                  meetingDetails.applications.candidates.last_name,
+                  meetingDetails?.applications?.candidates?.first_name ?? '',
+                  meetingDetails?.applications?.candidates?.last_name ?? '',
                 )}
               </span>
             </div>
@@ -126,12 +135,12 @@ function ScheduleMeetingCard({
           isAvatarWithNameVisible={!collapseOpen}
           textJob={
             <div className='flex flex-row items-center space-y-5'>
-              <span>{meetingDetails?.public_jobs.job_title}</span>
+              <span>{meetingDetails?.public_jobs?.job_title}</span>
             </div>
           }
           bgColorProps={{
-            background: getScheduleBgcolor(meetingDetails.status),
-            color: getScheduleTextcolor(meetingDetails.status),
+            background: getScheduleBgcolor(meetingDetails?.status),
+            color: getScheduleTextcolor(meetingDetails?.status),
           }}
         />
       </div>

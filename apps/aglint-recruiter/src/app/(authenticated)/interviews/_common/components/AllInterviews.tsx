@@ -62,7 +62,7 @@ function AllInterviews() {
               </div>
             </div>
           )}
-          <ScheduleMeetingList filterSchedules={schedules} />
+          <ScheduleMeetingList filterSchedules={schedules ?? []} />
         </>
       </div>
     </div>

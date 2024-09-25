@@ -7,7 +7,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import defaultCompanyLogo from '@public/images/default-company-logo.svg';
+import defaultCompanyLogo from '@public/images/default/company.svg';
 import { LogOut, Settings, User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -20,7 +20,7 @@ import PERMISSIONS from '@/utils/routing/permissions';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-import defaultProfileImage from '../../../public/images/default-user-profile.svg';
+import defaultProfileImage from '../../../public/images/default/user.svg';
 import { NotFound } from '../Common/404';
 import SideNavbar from './SideNavbar';
 

@@ -9,7 +9,7 @@ import {
 } from '@/pages/api/scheduling/fetchUserDetails';
 import { supabase } from '@/utils/supabase/client';
 
-export type InterviewScheduleContextType = {
+type InterviewScheduleContextType = {
   loading: boolean;
   members: MemberType[];
   allModules: { id: string; name: string }[];

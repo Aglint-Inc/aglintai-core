@@ -10,7 +10,6 @@ import { jobs } from './routers/jobs';
 import { requests } from './routers/requests';
 import { scheduling } from './routers/scheduling';
 import { tenant } from './routers/tenant';
-import { textTransform } from './routers/textTransform';
 import { createCallerFactory, createTRPCRouter } from './trpc';
 
 /**
@@ -30,7 +29,6 @@ export const appRouter = createTRPCRouter({
   jobs,
   requests,
   scheduling,
-  textTransform,
   application,
 });
 
