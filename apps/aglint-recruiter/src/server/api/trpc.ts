@@ -15,7 +15,7 @@ import { type TypeOf, ZodError, type ZodSchema } from 'zod';
 import { getDecryptKey } from '@/api/sync/greenhouse/util';
 
 import { createPrivateClient, createPublicClient } from '../db';
-import { UNAUTHENTICATED, UNAUTHORIZED } from '../enums';
+import { ERRORS } from '../enums';
 import { authorize } from '../utils';
 
 /**
@@ -170,7 +170,7 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
   } = await db.auth.getUser();
 
   if (!user) {
-    throw new TRPCError({ code: 'FORBIDDEN', message: UNAUTHENTICATED });
+    throw new TRPCError(ERRORS.UNAUTHORIZED);
   }
 
   const user_id = user.id;
@@ -185,7 +185,7 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
     .throwOnError();
 
   if (!data) {
-    throw new TRPCError({ code: 'FORBIDDEN', message: UNAUTHENTICATED });
+    throw new TRPCError(ERRORS.UNAUTHORIZED);
   }
 
   const {
@@ -200,8 +200,7 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
     [] as (typeof role_permissions)[number]['permissions']['name'][],
   );
 
-  if (!authorize(path, permissions))
-    throw new TRPCError({ code: 'UNAUTHORIZED', message: UNAUTHORIZED });
+  if (!authorize(path, permissions)) throw new TRPCError(ERRORS.FORBIDDEN);
 
   return await next({
     ctx: {

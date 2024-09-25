@@ -42,7 +42,7 @@ const useJobContext = () => {
 
   const handleJobsSync = async () => {
     try {
-      await handleSync();
+      await handleSync({ recruiter_id });
     } catch {
       //
     }
