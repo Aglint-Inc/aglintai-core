@@ -16,7 +16,7 @@ import { mailSender } from '@/utils/mailSender';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 import { findPlanCombs } from './findPlanCombs';
-import { selfScheduleLinkInstruction } from './utils/selfScheduleLinkInstruction';
+import { selfScheduleLinkInstruction } from './textTransforms/selfScheduleLinkInstruction';
 
 export const candidateSelfSchedule = async ({
   parsed_body,
@@ -51,6 +51,7 @@ export const candidateSelfSchedule = async ({
     session_ids: parsed_body.session_ids,
     reqProgressLogger,
     time_zone: req_assignee_tz,
+    agent_instruction: job_payload.agent.instruction,
     schedule_filters: {
       isHardConflicts: false,
       isNoConflicts: true,
@@ -101,6 +102,7 @@ export const candidateSelfSchedule = async ({
       })
       .select(),
   );
+
   await mailSender({
     target_api: 'sendSelfScheduleRequest_email_applicant',
     payload: {
