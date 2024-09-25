@@ -15,10 +15,10 @@ export function useRouterPro<T extends Record<string, string | number>>() {
   const router = useRouter();
   const params = useParams<Record<string, string>>() || {};
   const searchParams = useSearchParams();
-  const url = usePathname();
+  const url = usePathname() || '';
 
   const queryParams = {} as T;
-  for (const [key, value] of searchParams.entries()) {
+  for (const [key, value] of searchParams?.entries() || []) {
     (queryParams as any)[String(key)] = value;
   }
   const setQueryParams = (data: Partial<T>) => {

@@ -13,4 +13,6 @@ export const API_PERMISSIONS: ApiPermissions = {
   candidatePortal: [],
   requests: [],
   application: ['job_module'],
+  get_last_login: ['view_users'],
+  get_members_with_role: ['view_users'],
 };
