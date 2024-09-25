@@ -67,9 +67,9 @@ export const ImportResume = () => {
       name='file'
       types={FILE_TYPES}
     >
-      <div className='flex h-full items-center justify-center rounded-lg border-2 border-dashed border-gray-300'>
+      <div className='flex h-full items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-slate-50'>
         <div className='text-center'>
-          <Upload className='mx-auto h-12 w-12 text-gray-400' />
+          <Upload strokeWidth={1.5} className='mx-auto h-12 w-12' />
           <h3 className='mt-2 text-sm font-semibold text-gray-900'>
             Import Resume
           </h3>
@@ -136,10 +136,10 @@ export const ImportResume = () => {
 
   return (
     <div className='flex h-[500px] flex-col'>
-      <div className='flex-grow overflow-auto p-6'>
+      <div className='flex-grow overflow-auto mb-4 '>
         {selectedFiles.length === 0 ? renderFileUploader() : renderFileList()}
       </div>
-      <div className='p-4'>
+      <div className=''>
         <Button onClick={handleFileUpload} className='w-full'>
           Upload
         </Button>
