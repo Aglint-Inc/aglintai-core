@@ -13,12 +13,12 @@ export const RequestEmpty = () => {
           </CardHeader>
           <CardContent className='flex flex-col items-center'>
             <Inbox className='mb-4 h-24 w-24 text-gray-400' />
-            <div className='flex flex-col gap-2 items-center justify-center'>
-            <p className='mb-4 text-center text-gray-600'>
-              You haven&apos;t created any requests yet.
-              <br />
-              Start by creating a new request to get things rolling!
-            </p>
+            <div className='flex flex-col items-center justify-center gap-2'>
+              <p className='mb-4 text-center text-gray-600'>
+                You haven&apos;t created any requests yet.
+                <br />
+                Start by creating a new request to get things rolling!
+              </p>
             </div>
           </CardContent>
         </Card>

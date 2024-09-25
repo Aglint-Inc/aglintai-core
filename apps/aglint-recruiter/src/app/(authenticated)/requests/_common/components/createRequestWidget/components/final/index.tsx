@@ -1,4 +1,4 @@
-import type { DatabaseTable, Type } from '@aglint/shared-types';
+import type { Custom, DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils';
 import { Combobox } from '@components/combobox';
 import { Textarea } from '@components/ui/textarea';
@@ -65,7 +65,7 @@ const Priority = () => {
 };
 
 const priorityOptions: Required<
-  Type<
+  Custom<
     Parameters<typeof Combobox>[0]['options'],
     { value: DatabaseTable['request']['priority'] }
   >[number]

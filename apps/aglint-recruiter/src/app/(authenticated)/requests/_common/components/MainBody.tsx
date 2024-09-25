@@ -1,8 +1,10 @@
 import { Button } from '@components/ui/button';
+import { Skeleton } from '@components/ui/skeleton';
 import AgentChats from '@requests/components/AgentChats';
 import { AgentIEditorProvider } from '@requests/components/AgentChats/AgentEditorContext';
 import { REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
 import { useRequestCount } from '@requests/hooks';
+import { useRequestSetupProgress } from '@requests/hooks/useRequestSetupProgress';
 import { checkFiltersApplied } from '@requests/utils/checkFiltersApplied';
 import { Info, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -12,10 +14,10 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
 import { SafeObject } from '@/utils/safeObject';
 
+import LandingProgress from './LandingProgress';
 import RequestListContent from './RequestListContent';
 import Header from './ui/Header';
 import { RequestEmpty } from './ui/RequestEmpty';
-
 const MainBody = () => {
   const {
     requests: { data: requestList, isPlaceholderData, isFetched },
@@ -68,6 +70,16 @@ const MainBody = () => {
     );
   }, [localStorage.getItem('openChat')]);
 
+  const { isLoading, data: requestStep } = useRequestSetupProgress();
+
+  if (isLoading) {
+    return <Skeleton className='mx-auto h-[380px] w-full max-w-3xl' />;
+  }
+
+  if (!requestStep?.isSetupCompleted) {
+    return <LandingProgress />;
+  }
+
   return (
     <div className='flex w-full overflow-hidden'>
       {/* Dock to Right Button */}
@@ -113,7 +125,7 @@ const MainBody = () => {
         {showEmptyPage ? (
           <RequestEmpty />
         ) : (
-          <>
+          <div>
             <Header
               completed_percentage={completed_percentage}
               open_request={open_request}
@@ -138,7 +150,7 @@ const MainBody = () => {
                 isFetched={isFetched}
               />
             )}
-          </>
+          </div>
         )}
       </div>
     </div>

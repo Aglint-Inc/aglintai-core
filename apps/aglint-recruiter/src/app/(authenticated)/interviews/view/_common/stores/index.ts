@@ -5,9 +5,9 @@ import { type useScheduleDetails } from '../hooks/useScheduleDetails';
 type ScheduleDetails = {
   isDeclineDialogOpen: boolean;
   isCancelDialogOpen: boolean;
-  sessionUser: ReturnType<
-    typeof useScheduleDetails
-  >['data']['schedule_data']['users'][0];
+  sessionUser:
+    | ReturnType<typeof useScheduleDetails>['data']['schedule_data']['users'][0]
+    | null;
 };
 
 export const initialeScheduleDetailsStore: ScheduleDetails = {

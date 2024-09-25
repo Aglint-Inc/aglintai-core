@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from '@components/ui/dialog';
 import { Label } from '@components/ui/label';
+import { useRequestSetupProgress } from '@requests/hooks/useRequestSetupProgress';
 import { useState } from 'react';
 
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
@@ -40,6 +41,7 @@ function CreateModuleDialog() {
   const [nameError, setNameError] = useState(false);
   const [departmentError, setDepartmentError] = useState(false);
 
+  const { refetch } = useRequestSetupProgress();
   const { data: departments } = useAllDepartments();
 
   const validate = () => {
@@ -72,6 +74,7 @@ function CreateModuleDialog() {
             type_id: res.id,
           }),
         );
+        await refetch();
         setIsCreateDialogOpen(null);
         setSelectedUsers([]);
       } catch (e) {
