@@ -14,6 +14,7 @@ import {
   Calendar,
   ChevronDown,
   ChevronUp,
+  Clock,
   StickyNote,
   User,
   UserCircle,
@@ -97,6 +98,7 @@ function DefaultViewRequestCard({
             <div className='space-y-3'>
               <div className='flex gap-2'>
               <Badge
+              className='text-xs'
                   variant={
                     props?.status === 'to_do'
                       ? 'secondary'
@@ -110,6 +112,7 @@ function DefaultViewRequestCard({
                   {capitalizeFirstLetter(props.status)}
                 </Badge>
                 <Badge
+                className='text-xs'
                   variant={
                     props?.type === 'decline_request'
                       ? 'destructive'
@@ -145,7 +148,7 @@ function DefaultViewRequestCard({
                     value={
                       <>
                         <div className='flex flex-row items-center gap-4'>
-                          <div className='flex flex-row items-center space-x-2'>
+                          <div className='flex flex-row items-center space-x-2 text-sm'>
                             {<UserCircle className='h-4 w-4' />}
                             <Link
                               href={`/user/${props.assigner_id}`}
@@ -161,7 +164,8 @@ function DefaultViewRequestCard({
                                 : ''}
                             </Link>
                           </div>
-                          <div className='text-xs text-gray-500'>
+                          <div className='text-sm flex items-center'>
+                          <Clock strokeWidth={1.5} className="w-4 h-4 mr-1" />
                             {dayjsLocal(props.created_at).fromNow()}{' '}
                           </div>
                         </div>
@@ -247,20 +251,20 @@ const InfoItem = ({
 }) => {
   if (variant === 'column') {
     return (
-      <div className='flex flex-col items-start space-x-2'>
-        <div className='flex flex-row items-center gap-1'>
+      <div className='flex flex-col items-start space-x-2 '>
+        <div className='flex flex-row items-center gap-1 mt-1'>
           <div className=''>
             {React.cloneElement(icon as React.ReactElement, {
-              className: 'w-3 h-3',
+              className: 'w-4 h-4',
             })}
           </div>
           <p className='text-sm text-gray-500'>{label}</p>
         </div>
         <div className='flex flex-row items-start gap-1 pl-2'>
           {typeof value === 'string' ? (
-            <p className='ml-3 text-xs font-medium'>{value}</p>
+            <p className='ml-3 text-sm font-medium'>{value}</p>
           ) : (
-            value
+            <p className='text-sm '>{value}</p>
           )}
         </div>
       </div>

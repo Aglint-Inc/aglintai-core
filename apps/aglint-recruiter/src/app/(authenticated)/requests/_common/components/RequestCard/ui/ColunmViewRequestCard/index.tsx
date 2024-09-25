@@ -12,9 +12,9 @@ const ColumnViewRequestCard = ({ ...props }: RequestProps) => {
   return (
     <Card className='group w-full cursor-pointer p-3 transition-shadow duration-300'>
       <Link href={`/requests/${props.id}`} passHref>
-        <div className='space-y-2'>
+        <div className='flex flex-col items-start gap-3'>
           <div className='flex items-center justify-between'>
-            <Label className='line-clamp-1 text-xs font-medium'>
+            <Label className='line-clamp-1 text-sm font-medium'>
               {props.title}
             </Label>
             {/* <RequestOverflowMenu request_id={props.id} /> */}
@@ -44,13 +44,13 @@ const ColumnViewRequestCard = ({ ...props }: RequestProps) => {
             </Badge>
            
           </div>
-          <div className='text-xs flex items-center gap-2'>
-            <div className='flex items-center'>
-              <Calendar className='mr-1 h-3 w-3' />
+          <div className='text-sm flex flex-col items-start gap-2'>
+            <div className='flex items-center '>
+              <Calendar className='mr-2 h-5 w-5' strokeWidth={1.5}/>
               {dayjsLocal(props.schedule_start_date).format('MMM D, YYYY')}
             </div>
             <div className='flex items-center'>
-              <User className='mr-1 h-3 w-3' />
+              <User className='mr-2 h-5 w-5' strokeWidth={1.5} />
               {getFullName(
                 props.applications?.candidates?.first_name ?? '',
                 props.applications?.candidates?.last_name ?? '',
