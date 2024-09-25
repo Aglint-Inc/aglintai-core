@@ -1,4 +1,7 @@
-import { type ActionPayloadType } from '@aglint/shared-types';
+import {
+  type ActionPayloadType,
+  type PlanCombinationRespType,
+} from '@aglint/shared-types';
 import {
   type candidate_new_schedule_schema,
   CApiError,
@@ -66,13 +69,7 @@ export const candidateSelfSchedule = async ({
   if (plans.length === 0) {
     throw new CApiError('CLIENT', 'No plans matched');
   }
-  const candidate_slots = plans
-    .slice(0, formatted_ai_reponse.maxTotalSlots)
-    .sort((s1, s2) => {
-      return dayjsLocal(s1.sessions[0].start_time).diff(
-        dayjsLocal(s2.sessions[0].start_time),
-      );
-    });
+  const candidate_slots = getNSlots(plans, formatted_ai_reponse.maxTotalSlots);
   const [filter_json] = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')
@@ -131,4 +128,25 @@ export const candidateSelfSchedule = async ({
       filter_json_id: filter_json.id,
     },
   });
+};
+
+const getNSlots = (
+  slots: PlanCombinationRespType[],
+  slot_cnt: number,
+): PlanCombinationRespType[] => {
+  const slot_time = new Set<string>();
+  let added_slots_cnt = 0;
+  const filtered_slots: PlanCombinationRespType[] = [];
+
+  for (const curr_slot of slots) {
+    if (added_slots_cnt >= slot_cnt) {
+      break;
+    }
+    if (!slot_time.has(curr_slot.sessions[0].start_time)) {
+      slot_time.add(curr_slot.sessions[0].start_time);
+      filtered_slots.push(curr_slot);
+      added_slots_cnt++;
+    }
+  }
+  return filtered_slots;
 };
