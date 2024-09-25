@@ -1,8 +1,5 @@
 /* eslint-disable no-console */
-import {
-  type PlanCombinationRespType,
-  type RecruiterUserType,
-} from '@aglint/shared-types';
+import { type PlanCombinationRespType } from '@aglint/shared-types';
 import {
   createRequestProgressLogger,
   executeWorkflowAction,
@@ -27,7 +24,7 @@ export interface ApiBodyParamsSelfSchedule {
     end_date: string;
   };
   selectedSlots?: PlanCombinationRespType[];
-  recruiterUser: RecruiterUserType;
+  user_id: string;
   request_id: string;
 }
 
@@ -58,7 +55,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   } catch (error) {
     const resErr: ApiResponseSelfSchedule = {
       data: null,
-      error: error.message,
+      error: error?.message || ' Something went wrong',
     };
     return res.status(500).send(resErr);
   }
@@ -69,7 +66,7 @@ export default handler;
 const sendToCandidate = async ({
   dateRange,
   selectedSlots,
-  recruiterUser,
+  user_id,
   allSessions,
   application_id,
   request_id,
@@ -77,7 +74,9 @@ const sendToCandidate = async ({
 }: ApiBodyParamsSelfSchedule & {
   reqProgressLogger: ProgressLoggerType;
 }) => {
-  const selectedSessionIds = allSessions.map((ses) => ses.interview_session.id);
+  const selectedSessionIds = allSessions
+    .map((ses) => ses?.interview_session?.id)
+    .filter((id) => id !== undefined);
 
   const schedule = (
     await supabaseAdmin
@@ -88,15 +87,19 @@ const sendToCandidate = async ({
       .throwOnError()
   ).data;
 
+  if (!schedule) throw new Error('Application not found');
+
   const candidate = schedule.candidates;
+
+  if (!candidate) throw new Error('Candidate not found');
 
   const { organizer_id } = await handleMeetingsOrganizerResetRelations({
     application_id,
     selectedSessions: allSessions.map((ses) => ({
       interview_session_id: ses.interview_session.id,
-      interview_meeting_id: ses.interview_meeting.id,
-      job_id: ses.interview_meeting.job_id,
-      recruiter_id: ses.interview_meeting.recruiter_id,
+      interview_meeting_id: ses?.interview_meeting?.id || '',
+      job_id: ses?.interview_meeting?.job_id || '',
+      recruiter_id: ses?.interview_meeting?.recruiter_id || '',
     })),
     supabase: supabaseAdmin,
     meeting_flow: 'self_scheduling',
@@ -111,7 +114,7 @@ const sendToCandidate = async ({
       },
       session_ids: selectedSessionIds,
       selected_options: selectedSlots,
-      created_by: recruiterUser.user_id,
+      created_by: user_id,
       request_id,
       application_id,
     })
@@ -122,14 +125,14 @@ const sendToCandidate = async ({
   // filter_id = filterJson[0].id;
 
   await addScheduleActivity({
-    title: `Sent self scheduling link to ${getFullName(candidate.first_name, candidate.last_name)} for ${allSessions
+    title: `Sent self scheduling link to ${getFullName(candidate?.first_name, candidate?.last_name)} for ${allSessions
       .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
       .map((ses) => ses.interview_session.name)
       .join(' , ')}`,
     logged_by: 'user',
     application_id,
     supabase: supabaseAdmin,
-    created_by: recruiterUser.user_id,
+    created_by: user_id,
   });
 
   selfScheduleMailToCandidate({

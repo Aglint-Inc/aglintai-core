@@ -1,8 +1,8 @@
-/* eslint-disable security/detect-object-injection */
 import {
   type APICandScheduleMailThankYou,
   type TargetApiPayloadType,
 } from '@aglint/shared-types';
+import { type CustomMeta } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
@@ -28,6 +28,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       session_ids,
       application_id,
     );
+
+    if (!meeting_data) {
+      return res.status(400).send('No meeting data found');
+    }
 
     addScheduleActivity({
       title: `Booked ${meeting_data.map((ses) => ses.name).join(' , ')}`,
@@ -69,6 +73,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           application_id: application_id,
           session_ids: session_ids,
           filter_id: filter_id,
+          is_preview: false,
         };
       await mailSender({
         target_api: 'confirmInterview_email_applicant',
@@ -97,13 +102,18 @@ export const fetchSessionDetails = async (
       .select(
         '*,interview_meeting(id,start_time,end_time,status,cal_event_id,meeting_link),interview_session_relation(*,interview_module_relation(id,recruiter_user(user_id,email,first_name,last_name,profile_image)))',
       )
-      .in('id', session_ids),
+      .in('id', session_ids)
+      .returns<CustomMeta[]>(),
   );
-  const [application] = supabaseWrap(
+  const app_data = (
     await supabaseAdmin
       .from('applications')
       .select('id,candidates(id,first_name,last_name,email)')
-      .eq('id', application_id),
-  );
-  return { meeting_data, candidate: application.candidates };
+      .eq('id', application_id)
+      .single()
+  ).data;
+  return {
+    meeting_data: meeting_data,
+    candidate: app_data?.candidates,
+  };
 };
