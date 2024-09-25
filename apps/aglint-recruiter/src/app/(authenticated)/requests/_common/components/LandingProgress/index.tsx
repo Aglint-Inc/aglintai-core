@@ -1,5 +1,6 @@
 'use client';
 
+import { getFullName } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
 import {
   Card,
@@ -13,6 +14,8 @@ import { useRequestSetupProgress } from '@requests/hooks/useRequestSetupProgress
 import { AlertCircle, Check } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import UITypography from '@/components/Common/UITypography';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 interface StepType {
@@ -26,6 +29,7 @@ export default function LandingProgress() {
   const { data } = useRequestSetupProgress();
   const [progress, setProgress] = useState(0);
   const [steps, setSteps] = useState<StepType[]>([]);
+  const { recruiterUser } = useAuthDetails();
 
   useEffect(() => {
     if (data) {
@@ -61,12 +65,21 @@ export default function LandingProgress() {
     }
   }, [data]);
 
+  const name = getFullName(
+    recruiterUser?.first_name || '',
+    recruiterUser?.last_name || '',
+  );
   if (steps?.length > 0)
     return (
-      <Card className='mx-auto max-h-fit w-full max-w-3xl'>
+      <Card className='max-h-fit w-full max-w-4xl'>
         <CardHeader>
-          <CardTitle className='text-center text-2xl font-bold'>
-            Welcome to Your Recruitment Dashboard!
+          <CardTitle className='text-center text-2xl'>
+            <UITypography className='text-2xl font-bold'>
+              👋 Hey, {name}!
+            </UITypography>
+            <UITypography className='mt-2 text-lg font-semibold'>
+              Welcome to Your Request Dashboard!
+            </UITypography>
           </CardTitle>
           <CardDescription className='text-center'>
             Let&apos;s get you set up to create your first request. Complete
@@ -75,9 +88,11 @@ export default function LandingProgress() {
         </CardHeader>
         <CardContent className='space-y-4'>
           <Progress value={progress} className='w-full' />
-          {steps.map((step) => (
-            <List key={step.title} step={step} />
-          ))}
+          {steps
+            .sort((a, b) => Number(b?.completed) - Number(a?.completed))
+            .map((step) => (
+              <List key={step.title} step={step} />
+            ))}
         </CardContent>
       </Card>
     );
