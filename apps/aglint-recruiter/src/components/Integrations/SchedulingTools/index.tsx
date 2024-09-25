@@ -1,8 +1,8 @@
 import { useToast } from '@components/hooks/use-toast';
 import { Input } from '@components/ui/input';
 import { Toggle } from '@components/ui/toggle';
-import GoogleLogo from '@public/images/svg/google-logo.svg';
-import ZoomLogo from '@public/images/svg/zoom-logo.svg';
+import GoogleLogo from '@public/images/integration/google-logo.svg';
+import ZoomLogo from '@public/images/integration/zoom-logo.svg';
 import axios from 'axios';
 import { Loader2, Upload } from 'lucide-react';
 import { useRef, useState } from 'react';

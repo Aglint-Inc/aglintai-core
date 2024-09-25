@@ -1,6 +1,7 @@
 'use client';
 
 import { cn } from '@lib/utils';
+import Image from 'next/image';
 import React from 'react';
 
 import UITypography from '@/components/Common/UITypography';
@@ -63,15 +64,12 @@ export function StageListCard({
               'bg-error': color === 'danger',
             })}
           >
-            <svg
-              width='34'
-              height='66'
-              viewBox='0 0 34 66'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path d='M0 0L34 32.4469L0 66V0Z' fill='currentColor' />
-            </svg>
+            <Image
+              src='/images/icons/arrow-right.svg'
+              alt='arrow-right'
+              width={34}
+              height={66}
+            />
           </div>
         </div>
       )}

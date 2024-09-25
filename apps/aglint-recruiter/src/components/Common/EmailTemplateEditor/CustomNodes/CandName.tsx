@@ -6,7 +6,7 @@ import {
 } from '@tiptap/pm/model';
 import { NodeViewWrapper, ReactNodeViewRenderer } from '@tiptap/react';
 import { type SuggestionOptions } from '@tiptap/suggestion';
-import Image from 'next/image';
+import { BoxSelect } from 'lucide-react';
 
 export type MentionOptions = {
   HTMLAttributes: Record<string, any>;
@@ -70,14 +70,7 @@ const Label = (props) => {
           gap: 5,
         }}
       >
-        <Image
-          style={{ marginBottom: '2px', marginRight: '5px' }}
-          src={'/images/svg/text.svg'}
-          width={15}
-          height={15}
-          alt=''
-          unoptimized
-        />
+        <BoxSelect size={16} />
         <span>{props.node.attrs.label}</span>
       </span>
     </NodeViewWrapper>

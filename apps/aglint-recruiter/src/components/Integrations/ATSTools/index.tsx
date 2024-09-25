@@ -1,9 +1,9 @@
 'use client';
 import { useToast } from '@components/hooks/use-toast';
 import { Input } from '@components/ui/input';
-import AshbyLogo from '@public/images/svg/ashby-logo.svg';
-import GreenHouseLogo from '@public/images/svg/greenhouse-logo.svg';
-import LeverLogo from '@public/images/svg/lever-logo.svg';
+import AshbyLogo from '@public/images/integration/ashby-logo.svg';
+import GreenHouseLogo from '@public/images/integration/greenhouse-logo.svg';
+import LeverLogo from '@public/images/integration/lever-logo.svg';
 import axios from 'axios';
 import capitalize from 'lodash/capitalize';
 import { useRef, useState } from 'react';
