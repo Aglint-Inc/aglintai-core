@@ -26,7 +26,7 @@ function RequestNotes() {
   const [editorEnabled, setEditorEnabled] = useState(false);
   const [saving, setSaving] = useState(false);
 
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
     if (isFetched) {
       setNote(requestNotes?.[0]?.note || '');

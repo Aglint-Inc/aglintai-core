@@ -23,7 +23,7 @@ function CollapseContent({
     name: string;
     current_job_title: string;
     timezone: string;
-  };
+  } | null;
 }) {
   let users = currentSession.users;
 

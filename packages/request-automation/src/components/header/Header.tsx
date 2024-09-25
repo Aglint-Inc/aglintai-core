@@ -1,6 +1,7 @@
 import React from "react";
 import { tabs } from "../../type/UITypes";
 import InfoDisplay from "./InfoDisplay";
+import { useAppContext } from "../../context/AppContext";
 
 const Tabs: {
   name: string;
@@ -31,13 +32,17 @@ function Header({
   activeDiv: tabs;
   setActiveDiv: React.Dispatch<React.SetStateAction<tabs>>;
 }) {
+  const { getSupabaseSession } = useAppContext();
   return (
     <div id="header">
       <div className="flex-h">
-        <span className="drawer-warning">
-          <strong>⚠️ Warning:</strong> This is a utility for testing not a product feature. <InfoDisplay />
-        </span>
-
+        <div className="flex items-center gap-5">
+          <span className="drawer-warning ">
+            <strong>⚠️ Warning:</strong> This is a utility for testing not a
+            product feature. <InfoDisplay />
+          </span>
+          <button onClick={getSupabaseSession}>sync</button>
+        </div>
         <span>
           {Tabs.map((tab) => (
             <span

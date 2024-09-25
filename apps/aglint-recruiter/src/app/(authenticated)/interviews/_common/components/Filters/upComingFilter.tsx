@@ -74,8 +74,12 @@ function UpComingInterviewFilters() {
               ? members
                   .filter((ele) => ele.status === 'active')
                   .map((member) => ({
-                    id: member.user_id,
-                    label: getFullName(member.first_name, member.last_name),
+                    id: member.user_id ?? '',
+                    label:
+                      getFullName(
+                        member.first_name ?? '',
+                        member.last_name ?? '',
+                      ) ?? '',
                   }))
               : [],
             filterSearch: true,
@@ -89,9 +93,14 @@ function UpComingInterviewFilters() {
           {
             type: 'filter',
             name: 'Jobs',
-            options:
-              jobs.isFetched &&
-              jobs.data.map((ele) => ({ id: ele.id, label: ele.job_title })),
+            options: jobs.data
+              ? jobs.data?.map((ele) => {
+                  return {
+                    id: ele.id ?? '',
+                    label: ele.job_title ?? '',
+                  };
+                })
+              : [],
             setValue: (val) => {
               updateUpComingFilterState('jobs', val);
             },

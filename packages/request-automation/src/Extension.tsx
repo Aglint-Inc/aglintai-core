@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 import Demo from "./components/demo/Demo";
 import Header from "./components/header/Header";
@@ -13,9 +13,21 @@ export const Extension = () => {
 
   const drawerRef = useRef(null);
 
-  const toggleDrawer = () => {
-    setIsOpen(!isOpen);
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.ctrlKey && event.key === "i") {
+      setIsOpen((pre) => !pre);
+    }
   };
+
+  // Add event listener on component mount and remove on unmount
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <div
@@ -29,7 +41,7 @@ export const Extension = () => {
         {activeDiv === "reset" && <Reset />}
         {activeDiv === "mode" && <Mode />}
       </div>
-      <div className="drawer-handle" onClick={toggleDrawer}>
+      <div className="drawer-handle" onClick={() => setIsOpen((pre) => !pre)}>
         {isOpen ? "↧" : "↥"}
       </div>
     </div>

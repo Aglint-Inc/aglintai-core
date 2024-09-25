@@ -28,7 +28,7 @@ const Google = () => {
 
   useEffect(() => {
     if (recruiterUser) {
-      const { code } = router.params;
+      const { code } = router.queryParams;
       if (!code) return;
 
       (async () => {
@@ -42,6 +42,7 @@ const Google = () => {
             await supabase
               .from('recruiter_user')
               .update({
+                is_calendar_connected: true,
                 schedule_auth: {
                   access_token: tokens.access_token,
                   refresh_token: tokens.refresh_token,
