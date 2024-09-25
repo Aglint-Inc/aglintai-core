@@ -9,50 +9,59 @@ const query = async ({
   input: { user_id },
 }: PublicProcedure<typeof userSchema>) => {
   const db = createPublicClient();
-  const user = (
-    await db
+
+  const [res1, res2, res3, res4] = await Promise.all([
+    db
       .from('recruiter_user')
       .select(
         '*,recruiter_relation!public_recruiter_relation_user_id_fkey(created_by,manager_id,roles(name,id)),office_locations(*),departments(*)',
       )
       .eq('user_id', user_id)
       .single()
-      .throwOnError()
-  ).data;
+      .throwOnError(),
 
-  const interview = (
-    await db
+    db
       .from('all_interviewers')
       .select(
         'total_hours_this_week,total_hours_today,total_interviews_this_week,total_interviews_today',
       )
       .eq('user_id', user_id)
       .single()
-      .throwOnError()
-  ).data;
+      .throwOnError(),
 
-  const interview_type = (
-    await db
+    db
       .from('module_relations_view')
       .select(
         'module_name,completed_meeting_count,cancelled_meeting_count,confirmed_meeting_count,completed_meeting_duration',
       )
       .eq('user_id', user_id)
-      .throwOnError()
-  ).data;
+      .throwOnError(),
 
-  // --------------- meetings
-
-  const meeting_interviewers = (
-    await db
+    db
       .from('meeting_interviewers')
       .select(
         'meeting_id,interview_session_relation(feedback,interview_session(name,interview_meeting(applications(candidates(first_name,last_name)))))',
       )
       .eq('user_id', user_id)
       .eq('is_confirmed', true)
-      .throwOnError()
-  ).data;
+      .throwOnError(),
+  ]);
+
+  const user = res1.data;
+  const interview = res2.data;
+  const interview_type = res3.data;
+  const meeting_interviewers = res4.data;
+
+  const newinterview = {
+    total_hours_this_week: interview?.total_hours_this_week ?? 0,
+    total_hours_today: interview?.total_hours_today ?? 0,
+    total_interviews_this_week: interview?.total_interviews_this_week ?? 0,
+    total_interviews_today: interview?.total_interviews_today ?? 0,
+  };
+
+  const meeting_ids = meeting_interviewers?.map(
+    (i) => i.meeting_id,
+  ) as string[];
 
   const all_user_meetings = (
     await db
@@ -60,60 +69,62 @@ const query = async ({
       .select(
         'id,session_name,session_duration,start_time,end_time,status,applications(candidates(first_name,last_name)),public_jobs(job_title)',
       )
-      .in(
-        'id',
-        meeting_interviewers.map((i) => i.meeting_id),
-      )
+      .in('id', meeting_ids)
       .throwOnError()
   ).data;
 
-  const allMeetingDetails = all_user_meetings.map((meeting) => {
+  const allMeetingDetails = all_user_meetings?.map((meeting) => {
     const { applications, public_jobs, ...details } = meeting;
     return {
       ...details,
-      candidate: applications.candidates,
-      job: public_jobs.job_title,
+      candidate: applications?.candidates,
+      job: public_jobs?.job_title,
     };
   });
 
-  // const feedbacks = meeting_interviewers.map(
-  //   (meeting) => meeting?.interview_session_relation[0].feedback,
-  // );
-  const feedbacks = meeting_interviewers
-    .filter((meeting) => meeting?.interview_session_relation?.[0].feedback)
-    .map((meeting) => {
-      const feed = meeting?.interview_session_relation?.[0];
-      return {
-        feedback: feed.feedback,
-        session_name: feed.interview_session?.name,
-        candidate:
-          feed.interview_session?.interview_meeting?.applications?.candidates,
-      };
-    });
+  const feedbacks = meeting_interviewers?.length
+    ? meeting_interviewers
+        .filter((meeting) => meeting?.interview_session_relation?.[0].feedback)
+        .map((meeting) => {
+          const feed = meeting?.interview_session_relation?.[0];
+          const candidate =
+            feed.interview_session?.interview_meeting?.applications?.candidates;
+          return {
+            feedback: feed.feedback,
+            session_name: feed.interview_session?.name ?? '',
+            candidate: {
+              first_name: candidate?.first_name ?? '',
+              last_name: candidate?.last_name ?? '',
+            },
+          };
+        })
+    : [];
 
   // ----------------------
 
   const structuredData = {
-    avatar: user.profile_image,
-    first_name: user.first_name,
-    last_name: user.last_name,
-    position: user.position,
-    phone: user.phone,
-    email: user.email,
-    empolyment: user.employment,
-    Linkedin: user.linked_in,
-    department: user.departments?.name,
-    user_id: user.user_id,
-    scheduling_settings: user.scheduling_settings,
-    schedule_auth: user.schedule_auth,
-    interview_week_today: interview,
+    avatar: user?.profile_image ?? '',
+    first_name: user?.first_name ?? '',
+    last_name: user?.last_name ?? '',
+    position: user?.position ?? '',
+    phone: user?.phone ?? '',
+    email: user?.email ?? '',
+    empolyment: user?.employment ?? '',
+    Linkedin: user?.linked_in ?? '',
+    department: user?.departments?.name ?? '',
+    user_id: user?.user_id ?? '',
+    scheduling_settings: user?.scheduling_settings,
+    schedule_auth: user?.schedule_auth,
+
     location: [
-      user.office_locations?.city,
-      user.office_locations?.region,
-      user.office_locations?.country,
-    ].filter((loc) => loc),
-    timeZone: user.scheduling_settings?.timeZone?.tzCode,
-    role: user.recruiter_relation?.[0]?.roles?.name,
+      user?.office_locations?.city,
+      user?.office_locations?.region,
+      user?.office_locations?.country,
+    ]
+      .filter((loc) => loc)
+      .join(', '),
+    timeZone: user?.scheduling_settings?.timeZone?.tzCode,
+    role: user?.recruiter_relation?.[0]?.roles?.name,
     meeting_count: {
       completed:
         allMeetingDetails?.filter((meet) => meet.status === 'completed')
@@ -124,13 +135,16 @@ const query = async ({
       cancelled:
         allMeetingDetails?.filter((meet) => meet.status === 'cancelled')
           ?.length || 0,
-      completed_hour: allMeetingDetails.reduce(
-        (acc, cur) => acc + cur.session_duration,
-        0,
-      ),
+      completed_hour: allMeetingDetails?.length
+        ? allMeetingDetails.reduce((acc, cur) => {
+            const sessionDuration = cur?.session_duration as number;
+            return acc + sessionDuration;
+          }, 0)
+        : 0,
     },
-    interview_type,
+    interview_type: interview_type ?? [],
     feedbacks: feedbacks,
+    interview_week_today: newinterview,
     all_meetings: allMeetingDetails,
   };
 

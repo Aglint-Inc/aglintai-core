@@ -15,7 +15,7 @@ export const RecentInterviews = ({
   return (
     <>
       <SectionCard title='Recent Interviews'>
-        {interviews?.length > 0 ? (
+        {interviews?.length ? (
           <div className='space-y-4'>
             {interviews.map((interview) => (
               <List key={interview.id} interview={interview} />
@@ -35,12 +35,14 @@ export const RecentInterviews = ({
 const List = ({
   interview,
 }: {
-  interview: InterviewerDetailType['all_meetings'][number];
+  interview: NonNullable<InterviewerDetailType['all_meetings']>[number];
 }) => {
   const router = useRouterPro();
+  const candidate = interview?.candidate;
+
   const name = getFullName(
-    interview.candidate.first_name,
-    interview.candidate.last_name,
+    candidate?.first_name ?? '',
+    candidate?.last_name ?? '',
   );
   const date = `${dayjsLocal(interview.start_time).format('YYYY-MM-DD')} at ${dayjsLocal(interview.start_time).format('hh:mm A')}`;
   return (

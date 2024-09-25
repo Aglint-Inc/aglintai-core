@@ -75,6 +75,7 @@ export const API_PATHS = [
   '/api/scheduling/fetchUserDetails',
   '/api/scheduling/fetch_activities',
   '/api/scheduling/get-accesstoken',
+  '/api/scheduling/get_interviewer_and_modules',
   '/api/scheduling/get_interview_modules',
   '/api/scheduling/get_interview_plans',
   '/api/scheduling/get_interview_training_progress',
@@ -181,5 +182,5 @@ export const API_PATHS = [
   '/api/emails/slack/interviewStart_slack_interviewers',
   '/api/emails/slack/onQualified_slack_trainee',
   '/api/emails/slack/onRequestCancel_slack_interviewersOrganizer',
-  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification'
-] as const
+  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification',
+] as const;

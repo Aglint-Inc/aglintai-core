@@ -77,7 +77,13 @@ export const ScheduleAvailabilityUI = ({
   );
 };
 
-const SectionSubCard = ({ title, children }) => {
+const SectionSubCard = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) => {
   return (
     <div className='mb-6'>
       <h3 className='mb-2 text-lg font-semibold'>{title}</h3>
@@ -86,7 +92,11 @@ const SectionSubCard = ({ title, children }) => {
   );
 };
 
-const WorkHourList = ({ day }) => {
+const WorkHourList = ({
+  day,
+}: {
+  day: schedulingSettingType['workingHours'][number];
+}) => {
   const time =
     dayjsLocal()
       .set('hour', parseInt(day.timeRange.startTime.split(':')[0]))
@@ -106,7 +116,7 @@ const WorkHourList = ({ day }) => {
   );
 };
 
-const LoadCard = ({ load }) => {
+const LoadCard = ({ load }: { load: InterviewLoadItemType }) => {
   return (
     <div className='h-fit min-w-[150px] rounded-sm border-[1px]'>
       <UITypography className='bg-gray-100 px-4 py-2 text-lg font-semibold'>
@@ -120,7 +130,15 @@ const LoadCard = ({ load }) => {
   );
 };
 
-const KeywordViewSection = ({ title, description, keywords }) => {
+const KeywordViewSection = ({
+  title,
+  description,
+  keywords,
+}: {
+  title: string;
+  description: string;
+  keywords: string[];
+}) => {
   return (
     <div className='mb-6'>
       <UITypography
