@@ -4,6 +4,7 @@ import { Calendar } from 'lucide-react';
 import { useState } from 'react';
 
 import CalendarComp from '@/components/Common/Calendar/Calendar';
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 
 import { usePoolSchedules } from '../../../hooks/useSchedulesPool';
@@ -25,15 +26,7 @@ function Schedules() {
         </div>
       ) : allSchedules.length === 0 ? (
         <div className='w-full'>
-          <div className='flex flex-col items-center justify-center p-8 text-center'>
-            <Calendar className='mb-2 h-12 w-12 text-muted-foreground' />
-            <h3 className='mb-1 text-lg font-medium text-foreground'>
-              No schedule found
-            </h3>
-            <p className='text-sm text-muted-foreground'>
-              There are no schedules available at the moment.
-            </p>
-          </div>
+          <GlobalEmpty iconSlot={<Calendar strokeWidth={1.5} className='mb-2 h-10 w-10 text-muted-foreground' />} text={'There are no schedules available at the moment.'} height='400px' />
         </div>
       ) : (
         <Card className='p-4'>

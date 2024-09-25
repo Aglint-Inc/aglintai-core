@@ -1,7 +1,8 @@
 import { Card, CardContent } from '@components/ui/card';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, User } from 'lucide-react';
 import { useState } from 'react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
@@ -34,16 +35,16 @@ function Candidates() {
       <div className='flex justify-between'>
         <UITextField
           placeholder='Search Candidates...'
-          className='max-w-sm bg-white'
+          className='w-64 bg-white'
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
       <Card>
         <CardContent className='p-0'>
-          <table className='w-full'>
+          <table className='w-full overflow-hidden'>
             <thead>
-              <tr className='border-b bg-gray-50'>
+              <tr className='border-b'>
                 {Object.keys(headers).map((key) => (
                   <th
                     key={key}
@@ -67,7 +68,9 @@ function Candidates() {
                   {filteredData.length === 0 && (
                     <tr>
                       <td colSpan={6} className='p-4'>
-                        <span>No candidates found</span>
+                        <div>
+                        <GlobalEmpty text={'No candidates found'} iconSlot={<User strokeWidth={1.5} className='mb-2 h-10 w-10 text-muted-foreground'/> } height={'250px'}/>
+                        </div>
                       </td>
                     </tr>
                   )}

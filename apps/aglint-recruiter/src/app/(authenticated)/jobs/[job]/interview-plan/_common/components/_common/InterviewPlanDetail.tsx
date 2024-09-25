@@ -109,7 +109,7 @@ export function InterviewPlanDetail({
           </div>
         </div>
         <div>
-          <div className='text-sm text-gray-600'>{textSelected}</div>
+          <div className='text-sm mt-2 text-gray-600'>{textSelected}</div>
           <div>{slotInterviewers}</div>
         </div>
         <div className='absolute right-4 top-4 hidden gap-2 group-hover:flex'>
