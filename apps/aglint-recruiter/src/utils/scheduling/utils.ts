@@ -20,7 +20,7 @@ export const addScheduleActivity = async ({
   description?: string;
   logged_by: DatabaseTable['application_logs']['logged_by'];
   supabase: ReturnType<typeof createServerClient<DB>>;
-  created_by: string;
+  created_by: string | null;
   metadata?: DatabaseTable['application_logs']['metadata'];
   module?: DatabaseEnums['modules'];
 }) => {

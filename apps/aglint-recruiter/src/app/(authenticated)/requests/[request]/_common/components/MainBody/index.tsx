@@ -53,7 +53,7 @@ import ROUTES from '@/utils/routing/routes';
 import { breakDurations } from '@/utils/scheduling/const';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import { updateInterviewSessionsDurations } from '../../functions';
+import { updateInterviewSessionsDurations } from '../../utils';
 import CandidateAvailability from '../CandidateAvailability';
 import ConfirmAvailability from '../ConfirmAvailability';
 import { AvailabilityProvider } from '../ConfirmAvailability/_common/contexts/RequestAvailabilityContext';

@@ -27,7 +27,7 @@ export const transformAvailability = (
       return {
         ...data,
         extendedProps: {
-          conferenceData: event.conferenceData?.conferenceSolution,
+          conferenceData: event.conferenceData?.conferenceSolution ?? null,
           attendees: event.attendees,
           color: getStringColor(cal.name.charCodeAt(0)).text,
         },

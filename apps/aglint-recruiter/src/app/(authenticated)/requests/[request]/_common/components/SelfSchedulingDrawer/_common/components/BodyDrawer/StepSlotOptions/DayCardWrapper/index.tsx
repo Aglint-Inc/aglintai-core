@@ -154,19 +154,22 @@ function DayCardWrapper({
                 toast({ title: 'It has more slots' });
                 return;
               }
-              setSelectedCombIds(
-                isSelected
-                  ? selectedCombIds.filter((id) =>
-                      slotsWithDaySessions.every(
-                        (slot) => slot.plan_comb_id !== id,
-                      ),
-                    )
-                  : [
-                      ...selectedCombIds,
-                      ...slotsWithDaySessions.map((slot) => slot.plan_comb_id),
-                    ],
-              );
-              setCalendarDate(dayjs(dates[0]).toISOString());
+              setSelectedCombIds &&
+                setSelectedCombIds(
+                  isSelected
+                    ? selectedCombIds.filter((id) =>
+                        slotsWithDaySessions.every(
+                          (slot) => slot.plan_comb_id !== id,
+                        ),
+                      )
+                    : [
+                        ...selectedCombIds,
+                        ...slotsWithDaySessions.map(
+                          (slot) => slot.plan_comb_id,
+                        ),
+                      ],
+                );
+              setCalendarDate && setCalendarDate(dayjs(dates[0]).toISOString());
             }}
           />
         }
@@ -192,10 +195,12 @@ function DayCardWrapper({
                                         slot.plan_comb_id,
                                       )}
                                       onClick={() => {
-                                        onClickSelect(slot.plan_comb_id);
-                                        setCalendarDate(
-                                          dayjs(dates[0]).toISOString(),
-                                        );
+                                        onClickSelect &&
+                                          onClickSelect(slot.plan_comb_id);
+                                        setCalendarDate &&
+                                          setCalendarDate(
+                                            dayjs(dates[0]).toISOString(),
+                                          );
                                         setTimeout(() => {
                                           const element =
                                             document.getElementById(
@@ -221,10 +226,12 @@ function DayCardWrapper({
                                           slot.plan_comb_id,
                                         )}
                                         onClick={() => {
-                                          onClickSelect(slot.plan_comb_id);
-                                          setCalendarDate(
-                                            dayjs(dates[0]).toISOString(),
-                                          );
+                                          onClickSelect &&
+                                            onClickSelect(slot.plan_comb_id);
+                                          setCalendarDate &&
+                                            setCalendarDate(
+                                              dayjs(dates[0]).toISOString(),
+                                            );
                                           setTimeout(() => {
                                             const element =
                                               document.getElementById(

@@ -2,8 +2,16 @@ import { dayjsLocal } from '@aglint/shared-utils';
 
 import { SectionCard } from '@/authenticated/components/SectionCard';
 
-export const KeyMatrics = ({ totalHour, completedCount, declineCount }) => {
-  const completedHour = dayjsLocal.duration(totalHour, 'minutes').asHours();
+export const KeyMatrics = ({
+  totalHour,
+  completedCount,
+  declineCount,
+}: {
+  totalHour: string | number;
+  completedCount: string | number;
+  declineCount: string | number;
+}) => {
+  const completedHour = dayjsLocal.duration(+totalHour, 'minutes').asHours();
   return (
     <>
       <SectionCard title='Key Metrics'>
