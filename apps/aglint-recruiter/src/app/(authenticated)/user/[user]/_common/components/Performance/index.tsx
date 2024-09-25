@@ -2,19 +2,19 @@ import { Progress } from '@components/ui/progress';
 
 import { SectionCard } from '@/authenticated/components/SectionCard';
 
-export const Performance = ({ interviewer }) => {
+export const Performance = () => {
   const performances = [
     {
       title: 'Candidate Satisfaction',
-      percentage: interviewer.performanceMetrics.candidateSatisfaction,
+      percentage: 40,
     },
     {
       title: 'Hiring Manager Satisfaction',
-      percentage: interviewer.performanceMetrics.hiringManagerSatisfaction,
+      percentage: 70,
     },
     {
       title: 'Candidate Satisfaction',
-      percentage: interviewer.performanceMetrics.decisionAccuracy,
+      percentage: 50,
     },
   ];
   return (

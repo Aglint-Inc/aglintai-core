@@ -26,9 +26,9 @@ function DateRangeField() {
   );
 
   const [value, setValue] = React.useState<{
-    startTime: Date;
-    endTime: Date;
-  }>(null);
+    startTime: Date | null;
+    endTime: Date | null;
+  } | null>(null);
 
   return (
     <div className='flex flex-col space-y-2'>
@@ -58,27 +58,24 @@ function DateRangeField() {
 
               if (!value?.startTime || !value?.endTime) return;
               setLocalFilters({
-                preferredDateRanges: [
-                  ...localFilters.preferredDateRanges,
+                preferredTimeRanges: [
+                  ...localFilters.preferredTimeRanges,
                   {
                     startTime: dayjs(value.startTime)?.toISOString(),
                     endTime: dayjs(value.endTime)?.toISOString(),
                   },
                 ],
               });
-              setValue({
-                endTime: null,
-                startTime: null,
-              });
+              setValue(null);
             }}
           >
             Add
           </UIButton>
         }
         slotSelectedTime={
-          localFilters.preferredDateRanges.length > 0 && (
+          localFilters.preferredTimeRanges.length > 0 && (
             <div className='flex flex-wrap gap-1'>
-              {localFilters.preferredDateRanges.map((dateRange, index) => {
+              {localFilters.preferredTimeRanges.map((dateRange, index) => {
                 return (
                   <Badge
                     key={index}
@@ -92,8 +89,8 @@ function DateRangeField() {
                       className='h-auto p-0 text-muted-foreground hover:text-foreground'
                       onClick={() => {
                         setLocalFilters({
-                          preferredDateRanges:
-                            localFilters.preferredDateRanges.filter(
+                          preferredTimeRanges:
+                            localFilters.preferredTimeRanges.filter(
                               (range) =>
                                 range.startTime !== dateRange.startTime,
                             ),
@@ -141,7 +138,7 @@ function DateRangeField() {
                         .minute(parseInt(minutes, 10));
                       setValue((prev) => ({
                         startTime: newDate.toDate(),
-                        endTime: prev?.endTime,
+                        endTime: prev?.endTime ?? null,
                       }));
                     }}
                     className='w-full'
@@ -179,7 +176,7 @@ function DateRangeField() {
                           .hour(parseInt(hours, 10))
                           .minute(parseInt(minutes, 10));
                         setValue((prev) => ({
-                          startTime: prev?.startTime,
+                          startTime: prev?.startTime ?? null,
                           endTime: newDate.toDate(),
                         }));
                       }}

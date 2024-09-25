@@ -57,7 +57,7 @@ export const candidateSelfSchedule = async ({
       isNoConflicts: true,
       isOutSideWorkHours: formatted_ai_reponse.include_outside_working_hours,
       isSoftConflicts: formatted_ai_reponse.includeAllSoftConflictSlots,
-      preferredDateRanges: [
+      preferredTimeRanges: [
         {
           startTime:
             formatted_ai_reponse.candidateAvailability.prefferredTime.startTime,

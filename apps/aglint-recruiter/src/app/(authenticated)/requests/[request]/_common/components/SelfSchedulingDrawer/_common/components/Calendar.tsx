@@ -37,30 +37,27 @@ function Calendar() {
     const convertSelectedSessionsToEvents: EventCalendar[] = selectedSessions
       .map((session) => {
         const ints = [...session.qualifiedIntervs, ...session.trainingIntervs];
-        return ints.map(
-          (int) =>
-            ({
-              start: session.start_time,
-              end: session.end_time,
-              title: session.session_name,
-              resourceId: int.user_id,
-              id: crypto.randomUUID(),
-              extendedProps: {
-                conferenceData: null,
-                color: getStringColor(
-                  getFullName(int.first_name, int.last_name).charCodeAt(0),
-                ).text,
-                attendees: ints.map((interv) => ({
-                  email: interv.email,
-                  organizer: false,
-                  responseStatus: 'needsAction',
-                })),
-                isSelected: true,
-                session_id:
-                  session.session_id + session.qualifiedIntervs[0].user_id,
-              },
-            }) as EventCalendar,
-        );
+        return ints.map((int) => ({
+          start: session.start_time,
+          end: session.end_time,
+          title: session.session_name || '',
+          resourceId: int.user_id,
+          id: crypto.randomUUID(),
+          extendedProps: {
+            conferenceData: null,
+            color: getStringColor(
+              getFullName(int.first_name, int.last_name).charCodeAt(0),
+            ).text,
+            attendees: ints.map((interv) => ({
+              email: interv.email,
+              organizer: false,
+              responseStatus: 'needsAction',
+            })) as EventCalendar['extendedProps']['attendees'],
+            isSelected: true,
+            session_id:
+              session.session_id + session.qualifiedIntervs[0].user_id || '',
+          },
+        }));
       })
       .flat();
 
@@ -84,10 +81,13 @@ function Calendar() {
           currentDate={calendarDate}
           setCurrentDate={setCalendarDate}
           isLoading={fetchingPlan}
-          businessHours={transformWorkHours(
-            recruiter.scheduling_settings.workingHours,
-            recruiter.scheduling_settings.timeZone.tzCode,
-          )}
+          businessHours={
+            recruiter?.scheduling_settings &&
+            transformWorkHours(
+              recruiter.scheduling_settings.workingHours,
+              recruiter.scheduling_settings.timeZone.tzCode,
+            )
+          }
         />
       )}
     </>

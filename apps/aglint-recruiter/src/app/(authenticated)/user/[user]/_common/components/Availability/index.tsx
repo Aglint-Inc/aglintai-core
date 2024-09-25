@@ -5,7 +5,7 @@ import { Lightbulb } from 'lucide-react';
 import { SectionCard } from '@/authenticated/components/SectionCard';
 import { UIButton } from '@/components/Common/UIButton';
 
-export const Availability = ({ interviewer }) => {
+export const Availability = () => {
   return (
     <SectionCard title='Availability & AI Instructions'>
       <div className='space-y-4'>
@@ -13,18 +13,16 @@ export const Availability = ({ interviewer }) => {
           <h3 className='mb-2 text-sm font-medium text-gray-700'>
             Weekly Hours
           </h3>
-          <p className='text-xl font-bold'>
-            {interviewer.availability.weeklyHours} hours
-          </p>
+          <p className='text-xl font-bold'>weeklyHours</p>
         </div>
         <div>
           <h3 className='mb-2 text-sm font-medium text-gray-700'>
             Preferred Times
           </h3>
           <div className='space-y-1'>
-            {interviewer.availability.preferredTimes.map((time, index) => (
-              <Badge key={index} variant='secondary'>
-                {time}
+            {[1, 2, 3, 4, 5].map((k) => (
+              <Badge key={k} variant='secondary'>
+                time
               </Badge>
             ))}
           </div>
@@ -34,9 +32,9 @@ export const Availability = ({ interviewer }) => {
             Unavailable Dates
           </h3>
           <div className='space-y-1'>
-            {interviewer.availability.unavailableDates.map((date, index) => (
-              <Badge key={index} variant='outline'>
-                {date}
+            {[1, 2, 3, 4, 5].map((k) => (
+              <Badge key={k} variant='outline'>
+                date
               </Badge>
             ))}
           </div>

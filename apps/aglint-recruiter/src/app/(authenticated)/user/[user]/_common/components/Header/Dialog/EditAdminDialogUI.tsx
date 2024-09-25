@@ -17,6 +17,7 @@ import { type MemberType } from 'src/app/_common/types/memberType';
 
 import { type useRolesOptions } from '@/authenticated/hooks/useRolesOptions';
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
+import UITypography from '@/components/Common/UITypography';
 import { type useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type useAllDepartments } from '@/queries/departments';
 import { type useAllOfficeLocations } from '@/queries/officeLocations';
@@ -29,7 +30,7 @@ import {
 
 type Props = {
   form: EditAdminFormType;
-  imageFile: MutableRefObject<File>;
+  imageFile: MutableRefObject<File | null>;
   setIsImageChanged: Dispatch<SetStateAction<boolean>>;
   setForm: Dispatch<SetStateAction<EditAdminFormType>>;
   formError: EditAdminFormErrorType;
@@ -159,14 +160,20 @@ export const Form = ({
               <SelectValue placeholder='Choose Location' />
             </SelectTrigger>
             <SelectContent>
-              {officeLocations.map((location) => (
-                <SelectItem key={location.id} value={location.id.toString()}>
-                  {[location.city, location.region, location.country]
-                    .filter((location) => location)
-                    .map((location) => capitalizeFirstLetter(location).trim())
-                    .join(', ')}
-                </SelectItem>
-              ))}
+              {officeLocations?.length ? (
+                officeLocations.map((location) => (
+                  <SelectItem key={location.id} value={location.id.toString()}>
+                    {[location.city, location.region, location.country]
+                      .filter((location) => location)
+                      .map((location) => capitalizeFirstLetter(location).trim())
+                      .join(', ')}
+                  </SelectItem>
+                ))
+              ) : (
+                <UITypography className='px-4 py-1 text-sm'>
+                  No Location
+                </UITypography>
+              )}
             </SelectContent>
           </Select>
         </div>
@@ -182,32 +189,39 @@ export const Form = ({
               <SelectValue placeholder='Select Department' />
             </SelectTrigger>
             <SelectContent>
-              {departments.map((department) => (
-                <SelectItem
-                  key={department.id}
-                  value={department.id.toString()}
-                >
-                  {capitalizeFirstLetter(department.name)}
-                </SelectItem>
-              ))}
+              {departments?.length ? (
+                departments.map((department) => (
+                  <SelectItem
+                    key={department.id}
+                    value={department.id.toString()}
+                  >
+                    {capitalizeFirstLetter(department.name)}
+                  </SelectItem>
+                ))
+              ) : (
+                <UITypography className='px-4 py-1 text-sm'>
+                  No Departments
+                </UITypography>
+              )}
             </SelectContent>
           </Select>
         </div>
         {(member.role !== 'admin' ||
-          member.created_by === recruiterUser.user_id ||
-          member.user_id !== recruiterUser.user_id) && (
+          member.created_by === recruiterUser?.user_id ||
+          member.user_id !== recruiterUser?.user_id) && (
           <>
             <div className='space-y-2'>
               <Label htmlFor='role'>Role</Label>
               <Select
                 value={form.role_id}
                 onValueChange={(value) => {
-                  const selectedRole = roleOptions.find(
+                  const selectedRole = roleOptions?.find(
                     (role) => role.id === value,
                   );
+                  const role = selectedRole?.name as string;
                   setForm({
                     ...form,
-                    role: selectedRole.name,
+                    role,
                     role_id: value,
                   });
                 }}
@@ -216,11 +230,17 @@ export const Form = ({
                   <SelectValue placeholder='Choose Role' />
                 </SelectTrigger>
                 <SelectContent>
-                  {roleOptions.map((role) => (
-                    <SelectItem key={role.id} value={role.id}>
-                      {capitalizeFirstLetter(role.name)}
-                    </SelectItem>
-                  ))}
+                  {roleOptions?.length ? (
+                    roleOptions.map((role) => (
+                      <SelectItem key={role.id} value={role.id}>
+                        {capitalizeFirstLetter(role.name)}
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <UITypography className='px-4 py-1 text-sm'>
+                      No Roles
+                    </UITypography>
+                  )}
                 </SelectContent>
               </Select>
             </div>
