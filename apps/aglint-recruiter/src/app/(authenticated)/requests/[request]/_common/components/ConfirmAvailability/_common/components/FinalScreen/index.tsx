@@ -61,7 +61,7 @@ function FinalScreen() {
       });
   }
   useEffect(() => {
-    if (!emailData) {
+    if (!emailData.html) {
       getEmail();
     }
   }, []);

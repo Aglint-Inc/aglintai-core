@@ -123,8 +123,8 @@ export const useScheduleRequest = () => {
         });
         if (assigned_user_id !== recruiterUser.user_id) {
           router.push(
-            ROUTES['/requests/[id]']({
-              id: res.data,
+            ROUTES['/requests/[request]']({
+              request: res.data,
             }),
           );
         }
@@ -133,8 +133,8 @@ export const useScheduleRequest = () => {
         });
       } else if (res.status === 201 || res.status === 200) {
         router.push(
-          ROUTES['/requests/[id]']({
-            id: res.data,
+          ROUTES['/requests/[request]']({
+            request: res.data,
           }),
         );
         utils.application.applicationRequest.invalidate({

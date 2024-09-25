@@ -4,6 +4,8 @@ import { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
+import MoveToQualifiedDialog from '@/interview-pool/details/dialogs/MoveToQualified';
+import { api } from '@/trpc/client';
 
 import AddMemberDialog from '../../../dialogs/AddMemberDialog';
 import DeleteMemberDialog from '../../../dialogs/DeleteMemberDialog';
@@ -14,6 +16,7 @@ import { useProgressModuleUsers } from '../../../hooks/useProgressModuleUsers';
 import {
   setIsAddMemberDialogOpen,
   setTrainingStatus,
+  useModulesStore,
 } from '../../../stores/store';
 import EnableDisable from './EnableDisable';
 import IndividualRow from './IndividualRow';
@@ -40,13 +43,22 @@ function Training() {
     actions: '',
   };
 
+  const utils = api.useUtils();
+  const selUser = useModulesStore((state) => state.selUser);
+
   return (
     <>
       <DeleteMemberDialog />
       <AddMemberDialog />
       <PauseDialog />
       <ResumeMemberDialog />
-
+      <MoveToQualifiedDialog
+        refetch={async () => {
+          await utils.interview_pool.module_and_users.invalidate({
+            module_id: selUser.module_id,
+          });
+        }}
+      />
       <EnableDisable />
 
       {editModule?.settings?.require_training && (
@@ -73,7 +85,7 @@ function Training() {
             <CardContent className='p-0'>
               <table className='w-full'>
                 <thead>
-                  <tr >
+                  <tr>
                     {Object.keys(headers).map((key) => (
                       <th
                         key={key}

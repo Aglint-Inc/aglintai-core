@@ -75,7 +75,7 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
     }
   }
   useEffect(() => {
-    if (!emailData) {
+    if (!emailData.html) {
       getEmail();
     }
   }, []);
