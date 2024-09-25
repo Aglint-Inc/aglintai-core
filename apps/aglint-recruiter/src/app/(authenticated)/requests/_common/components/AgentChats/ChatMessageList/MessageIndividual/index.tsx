@@ -2,12 +2,12 @@ import { type FunctionNames } from '@aglint/shared-types/src/aglintApi/superviso
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import Image from 'next/image';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import { type ChatType } from '../hooks/fetch';
 import Widgets from '../Widgets';
-import AgentIcon from './AgentIcon';
 import CustomTypographyLink from './CustomTypographyLink';
 
 function MessageIndividual({ chat }: { chat: ChatType }) {
@@ -38,7 +38,12 @@ function MessageIndividual({ chat }: { chat: ChatType }) {
             </AvatarFallback>
           </Avatar>
         ) : (
-          <AgentIcon />
+          <Image
+            src='/agent/agent-icon.svg'
+            alt='Agent Icon'
+            width={32}
+            height={32}
+          />
         )}
 
         <div className='flex w-full flex-col space-y-1'>

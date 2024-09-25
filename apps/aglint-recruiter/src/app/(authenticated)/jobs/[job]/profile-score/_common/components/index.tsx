@@ -410,7 +410,7 @@ const SectionContent: FC<{ type: Sections }> = ({ type }) => {
       </div>
       <div className='flex items-center pl-2'>
         <Input
-          placeholder={`Add new ${type} (comma-separated for multiple)`}
+          placeholder={`Add new ${type}`}
           value={newTags}
           onChange={(e) => setNewTags(e.target.value)}
           onKeyPress={(e) => {
@@ -596,7 +596,7 @@ const Tips = () => {
   return (
     <>
       {firstVisit && (
-        <div className='mt-4'>
+        <div className='mx-4 mt-4'>
           <div className='flex items-start space-x-4 rounded-md bg-purple-100 p-4'>
             <Lightbulb className='h-6 w-6 flex-shrink-0 text-purple-500' />
             <div className='flex-grow'>
@@ -609,7 +609,7 @@ const Tips = () => {
               </p>
             </div>
             <Button
-              variant='outline'
+              variant='ghost'
               size='sm'
               onClick={handleTip}
               className='text-purple-500 hover:text-purple-700'

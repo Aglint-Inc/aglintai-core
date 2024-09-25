@@ -310,7 +310,7 @@ const JobForms = ({
           Add a detailed job description to help candidates understand the role
           and apply.
         </div>
-        <div className='mt-4 rounded-md border p-4'>{description}</div>
+        <div className='mt-4'>{description}</div>
         {fields.description.error.value && (
           <div className='mt-2 flex items-center text-red-500'>
             <AlertTriangle className='mr-2' />
