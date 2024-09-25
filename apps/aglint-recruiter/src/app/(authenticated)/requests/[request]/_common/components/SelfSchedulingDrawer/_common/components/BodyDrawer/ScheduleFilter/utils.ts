@@ -52,7 +52,11 @@ export function filterSchedulingOptionsArray({
   user_tz = dayjsLocal.tz.guess(),
 }: {
   schedulingOptions: ApiResponseFindAvailability['slots'];
-  filters: SelfSchedulingFlow['filters'];
+  filters: Omit<SelfSchedulingFlow['filters'], 'preferredInterviewers'> & {
+    preferredInterviewers: {
+      user_id: string;
+    }[];
+  };
   user_tz?: string;
 }) {
   const allFilteredOptions: ApiResponseFindAvailability['slots'] = (

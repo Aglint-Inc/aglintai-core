@@ -8,11 +8,9 @@ import { apiTargetToEvents } from '@requests/components/RequestProgress/utils/pr
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 // import { apiTargetToEvents } from '@/components/Requests/_common/components/RequestProgress/utils/progressMaps';
-import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfSchedule';
 import { confirmSlotFromCandidateAvailability } from '@/services/api-schedulings/confirmSlotFromCandidateAvailability';
 import { findCandSelectedSlots } from '@/services/api-schedulings/findCandSelectedSlots';
 import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { getOrganizerId } from '@/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -20,10 +18,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const {
     candidate_availability_request_id,
     recruiter_id,
-    application_id,
     request_id,
     event_run_id,
-    payload,
   } = req.body;
   try {
     const event = apiTargetToEvents[target_api];
@@ -60,7 +56,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         ),
     );
     const session_ids = meeting_details.map((m) => m.session_id);
-    const organizer_id = await getOrganizerId(application_id, supabaseAdmin);
 
     const cand_schedule = new CandidatesSchedulingV2({
       include_conflicting_slots: {
@@ -106,23 +101,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     } else if (
       target_api === 'onReceivingAvailReq_agent_sendSelfScheduleRequest'
     ) {
-      await executeWorkflowAction(
-        candidateSelfSchedule,
-        {
-          cloned_sessn_ids: session_ids,
-          start_date_str: avail_record.date_range[0],
-          end_date_str: avail_record.date_range[1],
-          organizer_id,
-          request_id,
-          application_id,
-          plans: cand_picked_slots,
-          reqProgressLogger,
-          mail_payload: payload?.email,
-          agent_payload: payload.agent.ai_response,
-          req_assignee_tz: request_assignee_tz,
-        },
-        reqProgressLogger,
-      );
+      // await executeWorkflowAction(
+      //   candidateSelfSchedule,
+      //   {
+      //     parsed_body: {
+      //       application_id,
+      //       event_run_id,
+      //       payload,
+      //       request_id,
+      //       recruiter_id,
+      //       session_ids,
+      //       target_api,
+      //     },
+      //     reqProgressLogger,
+      //     req_assignee_tz: request_assignee_tz,
+      //     organizer_id: organizer_id,
+      //     date_range:{},
+      //     job_payload:
+      //   },
+      //   reqProgressLogger,
+      // );
     }
     return res.status(200).send('OK');
   } catch (err) {

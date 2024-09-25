@@ -13,11 +13,11 @@ import { type filterSchedulingOptionsArray } from '../components/BodyDrawer/Sche
 
 type PrefferedInterviewer = {
   user_id: string;
-  // first_name: string;
-  // last_name: string;
-  // email: string;
-  // position: string;
-  // profile_image: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  position: string;
+  profile_image: string;
 };
 export interface SelfSchedulingFlow {
   isSelfScheduleDrawerOpen: boolean;
