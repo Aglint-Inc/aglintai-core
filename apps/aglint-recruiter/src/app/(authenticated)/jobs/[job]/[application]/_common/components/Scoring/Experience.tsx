@@ -57,7 +57,7 @@ const getCompanyLogos = (data) => {
       key={i}
       src={`https://logo.clearbit.com/${position.org.toLowerCase().replace(/\s+/g, '')}.com`}
       alt={`${position.org || 'Company'} logo`}
-      fallbackSrc={'/images/logo/company.png'}
+      fallbackSrc={'/images/default/company.svg'}
     />
   ));
 };
@@ -154,7 +154,7 @@ const Experiences = () => {
                   key={i}
                   src={`https://logo.clearbit.com/${org.toLowerCase().replace(/\s+/g, '')}.com`}
                   alt={`${org || 'Company'} logo`}
-                  fallbackSrc={'/images/logo/company.png'}
+                  fallbackSrc={'/images/default/company.png'}
                 />
                 <span>{capitalize(org, conjunctions)}</span>
               </TableCell>

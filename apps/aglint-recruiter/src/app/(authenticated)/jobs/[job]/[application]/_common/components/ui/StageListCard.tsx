@@ -65,7 +65,7 @@ export function StageListCard({
             })}
           >
             <Image
-              src='/images/icons/arrow-right.svg'
+              src='/images/interview-stage/arrow-right.svg'
               alt='arrow-right'
               width={34}
               height={66}
