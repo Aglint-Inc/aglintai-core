@@ -2,7 +2,7 @@ import { forwardRef, memo, type Ref } from 'react';
 
 import type { StageProgressProps } from '.';
 
-export type StageProgressPillProps = {
+type StageProgressPillProps = {
   pillProps: ReturnType<typeof getPlanPillProps>[number];
   isLast: boolean;
   isActive: boolean;

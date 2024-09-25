@@ -11,12 +11,14 @@ import {
 
 import { UIButton } from '@/components/Common/UIButton';
 
+import { type sectionKeys } from '..';
+
 export const SideBar = ({
   scrollToSection,
   activeSection,
 }: {
   // eslint-disable-next-line no-unused-vars
-  scrollToSection: (sectionKey: any) => void;
+  scrollToSection: (sectionKey: sectionKeys) => void;
   activeSection: string;
 }) => {
   return (
@@ -74,7 +76,18 @@ export const SideBar = ({
   );
 };
 
-const SideNavItem = ({ icon: Icon, label, active = false, onClick }) => (
+const SideNavItem = ({
+  icon: Icon,
+  label,
+  active = false,
+  onClick,
+}: {
+  icon: any;
+  // icon: ReactElement;
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}) => (
   <UIButton
     variant={active ? 'secondary' : 'ghost'}
     className='w-full justify-start'

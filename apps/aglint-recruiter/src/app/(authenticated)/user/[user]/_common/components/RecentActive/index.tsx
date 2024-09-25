@@ -2,16 +2,16 @@ import { FileText } from 'lucide-react';
 
 import { SectionCard } from '@/authenticated/components/SectionCard';
 
-export const RecentActivity = ({ interviewer }) => {
+export const RecentActivity = () => {
   return (
     <SectionCard title='Recent Activity'>
       <ul className='space-y-4'>
-        {interviewer.recentActivity.map((activity) => (
+        {[1, 2, 3, 4].map((k) => (
           <List
-            key={activity.action}
-            action={activity.action}
-            details={activity.details}
-            timestamp={activity.timestamp}
+            key={k}
+            action={'action'}
+            details={'details'}
+            timestamp={'timestamp'}
           />
         ))}
       </ul>
@@ -19,7 +19,15 @@ export const RecentActivity = ({ interviewer }) => {
   );
 };
 
-const List = ({ action, details, timestamp }) => {
+const List = ({
+  action,
+  details,
+  timestamp,
+}: {
+  action: string;
+  details: string;
+  timestamp: string;
+}) => {
   return (
     <li className='flex items-start space-x-3'>
       <div className='flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gray-100'>

@@ -119,7 +119,7 @@ function ConfirmAvailability() {
   const openAvailabilityDrawer = Boolean(candidateAvailabilityId);
   return (
     <UIDrawer
-      size={!isLoading && selectedDayAvailableBlocks ? 'full' : 'sm'}
+      size='full'
       title='Confirm Availability'
       onClose={closeDrawer}
       open={openAvailabilityDrawer && isFetched}
@@ -153,82 +153,69 @@ function ConfirmAvailability() {
           </>
         )
       }
+      calendar={<>{!isLoading && selectedDayAvailableBlocks && <Calendar />}</>}
     >
-      <div className={'flex w-full'}>
-        <div className={'h-[calc(100vh-96px)] overflow-hidden'}>
-          {!isLoading && selectedDayAvailableBlocks && <Calendar />}
-        </div>
-        <div>
-          <ShowCode>
-            <ShowCode.When
-              isTrue={
-                selectedIndex === (availableSlots?.slots ?? []).length + 1
-              }
-            >
-              <div
-                className={
-                  'h-[calc(100vh - 96px)] flex w-full flex-col gap-2 p-4'
-                }
-              >
-                <div>
-                  <div className='flex items-center gap-2'>
-                    <Check className='h-4 w-4 text-blue-500' />
-                    <h2 className='text-blue-500'>Interview Confirmed</h2>
-                  </div>
-                  <p>
-                    The candidate and the interviewers received an email
-                    containing a link to join to the interview on the specified
-                    date and time
-                  </p>
-                </div>
+      <ShowCode>
+        <ShowCode.When
+          isTrue={selectedIndex === (availableSlots?.slots ?? []).length + 1}
+        >
+          <div
+            className={'h-[calc(100vh - 96px)] flex w-full flex-col gap-2 p-4'}
+          >
+            <div>
+              <div className='flex items-center gap-2'>
+                <Check className='h-4 w-4 text-blue-500' />
+                <h2 className='text-blue-500'>Interview Confirmed</h2>
+              </div>
+              <p>
+                The candidate and the interviewers received an email containing
+                a link to join to the interview on the specified date and time
+              </p>
+            </div>
 
-                <div className={'flex flex-col gap-2'}>
-                  {selectedDateSlots &&
-                    selectedDateSlots?.map((item, index) => {
-                      return (
-                        <DayCardWrapper
-                          key={index}
-                          selectedCombIds={[]}
-                          item={{
-                            date_range: [item.selected_dates[0].curr_date],
-                            plans: item.selected_dates[0].plans,
-                          }}
-                          // eslint-disable-next-line @typescript-eslint/no-empty-function
-                          onClickSelect={() => {}}
-                          isDayCollapseNeeded={false}
-                          isSlotCollapseNeeded={false}
-                          isDayCheckboxNeeded={false}
-                          isRadioNeeded={false}
-                          isSlotCheckboxNeeded={false}
-                          index={index}
-                          // eslint-disable-next-line @typescript-eslint/no-empty-function
-                          setSelectedCombIds={() => {}}
-                        />
-                      );
-                    })}
-                  {selectedDateSlots && (
-                    <Link
-                      href={`/interviews/view?meeting_id=${selectedDateSlots[0]?.selected_dates[0]?.plans[0]?.sessions[0]?.meeting_id}`}
-                    >
-                      <UIButton>View in schedules</UIButton>
-                    </Link>
-                  )}
-                </div>
-              </div>
-            </ShowCode.When>
-            <ShowCode.When isTrue={isLoading && !isFetched}>
-              <div className='h-[calc(100vh - 96px)] flex items-center justify-center'>
-                <Loader2 className='h-6 w-6 animate-spin text-primary' />
-              </div>
-            </ShowCode.When>
-            <ShowCode.Else>
-              <SelectAvailableOption
-                availableSlots={availableSlots?.slots || []}
-              />
-            </ShowCode.Else>
-          </ShowCode>
-        </div>
-      </div>
+            <div className={'flex flex-col gap-2'}>
+              {selectedDateSlots &&
+                selectedDateSlots?.map((item, index) => {
+                  return (
+                    <DayCardWrapper
+                      key={index}
+                      selectedCombIds={[]}
+                      item={{
+                        date_range: [item.selected_dates[0].curr_date],
+                        plans: item.selected_dates[0].plans,
+                      }}
+                      // eslint-disable-next-line @typescript-eslint/no-empty-function
+                      onClickSelect={() => {}}
+                      isDayCollapseNeeded={false}
+                      isSlotCollapseNeeded={false}
+                      isDayCheckboxNeeded={false}
+                      isRadioNeeded={false}
+                      isSlotCheckboxNeeded={false}
+                      index={index}
+                      // eslint-disable-next-line @typescript-eslint/no-empty-function
+                      setSelectedCombIds={() => {}}
+                    />
+                  );
+                })}
+              {selectedDateSlots && (
+                <Link
+                  href={`/interviews/view?meeting_id=${selectedDateSlots[0]?.selected_dates[0]?.plans[0]?.sessions[0]?.meeting_id}`}
+                >
+                  <UIButton>View in schedules</UIButton>
+                </Link>
+              )}
+            </div>
+          </div>
+        </ShowCode.When>
+        <ShowCode.When isTrue={isLoading && !isFetched}>
+          <div className='h-[calc(100vh - 96px)] flex items-center justify-center'>
+            <Loader2 className='h-6 w-6 animate-spin text-primary' />
+          </div>
+        </ShowCode.When>
+        <ShowCode.Else>
+          <SelectAvailableOption availableSlots={availableSlots?.slots || []} />
+        </ShowCode.Else>
+      </ShowCode>
     </UIDrawer>
   );
 }

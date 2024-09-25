@@ -43,7 +43,7 @@ type Features =
   | 'REPORTS'
   | 'AGENT'
   | 'THEMES';
-export interface ContextValue {
+interface ContextValue {
   userCountry: string | null;
   recruiter: GetUserDetailsAPI['response']['recruiter'];
   userPermissions: {
@@ -91,8 +91,9 @@ const AuthProvider = ({ children }) => {
   const recruiter_id = recruiter?.id ?? null;
   const [userCountry, setUserCountry] = useState('us');
   const [loading, setLoading] = useState<boolean>(true);
-  const [userPermissions, setUserPermissions] =
-    useState<ContextValue['userPermissions']>(null);
+  const [userPermissions, setUserPermissions] = useState<
+    ContextValue['userPermissions'] | null
+  >(null);
 
   useEffect(() => {
     Promise.all([
@@ -223,7 +224,7 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-export { AuthContext, AuthProvider };
+export { AuthProvider };
 
 const AuthLoader = () => {
   return (

@@ -36,7 +36,7 @@ function StepSlotOptions() {
     requests: { data: requestList },
   } = useRequests();
 
-  const selectedRequest = Object.values(requestList)
+  const selectedRequest = Object.values(requestList ?? [])
     .flat()
     .find((request) => request?.id === (requestId || ''));
 
@@ -57,8 +57,8 @@ function StepSlotOptions() {
   const payload: TargetApiPayloadType<'sendSelfScheduleRequest_email_applicant'> =
     {
       is_preview: true,
-      organizer_id: recruiterUser.user_id,
-      application_id: selectedRequest.application_id,
+      organizer_id: recruiterUser?.user_id ?? '',
+      application_id: selectedRequest?.application_id,
     };
 
   useEffect(() => {

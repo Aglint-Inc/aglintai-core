@@ -1,8 +1,6 @@
-import { type DatabaseTable } from '@aglint/shared-types';
-
 import type ROUTES from '@/utils/routing/routes';
 
-export type Path<T extends keyof typeof ROUTES> = keyof Pick<typeof ROUTES, T>;
+type Path<T extends keyof typeof ROUTES> = keyof Pick<typeof ROUTES, T>;
 
 export type LinkProps =
   | {
@@ -69,11 +67,3 @@ export type LinkProps =
       module: 'Reports';
       path: Path<'/reports'>;
     };
-
-export type SubTabs = {
-  name: string;
-  icon: string;
-  url: string;
-  tab: string;
-  permission: DatabaseTable['permissions']['name'];
-};

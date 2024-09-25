@@ -52,8 +52,6 @@ export function FilterOptions({
   multiSelect = true,
   separator = false,
   sectionHeading,
-  // eslint-disable-next-line no-unused-vars
-  sectionReset,
   setSearchOp,
 }: FilterOptionsType) {
   const [search, setSearch] = React.useState('');

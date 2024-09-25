@@ -38,7 +38,7 @@ function ToogleList() {
           isHardConflicts: true,
           isOutSideWorkHours: true,
           preferredInterviewers: [],
-          preferredDateRanges: [],
+          preferredTimeRanges: [],
           isWorkLoad: false,
         },
       }),

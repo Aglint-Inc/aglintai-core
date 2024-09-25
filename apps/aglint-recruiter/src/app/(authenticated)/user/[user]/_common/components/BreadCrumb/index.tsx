@@ -7,7 +7,7 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Home } from 'lucide-react';
-export const BreadCrumb = ({ name }) => {
+export const BreadCrumb = ({ name }: { name: string }) => {
   return (
     <div className='py-6'>
       <Breadcrumb>

@@ -7,8 +7,8 @@ import { createContext, type ReactNode, useContext } from 'react';
 import { useAuthDetails } from '../AuthContext/AuthContext';
 
 /* eslint-disable no-unused-vars */
-export type RolesAndPermissionsContextType = {
-  checkPermissions: (x: DatabaseTable['permissions']['name'][]) => boolean;
+type RolesAndPermissionsContextType = {
+  checkPermissions?: (x: DatabaseTable['permissions']['name'][]) => boolean;
   devlinkProps?: (
     x: DatabaseTable['permissions']['name'][],
   ) => { onClick: null; style: { display: 'none' } } | object;

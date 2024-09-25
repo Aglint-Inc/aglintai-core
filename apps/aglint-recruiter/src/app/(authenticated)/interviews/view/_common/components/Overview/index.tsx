@@ -50,7 +50,7 @@ function Overview() {
       }
       textInterviewer={`Interviewer${confirmedUsers?.length > 1 ? 's' : ''}`}
       textInterviewerCount={
-        confirmedUsers?.length > 0 && `(${confirmedUsers?.length})`
+        confirmedUsers?.length > 0 ? `(${confirmedUsers?.length})` : '(0)'
       }
       slotInterviewerList={
         confirmedUsers?.length > 0 ? (
@@ -77,16 +77,16 @@ function Overview() {
           <div className='mb-2 flex items-center space-x-3'>
             <Avatar className='h-8 w-8'>
               <AvatarImage
-                src={schedule.organizer.profile_image}
+                src={schedule.organizer.profile_image ?? 'avatar.png'}
                 alt={getFullName(
-                  schedule.organizer.first_name,
-                  schedule.organizer.last_name,
+                  schedule.organizer.first_name ?? '',
+                  schedule?.organizer.last_name ?? '',
                 )}
               />
               <AvatarFallback>
                 {getFullName(
-                  schedule.organizer.first_name,
-                  schedule.organizer.last_name,
+                  schedule?.organizer?.first_name ?? '',
+                  schedule?.organizer?.last_name ?? '',
                 ).charAt(0)}
               </AvatarFallback>
             </Avatar>
@@ -96,8 +96,8 @@ function Overview() {
                 className='text-sm font-medium hover:underline'
               >
                 {getFullName(
-                  schedule.organizer.first_name,
-                  schedule.organizer.last_name,
+                  schedule?.organizer?.first_name ?? '',
+                  schedule?.organizer?.last_name ?? '',
                 )}
               </Link>
               <p className='text-xs text-gray-500'>
@@ -117,7 +117,7 @@ function Overview() {
           ? formatTimeWithTimeZone({
               start_time: schedule.interview_meeting.start_time,
               end_time: schedule.interview_meeting.end_time,
-              timeZone: schedule.candidates.timezone,
+              timeZone: schedule?.candidates?.timezone || '--',
             })
           : '--'
       }
@@ -131,7 +131,7 @@ function Overview() {
           ? dayjsLocal(schedule.interview_meeting.end_time).format('MMMM')
           : '--'
       }
-      textPanelName={schedule.interview_session.name}
+      textPanelName={schedule?.interview_session.name ?? ''}
       slotStatusBadge={
         <MeetingStatusBadge status={schedule.interview_meeting.status} />
       }
@@ -140,11 +140,13 @@ function Overview() {
           variant='outline'
           size='sm'
           onClick={() => {
-            checkPermissions(['interview_types']) &&
-              window.open(
-                `/interview-pool/${schedule.interview_session.module_id}`,
-                '_blank',
-              );
+            if (checkPermissions) {
+              checkPermissions(['interview_types']) &&
+                window.open(
+                  `/interview-pool/${schedule.interview_session.module_id}`,
+                  '_blank',
+                );
+            }
           }}
         >
           {schedule?.interview_module?.name}
@@ -162,8 +164,8 @@ function Overview() {
             <div className='flex flex-col'>
               <p className='text-base font-semibold'>
                 {getFullName(
-                  schedule.candidates.first_name,
-                  schedule.candidates.last_name,
+                  schedule?.candidates?.first_name ?? '',
+                  schedule?.candidates?.last_name ?? '',
                 )}
               </p>
             </div>
@@ -173,14 +175,14 @@ function Overview() {
               <Clock className='mr-1 h-4 w-4' />
               <span>
                 {formatTimeWithTimeZone({
-                  start_time: schedule.interview_meeting.start_time,
-                  end_time: schedule.interview_meeting.end_time,
-                  timeZone: schedule.candidates.timezone,
+                  start_time: schedule.interview_meeting.start_time ?? '',
+                  end_time: schedule.interview_meeting.end_time ?? '',
+                  timeZone: schedule?.candidates?.timezone ?? '',
                 })}
               </span>
             </div>
             <p className='text-xs text-gray-500'>
-              {getShortTimeZone(schedule.candidates.timezone)}
+              {getShortTimeZone(schedule?.candidates?.timezone ?? '')}
             </p>
           </div>
         </div>
@@ -193,7 +195,10 @@ function Overview() {
             variant='outline'
             size='sm'
             onClick={() => {
-              window.open(schedule.interview_meeting.meeting_link, '_blank');
+              window.open(
+                schedule?.interview_meeting?.meeting_link ?? '',
+                '_blank',
+              );
             }}
           >
             Join Meeting

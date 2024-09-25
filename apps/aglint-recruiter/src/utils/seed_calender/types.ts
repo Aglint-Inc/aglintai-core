@@ -19,7 +19,7 @@ export interface MeetingLimit {
   period: 'day' | 'month';
 }
 
-export interface MeetingCount {
+interface MeetingCount {
   occ_cnt: number;
   // period: 'day' | 'month';
 }

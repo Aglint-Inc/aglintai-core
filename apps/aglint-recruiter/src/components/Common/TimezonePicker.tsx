@@ -26,7 +26,7 @@ export function TimezonePicker({
   width = '280',
 }: {
   onChange: (value: TimeZoneType) => void;
-  value: TimeZoneType['tzCode'];
+  value: TimeZoneType['tzCode'] | null;
   width?: string;
 }) {
   const [open, setOpen] = useState(false);
@@ -47,7 +47,7 @@ export function TimezonePicker({
         >
           {selectedTimezone
             ? // If the user has selected a timezone, show its label.
-              `${selectedTimezone.label}`
+              `${selectedTimezone?.label}`
             : // Otherwise, show the placeholder text.
               'Select timezone...'}
           <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />

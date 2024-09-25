@@ -2,6 +2,7 @@ import {
   type TimeDurationDayjsType,
   type TimeDurationType,
 } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 import { type Dayjs } from 'dayjs';
 
 import { userTzDayjs } from './userTzDayjs';
@@ -131,4 +132,26 @@ export const convertTimeDurStrToDayjsChunk = (
   }
 
   return chunk;
+};
+
+export const compareTimes = (
+  isoString1: string,
+  isoString2: string,
+  tz: string,
+) => {
+  const time1 = dayjsLocal(isoString1).tz(tz);
+  const time2 = dayjsLocal(isoString2).tz(tz);
+  const hours1 = time1.hour();
+  const minutes1 = time1.minute();
+
+  const hours2 = time2.hour();
+  const minutes2 = time2.minute();
+
+  if (hours1 === hours2 && minutes1 === minutes2) {
+    return 0; // Times are equal
+  } else if (hours1 > hours2 || (hours1 === hours2 && minutes1 > minutes2)) {
+    return 1; // First time is later
+  } else {
+    return -1; // Second time is later
+  }
 };

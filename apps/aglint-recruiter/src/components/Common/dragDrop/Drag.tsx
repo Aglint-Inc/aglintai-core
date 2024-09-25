@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import { GripVertical } from 'lucide-react';
 import { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 
@@ -28,12 +28,7 @@ export const Drag = ({ id, index, ...props }) => {
                   display: onHovered || snapshot.isDragging ? 'block' : 'none',
                 }}
               >
-                <Image
-                  src='/images/svg/drag.svg'
-                  alt='drag'
-                  width={12}
-                  height={24}
-                />
+                <GripVertical size={24} />
               </div>
               {props.children}
             </div>

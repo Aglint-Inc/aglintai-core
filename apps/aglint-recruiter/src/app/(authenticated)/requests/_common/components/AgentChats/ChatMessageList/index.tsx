@@ -2,6 +2,7 @@ import { getFullName } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Separator } from '@components/ui/separator';
+import Image from 'next/image';
 import { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -48,32 +49,12 @@ function ChatMessageList() {
       {!viewHistory ? (
         <div className='flex h-[calc(100vh-180px)] flex-col items-center justify-center gap-4 p-4'>
           <div>
-            <svg
-              width='244'
-              height='108'
-              viewBox='0 0 244 108'
-              fill='none'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path
-                d='M193.185 7.21883V33.6247C193.185 36.9922 190.451 39.7263 187.084 39.7263H56.9142C53.5467 39.7263 50.8125 36.9922 50.8125 33.6247V7.21883C50.8125 3.85133 53.5467 1.11719 56.9142 1.11719H187.084C190.451 1.11719 193.185 3.85133 193.185 7.21883Z'
-                fill='#F1F0EF'
-                stroke='#FDFDFC'
-                stroke-width='2.03389'
-              />
-              <path
-                d='M219.625 29.5906V66.2696C219.625 70.7596 215.98 74.4051 211.49 74.4051H32.5067C28.0167 74.4051 24.3711 70.7596 24.3711 66.2696V29.5906C24.3711 25.1006 28.0167 21.4551 32.5067 21.4551H211.49C215.98 21.4551 219.625 25.1006 219.625 29.5906Z'
-                fill='#F1F0EF'
-                stroke='#FDFDFC'
-                stroke-width='2.03389'
-              />
-              <path
-                d='M242 51.9643V96.7097C242 102.322 237.443 106.879 231.831 106.879H12.1695C6.55695 106.879 2 102.322 2 96.7097V51.9643C2 46.3518 6.55695 41.7949 12.1695 41.7949H231.831C237.443 41.7949 242 46.3518 242 51.9643Z'
-                fill='#E9E8E6'
-                stroke='#FDFDFC'
-                stroke-width='2.03389'
-              />
-            </svg>
+            <Image
+              src='/images/agent/card-stack.svg'
+              alt='Card Stack'
+              width={244}
+              height={108}
+            />
           </div>
           <div className='flex flex-col gap-2 text-center'>
             <UITypography type='small'>

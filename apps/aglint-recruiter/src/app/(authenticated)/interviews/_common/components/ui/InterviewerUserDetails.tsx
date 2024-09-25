@@ -31,11 +31,11 @@ function InterviewerUserDetail({
     DatabaseTable['interview_meeting'],
     'start_time' | 'end_time' | 'status'
   >;
-  cancelReason: DatabaseTable['interview_session_cancel'];
+  cancelReason: DatabaseTable['interview_session_cancel'] | null;
   accepted_status: DatabaseTable['interview_session_relation']['accepted_status'];
   isCalendarConnected: boolean;
   isPaused: boolean;
-  pause_json: DatabaseTable['interview_module_relation']['pause_json'];
+  pause_json: DatabaseTable['interview_module_relation']['pause_json'] | null;
   userDetails: {
     profile_image: string;
     position: string;
@@ -91,7 +91,7 @@ function InterviewerUserDetail({
             {interview_meeting?.start_time
               ? formatTimeWithTimeZone({
                   start_time: interview_meeting.start_time,
-                  end_time: interview_meeting.end_time,
+                  end_time: interview_meeting.end_time ?? '',
                   timeZone: interviewerTimeZone,
                 })
               : 'Time not set'}

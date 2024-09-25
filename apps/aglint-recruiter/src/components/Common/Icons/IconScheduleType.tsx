@@ -5,7 +5,7 @@ function IconScheduleType({
   type,
   size = 16,
 }: {
-  type: DB['public']['Enums']['interview_schedule_type'];
+  type: DB['public']['Enums']['interview_schedule_type'] | null;
   size?: number;
 }) {
   return (

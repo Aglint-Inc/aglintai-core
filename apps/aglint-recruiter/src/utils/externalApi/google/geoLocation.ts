@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export async function searchLocation(address: string) {
+async function searchLocation(address: string) {
   const apiKey = 'AIzaSyDO-310g2JDNPmN3miVdhXl2gJtsBRYUrI';
   const res = await axios.get<GoogleLocationAPI>(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`,
@@ -41,7 +41,7 @@ export async function searchExactLocation(
   };
 }
 
-export function extractMetaFromGeoLocation(
+function extractMetaFromGeoLocation(
   addressObject: GoogleLocationAPI['results'][number],
 ) {
   let city = null,
@@ -61,7 +61,7 @@ export function extractMetaFromGeoLocation(
   return { city, state, country };
 }
 
-export const getTimeZoneOfGeo = async (
+const getTimeZoneOfGeo = async (
   {
     lang,
     lat,
@@ -77,7 +77,7 @@ export const getTimeZoneOfGeo = async (
   return data;
 };
 
-export type GoogleTimeZoneAPI = {
+type GoogleTimeZoneAPI = {
   dstOffset: number;
   rawOffset: number;
   status: string;
@@ -85,7 +85,7 @@ export type GoogleTimeZoneAPI = {
   timeZoneName: string;
 };
 
-export type GoogleLocationAPI = {
+type GoogleLocationAPI = {
   results: {
     address_components: AddressComponent[];
     formatted_address: string;

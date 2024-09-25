@@ -30,7 +30,7 @@ export type CandidateResumesCreateAction = {
   response: ReturnType<typeof createCandidateResumeDbAction>;
 };
 
-export type CandidateResumesDeleteAction = {
+type CandidateResumesDeleteAction = {
   request: {
     inputData: {
       candidate_file_id: string;

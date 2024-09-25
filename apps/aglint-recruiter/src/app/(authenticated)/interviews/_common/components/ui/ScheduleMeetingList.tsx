@@ -21,8 +21,8 @@ function ScheduleMeetingList({
         return (
           <NewMyScheduleCard
             key={ind}
-            textDate={date != 'undefined' ? dayjs(date).format('DD') : null}
-            textDay={date != 'undefined' ? dayjs(date).format('ddd') : null}
+            textDate={date != 'undefined' ? dayjs(date).format('DD') : ''}
+            textDay={date != 'undefined' ? dayjs(date).format('ddd') : ''}
             textMonth={
               date != 'undefined' ? (
                 dayjs(date).format('MMM')

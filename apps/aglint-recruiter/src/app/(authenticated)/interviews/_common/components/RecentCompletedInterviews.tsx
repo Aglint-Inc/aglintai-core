@@ -1,7 +1,8 @@
-import { EmptyState } from '@components/empty-state';
+import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import Link from 'next/link';
 import React from 'react';
 
-import { Loader } from '@/components/Common/Loader';
+import { UIButton } from '@/components/Common/UIButton';
 
 import { useAllInterviews } from '../hooks/useAllInterviews';
 import ScheduleMeetingList from './ui/ScheduleMeetingList';
@@ -18,18 +19,25 @@ function RecentCompletedInterviews() {
   });
   return (
     <>
-      {!isFetched && <Loader />}
-      {isFetched && schedules?.length === 0 && (
-        <div>
-          <EmptyState
-            title='No interviews found'
-            description='There are no completed interviews.'
-            module='interviews'
-          />
-        </div>
-      )}
-      {isFetched && schedules?.length > 0 && (
-        <ScheduleMeetingList filterSchedules={schedules.slice(0, 5)} />
+      {/* {!isFetched && <Loader />} */}
+      {isFetched && (schedules ?? [])?.length > 1 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className='text-lg font-semibold'>
+              <div className='flex justify-between'>
+                <h1>Recently Completed</h1>
+                <Link href={'/interviews/all'}>
+                  <UIButton size='sm' variant='ghost'>
+                    View All
+                  </UIButton>
+                </Link>
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ScheduleMeetingList filterSchedules={(schedules??[]).slice(0, 5)} />
+          </CardContent>
+        </Card>
       )}
     </>
   );

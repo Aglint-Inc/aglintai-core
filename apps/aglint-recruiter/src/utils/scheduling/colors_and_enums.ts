@@ -26,7 +26,7 @@ export const getScheduleType = (
 ) => TYPE_LABELS[schedule_type] || 'Google Meet';
 
 export const getScheduleBgcolor = (
-  status: InterviewMeetingTypeDb['status'],
+  status: InterviewMeetingTypeDb['status'] | null,
 ) => {
   return status === 'completed'
     ? '#228F67'
@@ -40,7 +40,7 @@ export const getScheduleBgcolor = (
 };
 
 export const getScheduleTextcolor = (
-  status: InterviewMeetingTypeDb['status'],
+  status: InterviewMeetingTypeDb['status'] | null,
 ) => {
   return status === 'completed'
     ? '#186146'

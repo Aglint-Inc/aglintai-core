@@ -40,7 +40,7 @@ export interface SelfSchedulingFlow {
     isHardConflicts: boolean;
     isOutSideWorkHours: boolean;
     preferredInterviewers: PrefferedInterviewer[];
-    preferredDateRanges: {
+    preferredTimeRanges: {
       startTime: string;
       endTime: string;
     }[];
@@ -61,7 +61,7 @@ export interface SelfSchedulingFlow {
     isHardConflicts: boolean;
     isOutSideWorkHours: boolean;
     preferredInterviewers: PrefferedInterviewer[];
-    preferredDateRanges: {
+    preferredTimeRanges: {
       startTime: string;
       endTime: string;
     }[];
@@ -82,7 +82,7 @@ export const initialFilters = {
   isHardConflicts: false,
   isOutSideWorkHours: false,
   preferredInterviewers: [],
-  preferredDateRanges: [],
+  preferredTimeRanges: [],
   isWorkLoad: true,
 };
 

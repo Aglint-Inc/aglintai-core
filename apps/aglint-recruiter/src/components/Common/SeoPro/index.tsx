@@ -1,4 +1,3 @@
-import type { Metadata } from 'next';
 import Head from 'next/head';
 
 type Props = {
@@ -37,42 +36,6 @@ const defaultMeta: Props = {
   type: 'website',
   robots: 'follow, index',
 };
-
-export function generateMetadata(params: Props): Metadata {
-  const meta = { ...defaultMeta, ...params };
-
-  return {
-    title: meta.title,
-    description: meta.description,
-    openGraph: {
-      title: meta.title,
-      description: meta.description,
-      url: meta.url,
-      siteName: meta.siteName,
-      images: [
-        {
-          url: meta.image,
-          width: 1200,
-          height: 630,
-          alt: 'Aglint Inc',
-        },
-      ],
-      locale: 'en_US',
-      type: meta.type,
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: meta.title,
-      description: meta.description,
-      images: [meta.image],
-    },
-    robots: meta.robots,
-    icons: {
-      icon: meta.icon,
-    },
-    metadataBase: new URL(meta.url),
-  };
-}
 
 export function SeoPro(params: Props) {
   // read route params

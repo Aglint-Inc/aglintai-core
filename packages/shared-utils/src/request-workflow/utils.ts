@@ -96,16 +96,14 @@ export async function executeWorkflowAction<T1 extends any, U extends unknown>(
     let err_log = 'Something wrong happenned';
     if (err instanceof CApiError && err.type === 'CLIENT') {
       err_log = err.message;
-      await logger({
-        ...(logger_args ?? {}),
-        status: 'failed',
-        id: log_id,
-        log: err_log,
-        is_progress_step: false,
-      });
-      return null;
-    } else {
-      throw new CApiError('WORKFLOW_ACTION', err.message, 500);
     }
+    await logger({
+      ...(logger_args ?? {}),
+      status: 'failed',
+      id: log_id,
+      log: err_log,
+      is_progress_step: false,
+    });
+    throw new CApiError('WORKFLOW_ACTION', err.message, 500);
   }
 }

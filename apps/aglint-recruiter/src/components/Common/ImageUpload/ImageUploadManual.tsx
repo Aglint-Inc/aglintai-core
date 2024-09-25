@@ -10,11 +10,11 @@ function ImageUploadManual({
   image,
   size = 64,
   imageFile,
-  setChanges = null,
+  setChanges,
 }: {
   image: string;
   size: number;
-  imageFile: MutableRefObject<File>;
+  imageFile: MutableRefObject<File | null>;
   setChanges?: () => void;
 }) {
   const router = useRouterPro();
@@ -46,7 +46,7 @@ function ImageUploadManual({
       >
         <Avatar className={`w-[${size}px] h-[${size}px] rounded-lg`}>
           <AvatarImage
-            src={initImage || '/images/emptyProfile.jpg'}
+            src={initImage || '/images/default/user.png'}
             alt='Profile'
             className='object-cover'
           />

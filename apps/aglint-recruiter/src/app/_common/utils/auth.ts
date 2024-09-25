@@ -22,14 +22,16 @@ export async function handleRedirect({
     return `${origin}${ROUTES['/login']()}?error=unauthorized`;
   }
 
-  if (relations[0].recruiter_user.status === 'suspended') {
+  if (relations[0]?.recruiter_user?.status === 'suspended') {
     return `${origin}${ROUTES['/login']()}?error=suspended`;
   } else if (session.user.user_metadata?.is_invite === 'true') {
     await supabase.auth.updateUser({
       data: { is_invite: 'false' },
     });
   }
-  const role = relations[0].roles.name;
+
+  const role = relations[0]?.roles?.name;
+
   if (role === 'interviewer') {
     return `${origin}${ROUTES['/scheduling']()}?tab=myschedules`;
   } else if (role === 'recruiter') {
