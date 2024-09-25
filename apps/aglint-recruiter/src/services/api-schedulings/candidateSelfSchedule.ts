@@ -83,6 +83,9 @@ export const candidateSelfSchedule = async ({
     },
     req_assignee_tz,
   );
+  if (date_filtered_slots.length === 0) {
+    throw new CApiError('CLIENT', 'No plans matched for given preferred dates');
+  }
   const candidate_slots = getNSlots(
     date_filtered_slots,
     formatted_ai_reponse.maxTotalSlots,

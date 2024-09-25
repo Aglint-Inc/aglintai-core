@@ -61,7 +61,10 @@ export const selfScheduleLinkInstruction = async ({
                   "startTime": "09:00",
                   "endTime": "17:00"
                 },
-                "preferredDates": null
+                "preferredDates": {
+                  startDate: ${default_preferred_dates.startDate},
+                  endDate: ${default_preferred_dates.endDate}
+                }
               },
               "maxTotalSlots": 10,
               "includeAllSoftConflictSlots": true,
