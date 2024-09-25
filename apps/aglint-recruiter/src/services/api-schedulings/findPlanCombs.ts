@@ -87,8 +87,9 @@ export const findPlanCombs = async ({
       .map((p) => p.no_slot_reasons)
       .map((p) => p.map((r) => r.reason))
       .flat();
+    const unique_conflicts = [...new Set(conflicts)];
     await reqProgressLogger({
-      log: `No slots found within ${schedule_dates.user_start_date_js.format('DD, MMMM')} - ${schedule_dates.user_end_date_js.format('DD, MMMM YYYY')} due to ${conflicts.join(', ')}`,
+      log: `No slots found within ${schedule_dates.user_start_date_js.format('DD, MMMM')} - ${schedule_dates.user_end_date_js.format('DD, MMMM YYYY')} due to ${unique_conflicts.join(', ')}`,
       status: 'completed',
       is_progress_step: true,
     });

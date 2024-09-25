@@ -64,7 +64,7 @@ export const candidateSelfSchedule = async ({
           endTime:
             formatted_ai_reponse.candidateAvailability.prefferredTime.endTime,
         },
-      ], // its time
+      ], //this is not date but time
       preferredInterviewers: [],
       isWorkLoad: true,
     },
