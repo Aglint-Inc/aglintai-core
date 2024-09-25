@@ -40,19 +40,6 @@ export const upComingInitialFilterState: ScheduleFilerType = {
   searchText: '',
 };
 
-import { type ReactNode } from 'react';
-
-export type FilterOptionsType = {
-  name:
-    | 'status'
-    | 'interviewer'
-    | 'candidate'
-    | 'date_range'
-    | 'schedule_type'
-    | 'job';
-  Icon: ReactNode;
-};
-
 export type ScheduleListType = {
   interview_meeting: {
     end_time: string;

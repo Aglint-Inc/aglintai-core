@@ -116,7 +116,7 @@ const JobWorkflows = () => {
   else if (status === 'error') return <>Error</>;
   if (workflows.length === 0)
     return (
-      <div className='flex flex-col items-center justify-center bg-white p-4'>
+      <div className='flex flex-col items-center justify-center p-4'>
         <div className='mb-2'>
           <Globe className='h-9 w-9 text-gray-500' />
         </div>

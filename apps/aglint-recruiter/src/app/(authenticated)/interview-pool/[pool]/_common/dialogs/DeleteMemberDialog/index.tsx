@@ -82,6 +82,7 @@ function DeleteMemberDialog() {
   };
 
   const resetState = () => {
+    if (isSaving) return;
     setIsFetching(true);
     setSelUser(null);
     setConnectedJobs([]);
