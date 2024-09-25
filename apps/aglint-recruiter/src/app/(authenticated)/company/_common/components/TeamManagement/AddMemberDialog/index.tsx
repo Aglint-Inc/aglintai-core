@@ -6,7 +6,7 @@ import {
 import { useToast } from '@components/hooks/use-toast';
 import { useState } from 'react';
 
-import { useRolesOptions } from '@/authenticated/hooks/useRolesOptions';
+import { useTenantRoles } from '@/authenticated/hooks/useTenantRoles';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -94,7 +94,7 @@ const AddMember = ({
   });
   const [isDisable, setIsDisable] = useState(false);
   const [isResendDisable, setResendDisable] = useState<string>(null);
-  const { data: roleOptions } = useRolesOptions();
+  const { data: roleOptions } = useTenantRoles();
 
   const checkValidation = () => {
     let flag = false;

@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import { type MemberType } from 'src/app/_common/types/memberType';
 
-import { useRolesOptions } from '@/authenticated/hooks/useRolesOptions';
+import { useTenantRoles } from '@/authenticated/hooks/useTenantRoles';
 import axios from '@/client/axios';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
@@ -55,7 +55,7 @@ const EditAdminDialog = ({
   memberList: { id: string; name: string }[];
   onClose: () => void;
 }) => {
-  const { data: roleOptions } = useRolesOptions();
+  const { data: roleOptions } = useTenantRoles();
   const { recruiterUser } = useAuthDetails();
   const { data: departments } = useAllDepartments();
   const { data: officeLocations } = useAllOfficeLocations();

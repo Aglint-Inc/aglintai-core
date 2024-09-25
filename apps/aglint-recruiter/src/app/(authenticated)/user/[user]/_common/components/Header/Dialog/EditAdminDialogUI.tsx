@@ -15,7 +15,7 @@ import {
 } from 'react';
 import { type MemberType } from 'src/app/_common/types/memberType';
 
-import { type useRolesOptions } from '@/authenticated/hooks/useRolesOptions';
+import type { useTenantRoles } from '@/authenticated/hooks/useTenantRoles';
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
 import { type useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type useAllDepartments } from '@/queries/departments';
@@ -37,7 +37,7 @@ type Props = {
   member: MemberType;
   recruiterUser: ReturnType<typeof useAuthDetails>['recruiterUser'];
   departments: ReturnType<typeof useAllDepartments>['data'];
-  roleOptions: ReturnType<typeof useRolesOptions>['data'];
+  roleOptions: ReturnType<typeof useTenantRoles>['data'];
   memberList: { id: string; name: string }[];
 };
 export const Form = ({

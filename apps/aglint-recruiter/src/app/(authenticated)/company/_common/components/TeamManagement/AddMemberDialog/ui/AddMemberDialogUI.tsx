@@ -16,7 +16,7 @@ import {
 import converter from 'number-to-words';
 import { type Dispatch, type SetStateAction } from 'react';
 
-import { type useRolesOptions } from '@/authenticated/hooks/useRolesOptions';
+import type { useTenantRoles } from '@/authenticated/hooks/useTenantRoles';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { type useAllDepartments } from '@/queries/departments';
@@ -33,7 +33,7 @@ type Props = {
   setForm: Dispatch<SetStateAction<InviteUserFormType>>;
   locations: ReturnType<typeof useAllOfficeLocations>['data'];
   departments: ReturnType<typeof useAllDepartments>['data'];
-  roleOptions: ReturnType<typeof useRolesOptions>['data'];
+  roleOptions: ReturnType<typeof useTenantRoles>['data'];
   memberList: {
     id: string;
     name: string;
