@@ -1,7 +1,6 @@
 import { analytics } from './routers/analytics';
 import { application } from './routers/application';
 import { ats } from './routers/ats';
-import { auth } from './routers/auth';
 import { candidatePortal } from './routers/candidatePortal';
 import { example, exampleSchema } from './routers/example';
 import { integrations } from './routers/integrations';
@@ -10,6 +9,7 @@ import { interviewers } from './routers/interviewers';
 import { jobs } from './routers/jobs';
 import { requests } from './routers/requests';
 import { scheduling } from './routers/scheduling';
+import { tenant } from './routers/tenant';
 import { textTransform } from './routers/textTransform';
 import { createCallerFactory, createTRPCRouter } from './trpc';
 
@@ -20,7 +20,7 @@ import { createCallerFactory, createTRPCRouter } from './trpc';
  */
 export const appRouter = createTRPCRouter({
   ats,
-  auth,
+  tenant,
   analytics,
   candidatePortal,
   example,

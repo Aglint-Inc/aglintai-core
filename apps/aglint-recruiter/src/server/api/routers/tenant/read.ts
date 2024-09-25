@@ -1,3 +1,5 @@
+import { TRPCError } from '@trpc/server';
+
 import { createPrivateClient } from '@/server/db';
 
 import { type PrivateProcedure, privateProcedure } from '../../trpc';
@@ -18,6 +20,9 @@ const query = async ({ ctx }: PrivateProcedure) => {
       .single()
       .throwOnError()
   ).data;
+
+  if (!data)
+    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'No user found' });
 
   const recruiter_user = {
     ...data.recruiter_user,
@@ -41,10 +46,22 @@ const query = async ({ ctx }: PrivateProcedure) => {
     recruiter_id: data.recruiter_id,
   };
 
+  const userPermissions = {
+    role: data.roles?.name || null,
+    permissions: (data.roles?.role_permissions ?? []).map(
+      ({ permissions: { name } }) => name,
+    ),
+  };
+
+  if (recruiter_user.status === 'invited') {
+    db.from('recruiter_user').update({ status: 'active' });
+  }
+
   return {
     recruiter_user,
     recruiter_id: data.recruiter_id,
     recruiter: data.recruiter,
+    userPermissions,
   };
 };
 

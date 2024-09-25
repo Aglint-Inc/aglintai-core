@@ -1,6 +1,6 @@
 import { createTRPCRouter } from '../../trpc';
 import { read } from './read';
 
-export const auth = createTRPCRouter({
+export const tenant = createTRPCRouter({
   read,
 });
