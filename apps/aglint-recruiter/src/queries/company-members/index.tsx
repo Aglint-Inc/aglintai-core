@@ -21,7 +21,7 @@ export const useCompanyMembers = () => {
   return { ...response, refetch };
 };
 
-export const getCompanyMembers = async ({
+const getCompanyMembers = async ({
   recruiter_id,
 }: {
   recruiter_id: string;

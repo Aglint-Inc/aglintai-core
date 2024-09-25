@@ -12,7 +12,7 @@ const toastOptions: ToastOptions = {
   cancel: '✕',
   type: 'dark',
 };
-export class Toast {
+class Toast {
   static asyncToast: { [key: string]: Toaster } = {};
   error(message) {
     createToast(message, {

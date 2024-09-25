@@ -1,4 +1,4 @@
-export const STATE_LEVER_DIALOG = {
+const STATE_LEVER_DIALOG = {
   INITIAL: 'INITIAL',
   FETCHING: 'FETCHING',
   API: 'API',
@@ -7,7 +7,7 @@ export const STATE_LEVER_DIALOG = {
   ERROR: 'ERROR',
 };
 
-export const STATE_GREENHOUSE_DIALOG = {
+const STATE_GREENHOUSE_DIALOG = {
   INITIAL: 'INITIAL',
   FETCHING: 'FETCHING',
   API: 'API',
@@ -16,7 +16,7 @@ export const STATE_GREENHOUSE_DIALOG = {
   ERROR: 'ERROR',
 };
 
-export const STATE_ASHBY_DIALOG = {
+const STATE_ASHBY_DIALOG = {
   INITIAL: 'INITIAL',
   FETCHING: 'FETCHING',
   API: 'API',

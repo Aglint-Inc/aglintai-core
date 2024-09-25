@@ -29,7 +29,7 @@ export default function ForgotPasswordForm() {
     setIsLoading(true);
     try {
       // eslint-disable-next-line no-unused-vars
-      const { data: resetData, error } =
+      const { error } =
         await supabase.auth.resetPasswordForEmail(data.email, {
           redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`,
         });

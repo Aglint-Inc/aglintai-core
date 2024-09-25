@@ -141,7 +141,7 @@ export const useJobDelete = () => {
   return mutation;
 };
 
-export const readJobs = async (recruiter_id: string, manageJob: boolean) => {
+const readJobs = async (recruiter_id: string, manageJob: boolean) => {
   const query = supabase
     .from('job_view')
     .select()
