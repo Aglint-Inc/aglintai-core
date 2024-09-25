@@ -2,7 +2,6 @@
 import { type DatabaseTable, type SupabaseType } from '@aglint/shared-types';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { apiRequestHandlerFactory } from '@/utils/apiUtils/responseFactory';
 import { interviewCancelReasons, userDetails } from '@/utils/scheduling/const';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
@@ -18,23 +17,12 @@ export type ApiInterviewSessionRequest = {
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const requestHandler = apiRequestHandlerFactory<ApiInterviewSessionRequest>(
-      req,
-      res,
-    );
-
-    return requestHandler(
-      'POST',
-      async ({ body }) => {
-        const { request_id } = body;
-        const sessions = await fetchDetails(request_id);
-        return {
-          success: true,
-          sessions,
-        };
-      },
-      ['request_id'],
-    );
+    const { request_id } = req.body as ApiInterviewSessionRequest['request'];
+    const sessions = await fetchDetails(request_id);
+    return res.status(200).send({
+      success: true,
+      sessions,
+    });
   } catch (error) {
     res.status(400).send(error.message);
   }
@@ -53,7 +41,7 @@ const fetchDetails = async (request_id: string) => {
   const sessions = resSessions.map((session) => {
     return {
       ...session,
-      users: session.users.map((user) => {
+      users: session?.users?.map((user) => {
         return {
           ...user,
           user_details: {
@@ -85,10 +73,29 @@ const fetchSessionDetails = async ({
 
   const reducedPlan = data.request_relation
     .flatMap((rel) => rel.interview_session)
+    .filter((ses) => ses !== null)
     .map((ses) => {
+      const interview_session: DatabaseTable['interview_session'] = {
+        break_duration: ses.break_duration,
+        created_at: ses.created_at,
+        id: ses.id,
+        interview_plan_id: ses.interview_plan_id,
+        interviewer_cnt: ses.interviewer_cnt,
+        location: ses.location,
+        meeting_id: ses.meeting_id,
+        members_meta: ses.members_meta,
+        module_id: ses.module_id,
+        name: ses.name,
+        parent_session_id: ses.parent_session_id,
+        recruiter_id: ses.recruiter_id,
+        schedule_type: ses.schedule_type,
+        session_duration: ses.session_duration,
+        session_order: ses.session_order,
+        session_type: ses.session_type,
+      };
       return {
-        interview_session: ses,
-        interview_meeting: ses.interview_meeting,
+        interview_session,
+        interview_meeting: ses.interview_meeting!,
         cancel_reasons: ses.interview_session_cancel
           .filter((cancel) => !cancel.is_resolved && !cancel.is_ignored)
           .map((cancel) => {
@@ -108,21 +115,22 @@ const fetchSessionDetails = async ({
                 application_id: cancel.application_id,
               };
             return {
-              interview_session_cancel: interview_session_cancel,
+              interview_session_cancel: interview_session_cancel!,
               recruiter_user: cancel.interview_session_relation
-                ? cancel.interview_session_relation.interview_module_relation
-                    .recruiter_user
-                : cancel.admin,
+                ? cancel?.interview_session_relation?.interview_module_relation
+                    ?.recruiter_user
+                : cancel.admin!,
             };
           }),
-        interview_module: ses.interview_module,
-        users: ses.interview_session_relation.map((sesitem) => ({
-          interview_session_relation: sesitem,
-          interview_module_relation: sesitem.interview_module_relation,
-          user_details: sesitem.interview_module_relation_id
-            ? sesitem.interview_module_relation.recruiter_user
-            : sesitem.debrief_user,
-        })),
+        interview_module: ses.interview_module!,
+        users:
+          ses.interview_session_relation.map((sesitem) => ({
+            interview_session_relation: sesitem!,
+            interview_module_relation: sesitem.interview_module_relation,
+            user_details: sesitem.interview_module_relation_id
+              ? sesitem?.interview_module_relation?.recruiter_user
+              : sesitem.debrief_user!,
+          })) || [],
       };
     });
 

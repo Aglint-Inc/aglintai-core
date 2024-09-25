@@ -88,7 +88,6 @@ export const PATHS = [
   '/api/scheduling/application/fetchinterviewstages',
   '/api/scheduling/application/mailthankyou',
   '/api/scheduling/application/openselfscheduling',
-  '/api/scheduling/application/reschedulemeeting',
   '/api/scheduling/application/schedulewithagent',
   '/api/scheduling/application/schedulewithagentwithouttaskid',
   '/api/scheduling/application/sendselfschedule',

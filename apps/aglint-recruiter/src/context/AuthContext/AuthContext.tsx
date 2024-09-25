@@ -91,8 +91,9 @@ const AuthProvider = ({ children }) => {
   const recruiter_id = recruiter?.id ?? null;
   const [userCountry, setUserCountry] = useState('us');
   const [loading, setLoading] = useState<boolean>(true);
-  const [userPermissions, setUserPermissions] =
-    useState<ContextValue['userPermissions']>(null);
+  const [userPermissions, setUserPermissions] = useState<
+    ContextValue['userPermissions'] | null
+  >(null);
 
   useEffect(() => {
     Promise.all([

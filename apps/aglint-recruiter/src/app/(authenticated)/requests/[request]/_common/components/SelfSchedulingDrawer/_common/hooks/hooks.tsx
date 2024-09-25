@@ -46,7 +46,10 @@ export const useSelfSchedulingDrawer = () => {
   const selectedSessionIds = allSessions?.map(
     (session) => session.interview_session.id,
   );
-  const application_id = allSessions[0]?.interview_meeting.application_id;
+  const application_id =
+    allSessions.length > 0
+      ? allSessions[0]?.interview_meeting?.application_id
+      : '';
 
   const {
     dateRange,
@@ -83,7 +86,7 @@ export const useSelfSchedulingDrawer = () => {
     const resOptions = await findScheduleOptions({
       dateRange: dateRange,
       session_ids: selectedSessionIds,
-      rec_id: recruiter.id,
+      rec_id: recruiter?.id || '',
     });
 
     //calendar resourrce view
@@ -201,7 +204,7 @@ export const useSelfSchedulingDrawer = () => {
       const bodyParams: ApiBodyParamsSelfSchedule = {
         dateRange,
         allSessions,
-        recruiterUser,
+        user_id: recruiterUser?.user_id ?? '',
         selectedSlots,
         application_id,
         request_id,
