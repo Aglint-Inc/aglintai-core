@@ -10,7 +10,7 @@ import { type InterviewerDetailType } from '../../hooks/useInterviewer';
 export const UpcomingInterview = ({
   interviews,
 }: {
-  interviews: InterviewerDetailType['all_meetings'];
+  interviews: NonNullable<InterviewerDetailType['all_meetings']>;
 }) => {
   return (
     <>
@@ -37,7 +37,7 @@ export const UpcomingInterview = ({
 const List = ({
   interview,
 }: {
-  interview: InterviewerDetailType['all_meetings'][number];
+  interview: NonNullable<InterviewerDetailType['all_meetings']>[number];
 }) => {
   const router = useRouterPro();
   return (
@@ -45,8 +45,8 @@ const List = ({
       <div>
         <h3 className='font-medium'>
           {getFullName(
-            interview.candidate.first_name,
-            interview.candidate.last_name,
+            interview?.candidate?.first_name || '',
+            interview?.candidate?.last_name || '',
           )}
         </h3>
         <p className='text-sm text-gray-500'>{interview.job}</p>

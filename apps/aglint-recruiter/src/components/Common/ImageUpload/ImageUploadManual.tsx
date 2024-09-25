@@ -10,11 +10,11 @@ function ImageUploadManual({
   image,
   size = 64,
   imageFile,
-  setChanges = null,
+  setChanges,
 }: {
   image: string;
   size: number;
-  imageFile: MutableRefObject<File>;
+  imageFile: MutableRefObject<File | null>;
   setChanges?: () => void;
 }) {
   const router = useRouterPro();

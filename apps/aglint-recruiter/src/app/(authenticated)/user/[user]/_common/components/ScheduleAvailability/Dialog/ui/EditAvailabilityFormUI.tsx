@@ -15,8 +15,8 @@ import UITypography from '@/components/Common/UITypography';
 import type timeZone from '@/utils/timeZone';
 
 type FormProp = {
-  timeZone: (typeof timeZone)[number];
-  setTimeZone: Dispatch<SetStateAction<(typeof timeZone)[number]>>;
+  timeZone: (typeof timeZone)[number] | null;
+  setTimeZone: Dispatch<SetStateAction<(typeof timeZone)[number] | null>>;
   dailyLimit: InterviewLoadType['daily'];
   weeklyLmit: InterviewLoadType['weekly'];
   // eslint-disable-next-line no-unused-vars
@@ -57,7 +57,7 @@ export const EditAvailabilityForm = ({
         </Label>
         <TimezonePicker
           width='280'
-          value={timeZone?.tzCode}
+          value={timeZone?.tzCode || null}
           onChange={(value) => setTimeZone(value)}
         />
       </div>

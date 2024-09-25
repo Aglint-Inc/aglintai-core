@@ -3,7 +3,20 @@ import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { AlertCircle, CheckCircle } from 'lucide-react';
 
-export const Top = ({ interviewer, isTopBarVisible }) => {
+export const Top = ({
+  interviewer,
+  isTopBarVisible,
+}: {
+  interviewer: {
+    avatar: string;
+    name: string;
+    role: string;
+    calendarConnected: boolean;
+    gmailConnected: boolean;
+    department: string;
+  };
+  isTopBarVisible: boolean;
+}) => {
   return (
     <>
       {interviewer ? (
