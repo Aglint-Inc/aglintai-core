@@ -26,9 +26,9 @@ function DateRangeField() {
   );
 
   const [value, setValue] = React.useState<{
-    startTime: Date;
-    endTime: Date;
-  }>(null);
+    startTime: Date | null;
+    endTime: Date | null;
+  } | null>(null);
 
   return (
     <div className='flex flex-col space-y-2'>
@@ -66,10 +66,7 @@ function DateRangeField() {
                   },
                 ],
               });
-              setValue({
-                endTime: null,
-                startTime: null,
-              });
+              setValue(null);
             }}
           >
             Add
@@ -141,7 +138,7 @@ function DateRangeField() {
                         .minute(parseInt(minutes, 10));
                       setValue((prev) => ({
                         startTime: newDate.toDate(),
-                        endTime: prev?.endTime,
+                        endTime: prev?.endTime ?? null,
                       }));
                     }}
                     className='w-full'
@@ -179,7 +176,7 @@ function DateRangeField() {
                           .hour(parseInt(hours, 10))
                           .minute(parseInt(minutes, 10));
                         setValue((prev) => ({
-                          startTime: prev?.startTime,
+                          startTime: prev?.startTime ?? null,
                           endTime: newDate.toDate(),
                         }));
                       }}

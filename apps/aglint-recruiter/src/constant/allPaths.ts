@@ -85,7 +85,6 @@ export const PATHS = [
   '/api/scheduling/application/debrief-add-users',
   '/api/scheduling/application/fetchfeedbackdetails',
   '/api/scheduling/application/fetchInterviewSessionByRequest',
-  '/api/scheduling/application/fetchinterviewstages',
   '/api/scheduling/application/mailthankyou',
   '/api/scheduling/application/openselfscheduling',
   '/api/scheduling/application/schedulewithagent',

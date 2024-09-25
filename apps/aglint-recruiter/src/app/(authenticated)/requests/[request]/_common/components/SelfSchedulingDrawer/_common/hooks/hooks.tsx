@@ -90,14 +90,16 @@ export const useSelfSchedulingDrawer = () => {
     });
 
     //calendar resourrce view
-    const { events, resources } = transformAvailability(
-      resOptions.availabilities,
-    );
-    setAvailabilities({
-      events,
-      resources,
-    });
-    setCalendarDate(dateRange.start_date);
+    if (resOptions?.availabilities) {
+      const { events, resources } = transformAvailability(
+        resOptions.availabilities,
+      );
+      setAvailabilities({
+        events,
+        resources,
+      });
+      setCalendarDate(dateRange.start_date);
+    }
     //calendar resourrce view
 
     // if api return empty array if user select same date and break duration is more than 1 day
@@ -105,10 +107,11 @@ export const useSelfSchedulingDrawer = () => {
       setNoOptions(true);
       return;
     }
-    setSchedulingOptions(resOptions?.slots); // this is global state which we dont alter in self scheduling flow
+
+    setSchedulingOptions(resOptions?.slots || []); // this is global state which we dont alter in self scheduling flow
 
     const filterSlots = filterSchedulingOptionsArray({
-      schedulingOptions: resOptions?.slots,
+      schedulingOptions: resOptions?.slots || [],
       filters,
     }); // before taking to preference step we generate combinations with all filters true to check if there are any slots available
 

@@ -12,9 +12,13 @@ export async function GET(request: Request) {
   if (code) {
     const supabase = createClient();
     const { error, data } = await supabase.auth.exchangeCodeForSession(code);
-    const user_id = data?.user.id;
+    const user_id = data?.user?.id;
 
     if (error) {
+      return NextResponse.redirect(`${origin}/login`);
+    }
+
+    if (!user_id) {
       return NextResponse.redirect(`${origin}/login`);
     }
 

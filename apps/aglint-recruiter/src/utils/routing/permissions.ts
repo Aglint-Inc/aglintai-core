@@ -67,7 +67,6 @@ const PERMISSIONS: Permissions = {
    * permission will reduced  using 'or'
    */
   '/api/getMembersWithRole': ['view_users'],
-  '/api/scheduling/application/fetchinterviewstages': ['scheduling_module'],
   '/api/scheduling/application/fetchInterviewSessionByRequest': ['authorized'],
   '/api/scheduling/get_interview_plans': ['scheduling_module'],
   '/api/greenhouse/getPostings': ['manage_job'],

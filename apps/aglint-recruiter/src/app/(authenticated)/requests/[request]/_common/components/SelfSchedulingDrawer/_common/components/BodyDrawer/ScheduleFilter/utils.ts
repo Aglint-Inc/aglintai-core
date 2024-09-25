@@ -50,7 +50,7 @@ export function filterSchedulingOptionsArray({
   schedulingOptions,
   filters,
 }: {
-  schedulingOptions: ApiResponseFindAvailability['slots'];
+  schedulingOptions: ApiResponseFindAvailability['slots'] | [];
   filters: SelfSchedulingFlow['filters'];
 }) {
   const allFilteredOptions: ApiResponseFindAvailability['slots'] = (

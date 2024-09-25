@@ -26,7 +26,7 @@ function SessionIndividual({
           <IconSessionType type={session.session_type} size={14} />
         }
         key={session.session_id}
-        textSessionName={session_name}
+        textSessionName={session_name ?? ''}
         textSessionDuration={session_duration}
         isMemberRow={true}
         slotMemberRow={members.map((member) => {
@@ -39,7 +39,7 @@ function SessionIndividual({
           return (
             <MemberRow
               key={member.user_id}
-              textRole={member.position}
+              textRole={member.position ?? ''}
               slotInterviewerImage={
                 <Avatar className='h-8 w-8'>
                   <AvatarImage
