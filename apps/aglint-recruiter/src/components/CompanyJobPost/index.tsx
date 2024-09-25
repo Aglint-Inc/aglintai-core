@@ -1,24 +1,28 @@
+'use client';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Building2, MapPin } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
-import { useRouterPro } from '@/hooks/useRouterPro';
-import { type CompanyPostAPI } from '@/pages/api/jobpost/company';
+import type { CompanyPostAPI } from '@/pages/api/jobpost/company';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import Footer from '../Common/Footer';
 
-type CompanyJobPostType = CompanyPostAPI;
+interface CompanyJobPostProps {
+  recruiter: CompanyPostAPI['recruiter'];
+  jobs: CompanyPostAPI['jobs'];
+}
 
-const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
-  const router = useRouterPro();
+const CompanyJobPost: React.FC<CompanyJobPostProps> = ({ recruiter, jobs }) => {
+  const router = useRouter();
 
-  const filteredJobs = jobs.filter((job: any) => job.status === 'published');
+  const filteredJobs = jobs.filter((job) => job.status === 'published');
 
   return (
     <div className='h-screen overflow-auto pb-6'>
@@ -89,7 +93,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
               <div className='mb-6'>
                 <h3 className='mb-2 text-lg font-semibold'>Office Locations</h3>
                 <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-                  {recruiter.office_locations.map((loc: any, index) => (
+                  {recruiter.office_locations.map((loc, index) => (
                     <Card key={index}>
                       <CardContent className='p-4'>
                         <MapPin className='mb-2 h-5 w-5' />
