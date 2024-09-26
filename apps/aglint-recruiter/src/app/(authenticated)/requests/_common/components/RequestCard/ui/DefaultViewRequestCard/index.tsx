@@ -35,7 +35,7 @@ function DefaultViewRequestCard({
   return (
     <Card
       className={cn(
-        'group transition-shadow duration-300',
+        'group transition-shadow duration-300 relative',
         isCompactList &&
           'rounded-none border-none shadow-none hover:bg-gray-50',
       )}
@@ -121,14 +121,14 @@ function DefaultViewRequestCard({
                 >
                   {capitalizeFirstLetter(props.type)}
                 </Badge>
-              
+              <div className=''>
                 {props?.request_note[0]?.note && (
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger>
                         <Badge
                           variant='outline'
-                          className='px-3 py-0.5 text-xs capitalize'
+                          className='px-3 py-0.5 text-xs capitalize '
                         >
                           {' '}
                           <StickyNote className='mr-1 h-3 w-3' />
@@ -141,6 +141,7 @@ function DefaultViewRequestCard({
                     </Tooltip>
                   </TooltipProvider>
                 )}
+                </div>
                 <div className='flex items-start space-y-3'>
                   <InfoItem
                     icon={<></>}
@@ -164,7 +165,7 @@ function DefaultViewRequestCard({
                                 : ''}
                             </Link>
                           </div>
-                          <div className='text-sm flex items-center'>
+                          <div className='text-sm flex items-center absolute bottom-4 right-4 text-muted-foreground'>
                           <Clock strokeWidth={1.5} className="w-4 h-4 mr-1" />
                             {dayjsLocal(props.created_at).fromNow()}{' '}
                           </div>
