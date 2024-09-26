@@ -57,7 +57,7 @@ function Instructions({
         )}
       </div>
       {isEditing ? (
-        <div className='mt-2'>
+        <div className='mt-2 min-h-80'>
           <TipTapAIEditor
             enablAI={false}
             placeholder='Instructions'

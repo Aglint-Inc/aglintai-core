@@ -75,7 +75,7 @@ function SchedulingViewComp() {
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
-            <div className='w-fullflex-row flex justify-between pr-6'>
+            <div className='w-fullflex-row flex justify-between'>
               <div>
                 <h1 className='text-2xl font-medium text-gray-900'>
                   {schedule?.interview_session.name}
