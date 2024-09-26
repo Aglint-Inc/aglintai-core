@@ -1,13 +1,3 @@
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@components/ui/alert-dialog';
 import { Button } from '@components/ui/button';
 import {
   Dialog,
@@ -36,36 +26,8 @@ function SchedulingPopUps({
   reason: SchedulingReasonTypes;
   isLoading: boolean;
 }) {
-  const isDisconnect =
-    reason === 'disconnect_google_workSpace' || reason === 'disconnect_zoom';
-
   if (isLoading) {
     return <Loader />;
-  }
-
-  if (isDisconnect) {
-    return (
-      <AlertDialog open={isOpen} onOpenChange={close}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              {reason === 'disconnect_google_workSpace'
-                ? 'Disconnect Google workspace'
-                : 'Disconnect Zoom'}
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              {reason === 'disconnect_google_workSpace'
-                ? 'By clicking "Disconnect", Google workspace will be disconnected from Aglint and will no longer be accessible in this application. You can reconnect again on the Integrations page.'
-                : 'By clicking "Disconnect", Zoom will be disconnected from Aglint and will no longer be accessible in this application. You can reconnect again on the Integrations page.'}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={close}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={action}>Disconnect</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    );
   }
 
   return (
