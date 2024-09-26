@@ -16,11 +16,11 @@ import {
 import { type MemberType } from 'src/app/_common/types/memberType';
 
 import type { useTenantRoles } from '@/company/hooks';
+import type { useTenantOfficeLocations } from '@/company/hooks';
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
 import UITypography from '@/components/Common/UITypography';
 import { type useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type useAllDepartments } from '@/queries/departments';
-import { type useAllOfficeLocations } from '@/queries/officeLocations';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import {
@@ -34,7 +34,7 @@ type Props = {
   setIsImageChanged: Dispatch<SetStateAction<boolean>>;
   setForm: Dispatch<SetStateAction<EditAdminFormType>>;
   formError: EditAdminFormErrorType;
-  officeLocations: ReturnType<typeof useAllOfficeLocations>['data'];
+  officeLocations: ReturnType<typeof useTenantOfficeLocations>['data'];
   member: MemberType;
   recruiterUser: ReturnType<typeof useAuthDetails>['recruiterUser'];
   departments: ReturnType<typeof useAllDepartments>['data'];

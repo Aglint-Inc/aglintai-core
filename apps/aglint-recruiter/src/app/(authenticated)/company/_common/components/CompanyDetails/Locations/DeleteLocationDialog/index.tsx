@@ -1,9 +1,9 @@
 import type { Dispatch, SetStateAction } from 'react';
 
+import { useTenantOfficeLocations } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { manageOfficeLocation } from '@/context/AuthContext/utils';
-import { useAllOfficeLocations } from '@/queries/officeLocations';
 
 function DeleteLocationDialog({
   dialog,
@@ -20,7 +20,7 @@ function DeleteLocationDialog({
     }>
   >;
 }) {
-  const { refetch: refetchLocations } = useAllOfficeLocations();
+  const { refetch: refetchLocations } = useTenantOfficeLocations();
   const handleDeleteLocation = async (id: number) => {
     await manageOfficeLocation({ type: 'delete', data: id });
     refetchLocations();

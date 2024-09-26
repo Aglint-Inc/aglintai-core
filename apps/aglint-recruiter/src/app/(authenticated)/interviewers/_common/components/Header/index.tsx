@@ -1,11 +1,11 @@
 import { type Dispatch, type SetStateAction } from 'react';
 
 import { useAllInterviewModules } from '@/authenticated/hooks';
+import { useTenantOfficeLocations } from '@/company/hooks';
 import FilterHeader from '@/components/Common/FilterHeader';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { useAllDepartments } from '@/queries/departments';
-import { useAllOfficeLocations } from '@/queries/officeLocations';
 
 export const Header = ({
   isFilterApplied,
@@ -19,7 +19,7 @@ export const Header = ({
   setInterviewTypes,
 }: HeaderProps) => {
   const { data: departments } = useAllDepartments();
-  const { data: locations } = useAllOfficeLocations();
+  const { data: locations } = useTenantOfficeLocations();
   const { data: InterivewTypes } = useAllInterviewModules();
 
   // options for filter ------------------------

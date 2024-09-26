@@ -7,12 +7,12 @@ import { useToast } from '@components/hooks/use-toast';
 import { useState } from 'react';
 
 import { useTenantRoles } from '@/company/hooks';
+import { useTenantOfficeLocations } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useAllDepartments } from '@/queries/departments';
 import { useAllMembers } from '@/queries/members';
-import { useAllOfficeLocations } from '@/queries/officeLocations';
 import timeZone from '@/utils/timeZone';
 
 import { inviteUserApi } from '../utils';
@@ -63,7 +63,7 @@ const AddMember = ({
 }) => {
   const { toast } = useToast();
   const { recruiter, recruiterUser } = useAuthDetails();
-  const { data: locations } = useAllOfficeLocations();
+  const { data: locations } = useTenantOfficeLocations();
   const { data: departments } = useAllDepartments();
   const { refetchMembers } = useAllMembers();
   const initform = {

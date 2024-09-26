@@ -5,12 +5,12 @@ import { type MemberType } from 'src/app/_common/types/memberType';
 
 import axios from '@/client/axios';
 import { useTenantRoles } from '@/company/hooks';
+import { useTenantOfficeLocations } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type API_setMembersWithRole } from '@/pages/api/setMembersWithRole/type';
 import { useAllDepartments } from '@/queries/departments';
-import { useAllOfficeLocations } from '@/queries/officeLocations';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
@@ -58,7 +58,7 @@ const EditAdminDialog = ({
   const { data: roleOptions } = useTenantRoles();
   const { recruiterUser } = useAuthDetails();
   const { data: departments } = useAllDepartments();
-  const { data: officeLocations } = useAllOfficeLocations();
+  const { data: officeLocations } = useTenantOfficeLocations();
   const [isUpdating, setIsUpdating] = useState(false);
   const imageFile = useRef<File>(null);
 

@@ -17,10 +17,10 @@ import converter from 'number-to-words';
 import { type Dispatch, type SetStateAction } from 'react';
 
 import type { useTenantRoles } from '@/company/hooks';
+import type { useTenantOfficeLocations } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { type useAllDepartments } from '@/queries/departments';
-import { type useAllOfficeLocations } from '@/queries/officeLocations';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { reinviteUser } from '../../utils';
@@ -31,7 +31,7 @@ type Props = {
   menu: 'addMember' | 'pendingMember';
   formError: InviteUserFormErrorType;
   setForm: Dispatch<SetStateAction<InviteUserFormType>>;
-  locations: ReturnType<typeof useAllOfficeLocations>['data'];
+  locations: ReturnType<typeof useTenantOfficeLocations>['data'];
   departments: ReturnType<typeof useAllDepartments>['data'];
   roleOptions: ReturnType<typeof useTenantRoles>['data'];
   memberList: {

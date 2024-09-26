@@ -2,8 +2,8 @@ import { Plus } from 'lucide-react';
 import { useState } from 'react';
 
 import { SectionCard } from '@/authenticated/components/SectionCard';
+import { useTenantOfficeLocations } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
-import { useAllOfficeLocations } from '@/queries/officeLocations';
 import timeZone from '@/utils/timeZone';
 
 import AddAndEditLocationDialog from './AddAndEditLocationDialog';
@@ -11,7 +11,7 @@ import DeleteLocationDialog from './DeleteLocationDialog';
 import LocationCard from './ui/LocationCard';
 
 export const Location = () => {
-  const { data: locations } = useAllOfficeLocations();
+  const { data: locations } = useTenantOfficeLocations();
   const [AddEditDialog, setAddEditDialog] = useState({
     open: false,
     edit: -1,

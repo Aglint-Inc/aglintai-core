@@ -15,26 +15,14 @@ import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
+import { useTenantOfficeLocations } from '@/company/hooks';
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
 import { manageOfficeLocation } from '@/context/AuthContext/utils';
-import { useAllOfficeLocations } from '@/queries/officeLocations';
 import timeZone from '@/utils/timeZone';
 
 type TimeZoneType = (typeof timeZone)[number];
 
-type initialValueType = {
-  line1: string;
-  line2: string;
-  city: string;
-  region: string;
-  country: string;
-  zipcode: string;
-  is_headquarter: boolean;
-  timezone: string;
-  full_address?: string;
-  location_header?: string;
-};
 interface LocationProps {
   handleClose: () => void;
   open: boolean;
@@ -47,7 +35,7 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
   edit,
 }) => {
   const { recruiter } = useTenant();
-  const { data: office_locations, refetch } = useAllOfficeLocations();
+  const { data: office_locations, refetch } = useTenantOfficeLocations();
   const address1Ref = useRef<HTMLInputElement>(null);
   const address2Ref = useRef<HTMLInputElement>(null);
   const cityRef = useRef<HTMLInputElement>(null);
@@ -57,11 +45,10 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
 
   const [selectedTimeZone, setSelectedTimeZone] = useState<TimeZoneType>(null);
   const [loading, setLoading] = useState(false);
-  const [initialValue, setInitialValue] = useState<initialValueType | null>(
-    null,
-  );
+  const [initialValue, setInitialValue] =
+    useState<(typeof office_locations)[number]>(null);
 
-  const hasHeadquarter = (office_locations as initialValueType[]).some(
+  const hasHeadquarter = office_locations.some(
     (location) => location.is_headquarter === true,
   );
 
