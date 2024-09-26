@@ -14,10 +14,10 @@ export type PopUpReasonTypes =
 
 export type SchedulingReasonTypes =
   | 'connect_google_workSpace'
-  | 'disconnect_google_workSpace'
+  // | 'disconnect_google_workSpace'
   | 'update_google_workspace'
   | 'connect_zoom'
-  | 'disconnect_zoom'
+  // | 'disconnect_zoom'
   | 'update_zoom';
 
 export type ATSType = 'greenhouse' | 'ashby' | 'lever';
