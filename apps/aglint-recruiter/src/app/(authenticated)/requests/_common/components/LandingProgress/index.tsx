@@ -10,66 +10,26 @@ import {
   CardTitle,
 } from '@components/ui/card';
 import { Progress } from '@components/ui/progress';
-import { useRequestSetupProgress } from '@requests/hooks/useRequestSetupProgress';
 import { AlertCircle, Check } from 'lucide-react';
-import { useEffect, useState } from 'react';
 
+import {
+  type SetupStepType,
+  useCompanySetup,
+} from '@/authenticated/hooks/useCompanySetup';
 import UITypography from '@/components/Common/UITypography';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import ROUTES from '@/utils/routing/routes';
-interface StepType {
-  title: string;
-  description: string;
-  navLink: string;
-  completed: boolean;
-}
 
 export default function LandingProgress() {
-  const { data } = useRequestSetupProgress();
-  const [progress, setProgress] = useState<number>(0);
-  const [steps, setSteps] = useState<StepType[]>([]);
   const { recruiterUser } = useAuthDetails();
-
-  useEffect(() => {
-    if (data) {
-      const newSteps = [
-        {
-          title: 'Set Interview Pool',
-          description: 'Add at least one interviewer',
-          completed: data.intervieModules,
-          navLink: ROUTES['/interview-pool'](),
-        },
-        {
-          title: 'Create Job',
-          description: 'At least one job must be present',
-          completed: data.jobs,
-          navLink: ROUTES['/jobs/create'](),
-        },
-        {
-          title: 'Add Candidate',
-          description: 'Add at least one candidate/application',
-          completed: data.candidates,
-          navLink: ROUTES['/jobs'](),
-        },
-        {
-          title: 'Set Interview Plan',
-          description: 'Create an interview plan for the job',
-          completed: data.interviewPlan,
-          navLink: ROUTES['/jobs'](),
-        },
-      ];
-      setSteps(newSteps);
-      const completedSteps = newSteps.filter((step) => step.completed).length;
-      setProgress((completedSteps / newSteps.length) * 100);
-    }
-  }, [data]);
+  const { isRequestSetupPending, requestSetupProgress, requestSetupSteps } =
+    useCompanySetup();
 
   const name = getFullName(
     recruiterUser?.first_name || '',
     recruiterUser?.last_name || '',
   );
-  if (steps?.length > 0)
+  if (requestSetupSteps?.length > 0 && isRequestSetupPending)
     return (
       <Card className='max-h-fit w-full max-w-4xl'>
         <CardHeader>
@@ -87,9 +47,9 @@ export default function LandingProgress() {
           </CardDescription>
         </CardHeader>
         <CardContent className='space-y-4'>
-          <Progress value={progress} className='w-full' />
-          {steps
-            .sort((a, b) => Number(b?.completed) - Number(a?.completed))
+          <Progress value={requestSetupProgress} className='w-full' />
+          {requestSetupSteps
+            .sort((a, b) => Number(b?.isCompleted) - Number(a?.isCompleted))
             .map((step) => (
               <List key={step.title} step={step} />
             ))}
@@ -98,14 +58,14 @@ export default function LandingProgress() {
     );
 }
 
-const List = ({ step }: { step: StepType }) => {
+const List = ({ step }: { step: SetupStepType }) => {
   const router = useRouterPro();
   return (
     <div className='flex items-center space-x-4'>
       <div
-        className={`flex h-8 w-8 items-center justify-center rounded-full ${step.completed ? 'bg-green-500' : 'bg-gray-200'}`}
+        className={`flex h-8 w-8 items-center justify-center rounded-full ${step.isCompleted ? 'bg-green-500' : 'bg-gray-200'}`}
       >
-        {step.completed ? (
+        {step.isCompleted ? (
           <Check className='text-white' size={20} />
         ) : (
           <AlertCircle className='text-gray-500' size={20} />
@@ -116,12 +76,12 @@ const List = ({ step }: { step: StepType }) => {
         <p className='text-sm text-gray-600'>{step.description}</p>
       </div>
       <Button
-        variant={step.completed ? 'outline' : 'default'}
+        variant={step.isCompleted ? 'outline' : 'default'}
         size='sm'
         onClick={() => router.push(step.navLink)}
-        disabled={step.completed}
+        disabled={step.isCompleted}
       >
-        {step.completed ? 'Completed' : 'Complete'}
+        {step.isCompleted ? 'Completed' : 'Complete'}
       </Button>
     </div>
   );

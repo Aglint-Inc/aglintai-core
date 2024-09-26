@@ -4,11 +4,11 @@ import AgentChats from '@requests/components/AgentChats';
 import { AgentIEditorProvider } from '@requests/components/AgentChats/AgentEditorContext';
 import { REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
 import { useRequestCount } from '@requests/hooks';
-import { useRequestSetupProgress } from '@requests/hooks/useRequestSetupProgress';
 import { checkFiltersApplied } from '@requests/utils/checkFiltersApplied';
 import { Info, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import { useCompanySetup } from '@/authenticated/hooks/useCompanySetup';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
@@ -70,13 +70,13 @@ const MainBody = () => {
     );
   }, [localStorage.getItem('openChat')]);
 
-  const { isLoading, data: requestStep } = useRequestSetupProgress();
+  const { isLoading, isRequestSetupPending } = useCompanySetup();
 
   if (isLoading) {
     return <Skeleton className='mx-auto h-[380px] w-full max-w-3xl' />;
   }
 
-  if (!requestStep?.isSetupCompleted) {
+  if (isRequestSetupPending) {
     return (
       <div className='flex w-full items-center justify-center'>
         <LandingProgress />

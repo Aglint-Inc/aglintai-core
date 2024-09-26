@@ -11,13 +11,12 @@ import {
 import { Progress } from '@components/ui/progress';
 import { AlertCircle, Check } from 'lucide-react';
 
+import { useCompanySetup } from '@/authenticated/hooks/useCompanySetup';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { useCompanySetup } from '@/jobs/hooks/useCompanySetup';
 
 export default function WelcomeJobSetup() {
-  const { steps, progress, isLoading } = useCompanySetup();
+  const { jobSetupProgress, jobSetupSteps } = useCompanySetup();
   const router = useRouterPro();
-  if (isLoading) return <>Loading</>;
   return (
     <Card className='mx-auto mt-[150px] w-full max-w-4xl'>
       <CardHeader>
@@ -30,14 +29,16 @@ export default function WelcomeJobSetup() {
         </CardDescription>
       </CardHeader>
       <CardContent className='space-y-6'>
-        <Progress value={progress} className='w-full' />
-        {steps.map((step) => (
+        <Progress value={jobSetupProgress} className='w-full' />
+        {jobSetupSteps.map((step) => (
           <div key={step.title} className='flex items-start space-x-2'>
-            <div className='mt-1'>
-              {step.completed ? (
-                <Check className='h-5 w-5 text-green-500' />
+            <div
+              className={`flex h-8 w-8 items-center justify-center rounded-full ${step.isCompleted ? 'bg-green-500' : 'bg-gray-200'}`}
+            >
+              {step.isCompleted ? (
+                <Check className='text-white' size={20} />
               ) : (
-                <AlertCircle className='h-5 w-5 text-yellow-500' />
+                <AlertCircle className='text-gray-500' size={20} />
               )}
             </div>
             <div className='flex w-full items-center justify-between'>
@@ -46,12 +47,12 @@ export default function WelcomeJobSetup() {
                 <p className='mb-2 text-sm text-gray-600'>{step.description}</p>
               </div>
               <Button
-                variant={step.completed ? 'outline' : 'default'}
+                variant={step.isCompleted ? 'outline' : 'default'}
                 onClick={() => {
                   router.push(step.navLink);
                 }}
               >
-                {step.completed ? 'Update' : 'Start'}
+                {step.isCompleted ? 'Update' : 'Start'}
               </Button>
             </div>
           </div>

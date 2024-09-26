@@ -22,8 +22,8 @@ import {
 } from '@/jobs/hooks';
 import ROUTES from '@/utils/routing/routes';
 
+import { useCompanySetup } from '../../../_common/hooks/useCompanySetup';
 import { STATE_LEVER_DIALOG } from '../constants';
-import { useCompanySetup } from '../hooks/useCompanySetup';
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
 import LeverModalComp from './AddJobWithIntegrations/LeverModal';
 import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
@@ -50,7 +50,7 @@ const DashboardComp = () => {
     setSearchText,
   } = useJobFilterAndSort(data ?? []);
 
-  const { isLoading, isCompanyDetailsPending } = useCompanySetup();
+  const { isLoading, isJobSetupPending } = useCompanySetup();
   return (
     <div className='h-full w-full'>
       {!initialLoad || isLoading ? (
@@ -74,7 +74,7 @@ const DashboardComp = () => {
         </div>
       ) : (
         <>
-          {isCompanyDetailsPending ? (
+          {isJobSetupPending ? (
             <WelcomeJobSetup />
           ) : data?.length === 0 ? (
             ifAllowed(

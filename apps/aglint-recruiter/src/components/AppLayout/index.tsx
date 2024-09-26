@@ -21,6 +21,7 @@ import { capitalizeAll } from '@/utils/text/textUtils';
 
 import DefaultProfileImage from '../../../public/images/default/user.svg';
 import { NotFound } from '../Common/404';
+import { OnboardPending } from './OnboardPending';
 import SideNavbar from './SideNavbar';
 
 export default function AppLayout({ children, appRouter = false }) {
@@ -40,6 +41,7 @@ export default function AppLayout({ children, appRouter = false }) {
 
   return (
     <>
+      <OnboardPending />
       {isHorizontalNav && (
         <nav className='sticky top-0 z-50 flex w-full items-center justify-between border-b bg-white p-2'>
           <div className='flex items-center space-x-4'>
