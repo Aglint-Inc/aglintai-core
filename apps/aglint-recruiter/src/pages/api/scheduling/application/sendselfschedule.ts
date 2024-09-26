@@ -12,7 +12,7 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 import { selfScheduleMailToCandidate } from '@/utils/scheduling/mailUtils';
 import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsertMeetingsWithOrganizerId';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { type ApiInterviewSessionRequest } from './fetchInterviewSessionByRequest';
 
@@ -34,6 +34,8 @@ export interface ApiResponseSelfSchedule {
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const bodyParams: ApiBodyParamsSelfSchedule = req.body;
   const reqProgressLogger = createRequestProgressLogger({
     supabaseAdmin,
@@ -74,6 +76,8 @@ const sendToCandidate = async ({
 }: ApiBodyParamsSelfSchedule & {
   reqProgressLogger: ProgressLoggerType;
 }) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const selectedSessionIds = allSessions
     .map((ses) => ses?.interview_session?.id)
     .filter((id) => id !== undefined);

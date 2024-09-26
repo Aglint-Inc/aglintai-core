@@ -1,6 +1,8 @@
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const getInterviewersRelations = async (session_ids) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const { data, error } = await supabaseAdmin
     .from('interview_session_relation')
     .select(

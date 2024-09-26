@@ -9,11 +9,11 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 
 // import { apiTargetToEvents } from '@/components/Requests/_common/components/RequestProgress/utils/progressMaps';
 import { changeInterviewer } from '@/services/api-schedulings/interviewer-decline/change-interviewer';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
-// import { apiTargetToEvents } from '@/components/Requests/_common/Components/RequestProgress/utils/progressMaps';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const target_api = req.body.target_api as DatabaseEnums['email_slack_types'];
+  const supabaseAdmin = getSupabaseServer();
 
   const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
     request_id: req.body.request_id,

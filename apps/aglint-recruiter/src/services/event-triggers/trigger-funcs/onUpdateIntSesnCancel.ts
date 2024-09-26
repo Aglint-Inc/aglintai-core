@@ -1,7 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export const onUpdateIntSesnCancel = async ({
   new_data,
@@ -23,6 +23,8 @@ export const declineRequestCompletion = async ({
   new_data: DatabaseTable['interview_session_cancel'];
 }) => {
   try {
+    const supabaseAdmin = getSupabaseServer();
+
     supabaseWrap(
       await supabaseAdmin
         .from('request')

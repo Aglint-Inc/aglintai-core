@@ -4,11 +4,13 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { type z } from 'zod';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export const fetchDBScheduleDetails = async (
   parsed_body: z.infer<typeof SchemaCandidateDirectBooking>,
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const [filter_json_data] = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')

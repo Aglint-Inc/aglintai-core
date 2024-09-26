@@ -20,8 +20,11 @@ import { candidateAvailRequest } from '@/services/api-schedulings/candidateAvail
 import { candidateAvailReRequest } from '@/services/api-schedulings/candidateAvailReRequest';
 import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfSchedule';
 import { getOrganizerId } from '@/utils/scheduling/getOrganizerId';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
+
 const schedule_wf = async (req_body: any) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const {
     parsed_body,
     api_target,
@@ -124,6 +127,8 @@ const handler = createPageApiPostRoute(null, schedule_wf);
 export default handler;
 
 const fetchUtil = async (req_body: any) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const parsed_body = candidate_new_schedule_schema.parse(req_body);
   const [request_rec] = supabaseWrap(
     await supabaseAdmin

@@ -1,7 +1,7 @@
 import { supabaseWrap } from '@aglint/shared-utils';
 import { NextResponse } from 'next/server';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export type apiPortalInterviewsResponse = (Awaited<
   ReturnType<typeof getInterviews>
@@ -40,6 +40,8 @@ const getMeetings = async (application_id) => {
 };
 
 const getInterviews = async (application_id) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const interviews = supabaseWrap(
     await supabaseAdmin
       .from('meeting_details')
@@ -53,6 +55,8 @@ const getInterviews = async (application_id) => {
 };
 
 const getInterviewers = async (session_id) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const { data: interviewers } = await supabaseAdmin
     .from('meeting_interviewers')
     .select('first_name,last_name,profile_image,position')

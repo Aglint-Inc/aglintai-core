@@ -11,7 +11,7 @@ import {
 } from '@aglint/shared-types';
 import { CApiError, ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import {
   type DbFetchScheduleApiDetailsParams,
@@ -159,6 +159,8 @@ export const fetchAndVerifyDb = async (
   params: ScheduleDBDetailsParams,
   meeting_details_dates: ScheduleApiDetails['schedule_dates'],
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const r = supabaseWrap(
     await supabaseAdmin.rpc('get_interview_session_data', {
       session_ids: params.session_ids,
@@ -298,6 +300,8 @@ const getInterviewersMeetings = (
 };
 
 const geAllIntsFromModules = async (session_ids: string[]) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const sesn_data = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')

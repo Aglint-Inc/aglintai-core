@@ -12,7 +12,7 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 
 import { type CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { confirmInterviewers } from './confirmInterviewers';
 import { createMeetingEvents } from './createMeetingEvents';
@@ -27,6 +27,8 @@ export const bookRecruiterSelectedOption = async (
   verified_slot: PlanCombinationRespType,
   fetched_cand_details: FetchedCandAvailType,
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const db_details: ScheduleDBDetails = {
     application: {
       id: fetched_cand_details.application.id,

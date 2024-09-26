@@ -6,9 +6,10 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { getResponseFactory } from '@/utils/apiUtils/responseFactory';
 import { mailSender } from '@/utils/mailSender';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const supabaseAdmin = getSupabaseServer();
   console.log('incoming body', req.body);
   const getResponse = getResponseFactory<APIWorkFlowCron['response']>(res);
   const { id, workflow_id, workflow_action_id, execution_time, meta } =
@@ -79,7 +80,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .throwOnError();
     return res.status(200).send('OK');
   } catch (error) {
-    console.error(error);
+    console.error(error.message);
+    console.error('Error stack', error.stack);
     await supabaseAdmin
       .from('workflow_action_logs')
       .update({ status: 'failed' })

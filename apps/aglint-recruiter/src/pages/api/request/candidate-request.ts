@@ -9,7 +9,7 @@ import {
 } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export default async function handler(
   req: NextApiRequest,
@@ -17,6 +17,7 @@ export default async function handler(
 ) {
   try {
     const parsed = createCandidateRequestSchema.parse(req.body);
+    const supabaseAdmin = getSupabaseServer();
 
     const [cand_application] = supabaseWrap(
       await supabaseAdmin
@@ -101,6 +102,8 @@ const saveCancelReschedule = async ({
 }: {
   details: DatabaseTableInsert['interview_session_cancel'][];
 }) => {
+  const supabaseAdmin = getSupabaseServer();
+
   (
     await supabaseAdmin
       .from('interview_session_cancel')
