@@ -1,8 +1,9 @@
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { api } from '@/trpc/client';
-export type InterviewerDetailType = Awaited<
-  ReturnType<typeof useInterviewer>
->['data'];
+export type InterviewerDetailType = NonNullable<
+  Awaited<ReturnType<typeof useInterviewer>>['data']
+>;
+
 export const useInterviewer = () => {
   const router = useRouterPro();
   const user_id = router.params.user as string;

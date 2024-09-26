@@ -1,6 +1,7 @@
 import { type APIFindAvailability } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
 import { useMeetingList } from '@requests/hooks';
+// import { type ApiResponseFindAvailability } from '@requests/types';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useParams } from 'next/navigation';
@@ -46,7 +47,10 @@ export const useSelfSchedulingDrawer = () => {
   const selectedSessionIds = allSessions?.map(
     (session) => session.interview_session.id,
   );
-  const application_id = allSessions[0]?.interview_meeting.application_id;
+  const application_id =
+    allSessions.length > 0
+      ? allSessions[0]?.interview_meeting?.application_id
+      : '';
 
   const {
     dateRange,
@@ -83,18 +87,20 @@ export const useSelfSchedulingDrawer = () => {
     const resOptions = await findScheduleOptions({
       dateRange: dateRange,
       session_ids: selectedSessionIds,
-      rec_id: recruiter.id,
+      rec_id: recruiter?.id || '',
     });
 
     //calendar resourrce view
-    const { events, resources } = transformAvailability(
-      resOptions.availabilities,
-    );
-    setAvailabilities({
-      events,
-      resources,
-    });
-    setCalendarDate(dateRange.start_date);
+    if (resOptions?.availabilities) {
+      const { events, resources } = transformAvailability(
+        resOptions.availabilities,
+      );
+      setAvailabilities({
+        events,
+        resources,
+      });
+      setCalendarDate(dateRange.start_date);
+    }
     //calendar resourrce view
 
     // if api return empty array if user select same date and break duration is more than 1 day
@@ -102,10 +108,11 @@ export const useSelfSchedulingDrawer = () => {
       setNoOptions(true);
       return;
     }
-    setSchedulingOptions(resOptions?.slots); // this is global state which we dont alter in self scheduling flow
+
+    setSchedulingOptions(resOptions?.slots || []); // this is global state which we dont alter in self scheduling flow
 
     const filterSlots = filterSchedulingOptionsArray({
-      schedulingOptions: resOptions?.slots,
+      schedulingOptions: resOptions?.slots || [],
       filters,
     }); // before taking to preference step we generate combinations with all filters true to check if there are any slots available
 
@@ -134,7 +141,7 @@ export const useSelfSchedulingDrawer = () => {
       isHardConflicts: localFilters.isHardConflicts,
       isOutSideWorkHours: localFilters.isOutSideWorkHours,
       preferredInterviewers: localFilters.preferredInterviewers,
-      preferredDateRanges: localFilters.preferredDateRanges,
+      preferredTimeRanges: localFilters.preferredTimeRanges,
       isWorkLoad: localFilters.isWorkLoad,
     };
     setFilters(newFilters);
@@ -201,7 +208,7 @@ export const useSelfSchedulingDrawer = () => {
       const bodyParams: ApiBodyParamsSelfSchedule = {
         dateRange,
         allSessions,
-        recruiterUser,
+        user_id: recruiterUser?.user_id ?? '',
         selectedSlots,
         application_id,
         request_id,

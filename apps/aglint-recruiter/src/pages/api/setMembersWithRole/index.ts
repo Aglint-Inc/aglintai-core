@@ -34,8 +34,8 @@ export default async function handler(
         const temp = await setRelation({
           user_id: userData.user_id,
           recruiter_id,
-          role_id,
-          manager_id,
+          role_id: role_id || null,
+          manager_id: manager_id || null,
         });
         role = temp.role;
         role_id = temp.role_id;

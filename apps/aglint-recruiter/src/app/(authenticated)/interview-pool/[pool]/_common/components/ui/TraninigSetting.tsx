@@ -1,6 +1,8 @@
 import { Card, CardContent } from '@components/ui/card';
-import { RotateCcw, RotateCw } from 'lucide-react';
 import React from 'react';
+
+import ReverseShadowIcon from '@/authenticated/components/ReverseShadowIcon';
+import ShadowIcon from '@/authenticated/components/ShadowIcon';
 
 interface TrainingSettingProps {
   slotButton: React.ReactNode;
@@ -24,8 +26,8 @@ export function TrainingSetting({
   isApprovalVisible = true,
 }: TrainingSettingProps) {
   return (
-    <Card className='flex flex-col p-4'>
-      <div className='flex items-start justify-between p-0'>
+    <Card className='flex flex-col p-4 w-full'>
+      <div className='flex items-center w-full justify-between p-0'>
         <div className='flex flex-col gap-1'>
           <p>{textHeading}</p>
           {isDisable && (
@@ -41,17 +43,17 @@ export function TrainingSetting({
         <CardContent className='mt-4 flex flex-col gap-4 p-0'>
           <div className='flex flex-col gap-2'>
             <div className='flex items-center gap-2'>
-              <RotateCw className='h-4 w-4' />
+              <ShadowIcon className="w-5 h-5"/>
               <p>{textShadow}</p>
             </div>
             <div className='flex items-center gap-2'>
-              <RotateCcw className='h-4 w-4' />
+              <ReverseShadowIcon className="w-5 h-5"/>
               <p>{textReverseShadow}</p>
             </div>
           </div>
           {isApprovalVisible && (
             <div className='flex flex-col gap-1'>
-              <p>
+              <p className='text-sm text-muted-foreground mb-2'>
                 Following persons approval is required before moving to
                 qualified state:
               </p>

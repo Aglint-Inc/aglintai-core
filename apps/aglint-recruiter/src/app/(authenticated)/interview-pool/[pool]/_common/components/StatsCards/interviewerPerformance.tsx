@@ -9,7 +9,7 @@ function InterviewerPerformance({module_id}:{module_id:string}) {
   return (
     <Card className='border-t-4 border-t-green-500 bg-white shadow-md'>
         <CardHeader>
-          <CardTitle className='text-gray-800'>
+          <CardTitle className='text-gray-800 text-lg font-medium'>
             Interviewer Performance
           </CardTitle>
         </CardHeader>

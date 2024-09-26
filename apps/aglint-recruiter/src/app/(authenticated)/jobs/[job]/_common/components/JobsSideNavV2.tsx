@@ -105,18 +105,17 @@ const JobsSideNavV2 = () => {
       </nav>
 
       {manageJob && (
-        <div className='mt-12 max-w-60 rounded-md border p-4'>
+        <div className=' rounded-md border p-4 bg-white'>
           <h4 className='mb-1 text-sm font-semibold'>
             {job?.status !== 'published' ? 'Delete' : 'Close'} Job
           </h4>
-          <p className='mb-2 text-xs text-muted-foreground'>
+          <p className='mb-2 text-sm text-muted-foreground'>
             {job?.status !== 'published'
               ? 'Permanently remove this job and all related data.'
               : 'Stop all activities and remove the job from the company page.'}
           </p>
           <Button
-            variant='link'
-            className='h-auto p-0 text-destructive'
+            variant='destructive'
             onClick={() => setIsCloseJobDialogOpen(true)}
           >
             <span>{job?.status !== 'published' ? 'Delete' : 'Close'} Job</span>

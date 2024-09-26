@@ -6,7 +6,7 @@ export type EventCalendar = {
       };
       name: string;
       iconUri: string;
-    };
+    } | null;
     attendees: {
       email: string;
       responseStatus?: 'accepted' | 'declined' | 'tentative' | 'needsAction';

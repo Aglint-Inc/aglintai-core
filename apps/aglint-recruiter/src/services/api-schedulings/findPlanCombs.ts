@@ -67,10 +67,10 @@ export const findPlanCombs = async ({
       preferredInterviewers: preferredInterviewers.interviewers.map((i) => ({
         user_id: i.user_id,
       })),
-      preferredDateRanges: [
+      preferredTimeRanges: [
         {
-          startTime: schedule_filters.preferredDateRanges[0].startTime,
-          endTime: schedule_filters.preferredDateRanges[0].endTime,
+          startTime: schedule_filters.preferredTimeRanges[0].startTime,
+          endTime: schedule_filters.preferredTimeRanges[0].endTime,
         },
       ],
       isWorkLoad: true,

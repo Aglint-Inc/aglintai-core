@@ -91,7 +91,7 @@ export const ImportCsv: React.FC = () => {
 
   return (
     <div className='flex h-[500px] flex-col border-0 shadow-none'>
-      <div className='flex-grow overflow-auto p-6'>
+      <div className='flex-grow overflow-auto'>
         {isLoading ? (
           <Loader />
         ) : candidates.length ? (
@@ -124,30 +124,7 @@ export const ImportCsv: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div className='flex h-full flex-col space-y-6'>
-            <div className='flex w-full items-center justify-center'>
-              <label
-                htmlFor='file-upload'
-                className='flex cursor-pointer items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50'
-              >
-                <Upload className='mr-2 h-5 w-5 text-gray-400' />
-                Select CSV file
-                <input
-                  id='file-upload'
-                  type='file'
-                  className='hidden'
-                  accept='.csv'
-                  onChange={(event) =>
-                    handleFileUpload(
-                      (
-                        event.target as React.ChangeEvent<HTMLInputElement>['target']
-                      ).files[0],
-                    )
-                  }
-                />
-              </label>
-            </div>
-            <div className='text-center text-sm text-gray-600'>or</div>
+          <div className='flex h-full flex-col'>
             <div className='flex-grow overflow-auto'>
               <FileUploader
                 handleChange={(
@@ -156,8 +133,8 @@ export const ImportCsv: React.FC = () => {
                   handleFileUpload(file);
                 }}
               >
-                <div className='rounded-lg border border-dashed border-gray-300 p-6 text-center'>
-                  <FileText className='mx-auto mb-4 h-12 w-12 text-gray-400' />
+                <div className='rounded-lg border-2 border-dashed border-gray-300 bg-slate-50  text-center h-[450px] flex flex-col items-center justify-center'>
+                  <FileText className='mx-auto mb-4 h-12 w-12' strokeWidth={1.5}/>
                   <p className='text-gray-500'>
                     Upload a CSV file to import candidates
                   </p>
@@ -167,7 +144,7 @@ export const ImportCsv: React.FC = () => {
           </div>
         )}
       </div>
-      <div className='p-4'>
+      <div className=''>
         <UIButton
           onClick={handleImport}
           disabled={candidates.length === 0}

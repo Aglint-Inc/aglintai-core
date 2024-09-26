@@ -15,7 +15,7 @@ export function useGreenhouseDetails() {
       query.refetch();
     },
   });
-  return { ...query, setOptions: mutateAsync };
+  return { ...query, data: query.data!, setOptions: mutateAsync };
 }
 
 async function getGreenhouseDetails() {

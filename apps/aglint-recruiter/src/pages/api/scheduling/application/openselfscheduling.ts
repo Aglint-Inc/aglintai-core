@@ -1,4 +1,3 @@
-/* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
@@ -64,7 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         );
     }
   } catch (error) {
-    // console.log('error', error);
+    console.log('error', error);
     res.status(400).send(error.message);
   }
 };

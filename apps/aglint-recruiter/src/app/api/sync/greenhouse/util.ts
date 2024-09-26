@@ -29,7 +29,7 @@ export async function getGreenhouseKey(
       .eq('recruiter_id', recruiter_id)
       .single()
       .throwOnError()
-  ).data.greenhouse_key;
+  ).data!.greenhouse_key;
 }
 
 export async function getSyncDetails(
@@ -63,6 +63,7 @@ export async function setLastSync(
   temp_meta.last_sync = { ...temp_meta.last_sync, ...lastSync };
   await supabaseAdmin
     .from('integrations')
+    // @ts-ignore
     .update({ greenhouse_metadata: temp_meta })
     .eq('recruiter_id', recruiter_id)
     .throwOnError();
