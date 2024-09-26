@@ -5,7 +5,7 @@ import { LoadMax } from 'src/app/(authenticated)/user/[user]/_common/components/
 
 import InterviewLimitInput from '@/authenticated/components/InterviewLoad';
 import { SectionCard } from '@/authenticated/components/SectionCard';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { api } from '@/trpc/client';
 
 import KeywordSection from '../../../../_common/components/KeywordSection';
@@ -21,7 +21,7 @@ type interviewLoadType = {
 };
 
 function SchedulingSettings() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
 
   const [workingHours, setWorkingHours] = useState([]);
   const [debriefDefaults, setDebriefDefaults] = useState<

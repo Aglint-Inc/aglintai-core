@@ -9,8 +9,8 @@ import { useEffect, useState } from 'react';
 import { transformDataSchedules } from 'src/app/_common/utils/schedules-query';
 
 import { useAllIntegrations } from '@/authenticated/hooks';
+import { useTenant } from '@/company/hooks';
 import { Loader } from '@/components/Common/Loader';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import {
   getInterviewsCountByUserId,
@@ -21,7 +21,7 @@ import { NewMyScheduleCard } from './ui/NewMyScheduleCard';
 import ScheduleMeetingCard from './ui/ScheduleMeetingCard';
 
 function MyInterviews() {
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
   const [filter, setFilter] =
     useState<DatabaseTable['interview_meeting']['status']>('confirmed');
   // const [changeText, setChangeText] = useState('');
@@ -34,7 +34,7 @@ function MyInterviews() {
   useEffect(() => {
     (async () => {
       const res = await getInterviewsCountByUserId(
-        recruiterUser?.user_id ?? '',
+        recruiter_user?.user_id ?? '',
       );
       setCounts(res);
     })();
@@ -42,7 +42,7 @@ function MyInterviews() {
 
   const { data, isFetched: scheduleFetched } = useInterviewsByUserId({
     filter,
-    member_id: recruiterUser?.user_id ?? '',
+    member_id: recruiter_user?.user_id ?? '',
   });
   const schedules = data?.schedules ?? [];
   const allSchedules = schedules;
@@ -51,8 +51,8 @@ function MyInterviews() {
 
   return (!!allIntegrations?.service_json &&
     allIntegrations?.google_workspace_domain?.split('//')[1] ===
-      recruiterUser?.email.split('@')[1]) ||
-    !!(recruiterUser?.schedule_auth as any)?.access_token ? (
+      recruiter_user?.email.split('@')[1]) ||
+    !!(recruiter_user?.schedule_auth as any)?.access_token ? (
     <>
       <InterviewMemberSide
         propsGrids={{ style: { maxWidth: 'none' } }}
@@ -142,7 +142,7 @@ function MyInterviews() {
 export default MyInterviews;
 
 function IntegrationNotFound({ loading }: { loading: boolean }) {
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
   return (
     <Card className='mb-6'>
       <CardHeader>
@@ -163,7 +163,7 @@ function IntegrationNotFound({ loading }: { loading: boolean }) {
                 <AlertTitle>Warning</AlertTitle>
                 <AlertDescription>
                   Your calendar is not connected to the scheduling app. Please
-                  <Link href={`/user/${recruiterUser?.user_id}`}>
+                  <Link href={`/user/${recruiter_user?.user_id}`}>
                     connect it in your profile settings.
                   </Link>
                 </AlertDescription>

@@ -2,9 +2,9 @@ import { getFullName } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
 import { useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useMemberList } from '@/hooks/useMemberList';
 import { supabase } from '@/utils/supabase/client';
 
@@ -15,8 +15,7 @@ import {
 
 function MoveToQualifiedDialog({ refetch }: { refetch: () => void }) {
   const { toast } = useToast();
-  const { recruiterUser } = useAuthDetails();
-  // const { members } = useSchedulingContext();
+  const { recruiter_user } = useTenant();
   const { data: members } = useMemberList();
   const isMovedToQualifiedDialogOpen = useModulesStore(
     (state) => state.isMovedToQualifiedDialogOpen,
@@ -31,7 +30,7 @@ function MoveToQualifiedDialog({ refetch }: { refetch: () => void }) {
         .from('interview_module_relation')
         .update({
           training_status: 'qualified',
-          training_approver: recruiterUser.user_id,
+          training_approver: recruiter_user.user_id,
         })
         .eq('id', selUser.id)
         .throwOnError();

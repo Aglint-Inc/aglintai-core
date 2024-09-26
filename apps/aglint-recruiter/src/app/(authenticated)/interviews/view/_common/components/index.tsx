@@ -8,9 +8,9 @@ import {
 import { Home, User } from 'lucide-react';
 import { useEffect } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import { Loader } from '@/components/Common/Loader';
 import { UIAlert } from '@/components/Common/UIAlert';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
@@ -22,7 +22,7 @@ import Requests from './Requests';
 import ScheduleDetailsTabs from './Tabs';
 
 function SchedulingViewComp() {
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
   const { checkPermissions } = useRolesAndPermissions();
   const { data, isLoading } = useScheduleDetails();
 
@@ -38,7 +38,7 @@ function SchedulingViewComp() {
     if (confirmedUsers?.length > 0) {
       setSessionUser(
         confirmedUsers.find(
-          (user) => user?.user_details?.email === recruiterUser?.email,
+          (user) => user?.user_details?.email === recruiter_user?.email,
         ) ?? null,
       );
     }
@@ -136,26 +136,6 @@ function SchedulingViewComp() {
             ? checkPermissions(['scheduling_actions']) && (
                 <div className='w-4/12'>
                   <div className='p-11'></div>
-                  {/* <div className='flex flex-col space-y-2'>
-                <p className='font-medium'>Job</p>
-
-                <WorkflowConnectedCard
-                  isLinkOffVisible={false}
-                  textRoleCategory={
-                    capitalizeFirstLetter(job?.departments?.name) || '--'
-                  }
-                  role={job.job_title || '--'}
-                  textLocation={
-                    !job.office_locations?.city ||
-                    !job.office_locations?.country
-                      ? '--'
-                      : `${job.office_locations?.city}, ${job.office_locations?.country}`
-                  }
-                  onClickJob={() => {
-                    window.open(`/jobs/${job.id}?section=interview`, '_blank');
-                  }}
-                />
-              </div> */}
                   <Requests session_id={schedule?.interview_session?.id} />
                 </div>
               )

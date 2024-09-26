@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Instructions from 'src/app/_common/components/Instructions';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
 import { useScheduleDetails } from '../../hooks/useScheduleDetails';
 
 function ScheduleDetailInstructions() {
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
   const {
     data: { schedule_data: schedule },
     refetch,
@@ -38,7 +38,8 @@ function ScheduleDetailInstructions() {
         instruction={schedule?.interview_meeting.instructions as string}
         setTextValue={setTextValue}
         showEditButton={
-          recruiterUser?.role === 'admin' || recruiterUser?.role === 'recruiter'
+          recruiter_user?.role === 'admin' ||
+          recruiter_user?.role === 'recruiter'
         }
         updateInstruction={updateInstruction}
       />

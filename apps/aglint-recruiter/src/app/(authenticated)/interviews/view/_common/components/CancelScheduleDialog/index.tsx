@@ -12,12 +12,11 @@ import axios from 'axios';
 import { Loader2 } from 'lucide-react';
 import React, { type Dispatch, useEffect, useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import { UITextArea } from '@/components/Common/UITextArea';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type ApiBodyParamsCancelSchedule } from '@/pages/api/scheduling/application/cancelschedule';
 import toast from '@/utils/toast';
-
 function CancelScheduleDialog({
   isDeclineOpen,
   setIsDeclineOpen,
@@ -38,7 +37,7 @@ function CancelScheduleDialog({
   application_log_id: string | null; // used for removing cancel button from activities after cancelling
   closeDialog: () => void;
 }) {
-  const { recruiter, recruiterUser } = useAuthDetails();
+  const { recruiter, recruiter_user } = useTenant();
 
   const [reason, setReason] = useState('');
   const [notes, setNotes] = useState('');
@@ -59,7 +58,7 @@ function CancelScheduleDialog({
       setIsSaving(true);
       const promises = metaDetails.map(async (meta) => {
         const req_body: ApiBodyParamsCancelSchedule = {
-          cancel_user_id: recruiterUser?.user_id ?? '',
+          cancel_user_id: recruiter_user?.user_id ?? '',
           meeting_id: meta.meeting_id,
           session_id: meta.session_id,
           notes,

@@ -26,11 +26,11 @@ import {
 import { useMemo, useState } from 'react';
 
 import axios from '@/client/axios';
+import { useTenant } from '@/company/hooks';
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import UIDialog from '@/components/Common/UIDialog';
 import UITypography from '@/components/Common/UITypography';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type API_request_feedback } from '@/pages/api/request_feedback/type';
@@ -107,10 +107,10 @@ const FeedbackWindow = () => {
     session_ids: interview_sessions.map((item) => item.id),
   });
 
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
   const { checkPermissions } = useRolesAndPermissions();
-  const user_id = recruiterUser?.user_id;
-  const isAdmin = recruiterUser?.role === 'admin';
+  const user_id = recruiter_user?.user_id;
+  const isAdmin = recruiter_user?.role === 'admin';
 
   const tempRelations = useMemo(() => {
     const tempData = (
