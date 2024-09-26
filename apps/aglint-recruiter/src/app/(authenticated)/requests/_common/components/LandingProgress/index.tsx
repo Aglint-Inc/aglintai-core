@@ -27,7 +27,7 @@ interface StepType {
 
 export default function LandingProgress() {
   const { data } = useRequestSetupProgress();
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState<number>(0);
   const [steps, setSteps] = useState<StepType[]>([]);
   const { recruiterUser } = useAuthDetails();
 

@@ -23,10 +23,12 @@ import {
 import ROUTES from '@/utils/routing/routes';
 
 import { STATE_LEVER_DIALOG } from '../constants';
+import { useCompanySetup } from '../hooks/useCompanySetup';
 import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
 import LeverModalComp from './AddJobWithIntegrations/LeverModal';
 import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';
+import WelcomeJobSetup from './WelcomeJobSetup';
 
 const DashboardComp = () => {
   const router = useRouterPro();
@@ -48,9 +50,10 @@ const DashboardComp = () => {
     setSearchText,
   } = useJobFilterAndSort(data ?? []);
 
+  const { isLoading, isCompanyDetailsPending } = useCompanySetup();
   return (
     <div className='h-full w-full'>
-      {!initialLoad ? (
+      {!initialLoad || isLoading ? (
         <div className='min-h-screen'>
           <div className='container-lg mx-auto w-full space-y-4 px-12'>
             <div className='flex items-center justify-between'>
@@ -71,7 +74,9 @@ const DashboardComp = () => {
         </div>
       ) : (
         <>
-          {data?.length === 0 ? (
+          {isCompanyDetailsPending ? (
+            <WelcomeJobSetup />
+          ) : data?.length === 0 ? (
             ifAllowed(
               <EmptyJobDashboard
                 handleClickAddJob={() => router.push(ROUTES['/jobs/create']())}
