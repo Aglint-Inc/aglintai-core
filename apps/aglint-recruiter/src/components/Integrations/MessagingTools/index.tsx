@@ -11,7 +11,7 @@ function MessagingTools() {
       url: 'slack.com',
       logo: (
         <Image
-          src={'/images/svg/slack-logo.svg'}
+          src={'/images/integration/slack-logo.svg'}
           alt={'Slack'}
           width={40}
           height={40}
@@ -23,7 +23,7 @@ function MessagingTools() {
     //   url: 'teams.live.com',
     //   logo: (
     //     <Image
-    //       src={'/images/svg/teams-logo.svg'}
+    //       src={'/images/integration/teams-logo.svg'}
     //       alt={'Teams'}
     //       width={40}
     //       height={40}

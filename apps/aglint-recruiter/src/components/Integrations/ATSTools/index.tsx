@@ -292,7 +292,7 @@ function ATSTools({
       isConnected: Boolean(data?.greenhouse_key),
       logo: (
         <Image
-          src={'/images/svg/greenhouse-logo.svg'}
+          src={'/images/integration/greenhouse-logo.svg'}
           alt={'Greenhouse'}
           width={40}
           height={40}
@@ -318,7 +318,7 @@ function ATSTools({
       isConnected: Boolean(data?.lever_key),
       logo: (
         <Image
-          src={'/images/svg/lever-logo.svg'}
+          src={'/images/integration/lever-logo.svg'}
           alt={'Lever'}
           width={40}
           height={40}
@@ -344,7 +344,7 @@ function ATSTools({
       isConnected: Boolean(data?.ashby_key),
       logo: (
         <Image
-          src={'/images/svg/ashby-logo.svg'}
+          src={'/images/integration/ashby-logo.svg'}
           alt={'Lever'}
           width={40}
           height={40}

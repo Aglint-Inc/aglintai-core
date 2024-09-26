@@ -157,7 +157,7 @@ function Scheduling({ allIntegrations }) {
       isConnected: allIntegrations?.service_json,
       logo: (
         <Image
-          src={'/images/svg/google-logo.svg'}
+          src={'/images/integration/google-logo.svg'}
           alt={'Google'}
           width={40}
           height={40}
@@ -182,7 +182,7 @@ function Scheduling({ allIntegrations }) {
       url: 'zoom.com',
       logo: (
         <Image
-          src={'/images/svg/zoom-logo.svg'}
+          src={'/images/integration/zoom-logo.svg'}
           alt={'Zoom'}
           width={40}
           height={40}
