@@ -1,5 +1,3 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
-
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 
@@ -12,45 +10,42 @@ import InstructionsComp from './Instructions';
 import Interviewers from './Interviewers';
 import Schedules from './Schedules';
 import Training from './Training';
+import UITabs from '@/components/Common/UITabs';
 
 function InterviewDetailsTabs() {
   const router = useRouterPro();
-
-  const type_id = router.params.pool;
   const tabs = [
     {
       name: 'Interviewers',
-      value: 'interviewers',
+      id: 'interviewers',
       tabComp: <Interviewers />,
     },
     {
       name: 'Training',
-      value: 'training',
+      id: 'training',
       tabComp: <Training />,
     },
     {
       name: 'Schedules',
-      value: 'schedules',
+      id: 'schedules',
       tabComp: <Schedules />,
     },
     {
       name: 'Instructions',
-      value: 'instructions',
+      id: 'instructions',
       tabComp: <InstructionsComp />,
     },
     {
       name: 'Candidates',
-      value: 'candidates',
+      id: 'candidates',
       tabComp: <Candidates />,
     },
-    
+
     {
       name: 'Feedback',
-      value: 'feedback',
+      id: 'feedback',
       tabComp: <Feedback />,
     },
-   
-    
   ];
 
   usePoolSchedules({
@@ -59,39 +54,23 @@ function InterviewDetailsTabs() {
   usePoolCandidates();
   usePoolFeedbacks();
 
+  const type_id = router.params.pool;
   return (
-    <Tabs
-      defaultValue='interviewers'
-      className='space-y-4'
-      value={router.queryParams.tab as string}
-    >
-      <TabsList>
-        {tabs.map((tab) => (
-          <>
-            <TabsTrigger
-              key={tab.value}
-              value={tab.value}
-              onClick={() => {
-                router.replace(
-                  ROUTES['/interview-pool/[pool]']({
-                    type_id,
-                  }) +
-                    '?tab=' +
-                    tab.value,
-                );
-              }}
-            >
-              {tab.name}
-            </TabsTrigger>
-          </>
-        ))}
-      </TabsList>
-      {tabs.map((tab) => (
-        <TabsContent key={tab.value} value={tab.value} className='space-y-4'>
-          <>{tab.tabComp}</>
-        </TabsContent>
-      ))}
-    </Tabs>
+    <>
+      <UITabs
+        tabs={tabs}
+        defaultValue={(router.queryParams.tab as string) || 'interviewers'}
+        onClick={(value) => {
+          router.replace(
+            ROUTES['/interview-pool/[pool]']({
+              type_id,
+            }) +
+              '?tab=' +
+              value,
+          );
+        }}
+      />
+    </>
   );
 }
 
