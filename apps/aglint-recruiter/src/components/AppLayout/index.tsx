@@ -7,8 +7,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import DefaultCompanyLogo from '@public/images/default/company.svg';
 import { LogOut, Settings } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -19,9 +19,25 @@ import PERMISSIONS from '@/utils/routing/permissions';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-import DefaultProfileImage from '../../../public/images/default/user.svg';
 import { NotFound } from '../Common/404';
 import SideNavbar from './SideNavbar';
+
+const DefaultProfileImage = () => (
+  <Image
+    src={'/images/default/user.svg'}
+    alt={'Greenhouse'}
+    width={40}
+    height={40}
+  />
+);
+const DefaultCompanyLogo = () => (
+  <Image
+    src={'/images/default/company.svg'}
+    alt={'Greenhouse'}
+    width={40}
+    height={40}
+  />
+);
 
 export default function AppLayout({ children, appRouter = false }) {
   const { checkPermissions } = useRolesAndPermissions();
