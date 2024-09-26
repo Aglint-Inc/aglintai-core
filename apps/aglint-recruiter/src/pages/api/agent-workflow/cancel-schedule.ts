@@ -8,9 +8,11 @@ import {
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
     request_id: req.body.request_id,
     event_run_id: req.body.event_run_id,

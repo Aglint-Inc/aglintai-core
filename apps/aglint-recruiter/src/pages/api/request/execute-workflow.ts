@@ -3,10 +3,12 @@ import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { getWActions } from '@/services/event-triggers/utils/w_actions';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    const supabaseAdmin = getSupabaseServer();
+
     const { request_id } = req.body;
     const [request] = supabaseWrap(
       await supabaseAdmin.from('request').select().eq('id', request_id),
@@ -22,6 +24,8 @@ export default handler;
 
 const triggerActions = async (request_data: DatabaseTable['request']) => {
   try {
+    const supabaseAdmin = getSupabaseServer();
+
     const [applications] = supabaseWrap(
       await supabaseAdmin
         .from('applications')

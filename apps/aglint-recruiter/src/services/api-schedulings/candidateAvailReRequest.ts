@@ -4,7 +4,7 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import { candidate_avail_request_schema } from '@aglint/shared-utils/src/scheduling/apiSchemas';
 
 import { mailSender } from '@/utils/mailSender';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export const candidateAvailReRequest = async ({
   end_date_str,
@@ -23,6 +23,7 @@ export const candidateAvailReRequest = async ({
 }) => {
   const { application_id, number_of_days, number_of_slots, recruiter_id } =
     candidate_avail_request_schema.parse(req_body);
+  const supabaseAdmin = getSupabaseServer();
 
   const [cand_avail] = supabaseWrap(
     await supabaseAdmin

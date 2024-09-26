@@ -3,8 +3,7 @@
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { type GreenhouseApplicationRemoteData } from '@/api/sync/greenhouse/applications/type';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { type SaveResumeAPI } from './saveResume';
 
@@ -16,6 +15,8 @@ const url = `${baseUrl}/api/greenhouse/saveResume`;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    const supabaseAdmin = getSupabaseServer();
+
     const { recruiter_id } = req.body as {
       recruiter_id: string;
     };
@@ -27,7 +28,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const applications = (
       await supabaseAdmin
         .from('applications')
-        .select('application_id:id,remote_data, candidate_id')
+        .select('application_id:id, remote_data, candidate_id')
         .eq('is_resume_fetching', true)
         .not('remote_data', 'is', null)
         .eq('source', 'greenhouse')
@@ -37,11 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         })
         .limit(50)
         .throwOnError()
-    ).data as {
-      application_id: string;
-      remote_data: GreenhouseApplicationRemoteData;
-      candidate_id: string;
-    }[];
+    ).data;
     if (applications.length) {
       await Promise.all(
         applications.map(async (ref) => {

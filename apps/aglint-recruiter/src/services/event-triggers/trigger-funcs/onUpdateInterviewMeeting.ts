@@ -2,7 +2,7 @@ import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { getWActions } from '../utils/w_actions';
 
@@ -20,6 +20,7 @@ export const onUpdateInterviewMeeting = async ({
 
 const addJobsToQueue = async (new_data: DatabaseTable['interview_meeting']) => {
   try {
+    const supabaseAdmin = getSupabaseServer();
     const jobs_set: Set<DatabaseEnums['email_slack_types']> = new Set([
       'interviewStart_email_applicant',
       'interviewStart_email_organizer',
@@ -86,6 +87,8 @@ const addJobsToQueue = async (new_data: DatabaseTable['interview_meeting']) => {
 const stopJobPreviouslyQueuedJobs = async (
   new_data: DatabaseTable['interview_meeting'],
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   supabaseWrap(
     await supabaseAdmin
       .from('workflow_action_logs')

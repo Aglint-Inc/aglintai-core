@@ -1,7 +1,7 @@
 import { type SupabaseType } from '@aglint/shared-types';
 
 import { registerMember } from '@/pages/api/invite_user';
-import { type SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
+import type { SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
 import { getDepartment } from '../departments/process';
 import { getOfficeLocations } from '../office_locations/process';
@@ -16,7 +16,7 @@ export async function syncUsers({
   supabaseAdmin: SupabaseType;
   recruiter_id: string;
   decryptKey: string;
-  last_sync: string;
+  last_sync?: string;
 }) {
   const users = await getGreenhouseUsers(decryptKey, last_sync);
   const updatedUsers = last_sync
@@ -90,7 +90,7 @@ export type filterMapUserType = Awaited<ReturnType<typeof filterMapUser>>;
 async function getCurrentUserEmail(supabaseAdmin: SupabaseClientType) {
   return (
     await supabaseAdmin.from('recruiter_user').select('email').throwOnError()
-  ).data.map((item) => item.email);
+  ).data!.map((item) => item.email);
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -209,7 +209,7 @@ const dummyData: GreenhouseUserApi = [
         parent_department_external_id: 'parent-1',
         child_ids: [],
         child_department_external_ids: [],
-        external_id: null,
+        external_id: 'null',
       },
     ],
   },
@@ -266,7 +266,7 @@ export async function getRole(
       .eq('name', 'interviewer')
       .single()
       .throwOnError()
-  ).data.id;
+  ).data!.id;
 }
 async function getScheduleSetting(
   supabaseAdmin: SupabaseClientType,
@@ -279,5 +279,5 @@ async function getScheduleSetting(
       .eq('id', recruiter_id)
       .single()
       .throwOnError()
-  ).data;
+  ).data!;
 }

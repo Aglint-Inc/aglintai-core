@@ -11,12 +11,14 @@ import {
   bulkCreateFiles,
 } from '@/apiUtils/job/candidateUpload/utils';
 import { type CandidateFilesBulkCreateAction } from '@/context/CandidatesContext/types';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<CsvUploadApi['response']>,
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const { job_id, recruiter_id, candidates } =
     req.body as CsvUploadApi['request'];
 

@@ -1,14 +1,13 @@
-import { type DatabaseTableInsert } from '@aglint/shared-types';
+import type { DatabaseEnums, DatabaseTableInsert } from '@aglint/shared-types';
 
-import { type SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
+import type { SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
-import { type GreenhouseJobStagesAPI } from '../types';
+import type { GreenhouseJobStagesAPI } from '../types';
 import {
   chunkArray,
   getGreenhouseCandidates,
   getGreenhouseJobPlan,
 } from '../util';
-import { type GreenhouseApplicationRemoteData } from './type';
 
 const MAX_EMAILS_PER_BATCH = 100;
 
@@ -25,11 +24,11 @@ export async function syncGreenhouseApplication({
   job_id: string;
   remote_id: number;
   recruiter_id: string;
-  last_sync?: string;
+  last_sync?: string | null;
 }) {
   return syncJobApplications(
     supabaseAdmin,
-    { job_id, remote_id, recruiter_id, last_sync },
+    { job_id, remote_id, recruiter_id, last_sync: last_sync || undefined },
     decryptKey,
   );
 }
@@ -61,8 +60,8 @@ export async function syncJobApplications(
 
   //new candidates insert flow
   const uniqueRefCandidates = refCandidates.filter((candidate) => {
-    return !checkCandidates.some((checkCand) => {
-      return checkCand.email === candidate.email;
+    return !checkCandidates.some((checkCandidate) => {
+      return checkCandidate.email === candidate.email;
     });
   });
 
@@ -97,7 +96,7 @@ export async function syncJobApplications(
       .insert(dbCandidates)
       .select()
       .throwOnError()
-  ).data;
+  ).data!;
 
   const allCandidates = [
     ...newCandidates,
@@ -112,34 +111,34 @@ export async function syncJobApplications(
 
       if (matchingCandidate && matchingCandidate.id) {
         return {
-          applied_at: ref.created_at,
+          applied_at: ref.created_at.toISOString(),
           candidate_id: matchingCandidate.id,
           job_id: post.job_id,
           id: ref.application_id,
           is_resume_fetching: true,
-          source: 'greenhouse',
+          source: 'greenhouse' as DatabaseEnums['application_source'],
           remote_id: String(ref.id), //greenhouse candidate id
           remote_data: ref,
-          recruiter_id: matchingCandidate?.recruiter_id,
-        } as DatabaseTableInsert['applications'];
+          recruiter_id: matchingCandidate.recruiter_id,
+        };
       } else {
         return null;
       }
     })
-    .filter(Boolean);
+    .filter((item) => !!item);
 
   const chunks = chunkArray(dbApplications, 100);
   for (const applications of chunks) {
     const userToUpdate = await checkUpdate(
       supabaseAdmin,
       post.job_id,
-      applications.map((c) => c.remote_id),
+      applications.map((c) => c.remote_id!),
     );
     const upsertData = applications.map((app) => {
       const temp = {
         ...app,
       };
-      if (userToUpdate[app.remote_id]) {
+      if (app.remote_id && userToUpdate[app.remote_id]) {
         temp.id = userToUpdate[app.remote_id];
       }
       return temp;
@@ -169,9 +168,11 @@ async function checkUpdate(
       .eq('job_id', job_id)
       .in('remote_id', ids)
       .throwOnError()
-  ).data.reduce(
+  ).data!.reduce(
     (acc, curr) => {
-      acc[curr.remote_id] = curr.id;
+      if (curr.remote_id) {
+        acc[curr.remote_id] = curr.id;
+      }
       return acc;
     },
     {} as { [key: string]: string },
@@ -187,7 +188,7 @@ async function fetchAllCandidates(
   },
   apiKey: string,
 ) {
-  let allCandidates = [];
+  let allCandidates = [] as Awaited<ReturnType<typeof getGreenhouseCandidates>>;
   let hasMore = true;
   let page = 1;
   while (hasMore) {
@@ -242,7 +243,8 @@ async function fetchAllCandidates(
         return null;
       }
     })
-    .filter(Boolean) as GreenhouseApplicationRemoteData[];
+    .filter((item) => !!item);
+  // as GreenhouseApplicationRemoteData[];
 }
 
 export function extractLinkedInURLGreenhouse(item: string): string {
@@ -261,7 +263,7 @@ async function processEmailsInBatches(
   emails: string[],
   recruiter_id: string,
 ) {
-  let allCandidates = [];
+  let allCandidates: Awaited<ReturnType<typeof processBatch>> = [];
   for (let i = 0; i < emails.length; i += MAX_EMAILS_PER_BATCH) {
     const emailBatch = emails.slice(i, i + MAX_EMAILS_PER_BATCH);
     const candidate = await processBatch(
@@ -299,7 +301,7 @@ export async function syncGreenhouseJobPlan(
     ats_job_id: number;
     public_job_id: string;
   },
-  key?: string,
+  key: string,
 ) {
   const plans = await getGreenhouseJobPlan(key, prop.ats_job_id);
   return mapSaveInterviewPlans(
@@ -333,7 +335,7 @@ async function mapSaveInterviewPlans(
       .insert(temp_plans)
       .select('id, plan_order')
       .throwOnError()
-  ).data;
+  ).data!;
   const temp_sessions: DatabaseTableInsert['interview_session'][] = plans
     .map((plan) => {
       return data[plan.plan_order - 1]?.interviews.map((session, index) => {

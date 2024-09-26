@@ -11,14 +11,15 @@ import {
 } from '@/utils/event_book/types';
 import { getSuperAdminAuth } from '@/utils/scheduling/getSuperAdminAuth';
 import { getUserCalAuth } from '@/utils/scheduling/getUserCalAuth';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { decrypt_string } from '../../utils/integrations/crypt-funcs';
-import { supabaseAdmin } from '../../utils/supabase/supabaseAdmin';
 
 export class GoogleCalender {
   private recruiter_user_id;
   private auth_details: GetAuthParams;
   private user_auth: any;
+  private supabaseAdmin = getSupabaseServer();
   constructor(
     _comp_domain_cred_hash: string | null,
     _recruiter_auth: CalEventAttendeesAuthDetails | null,
@@ -38,7 +39,7 @@ export class GoogleCalender {
   public async authorizeUser() {
     if (this.recruiter_user_id) {
       const [rec_relns] = supabaseWrap(
-        await supabaseAdmin
+        await this.supabaseAdmin
           .from('recruiter_relation')
           .select(
             'recruiter(integrations(service_json)),recruiter_user!public_recruiter_relation_user_id_fkey(email,schedule_auth)',
@@ -76,7 +77,7 @@ export class GoogleCalender {
   }
   public async authSuperAdmin(company_id: string) {
     const [company] = supabaseWrap(
-      await supabaseAdmin
+      await this.supabaseAdmin
         .from('recruiter_relation')
         .select('recruiter(integrations(service_json,domain_admin_email))')
         .eq('recruiter_id', company_id),

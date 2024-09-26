@@ -106,85 +106,90 @@ function CreateRequest({
 
   return (
     <>
-      <ScheduleInterviewPop
-        isCandidateVisible={false}
-        slotStagePill={
-          <>
-            <SessionList
-              selectedSession={selectedSession}
-              setSelectedSession={setSelectedSession}
-              onChange={({ sessions }) => {
-                setSelectedSession([...sessions]);
-              }}
-              sessionList={
-                data?.flatMap((item) =>
-                  item.interview_session
-                    .filter((ele) => ele.session_type !== 'debrief')
-                    .flatMap((ele) => ({
-                      id: ele.id,
-                      name: ele.name,
-                      type: ele.session_type,
-                    })),
-                ) as SessionType[]
-              }
-            />
-          </>
-        }
-        slotAssignedInput={
-          membersStatus === 'pending' ? (
-            <div className='h-10 w-full animate-pulse rounded-md bg-gray-100'></div>
-          ) : (
-            <div className='flex items-center justify-between pr-2'>
-              {selectedInterviewer && (
-                <MemberCard selectedMember={selectedInterviewer} />
-              )}
-              <UpdateMembers
-                handleChange={(member) => {
-                  setSelectedInterviewer(member);
-                  setRequest((pre) => {
-                    const preData = { ...pre };
-                    return {
-                      ...preData,
-                      assignee_id: member.user_id,
-                    };
-                  });
+      {selectedSession.length > 0 ? (
+        <ScheduleInterviewPop
+          isCandidateVisible={false}
+          slotStagePill={
+            <>
+              <SessionList
+                selectedSession={selectedSession}
+                setSelectedSession={setSelectedSession}
+                onChange={({ sessions }) => {
+                  setSelectedSession([...sessions]);
                 }}
-                updateButton={
-                  <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
+                sessionList={
+                  data?.flatMap((item) =>
+                    item.interview_session
+                      .filter((ele) => ele.session_type !== 'debrief')
+                      .flatMap((ele) => ({
+                        id: ele.id,
+                        name: ele.name,
+                        type: ele.session_type,
+                      })),
+                  ) as SessionType[]
                 }
-                members={members}
               />
-            </div>
-          )
-        }
-        slotRequestOption={
-          <RequestOption requestType={priority} setRequestType={setPriority} />
-        }
-        isRequestTypeVisible={true}
-        textSelectedSchedule={`Selected Schedules`}
-        slotPickDateInput={
-          <UIDateRangePicker
-            value={{
-              from: new Date(dateRange.start),
-              to: new Date(dateRange.end),
-            }}
-            onAccept={(date) => {
-              setDateRange({
-                start: dayjs(date.from).toISOString(),
-                end: dayjs(date.to).toISOString(),
-              });
-            }}
-          />
-        }
-        slotNotes={
-          <Textarea
-            value={note || ''}
-            onChange={(e) => setNote(e.target.value)}
-            placeholder='Add note'
-            className='min-h-[80px]'
-          />
-        }
-      />
+            </>
+          }
+          slotAssignedInput={
+            membersStatus === 'pending' ? (
+              <div className='h-10 w-full animate-pulse rounded-md bg-gray-100'></div>
+            ) : (
+              <div className='flex items-center justify-between pr-2'>
+                {selectedInterviewer && (
+                  <MemberCard selectedMember={selectedInterviewer} />
+                )}
+                <UpdateMembers
+                  handleChange={(member) => {
+                    setSelectedInterviewer(member);
+                    setRequest((pre) => {
+                      const preData = { ...pre };
+                      return {
+                        ...preData,
+                        assignee_id: member.user_id,
+                      };
+                    });
+                  }}
+                  updateButton={
+                    <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
+                  }
+                  members={members}
+                />
+              </div>
+            )
+          }
+          slotRequestOption={
+            <RequestOption
+              requestType={priority}
+              setRequestType={setPriority}
+            />
+          }
+          isRequestTypeVisible={true}
+          textSelectedSchedule={`Selected Schedules`}
+          slotPickDateInput={
+            <UIDateRangePicker
+              value={{
+                from: new Date(dateRange.start),
+                to: new Date(dateRange.end),
+              }}
+              onAccept={(date) => {
+                setDateRange({
+                  start: dayjs(date.from).toISOString(),
+                  end: dayjs(date.to).toISOString(),
+                });
+              }}
+            />
+          }
+          slotNotes={
+            <Textarea
+              value={note || ''}
+              onChange={(e) => setNote(e.target.value)}
+              placeholder='Add note'
+              className='min-h-[80px]'
+            />
+          }
+        />
+      ) : null}
     </>
   );
 }

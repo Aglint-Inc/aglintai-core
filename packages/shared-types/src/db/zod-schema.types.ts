@@ -857,7 +857,7 @@ export const candidatesRowSchema = z.object({
   last_updated: z.string(),
   linkedin: z.string().nullable(),
   phone: z.string().nullable(),
-  recruiter_id: z.string().nullable(),
+  recruiter_id: z.string(),
   state: z.string().nullable(),
   timezone: z.string().nullable(),
 });
@@ -878,7 +878,7 @@ export const candidatesInsertSchema = z.object({
   last_updated: z.string().optional(),
   linkedin: z.string().optional().nullable(),
   phone: z.string().optional().nullable(),
-  recruiter_id: z.string().optional().nullable(),
+  recruiter_id: z.string(),
   state: z.string().optional().nullable(),
   timezone: z.string().optional().nullable(),
 });
@@ -899,7 +899,7 @@ export const candidatesUpdateSchema = z.object({
   last_updated: z.string().optional(),
   linkedin: z.string().optional().nullable(),
   phone: z.string().optional().nullable(),
-  recruiter_id: z.string().optional().nullable(),
+  recruiter_id: z.string().optional(),
   state: z.string().optional().nullable(),
   timezone: z.string().optional().nullable(),
 });

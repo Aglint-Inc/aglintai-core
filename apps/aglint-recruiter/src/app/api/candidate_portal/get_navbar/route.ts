@@ -1,7 +1,7 @@
 import { supabaseWrap } from '@aglint/shared-utils';
 import { NextResponse } from 'next/server';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export type apiResponsePortalNavBar = Awaited<ReturnType<typeof getCompany>>;
 
@@ -20,6 +20,8 @@ export async function POST(req) {
 }
 
 const getCompany = async (application_id) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const company = supabaseWrap(
     await supabaseAdmin
       .from('applications')

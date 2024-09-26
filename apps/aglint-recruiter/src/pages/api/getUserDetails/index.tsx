@@ -1,7 +1,7 @@
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { apiRequestHandlerFactory } from '@/utils/apiUtils/responseFactory';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { type GetUserDetailsAPI } from './type';
 
@@ -22,6 +22,8 @@ export default async function handler(
 }
 
 export const getRecruiterDetails = async (user_id: string) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const temp = (
     await supabaseAdmin
       .from('recruiter_relation')

@@ -6,7 +6,7 @@ import { agentTrigger } from '@/utils/scheduling/agentTrigger';
 import { createFilterJson } from '@/utils/scheduling/createFilterJson';
 import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsertMeetingsWithOrganizerId';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export type ApiBodyParamsScheduleAgent = {
   type: 'phone_agent' | 'email_agent';
@@ -30,6 +30,8 @@ export type ApiBodyParamsScheduleAgent = {
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    const supabaseAdmin = getSupabaseServer();
+
     const {
       application_id,
       dateRange,
@@ -101,8 +103,7 @@ export const scheduleWithAgent = async ({
   rec_user_id: string;
   supabase: SupabaseType;
 }) => {
-  console.log(application_id, 'application_id');
-  console.log(task_id, 'task_id');
+  const supabaseAdmin = getSupabaseServer();
 
   if (type) {
     const app = (
