@@ -3,33 +3,16 @@ import type { Database } from "./schema.types";
 import type { Tables } from "./tables/index.types";
 import type { Custom } from "./utils.types";
 import type { Views } from "./views/index.types";
-import { NotNullTables } from "./nullChecks/tables";
-import { NotNullViews } from "./nullChecks/views";
 
-export type TrueDB = Custom<
+export type DB = Custom<
   Database,
   {
     public: Custom<
       Database["public"],
-      { Tables: Tables; Functions: Functions; Views: Views }
+      { Tables: Tables; Views: Views; Functions: Functions }
     >;
   }
 >;
-
-export type IgnoreNullChecksDB = Custom<
-  TrueDB,
-  {
-    public: Custom<
-      TrueDB["public"],
-      {
-        Tables: NotNullTables;
-        Views: NotNullViews;
-      }
-    >;
-  }
->;
-
-export type DB = IgnoreNullChecksDB;
 
 export type DatabaseFunctions = {
   [Functions in keyof DB["public"]["Functions"]]: DB["public"]["Functions"][Functions];

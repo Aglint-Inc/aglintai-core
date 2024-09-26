@@ -1,5 +1,5 @@
 import type { Database } from "../schema.types";
-import type { Custom, CustomizableTypes } from "../utils.types";
+import type { Custom, CustomizableTypes, Type } from "../utils.types";
 import type { CustomApplicationLogs } from "./application_logs.types";
 import type { CustomApplications } from "./applications.types";
 import type { CustomCandidateFiles } from "./candidate_files";
@@ -34,26 +34,25 @@ type DatabaseTableRow<T extends keyof DatabaseTables> =
   DatabaseTables[T]["Row"];
 type DatabaseTableUpdate<T extends keyof DatabaseTables> =
   DatabaseTables[T]["Update"];
-type DatabaseTableRelationships<T extends keyof DatabaseTables> =
-  DatabaseTables[T]["Relationships"];
 
 export type TableType<
   T extends keyof DatabaseTables,
   U extends DatabaseTableRow<T> extends CustomizableTypes<"Array">
     ? { [id in keyof Partial<DatabaseTableRow<T>[number]>]: any }
     : { [id in keyof Partial<DatabaseTableRow<T>>]: any },
-> = Custom<
-  DatabaseTables[T],
-  //@ts-expect-error
-  {
+> = Required<
+  Custom<
+    DatabaseTables[T],
     //@ts-expect-error
-    Row: Custom<DatabaseTableRow<T>, U>;
-    //@ts-expect-error
-    Insert: Custom<DatabaseTableInsert<T>, Partial<U>>;
-    //@ts-expect-error
-    Update: Custom<DatabaseTableUpdate<T>, Partial<U>>;
-    Relationships: DatabaseTableRelationships<T>;
-  }
+    {
+      //@ts-expect-error
+      Row: Custom<DatabaseTableRow<T>, U>;
+      //@ts-expect-error
+      Insert: Custom<DatabaseTableInsert<T>, Partial<U>>;
+      //@ts-expect-error
+      Update: Custom<DatabaseTableUpdate<T>, Partial<U>>;
+    }
+  >
 >;
 
 // TODO: REMOVE PARTIALS AND TS_EXPECT_ERROR AFTER STRICT NULL CHECK IS TURNED ON
