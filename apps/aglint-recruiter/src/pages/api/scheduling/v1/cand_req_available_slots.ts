@@ -7,18 +7,14 @@ import {
   supabaseWrap,
 } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
-import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const parsed_body = v.parse(schema_candidate_req_availabale_slots, {
+    const parsed_body = schema_candidate_req_availabale_slots.parse({
       ...req.body,
-      options: req.body.options || {
-        include_conflicting_slots: {},
-      },
     });
     const fetched_details = await fetchDetails(parsed_body);
     const cand_schedule = new CandidatesSchedulingV2(
@@ -60,7 +56,7 @@ const fetchDetails = async (payload: CandReqAvailableSlots) => {
       )
       .eq('id', payload.avail_req_id),
   );
-  const updated_api_options = v.parse(scheduling_options_schema, {
+  const updated_api_options = scheduling_options_schema.parse({
     options: {
       include_conflicting_slots: {},
     },

@@ -5,7 +5,6 @@ import {
   supabaseWrap,
 } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
-import * as v from 'valibot';
 
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
@@ -14,7 +13,7 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   try {
-    const parsed = v.parse(createInterviewerRequestSchema, req.body);
+    const parsed = createInterviewerRequestSchema.parse(req.body);
     const [int_sesn_cancel] = supabaseWrap(
       await supabaseAdmin
         .from('interview_session_cancel')

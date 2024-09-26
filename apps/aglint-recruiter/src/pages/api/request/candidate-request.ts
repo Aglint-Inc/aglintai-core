@@ -8,7 +8,6 @@ import {
   supabaseWrap,
 } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
-import * as v from 'valibot';
 
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
@@ -17,7 +16,7 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   try {
-    const parsed = v.parse(createCandidateRequestSchema, req.body);
+    const parsed = createCandidateRequestSchema.parse(req.body);
 
     const [cand_application] = supabaseWrap(
       await supabaseAdmin

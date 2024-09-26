@@ -23,9 +23,9 @@ export type ConflictReason = {
     | CalConflictType
     | 'calender_diconnected'
     | 'interviewer_paused';
-  conflict_event: string;
-  start_time: string;
-  end_time: string;
+  conflict_event: string | null;
+  start_time: string | null;
+  end_time: string | null;
 };
 export type InterviwerConflicts = {
   interviewer: Pick<SessionInterviewerApiRespType, 'user_id'>;
