@@ -2,7 +2,6 @@
 import { CApiError } from '@aglint/shared-utils';
 import { AxiosError } from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
-import * as v from 'valibot';
 export const createPageApiPostRoute = (
   schema: any,
   call_back_handler: (p: any) => any,
@@ -14,14 +13,13 @@ export const createPageApiPostRoute = (
       }
       let parsed_body;
       if (schema) {
-        parsed_body = v.parse(schema, req.body);
+        parsed_body = schema.parse(req.body);
       } else {
         parsed_body = req.body;
       }
       const resp = await call_back_handler(parsed_body);
       return res.status(200).json(resp);
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
       if (error instanceof CApiError) {
         if (error.type === 'CLIENT') {
           return res
@@ -36,7 +34,7 @@ export const createPageApiPostRoute = (
       if (error instanceof AxiosError) {
         return res
           .status(500)
-          .json({ type: 'AXIOS_ERROR', error: error.response.data });
+          .json({ type: 'AXIOS_ERROR', error: error.response?.data });
       }
       return res.status(500).json({ type: 'UNKNOWN', error: error.message });
     }

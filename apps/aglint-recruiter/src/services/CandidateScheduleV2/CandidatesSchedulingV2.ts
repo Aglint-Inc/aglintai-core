@@ -15,6 +15,7 @@ import {
   type SessionsCombType,
 } from '@aglint/shared-types';
 import {
+  CApiError,
   getFullName,
   ScheduleUtils,
   scheduling_options_schema,
@@ -23,7 +24,7 @@ import {
 import { type Dayjs } from 'dayjs';
 import { isEqual } from 'lodash';
 import { nanoid } from 'nanoid';
-import * as v from 'valibot';
+import { type z } from 'zod';
 
 import {
   type DbFetchScheduleApiDetailsParams,
@@ -45,16 +46,18 @@ import {
 import { userTzDayjs } from './utils/userTzDayjs';
 
 export class CandidatesSchedulingV2 {
-  public db_details: ScheduleApiDetails;
+  public db_details: ScheduleApiDetails | null;
   private api_options: APIOptions;
   public intervs_details_map: IntervsWorkHrsEventMapType;
-  public calendar_events: Awaited<
-    ReturnType<typeof fetchIntsCalEventsDetails>
-  >['ints_events_map'];
+  public calendar_events:
+    | Awaited<ReturnType<typeof fetchIntsCalEventsDetails>>['ints_events_map']
+    | null;
 
-  constructor(_api_options: v.InferInput<typeof scheduling_options_schema>) {
+  constructor(_api_options: z.infer<typeof scheduling_options_schema>) {
+    this.db_details = null;
+    this.calendar_events = null;
     // scheduling_options_schema;
-    const parsed_api_options = v.parse(scheduling_options_schema, {
+    const parsed_api_options = scheduling_options_schema.parse({
       ...(_api_options ?? {}),
       include_conflicting_slots: {
         ...(_api_options?.include_conflicting_slots ?? {}),
@@ -137,6 +140,9 @@ export class CandidatesSchedulingV2 {
   public verifyIntSelectedSlots = (
     selected_slots: PlanCombinationRespType[],
   ) => {
+    if (!this.db_details) {
+      throw new CApiError('SERVER_ERROR', 'DB details not set');
+    }
     const verified_slots: PlanCombinationRespType[] = [];
     for (const comb of selected_slots) {
       const session_rounds: SessionCombinationRespType[][] =
@@ -172,6 +178,9 @@ export class CandidatesSchedulingV2 {
   public getCandidateSelectedSlots = (
     cand_selected_slots: DatabaseTable['candidate_request_availability']['slots'],
   ) => {
+    if (!this.db_details) {
+      throw new CApiError('SERVER_ERROR', 'DB details not set');
+    }
     const session_rounds = this.getSessionRounds();
     const ints_combs_for_each_round = calcIntsCombsForEachSessionRound(
       session_rounds,
@@ -220,6 +229,9 @@ export class CandidatesSchedulingV2 {
   };
 
   public ignoreTrainee() {
+    if (!this.db_details) {
+      throw new CApiError('SERVER_ERROR', 'DB details not set');
+    }
     this.db_details.ses_with_ints = this.db_details.ses_with_ints.map((s) => ({
       ...s,
       trainingIntervs: [],
@@ -228,7 +240,12 @@ export class CandidatesSchedulingV2 {
       (i) => i.interviewer_type !== 'training',
     );
   }
-  public ignoreInterviewers(sesssion_ints: { sesn_id; user_id: string }[]) {
+  public ignoreInterviewers(
+    sesssion_ints: { sesn_id: string; user_id: string }[],
+  ) {
+    if (!this.db_details) {
+      throw new CApiError('SERVER_ERROR', 'DB details not set');
+    }
     this.db_details.ses_with_ints = this.db_details.ses_with_ints.map((s) => ({
       ...s,
       qualifiedIntervs: s.qualifiedIntervs.filter(
@@ -251,6 +268,9 @@ export class CandidatesSchedulingV2 {
 
   // single round slots with suggesting slots
   public candavailabilityWithSuggestion() {
+    if (!this.db_details) {
+      throw new CApiError('SERVER_ERROR', 'DB details not set');
+    }
     const session_rounds = this.getSessionRounds();
     const first_round_sessions = session_rounds[0];
     const ints_combs_for_each_round = calcIntsCombsForEachSessionRound(
@@ -264,6 +284,9 @@ export class CandidatesSchedulingV2 {
       curr_day: Dayjs,
       curr_round_duration: number,
     ): CurrRoundCandidateAvailReq['slots'] => {
+      if (!this.db_details) {
+        throw new CApiError('SERVER_ERROR', 'DB details not set');
+      }
       const curr_day_sugg_slots: CurrRoundCandidateAvailReq['slots'] = [];
       const plans_start_times = new Set<string>();
       const curr_day_plans = this.findFixedBreakSessionCombs(
@@ -332,6 +355,9 @@ export class CandidatesSchedulingV2 {
 
   //NOTE: private funcs
   private getSessionRounds() {
+    if (!this.db_details) {
+      throw new CApiError('SERVER_ERROR', 'DB details not set');
+    }
     let session_rounds: InterviewSessionApiRespType[][] = [[]];
     let curr_round = 0;
     for (const sess of this.db_details.ses_with_ints) {
@@ -357,7 +383,7 @@ export class CandidatesSchedulingV2 {
     let all_schedule_combs: PlanCombinationRespType[] = [];
     const exploreSessionCombs = (
       current_comb: InterviewSessionApiRespType[],
-      session_idx,
+      session_idx: number,
     ) => {
       if (session_idx === interviewrs_sesn_comb.length) {
         const combs = this.calcMeetingCombinsForPlan(
@@ -417,6 +443,9 @@ export class CandidatesSchedulingV2 {
       curr_date: Dayjs,
       curr_round_idx: number,
     ): DateRangePlansType['interview_rounds'] => {
+      if (!this.db_details) {
+        throw new CApiError('SERVER_ERROR', 'DB details not set');
+      }
       if (curr_round_idx === session_rounds.length) {
         return final_combs;
       }
@@ -461,6 +490,9 @@ export class CandidatesSchedulingV2 {
     };
 
     const findCurrentDayPlan = () => {
+      if (!this.db_details) {
+        throw new CApiError('SERVER_ERROR', 'DB details not set');
+      }
       const current_day = this.db_details.schedule_dates.user_start_date_js;
       const plan_combs = findMultiDaySlotsUtil([], current_day, 0);
 
@@ -468,6 +500,9 @@ export class CandidatesSchedulingV2 {
     };
 
     const findAllDayPlans = () => {
+      if (!this.db_details) {
+        throw new CApiError('SERVER_ERROR', 'DB details not set');
+      }
       const dayjs_start_date =
         this.db_details.schedule_dates.user_start_date_js;
       const dayjs_end_date = this.db_details.schedule_dates.user_end_date_js;
@@ -485,6 +520,9 @@ export class CandidatesSchedulingV2 {
       return all_combs;
     };
     const findAvailabilitySlots = () => {
+      if (!this.db_details) {
+        throw new CApiError('SERVER_ERROR', 'DB details not set');
+      }
       const dayjs_start_date =
         this.db_details.schedule_dates.user_start_date_js;
       const dayjs_end_date = this.db_details.schedule_dates.user_end_date_js;
@@ -508,6 +546,9 @@ export class CandidatesSchedulingV2 {
   };
 
   private getTimeInCandTimeZone = (time: string | Dayjs) => {
+    if (!this.db_details) {
+      throw new CApiError('SERVER_ERROR', 'DB details not set');
+    }
     return userTzDayjs(time).tz(this.db_details.req_user_tz);
   };
   private getTimeIntTimeZone = (
@@ -515,6 +556,9 @@ export class CandidatesSchedulingV2 {
     session_id: string,
     interview_id: string,
   ) => {
+    if (!this.db_details) {
+      throw new CApiError('SERVER_ERROR', 'DB details not set');
+    }
     return userTzDayjs(time_str).tz(
       this.db_details.all_session_int_details[session_id].interviewers[
         interview_id
@@ -522,6 +566,9 @@ export class CandidatesSchedulingV2 {
     );
   };
   private getIntPauseJson(session_id: string, user_id: string) {
+    if (!this.db_details) {
+      throw new CApiError('SERVER_ERROR', 'DB details not set');
+    }
     return this.db_details.all_session_int_details[session_id].interviewers[
       user_id
     ].pause_json;
@@ -534,9 +581,18 @@ export class CandidatesSchedulingV2 {
     curr_day_js: Dayjs,
     plan_comb: InterviewSessionApiRespType[],
   ) => {
+    if (!this.db_details) {
+      throw new CApiError('SERVER_ERROR', 'DB details not set');
+    }
+    if (!this.intervs_details_map) {
+      throw new CApiError('SERVER_ERROR', 'Interviewer details not set');
+    }
     const curr_day_str = curr_day_js.startOf('day').format();
 
     const cacheCurrPlanCalc = () => {
+      if (!this.db_details) {
+        throw new CApiError('SERVER_ERROR', 'DB details not set');
+      }
       const indef_paused_inters: {
         session_id: string;
         inters: (Pick<
@@ -624,13 +680,16 @@ export class CandidatesSchedulingV2 {
         let cnt_qualified_ints = 0;
 
         session_attendees.forEach((attendee) => {
+          if (!this.db_details) {
+            throw new CApiError('SERVER_ERROR', 'DB details not set');
+          }
           const attendee_details = this.intervs_details_map.get(
             attendee.user_id,
           );
-
-          if (
-            !this.intervs_details_map.get(attendee.user_id).isCalenderConnected
-          ) {
+          if (!attendee_details) {
+            throw new CApiError('SERVER_ERROR', 'Interviewer not found');
+          }
+          if (!attendee_details.isCalenderConnected) {
             cal_disc_inters[sess_idx].inters.push({
               user_id: attendee.user_id,
               first_name: attendee.first_name,
@@ -721,13 +780,18 @@ export class CandidatesSchedulingV2 {
 
           if (attendee.training_type === 'qualified') {
             cnt_qualified_ints++;
+            const trainee_details = this.intervs_details_map.get(
+              attendee.user_id,
+            );
+            if (!trainee_details) {
+              throw new CApiError('SERVER_ERROR', 'Trainee not found');
+            }
             const { is_passed, type, day_load_density, week_load_density } =
               isIntervLoadPassed(
                 curr_day_js,
                 this.db_details,
                 attendee.user_id,
-                this.intervs_details_map.get(attendee.user_id)
-                  .int_schedule_setting,
+                trainee_details.int_schedule_setting,
                 plan_comb,
               );
 
@@ -784,6 +848,10 @@ export class CandidatesSchedulingV2 {
       sesn_slot: SessionCombinationRespType,
       sessn_idx: number,
     ) => {
+      if (!this.db_details) {
+        throw new CApiError('SERVER_ERROR', 'DB details not set');
+      }
+
       const upd_sess_slot: SessionCombinationRespType = { ...sesn_slot };
       const curr_sess_cal_dic_ints = cal_disc_inters[sessn_idx].inters;
       const curr_sess_indef_paused_ints = indef_paused_inters[sessn_idx].inters;
@@ -799,6 +867,9 @@ export class CandidatesSchedulingV2 {
 
       for (const attendee of session_attendees) {
         const attendee_details = this.intervs_details_map.get(attendee.user_id);
+        if (!attendee_details) {
+          throw new CApiError('SERVER_ERROR', 'Interviewer not found');
+        }
         const int_conflic_reasons: ConflictReason[] = [];
         // cal disconnected conflict
         if (
@@ -878,6 +949,9 @@ export class CandidatesSchedulingV2 {
         }
         let is_slot_day_off = false;
         attendee_details.day_off[curr_day_str].forEach((t) => {
+          if (!this.db_details) {
+            throw new CApiError('SERVER_ERROR', 'DB details not set');
+          }
           is_slot_day_off = isTimeChunksOverLapps(
             convertTimeDurStrToDayjsChunk(t, this.db_details.req_user_tz),
             {
@@ -910,6 +984,9 @@ export class CandidatesSchedulingV2 {
 
         let is_slot_holiday = false;
         attendee_details.holiday[curr_day_str].forEach((t) => {
+          if (!this.db_details) {
+            throw new CApiError('SERVER_ERROR', 'DB details not set');
+          }
           const flag = isTimeChunksOverLapps(
             convertTimeDurStrToDayjsChunk(t, this.db_details.req_user_tz),
             {
@@ -942,6 +1019,9 @@ export class CandidatesSchedulingV2 {
         const is_slot_out_of_work_hrs = !attendee_details.work_hours[
           curr_day_str
         ].some((t) => {
+          if (!this.db_details) {
+            throw new CApiError('SERVER_ERROR', 'DB details not set');
+          }
           return isTimeChunksEnclosed(
             convertTimeDurStrToDayjsChunk(t, this.db_details.req_user_tz),
             {
@@ -966,34 +1046,33 @@ export class CandidatesSchedulingV2 {
             return null;
           }
         }
+        const conflicting_events = attendee_details.cal_date_events[
+          curr_day_str
+        ].filter((cal_event) => {
+          if (
+            cal_event.cal_type === 'recruiting_blocks' &&
+            this.api_options.use_recruiting_blocks
+          ) {
+            return false;
+          }
 
-        const conflicting_events = this.intervs_details_map
-          .get(attendee.user_id)
-          .cal_date_events[curr_day_str].filter((cal_event) => {
-            if (
-              cal_event.cal_type === 'recruiting_blocks' &&
-              this.api_options.use_recruiting_blocks
-            ) {
-              return false;
-            }
-
-            if (
-              cal_event.cal_type === 'free_time' &&
-              this.api_options.include_free_time
-            ) {
-              return false;
-            }
-            return isTimeChunksOverLapps(
-              {
-                startTime: this.getTimeInCandTimeZone(cal_event.start.dateTime),
-                endTime: this.getTimeInCandTimeZone(cal_event.end.dateTime),
-              },
-              {
-                startTime: this.getTimeInCandTimeZone(upd_sess_slot.start_time),
-                endTime: this.getTimeInCandTimeZone(upd_sess_slot.end_time),
-              },
-            );
-          });
+          if (
+            cal_event.cal_type === 'free_time' &&
+            this.api_options.include_free_time
+          ) {
+            return false;
+          }
+          return isTimeChunksOverLapps(
+            {
+              startTime: this.getTimeInCandTimeZone(cal_event.start.dateTime),
+              endTime: this.getTimeInCandTimeZone(cal_event.end.dateTime),
+            },
+            {
+              startTime: this.getTimeInCandTimeZone(upd_sess_slot.start_time),
+              endTime: this.getTimeInCandTimeZone(upd_sess_slot.end_time),
+            },
+          );
+        });
         //conflicting events
         for (const conf_event of conflicting_events) {
           const ev_type = conf_event.cal_type;
@@ -1219,6 +1298,9 @@ export class CandidatesSchedulingV2 {
     };
 
     const generateSlotsForCurrDay = (): PlanCombinationRespType[] => {
+      if (!this.db_details) {
+        throw new CApiError('SERVER_ERROR', 'DB details not set');
+      }
       const dayConflictsReasons = slotDayConflictsReasons();
       if (dayConflictsReasons.no_slot_reasons.length > 0) {
         return this.api_options.return_empty_slots_err
@@ -1272,6 +1354,9 @@ export class CandidatesSchedulingV2 {
     };
 
     const verifyCurrDaySlot = (slot: SessionCombinationRespType[]) => {
+      if (!this.db_details) {
+        throw new CApiError('SERVER_ERROR', 'DB details not set');
+      }
       const slot_start_time = userTzDayjs(slot[0].start_time).tz(
         this.db_details.req_user_tz,
       );
