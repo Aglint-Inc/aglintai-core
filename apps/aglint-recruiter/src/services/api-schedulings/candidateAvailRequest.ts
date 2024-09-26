@@ -2,7 +2,6 @@
 import { type TargetApiPayloadType } from '@aglint/shared-types';
 import { type ProgressLoggerType, supabaseWrap } from '@aglint/shared-utils';
 import { candidate_avail_request_schema } from '@aglint/shared-utils/src/scheduling/apiSchemas';
-import * as v from 'valibot';
 
 import { mailSender } from '@/utils/mailSender';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
@@ -27,7 +26,7 @@ export const candidateAvailRequest = async ({
   mail_payload: any;
 }) => {
   const { application_id, number_of_days, number_of_slots, recruiter_id } =
-    v.parse(candidate_avail_request_schema, req_body);
+    candidate_avail_request_schema.parse(req_body);
 
   supabaseWrap(
     await supabaseAdmin

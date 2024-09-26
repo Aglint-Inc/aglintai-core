@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { Database, Tables } from "./schema.types";
-import type { Custom } from "./utils.types";
+import type { Custom, Type } from "./utils.types";
 
 export type CustomMembersMeta = {
   [id in
@@ -88,7 +88,7 @@ export type CustomApplicationStatus =
   | "qualified"
   | "disqualified";
 
-export type CustomInterviewSessionCancelRow = Custom<
+export type CustomInterviewSessionCancelRow = Type<
   Database["public"]["Tables"]["interview_session_cancel"]["Row"],
   {
     other_details: {

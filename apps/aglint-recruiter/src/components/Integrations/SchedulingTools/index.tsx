@@ -1,10 +1,9 @@
 import { useToast } from '@components/hooks/use-toast';
 import { Input } from '@components/ui/input';
 import { Toggle } from '@components/ui/toggle';
-import GoogleLogo from '@public/images/integration/google-logo.svg';
-import ZoomLogo from '@public/images/integration/zoom-logo.svg';
 import axios from 'axios';
 import { Loader2, Upload } from 'lucide-react';
+import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
@@ -57,13 +56,13 @@ function Scheduling({ allIntegrations }) {
         );
       }
     }
-    if (reason === 'disconnect_google_workSpace') {
-      await updateIntegrations({ service_json: null }, recruiter.id);
-    }
+    // if (reason === 'disconnect_google_workSpace') {
+    //   await updateIntegrations({ service_json: null }, recruiter.id);
+    // }
 
-    if (reason === 'disconnect_zoom') {
-      await updateIntegrations({ zoom_auth: null }, recruiter.id);
-    }
+    // if (reason === 'disconnect_zoom') {
+    //   await updateIntegrations({ zoom_auth: null }, recruiter.id);
+    // }
     if (reason === 'connect_zoom') {
       const client_id = clientIdRef.current.value;
       const client_secret = clientSecretRef.current.value;
@@ -133,15 +132,15 @@ function Scheduling({ allIntegrations }) {
         });
     }
   }
-  function disConnectApi(source: schedulingToolsType) {
-    setIsOpen(true);
-    if (source === 'google_workspace') {
-      setReason('disconnect_google_workSpace');
-    }
-    if (source === 'zoom') {
-      setReason('disconnect_zoom');
-    }
-  }
+  // function disConnectApi(source: schedulingToolsType) {
+  //   setIsOpen(true);
+  //   if (source === 'google_workspace') {
+  //     setReason('disconnect_google_workSpace');
+  //   }
+  //   if (source === 'zoom') {
+  //     setReason('disconnect_zoom');
+  //   }
+  // }
   function readDocs(source: schedulingToolsType) {
     if (source === 'google_workspace')
       window.open('https://workspace.google.com');
@@ -156,9 +155,16 @@ function Scheduling({ allIntegrations }) {
       name: 'Google Workspace',
       url: 'workspace.google.com',
       isConnected: allIntegrations?.service_json,
-      logo: <GoogleLogo />,
+      logo: (
+        <Image
+          src={'/images/integration/google-logo.svg'}
+          alt={'Google'}
+          width={40}
+          height={40}
+        />
+      ),
       primaryText: allIntegrations?.service_json ? 'Re-Upload' : 'Connect',
-      secondaryText: allIntegrations?.service_json ? 'Disconnect' : 'Learn How',
+      secondaryText: allIntegrations?.service_json ? null : 'Learn How',
       primaryAction: () => {
         setLoading(false);
         if (allIntegrations?.service_json) updateApi('google_workspace');
@@ -166,18 +172,26 @@ function Scheduling({ allIntegrations }) {
       },
       secondaryAction: () => {
         setLoading(false);
-        if (allIntegrations?.service_json) disConnectApi('google_workspace');
-        else readDocs('google_workspace');
+        // if (allIntegrations?.service_json) disConnectApi('google_workspace');
+        // else
+        readDocs('google_workspace');
       },
       learnHowLink: 'https://workspace.google.com',
     },
     {
       name: 'Zoom',
       url: 'zoom.com',
-      logo: <ZoomLogo />,
+      logo: (
+        <Image
+          src={'/images/integration/zoom-logo.svg'}
+          alt={'Zoom'}
+          width={40}
+          height={40}
+        />
+      ),
       isConnected: allIntegrations?.zoom_auth,
       primaryText: allIntegrations?.zoom_auth ? 'Re-Connect' : 'Connect',
-      secondaryText: allIntegrations?.zoom_auth ? 'Disconnect' : 'Learn How',
+      secondaryText: allIntegrations?.zoom_auth ? null : 'Learn How',
       primaryAction: () => {
         setLoading(false);
         if (allIntegrations?.zoom_auth) updateApi('zoom');
@@ -185,8 +199,9 @@ function Scheduling({ allIntegrations }) {
       },
       secondaryAction: () => {
         setLoading(false);
-        if (allIntegrations?.zoom_auth) disConnectApi('zoom');
-        else readDocs('zoom');
+        // if (allIntegrations?.zoom_auth) disConnectApi('zoom');
+        // else
+        readDocs('zoom');
       },
       learnHowLink:
         'https://marketplace.zoom.us/develop/applications/6yi2AYxkRASH4rVcP-8c9Q/information?mode=dev',
@@ -267,7 +282,6 @@ function Scheduling({ allIntegrations }) {
             <ShowCode.When
               isTrue={
                 reason === 'connect_google_workSpace' ||
-                reason === 'disconnect_google_workSpace' ||
                 reason === 'update_google_workspace'
               }
             >
@@ -309,11 +323,7 @@ function Scheduling({ allIntegrations }) {
               </div>
             </ShowCode.When>
             <ShowCode.When
-              isTrue={
-                reason === 'connect_zoom' ||
-                reason === 'disconnect_zoom' ||
-                reason === 'update_zoom'
-              }
+              isTrue={reason === 'connect_zoom' || reason === 'update_zoom'}
             >
               <div className='space-y-4'>
                 <div className='flex items-center justify-end space-x-2'>

@@ -238,7 +238,9 @@ const EditAdminDialog = ({
               }
             }}
             disabled={
-              recruiterUser?.role !== 'admin' || isUpdating || !isProfileChanged
+              recruiterUser?.role !== 'admin' ||
+              isUpdating ||
+              (!isProfileChanged && !isImageChanged)
             }
           >
             {isUpdating ? 'Updating...' : 'Update'}

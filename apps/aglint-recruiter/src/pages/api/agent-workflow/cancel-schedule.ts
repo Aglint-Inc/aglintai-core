@@ -7,7 +7,6 @@ import {
 } from '@aglint/shared-utils';
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
-import * as v from 'valibot';
 
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
@@ -21,8 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     await reqProgressLogger.resetEventProgress();
 
-    const { session_ids, target_api } = v.parse(
-      candidate_new_schedule_schema,
+    const { session_ids, target_api } = candidate_new_schedule_schema.parse(
       req.body,
     );
 

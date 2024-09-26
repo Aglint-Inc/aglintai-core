@@ -7,9 +7,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import defaultCompanyLogo from '@public/images/default/company.svg';
-import { LogOut, Settings, User } from 'lucide-react';
-import Image from 'next/image';
+import DefaultCompanyLogo from '@public/images/default/company.svg';
+import { LogOut, Settings } from 'lucide-react';
 import Link from 'next/link';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -20,7 +19,7 @@ import PERMISSIONS from '@/utils/routing/permissions';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-import defaultProfileImage from '../../../public/images/default/user.svg';
+import DefaultProfileImage from '../../../public/images/default/user.svg';
 import { NotFound } from '../Common/404';
 import SideNavbar from './SideNavbar';
 
@@ -30,7 +29,6 @@ export default function AppLayout({ children, appRouter = false }) {
     useAuthDetails();
   const router = useRouterPro();
   const logo = recruiter?.logo;
-  const name = recruiter?.name;
 
   const { data: members } = useMemberList();
 
@@ -46,14 +44,12 @@ export default function AppLayout({ children, appRouter = false }) {
         <nav className='sticky top-0 z-50 flex w-full items-center justify-between border-b bg-white p-2'>
           <div className='flex items-center space-x-4'>
             <Link href='/jobs'>
-              <Image
-                src={logo || defaultCompanyLogo}
-                alt={name}
-                width={32}
-                height={32}
-                className='rounded-sm'
-                style={{ objectFit: 'contain' }}
-              />
+              <Avatar className='h-[32px] w-[32px] cursor-pointer rounded-[4px]'>
+                <AvatarImage src={logo || ''} alt='@shadcn' />
+                <AvatarFallback className='rounded-[4px]'>
+                  <DefaultCompanyLogo />
+                </AvatarFallback>
+              </Avatar>
             </Link>
             <div className='flex space-x-2'>
               <Button variant='ghost' asChild>
@@ -77,27 +73,15 @@ export default function AppLayout({ children, appRouter = false }) {
                   }) + '?profile=true'
                 }
               >
-                {recruiterUser?.profile_image ? (
-                  // <Image
-                  //   src={recruiterUser?.profile_image}
-                  //   alt={recruiterUser?.first_name || 'User'}
-                  //   width={32}
-                  //   height={32}
-                  //   className='rounded-full'
-                  //   style={{ objectFit: 'cover' }}
-                  // />
-                  <Avatar className='h-[32px] w-[32px] cursor-pointer rounded-[4px]'>
-                    <AvatarImage
-                      src={userDetails?.profile_image || defaultProfileImage}
-                      alt='@shadcn'
-                    />
-                    <AvatarFallback className='rounded-[4px]'>
-                      <User className='text-gray-700' />
-                    </AvatarFallback>
-                  </Avatar>
-                ) : (
-                  <User className='h-5 w-5' strokeWidth={1.5} />
-                )}
+                <Avatar className='h-[32px] w-[32px] cursor-pointer rounded-[4px]'>
+                  <AvatarImage
+                    src={userDetails?.profile_image || ''}
+                    alt='@shadcn'
+                  />
+                  <AvatarFallback className='rounded-[4px]'>
+                    <DefaultProfileImage />
+                  </AvatarFallback>
+                </Avatar>
               </Link>
             </Button>
 
@@ -115,14 +99,12 @@ export default function AppLayout({ children, appRouter = false }) {
             <div className='flex flex-grow flex-col items-center py-3'>
               <Button variant='link' className='mt-4' asChild>
                 <Link href='/jobs'>
-                  <Image
-                    src={logo || defaultCompanyLogo}
-                    alt={name}
-                    width={40}
-                    height={40}
-                    className='mb-5 rounded-sm'
-                    style={{ objectFit: 'contain' }}
-                  />
+                  <Avatar className='h-[32px] w-[32px] cursor-pointer rounded-[4px]'>
+                    <AvatarImage src={logo || ''} alt='@shadcn' />
+                    <AvatarFallback className='rounded-[4px]'>
+                      <DefaultCompanyLogo />
+                    </AvatarFallback>
+                  </Avatar>
                 </Link>
               </Button>
               <SideNavbar />
@@ -140,13 +122,11 @@ export default function AppLayout({ children, appRouter = false }) {
                     >
                       <Avatar className='h-[32px] w-[32px] cursor-pointer rounded-[4px]'>
                         <AvatarImage
-                          src={
-                            userDetails?.profile_image || defaultProfileImage
-                          }
+                          src={userDetails?.profile_image || ''}
                           alt='@shadcn'
                         />
                         <AvatarFallback className='rounded-[4px]'>
-                          <User className='text-gray-600' strokeWidth={1.5} />
+                          <DefaultProfileImage />
                         </AvatarFallback>
                       </Avatar>
                       <span className='sr-only'>Your profile</span>
