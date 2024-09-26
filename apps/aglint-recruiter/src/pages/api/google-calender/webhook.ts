@@ -7,10 +7,12 @@ import { dayjsLocal } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    const supabaseAdmin = getSupabaseServer();
+
     const resource_id = req.headers['x-goog-resource-id'] as string;
     const channel_id = req.headers['x-goog-channel-id'] as string;
     // const channel_token = req.headers['x-goog-channel-token'];
@@ -176,6 +178,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 export default handler;
 
 const fetchMeetings = async (user_id: string) => {
+  const supabaseAdmin = getSupabaseServer();
+
   return (
     await supabaseAdmin
       .from('interview_meeting')
@@ -187,6 +191,8 @@ const fetchMeetings = async (user_id: string) => {
 };
 
 const getUser = async (user_id: string) => {
+  const supabaseAdmin = getSupabaseServer();
+
   return (
     await supabaseAdmin
       .from('recruiter_user')
@@ -208,6 +214,8 @@ const updateUser = async ({
   resourceId: string;
   channelId: string;
 }) => {
+  const supabaseAdmin = getSupabaseServer();
+
   await supabaseAdmin
     .from('recruiter_user')
     .update({

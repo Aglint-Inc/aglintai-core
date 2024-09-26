@@ -8,7 +8,7 @@ import {
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { isArray } from 'lodash';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { getWActions } from '../utils/w_actions';
 
@@ -19,6 +19,7 @@ export const onUpdateCandidateRequestAvailability = async ({
   new_data: DatabaseTable['candidate_request_availability'];
   old_data: DatabaseTable['candidate_request_availability'];
 }) => {
+  const supabaseAdmin = getSupabaseServer();
   // candidate availability recieved
   if (
     old_data.slots === null &&
@@ -64,6 +65,8 @@ export const onUpdateCandidateRequestAvailability = async ({
 const triggerActions = async (
   new_data: DatabaseTable['candidate_request_availability'],
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   try {
     const allowed_end_points: DatabaseEnums['email_slack_types'][] = [
       'onReceivingAvailReq_agent_confirmSlot',
@@ -112,6 +115,8 @@ const triggerActions = async (
 };
 
 const pauseCandAvailabilityReminder = async (cand_avail_id: string) => {
+  const supabaseAdmin = getSupabaseServer();
+
   try {
     supabaseWrap(
       await supabaseAdmin
@@ -131,6 +136,8 @@ const pauseCandAvailabilityReminder = async (cand_avail_id: string) => {
 const updateRequestProgress = async (
   new_data: DatabaseTable['candidate_request_availability'],
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   try {
     const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
       request_id: new_data.request_id,
@@ -157,6 +164,8 @@ const updateRequestProgress = async (
 const reRequestingAvailability = async (
   new_data: DatabaseTable['candidate_request_availability'],
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   try {
     const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
       request_id: new_data.request_id,

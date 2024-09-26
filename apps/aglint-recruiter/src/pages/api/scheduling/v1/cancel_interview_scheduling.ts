@@ -1,18 +1,15 @@
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
-dayjs.extend(utc);
-dayjs.extend(timezone);
 import { type ApiCancelScheduledInterview } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { session_ids } = req.body as ApiCancelScheduledInterview;
   if (!session_ids) return res.status(400).send('missing fields');
+  const supabaseAdmin = getSupabaseServer();
+
   try {
     const meeting_ids = supabaseWrap(
       await supabaseAdmin

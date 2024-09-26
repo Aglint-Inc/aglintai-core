@@ -1,6 +1,7 @@
 import { supabaseWrap } from '@aglint/shared-utils';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
+
 export const getWActions = async ({
   company_id,
   request_id,
@@ -8,6 +9,7 @@ export const getWActions = async ({
   company_id: string;
   request_id?: string;
 }) => {
+  const supabaseAdmin = getSupabaseServer();
   const all_actions = supabaseWrap(
     await supabaseAdmin
       .from('workflow_action')

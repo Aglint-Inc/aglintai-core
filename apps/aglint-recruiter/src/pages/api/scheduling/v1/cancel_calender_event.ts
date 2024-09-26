@@ -4,7 +4,7 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
 import type { CalEventAttendeesAuthDetails } from '@/utils/event_book/types';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 type BodyParams = {
   calender_event: CalendarEvent;
@@ -34,6 +34,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 export default handler;
 
 const getRecruiterCredentials = async ({ email }) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const [rec_user] = supabaseWrap(
     await supabaseAdmin.from('recruiter_user').select().eq('email', email),
   );

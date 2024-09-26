@@ -1,7 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export const onUpdateInterviewFilterJson = async ({
   new_data,
@@ -24,6 +24,7 @@ export const onUpdateInterviewFilterJson = async ({
 const stopSelfScheduleReminder = async (
   new_data: DatabaseTable['interview_filter_json'],
 ) => {
+  const supabaseAdmin = getSupabaseServer();
   try {
     supabaseWrap(
       await supabaseAdmin
@@ -41,6 +42,7 @@ const stopSelfScheduleReminder = async (
 const candConfirmSlot = async (
   new_data: DatabaseTable['interview_filter_json'],
 ) => {
+  const supabaseAdmin = getSupabaseServer();
   try {
     if (!new_data.request_id) return;
     supabaseWrap(

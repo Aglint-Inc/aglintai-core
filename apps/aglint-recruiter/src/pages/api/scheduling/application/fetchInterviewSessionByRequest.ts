@@ -3,7 +3,7 @@ import { type DatabaseTable, type SupabaseType } from '@aglint/shared-types';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { interviewCancelReasons, userDetails } from '@/utils/scheduling/const';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export type ApiInterviewSessionRequest = {
   request: {
@@ -31,6 +31,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 export default handler;
 
 const fetchDetails = async (request_id: string) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const [resSessions] = await Promise.all([
     fetchSessionDetails({
       request_id,

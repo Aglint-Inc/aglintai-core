@@ -9,7 +9,7 @@ import {
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -48,6 +48,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 export default handler;
 
 const fetchDetails = async (payload: CandReqAvailableSlots) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const [avail_req_details] = supabaseWrap(
     await supabaseAdmin
       .from('candidate_request_availability')

@@ -11,7 +11,7 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 import { type GoogleCalender } from '@/services/GoogleCalender/google-calender';
 
-import { supabaseAdmin } from '../supabase/supabaseAdmin';
+import { getSupabaseServer } from '../supabase/supabaseAdmin';
 import {
   type MeetingLimit,
   type MeetingLimitsConfig,
@@ -64,6 +64,8 @@ export const seedCalendersUtil = (
   // eslint-disable-next-line no-unused-vars
   cal_end_date: string,
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   let comp_details: {
     comp_schedule_setting: schedulingSettingType;
     companyCred: CompServiceKeyCred;

@@ -12,7 +12,6 @@ if (!url) {
 if (!key) {
   throw new Error(`Missing SUPABASE_SERVICE_ROLE_KEY on ${env}`);
 }
-export const supabaseAdmin = createClient<DB>(url, key);
 export function getSupabaseServer() {
   return createClient<DB>(url, key);
 }

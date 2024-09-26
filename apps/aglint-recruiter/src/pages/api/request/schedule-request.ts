@@ -4,7 +4,7 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 import { z } from 'zod';
 
 import { resetSessionRelations } from '@/utils/scheduling/resetSessionRelations';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const createScheduleRequest = z.object({
   session_ids: z.array(z.string()),
@@ -26,6 +26,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  const supabaseAdmin = getSupabaseServer();
+
   try {
     const parsed = createScheduleRequest.parse(req.body);
 

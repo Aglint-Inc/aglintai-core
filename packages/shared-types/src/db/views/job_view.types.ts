@@ -30,6 +30,8 @@ type ProcessingState = Database["public"]["Enums"]["resume_processing_state"];
 
 type CustomProcessingCount = { [id in ProcessingState]: number };
 
+type CustomFlag = { [id in CustomApplicationStatus]: boolean };
+
 type ApplicationMatch = Database["public"]["Enums"]["application_match"];
 
 type CustomApplicationMatch = { [id in ApplicationMatch]: number };

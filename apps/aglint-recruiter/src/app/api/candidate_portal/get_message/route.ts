@@ -1,7 +1,7 @@
 import { supabaseWrap } from '@aglint/shared-utils';
 import { NextResponse } from 'next/server';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export type apiResponsePortalMessage = Awaited<ReturnType<typeof getMessages>>;
 
@@ -21,6 +21,8 @@ export async function POST(req) {
 }
 
 const getMessages = async (application_id) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const { data } = await supabaseAdmin
     .from('applications')
     .select('candidates(recruiter(name,logo))')
