@@ -24,6 +24,7 @@ export const createPageApiPostRoute = (
       }
       return res.status(200).json(resp);
     } catch (error: any) {
+      console.error('ERROR STACK : \n', error.stack);
       if (onError) {
         await onError(error);
       }
