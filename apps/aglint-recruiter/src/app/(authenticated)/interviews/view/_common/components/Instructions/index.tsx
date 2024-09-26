@@ -33,7 +33,7 @@ function ScheduleDetailInstructions() {
     }
   }
   return (
-    <div className='max-w-4xl'>
+    <div className='max-w-4xl min-h-80'>
       <Instructions
         instruction={schedule?.interview_meeting.instructions as string}
         setTextValue={setTextValue}

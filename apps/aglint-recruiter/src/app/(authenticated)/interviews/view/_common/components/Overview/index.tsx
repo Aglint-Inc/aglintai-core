@@ -2,7 +2,7 @@ import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import { Card } from '@components/ui/card';
-import { Clock, SquareArrowOutUpRight, User, Users } from 'lucide-react';
+import { Globe, SquareArrowOutUpRight, User, Users } from 'lucide-react';
 import Link from 'next/link';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
@@ -74,8 +74,8 @@ function Overview() {
       slotHiringTeamList={<AllRolesMeetings />}
       slotOrganizerList={
         schedule.organizer && (
-          <div className='mb-2 flex items-center space-x-3'>
-            <Avatar className='h-8 w-8'>
+          <div className='mb-2 flex items-center space-x-2'>
+            <Avatar className='h-10 w-10 rounded-sm'>
               <AvatarImage
                 src={schedule.organizer.profile_image ?? 'avatar.png'}
                 alt={getFullName(
@@ -83,7 +83,7 @@ function Overview() {
                   schedule?.organizer.last_name ?? '',
                 )}
               />
-              <AvatarFallback>
+              <AvatarFallback className='h-10 w-10 rounded-sm'>
                 {getFullName(
                   schedule?.organizer?.first_name ?? '',
                   schedule?.organizer?.last_name ?? '',
@@ -100,7 +100,7 @@ function Overview() {
                   schedule?.organizer?.last_name ?? '',
                 )}
               </Link>
-              <p className='text-xs text-gray-500'>
+              <p className='text-sm text-gray-500'>
                 {schedule.organizer.position}
               </p>
             </div>
@@ -155,24 +155,21 @@ function Overview() {
       }
       slotCandidateList={
         <div className='flex w-full items-center justify-between'>
-          <div className='flex items-center space-x-4'>
+          <div className='flex items-center gap-2'>
             <div className='flex-shrink-0'>
-              <div className='flex h-12 w-12 items-center justify-center rounded-full bg-gray-200 text-lg font-medium text-gray-500'>
+              <div className='flex h-12 w-12 items-center justify-center rounded-md bg-gray-200 text-lg font-medium text-gray-500'>
                 <User className='h-6 w-6' />
               </div>
             </div>
-            <div className='flex flex-col'>
-              <p className='text-base font-semibold'>
+            <div className='flex flex-col gap-1'>
+              <p className='text-md font-medium'>
                 {getFullName(
                   schedule?.candidates?.first_name ?? '',
                   schedule?.candidates?.last_name ?? '',
                 )}
               </p>
-            </div>
-          </div>
-          <div className='flex flex-col items-end'>
-            <div className='flex items-center text-sm text-gray-600'>
-              <Clock className='mr-1 h-4 w-4' />
+              <div className='flex items-center text-sm text-gray-600'>
+              <Globe className='mr-1 h-4 w-4' />
               <span>
                 {formatTimeWithTimeZone({
                   start_time: schedule.interview_meeting.start_time ?? '',
@@ -181,19 +178,25 @@ function Overview() {
                 })}
               </span>
             </div>
+            </div>
+          </div>
+          <div className='flex flex-col items-end absolute opacity-0 pointer-events-none'>
+            
             <p className='text-xs text-gray-500'>
               {getShortTimeZone(schedule?.candidates?.timezone ?? '')}
             </p>
           </div>
         </div>
       }
-      textMeetingLink={schedule.interview_meeting.meeting_link || '--'}
+      // textMeetingLink={schedule.interview_meeting.meeting_link || '--'}
       slotJoinMeeting={
         schedule?.interview_meeting?.status === 'confirmed' &&
         schedule?.interview_meeting?.meeting_link && (
+          <div className=''>
           <Button
-            variant='outline'
-            size='sm'
+            variant='link'
+            size='md'
+            className='text-sm font-normal flex items-center gap-2 px-0 py-0'
             onClick={() => {
               window.open(
                 schedule?.interview_meeting?.meeting_link ?? '',
@@ -201,9 +204,10 @@ function Overview() {
               );
             }}
           >
-            Join Meeting
-            <SquareArrowOutUpRight className='ml-2 h-4 w-4' />
+            {schedule.interview_meeting.meeting_link || '--'}
+            <SquareArrowOutUpRight className=' h-4 w-4' />
           </Button>
+          </div>
         )
       }
       textDuration={getBreakLabel(schedule.interview_session.session_duration)}

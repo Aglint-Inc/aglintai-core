@@ -37,7 +37,7 @@ export function UIAlert({
   const alertClass = cn(
     'flex items-start',
     'flex-col w-full',
-    type === 'inline' ? 'px-2 py-1' : type === 'small' ? 'p-3' : 'p-4',
+    type === 'inline' ? 'px-2 py-2' : type === 'small' ? 'p-3' : 'p-4',
     className,
   );
 

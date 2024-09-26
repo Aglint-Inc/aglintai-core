@@ -30,7 +30,7 @@ function Instructions({
   };
 
   return (
-    <div className='rounded-lg border bg-white p-4 shadow-sm'>
+    <div className='rounded-lg border bg-white p-4 shadow-sm min-h-80'>
       <div className='mb-2 flex items-center justify-between'>
         <h2 className='text-base font-medium text-gray-900'>Instructions</h2>
         {showEditButton && !isEditing && (

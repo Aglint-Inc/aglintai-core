@@ -77,10 +77,10 @@ function SchedulingViewComp() {
             </Breadcrumb>
             <div className='w-fullflex-row flex justify-between pr-6'>
               <div>
-                <h1 className='text-3xl font-bold text-gray-900'>
+                <h1 className='text-2xl font-medium text-gray-900'>
                   {schedule?.interview_session.name}
                 </h1>
-                <p className='text-md mt-2 pb-2 text-gray-600'>
+                <p className='text-md mt-1 pb-2 text-gray-600'>
                   Interview for{' '}
                   <a
                     href={`/jobs/${job?.id}`}
@@ -120,7 +120,7 @@ function SchedulingViewComp() {
 
         <div className='flex justify-between space-x-12'>
           <div className='w-8/12 space-y-6'>
-            <div className='flex flex-col space-y-2 pb-4'>
+            <div className='flex flex-col space-y-2 pt-4'>
               <Banners />
             </div>
             {data?.schedule_data ? (
