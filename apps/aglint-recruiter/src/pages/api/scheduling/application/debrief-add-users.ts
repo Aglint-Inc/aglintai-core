@@ -5,7 +5,7 @@ import { type CustomMembersMeta } from '@aglint/shared-types/src/db/common.types
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export type ApiBodyParamTaskCreate = {
   schedule_id: string;
@@ -19,6 +19,8 @@ export type ApiDebriefAddUsers = {
 const debrief_task_create_url = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/debrief/task_create`;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const supabaseAdmin = getSupabaseServer();
+
   try {
     const { filter_id } = req.body as ApiDebriefAddUsers;
 
@@ -160,6 +162,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 export default handler;
 
 const fetchMeetingsSessions = async (application_id: string) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const { data: intMeetSessions, error: errSessions } = await supabaseAdmin
     .from('interview_meeting')
     .select(

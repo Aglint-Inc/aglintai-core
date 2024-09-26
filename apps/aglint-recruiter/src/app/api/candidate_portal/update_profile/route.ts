@@ -2,7 +2,7 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { NextResponse } from 'next/server';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export type profileDetailsPayload = Pick<
   DatabaseTable['candidates'],
@@ -42,6 +42,8 @@ const updateCandidateDetails = async (
   application_id: string,
   details: profileDetailsPayload,
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const candidate_id = supabaseWrap(
     await supabaseAdmin
       .from('applications')

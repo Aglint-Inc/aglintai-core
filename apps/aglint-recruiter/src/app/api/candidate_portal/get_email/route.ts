@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export type candidatePortalGetEmailtype = Awaited<ReturnType<typeof getEmail>>;
 
@@ -20,6 +20,8 @@ export async function POST(req) {
 }
 
 const getEmail = async (application_id: string[]) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const { data } = await supabaseAdmin
     .from('applications')
     .select('id,candidates(email)')

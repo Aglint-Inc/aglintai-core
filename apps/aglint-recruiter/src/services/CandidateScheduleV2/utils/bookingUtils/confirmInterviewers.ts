@@ -1,7 +1,7 @@
 import { type SessionInterviewerType } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { type BookedMeetingDetails } from './types';
 
@@ -14,6 +14,8 @@ export const confirmInterviewers = async (
   booked_meeting_details: BookedMeetingDetails,
   is_debreif = false,
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   let inters: ConfirmInt[] = [];
   for (const booked_meeting of booked_meeting_details) {
     booked_meeting.meeting_organizer;

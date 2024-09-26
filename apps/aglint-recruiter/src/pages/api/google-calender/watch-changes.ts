@@ -1,7 +1,7 @@
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -30,6 +30,7 @@ const updateUser = async ({
   resourceId: string;
   channelId: string;
 }) => {
+  const supabaseAdmin = getSupabaseServer();
   await supabaseAdmin
     .from('recruiter_user')
     .update({

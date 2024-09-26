@@ -14,7 +14,7 @@ import {
   deleteResume,
   getFiles,
 } from '@/apiUtils/job/candidateUpload/utils';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export const config = {
   api: {
@@ -26,6 +26,8 @@ const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<ResumeUploadApi['response']>,
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const files = await getFiles(req);
   const { job_id, recruiter_id } = Object.assign(
     {},

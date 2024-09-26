@@ -1,13 +1,15 @@
 import { type APIScheduleDebreif } from '@aglint/shared-types';
 import { scheduling_options_schema, supabaseWrap } from '@aglint/shared-utils';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { userTzDayjs } from '../../userTzDayjs';
 
 export const fetchCandDetailsForDebreifBooking = async (
   req_body: APIScheduleDebreif,
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const [cand_debreif_details] = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')

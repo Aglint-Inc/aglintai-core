@@ -1,7 +1,7 @@
 import { supabaseWrap } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 type BodyParams = {
   training_ints: {
@@ -14,6 +14,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { training_ints } = req.body as BodyParams;
   try {
     if (!training_ints) res.status(400).send('missing field');
+    const supabaseAdmin = getSupabaseServer();
+
     const module_relations = supabaseWrap(
       await supabaseAdmin
         .from('module_relations_view')

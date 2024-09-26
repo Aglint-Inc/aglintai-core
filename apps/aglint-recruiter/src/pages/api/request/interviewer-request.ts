@@ -6,12 +6,14 @@ import {
 } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  const supabaseAdmin = getSupabaseServer();
+
   try {
     const parsed = createInterviewerRequestSchema.parse(req.body);
     const [int_sesn_cancel] = supabaseWrap(
