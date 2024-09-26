@@ -4,11 +4,13 @@ import { useEffect, useRef, useState } from 'react';
 import { type MemberType } from 'src/app/_common/types/memberType';
 
 import axios from '@/client/axios';
-import { useTenantRoles } from '@/company/hooks';
-import { useTenantOfficeLocations } from '@/company/hooks';
+import {
+  useTenant,
+  useTenantOfficeLocations,
+  useTenantRoles,
+} from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type API_setMembersWithRole } from '@/pages/api/setMembersWithRole/type';
 import { useAllDepartments } from '@/queries/departments';
 import { supabase } from '@/utils/supabase/client';
@@ -56,7 +58,7 @@ const EditAdminDialog = ({
   onClose: () => void;
 }) => {
   const { data: roleOptions } = useTenantRoles();
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
   const { data: departments } = useAllDepartments();
   const { data: officeLocations } = useTenantOfficeLocations();
   const [isUpdating, setIsUpdating] = useState(false);
@@ -138,23 +140,23 @@ const EditAdminDialog = ({
   };
 
   function permissionCheck() {
-    if (recruiterUser?.role === 'admin') {
+    if (recruiter_user?.role === 'admin') {
       if (
-        recruiterUser?.user_id === member.user_id ||
+        recruiter_user?.user_id === member.user_id ||
         form?.role !== 'admin' ||
-        recruiterUser?.user_id === member.created_by
+        recruiter_user?.user_id === member.created_by
       ) {
         return true;
       } else if (
         form?.role === 'admin' &&
-        recruiterUser?.created_by === member.user_id
+        recruiter_user?.created_by === member.user_id
       ) {
         toast.error('Permission Denied');
 
         return false;
       } else if (
         form?.role === 'admin' &&
-        recruiterUser?.user_id !== member.created_by
+        recruiter_user?.user_id !== member.created_by
       ) {
         toast.error('Permission Denied');
         // toast.error('You cannot edit another admin detail');
@@ -238,7 +240,7 @@ const EditAdminDialog = ({
               }
             }}
             disabled={
-              recruiterUser?.role !== 'admin' ||
+              recruiter_user?.role !== 'admin' ||
               isUpdating ||
               (!isProfileChanged && !isImageChanged)
             }
@@ -257,7 +259,7 @@ const EditAdminDialog = ({
           formError={formError}
           officeLocations={officeLocations}
           member={member}
-          recruiterUser={recruiterUser}
+          recruiter_user={recruiter_user}
           departments={departments}
           roleOptions={roleOptions}
           memberList={memberList}

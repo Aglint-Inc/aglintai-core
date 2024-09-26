@@ -6,7 +6,7 @@ import {
   useState,
 } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { supabase } from '@/utils/supabase/client';
 
 import { type AnalyticsContextInterface, type AnalyticsFilters } from './Type';
@@ -47,7 +47,7 @@ export default function AnalyticsProvider({
 }: {
   children: ReactNode;
 }) {
-  const { recruiter } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   const [filtersOptions, setFiltersOptions] = useState<
     AnalyticsContextInterface['filtersOptions']
   >({
@@ -62,11 +62,11 @@ export default function AnalyticsProvider({
     setFilters((pre) => ({ ...pre, ...data }));
   };
   useEffect(() => {
-    recruiter?.id &&
-      getOptions(recruiter.id).then((data) => {
+    recruiter_id &&
+      getOptions(recruiter_id).then((data) => {
         setFiltersOptions((pre) => ({ ...pre, ...data }));
       });
-  }, [recruiter.id]);
+  }, [recruiter_id]);
   return (
     <AnalyticsContext.Provider
       value={{

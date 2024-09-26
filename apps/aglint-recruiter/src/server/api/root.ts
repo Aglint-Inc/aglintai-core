@@ -11,6 +11,7 @@ import { jobs } from './routers/jobs';
 import { requests } from './routers/requests';
 import { scheduling } from './routers/scheduling';
 import { tenant } from './routers/tenant';
+import { user } from './routers/user';
 import { workflows } from './routers/workflows';
 import { createCallerFactory, createTRPCRouter } from './trpc';
 
@@ -34,6 +35,7 @@ export const appRouter = createTRPCRouter({
   application,
   workflows,
   get_last_login,
+  user,
 });
 
 export const appRouterSchema = {

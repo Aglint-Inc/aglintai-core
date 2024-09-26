@@ -7,7 +7,7 @@ import {
 } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import {
   useWorkflowCreate,
@@ -21,7 +21,7 @@ import { useWorkflowsJobFilter } from '../hooks/useWorkflowsJobFilter';
 import { useWorkflowsRead } from '../hooks/useWorkflowsRead';
 
 const useWorkflowsContext = () => {
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   const workflows = useWorkflowsRead();
   const { mutate: createWorkflowMutation } = useWorkflowCreate();
   const workflowJobFilter = useWorkflowsJobFilter();

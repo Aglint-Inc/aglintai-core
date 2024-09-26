@@ -8,7 +8,6 @@ import type {
 } from 'src/app/_common/components/Profile/uitls';
 
 import { ShadcnPhoneInput } from '@/components/Common/UIPhoneInput/PhoneInput';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 export const ProfileForms = ({
   profile,
@@ -51,9 +50,8 @@ const ProfileForm = ({
   // eslint-disable-next-line no-unused-vars
   onChange: (e: any, key: keyof FormFields, phoneFormat?: any) => void;
 }) => {
-  const { userCountry } = useAuthDetails();
   const defaultCountry =
-    value.validation === 'phone' && !value.value ? userCountry : '+1';
+    value.validation === 'phone' && !value.value ? 'us' : '+1';
 
   switch (value.validation) {
     case 'phone': {

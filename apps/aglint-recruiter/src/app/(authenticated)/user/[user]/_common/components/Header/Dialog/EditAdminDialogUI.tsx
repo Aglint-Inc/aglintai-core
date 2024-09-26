@@ -15,11 +15,10 @@ import {
 } from 'react';
 import { type MemberType } from 'src/app/_common/types/memberType';
 
-import type { useTenantRoles } from '@/company/hooks';
+import type { useTenant, useTenantRoles } from '@/company/hooks';
 import type { useTenantOfficeLocations } from '@/company/hooks';
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
 import UITypography from '@/components/Common/UITypography';
-import { type useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type useAllDepartments } from '@/queries/departments';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
@@ -36,7 +35,7 @@ type Props = {
   formError: EditAdminFormErrorType;
   officeLocations: ReturnType<typeof useTenantOfficeLocations>['data'];
   member: MemberType;
-  recruiterUser: ReturnType<typeof useAuthDetails>['recruiterUser'];
+  recruiterUser: ReturnType<typeof useTenant>['recruiter_user'];
   departments: ReturnType<typeof useAllDepartments>['data'];
   roleOptions: ReturnType<typeof useTenantRoles>['data'];
   memberList: { id: string; name: string }[];

@@ -18,7 +18,7 @@ export type CustomRecruiter = TableType<
   }
 >;
 
-export const CustomRecruiterSchema = recruiterUpdateSchema.extend({
+export const CustomRecruiterUpdateSchema = recruiterUpdateSchema.extend({
   scheduling_settings: customSchedulingSettingsSchema.optional(),
   scheduling_reason: customSchedulingReasonSchema.optional(),
   socials: socialsTypeSchema.optional(),

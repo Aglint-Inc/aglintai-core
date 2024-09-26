@@ -6,8 +6,8 @@ import { Clock, Mail, MapPin, Phone, User } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { type RefObject, useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
 import { EditUser } from './EditUser';
@@ -37,7 +37,7 @@ export const Header = ({
   const isInitalOpen = router.queryParams.edit_enable as unknown as boolean;
   const [isOpen, setIsOpen] = useState<boolean>(isInitalOpen || false);
 
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
   const param = useParams() as { user: string };
   const user_id = param.user as string;
   const getConsent = async () => {
@@ -96,8 +96,8 @@ export const Header = ({
               </div>
             </div>
             <div className='flex gap-3'>
-              {recruiterUser?.user_id === user_id &&
-                !recruiterUser.is_calendar_connected && (
+              {recruiter_user?.user_id === user_id &&
+                !recruiter_user.is_calendar_connected && (
                   <UIButton onClick={getConsent}>Connect Calendar</UIButton>
                 )}
               <UIButton

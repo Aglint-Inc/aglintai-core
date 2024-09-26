@@ -76,3 +76,25 @@ export const socialsTypeSchema = z.object({
   linkedin: z.string(),
   instagram: z.string(),
 });
+
+export const customRecuiterUserStatus = z.union([
+  z.literal("invited"),
+  z.literal("active"),
+  z.literal("suspended"),
+]);
+
+export const customRecruiterUserScheduleAuth = z
+  .object({
+    email: z.string(),
+    expiry_date: z.number(),
+    access_token: z.string(),
+    refresh_token: z.string(),
+  })
+  .nullable();
+
+export const customRecruiterUserCalendarSync = z
+  .object({
+    resourceId: z.string(),
+    channelId: z.string(),
+  })
+  .nullable();
