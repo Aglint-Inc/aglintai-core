@@ -1,15 +1,12 @@
-import { supabaseWrap } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
 import axios from 'axios';
 import { Loader2 } from 'lucide-react';
 import { useEffect } from 'react';
 
-import {
-  AuthProvider,
-  useAuthDetails,
-} from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
+import { AuthProvider } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { supabase } from '@/utils/supabase/client';
+import { api } from '@/trpc/client';
 
 const AuthHoc = () => {
   return (
@@ -24,43 +21,31 @@ const AuthHoc = () => {
 const Google = () => {
   const router = useRouterPro();
   const { toast } = useToast();
-  const { recruiterUser, setRecruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
+  const { code } = router.queryParams;
+  const { mutateAsync } = api.user.update_current_user.useMutation();
+  const { mutateAsync: getAuthEmail } = api.user.get_oauth_user.useMutation();
 
   useEffect(() => {
-    if (recruiterUser) {
-      const { code } = router.queryParams;
+    if (recruiter_user) {
       if (!code) return;
 
       (async () => {
         try {
           const tokens = await getTokens(code as string);
-          const email = await axios.post('/api/email-outreach/get-user-email', {
-            ...tokens,
+          const email = await getAuthEmail({
+            access_token: tokens.access_token,
+            refresh_token: tokens.refresh_token,
           });
-
-          supabaseWrap(
-            await supabase
-              .from('recruiter_user')
-              .update({
-                is_calendar_connected: true,
-                schedule_auth: {
-                  access_token: tokens.access_token,
-                  refresh_token: tokens.refresh_token,
-                  expiry_date: tokens.expiry_date,
-                  email: email.data,
-                },
-              })
-              .eq('user_id', recruiterUser.user_id),
-          );
-          setRecruiterUser((prev) => ({
-            ...prev,
+          await mutateAsync({
+            is_calendar_connected: true,
             schedule_auth: {
-              email: email.data,
               access_token: tokens.access_token,
               refresh_token: tokens.refresh_token,
               expiry_date: tokens.expiry_date,
+              email: email,
             },
-          }));
+          });
         } catch (error) {
           if (error instanceof Error) {
             toast({
@@ -70,16 +55,16 @@ const Google = () => {
             });
           }
         } finally {
-          const path = localStorage.getItem('gmail-redirect-path');
-          if (path) {
-            router.replace(path);
-          } else {
-            router.replace('/jobs');
-          }
+          // const path = localStorage.getItem('gmail-redirect-path');
+          // if (path) {
+          //   router.replace(path);
+          // } else {
+          //   router.replace('/jobs');
+          // }
         }
       })();
     }
-  }, [router.isReady]);
+  }, [recruiter_user]);
 
   return (
     <>
@@ -107,11 +92,3 @@ const getTokens = async (code: string) => {
     expiry_date: number;
   };
 };
-
-// const getUserEmail = async ({ access_token, refresh_token }) => {
-//   const { data } = await axios.post('/api/email-outreach/get-user-email', {
-//     access_token,
-//     refresh_token,
-//   });
-//   return data;
-// };

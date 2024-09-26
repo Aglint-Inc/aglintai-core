@@ -15,5 +15,8 @@ export const API_PERMISSIONS: ApiPermissions = {
   requests: [],
   application: ['job_module'],
   get_last_login: ['view_users'],
-  user: ['view_users'],
+  user: {
+    update_current_user: ['authorized'],
+    get_oauth_user: ['authorized'],
+  },
 };

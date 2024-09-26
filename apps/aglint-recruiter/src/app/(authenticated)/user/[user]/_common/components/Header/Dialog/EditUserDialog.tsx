@@ -1,4 +1,3 @@
-import { type recruiter_userType } from '@aglint/shared-types';
 import { type CustomSchedulingSettings } from '@aglint/shared-types/src/db/tables/common.types';
 import { type Dispatch, type SetStateAction, useRef, useState } from 'react';
 import {
