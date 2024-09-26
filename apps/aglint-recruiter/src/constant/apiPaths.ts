@@ -84,7 +84,6 @@ export const API_PATHS = [
   '/api/scheduling/get-accesstoken',
   '/api/scheduling/get_interview_modules',
   '/api/scheduling/get_interview_plans',
-  '/api/scheduling/get_interview_training_progress',
   '/api/scheduling/get_interviewer_and_modules',
   '/api/scheduling/google-consent',
   '/api/scheduling/invite',

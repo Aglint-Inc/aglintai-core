@@ -99,7 +99,6 @@ const PERMISSIONS: Permissions = {
   ],
   '/api/scheduling/request_availability/candidateAvailability/getScheduleMeetings':
     ['scheduling_module'],
-  '/api/scheduling/get_interview_training_progress': ['scheduling_module'],
   // request availability mail apis
   // '/api/scheduling/v1/find-alternative-time-slots': ['scheduler_update'], //
   // '/api/scheduling/v1/update_meeting_interviewers': ['scheduler_update'], //
