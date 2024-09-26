@@ -4691,6 +4691,7 @@ export type Database = {
           section_count: Json | null
           sourcer: string | null
           status: Database["public"]["Enums"]["public_job_status"] | null
+          syncable: boolean | null
           workplace_type:
             | Database["public"]["Enums"]["public_job_workplace"]
             | null
@@ -6919,4 +6920,3 @@ export type Enums<
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
     : never
-
