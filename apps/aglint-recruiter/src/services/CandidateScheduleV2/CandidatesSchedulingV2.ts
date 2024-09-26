@@ -24,7 +24,7 @@ import {
 import { type Dayjs } from 'dayjs';
 import { isEqual } from 'lodash';
 import { nanoid } from 'nanoid';
-import * as v from 'valibot';
+import { type z } from 'zod';
 
 import {
   type DbFetchScheduleApiDetailsParams,
@@ -53,11 +53,11 @@ export class CandidatesSchedulingV2 {
     | Awaited<ReturnType<typeof fetchIntsCalEventsDetails>>['ints_events_map']
     | null;
 
-  constructor(_api_options: v.InferInput<typeof scheduling_options_schema>) {
+  constructor(_api_options: z.infer<typeof scheduling_options_schema>) {
     this.db_details = null;
     this.calendar_events = null;
     // scheduling_options_schema;
-    const parsed_api_options = v.parse(scheduling_options_schema, {
+    const parsed_api_options = scheduling_options_schema.parse({
       ...(_api_options ?? {}),
       include_conflicting_slots: {
         ...(_api_options?.include_conflicting_slots ?? {}),

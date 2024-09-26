@@ -10,7 +10,7 @@ import {
   type ProgressLoggerType,
   supabaseWrap,
 } from '@aglint/shared-utils';
-import type * as v from 'valibot';
+import { type z } from 'zod';
 
 import { mailSender } from '@/utils/mailSender';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
@@ -26,7 +26,7 @@ export const candidateSelfSchedule = async ({
   req_assignee_tz,
   organizer_id,
 }: {
-  parsed_body: v.InferInput<typeof candidate_new_schedule_schema>;
+  parsed_body: z.infer<typeof candidate_new_schedule_schema>;
   date_range: {
     start_date_str: string;
     end_date_str: string;

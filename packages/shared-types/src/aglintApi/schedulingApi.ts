@@ -1,9 +1,9 @@
-import * as v from 'valibot';
+import { z } from 'zod';
 import { PlanCombinationRespType } from '../scheduleTypes';
 import {
-  schema_candidate_direct_booking,
-  schema_confirm_slot_no_conflict,
-} from './valibotSchema/candidate-self-schedule';
+  SchemaCandidateDirectBooking,
+  SchemaConfirmSlotNoConflict,
+} from './zodSchemas/candidate-self-schedule';
 import {
   candidate_avail_request_schema,
   candidate_new_schedule_schema,
@@ -30,7 +30,7 @@ export type APIEventAttendeeStatus = {
   attendee_interv_id: string;
 };
 
-export type APIFindAltenativeTimeSlot = v.InferInput<
+export type APIFindAltenativeTimeSlot = z.infer<
   typeof schema_find_alternative_slots
 >;
 
@@ -45,23 +45,21 @@ export type APICandScheduleMailThankYou = {
 };
 type t = typeof schema_find_availability_payload;
 
-export type APIOptions = v.InferOutput<typeof scheduling_options_schema>;
+export type APIOptions = z.infer<typeof scheduling_options_schema>;
 
-export type APIFindAvailability = v.InferInput<
+export type APIFindAvailability = z.infer<
   typeof schema_find_availability_payload
 >;
-export type APISendAvailabilityRequestLink = v.InferInput<
+export type APISendAvailabilityRequestLink = z.infer<
   typeof schema_send_avail_req_link
 >;
-export type APIFindInterviewSlot = v.InferInput<
-  typeof schema_find_interview_slot
->;
+export type APIFindInterviewSlot = z.infer<typeof schema_find_interview_slot>;
 
-export type APIFindSlotsDateRange = v.InferInput<
+export type APIFindSlotsDateRange = z.infer<
   typeof schema_find_availability_payload
 >;
 
-export type CandReqAvailableSlots = v.InferInput<
+export type CandReqAvailableSlots = z.infer<
   typeof schema_candidate_req_availabale_slots
 >;
 
@@ -90,12 +88,12 @@ export type APIConfirmRecruiterSelectedOption = {
   request_id: string;
 };
 
-export type CandidateDirectBookingType = v.InferOutput<
-  typeof schema_candidate_direct_booking
+export type CandidateDirectBookingType = z.infer<
+  typeof SchemaCandidateDirectBooking
 >;
 
-export type APICandidateConfirmSlotNoConflict = v.InferOutput<
-  typeof schema_confirm_slot_no_conflict
+export type APICandidateConfirmSlotNoConflict = z.infer<
+  typeof SchemaConfirmSlotNoConflict
 >;
 
 export type APIScheduleDebreif = {
@@ -135,30 +133,28 @@ export type CurrRoundCandidateAvailReq = {
   }[];
 };
 
-export type APICandidateAvailableRequestType = v.InferOutput<
+export type APICandidateAvailableRequestType = z.infer<
   typeof candidate_avail_request_schema
 >;
 
-export type APICandidateSelfScheduleRequest = v.InferOutput<
+export type APICandidateSelfScheduleRequest = z.infer<
   typeof candidate_self_schedule_request
 >;
 
-export type APICandidateNewSchedule = v.InferOutput<
+export type APICandidateNewSchedule = z.infer<
   typeof candidate_new_schedule_schema
 >;
 
-export type APIPhoneAgent = v.InferOutput<
-  typeof phone_agent_self_schedule_schema
->;
+export type APIPhoneAgent = z.infer<typeof phone_agent_self_schedule_schema>;
 
-export type APIEmailAgentPayload = v.InferOutput<
+export type APIEmailAgentPayload = z.infer<
   typeof email_agent_self_schedule_schema
 >;
 
-export type APIUpdateMeetingInterviewers = v.InferInput<
+export type APIUpdateMeetingInterviewers = z.infer<
   typeof schema_update_meeting_ints
 >;
 
-export type APICreateInterviewerRequest = v.InferInput<
+export type APICreateInterviewerRequest = z.infer<
   typeof createInterviewerRequestSchema
 >;
