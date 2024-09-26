@@ -5,6 +5,7 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 export const createPageApiPostRoute = (
   schema: any,
   call_back_handler: (p: any) => any,
+  onError?: (e: any) => any,
 ) => {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     try {
@@ -18,8 +19,14 @@ export const createPageApiPostRoute = (
         parsed_body = req.body;
       }
       const resp = await call_back_handler(parsed_body);
+      if (!resp) {
+        return res.status(204).end();
+      }
       return res.status(200).json(resp);
     } catch (error: any) {
+      if (onError) {
+        await onError(error);
+      }
       if (error instanceof CApiError) {
         if (error.type === 'CLIENT') {
           return res

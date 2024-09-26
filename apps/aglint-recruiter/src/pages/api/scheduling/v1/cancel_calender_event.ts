@@ -1,7 +1,7 @@
 import { type CalendarEvent } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
-import { type NextApiRequest, type NextApiResponse } from 'next';
 
+import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
 import type { CalEventAttendeesAuthDetails } from '@/utils/event_book/types';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
@@ -10,28 +10,18 @@ type BodyParams = {
   calender_event: CalendarEvent;
 };
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { calender_event } = req.body as BodyParams;
-  if (!calender_event) return res.status(400).send('missing Fields');
-  try {
-    const { comp_cred, recruiter } = await getRecruiterCredentials({
-      email: calender_event.organizer.email,
-    });
+const cancelCalenderEvent = async (req_body: BodyParams) => {
+  const { calender_event } = req_body as BodyParams;
+  const { comp_cred, recruiter } = await getRecruiterCredentials({
+    email: calender_event.organizer.email,
+  });
 
-    const google_cal = new GoogleCalender(comp_cred, recruiter);
+  const google_cal = new GoogleCalender(comp_cred, recruiter);
 
-    await google_cal.authorizeUser();
+  await google_cal.authorizeUser();
 
-    await google_cal.updateEventStatus(calender_event.id, 'cancelled');
-
-    return res.status(200).send('ok');
-  } catch (error) {
-    console.error(error.message);
-    res.status(500).send(error.message);
-  }
+  await google_cal.updateEventStatus(calender_event.id, 'cancelled');
 };
-
-export default handler;
 
 const getRecruiterCredentials = async ({ email }) => {
   const supabaseAdmin = getSupabaseServer();
@@ -56,3 +46,5 @@ const getRecruiterCredentials = async ({ email }) => {
   };
   return { comp_cred: rec.recruiter.integrations.service_json, recruiter: r };
 };
+
+export default createPageApiPostRoute(null, cancelCalenderEvent);
