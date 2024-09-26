@@ -6,6 +6,7 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useAllMembers } from '@/queries/members';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 export type SetupStepType = {
   id:
@@ -23,6 +24,7 @@ export type SetupStepType = {
   isCompleted: boolean;
   navLink: string;
   isOptional: boolean;
+  isVisiable: boolean;
 };
 
 const jobIds: SetupStepType['id'][] = [
@@ -50,6 +52,7 @@ export function useCompanySetup() {
   const { data: compandDetails, isLoading: companySettingLoading } =
     useFetchcompanySetup();
 
+  const { isShowFeature } = useAuthDetails();
   //loading ---
   const isLoading =
     recruiterLoading ||
@@ -68,6 +71,11 @@ export function useCompanySetup() {
     !!recruiter?.logo &&
     !!recruiter?.employee_size &&
     !!recruiter?.industry;
+
+  const requiredProperties = ['name', 'logo', 'employee_size', 'industry'];
+  const missingCompanyProperties = recruiter
+    ? findMissingProperties(recruiter, requiredProperties)
+    : [];
 
   const isLocationsPresent =
     recruiter?.office_locations.length > 0 ? true : false;
@@ -137,11 +145,11 @@ export function useCompanySetup() {
         {
           id: 'company-details',
           title: 'Company Details',
-          description:
-            'Update basic information like company name, logo, and contact details.',
+          description: `Update basic information like company ${missingCompanyProperties?.map((pro) => capitalizeAll(pro)).join(', ')} details.`,
           isCompleted: isCompanyDetailsCompleted,
           navLink: ROUTES['/company']() + '?tab=company-info',
           isOptional: false,
+          isVisiable: true,
         },
         {
           id: 'departments-locations',
@@ -150,6 +158,7 @@ export function useCompanySetup() {
           isCompleted: isLocationsPresent && isDepartmentsPresent,
           navLink: ROUTES['/company']() + '?tab=company-info',
           isOptional: false,
+          isVisiable: true,
         },
         {
           id: 'add-users',
@@ -158,6 +167,7 @@ export function useCompanySetup() {
           isCompleted: isMembersPresent,
           navLink: ROUTES['/company']() + '?tab=team',
           isOptional: true,
+          isVisiable: true,
         },
         {
           id: 'integrations',
@@ -167,6 +177,7 @@ export function useCompanySetup() {
           isCompleted: isIntegrationsPresent,
           navLink: ROUTES['/integrations'](),
           isOptional: true,
+          isVisiable: isShowFeature('INTEGRATIONS'),
         },
         {
           id: 'interview-pool',
@@ -175,6 +186,7 @@ export function useCompanySetup() {
           isCompleted: isInterviewPoolPresent,
           navLink: ROUTES['/interview-pool'](),
           isOptional: false,
+          isVisiable: true,
         },
 
         {
@@ -184,6 +196,7 @@ export function useCompanySetup() {
           isCompleted: isJobsPresent,
           navLink: ROUTES['/jobs/create'](),
           isOptional: false,
+          isVisiable: true,
         },
         {
           id: 'candidate',
@@ -192,6 +205,7 @@ export function useCompanySetup() {
           isCompleted: isCandidatePresent,
           navLink: ROUTES['/jobs'](),
           isOptional: false,
+          isVisiable: true,
         },
         {
           id: 'interview-plan',
@@ -200,8 +214,11 @@ export function useCompanySetup() {
           isCompleted: isInterviewPlanPresent,
           navLink: ROUTES['/jobs'](),
           isOptional: false,
+          isVisiable: true,
         },
-      ].sort((a, b) => Number(b?.isCompleted) - Number(a?.isCompleted));
+      ]
+        .filter((step) => step.isVisiable)
+        .sort((a, b) => Number(b?.isCompleted) - Number(a?.isCompleted));
       setSteps(newSteps);
     }
   }, [recruiter, integrations, allMembers]);
@@ -241,3 +258,7 @@ const fetchCompanySetup = async (recruiter_id: string) => {
       .throwOnError()
   ).data;
 };
+
+function findMissingProperties(obj, requiredProps) {
+  return requiredProps.filter((prop) => obj[prop] === null || obj[prop] === '');
+}

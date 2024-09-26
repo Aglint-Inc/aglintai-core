@@ -1,23 +1,20 @@
 import { Button } from '@components/ui/button';
-import { Skeleton } from '@components/ui/skeleton';
 import AgentChats from '@requests/components/AgentChats';
 import { AgentIEditorProvider } from '@requests/components/AgentChats/AgentEditorContext';
 import { REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
 import { useRequestCount } from '@requests/hooks';
 import { checkFiltersApplied } from '@requests/utils/checkFiltersApplied';
-import { Info, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { HardDrive, Info, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { useCompanySetup } from '@/authenticated/hooks/useCompanySetup';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
 import { SafeObject } from '@/utils/safeObject';
 
-import LandingProgress from './LandingProgress';
 import RequestListContent from './RequestListContent';
 import Header from './ui/Header';
-import { RequestEmpty } from './ui/RequestEmpty';
+
 const MainBody = () => {
   const {
     requests: { data: requestList, isPlaceholderData, isFetched },
@@ -70,20 +67,6 @@ const MainBody = () => {
     );
   }, [localStorage.getItem('openChat')]);
 
-  const { isLoading, isRequestSetupPending } = useCompanySetup();
-
-  if (isLoading) {
-    return <Skeleton className='mx-auto h-[380px] w-full max-w-3xl' />;
-  }
-
-  if (isRequestSetupPending) {
-    return (
-      <div className='flex w-full items-center justify-center'>
-        <LandingProgress />
-      </div>
-    );
-  }
-
   return (
     <div className='flex w-full overflow-hidden'>
       {/* Dock to Right Button */}
@@ -127,7 +110,13 @@ const MainBody = () => {
         }`}
       >
         {showEmptyPage ? (
-          <RequestEmpty />
+          // <RequestEmpty />
+          <div className='mt-72 flex w-full flex-col items-center text-neutral-500'>
+            <div className='mb-4 flex items-center justify-center'>
+              <HardDrive className='h-16 w-16' strokeWidth={1} size={48} />
+            </div>
+            <h3 className='mb-2 text-lg font-semibold'>No Request</h3>
+          </div>
         ) : (
           <div>
             <Header

@@ -7,13 +7,12 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import { Skeleton } from '@components/ui/skeleton';
-import { MoreHorizontal, PlusCircle, RefreshCw } from 'lucide-react';
+import { Briefcase, MoreHorizontal, PlusCircle, RefreshCw } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
 import { useAllIntegrations } from '@/authenticated/hooks';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import {
   useIntegrationActions,
@@ -22,22 +21,16 @@ import {
 } from '@/jobs/hooks';
 import ROUTES from '@/utils/routing/routes';
 
-import { useCompanySetup } from '../../../_common/hooks/useCompanySetup';
 import { STATE_LEVER_DIALOG } from '../constants';
-import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
 import LeverModalComp from './AddJobWithIntegrations/LeverModal';
 import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';
-import WelcomeJobSetup from './WelcomeJobSetup';
-
 const DashboardComp = () => {
-  const router = useRouterPro();
   const {
     manageJob,
     jobs: { data },
     initialLoad,
   } = useJobs();
-  const { ifAllowed } = useRolesAndPermissions();
   const {
     jobs,
     filterOptions,
@@ -50,10 +43,9 @@ const DashboardComp = () => {
     setSearchText,
   } = useJobFilterAndSort(data ?? []);
 
-  const { isLoading, isJobSetupPending } = useCompanySetup();
   return (
     <div className='h-full w-full'>
-      {!initialLoad || isLoading ? (
+      {!initialLoad ? (
         <div className='min-h-screen'>
           <div className='container-lg mx-auto w-full space-y-4 px-12'>
             <div className='flex items-center justify-between'>
@@ -74,16 +66,13 @@ const DashboardComp = () => {
         </div>
       ) : (
         <>
-          {isJobSetupPending ? (
-            <WelcomeJobSetup />
-          ) : data?.length === 0 ? (
-            ifAllowed(
-              <EmptyJobDashboard
-                handleClickAddJob={() => router.push(ROUTES['/jobs/create']())}
-                heading={'Jobs'}
-              />,
-              ['manage_job'],
-            )
+          {data?.length === 0 ? (
+            <div className='mt-72 flex h-screen w-full flex-col items-center text-neutral-500'>
+              <div className='mb-4 flex items-center justify-center'>
+                <Briefcase className='h-16 w-16' strokeWidth={1} size={48} />
+              </div>
+              <h3 className='mb-2 text-lg font-semibold'>No Jobs</h3>
+            </div>
           ) : (
             <div className='container-lg mx-auto w-full px-12'>
               <div className='flex flex-row justify-between'>
