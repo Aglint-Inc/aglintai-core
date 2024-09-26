@@ -1,20 +1,20 @@
-import * as v from "valibot";
+import { z } from 'zod';
 
-export const createCandidateRequestSchema = v.object({
-  session_ids: v.array(v.string()),
-  application_id: v.string(),
-  type: v.picklist(["reschedule", "declined"]),
-  dates: v.nullish(
-    v.object({
-      start: v.nullish(v.string()),
-      end: v.nullish(v.string()),
+export const createCandidateRequestSchema = z.object({
+  session_ids: z.array(z.string()),
+  application_id: z.string(),
+  type: z.enum(['reschedule', 'declined']),
+  dates: z
+    .object({
+      start: z.string().nullable(),
+      end: z.string().nullable(),
     })
-  ),
-  reason: v.string(),
-  other_details: v.any(),
+    .nullable(),
+  reason: z.string(),
+  other_details: z.any(),
 });
 
-export const createInterviewerRequestSchema = v.object({
-  session_id: v.string(),
-  interview_cancel_id: v.string(),
+export const createInterviewerRequestSchema = z.object({
+  session_id: z.string(),
+  interview_cancel_id: z.string(),
 });

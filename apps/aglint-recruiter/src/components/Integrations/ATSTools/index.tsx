@@ -1,11 +1,9 @@
 'use client';
 import { useToast } from '@components/hooks/use-toast';
 import { Input } from '@components/ui/input';
-import AshbyLogo from '@public/images/integration/ashby-logo.svg';
-import GreenHouseLogo from '@public/images/integration/greenhouse-logo.svg';
-import LeverLogo from '@public/images/integration/lever-logo.svg';
 import axios from 'axios';
 import capitalize from 'lodash/capitalize';
+import Image from 'next/image';
 import { useRef, useState } from 'react';
 
 import type { useAllIntegrations } from '@/authenticated/hooks';
@@ -292,7 +290,14 @@ function ATSTools({
       url: 'greenhouse.com',
       isVisibile: recruiter.recruiter_preferences.ats === 'Greenhouse',
       isConnected: Boolean(data?.greenhouse_key),
-      logo: <GreenHouseLogo />,
+      logo: (
+        <Image
+          src={'/images/integration/greenhouse-logo.svg'}
+          alt={'Greenhouse'}
+          width={40}
+          height={40}
+        />
+      ),
       primaryText: data?.greenhouse_key ? 'Settings' : 'Connect',
       secondaryText: data?.greenhouse_key ? null : 'Learn How',
       primaryAction: () => {
@@ -311,7 +316,14 @@ function ATSTools({
       url: 'lever.co',
       isVisibile: recruiter.recruiter_preferences.ats === 'Lever',
       isConnected: Boolean(data?.lever_key),
-      logo: <LeverLogo />,
+      logo: (
+        <Image
+          src={'/images/integration/lever-logo.svg'}
+          alt={'Lever'}
+          width={40}
+          height={40}
+        />
+      ),
       primaryText: data?.lever_key ? 'Settings' : 'Connect',
       secondaryText: data?.lever_key ? null : 'Learn How',
       primaryAction: () => {
@@ -330,7 +342,14 @@ function ATSTools({
       url: 'ashbyhq.com',
       isVisibile: recruiter.recruiter_preferences.ats === 'Ashby',
       isConnected: Boolean(data?.ashby_key),
-      logo: <AshbyLogo />,
+      logo: (
+        <Image
+          src={'/images/integration/ashby-logo.svg'}
+          alt={'Lever'}
+          width={40}
+          height={40}
+        />
+      ),
       primaryText: data?.ashby_key ? 'Settings' : 'Connect',
       secondaryText: data?.ashby_key ? null : 'Learn How',
       primaryAction: () => {
