@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { type ATSProcedure, atsProcedure } from '@/server/api/trpc';
 
-import { greenhouseJobsMutation } from '../greenhouse/jobs';
+import { greenhouseJobsMutation } from '../greenhouse/jobs/jobs';
 import { leverJobsMutation } from '../lever/jobs';
 
 const schema = z.object({

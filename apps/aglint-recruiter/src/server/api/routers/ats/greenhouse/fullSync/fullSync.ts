@@ -1,11 +1,13 @@
 import type { ZodTypeToSchema } from '@aglint/shared-types';
 import { z } from 'zod';
 
-import { syncUsers } from '@/api/sync/greenhouse/user/process';
+// import { runFullSync } from '@/api/sync/greenhouse/full_db/process';
 import { type ATSProcedure, atsProcedure } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
-type Params = Pick<Parameters<typeof syncUsers>[0], 'recruiter_id'>;
+import { runFullSync } from './process';
+
+type Params = Pick<Parameters<typeof runFullSync>[0], 'recruiter_id'>;
 
 const schema = z.object({
   recruiter_id: z.string().uuid(),
@@ -13,12 +15,12 @@ const schema = z.object({
 
 const mutation = async ({ ctx, input }: ATSProcedure<typeof schema>) => {
   const adminDb = createPublicClient();
-  return await syncUsers({
+  return await runFullSync({
     decryptKey: ctx.decryptKey,
     recruiter_id: input.recruiter_id,
     supabaseAdmin: adminDb,
-    last_sync: ctx.greenhouse_metadata?.last_sync?.users ?? null,
+    syncData: ctx.greenhouse_metadata,
   });
 };
 
-export const users = atsProcedure.input(schema).mutation(mutation);
+export const fullSync = atsProcedure.input(schema).mutation(mutation);

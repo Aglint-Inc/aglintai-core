@@ -1,9 +1,10 @@
 import type { ZodTypeToSchema } from '@aglint/shared-types';
 import { z } from 'zod';
 
-import { syncOfficeLocations } from '@/api/sync/greenhouse/office_locations/process';
 import { type ATSProcedure, atsProcedure } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
+
+import { syncOfficeLocations } from './process';
 
 type Params = Pick<Parameters<typeof syncOfficeLocations>[0], 'recruiter_id'>;
 

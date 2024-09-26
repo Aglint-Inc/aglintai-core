@@ -1,11 +1,12 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 
+// import { syncUsers } from '@/api/sync/greenhouse/user/process';
 import { type SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
 import { syncDepartments } from '../departments/process';
 import { syncGreenhouseJob } from '../jobs/process';
 import { syncOfficeLocations } from '../office_locations/process';
-import { syncUsers } from '../user/process';
+import { syncUsers } from '../users/process';
 import { setLastSync } from '../util';
 
 const baseUrl = process.env.NEXT_PUBLIC_HOST_NAME;
