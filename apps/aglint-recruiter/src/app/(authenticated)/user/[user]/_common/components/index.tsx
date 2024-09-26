@@ -1,6 +1,6 @@
 import {
   type DatabaseTable,
-  type schedulingSettingType,
+  type SchedulingSettingType,
 } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { useInterviewsByUserId } from '@interviews/hooks/useInterviewsByUserId';
@@ -104,7 +104,7 @@ export default function InterviewerDetailsPage() {
   // ---------------- data
 
   const interviewLoad = interviewerDetails?.scheduling_settings
-    ?.interviewLoad as schedulingSettingType['interviewLoad'];
+    ?.interviewLoad as SchedulingSettingType['interviewLoad'];
 
   const interviewType =
     interviewerDetails?.interview_type as InterviewerDetailType['interview_type'];

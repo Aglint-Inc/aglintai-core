@@ -37,7 +37,7 @@ import {
   template_tabs,
 } from './utils';
 
-function SchedulerEmailTemps({ setSaving }) {
+function SchedulerEmailTemps() {
   const { recruiter_id } = useAuthDetails();
   const [templates, setTemplates] = useState<
     DatabaseTable['company_email_template'][]
@@ -106,16 +106,12 @@ function SchedulerEmailTemps({ setSaving }) {
     updated_template: DatabaseTable['company_email_template'],
   ) {
     try {
-      setSaving('saving');
       supabaseWrap(
         await supabase
           .from('company_email_template')
           .update({ ...updated_template })
           .eq('id', updated_template.id),
       );
-      setTimeout(() => {
-        setSaving('saved');
-      }, 1000);
     } catch (err) {
       toast({
         variant: 'destructive',

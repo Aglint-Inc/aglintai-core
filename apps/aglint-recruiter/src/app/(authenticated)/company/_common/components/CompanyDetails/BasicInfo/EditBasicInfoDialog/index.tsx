@@ -1,3 +1,4 @@
+import { useToast } from '@components/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
@@ -11,14 +12,16 @@ import {
   useRef,
   useState,
 } from 'react';
-import { toast } from 'sonner';
 
 import { useTenant } from '@/company/hooks';
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
+import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 // import ImageUpload from '@/components/Common/ImageUpload';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { api } from '@/trpc/client';
+import { supabase } from '@/utils/supabase/client';
 
 import SocialComp from './SocialComp';
 
@@ -41,18 +44,17 @@ const EditBasicInfoDialog = ({
   setEditDialog: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { recruiter } = useTenant();
-  const [isError] = useState(false);
-  const [IsLoading, setIsLoading] = useState(false);
+  const [isError, setError] = useState(false);
   const [logo, setLogo] = useState(null);
   const [nameError, setNameError] = useState(false);
   const { checkPermissions } = useRolesAndPermissions();
   const isFormDisabled = !checkPermissions(['manage_company']);
   const imageFile = useRef(null);
   const [isImageChanged, setIsImageChanged] = useState(false);
-
   const [recruiterLocal, setRecruiterLocal] = useState<typeof recruiter | null>(
     recruiter,
   );
+  const { toast } = useToast();
 
   useEffect(() => {
     setLogo(recruiter?.logo);
@@ -81,54 +83,49 @@ const EditBasicInfoDialog = ({
       return false;
     return true;
   };
+
+  const { mutateAsync, isPending } = api.tenant.updateTenant.useMutation({
+    onError: () =>
+      toast({
+        title: 'Unable to update company info',
+        variant: 'destructive',
+      }),
+  });
+
   const handleUpdate = async () => {
-    delete recruiterLocal.recruiter_preferences;
-
     if (!isValidation()) return;
-
     try {
-      // TODO: CONVERT ALL OF THESE TO A TRPC PRIVATE PROCEDURE
       // setIsLoading(true);
-      // let logo = recruiter.logo;
-      // if (isImageChanged) {
-      //   const { data } = await supabase.storage
-      //     .from('recruiter-user')
-      //     .upload(`public/${recruiterUser.user_id}`, imageFile.current, {
-      //       cacheControl: '3600',
-      //       upsert: true,
-      //     });
-      //   if (data?.path && imageFile?.current?.size) {
-      //     logo = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/recruiter-user/${data?.path}?t=${new Date().toISOString()}`;
-      //     setError(false);
-      //   } else {
-      //     logo = null;
-      //   }
-      //   setIsImageChanged(false);
-      // }
-      // const { error } = await supabase
-      //   .from('recruiter')
-      //   .update({
-      //     ...recruiterLocal,
-      //     name: recruiterLocal.name ? recruiterLocal.name : recruiter?.name,
-      //     departments: undefined,
-      //     office_locations: undefined,
-      //     logo: logo,
-      //   })
-      //   .eq('id', recruiter.id)
-      //   .select()
-      //   .throwOnError();
-      // if (!error) {
-      //   setRecruiter({
-      //     ...recruiterLocal,
-      //     logo: logo,
-      //     name: recruiterLocal.name ? recruiterLocal.name : recruiter?.name,
-      //   });
-      //   setEditDialog(false);
-      // }
+      let logo = recruiter.logo;
+      if (isImageChanged) {
+        const { data } = await supabase.storage
+          .from('company-logo')
+          .upload(`public/${recruiter.id}`, imageFile.current, {
+            cacheControl: '3600',
+            upsert: true,
+          });
+        if (data?.path && imageFile?.current?.size) {
+          logo = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/company-logo/${data?.path}?t=${new Date().toISOString()}`;
+          setError(false);
+        } else {
+          logo = null;
+        }
+        setIsImageChanged(false);
+      }
+      await mutateAsync({
+        name: recruiterLocal.name ? recruiterLocal.name : recruiter?.name,
+        email: recruiterLocal.email,
+        industry: recruiterLocal.industry,
+        company_website: recruiterLocal.company_website,
+        socials: recruiterLocal.socials,
+        logo,
+      });
+      setEditDialog(false);
     } catch (e) {
-      toast.error(e.message);
-    } finally {
-      setIsLoading(false);
+      toast({
+        title: e.message,
+        variant: 'destructive',
+      });
     }
   };
 
@@ -163,9 +160,13 @@ const EditBasicInfoDialog = ({
           <Button variant='outline' onClick={handleClose}>
             Cancel
           </Button>
-          <Button onClick={handleUpdate} disabled={IsLoading || isSame}>
-            {IsLoading ? 'Updating...' : 'Update'}
-          </Button>
+          <UIButton
+            onClick={handleUpdate}
+            disabled={isSame}
+            isLoading={isPending}
+          >
+            Update
+          </UIButton>
         </>
       }
     >
@@ -182,10 +183,10 @@ const EditBasicInfoDialog = ({
         )}
 
         <div className='flex items-center space-x-4'>
-          <div className='max-w-[70px] rounded-md border border-gray-200'>
+          <div className='h-[70px] w-[70px] rounded-md border border-gray-200'>
             <ImageUploadManual
               image={logo}
-              size={64}
+              size={70}
               imageFile={imageFile}
               setChanges={() => {
                 setIsImageChanged(true);

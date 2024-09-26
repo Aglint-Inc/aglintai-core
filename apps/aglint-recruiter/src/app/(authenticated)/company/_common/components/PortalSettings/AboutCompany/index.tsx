@@ -3,7 +3,8 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { Parser } from 'html-to-react';
 import { useState } from 'react';
 
-import { usePortalSettings } from '../../../hooks/hook';
+import { usePortalSettings } from '@/company/hooks/usePortalSettings';
+
 import { AboutCompanyDialog } from './AboutCompanyDialog';
 
 export default function AboutCompany() {

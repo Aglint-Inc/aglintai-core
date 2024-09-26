@@ -1,20 +1,14 @@
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
+import { type SchedulingSettingType } from '@aglint/shared-types';
 import { cloneDeep, debounce } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
-
-import { type schedulingSettingType } from '@aglint/shared-types';
+import { LoadMax } from 'src/app/(authenticated)/user/[user]/_common/components/ScheduleAvailability/Dialog/EditAvailabiityDialog';
 
 import InterviewLimitInput from '@/authenticated/components/InterviewLoad';
 import { SectionCard } from '@/authenticated/components/SectionCard';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { api } from '@/trpc/client';
 
 import KeywordSection from '../../../../_common/components/KeywordSection';
-import { LoadMax } from '../Holidays';
 import DebriefDefaults from './DebriefDefaults';
 
 let schedulingSettingObj = {};
@@ -26,12 +20,12 @@ type interviewLoadType = {
   max: number;
 };
 
-function SchedulingSettings({ updateSettings }) {
+function SchedulingSettings() {
   const { recruiter } = useAuthDetails();
 
   const [workingHours, setWorkingHours] = useState([]);
   const [debriefDefaults, setDebriefDefaults] = useState<
-    schedulingSettingType['debrief_defaults']
+    SchedulingSettingType['debrief_defaults']
   >({
     hiring_manager: false,
     recruiter: false,
@@ -104,7 +98,7 @@ function SchedulingSettings({ updateSettings }) {
     if (recruiter.scheduling_settings) {
       const schedulingSettingData = cloneDeep(
         recruiter.scheduling_settings,
-      ) as schedulingSettingType;
+      ) as SchedulingSettingType;
 
       const workingHoursCopy = cloneDeep(schedulingSettingData.workingHours);
 
@@ -150,9 +144,13 @@ function SchedulingSettings({ updateSettings }) {
     }
   }
 
+  const { mutate } = api.tenant.updateTenant.useMutation();
+
   const debouncedUpsertRequestNotes = useCallback(
     debounce(async (settings) => {
-      await updateSettings(settings);
+      mutate({
+        scheduling_settings: settings,
+      });
     }, 500),
     [],
   );
@@ -179,7 +177,7 @@ function SchedulingSettings({ updateSettings }) {
           recruitingBlocks: recruitingBlocks,
         },
         debrief_defaults: debriefDefaults,
-      } as schedulingSettingType;
+      } as SchedulingSettingType;
 
       if (changeValue === 'updating') {
         debouncedUpsertRequestNotes(schedulingSettingObj);

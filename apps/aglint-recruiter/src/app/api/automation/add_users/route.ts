@@ -1,7 +1,7 @@
 import {
   type DatabaseTable,
   type RecruiterUserType,
-  type schedulingSettingType,
+  type SchedulingSettingType,
   type SupabaseType,
 } from '@aglint/shared-types';
 import { NextResponse } from 'next/server';
@@ -115,7 +115,7 @@ export async function POST(req) {
               item.label ===
               locations.find((loc) => loc.id === locationId).timezone,
           ),
-        } as schedulingSettingType,
+        } as SchedulingSettingType,
       } as InviteUserAPIType['request']['users'][number];
     });
 

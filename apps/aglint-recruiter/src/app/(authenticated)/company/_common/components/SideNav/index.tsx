@@ -10,7 +10,7 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { getUrlPro, useRouterPro } from '@/hooks/useRouterPro';
 import { emailTemplateQueries } from '@/queries/email-templates';
 
-import type { companySettingTabsType } from './utils';
+import type { CompanySettingTabsType } from './utils';
 
 function VerticalNav() {
   const router = useRouterPro();
@@ -89,7 +89,7 @@ function VerticalNav() {
     },
   ] as {
     label: string;
-    value: companySettingTabsType;
+    value: CompanySettingTabsType;
     permission?: permissionsEnum | 'authorized';
     icon: string;
     show: boolean;

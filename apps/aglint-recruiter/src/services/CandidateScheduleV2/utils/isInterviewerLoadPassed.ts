@@ -2,7 +2,7 @@
 import {
   type CalConflictType,
   type InterviewSessionApiRespType,
-  type schedulingSettingType,
+  type SchedulingSettingType,
 } from '@aglint/shared-types';
 import { type Dayjs } from 'dayjs';
 
@@ -17,7 +17,7 @@ export const isIntervLoadPassed = (
   current_day: Dayjs,
   db_details: ScheduleApiDetails,
   inter_id: string,
-  int_schedule_setting: schedulingSettingType,
+  int_schedule_setting: SchedulingSettingType,
   plan_comb: InterviewSessionApiRespType[],
 ): {
   type: CalConflictType;

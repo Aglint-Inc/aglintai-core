@@ -3,7 +3,8 @@ import { ImagePlus, X } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { usePortalSettings } from '../../../hooks/hook';
+import { usePortalSettings } from '@/company/hooks/usePortalSettings';
+
 import { SliderImageUploadDialog } from './SliderImageUploadDialog';
 
 export function SliderImages() {

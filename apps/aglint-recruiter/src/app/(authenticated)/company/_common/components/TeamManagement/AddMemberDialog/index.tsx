@@ -1,7 +1,7 @@
 import {
   type employmentTypeEnum,
   type RecruiterUserType,
-  type schedulingSettingType,
+  type SchedulingSettingType,
 } from '@aglint/shared-types';
 import { useToast } from '@components/hooks/use-toast';
 import { useState } from 'react';
@@ -174,7 +174,7 @@ const AddMember = ({
                 item.tzCode ===
                 locations.find((loc) => loc.id === form.location_id).timezone,
             ),
-          } as schedulingSettingType,
+          } as SchedulingSettingType,
         },
         recruiter.id,
       );

@@ -2,7 +2,7 @@
 import {
   type CalConflictType,
   type InterDetailsType,
-  type schedulingSettingType,
+  type SchedulingSettingType,
 } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 
@@ -139,7 +139,7 @@ const fetchIntsCalEvents = async (params: FetchCalEventsParams) => {
 
 export const getCalEventType = (
   cal_event_summary: string,
-  comp_schedule_setting: schedulingSettingType,
+  comp_schedule_setting: SchedulingSettingType,
 ): CalConflictType => {
   if (!cal_event_summary) {
     return 'cal_event';

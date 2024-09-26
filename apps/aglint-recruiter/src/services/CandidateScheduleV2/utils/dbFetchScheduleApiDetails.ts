@@ -5,7 +5,7 @@ import {
   type InterviewSession,
   type InterviewSessionApiRespType,
   type InterviewSessionApiType,
-  type schedulingSettingType,
+  type SchedulingSettingType,
   type SessionInterviewerApiRespType,
   type SessionInterviewerType,
 } from '@aglint/shared-types';
@@ -174,7 +174,7 @@ export const fetchAndVerifyDb = async (
 
   const db_resp = {
     comp_schedule_setting: (r[0].comp_schedule_setting ??
-      null) as unknown as schedulingSettingType,
+      null) as unknown as SchedulingSettingType,
     int_meetings: (r[0].int_meetings ?? []) as InterviewerMeetingScheduled[],
     int_modules_data: (r[0].interview_modules ??
       []) as unknown as InterviewModuleType[][],

@@ -1,7 +1,7 @@
 import {
   type APIOptions,
   type MinCalEventDetailTypes,
-  type schedulingSettingType,
+  type SchedulingSettingType,
   type TimeDurationDayjsType,
 } from '@aglint/shared-types';
 
@@ -15,7 +15,7 @@ import { userTzDayjs } from './userTzDayjs';
  * @returns return blocked time chunk in his canlender, each blocked time may overlapp
  */
 export const getInterviewerBlockedTimes = (
-  comp_shedule_settings: schedulingSettingType,
+  comp_shedule_settings: SchedulingSettingType,
   int_events: MinCalEventDetailTypes[],
   cand_tz: string,
   api_options: APIOptions,

@@ -4,7 +4,7 @@
 //   CalendarEvent,
 //   ScheduleAuthType,
 // } from '@aglint/shared-types';
-// import { schedulingSettingType } from '@aglint/shared-types';
+// import { SchedulingSettingType } from '@aglint/shared-types';
 
 // export type InterDetailsType = {
 //   tokens: ScheduleAuthType | null;
@@ -12,7 +12,7 @@
 //   name: string;
 //   profile_img: string;
 //   email: string;
-//   shedule_settings: schedulingSettingType;
+//   shedule_settings: SchedulingSettingType;
 //   events: CalendarEvent[];
 //   freeTimes: InterviewFreeTime[];
 //   isCalenderConnected: boolean;

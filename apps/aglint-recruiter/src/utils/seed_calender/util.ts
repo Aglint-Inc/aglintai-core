@@ -4,7 +4,7 @@ import {
   type CompServiceKeyCred,
   type InterviewModuleType,
   type NewCalenderEvent,
-  type schedulingSettingType,
+  type SchedulingSettingType,
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
@@ -65,7 +65,7 @@ export const seedCalendersUtil = (
   cal_end_date: string,
 ) => {
   let comp_details: {
-    comp_schedule_setting: schedulingSettingType;
+    comp_schedule_setting: SchedulingSettingType;
     companyCred: CompServiceKeyCred;
   };
   let interview_modules: InterviewModuleType[];
@@ -228,7 +228,7 @@ export const seedCalendersUtil = (
   const fillEventsForTheDay = async (
     curr_day: string,
     google_cal: GoogleCalender,
-    int_schd_sett: schedulingSettingType,
+    int_schd_sett: SchedulingSettingType,
     monthly_interviewer_config: MeetingLimitsConfig,
   ) => {
     const day_interviewer_config: MeetingLimitsConfig = {

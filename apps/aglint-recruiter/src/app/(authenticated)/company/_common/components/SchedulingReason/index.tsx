@@ -1,14 +1,13 @@
 import {
-  type DatabaseTable,
-  type DatabaseTableUpdate,
+  type DatabaseTable
 } from '@aglint/shared-types';
+import { useToast } from '@components/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useState } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { supabase } from '@/utils/supabase/client';
+import { useTenant } from '@/company/hooks';
+import { api } from '@/trpc/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import toast from '@/utils/toast';
 
 import { ScheduleReasonCard } from './ScheduleReasonCard';
 
@@ -25,15 +24,25 @@ const initialReasons: DatabaseTable['recruiter']['scheduling_reason'] = {
 };
 
 const SchedulingReasons = () => {
-  const { recruiter, setRecruiter: updateRecruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
+  const { toast } = useToast();
   const [tab, setTab] =
     useState<keyof DatabaseTable['recruiter']['scheduling_reason']>(
       'candidate',
     );
   const reason = {
     ...initialReasons,
-    ...(recruiter.scheduling_reason ?? {}),
+    ...(recruiter.scheduling_reason || {}),
   };
+
+  const { mutate } = api.tenant.updateTenant.useMutation({
+    onError: () => {
+      toast({
+        title: 'Unable to update scheduling reasons',
+        variant: 'destructive',
+      });
+    },
+  });
 
   const handleUpdateReasons = async <T extends typeof tab>(
     updatedReason: Partial<DatabaseTable['recruiter']['scheduling_reason'][T]>,
@@ -42,21 +51,15 @@ const SchedulingReasons = () => {
       ...reason,
     };
     temp[tab] = { ...(temp[tab] || {}), ...updatedReason };
-    return setRecruiter({
-      id: recruiter.id,
+    mutate({
       scheduling_reason: temp,
-    }).then((data) => {
-      updateRecruiter({ ...data, socials: recruiter.socials });
-      return true;
     });
   };
 
   const handleAddReason = (sectionKey: string, newReason: string) => {
     const temp = { ...reason };
     temp[tab][sectionKey] = [...(temp[tab][sectionKey] || []), newReason];
-    handleUpdateReasons(temp[tab]).then(() => {
-      toast.success('Reason added successfully.');
-    });
+    handleUpdateReasons(temp[tab]);
   };
 
   const handleEditReason = (
@@ -66,17 +69,13 @@ const SchedulingReasons = () => {
   ) => {
     const temp = { ...reason };
     temp[tab][sectionKey][index] = newReason;
-    handleUpdateReasons(temp[tab]).then(() => {
-      toast.success('Reason updated successfully.');
-    });
+    handleUpdateReasons(temp[tab]);
   };
 
   const handleDeleteReason = (sectionKey: string, index: number) => {
     const temp = { ...reason };
     temp[tab][sectionKey] = temp[tab][sectionKey].filter((_, i) => i !== index);
-    handleUpdateReasons(temp[tab]).then(() => {
-      toast.success('Reason deleted successfully.');
-    });
+    handleUpdateReasons(temp[tab]);
   };
 
   const getSections = (tabKey: typeof tab) => {
@@ -146,20 +145,3 @@ const SchedulingReasons = () => {
 };
 
 export default SchedulingReasons;
-
-const setRecruiter = async (
-  data: Omit<DatabaseTableUpdate['recruiter'], 'id'> & { id: string },
-) => {
-  return supabase
-    .from('recruiter')
-    .update(data)
-    .eq('id', data.id)
-    .select(
-      '*,office_locations(*), departments(id,name), recruiter_preferences(*)',
-    )
-    .single()
-    .then(({ data, error }) => {
-      if (error) throw new Error(error.message);
-      return data;
-    });
-};

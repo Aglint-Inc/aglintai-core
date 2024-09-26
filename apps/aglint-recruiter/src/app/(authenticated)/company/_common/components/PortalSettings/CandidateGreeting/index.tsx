@@ -2,7 +2,8 @@ import { Button } from '@components/ui/button';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { useState } from 'react';
 
-import { usePortalSettings } from '../../../hooks/hook';
+import { usePortalSettings } from '@/company/hooks/usePortalSettings';
+
 import { GreetingEditDialog } from './GreetingEditDialog';
 
 export default function CandidateGreeting() {

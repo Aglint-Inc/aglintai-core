@@ -3,7 +3,7 @@ import {
   type InterDetailsType,
   type InterviewerMeetingScheduled,
   type InterviewSessionApiRespType,
-  type schedulingSettingType,
+  type SchedulingSettingType,
   type SessionInterviewerApiRespType,
   type SessionInterviewerType,
   type TimeDurationDayjsType,
@@ -26,7 +26,7 @@ export type ScheduleApiDetails = {
   company_cred_hash_str: string;
   ses_with_ints: InterviewSessionApiRespType[];
   all_inters: SessionInterviewerType[];
-  comp_schedule_setting: schedulingSettingType;
+  comp_schedule_setting: SchedulingSettingType;
   int_meetings: InterviewerMeetingScheduled[];
   ints_schd_meetings: UserMeetingDetails;
   all_session_int_details: AllSessionIntDetails;

@@ -1,6 +1,6 @@
 import {
   type InterviewLoadType,
-  type schedulingSettingType,
+  type SchedulingSettingType,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils';
 import { Label } from '@components/ui/label';
@@ -25,9 +25,9 @@ type FormProp = {
   handleWeeklyValue: (value: number) => void;
   // eslint-disable-next-line no-unused-vars
   handleType: (type: 'Hours' | 'Interviews') => void;
-  workingHours: schedulingSettingType['workingHours'];
+  workingHours: SchedulingSettingType['workingHours'];
   setWorkingHours: Dispatch<
-    SetStateAction<schedulingSettingType['workingHours']>
+    SetStateAction<SchedulingSettingType['workingHours']>
   >;
   keywords: {
     title: string;
