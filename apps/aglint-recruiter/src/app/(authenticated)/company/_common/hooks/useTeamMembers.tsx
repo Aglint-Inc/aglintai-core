@@ -2,16 +2,16 @@ import { useMemo } from 'react';
 
 import { type GreenHouseUserSyncAPI } from '@/api/sync/greenhouse/user/type';
 import axios from '@/client/axios';
+import { useTenantMembers } from '@/company/hooks';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useGreenhouseDetails } from '@/queries/greenhouse';
-import { useAllMembers } from '@/queries/members';
 import { api } from '@/trpc/client';
 
 export const useTeamMembers = () => {
   const { recruiter: tempRecruiter } = useAuthDetails();
   const recruiter = tempRecruiter!;
 
-  const { allMembers, members, refetchMembers } = useAllMembers();
+  const { allMembers, members, refetchMembers } = useTenantMembers();
   const {
     data: syncData,
     isPending,

@@ -1,29 +1,21 @@
-/* eslint-disable */
-
-import { rolesOrder } from '@/constant/role_and_permissions';
-import { useAllMembers } from '@/queries/members';
-
-import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import RoleDetails from './RoleDetails';
-import { CirclePlus } from 'lucide-react';
-import { Button } from '@components/ui/button';
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from '@components/ui/table';
-import { Skeleton } from '@components/ui/skeleton';
-import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Badge } from '@components/ui/badge';
+
+import { useTenantMembers } from '@/company/hooks';
 import {
-  getRoleAndPermissionsWithUserCount,
+  type getRoleAndPermissionsWithUserCount,
   useRoleAndPermissionsHook,
 } from '@/company/hooks/useRoleAndPermissionsHook';
-import { TableLoading } from './ui/TableLoading';
+import { rolesOrder } from '@/constant/role_and_permissions';
+
+import RoleDetails from './RoleDetails';
 import { RoleList } from './ui/RoleList';
+import { TableLoading } from './ui/TableLoading';
 
 function RolesAndPermissionsComponent() {
   const {
@@ -34,7 +26,6 @@ function RolesAndPermissionsComponent() {
     roleDetails,
     setSelectRole,
   } = useRoleAndPermissionsHook();
-
   return (
     <>
       {role ? ( // roleDetailsComponent
@@ -89,9 +80,9 @@ const RoleTable = ({
   roles: Awaited<
     ReturnType<typeof getRoleAndPermissionsWithUserCount>
   >['rolesAndPermissions'];
-  setRole: (role_id: string, addMode?: boolean) => void;
+  setRole: (_role_id: string, _addMode?: boolean) => void;
 }) => {
-  const { members } = useAllMembers();
+  const { members } = useTenantMembers();
 
   if (loading) {
     return <TableLoading />;
@@ -110,11 +101,12 @@ const RoleTable = ({
       <TableBody>
         {Object.entries(roles || {})
           .sort((a, b) => rolesOrder[a[1].name] - rolesOrder[b[1].name])
-          .map(([key, details]) => {
+          .map(([key, details], i) => {
             const role = details;
             const count = role.assignedTo.length;
             return (
               <RoleList
+                key={i}
                 count={count}
                 details={details}
                 members={members}
