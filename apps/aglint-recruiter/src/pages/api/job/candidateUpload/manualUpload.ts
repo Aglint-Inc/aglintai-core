@@ -14,7 +14,7 @@ import {
   uploadResume,
   verifyAndCreateCandidate,
 } from '@/apiUtils/job/candidateUpload/utils';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export const config = {
   api: {
@@ -42,6 +42,7 @@ const handler = async (
       [key]: decodeURIComponent(value as string),
     })),
   ) as ManualUploadApi['request']['params'];
+  const supabaseAdmin = getSupabaseServer();
 
   // const supabase = createClient();
   const { confirmation, error } = await verifyAndCreateCandidate(

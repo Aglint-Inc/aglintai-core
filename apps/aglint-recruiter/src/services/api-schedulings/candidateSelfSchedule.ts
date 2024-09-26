@@ -13,7 +13,7 @@ import {
 import { type z } from 'zod';
 
 import { mailSender } from '@/utils/mailSender';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { findPlanCombs } from './findPlanCombs';
 import { selfScheduleLinkInstruction } from './textTransforms/selfScheduleLinkInstruction';
@@ -36,6 +36,8 @@ export const candidateSelfSchedule = async ({
   req_assignee_tz: string;
   organizer_id: string;
 }) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const formatted_ai_reponse = await selfScheduleLinkInstruction({
     instruction: job_payload.agent.instruction,
     user_tz: req_assignee_tz,

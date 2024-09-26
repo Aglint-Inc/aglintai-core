@@ -16,11 +16,13 @@ import { type InitAgentBodyParams } from '@/components/ScheduleAgent/types';
 import { EmailWebHook } from '@/services/EmailWebhook/EmailWebhook';
 import { mailSender } from '@/utils/mailSender';
 import { agent_activities } from '@/utils/scheduling_v2/agents_activity';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { getCandidateLogger } from '../../../../utils/scheduling_v2/getCandidateLogger';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const { filter_json_id, recruiter_user_id } = req.body as InitAgentBodyParams;
   const candLogger = getCandidateLogger('', '', 'email_agent');
   try {
@@ -105,6 +107,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 export default handler;
 
 const fetchCandDetails = async ({ filter_json_id }) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const [rec] = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')

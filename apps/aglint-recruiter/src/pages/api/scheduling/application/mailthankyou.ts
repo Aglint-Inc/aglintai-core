@@ -10,11 +10,13 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { mailSender } from '@/utils/mailSender';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { type ApiDebriefAddUsers } from './debrief-add-users';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const supabaseAdmin = getSupabaseServer();
+
   try {
     const {
       session_ids,
@@ -96,6 +98,8 @@ export const fetchSessionDetails = async (
   session_ids: string[],
   application_id: string,
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const meeting_data = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')

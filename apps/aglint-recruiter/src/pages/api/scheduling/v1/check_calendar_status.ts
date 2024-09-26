@@ -4,7 +4,7 @@ import { google } from 'googleapis';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import type { CalEventAttendeesAuthDetails } from '@/utils/event_book/types';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { decrypt } from '../../decryptApiKey';
 
@@ -17,6 +17,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   try {
+    const supabaseAdmin = getSupabaseServer();
+
     const { data } = await supabaseAdmin
       .from('recruiter_relation')
       .select(

@@ -14,7 +14,7 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { planCombineSlots } from '@/services/CandidateScheduleV2/utils/planCombine';
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { candidate_tz } = req.body as APIVerifyRecruiterSelectedSlots;
@@ -72,6 +72,8 @@ export default handler;
 const fetch_details_from_db = async (
   req_body: APIVerifyRecruiterSelectedSlots,
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const [filter_json_data] = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')

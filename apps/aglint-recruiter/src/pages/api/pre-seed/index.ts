@@ -8,7 +8,7 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { seed_email_templates } from '@/utils/seedCompanyData/seed_email_templates';
 import { modified_seed_workflow_actions } from '@/utils/seedCompanyData/seed_workflow';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export default async function handler(
   req: NextApiRequest,
@@ -60,6 +60,8 @@ async function seedRolesAndPermissions(rec_id: string) {
   return true;
 }
 async function createRoles(rec_id: string) {
+  const supabaseAdmin = getSupabaseServer();
+
   return supabaseAdmin
     .from('roles')
     .insert(
@@ -74,6 +76,8 @@ async function createRoles(rec_id: string) {
     .then(({ data }) => data);
 }
 async function getPermissions() {
+  const supabaseAdmin = getSupabaseServer();
+
   const temp_p = (
     await supabaseAdmin.from('permissions').select('id,name').throwOnError()
   ).data;
@@ -88,6 +92,8 @@ async function getPermissions() {
 async function createRolePermissions(
   data: { permission_id: number; recruiter_id: string; role_id: string }[],
 ) {
+  const supabaseAdmin = getSupabaseServer();
+
   return supabaseAdmin
     .from('role_permissions')
     .insert(data)
@@ -96,6 +102,8 @@ async function createRolePermissions(
 }
 
 const removeAllTemps = async (recruiter_id: string) => {
+  const supabaseAdmin = getSupabaseServer();
+
   supabaseWrap(
     await supabaseAdmin
       .from('workflow')
@@ -113,6 +121,8 @@ const removeAllTemps = async (recruiter_id: string) => {
 };
 
 const seedCompTemplate = async (recruiter_id) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const all_templates = supabaseWrap(
     await supabaseAdmin
       .from('company_email_template')
@@ -131,6 +141,8 @@ const seedWorkFlow = async (
   recruiter_id: string,
   company_email_template: DatabaseTable['company_email_template'][],
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const promies = modified_seed_workflow_actions.map(async (work_flow_act) => {
     const [workflow] = supabaseWrap(
       await supabaseAdmin
@@ -175,6 +187,8 @@ const seedWorkFlow = async (
 };
 
 async function seedPreferencesAndIntegrations(rec_id: string) {
+  const supabaseAdmin = getSupabaseServer();
+
   await supabaseAdmin
     .from('recruiter_preferences')
     .insert([{ recruiter_id: rec_id, scoring: false }])

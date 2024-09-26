@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { type SaveResumeAPI } from './saveResume';
 
@@ -15,6 +15,8 @@ const url = `${baseUrl}/api/greenhouse/saveResume`;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    const supabaseAdmin = getSupabaseServer();
+
     const { recruiter_id } = req.body as {
       recruiter_id: string;
     };

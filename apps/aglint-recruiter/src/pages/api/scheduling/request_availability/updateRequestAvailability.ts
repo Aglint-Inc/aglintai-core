@@ -4,7 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import type { fetchAllActivities } from '../fetch_activities';
 
@@ -27,6 +27,8 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   try {
+    const supabaseAdmin = getSupabaseServer();
+
     if (req.method === 'POST') {
       const { data, id } = req.body;
       if (data) {

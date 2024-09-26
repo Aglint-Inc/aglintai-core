@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const storageUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 if (!storageUrl) {
@@ -46,6 +46,8 @@ export default async function handler(req, res) {
 }
 
 async function updateApplicationsToFailed(application_id: string) {
+  const supabaseAdmin = getSupabaseServer();
+
   return supabaseAdmin
     .from('applications')
     .update({
@@ -64,6 +66,8 @@ async function saveResumeToDb(
 ) {
   const fileId = uuidv4();
   const fileLink = await uploadFile(fileId, fileUrl);
+  const supabaseAdmin = getSupabaseServer();
+
   await supabaseAdmin
     .from('candidate_files')
     .insert({
@@ -85,6 +89,8 @@ async function uploadFile(fileId: string, fileUrl: string) {
   const response = await axios.get(fileUrl, {
     responseType: 'arraybuffer', // Request binary data
   });
+  const supabaseAdmin = getSupabaseServer();
+
   const { data, error: uploadError } = await supabaseAdmin.storage
     .from(bucketName)
     .upload(

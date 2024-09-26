@@ -12,10 +12,11 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
 import type { CalEventAttendeesAuthDetails } from '@/utils/event_book/types';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    const supabaseAdmin = getSupabaseServer();
     const parsed_body = schema_update_meeting_ints.parse({
       ...req.body,
     });
@@ -100,6 +101,7 @@ export default handler;
 
 const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
   const { session_id } = payload;
+  const supabaseAdmin = getSupabaseServer();
 
   const [meeting_details] = await Promise.all([
     (async () => {
@@ -203,6 +205,8 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
 };
 
 const updateInterviewers = async ({ id, is_confirmed }) => {
+  const supabaseAdmin = getSupabaseServer();
+
   supabaseWrap(
     await supabaseAdmin
       .from('interview_session_relation')
@@ -229,6 +233,8 @@ const createSesnRelnIfNotExists = async ({
   user_id: string;
   session_id: string;
 }) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const [new_int_module_reln] = supabaseWrap(
     await supabaseAdmin
       .from('interview_module_relation')

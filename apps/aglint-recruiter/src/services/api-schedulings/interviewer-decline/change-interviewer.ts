@@ -7,14 +7,14 @@ import { type ProgressLoggerType } from '@aglint/shared-utils/src/request-workfl
 import axios from 'axios';
 
 import { findReplacementIntsUtil } from '@/server/api/routers/scheduling/v1/findReplacementInts/util';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 type FuncParams = {
   request_id: string;
   session_id: string;
   reqProgress: ProgressLoggerType;
 };
 export const changeInterviewer = async (payload: FuncParams) => {
-  // list interviewers
+  const supabaseAdmin = getSupabaseServer();
 
   const [cancel_rec] = supabaseWrap(
     await supabaseAdmin
