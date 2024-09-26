@@ -48,7 +48,7 @@ export default function WorkingHour() {
     },
   });
 
-  const handleUpdate = async (updatedData) => {
+  const handleUpdate = async (updatedData: SchedulingSettingType) => {
     try {
       const schedulingSettingObj: SchedulingSettingType = {
         ...initialData,
