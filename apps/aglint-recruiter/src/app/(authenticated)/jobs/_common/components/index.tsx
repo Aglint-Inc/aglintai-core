@@ -1,3 +1,4 @@
+import { toast } from '@components/hooks/use-toast';
 import OptimisticWrapper from '@components/loadingWapper';
 import { Button } from '@components/ui/button';
 import {
@@ -7,12 +8,18 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import { Skeleton } from '@components/ui/skeleton';
-import { Briefcase, MoreHorizontal, PlusCircle, RefreshCw } from 'lucide-react';
+import { MoreHorizontal, PlusCircle, RefreshCw } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
 import { useAllIntegrations } from '@/authenticated/hooks';
+import { useCompanySetup } from '@/authenticated/hooks/useCompanySetup';
+import {
+  setIsOnboardOpen,
+  useOnboard,
+} from '@/authenticated/store/OnboardStore';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import {
   useIntegrationActions,
@@ -22,10 +29,13 @@ import {
 import ROUTES from '@/utils/routing/routes';
 
 import { STATE_LEVER_DIALOG } from '../constants';
+import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
 import LeverModalComp from './AddJobWithIntegrations/LeverModal';
 import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';
 const DashboardComp = () => {
+  const { ifAllowed } = useRolesAndPermissions();
+  const router = useRouterPro();
   const {
     manageJob,
     jobs: { data },
@@ -67,12 +77,13 @@ const DashboardComp = () => {
       ) : (
         <>
           {data?.length === 0 ? (
-            <div className='mt-72 flex h-screen w-full flex-col items-center text-neutral-500'>
-              <div className='mb-4 flex items-center justify-center'>
-                <Briefcase className='h-16 w-16' strokeWidth={1} size={48} />
-              </div>
-              <h3 className='mb-2 text-lg font-semibold'>No Jobs</h3>
-            </div>
+            ifAllowed(
+              <EmptyJobDashboard
+                handleClickAddJob={() => router.push(ROUTES['/jobs/create']())}
+                heading={'Jobs'}
+              />,
+              ['manage_job'],
+            )
           ) : (
             <div className='container-lg mx-auto w-full px-12'>
               <div className='flex flex-row justify-between'>
@@ -114,6 +125,8 @@ export function AddJob() {
   const integration = useIntegrationStore((state) => state.integrations);
   const { setIntegrations } = useIntegrationActions();
   const { data: integrations } = useAllIntegrations();
+  const { isJobSetupPending } = useCompanySetup();
+  const { isOpen } = useOnboard();
 
   return (
     <div className='flex flex-row items-center gap-1'>
@@ -128,11 +141,16 @@ export function AddJob() {
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-56'>
           <DropdownMenuItem
-            onSelect={() => router.push(ROUTES['/jobs/create']())}
+            onSelect={() => {
+              if (isJobSetupPending) {
+                if (!isOpen) toast({ title: 'Please complete this Steps' });
+                setIsOnboardOpen(true);
+              } else router.push(ROUTES['/jobs/create']());
+            }}
             className='cursor-pointer'
           >
             <PlusCircle className='mr-2 h-4 w-4' />
-            <span>Create Job</span>
+            <span>Create Job </span>
           </DropdownMenuItem>
           <DropdownMenuItem
             onSelect={() => {

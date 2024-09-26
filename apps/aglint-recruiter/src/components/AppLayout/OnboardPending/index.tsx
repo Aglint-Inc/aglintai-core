@@ -9,17 +9,22 @@ import {
   type SetupStepType,
   useCompanySetup,
 } from '@/authenticated/hooks/useCompanySetup';
+import {
+  setIsOnboardOpen,
+  useOnboard,
+} from '@/authenticated/store/OnboardStore';
 import { UIButton } from '@/components/Common/UIButton';
 
 export const OnboardPending = () => {
   const { isCompanySetupPending, companySetupProgress, companySetupSteps } =
     useCompanySetup();
-  const [isOpen, setIsOpen] = useState(false);
+
   const [selectedStep, setSelectedStep] = useState<SetupStepType>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(null);
 
+  const { isOpen } = useOnboard();
   const toggleOpen = () => {
-    setIsOpen(!isOpen);
+    setIsOnboardOpen(!isOpen);
   };
 
   useEffect(() => {
@@ -71,7 +76,7 @@ export const OnboardPending = () => {
             <CardHeader className='flex flex-col space-y-1.5 pb-4'>
               <div className='flex items-center justify-between'>
                 <CardTitle className='text-xl font-semibold'>
-                  Aglint AI Onboarding
+                  Onboarding Progress
                 </CardTitle>
                 <UIButton
                   variant='ghost'

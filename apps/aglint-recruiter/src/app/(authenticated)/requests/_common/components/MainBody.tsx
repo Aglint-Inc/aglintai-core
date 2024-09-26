@@ -4,7 +4,7 @@ import { AgentIEditorProvider } from '@requests/components/AgentChats/AgentEdito
 import { REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
 import { useRequestCount } from '@requests/hooks';
 import { checkFiltersApplied } from '@requests/utils/checkFiltersApplied';
-import { HardDrive, Info, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { Info, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
@@ -109,42 +109,32 @@ const MainBody = () => {
           openChat ? 'w-[calc(100%-450px)]' : ''
         }`}
       >
-        {showEmptyPage ? (
-          // <RequestEmpty />
-          <div className='mt-72 flex w-full flex-col items-center text-neutral-500'>
-            <div className='mb-4 flex items-center justify-center'>
-              <HardDrive className='h-16 w-16' strokeWidth={1} size={48} />
-            </div>
-            <h3 className='mb-2 text-lg font-semibold'>No Request</h3>
-          </div>
-        ) : (
-          <div>
-            <Header
-              completed_percentage={completed_percentage}
-              open_request={open_request}
-              recruiterUser={recruiterUser}
-              requestCount={requestCount}
-              setView={setView}
-              view={view}
-            />
+        <div>
+          <Header
+            completed_percentage={completed_percentage}
+            open_request={open_request}
+            recruiterUser={recruiterUser}
+            requestCount={requestCount}
+            setView={setView}
+            view={view}
+          />
 
-            {isRequestListEmpty ? (
-              <div className='container-lg mx-auto w-full px-12 py-8'>
-                <GlobalEmpty
-                  height='300px'
-                  text={'No requests found'}
-                  iconSlot={<Info className='text-gray-500' />}
-                />
-              </div>
-            ) : (
-              <RequestListContent
-                view={view}
-                defaults={defaults}
-                isFetched={isFetched}
+          {isRequestListEmpty || showEmptyPage ? (
+            <div className='container-lg mx-auto w-full px-12 py-8'>
+              <GlobalEmpty
+                height='300px'
+                text={'No requests found'}
+                iconSlot={<Info className='text-gray-500' />}
               />
-            )}
-          </div>
-        )}
+            </div>
+          ) : (
+            <RequestListContent
+              view={view}
+              defaults={defaults}
+              isFetched={isFetched}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

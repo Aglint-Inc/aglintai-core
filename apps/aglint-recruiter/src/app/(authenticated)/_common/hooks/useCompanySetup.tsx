@@ -43,7 +43,6 @@ const requestIds: SetupStepType['id'][] = [
 export function useCompanySetup() {
   //states ---
   const [steps, setSteps] = useState<SetupStepType[]>([]);
-
   //Hooks ---
   const { recruiter, loading: recruiterLoading } = useAuthDetails();
   const { data: integrations, isLoading: integrationLoading } =
@@ -53,6 +52,7 @@ export function useCompanySetup() {
     useFetchcompanySetup();
 
   const { isShowFeature } = useAuthDetails();
+
   //loading ---
   const isLoading =
     recruiterLoading ||
