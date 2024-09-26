@@ -12,15 +12,25 @@ type RolesAndPermissionsContextType = {
   devlinkProps?: (
     x: DatabaseTable['permissions']['name'][],
   ) => { onClick: null; style: { display: 'none' } } | object;
-  ifAllowed: <T extends any | ReactNode>(
+  ifAllowed: <T extends ((...args: unknown[]) => unknown) | ReactNode>(
     func: T,
     permission: DatabaseTable['permissions']['name'][],
   ) => T;
   isScoringEnabled: boolean;
 };
 
+const initialValue: RolesAndPermissionsContextType = {
+  checkPermissions: () => false,
+  ifAllowed: <T extends ((...args: unknown[]) => unknown) | ReactNode>(
+    func: T,
+    _: DatabaseTable['permissions']['name'][],
+  ) => {
+    return typeof func === 'function' ? func : ((() => {}) as T);
+  },
+  isScoringEnabled: false,
+};
 const RolesAndPermissionsContext =
-  createContext<RolesAndPermissionsContextType>(undefined);
+  createContext<RolesAndPermissionsContextType>(initialValue);
 
 export const RolesAndPermissionsProvider = ({
   children,
@@ -49,11 +59,6 @@ export const RolesAndPermissionsProvider = ({
   ) => {
     // eslint-disable-next-line security/detect-object-injection
     const allow = checkPermissions(permissions);
-    // Boolean(permissions.length) &&
-    // permissions.reduce(
-    //   (prev, curr) => prev && Boolean(userPermissions['permissions'][curr]),
-    //   true,
-    // );
     if (allow) {
       return func;
     }

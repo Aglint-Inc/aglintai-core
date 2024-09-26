@@ -62,7 +62,6 @@ const PERMISSIONS: Permissions = {
   /** Any one of the permission is required to access this apis
    * permission will reduced  using 'or'
    */
-  '/api/getMembersWithRole': ['view_users'],
   '/api/scheduling/application/fetchinterviewstages': ['scheduling_module'],
   '/api/scheduling/application/fetchInterviewSessionByRequest': ['authorized'],
   '/api/scheduling/get_interview_plans': ['scheduling_module'],
@@ -114,7 +113,6 @@ const PERMISSIONS: Permissions = {
     'scheduling_module',
   ],
   '/api/emails/preview': ['scheduling_module'],
-  '/api/get_last_login': ['view_users'],
   '/api/setMembersWithRole': ['manage_users'],
   '/api/getRoleAndPermissions': ['view_roles'],
   '/api/setRoleAndPermission': ['manage_roles'],

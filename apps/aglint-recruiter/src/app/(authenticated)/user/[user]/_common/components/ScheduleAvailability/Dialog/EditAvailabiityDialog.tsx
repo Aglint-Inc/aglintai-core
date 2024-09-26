@@ -13,7 +13,10 @@ import UIDialog from '@/components/Common/UIDialog';
 import { supabase } from '@/utils/supabase/client';
 import { type timeZone as timeZones } from '@/utils/timeZone';
 
-import { useInterviewer } from '../../../hooks/useInterviewer';
+import {
+  type InterviewerDetailType,
+  useInterviewer,
+} from '../../../hooks/useInterviewer';
 import { EditAvailabilityForm } from './ui/EditAvailabilityFormUI';
 
 export const LoadMax = {
@@ -32,15 +35,17 @@ export const EditAvailabiityDialog = ({
 }: {
   setIsEditOpen: Dispatch<SetStateAction<boolean>>;
   isEditOpen: boolean;
-  schedulingSettings: ReturnType<
-    typeof useInterviewer
-  >['data']['scheduling_settings'];
+  schedulingSettings: InterviewerDetailType['scheduling_settings'];
 }) => {
   const [isSaving, setIsSaving] = useState(false);
-  const [workingHours, setWorkingHours] = useState([]);
-  const [timeZone, setTimeZone] = useState<TimeZoneType>(null);
-  const [freeKeyWords, setFreeKeywords] = useState([]);
-  const [softConflictsKeyWords, setSoftConflictsKeyWords] = useState([]);
+  const [workingHours, setWorkingHours] = useState<
+    schedulingSettingType['workingHours']
+  >([]);
+  const [timeZone, setTimeZone] = useState<TimeZoneType | null>(null);
+  const [freeKeyWords, setFreeKeywords] = useState<string[]>([]);
+  const [softConflictsKeyWords, setSoftConflictsKeyWords] = useState<string[]>(
+    [],
+  );
   const [outOfOffice, setOutOfOffice] = useState<string[]>([]);
   const [recruitingBlocks, setRecruitingBlocks] = useState<string[]>([]);
   const [dailyLmit, setDailyLimit] = useState<InterviewLoadType['daily']>({
@@ -54,7 +59,8 @@ export const EditAvailabiityDialog = ({
     max: LoadMax.weeklyHours,
   });
   const { refetch } = useInterviewer();
-  const user_id = useParams().user as string;
+  const param = useParams() as { user: string };
+  const user_id = param.user as string;
 
   const handleDailyValue = (value: number) => {
     setDailyLimit((pre) => ({
@@ -130,7 +136,7 @@ export const EditAvailabiityDialog = ({
 
       setTimeZone(timeZoneCopy);
       setWorkingHours(workingHoursCopy);
-      setFreeKeywords(schedulingSettingData?.schedulingKeyWords?.free || []);
+      setFreeKeywords(schedulingSettingData?.schedulingKeyWords?.free);
       setSoftConflictsKeyWords(
         schedulingSettingData?.schedulingKeyWords?.SoftConflicts || [],
       );
@@ -256,7 +262,7 @@ export const EditAvailabiityDialog = ({
             keywords={keywords}
             setTimeZone={setTimeZone}
             setWorkingHours={setWorkingHours}
-            timeZone={timeZone}
+            timeZone={timeZone || null}
             weeklyLmit={weeklyLmit}
             workingHours={workingHours}
           />

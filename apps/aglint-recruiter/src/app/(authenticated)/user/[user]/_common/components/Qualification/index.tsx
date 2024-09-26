@@ -9,7 +9,7 @@ import { List } from './ui/List';
 export const Qualifications = ({
   interview_types,
 }: {
-  interview_types: InterviewerDetailType['interview_type'];
+  interview_types: NonNullable<InterviewerDetailType>['interview_type'];
 }) => {
   return (
     <>
@@ -17,8 +17,11 @@ export const Qualifications = ({
         <ScrollArea className='h-[360px] w-full'>
           <div className='space-y-4'>
             {interview_types?.length ? (
-              interview_types.map((interview_type, index) => (
-                <List interviewType={interview_type} key={index} />
+              interview_types?.map((interview_type) => (
+                <List
+                  interviewType={interview_type}
+                  key={interview_type.module_name}
+                />
               ))
             ) : (
               <div className='flex h-[100px] w-full flex-col items-center justify-center space-y-2 text-gray-500'>

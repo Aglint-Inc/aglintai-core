@@ -2,8 +2,7 @@ import {
   type DatabaseTable,
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
-
-import { type ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
+import { type ApiResponseFindAvailability } from '@requests/types';
 
 export function filterSchedulingOptionsArray({
   schedulingOptions,

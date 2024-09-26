@@ -66,7 +66,7 @@ function IndividualRow({
     <>
       <tr
         key={relation.id}
-        className='border-b last:border-b-0 hover:bg-gray-50'
+        className='border-b last:border-b-0 hover:bg-gray-50 '
       >
         <td className='p-4'>
           <Link
@@ -119,6 +119,7 @@ function IndividualRow({
           />
         </td>
         <td className='p-4'>
+          <div className='flex items-center'>
           <div className='flex flex-row gap-0.5 overflow-hidden rounded-md'>
             {pills.map((pill, i) => (
               <HistoryPillShadcn
@@ -128,6 +129,7 @@ function IndividualRow({
                 isActive={pill.completed}
               />
             ))}
+          </div>
           </div>
         </td>
         <td className='p-4'>
@@ -140,7 +142,7 @@ function IndividualRow({
                   icon={<ChevronDown />}
                 />
               </PopoverTrigger>
-              <PopoverContent className='w-auto rounded-sm p-0'>
+              <PopoverContent side='top' className='w-auto rounded-sm p-0'>
                 <CollapseTrainingProgress
                   reverse_shadow_to_complete={relation.number_of_reverse_shadow}
                   shadow_to_complete={relation.number_of_shadow}

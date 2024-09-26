@@ -46,7 +46,7 @@ function SortComponent({ selected, setOrder, sortOptions }: sortComponentType) {
   ) as { id: string; label: string }[];
   const selectedSort = orderOptionList.find(
     (item) => item.id === selected.order,
-  );
+  ) || { id: '', label: '' };
   return (
     <div className='flex flex-row items-center gap-1'>
       <p className='text-sm text-muted-foreground'>Sort by</p>
@@ -75,7 +75,7 @@ function SortComponent({ selected, setOrder, sortOptions }: sortComponentType) {
                 </div>
               }
               itemList={orderOptionList}
-              selectedItem={selectedSort?.id || ''}
+              selectedItem={selectedSort.id || ''}
               setSelectedItem={(values) => {
                 setOrder({ order: values });
               }}

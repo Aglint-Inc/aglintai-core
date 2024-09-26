@@ -15,6 +15,10 @@ type ItemType = string;
 const TeamManagement = () => {
   const { checkPermissions } = useRolesAndPermissions();
   const { data: members, isPending, remote_sync } = useTeamMembers();
+  // console.log(members);
+  // useEffect(() => {
+  //   console.log('render');
+  // },[])
 
   const timeStamp = remote_sync?.lastSync;
   const last_sync = timeStamp ? dayjsLocal(timeStamp).fromNow() : 'Never';
@@ -67,10 +71,12 @@ const TeamManagement = () => {
     const filtered = members.filter((member) => {
       const departmentMatch =
         !selectedDepartments.length ||
-        selectedDepartments.includes(member.department?.name);
+        (member.department?.name &&
+          selectedDepartments.includes(member.department?.name));
       const locationMatch =
         !selectedLocations.length ||
-        selectedLocations.includes(member.office_location?.city);
+        (member.office_location?.city &&
+          selectedLocations.includes(member.office_location?.city));
       const statusMatch =
         !selectedStatus.length ||
         selectedStatus.includes(String(member.status).toLowerCase());
@@ -89,13 +95,13 @@ const TeamManagement = () => {
     members,
   ]);
   const canManage = checkPermissions(['manage_users']);
-  const [isInitialLoading, setIsInitialLoading] = useState(
-    filteredMembers.length ? false : true,
-  );
+  // const [isInitialLoading, setIsInitialLoading] = useState(
+  //   filteredMembers.length ? false : true,
+  // );
 
-  useEffect(() => {
-    if (filteredMembers.length) setIsInitialLoading(false);
-  }, [filteredMembers.length]);
+  // useEffect(() => {
+  //   if (filteredMembers.length) setIsInitialLoading(false);
+  // }, [filteredMembers.length]);
 
   const [open, setOpen] = useState(false);
 
@@ -103,7 +109,7 @@ const TeamManagement = () => {
     .filter((mem) => mem.status === 'active')
     .map((mem) => ({
       id: mem.user_id,
-      name: getFullName(mem.first_name, mem.last_name),
+      name: getFullName(mem.first_name, mem.last_name || ''),
     }));
 
   const filters = [
@@ -160,9 +166,7 @@ const TeamManagement = () => {
         canManage={canManage}
         filteredMembers={filteredMembers}
         isRemoteSync={remote_sync.isEnabled}
-        isTableLoading={
-          (!filteredMembers.length && isPending) || isInitialLoading
-        }
+        isTableLoading={!filteredMembers?.length && isPending}
         last_sync={last_sync}
         remote_sync={remote_sync.sync}
         setOpen={setOpen}

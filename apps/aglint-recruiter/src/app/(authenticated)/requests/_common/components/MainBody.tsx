@@ -77,7 +77,11 @@ const MainBody = () => {
   }
 
   if (!requestStep?.isSetupCompleted) {
-    return <LandingProgress />;
+    return (
+      <div className='flex w-full items-center justify-center'>
+        <LandingProgress />
+      </div>
+    );
   }
 
   return (

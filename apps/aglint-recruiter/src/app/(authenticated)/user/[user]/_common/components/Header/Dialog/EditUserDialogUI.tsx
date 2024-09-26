@@ -3,11 +3,8 @@ import { Label } from '@components/ui/label';
 import capitalize from 'lodash/capitalize';
 import React from 'react';
 import type {
-  EmailFormFields,
   FormFields,
   FormValues,
-  PasswordFormFields,
-  PreferenceFormFields,
 } from 'src/app/_common/components/Profile/uitls';
 
 import { ShadcnPhoneInput } from '@/components/Common/UIPhoneInput/PhoneInput';
@@ -16,26 +13,18 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 export const ProfileForms = ({
   profile,
   setProfile,
-  setChanges = null,
+  setChanges,
 }: {
-  profile:
-    | FormFields
-    | PreferenceFormFields
-    | EmailFormFields
-    | PasswordFormFields;
-  setProfile:
-    | React.Dispatch<React.SetStateAction<FormFields>>
-    | React.Dispatch<React.SetStateAction<PreferenceFormFields>>
-    | React.Dispatch<React.SetStateAction<EmailFormFields>>
-    | React.Dispatch<React.SetStateAction<PasswordFormFields>>;
+  profile: FormFields;
+  setProfile: React.Dispatch<React.SetStateAction<FormFields>>;
   setChanges?: () => void;
 }) => {
-  const handleChange = (e, key: string) => {
+  const handleChange = (e: any, key: keyof FormFields) => {
     setProfile((prev) => {
       return {
         ...prev,
         [key]: {
-          ...prev[String(key)],
+          ...prev[key],
           value: e.target.value,
           error: false,
         },
@@ -43,7 +32,8 @@ export const ProfileForms = ({
     });
     if (setChanges) setChanges();
   };
-  const forms = Object.entries(profile).map(([key, val]) => {
+  const forms = Object.entries(profile).map(([k, val]) => {
+    const key = k as keyof FormFields;
     return (
       <ProfileForm key={key} id={key} value={val} onChange={handleChange} />
     );
@@ -56,10 +46,10 @@ const ProfileForm = ({
   value,
   onChange,
 }: {
-  id: string;
+  id: keyof FormFields;
   value: FormValues;
   // eslint-disable-next-line no-unused-vars
-  onChange: (e: any, key: string, phoneFormat?: any) => void;
+  onChange: (e: any, key: keyof FormFields, phoneFormat?: any) => void;
 }) => {
   const { userCountry } = useAuthDetails();
   const defaultCountry =
@@ -71,7 +61,7 @@ const ProfileForm = ({
         <div className='space-y-2'>
           {value.label && <Label>{value.label}</Label>}
           <ShadcnPhoneInput
-            country={defaultCountry}
+            country={defaultCountry || ''}
             placeholder={value.placeholder}
             value={value.value}
             required={value.required}

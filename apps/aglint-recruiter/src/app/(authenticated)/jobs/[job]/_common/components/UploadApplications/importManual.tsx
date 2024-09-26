@@ -82,11 +82,11 @@ export const ImportManual = () => {
   };
 
   return (
-    <Card className='flex h-[500px] flex-col border-0 shadow-none'>
-      <div className='flex-grow overflow-auto p-6'>
+    <Card className='flex flex-col border-0 shadow-none pt-2' style={{height:'550px'}}>
+      <div className='flex-grow overflow-auto'>
         <FormBody applicant={applicant} setApplicant={setApplicant} />
       </div>
-      <div className='p-4'>
+      <div className='p-0'>
         <Button onClick={handleSubmit} className='w-full'>
           Add Candidate
         </Button>
@@ -104,7 +104,7 @@ const FormBody = ({ applicant, setApplicant }) => {
   };
 
   return (
-    <div className='space-y-4'>
+    <div className='flex flex-col gap-4 p-1'>
       <div className='grid grid-cols-2 gap-4'>
         <FormField
           label='First Name'
@@ -120,7 +120,9 @@ const FormBody = ({ applicant, setApplicant }) => {
           onChange={(e) => handleChange(e.target.value, 'last_name')}
           error={applicant.last_name.error}
         />
-        <FormField
+      </div>
+      <div className='flex flex-col gap-4'>
+      <FormField
           label='Email'
           id='email'
           type='email'
@@ -175,7 +177,7 @@ const ResumeUploadComp = ({ value, handleChange, error }) => (
     </Label>
     <FileUploader handleChange={handleChange} types={fileTypes}>
       <div
-        className={`flex cursor-pointer items-center justify-center space-x-2 rounded-md border border-dashed p-8 ${error ? 'border-red-500' : 'border-gray-300'} bg-gray-50`}
+        className={`flex cursor-pointer items-center justify-center space-x-2 rounded-md border-2 h-[100px] border-dashed p-8 ${error ? 'border-red-500' : 'border-gray-300'} bg-gray-50`}
       >
         {value ? <FileIcon size={20} /> : <UploadCloud size={24} />}
         <span

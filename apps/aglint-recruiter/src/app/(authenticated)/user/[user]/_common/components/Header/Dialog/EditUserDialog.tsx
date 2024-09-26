@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react';
+import { type RecruiterUserType } from '@aglint/shared-types';
+import { type CustomSchedulingSettings } from '@aglint/shared-types/src/db/tables/common.types';
+import { type Dispatch, type SetStateAction, useRef, useState } from 'react';
 import {
   type FormFields,
   type FormValues,
-  type PreferenceFormFields,
   validateLinkedIn,
   validateMail,
   validateString,
@@ -20,18 +21,18 @@ import toast from '@/utils/toast';
 import { ProfileForms } from './EditUserDialogUI';
 
 const initialFormValues: FormValues = {
-  value: null,
-  label: null,
+  value: '',
+  label: '',
   type: 'text',
-  helperText: null,
-  placeholder: null,
+  helperText: '',
+  placeholder: '',
   error: false,
   blocked: false,
   validation: 'string',
   required: false,
   disabled: false,
   specialForm: false,
-  options: null,
+  options: [],
   modal: false,
 };
 
@@ -39,37 +40,42 @@ export const EditUserDialog = ({
   isOpen,
   setIsOpen,
   interviewerDetailsRefetch,
+}: {
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  interviewerDetailsRefetch: () => void;
 }) => {
   const { recruiterUser, setRecruiterUser } = useAuthDetails();
   const [selectedTimeZone, setSelectedTimeZone] = useState(
-    recruiterUser.scheduling_settings.timeZone || null,
+    recruiterUser?.scheduling_settings.timeZone || null,
   );
 
+  const recruUser = recruiterUser as RecruiterUserType;
   const initialProfileFormFields: FormFields = {
     first_name: {
       ...initialFormValues,
-      value: recruiterUser.first_name,
+      value: recruiterUser?.first_name ?? '',
       required: true,
       label: 'First Name',
       placeholder: 'Enter your first name.',
     },
     last_name: {
       ...initialFormValues,
-      value: recruiterUser.last_name,
+      value: recruiterUser?.last_name ?? '',
       required: true,
       label: 'Last Name',
       placeholder: 'Enter your last name.',
     },
     phone: {
       ...initialFormValues,
-      value: recruiterUser.phone,
+      value: recruiterUser?.phone ?? '',
       validation: 'phone',
       label: 'Contact Number',
       required: false,
     },
     linked_in: {
       ...initialFormValues,
-      value: recruiterUser.linked_in,
+      value: recruiterUser?.linked_in ?? '',
       validation: 'linkedIn',
       label: 'LinkedIn',
       required: false,
@@ -83,9 +89,9 @@ export const EditUserDialog = ({
   );
   const [isError, setError] = useState(false);
   const [isImageChanged, setIsImageChanged] = useState(false);
-  const imageFile = useRef(null);
+  const imageFile = useRef<File>(null);
 
-  const handleValidate = (profile: FormFields | PreferenceFormFields) => {
+  const handleValidate = (profile: FormFields) => {
     return Object.entries(profile).reduce(
       (acc, [key, curr]) => {
         const value = curr.value?.trim() || null;
@@ -112,10 +118,12 @@ export const EditUserDialog = ({
             }
           }
         }
+
+        const k = key as keyof FormFields;
         return {
           newProfile: {
             ...acc.newProfile,
-            [key]: { ...acc.newProfile[String(key)], value, error },
+            [key]: { ...acc.newProfile[k], value, error },
           },
           error: error && !acc.error ? true : acc.error,
         };
@@ -135,13 +143,13 @@ export const EditUserDialog = ({
         const { error } = handleValidate(profile);
 
         if (error) return;
-        let profile_image = recruiterUser.profile_image;
+        let profile_image = recruiterUser?.profile_image;
         setLoading(true);
 
-        if (isImageChanged) {
+        if (isImageChanged && imageFile.current) {
           const { data } = await supabase.storage
             .from('recruiter-user')
-            .upload(`public/${recruiterUser.user_id}`, imageFile.current, {
+            .upload(`public/${recruiterUser?.user_id}`, imageFile.current, {
               cacheControl: '3600',
               upsert: true,
             });
@@ -155,6 +163,12 @@ export const EditUserDialog = ({
           setIsImageChanged(false);
         }
 
+        const scheduling_settings = {
+          ...recruiterUser?.scheduling_settings,
+          timeZone: selectedTimeZone,
+        } as CustomSchedulingSettings;
+
+        const user_id = recruiterUser?.user_id as string;
         await supabase
           .from('recruiter_user')
           .update({
@@ -163,12 +177,11 @@ export const EditUserDialog = ({
             phone: profile.phone.value,
             linked_in: profile.linked_in.value,
             profile_image,
-            scheduling_settings: {
-              ...recruiterUser.scheduling_settings,
-              timeZone: selectedTimeZone,
-            },
+            scheduling_settings,
           })
-          .eq('user_id', recruiterUser.user_id);
+          .eq('user_id', user_id);
+
+        // const profile_img = profile_image;
 
         setRecruiterUser({
           ...recruiterUser,
@@ -176,11 +189,8 @@ export const EditUserDialog = ({
           last_name: profile.last_name.value,
           phone: profile.phone.value,
           linked_in: profile.linked_in.value,
+          scheduling_settings,
           profile_image,
-          scheduling_settings: {
-            ...recruiterUser.scheduling_settings,
-            timeZone: selectedTimeZone,
-          },
         });
         await interviewerDetailsRefetch();
         setProfileChange(false);
@@ -194,14 +204,14 @@ export const EditUserDialog = ({
   }
 
   const selectedTzCode =
-    selectedTimeZone.tzCode as (typeof timeZone)[number]['tzCode'];
+    selectedTimeZone?.tzCode as (typeof timeZone)[number]['tzCode'];
   return (
     <UIDialog
       open={isOpen}
       title='Edit Profile'
       onClose={() => {
         setProfile(structuredClone(initialProfileFormFields));
-        setSelectedTimeZone(recruiterUser.scheduling_settings.timeZone);
+        setSelectedTimeZone(recruUser.scheduling_settings.timeZone);
         setIsOpen(false);
       }}
       slotButtons={
@@ -233,7 +243,7 @@ export const EditUserDialog = ({
         <div className='flex items-center space-x-4'>
           <div className='max-w-[64px]'>
             <ImageUploadManual
-              image={recruiterUser.profile_image}
+              image={recruUser.profile_image ?? ''}
               size={64}
               imageFile={imageFile}
               setChanges={() => {

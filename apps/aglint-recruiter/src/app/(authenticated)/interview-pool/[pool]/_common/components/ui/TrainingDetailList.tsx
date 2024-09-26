@@ -1,5 +1,7 @@
-import { RotateCcw, RotateCw } from 'lucide-react';
 import React from 'react';
+
+import ReverseShadowIcon from '@/authenticated/components/ReverseShadowIcon';
+import ShadowIcon from '@/authenticated/components/ShadowIcon';
 
 interface TrainingDetailListProps {
   isReverse?: boolean;
@@ -17,13 +19,13 @@ export function TrainingDetailList({
   slotPanelBlock,
 }: TrainingDetailListProps) {
   return (
-    <div className='flex items-center gap-2.5'>
-      <div className='flex w-[300px] items-center gap-2.5'>
+    <div className='flex items-center justify-between w-full'>
+      <div className='flex w-full items-center gap-2.5'>
         <div>
-          {isShadow && <RotateCw className='h-6 w-6' />}
-          {isReverse && <RotateCcw className='h-6 w-6' />}
+          {isShadow && <ShadowIcon className='h-5 w-5' />}
+          {isReverse && <ReverseShadowIcon className='h-5 w-5' />}
         </div>
-        <div className='capitalize'>{textTraining}</div>
+        <div className='text-md font-normal capitalize'>{textTraining}</div>
       </div>
       <div className='w-[150px]'>{slotTrainingStatus}</div>
       <div className='flex items-center gap-2.5'>{slotPanelBlock}</div>

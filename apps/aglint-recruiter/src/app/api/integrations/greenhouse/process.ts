@@ -10,7 +10,7 @@ export async function getGreenhouseMeta(recruiter_id: string) {
       .eq('recruiter_id', recruiter_id)
       .single()
       .throwOnError()
-  ).data;
+  ).data!;
   return {
     ...greenhouse_metadata,
     key: greenhouse_key,
@@ -28,5 +28,5 @@ export async function setGreenhouseMeta(
       .select('greenhouse_metadata')
       .single()
       .throwOnError()
-  ).data.greenhouse_metadata;
+  ).data!.greenhouse_metadata;
 }

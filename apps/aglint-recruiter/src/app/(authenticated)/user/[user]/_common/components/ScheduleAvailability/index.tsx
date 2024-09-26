@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { SectionCard } from '@/authenticated/components/SectionCard';
 import { UIButton } from '@/components/Common/UIButton';
 
-import { type useInterviewer } from '../../hooks/useInterviewer';
+import { type InterviewerDetailType } from '../../hooks/useInterviewer';
 import { EditAvailabiityDialog } from './Dialog/EditAvailabiityDialog';
 import { ScheduleAvailabilityUI } from './ui/ScheduleAvailabilityUI';
 
@@ -25,12 +25,10 @@ export default function ScheduleAvailability({
   schedulingSettings,
   interviewTodayWeek,
 }: {
-  schedulingSettings: ReturnType<
-    typeof useInterviewer
-  >['data']['scheduling_settings'];
-  interviewTodayWeek: ReturnType<
-    typeof useInterviewer
-  >['data']['interview_week_today'];
+  schedulingSettings: NonNullable<InterviewerDetailType['scheduling_settings']>;
+  interviewTodayWeek: NonNullable<
+    InterviewerDetailType['interview_week_today']
+  >;
 }) {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const {

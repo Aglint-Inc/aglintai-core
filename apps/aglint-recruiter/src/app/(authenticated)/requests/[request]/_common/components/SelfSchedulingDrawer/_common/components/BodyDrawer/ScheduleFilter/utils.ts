@@ -4,12 +4,13 @@ import {
   type PlanCombinationRespType,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils';
+import { type ApiResponseFindAvailability } from '@requests/types';
 
-import type { ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
 import { createCombsForMultiDaySlots } from '@/services/CandidateScheduleV2/utils/createCombsForMultiDaySlots';
 import { compareTimes } from '@/services/CandidateScheduleV2/utils/time_range_utils';
 
 import { type SelfSchedulingFlow } from '../../../store/store';
+
 type PlanFilterType = Omit<
   SelfSchedulingFlow['filters'],
   'preferredInterviewers'
@@ -18,19 +19,20 @@ type PlanFilterType = Omit<
     user_id: string;
   }[];
 };
+
 export const filterByDateRanges = ({
   schedulingOptions,
-  preferredDateRanges,
+  preferredTimeRanges,
   user_tz,
 }: {
   schedulingOptions: {
     curr_date: string;
     plans: PlanCombinationRespType[];
   };
-  preferredDateRanges: SelfSchedulingFlow['filters']['preferredDateRanges'];
+  preferredTimeRanges: SelfSchedulingFlow['filters']['preferredTimeRanges'];
   user_tz: string;
 }) => {
-  if (preferredDateRanges.length === 0) {
+  if (preferredTimeRanges.length === 0) {
     return schedulingOptions;
   }
 
@@ -38,7 +40,7 @@ export const filterByDateRanges = ({
     ...schedulingOptions,
     plans: schedulingOptions.plans.filter((option) => {
       return option.sessions.every((session) => {
-        return preferredDateRanges.some((dateRange) => {
+        return preferredTimeRanges.some((dateRange) => {
           const l1 = compareTimes(
             session.start_time,
             dateRange.startTime,
@@ -69,10 +71,10 @@ export function filterSchedulingOptionsArray({
     interview_rounds: option.interview_rounds.map((items) => {
       let allOptions = items;
 
-      if (filters.preferredDateRanges.length > 0) {
+      if (filters.preferredTimeRanges.length > 0) {
         allOptions = filterByDateRanges({
           schedulingOptions: allOptions,
-          preferredDateRanges: filters.preferredDateRanges,
+          preferredTimeRanges: filters.preferredTimeRanges,
           user_tz,
         });
       }

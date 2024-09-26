@@ -8,7 +8,7 @@ import { type GreenhouseAPI } from './type';
 export function GET(request: NextRequest) {
   const method = routeHandlerFactory<GreenhouseAPI['GET']>('GET', request);
   return method(async ({ requesterDetails }) => {
-    const { recruiter_id } = requesterDetails;
+    const recruiter_id = requesterDetails.recruiter_id!;
     const temp = await getGreenhouseMeta(recruiter_id);
     return {
       options: temp.options || {},
@@ -21,8 +21,8 @@ export function GET(request: NextRequest) {
 export function POST(request: NextRequest) {
   const method = routeHandlerFactory<GreenhouseAPI['POST']>('POST', request);
   return method(async ({ requesterDetails, body }) => {
-    const { recruiter_id } = requesterDetails;
-    const temp = await setGreenhouseMeta(recruiter_id, body);
+    const recruiter_id = requesterDetails.recruiter_id!;
+    const temp = await setGreenhouseMeta(recruiter_id, body!);
     return { options: temp.options || {}, last_sync: temp.last_sync || {} };
   });
 }

@@ -20,10 +20,10 @@ export type EditAdminFormType = {
   first_name: string;
   last_name: string;
   linked_in: string;
-  location_id: number;
+  location_id: number | null;
   employment: employmentTypeEnum;
   position: string;
-  department_id: number;
+  department_id: number | null;
   role: string;
   role_id: string;
   manager_id: string;
@@ -61,11 +61,11 @@ const EditAdminDialog = ({
   const { data: officeLocations } = useAllOfficeLocations();
   const [isUpdating, setIsUpdating] = useState(false);
   const imageFile = useRef<File>(null);
-  const [form, setForm] = useState<EditAdminFormType | null>(null);
+
   const [isImageChanged, setIsImageChanged] = useState(false);
   const [isProfileChanged, setIsProfileChanged] = useState(false);
 
-  const initForm = {
+  const initForm: EditAdminFormType = {
     first_name: member.first_name,
     last_name: member.last_name,
     phone: member.phone,
@@ -79,6 +79,7 @@ const EditAdminDialog = ({
     role_id: member?.role_id,
     manager_id: member?.manager_id,
   };
+  const [form, setForm] = useState<EditAdminFormType>(initForm);
   useEffect(() => {
     if (_.isEqual(initForm, form)) {
       setIsProfileChanged(false);
@@ -108,19 +109,19 @@ const EditAdminDialog = ({
 
     let flag = false;
 
-    if (!form.first_name || form.first_name.trim() === '') {
+    if (!form?.first_name || form?.first_name.trim() === '') {
       temp.first_name = true;
       flag = true;
     }
-    if (!form.department_id) {
+    if (!form?.department_id) {
       temp.department = true;
       flag = true;
     }
-    if (!form.position || form.position.trim() === '') {
+    if (!form?.position || form?.position.trim() === '') {
       temp.position = true;
       flag = true;
     }
-    if (!form.role_id || form.role_id.trim() === '') {
+    if (!form?.role_id || form?.role_id.trim() === '') {
       temp.role = true;
       flag = true;
     }
@@ -137,23 +138,23 @@ const EditAdminDialog = ({
   };
 
   function permissionCheck() {
-    if (recruiterUser.role === 'admin') {
+    if (recruiterUser?.role === 'admin') {
       if (
-        recruiterUser.user_id === member.user_id ||
-        form.role !== 'admin' ||
-        recruiterUser.user_id === member.created_by
+        recruiterUser?.user_id === member.user_id ||
+        form?.role !== 'admin' ||
+        recruiterUser?.user_id === member.created_by
       ) {
         return true;
       } else if (
-        form.role === 'admin' &&
-        recruiterUser.created_by === member.user_id
+        form?.role === 'admin' &&
+        recruiterUser?.created_by === member.user_id
       ) {
         toast.error('Permission Denied');
 
         return false;
       } else if (
-        form.role === 'admin' &&
-        recruiterUser.user_id !== member.created_by
+        form?.role === 'admin' &&
+        recruiterUser?.user_id !== member.created_by
       ) {
         toast.error('Permission Denied');
         // toast.error('You cannot edit another admin detail');
@@ -169,11 +170,12 @@ const EditAdminDialog = ({
     try {
       setIsUpdating(true);
 
-      let profile_image = member.profile_image;
+      let profile_image: string | null = member.profile_image;
       if (isImageChanged) {
+        const image = imageFile.current as File;
         const { data } = await supabase.storage
           .from('recruiter-user')
-          .upload(`public/${member.user_id}`, imageFile.current, {
+          .upload(`public/${member.user_id}`, image, {
             cacheControl: '3600',
             upsert: true,
           });
@@ -187,17 +189,17 @@ const EditAdminDialog = ({
       }
 
       const data = {
-        first_name: form.first_name,
-        last_name: form.last_name,
-        linked_in: form.linked_in,
-        employment: form.employment,
+        first_name: form?.first_name,
+        last_name: form?.last_name,
+        linked_in: form?.linked_in,
+        employment: form?.employment,
         profile_image: profile_image,
-        position: form.position,
-        role_id: form.role_id,
-        phone: form.phone,
-        manager_id: form.manager_id,
-        department_id: form.department_id,
-        office_location_id: form.location_id,
+        position: form?.position,
+        role_id: form?.role_id,
+        phone: form?.phone,
+        manager_id: form?.manager_id,
+        department_id: form?.department_id,
+        office_location_id: form?.location_id,
         user_id: member.user_id,
       };
       await axios
@@ -206,7 +208,8 @@ const EditAdminDialog = ({
         })
         .then((res) => res.data);
       await refetch();
-      setForm({ ...form, profile_image: profile_image });
+      const profile_pic = profile_image as string;
+      setForm({ ...form, profile_image: profile_pic });
       onClose();
     } catch (e) {
       console.error(e);
@@ -235,7 +238,7 @@ const EditAdminDialog = ({
               }
             }}
             disabled={
-              recruiterUser.role !== 'admin' || isUpdating || !isProfileChanged
+              recruiterUser?.role !== 'admin' || isUpdating || !isProfileChanged
             }
           >
             {isUpdating ? 'Updating...' : 'Update'}

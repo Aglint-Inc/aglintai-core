@@ -3,6 +3,8 @@ import { application } from './routers/application';
 import { ats } from './routers/ats';
 import { candidatePortal } from './routers/candidatePortal';
 import { example, exampleSchema } from './routers/example';
+import { get_last_login } from './routers/get_last_login';
+import { get_members_with_role } from './routers/get_members_with_role';
 import { integrations } from './routers/integrations';
 import { interview_pool } from './routers/interview_pool';
 import { interviewers } from './routers/interviewers';
@@ -32,6 +34,8 @@ export const appRouter = createTRPCRouter({
   scheduling,
   application,
   workflows,
+  get_last_login,
+  get_members_with_role,
 });
 
 export const appRouterSchema = {
