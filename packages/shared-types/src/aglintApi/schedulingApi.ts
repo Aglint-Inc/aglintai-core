@@ -45,9 +45,7 @@ export type APICandScheduleMailThankYou = {
 };
 type t = typeof schema_find_availability_payload;
 
-export type APIOptions = v.NonNullish<
-  v.InferInput<typeof scheduling_options_schema>
->;
+export type APIOptions = v.InferOutput<typeof scheduling_options_schema>;
 
 export type APIFindAvailability = v.InferInput<
   typeof schema_find_availability_payload

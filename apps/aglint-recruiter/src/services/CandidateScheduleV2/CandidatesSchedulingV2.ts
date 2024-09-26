@@ -140,6 +140,9 @@ export class CandidatesSchedulingV2 {
   public verifyIntSelectedSlots = (
     selected_slots: PlanCombinationRespType[],
   ) => {
+    if (!this.db_details) {
+      throw new CApiError('SERVER_ERROR', 'DB details not set');
+    }
     const verified_slots: PlanCombinationRespType[] = [];
     for (const comb of selected_slots) {
       const session_rounds: SessionCombinationRespType[][] =
@@ -380,7 +383,7 @@ export class CandidatesSchedulingV2 {
     let all_schedule_combs: PlanCombinationRespType[] = [];
     const exploreSessionCombs = (
       current_comb: InterviewSessionApiRespType[],
-      session_idx,
+      session_idx: number,
     ) => {
       if (session_idx === interviewrs_sesn_comb.length) {
         const combs = this.calcMeetingCombinsForPlan(
@@ -587,6 +590,9 @@ export class CandidatesSchedulingV2 {
     const curr_day_str = curr_day_js.startOf('day').format();
 
     const cacheCurrPlanCalc = () => {
+      if (!this.db_details) {
+        throw new CApiError('SERVER_ERROR', 'DB details not set');
+      }
       const indef_paused_inters: {
         session_id: string;
         inters: (Pick<
@@ -674,6 +680,9 @@ export class CandidatesSchedulingV2 {
         let cnt_qualified_ints = 0;
 
         session_attendees.forEach((attendee) => {
+          if (!this.db_details) {
+            throw new CApiError('SERVER_ERROR', 'DB details not set');
+          }
           const attendee_details = this.intervs_details_map.get(
             attendee.user_id,
           );
@@ -771,13 +780,18 @@ export class CandidatesSchedulingV2 {
 
           if (attendee.training_type === 'qualified') {
             cnt_qualified_ints++;
+            const trainee_details = this.intervs_details_map.get(
+              attendee.user_id,
+            );
+            if (!trainee_details) {
+              throw new CApiError('SERVER_ERROR', 'Trainee not found');
+            }
             const { is_passed, type, day_load_density, week_load_density } =
               isIntervLoadPassed(
                 curr_day_js,
                 this.db_details,
                 attendee.user_id,
-                this.intervs_details_map.get(attendee.user_id)
-                  .int_schedule_setting,
+                trainee_details.int_schedule_setting,
                 plan_comb,
               );
 
@@ -970,6 +984,9 @@ export class CandidatesSchedulingV2 {
 
         let is_slot_holiday = false;
         attendee_details.holiday[curr_day_str].forEach((t) => {
+          if (!this.db_details) {
+            throw new CApiError('SERVER_ERROR', 'DB details not set');
+          }
           const flag = isTimeChunksOverLapps(
             convertTimeDurStrToDayjsChunk(t, this.db_details.req_user_tz),
             {
@@ -1002,6 +1019,9 @@ export class CandidatesSchedulingV2 {
         const is_slot_out_of_work_hrs = !attendee_details.work_hours[
           curr_day_str
         ].some((t) => {
+          if (!this.db_details) {
+            throw new CApiError('SERVER_ERROR', 'DB details not set');
+          }
           return isTimeChunksEnclosed(
             convertTimeDurStrToDayjsChunk(t, this.db_details.req_user_tz),
             {
@@ -1026,34 +1046,33 @@ export class CandidatesSchedulingV2 {
             return null;
           }
         }
+        const conflicting_events = attendee_details.cal_date_events[
+          curr_day_str
+        ].filter((cal_event) => {
+          if (
+            cal_event.cal_type === 'recruiting_blocks' &&
+            this.api_options.use_recruiting_blocks
+          ) {
+            return false;
+          }
 
-        const conflicting_events = this.intervs_details_map
-          .get(attendee.user_id)
-          .cal_date_events[curr_day_str].filter((cal_event) => {
-            if (
-              cal_event.cal_type === 'recruiting_blocks' &&
-              this.api_options.use_recruiting_blocks
-            ) {
-              return false;
-            }
-
-            if (
-              cal_event.cal_type === 'free_time' &&
-              this.api_options.include_free_time
-            ) {
-              return false;
-            }
-            return isTimeChunksOverLapps(
-              {
-                startTime: this.getTimeInCandTimeZone(cal_event.start.dateTime),
-                endTime: this.getTimeInCandTimeZone(cal_event.end.dateTime),
-              },
-              {
-                startTime: this.getTimeInCandTimeZone(upd_sess_slot.start_time),
-                endTime: this.getTimeInCandTimeZone(upd_sess_slot.end_time),
-              },
-            );
-          });
+          if (
+            cal_event.cal_type === 'free_time' &&
+            this.api_options.include_free_time
+          ) {
+            return false;
+          }
+          return isTimeChunksOverLapps(
+            {
+              startTime: this.getTimeInCandTimeZone(cal_event.start.dateTime),
+              endTime: this.getTimeInCandTimeZone(cal_event.end.dateTime),
+            },
+            {
+              startTime: this.getTimeInCandTimeZone(upd_sess_slot.start_time),
+              endTime: this.getTimeInCandTimeZone(upd_sess_slot.end_time),
+            },
+          );
+        });
         //conflicting events
         for (const conf_event of conflicting_events) {
           const ev_type = conf_event.cal_type;
