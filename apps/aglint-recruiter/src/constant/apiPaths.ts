@@ -59,6 +59,7 @@ export const API_PATHS = [
   '/api/scheduling/application/debrief-add-users',
   '/api/scheduling/application/fetchfeedbackdetails',
   '/api/scheduling/application/fetchInterviewSessionByRequest',
+  '/api/scheduling/application/fetchfeedbackdetails',
   '/api/scheduling/application/mailthankyou',
   '/api/scheduling/application/openselfscheduling',
   '/api/scheduling/application/schedulewithagent',
@@ -178,5 +179,5 @@ export const API_PATHS = [
   '/api/emails/slack/interviewStart_slack_interviewers',
   '/api/emails/slack/onQualified_slack_trainee',
   '/api/emails/slack/onRequestCancel_slack_interviewersOrganizer',
-  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification'
-] as const
+  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification',
+] as const;
