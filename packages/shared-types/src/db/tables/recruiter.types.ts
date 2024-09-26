@@ -8,6 +8,7 @@ import {
 import { recruiterUpdateSchema } from "../zod-schema.types";
 import type { CustomSchedulingSettings } from "./common.types";
 import type { TableType } from "./index.types";
+import { CustomSchedulingReason } from "../common.types";
 
 export type CustomRecruiter = TableType<
   "recruiter",
@@ -23,12 +24,3 @@ export const CustomRecruiterUpdateSchema = recruiterUpdateSchema.extend({
   scheduling_reason: customSchedulingReasonSchema.optional(),
   socials: socialsTypeSchema.optional(),
 });
-
-type CustomSchedulingReason = {
-  internal: {
-    rescheduling: string[];
-    cancellation: string[];
-    decline: string[];
-  };
-  candidate: { rescheduling: string[]; cancellation: string[] };
-};

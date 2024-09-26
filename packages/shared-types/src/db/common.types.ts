@@ -21,6 +21,15 @@ export type CustomApplicationBadges = {
   jobHopping: number;
 };
 
+export type CustomSchedulingReason = {
+  internal: {
+    rescheduling: string[];
+    cancellation: string[];
+    decline: string[];
+  };
+  candidate: { rescheduling: string[]; cancellation: string[] };
+};
+
 export type CustomJobParamters = Custom<
   Pick<
     Database["public"]["Tables"]["public_jobs"]["Row"],
