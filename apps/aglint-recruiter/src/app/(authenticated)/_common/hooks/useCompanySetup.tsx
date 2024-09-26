@@ -77,21 +77,17 @@ export function useCompanySetup() {
     ? findMissingProperties(recruiter, requiredProperties)
     : [];
 
-  const isLocationsPresent =
-    recruiter?.office_locations.length > 0 ? true : false;
-  const isDepartmentsPresent = recruiter?.departments.length > 0 ? true : false;
+  const isLocationsPresent = !!recruiter?.office_locations.length;
+  const isDepartmentsPresent = !!recruiter?.departments.length;
 
   const isMembersPresent = allMembers?.length > 1 ? true : false;
 
   // checking --- request
 
-  const isCandidatePresent =
-    compandDetails?.candidates.length > 0 ? true : false;
-  const isInterviewPoolPresent =
-    compandDetails?.interview_module.length > 0 ? true : false;
-  const isInterviewPlanPresent =
-    compandDetails?.interview_plan.length > 0 ? true : false;
-  const isJobsPresent = compandDetails?.public_jobs.length > 0 ? true : false;
+  const isCandidatePresent = !!compandDetails?.candidates.length;
+  const isInterviewPoolPresent = !!compandDetails?.interview_module.length;
+  const isInterviewPlanPresent = !!compandDetails?.interview_plan.length;
+  const isJobsPresent = !!compandDetails?.public_jobs.length;
 
   //steps ------
 
@@ -241,7 +237,7 @@ const useFetchcompanySetup = () => {
   const { recruiter_id } = useAuthDetails();
   return useQuery({
     queryKey: ['company_setup'],
-    queryFn: () => fetchCompanySetup(recruiter_id),
+    queryFn: () => fetchCompanySetup(recruiter_id ? recruiter_id : ''),
     enabled: !!recruiter_id,
   });
 };
@@ -259,6 +255,6 @@ const fetchCompanySetup = async (recruiter_id: string) => {
   ).data;
 };
 
-function findMissingProperties(obj, requiredProps) {
+function findMissingProperties(obj: any, requiredProps: string[]) {
   return requiredProps.filter((prop) => obj[prop] === null || obj[prop] === '');
 }
