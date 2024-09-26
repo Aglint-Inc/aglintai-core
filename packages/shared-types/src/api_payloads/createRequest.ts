@@ -1,6 +1,6 @@
 import { createCandidateRequestSchema } from '@aglint/shared-utils';
-import * as v from 'valibot';
+import { z } from 'zod';
 
-export type APICreateCandidateRequest = v.InferInput<
+export type APICreateCandidateRequest = z.infer<
   typeof createCandidateRequestSchema
 >;

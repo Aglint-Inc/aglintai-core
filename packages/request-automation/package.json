@@ -1,4 +1,5 @@
 {
+  "name": "@aglint/request-automation",
   "scripts": {
     "dev": "npx webpack serve --port 3010"
   },

@@ -1,13 +1,13 @@
 import { type PlanCombinationRespType } from '@aglint/shared-types';
-import { type schema_candidate_direct_booking } from '@aglint/shared-types/src/aglintApi/valibotSchema/candidate-self-schedule';
+import { type SchemaCandidateDirectBooking } from '@aglint/shared-types/src/aglintApi/zodSchemas/candidate-self-schedule';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import type * as v from 'valibot';
+import { type z } from 'zod';
 
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 export const fetchDBScheduleDetails = async (
-  parsed_body: v.InferInput<typeof schema_candidate_direct_booking>,
+  parsed_body: z.infer<typeof SchemaCandidateDirectBooking>,
 ) => {
   const [filter_json_data] = supabaseWrap(
     await supabaseAdmin

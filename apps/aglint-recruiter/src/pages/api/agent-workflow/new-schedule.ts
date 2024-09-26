@@ -14,7 +14,6 @@ import {
 } from '@aglint/shared-utils';
 import { apiTargetToEvents } from '@requests/components/RequestProgress/utils/progressMaps';
 import { v4 as uuidv4 } from 'uuid';
-import * as v from 'valibot';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { candidateAvailRequest } from '@/services/api-schedulings/candidateAvailRequest';
@@ -22,7 +21,7 @@ import { candidateAvailReRequest } from '@/services/api-schedulings/candidateAva
 import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfSchedule';
 import { getOrganizerId } from '@/utils/scheduling/getOrganizerId';
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
-const schedule_wf = async (req_body) => {
+const schedule_wf = async (req_body: any) => {
   const {
     parsed_body,
     api_target,
@@ -33,7 +32,9 @@ const schedule_wf = async (req_body) => {
     job_payload,
   } = await fetchUtil(req_body);
   const event_log_id = uuidv4();
-  const eventAction = apiTargetToEvents[parsed_body.target_api];
+  const target_api =
+    parsed_body.target_api as DatabaseEnums['email_slack_types'];
+  const eventAction = apiTargetToEvents[target_api];
 
   const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
     request_id: parsed_body.request_id,
@@ -123,7 +124,7 @@ const handler = createPageApiPostRoute(null, schedule_wf);
 export default handler;
 
 const fetchUtil = async (req_body: any) => {
-  const parsed_body = v.parse(candidate_new_schedule_schema, req_body);
+  const parsed_body = candidate_new_schedule_schema.parse(req_body);
   const [request_rec] = supabaseWrap(
     await supabaseAdmin
       .from('request')

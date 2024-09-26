@@ -12,8 +12,8 @@
     "lint:no-circular": "eslint . --rule \"import/no-cycle: off\" && npm run tslint",
     "autofix": "eslint . --fix",
     "format": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\"",
-    "supabase:dev": "npx supabase gen types --lang=typescript --project-id ecfwsyxpcuzxlxrkhxjz --schema public > ../../packages/shared-types/src/db/schema.types.ts && npm run fix_types",
-    "supabase:local": "npx supabase gen types --lang=typescript --local  --schema public> ../../packages/shared-types/src/db/schema.types.ts && npm run fix_types",
+    "supabase:dev": "npx supabase gen types --lang=typescript --project-id ecfwsyxpcuzxlxrkhxjz --schema public > ../../packages/shared-types/src/db/schema.types.ts && npm run fix_types && npm run generate-zod-schemas",
+    "supabase:local": "npx supabase gen types --lang=typescript --local  --schema public> ../../packages/shared-types/src/db/schema.types.ts && npm run fix_types && npm run generate-zod-schemas",
     "fix_types": "npx tsc script/removeJsonType.ts --skipLibCheck && node script/removeJsonType.js",
     "pull": "git pull origin development --no-rebase",
     "test": "jest",
@@ -22,7 +22,8 @@
     "gen_types": "npx tsc script/genTypesFromDB.ts --skipLibCheck && node script/genTypesFromDB.js",
     "shadcn": "npx shadcn-ui@latest add",
     "v0": "npx v0@latest add",
-    "script_cleanup": "npx tsc script/cleanup.ts --skipLibCheck && node script/cleanup.js"
+    "script_cleanup": "npx tsc script/cleanup.ts --skipLibCheck && node script/cleanup.js",
+    "generate-zod-schemas": "supabase-to-zod --input ../../packages/shared-types/src/db/schema.types.ts --output ../../packages/shared-types/src/db/zod-schema.types.ts"
   },
   "dependencies": {
     "@aglint/shared-utils": "*",
@@ -141,7 +142,6 @@
     "tailwind-merge": "^2.5.2",
     "use-deep-compare-effect": "^1.8.1",
     "uuid": "^10.0.0",
-    "valibot": "^0.41.0",
     "vaul": "^0.9.2",
     "vercel-toast": "^1.8.0",
     "zod": "^3.23.8",

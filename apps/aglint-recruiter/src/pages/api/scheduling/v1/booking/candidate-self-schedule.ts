@@ -4,10 +4,9 @@ import {
   type PlanCombinationRespType,
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
-import { schema_candidate_direct_booking } from '@aglint/shared-types/src/aglintApi/valibotSchema/candidate-self-schedule';
+import { SchemaCandidateDirectBooking } from '@aglint/shared-types/src/aglintApi/zodSchemas/candidate-self-schedule';
 import { ScheduleUtils, scheduling_options_schema } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
-import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { bookCandidateSelectedOption } from '@/services/CandidateScheduleV2/utils/bookingUtils/bookCandidateSelectedOption';
@@ -16,7 +15,7 @@ import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const parsed = v.parse(schema_candidate_direct_booking, req.body);
+    const parsed = SchemaCandidateDirectBooking.parse(req.body);
     const schedule_db_details = await fetchDBScheduleDetails(parsed);
 
     const { filered_selected_options, company } = schedule_db_details;
@@ -27,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       parsed,
     );
 
-    const zod_options = v.parse(scheduling_options_schema, {
+    const zod_options = scheduling_options_schema.parse({
       include_conflicting_slots: {},
     });
 

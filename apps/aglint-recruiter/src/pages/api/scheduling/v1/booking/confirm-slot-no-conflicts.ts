@@ -1,8 +1,7 @@
 /* eslint-disable security/detect-object-injection */
-import { schema_confirm_slot_no_conflict } from '@aglint/shared-types/src/aglintApi/valibotSchema/candidate-self-schedule';
+import { SchemaConfirmSlotNoConflict } from '@aglint/shared-types/src/aglintApi/zodSchemas/candidate-self-schedule';
 import { scheduling_options_schema } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
-import * as v from 'valibot';
 
 import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { confirmSlotNoConflict } from '@/services/CandidateScheduleV2/utils/bookingUtils/confirmSlotNoConflict';
@@ -11,7 +10,7 @@ import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const parsed = v.parse(schema_confirm_slot_no_conflict, req.body);
+    const parsed = SchemaConfirmSlotNoConflict.parse(req.body);
     const schedule_db_details = await fetchDBScheduleDetails({
       cand_tz: parsed.cand_tz,
       filter_id: parsed.filter_id,
@@ -23,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ],
     });
     const { filter_json_data } = schedule_db_details;
-    const zod_options = v.parse(scheduling_options_schema, {
+    const zod_options = scheduling_options_schema.parse({
       include_conflicting_slots: {},
     });
     const selected_date = userTzDayjs(parsed.selected_slot.slot_start_time)
