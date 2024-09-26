@@ -1,7 +1,7 @@
 import {
   InterviewMeetingTypeDb,
   InterviewSession,
-  schedulingSettingType,
+  SchedulingSettingType,
 } from '@aglint/shared-types';
 
 export type EmailAgentPayload = {
@@ -29,7 +29,7 @@ export type EmailAgentPayload = {
     interview_meetings: InterviewMeetingTypeDb[];
     meeting_summary: string;
     job_description: string;
-    comp_scheduling_setting: schedulingSettingType;
+    comp_scheduling_setting: SchedulingSettingType;
     filter_id: string;
     email_subject: string;
     agent_email: string;

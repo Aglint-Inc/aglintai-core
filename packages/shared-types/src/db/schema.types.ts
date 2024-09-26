@@ -1685,16 +1685,16 @@ export type Database = {
       }
       interview_session: {
         Row: {
-          break_duration: number
+          break_duration: number | null
           created_at: string
           id: string
           interview_plan_id: string | null
-          interviewer_cnt: number
+          interviewer_cnt: number | null
           location: string | null
           meeting_id: string | null
           members_meta: Json
           module_id: string | null
-          name: string
+          name: string | null
           parent_session_id: string | null
           recruiter_id: string
           schedule_type: Database["public"]["Enums"]["interview_schedule_type"]
@@ -1703,16 +1703,16 @@ export type Database = {
           session_type: Database["public"]["Enums"]["session_type"]
         }
         Insert: {
-          break_duration?: number
+          break_duration?: number | null
           created_at?: string
           id?: string
           interview_plan_id?: string | null
-          interviewer_cnt?: number
+          interviewer_cnt?: number | null
           location?: string | null
           meeting_id?: string | null
           members_meta?: Json
           module_id?: string | null
-          name?: string
+          name?: string | null
           parent_session_id?: string | null
           recruiter_id: string
           schedule_type?: Database["public"]["Enums"]["interview_schedule_type"]
@@ -1721,16 +1721,16 @@ export type Database = {
           session_type?: Database["public"]["Enums"]["session_type"]
         }
         Update: {
-          break_duration?: number
+          break_duration?: number | null
           created_at?: string
           id?: string
           interview_plan_id?: string | null
-          interviewer_cnt?: number
+          interviewer_cnt?: number | null
           location?: string | null
           meeting_id?: string | null
           members_meta?: Json
           module_id?: string | null
-          name?: string
+          name?: string | null
           parent_session_id?: string | null
           recruiter_id?: string
           schedule_type?: Database["public"]["Enums"]["interview_schedule_type"]
@@ -5247,7 +5247,7 @@ export type Database = {
     }
     Functions: {
       ashbyapplicationsync: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: Json
       }
       ashbyjobreference: {
@@ -5257,11 +5257,11 @@ export type Database = {
         Returns: Json[]
       }
       ashbysync: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: Json
       }
       batchcalcresumejdscore: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: Json[]
       }
       batchscorecron: {
@@ -5271,7 +5271,7 @@ export type Database = {
         Returns: Json
       }
       batchtriggergreenhouse: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: Json
       }
       calc_sim_score3: {
@@ -5349,7 +5349,7 @@ export type Database = {
         }[]
       }
       check_user_auth: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       count_candidates: {
@@ -5361,7 +5361,7 @@ export type Database = {
         }[]
       }
       count_requests: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: {
           date: string
           created_at_count: number
@@ -5431,23 +5431,23 @@ export type Database = {
         Returns: undefined
       }
       emailcroncandidatedb: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: Json
       }
       emailhandlercandidatedb: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: Json[]
       }
       expire_new_applications: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       expire_new_requests: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       fail_processing_applications: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       fetch_interview_data: {
@@ -5774,7 +5774,7 @@ export type Database = {
         }[]
       }
       get_present_scheduled_jobs: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: Json[]
       }
       get_recruiter_name_id: {
@@ -5940,7 +5940,7 @@ export type Database = {
         Returns: Json
       }
       getoutreachemails: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: Json[]
       }
       getrecruiterscreeningdata: {
@@ -5963,7 +5963,7 @@ export type Database = {
         Returns: Json
       }
       greenhouse_sync: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       insert_debrief_session: {
@@ -6064,7 +6064,7 @@ export type Database = {
         }[]
       }
       interviewing_state_active: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       jobs_locations_count: {
@@ -6084,11 +6084,11 @@ export type Database = {
         }[]
       }
       lever_resume_save: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       levercandidatesync: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: Json
       }
       match_documents: {
@@ -6106,7 +6106,7 @@ export type Database = {
         }[]
       }
       move_scheduled_jobs_sourcing_to_active: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       move_to_interview: {
@@ -6134,11 +6134,11 @@ export type Database = {
         }[]
       }
       outreachhandler: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: Json
       }
       overviewgenerate: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: Json
       }
       per_module_candidate_pipeline: {
@@ -6213,11 +6213,11 @@ export type Database = {
         Returns: undefined
       }
       resync_calendar: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       retrybatchcalcresumejdscore: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: Json[]
       }
       run_workflow_action: {
@@ -6227,7 +6227,7 @@ export type Database = {
         Returns: boolean
       }
       schedulercron: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: Json
       }
       scheduling_analytics_completed_interviews: {
@@ -6391,7 +6391,7 @@ export type Database = {
         }[]
       }
       secondretrybatchcalcresumejdscore: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: Json[]
       }
       set_active_rec: {
@@ -6479,7 +6479,7 @@ export type Database = {
         Returns: undefined
       }
       update_meeting_status: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: undefined
       }
       update_or_delete_filter_json: {
@@ -6502,11 +6502,11 @@ export type Database = {
         Returns: undefined
       }
       workflow_action_log_cron: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: boolean
       }
       workflow_action_log_set_fail_cron: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: boolean
       }
     }

@@ -12,10 +12,10 @@ export type CustomRecruiter = TableType<
 >;
 
 type CustomSchedulingReason = {
-  internal?: {
-    rescheduling?: string[];
-    cancellation?: string[];
-    decline?: string[];
+  internal: {
+    rescheduling: string[];
+    cancellation: string[];
+    decline: string[];
   };
-  candidate?: { rescheduling?: string[]; cancellation?: string[] };
-} | null;
+  candidate: { rescheduling: string[]; cancellation: string[] };
+};
