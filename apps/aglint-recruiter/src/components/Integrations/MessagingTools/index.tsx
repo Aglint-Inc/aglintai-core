@@ -1,5 +1,5 @@
-import SlackLogo from '@public/images/integration/slack-logo.svg';
 import capitalize from 'lodash/capitalize';
+import Image from 'next/image';
 
 import { IntegrationCard } from '../components/IntegrationCard';
 import { type MessagingToolsType } from '../types';
@@ -9,12 +9,26 @@ function MessagingTools() {
     {
       name: 'slack' as MessagingToolsType,
       url: 'slack.com',
-      logo: <SlackLogo />,
+      logo: (
+        <Image
+          src={'/images/svg/slack-logo.svg'}
+          alt={'Slack'}
+          width={40}
+          height={40}
+        />
+      ),
     },
     // {
     //   name: 'teams' as MessagingToolsType,
     //   url: 'teams.live.com',
-    //   logo: <TeamsLogo />,
+    //   logo: (
+    //     <Image
+    //       src={'/images/svg/teams-logo.svg'}
+    //       alt={'Teams'}
+    //       width={40}
+    //       height={40}
+    //     />
+    //   ),
     // },
   ];
 
