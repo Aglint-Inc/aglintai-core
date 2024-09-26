@@ -6,46 +6,36 @@ import {
   schema_candidate_req_availabale_slots,
   supabaseWrap,
 } from '@aglint/shared-utils';
-import { type NextApiRequest, type NextApiResponse } from 'next';
+import { type z } from 'zod';
 
+import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    const parsed_body = schema_candidate_req_availabale_slots.parse({
-      ...req.body,
-    });
-    const fetched_details = await fetchDetails(parsed_body);
-    const cand_schedule = new CandidatesSchedulingV2(
-      fetched_details.updated_api_options,
-    );
-    await cand_schedule.fetchDetails({
-      params: {
-        session_ids:
-          fetched_details.avail_req_details.request_session_relation.map(
-            (s) => s.interview_session.id,
-          ),
-        start_date_str: fetched_details.avail_req_details.date_range[0],
-        end_date_str: fetched_details.avail_req_details.date_range[1],
-        company_id: parsed_body.recruiter_id,
-        req_user_tz: parsed_body.candidate_tz,
-      },
-    });
+const candidateAvailReqSlots = async (
+  parsed_body: z.infer<typeof schema_candidate_req_availabale_slots>,
+) => {
+  const fetched_details = await fetchDetails(parsed_body);
+  const cand_schedule = new CandidatesSchedulingV2(
+    fetched_details.updated_api_options,
+  );
+  await cand_schedule.fetchDetails({
+    params: {
+      session_ids:
+        fetched_details.avail_req_details.request_session_relation.map(
+          (s) => s.interview_session.id,
+        ),
+      start_date_str: fetched_details.avail_req_details.date_range[0],
+      end_date_str: fetched_details.avail_req_details.date_range[1],
+      company_id: parsed_body.recruiter_id,
+      req_user_tz: parsed_body.candidate_tz,
+    },
+  });
 
-    const curr_round_sugg_slots =
-      cand_schedule.candavailabilityWithSuggestion();
+  const curr_round_sugg_slots = cand_schedule.candavailabilityWithSuggestion();
 
-    return res.status(200).json(curr_round_sugg_slots);
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(error.status ?? 500)
-      .json({ name: error.name, message: error.message });
-  }
+  return curr_round_sugg_slots;
 };
-
-export default handler;
 
 const fetchDetails = async (payload: CandReqAvailableSlots) => {
   const supabaseAdmin = getSupabaseServer();
@@ -87,3 +77,8 @@ const fetchDetails = async (payload: CandReqAvailableSlots) => {
     curr_round_duration,
   };
 };
+
+export default createPageApiPostRoute(
+  schema_candidate_req_availabale_slots,
+  candidateAvailReqSlots,
+);

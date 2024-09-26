@@ -1,6 +1,8 @@
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from "@/utils/supabase/supabaseAdmin";
 
 export const getFilterId = async (request_id) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const {
     data: [filter_json],
     error,
@@ -17,6 +19,8 @@ export const getFilterId = async (request_id) => {
 };
 
 export const sendSelfScheduleReminder = async (filter_id, target_api) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const workFlow_data_id = (
     await supabaseAdmin
       .from('workflow_action_logs')
