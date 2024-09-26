@@ -11,8 +11,8 @@ import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { useAllIntegrations } from '@/authenticated/hooks';
+import { useTenant } from '@/company/hooks';
 import { Loader } from '@/components/Common/Loader';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { STATE_ASHBY_DIALOG } from '@/jobs/constants';
 import {
@@ -30,7 +30,7 @@ import { type JobAshby } from './types';
 import { createJobObject, fetchAllJobs } from './utils';
 
 export function AshbyModalComp() {
-  const { recruiter, setRecruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { setIntegrations, resetIntegrations } = useIntegrationActions();
   const integration = useIntegrationStore((state) => state.integrations);
   const router = useRouterPro();
@@ -142,7 +142,6 @@ export function AshbyModalComp() {
         });
 
         if (responseRec.status === 200 && responseRec.data[0]?.ashby_key) {
-          setRecruiter(responseRec.data[0]);
           setPostings(response.data?.results);
           setInitialFetch(false);
           posthog.capture('Asbhy Data Fetched');

@@ -10,9 +10,9 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useAllIntegrations } from '@/authenticated/hooks';
 import axios from '@/client/axios';
+import { useTenant } from '@/company/hooks';
 import UIDialog from '@/components/Common/UIDialog';
 import UITypography from '@/components/Common/UITypography';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { STATE_LEVER_DIALOG } from '@/jobs/constants';
 import {
@@ -30,7 +30,7 @@ import { type LeverJob } from './types/job';
 import { fetchAllJobs } from './utils';
 
 export default function LeverModalComp() {
-  const { recruiter, setRecruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { setIntegrations, resetIntegrations } = useIntegrationActions();
   const integration = useIntegrationStore((state) => state.integrations);
   const router = useRouterPro();
@@ -135,7 +135,6 @@ export default function LeverModalComp() {
         });
 
         if (responseRec.status === 200 && responseRec.data[0]?.lever_key) {
-          setRecruiter(responseRec.data[0]);
           setLeverPostings(response.data.data);
           setInitialFetch(false);
           setTimeout(() => {
