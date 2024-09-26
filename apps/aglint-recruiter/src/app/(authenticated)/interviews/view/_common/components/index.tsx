@@ -118,11 +118,13 @@ function SchedulingViewComp() {
           </div>
         </div>
 
-        <div className='flex justify-between space-x-12'>
-          <div className='w-8/12 space-y-6'>
-            <div className='flex flex-col space-y-2 pt-4'>
+        <div className='flex justify-between'>
+          <div className='w-full'>
+            <div className='flex flex-col gap-2 py-2 w-8/12 pr-3'>
               <Banners />
             </div>
+            <div className='flex gap-4 w-full'>
+            <div className='w-8/12 space-y-6'>
             {data?.schedule_data ? (
               <ScheduleDetailsTabs />
             ) : (
@@ -130,12 +132,10 @@ function SchedulingViewComp() {
                 <UIAlert title={'Meeting Not Found'} iconName={'Calendar'} />
               </div>
             )}
-          </div>
-
-          {checkPermissions
+            </div>
+            {checkPermissions
             ? checkPermissions(['scheduling_actions']) && (
-                <div className='w-4/12'>
-                  <div className='p-11'></div>
+                <div className='w-4/12 pt-11'>
                   {/* <div className='flex flex-col space-y-2'>
                 <p className='font-medium'>Job</p>
 
@@ -160,6 +160,11 @@ function SchedulingViewComp() {
                 </div>
               )
             : null}
+            </div>
+            
+          </div>
+
+      
         </div>
       </div>
     </>
