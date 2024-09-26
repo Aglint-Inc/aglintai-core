@@ -12,11 +12,10 @@ import type { ProcedureBuilder } from '@trpc/server/unstable-core-do-not-import'
 import superjson from 'superjson';
 import { type TypeOf, ZodError, type ZodSchema } from 'zod';
 
-import { getDecryptKey } from '@/api/sync/greenhouse/util';
-
 import { createPrivateClient, createPublicClient } from '../db';
 import { UNAUTHENTICATED, UNAUTHORIZED } from '../enums';
 import { authorize } from '../utils';
+import { getDecryptKey } from './routers/ats/greenhouse/util';
 
 /**
  * 1. CONTEXT
@@ -157,7 +156,7 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
       ...ctx,
       ats,
       greenhouse_metadata,
-      decryptKey,
+      decryptKey: decryptKey!,
     },
   });
 });

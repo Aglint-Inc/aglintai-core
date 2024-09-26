@@ -94,9 +94,11 @@ export async function getDepartment(
       .select('id, remote_id')
       .eq('recruiter_id', recruiter_id)
       .throwOnError()
-  ).data.reduce(
+  ).data!.reduce(
     (acc, curr) => {
-      acc[curr.remote_id] = curr.id;
+      if (curr.remote_id) {
+        acc[curr.remote_id] = curr.id;
+      }
       return acc;
     },
     {} as { [key: string]: number },

@@ -1,9 +1,10 @@
 import type { ZodTypeToSchema } from '@aglint/shared-types';
 import { z } from 'zod';
 
-import { syncGreenhouseApplication } from '@/api/sync/greenhouse/applications/process';
 import { type ATSProcedure, atsProcedure } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
+
+import { syncGreenhouseApplication } from './process';
 
 type Params = Pick<
   Parameters<typeof syncGreenhouseApplication>[0],
@@ -27,7 +28,7 @@ export const greenhouseJobMutation = async ({
       .eq('id', input.job_id)
       .single()
       .throwOnError()
-  ).data;
+  ).data!;
   return await syncGreenhouseApplication({
     decryptKey: ctx.decryptKey,
     job_id: input.job_id,

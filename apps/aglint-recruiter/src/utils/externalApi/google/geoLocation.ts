@@ -22,7 +22,7 @@ export async function searchExactLocation(
   if (!temp_res.length) {
     throw new Error('no Match found!');
   }
-  let timeZone: string | null = null;
+  let timeZone: string = '';
   if (options?.timeZone) {
     timeZone = (
       await getTimeZoneOfGeo(
@@ -44,9 +44,9 @@ export async function searchExactLocation(
 function extractMetaFromGeoLocation(
   addressObject: GoogleLocationAPI['results'][number],
 ) {
-  let city = null,
-    state = null,
-    country = null;
+  let city: string | null = null,
+    state: string | null = null,
+    country: string | null = null;
 
   for (const component of addressObject.address_components) {
     const types = component.types;

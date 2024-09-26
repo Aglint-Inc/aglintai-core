@@ -5,7 +5,7 @@ import { type SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
 import { syncJobApplications } from '../applications/process';
 import { getOfficeLocations } from '../office_locations/process';
-import { type GreenhouseJobStagesAPI } from '../types';
+import type { GreenhouseJobStagesAPI } from '../types';
 import {
   chunkArray,
   getGreenhouseJobPlan,
@@ -50,7 +50,7 @@ export async function mapSaveJobs(
       .upsert(temp_public_jobs, { onConflict: 'remote_id' })
       .select('id,remote_id, remote_sync_time')
       .throwOnError()
-  ).data;
+  ).data!;
   await setLastSync(supabaseAdmin, recruiter_id, {
     jobs: new Date().toISOString(),
   });
@@ -69,7 +69,7 @@ export async function mapSaveJobs(
                   job_id: job.id,
                   recruiter_id,
                   remote_id: Number(job.remote_id),
-                  last_sync: job.remote_sync_time,
+                  last_sync: job.remote_sync_time || undefined,
                 },
                 key,
               ),
@@ -114,7 +114,7 @@ function createJobObject(
         skills: [],
         title: post.title,
       },
-      department_id: null,
+      department_id: undefined,
     },
     location_id,
     job_title: post.title,
@@ -153,7 +153,7 @@ export async function syncGreenhouseJobPlan(
     ats_job_id: number;
     public_job_id: string;
   },
-  key?: string,
+  key: string,
 ) {
   const plans = await getGreenhouseJobPlan(key, prop.ats_job_id);
   return mapSaveInterviewPlans(
@@ -188,7 +188,7 @@ async function mapSaveInterviewPlans(
       .insert(temp_plans)
       .select('id, plan_order')
       .throwOnError()
-  ).data;
+  ).data!;
   const temp_sessions: DatabaseTableInsert['interview_session'][] = plans
     .map((plan) => {
       return data[plan.plan_order - 1]?.interviews.map((session, index) => {

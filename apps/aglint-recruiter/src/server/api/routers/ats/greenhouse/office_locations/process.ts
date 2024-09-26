@@ -110,11 +110,11 @@ export async function saveOfficeLocations(
       name: office_location.name,
       line1: office_location.location.name,
       recruiter_id,
-      city: geoLocation.city,
-      country: geoLocation.country,
+      city: geoLocation.city || '',
+      country: geoLocation.country || '',
       is_headquarter: false,
       timezone: geoLocation.timeZone,
-      region: geoLocation.state,
+      region: geoLocation.state || '',
       zipcode: '',
       remote_id: String(office_location.id),
     });
@@ -138,9 +138,11 @@ export async function getOfficeLocations(
       .select('id,remote_id')
       .eq('recruiter_id', recruiter_id)
       .throwOnError()
-  ).data.reduce(
+  ).data!.reduce(
     (acc, curr) => {
-      acc[curr.remote_id] = curr.id;
+      if (curr.remote_id) {
+        acc[curr.remote_id] = curr.id;
+      }
       return acc;
     },
     {} as { [key: string]: number },
