@@ -6,70 +6,62 @@ import {
 } from '@aglint/shared-types';
 import { SchemaCandidateDirectBooking } from '@aglint/shared-types/src/aglintApi/zodSchemas/candidate-self-schedule';
 import { ScheduleUtils, scheduling_options_schema } from '@aglint/shared-utils';
-import { type NextApiRequest, type NextApiResponse } from 'next';
+import { type z } from 'zod';
 
+import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { bookCandidateSelectedOption } from '@/services/CandidateScheduleV2/utils/bookingUtils/bookCandidateSelectedOption';
 import { fetchDBScheduleDetails } from '@/services/CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchDBScheduleDetails';
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    const parsed = SchemaCandidateDirectBooking.parse(req.body);
-    const schedule_db_details = await fetchDBScheduleDetails(parsed);
+const candidateSelfSchedule = async (
+  parsed: z.infer<typeof SchemaCandidateDirectBooking>,
+) => {
+  const schedule_db_details = await fetchDBScheduleDetails(parsed);
 
-    const { filered_selected_options, company } = schedule_db_details;
-    const interviewer_selected_options = filered_selected_options;
+  const { filered_selected_options, company } = schedule_db_details;
+  const interviewer_selected_options = filered_selected_options;
 
-    const cand_filtered_plans: PlanCombinationRespType[] = getCandFilteredSlots(
-      interviewer_selected_options,
-      parsed,
-    );
+  const cand_filtered_plans: PlanCombinationRespType[] = getCandFilteredSlots(
+    interviewer_selected_options,
+    parsed,
+  );
 
-    const zod_options = scheduling_options_schema.parse({
-      include_conflicting_slots: {},
-    });
+  const zod_options = scheduling_options_schema.parse({
+    include_conflicting_slots: {},
+  });
 
-    zod_options.include_conflicting_slots.show_conflicts_events = true;
-    zod_options.include_conflicting_slots.show_soft_conflicts = true;
-    zod_options.include_conflicting_slots.out_of_working_hrs = true;
+  zod_options.include_conflicting_slots.show_conflicts_events = true;
+  zod_options.include_conflicting_slots.show_soft_conflicts = true;
+  zod_options.include_conflicting_slots.out_of_working_hrs = true;
 
-    const cand_schedule = new CandidatesSchedulingV2(zod_options);
+  const cand_schedule = new CandidatesSchedulingV2(zod_options);
 
-    await cand_schedule.fetchDetails({
-      params: {
-        req_user_tz: parsed.cand_tz,
-        start_date_str: schedule_db_details.start_date_str,
-        end_date_str: schedule_db_details.end_date_str,
-        company_id: company.id,
-        session_ids: interviewer_selected_options[0].sessions.map(
-          (s) => s.session_id,
-        ),
-      },
-    });
+  await cand_schedule.fetchDetails({
+    params: {
+      req_user_tz: parsed.cand_tz,
+      start_date_str: schedule_db_details.start_date_str,
+      end_date_str: schedule_db_details.end_date_str,
+      company_id: company.id,
+      session_ids: interviewer_selected_options[0].sessions.map(
+        (s) => s.session_id,
+      ),
+    },
+  });
 
-    const verified_plans =
-      cand_schedule.verifyIntSelectedSlots(cand_filtered_plans);
-    if (verified_plans.length === 0) {
-      throw new Error('Requested plan does not exist');
-    }
-
-    await bookCandidateSelectedOption(
-      parsed,
-      cand_schedule,
-      verified_plans[0],
-      schedule_db_details,
-    );
-
-    return res.status(200).json('ok');
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(error.status ?? 500)
-      .json({ name: error.name, message: error.message });
+  const verified_plans =
+    cand_schedule.verifyIntSelectedSlots(cand_filtered_plans);
+  if (verified_plans.length === 0) {
+    throw new Error('Requested plan does not exist');
   }
+
+  await bookCandidateSelectedOption(
+    parsed,
+    cand_schedule,
+    verified_plans[0],
+    schedule_db_details,
+  );
 };
-export default handler;
 
 const getCandFilteredSlots = (
   interviewer_selected_options: PlanCombinationRespType[],
@@ -125,3 +117,8 @@ const getCandFilteredSlots = (
 
   return cand_filtered_plans;
 };
+
+export default createPageApiPostRoute(
+  SchemaCandidateDirectBooking,
+  candidateSelfSchedule,
+);
