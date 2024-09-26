@@ -1,6 +1,5 @@
 import { type APIConfirmRecruiterSelectedOption } from '@aglint/shared-types';
 import { scheduling_options_schema, supabaseWrap } from '@aglint/shared-utils';
-import * as v from 'valibot';
 
 import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 export const fetchCandAvailForBooking = async (
@@ -17,7 +16,7 @@ export const fetchCandAvailForBooking = async (
   if (!avail_details) {
     throw new Error('Availabiluty does not exist');
   }
-  const zod_options = v.parse(scheduling_options_schema, {
+  const zod_options = scheduling_options_schema.parse({
     include_conflicting_slots: {
       day_off: true,
       day_passed: true,

@@ -9,7 +9,6 @@ import {
   supabaseWrap,
 } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
-import * as v from 'valibot';
 
 import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
 import type { CalEventAttendeesAuthDetails } from '@/utils/event_book/types';
@@ -17,7 +16,7 @@ import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const parsed_body = v.parse(schema_update_meeting_ints, {
+    const parsed_body = schema_update_meeting_ints.parse({
       ...req.body,
     });
     const {
