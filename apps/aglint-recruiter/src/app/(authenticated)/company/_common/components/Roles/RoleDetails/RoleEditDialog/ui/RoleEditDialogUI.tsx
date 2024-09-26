@@ -5,16 +5,16 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { AlertCircle, ChevronDown } from 'lucide-react';
 import { type Dispatch, type SetStateAction } from 'react';
 
+import type { useTenantMembers } from '@/company/hooks';
 import UITextField from '@/components/Common/UITextField';
-import { type useAllMembers } from '@/queries/members';
 
 type props = {
-  selectedMember: ReturnType<typeof useAllMembers>['members'][number];
+  selectedMember: ReturnType<typeof useTenantMembers>['members'][number];
   search: string;
   setSearch: Dispatch<SetStateAction<string>>;
-  filteredMember: ReturnType<typeof useAllMembers>['members'];
+  filteredMember: ReturnType<typeof useTenantMembers>['members'];
   setSelectedMember: Dispatch<
-    SetStateAction<ReturnType<typeof useAllMembers>['members'][number]>
+    SetStateAction<ReturnType<typeof useTenantMembers>['members'][number]>
   >;
   role;
 };

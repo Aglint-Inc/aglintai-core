@@ -1,5 +1,6 @@
 import { createTRPCRouter } from '../../trpc';
 import { departmentsUsage } from './departmentsUsage';
+import { members } from './members';
 import { officeLocations } from './officeLocations';
 import { read } from './read';
 import { roles } from './roles';
@@ -11,4 +12,5 @@ export const tenant = createTRPCRouter({
   departmentsUsage,
   updateTenant,
   officeLocations,
+  members,
 });
