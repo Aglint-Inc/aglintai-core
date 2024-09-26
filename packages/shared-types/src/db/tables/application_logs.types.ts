@@ -38,7 +38,7 @@ export type CandidateResponseSelfSchedule = {
   session_ids: string[];
 };
 
-export type CustomMeta = DatabaseTable["interview_session"] & {
+type CustomMeta = DatabaseTable["interview_session"] & {
   interview_meeting: Pick<
     DatabaseTable["interview_meeting"],
     | "id"
