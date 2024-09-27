@@ -1,6 +1,4 @@
 'use client';
-import { Clock, Hourglass } from 'lucide-react';
-
 import UITypography from '@/components/Common/UITypography';
 
 type MeetingDetails = {
@@ -61,11 +59,11 @@ export function NewScheduleDetail({
   textInterviewer = 'Interviewers',
 }: MeetingDetails) {
   return (
-    <div className='flex w-full flex-col gap-6 rounded-lg border bg-white p-4'>
+    <div className='flex w-full flex-col gap-6 rounded-lg border bg-white p-6'>
       <div className='flex items-start justify-between'>
-        <div className='flex items-center gap-6'>
+        <div className='flex items-start gap-6'>
           {isDateCardVisible && (
-            <div className='flex h-24 w-24 flex-col gap-1 items-center justify-center rounded-md bg-neutral-100'>
+            <div className='flex h-20 w-20 flex-col items-center justify-center rounded-md bg-neutral-100'>
               <UITypography
                 variant='p'
                 type='small'
@@ -76,7 +74,7 @@ export function NewScheduleDetail({
               <UITypography
                 variant='p'
                 type='large'
-                className='text-2xl font-medium text-neutral-800'
+                className='text-2xl font-bold text-neutral-800'
               >
                 {textDate}
               </UITypography>
@@ -91,11 +89,11 @@ export function NewScheduleDetail({
           )}
           <div className='flex flex-col gap-2'>
             <div className='flex items-center gap-2'>
-              <div className='hidden'>{slotPanelIcon}</div>
+              <div>{slotPanelIcon}</div>
               <UITypography
                 variant='h2'
                 type='medium'
-                className='text-xl font-medium'
+                className='text-xl font-semibold'
               >
                 {textPanelName}
               </UITypography>
@@ -104,36 +102,34 @@ export function NewScheduleDetail({
             <div className='flex items-center gap-4 text-sm text-neutral-600'>
               {isTimingVisible && (
                 <div className='flex items-center gap-1'>
-                  <div className='hidden'>{slotMeetingIcon}</div>
-                  <Clock className='w-4 h-4'/>
+                  <div>{slotMeetingIcon}</div>
                   <UITypography variant='p' type='small'>
                     {textTime}
                   </UITypography>
                 </div>
               )}
-              <UITypography variant='p' type='small' className='flex items-center gap-2 text-sm'>
-                <Hourglass className='w-4 h-4'/>
+              <UITypography variant='p' type='small'>
                 {textDuration}
               </UITypography>
             </div>
-            <div className='flex items-center gap-2 text-sm' style={{marginTop:'-10px'}} >
+            <div className='flex items-center gap-2 text-sm'>
               <UITypography
                 variant='p'
                 type='small'
-                className='text-sm font-medium'
+                className='text-neutral-600'
               >
-                {textMeetingPlatform} :
+                {textMeetingPlatform}
               </UITypography>
               {isMeetingLinkVisible && (
                 <div className='flex items-center gap-1'>
                   <UITypography
                     variant='p'
                     type='small'
-                    className='text-primary hidden'
+                    className='text-primary'
                   >
                     {textMeetingLink}
                   </UITypography>
-                  <div> {slotJoinMeeting}</div>
+                  <div>{slotJoinMeeting}</div>
                 </div>
               )}
             </div>
@@ -142,11 +138,11 @@ export function NewScheduleDetail({
       </div>
       <div className='flex h-full w-full items-stretch justify-start gap-12'>
         <div className='flex h-full w-2/3 flex-col gap-6'>
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-4'>
             <UITypography
               variant='h3'
               type='medium'
-              className='text-sm font-normal text-muted-foreground'
+              className='text-lg font-semibold'
             >
               Candidate
             </UITypography>
@@ -154,18 +150,18 @@ export function NewScheduleDetail({
             {isCandidateButtonVisible && <div>{slotCandidateButton}</div>}
           </div>
           <div className='flex flex-col gap-4'>
-            <div className='flex items-center gap-1'>
+            <div className='flex items-center gap-2'>
               <UITypography
                 variant='h3'
                 type='medium'
-                className='text-sm font-normal text-muted-foreground'
+                className='text-lg font-semibold'
               >
                 {textInterviewer}
               </UITypography>
               <UITypography
                 variant='p'
                 type='small'
-                className='text-sm font-normal text-muted-foreground'
+                className='text-sm text-neutral-600'
               >
                 {textInterviewerCount}
               </UITypography>
@@ -175,21 +171,21 @@ export function NewScheduleDetail({
           </div>
         </div>
         <div className='flex w-1/3 flex-col gap-6'>
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-4'>
             <UITypography
               variant='h3'
               type='medium'
-              className='text-sm font-normal text-muted-foreground'
+              className='text-lg font-semibold'
             >
               Interview Type
             </UITypography>
             <div>{slotInterviewTypeButton}</div>
           </div>
-          <div className='flex flex-col gap-2'>
+          <div className='flex flex-col gap-4'>
             <UITypography
               variant='h3'
               type='medium'
-              className='text-sm font-normal text-muted-foreground'
+              className='text-lg font-semibold'
             >
               Organizer & Hiring Team
             </UITypography>

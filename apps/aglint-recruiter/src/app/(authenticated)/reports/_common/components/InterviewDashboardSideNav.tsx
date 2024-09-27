@@ -1,74 +1,55 @@
-import { Button } from '@components/ui/button';
-import { cn } from '@lib/utils';
-import {
-  Briefcase,
-  // GraduationCap,
-  List,
-  PieChart,
-  Trophy,
-  // UserPlus,
-} from 'lucide-react';
-import React from 'react';
-
+'use client';
+import UITabs from '@/components/Common/UITabs';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
 export default function Component() {
   const { queryParams, setQueryParams } = useRouterPro<{ tab: string }>();
   const navItems = [
     {
-      title: 'Interview Metrics',
-      icon: PieChart,
-      value: 'interviewMetrics',
+      name: 'Interview Metrics',
+      icon: 'ChartPie',
+      id: 'interviewMetrics',
     },
     {
-      title: 'Interviewer Leaderboard',
-      icon: Trophy,
-      value: 'interviewerLeaderboard',
+      name: 'Interviewer Leaderboard',
+      icon: 'Trophy',
+      id: 'interviewerLeaderboard',
+    },
+
+    {
+      name: 'Request Metrics',
+      icon: 'List',
+      id: 'requestMetrics',
+    },
+    {
+      name: 'Job Metrics',
+      icon: 'Briefcase',
+      id: 'jobMetrics',
     },
     // {
-    //   title: 'Training Metrics',
+    //   name: 'Training Metrics',
     //   icon: GraduationCap,
-    //   value: 'trainingMetrics',
+    //   id: 'trainingMetrics',
     // },
     // {
-    //   title: 'Candidate Metrics',
+    //   name: 'Candidate Metrics',
     //   icon: UserPlus,
-    //   value: 'candidateMetrics',
+    //   id: 'candidateMetrics',
     // },
-    {
-      title: 'Request Metrics',
-      icon: List,
-      value: 'requestMetrics',
-    },
-    {
-      title: 'Job Metrics',
-      icon: Briefcase,
-      value: 'jobMetrics',
-    },
     // {
-    //   title: "Interview Consistency",
+    //   name: "Interview Consistency",
     //   icon: ClipboardCheck,
-    //   value: "interviewConsistency"
+    //   id: "interviewConsistency"
     // },
   ];
   return (
     <div className='space-y-1'>
-      {navItems.map((item) => {
-        return (
-          <Button
-            key={item.value}
-            variant={queryParams.tab === item.value ? 'secondary' : 'ghost'}
-            onClick={() => setQueryParams({ tab: item.value })}
-            className={cn(
-              'w-full justify-start',
-              queryParams.tab === item.value ? 'bg-muted hover:bg-muted' : '',
-            )}
-          >
-            <item.icon className='mr-2 h-4 w-4' />
-            {item.title}
-          </Button>
-        );
-      })}
+      <UITabs
+        vertical
+        tabs={navItems}
+        defaultValue={queryParams.tab || navItems[0].id}
+        onClick={(value) => setQueryParams({ tab: value })}
+      />
     </div>
   );
 }

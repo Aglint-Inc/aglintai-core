@@ -1,8 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { RotateCcw, RotateCw } from 'lucide-react';
 import React from 'react';
-
-import ReverseShadowIcon from '@/authenticated/components/ReverseShadowIcon';
-import ShadowIcon from '@/authenticated/components/ShadowIcon';
 
 function InterviewerTrainingTypeIcon({
   type,
@@ -11,8 +9,8 @@ function InterviewerTrainingTypeIcon({
 }) {
   return (
     <>
-      {type == 'reverse_shadow' && <ReverseShadowIcon/>}
-      {type == 'shadow' && <ShadowIcon/>}
+      {type == 'reverse_shadow' && <RotateCcw />}
+      {type == 'shadow' && <RotateCw />}
     </>
   );
 }

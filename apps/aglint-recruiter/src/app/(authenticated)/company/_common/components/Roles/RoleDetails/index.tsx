@@ -6,8 +6,8 @@ import { Switch } from '@components/ui/switch';
 import { CirclePlus, Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { SectionCard } from '@/authenticated/components/SectionCard';
 import { type useRoleAndPermissionsHook } from '@/company/hooks/useRoleAndPermissionsHook';
+import UISectionCard from '@/components/Common/UISectionCard';
 import { allPermissions } from '@/constant/role_and_permissions';
 import { useRolesAndPermissions as useRolesAndPermissionsContext } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSearchQuery } from '@/hooks/useSearchQuery';
@@ -105,7 +105,7 @@ function RoleDetails({
           <div className='space-y-6'>
             {Object.entries(roleDetails || {}).map(
               ([module, { description, permissions }]) => (
-                <SectionCard
+                <UISectionCard
                   key={module}
                   title={capitalizeFirstLetter(module)}
                   description={description.replace(
@@ -151,7 +151,7 @@ function RoleDetails({
                       </div>
                     );
                   })}
-                </SectionCard>
+                </UISectionCard>
               ),
             )}
           </div>

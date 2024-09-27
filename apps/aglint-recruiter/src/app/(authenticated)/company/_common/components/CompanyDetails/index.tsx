@@ -12,9 +12,11 @@ const CompanyInfoComp = () => {
             Update the settings here changes will be saved automatically.
           </p>
         </div>
-        <BasicInfo />
-        <Location />
-        <Departments />
+        <div className='flex flex-col gap-5'>
+          <BasicInfo />
+          <Location />
+          <Departments />
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { ScrollArea } from '@components/ui/scroll-area';
 import { FileX } from 'lucide-react';
 
-import { SectionCard } from '@/authenticated/components/SectionCard';
+import UISectionCard from '@/components/Common/UISectionCard';
 
 import { type InterviewerDetailType } from '../../hooks/useInterviewer';
 import { List } from './ui/List';
@@ -13,7 +13,7 @@ export const Qualifications = ({
 }) => {
   return (
     <>
-      <SectionCard title='Qualifications'>
+      <UISectionCard title='Qualifications'>
         <ScrollArea className='h-[360px] w-full'>
           <div className='space-y-4'>
             {interview_types?.length ? (
@@ -31,7 +31,7 @@ export const Qualifications = ({
             )}
           </div>
         </ScrollArea>
-      </SectionCard>
+      </UISectionCard>
     </>
   );
 };

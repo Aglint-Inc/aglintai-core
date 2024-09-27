@@ -15,6 +15,7 @@ import {
   Circle,
   Clock,
   Edit,
+  Loader2,
   Mail,
   MessageSquare,
   Plus,
@@ -25,7 +26,6 @@ import {
 import { useMemo, useState } from 'react';
 
 import axios from '@/client/axios';
-import { Loader } from '@/components/Common/Loader';
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import UIDialog from '@/components/Common/UIDialog';
@@ -213,8 +213,8 @@ const FeedbackWindow = () => {
     <>
       <ShowCode>
         <ShowCode.When isTrue={isLoading}>
-          <div className='flex items-center justify-center h-60'>
-            <Loader/>
+          <div className='flex items-center justify-center'>
+            <Loader2 className='h-8 w-8 animate-spin text-primary' />
           </div>
         </ShowCode.When>
         <ShowCode.When
@@ -340,7 +340,7 @@ const AdminFeedback = ({
   const router = useRouterPro();
   return (
     <>
-      <div className='flex flex-col space-y-2'>
+      <div className='flex flex-col space-y-2 p-2'>
         {router.pathName !== '/interviews/view'
           ? Object.keys(sessions)
               .map((key) => {
@@ -455,7 +455,7 @@ const InterviewerFeedback = ({
   const router = useRouterPro();
   return (
     <>
-      <div className='flex flex-col space-y-2 p-0'>
+      <div className='flex flex-col space-y-2 p-2'>
         {router.pathName !== '/interviews/view'
           ? Object.keys(sessions)
               .map((key) => {
@@ -608,18 +608,18 @@ function FeedbackCardDetails({
 }) {
   return (
     <Card className='mb-4 w-full'>
-      <CardHeader className='flex flex-row items-center gap-3 p-3'>
-        <Avatar className='h-12 w-12 rounded-sm'>
+      <CardHeader className='flex flex-row items-center space-x-4 p-4'>
+        <Avatar className='h-12 w-12'>
           <AvatarImage
             src={int.profile_image}
             alt={getFullName(int.first_name, int.last_name)}
           />
-          <AvatarFallback className='h-12 w-12 rounded-sm'>
+          <AvatarFallback>
             {getFullName(int.first_name, int.last_name).charAt(0)}
           </AvatarFallback>
         </Avatar>
         <div className='flex-grow'>
-          <h3 className='text-md font-medium'>
+          <h3 className='text-lg font-semibold'>
             {getFullName(int.first_name, int.last_name)}
           </h3>
           <p className='text-sm text-muted-foreground'>{int.position}</p>
@@ -726,7 +726,7 @@ function FeedbackCardDetails({
           </div>
         )}
       </CardHeader>
-      <CardContent className='p-3'>
+      <CardContent className='p-4'>
         <div className='space-y-2.5'>
           {int.feedback?.recommendation ? (
             <>
