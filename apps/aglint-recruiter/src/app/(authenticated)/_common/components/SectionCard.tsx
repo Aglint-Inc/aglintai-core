@@ -41,7 +41,7 @@ export const SectionCard: React.FC<SectionCardProps> = ({
           <div>
             <UITypography className='text-lg font-medium'>{title}</UITypography>
             {description && (
-              <UITypography className='text-sm font-normal text-muted-foreground'>
+              <UITypography className='text-base font-normal text-muted-foreground'>
                 {description}
               </UITypography>
             )}
