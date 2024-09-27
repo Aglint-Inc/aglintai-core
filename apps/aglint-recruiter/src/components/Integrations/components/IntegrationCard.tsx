@@ -79,7 +79,11 @@ export function IntegrationCard({
       </CardContent>
       <CardFooter className='flex justify-between'>
         {secondaryText === 'Learn How' ? (
-          <Link href={learnHowLink} target='_blank' rel='noopener noreferrer'>
+          <Link
+            href={learnHowLink || ''}
+            target='_blank'
+            rel='noopener noreferrer'
+          >
             <Button variant='link'>
               Learn How
               <ExternalLink className='ml-1 h-4 w-4' />

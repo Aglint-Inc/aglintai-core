@@ -1,52 +1,43 @@
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
-dayjs.extend(utc);
-dayjs.extend(timezone);
 import { type ApiCancelScheduledInterview } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
-import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { session_ids } = req.body as ApiCancelScheduledInterview;
-  if (!session_ids) return res.status(400).send('missing fields');
-  try {
-    const meeting_ids = supabaseWrap(
-      await supabaseAdmin
-        .from('interview_session')
-        .select('meeting_id')
-        .in('id', session_ids),
+const cancelInterviewScheduling = async (
+  req_body: ApiCancelScheduledInterview,
+) => {
+  const { session_ids } = req_body;
+  const supabaseAdmin = getSupabaseServer();
+
+  const meeting_ids = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_session')
+      .select('meeting_id')
+      .in('id', session_ids),
+  );
+  const meetings = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_meeting')
+      .update({
+        status: 'cancelled',
+      })
+      .in(
+        'id',
+        meeting_ids.map((i) => i.meeting_id),
+      )
+      .select(),
+  );
+
+  if (meetings.length === 0) return 'no meetings found';
+  const promises = meetings.map(async (meeting) => {
+    await axios.post(
+      `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/cancel_calender_event`,
+      { calender_event: meeting.meeting_json },
     );
-    const meetings = supabaseWrap(
-      await supabaseAdmin
-        .from('interview_meeting')
-        .update({
-          status: 'cancelled',
-        })
-        .in(
-          'id',
-          meeting_ids.map((i) => i.meeting_id),
-        )
-        .select(),
-    );
-
-    if (meetings.length === 0) return res.status(200).send('no meetings found');
-    const promises = meetings.map(async (meeting) => {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/cancel_calender_event`,
-        { calender_event: meeting.meeting_json },
-      );
-    });
-    await Promise.all(promises);
-
-    return res.status(200).send('ok');
-  } catch (error) {
-    console.error(error.message);
-    return res.status(500).send(error.message);
-  }
+  });
+  await Promise.all(promises);
 };
 
-export default handler;
+export default createPageApiPostRoute(null, cancelInterviewScheduling);

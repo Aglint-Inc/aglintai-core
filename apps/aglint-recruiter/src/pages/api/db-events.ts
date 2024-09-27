@@ -1,7 +1,5 @@
-/* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
-import { type NextApiRequest, type NextApiResponse } from 'next';
-
+import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { db_event_triggers } from '@/services/event-triggers/eventTriggers';
 
 type BodyParams = {
@@ -11,26 +9,6 @@ type BodyParams = {
   operation_type: 'UPDATE' | 'INSERT' | 'DELETE';
 };
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const payload = req.body as BodyParams;
-  const trigger = `${payload.operation_type}_${payload.table_name}`;
-  console.log(`executing `, trigger);
-  try {
-    const trigger_to_exec = db_event_triggers[trigger];
-    if (trigger_to_exec) {
-      await trigger_to_exec({ ...payload });
-      console.log(`executed `, trigger);
-    } else {
-      console.error('Missing', payload.operation_type, payload.table_name);
-    }
-    return res.status(200).send('OK');
-  } catch (err) {
-    console.error(`Failed ${trigger}`, err.message);
-    res.status(500).send(err.message);
-  }
-};
-export default handler;
-
 export const config = {
   api: {
     bodyParser: {
@@ -38,3 +16,18 @@ export const config = {
     },
   },
 };
+
+const dbEvents = async (req_body: BodyParams) => {
+  const payload = req_body as BodyParams;
+  const trigger = `${payload.operation_type}_${payload.table_name}`;
+  console.info(`executing `, trigger);
+  const trigger_to_exec = db_event_triggers[trigger];
+  if (trigger_to_exec) {
+    await trigger_to_exec({ ...payload });
+    console.info(`executed `, trigger);
+  } else {
+    console.error('Missing', payload.operation_type, payload.table_name);
+  }
+};
+
+export default createPageApiPostRoute(null, dbEvents);

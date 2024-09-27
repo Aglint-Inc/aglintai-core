@@ -1,8 +1,9 @@
 /* eslint-disable no-console */
 import { type DateRangePlansType } from '@aglint/shared-types';
-import { schema_find_availability_payload } from '@aglint/shared-utils';
-import { type NextApiRequest, type NextApiResponse } from 'next';
+import { type schema_find_availability_payload } from '@aglint/shared-utils';
+import { type z } from 'zod';
 
+import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
 
 export type ApiResponseFindAvailability = {
@@ -10,37 +11,26 @@ export type ApiResponseFindAvailability = {
   availabilities: CandidatesSchedulingV2['calendar_events'];
 };
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    const parsedData = schema_find_availability_payload.parse({
-      ...req.body,
-      options: req.body.options || {
-        include_conflicting_slots: {},
-      },
-    });
-    parsedData.options.return_empty_slots_err = true;
-    const cand_schedule = new CandidatesSchedulingV2(parsedData.options);
+const findAvailability = async (
+  parsedData: z.infer<typeof schema_find_availability_payload>,
+) => {
+  parsedData.options.return_empty_slots_err = true;
+  const cand_schedule = new CandidatesSchedulingV2(parsedData.options);
 
-    await cand_schedule.fetchDetails({
-      params: {
-        company_id: parsedData.recruiter_id,
-        req_user_tz: parsedData.candidate_tz,
-        session_ids: parsedData.session_ids,
-        start_date_str: parsedData.start_date_str,
-        end_date_str: parsedData.end_date_str,
-      },
-    });
+  await cand_schedule.fetchDetails({
+    params: {
+      company_id: parsedData.recruiter_id,
+      req_user_tz: parsedData.candidate_tz,
+      session_ids: parsedData.session_ids,
+      start_date_str: parsedData.start_date_str,
+      end_date_str: parsedData.end_date_str,
+    },
+  });
 
-    const availabilities = cand_schedule.calendar_events;
+  const availabilities = cand_schedule.calendar_events;
 
-    const slots = cand_schedule.findAvailabilitySlotsDateRange();
-    return res.status(200).json({ slots, availabilities });
-  } catch (error) {
-    console.log(error);
-    return res
-      .status(error.status ?? 500)
-      .json({ name: error.name, message: error.message });
-  }
+  const slots = cand_schedule.findAvailabilitySlotsDateRange();
+  return { slots, availabilities };
 };
 
-export default handler;
+export default createPageApiPostRoute(null, findAvailability);

@@ -1,9 +1,6 @@
 import { useMemo } from 'react';
 
-import { type GreenHouseUserSyncAPI } from '@/api/sync/greenhouse/user/type';
-import axios from '@/client/axios';
-import { useTenantMembers } from '@/company/hooks';
-import { useTenant } from '@/company/hooks';
+import { useTenant, useTenantMembers } from '@/company/hooks';
 import { useGreenhouseDetails } from '@/queries/greenhouse';
 import { api } from '@/trpc/client';
 
@@ -28,14 +25,12 @@ export const useTeamMembers = () => {
       refetchOnMount: false,
     },
   );
-
+  const { mutateAsync: syncUsers } = api.ats.greenhouse.users.useMutation();
   async function sync_users() {
-    syncUsers(recruiter.id, syncData?.key, syncData?.last_sync['users']).then(
-      () => {
-        refetchMembers();
-        refetchLastSync();
-      },
-    );
+    syncUsers({ recruiter_id: recruiter.id }).then(() => {
+      refetchMembers();
+      refetchLastSync();
+    });
   }
 
   const data = useMemo(() => {
@@ -62,21 +57,3 @@ export const useTeamMembers = () => {
     refetchMembers, // Add this line
   };
 };
-
-async function syncUsers(
-  recruiter_id: string,
-  key: string | null,
-  last_sync?: string,
-) {
-  if (key) {
-    return await axios.call<GreenHouseUserSyncAPI>(
-      'POST',
-      `/api/sync/greenhouse/user`,
-      {
-        recruiter_id,
-        key,
-        last_sync,
-      },
-    );
-  }
-}

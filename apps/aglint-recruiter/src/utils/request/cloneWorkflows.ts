@@ -4,7 +4,7 @@ import {
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
-import { supabaseAdmin } from '../supabase/supabaseAdmin';
+import { getSupabaseServer } from '../supabase/supabaseAdmin';
 
 export const cloneWorkflows = async ({
   request_id,
@@ -12,6 +12,8 @@ export const cloneWorkflows = async ({
   request_id: string;
   meeting_flow?: DatabaseTable['interview_meeting']['meeting_flow'];
 }) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const [request] = supabaseWrap(
     await supabaseAdmin
       .from('request')

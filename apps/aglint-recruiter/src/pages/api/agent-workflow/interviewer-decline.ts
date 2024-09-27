@@ -5,50 +5,45 @@ import {
   type ProgressLoggerType,
 } from '@aglint/shared-utils';
 import { apiTargetToEvents } from '@requests/components/RequestProgress/utils/progressMaps';
-import { type NextApiRequest, type NextApiResponse } from 'next';
 
+import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 // import { apiTargetToEvents } from '@/components/Requests/_common/components/RequestProgress/utils/progressMaps';
 import { changeInterviewer } from '@/services/api-schedulings/interviewer-decline/change-interviewer';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
-// import { apiTargetToEvents } from '@/components/Requests/_common/Components/RequestProgress/utils/progressMaps';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const target_api = req.body.target_api as DatabaseEnums['email_slack_types'];
+type BodyParams = {
+  request_id: string;
+  session_ids: string[];
+  event_run_id: number;
+  target_api: DatabaseEnums['email_slack_types'];
+};
+
+const interviewerDecline = async (req_body: BodyParams) => {
+  const target_api = req_body.target_api as DatabaseEnums['email_slack_types'];
+  const supabaseAdmin = getSupabaseServer();
 
   const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
-    request_id: req.body.request_id,
+    request_id: req_body.request_id,
     supabaseAdmin: supabaseAdmin,
-    event_run_id: req.body.event_run_id,
+    event_run_id: req_body.event_run_id,
     event_type: apiTargetToEvents[target_api],
   });
 
-  const {
-    request_id,
-    session_ids,
-  }: {
-    request_id: string;
-    session_ids: string[];
-  } = req.body;
+  const { request_id, session_ids } = req_body;
 
-  try {
-    await reqProgressLogger.resetEventProgress();
+  await reqProgressLogger.resetEventProgress();
 
-    if (target_api === 'onRequestInterviewerDecline_agent_changeInterviewer') {
-      await executeWorkflowAction(
-        changeInterviewer,
-        {
-          request_id,
-          session_id: session_ids[0],
-          reqProgress: reqProgressLogger,
-        },
-        reqProgressLogger,
-      );
-    }
-    return res.status(200).send('ok');
-  } catch (error) {
-    console.error(error);
-    return res.status(400).send(error.message);
+  if (target_api === 'onRequestInterviewerDecline_agent_changeInterviewer') {
+    await executeWorkflowAction(
+      changeInterviewer,
+      {
+        request_id,
+        session_id: session_ids[0],
+        reqProgress: reqProgressLogger,
+      },
+      reqProgressLogger,
+    );
   }
 };
 
-export default handler;
+export default createPageApiPostRoute(null, interviewerDecline);

@@ -75,12 +75,12 @@ function SchedulingViewComp() {
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
-            <div className='w-fullflex-row flex justify-between pr-6'>
+            <div className='w-fullflex-row flex justify-between'>
               <div>
-                <h1 className='text-3xl font-bold text-gray-900'>
+                <h1 className='text-2xl font-medium text-gray-900'>
                   {schedule?.interview_session.name}
                 </h1>
-                <p className='text-md mt-2 pb-2 text-gray-600'>
+                <p className='text-md mt-1 pb-2 text-gray-600'>
                   Interview for{' '}
                   <a
                     href={`/jobs/${job?.id}`}
@@ -118,11 +118,13 @@ function SchedulingViewComp() {
           </div>
         </div>
 
-        <div className='flex justify-between space-x-12'>
-          <div className='w-8/12 space-y-6'>
-            <div className='flex flex-col space-y-2 pb-4'>
+        <div className='flex justify-between'>
+          <div className='w-full'>
+            <div className='flex flex-col gap-2 py-2 w-8/12 pr-3'>
               <Banners />
             </div>
+            <div className='flex gap-4 w-full'>
+            <div className='w-8/12 space-y-6'>
             {data?.schedule_data ? (
               <ScheduleDetailsTabs />
             ) : (
@@ -130,9 +132,8 @@ function SchedulingViewComp() {
                 <UIAlert title={'Meeting Not Found'} iconName={'Calendar'} />
               </div>
             )}
-          </div>
-
-          {checkPermissions
+            </div>
+            {checkPermissions
             ? checkPermissions(['scheduling_actions']) && (
                 <div className='w-4/12'>
                   <div className='p-11'></div>
@@ -140,6 +141,11 @@ function SchedulingViewComp() {
                 </div>
               )
             : null}
+            </div>
+            
+          </div>
+
+      
         </div>
       </div>
     </>

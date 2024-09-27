@@ -9,69 +9,64 @@ import {
 import { ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { nanoid } from 'nanoid';
-import { type NextApiRequest, type NextApiResponse } from 'next';
 
+import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { planCombineSlots } from '@/services/CandidateScheduleV2/utils/planCombine';
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { candidate_tz } = req.body as APIVerifyRecruiterSelectedSlots;
-  try {
-    const {
-      filter_json_data,
-      end_date_str,
-      start_date_str,
-      filered_selected_options,
-      is_link_from_email_agent,
-    } = await fetch_details_from_db(req.body);
-    const selected_options = filered_selected_options;
+const verifyRecruiterSelectedSlots = async (
+  req_body: APIVerifyRecruiterSelectedSlots,
+) => {
+  const { candidate_tz } = req_body;
+  const {
+    filter_json_data,
+    end_date_str,
+    start_date_str,
+    filered_selected_options,
+    is_link_from_email_agent,
+  } = await fetch_details_from_db(req_body);
+  const selected_options = filered_selected_options;
 
-    const cand_schedule = new CandidatesSchedulingV2({
-      include_conflicting_slots: {
-        out_of_office: true,
-        out_of_working_hrs: true,
-        show_soft_conflicts: true,
-      },
-    });
-    await cand_schedule.fetchDetails({
-      params: {
-        req_user_tz: candidate_tz,
-        end_date_str: end_date_str,
-        company_id: filter_json_data.applications.public_jobs.recruiter_id,
-        session_ids: filter_json_data.session_ids,
-        start_date_str: start_date_str,
-      },
-    });
-    let all_day_plans = [];
+  const cand_schedule = new CandidatesSchedulingV2({
+    include_conflicting_slots: {
+      out_of_office: true,
+      out_of_working_hrs: true,
+      show_soft_conflicts: true,
+    },
+  });
+  await cand_schedule.fetchDetails({
+    params: {
+      req_user_tz: candidate_tz,
+      end_date_str: end_date_str,
+      company_id: filter_json_data.applications.public_jobs.recruiter_id,
+      session_ids: filter_json_data.session_ids,
+      start_date_str: start_date_str,
+    },
+  });
+  let all_day_plans = [];
 
-    // email agent schedule link
-    if (is_link_from_email_agent) {
-      all_day_plans = cand_schedule.findCandSlotsForDateRange();
-    } else {
-      const verified_slots =
-        cand_schedule.verifyIntSelectedSlots(selected_options);
-      all_day_plans = convertOptionsToDateRangeSlots(
-        verified_slots,
-        candidate_tz,
-      );
-    }
-
-    return res.status(200).json(all_day_plans);
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(error.status ?? 500)
-      .json({ name: error.name, message: error.message });
+  // email agent schedule link
+  if (is_link_from_email_agent) {
+    all_day_plans = cand_schedule.findCandSlotsForDateRange();
+  } else {
+    const verified_slots =
+      cand_schedule.verifyIntSelectedSlots(selected_options);
+    all_day_plans = convertOptionsToDateRangeSlots(
+      verified_slots,
+      candidate_tz,
+    );
   }
-};
 
-export default handler;
+  return all_day_plans;
+};
 
 const fetch_details_from_db = async (
   req_body: APIVerifyRecruiterSelectedSlots,
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const [filter_json_data] = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')
@@ -187,3 +182,5 @@ const convertOptionsToDateRangeSlots = (
 
   return all_day_plans;
 };
+
+export default createPageApiPostRoute(null, verifyRecruiterSelectedSlots);

@@ -2,7 +2,7 @@
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { addScheduleActivity } from '@/utils/scheduling/utils';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export interface ApiBodyOpenSelfScheduling {
   filter_id: string;
@@ -18,6 +18,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { filter_id, timezone, application_id, sesssion_name, candidate_id } =
       req.body as ApiBodyOpenSelfScheduling;
+    const supabaseAdmin = getSupabaseServer();
+
     if (
       filter_id &&
       timezone &&

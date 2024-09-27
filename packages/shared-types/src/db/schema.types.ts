@@ -823,7 +823,7 @@ export type Database = {
           last_updated: string
           linkedin: string | null
           phone: string | null
-          recruiter_id: string | null
+          recruiter_id: string
           state: string | null
           timezone: string | null
         }
@@ -843,7 +843,7 @@ export type Database = {
           last_updated?: string
           linkedin?: string | null
           phone?: string | null
-          recruiter_id?: string | null
+          recruiter_id: string
           state?: string | null
           timezone?: string | null
         }
@@ -863,7 +863,7 @@ export type Database = {
           last_updated?: string
           linkedin?: string | null
           phone?: string | null
-          recruiter_id?: string | null
+          recruiter_id?: string
           state?: string | null
           timezone?: string | null
         }
@@ -6920,3 +6920,4 @@ export type Enums<
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
     : never
+

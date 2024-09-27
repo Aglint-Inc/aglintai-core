@@ -36,12 +36,12 @@ export const SectionCard: React.FC<SectionCardProps> = ({
       onFocus={() => setIsHover(true)}
       onBlur={() => setIsHover(false)}
     >
-      <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-        <CardTitle className='mb-4 flex h-[40px] w-full justify-between'>
+      <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2 p-4'>
+        <CardTitle className='flex min-h-[40px] w-full justify-between'>
           <div>
-            <UITypography className='text-2xl font-bold'>{title}</UITypography>
+            <UITypography className='text-lg font-medium'>{title}</UITypography>
             {description && (
-              <UITypography className='text-sm font-normal'>
+              <UITypography className='text-sm font-normal text-muted-foreground'>
                 {description}
               </UITypography>
             )}
@@ -50,7 +50,7 @@ export const SectionCard: React.FC<SectionCardProps> = ({
         </CardTitle>
         {}
       </CardHeader>
-      <CardContent>{children}</CardContent>
+      <CardContent className='p-4 pt-0'>{children}</CardContent>
       {bottomAction && (
         <CardFooter className='h-[40px]'>{isHover ? 'footer' : ''}</CardFooter>
       )}

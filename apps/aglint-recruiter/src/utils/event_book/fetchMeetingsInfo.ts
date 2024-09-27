@@ -4,8 +4,10 @@ import {
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
-import { supabaseAdmin } from '../supabase/supabaseAdmin';
+import { getSupabaseServer } from '../supabase/supabaseAdmin';
 export const fetchMeetingsInfo = async (meeting_ids) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const meetings = supabaseWrap(
     await supabaseAdmin
       .from('interview_meeting')

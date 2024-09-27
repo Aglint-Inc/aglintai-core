@@ -21,7 +21,7 @@ export const mutation = async (payload: ATSProcedure<typeof schema>) => {
       .eq('job_id', payload.input.job_id)
       .single()
       .throwOnError()
-  ).data;
+  ).data!;
   if (!syncable)
     throw new TRPCError({
       code: 'UNPROCESSABLE_CONTENT',

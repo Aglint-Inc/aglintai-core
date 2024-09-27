@@ -9,7 +9,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import type { ApiResponseFindAvailability } from '../v1/find_availability';
 
@@ -167,6 +167,8 @@ const updateFailedTask = async ({
     end_date: string;
   };
 }) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const { error: errorTasks } = await supabaseAdmin
     .from('new_tasks')
     .update({

@@ -26,7 +26,7 @@ function ATSTools({
   const [isOpen, setIsOpen] = useState(false);
   const [reason, setReason] = useState<PopUpReasonTypes>();
   const [isLoading, setLoading] = useState(false);
-  const [inputValue, setInputValue] = useState(null);
+  const [inputValue, setInputValue] = useState('');
 
   async function action(): Promise<boolean> {
     try {
@@ -288,7 +288,7 @@ function ATSTools({
     {
       name: 'greenhouse' as ATSType,
       url: 'greenhouse.com',
-      isVisibile: recruiter.recruiter_preferences.ats === 'Greenhouse',
+      isVisibile: recruiter.recruiter_preferences.ats === 'Greenhouse' || true,
       isConnected: Boolean(data?.greenhouse_key),
       logo: (
         <Image
@@ -378,7 +378,7 @@ function ATSTools({
                 textLink={item.url}
                 isConnected={item.isConnected}
                 primaryText={item.primaryText}
-                secondaryText={item.secondaryText}
+                secondaryText={item.secondaryText || undefined}
                 primaryAction={item.primaryAction}
                 secondaryAction={item.secondaryAction}
                 learnHowLink={item.learnHowLink}
@@ -392,7 +392,7 @@ function ATSTools({
         close={close}
         isOpen={isOpen}
         action={action}
-        reason={reason}
+        reason={reason!}
         isLoading={isLoading}
         inputValue={inputValue}
       />

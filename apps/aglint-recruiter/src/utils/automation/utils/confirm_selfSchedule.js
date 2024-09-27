@@ -1,7 +1,9 @@
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from "@/utils/supabase/supabaseAdmin";
 
 //get filter id --------------------------
 export const getFilterJson = async (request_id) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const {
     error,
     data: [filter_json],

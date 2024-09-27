@@ -4,7 +4,7 @@ import { type ProgressLoggerType, supabaseWrap } from '@aglint/shared-utils';
 import { candidate_avail_request_schema } from '@aglint/shared-utils/src/scheduling/apiSchemas';
 
 import { mailSender } from '@/utils/mailSender';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export const candidateAvailRequest = async ({
   cloned_sessn_ids,
@@ -27,6 +27,7 @@ export const candidateAvailRequest = async ({
 }) => {
   const { application_id, number_of_days, number_of_slots, recruiter_id } =
     candidate_avail_request_schema.parse(req_body);
+  const supabaseAdmin = getSupabaseServer();
 
   supabaseWrap(
     await supabaseAdmin

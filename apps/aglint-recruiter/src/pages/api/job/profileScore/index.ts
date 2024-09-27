@@ -7,7 +7,7 @@ import OpenAI from 'openai';
 import { type ChatCompletionMessageParam } from 'openai/resources';
 
 import { distributeScoreWeights } from '@/job/utils';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export const openai = new OpenAI({
   apiKey: process.env.OPENAI_KEY,
@@ -23,6 +23,8 @@ const handler = async (
   req: NextApiRequest,
   res: NextApiResponse<JobProfileScoreApi['response']>,
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   // eslint-disable-next-line no-unused-vars
   const { job_id, regenerate = false } =
     req.body as JobProfileScoreApi['request'];
