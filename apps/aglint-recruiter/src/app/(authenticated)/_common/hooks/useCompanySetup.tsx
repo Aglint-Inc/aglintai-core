@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import { useAllIntegrations } from '@/authenticated/hooks';
+import { useTenantMembers } from '@/company/hooks';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useAllMembers } from '@/queries/members';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
@@ -47,7 +47,7 @@ export function useCompanySetup() {
   const { recruiter, loading: recruiterLoading } = useAuthDetails();
   const { data: integrations, isLoading: integrationLoading } =
     useAllIntegrations();
-  const { allMembers, isLoading: memberLoading } = useAllMembers();
+  const { allMembers, isLoading: memberLoading } = useTenantMembers();
   const { data: compandDetails, isLoading: companySettingLoading } =
     useFetchcompanySetup();
 
