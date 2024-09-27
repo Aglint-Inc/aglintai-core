@@ -1,5 +1,6 @@
 'use client';
 
+import { TooltipProvider } from '@radix-ui/react-tooltip';
 import { type PropsWithChildren } from 'react';
 
 import AppLayout from '@/components/AppLayout';
@@ -10,14 +11,16 @@ import { WorkflowsProvider } from '@/workflows/contexts';
 
 export const Provider = ({ children }: PropsWithChildren) => {
   return (
-    <RolesAndPermissionsProvider>
-      <BreadcrumProvider>
-        <JobsProvider>
-          <WorkflowsProvider>
-            <AppLayout>{children}</AppLayout>
-          </WorkflowsProvider>
-        </JobsProvider>
-      </BreadcrumProvider>
-    </RolesAndPermissionsProvider>
+    <TooltipProvider>
+      <RolesAndPermissionsProvider>
+        <BreadcrumProvider>
+          <JobsProvider>
+            <WorkflowsProvider>
+              <AppLayout>{children}</AppLayout>
+            </WorkflowsProvider>
+          </JobsProvider>
+        </BreadcrumProvider>
+      </RolesAndPermissionsProvider>
+    </TooltipProvider>
   );
 };
