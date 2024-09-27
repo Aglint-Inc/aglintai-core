@@ -1,3 +1,4 @@
+import UITabs from '@/components/Common/UITabs';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 
@@ -10,7 +11,6 @@ import InstructionsComp from './Instructions';
 import Interviewers from './Interviewers';
 import Schedules from './Schedules';
 import Training from './Training';
-import UITabs from '@/components/Common/UITabs';
 
 function InterviewDetailsTabs() {
   const router = useRouterPro();
