@@ -70,7 +70,7 @@ export default function InterviewerDetailsPage() {
     // setIsTopBarVisible(!!userCardBottom && scrollPosition > userCardBottom);
 
     Object.entries(sectionRefs).forEach(([key, ref]) => {
-      if (ref.current && ref.current.getBoundingClientRect().top < 100) {
+      if (ref.current && ref.current.getBoundingClientRect().top < 90) {
         setActiveSection(key);
       }
     });
@@ -81,7 +81,12 @@ export default function InterviewerDetailsPage() {
   }, []);
 
   const scrollToSection = (sectionKey: sectionKeys) => {
-    sectionRefs[sectionKey].current?.scrollIntoView({ behavior: 'smooth' });
+    const section = sectionRefs[sectionKey].current;
+
+    if (section) {
+      const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: sectionTop - 80, behavior: 'smooth' });
+    }
   };
 
   //----------------------- page data
