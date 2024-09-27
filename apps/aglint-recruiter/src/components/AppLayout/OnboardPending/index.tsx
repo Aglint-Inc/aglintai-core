@@ -2,7 +2,6 @@ import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Progress } from '@components/ui/progress';
 import { AlertCircle, ArrowLeft, ArrowRight, Check, X } from 'lucide-react';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import {
@@ -14,6 +13,8 @@ import {
   useOnboard,
 } from '@/authenticated/store/OnboardStore';
 import { UIButton } from '@/components/Common/UIButton';
+
+import { SetupCard } from './SetupCard';
 
 export const OnboardPending = () => {
   const { isCompanySetupPending, companySetupProgress, companySetupSteps } =
@@ -107,7 +108,7 @@ export const OnboardPending = () => {
                   ))}
                 </div>
 
-                <div className='rounded-lg bg-secondary p-4 md:col-span-2'>
+                <div className='h-full md:col-span-2'>
                   {selectedStep && <Content selectedStep={selectedStep} />}
                 </div>
               </div>
@@ -155,24 +156,15 @@ const Footer = ({
 const Content = ({ selectedStep }) => {
   return (
     <>
-      <h2 className='mb-2 text-lg font-semibold'>{selectedStep.title}</h2>
-      {selectedStep.isCompleted ? (
-        <>Setup Completed</>
-      ) : (
-        <>
-          <p className='mb-4 text-muted-foreground'>
-            {selectedStep.description}
-          </p>
-          <div className='space-y-4'>
-            <p className='text-sm'>
-              Complete this step to progress in your onboarding process.
-            </p>
-            <Link href={selectedStep.navLink} className='inline-block'>
-              <Button variant='secondary'>Go to {selectedStep.title}</Button>
-            </Link>
-          </div>
-        </>
-      )}
+      <SetupCard
+        isCompleted={selectedStep.isCompleted || ''}
+        title={selectedStep.title || ''}
+        description={selectedStep.description || ''}
+        bulletPoints={selectedStep.bulletPoints || []}
+        scoringPoints={selectedStep.scoringPoints || []}
+        schedulingPoints={selectedStep.schedulingPoints || []}
+        navLink={selectedStep.navLink || ''}
+      />
     </>
   );
 };
