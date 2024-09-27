@@ -166,17 +166,19 @@ export default function AppLayout({ children }) {
             </div>
           </nav>
         )}
-        <main
-          className={`flex h-screen w-full overflow-auto bg-gray-50 py-8 ${
+        <div
+          className={`flex w-full overflow-auto bg-gray-50 ${
             isHorizontalNav ? '' : 'ml-16'
           }`}
         >
-          {checkPermissions(PERMISSIONS[String(router.pathName)]) ? (
-            children
-          ) : (
-            <NotFound />
-          )}
-        </main>
+          <div className='w-full py-8'>
+            {checkPermissions(PERMISSIONS[String(router.pathName)]) ? (
+              children
+            ) : (
+              <NotFound />
+            )}
+          </div>
+        </div>
       </div>
     </>
   );
