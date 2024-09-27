@@ -1,5 +1,4 @@
 import { Accordion } from '@components/ui/accordion';
-import { Button } from '@components/ui/button';
 import {
   Card,
   CardContent,
@@ -8,11 +7,11 @@ import {
   CardTitle,
 } from '@components/ui/card';
 
+import { UIButton } from '@/components/Common/UIButton';
 import { useJobAutomationStore } from '@/job/workflows/contexts/workflowsStoreContext';
 import { TriggerCategory } from '@/job/workflows/lib/constants';
 
 import { AutomationAccordion } from './AutomationAccordion';
-import { UIButton } from '@/components/Common/UIButton';
 
 export default function Main() {
   const { jobWorkflowTriggers, jobWorkflowActions } = useJobAutomationStore();

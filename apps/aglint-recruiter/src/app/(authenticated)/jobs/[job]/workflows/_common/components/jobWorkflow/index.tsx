@@ -4,8 +4,8 @@ import { useEffect } from 'react';
 
 import { initiateJobAutomationState } from '../../contexts/workflowsStoreContext';
 import { useGetJobWorkflow } from '../../hooks';
-import Main from './workflows';
 import { Summary } from './Summary';
+import Main from './workflows';
 
 export default function EnhancedAutomationPage() {
   const { data, status } = useGetJobWorkflow();

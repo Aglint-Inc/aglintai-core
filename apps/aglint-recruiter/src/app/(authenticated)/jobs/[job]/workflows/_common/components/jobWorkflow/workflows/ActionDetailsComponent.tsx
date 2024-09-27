@@ -1,4 +1,4 @@
-import { type DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseEnums } from '@aglint/shared-types';
 
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';

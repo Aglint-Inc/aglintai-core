@@ -1,27 +1,27 @@
+import { type DatabaseTable } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+} from '@components/ui/command';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
+import { PlusCircle } from 'lucide-react';
+import { useState } from 'react';
+import { v4 } from 'uuid';
+
 import { UIButton } from '@/components/Common/UIButton';
 import {
   addWaction,
   useJobAutomationStore,
 } from '@/job/workflows/contexts/workflowsStoreContext';
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
-import { DatabaseTable } from '@aglint/shared-types';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@components/ui/popover';
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@components/ui/command';
-import { useState } from 'react';
-import { PlusCircle } from 'lucide-react';
-import { v4 } from 'uuid';
-import { dayjsLocal } from '@aglint/shared-utils';
 
 const AddActionMenu = ({
   wTrigger,
