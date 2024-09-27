@@ -29,9 +29,7 @@ const Layout = ({ children }: PropsWithChildren) => {
             disableTransitionOnChange
           >
             <TRPCReactProvider>
-              <div className='it flex h-screen w-screen items-center justify-center'>
-                {children}
-              </div>
+              <div className='flex h-screen w-full'>{children}</div>
             </TRPCReactProvider>
             <Toaster />
           </ThemeProvider>

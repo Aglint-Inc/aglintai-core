@@ -17,6 +17,7 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { useRouterPro } from '@/hooks/useRouterPro';
 import PERMISSIONS from '@/utils/routing/permissions';
 import ROUTES from '@/utils/routing/routes';
+import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { NotFound } from '../Common/404';
@@ -42,11 +43,21 @@ const DefaultCompanyLogo = () => (
 
 export default function AppLayout({ children }) {
   const { checkPermissions } = useRolesAndPermissions();
+  const { superPush } = useRouterPro();
   const { isShowFeature } = useFlags();
   const { recruiter, recruiter_user } = useTenant();
   const router = useRouterPro();
   const logo = recruiter?.logo;
   const isHorizontalNav = !isShowFeature('SCHEDULING');
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut({
+      scope: 'local',
+    });
+    if (!error) {
+      superPush('/login');
+    }
+  };
 
   return (
     <>
@@ -153,7 +164,7 @@ export default function AppLayout({ children }) {
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger>
-                  <Button variant='link' onClick={() => {}}>
+                  <Button variant='link' onClick={handleLogout}>
                     <LogOut className='h-5 w-5' strokeWidth={1.5} />
                   </Button>
                 </TooltipTrigger>
