@@ -46,6 +46,13 @@ export const updateWAction = (
   }));
 };
 
+export const addWaction = (
+  jobWorkflowActions: JobAutomationState['jobWorkflowActions'][number],
+) => {
+  useJobAutomationStore.setState((state) => ({
+    jobWorkflowActions: [...state.jobWorkflowActions, jobWorkflowActions],
+  }));
+};
 export const deleteWAcion = (id: string) => {
   useJobAutomationStore.setState((state) => ({
     jobWorkflowActions: state.jobWorkflowActions.filter(
@@ -53,7 +60,6 @@ export const deleteWAcion = (id: string) => {
     ),
   }));
 };
-
 export const initiateJobAutomationState = (
   data: ReturnType<typeof useGetJobWorkflow>['data'],
 ) => {

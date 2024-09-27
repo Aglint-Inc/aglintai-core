@@ -21,6 +21,7 @@ import {
   triggerToQuestion,
 } from '@/job/workflows/lib/constants';
 import ActionsContainer from './ActionsContainer';
+import AddActionMenu from './AddActionMenu';
 
 export const AutomationAccordion = ({
   category,
@@ -86,15 +87,7 @@ export const AutomationAccordion = ({
                             />
                           );
                         })}
-                      <Button
-                        variant='outline'
-                        size='sm'
-                        onClick={() => {
-                          // onAddAction(categoryIndex, automationIndex)
-                        }}
-                      >
-                        Add Action
-                      </Button>
+                      <AddActionMenu wTrigger={wTrigger} />
                     </div>
                   )}
                 </div>
