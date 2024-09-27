@@ -9,6 +9,7 @@
 import type { DatabaseTable } from '@aglint/shared-types';
 import { initTRPC, TRPCError } from '@trpc/server';
 import type { ProcedureBuilder } from '@trpc/server/unstable-core-do-not-import';
+import { cookies } from 'next/headers';
 import superjson from 'superjson';
 import { type TypeOf, ZodError, type ZodSchema } from 'zod';
 
@@ -83,7 +84,7 @@ export const createTRPCRouter = t.router;
  */
 const timingMiddleware = t.middleware(async ({ next, path }) => {
   const start = Date.now();
-
+  console.log(cookies().getAll());
   // if (t._config.isDev) {
   //   const waitMs = Math.floor(Math.random() * 400) + 100;
   //   await new Promise((resolve) => setTimeout(resolve, waitMs));
@@ -162,6 +163,8 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
 });
 
 const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
+  console.log(cookies().getAll());
+
   const db = createPrivateClient();
   const {
     data: { user },

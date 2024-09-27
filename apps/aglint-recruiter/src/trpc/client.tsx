@@ -1,6 +1,7 @@
 'use client';
 import { type QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ReactQueryStreamedHydration } from '@tanstack/react-query-next-experimental';
 import {
   httpLink,
   splitLink,
@@ -113,7 +114,9 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <api.Provider client={trpcClient} queryClient={queryClient}>
         {showRQDevTools && <ReactQueryDevtools />}
-        {props.children}
+        <ReactQueryStreamedHydration>
+          {props.children}
+        </ReactQueryStreamedHydration>
       </api.Provider>
     </QueryClientProvider>
   );

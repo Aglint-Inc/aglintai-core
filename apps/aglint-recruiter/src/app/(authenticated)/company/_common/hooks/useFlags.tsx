@@ -16,9 +16,7 @@ type Features =
   | 'THEMES';
 
 export const useFlags = () => {
-  const preferences = api.tenant.flags.useSuspenseQuery(undefined, {
-    trpc: TRPC_CLIENT_CONTEXT,
-  })[0];
+  const preferences = api.tenant.flags.useSuspenseQuery()[0];
 
   const isShowFeature = useCallback(
     (feature: Features) => {
