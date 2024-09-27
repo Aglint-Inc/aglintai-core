@@ -1,6 +1,6 @@
 import { MessageSquareOff } from 'lucide-react';
 
-import { SectionCard } from '@/authenticated/components/SectionCard';
+import UISectionCard from '@/components/Common/UISectionCard';
 
 import { type InterviewerDetailType } from '../../hooks/useInterviewer';
 import { List } from './ui/List';
@@ -12,7 +12,7 @@ export const Feedback = ({
 }) => {
   return (
     <>
-      <SectionCard title='Interview Feedback Provided'>
+      <UISectionCard title='Interview Feedback Provided'>
         <div className='space-y-4'>
           {feedbacks?.length ? (
             feedbacks.map((feedback) => (
@@ -25,7 +25,7 @@ export const Feedback = ({
             </div>
           )}
         </div>
-      </SectionCard>
+      </UISectionCard>
     </>
   );
 };

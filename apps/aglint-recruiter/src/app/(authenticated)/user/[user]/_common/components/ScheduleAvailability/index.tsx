@@ -2,7 +2,7 @@ import { type schedulingSettingType } from '@aglint/shared-types';
 import { Pencil } from 'lucide-react';
 import { useState } from 'react';
 
-import { SectionCard } from '@/authenticated/components/SectionCard';
+import UISectionCard from '@/components/Common/UISectionCard';
 import { UIButton } from '@/components/Common/UIButton';
 
 import { type InterviewerDetailType } from '../../hooks/useInterviewer';
@@ -110,7 +110,7 @@ export default function ScheduleAvailability({
         setIsEditOpen={setIsEditOpen}
         isEditOpen={isEditOpen}
       />
-      <SectionCard
+      <UISectionCard
         title='Availability'
         topAction={
           <UIButton
@@ -127,7 +127,7 @@ export default function ScheduleAvailability({
           workingHours={workingHours}
           scheduleKeywords={scheduleKeywords}
         />
-      </SectionCard>
+      </UISectionCard>
     </>
   );
 }

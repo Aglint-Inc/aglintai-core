@@ -4,7 +4,7 @@ import React from 'react';
 
 interface InfoCardProps {
   title: string;
-  description: string;
+  description?: string;
   titleAddon?: React.ReactNode;
   descriptionAddon?: React.ReactNode;
   action?: React.ReactNode;
