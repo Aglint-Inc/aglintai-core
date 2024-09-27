@@ -1,4 +1,3 @@
-import { Alert } from '@components/ui/alert';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { ArrowRight, X } from 'lucide-react';
@@ -42,28 +41,15 @@ const Selections = () => {
     ));
 };
 
-const Error = () => {
-  const error = useCreateRequest((state) => state.error);
-  if (!error) return <></>;
-  return (
-    <Alert variant='warning' className='text-sm'>
-      {error}
-    </Alert>
-  );
-};
-
 const Buttons = () => {
   const { onOpenChange } = useCreateRequestActions();
   return (
-    <>
-      <Error />
-      <div className='flex justify-end gap-2'>
-        <Button variant='outline' onClick={() => onOpenChange(false)}>
-          Cancel
-        </Button>
-        <Action />
-      </div>
-    </>
+    <div className='flex justify-end gap-2'>
+      <Button variant='outline' onClick={() => onOpenChange(false)}>
+        Cancel
+      </Button>
+      <Action />
+    </div>
   );
 };
 

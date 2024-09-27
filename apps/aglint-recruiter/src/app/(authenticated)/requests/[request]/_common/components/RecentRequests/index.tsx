@@ -43,7 +43,7 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
               <div className='flex flex-col items-center justify-center space-y-2'>
                 <LayoutList className='h-8 w-8 text-gray-400' />
                 <span className='text-sm text-gray-500'>
-                  Recent Requests Not Found
+                  Recent requests not found
                 </span>
               </div>
             ) : (

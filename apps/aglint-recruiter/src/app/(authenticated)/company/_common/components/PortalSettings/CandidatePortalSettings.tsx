@@ -11,7 +11,7 @@ function CandidatePortalSettings() {
   const { isPending } = usePortalSettings();
   if (isPending) return <CandidatePoratlSettingsSkeleton />;
   return (
-    <div className='flex flex-col gap-8 p-4 pb-32 pl-6'>
+    <div className='flex flex-col gap-5'>
       <CoverImage />
       <CandidateGreeting />
       <AboutCompany />

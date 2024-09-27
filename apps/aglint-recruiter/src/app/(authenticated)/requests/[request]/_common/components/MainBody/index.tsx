@@ -27,6 +27,7 @@ import {
   Coffee,
   Edit2,
   Eye,
+  Home,
   MapPin,
   User,
 } from 'lucide-react';
@@ -125,7 +126,9 @@ export default function ViewRequestDetails() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href='/'>Home</BreadcrumbLink>
+                <BreadcrumbLink href='/'>
+                  <Home className='h-4 w-4' />
+                </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>

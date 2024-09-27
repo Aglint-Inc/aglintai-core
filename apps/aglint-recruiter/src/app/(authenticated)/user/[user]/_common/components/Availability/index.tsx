@@ -2,12 +2,12 @@ import { Badge } from '@components/ui/badge';
 import { Separator } from '@components/ui/separator';
 import { Lightbulb } from 'lucide-react';
 
-import { SectionCard } from '@/authenticated/components/SectionCard';
 import { UIButton } from '@/components/Common/UIButton';
+import UISectionCard from '@/components/Common/UISectionCard';
 
 export const Availability = () => {
   return (
-    <SectionCard title='Availability & AI Instructions'>
+    <UISectionCard title='Availability & AI Instructions'>
       <div className='space-y-4'>
         <div>
           <h3 className='mb-2 text-sm font-medium text-gray-700'>
@@ -59,6 +59,6 @@ export const Availability = () => {
           </div>
         </div>
       </div>
-    </SectionCard>
+    </UISectionCard>
   );
 };

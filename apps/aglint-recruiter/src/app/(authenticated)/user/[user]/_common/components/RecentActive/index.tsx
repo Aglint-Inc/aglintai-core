@@ -1,10 +1,10 @@
 import { FileText } from 'lucide-react';
 
-import { SectionCard } from '@/authenticated/components/SectionCard';
+import UISectionCard from '@/components/Common/UISectionCard';
 
 export const RecentActivity = () => {
   return (
-    <SectionCard title='Recent Activity'>
+    <UISectionCard title='Recent Activity'>
       <ul className='space-y-4'>
         {[1, 2, 3, 4].map((k) => (
           <List
@@ -15,7 +15,7 @@ export const RecentActivity = () => {
           />
         ))}
       </ul>
-    </SectionCard>
+    </UISectionCard>
   );
 };
 
