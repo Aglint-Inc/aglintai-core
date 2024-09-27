@@ -115,7 +115,7 @@ const ScheduleOptions = () => {
               }, 2000);
             }}
           >
-            {isProceeding ? 'Proceeding...' : 'Click here Proceed'}
+            {isProceeding ? 'Proceeding...' : 'Proceed with AI'}
           </UIButton>
         </>
       </ShowCode.When>

@@ -7,10 +7,10 @@ import { useInterviewsByUserId } from '@interviews/hooks/useInterviewsByUserId';
 import { useParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
-import { SectionCard } from '@/authenticated/components/SectionCard';
 import CalendarComp from '@/components/Common/Calendar/Calendar';
 import Heatmap from '@/components/Common/Heatmap/HeatmapUser';
 import { Loader } from '@/components/Common/Loader';
+import UISectionCard from '@/components/Common/UISectionCard';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
@@ -70,7 +70,7 @@ export default function InterviewerDetailsPage() {
     // setIsTopBarVisible(!!userCardBottom && scrollPosition > userCardBottom);
 
     Object.entries(sectionRefs).forEach(([key, ref]) => {
-      if (ref.current && ref.current.getBoundingClientRect().top < 100) {
+      if (ref.current && ref.current.getBoundingClientRect().top < 90) {
         setActiveSection(key);
       }
     });
@@ -81,7 +81,12 @@ export default function InterviewerDetailsPage() {
   }, []);
 
   const scrollToSection = (sectionKey: sectionKeys) => {
-    sectionRefs[sectionKey].current?.scrollIntoView({ behavior: 'smooth' });
+    const section = sectionRefs[sectionKey].current;
+
+    if (section) {
+      const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: sectionTop - 80, behavior: 'smooth' });
+    }
   };
 
   //----------------------- page data
@@ -164,7 +169,7 @@ export default function InterviewerDetailsPage() {
           />
         </div>
         {isShowFeature('SCHEDULING') && (
-          <div className='relative flex gap-8'>
+          <div className='relative flex gap-5'>
             <div className='sticky top-20 self-start' style={{ top: '90px' }}>
               <aside>
                 <SideBar
@@ -220,9 +225,9 @@ export default function InterviewerDetailsPage() {
               </section>
 
               <section ref={sectionRefs.meetingOverview}>
-                <SectionCard title='Meetings overview'>
+                <UISectionCard title='Meetings overview'>
                   <Heatmap loadSetting={interviewLoad} />
-                </SectionCard>
+                </UISectionCard>
               </section>
               <section ref={sectionRefs.scheduleAvailabilityRef}>
                 <ScheduleAvailability
@@ -231,14 +236,14 @@ export default function InterviewerDetailsPage() {
                 />
               </section>
               <section ref={sectionRefs.calendar}>
-                <SectionCard title='Schedule Calendar'>
+                <UISectionCard title='Schedule Calendar'>
                   <CalendarComp
                     allSchedules={allSchedules ?? []}
                     isLoading={iscalendarLoading}
                     filter={filter}
                     setFilter={setFilter}
                   />
-                </SectionCard>
+                </UISectionCard>
               </section>
             </main>
           </div>

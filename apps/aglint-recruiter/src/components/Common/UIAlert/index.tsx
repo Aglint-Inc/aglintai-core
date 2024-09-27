@@ -37,7 +37,7 @@ export function UIAlert({
   const alertClass = cn(
     'flex items-start',
     'flex-col w-full',
-    type === 'inline' ? 'px-2 py-2' : type === 'small' ? 'p-3' : 'p-4',
+    type === 'inline' ? 'px-2 py-1' : type === 'small' ? 'p-3' : 'p-4',
     className,
   );
 
@@ -55,7 +55,7 @@ export function UIAlert({
                 {IconComponent && <IconComponent size={32} className='mr-2' />}
               </div>
               <div className='flex flex-col justify-center'>
-                {title && <AlertTitle >{title}</AlertTitle>}
+                {title && <AlertTitle>{title}</AlertTitle>}
                 {description && (
                   <AlertDescription>{description}</AlertDescription>
                 )}
@@ -77,17 +77,17 @@ export function UIAlert({
         <div
           className={'flex w-full flex-row items-center justify-between gap-2'}
         >
-          <div className={'flex flex-row gap-2 items-center'}>
+          <div className={'flex flex-row gap-2'}>
             {IconComponent && <IconComponent size={16} />}
             <div className='flex flex-col'>
-              {title && <AlertTitle className='text-md font-medium'>{title}</AlertTitle>}
+              {title && <AlertTitle>{title}</AlertTitle>}
             </div>
           </div>
           {actions && <div className='flex gap-2'>{actions}</div>}
         </div>
       ) : (
         <div className={'flex w-full flex-col gap-1'}>
-          <div className={'flex flex-row gap-2 items-center'}>
+          <div className={'flex flex-row gap-2'}>
             {IconComponent && <IconComponent size={16} />}
             <div className='flex flex-col'>
               {title && <AlertTitle>{title}</AlertTitle>}

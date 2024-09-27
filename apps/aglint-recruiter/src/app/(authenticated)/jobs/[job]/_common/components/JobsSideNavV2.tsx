@@ -9,8 +9,8 @@ import {
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import {
-  BarChart,
   Calendar,
+  CircleDashed,
   CircleUser,
   FileText,
   UserPlus,
@@ -46,7 +46,7 @@ const JobsSideNavV2 = () => {
       show: true,
     },
     {
-      icon: <BarChart className='h-5 w-5' />,
+      icon: <CircleDashed className='h-5 w-5' />,
       label: 'Profile Score',
       route: 'profile-score',
       show: isScoringEnabled,
@@ -105,7 +105,7 @@ const JobsSideNavV2 = () => {
       </nav>
 
       {manageJob && (
-        <div className=' rounded-md border p-4 bg-white'>
+        <div className='rounded-md border bg-white p-4'>
           <h4 className='mb-1 text-sm font-semibold'>
             {job?.status !== 'published' ? 'Delete' : 'Close'} Job
           </h4>

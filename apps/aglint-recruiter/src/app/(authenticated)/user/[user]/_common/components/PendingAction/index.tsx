@@ -1,12 +1,12 @@
 import { AlertTriangle } from 'lucide-react';
 import { type Key } from 'react';
 
-import { SectionCard } from '@/authenticated/components/SectionCard';
 import { UIButton } from '@/components/Common/UIButton';
+import UISectionCard from '@/components/Common/UISectionCard';
 
 export const PendingActions = () => {
   return (
-    <SectionCard title='Pending Actions'>
+    <UISectionCard title='Pending Actions'>
       <div className='space-y-4'>
         {[1, 2, 3, 4].map((action: Key | null | undefined) => (
           <div
@@ -31,6 +31,6 @@ export const PendingActions = () => {
           </div>
         ))}
       </div>
-    </SectionCard>
+    </UISectionCard>
   );
 };
