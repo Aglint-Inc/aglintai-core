@@ -26,8 +26,9 @@ export const Resume = () => {
         <embed
           src={`https://docs.google.com/gview?url=${url}&embedded=true`}
           title='resume'
-          width='1000px'
-          height='1000px'
+          width='100%'
+          height='1250px'
+          className='rounded-lg overflow-hidden'
         />
       </>
     );
@@ -35,7 +36,7 @@ export const Resume = () => {
 
 const ResumeLayout = (props: PropsWithChildren) => {
   return (
-    <div className='relative flex h-full max-h-[1000px] w-full max-w-[1000px] items-center justify-center'>
+    <div className='relative flex h-full  w-full  items-center justify-center'>
       {props.children}
     </div>
   );

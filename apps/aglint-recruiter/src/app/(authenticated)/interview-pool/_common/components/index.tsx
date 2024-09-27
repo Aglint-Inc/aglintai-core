@@ -128,7 +128,13 @@ export default function InterviewTypesPage() {
             </Table>
             {filteredInterviewModules?.length === 0 ? (
               <div className='flex w-full items-center justify-center'>
-                <GlobalEmpty iconSlot={<LibraryBig strokeWidth={1} className="w-10 h-10" />} text={'No Interview pools found'} height='400px'/>
+                <GlobalEmpty
+                  iconSlot={
+                    <LibraryBig strokeWidth={1} className='h-10 w-10' />
+                  }
+                  text={'No Interview pools found'}
+                  height='400px'
+                />
               </div>
             ) : (
               <></>

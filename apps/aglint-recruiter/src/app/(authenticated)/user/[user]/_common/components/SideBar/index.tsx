@@ -35,7 +35,6 @@ export const SideBar = ({
         active={activeSection === 'qualifications'}
         onClick={() => scrollToSection('qualifications')}
       />
-
       <SideNavItem
         icon={CalendarIcon}
         label='Upcoming Interviews'
@@ -53,18 +52,18 @@ export const SideBar = ({
         label='Interview Feedback'
         active={activeSection === 'interviewFeedback'}
         onClick={() => scrollToSection('interviewFeedback')}
+      />{' '}
+      <SideNavItem
+        icon={Projector}
+        label='Meeting Overview'
+        active={activeSection === 'meetingOverview'}
+        onClick={() => scrollToSection('meetingOverview')}
       />
       <SideNavItem
         icon={Coffee}
         label='Schedule Availability'
         active={activeSection === 'scheduleAvailabilityRef'}
         onClick={() => scrollToSection('scheduleAvailabilityRef')}
-      />
-      <SideNavItem
-        icon={Projector}
-        label='Meeting Overview'
-        active={activeSection === 'meetingOverview'}
-        onClick={() => scrollToSection('meetingOverview')}
       />
       <SideNavItem
         icon={Calendar}

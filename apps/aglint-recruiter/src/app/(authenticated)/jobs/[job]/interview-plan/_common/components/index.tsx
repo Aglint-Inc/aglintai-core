@@ -18,8 +18,8 @@ import {
 } from '@components/ui/tooltip';
 import { useQueryClient } from '@tanstack/react-query';
 import {
+  ChartNoAxesGantt,
   Edit,
-  Kanban,
   PauseCircle,
   Pencil,
   Plus,
@@ -421,17 +421,19 @@ const InterviewPlan = ({
           slotInputButton={
             // Start of Selection
             <div className='flex items-center gap-2'>
-              <UITextField ref={planRef} defaultValue={data.name} fullWidth style={{height:'36px'}} />
+              <UITextField
+                ref={planRef}
+                defaultValue={data.name}
+                fullWidth
+                style={{ height: '36px' }}
+              />
               <UIButton
                 variant='default'
                 onClick={() => handleUpdatePlan(planRef.current.value)}
               >
                 Update
               </UIButton>
-              <UIButton
-                variant='secondary'
-                onClick={() => handleEditPlan()}
-              >
+              <UIButton variant='secondary' onClick={() => handleEditPlan()}>
                 Cancel
               </UIButton>
             </div>
@@ -492,7 +494,7 @@ const InterviewPlan = ({
                     <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
                   ) : (
                     <div className='flex h-64 flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300'>
-                      <Kanban className='mb-4 h-4 w-4 text-gray-400' />
+                      <ChartNoAxesGantt className='mb-4 h-4 w-4 text-gray-400' />
                       <p className='mb-4 text-gray-500'>
                         No interview plan found
                       </p>
@@ -890,7 +892,9 @@ const InterviewSessionMember = ({ member }: InterviewSessionMemberProps) => {
       <div className='flex items-center space-x-3'>
         <Avatar className='h-10 w-10 rounded-sm'>
           <AvatarImage src={member.profile_image} alt={name} />
-          <AvatarFallback className='h-10 w-10 rounded-sm'>{name.charAt(0)}</AvatarFallback>
+          <AvatarFallback className='h-10 w-10 rounded-sm'>
+            {name.charAt(0)}
+          </AvatarFallback>
         </Avatar>
         <div className='flex flex-col gap-1'>
           <p className='text-sm font-medium leading-none'>{name}</p>

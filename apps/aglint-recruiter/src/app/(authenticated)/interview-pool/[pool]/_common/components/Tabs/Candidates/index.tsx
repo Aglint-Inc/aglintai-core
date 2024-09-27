@@ -32,7 +32,7 @@ function Candidates() {
 
   return (
     <>
-      <div className='flex justify-between'>
+      <div className='mb-4 flex justify-between'>
         <UITextField
           placeholder='Search Candidates...'
           className='w-64 bg-white'
@@ -69,7 +69,16 @@ function Candidates() {
                     <tr>
                       <td colSpan={6} className='p-4'>
                         <div>
-                        <GlobalEmpty text={'No candidates found'} iconSlot={<User strokeWidth={1.5} className='mb-2 h-10 w-10 text-muted-foreground'/> } height={'250px'}/>
+                          <GlobalEmpty
+                            text={'No candidates found'}
+                            iconSlot={
+                              <User
+                                strokeWidth={1.5}
+                                className='mb-2 h-10 w-10 text-muted-foreground'
+                              />
+                            }
+                            height={'250px'}
+                          />
                         </div>
                       </td>
                     </tr>

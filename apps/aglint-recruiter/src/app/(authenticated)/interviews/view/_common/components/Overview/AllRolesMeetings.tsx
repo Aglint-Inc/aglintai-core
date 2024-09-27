@@ -33,7 +33,7 @@ function AllRolesMeetings() {
       {filteredRoles.map((item) => {
         return (
           <div key={item.type} className='flex items-center space-x-2'>
-            <Avatar className='h-10 w-10 rounded-sm'>
+            <Avatar className='h-6 w-6'>
               <AvatarImage
                 src={item?.details?.profile_image ?? 'avatar.png'}
                 alt={getFullName(
@@ -41,24 +41,24 @@ function AllRolesMeetings() {
                   item?.details?.last_name ?? '',
                 )}
               />
-              <AvatarFallback className='h-10 w-10 rounded-sm'>
+              <AvatarFallback>
                 {getFullName(
                   item?.details?.first_name ?? '',
                   item?.details?.last_name ?? '',
                 ).charAt(0)}
               </AvatarFallback>
             </Avatar>
-            <div className='flex flex-col gap-0'>
+            <div>
               <Link
                 href={`/user/${item?.details?.user_id}`}
-                className='text-sm font-medium hover:underline'
+                className='text-xs font-medium hover:underline'
               >
                 {getFullName(
                   item?.details?.first_name ?? '',
                   item?.details?.last_name ?? '',
                 )}
               </Link>
-              <p className='text-sm text-gray-500'>{item.label}</p>
+              <p className='text-xs text-gray-500'>{item.label}</p>
             </div>
           </div>
         );

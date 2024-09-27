@@ -6,7 +6,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { Briefcase, Globe } from 'lucide-react';
+import { Briefcase } from 'lucide-react';
 
 import { getPauseMemberText } from '@/authenticated/utils';
 import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerAcceptDeclineIcon';
@@ -48,16 +48,16 @@ function InterviewerUserDetail({
   interviewerType: DatabaseTable['interview_session_relation']['interviewer_type'];
 }) {
   return (
-    <div className='flex items-center justify-between rounded-lg'>
-      <div className='flex items-center gap-3'>
+    <div className='flex items-center justify-between rounded-lg bg-gray-50 p-3'>
+      <div className='flex items-center space-x-4'>
         <div className='flex-shrink-0'>
           {userDetails.profile_image ? (
-            <Avatar className='h-12 w-12 rounded-md'>
+            <Avatar className='h-10 w-10'>
               <AvatarImage
                 src={userDetails.profile_image}
                 alt={getFullName(userDetails.first_name, userDetails.last_name)}
               />
-              <AvatarFallback className='h-12 w-12 rounded-md'>
+              <AvatarFallback>
                 {getFullName(
                   userDetails.first_name,
                   userDetails.last_name,
@@ -65,7 +65,7 @@ function InterviewerUserDetail({
               </AvatarFallback>
             </Avatar>
           ) : (
-            <div className='flex h-12 w-12 items-center justify-center rounded-full bg-gray-200 text-sm font-medium text-gray-500'>
+            <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 text-sm font-medium text-gray-500'>
               {getFullName(
                 userDetails.first_name,
                 userDetails.last_name,
@@ -73,12 +73,34 @@ function InterviewerUserDetail({
             </div>
           )}
         </div>
-        <div className='flex flex-col gap-1'>
-          <div className='flex items-center'>
-          <p className='text-md font-medium'>
+        <div className='flex flex-col'>
+          <p className='text-sm font-semibold'>
             {getFullName(userDetails.first_name, userDetails.last_name)}
           </p>
-          <div className='flex items-center space-x-2'>
+          {userDetails?.position && (
+            <div className='flex items-center text-xs text-gray-600'>
+              <Briefcase className='mr-1 h-3 w-3' />
+              <span>{userDetails.position}</span>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className='flex items-center space-x-4'>
+        <div className='text-right'>
+          <p className='text-sm font-medium'>
+            {interview_meeting?.start_time
+              ? formatTimeWithTimeZone({
+                  start_time: interview_meeting.start_time,
+                  end_time: interview_meeting.end_time,
+                  timeZone: interviewerTimeZone,
+                })
+              : 'Time not set'}
+          </p>
+          <p className='text-xs text-gray-500'>
+            {getShortTimeZone(interviewerTimeZone)}
+          </p>
+        </div>
+        <div className='flex items-center space-x-2'>
           {trainingType ? (
             <InterviewerTrainingTypeIcon type={trainingType} />
           ) : interviewerType !== 'qualified' &&
@@ -130,34 +152,6 @@ function InterviewerUserDetail({
               </>
             )}
         </div>
-          </div>
-          <div className='flex items-center gap-4'>
-          <div className='flex items-center text-right gap-2  text-gray-600'>
-              <Globe className='h-4 w-4' strokeWidth={1.5} />
-              <p className='text-sm'>
-                {interview_meeting?.start_time
-                  ? formatTimeWithTimeZone({
-                      start_time: interview_meeting.start_time,
-                      end_time: interview_meeting.end_time,
-                      timeZone: interviewerTimeZone,
-                    })
-                  : 'Time not set'}
-              </p>
-              <p className='text-xs text-gray-500 hidden'>
-                {getShortTimeZone(interviewerTimeZone)}
-              </p>
-            </div>
-            {userDetails?.position && (
-              <div className='flex items-center gap-2 text-sm text-gray-600'>
-                <Briefcase strokeWidth={1.5} className='h-4 w-4' />
-                <span>{userDetails.position}</span>
-              </div>
-            )}
-            
-          </div>
-        </div>
-        <div className='flex items-center space-x-4'></div>
-
       </div>
     </div>
   );
