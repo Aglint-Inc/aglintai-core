@@ -1,12 +1,7 @@
 import { Loader } from '@/components/Common/Loader';
 
 const Loading = () => {
-  return (
-    <>
-      Suspense
-      <Loader />
-    </>
-  );
+  return <Loader />;
 };
 
 export default Loading;

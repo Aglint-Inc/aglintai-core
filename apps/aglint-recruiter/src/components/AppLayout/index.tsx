@@ -40,7 +40,7 @@ const DefaultCompanyLogo = () => (
   />
 );
 
-export default function AppLayout({ children, appRouter = false }) {
+export default function AppLayout({ children }) {
   const { checkPermissions } = useRolesAndPermissions();
   const { isShowFeature } = useFlags();
   const { recruiter, recruiter_user } = useTenant();
@@ -169,8 +169,7 @@ export default function AppLayout({ children, appRouter = false }) {
             isHorizontalNav ? '' : 'ml-16'
           }`}
         >
-          {appRouter ||
-          checkPermissions(PERMISSIONS[String(router.pathName)]) ? (
+          {checkPermissions(PERMISSIONS[String(router.pathName)]) ? (
             children
           ) : (
             <NotFound />

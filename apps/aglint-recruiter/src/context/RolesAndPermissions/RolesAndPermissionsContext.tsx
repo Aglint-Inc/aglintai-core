@@ -48,7 +48,7 @@ export const RolesAndPermissionsProvider = ({
         (prev, curr) =>
           prev &&
           Boolean(
-            userPermissions['permissions'][curr] || curr === 'authorized',
+            userPermissions.permissions.includes(curr) || curr === 'authorized',
           ),
         true,
       )
