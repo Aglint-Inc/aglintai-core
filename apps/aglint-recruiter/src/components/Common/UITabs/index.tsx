@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 interface Tab {
   id: string;
   name: string;
-  tabComp: JSX.Element;
+  tabComp?: JSX.Element;
 }
 
 export default function UITabs({
@@ -97,6 +97,8 @@ export default function UITabs({
   useEffect(() => {
     setActiveTab(defaultValue || tabs[0].id);
   }, []);
+
+  const isContentPreset = !!tabs.filter((tab) => tab.tabComp)?.length;
   return (
     <div className={`w-full ${vertical ? 'flex' : ''}`}>
       <div
@@ -161,18 +163,20 @@ export default function UITabs({
           />
         </div>
       </div>
-      <div className={`${vertical ? 'ml-4 flex-1' : 'mt-4'}`}>
-        {tabs.map((tab) => (
-          <div
-            key={tab.id}
-            className={`${activeTab === tab.id ? 'block' : 'hidden'}`}
-            role='tabpanel'
-            aria-labelledby={tab.id}
-          >
-            {tab.tabComp}
-          </div>
-        ))}
-      </div>
+      {isContentPreset && (
+        <div className={`${vertical ? 'ml-4 flex-1' : 'mt-4'}`}>
+          {tabs.map((tab) => (
+            <div
+              key={tab.id}
+              className={`${activeTab === tab.id ? 'block' : 'hidden'}`}
+              role='tabpanel'
+              aria-labelledby={tab.id}
+            >
+              {tab.tabComp}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
