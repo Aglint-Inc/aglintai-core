@@ -4267,8 +4267,9 @@ export const workflowTriggerSchema = z.union([
 ]);
 
 export const workflowTypeSchema = z.union([
-  z.literal("system"),
+  z.literal("company"),
   z.literal("job"),
+  z.literal("request"),
 ]);
 
 export const workflowInsertSchema = z.object({

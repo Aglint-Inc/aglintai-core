@@ -6822,7 +6822,7 @@ export type Database = {
         | "onRequestCancel"
         | "onRequestReschedule"
         | "onRequestInterviewerDecline"
-      workflow_type: "system" | "job"
+      workflow_type: "company" | "job" | "request"
     }
     CompositeTypes: {
       location_type: {

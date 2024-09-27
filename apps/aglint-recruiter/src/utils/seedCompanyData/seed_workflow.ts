@@ -126,7 +126,7 @@ export const modified_seed_workflow_actions: {
       title:
         'Send Slack and Email notifications to the Trainee interviewer for confirming whether He attended or not',
       trigger: 'interviewEnd',
-      workflow_type: 'system',
+      workflow_type: 'company',
     },
     actions: [
       {
