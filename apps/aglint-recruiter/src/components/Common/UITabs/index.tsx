@@ -10,6 +10,7 @@ export type UITabType = {
     id: string;
     name: string;
     content?: JSX.Element;
+
     icon?: IconName;
     iconComp?: JSX.Element;
   };
@@ -108,7 +109,7 @@ export default function UITabs({
 
   useEffect(() => {
     setActiveTab(defaultValue || tabs[0].id);
-  }, []);
+  }, [defaultValue]);
 
   const isContentPreset = !!tabs.filter((tab) => tab.content)?.length;
   return (
