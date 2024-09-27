@@ -132,7 +132,6 @@ export default function InterviewerDetailsPage() {
     interviewerDetails?.last_name ?? '',
   );
 
-  console.log('interviewerDetails :', interviewerDetails);
   //--------------------------------------
   if (isLoading)
     return (

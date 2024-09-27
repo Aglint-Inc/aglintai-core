@@ -10,7 +10,6 @@ import { CheckCircle2, Circle } from 'lucide-react';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { ScrollArea } from '@radix-ui/react-scroll-area';
 
 interface SetupCardProps {
   title: string;

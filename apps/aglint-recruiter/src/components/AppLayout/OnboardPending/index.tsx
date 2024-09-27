@@ -13,9 +13,9 @@ import {
   useOnboard,
 } from '@/authenticated/store/OnboardStore';
 import { UIButton } from '@/components/Common/UIButton';
+import UITabs from '@/components/Common/UITabs';
 
 import { SetupCard } from './SetupCard';
-import UITabs from '@/components/Common/UITabs';
 
 export const OnboardPending = () => {
   const { isCompanySetupPending, companySetupProgress, companySetupSteps } =
@@ -65,7 +65,7 @@ export const OnboardPending = () => {
     }
   };
 
-  const tabs = companySetupSteps.map((step, i) => ({
+  const tabs = companySetupSteps.map((step) => ({
     id: step.id,
     name: step.title,
 
@@ -187,31 +187,5 @@ const Content = ({ selectedStep }) => {
         navLink={selectedStep.navLink || ''}
       />
     </>
-  );
-};
-const NavList = ({ step, selectedStep, onClick }) => {
-  return (
-    <div
-      key={step.id}
-      className={`flex cursor-pointer items-center gap-2 rounded-lg p-2 transition-all ${
-        selectedStep?.id === step.id ? 'bg-primary/10' : 'hover:bg-secondary'
-      }`}
-      onClick={onClick}
-    >
-      <div
-        className={`flex h-4 w-4 items-center justify-center rounded-full ${step.isCompleted ? 'bg-green-500' : 'bg-transparent'}`}
-      >
-        {step.isCompleted ? (
-          <Check className='text-white' size={12} />
-        ) : (
-          <AlertCircle className='text-gray-500' size={15} />
-        )}
-      </div>
-      <h3
-        className={`text-sm font-medium ${step.isCompleted ? 'text-muted-foreground' : ''}`}
-      >
-        {step.title}
-      </h3>
-    </div>
   );
 };

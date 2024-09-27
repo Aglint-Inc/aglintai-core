@@ -1,9 +1,9 @@
-import { UIButton } from '@/components/Common/UIButton';
+import { debounce } from 'lodash';
+import { useCallback, useEffect, useState } from 'react';
+
+import UITabs from '@/components/Common/UITabs';
 
 import { type sectionKeys } from '..';
-import UITabs, { UITabType } from '@/components/Common/UITabs';
-import { useCallback, useEffect, useState } from 'react';
-import { debounce } from 'lodash';
 
 export const SideBar = ({
   scrollToSection,
