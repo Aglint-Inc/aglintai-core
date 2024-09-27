@@ -3,8 +3,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import axios from '@/client/axios';
+import { useTenant } from '@/company/hooks';
 import { app_modules } from '@/constant/role_and_permissions';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useSearchQuery } from '@/hooks/useSearchQuery';
 import { type GetRoleAndPermissionsAPI } from '@/pages/api/getRoleAndPermissions/type';
 import { type SetRoleAndPermissionAPI } from '@/pages/api/setRoleAndPermission/type';
@@ -15,7 +15,7 @@ export const useRoleAndPermissionsHook = () => {
     role: string;
     add: boolean;
   }>();
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ['app', recruiter?.id, 'role-and-permissions'],

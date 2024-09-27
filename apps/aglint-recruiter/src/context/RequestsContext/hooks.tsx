@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import { subscriptions } from '@/hooks/useRealtime';
 import {
   type GetRequestParams,
@@ -14,8 +15,6 @@ import {
 import { type RequestResponse } from '@/queries/requests/types';
 import { SafeObject } from '@/utils/safeObject';
 import { supabase } from '@/utils/supabase/client';
-
-import { useAuthDetails } from '../AuthContext/AuthContext';
 
 const defaultFilter = {
   is_new: false,
@@ -41,9 +40,9 @@ const defaultSections: { [_id in keyof RequestResponse]?: boolean } = {
 };
 
 export const useRequestsActions = () => {
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
 
-  const assigner_id = recruiterUser?.user_id;
+  const assigner_id = recruiter_user?.user_id;
 
   const [filters, setFilters] = useState<GetRequestParams['filters']>(
     structuredClone(defaultFilter),

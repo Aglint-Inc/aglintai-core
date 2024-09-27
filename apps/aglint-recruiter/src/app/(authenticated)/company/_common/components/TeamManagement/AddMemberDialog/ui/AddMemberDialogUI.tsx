@@ -16,11 +16,11 @@ import {
 import converter from 'number-to-words';
 import { type Dispatch, type SetStateAction } from 'react';
 
-import { type useRolesOptions } from '@/authenticated/hooks/useRolesOptions';
+import type { useTenant, useTenantRoles } from '@/company/hooks';
+import type { useTenantOfficeLocations } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { type useAllDepartments } from '@/queries/departments';
-import { type useAllOfficeLocations } from '@/queries/officeLocations';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { reinviteUser } from '../../utils';
@@ -31,9 +31,9 @@ type Props = {
   menu: 'addMember' | 'pendingMember';
   formError: InviteUserFormErrorType;
   setForm: Dispatch<SetStateAction<InviteUserFormType>>;
-  locations: ReturnType<typeof useAllOfficeLocations>['data'];
+  locations: ReturnType<typeof useTenantOfficeLocations>['data'];
   departments: ReturnType<typeof useAllDepartments>['data'];
-  roleOptions: ReturnType<typeof useRolesOptions>['data'];
+  roleOptions: ReturnType<typeof useTenantRoles>['data'];
   memberList: {
     id: string;
     name: string;
@@ -41,7 +41,7 @@ type Props = {
   pendingList: RecruiterUserType[];
   isResendDisable: string;
   setResendDisable: Dispatch<SetStateAction<string>>;
-  recruiterUser: RecruiterUserType;
+  recruiterUser: ReturnType<typeof useTenant>['recruiter_user'];
 };
 
 export const AddMemberDialogUI = ({

@@ -1,13 +1,13 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { type getInterviewModulesType } from '@/pages/api/scheduling/get_interview_modules';
 
 import { interviewModuleKeys } from './keys';
 
 export const useInterviewModules = () => {
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   const queryClient = useQueryClient();
   const { queryKey } = interviewModuleKeys.interview_module();
   const response = useQuery({

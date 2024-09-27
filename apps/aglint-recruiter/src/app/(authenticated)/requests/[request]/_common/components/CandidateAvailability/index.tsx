@@ -21,11 +21,11 @@ import { useCandidateAvailability, useMeetingList } from '@requests/hooks';
 import { type Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import { UIDatePicker } from '@/components/Common/UIDatePicker';
 import UIDrawer from '@/components/Common/UIDrawer';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type Request as RequestType } from '@/queries/requests/types';
 import { getCompanyDaysCnt } from '@/services/CandidateScheduleV2/utils/companyWorkingDays';
 import { mailSender } from '@/utils/mailSender';
@@ -50,7 +50,7 @@ function CandidateAvailability({
     reRequestAvailability,
     candidateAvailabilityIdForReRequest,
   } = useCandidateAvailabilitySchedulingFlowStore();
-  const { recruiter, recruiterUser } = useAuthDetails();
+  const { recruiter, recruiter_user } = useTenant();
   const selectedSessions = selectedRequest.request_relation;
   // states
   const [selectedDays, setSelectedDays] = useState(DAYS_LIST[1]);
@@ -111,7 +111,7 @@ function CandidateAvailability({
       try {
         const payload: TargetApiPayloadType<'availabilityReqResend_email_candidate'> =
           {
-            recruiter_user_id: recruiterUser?.user_id ?? '',
+            recruiter_user_id: recruiter_user?.user_id ?? '',
             avail_req_id: candidateAvailabilityIdForReRequest,
           };
         mailSender({
@@ -179,7 +179,7 @@ function CandidateAvailability({
       );
       const payload: TargetApiPayloadType<'sendAvailabilityRequest_email_applicant'> =
         {
-          organizer_user_id: recruiterUser?.user_id ?? '',
+          organizer_user_id: recruiter_user?.user_id ?? '',
           avail_req_id: result?.id ?? '',
         };
 

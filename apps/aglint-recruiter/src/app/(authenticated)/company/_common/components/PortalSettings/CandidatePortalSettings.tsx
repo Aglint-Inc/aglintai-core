@@ -1,6 +1,7 @@
 'use client';
 
-import { usePortalSettings } from '../../hooks/hook';
+import { usePortalSettings } from '@/company/hooks/usePortalSettings';
+
 import AboutCompany from './AboutCompany';
 import CandidateGreeting from './CandidateGreeting';
 import { CoverImage } from './CoverImage';

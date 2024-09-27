@@ -24,10 +24,10 @@ import { debounce } from 'lodash';
 import { Loader2 } from 'lucide-react';
 import { useCallback, useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import { Loader } from '@/components/Common/Loader';
 import { UIPageLayout } from '@/components/Common/UIPageLayout';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
@@ -90,7 +90,7 @@ const JobEmailTemplatesDashboardBreadCrumbs = () => {
 
 const JobEmailTemplates = ({ setSaving }) => {
   const { job } = useJob();
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   const {
     editTemp,
     isloadTiptap,

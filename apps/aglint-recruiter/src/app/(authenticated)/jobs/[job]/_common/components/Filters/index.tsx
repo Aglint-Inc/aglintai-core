@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 
+import { useFlags } from '@/company/hooks/useFlags';
 import FilterHeader from '@/components/Common/FilterHeader';
 import {
   arrayToNestedObject,
   nestedObjectToArray,
 } from '@/components/Common/FilterHeader/filters/utils';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import {
   useApplicationsActions,
@@ -18,7 +18,7 @@ import type { Applications } from '@/job/types';
 import { capitalize } from '@/utils/text/textUtils';
 
 export const Filters = () => {
-  const { isShowFeature } = useAuthDetails();
+  const { isShowFeature } = useFlags();
   const {
     interviewPlans: { data: interviewPlans },
     job: { application_match: matches },

@@ -1,8 +1,8 @@
 import { getFullName } from '@aglint/shared-utils';
 import { type Dispatch, type SetStateAction } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import { useTeamMembers } from '@/company/hooks/useTeamMembers';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useMemberList } from '@/hooks/useMemberList';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
@@ -26,7 +26,7 @@ export const EditUser = ({
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const router = useRouterPro();
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
   const { activeMembers } = useTeamMembers();
   const user_id = router.params.user as string;
   const { refetch: interviewerDetailsRefetch } = useInterviewer();
@@ -36,7 +36,7 @@ export const EditUser = ({
     (member) => member.user_id === user_id,
   ) as memberDetailsType;
 
-  const isAdmin = recruiterUser?.role === 'admin';
+  const isAdmin = recruiter_user?.role === 'admin';
 
   const actMembers = activeMembers as activeMembersType;
 
@@ -50,7 +50,7 @@ export const EditUser = ({
               id: mem.user_id ?? '',
               name: getFullName(mem?.first_name ?? '', mem?.last_name ?? ''),
             }))
-            .filter((mem) => mem.id !== recruiterUser.user_id)}
+            .filter((mem) => mem.id !== recruiter_user.user_id)}
           member={details}
           refetch={async () => {
             await interviewerDetailsRefetch();

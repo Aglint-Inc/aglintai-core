@@ -11,6 +11,7 @@ import { MoreHorizontal } from 'lucide-react';
 import type { PropsWithChildren } from 'react';
 
 import { WithPermission } from '@/components/withPermission';
+import type { Workflow } from '@/types/workflow.types';
 import { DeletePopup } from '@/workflow//components/deletePopup';
 import { BreadCrumbs } from '@/workflow/components/breadCrumbs';
 import { WorkflowProvider } from '@/workflow/contexts';
@@ -52,7 +53,7 @@ const Edit = () => {
   const handleDelete = () => {
     setDeletion({
       open: true,
-      workflow: { id: workflow.id, jobs: workflow.jobs },
+      workflow: { id: workflow.id, jobs: workflow.jobs as Workflow['jobs'] },
     });
   };
 

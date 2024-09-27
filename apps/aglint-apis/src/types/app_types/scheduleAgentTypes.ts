@@ -2,7 +2,7 @@ import {
   InterviewMeetingTypeDb,
   InterviewSessionTypeDB,
   SessionsCombType,
-  schedulingSettingType,
+  SchedulingSettingType,
 } from '@aglint/shared-types';
 import {z} from 'zod';
 
@@ -48,7 +48,7 @@ export type CandidateInfoType = {
   application_id: string;
   inter_dur_days: number;
   candidate_id: string;
-  comp_scheduling_setting: schedulingSettingType;
+  comp_scheduling_setting: SchedulingSettingType;
   all_slots: SessionsCombType[][][];
   // updates
   tool_invocations: ScheduleTool[];

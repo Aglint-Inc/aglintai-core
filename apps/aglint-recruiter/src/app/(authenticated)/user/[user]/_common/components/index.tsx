@@ -1,17 +1,17 @@
 import {
   type DatabaseTable,
-  type schedulingSettingType,
+  type SchedulingSettingType,
 } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { useInterviewsByUserId } from '@interviews/hooks/useInterviewsByUserId';
 import { useParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
+import { useFlags } from '@/company/hooks/useFlags';
 import CalendarComp from '@/components/Common/Calendar/Calendar';
 import Heatmap from '@/components/Common/Heatmap/HeatmapUser';
 import { Loader } from '@/components/Common/Loader';
 import UISectionCard from '@/components/Common/UISectionCard';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import {
@@ -45,8 +45,8 @@ export type sectionKeys =
 export default function InterviewerDetailsPage() {
   //scrolling-------------------
   const [activeSection, setActiveSection] = useState('overview');
-
-  const { isShowFeature } = useAuthDetails();
+  // const [isTopBarVisible, setIsTopBarVisible] = useState<boolean>(false);
+  const { isShowFeature } = useFlags();
   const sectionRefs = {
     overview: useRef<HTMLDivElement>(null),
     qualifications: useRef<HTMLDivElement>(null),
@@ -110,7 +110,7 @@ export default function InterviewerDetailsPage() {
   // ---------------- data
 
   const interviewLoad = interviewerDetails?.scheduling_settings
-    ?.interviewLoad as schedulingSettingType['interviewLoad'];
+    ?.interviewLoad as SchedulingSettingType['interviewLoad'];
 
   const interviewType =
     interviewerDetails?.interview_type as InterviewerDetailType['interview_type'];

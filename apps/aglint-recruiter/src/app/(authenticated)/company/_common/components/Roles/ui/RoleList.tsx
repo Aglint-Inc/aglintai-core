@@ -3,9 +3,9 @@ import { Badge } from '@components/ui/badge';
 import { TableCell, TableRow } from '@components/ui/table';
 import { CirclePlus } from 'lucide-react';
 
+import type { useTenantMembers } from '@/company/hooks';
 import { type getRoleAndPermissionsWithUserCount } from '@/company/hooks/useRoleAndPermissionsHook';
 import { UIButton } from '@/components/Common/UIButton';
-import { type useAllMembers } from '@/queries/members';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 type getRoleAndPermissionsWithUserCountType = Awaited<
@@ -16,7 +16,7 @@ type Props = {
   role: getRoleAndPermissionsWithUserCountType;
   details: getRoleAndPermissionsWithUserCountType;
   count: number;
-  members: ReturnType<typeof useAllMembers>['members'];
+  members: ReturnType<typeof useTenantMembers>['members'];
   // eslint-disable-next-line no-unused-vars
   onClickAdd: (e: any) => void;
   onClickRow: () => void;

@@ -1,18 +1,20 @@
 import {
   type employmentTypeEnum,
   type RecruiterUserType,
-  type schedulingSettingType,
+  type SchedulingSettingType,
 } from '@aglint/shared-types';
 import { useToast } from '@components/hooks/use-toast';
 import { useState } from 'react';
 
-import { useRolesOptions } from '@/authenticated/hooks/useRolesOptions';
+import {
+  useTenantMembers,
+  useTenantOfficeLocations,
+  useTenantRoles,
+} from '@/company/hooks';
+import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useAllDepartments } from '@/queries/departments';
-import { useAllMembers } from '@/queries/members';
-import { useAllOfficeLocations } from '@/queries/officeLocations';
 import timeZone from '@/utils/timeZone';
 
 import { inviteUserApi } from '../utils';
@@ -62,10 +64,10 @@ const AddMember = ({
   };
 }) => {
   const { toast } = useToast();
-  const { recruiter, recruiterUser } = useAuthDetails();
-  const { data: locations } = useAllOfficeLocations();
+  const { recruiter, recruiter_user } = useTenant();
+  const { data: locations } = useTenantOfficeLocations();
   const { data: departments } = useAllDepartments();
-  const { refetchMembers } = useAllMembers();
+  const { refetchMembers } = useTenantMembers();
   const initform = {
     first_name: null,
     last_name: null,
@@ -94,7 +96,7 @@ const AddMember = ({
   });
   const [isDisable, setIsDisable] = useState(false);
   const [isResendDisable, setResendDisable] = useState<string>(null);
-  const { data: roleOptions } = useRolesOptions();
+  const { data: roleOptions } = useTenantRoles();
 
   const checkValidation = () => {
     let flag = false;
@@ -107,10 +109,7 @@ const AddMember = ({
       temp = { ...temp, email: true };
       flag = true;
     } else if (
-      !(
-        form?.email?.split('@')[1] === recruiter?.email?.split('@')[1] ||
-        recruiterUser.primary
-      )
+      !(form?.email?.split('@')[1] === recruiter?.email?.split('@')[1])
     ) {
       toast({
         variant: 'destructive',
@@ -174,7 +173,7 @@ const AddMember = ({
                 item.tzCode ===
                 locations.find((loc) => loc.id === form.location_id).timezone,
             ),
-          } as schedulingSettingType,
+          } as SchedulingSettingType,
         },
         recruiter.id,
       );
@@ -265,7 +264,7 @@ const AddMember = ({
         pendingList={pendingList}
         isResendDisable={isResendDisable}
         setResendDisable={setResendDisable}
-        recruiterUser={recruiterUser}
+        recruiterUser={recruiter_user}
       />
     </UIDialog>
   );

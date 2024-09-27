@@ -1,22 +1,20 @@
 /* eslint-disable no-unused-vars */
 import { createContext, type ReactNode, useContext } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 
 import { api } from './client';
 
 export const useHello = () => {
-  const { recruiter_id } = useAuthDetails();
   return api.example.helloWorld.hello.useQuery({
-    helloId: recruiter_id,
+    helloId: 'abc',
   });
 };
 
 export const useWorld = () => {
-  const { recruiter_id } = useAuthDetails();
   const { mutate } = api.example.helloWorld.world.useMutation();
   const handleWorld = () => {
-    mutate({ worldId: recruiter_id });
+    mutate({ worldId: 'def' });
   };
   return { handleWorld };
 };
@@ -39,13 +37,12 @@ const B = () => {
 };
 
 const useFooBarContext = () => {
-  const { recruiter_id } = useAuthDetails();
   const foo = api.example.fooBar.foo.useQuery({
-    fooId: recruiter_id,
+    fooId: 'abc',
   });
   const { mutate } = api.example.fooBar.bar.useMutation();
   const handleBar = () => {
-    mutate({ barId: recruiter_id });
+    mutate({ barId: 'def' });
   };
   return { foo, handleBar };
 };

@@ -4,9 +4,9 @@ import { Button } from '@components/ui/button';
 import { X } from 'lucide-react';
 import { useState } from 'react';
 
+import { useFlags } from '@/company/hooks/useFlags';
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import {
   useApplicationsActions,
   useApplicationsMove,
@@ -124,7 +124,7 @@ const MoveCandidateNew = () => {
 };
 
 const MoveCandidateInterview = () => {
-  const { isShowFeature } = useAuthDetails();
+  const { isShowFeature } = useFlags();
   const { mutate, isPending } = useApplicationsMove();
   const [request, setRequest] = useState<DatabaseTableInsert['request']>(null);
   const [priority, setPriority] = useState<'urgent' | 'standard'>('standard');

@@ -1,6 +1,6 @@
 import {
   type ScheduleAuthType,
-  type schedulingSettingType,
+  type SchedulingSettingType,
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
@@ -21,7 +21,7 @@ export const fetchMeetingsInfo = async (meeting_ids) => {
     organizer_id: meeting.recruiter_user.user_id,
     meeting_organizer_email: meeting.recruiter_user.email,
     scheduling_settings: meeting.recruiter_user
-      .scheduling_settings as schedulingSettingType,
+      .scheduling_settings as SchedulingSettingType,
     meeting_organizer_auth: meeting.recruiter_user
       .schedule_auth as ScheduleAuthType | null,
   }));

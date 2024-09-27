@@ -1,4 +1,3 @@
-import { type RecruiterUserType } from '@aglint/shared-types';
 import { type CustomSchedulingSettings } from '@aglint/shared-types/src/db/tables/common.types';
 import { type Dispatch, type SetStateAction, useRef, useState } from 'react';
 import {
@@ -9,11 +8,11 @@ import {
   validateString,
 } from 'src/app/_common/components/Profile/uitls';
 
+import { useTenant } from '@/company/hooks';
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { supabase } from '@/utils/supabase/client';
 import type timeZone from '@/utils/timeZone';
 import toast from '@/utils/toast';
@@ -45,37 +44,37 @@ export const EditUserDialog = ({
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   interviewerDetailsRefetch: () => void;
 }) => {
-  const { recruiterUser, setRecruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
   const [selectedTimeZone, setSelectedTimeZone] = useState(
-    recruiterUser?.scheduling_settings.timeZone || null,
+    recruiter_user?.scheduling_settings.timeZone || null,
   );
 
-  const recruUser = recruiterUser as RecruiterUserType;
+  const recruUser = recruiter_user;
   const initialProfileFormFields: FormFields = {
     first_name: {
       ...initialFormValues,
-      value: recruiterUser?.first_name ?? '',
+      value: recruiter_user?.first_name ?? '',
       required: true,
       label: 'First Name',
       placeholder: 'Enter your first name.',
     },
     last_name: {
       ...initialFormValues,
-      value: recruiterUser?.last_name ?? '',
+      value: recruiter_user?.last_name ?? '',
       required: true,
       label: 'Last Name',
       placeholder: 'Enter your last name.',
     },
     phone: {
       ...initialFormValues,
-      value: recruiterUser?.phone ?? '',
+      value: recruiter_user?.phone ?? '',
       validation: 'phone',
       label: 'Contact Number',
       required: false,
     },
     linked_in: {
       ...initialFormValues,
-      value: recruiterUser?.linked_in ?? '',
+      value: recruiter_user?.linked_in ?? '',
       validation: 'linkedIn',
       label: 'LinkedIn',
       required: false,
@@ -143,13 +142,13 @@ export const EditUserDialog = ({
         const { error } = handleValidate(profile);
 
         if (error) return;
-        let profile_image = recruiterUser?.profile_image;
+        let profile_image = recruiter_user?.profile_image;
         setLoading(true);
 
         if (isImageChanged && imageFile.current) {
           const { data } = await supabase.storage
             .from('recruiter-user')
-            .upload(`public/${recruiterUser?.user_id}`, imageFile.current, {
+            .upload(`public/${recruiter_user?.user_id}`, imageFile.current, {
               cacheControl: '3600',
               upsert: true,
             });
@@ -164,11 +163,11 @@ export const EditUserDialog = ({
         }
 
         const scheduling_settings = {
-          ...recruiterUser?.scheduling_settings,
+          ...recruiter_user?.scheduling_settings,
           timeZone: selectedTimeZone,
         } as CustomSchedulingSettings;
 
-        const user_id = recruiterUser?.user_id as string;
+        const user_id = recruiter_user?.user_id as string;
         await supabase
           .from('recruiter_user')
           .update({
@@ -183,15 +182,6 @@ export const EditUserDialog = ({
 
         // const profile_img = profile_image;
 
-        setRecruiterUser({
-          ...recruiterUser,
-          first_name: profile.first_name.value,
-          last_name: profile.last_name.value,
-          phone: profile.phone.value,
-          linked_in: profile.linked_in.value,
-          scheduling_settings,
-          profile_image,
-        });
         await interviewerDetailsRefetch();
         setProfileChange(false);
         setIsOpen(false);

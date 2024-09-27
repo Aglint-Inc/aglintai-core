@@ -4,11 +4,11 @@ import { RefreshCcw } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import { Loader } from '@/components/Common/Loader';
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
 import { mailSender } from '@/utils/mailSender';
 
@@ -20,7 +20,7 @@ function EmailPreviewSelfSchedule() {
   const params = useParams();
   const requestId = params?.request as string;
 
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
 
   const {
     requests: { data: requestList },
@@ -33,7 +33,7 @@ function EmailPreviewSelfSchedule() {
   const payload: TargetApiPayloadType<'sendSelfScheduleRequest_email_applicant'> =
     {
       is_preview: true,
-      organizer_id: recruiterUser?.user_id ?? '',
+      organizer_id: recruiter_user?.user_id ?? '',
       application_id: selectedRequest?.application_id,
     };
 

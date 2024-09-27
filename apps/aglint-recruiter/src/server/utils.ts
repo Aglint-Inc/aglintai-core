@@ -6,7 +6,7 @@ import {
 } from '@trpc/server/unstable-core-do-not-import';
 
 import type { AppRouter } from './api/root';
-import { UNAUTHORIZED } from './enums';
+import { ERRORS } from './enums';
 import { API_PERMISSIONS } from './permissions';
 
 type Procedures = AppRouter['_def']['procedures'];
@@ -39,8 +39,7 @@ const getPermissions = (
 export const authorize = (path, permissions) => {
   const input = path.split('.');
   const apiPermission = getPermissions(input);
-  if (!apiPermission)
-    throw new TRPCError({ code: 'UNAUTHORIZED', message: UNAUTHORIZED });
+  if (!apiPermission) throw new TRPCError(ERRORS.FORBIDDEN);
   return apiPermission.every((permission) => permissions.includes(permission));
 };
 

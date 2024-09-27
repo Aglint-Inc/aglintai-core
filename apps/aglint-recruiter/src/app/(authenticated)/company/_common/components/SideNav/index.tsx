@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
+import { useFlags } from '@/company/hooks/useFlags';
 import UITabs, { type UITabType } from '@/components/Common/UITabs';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { emailTemplateQueries } from '@/queries/email-templates';
@@ -10,7 +11,7 @@ import ROUTES from '@/utils/routing/routes';
 
 function VerticalNav() {
   const router = useRouterPro();
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const emailTemplates = useQuery(
     emailTemplateQueries.emailTemplates(recruiter.id),
   );
@@ -24,7 +25,7 @@ function VerticalNav() {
       );
     }
   }, [emailTemplates.isFetched, router.queryParams.email]);
-  const { isShowFeature } = useAuthDetails();
+  const { isShowFeature } = useFlags();
 
   const settingsItems = [
     {

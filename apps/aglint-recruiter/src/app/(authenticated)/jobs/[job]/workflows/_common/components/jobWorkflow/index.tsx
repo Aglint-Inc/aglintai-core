@@ -3,8 +3,8 @@
 import { toast } from '@components/hooks/use-toast';
 import { useEffect } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { cloneCompWorkflows } from '@/utils/clone/clonecompWorkflows';
 import { supabase } from '@/utils/supabase/client';
@@ -19,7 +19,7 @@ export default function EnhancedAutomationPage() {
   const { params } = useRouterPro();
   const job_id = params.job;
 
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   useEffect(() => {
     // TODO: handle diff cases
     if (status === 'success' && data) {

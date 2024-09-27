@@ -7,14 +7,14 @@ import {
   startOfWeek,
 } from 'date-fns';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { api, TRPC_CLIENT_CONTEXT } from '@/trpc/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { useAnalyticsContext } from '../../context/AnalyticsContext/AnalyticsContextProvider';
 
 export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
   const { data, isFetching, isError } = api.analytics.interview_count.useQuery(
     {
@@ -71,7 +71,7 @@ export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
   };
 }
 export function useDeclineCount() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
   const { data, isFetching, isError } =
     api.analytics.interview_decline.useQuery(

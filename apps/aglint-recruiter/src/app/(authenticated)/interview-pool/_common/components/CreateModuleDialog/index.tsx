@@ -1,5 +1,4 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { Button } from '@components/ui/button';
 import { Checkbox as ShadcnCheckbox } from '@components/ui/checkbox';
 import {
   Dialog,
@@ -11,27 +10,22 @@ import {
 import { Label } from '@components/ui/label';
 import { useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useRouterPro } from '@/hooks/useRouterPro';
 import {
   setIsCreateDialogOpen,
   setSelectedUsers,
   useModulesStore,
 } from '@/interview-pool/details/stores/store';
-import { createModule } from '@/interview-pool/utils/createModule';
+import { useCreateInterviewPool } from '@/interview-pool/hooks/useCreateInterviewPool';
 import { useAllDepartments } from '@/queries/departments';
-import ROUTES from '@/utils/routing/routes';
 import { capitalize } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 
 function CreateModuleDialog() {
-  const router = useRouterPro();
-  const { recruiter_id } = useAuthDetails();
   const { isCreateDialogOpen } = useModulesStore();
-  const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
   const [objective, setObjective] = useState('');
   const [selDepartment, setSelDepartment] =
@@ -39,7 +33,6 @@ function CreateModuleDialog() {
   const [isTraining, setIsTraining] = useState(false);
   const [nameError, setNameError] = useState(false);
   const [departmentError, setDepartmentError] = useState(false);
-
   const { data: departments } = useAllDepartments();
 
   const validate = () => {
@@ -56,29 +49,22 @@ function CreateModuleDialog() {
     return error;
   };
 
+  const { isPending, mutateAsync } = useCreateInterviewPool();
+
   const createModuleHandler = async () => {
-    if (!validate() && !loading) {
+    if (!validate() && !isPending) {
       try {
-        setLoading(true);
-        const res = await createModule({
+        await mutateAsync({
           name: name,
           description: objective,
           isTraining: isTraining,
-          recruiter_id,
           department_id: selDepartment.id,
         });
-        await router.push(
-          ROUTES['/interview-pool/[pool]']({
-            type_id: res.id,
-          }),
-        );
         setIsCreateDialogOpen(null);
         setSelectedUsers([]);
       } catch (e) {
         toast.error(e.message);
         setIsCreateDialogOpen(null);
-      } finally {
-        setLoading(true);
       }
     }
   };
@@ -169,15 +155,17 @@ function CreateModuleDialog() {
           </div>
         </div>
         <DialogFooter>
-          <Button
+          <UIButton
             variant='outline'
             onClick={() => {
               setIsCreateDialogOpen(false);
             }}
           >
             Cancel
-          </Button>
-          <Button onClick={createModuleHandler}>Create</Button>
+          </UIButton>
+          <UIButton isLoading={isPending} onClick={createModuleHandler}>
+            Create
+          </UIButton>
         </DialogFooter>
       </DialogContent>
     </Dialog>

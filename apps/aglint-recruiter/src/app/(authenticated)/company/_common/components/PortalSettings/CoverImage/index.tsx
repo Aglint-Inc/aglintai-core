@@ -3,10 +3,9 @@ import { ImagePlus } from 'lucide-react';
 import Image from 'next/image';
 import { type ChangeEvent, type DragEvent, useRef, useState } from 'react';
 
+import { usePortalSettings } from '@/company/hooks/usePortalSettings';
 import { Loader } from '@/components/Common/Loader';
 import UISectionCard from '@/components/Common/UISectionCard';
-
-import { usePortalSettings } from '../../../hooks/hook';
 
 export function CoverImage() {
   const { data, removeCover, updateCover, isCoverUploading, isCoverRemoving } =

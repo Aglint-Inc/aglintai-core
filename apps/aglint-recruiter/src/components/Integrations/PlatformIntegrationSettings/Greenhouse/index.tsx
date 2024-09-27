@@ -7,19 +7,15 @@ import { Checkbox } from '@components/ui/checkbox';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Lightbulb, Loader2 } from 'lucide-react';
-import React from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import {
-  useGreenhouseDetails,
-  useUpdateGreenhouseDetails,
-} from '@/queries/greenhouse';
+import { useTenant } from '@/company/hooks';
+import { useGreenhouseDetails, useUpdateGreenhouseDetails } from '@/queries/greenhouse';
 import { api } from '@/trpc/client';
 
 dayjs.extend(relativeTime);
 
 function GreenhouseSettings() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { mutateAsync: getGreenhouseSync } =
     api.ats.greenhouse.fullSync.useMutation();
   const { data, isPending, refetch } = useGreenhouseDetails();

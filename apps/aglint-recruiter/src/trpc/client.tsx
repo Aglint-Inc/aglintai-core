@@ -1,3 +1,4 @@
+'use client';
 import { type QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import {
@@ -11,6 +12,8 @@ import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server';
 import { useState } from 'react';
 import superjson from 'superjson';
 
+import { useLogout } from '@/authenticated/hooks/useLogout';
+
 import type { AppRouter } from '../server/api/root';
 import { createQueryClient } from './query-client';
 
@@ -20,13 +23,15 @@ import { createQueryClient } from './query-client';
 // import { splitLink } from '@trpc/client/links/splitLink';
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined;
-const getQueryClient = () => {
+const getQueryClient = (
+  logout?: (_queryClient: QueryClient) => Promise<void>,
+) => {
   if (typeof window === 'undefined') {
     // Server: always make a new query client
     return createQueryClient();
   }
   // Browser: use singleton pattern to keep the same query client
-  return (clientQueryClientSingleton ??= createQueryClient());
+  return (clientQueryClientSingleton ??= createQueryClient(logout));
 };
 
 // export const api = createTRPCClient<AppRouter>({
@@ -67,7 +72,8 @@ export type RouterOutputs = inferRouterOutputs<AppRouter>;
 export type Unvoid<T> = T extends void ? never : T;
 
 export function TRPCReactProvider(props: { children: React.ReactNode }) {
-  const queryClient = getQueryClient();
+  const { logout } = useLogout();
+  const queryClient = getQueryClient(logout);
 
   const url = getBaseUrl();
 

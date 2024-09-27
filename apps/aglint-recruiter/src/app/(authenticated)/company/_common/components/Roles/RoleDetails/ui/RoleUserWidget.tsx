@@ -3,8 +3,8 @@ import { Badge } from '@components/ui/badge';
 import Link from 'next/link';
 import React from 'react';
 
+import type { useTenantMembers } from '@/company/hooks';
 import { type GetRoleAndPermissionsAPI } from '@/pages/api/getRoleAndPermissions/type';
-import type { useAllMembers } from '@/queries/members';
 
 export const RoleUserWidget = ({
   role,
@@ -15,7 +15,7 @@ export const RoleUserWidget = ({
   >['rolesAndPermissions'][string] & {
     name: string;
   };
-  members: ReturnType<typeof useAllMembers>['members'];
+  members: ReturnType<typeof useTenantMembers>['members'];
 }) => {
   return (
     <>

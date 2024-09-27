@@ -1,6 +1,6 @@
 import {
   type InterviewLoadType,
-  type schedulingSettingType,
+  type SchedulingSettingType,
 } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
 import { ScrollArea } from '@components/ui/scroll-area';
@@ -39,7 +39,7 @@ export const EditAvailabiityDialog = ({
 }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [workingHours, setWorkingHours] = useState<
-    schedulingSettingType['workingHours']
+    SchedulingSettingType['workingHours']
   >([]);
   const [timeZone, setTimeZone] = useState<TimeZoneType | null>(null);
   const [freeKeyWords, setFreeKeywords] = useState<string[]>([]);
@@ -109,7 +109,7 @@ export const EditAvailabiityDialog = ({
     if (schedulingSettings) {
       const schedulingSettingData = cloneDeep(
         schedulingSettings,
-      ) as schedulingSettingType;
+      ) as SchedulingSettingType;
 
       const workingHoursCopy = cloneDeep(schedulingSettingData.workingHours);
       const timeZoneCopy = cloneDeep(
@@ -172,7 +172,7 @@ export const EditAvailabiityDialog = ({
           outOfOffice: outOfOffice,
           recruitingBlocks: recruitingBlocks,
         },
-      } as schedulingSettingType;
+      } as SchedulingSettingType;
       await supabase
         .from('recruiter_user')
         .update({

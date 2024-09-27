@@ -12,7 +12,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 import { useAllIntegrations } from '@/authenticated/hooks';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import {
@@ -172,7 +172,7 @@ export function AddJob() {
 }
 
 const Sync = () => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { handleJobsSync } = useJobs();
   const [load, setLoad] = useState(false);
 

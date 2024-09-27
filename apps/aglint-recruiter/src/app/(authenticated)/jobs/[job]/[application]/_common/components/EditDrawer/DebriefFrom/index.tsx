@@ -4,8 +4,8 @@ import MembersAutoComplete, {
   type MemberTypeAutoComplete,
 } from 'src/app/_common/components/MembersTextField';
 
+import { useTenant } from '@/company/hooks';
 import UITextField from '@/components/Common/UITextField';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { ScheduleTypeField } from '@/job/interview-plan/components/sessionForms';
 import {
   type BodyParamsFetchUserDetails,
@@ -20,7 +20,7 @@ import {
 import SessionDuration from '../DurationDropdown';
 
 function DebriedForm() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const [members, setMembers] = useState<CompanyMembersAPI>([]);
   const { editSession, debriefMembers, errorValidation } =
     useEditSessionDrawerStore((state) => ({

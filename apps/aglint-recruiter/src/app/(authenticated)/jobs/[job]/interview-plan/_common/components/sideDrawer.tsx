@@ -5,9 +5,9 @@ import { DialogDescription, DialogTitle } from '@components/ui/dialog';
 import { FileQuestion } from 'lucide-react';
 import { useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDrawer from '@/components/Common/UIDrawer';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJobInterviewPlan } from '@/job/interview-plan/hooks';
 import { type CompanyMember } from '@/queries/company-members';
@@ -351,11 +351,13 @@ const CreateDebrief = ({
   interview_plan_id,
   order,
 }: DrawerProps) => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { handleCreateDebriefSession } = useJobInterviewPlan();
   const [fields, setFields] = useState(
     getDebriefFields(initialDebriefFields, {
+      // @ts-ignore
       members_meta: recruiter?.scheduling_settings?.debrief_defaults,
+      // TODO: fix with null checks
     }),
   );
   const { toast } = useToast();

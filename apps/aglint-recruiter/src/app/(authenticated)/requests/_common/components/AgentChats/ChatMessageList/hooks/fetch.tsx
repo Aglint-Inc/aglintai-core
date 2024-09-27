@@ -5,7 +5,7 @@ import {
 import { type FunctionNames } from '@aglint/shared-types/src/aglintApi/supervisor/functions';
 import axios from 'axios';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
@@ -24,8 +24,8 @@ import { scrollToElementById } from './scroll';
 export type ChatType = Awaited<ReturnType<typeof fetchUserChat>>[0];
 
 export const useUserChat = () => {
-  const { recruiter, recruiterUser } = useAuthDetails();
-  const user_id = recruiterUser.user_id;
+  const { recruiter, recruiter_user } = useTenant();
+  const user_id = recruiter_user.user_id;
   const { isFetchingNextPage, tempLoading, cursor, chatList } =
     useAgentChatStore((state) => ({
       isFetchingNextPage: state.isFetchingNextPage,
@@ -98,7 +98,7 @@ export const useUserChat = () => {
   const fetchChat = async (cursor: number) => {
     try {
       setTempLoading(true);
-      const res = await fetchUserChat(recruiterUser.user_id, cursor);
+      const res = await fetchUserChat(recruiter_user.user_id, cursor);
       setCursor(cursor + 11);
       if (res.length === 0) {
         setHasNextPage(false);
@@ -141,7 +141,7 @@ export const useUserChat = () => {
       const bodyParams: ApiBodyAgentSupervisor = {
         recruiter_id: recruiter.id,
         history: [...oldMessages, newMessage],
-        user_id: recruiterUser.user_id,
+        user_id: recruiter_user.user_id,
         applications: selectedItems?.applicant_name,
         jobs: selectedItems?.job_title,
         sessions: selectedItems?.interview_name,

@@ -1,48 +1,32 @@
-import { Toaster } from '@components/ui/toaster';
-import { TooltipProvider } from '@components/ui/tooltip';
-import { PostHogProvider } from 'posthog-js/react';
-import { type PropsWithChildren, Suspense } from 'react';
+import { TooltipProvider } from '@radix-ui/react-tooltip';
+import { type PropsWithChildren } from 'react';
 
+import AppLayout from '@/components/AppLayout';
 import { JobsProvider } from '@/jobs/contexts';
 import { WorkflowsProvider } from '@/workflows/contexts';
 
-import AppLayout from '../components/AppLayout';
-import { AuthProvider } from '../context/AuthContext/AuthContext';
-import { RolesAndPermissionsProvider } from '../context/RolesAndPermissions/RolesAndPermissionsContext';
 import { TRPCReactProvider } from '../trpc/client';
 import { BreadcrumProvider } from './BreadcrumContext/BreadcrumContext';
+import { RolesAndPermissionsProvider } from './RolesAndPermissions/RolesAndPermissionsContext';
 
-export const PrivateProviders = ({
-  children,
-  appRouter = false,
-}: PropsWithChildren<{ appRouter?: boolean }>) => {
+export const PrivateProviders = ({ children }: PropsWithChildren) => {
   return (
     <PublicProviders>
-      <PostHogProvider>
-        <AuthProvider>
-          <RolesAndPermissionsProvider>
-            <BreadcrumProvider>
-              <JobsProvider>
-                <WorkflowsProvider>
-                  <TooltipProvider>
-                    <AppLayout appRouter={appRouter}>{children}</AppLayout>
-                  </TooltipProvider>
-                </WorkflowsProvider>
-              </JobsProvider>
-            </BreadcrumProvider>
-          </RolesAndPermissionsProvider>
-        </AuthProvider>
-      </PostHogProvider>
+      <RolesAndPermissionsProvider>
+        <BreadcrumProvider>
+          <JobsProvider>
+            <WorkflowsProvider>
+              <TooltipProvider>
+                <AppLayout>{children}</AppLayout>
+              </TooltipProvider>
+            </WorkflowsProvider>
+          </JobsProvider>
+        </BreadcrumProvider>
+      </RolesAndPermissionsProvider>
     </PublicProviders>
   );
 };
 
 export const PublicProviders = ({ children }: PropsWithChildren) => {
-  return (
-    <Suspense>
-      <Toaster />
-      <TRPCReactProvider>{children}</TRPCReactProvider>
-      <Toaster />
-    </Suspense>
-  );
+  return <TRPCReactProvider>{children}</TRPCReactProvider>;
 };

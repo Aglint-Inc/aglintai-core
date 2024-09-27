@@ -11,7 +11,7 @@ import {
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
@@ -46,7 +46,7 @@ function ImageUpload({
   const router = useRouterPro();
   const [isHovered, setIsHovered] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
 
   const defaultImage = '/images/default/company.svg';
   const displayImage = image || defaultImage;
@@ -63,7 +63,7 @@ function ImageUpload({
 
     const { data } = await supabase.storage
       .from(table)
-      .upload(`public/${recruiterUser?.user_id}`, file, {
+      .upload(`public/${recruiter_user?.user_id}`, file, {
         cacheControl: '3600',
         upsert: true,
       });

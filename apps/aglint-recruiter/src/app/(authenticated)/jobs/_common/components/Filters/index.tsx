@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import { useMemo, useState } from 'react';
 
+import { useTenant, useTenantMembers } from '@/company/hooks';
+import { useFlags } from '@/company/hooks/useFlags';
 import FilterHeader from '@/components/Common/FilterHeader';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type Job } from '@/queries/jobs/types';
-import { useAllMembers } from '@/queries/members';
 
 const initalFilterValue = {
   status: [],
@@ -47,7 +47,7 @@ function FilterJobDashboard({
   // eslint-disable-next-line no-unused-vars
   handlerFilter: (value: string) => void;
 }) {
-  const { isShowFeature } = useAuthDetails();
+  const { isShowFeature } = useFlags();
   const isResetAll = _.isEqual(filterValues, initalFilterValue);
 
   return (
@@ -155,8 +155,8 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
     recruiter: {
       recruiter_preferences: { ats },
     },
-  } = useAuthDetails();
-  const { members } = useAllMembers();
+  } = useTenant();
+  const { members } = useTenantMembers();
   const sortOptions = {
     options: ['published_date', 'name', 'status'] as const,
     order: ['descending', 'ascending'] as const,

@@ -1,6 +1,5 @@
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 
-import { useCompanyDetailComp } from '../hooks/hook';
 import CompanyInfoComp from './CompanyDetails';
 import Holidays from './Holidays';
 import PortalSettings from './PortalSettings';
@@ -8,15 +7,14 @@ import RolesAndPermissionsComponent from './Roles';
 import SchedulingSettings from './Scheduling';
 import SchedulingReasons from './SchedulingReason';
 import SettingsSubNabItem from './SideNav';
-import type { companySettingTabsType } from './SideNav/utils';
+import type { CompanySettingTabsType } from './SideNav/utils';
 import TeamManagement from './TeamManagement';
 import SchedulerEmailTemps from './Templates';
 import WorkingHour from './WorkingHours';
 
 const CompanyDetailComp = () => {
-  const { recruiter } = useAuthDetails();
-  const { updateSettings, tab: tempTab, setIsSaving } = useCompanyDetailComp();
-  const tab = tempTab as unknown as companySettingTabsType;
+  const router = useRouterPro();
+  const tab = router?.queryParams?.tab as CompanySettingTabsType;
   return (
     <div className='container mx-auto'>
       <div className='mb-6 flex gap-6'>
@@ -30,23 +28,14 @@ const CompanyDetailComp = () => {
           {tab === 'team' && <TeamManagement />}
           {tab === 'roles' && <RolesAndPermissionsComponent />}
           {tab === 'schedulingReasons' && <SchedulingReasons />}
-          {tab === 'workingHours' && (
-            <WorkingHour
-              initialData={recruiter.scheduling_settings}
-              updateSettings={updateSettings}
-            />
-          )}
+          {tab === 'workingHours' && <WorkingHour />}
           {tab === 'holidays' && <Holidays />}
-          {tab === 'scheduling' && (
-            <SchedulingSettings updateSettings={updateSettings} />
-          )}
+          {tab === 'scheduling' && <SchedulingSettings />}
           {tab === 'portalSettings' && <PortalSettings />}
           {(tab === 'emailTemplate' ||
             tab === 'slackTemplate' ||
             tab === 'agentTemplate' ||
-            tab === 'calenderTemplate') && (
-            <SchedulerEmailTemps setSaving={setIsSaving} />
-          )}
+            tab === 'calenderTemplate') && <SchedulerEmailTemps />}
         </div>
       </div>
     </div>

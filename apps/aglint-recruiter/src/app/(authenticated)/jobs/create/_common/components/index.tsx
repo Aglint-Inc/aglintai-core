@@ -17,7 +17,7 @@ import {
   useState,
 } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJobs } from '@/jobs/hooks';
 import type { Form } from '@/jobs/types';
@@ -48,7 +48,7 @@ const JobCreateComponent = () => {
 };
 
 const JobCreate = () => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const initialCompany = recruiter?.name ?? '';
   const initialTitle = recruiter?.name ? `${initialCompany}'s first job` : '';
   const [fields, setFields] = useState<Form>({

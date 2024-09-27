@@ -2,7 +2,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { useRequests } from '@/context/RequestsContext';
 import { SafeObject } from '@/utils/safeObject';
 import { supabase } from '@/utils/supabase/client';
@@ -15,7 +15,7 @@ import CreateSchedulePopUp from './CreateSchedulePopUp';
 import { scheduleTypes, type selectedItemsType } from './utils';
 
 function AgentInputBox() {
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   const {
     text,
     setText,

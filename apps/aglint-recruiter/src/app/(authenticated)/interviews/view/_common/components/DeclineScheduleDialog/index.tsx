@@ -3,10 +3,10 @@ import { useToast } from '@components/hooks/use-toast';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { useEffect, useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { UITextArea } from '@/components/Common/UITextArea';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
 import { supabase } from '@/utils/supabase/client';
 
@@ -21,7 +21,7 @@ function DeclineScheduleDialog() {
 
   const { sessionUser, isDeclineDialogOpen } = useScheduleDetailsStore();
   const { toast } = useToast();
-  const { recruiter, recruiterUser } = useAuthDetails();
+  const { recruiter, recruiter_user } = useTenant();
   const [isSaving, setIsSaving] = useState(false);
   const [reason, setReason] = useState('');
   const [notes, setNotes] = useState('');
@@ -79,7 +79,7 @@ function DeclineScheduleDialog() {
           application_id: schedule.application_id,
           logged_by: 'user',
           supabase: supabase,
-          created_by: recruiterUser?.user_id ?? '',
+          created_by: recruiter_user?.user_id ?? '',
           metadata,
         });
 

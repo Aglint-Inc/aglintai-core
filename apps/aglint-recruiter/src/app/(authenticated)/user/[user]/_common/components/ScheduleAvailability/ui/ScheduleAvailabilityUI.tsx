@@ -1,4 +1,4 @@
-import { type schedulingSettingType } from '@aglint/shared-types';
+import { type SchedulingSettingType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils';
 import {
   Table,
@@ -17,7 +17,7 @@ import { type InterviewLoadItemType, type ScheduleKeywordType } from '..';
 type Props = {
   interviewLoads: InterviewLoadItemType[];
   timeZone: string;
-  workingHours: schedulingSettingType['workingHours'];
+  workingHours: SchedulingSettingType['workingHours'];
   scheduleKeywords: ScheduleKeywordType[];
 };
 export const ScheduleAvailabilityUI = ({
@@ -95,7 +95,7 @@ const SectionSubCard = ({
 const WorkHourList = ({
   day,
 }: {
-  day: schedulingSettingType['workingHours'][number];
+  day: SchedulingSettingType['workingHours'][number];
 }) => {
   const time =
     dayjsLocal()

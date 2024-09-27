@@ -1,10 +1,10 @@
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { api } from '@/trpc/client';
 
 import { useAnalyticsContext } from '../../context/AnalyticsContext/AnalyticsContextProvider';
 
 export function useInterviewerLeaderboard() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
   const { data, isFetching } = api.analytics.interviewer_leaderboard.useQuery(
     {
@@ -32,7 +32,7 @@ export function useInterviewerLeaderboard() {
   };
 }
 export function useInterviewer_upcoming() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
   const { data: interviewers, isFetching: iFInterviewers } =
     useInterviewerLeaderboard();
@@ -80,23 +80,24 @@ export function useInterviewer_upcoming() {
 }
 
 export function useInterviewerDeclines() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
-  const { data, isFetching, isError } = api.analytics.interviewer_rejections.useQuery(
-    {
-      recruiter_id: recruiter.id,
-      job_id: filters.job,
-      locations: filters.location && [filters.location],
-      departments: filters.department && [filters.department],
-      data_range: filters.dateRange,
-    },
-    {
-      enabled: !!recruiter.id,
-    },
-  );
+  const { data, isFetching, isError } =
+    api.analytics.interviewer_rejections.useQuery(
+      {
+        recruiter_id: recruiter.id,
+        job_id: filters.job,
+        locations: filters.location && [filters.location],
+        departments: filters.department && [filters.department],
+        data_range: filters.dateRange,
+      },
+      {
+        enabled: !!recruiter.id,
+      },
+    );
   return {
     data,
     isFetching: isFetching,
-    isError
+    isError,
   };
 }

@@ -3,9 +3,9 @@ import { ImagePlus, X } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
+import { usePortalSettings } from '@/company/hooks/usePortalSettings';
 import UISectionCard from '@/components/Common/UISectionCard';
 
-import { usePortalSettings } from '../../../hooks/hook';
 import { SliderImageUploadDialog } from './SliderImageUploadDialog';
 
 export function SliderImages() {

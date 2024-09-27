@@ -1,22 +1,16 @@
-import { supabaseWrap } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
 import axios from 'axios';
 import { Loader2 } from 'lucide-react';
 import { useEffect } from 'react';
 
-import {
-  AuthProvider,
-  useAuthDetails,
-} from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { supabase } from '@/utils/supabase/client';
+import { api } from '@/trpc/client';
 
 const AuthHoc = () => {
   return (
     <>
-      <AuthProvider>
-        <Google />
-      </AuthProvider>
+      <Google />
     </>
   );
 };
@@ -24,9 +18,10 @@ const AuthHoc = () => {
 const Google = () => {
   const router = useRouterPro();
   const { toast } = useToast();
-  const { recruiterUser, setRecruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
+  const { mutateAsync } = api.user.update_current_user.useMutation();
   useEffect(() => {
-    if (recruiterUser) {
+    if (recruiter_user) {
       const { code } = router.params;
       if (!code) return;
 
@@ -47,19 +42,10 @@ const Google = () => {
             expiry_date,
           };
 
-          setRecruiterUser((prev) => ({
-            ...prev,
+          await mutateAsync({
             email_auth: authEmailDetails,
-          }));
-
-          supabaseWrap(
-            await supabase
-              .from('recruiter_user')
-              .update({
-                email_auth: authEmailDetails,
-              })
-              .eq('user_id', recruiterUser.user_id),
-          );
+            user_id: recruiter_user.user_id,
+          });
 
           const path = localStorage.getItem('gmail-redirect-path');
           if (path) {
@@ -76,7 +62,7 @@ const Google = () => {
         }
       })();
     }
-  }, [router.isReady]);
+  }, [recruiter_user]);
 
   return (
     <>

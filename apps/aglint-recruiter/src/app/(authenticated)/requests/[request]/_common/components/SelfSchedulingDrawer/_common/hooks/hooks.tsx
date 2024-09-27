@@ -6,7 +6,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { useParams } from 'next/navigation';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import type {
   ApiBodyParamsSelfSchedule,
   ApiResponseSelfSchedule,
@@ -40,7 +40,7 @@ export const useSelfSchedulingDrawer = () => {
   const params = useParams();
   const requestId = params?.request as string;
 
-  const { recruiter, recruiterUser } = useAuthDetails();
+  const { recruiter, recruiter_user } = useTenant();
   const request_id = requestId || '';
   const { data } = useMeetingList();
   const allSessions = data || [];
@@ -208,7 +208,7 @@ export const useSelfSchedulingDrawer = () => {
       const bodyParams: ApiBodyParamsSelfSchedule = {
         dateRange,
         allSessions,
-        user_id: recruiterUser?.user_id ?? '',
+        user_id: recruiter_user?.user_id ?? '',
         selectedSlots,
         application_id,
         request_id,

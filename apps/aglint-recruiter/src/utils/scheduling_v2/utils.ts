@@ -5,7 +5,7 @@ import {
 } from '@aglint/shared-types';
 import {
   type holidayType,
-  type schedulingSettingType,
+  type SchedulingSettingType,
   type SessionInterviewerApiRespType,
   type SessionInterviewerType,
   type SessionsCombType,
@@ -87,7 +87,7 @@ export const convertIntToResp = (inters: SessionInterviewerType[]) => {
 };
 
 export const getNextWorkingDay = (
-  comp_schedule_setting: schedulingSettingType,
+  comp_schedule_setting: SchedulingSettingType,
   curr_day: Dayjs,
   day_gap = 1,
 ) => {

@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useRef, useState } from 'react';
 
 import type { useAllIntegrations } from '@/authenticated/hooks';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
 import ATSPopUps from '../ATSPopUps';
@@ -21,8 +21,7 @@ function ATSTools({
 }: Pick<ReturnType<typeof useAllIntegrations>, 'data' | 'invalidate'>) {
   const { toast } = useToast();
   const router = useRouterPro();
-  const { recruiter: tempRecruiter } = useAuthDetails();
-  const recruiter = tempRecruiter!;
+  const { recruiter } = useTenant();
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [reason, setReason] = useState<PopUpReasonTypes>();
@@ -65,7 +64,7 @@ function ATSTools({
                 responseRec.status === 200 &&
                 responseRec.data[0]?.greenhouse_key
               ) {
-                // Removedposthog.capture('Greenhouse Data Fetched');
+                //
               }
             } else {
               toast({
@@ -111,7 +110,7 @@ function ATSTools({
                 responseRec.status === 200 &&
                 responseRec.data[0]?.ashby_key
               ) {
-                //Removedposthog posthog.capture('Ashby Data Fetched');
+                //
               }
             } else {
               toast({
@@ -157,7 +156,7 @@ function ATSTools({
                 responseRec.status === 200 &&
                 responseRec.data[0]?.lever_key
               ) {
-                // Removed posthog.capture('Lever Data Fetched');
+                //
               }
             } else {
               toast({

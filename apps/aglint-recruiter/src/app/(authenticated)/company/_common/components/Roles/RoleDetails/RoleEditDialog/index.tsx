@@ -2,10 +2,10 @@ import { Button } from '@components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
+import { useTenantMembers } from '@/company/hooks';
 import { useRoleAndPermissionsHook } from '@/company/hooks/useRoleAndPermissionsHook';
 import UIDialog from '@/components/Common/UIDialog';
 import { updateMember } from '@/context/AuthContext/utils';
-import { useAllMembers } from '@/queries/members';
 
 import { RoleEditDialogUI } from './ui/RoleEditDialogUI';
 
@@ -18,7 +18,7 @@ function RoleEditDialog({
   role: { role: string; id: string; assignedTo: string[] };
   close: () => void;
 }) {
-  const { members } = useAllMembers();
+  const { members } = useTenantMembers();
   const { refetch } = useRoleAndPermissionsHook();
   const [search, setSearch] = useState('');
   const [selectedMember, setSelectedMember] = useState<

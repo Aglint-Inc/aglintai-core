@@ -82,7 +82,7 @@ const ConnectedJobs = () => {
   return (workflow?.jobs ?? []).map((job) => (
     <WorkflowJob
       key={job.id}
-      {...job}
+      {...(job as Workflow['jobs'][number])}
       devlinkProps={devlink}
       workflow_id={workflow?.id}
     />

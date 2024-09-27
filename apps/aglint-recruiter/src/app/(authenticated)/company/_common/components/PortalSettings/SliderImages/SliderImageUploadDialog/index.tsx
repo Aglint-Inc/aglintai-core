@@ -1,7 +1,7 @@
 import { DialogDescription } from '@components/ui/dialog';
 import { useState } from 'react';
 
-import { usePortalSettings } from '@/company/hooks/hook';
+import { usePortalSettings } from '@/company/hooks/usePortalSettings';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 

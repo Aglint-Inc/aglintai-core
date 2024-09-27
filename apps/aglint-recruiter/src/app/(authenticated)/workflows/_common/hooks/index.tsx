@@ -4,5 +4,7 @@ export { useWorkflowsActionsLoad } from './useWorkflowsActionsLoad';
 export { useWorkflowsDeletion } from './useWorkflowsDeletion';
 export { useWorkflowsFilters } from './useWorkflowsFilters';
 export { useWorkflowsInitial } from './useWorkflowsInitial';
+export { useWorkflowsJobFilter } from './useWorkflowsJobFilter';
 export { useWorkflowsPopup } from './useWorkflowsPopup';
+export { useWorkflowsRead } from './useWorkflowsRead';
 export { useWorkflowsStore } from './useWorkflowsStore';

@@ -2,10 +2,10 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { PencilIcon, Plus } from 'lucide-react';
 import { useState } from 'react';
 
+import { usePortalSettings } from '@/company/hooks/usePortalSettings';
 import { UIButton } from '@/components/Common/UIButton';
 import UISectionCard from '@/components/Common/UISectionCard';
 
-import { usePortalSettings } from '../../../hooks/hook';
 import { GreetingEditDialog } from './GreetingEditDialog';
 
 export default function CandidateGreeting() {

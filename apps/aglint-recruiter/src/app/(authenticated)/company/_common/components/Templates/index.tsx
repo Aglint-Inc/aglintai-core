@@ -19,10 +19,10 @@ import { debounce } from 'lodash';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import EmailPreviewPopover from '@/components/Common/EmailTemplateEditor/EmailPreviewPopover';
 import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import { UIButton } from '@/components/Common/UIButton';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { emailTemplateCopy } from '@/types/companyEmailTypes';
@@ -37,8 +37,8 @@ import {
   template_tabs,
 } from './utils';
 
-function SchedulerEmailTemps({ setSaving }) {
-  const { recruiter_id } = useAuthDetails();
+function SchedulerEmailTemps() {
+  const { recruiter_id } = useTenant();
   const [templates, setTemplates] = useState<
     DatabaseTable['company_email_template'][]
   >([]);
@@ -106,16 +106,12 @@ function SchedulerEmailTemps({ setSaving }) {
     updated_template: DatabaseTable['company_email_template'],
   ) {
     try {
-      setSaving('saving');
       supabaseWrap(
         await supabase
           .from('company_email_template')
           .update({ ...updated_template })
           .eq('id', updated_template.id),
       );
-      setTimeout(() => {
-        setSaving('saved');
-      }, 1000);
     } catch (err) {
       toast({
         variant: 'destructive',

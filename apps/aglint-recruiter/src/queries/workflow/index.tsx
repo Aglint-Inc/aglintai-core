@@ -5,48 +5,15 @@ import {
 import {
   useMutation,
   useMutationState,
-  useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type Workflow, type WorkflowAction } from '@/types/workflow.types';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
 import { workflowActionQueryKeys } from '../workflow-action/keys';
 import { workflowMutationKeys, workflowQueryKeys } from './keys';
-
-export const useWorkflowQuery = () => {
-  const { recruiter_id } = useAuthDetails();
-  const { queryKey } = workflowQueryKeys.workflows();
-  return useQuery({
-    queryKey,
-    queryFn: () => getWorkflows({ recruiter_id }),
-  });
-};
-type GetWorkflows = WorkflowKeys;
-
-const getWorkflows = async ({ recruiter_id }: GetWorkflows) => {
-  const { data, error } = await supabase
-    .from('workflow_view')
-    .select()
-    .order('created_at')
-    .eq('recruiter_id', recruiter_id);
-  if (error) throw new Error(error.message);
-  return data;
-};
-
-export const useWorkflowJobFilter = () => {
-  const { recruiter_id } = useAuthDetails();
-  const { queryKey } = workflowQueryKeys.workflow_job_filter();
-  return useQuery({
-    queryKey,
-    queryFn: async () =>
-      (await supabase.rpc('get_job_workflows', { recruiter_id }).throwOnError())
-        .data,
-  });
-};
 
 export const useWorkflowMutations = () => {
   const { mutationKey: createMutationKey } =
@@ -76,9 +43,6 @@ export const useWorkflowMutations = () => {
   return { create, update, remove, refresh };
 };
 
-type WorkflowKeys = {
-  recruiter_id: string;
-};
 export const useWorkflowDelete = () => {
   const { mutationKey } = workflowMutationKeys.workflows('DELETE');
   const { queryKey } = workflowQueryKeys.workflows();

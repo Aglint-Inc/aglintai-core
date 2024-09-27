@@ -1,4 +1,4 @@
-import { type schedulingSettingType } from '@aglint/shared-types';
+import { type SchedulingSettingType } from '@aglint/shared-types';
 import { Pencil } from 'lucide-react';
 import { useState } from 'react';
 
@@ -100,7 +100,7 @@ export default function ScheduleAvailability({
 
   const workingHours = schedulingSettings.workingHours.filter(
     (day) => day.isWorkDay,
-  ) as schedulingSettingType['workingHours'];
+  ) as SchedulingSettingType['workingHours'];
 
   return (
     <>

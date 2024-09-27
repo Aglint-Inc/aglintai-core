@@ -6,13 +6,13 @@ import { Switch } from '@components/ui/switch';
 import { CirclePlus, Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import { useTenantMembers } from '@/company/hooks';
 import { type useRoleAndPermissionsHook } from '@/company/hooks/useRoleAndPermissionsHook';
 import UISectionCard from '@/components/Common/UISectionCard';
 import { allPermissions } from '@/constant/role_and_permissions';
 import { useRolesAndPermissions as useRolesAndPermissionsContext } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSearchQuery } from '@/hooks/useSearchQuery';
 import { type GetRoleAndPermissionsAPI } from '@/pages/api/getRoleAndPermissions/type';
-import { useAllMembers } from '@/queries/members';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import RoleEditDialog from './RoleEditDialog';
@@ -52,7 +52,7 @@ function RoleDetails({
   const { queryParams } = useSearchQuery<{ add: boolean }>();
 
   const [editUser, setEditUser] = useState(false);
-  const { members } = useAllMembers();
+  const { members } = useTenantMembers();
   const activePermissionCount = role.permissions.filter(
     (item) => item.isActive && allPermissions.includes(item.name),
   ).length;

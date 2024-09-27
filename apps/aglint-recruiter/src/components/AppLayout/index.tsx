@@ -1,3 +1,5 @@
+'use client';
+
 import '@styles/globals.css';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
@@ -7,13 +9,16 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
+import { TooltipProvider } from '@radix-ui/react-tooltip';
+import { useQueryClient } from '@tanstack/react-query';
 import { LogOut, Settings } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useLogout } from '@/authenticated/hooks/useLogout';
+import { useTenant } from '@/company/hooks';
+import { useFlags } from '@/company/hooks/useFlags';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useMemberList } from '@/hooks/useMemberList';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import PERMISSIONS from '@/utils/routing/permissions';
 import ROUTES from '@/utils/routing/routes';
@@ -40,23 +45,18 @@ const DefaultCompanyLogo = () => (
   />
 );
 
-export default function AppLayout({ children, appRouter = false }) {
+export default function AppLayout({ children }) {
+  const queryClient = useQueryClient();
   const { checkPermissions } = useRolesAndPermissions();
-  const { recruiter, recruiterUser, isShowFeature, handleLogout } =
-    useAuthDetails();
+  const { logout } = useLogout();
+  const { isShowFeature } = useFlags();
+  const { recruiter, recruiter_user } = useTenant();
   const router = useRouterPro();
   const logo = recruiter?.logo;
-
-  const { data: members } = useMemberList();
-
-  const userDetails = members?.find(
-    (member) => member.user_id === recruiterUser.user_id,
-  );
-
   const isHorizontalNav = !isShowFeature('SCHEDULING');
 
   return (
-    <>
+    <TooltipProvider>
       <OnboardPending />
       {isHorizontalNav && (
         <nav className='sticky top-0 z-50 flex w-full items-center justify-between border-b bg-white p-2'>
@@ -87,13 +87,13 @@ export default function AppLayout({ children, appRouter = false }) {
               <Link
                 href={
                   ROUTES['/user/[user]']({
-                    user_id: recruiterUser?.user_id,
+                    user_id: recruiter_user?.user_id,
                   }) + '?profile=true'
                 }
               >
                 <Avatar className='h-[32px] w-[32px] cursor-pointer rounded-[4px]'>
                   <AvatarImage
-                    src={userDetails?.profile_image || ''}
+                    src={recruiter_user?.profile_image || ''}
                     alt='@shadcn'
                   />
                   <AvatarFallback className='rounded-[4px]'>
@@ -103,7 +103,7 @@ export default function AppLayout({ children, appRouter = false }) {
               </Link>
             </Button>
 
-            <Button variant='link' onClick={handleLogout} asChild>
+            <Button variant='link' onClick={() => {}} asChild>
               <Link href='#'>
                 <LogOut className='mr-2 h-5 w-5' strokeWidth={1.5} />
               </Link>
@@ -134,13 +134,13 @@ export default function AppLayout({ children, appRouter = false }) {
                     <Link
                       href={
                         ROUTES['/user/[user]']({
-                          user_id: recruiterUser?.user_id,
+                          user_id: recruiter_user?.user_id,
                         }) + '?profile=true'
                       }
                     >
                       <Avatar className='h-[32px] w-[32px] cursor-pointer rounded-[4px]'>
                         <AvatarImage
-                          src={userDetails?.profile_image || ''}
+                          src={recruiter_user?.profile_image || ''}
                           alt='@shadcn'
                         />
                         <AvatarFallback className='rounded-[4px]'>
@@ -153,13 +153,14 @@ export default function AppLayout({ children, appRouter = false }) {
                 </TooltipTrigger>
                 <TooltipContent align='start' side='right'>
                   <p>
-                    {capitalizeAll(userDetails?.first_name) || 'Your profile'}
+                    {capitalizeAll(recruiter_user?.first_name) ||
+                      'Your profile'}
                   </p>
                 </TooltipContent>
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger>
-                  <Button variant='link' onClick={handleLogout}>
+                  <Button variant='link' onClick={() => logout(queryClient)}>
                     <LogOut className='h-5 w-5' strokeWidth={1.5} />
                   </Button>
                 </TooltipTrigger>
@@ -170,19 +171,20 @@ export default function AppLayout({ children, appRouter = false }) {
             </div>
           </nav>
         )}
-        <main
-          className={`flex min-h-screen w-full bg-gray-50 py-8 ${
+        <div
+          className={`flex w-full overflow-auto bg-gray-50 ${
             isHorizontalNav ? '' : 'ml-16'
           }`}
         >
-          {appRouter ||
-          checkPermissions(PERMISSIONS[String(router.pathName)]) ? (
-            children
-          ) : (
-            <NotFound />
-          )}
-        </main>
+          <div className='w-full py-8'>
+            {checkPermissions(PERMISSIONS[String(router.pathName)]) ? (
+              children
+            ) : (
+              <NotFound />
+            )}
+          </div>
+        </div>
       </div>
-    </>
+    </TooltipProvider>
   );
 }

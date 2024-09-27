@@ -1,21 +1,19 @@
-import type { schedulingSettingType } from '@aglint/shared-types';
+import type { SchedulingSettingType } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
 import cloneDeep from 'lodash/cloneDeep';
 import { useEffect, useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
+import { api } from '@/trpc/client';
 import { type TimezoneObj } from '@/utils/timeZone';
 
 import BreakTimeCard from './BreakTime';
 import TimeZone from './TimeZone';
 import WorkTime from './WorkTime';
 
-export default function WorkingHour({
-  updateSettings,
-  initialData,
-}: {
-  updateSettings: any;
-  initialData: schedulingSettingType;
-}) {
+export default function WorkingHour() {
+  const { recruiter } = useTenant();
+  const initialData = recruiter.scheduling_settings;
   const [workingHours, setWorkingHours] = useState([]);
   const [selectedTimeZone, setSelectedTimeZone] = useState<TimezoneObj>(null);
   const [selectedHourBreak, setSelectedHourBreak] = useState<{
@@ -31,7 +29,7 @@ export default function WorkingHour({
     if (initialData) {
       const schedulingSettingData = cloneDeep(
         initialData,
-      ) as schedulingSettingType;
+      ) as SchedulingSettingType;
       setSelectedTimeZone({ ...schedulingSettingData.timeZone } as TimezoneObj);
       setSelectedHourBreak({
         start_time: schedulingSettingData.break_hour?.start_time,
@@ -41,13 +39,24 @@ export default function WorkingHour({
     }
   }
 
-  const handleUpdate = async (updatedData) => {
+  const { mutate } = api.tenant.updateTenant.useMutation({
+    onError: () => {
+      toast({
+        title: 'Unable to update working hours',
+        variant: 'destructive',
+      });
+    },
+  });
+
+  const handleUpdate = async (updatedData: SchedulingSettingType) => {
     try {
-      const schedulingSettingObj = {
+      const schedulingSettingObj: SchedulingSettingType = {
         ...initialData,
         ...updatedData,
-      } as schedulingSettingType;
-      await updateSettings(schedulingSettingObj);
+      };
+      mutate({
+        scheduling_settings: schedulingSettingObj,
+      });
     } catch (error) {
       toast({
         title: 'Error',
@@ -55,6 +64,7 @@ export default function WorkingHour({
       });
     }
   };
+
   return (
     <div className='mb-8 flex flex-col gap-4'>
       <div className='flex flex-col'>

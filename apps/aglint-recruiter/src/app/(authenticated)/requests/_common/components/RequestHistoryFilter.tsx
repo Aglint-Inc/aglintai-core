@@ -7,8 +7,8 @@ import {
 } from '@requestHistory/contexts/completedRequeststore';
 import { useEffect, useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import FilterHeader from '@/components/Common/FilterHeader';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type GetRequestParams } from '@/queries/requests';
 import { supabase } from '@/utils/supabase/client';
 
@@ -18,7 +18,7 @@ function RequestHistoryFilter() {
   const { completedFilters } = useCompletedRequestsStore();
   const { applications, assigneeList, jobs, assignerList, title, type, date } =
     completedFilters ?? {};
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
 
   async function getCandidateList() {
     const { data } = await supabase

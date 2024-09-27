@@ -13,7 +13,7 @@ import superjson from 'superjson';
 import { type TypeOf, ZodError, type ZodSchema } from 'zod';
 
 import { createPrivateClient, createPublicClient } from '../db';
-import { UNAUTHENTICATED, UNAUTHORIZED } from '../enums';
+import { ERRORS } from '../enums';
 import { authorize } from '../utils';
 import { getDecryptKey } from './routers/ats/greenhouse/util';
 
@@ -163,13 +163,12 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
 
 const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
   const db = createPrivateClient();
-
   const {
     data: { user },
   } = await db.auth.getUser();
 
   if (!user) {
-    throw new TRPCError({ code: 'FORBIDDEN', message: UNAUTHENTICATED });
+    throw new TRPCError(ERRORS.UNAUTHORIZED);
   }
 
   const user_id = user.id;
@@ -184,7 +183,7 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
     .throwOnError();
 
   if (!data) {
-    throw new TRPCError({ code: 'FORBIDDEN', message: UNAUTHENTICATED });
+    throw new TRPCError(ERRORS.UNAUTHORIZED);
   }
 
   const {
@@ -199,8 +198,7 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
     [] as (typeof role_permissions)[number]['permissions']['name'][],
   );
 
-  if (!authorize(path, permissions))
-    throw new TRPCError({ code: 'UNAUTHORIZED', message: UNAUTHORIZED });
+  if (!authorize(path, permissions)) throw new TRPCError(ERRORS.FORBIDDEN);
 
   return await next({
     ctx: {

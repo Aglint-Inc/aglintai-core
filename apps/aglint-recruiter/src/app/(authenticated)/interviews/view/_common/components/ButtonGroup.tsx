@@ -1,5 +1,5 @@
+import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 
 import { useScheduleDetails } from '../hooks/useScheduleDetails';
@@ -7,8 +7,8 @@ import { setIsCancelDialogOpen, useScheduleDetailsStore } from '../stores';
 import CancelScheduleDialog from './CancelScheduleDialog';
 
 function ButtonGroup() {
-  const { recruiterUser } = useAuthDetails();
-  const userId = recruiterUser?.user_id ?? '';
+  const { recruiter_user } = useTenant();
+  const userId = recruiter_user?.user_id ?? '';
   const { checkPermissions } = useRolesAndPermissions();
   const { isCancelDialogOpen } = useScheduleDetailsStore();
   const { data, refetch } = useScheduleDetails();

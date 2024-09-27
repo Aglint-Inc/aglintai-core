@@ -3,10 +3,10 @@ import { Parser } from 'html-to-react';
 import { PencilIcon, Plus } from 'lucide-react';
 import { useState } from 'react';
 
+import { usePortalSettings } from '@/company/hooks/usePortalSettings';
 import { UIButton } from '@/components/Common/UIButton';
 import UISectionCard from '@/components/Common/UISectionCard';
 
-import { usePortalSettings } from '../../../hooks/hook';
 import { AboutCompanyDialog } from './AboutCompanyDialog';
 
 export default function AboutCompany() {

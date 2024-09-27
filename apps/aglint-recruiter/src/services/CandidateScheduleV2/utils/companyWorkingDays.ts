@@ -1,13 +1,13 @@
 import {
   type holidayType,
-  type schedulingSettingType,
+  type SchedulingSettingType,
 } from '@aglint/shared-types';
 import { ScheduleUtils } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 // return working day count between two dates
 export const getCompanyDaysCnt = (
-  comp_schedule_setting: schedulingSettingType,
+  comp_schedule_setting: SchedulingSettingType,
   start_date_str: string, //DD/MM/YYYY
   end_date_str: string, //DD/MM/YYYY,
   count_holiday = false,

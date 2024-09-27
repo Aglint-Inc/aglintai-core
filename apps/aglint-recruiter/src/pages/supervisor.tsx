@@ -6,11 +6,12 @@ import { type ChatType } from '@requests/components/AgentChats/ChatMessageList/h
 import axios from 'axios';
 import { useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
+
 // import { type ChatType } from '../components/Requests/AgentChats/ChatMessageList/hooks/fetch';
-import { useAuthDetails } from '../context/AuthContext/AuthContext';
 
 const ChatApp = () => {
-  const { recruiter, recruiterUser } = useAuthDetails();
+  const { recruiter, recruiter_user } = useTenant();
   const [messages, setMessages] = useState<Message[]>([
     {
       type: 'assistant',
@@ -35,7 +36,7 @@ const ChatApp = () => {
       const bodyParams: ApiBodyAgentSupervisor = {
         recruiter_id: recruiter.id,
         history: newMessages,
-        user_id: recruiterUser.user_id,
+        user_id: recruiter_user.user_id,
         applications: [],
         jobs: [],
         sessions: [],

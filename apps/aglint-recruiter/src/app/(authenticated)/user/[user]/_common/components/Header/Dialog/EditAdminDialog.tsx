@@ -3,14 +3,16 @@ import _ from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 import { type MemberType } from 'src/app/_common/types/memberType';
 
-import { useRolesOptions } from '@/authenticated/hooks/useRolesOptions';
 import axios from '@/client/axios';
+import {
+  useTenant,
+  useTenantOfficeLocations,
+  useTenantRoles,
+} from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type API_setMembersWithRole } from '@/pages/api/setMembersWithRole/type';
 import { useAllDepartments } from '@/queries/departments';
-import { useAllOfficeLocations } from '@/queries/officeLocations';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
@@ -55,10 +57,10 @@ const EditAdminDialog = ({
   memberList: { id: string; name: string }[];
   onClose: () => void;
 }) => {
-  const { data: roleOptions } = useRolesOptions();
-  const { recruiterUser } = useAuthDetails();
+  const { data: roleOptions } = useTenantRoles();
+  const { recruiter_user } = useTenant();
   const { data: departments } = useAllDepartments();
-  const { data: officeLocations } = useAllOfficeLocations();
+  const { data: officeLocations } = useTenantOfficeLocations();
   const [isUpdating, setIsUpdating] = useState(false);
   const imageFile = useRef<File>(null);
 
@@ -66,15 +68,15 @@ const EditAdminDialog = ({
   const [isProfileChanged, setIsProfileChanged] = useState(false);
 
   const initForm: EditAdminFormType = {
-    first_name: member.first_name,
-    last_name: member.last_name,
-    phone: member.phone,
-    linked_in: member.linked_in,
-    location_id: member.office_location_id,
-    employment: member.employment,
-    profile_image: member.profile_image,
-    department_id: member.department_id,
-    position: member.position,
+    first_name: member?.first_name,
+    last_name: member?.last_name,
+    phone: member?.phone,
+    linked_in: member?.linked_in,
+    location_id: member?.office_location_id,
+    employment: member?.employment,
+    profile_image: member?.profile_image,
+    department_id: member?.department_id,
+    position: member?.position,
     role: member?.role,
     role_id: member?.role_id,
     manager_id: member?.manager_id,
@@ -138,23 +140,23 @@ const EditAdminDialog = ({
   };
 
   function permissionCheck() {
-    if (recruiterUser?.role === 'admin') {
+    if (recruiter_user?.role === 'admin') {
       if (
-        recruiterUser?.user_id === member.user_id ||
+        recruiter_user?.user_id === member.user_id ||
         form?.role !== 'admin' ||
-        recruiterUser?.user_id === member.created_by
+        recruiter_user?.user_id === member.created_by
       ) {
         return true;
       } else if (
         form?.role === 'admin' &&
-        recruiterUser?.created_by === member.user_id
+        recruiter_user?.created_by === member.user_id
       ) {
         toast.error('Permission Denied');
 
         return false;
       } else if (
         form?.role === 'admin' &&
-        recruiterUser?.user_id !== member.created_by
+        recruiter_user?.user_id !== member.created_by
       ) {
         toast.error('Permission Denied');
         // toast.error('You cannot edit another admin detail');
@@ -238,7 +240,7 @@ const EditAdminDialog = ({
               }
             }}
             disabled={
-              recruiterUser?.role !== 'admin' ||
+              recruiter_user?.role !== 'admin' ||
               isUpdating ||
               (!isProfileChanged && !isImageChanged)
             }
@@ -257,7 +259,7 @@ const EditAdminDialog = ({
           formError={formError}
           officeLocations={officeLocations}
           member={member}
-          recruiterUser={recruiterUser}
+          recruiterUser={recruiter_user}
           departments={departments}
           roleOptions={roleOptions}
           memberList={memberList}

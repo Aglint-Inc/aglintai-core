@@ -6,7 +6,7 @@ import {
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-import { type useAuthDetails } from '@/context/AuthContext/AuthContext';
+import type { useTenant } from '@/company/hooks';
 import { type JobInsert } from '@/queries/jobs/types';
 import { supabase } from '@/utils/supabase/client';
 
@@ -218,7 +218,7 @@ export const fetchAllJobs = async (
 
 export const createJobObject = async (
   selectedPostings: ExtendedJobGreenhouse[],
-  recruiter: ReturnType<typeof useAuthDetails>['recruiter'],
+  recruiter: ReturnType<typeof useTenant>['recruiter'],
 ) => {
   const dbJobs: DatabaseTableInsert['public_jobs'][] = selectedPostings.map(
     (post) => {

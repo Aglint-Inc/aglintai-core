@@ -1,3 +1,4 @@
+import { z } from "zod";
 import type { Database, Tables } from "./schema.types";
 import type { Custom, Type } from "./utils.types";
 
@@ -18,6 +19,15 @@ export type CustomApplicationBadges = {
   jobStability: number;
   careerGrowth: number;
   jobHopping: number;
+};
+
+export type CustomSchedulingReason = {
+  internal: {
+    rescheduling: string[];
+    cancellation: string[];
+    decline: string[];
+  };
+  candidate: { rescheduling: string[]; cancellation: string[] };
 };
 
 export type CustomJobParamters = Custom<

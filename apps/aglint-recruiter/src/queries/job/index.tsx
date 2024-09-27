@@ -11,7 +11,7 @@ import { useCallback } from 'react';
 
 import { UploadApiFormData } from '@/apiUtils/job/candidateUpload/types';
 import { handleJobApi } from '@/apiUtils/job/utils';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { type GetInterviewPlansType } from '@/pages/api/scheduling/get_interview_plans';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
@@ -149,7 +149,7 @@ type ApplicationsAllQueryPrerequistes = {
 };
 
 export const useUploadApplication = ({ job_id }: { job_id: string }) => {
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   const { revalidateJobQueries } = useInvalidateJobQueries();
   return useMutation({
     mutationFn: async (
@@ -192,7 +192,7 @@ const handleUploadApplication = async (payload: HandleUploadApplication) => {
 };
 
 export const useUploadResume = (params: { job_id: string }) => {
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   const { revalidateJobQueries } = useInvalidateJobQueries();
   return useMutation({
     mutationFn: async (
@@ -248,7 +248,7 @@ const handleBulkResumeUpload = async (payload: HandleUploadResume) => {
 };
 
 export const useUploadCsv = (params: { job_id: string }) => {
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   const { revalidateJobQueries } = useInvalidateJobQueries();
   return useMutation({
     mutationFn: async (

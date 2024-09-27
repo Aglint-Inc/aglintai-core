@@ -12,10 +12,10 @@ import { cn } from '@lib/utils';
 import { UserX } from 'lucide-react';
 import React, { type FC, memo } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITextField from '@/components/Common/UITextField';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import type { Form } from '@/jobs/types';
 import { useCompanyMembers } from '@/queries/company-members';
 import { formatOfficeLocation } from '@/utils/formatOfficeLocation';
@@ -133,9 +133,11 @@ const JobCompany: FC<MetaForms> = memo(({ name, value, onChange }) => {
 JobCompany.displayName = 'JobCompany';
 
 const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const options = (recruiter?.office_locations ?? []).map((s) => ({
+    // @ts-ignore
     name: formatOfficeLocation(s),
+    // TODO: fix with null checks
     value: s.id,
   }));
   return (
@@ -223,7 +225,7 @@ const JobType: FC<MetaForms> = memo(({ name, value, onChange }) => {
 JobType.displayName = 'JobType';
 
 const JobDepartment: FC<MetaForms> = memo(({ name, value, onChange }) => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const options = recruiter.departments.map((department) => ({
     name: department.name,
     value: department.id,

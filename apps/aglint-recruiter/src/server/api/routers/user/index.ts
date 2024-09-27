@@ -1,6 +1,8 @@
 import { createTRPCRouter } from '../../trpc';
-import { get } from './get';
+import { getOauthEmail } from './get_oauth_user';
+import { updateUser } from './update_current_user';
 
 export const user = createTRPCRouter({
-  get,
+  update_current_user: updateUser,
+  get_oauth_user: getOauthEmail,
 });

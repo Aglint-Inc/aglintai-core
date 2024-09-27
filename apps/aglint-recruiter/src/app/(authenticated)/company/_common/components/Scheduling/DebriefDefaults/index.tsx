@@ -1,12 +1,12 @@
 /* eslint-disable security/detect-object-injection */
-import { type schedulingSettingType } from '@aglint/shared-types';
+import { type SchedulingSettingType } from '@aglint/shared-types';
 import { Switch } from '@components/ui/switch';
 import React, { type Dispatch, type SetStateAction } from 'react';
 
 import UITypography from '@/components/Common/UITypography';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-type MembersMeta = schedulingSettingType['debrief_defaults'];
+type MembersMeta = SchedulingSettingType['debrief_defaults'];
 
 type DebriefDefaultsProps = {
   value: MembersMeta;

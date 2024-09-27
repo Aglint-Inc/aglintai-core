@@ -11,7 +11,7 @@ import {
   InterviewMeetingTypeDb,
   InterviewSessionTypeDB,
   SessionsCombType,
-  schedulingSettingType,
+  SchedulingSettingType,
 } from '@aglint/shared-types';
 import {envConfig} from '../../config';
 import {SINGLE_DAY_TIME, supabaseWrap} from '@aglint/shared-utils';
@@ -121,7 +121,7 @@ export const fetchCandidateDetails = async (
     tool_invocations: [],
     job_description: job.description,
     comp_scheduling_setting: job.recruiter
-      .scheduling_settings as schedulingSettingType,
+      .scheduling_settings as SchedulingSettingType,
     all_slots,
     candidate_tz: {
       tz_code: '',
@@ -134,7 +134,7 @@ export const fetchCandidateDetails = async (
 };
 
 export const isCurrDayHoliday = (
-  comp_schedule_setting: schedulingSettingType,
+  comp_schedule_setting: SchedulingSettingType,
   curr_day: Dayjs
 ) => {
   // is curr day holiday
