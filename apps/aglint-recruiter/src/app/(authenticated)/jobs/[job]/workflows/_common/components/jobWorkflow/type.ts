@@ -1,15 +1,10 @@
-export type Action = {
-  id: string;
-  type: 'email' | 'message' | 'ai' | 'slack';
-  content: string;
-  subject?: string;
-};
+import { type DatabaseTable } from '@aglint/shared-types';
 
 export type Automation = {
   id: string;
   question: string;
   enabled: boolean;
-  actions: Action[];
+  actions: DatabaseTable['workflow_action'];
 };
 
 export type AutomationCategory = {
