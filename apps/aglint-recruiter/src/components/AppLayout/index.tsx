@@ -9,7 +9,6 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { TooltipProvider } from '@radix-ui/react-tooltip';
 import { useQueryClient } from '@tanstack/react-query';
 import { LogOut, Settings } from 'lucide-react';
 import Image from 'next/image';
@@ -56,7 +55,7 @@ export default function AppLayout({ children }) {
   const isHorizontalNav = !isShowFeature('SCHEDULING');
 
   return (
-    <TooltipProvider>
+    <>
       <OnboardPending />
       {isHorizontalNav && (
         <nav className='sticky top-0 z-50 flex w-full items-center justify-between border-b bg-white p-2'>
@@ -185,6 +184,6 @@ export default function AppLayout({ children }) {
           </div>
         </div>
       </div>
-    </TooltipProvider>
+    </>
   );
 }
