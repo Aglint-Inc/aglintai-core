@@ -70,7 +70,7 @@ export const SharedActions = () => {
 const Sync = () => {
   const { job, handleJobSync } = useJob();
   const [load, setLoad] = useState(false);
-  // if (!job.sy) return <></>;
+  if (!job.syncable) return <></>;
   const handleSync = async () => {
     if (load) return;
     setLoad(true);
