@@ -18,27 +18,27 @@ function InterviewDetailsTabs() {
     {
       name: 'Interviewers',
       id: 'interviewers',
-      tabComp: <Interviewers />,
+      content: <Interviewers />,
     },
     {
       name: 'Training',
       id: 'training',
-      tabComp: <Training />,
+      content: <Training />,
     },
     {
       name: 'Schedules',
       id: 'schedules',
-      tabComp: <Schedules />,
+      content: <Schedules />,
     },
     {
       name: 'Instructions',
       id: 'instructions',
-      tabComp: <InstructionsComp />,
+      content: <InstructionsComp />,
     },
     {
       name: 'Candidates',
       id: 'candidates',
-      tabComp: <Candidates />,
+      content: <Candidates />,
     },
 
     {

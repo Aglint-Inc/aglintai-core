@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 interface Tab {
   id: string;
   name: string;
-  tabComp?: JSX.Element;
+  content?: JSX.Element;
 }
 
 export default function UITabs({
@@ -98,7 +98,7 @@ export default function UITabs({
     setActiveTab(defaultValue || tabs[0].id);
   }, []);
 
-  const isContentPreset = !!tabs.filter((tab) => tab.tabComp)?.length;
+  const isContentPreset = !!tabs.filter((tab) => tab.content)?.length;
   return (
     <div className={`w-full ${vertical ? 'flex' : ''}`}>
       <div
@@ -172,7 +172,7 @@ export default function UITabs({
               role='tabpanel'
               aria-labelledby={tab.id}
             >
-              {tab.tabComp}
+              {tab.content}
             </div>
           ))}
         </div>
