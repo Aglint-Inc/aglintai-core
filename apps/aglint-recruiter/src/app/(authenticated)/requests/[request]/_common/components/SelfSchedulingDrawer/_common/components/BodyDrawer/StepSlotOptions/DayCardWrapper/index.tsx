@@ -9,6 +9,7 @@ import React, { type Dispatch, useEffect, useMemo, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';
+import toast from '@/utils/toast';
 
 import { DayCard } from '../../../ui/DayCard';
 import { EmptySlotReason } from '../../../ui/EmptySlotReason';

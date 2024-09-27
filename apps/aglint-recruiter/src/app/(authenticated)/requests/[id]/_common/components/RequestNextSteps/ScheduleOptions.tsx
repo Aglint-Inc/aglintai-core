@@ -1,6 +1,22 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
+import {
+  setCandidateAvailabilityDrawerOpen,
+  setCandidateAvailabilityIdForReRequest,
+  setReRequestAvailability,
+} from '@request/components/CandidateAvailability/store';
+import {
+  setApplicationIdForConfirmAvailability,
+  setCandidateAvailabilityId,
+  useConfirmAvailabilitySchedulingFlowStore,
+} from '@request/components/ConfirmAvailability/store';
+import { useSelfSchedulingDrawer } from '@request/components/SelfSchedulingDrawer/_common/hooks/hooks';
+import {
+  initialFilters,
+  setIsSelfScheduleDrawerOpen,
+  useSelfSchedulingFlowStore,
+} from '@request/components/SelfSchedulingDrawer/_common/store/store';
 import { deleteRequestWorkflowAction } from '@requests/components/RequestProgress/utils';
 import { useRequestAvailabilityDetails } from '@requests/hooks';
 import React, { useMemo } from 'react';
@@ -10,23 +26,6 @@ import { UIButton } from '@/components/Common/UIButton';
 import { useRequest } from '@/context/RequestContext';
 import { useRequests } from '@/context/RequestsContext';
 import { supabase } from '@/utils/supabase/client';
-
-import {
-  setCandidateAvailabilityDrawerOpen,
-  setCandidateAvailabilityIdForReRequest,
-  setReRequestAvailability,
-} from '../CandidateAvailability/_common/contexts/CandidateAvailabilityFlowStore';
-import {
-  setApplicationIdForConfirmAvailability,
-  setCandidateAvailabilityId,
-  useConfirmAvailabilitySchedulingFlowStore,
-} from '../ConfirmAvailability/_common/contexts/AvailabilitySchedulingStore';
-import { useSelfSchedulingDrawer } from '../SelfSchedulingDrawer/_common/hooks/hooks';
-import {
-  initialFilters,
-  setIsSelfScheduleDrawerOpen,
-  useSelfSchedulingFlowStore,
-} from '../SelfSchedulingDrawer/_common/store/store';
 
 const ScheduleOptions = () => {
   const [isProceeding, setIsProceeding] = React.useState(false);
@@ -115,11 +114,11 @@ const ScheduleOptions = () => {
               }, 2000);
             }}
           >
-            {isProceeding ? 'Proceeding...' : 'Proceed with AI'}
+            {isProceeding ? 'Proceeding...' : 'Click here Proceed'}
           </UIButton>
         </>
       </ShowCode.When>
-      {/* <ShowCode.When
+      <ShowCode.When
         isTrue={
           (!scheduleWorkflowAction && !lastEvent) ||
           (lastEvent &&
@@ -127,14 +126,14 @@ const ScheduleOptions = () => {
               lastEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK') &&
             lastEvent.status === 'failed')
         }
-      > */}
+      >
         <>
           <UIButton
             onClick={async () => {
               if (scheduleWorkflowAction) {
                 await deleteRequestWorkflowAction(scheduleWorkflowAction.id);
                 await deleteRequestProgress(requestDetails.id);
-                await await request_workflow.refetch();
+                await request_workflow.refetch();
               }
               setCandidateAvailabilityDrawerOpen(true);
             }}
@@ -167,7 +166,7 @@ const ScheduleOptions = () => {
             Send Self Scheduling
           </UIButton>
         </>
-      {/* </ShowCode.When> */}
+      </ShowCode.When>
       <ShowCode.When
         isTrue={
           lastEvent &&
