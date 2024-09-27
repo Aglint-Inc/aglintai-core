@@ -159,7 +159,7 @@ const seedWorkFlow = async (
           title: work_flow_act.workflow.title,
           recruiter_id,
           is_active: true,
-          workflow_type: work_flow_act.workflow.workflow_type,
+          workflow_type: 'company',
         })
         .select(),
     );

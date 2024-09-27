@@ -64,12 +64,16 @@ export const initiateJobAutomationState = (
   data: ReturnType<typeof useGetJobWorkflow>['data'],
 ) => {
   useJobAutomationStore.setState({
-    jobWorkflowTriggers: data.job_workflows.map((workflow) => {
-      return {
-        ...workflow,
-        category: triggerToCategoryMap[workflow.trigger],
-      };
-    }) as JobAutomationState['jobWorkflowTriggers'],
+    jobWorkflowTriggers: data.job_workflows
+      .filter((j) => {
+        return j.trigger in triggerToCategoryMap;
+      })
+      .map((workflow) => {
+        return {
+          ...workflow,
+          category: triggerToCategoryMap[workflow.trigger],
+        };
+      }) as JobAutomationState['jobWorkflowTriggers'],
     jobWorkflowActions:
       data.job_workflow_actions as JobAutomationState['jobWorkflowActions'],
   });

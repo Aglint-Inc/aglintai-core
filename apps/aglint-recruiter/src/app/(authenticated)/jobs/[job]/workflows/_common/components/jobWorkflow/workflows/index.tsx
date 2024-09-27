@@ -15,7 +15,6 @@ import { AutomationAccordion } from './AutomationAccordion';
 
 export default function Main() {
   const { jobWorkflowTriggers, jobWorkflowActions } = useJobAutomationStore();
-
   const allCategories: TriggerCategory[] = [
     TriggerCategory.CandidateExperience,
     TriggerCategory.InterviewerManagement,
@@ -51,7 +50,6 @@ export default function Main() {
         </CardContent>
       </Card>
       <div className='mt-6 flex justify-end space-x-1'>
-        {/* <UIButton variant='outline'>Reset</UIButton> */}
         <UIButton>Save</UIButton>
       </div>
     </div>

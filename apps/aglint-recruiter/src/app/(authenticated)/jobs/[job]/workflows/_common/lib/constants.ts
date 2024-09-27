@@ -28,7 +28,7 @@ export const triggerToCategoryMap: Record<
   JobRelatedCTriggers,
   TriggerCategory
 > = {
-  interviewEnd: TriggerCategory.CandidateExperience,
+  interviewEnd: TriggerCategory.InterviewerManagement,
   onRequestCancel: TriggerCategory.CandidateExperience,
   onRequestReschedule: TriggerCategory.CandidateExperience,
   candidateBook: TriggerCategory.InterviewerManagement,
@@ -52,7 +52,7 @@ export const triggerToQuestion: Record<JobRelatedCTriggers, string> = {
   sendAvailReqReminder: 'how do we remind candidate for availability ?',
   interviewerConfirmation:
     'How do we confirm when an interviewer accepts an invitation ?',
-  interviewEnd: '',
+  interviewEnd: 'What happens after an interview ends ?',
   meetingDeclined: 'How do we handle declined interview invitations ?',
   meetingAccepted: 'What happens when an interviewer confirms ?',
   onReceivingAvailReq: 'What happens after reciving candidate availability ?',
