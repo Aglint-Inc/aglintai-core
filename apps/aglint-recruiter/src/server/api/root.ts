@@ -10,7 +10,9 @@ import { interview_pool } from './routers/interview_pool';
 import { interviewers } from './routers/interviewers';
 import { jobs } from './routers/jobs';
 import { requests } from './routers/requests';
+import { rolesAndPermissions } from './routers/rolesAndPermissions';
 import { scheduling } from './routers/scheduling';
+import { user } from './routers/user';
 import { createCallerFactory, createTRPCRouter } from './trpc';
 
 /**
@@ -32,6 +34,8 @@ export const appRouter = createTRPCRouter({
   application,
   get_last_login,
   get_members_with_role,
+  user,
+  rolesAndPermissions,
 });
 
 export const appRouterSchema = {

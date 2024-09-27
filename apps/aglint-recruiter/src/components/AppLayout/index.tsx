@@ -23,6 +23,23 @@ import DefaultProfileImage from '../../../public/images/default/user.svg';
 import { NotFound } from '../Common/404';
 import SideNavbar from './SideNavbar';
 
+const DefaultProfileImage = () => (
+  <Image
+    src={'/images/default/user.svg'}
+    alt={'Greenhouse'}
+    width={20}
+    height={20}
+  />
+);
+const DefaultCompanyLogo = () => (
+  <Image
+    src={'/images/default/company.svg'}
+    alt={'Greenhouse'}
+    width={20}
+    height={20}
+  />
+);
+
 export default function AppLayout({ children, appRouter = false }) {
   const { checkPermissions } = useRolesAndPermissions();
   const { recruiter, recruiterUser, isShowFeature, handleLogout } =
