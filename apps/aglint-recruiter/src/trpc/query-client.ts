@@ -19,21 +19,22 @@ export const REFETCH_ON_MOUNT = true;
 export const REFETCH_ON_WINDOW_FOCUS = true;
 
 export const createQueryClient = (
+  // eslint-disable-next-line no-unused-vars
   logout?: (_queryClient: QueryClient) => Promise<void>,
 ) => {
   let queryClient: QueryClient;
   queryClient = new QueryClient({
     queryCache: new QueryCache({
       onError: (error) =>
-        onError(error as unknown as TRPCErrorShape<TRPCError>, () =>
-          logout(queryClient),
-        ),
+        onError(error as unknown as TRPCErrorShape<TRPCError>, () => {
+          // logout(queryClient),
+        }),
     }),
     mutationCache: new MutationCache({
       onError: (error) =>
-        onError(error as unknown as TRPCErrorShape<TRPCError>, () =>
-          logout(queryClient),
-        ),
+        onError(error as unknown as TRPCErrorShape<TRPCError>, () => {
+          // logout(queryClient),
+        }),
       onSuccess: () => queryClient.invalidateQueries(),
     }),
     defaultOptions: {
