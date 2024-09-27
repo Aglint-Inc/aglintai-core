@@ -20,7 +20,7 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 import {
   useJobWorkflowDisconnect,
   useJobWorkflowMutations,
-} from '@/queries/job-workflow';
+} from '@/queries/(old)-job-workflow';
 import { type Workflow } from '@/types/workflow.types';
 import { formatOfficeLocation } from '@/utils/formatOfficeLocation';
 import ROUTES from '@/utils/routing/routes';
