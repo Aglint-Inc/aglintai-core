@@ -1,13 +1,24 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
+import type * as Icons from 'lucide-react';
+import { icons } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
-interface Tab {
-  id: string;
-  name: string;
-  content?: JSX.Element;
-}
+export type UITabType = {
+  vertical: {
+    id: string;
+    name: string;
+    content?: JSX.Element;
+    icon: IconName;
+  };
+  horizontal: {
+    id: string;
+    name: string;
+    content?: JSX.Element;
+  };
+};
+type IconName = keyof typeof Icons;
 
 export default function UITabs({
   vertical = false,
@@ -16,7 +27,7 @@ export default function UITabs({
   defaultValue,
 }: {
   vertical?: boolean;
-  tabs: Tab[];
+  tabs: UITabType['horizontal'][] | UITabType['vertical'][];
   // eslint-disable-next-line no-unused-vars
   onClick: (value: string) => void;
   defaultValue: string;
@@ -131,26 +142,31 @@ export default function UITabs({
               />
             )}
           </AnimatePresence>
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              ref={(el) => {
-                tabRefs.current[tab.id] = el; // Correctly store the reference without returning anything
-              }}
-              onClick={() => handleTabClick(tab.id)}
-              onMouseEnter={() => handleTabHover(tab.id)}
-              className={`relative z-20 px-4 py-2 text-sm font-medium outline-none transition-colors ${
-                activeTab === tab.id
-                  ? 'text-primary'
-                  : 'text-gray-500 hover:text-primary'
-              } ${vertical ? 'w-full text-left' : ''}`}
-              role='tab'
-              aria-selected={activeTab === tab.id}
-              tabIndex={activeTab === tab.id ? 0 : -1}
-            >
-              {tab.name}
-            </button>
-          ))}
+          {tabs.map((tab) => {
+            const Icon = icons[tab?.icon];
+            return (
+              <button
+                key={tab.id}
+                // leftIcon={tab?.icon ? <Icon /> : null}
+                ref={(el) => {
+                  tabRefs.current[tab.id] = el; // Correctly store the reference without returning anything
+                }}
+                onClick={() => handleTabClick(tab.id)}
+                onMouseEnter={() => handleTabHover(tab.id)}
+                className={`relative z-20 px-4 py-2 text-sm font-medium outline-none transition-colors ${
+                  activeTab === tab.id
+                    ? 'text-primary'
+                    : 'text-gray-500 hover:text-primary'
+                } ${vertical ? 'flex w-full items-center gap-3 text-left' : ''}`}
+                role='tab'
+                aria-selected={activeTab === tab.id}
+                tabIndex={activeTab === tab.id ? 0 : -1}
+              >
+                <span>{tab.icon && <Icon size={16} />}</span>
+                <span>{tab.name}</span>
+              </button>
+            );
+          })}
           <motion.div
             key='activeIndicator'
             className={`absolute bg-primary ${
