@@ -61,7 +61,7 @@ function ApplicationDetailComp() {
           {renderTabContent()}
         </div>
         <div className='w-3/12'>
-          <div className='flex flex-col space-y-4'>
+          <div className='flex flex-col space-y-4 pt-[90px]'>
             {isShowFeature('SCHEDULING') ? (
               <Card>
                 <CardHeader className='p-4 '>
