@@ -28,9 +28,9 @@ const Layout = ({ children }: PropsWithChildren) => {
             enableSystem={false}
             disableTransitionOnChange
           >
-            <TRPCReactProvider>
-              <div className='flex h-screen w-full'>{children}</div>
-            </TRPCReactProvider>
+            <div className='flex h-screen w-full'>
+              <TRPCReactProvider>{children}</TRPCReactProvider>
+            </div>
             <Toaster />
           </ThemeProvider>
         </main>

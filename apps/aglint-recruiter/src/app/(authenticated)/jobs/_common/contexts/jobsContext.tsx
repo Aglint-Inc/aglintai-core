@@ -1,3 +1,5 @@
+'use client';
+
 import { type DatabaseView } from '@aglint/shared-types';
 import { createContext, memo, type ReactNode } from 'react';
 import { useCallback, useMemo } from 'react';

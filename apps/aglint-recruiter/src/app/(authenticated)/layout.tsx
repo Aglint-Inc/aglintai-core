@@ -1,30 +1,16 @@
-'use client';
+import { type PropsWithChildren } from 'react';
 
-import { TooltipProvider } from '@radix-ui/react-tooltip';
-import type { PropsWithChildren } from 'react';
+import { api, HydrateClient } from '@/trpc/server';
 
-import AppLayout from '@/components/AppLayout';
-import { BreadcrumProvider } from '@/context/BreadcrumContext/BreadcrumContext';
-import { PublicProviders } from '@/context/Providers';
-import { RolesAndPermissionsProvider } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { JobsProvider } from '@/jobs/contexts';
-import { WorkflowsProvider } from '@/workflows/contexts';
+import { Provider } from './providers';
 
-const Layout = ({ children }: PropsWithChildren) => {
+const Layout = async ({ children }: PropsWithChildren) => {
+  void api.tenant.read.prefetch();
+  void api.tenant.flags.prefetch();
   return (
-    <PublicProviders>
-      <RolesAndPermissionsProvider>
-        <BreadcrumProvider>
-          <JobsProvider>
-            <WorkflowsProvider>
-              <TooltipProvider>
-                <AppLayout>{children}</AppLayout>
-              </TooltipProvider>
-            </WorkflowsProvider>
-          </JobsProvider>
-        </BreadcrumProvider>
-      </RolesAndPermissionsProvider>
-    </PublicProviders>
+    <HydrateClient>
+      <Provider>{children}</Provider>
+    </HydrateClient>
   );
 };
 

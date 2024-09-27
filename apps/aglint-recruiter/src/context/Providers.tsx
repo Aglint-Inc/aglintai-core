@@ -1,13 +1,13 @@
-import { TooltipProvider } from '@components/ui/tooltip';
+import { TooltipProvider } from '@radix-ui/react-tooltip';
 import { type PropsWithChildren } from 'react';
 
+import AppLayout from '@/components/AppLayout';
 import { JobsProvider } from '@/jobs/contexts';
 import { WorkflowsProvider } from '@/workflows/contexts';
 
-import AppLayout from '../components/AppLayout';
-import { RolesAndPermissionsProvider } from '../context/RolesAndPermissions/RolesAndPermissionsContext';
 import { TRPCReactProvider } from '../trpc/client';
 import { BreadcrumProvider } from './BreadcrumContext/BreadcrumContext';
+import { RolesAndPermissionsProvider } from './RolesAndPermissions/RolesAndPermissionsContext';
 
 export const PrivateProviders = ({ children }: PropsWithChildren) => {
   return (
