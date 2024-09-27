@@ -4,7 +4,7 @@ import {
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
-import { supabaseAdmin } from '../supabase/supabaseAdmin';
+import { getSupabaseServer } from '../supabase/supabaseAdmin';
 
 export const cloneWorkflows = async ({
   request_id,
@@ -12,6 +12,8 @@ export const cloneWorkflows = async ({
   request_id: string;
   meeting_flow?: DatabaseTable['interview_meeting']['meeting_flow'];
 }) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const [request] = supabaseWrap(
     await supabaseAdmin
       .from('request')
@@ -40,7 +42,7 @@ export const cloneWorkflows = async ({
           trigger: j_w.workflow.trigger,
           auto_connect: j_w.workflow.auto_connect,
           interval: j_w.workflow.interval,
-          is_paused: j_w.workflow.is_paused,
+          is_active: j_w.workflow.is_active,
           title: j_w.workflow.title,
           workflow_type: j_w.workflow.workflow_type,
           request_id: request_id,

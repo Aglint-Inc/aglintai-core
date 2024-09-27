@@ -1,4 +1,5 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { Calendar } from '@components/ui/calendar';
@@ -20,7 +21,6 @@ import UIDialog from '@/components/Common/UIDialog';
 import UITextField from '@/components/Common/UITextField';
 import UpdateMembers from '@/components/Common/UpdateMembers';
 import { useMemberList } from '@/hooks/useMemberList';
-import dayjs from '@/utils/dayjs';
 
 import { useApplicationMeta } from '../../hooks/useApplicationMeta';
 import { useScheduleRequest } from '../../hooks/useScheduleRequest';
@@ -111,7 +111,7 @@ function DialogSchedule() {
           )}
 
           <ScheduleInterviewPop
-            textName={candidate.name}
+            textName={candidate?.name ?? ''}
             slotStagePill={
               <>
                 {sessions.map((session) => {
@@ -143,7 +143,14 @@ function DialogSchedule() {
             slotAssignedInput={
               <div className='flex items-center justify-between pr-2'>
                 {selectedAssignee && (
-                  <MemberCard selectedMember={selectedAssignee} />
+                  <MemberCard
+                    selectedMember={{
+                      first_name: selectedAssignee?.first_name,
+                      last_name: selectedAssignee?.last_name,
+                      profile_image: selectedAssignee?.profile_image,
+                      role: selectedAssignee?.role,
+                    }}
+                  />
                 )}
                 <UpdateMembers
                   handleChange={(assignee) => {
@@ -152,7 +159,7 @@ function DialogSchedule() {
                   updateButton={
                     <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                   }
-                  members={members}
+                  members={members || []}
                 />
               </div>
             }
@@ -190,8 +197,8 @@ export const RangePicker = ({
 
   useEffect(() => {
     setDateRange({
-      start: dayjs(date?.from).toISOString(),
-      end: dayjs(date?.to).toISOString(),
+      start: dayjsLocal(date?.from).toISOString(),
+      end: dayjsLocal(date?.to).toISOString(),
     });
   }, [date]);
 

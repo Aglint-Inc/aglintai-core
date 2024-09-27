@@ -5,9 +5,8 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { supabase } from '@/utils/supabase/client';
 
 export const useRequestCounts = () => {
-  const {
-    recruiterUser: { user_id },
-  } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
+  const user_id = recruiterUser?.user_id ?? '';
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ['get_All_request'],

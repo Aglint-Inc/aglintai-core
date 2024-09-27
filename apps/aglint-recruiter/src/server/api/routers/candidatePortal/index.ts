@@ -1,6 +1,8 @@
 import type { DatabaseTable } from '@aglint/shared-types';
 import { z } from 'zod';
 
+import { createPublicClient } from '@/server/db';
+
 import { createTRPCRouter, publicProcedure } from '../../trpc';
 
 const candidatePortalSchema = z.object({ application_id: z.string().uuid() });
@@ -32,11 +34,12 @@ export const candidatePortal = createTRPCRouter({
   // get interviews -------------------------------------------------------------
   get_interviews: publicProcedure
     .input(candidatePortalSchema)
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
+      const adminDb = createPublicClient();
       const { application_id } = input;
 
       const interviews = (
-        await ctx.adminDb
+        await adminDb
           .from('meeting_details')
           .select(
             'start_time,end_time,session_name,session_duration,schedule_type,meeting_link,status,session_id',
@@ -49,7 +52,7 @@ export const candidatePortal = createTRPCRouter({
         return await Promise.all(
           interviews.map(async (interview) => {
             const interviewers = (
-              await ctx.adminDb
+              await adminDb
                 .from('meeting_interviewers')
                 .select('first_name,last_name,profile_image,position')
                 .eq('session_id', interview.session_id)
@@ -67,11 +70,12 @@ export const candidatePortal = createTRPCRouter({
   // get messages ----------------------------------------------------------------
   get_messages: publicProcedure
     .input(candidatePortalSchema)
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
+      const adminDb = createPublicClient();
       const { application_id } = input;
 
       const messages = (
-        await ctx.adminDb
+        await adminDb
           .from('candidate_portal_message')
           .select(
             'id,message,created_at,title,availability_id,filter_id,applications(recruiter(name,logo)),interview_filter_json(id,viewed_on,confirmed_on),candidate_request_availability(id,slots,visited)',
@@ -123,10 +127,11 @@ export const candidatePortal = createTRPCRouter({
   // get navbar ----------------------------------------------------------------
   get_navbar: publicProcedure
     .input(candidatePortalSchema)
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
+      const adminDb = createPublicClient();
       const { application_id } = input;
       const company = (
-        await ctx.adminDb
+        await adminDb
           .from('applications')
           .select(
             'candidates(avatar,first_name,last_name,recruiter(name,logo))',
@@ -147,10 +152,11 @@ export const candidatePortal = createTRPCRouter({
   //get profile ------------------------------------------------------------------
   get_profile: publicProcedure
     .input(candidatePortalSchema)
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
+      const adminDb = createPublicClient();
       const { application_id } = input;
       const data = (
-        await ctx.adminDb
+        await adminDb
           .from('applications')
           .select(
             'candidate_files(file_url),candidates(id,first_name,last_name,linkedin,phone,avatar,timezone,email)',
@@ -167,12 +173,12 @@ export const candidatePortal = createTRPCRouter({
     }),
   update_profile: publicProcedure
     .input(updateProfileSchema)
-    .mutation(
-      async ({ ctx, input: { id, ...payload } }) =>
-        await ctx.adminDb
-          .from('candidates')
-          .update(payload)
-          .eq('id', id)
-          .throwOnError(),
-    ),
+    .mutation(async ({ input: { id, ...payload } }) => {
+      const adminDb = createPublicClient();
+      return await adminDb
+        .from('candidates')
+        .update(payload)
+        .eq('id', id)
+        .throwOnError();
+    }),
 });

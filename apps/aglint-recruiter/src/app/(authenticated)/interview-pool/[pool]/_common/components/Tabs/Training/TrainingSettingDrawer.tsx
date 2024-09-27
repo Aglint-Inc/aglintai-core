@@ -129,7 +129,8 @@ function TrainingSettingDrawer(
             <div
               className={`space-y-4 ${!localModule?.settings?.require_training ? 'pointer-events-none opacity-50' : ''}`}
             >
-              <div className='flex items-center space-x-2'>
+              <div className='flex flex-col items-left gap-2'>
+                <div className="flex items-center gap-2">
                 <Checkbox
                   checked={localModule?.settings?.reqruire_approval}
                   onCheckedChange={(checked) => {
@@ -144,6 +145,10 @@ function TrainingSettingDrawer(
                   id='require-approval'
                 />
                 <Label htmlFor='require-approval'>Require Approval</Label>
+                </div>
+                <div className="text-sm text-muted-foreground">
+                By selecting this option, the approval of the chosen members is required to move a trainee to the qualified stage.
+                </div>
               </div>
 
               {localModule?.settings?.reqruire_approval && (
@@ -220,7 +225,7 @@ function TrainingSettingDrawer(
                     variant='destructive'
                     onClick={() => {
                       if (
-                        localModule.relations.filter(
+                        editModule.relations.filter(
                           (relation) =>
                             relation.training_status === 'training' &&
                             !relation.is_archived,

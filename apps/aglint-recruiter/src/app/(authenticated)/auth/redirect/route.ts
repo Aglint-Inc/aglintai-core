@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
+import { getRecruiterUser, handleRedirect } from 'src/app/_common/utils/auth';
 
-import { getRecruiterUser, handleRedirect } from '@/utils/auth';
 import { createClient } from '@/utils/supabase/server';
 
 export const dynamic = 'force-dynamic';
@@ -10,13 +10,13 @@ export async function GET(request: Request) {
 
   const supabase = createClient();
   const { error, data } = await supabase.auth.getSession();
-  const user_id = data?.session.user.id;
+  const user_id = data?.session?.user.id;
 
   if (error) {
     return NextResponse.redirect(`${origin}/login`);
   }
 
-  if (user_id) {
+  if (user_id && data?.session) {
     const relations = await getRecruiterUser(user_id, supabase);
     if (relations) {
       const url = await handleRedirect({

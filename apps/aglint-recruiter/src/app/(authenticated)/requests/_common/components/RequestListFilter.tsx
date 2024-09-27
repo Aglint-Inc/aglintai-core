@@ -31,7 +31,7 @@ function RequestListFilter() {
   async function getCandidateList() {
     const { data } = await supabase
       .rpc('get_requests_candidate_list', {
-        rec_id: recruiter_id,
+        rec_id: recruiter_id ?? '',
       })
       .single();
     setCandidateAndJobs(data);
@@ -75,20 +75,15 @@ function RequestListFilter() {
   );
 
   const safeFilters: Parameters<typeof FilterHeader>[0]['filters'] =
-    Object.entries(filters).map(
-      ([key, value]) =>
-        ({
-          active: value.length,
-          name: key,
-          value: value ?? [],
-          type: 'filter',
-          iconname: '',
-          icon: <></>,
-          setValue: (newValue: typeof value) =>
-            setFilters((prev) => ({ ...prev, [key]: newValue })),
-          options: safeOptions[key] ?? [],
-        }) as (typeof safeFilters)[number],
-    );
+    Object.entries(filters).map(([key, value]) => ({
+      name: key,
+      value: value ?? [],
+      type: 'filter',
+      icon: <></>,
+      setValue: (newValue: typeof value) =>
+        setFilters((prev) => ({ ...prev, [key]: newValue })),
+      options: safeOptions[key] ?? [],
+    }));
 
   const jobFilter = {
     filterSearch: true,
@@ -114,33 +109,10 @@ function RequestListFilter() {
       : [],
   } as (typeof safeFilters)[number];
 
-  const _candidateFilter = {
-    filterSearch: true,
-    searchPlaceholder: 'Search Candidates',
-    active: applications.length,
-    name: 'Candidates',
-    value: applications ?? [],
-    type: 'filter',
-    iconname: '',
-    icon: <></>,
-    setValue: (newValue) => {
-      setFilters((prev) => ({ ...prev, applications: newValue }));
-    },
-    options: candidateAndJobs
-      ? candidateAndJobs?.applications.map(
-          (ele: { candidate_name: string; application_id: string }) => {
-            return {
-              id: ele.application_id,
-              label: ele.candidate_name,
-            };
-          },
-        )
-      : [],
-  } as (typeof safeFilters)[number];
   const assignerFilter = {
     filterSearch: true,
     searchPlaceholder: 'Search created by',
-    active: assignerList.length,
+    active: assignerList?.length,
     name: 'Created by',
     value: assignerList ?? [],
     type: 'filter',
@@ -161,30 +133,6 @@ function RequestListFilter() {
       : [],
   } as (typeof safeFilters)[number];
 
-  const _assigneeFilter = {
-    filterSearch: true,
-    searchPlaceholder: 'Search Assignees',
-    active: assigneeList.length,
-    name: 'Assignee',
-    value: assigneeList ?? [],
-    type: 'filter',
-    iconname: '',
-    icon: <></>,
-    setValue: (newValue) => {
-      setFilters((prev) => ({ ...prev, assigneeList: newValue }));
-    },
-    options: candidateAndJobs
-      ? candidateAndJobs?.assigneelist.map(
-          (ele: { name: string; id: string }) => {
-            return {
-              id: ele.id,
-              label: ele.name,
-            };
-          },
-        )
-      : [],
-  } as (typeof safeFilters)[number];
-
   return (
     <FilterHeader
       filters={[
@@ -195,7 +143,7 @@ function RequestListFilter() {
         // candidateFilter,
       ]}
       search={{
-        value: title,
+        value: title ?? '',
         setValue: (newValue: typeof title) => {
           setFilters((prev) => ({ ...prev, title: newValue }));
         },

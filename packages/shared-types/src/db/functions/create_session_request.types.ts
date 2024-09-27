@@ -8,7 +8,7 @@ export type CustomCreateSessionRequest = FunctionType<
   Custom<
     Database["public"]["Functions"]["create_session_request"]["Args"],
     {
-      request?: CustomRequestPayload;
+      request?: Partial<CustomRequestPayload>;
     }
   >,
   {}

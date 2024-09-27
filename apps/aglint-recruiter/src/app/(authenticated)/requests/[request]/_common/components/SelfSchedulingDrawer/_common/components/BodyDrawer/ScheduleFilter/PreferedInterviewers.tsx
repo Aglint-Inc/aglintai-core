@@ -1,4 +1,6 @@
-import MembersAutoComplete from 'src/app/_common/components/MembersTextField';
+import MembersAutoComplete, {
+  type MemberTypeAutoComplete,
+} from 'src/app/_common/components/MembersTextField';
 
 import {
   setLocalFilters,
@@ -14,7 +16,7 @@ function PreferedInterviewers() {
     }),
   );
 
-  const uniqueInterviewers = [];
+  const uniqueInterviewers: MemberTypeAutoComplete[] = [];
 
   schedulingOptions
     .flatMap((option) => option.interview_rounds)
@@ -28,7 +30,14 @@ function PreferedInterviewers() {
           );
 
           if (existingIndex === -1) {
-            uniqueInterviewers.push(interv);
+            uniqueInterviewers.push({
+              email: interv.email,
+              first_name: interv.first_name,
+              last_name: interv.last_name ?? '',
+              user_id: interv.user_id,
+              position: interv.position ?? '',
+              profile_image: interv.profile_image ?? '',
+            });
           }
         });
       });

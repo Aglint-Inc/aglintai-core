@@ -55,32 +55,33 @@ function InterviewModeComp() {
       moduleCurrent?.members
         .filter((user) => user.training_status == 'qualified')
         ?.map((member) => ({
-          email: member.email,
-          user_id: member.user_id,
-          profile_image: member.profile_image,
-          position: member.position,
-          first_name: member.first_name,
-          last_name: member.last_name,
-          module_relation_id: member.module_relation_id,
+          email: member?.email || '',
+          user_id: member?.user_id || '',
+          profile_image: member?.profile_image || '',
+          position: member?.position || '',
+          first_name: member?.first_name || '',
+          last_name: member?.last_name || '',
+          module_relation_id: member?.module_relation_id,
         })) || [];
 
     optionTrainees =
       moduleCurrent?.members
         .filter((user) => user.training_status == 'training')
         ?.map((member) => ({
-          email: member.email,
-          user_id: member.user_id,
-          profile_image: member.profile_image,
-          position: member.position,
-          first_name: member.first_name,
-          last_name: member.last_name,
-          module_relation_id: member.module_relation_id,
+          email: member?.email || '',
+          user_id: member?.user_id || '',
+          profile_image: member?.profile_image || '',
+          position: member?.position || '',
+          first_name: member?.first_name || '',
+          last_name: member?.last_name || '',
+          module_relation_id: member?.module_relation_id,
         })) || [];
   }
 
   const isTraineesDropVisible =
-    moduleCurrent?.members?.filter((user) => user.training_status == 'training')
-      .length > 0;
+    (moduleCurrent?.members?.filter(
+      (user) => user.training_status === 'training',
+    )?.length ?? 0) > 0;
 
   return (
     <InterviewMode
@@ -142,12 +143,12 @@ function InterviewModeComp() {
               error={
                 errorValidation.find(
                   (err) => err.field === 'qualified_interviewers',
-                ).error
+                )?.error
               }
               helperText={
                 errorValidation.find(
                   (err) => err.field === 'qualified_interviewers',
-                ).message
+                )?.message
               }
               onUserSelect={() => {
                 setErrorValidation(
@@ -178,11 +179,11 @@ function InterviewModeComp() {
           pillColor='bg-neutral-200'
           error={
             errorValidation.find((err) => err.field === 'training_interviewers')
-              .error
+              ?.error
           }
           helperText={
             errorValidation.find((err) => err.field === 'training_interviewers')
-              .message
+              ?.message
           }
           onUserSelect={() => {
             setErrorValidation(

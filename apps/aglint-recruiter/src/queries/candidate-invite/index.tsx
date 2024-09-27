@@ -100,14 +100,6 @@ const confirmSlotNoConflict = async (
   );
 };
 
-export type InviteMetaParams = {
-  session_ids: string[];
-  recruiter_id: string;
-  user_tz: string;
-  start_date: string;
-  end_date?: string;
-};
-
 export type InviteSlotsParams = {
   filter_json_id: string;
   user_tz: string;

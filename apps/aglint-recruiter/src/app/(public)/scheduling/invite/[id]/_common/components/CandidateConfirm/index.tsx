@@ -2,10 +2,11 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { type CandidateResponseSelfSchedule } from '@aglint/shared-types/src/db/tables/application_logs.types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { Building2 } from 'lucide-react';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 import axios from '@/client/axios';
-import CompanyLogo from '@/components/Common/CompanyLogo';
 import Footer from '@/components/Common/Footer';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { UIAlert } from '@/components/Common/UIAlert';
@@ -373,8 +374,28 @@ const ConfirmedScheduleCard = (
 
 const Logo = ({ companyName, logo }: { companyName: string; logo: string }) => {
   return (
-    <div className='h-[60px]'>
-      <CompanyLogo companyName={companyName} companyLogo={logo} />
+    <div className={'relative max-h-[60px] max-w-[60px]'}>
+      <div className='relative h-[60px] w-[60px]'>
+        <Image
+          src={logo}
+          alt={companyName}
+          width={60}
+          height={60}
+          className='object-contain'
+          onError={(e) => {
+            if (e.currentTarget instanceof HTMLImageElement) {
+              e.currentTarget.style.display = 'none';
+              const fallback =
+                e.currentTarget.parentElement?.querySelector('.fallback');
+              if (fallback instanceof HTMLElement)
+                fallback.style.display = 'flex';
+            }
+          }}
+        />
+        <div className='fallback absolute inset-0 hidden items-center justify-center'>
+          <Building2 className='h-10 w-10 text-neutral-400' />
+        </div>
+      </div>
     </div>
   );
 };

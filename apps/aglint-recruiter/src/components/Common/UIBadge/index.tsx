@@ -41,8 +41,8 @@ const badgeVariants = cva(
   },
 );
 
-export interface UIBadgeProps {
-  iconName?: keyof typeof Icons;
+interface UIBadgeProps {
+  iconName?: keyof typeof Icons | null;
   iconSize?: number;
   textBadge?: string | number;
   size?: 'default' | 'sm' | 'lg';
@@ -70,7 +70,7 @@ export function UIBadge({
   iconSize = 16,
   icon,
 }: UIBadgeProps) {
-  const IconComponent = Icons[iconName] as React.ElementType;
+  const IconComponent = Icons[iconName ?? ''] as React.ElementType;
 
   return (
     <Badge
@@ -94,7 +94,7 @@ export function UIBadge({
       )}
 
       {textBadge !== undefined || textBadge !== null ? (
-        <div>{textBadge.toString()}</div>
+        <div>{(textBadge ?? '').toString()}</div>
       ) : null}
     </Badge>
   );

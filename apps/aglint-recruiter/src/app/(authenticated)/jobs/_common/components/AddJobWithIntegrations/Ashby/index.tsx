@@ -10,6 +10,7 @@ import posthog from 'posthog-js';
 import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+import { useAllIntegrations } from '@/authenticated/hooks';
 import { Loader } from '@/components/Common/Loader';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -19,7 +20,6 @@ import {
   useIntegrationStore,
   useJobs,
 } from '@/jobs/hooks';
-import { useAllIntegrations } from '@/queries/intergrations';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';

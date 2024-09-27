@@ -6,7 +6,7 @@ import { agentTrigger } from '@/utils/scheduling/agentTrigger';
 import { createFilterJson } from '@/utils/scheduling/createFilterJson';
 import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsertMeetingsWithOrganizerId';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export type ApiBodyParamsScheduleAgent = {
   type: 'phone_agent' | 'email_agent';
@@ -14,14 +14,14 @@ export type ApiBodyParamsScheduleAgent = {
   application_id: string;
 
   dateRange: {
-    start_date: string | null;
-    end_date: string | null;
+    start_date: string;
+    end_date: string;
   };
   recruiter_id: string;
   task_id: string;
   recruiter_user_name: string;
-  candidate_name?: string;
-  company_name?: string;
+  candidate_name: string;
+  company_name: string;
   rec_user_phone: string;
   rec_user_id: string;
   user_tz: string;
@@ -30,6 +30,8 @@ export type ApiBodyParamsScheduleAgent = {
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    const supabaseAdmin = getSupabaseServer();
+
     const {
       application_id,
       dateRange,
@@ -43,7 +45,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       company_name,
     } = req.body as ApiBodyParamsScheduleAgent;
 
-    let resAgent = null;
+    let resAgent: boolean | null = null;
 
     if (task_id) {
       resAgent = await scheduleWithAgent({
@@ -90,8 +92,8 @@ export const scheduleWithAgent = async ({
   session_ids: string[];
   application_id: string;
   dateRange: {
-    start_date: string | null;
-    end_date: string | null;
+    start_date: string;
+    end_date: string;
   };
   task_id: string;
   recruiter_user_name: string;
@@ -101,8 +103,7 @@ export const scheduleWithAgent = async ({
   rec_user_id: string;
   supabase: SupabaseType;
 }) => {
-  console.log(application_id, 'application_id');
-  console.log(task_id, 'task_id');
+  const supabaseAdmin = getSupabaseServer();
 
   if (type) {
     const app = (
@@ -114,6 +115,9 @@ export const scheduleWithAgent = async ({
         .throwOnError()
     ).data;
 
+    if (!app || !app.public_jobs?.job_title || !app.candidates?.email)
+      throw new Error('Application not found');
+
     const sessions = (
       await supabaseAdmin
         .from('interview_session')
@@ -122,13 +126,15 @@ export const scheduleWithAgent = async ({
         .throwOnError()
     ).data;
 
+    if (!sessions) throw new Error('sessions not found');
+
     await handleMeetingsOrganizerResetRelations({
       application_id,
       selectedSessions: sessions.map((ses) => ({
         interview_session_id: ses.id,
-        interview_meeting_id: ses.interview_meeting.id,
-        job_id: ses.interview_meeting.job_id,
-        recruiter_id: ses.interview_meeting.recruiter_id,
+        interview_meeting_id: ses?.interview_meeting?.id || '',
+        job_id: ses?.interview_meeting?.job_id || '',
+        recruiter_id: ses?.interview_meeting?.recruiter_id || '',
       })),
       supabase,
       meeting_flow: type === 'email_agent' ? 'mail_agent' : 'phone_agent',

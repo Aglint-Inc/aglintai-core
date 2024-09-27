@@ -2,15 +2,13 @@ import { dayjsLocal } from '@aglint/shared-utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import dayjs from '@/utils/dayjs';
 import { supabase } from '@/utils/supabase/client';
 
 import type { responseCreatedCompletedType, SectionRequests } from '../types';
 
 export const useRequestCount = () => {
-  const {
-    recruiterUser: { user_id },
-  } = useAuthDetails();
+  const { recruiterUser } = useAuthDetails();
+  const user_id = recruiterUser?.user_id ?? '';
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ['get_requests_Count'],
@@ -46,7 +44,7 @@ export async function getRequestsCount({
     createdCompletedRequestCount as responseCreatedCompletedType
   ).value.data.map((ele) => {
     return {
-      name: dayjs(ele.date).format('MMM DD'),
+      name: dayjsLocal(ele.date).format('MMM DD'),
       count: ele.created,
     };
   });
@@ -55,7 +53,7 @@ export async function getRequestsCount({
     createdCompletedRequestCount as responseCreatedCompletedType
   ).value.data.map((ele) => {
     return {
-      name: dayjs(ele.date).format('MMM DD'),
+      name: dayjsLocal(ele.date).format('MMM DD'),
       count: ele.completed,
     };
   });
@@ -63,14 +61,13 @@ export async function getRequestsCount({
     createdCompletedRequestCount as responseCreatedCompletedType
   ).value.data.map((ele) => {
     return {
-      name: dayjs(ele.date).format('MMM DD'),
+      name: dayjsLocal(ele.date).format('MMM DD'),
       count: ele.on_going,
     };
   });
-
-  const card = (
-    allRequestCount.status === 'fulfilled' && allRequestCount.value.data
-  ).reduce(
+  const cardData =
+    allRequestCount.status === 'fulfilled' ? allRequestCount?.value?.data : [];
+  const card = (cardData ?? []).reduce(
     (acc, curr) => {
       if (curr.status === 'completed') acc.completed_request += 1;
       else if (curr.priority === 'urgent') acc.urgent_request += 1;

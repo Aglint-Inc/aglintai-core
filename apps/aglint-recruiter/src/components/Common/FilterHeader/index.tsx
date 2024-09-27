@@ -20,23 +20,24 @@ export default function FilterHeader({
   },
 }: FilterHeaderType) {
   handelResetAll =
-    handelResetAll ||
-    function () {
-      filters.forEach((filter) => {
-        switch (filter.type) {
-          case 'filter':
-          case 'nested-filter': {
-            filter.setValue([]);
-            break;
+    filters &&
+    (handelResetAll ||
+      function () {
+        filters.forEach((filter) => {
+          switch (filter.type) {
+            case 'filter':
+            case 'nested-filter': {
+              filter.setValue([]);
+              break;
+            }
+            case 'multi-section-filter': {
+              filter.setValue({});
+              break;
+            }
           }
-          case 'multi-section-filter': {
-            filter.setValue({});
-            break;
-          }
-        }
+        });
       });
-    };
-  const isFiltersActive = filters.some((filter) => {
+  const isFiltersActive = (filters || []).some((filter) => {
     switch (filter.type) {
       case 'filter': {
         return filter.value.length > 0;
@@ -66,7 +67,7 @@ export default function FilterHeader({
             value={debouncedSearch}
             onChange={(e) => setDebouncedSearch(e.target.value)}
             onClear={() => setDebouncedSearch('')}
-            placeholder={search.placeholder}
+            placeholder={search?.placeholder}
             height='h-9'
           />
         )}
@@ -74,11 +75,11 @@ export default function FilterHeader({
           <div className='flex flex-row items-center gap-2'>
             <div className='flex flex-row gap-2'>
               <Filters
-                filters={filters}
+                filters={filters || []}
                 showFilters={showFiltersByDefault}
                 setShowFilters={setShowFilters}
               />
-              {Boolean(dateRangeSelector) && (
+              {!!dateRangeSelector && (
                 <DateRangeSelector {...dateRangeSelector} />
               )}
               {isResetAll && isFiltersActive && (
@@ -96,12 +97,12 @@ export default function FilterHeader({
           </div>
         </div>
       </div>
-      {Boolean(sort) && <SortComponent {...sort} />}
+      {!!sort && <SortComponent {...sort} />}
     </div>
   );
 }
 
-export type FilterHeaderType = {
+type FilterHeaderType = {
   handelResetAll?: () => void;
   search?: {
     value: string;

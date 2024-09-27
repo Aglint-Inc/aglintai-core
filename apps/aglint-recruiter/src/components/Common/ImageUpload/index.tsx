@@ -48,7 +48,7 @@ function ImageUpload({
   const [loading, setLoading] = useState(false);
   const { recruiterUser } = useAuthDetails();
 
-  const defaultImage = '/images/logo/company.png';
+  const defaultImage = '/images/default/company.svg';
   const displayImage = image || defaultImage;
 
   const setProfilePicture = async (file: File) => {

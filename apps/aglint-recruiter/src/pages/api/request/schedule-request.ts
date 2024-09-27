@@ -1,35 +1,35 @@
 import { type DatabaseFunctions } from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
-import * as v from 'valibot';
+import { z } from 'zod';
 
 import { resetSessionRelations } from '@/utils/scheduling/resetSessionRelations';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-export type APICreateScheduleRequest = v.InferInput<
-  typeof createScheduleRequest
->;
-
-const createScheduleRequest = v.object({
-  session_ids: v.array(v.string()),
-  application_id: v.string(),
-  type: v.picklist(['schedule']),
-  dates: v.object({
-    start: v.nullish(v.string()),
-    end: v.nullish(v.string()),
+const createScheduleRequest = z.object({
+  session_ids: z.array(z.string()),
+  application_id: z.string(),
+  type: z.enum(['schedule']),
+  dates: z.object({
+    start: z.string().optional(),
+    end: z.string().optional(),
   }),
-  priority: v.picklist(['urgent', 'standard']),
-  assignee_id: v.string(),
-  assigner_id: v.string(),
-  session_names: v.array(v.string()),
+  priority: z.enum(['urgent', 'standard']),
+  assignee_id: z.string(),
+  assigner_id: z.string(),
+  session_names: z.array(z.string()),
 });
+
+export type APICreateScheduleRequest = z.infer<typeof createScheduleRequest>;
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  const supabaseAdmin = getSupabaseServer();
+
   try {
-    const parsed = v.parse(createScheduleRequest, req.body);
+    const parsed = createScheduleRequest.parse(req.body);
 
     const [cand_application] = supabaseWrap(
       await supabaseAdmin

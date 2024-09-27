@@ -15,12 +15,12 @@ import {
   setCandidateAvailabilityDrawerOpen,
   setCandidateAvailabilityIdForReRequest,
   setReRequestAvailability,
-} from '../CandidateAvailability/store';
+} from '../CandidateAvailability/_common/contexts/CandidateAvailabilityFlowStore';
 import {
   setApplicationIdForConfirmAvailability,
   setCandidateAvailabilityId,
   useConfirmAvailabilitySchedulingFlowStore,
-} from '../ConfirmAvailability/store';
+} from '../ConfirmAvailability/_common/contexts/AvailabilitySchedulingStore';
 import { useSelfSchedulingDrawer } from '../SelfSchedulingDrawer/_common/hooks/hooks';
 import {
   initialFilters,
@@ -115,7 +115,7 @@ const ScheduleOptions = () => {
               }, 2000);
             }}
           >
-            {isProceeding ? 'Proceeding...' : 'Click here Proceed'}
+            {isProceeding ? 'Proceeding...' : 'Proceed with AI'}
           </UIButton>
         </>
       </ShowCode.When>

@@ -1,7 +1,9 @@
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from "@/utils/supabase/supabaseAdmin";
 
 // getting ava_request_id ------------------------------------------------------
 export async function fetchLatestCandidateAvailability(requestId) {
+  const supabaseAdmin = getSupabaseServer();
+
   const { data, error } = await supabaseAdmin
     .from('candidate_request_availability')
     .select('id, number_of_days, number_of_slots,request_id,application_id')
@@ -69,6 +71,8 @@ export async function updateCandidateAvailabilitySlots(
   applicationId,
   filteredSlots,
 ) {
+  const supabaseAdmin = getSupabaseServer();
+
   const dataReady = [{ round: 1, dates: filteredSlots }].map((item) => ({
     round: item.round,
     dates: item.dates.map((date) => ({

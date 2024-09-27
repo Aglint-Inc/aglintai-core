@@ -1,7 +1,7 @@
 import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 
-import { supabaseAdmin } from '../supabase/supabaseAdmin';
+import { getSupabaseServer } from '../supabase/supabaseAdmin';
 import { ZOOM_API_URL } from './constants';
 import { decrypt_string } from './crypt-funcs';
 import {
@@ -18,6 +18,8 @@ export class ZoomMeet {
     this.recruiter_id = _recruiter_id;
   }
   public async authorizeUser() {
+    const supabaseAdmin = getSupabaseServer();
+
     const [rec] = supabaseWrap(
       await supabaseAdmin
         .from('integrations')

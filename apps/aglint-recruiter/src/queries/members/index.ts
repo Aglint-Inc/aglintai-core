@@ -1,16 +1,13 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
-import axios from '@/client/axios';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { type API_getMembersWithRole } from '@/pages/api/getMembersWithRole/type';
+import { api } from '@/trpc/client';
 
 export const useAllMembers = () => {
   const { recruiter_id } = useAuthDetails();
   const queryClient = useQueryClient();
 
-  const query = useQuery({
-    queryKey: ['members'],
-    queryFn: () => getMembers(),
+  const query = api.get_members_with_role.useQuery(undefined, {
     enabled: !!recruiter_id,
     refetchInterval: 1000 * 60 * 10,
     placeholderData: [],
@@ -23,7 +20,7 @@ export const useAllMembers = () => {
   };
 
   const allMembers = query?.data || [];
-  const members = query.data?.filter((member) => member.status === 'active');
+  const members = allMembers.filter((member) => member.status === 'active');
 
   return {
     allMembers,
@@ -31,12 +28,4 @@ export const useAllMembers = () => {
     members,
     isLoading: query.isLoading,
   };
-};
-
-const getMembers = () => {
-  return axios.call<API_getMembersWithRole>(
-    'GET',
-    '/api/getMembersWithRole',
-    null,
-  );
 };

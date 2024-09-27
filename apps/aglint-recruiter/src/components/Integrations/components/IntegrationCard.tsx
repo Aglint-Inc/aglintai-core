@@ -79,16 +79,22 @@ export function IntegrationCard({
       </CardContent>
       <CardFooter className='flex justify-between'>
         {secondaryText === 'Learn How' ? (
-          <Link href={learnHowLink} target='_blank' rel='noopener noreferrer'>
+          <Link
+            href={learnHowLink || ''}
+            target='_blank'
+            rel='noopener noreferrer'
+          >
             <Button variant='link'>
               Learn How
               <ExternalLink className='ml-1 h-4 w-4' />
             </Button>
           </Link>
         ) : (
-          <Button variant='outline' onClick={secondaryAction}>
-            {secondaryText || 'Disconnect'}
-          </Button>
+          Boolean(secondaryText) && (
+            <Button variant='outline' onClick={secondaryAction}>
+              {secondaryText}
+            </Button>
+          )
         )}
         <Button
           variant={

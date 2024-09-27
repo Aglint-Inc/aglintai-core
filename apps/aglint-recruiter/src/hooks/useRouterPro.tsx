@@ -7,28 +7,18 @@ import {
 } from 'next/navigation';
 
 import { type PATHS } from '@/constant/allPaths';
+import { type TYPE_SAFE_PATHS } from '@/constant/typeSafePaths';
 
 import type ROUTES from '../utils/routing/routes';
-
-type ExtractParams<T extends string> =
-  T extends `${string}[${infer Param}]${infer Rest}`
-    ? // eslint-disable-next-line no-unused-vars
-      { [K in Param | keyof ExtractParams<Rest>]: string }
-    : undefined;
-
-type RouteArgs<T extends string> = {
-  params?: ExtractParams<T>;
-  searchParams?: Record<string, string>;
-};
 
 export function useRouterPro<T extends Record<string, string | number>>() {
   const router = useRouter();
   const params = useParams<Record<string, string>>() || {};
   const searchParams = useSearchParams();
-  const url = usePathname();
+  const url = usePathname() || '';
 
   const queryParams = {} as T;
-  for (const [key, value] of searchParams.entries()) {
+  for (const [key, value] of searchParams?.entries() || []) {
     (queryParams as any)[String(key)] = value;
   }
   const setQueryParams = (data: Partial<T>) => {
@@ -56,12 +46,9 @@ export function useRouterPro<T extends Record<string, string | number>>() {
       .join('&');
   function superPush<T extends (typeof PATHS)[number]>(
     url: T,
-    args?: RouteArgs<T>,
+    op?: TYPE_SAFE_PATHS<T>,
   ) {
-    const path = updateUrl(url, {
-      params: args.params,
-      searchParams: { ...queryParams, ...(args?.searchParams || {}) },
-    });
+    const path = updateUrl(url, op);
     router.push(path);
   }
   return {
@@ -76,21 +63,22 @@ export function useRouterPro<T extends Record<string, string | number>>() {
   };
 }
 
-function updateUrl<T extends string>(
-  url: string,
-  { params, searchParams }: RouteArgs<T>,
-) {
+function updateUrl(url: string, op: unknown) {
+  const { params, searchParams } = op as {
+    params?: Record<string, string>;
+    searchParams: Record<string, string | number>;
+  };
   if (params) {
     const temp = Object.entries(params);
-    if (!temp.length) {
-      Object.entries(params).forEach(([key, value]) => {
+    if (temp.length) {
+      temp.forEach(([key, value]) => {
         url = url.replace(`[${key}]`, value);
       });
     }
   }
   if (searchParams) {
     const temp = Object.entries(searchParams);
-    if (!temp.length) {
+    if (temp.length) {
       const sp = Object.entries(searchParams)
         .map(([key, value]) => {
           if (!value || !String(value).trim().length) return null;
@@ -102,4 +90,11 @@ function updateUrl<T extends string>(
     }
   }
   return url;
+}
+
+export function getUrlPro<T extends (typeof PATHS)[number]>(
+  url: T,
+  op?: TYPE_SAFE_PATHS<T>,
+) {
+  return updateUrl(url, op);
 }

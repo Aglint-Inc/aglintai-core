@@ -1,3 +1,4 @@
+import { dayjsLocal } from '@aglint/shared-utils';
 import isBetween from 'dayjs/plugin/isBetween';
 import { z } from 'zod';
 
@@ -7,18 +8,18 @@ import {
   type PublicProcedure,
   publicProcedure,
 } from '@/server/api/trpc';
-import dayjs from '@/utils/dayjs';
+import { createPublicClient } from '@/server/db';
 
-dayjs.extend(isBetween);
+dayjsLocal.extend(isBetween);
 
 export const interviewPoolModuleSchema = z.object({
   recruiter_id: z.string().uuid(),
 });
 
 const query = async ({
-  ctx: { adminDb },
   input: { recruiter_id },
 }: PublicProcedure<typeof interviewPoolModuleSchema>) => {
+  const adminDb = createPublicClient();
   const interview_types = (
     await adminDb
       .from('interview_types_view')

@@ -1,48 +1,45 @@
+import { dayjsLocal } from '@aglint/shared-utils';
 import { Card } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import { Textarea } from '@components/ui/textarea';
 import { cn } from '@lib/utils';
-import { updateRequestNotes } from '@requests/functions';
-import { useRequestNotes } from '@requests/hooks';
+import {
+  useReadNotes,
+  useUpdateRequestNote,
+} from '@requests/hooks/useRequestNotes';
 import debounce from 'lodash/debounce';
 import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
-import dayjs from '@/utils/dayjs';
 
 function RequestNotes() {
   const params = useParams();
   const requestId = params?.request as string;
 
-  const {
-    data: requestNotes,
-    isFetched,
-    refetch,
-  } = useRequestNotes({
+  const { data: requestNotes, isFetched } = useReadNotes({
     request_id: requestId,
   });
   const [note, setNote] = useState('');
   const [editorEnabled, setEditorEnabled] = useState(false);
-  const [saving, setSaving] = useState(false);
 
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
     if (isFetched) {
       setNote(requestNotes?.[0]?.note || '');
     }
   }, [isFetched]);
-
+  const { updateRequestNote, isPending } = useUpdateRequestNote();
   const debouncedUpsertRequestNotes = useCallback(
-    debounce(async (noteValue, request_id) => {
-      await updateRequestNotes({
-        id: request_id as string,
+    debounce(async (noteValue: string, noteId?: string) => {
+      const payload = {
+        id: noteId,
         note: noteValue,
         request_id: requestId,
-        updated_at: dayjs().toISOString(),
-      });
-      setSaving(false);
-      refetch();
+        updated_at: dayjsLocal().toISOString(),
+      };
+      if (!noteId) delete payload.id;
+      updateRequestNote(payload);
     }, 500),
     [],
   );
@@ -78,7 +75,6 @@ function RequestNotes() {
                     value={note || ''}
                     onChange={async (e) => {
                       setNote(e.target.value);
-                      setSaving(true);
                       debouncedUpsertRequestNotes(
                         e.target.value,
                         requestNotes?.[0]?.id,
@@ -113,9 +109,11 @@ function RequestNotes() {
             {!requestNotes?.[0]?.note
               ? 'Notes will remain here until you clear it.'
               : 'Last edited on ' +
-                dayjs(requestNotes?.[0]?.updated_at).format('hh:mm A, MMM DD')}
+                dayjsLocal(requestNotes?.[0]?.updated_at).format(
+                  'hh:mm A, MMM DD',
+                )}
           </p>
-          {saving && <p className='text-xs text-neutral-500'>Saving...</p>}
+          {isPending && <p className='text-xs text-neutral-500'>Saving...</p>}
         </div>
       </Card>
     </div>

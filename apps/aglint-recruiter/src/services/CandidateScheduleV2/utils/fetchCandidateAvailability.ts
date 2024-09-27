@@ -1,8 +1,10 @@
 import { scheduling_options_schema, supabaseWrap } from '@aglint/shared-utils';
-import * as v from 'valibot';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
+
 export const fetchCandidateAvailability = async (request_id: string) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const [avail_details] = supabaseWrap(
     await supabaseAdmin
       .from('candidate_request_availability')
@@ -14,7 +16,7 @@ export const fetchCandidateAvailability = async (request_id: string) => {
   if (!avail_details) {
     throw new Error('Availabiluty does not exist');
   }
-  const zod_options = v.parse(scheduling_options_schema, {
+  const zod_options = scheduling_options_schema.parse({
     include_conflicting_slots: {
       day_off: true,
       day_passed: true,

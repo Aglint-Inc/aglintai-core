@@ -1,8 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { ScheduleStatesProvider } from '@interviews/contexts/ScheduleStatesContext';
-import Link from 'next/link';
-
-import { UIButton } from '@/components/Common/UIButton';
 
 import MyInterviews from './MyInterviews';
 import RecentCompletedInterviews from './RecentCompletedInterviews';
@@ -14,7 +10,7 @@ function Interviews() {
       <header>
         <div className='mb-4 flex items-center justify-between'>
           <div>
-            <h1 className='text-3xl font-semibold'>All Interviews</h1>
+            <h1 className='text-3xl font-semibold'>Interviews</h1>
             <p className='mb-4 text-gray-600'>
               Connect your favorite tools to streamline your recruitment
               process.
@@ -34,26 +30,8 @@ function Interviews() {
         {/* Right Column: My Interviews and Recently Completed Interviews */}
         <div className='flex w-5/12 flex-col'>
           <div className='p-12'></div>
-
           <MyInterviews />
-
-          <Card>
-            <CardHeader>
-              <CardTitle className='text-lg font-semibold'>
-                <div className='flex justify-between'>
-                  <h1>Recently Completed</h1>
-                  <Link href={'/interviews/all'}>
-                    <UIButton size='sm' variant='ghost'>
-                      View All
-                    </UIButton>
-                  </Link>
-                </div>
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <RecentCompletedInterviews />
-            </CardContent>
-          </Card>
+          <RecentCompletedInterviews />
         </div>
       </div>
     </div>

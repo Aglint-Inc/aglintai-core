@@ -1,10 +1,10 @@
+import { type ApiResponseFindAvailability } from '@requests/types';
 import { getStringColor } from 'src/app/_common/utils/getColorForText';
 
 import {
   type EventCalendar,
   type Resource,
 } from '@/components/Common/CalendarResourceView/types';
-import type { ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
 
 export const transformAvailability = (
   availabilities: ApiResponseFindAvailability['availabilities'],
@@ -27,7 +27,7 @@ export const transformAvailability = (
       return {
         ...data,
         extendedProps: {
-          conferenceData: event.conferenceData?.conferenceSolution,
+          conferenceData: event.conferenceData?.conferenceSolution ?? null,
           attendees: event.attendees,
           color: getStringColor(cal.name.charCodeAt(0)).text,
         },

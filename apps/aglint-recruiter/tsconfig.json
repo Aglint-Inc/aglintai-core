@@ -4,7 +4,6 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "incremental": true,
@@ -17,6 +16,7 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
+      "@/definitions/*": ["./src/definitions/*"],
       "@/api/*": ["./src/app/api/*"],
       "@/authenticated/*": ["./src/app/(authenticated)/_common/*"],
       "@/company/*": ["./src/app/(authenticated)/company/_common/*"],
@@ -91,6 +91,7 @@
         "name": "next"
       }
     ],
+    "strict": false,
     "strictNullChecks": false
   },
   "include": [

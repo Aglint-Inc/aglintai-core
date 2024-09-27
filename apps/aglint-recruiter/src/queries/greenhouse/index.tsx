@@ -1,37 +1,21 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import type { DatabaseTable } from '@aglint/shared-types';
 
-import { type GreenhouseAPI } from '@/api/integrations/greenhouse/type';
-import axios from '@/client/axios';
+import { api } from '@/trpc/client';
 
 export function useGreenhouseDetails() {
-  const query = useQuery({
-    queryKey: ['integrations', 'greenhouse'],
-    queryFn: getGreenhouseDetails,
-  });
-  const { mutateAsync } = useMutation({
-    mutationKey: ['integrations', 'greenhouse'],
-    mutationFn: setGreenhouseDetails,
+  const { data, isLoading, refetch } = api.ats.greenhouse.get.useQuery();
+  return {
+    data: data as DatabaseTable['integrations']['greenhouse_metadata'],
+    isPending: isLoading,
+    refetch,
+  };
+}
+export function useUpdateGreenhouseDetails() {
+  const util = api.useUtils();
+  const { mutateAsync } = api.ats.greenhouse.post.useMutation({
     onSuccess: () => {
-      query.refetch();
+      util.ats.greenhouse.get.refetch();
     },
   });
-  return { ...query, setOptions: mutateAsync };
-}
-
-async function getGreenhouseDetails() {
-  const res = await axios.call<GreenhouseAPI['GET']>(
-    'GET',
-    '/api/integrations/greenhouse',
-    null,
-  );
-  return res || ({} as typeof res);
-}
-
-async function setGreenhouseDetails(data: GreenhouseAPI['POST']['request']) {
-  const res = await axios.call<GreenhouseAPI['POST']>(
-    'POST',
-    '/api/integrations/greenhouse',
-    data,
-  );
-  return res;
+  return { setGreenhouseDetails: mutateAsync };
 }

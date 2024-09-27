@@ -1,11 +1,10 @@
 import { Mail, MailPlus, Phone } from 'lucide-react';
 
 import { type StageWithSessions } from '../../hooks/useInterviewStages';
-
 function RequestStatusUnconfirmed({
   interview_meeting,
 }: {
-  interview_meeting: StageWithSessions[0]['sessions'][0]['interview_meeting'];
+  interview_meeting: NonNullable<StageWithSessions>[0]['sessions'][0]['interview_meeting'];
 }) {
   return (
     <>

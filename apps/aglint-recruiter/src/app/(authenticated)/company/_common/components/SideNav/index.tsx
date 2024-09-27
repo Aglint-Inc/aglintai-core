@@ -1,15 +1,12 @@
-import { type permissionsEnum } from '@aglint/shared-types/src/db/tables/permissions/type';
-import { Button } from '@components/ui/button';
-import { cn } from '@lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
+import UITabs, { type UITabType } from '@/components/Common/UITabs';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { emailTemplateQueries } from '@/queries/email-templates';
-
-import { settingSubNavItem } from './utils';
+import ROUTES from '@/utils/routing/routes';
 
 function VerticalNav() {
   const router = useRouterPro();
@@ -18,7 +15,7 @@ function VerticalNav() {
     emailTemplateQueries.emailTemplates(recruiter.id),
   );
   const [firstTemplate, setFirstTemplate] = useState(null);
-  const { ifAllowed } = useRolesAndPermissions();
+  const { checkPermissions } = useRolesAndPermissions();
 
   useEffect(() => {
     if (emailTemplates.isFetched) {
@@ -27,110 +24,84 @@ function VerticalNav() {
       );
     }
   }, [emailTemplates.isFetched, router.queryParams.email]);
-
-  const handleNavClick = (value: string) => {
-    let url = `/company?tab=${value}`;
-    if (value === settingSubNavItem['EMAILTEMPLATE']) {
-      url += `&email=${firstTemplate}`;
-    }
-    router.replace(url);
-  };
   const { isShowFeature } = useAuthDetails();
 
   const settingsItems = [
     {
-      label: 'Company Details',
-      value: settingSubNavItem['COMPANYINFO'],
+      name: 'Company Details',
+      id: 'company-info',
       icon: 'Building',
       show: true,
     },
     {
-      label: 'Working Hours',
-      value: settingSubNavItem['WORKINGHOURS'],
+      name: 'Working Hours',
+      id: 'workingHours',
       icon: 'Clock',
       show: true,
     },
     {
-      label: 'Holidays',
-      value: settingSubNavItem['HOLIDAYS'],
+      name: 'Holidays',
+      id: 'holidays',
       icon: 'Calendar',
       show: true,
     },
     {
-      label: 'User',
-      value: settingSubNavItem['USERS'],
-      permission: 'view_users',
+      name: 'User',
+      id: 'team',
       icon: 'Users',
       show: true,
     },
     {
-      label: 'Roles',
-      value: settingSubNavItem['ROLES'],
-      permission: 'view_roles',
+      name: 'Roles',
+      id: 'roles',
       icon: 'Shield',
-      show: isShowFeature('ROLES'),
+      show: isShowFeature('ROLES') && checkPermissions(['view_roles']),
     },
     {
-      label: 'Templates',
-      value: settingSubNavItem['EMAILTEMPLATE'],
+      name: 'Templates',
+      id: 'emailTemplate',
       icon: 'FileText',
       show: isShowFeature('SCHEDULING'),
     },
     {
-      label: 'Scheduling',
-      value: settingSubNavItem['SCHEDULING'],
+      name: 'Scheduling',
+      id: 'scheduling',
       icon: 'CalendarDays',
       show: isShowFeature('SCHEDULING'),
     },
     {
-      label: 'Reasons',
-      value: settingSubNavItem['SCHEDULING_REASONS'],
+      name: 'Reasons',
+      id: 'schedulingReasons',
       icon: 'List',
       show: isShowFeature('SCHEDULING'),
     },
     {
-      label: 'Candidate Portal',
-      value: settingSubNavItem['PORTAL_SETTINGS'],
+      name: 'Candidate Portal',
+      id: 'portalSettings',
       icon: 'Globe',
       show: isShowFeature('CANDIDATE_PORTAL'),
     },
-  ] as {
-    label: string;
-    value: string;
-    permission?: permissionsEnum | 'authorized';
-    icon: string;
-    show: boolean;
-  }[];
+  ] as (UITabType['vertical'] & { show: boolean })[];
+
+  const filteredTabs = settingsItems
+    .filter((tab) => tab.show)
+    .map((tab) => ({
+      name: tab.name,
+      id: tab.id,
+      icon: tab.icon,
+    }));
 
   return (
-    <div className='space-y-1'>
-      <nav className='flex flex-col'>
-        {settingsItems
-          .filter((ele) => ele.show)
-          .map((item, i) => {
-            // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
-            const Icon = item.icon ? require('lucide-react')[item.icon] : null;
-            const NavButton = (
-              <Button
-                key={i}
-                variant='ghost'
-                className={cn(
-                  'justify-start',
-                  router.queryParams.tab === item.value && 'bg-muted',
-                )}
-                onClick={() => handleNavClick(item.value)}
-              >
-                {Icon && <Icon className='mr-2 h-4 w-4' />}
-                {item.label}
-              </Button>
-            );
-
-            return item?.permission
-              ? ifAllowed(NavButton, [item.permission])
-              : NavButton;
-          })}
-      </nav>
-    </div>
+    <UITabs
+      vertical
+      tabs={filteredTabs}
+      defaultValue={(router.queryParams.tab as string) || filteredTabs[0].id}
+      onClick={(value: string) => {
+        router.replace(
+          `${ROUTES['/company']()}?tab=${value}${value === 'emailTemplate' ? '&email=' + firstTemplate : ''}`,
+        );
+      }}
+    />
   );
 }
 

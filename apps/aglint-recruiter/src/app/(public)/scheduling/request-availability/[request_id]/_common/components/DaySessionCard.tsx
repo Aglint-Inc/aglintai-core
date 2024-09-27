@@ -1,17 +1,10 @@
+import { dayjsLocal } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
-import {
-  Calendar,
-  CheckCircle,
-  Clock,
-  MapPin,
-  Timer,
-  Users,
-} from 'lucide-react';
+import { CheckCircle, MapPin, Timer, Users } from 'lucide-react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
-import dayjs from '@/utils/dayjs';
 
 import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityContext';
 import { convertMinutesToHoursAndMinutes } from '../utils';
@@ -101,7 +94,7 @@ function DaySessionCard({
           dates.map((ele, i) => {
             return (
               <SelectedSlot
-                textDate={dayjs(ele.curr_day).format('DD MMMM YYYY')}
+                textDate={dayjsLocal(ele.curr_day).format('DD MMMM YYYY')}
                 slotBadge={ele.slots.map((slot, i) => {
                   return (
                     <UIBadge
@@ -109,7 +102,7 @@ function DaySessionCard({
                       color={isSubmitted ? 'success' : 'warning'}
                       key={i}
                       className='text-black'
-                      textBadge={`${dayjs(slot.startTime).format('hh:mm A')} - ${dayjs(slot.endTime).format('hh:mm A')}`}
+                      textBadge={`${dayjsLocal(slot.startTime).format('hh:mm A')} - ${dayjsLocal(slot.endTime).format('hh:mm A')}`}
                     />
                   );
                 })}
@@ -147,11 +140,11 @@ export function MultiDayCard({
   slotSelected,
 }: MultiDayCardCardProps) {
   return (
-    <div className='w-full max-w-2xl rounded-lg border border-neutral-200'>
+    <div className='w-full rounded-lg border border-neutral-200'>
       <div className='space-y-4 p-4'>
         <div className='flex items-start justify-between'>
           <div>
-            <h1 className='text-black'>{textDayCount}</h1>
+            <h1 className='mb-2 text-black'>{textDayCount}</h1>
             <div className='flex items-center space-x-2 text-sm text-neutral-600'>
               <Timer className='h-5 w-5 text-neutral-500' />
               <span>Total Duration: {textTotalDuration}</span>
@@ -174,7 +167,7 @@ export function MultiDayCard({
               </div>
               {slotChangeButton}
             </div>
-            <div className='space-y-4'>{slotSelected}</div>
+            <div className='flex flex-col'>{slotSelected}</div>
           </div>
         </>
       ) : null}
@@ -189,13 +182,10 @@ export function SelectedSlot({
   slotBadge: React.ReactNode;
 }) {
   return (
-    <div className='flex w-full flex-row gap-4'>
-      <div className='flex min-w-[200px] items-start space-x-2'>
-        <Calendar className='h-4 w-4 text-gray-500' />
-        <span className='text-sm text-gray-700'>{textDate}</span>
-      </div>
-      <div className='mt-1 flex items-start space-x-2'>
-        <Clock className='max-h-4 min-h-4 min-w-4 max-w-4 text-gray-500' />
+    <div className='mb-4 flex w-full flex-row gap-4'>
+      <div className='flex flex-col items-start gap-2'>
+        {/* <Calendar className='h-4 w-4 text-gray-500' /> */}
+        <span className='text-sm font-medium text-gray-700'>{textDate}</span>
         <div className='flex flex-wrap gap-1'>{slotBadge}</div>
       </div>
     </div>

@@ -9,14 +9,22 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { Lightbulb, Loader2 } from 'lucide-react';
 import React from 'react';
 
-import { type GreenHouseFullSyncAPI } from '@/api/sync/greenhouse/full_sync/type';
-import axios from '@/client/axios';
-import { useGreenhouseDetails } from '@/queries/greenhouse';
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import {
+  useGreenhouseDetails,
+  useUpdateGreenhouseDetails,
+} from '@/queries/greenhouse';
+import { api } from '@/trpc/client';
 
 dayjs.extend(relativeTime);
 
 function GreenhouseSettings() {
-  const { data, isPending, setOptions, refetch } = useGreenhouseDetails();
+  const { recruiter } = useAuthDetails();
+  const { mutateAsync: getGreenhouseSync } =
+    api.ats.greenhouse.fullSync.useMutation();
+  const { data, isPending, refetch } = useGreenhouseDetails();
+  const { setGreenhouseDetails: setOptions } = useUpdateGreenhouseDetails();
+
   const timeStamp = data && data.last_sync['full_sync'];
   const last_sync = timeStamp ? dayjs(timeStamp).fromNow() : 'Never';
 
@@ -79,7 +87,12 @@ function GreenhouseSettings() {
                 <p className='text-sm text-gray-500'>{`Last synchronized on: ${last_sync}`}</p>
                 <Button
                   size='sm'
-                  onClick={() => getGreenhouseSync(data).then(() => refetch())}
+                  onClick={() => {
+                    if (recruiter && recruiter.id)
+                      getGreenhouseSync({ recruiter_id: recruiter.id }).then(
+                        () => refetch(),
+                      );
+                  }}
                 >
                   Sync Now
                 </Button>
@@ -148,15 +161,15 @@ function GreenhouseSettings() {
 
 export default GreenhouseSettings;
 
-async function getGreenhouseSync(
-  syncData: GreenHouseFullSyncAPI['request']['syncData'],
-) {
-  const res = await axios.call<GreenHouseFullSyncAPI>(
-    'POST',
-    '/api/sync/greenhouse/full_sync',
-    {
-      syncData,
-    },
-  );
-  return res;
-}
+// async function getGreenhouseSync(
+//   syncData: GreenHouseFullSyncAPI['request']['syncData'],
+// ) {
+//   const res = await axios.call<GreenHouseFullSyncAPI>(
+//     'POST',
+//     '/api/sync/greenhouse/full_sync',
+//     {
+//       syncData,
+//     },
+//   );
+//   return res;
+// }

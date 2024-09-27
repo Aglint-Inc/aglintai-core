@@ -55,7 +55,7 @@ function UpComingInterviewFilters() {
 
   const { jobs } = useJobs();
   return (
-    <div className='flex flex-row space-x-3'>
+    <div className='flex flex-row justify-between'>
       <FilterHeader
         search={{
           value: searchText,
@@ -67,21 +67,6 @@ function UpComingInterviewFilters() {
           placeholder: 'Search schedules.',
         }}
         filters={[
-          //   {
-          //     type: 'filter',
-          //     name: 'Status',
-          //     options: [
-          //       { id: 'completed', label: 'Completed' },
-          //       { id: 'cancelled', label: 'Cancelled' },
-          //       { id: 'confirmed', label: 'Confirmed' },
-          //       { id: 'waiting', label: 'Waiting' },
-          //     ],
-          //     setValue: (val) => {
-          //       updateUpComingFilterState('status', val);
-          //     },
-          //     value: upcomingFilterState.status,
-          //     // iconname: 'filter_tilt_shift',
-          //   },
           {
             type: 'filter',
             name: 'Interviewer',
@@ -89,8 +74,12 @@ function UpComingInterviewFilters() {
               ? members
                   .filter((ele) => ele.status === 'active')
                   .map((member) => ({
-                    id: member.user_id,
-                    label: getFullName(member.first_name, member.last_name),
+                    id: member.user_id ?? '',
+                    label:
+                      getFullName(
+                        member.first_name ?? '',
+                        member.last_name ?? '',
+                      ) ?? '',
                   }))
               : [],
             filterSearch: true,
@@ -104,15 +93,19 @@ function UpComingInterviewFilters() {
           {
             type: 'filter',
             name: 'Jobs',
-            options:
-              jobs.isFetched &&
-              jobs.data.map((ele) => ({ id: ele.id, label: ele.job_title })),
+            options: jobs.data
+              ? jobs.data?.map((ele) => {
+                  return {
+                    id: ele.id ?? '',
+                    label: ele.job_title ?? '',
+                  };
+                })
+              : [],
             setValue: (val) => {
               updateUpComingFilterState('jobs', val);
             },
 
             value: upcomingFilterState.jobs,
-            // iconname: 'filter_tilt_shift',
           },
           {
             type: 'filter',
@@ -123,7 +116,6 @@ function UpComingInterviewFilters() {
               updateUpComingFilterState('date', val);
             },
             value: upcomingFilterState.date,
-            // iconname: 'filter_tilt_shift',
           },
         ]}
       />

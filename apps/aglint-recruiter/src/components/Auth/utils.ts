@@ -1,4 +1,4 @@
-import { errorMessages } from '@/utils/errorMessages';
+import { errorMessages } from 'src/app/_common/utils/errorMessages';
 
 import { type FieldError } from './types';
 
@@ -50,21 +50,4 @@ export const handleEmail = (email): FieldError => {
   } else {
     return { error: true, msg: 'Please enter a valid company email address' };
   }
-};
-
-export const stepObj = {
-  type: 'type',
-  signin: 'login',
-  detailsOne: 'details-one',
-  detailsTwo: 'details-two',
-  atsSystem: 'select-ats-system',
-  useGoal: 'use-goal',
-  allSet: 'all-set',
-};
-
-export const candidateDatabaseSampleJob = () => {
-  return {
-    job_title: 'Candidate Database',
-    is_campus: true,
-  };
 };

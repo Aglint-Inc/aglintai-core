@@ -170,7 +170,7 @@ const JobEdit = () => {
               <h2 className='mb-2 text-xl font-bold'>Job Details</h2>
               <p className='mb-4 text-sm text-gray-600'>
                 Update the job details here; changes will be saved
-                automatically. Publish to make the updates live.
+                automatically.
               </p>
             </div>
             <div
@@ -318,13 +318,9 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
 
   return (
     <div className='rounded-lg bg-white p-6 shadow-md'>
-      <p className='mb-4 text-sm text-gray-600'>
-        Update the job details here; changes will be saved automatically.
-        Publish to make the updates live.
-      </p>
       <div className='mb-6 grid grid-cols-2 gap-4'>{forms}</div>
       <div
-        className={`rounded-md border p-4 ${fields.description.error.value ? 'border-red-500' : 'border-gray-300'}`}
+        className={`rounded-md ${fields.description.error.value ? 'outline-red-500' : ''}`}
       >
         {description}
       </div>

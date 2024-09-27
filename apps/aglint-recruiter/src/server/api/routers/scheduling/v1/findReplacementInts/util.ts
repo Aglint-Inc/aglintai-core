@@ -5,14 +5,15 @@ import {
 import { CApiError, dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 
 import { type PrivateProcedure } from '@/server/api/trpc';
+import { createPrivateClient } from '@/server/db';
 import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
 
 import { type schemaFindAlternativeSlots } from './schema';
 
 export const findReplacementIntsUtil = async ({
-  ctx: { db },
   input,
 }: PrivateProcedure<typeof schemaFindAlternativeSlots>) => {
+  const db = createPrivateClient();
   const parsed_body = input;
   const [meeting_detail] = supabaseWrap(
     await db

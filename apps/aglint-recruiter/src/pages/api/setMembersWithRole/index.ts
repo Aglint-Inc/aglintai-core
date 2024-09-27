@@ -2,7 +2,7 @@ import { type DatabaseTableUpdate } from '@aglint/shared-types';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { apiRequestHandlerFactory } from '@/utils/apiUtils/responseFactory';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { type API_setMembersWithRole } from './type';
 
@@ -34,8 +34,8 @@ export default async function handler(
         const temp = await setRelation({
           user_id: userData.user_id,
           recruiter_id,
-          role_id,
-          manager_id,
+          role_id: role_id || null,
+          manager_id: manager_id || null,
         });
         role = temp.role;
         role_id = temp.role_id;
@@ -58,6 +58,8 @@ const setMembers = (
     user_id: string;
   },
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   return supabaseAdmin
     .from('recruiter_user')
     .update(data)
@@ -81,6 +83,8 @@ const setRelation = (
     recruiter_id: string;
   },
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   return supabaseAdmin
     .from('recruiter_relation')
     .update(data)

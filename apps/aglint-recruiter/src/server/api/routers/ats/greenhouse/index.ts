@@ -1,11 +1,13 @@
 import { createTRPCRouter } from '@/server/api/trpc';
 
 import { applications } from './applications';
-import { departments } from './departments';
-import { fullSync } from './fullSync';
-import { jobs } from './jobs';
-import { officeLocations } from './officeLocations';
-import { users } from './users';
+import { departments } from './departments/departments';
+import { fullSync } from './fullSync/fullSync';
+import { get } from './get';
+import { jobs } from './jobs/jobs';
+import { officeLocations } from './office_locations/officeLocations';
+import { post } from './post';
+import { users } from './users/users';
 
 export const greenhouse = createTRPCRouter({
   applications,
@@ -14,4 +16,7 @@ export const greenhouse = createTRPCRouter({
   jobs,
   officeLocations,
   users,
+  get,
+  post,
 });
+

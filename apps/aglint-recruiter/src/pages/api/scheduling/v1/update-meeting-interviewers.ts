@@ -8,99 +8,89 @@ import {
   schema_update_meeting_ints,
   supabaseWrap,
 } from '@aglint/shared-utils';
-import { type NextApiRequest, type NextApiResponse } from 'next';
-import * as v from 'valibot';
+import { type z } from 'zod';
 
+import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
 import type { CalEventAttendeesAuthDetails } from '@/utils/event_book/types';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    const parsed_body = v.parse(schema_update_meeting_ints, {
-      ...req.body,
-    });
-    const {
-      company_cred_hash_str,
-      meeting_organizer_auth,
-      session_ints_auth,
-      meeting_details,
-    } = await fetch_details(req.body);
+const updateMeetingInterviewers = async (
+  parsed_body: z.infer<typeof schema_update_meeting_ints>,
+) => {
+  const supabaseAdmin = getSupabaseServer();
 
-    const updated_session_attendees = session_ints_auth.map((int) => {
-      const updated_int = {
-        ...int,
-      };
-      if (
-        int.session_relation_id === parsed_body.curr_declined_int_sesn_reln_id
-      ) {
-        updated_int.is_confirmed = false;
-      }
-      if (int.user_id === parsed_body.new_int_user_id) {
-        updated_int.is_confirmed = true;
-      }
-      return updated_int;
-    });
+  const {
+    company_cred_hash_str,
+    meeting_organizer_auth,
+    session_ints_auth,
+    meeting_details,
+  } = await fetch_details(parsed_body);
 
-    const google_cal = new GoogleCalender(company_cred_hash_str, {
-      email: meeting_organizer_auth.email,
-      schedule_auth: meeting_organizer_auth.schedule_auth,
-      user_id: meeting_organizer_auth.user_id,
-    });
-    await google_cal.authorizeUser();
+  const updated_session_attendees = session_ints_auth.map((int) => {
+    const updated_int = {
+      ...int,
+    };
+    if (
+      int.session_relation_id === parsed_body.curr_declined_int_sesn_reln_id
+    ) {
+      updated_int.is_confirmed = false;
+    }
+    if (int.user_id === parsed_body.new_int_user_id) {
+      updated_int.is_confirmed = true;
+    }
+    return updated_int;
+  });
 
-    const updated_event = await google_cal.updateEvent({
-      id: (meeting_details.meeting_json as CalendarEvent).id,
-      attendees: updated_session_attendees
-        .filter((i) => i.is_confirmed)
-        .map((int) => ({
-          email: (int.schedule_auth as ScheduleAuthType)?.email ?? int.email,
-          organizer: false,
-        })),
-    });
+  const google_cal = new GoogleCalender(company_cred_hash_str, {
+    email: meeting_organizer_auth.email,
+    schedule_auth: meeting_organizer_auth.schedule_auth,
+    user_id: meeting_organizer_auth.user_id,
+  });
+  await google_cal.authorizeUser();
 
-    const attendees_promises = updated_session_attendees
+  const updated_event = await google_cal.updateEvent({
+    id: (meeting_details.meeting_json as CalendarEvent).id,
+    attendees: updated_session_attendees
       .filter((i) => i.is_confirmed)
-      .map(async (int) => {
-        const email =
-          (int.schedule_auth as ScheduleAuthType)?.email ?? int.email;
-        const int_cal = new GoogleCalender(company_cred_hash_str, int);
-        await int_cal.authorizeUser();
-        await int_cal.importEvent(updated_event, email);
-      });
-    await Promise.all(attendees_promises);
+      .map((int) => ({
+        email: (int.schedule_auth as ScheduleAuthType)?.email ?? int.email,
+        organizer: false,
+      })),
+  });
 
-    await Promise.all(
-      updated_session_attendees.map(
-        async (reln) =>
-          await updateInterviewers({
-            id: reln.session_relation_id,
-            is_confirmed: reln.is_confirmed,
-          }),
-      ),
-    );
-    supabaseWrap(
-      await supabaseAdmin
-        .from('interview_session_cancel')
-        .update({
-          is_resolved: true,
-        })
-        .eq('session_relation_id', parsed_body.curr_declined_int_sesn_reln_id),
-    );
+  const attendees_promises = updated_session_attendees
+    .filter((i) => i.is_confirmed)
+    .map(async (int) => {
+      const email = (int.schedule_auth as ScheduleAuthType)?.email ?? int.email;
+      const int_cal = new GoogleCalender(company_cred_hash_str, int);
+      await int_cal.authorizeUser();
+      await int_cal.importEvent(updated_event, email);
+    });
+  await Promise.all(attendees_promises);
 
-    return res.status(200).json('ok');
-  } catch (error) {
-    console.error(error);
-    return res
-      .status(error.status ?? 500)
-      .json({ name: error.name, message: error.message });
-  }
+  await Promise.all(
+    updated_session_attendees.map(
+      async (reln) =>
+        await updateInterviewers({
+          id: reln.session_relation_id,
+          is_confirmed: reln.is_confirmed,
+        }),
+    ),
+  );
+  supabaseWrap(
+    await supabaseAdmin
+      .from('interview_session_cancel')
+      .update({
+        is_resolved: true,
+      })
+      .eq('session_relation_id', parsed_body.curr_declined_int_sesn_reln_id),
+  );
 };
-
-export default handler;
 
 const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
   const { session_id } = payload;
+  const supabaseAdmin = getSupabaseServer();
 
   const [meeting_details] = await Promise.all([
     (async () => {
@@ -204,6 +194,8 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
 };
 
 const updateInterviewers = async ({ id, is_confirmed }) => {
+  const supabaseAdmin = getSupabaseServer();
+
   supabaseWrap(
     await supabaseAdmin
       .from('interview_session_relation')
@@ -230,6 +222,8 @@ const createSesnRelnIfNotExists = async ({
   user_id: string;
   session_id: string;
 }) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const [new_int_module_reln] = supabaseWrap(
     await supabaseAdmin
       .from('interview_module_relation')
@@ -256,3 +250,8 @@ const createSesnRelnIfNotExists = async ({
     );
   }
 };
+
+export default createPageApiPostRoute(
+  schema_update_meeting_ints,
+  updateMeetingInterviewers,
+);

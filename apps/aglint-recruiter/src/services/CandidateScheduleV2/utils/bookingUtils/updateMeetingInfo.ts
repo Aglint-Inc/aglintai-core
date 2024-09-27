@@ -2,7 +2,7 @@ import { type CalendarEvent } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { type BookedMeetingDetails } from './types';
 
@@ -18,6 +18,8 @@ export const updateMeetingEventDetails = async (
     meeting_id: string;
     cal_event: CalendarEvent;
   }) => {
+    const supabaseAdmin = getSupabaseServer();
+
     let meeting_link = '';
 
     if (

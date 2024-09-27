@@ -25,7 +25,7 @@ export const useWorkflowQuery = () => {
     queryFn: () => getWorkflows({ recruiter_id }),
   });
 };
-export type GetWorkflows = WorkflowKeys;
+type GetWorkflows = WorkflowKeys;
 
 const getWorkflows = async ({ recruiter_id }: GetWorkflows) => {
   const { data, error } = await supabase

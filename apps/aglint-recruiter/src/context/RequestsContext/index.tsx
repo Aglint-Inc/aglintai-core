@@ -2,8 +2,9 @@ import { createContext, type PropsWithChildren, useContext } from 'react';
 
 import { useRequestsActions } from './hooks';
 
-const RequestsContext =
-  createContext<ReturnType<typeof useRequestsActions>>(undefined);
+const RequestsContext = createContext<
+  ReturnType<typeof useRequestsActions> | undefined
+>(undefined);
 
 export const RequestsProvider = (props: PropsWithChildren) => {
   const value = useRequestsActions();

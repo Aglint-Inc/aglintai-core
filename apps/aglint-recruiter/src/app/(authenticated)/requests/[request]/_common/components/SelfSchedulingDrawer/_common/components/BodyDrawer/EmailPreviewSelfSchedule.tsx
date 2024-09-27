@@ -1,4 +1,5 @@
 import type { TargetApiPayloadType } from '@aglint/shared-types';
+import { toast } from '@components/hooks/use-toast';
 import { RefreshCcw } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
@@ -10,7 +11,6 @@ import UITypography from '@/components/Common/UITypography';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
 import { mailSender } from '@/utils/mailSender';
-import toast from '@/utils/toast';
 
 import { setEmailData, useSelfSchedulingFlowStore } from '../../store/store';
 import DayCardWrapper from './StepSlotOptions/DayCardWrapper';
@@ -26,15 +26,15 @@ function EmailPreviewSelfSchedule() {
     requests: { data: requestList },
   } = useRequests();
 
-  const selectedRequest = Object.values(requestList)
+  const selectedRequest = Object.values(requestList ?? {})
     .flat()
     .find((request) => request?.id === (requestId || ''));
 
   const payload: TargetApiPayloadType<'sendSelfScheduleRequest_email_applicant'> =
     {
       is_preview: true,
-      organizer_id: recruiterUser.user_id,
-      application_id: selectedRequest.application_id,
+      organizer_id: recruiterUser?.user_id ?? '',
+      application_id: selectedRequest?.application_id,
     };
 
   const { emailData, filteredSchedulingOptions, selectedCombIds } =
@@ -66,13 +66,13 @@ function EmailPreviewSelfSchedule() {
         setFetching(false);
       })
       .catch(() => {
-        toast.error('Fail to fetch email preview');
+        toast({ variant: 'destructive', title: 'Fail to fetch email preview' });
         setFetching(false);
       });
   };
 
   return (
-    <div className='flex h-[calc(100vh-96px)] flex-col gap-2 overflow-scroll p-4'>
+    <div className='flex h-[calc(100vh-98px)] flex-col gap-2 overflow-auto p-4'>
       <UITypography type='small'>
         You have selected {selectedCombIds.length} slots across {numberOfDays}
         days.

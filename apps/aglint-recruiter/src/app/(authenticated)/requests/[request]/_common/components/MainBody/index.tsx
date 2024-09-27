@@ -1,4 +1,4 @@
-import { getFullName } from '@aglint/shared-utils';
+import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
@@ -12,7 +12,6 @@ import {
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
-import { Switch } from '@components/ui/switch';
 import RequestProgress from '@requests/components/RequestProgress';
 import {
   REQUEST_STATUS_LIST,
@@ -28,6 +27,7 @@ import {
   Coffee,
   Edit2,
   Eye,
+  Home,
   MapPin,
   User,
 } from 'lucide-react';
@@ -49,16 +49,15 @@ import CollapseContent from '@/jobs/job/application/components/InterviewStage/In
 import { useEditSession } from '@/jobs/job/application/components/InterviewTab/hooks/useEditSession';
 import { type ApiInterviewSessionRequest } from '@/pages/api/scheduling/application/fetchInterviewSessionByRequest';
 import { type Request } from '@/queries/requests/types';
-import dayjs from '@/utils/dayjs';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import ROUTES from '@/utils/routing/routes';
 import { breakDurations } from '@/utils/scheduling/const';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import { updateInterviewSessionsDurations } from '../../functions';
+import { updateInterviewSessionsDurations } from '../../utils';
 import CandidateAvailability from '../CandidateAvailability';
 import ConfirmAvailability from '../ConfirmAvailability';
-import { AvailabilityProvider } from '../ConfirmAvailability/RequestAvailabilityContext';
+import { AvailabilityProvider } from '../ConfirmAvailability/_common/contexts/RequestAvailabilityContext';
 import RecentRequests from '../RecentRequests';
 import CandidateCancelRequest from '../RequestNextSteps/CandidateCancelRequest';
 import RequestDecline from '../RequestNextSteps/RequestDecline';
@@ -79,9 +78,12 @@ export default function ViewRequestDetails() {
 
   const { data: members } = useMemberList();
 
-  const [dateRange, setDateRange] = useState({ from: null, to: null });
+  const [dateRange, setDateRange] = useState<{
+    from: Date | undefined;
+    to: Date | undefined;
+  }>({ from: new Date(), to: new Date() });
 
-  const selectedRequest = Object.values(requestList)
+  const selectedRequest = Object.values(requestList ?? [])
     .flat()
     .find((request) => request?.id === requestId);
   const candidateDetails = selectedRequest?.applications?.candidates;
@@ -93,8 +95,8 @@ export default function ViewRequestDetails() {
   useEffect(() => {
     if (!isPlaceholderData && status === 'success' && selectedRequest) {
       setDateRange({
-        from: new Date(selectedRequest.schedule_start_date).toISOString(),
-        to: new Date(selectedRequest.schedule_end_date).toISOString(),
+        from: new Date(selectedRequest?.schedule_start_date ?? ''),
+        to: new Date(selectedRequest?.schedule_end_date ?? ''),
       });
     }
   }, [isPlaceholderData]);
@@ -124,7 +126,9 @@ export default function ViewRequestDetails() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href='/'>Home</BreadcrumbLink>
+                <BreadcrumbLink href='/'>
+                  <Home className='h-4 w-4' />
+                </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
@@ -141,7 +145,7 @@ export default function ViewRequestDetails() {
           <div className='flex flex-row items-start justify-between pb-2'>
             <div>
               <h1 className='mb-2 text-2xl text-gray-900'>
-                {capitalizeFirstLetter(selectedRequest?.title)}
+                {capitalizeFirstLetter(selectedRequest?.title ?? '')}
               </h1>
               <div className='flex items-center space-x-4 text-sm text-gray-500'>
                 <div className='flex items-center space-x-1'>
@@ -149,15 +153,15 @@ export default function ViewRequestDetails() {
                   <Link
                     href={
                       ROUTES['/jobs/[job]/[application]']({
-                        job: jobDetails?.id,
-                        application_id: selectedRequest?.application_id,
+                        job: jobDetails?.id ?? '',
+                        application_id: selectedRequest?.application_id ?? '',
                       }) + '?tab=scoring'
                     }
                   >
-                    <span>
+                    <span className='duration-300 hover:text-black hover:underline'>
                       {getFullName(
-                        candidateDetails?.first_name,
-                        candidateDetails?.last_name,
+                        candidateDetails?.first_name ?? '',
+                        candidateDetails?.last_name ?? '',
                       )}
                     </span>
                   </Link>
@@ -167,8 +171,14 @@ export default function ViewRequestDetails() {
                 <span>•</span> */}
                 <div className='flex items-center space-x-1'>
                   <Briefcase className='h-4 w-4' />
-                  <Link href={ROUTES['/jobs/[job]']({ job: jobDetails?.id })}>
-                    <span>{jobDetails?.job_title}</span>
+                  <Link
+                    href={ROUTES['/jobs/[job]']({
+                      job: jobDetails?.id ?? '',
+                    })}
+                  >
+                    <span className='duration-300 hover:text-black hover:underline'>
+                      {jobDetails?.job_title}
+                    </span>
                   </Link>
                 </div>
                 {/* <span>•</span> */}
@@ -185,13 +195,22 @@ export default function ViewRequestDetails() {
               </div>
             </div>
             <div className='flex flex-col items-end gap-4 space-x-2'>
-              <div className='flex flex-row gap-2'>
-                <Badge variant='destructive'>
-                  {capitalizeFirstLetter(selectedRequest?.type)}
-                </Badge>
-                <Badge variant='outline' className='bg-green-50 text-green-700'>
-                  {capitalizeFirstLetter(selectedRequest?.status)}
-                </Badge>
+              <div className='flex flex-row items-center gap-2'>
+                {selectedRequest.status === 'completed' ? (
+                  <>
+                    <h3 className='text-sm font-medium text-gray-500'>
+                      Completed at:
+                    </h3>
+                    <p>{dayjsLocal(selectedRequest?.completed_at).fromNow()}</p>
+                  </>
+                ) : (
+                  <>
+                    <h3 className='text-sm font-medium text-gray-500'>
+                      Created at:
+                    </h3>
+                    <p>{dayjsLocal(selectedRequest?.created_at).fromNow()}</p>
+                  </>
+                )}
               </div>
               <div className='flex-center flex items-center gap-2'>
                 <h3 className='text-sm font-medium text-gray-500'>
@@ -199,7 +218,7 @@ export default function ViewRequestDetails() {
                 </h3>
                 <Link
                   href={ROUTES['/user/[user]']({
-                    user_id: selectedMember?.user_id,
+                    user_id: selectedMember?.user_id ?? '',
                   })}
                   className='flex flex-row items-center gap-2'
                 >
@@ -209,14 +228,15 @@ export default function ViewRequestDetails() {
                       alt='Avatar'
                     />
                     <AvatarFallback>
-                      {selectedMember?.first_name.slice(0, 1)}
-                      {selectedMember?.last_name.slice(0, 1)}
+                      <span className='text-md'>
+                        {selectedMember?.first_name.slice(0, 1)}
+                      </span>
                     </AvatarFallback>
                   </Avatar>
                   <p className='font-medium'>
                     {getFullName(
-                      selectedMember?.first_name,
-                      selectedMember?.last_name,
+                      selectedMember?.first_name ?? '',
+                      selectedMember?.last_name ?? '',
                     )}
                   </p>
                 </Link>
@@ -264,8 +284,15 @@ export default function ViewRequestDetails() {
                             </div>
                           </div>
                           <Badge
-                            variant='outline'
-                            className='bg-green-50 text-green-700'
+                            variant={
+                              selectedRequest?.status === 'to_do'
+                                ? 'secondary'
+                                : selectedRequest?.status === 'in_progress'
+                                  ? 'in_progress'
+                                  : selectedRequest?.status === 'completed'
+                                    ? 'completed'
+                                    : 'destructive'
+                            }
                           >
                             {capitalizeFirstLetter(selectedRequest?.status)}
                           </Badge>
@@ -314,16 +341,19 @@ export default function ViewRequestDetails() {
                               <UIDateRangePicker
                                 value={dateRange}
                                 onAccept={(dates) => {
-                                  setDateRange(dates);
+                                  setDateRange({
+                                    from: dates.from ?? new Date(),
+                                    to: dates.to ?? new Date(),
+                                  });
                                   if (dates) {
                                     handleAsyncUpdateRequest({
                                       payload: {
                                         requestId: selectedRequest.id,
                                         requestPayload: {
-                                          schedule_start_date: dayjs(
+                                          schedule_start_date: dayjsLocal(
                                             dates.from,
                                           ).toISOString(),
-                                          schedule_end_date: dayjs(
+                                          schedule_end_date: dayjsLocal(
                                             dates.to,
                                           ).toISOString(),
                                         },
@@ -339,13 +369,13 @@ export default function ViewRequestDetails() {
                             </div>
                           </div>
                           <span className='text-sm'>
-                            {dayjs(selectedRequest?.schedule_start_date).format(
-                              'DD MMM, YYYY',
-                            ) +
+                            {dayjsLocal(
+                              selectedRequest?.schedule_start_date,
+                            ).format('DD MMM, YYYY') +
                               ' - ' +
-                              dayjs(selectedRequest?.schedule_end_date).format(
-                                'DD MMM, YYYY',
-                              )}
+                              dayjsLocal(
+                                selectedRequest?.schedule_end_date,
+                              ).format('DD MMM, YYYY')}
                           </span>
                         </div>
                         <div className='group relative space-y-2'>
@@ -369,11 +399,19 @@ export default function ViewRequestDetails() {
                                 updateButton={
                                   <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                                 }
-                                members={members}
+                                members={members ?? []}
                               />
                             </div>
                           </div>
-                          <MemberCard selectedMember={selectedMember} />
+                          <MemberCard
+                            selectedMember={{
+                              first_name: selectedMember?.first_name ?? '',
+                              last_name: selectedMember?.last_name ?? '',
+                              profile_image:
+                                selectedMember?.profile_image ?? '',
+                              role: selectedMember?.role ?? '',
+                            }}
+                          />
                         </div>
                       </div>
                     </div>
@@ -405,10 +443,19 @@ export default function ViewRequestDetails() {
                           </div>
                         </div>
                         <div className='flex items-center space-x-2'>
-                          <Calendar className='h-4 w-4 text-gray-500' />
-                          <span className='text-sm'>
-                            {capitalizeFirstLetter(selectedRequest?.type)}
-                          </span>
+                          <Badge
+                            variant={
+                              selectedRequest?.type === 'decline_request'
+                                ? 'destructive'
+                                : 'secondary'
+                            }
+                            className='gap-1'
+                          >
+                            <Calendar className='h-4 w-4 text-gray-500' />
+                            <p>
+                              {capitalizeFirstLetter(selectedRequest?.type)}
+                            </p>
+                          </Badge>
                         </div>
                       </div>
                     </div>
@@ -417,11 +464,13 @@ export default function ViewRequestDetails() {
 
                   <SessionCards
                     refetchMeetings={refetchMeetings}
-                    sessions={sessions}
+                    sessions={sessions ?? []}
                   />
                 </CardContent>
               </Card>
-              <RecentRequests applicationId={selectedRequest?.application_id} />
+              <RecentRequests
+                applicationId={selectedRequest?.application_id ?? ''}
+              />
             </div>
             <div className='flex w-4/12 flex-col space-y-4'>
               <ShowCode.When isTrue={selectedRequest.status !== 'completed'}>
@@ -461,18 +510,7 @@ export default function ViewRequestDetails() {
                 <CardHeader className='flex items-center justify-between'>
                   <div className='flex w-full flex-row items-center justify-between'>
                     <CardTitle className='text-lg'>Request Progress</CardTitle>
-                    <div className='flex items-center space-x-2'>
-                      {/* {reqTriggerActionsMap && Object.keys(reqTriggerActionsMap).length > 0 && ( */}
-                      {/* <Button size='sm'>
-                        <WandSparkles className='h-4 w-4 mr-2' />
-                        Proceed with Aglint AI
-                      </Button> */}
-                      {/* )} */}
-                      <div className='flex items-center space-x-2'>
-                        <span className='text-sm'>Automaton</span>
-                        <Switch />
-                      </div>
-                    </div>
+                    <div className='flex items-center space-x-2'></div>
                   </div>
                 </CardHeader>
                 <CardContent>
@@ -486,41 +524,6 @@ export default function ViewRequestDetails() {
                   ) : null}
                 </CardContent>
               </Card>
-
-              {/* <Card className='mb-4'>
-              <CardHeader>
-                <CardTitle className='text-md'>Add Automations</CardTitle>
-                <CardDescription>
-                  Streamline your workflow with these automations:
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className='space-y-4'>
-                  <div>
-                    <div className='space-y-2'>
-                      <div className='flex items-center justify-between'>
-                        <span className='text-sm'>Add Candidate Reminders</span>
-                        <Button size='sm' variant='outline'>
-                          Add
-                        </Button>
-                      </div>
-                      <div className='flex items-center justify-between'>
-                        <span className='text-sm'>RSVP Via Slack</span>
-                        <Button size='sm' variant='outline'>
-                          Add
-                        </Button>
-                      </div>
-                      <div className='flex items-center justify-between'>
-                        <span className='text-sm'>Sync with Calendar</span>
-                        <Button size='sm' variant='outline'>
-                          Add
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card> */}
             </div>
           </div>
         </div>
@@ -559,12 +562,14 @@ function SessionCards({
                 >
                   <div className='flex items-center justify-between'>
                     <CardTitle className='flex-1 truncate text-sm font-medium'>
-                      {capitalizeFirstLetter(session.interview_session.name)}
+                      {capitalizeFirstLetter(
+                        session?.interview_session?.name ?? '',
+                      )}
                     </CardTitle>
                     <div className='flex items-center space-x-2'>
                       <Badge variant='outline' className='text-xs'>
                         {capitalizeFirstLetter(
-                          session.interview_meeting.status,
+                          session?.interview_meeting?.status ?? '',
                         )}
                       </Badge>
                       <Button
@@ -582,7 +587,7 @@ function SessionCards({
                         onClick={(e) => {
                           e.stopPropagation();
                           window.open(
-                            `/interviews/view?meeting_id=${session.interview_meeting.id}&tab=job_details`,
+                            `/interviews/view?meeting_id=${session?.interview_meeting?.id}&tab=job_details`,
                             '_blank',
                           );
                         }}
@@ -625,7 +630,7 @@ function SessionCards({
                           value={session.interview_session.break_duration.toString()}
                           onValueChange={(value) => {
                             updateInterviewSessionsDurations(
-                              session.interview_session.id,
+                              session?.interview_session?.id ?? '',
                               parseInt(value),
                             ).then(() => refetchMeetings());
                           }}
@@ -645,103 +650,106 @@ function SessionCards({
 
 function ViewRequestDetailsSkeleton() {
   return (
-    <div className='container-lg mx-auto w-full px-12'>
-      {/* Breadcrumb */}
-      <div className='flex items-center space-x-2 text-sm text-gray-500'>
-        <span>Home</span>
-        <span>/</span>
-        <span>Requests</span>
-        <span>/</span>
-        {/* <span>Schedule Requests</span> */}
-        {/* <span>/</span> */}
-        <span className='font-medium text-gray-900'>Request Details</span>
-      </div>
-
-      {/* Header */}
-      <div className='flex flex-row items-start justify-between pb-2'>
-        <div>
-          <h1 className='mb-2 text-2xl font-bold text-gray-900'>
-            Schedule Request Details
-          </h1>
-          <Skeleton className='h-4 w-96' />
-        </div>
-        <div className='flex flex-col gap-4'>
-          <div className='flex flex-row gap-2'>
-            <Skeleton className='h-6 w-20' />
-            <Skeleton className='h-6 w-20' />
+    <div className='container-lg mx-auto w-full px-16'>
+      <div className='space-y-8'>
+        {/* Breadcrumb */}
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href='/'>
+                <Home className='h-4 w-4' />
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href='/requests'>Requests</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href='#' className='font-medium text-gray-900'>
+                Request Details
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        {/* Header */}
+        <div className='flex flex-row items-start justify-between pb-2'>
+          <div>
+            <h1 className='mb-2 text-2xl font-bold text-gray-900'>
+              <Skeleton className='h-10 w-96' />
+            </h1>
+            <Skeleton className='h-4 w-96' />
           </div>
-          <div className='flex items-center gap-2'>
-            <Skeleton className='h-4 w-24' />
-            <Skeleton className='h-6 w-6 rounded-full' />
-            <Skeleton className='h-4 w-24' />
-          </div>
-        </div>
-      </div>
-
-      {/* Progress Holder */}
-      <Alert>
-        <Bot className='h-4 w-4' />
-        <AlertTitle>Next Step</AlertTitle>
-        <AlertDescription>
-          <Skeleton className='h-4 w-64' />
-        </AlertDescription>
-        <div className='mt-4 flex flex-row justify-end gap-2'>
-          <Skeleton className='h-9 w-32' />
-          <Skeleton className='h-9 w-40' />
-        </div>
-      </Alert>
-
-      {/* Request Details Card */}
-      <Card className='bg-white shadow-sm'>
-        <CardHeader className='flex flex-row items-start justify-between pb-2'>
-          <CardTitle className='mb-2 text-xl font-semibold'>
-            Request Details
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className='grid grid-cols-3 gap-6'>
-            {/* Left column */}
-            <div className='col-span-2 grid grid-cols-2 gap-6'>
-              {[...Array(4)].map((_, index) => (
-                <div key={index} className='space-y-4'>
-                  <Skeleton className='h-4 w-24' />
-                  <Skeleton className='h-6 w-32' />
-                </div>
-              ))}
+          <div className='flex flex-col items-end gap-4'>
+            <div className='item-center flex flex-row gap-2'>
+              <Skeleton className='h-6 w-20' />
+              <Skeleton className='h-6 w-20' />
             </div>
-            {/* Right column */}
-            <div className='space-y-4'>
+            <div className='flex items-center gap-2'>
               <Skeleton className='h-4 w-24' />
-              <Skeleton className='h-6 w-32' />
+              <Skeleton className='h-6 w-6 rounded-full' />
+              <Skeleton className='h-4 w-24' />
             </div>
           </div>
-
-          {/* Sessions */}
-          <div className='mt-8'>
-            <div className='my-4 flex items-center justify-between'>
-              <Skeleton className='h-6 w-24' />
-              <Skeleton className='h-6 w-24' />
-            </div>
-            <div className='space-y-2 rounded-lg border p-4'>
-              {[...Array(3)].map((_, index) => (
-                <Card key={index} className='border-0 shadow-none'>
-                  <CardHeader className='px-4 py-2'>
-                    <div className='flex items-center justify-between'>
-                      <Skeleton className='h-4 w-64' />
-                      <div className='flex items-center space-x-2'>
-                        <Skeleton className='h-6 w-20' />
-                        <Skeleton className='h-8 w-20' />
-                        <Skeleton className='h-8 w-24' />
-                        <Skeleton className='h-4 w-4' />
-                      </div>
+        </div>
+        {/* Request Details Card */}
+        <div className='flex'>
+          <div className='flex w-8/12 flex-col space-y-4 pb-6 pr-4'>
+            <Card className='bg-white shadow-sm'>
+              <CardHeader className='flex flex-row items-start justify-between pb-2'>
+                <Skeleton className='h-8 w-1/4' />
+              </CardHeader>
+              <CardContent className='space-y-4'>
+                <div className='grid grid-cols-3 gap-6'>
+                  <div className='col-span-2 grid grid-cols-2 gap-6'>
+                    <div className='space-y-4'>
+                      <Skeleton className='h-4 w-full' />
+                      <Skeleton className='h-4 w-full' />
                     </div>
-                  </CardHeader>
-                </Card>
-              ))}
-            </div>
+                    <div className='space-y-4'>
+                      <Skeleton className='h-4 w-full' />
+                      <Skeleton className='h-4 w-full' />
+                    </div>
+                  </div>
+                  <div className='space-y-4'>
+                    <Skeleton className='h-4 w-full' />
+                  </div>
+                </div>
+                <Skeleton className='h-20 w-full' />
+                <Skeleton className='h-20 w-full' />
+              </CardContent>
+            </Card>
+            <Card className='bg-white shadow-sm'>
+              <CardHeader className='flex flex-row items-start justify-between pb-2'>
+                <Skeleton className='h-8 w-1/4' />
+              </CardHeader>
+              <CardContent>
+                <Skeleton className='h-20 w-full' />
+              </CardContent>
+            </Card>
           </div>
-        </CardContent>
-      </Card>
+          <div className='flex w-4/12 flex-col space-y-4'>
+            <Card className='bg-white shadow-sm'>
+              <CardHeader className='flex flex-row items-start justify-between pb-2'>
+                <Skeleton className='h-8 w-1/4' />
+              </CardHeader>
+              <CardContent className='space-y-4'>
+                <Skeleton className='h-10 w-full' />
+              </CardContent>
+            </Card>
+            <Card className='bg-white shadow-sm'>
+              <CardHeader className='flex flex-row items-start justify-between pb-2'>
+                <Skeleton className='h-8 w-1/4' />
+              </CardHeader>
+              <CardContent className='space-y-4'>
+                <Skeleton className='h-10 w-full' />
+                <Skeleton className='h-10 w-full' />
+                <Skeleton className='h-10 w-full' />
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import { createPrivateClient } from '@/server/db';
 
 const applicationDetailsSchema = z.object({
   application_id: z.string().uuid(),
@@ -19,11 +20,11 @@ export const applicationDetails = privateProcedure
 const getApplicationDetails = async (
   ctx: PrivateProcedure<typeof applicationDetailsSchema>,
 ) => {
+  const db = createPrivateClient();
   const {
-    ctx: { db },
     input: { application_id },
   } = ctx;
-  const { candidate_files, score_json, public_jobs, status } = (
+  const resp = (
     await db
       .from('applications')
       .select(
@@ -34,10 +35,13 @@ const getApplicationDetails = async (
       .single()
       .throwOnError()
   ).data;
-  return {
-    score_json,
-    resume_json: candidate_files?.resume_json,
-    status,
-    job_status: public_jobs?.status,
-  };
+
+  return resp && resp?.public_jobs?.status && resp?.candidate_files?.resume_json
+    ? {
+        score_json: resp?.score_json,
+        resume_json: resp?.candidate_files?.resume_json,
+        status: resp?.status,
+        job_status: resp?.public_jobs?.status,
+      }
+    : null;
 };

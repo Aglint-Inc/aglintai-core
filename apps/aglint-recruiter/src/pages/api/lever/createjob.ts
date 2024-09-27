@@ -15,7 +15,7 @@ import {
   splitFullName,
 } from '@/jobs/components/AddJobWithIntegrations/utils';
 import { apiRequestHandlerFactory } from '@/utils/apiUtils/responseFactory';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { decrypt } from '../decryptApiKey';
 
@@ -31,6 +31,8 @@ export type ApiLeverCreateJob = {
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const public_job_id = crypto.randomUUID();
   try {
     const requestHandler = apiRequestHandlerFactory<ApiLeverCreateJob>(
@@ -155,6 +157,8 @@ const createJobApplications = async ({
   public_job_id: string;
   recruiter_id: string;
 }) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const fetchedCandidates = await fetchAllCandidates(ats_job_id, apiKey);
 
   console.log('fetchedCandidates', fetchedCandidates.length);

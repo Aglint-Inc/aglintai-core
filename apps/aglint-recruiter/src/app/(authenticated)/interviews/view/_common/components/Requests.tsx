@@ -23,7 +23,7 @@ function Requests({ session_id }) {
         <Loader />
       ) : (
         <div className='space-y-2'>
-          {requests.length === 0 && (
+          {(requests ?? []).length === 0 && (
             <GlobalEmpty
               iconSlot={<Calendar className='text-gray-500' />}
               text={'No requests found'}
@@ -35,8 +35,8 @@ function Requests({ session_id }) {
               className='cursor-pointer border-none p-3 shadow-none hover:bg-gray-50'
               onClick={() => {
                 router.push(
-                  ROUTES['/requests/[id]']({
-                    id: request.id,
+                  ROUTES['/requests/[request]']({
+                    request: request.id,
                   }),
                 );
               }}
@@ -51,23 +51,26 @@ function Requests({ session_id }) {
                   <div className='flex items-center space-x-2'>
                     <Avatar className='h-6 w-6'>
                       <AvatarImage
-                        src={request.assignee_details.profile_image}
+                        src={
+                          request?.assignee_details?.profile_image ??
+                          '/avatar.png'
+                        }
                         alt={getFullName(
-                          request.assignee_details.first_name,
-                          request.assignee_details.last_name,
+                          request?.assignee_details?.first_name ?? '',
+                          request?.assignee_details?.last_name ?? '',
                         )}
                       />
                       <AvatarFallback className='text-xs'>
                         {getFullName(
-                          request.assignee_details.first_name,
-                          request.assignee_details.last_name,
+                          request?.assignee_details?.first_name ?? '',
+                          request?.assignee_details?.last_name ?? '',
                         ).charAt(0)}
                       </AvatarFallback>
                     </Avatar>
                     <span className='text-xs text-gray-600'>
                       {getFullName(
-                        request.assignee_details.first_name,
-                        request.assignee_details.last_name,
+                        request?.assignee_details?.first_name ?? '',
+                        request?.assignee_details?.last_name ?? '',
                       )}
                     </span>
                   </div>

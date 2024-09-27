@@ -5,9 +5,12 @@ import { type CustomMembersMeta } from '@aglint/shared-types/src/db/common.types
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-import { type ApiBodyParamTaskCreate } from '../debrief/task_create';
+export type ApiBodyParamTaskCreate = {
+  schedule_id: string;
+  application_id: string;
+};
 
 export type ApiDebriefAddUsers = {
   filter_id: string;
@@ -16,24 +19,27 @@ export type ApiDebriefAddUsers = {
 const debrief_task_create_url = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/debrief/task_create`;
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const supabaseAdmin = getSupabaseServer();
+
   try {
     const { filter_id } = req.body as ApiDebriefAddUsers;
 
-    const { data: filterJson, error: errorFilterJson } = await supabaseAdmin
+    const { data: filterJson } = await supabaseAdmin
       .from('interview_filter_json')
       .select(
         '*,applications( id,public_jobs(id,job_title,sourcer,recruiter,hiring_manager,recruiting_coordinator),candidates(*)),recruiter_user(first_name,last_name,user_id,email)',
       )
       .eq('id', filter_id)
-      .single();
+      .single()
+      .throwOnError();
 
-    if (errorFilterJson) throw new Error(errorFilterJson.message);
+    if (!filterJson) throw new Error('No filter json found');
 
     const intMeetSessions = await fetchMeetingsSessions(
       filterJson.application_id,
     );
 
-    let debriefSessionId = null;
+    let debriefSessionId: string | null = null;
 
     //find next debrief session
     for (let i = 0; i < intMeetSessions.length; i++) {
@@ -63,48 +69,51 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     console.log(isAllPreviousMeetingsBooked, 'isAllPreviousMeetingsBooked');
 
-    const allUserIds = [...(sessionRelations?.user_ids || [])];
+    const allUserIds: string[] = [...(sessionRelations?.user_ids || [])];
 
-    const members_meta = debriefSession.interview_session[0]
+    const members_meta = debriefSession?.interview_session[0]
       .members_meta as CustomMembersMeta;
 
     if (
       members_meta.hiring_manager &&
-      filterJson.applications.public_jobs.hiring_manager
+      filterJson.applications?.public_jobs?.hiring_manager
     ) {
       allUserIds.push(filterJson.applications.public_jobs.hiring_manager);
     }
 
     if (
       members_meta.recruiter &&
-      filterJson.applications.public_jobs.recruiter
+      filterJson.applications?.public_jobs?.recruiter
     ) {
       allUserIds.push(filterJson.applications.public_jobs.recruiter);
     }
 
     if (
       members_meta.recruiting_coordinator &&
-      filterJson.applications.public_jobs.recruiting_coordinator
+      filterJson.applications?.public_jobs?.recruiting_coordinator
     ) {
       allUserIds.push(
         filterJson.applications.public_jobs.recruiting_coordinator,
       );
     }
 
-    if (members_meta.sourcer && filterJson.applications.public_jobs.sourcer) {
+    if (
+      members_meta.sourcer &&
+      filterJson?.applications?.public_jobs?.sourcer
+    ) {
       allUserIds.push(filterJson.applications.public_jobs.sourcer);
     }
 
-    const eligibleUserIds = [...new Set(allUserIds)];
+    const eligibleUserIds: string[] = [...new Set(allUserIds)];
 
-    const existingUserIds = intMeetSessions
+    const existingUserIds = (intMeetSessions || [])
       .find((meet) => meet.interview_session[0].id === debriefSessionId)
-      .interview_session[0].interview_session_relation.map(
+      ?.interview_session[0].interview_session_relation.map(
         (sesrel) => sesrel.user_id,
       );
 
     const insertTableUserIds = eligibleUserIds.filter(
-      (userId) => !existingUserIds.includes(userId),
+      (userId) => !existingUserIds?.includes(userId),
     );
 
     if (insertTableUserIds.length === 0) {
@@ -153,6 +162,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 export default handler;
 
 const fetchMeetingsSessions = async (application_id: string) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const { data: intMeetSessions, error: errSessions } = await supabaseAdmin
     .from('interview_meeting')
     .select(
@@ -178,7 +189,7 @@ function findSessionRelations({
 }) {
   const allPreviousMeetings: Awaited<ReturnType<typeof fetchMeetingsSessions>> =
     [];
-  const user_ids = [];
+  const user_ids: string[] = [];
   let previousDebriefIndex = -1;
   let selectedDebriefIndex = -1;
 
@@ -204,7 +215,7 @@ function findSessionRelations({
     const session = sessions[i];
 
     session.interview_session[0].interview_session_relation.map((sesrel) => {
-      if (sesrel.is_confirmed)
+      if (sesrel.is_confirmed && sesrel?.interview_module_relation?.user_id)
         user_ids.push(sesrel.interview_module_relation.user_id);
     });
 

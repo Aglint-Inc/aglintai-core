@@ -4,9 +4,11 @@ import {
 } from '@aglint/shared-types';
 import {
   createRequestProgressLogger,
+  dayjsLocal,
   type ProgressLoggerType,
   ScheduleUtils,
 } from '@aglint/shared-utils';
+import { toast } from '@components/hooks/use-toast';
 import { Card, CardContent } from '@components/ui/card';
 import { Label } from '@components/ui/label';
 import { SelectItem } from '@components/ui/select';
@@ -16,6 +18,7 @@ import {
   updateCandidateRequestAvailability,
 } from '@requests/functions';
 import { useCandidateAvailability, useMeetingList } from '@requests/hooks';
+import { type Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -25,19 +28,17 @@ import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type Request as RequestType } from '@/queries/requests/types';
 import { getCompanyDaysCnt } from '@/services/CandidateScheduleV2/utils/companyWorkingDays';
-import dayjs from '@/utils/dayjs';
 import { mailSender } from '@/utils/mailSender';
 import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsertMeetingsWithOrganizerId';
 import { supabase } from '@/utils/supabase/client';
-import toast from '@/utils/toast';
 
-import EmailTemplate from './Components/EmailTemplate';
+import EmailTemplate from './_common/components/EmailTemplate';
 import {
   setCandidateAvailabilityDrawerOpen,
   setCandidateAvailabilityIdForReRequest,
   setReRequestAvailability,
   useCandidateAvailabilitySchedulingFlowStore,
-} from './store';
+} from './_common/contexts/CandidateAvailabilityFlowStore';
 
 function CandidateAvailability({
   selectedRequest,
@@ -55,14 +56,17 @@ function CandidateAvailability({
   const [selectedDays, setSelectedDays] = useState(DAYS_LIST[1]);
   const [selectedSlots, setSelectedSlots] = useState(SLOTS_LIST[1]);
   const [selectedDate, setSelectedDate] = useState<{
-    start_date: dayjs.Dayjs;
-    end_date: dayjs.Dayjs;
-  } | null>({
-    start_date: dayjs(
-      selectedRequest?.schedule_start_date || dayjs().toISOString(),
+    start_date: Dayjs;
+    end_date: Dayjs;
+  }>({
+    start_date: dayjsLocal(
+      selectedRequest?.schedule_start_date || dayjsLocal().toISOString(),
     ),
-    end_date: dayjs(selectedRequest.schedule_end_date || dayjs().toISOString()),
+    end_date: dayjsLocal(
+      selectedRequest.schedule_end_date || dayjsLocal().toISOString(),
+    ),
   });
+  dayjsLocal;
   const [submitting, setSubmitting] = useState(false);
   const { data: sessions } = useMeetingList();
 
@@ -75,16 +79,16 @@ function CandidateAvailability({
       const startDate = `${candidateAvailability?.date_range[0].split('/')[1]}-${candidateAvailability?.date_range[0].split('/')[0]}-${candidateAvailability?.date_range[0].split('/')[2]}`;
       const endDate = `${candidateAvailability?.date_range[1].split('/')[1]}-${candidateAvailability?.date_range[1].split('/')[0]}-${candidateAvailability?.date_range[1].split('/')[2]}`;
       setSelectedDays({
-        value: candidateAvailability.number_of_days,
+        value: candidateAvailability.number_of_days ?? 0,
         label: `${candidateAvailability.number_of_days} Days`,
       });
       setSelectedSlots({
-        value: candidateAvailability.number_of_slots,
+        value: candidateAvailability.number_of_slots ?? 0,
         label: `${candidateAvailability.number_of_slots} Slots`,
       });
       setSelectedDate({
-        start_date: dayjs(startDate),
-        end_date: dayjs(endDate),
+        start_date: dayjsLocal(startDate),
+        end_date: dayjsLocal(endDate),
       });
     }
   }, [candidateAvailability]);
@@ -98,8 +102,8 @@ function CandidateAvailability({
           number_of_days: selectedDays.value,
           number_of_slots: selectedSlots.value,
           date_range: [
-            selectedDate.start_date.format('DD/MM/YYYY'),
-            selectedDate.end_date.format('DD/MM/YYYY'),
+            selectedDate?.start_date.format('DD/MM/YYYY'),
+            selectedDate?.end_date.format('DD/MM/YYYY'),
           ],
         },
         id: candidateAvailabilityIdForReRequest,
@@ -107,7 +111,7 @@ function CandidateAvailability({
       try {
         const payload: TargetApiPayloadType<'availabilityReqResend_email_candidate'> =
           {
-            recruiter_user_id: recruiterUser.user_id,
+            recruiter_user_id: recruiterUser?.user_id ?? '',
             avail_req_id: candidateAvailabilityIdForReRequest,
           };
         mailSender({
@@ -115,28 +119,32 @@ function CandidateAvailability({
           payload: payload,
         });
       } catch (error) {
-        toast.message('Failed to send email');
+        toast({ variant: 'destructive', title: 'Failed to send email' });
       }
 
-      toast.success('Request availability has been re-requested successfully');
+      toast({
+        title: 'Request availability has been re-requested successfully',
+      });
       setSubmitting(false);
       setCandidateAvailabilityDrawerOpen(false);
       return;
     }
     await handleMeetingsOrganizerResetRelations({
-      application_id: selectedRequest.application_id,
+      application_id: selectedRequest.application_id ?? '',
       meeting_flow: 'candidate_request',
-      selectedSessions: sessions.map((ses) => ({
-        interview_session_id: ses.interview_session.id,
-        interview_meeting_id: ses.interview_meeting.id,
-        job_id: ses.interview_meeting.job_id,
-        recruiter_id: ses.interview_meeting.recruiter_id,
-      })),
+      selectedSessions: sessions
+        ? sessions.map((ses) => ({
+            interview_session_id: ses?.interview_session?.id ?? '',
+            interview_meeting_id: ses?.interview_meeting?.id ?? '',
+            job_id: ses?.interview_meeting?.job_id ?? '',
+            recruiter_id: ses?.interview_meeting?.recruiter_id ?? '',
+          }))
+        : [],
       supabase,
     });
     const result = await insertCandidateRequestAvailability({
       application_id: String(selectedRequest.application_id),
-      recruiter_id: String(recruiter.id),
+      recruiter_id: String(recruiter?.id),
       availability: {
         day_offs: false,
         free_keywords: true,
@@ -144,8 +152,8 @@ function CandidateAvailability({
         recruiting_block_keywords: true,
       },
       date_range: [
-        selectedDate.start_date.format('DD/MM/YYYY'),
-        selectedDate.end_date.format('DD/MM/YYYY'),
+        selectedDate?.start_date.format('DD/MM/YYYY'),
+        selectedDate?.end_date.format('DD/MM/YYYY'),
       ],
       is_task_created: false,
       number_of_days: selectedDays.value,
@@ -154,9 +162,9 @@ function CandidateAvailability({
       request_id: selectedRequest.id,
     });
     await supabase.from('request_session_relation').insert(
-      sessions.map((ele) => ({
-        session_id: ele.interview_session.id,
-        request_availability_id: result.id,
+      (sessions ?? []).map((ele) => ({
+        session_id: ele?.interview_session?.id ?? '',
+        request_availability_id: result?.id ?? '',
       })),
     );
 
@@ -171,8 +179,8 @@ function CandidateAvailability({
       );
       const payload: TargetApiPayloadType<'sendAvailabilityRequest_email_applicant'> =
         {
-          organizer_user_id: recruiterUser.user_id,
-          avail_req_id: result.id,
+          organizer_user_id: recruiterUser?.user_id ?? '',
+          avail_req_id: result?.id ?? '',
         };
 
       mailSender({
@@ -188,14 +196,14 @@ function CandidateAvailability({
         status: 'completed',
         meta: {
           event_run_id: null,
-          avail_req_id: result.id,
+          avail_req_id: result?.id ?? '',
         },
       });
     } catch (error) {
-      toast.message('Failed to send email');
+      toast({ variant: 'destructive', title: 'Failed to send email' });
     }
 
-    toast.success('Request availability created successfully');
+    toast({ title: 'Request availability created successfully' });
     setSubmitting(false);
     setCandidateAvailabilityDrawerOpen(false);
   }
@@ -210,9 +218,10 @@ function CandidateAvailability({
   ) as unknown as InterviewSessionTypeDB[][];
   const maxDays =
     getCompanyDaysCnt(
-      recruiter.scheduling_settings,
-      selectedDate.start_date.format('DD/MM/YYYY'),
-      selectedDate.end_date.format('DD/MM/YYYY'),
+      //@ts-ignore
+      recruiter?.scheduling_settings,
+      selectedDate?.start_date.format('DD/MM/YYYY') ?? '',
+      selectedDate?.end_date.format('DD/MM/YYYY') ?? '',
     ) -
     (meetingsRound.length - 1);
   function closeDrawer() {
@@ -262,10 +271,10 @@ function CandidateAvailability({
           slotStartDateInput={
             <UIDatePicker
               closeOnSelect={true}
-              value={new Date(selectedDate.start_date.toISOString())}
+              value={new Date(selectedDate?.start_date.toISOString())}
               onAccept={(value: Date) => {
                 setSelectedDate({
-                  start_date: dayjs(value),
+                  start_date: dayjsLocal(value),
                   end_date: selectedDate?.end_date,
                 });
               }}
@@ -278,7 +287,7 @@ function CandidateAvailability({
               onAccept={(value: Date) => {
                 setSelectedDate({
                   start_date: selectedDate?.start_date,
-                  end_date: dayjs(value),
+                  end_date: dayjsLocal(value),
                 });
               }}
             />
@@ -300,7 +309,10 @@ function CandidateAvailability({
                 const selectedOption = DAYS_LIST.find(
                   (option) => option.value === Number(value),
                 );
-                setSelectedDays(selectedOption);
+                setSelectedDays({
+                  label: selectedOption?.label ?? '',
+                  value: selectedOption?.value ?? 0,
+                });
               }}
             >
               {DAYS_LIST.map((option, index) => {
@@ -328,7 +340,10 @@ function CandidateAvailability({
                 const selectedOption = SLOTS_LIST.find(
                   (option) => option.value === Number(value),
                 );
-                setSelectedSlots(selectedOption);
+                setSelectedSlots({
+                  label: selectedOption?.label ?? '',
+                  value: selectedOption?.value ?? 0,
+                });
               }}
             >
               {SLOTS_LIST.map((option) => (
@@ -339,7 +354,9 @@ function CandidateAvailability({
             </UISelectDropDown>
           }
           slotEmailTemplateHolder={
-            <EmailTemplate application_id={selectedRequest.application_id} />
+            <EmailTemplate
+              application_id={selectedRequest.application_id ?? ''}
+            />
           }
         />
       </UIDrawer>

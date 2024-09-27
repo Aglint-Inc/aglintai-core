@@ -1,7 +1,7 @@
 import { type SocialsType } from '@aglint/shared-types';
 import { NextResponse } from 'next/server';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { type apiPortalInterviewsResponse } from '../get_interviews/route';
 
@@ -58,6 +58,8 @@ type sessions = Awaited<ReturnType<typeof getScheudleSessionDetails>>;
 
 export async function POST(req) {
   try {
+    const supabaseAdmin = getSupabaseServer();
+
     const { application_id } = await req.json();
 
     const { data: application } = await supabaseAdmin
@@ -190,6 +192,8 @@ export async function POST(req) {
 }
 
 const getScheudleSessionDetails = async (session_ids: string[]) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const { data: scheduleSession } = await supabaseAdmin
     .from('interview_session')
     .select('name,session_duration,interview_meeting(start_time,end_time)')
@@ -206,6 +210,8 @@ const getScheudleSessionDetails = async (session_ids: string[]) => {
 };
 
 const getAvailabilitySessionDetails = async (availability_id: string) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const { data: availabilitySess } = await supabaseAdmin
     .from('request_session_relation')
     .select(
@@ -244,6 +250,8 @@ const getMeetings = async (application_id) => {
 };
 
 const getInterviews = async (application_id) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const { data: interviews } = await supabaseAdmin
     .from('meeting_details')
     .select(
@@ -257,6 +265,8 @@ const getInterviews = async (application_id) => {
 };
 
 const getInterviewers = async (session_id) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const { data: interviewers } = await supabaseAdmin
     .from('meeting_interviewers')
     .select('first_name,last_name,profile_image,position')

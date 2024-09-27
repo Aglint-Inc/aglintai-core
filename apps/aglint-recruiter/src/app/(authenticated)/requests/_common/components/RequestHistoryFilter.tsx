@@ -17,13 +17,13 @@ function RequestHistoryFilter() {
     useState<Awaited<ReturnType<typeof getCandidateList>>>(null);
   const { completedFilters } = useCompletedRequestsStore();
   const { applications, assigneeList, jobs, assignerList, title, type, date } =
-    completedFilters;
+    completedFilters ?? {};
   const { recruiter_id } = useAuthDetails();
 
   async function getCandidateList() {
     const { data } = await supabase
       .rpc('get_completed_requests_candidate_list', {
-        rec_id: recruiter_id,
+        rec_id: recruiter_id ?? '',
       })
       .single();
     setCandidateAndJobs(data);
@@ -44,133 +44,6 @@ function RequestHistoryFilter() {
     ],
   };
 
-  const jobFilter = {
-    filterSearch: true,
-    searchPlaceholder: 'Search Jobs',
-    active: jobs && jobs.length,
-    name: 'Jobs',
-    value: jobs ?? [],
-    type: 'filter',
-    iconname: '',
-    icon: <></>,
-    setValue: (newValue) => {
-      setCompletedFilters({
-        ...completedFilters,
-        jobs: newValue,
-      });
-    },
-    options: candidateAndJobs?.jobs
-      ? candidateAndJobs.jobs.map(
-          (ele: { job_id: string; job_title: string }) => {
-            return {
-              id: ele.job_id,
-              label: ele.job_title,
-            };
-          },
-        )
-      : [],
-  } as Parameters<typeof FilterHeader>[0]['filters'][number];
-
-  const candidateFilter = {
-    filterSearch: true,
-    searchPlaceholder: 'Search Candidates',
-    active: applications && applications.length,
-    name: 'Candidates',
-    value: applications ?? [],
-    type: 'filter',
-    iconname: '',
-    icon: <></>,
-    setValue: (newValue) => {
-      setCompletedFilters({
-        ...completedFilters,
-        applications: newValue,
-      });
-    },
-    options: candidateAndJobs?.applications
-      ? candidateAndJobs?.applications.map(
-          (ele: { candidate_name: string; application_id: string }) => {
-            return {
-              id: ele.application_id,
-              label: ele.candidate_name,
-            };
-          },
-        )
-      : [],
-  } as Parameters<typeof FilterHeader>[0]['filters'][number];
-  const assignerFilter = {
-    filterSearch: true,
-    searchPlaceholder: 'Search created by',
-    active: assignerList && assignerList.length,
-    name: 'Created by',
-    value: assignerList ?? [],
-    type: 'filter',
-    iconname: '',
-    icon: <></>,
-    setValue: (newValue) => {
-      setCompletedFilters({
-        ...completedFilters,
-        assignerList: newValue,
-      });
-    },
-    options: candidateAndJobs?.assignerlist
-      ? candidateAndJobs?.assignerlist.map(
-          (ele: { name: string; id: string }) => {
-            return {
-              id: ele.id,
-              label: ele.name,
-            };
-          },
-        )
-      : [],
-  } as Parameters<typeof FilterHeader>[0]['filters'][number];
-
-  const assigneeFilter = {
-    filterSearch: true,
-    searchPlaceholder: 'Search Assignees',
-    active: assigneeList && assigneeList.length,
-    name: 'Assignee',
-    value: assigneeList ?? [],
-    type: 'filter',
-    iconname: '',
-    icon: <></>,
-    setValue: (newValue) => {
-      setCompletedFilters({
-        ...completedFilters,
-        assigneeList: newValue,
-      });
-    },
-    options: candidateAndJobs?.assigneelist
-      ? candidateAndJobs?.assigneelist.map(
-          (ele: { name: string; id: string }) => {
-            return {
-              id: ele.id,
-              label: ele.name,
-            };
-          },
-        )
-      : [],
-  } as Parameters<typeof FilterHeader>[0]['filters'][number];
-  const typeFilter = {
-    active: type && type.length,
-    name: 'Type',
-    value: type ?? [],
-    type: 'filter',
-    iconname: '',
-    icon: <></>,
-    setValue: (newValue) => {
-      setCompletedFilters({
-        ...completedFilters,
-        type: newValue,
-      });
-    },
-    options: options.type.map((ele: string) => {
-      return {
-        id: ele,
-        label: ele,
-      };
-    }),
-  } as Parameters<typeof FilterHeader>[0]['filters'][number];
-
   return (
     <FilterHeader
       filters={[
@@ -181,24 +54,170 @@ function RequestHistoryFilter() {
           multiSelect: false,
           setValue: (newValue) => {
             setCompletedFilters({
-              ...completedFilters,
+              type: completedFilters?.type ?? [],
+              assignerList: completedFilters?.assignerList,
+              assigneeList: completedFilters?.assigneeList,
+              title: completedFilters?.title,
+              applications: completedFilters?.applications,
+              jobs: completedFilters?.jobs ?? [],
               date: newValue,
             });
           },
-          value: date,
+          value: date ?? [],
+
           // iconname: '',
         },
-        typeFilter,
-        assigneeFilter,
-        assignerFilter,
-        jobFilter,
-        candidateFilter,
+        {
+          name: 'Type',
+          value: type ?? [],
+          type: 'filter',
+          icon: <></>,
+          setValue: (newValue) => {
+            setCompletedFilters({
+              date: completedFilters?.date ?? [],
+              assignerList: completedFilters?.assignerList,
+              assigneeList: completedFilters?.assigneeList,
+              title: completedFilters?.title,
+              applications: completedFilters?.applications,
+              jobs: completedFilters?.jobs ?? [],
+              type: newValue,
+            });
+          },
+          options: options.type
+            ? options.type.map((ele: string) => {
+                return {
+                  id: ele ?? '',
+                  label: ele ?? '',
+                };
+              })
+            : [],
+        },
+        {
+          filterSearch: true,
+          searchPlaceholder: 'Search Assignees',
+          name: 'Assignee',
+          value: assigneeList ?? [],
+          type: 'filter',
+          icon: <></>,
+          setValue: (newValue) => {
+            setCompletedFilters({
+              date: completedFilters?.date ?? [],
+              assignerList: completedFilters?.assignerList,
+              title: completedFilters?.title,
+              type: completedFilters?.type ?? [],
+              applications: completedFilters?.applications,
+              jobs: completedFilters?.jobs ?? [],
+              assigneeList: newValue,
+            });
+          },
+          options: candidateAndJobs?.assigneelist
+            ? candidateAndJobs?.assigneelist.map(
+                (ele: { name: string; id: string }) => {
+                  return {
+                    id: ele.id,
+                    label: ele.name,
+                  };
+                },
+              )
+            : [],
+        },
+        {
+          filterSearch: true,
+          searchPlaceholder: 'Search created by',
+          name: 'Created by',
+          value: assignerList ?? [],
+          type: 'filter',
+          icon: <></>,
+          setValue: (newValue: string[]) => {
+            setCompletedFilters({
+              date: completedFilters?.date ?? [],
+              assigneeList: completedFilters?.assigneeList,
+              title: completedFilters?.title,
+              type: completedFilters?.type ?? [],
+              applications: completedFilters?.applications,
+              jobs: completedFilters?.jobs ?? [],
+              assignerList: newValue,
+            });
+          },
+          options: candidateAndJobs?.assignerlist
+            ? candidateAndJobs?.assignerlist.map(
+                (ele: { name: string; id: string }) => {
+                  return {
+                    id: ele.id,
+                    label: ele.name,
+                  };
+                },
+              )
+            : [],
+        },
+        {
+          filterSearch: true,
+          searchPlaceholder: 'Search Jobs',
+          name: 'Jobs',
+          value: jobs ?? [],
+          type: 'filter',
+          icon: <></>,
+          setValue: (newValue: string[]) => {
+            setCompletedFilters({
+              date: completedFilters?.date ?? [],
+              assignerList: completedFilters?.assignerList,
+              assigneeList: completedFilters?.assigneeList,
+              title: completedFilters?.title,
+              type: completedFilters?.type ?? [],
+              applications: completedFilters?.applications,
+              jobs: newValue,
+            });
+          },
+          options: candidateAndJobs?.jobs
+            ? candidateAndJobs.jobs.map(
+                (ele: { job_id: string; job_title: string }) => {
+                  return {
+                    id: ele.job_id,
+                    label: ele.job_title,
+                  };
+                },
+              )
+            : [],
+        },
+        {
+          filterSearch: true,
+          searchPlaceholder: 'Search Candidates',
+          name: 'Candidates',
+          value: applications ?? [],
+          type: 'filter',
+          icon: <></>,
+          setValue: (newValue: string[]) => {
+            setCompletedFilters({
+              date: completedFilters?.date ?? [],
+              assignerList: completedFilters?.assignerList,
+              assigneeList: completedFilters?.assigneeList,
+              title: completedFilters?.title,
+              type: completedFilters?.type ?? [],
+              applications: newValue,
+            });
+          },
+          options: candidateAndJobs?.applications
+            ? candidateAndJobs?.applications.map(
+                (ele: { candidate_name: string; application_id: string }) => {
+                  return {
+                    id: ele.application_id,
+                    label: ele.candidate_name,
+                  };
+                },
+              )
+            : [],
+        },
       ]}
       search={{
-        value: title,
+        value: title ?? '',
         setValue: (newValue: typeof title) => {
           setCompletedFilters({
-            ...completedFilters,
+            date: completedFilters?.date ?? [],
+            assignerList: completedFilters?.assignerList,
+            assigneeList: completedFilters?.assigneeList,
+            type: completedFilters?.type ?? [],
+            applications: completedFilters?.applications,
+            jobs: completedFilters?.jobs ?? [],
             title: newValue,
           });
         },

@@ -1,3 +1,4 @@
+import { type CustomApplicationBadges } from '@aglint/shared-types/src/db/common.types';
 import { Badge } from '@components/ui/badge';
 import { Skeleton } from '@components/ui/skeleton';
 import {
@@ -33,7 +34,7 @@ const Content = () => {
 
   if (!data?.badges) return null;
 
-  const badges = getAllBadges(data.badges);
+  const badges = getAllBadges(data.badges as CustomApplicationBadges);
 
   return badges.length > 0 ? (
     badges.map((badge, index) => (
@@ -52,7 +53,7 @@ const Content = () => {
 };
 
 // Helper function to get all badges
-const getAllBadges = (badgesData) => {
+const getAllBadges = (badgesData: CustomApplicationBadges) => {
   const BADGE_CONSTANTS = {
     careerGrowth: 5,
     jobStability: 5,

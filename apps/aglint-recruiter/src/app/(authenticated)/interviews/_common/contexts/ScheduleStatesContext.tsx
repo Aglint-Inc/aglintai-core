@@ -7,10 +7,6 @@ import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 import { initialFilterState, upComingInitialFilterState } from '../types';
 
-export type AssignerType = RecruiterUserType & {
-  assignee: 'Agents' | 'Interviewers';
-};
-
 interface ContextValue {
   filteredSchedules: SchedulesSupabase | null;
   setFilteredSchedule: (x: SchedulesSupabase | null) => void;

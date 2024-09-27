@@ -2,7 +2,7 @@ import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { getWActions } from '../utils/w_actions';
 
@@ -13,6 +13,8 @@ export const onUpdateInterviewTrainingProgress = async ({
   old_data: DatabaseTable['interview_training_progress'];
   new_data: DatabaseTable['interview_training_progress'];
 }) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const [i_s_r] = supabaseWrap(
     await supabaseAdmin
       .from('interview_session_relation')
@@ -48,6 +50,8 @@ const addJobsToQueue = async (
   new_data: DatabaseTable['interview_training_progress'],
   company_id: string,
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   try {
     const trig_actions: DatabaseEnums['email_slack_types'][] = [
       'onTrainingComplete_email_approverForTraineeMeetingQualification',

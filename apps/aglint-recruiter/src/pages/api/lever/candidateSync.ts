@@ -12,7 +12,7 @@ import {
   extractLinkedInURL,
   splitFullName,
 } from '@/jobs/components/AddJobWithIntegrations/utils';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { decrypt } from '../decryptApiKey';
 
@@ -25,6 +25,7 @@ export default async function handler(req, res) {
     res.status(400).send('No job id found');
     return;
   }
+  const supabaseAdmin = getSupabaseServer();
 
   const { data: job } = await supabaseAdmin
     .from('public_jobs')

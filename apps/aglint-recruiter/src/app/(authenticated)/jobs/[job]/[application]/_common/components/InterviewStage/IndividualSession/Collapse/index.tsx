@@ -23,7 +23,7 @@ function CollapseContent({
     name: string;
     current_job_title: string;
     timezone: string;
-  };
+  } | null;
 }) {
   let users = currentSession.users;
 
@@ -135,7 +135,7 @@ function CollapseContent({
 
                     return (
                       <InterviewerUserDetail
-                        key={item.user_id}
+                        key={item?.user_id}
                         accepted_status={
                           user.interview_session_relation.accepted_status
                         }
@@ -146,17 +146,17 @@ function CollapseContent({
                           status: interview_meeting?.status,
                         }}
                         interviewerTimeZone={
-                          item.scheduling_settings?.timeZone?.tzCode
+                          item.scheduling_settings?.timeZone?.tzCode ?? ''
                         }
-                        isCalendarConnected={isCalendarConnected}
+                        isCalendarConnected={Boolean(isCalendarConnected)}
                         isPaused={isPaused}
                         pause_json={pause_json}
                         userDetails={{
-                          first_name: item.first_name,
-                          last_name: item.last_name,
-                          user_id: item.user_id,
-                          position: item.position,
-                          profile_image: item.profile_image,
+                          first_name: item?.first_name ?? '',
+                          last_name: item?.last_name ?? '',
+                          user_id: item?.user_id ?? '',
+                          position: item?.position ?? '',
+                          profile_image: item?.profile_image ?? '',
                         }}
                         trainingType={
                           user.interview_session_relation.training_type

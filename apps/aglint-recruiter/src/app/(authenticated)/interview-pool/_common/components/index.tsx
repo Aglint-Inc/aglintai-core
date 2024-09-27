@@ -8,9 +8,11 @@ import {
   TableRow,
 } from '@components/ui/table';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { LibraryBig } from 'lucide-react';
 import { useState } from 'react';
 
 import { useAllInterviewModules } from '@/authenticated/hooks';
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 import { useAllDepartments } from '@/queries/departments';
 
@@ -102,7 +104,7 @@ export default function InterviewTypesPage() {
           setDepartments={setDepartments}
         />
         <Card className='w-full'>
-          <CardContent className='p-6'>
+          <CardContent className='p-0'>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -125,8 +127,14 @@ export default function InterviewTypesPage() {
               </TableBody>
             </Table>
             {filteredInterviewModules?.length === 0 ? (
-              <div className='flex h-[200px] w-full items-center justify-center'>
-                No Interview pools found
+              <div className='flex w-full items-center justify-center'>
+                <GlobalEmpty
+                  iconSlot={
+                    <LibraryBig strokeWidth={1} className='h-10 w-10' />
+                  }
+                  text={'No Interview pools found'}
+                  height='400px'
+                />
               </div>
             ) : (
               <></>

@@ -1,4 +1,7 @@
-import { type DatabaseTable } from '@aglint/shared-types';
+import {
+  type CustomAgentInstructionPayload,
+  type DatabaseTable,
+} from '@aglint/shared-types';
 import {
   defaultRolePermissionRelation,
   defaultRoles,
@@ -8,7 +11,7 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { seed_email_templates } from '@/utils/seedCompanyData/seed_email_templates';
 import { modified_seed_workflow_actions } from '@/utils/seedCompanyData/seed_workflow';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export default async function handler(
   req: NextApiRequest,
@@ -60,6 +63,8 @@ async function seedRolesAndPermissions(rec_id: string) {
   return true;
 }
 async function createRoles(rec_id: string) {
+  const supabaseAdmin = getSupabaseServer();
+
   return supabaseAdmin
     .from('roles')
     .insert(
@@ -74,6 +79,8 @@ async function createRoles(rec_id: string) {
     .then(({ data }) => data);
 }
 async function getPermissions() {
+  const supabaseAdmin = getSupabaseServer();
+
   const temp_p = (
     await supabaseAdmin.from('permissions').select('id,name').throwOnError()
   ).data;
@@ -88,6 +95,8 @@ async function getPermissions() {
 async function createRolePermissions(
   data: { permission_id: number; recruiter_id: string; role_id: string }[],
 ) {
+  const supabaseAdmin = getSupabaseServer();
+
   return supabaseAdmin
     .from('role_permissions')
     .insert(data)
@@ -96,6 +105,8 @@ async function createRolePermissions(
 }
 
 const removeAllTemps = async (recruiter_id: string) => {
+  const supabaseAdmin = getSupabaseServer();
+
   supabaseWrap(
     await supabaseAdmin
       .from('workflow')
@@ -113,6 +124,8 @@ const removeAllTemps = async (recruiter_id: string) => {
 };
 
 const seedCompTemplate = async (recruiter_id) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const all_templates = supabaseWrap(
     await supabaseAdmin
       .from('company_email_template')
@@ -131,6 +144,8 @@ const seedWorkFlow = async (
   recruiter_id: string,
   company_email_template: DatabaseTable['company_email_template'][],
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const promies = modified_seed_workflow_actions.map(async (work_flow_act) => {
     const [workflow] = supabaseWrap(
       await supabaseAdmin
@@ -143,7 +158,7 @@ const seedWorkFlow = async (
           interval: work_flow_act.workflow.interval,
           title: work_flow_act.workflow.title,
           recruiter_id,
-          is_paused: false,
+          is_active: true,
           workflow_type: work_flow_act.workflow.workflow_type,
         })
         .select(),
@@ -154,12 +169,32 @@ const seedWorkFlow = async (
           const temp = company_email_template.find(
             (temp) => temp.type === action.target_api,
           );
+          let payload = null;
+          if (action.action_type === 'email') {
+            payload = {
+              email: {
+                body: temp ? temp.body : undefined,
+                subject: temp ? temp.subject : undefined,
+              },
+            };
+          } else if (action.action_type === 'agent_instruction') {
+            const ag_payload = action.payload as CustomAgentInstructionPayload;
+            payload = {
+              agent: {
+                instruction: ag_payload.agent.instruction,
+              },
+            };
+          } else if (action.action_type === 'slack') {
+            payload = {
+              slack: null,
+            };
+          } else if (action.action_type === 'end_point') {
+            payload = {
+              end_point: null,
+            };
+          }
           return {
-            payload: {
-              body: temp ? temp.body : undefined,
-              subject: temp ? temp.subject : undefined,
-              ...(action?.payload ?? {}),
-            },
+            payload,
             order: action.order,
             workflow_id: workflow.id,
             target_api: action.target_api,
@@ -175,6 +210,8 @@ const seedWorkFlow = async (
 };
 
 async function seedPreferencesAndIntegrations(rec_id: string) {
+  const supabaseAdmin = getSupabaseServer();
+
   await supabaseAdmin
     .from('recruiter_preferences')
     .insert([{ recruiter_id: rec_id, scoring: false }])

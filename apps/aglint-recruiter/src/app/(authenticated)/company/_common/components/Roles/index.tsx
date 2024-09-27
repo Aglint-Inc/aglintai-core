@@ -2,10 +2,7 @@
 
 import { rolesOrder } from '@/constant/role_and_permissions';
 import { useAllMembers } from '@/queries/members';
-import {
-  type getRoleAndPermissionsWithUserCount,
-  useRoleAndPermissionsHook,
-} from '@/queries/RolesSettings';
+
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import RoleDetails from './RoleDetails';
 import { CirclePlus } from 'lucide-react';
@@ -21,6 +18,12 @@ import {
 import { Skeleton } from '@components/ui/skeleton';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
+import {
+  getRoleAndPermissionsWithUserCount,
+  useRoleAndPermissionsHook,
+} from '@/company/hooks/useRoleAndPermissionsHook';
+import { TableLoading } from './ui/TableLoading';
+import { RoleList } from './ui/RoleList';
 
 function RolesAndPermissionsComponent() {
   const {
@@ -56,7 +59,7 @@ function RolesAndPermissionsComponent() {
           updateRoles={handelUpdateRole}
         />
       ) : (
-        <div className=''>
+        <div>
           <h1 className='mb-4 text-lg font-semibold'>Roles & Permissions</h1>
           <p className='mb-6 text-gray-600'>
             Customize permissions for each role and control access by enabling
@@ -91,43 +94,7 @@ const RoleTable = ({
   const { members } = useAllMembers();
 
   if (loading) {
-    return (
-      <Table>
-        <TableHeader className='bg-gray-100'>
-          <TableRow>
-            <TableHead>
-              <Skeleton className='h-6 w-24' />
-            </TableHead>
-            <TableHead>
-              <Skeleton className='h-6 w-32' />
-            </TableHead>
-            <TableHead>
-              <Skeleton className='h-6 w-16' />
-            </TableHead>
-            <TableHead>
-              <Skeleton className='h-6 w-20' />
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          <TableRow>
-            <TableCell colSpan={4}>
-              <Skeleton className='h-12 w-full' />
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell colSpan={4}>
-              <Skeleton className='h-12 w-full' />
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell colSpan={4}>
-              <Skeleton className='h-12 w-full' />
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    );
+    return <TableLoading />;
   }
 
   return (
@@ -147,66 +114,17 @@ const RoleTable = ({
             const role = details;
             const count = role.assignedTo.length;
             return (
-              <TableRow
-                key={role.id}
-                className='cursor-pointer hover:bg-gray-100'
-                onClick={() => setRole(key)}
-              >
-                <TableCell className='font-medium'>
-                  {capitalizeFirstLetter(role.name)}
-                </TableCell>
-                <TableCell>{role.description}</TableCell>
-                <TableCell>
-                  <div className='flex items-center space-x-2'>
-                    {count ? (
-                      <>
-                        {role.assignedTo.slice(0, 3).map((user_id) => {
-                          const user = members.find(
-                            (member) =>
-                              member.user_id === user_id &&
-                              member.user_id !== member.created_by,
-                          );
-                          if (!user) return null;
-                          return (
-                            <Avatar key={user_id} className='h-6 w-6'>
-                              <AvatarImage
-                                src={user.profile_image}
-                                alt={user.first_name}
-                              />
-                              <AvatarFallback>
-                                {user.first_name[0]}
-                              </AvatarFallback>
-                            </Avatar>
-                          );
-                        })}
-                        {count > 3 && (
-                          <Badge variant='secondary'>+{count - 3} more</Badge>
-                        )}
-                      </>
-                    ) : (
-                      <p className='text-sm text-gray-500'>
-                        {`No users with ${details.name}`}
-                      </p>
-                    )}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  {!count && (
-                    <Button
-                      variant='outline'
-                      size='sm'
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setRole(key, true);
-                      }}
-                      className='flex items-center space-x-1'
-                    >
-                      <CirclePlus className='h-4 w-4' />
-                      <span>Add</span>
-                    </Button>
-                  )}
-                </TableCell>
-              </TableRow>
+              <RoleList
+                count={count}
+                details={details}
+                members={members}
+                onClickAdd={(e) => {
+                  e.stopPropagation();
+                  setRole(key, true);
+                }}
+                onClickRow={() => setRole(key)}
+                role={role}
+              />
             );
           })}
       </TableBody>

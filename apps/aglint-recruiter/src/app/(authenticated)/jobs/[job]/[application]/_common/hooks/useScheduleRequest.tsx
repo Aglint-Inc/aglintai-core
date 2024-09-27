@@ -1,8 +1,7 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
-import { updateRequestNotes } from '@requests/functions';
+import { useUpdateRequestNote } from '@requests/hooks/useRequestNotes';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useMemberList } from '@/hooks/useMemberList';
@@ -32,6 +31,8 @@ export const useScheduleRequest = () => {
     requestType,
     selectedAssignee,
   } = useApplicationDetailStore();
+  const { updateRequestNote } = useUpdateRequestNote();
+
   const [isSaving, setIsSaving] = useState(false);
   const { data: members, status: membersStatus } = useMemberList();
   const { recruiterUser } = useAuthDetails();
@@ -79,17 +80,18 @@ export const useScheduleRequest = () => {
       const selectedAssignee = members?.find(
         (member) => member.user_id === String(optionsAssignees[0].value),
       );
-      setSelectedAssignee(selectedAssignee);
+      if (selectedAssignee) setSelectedAssignee(selectedAssignee);
     }
   }, [optionsAssignees?.length, membersStatus]);
 
   const handleCreateRequest = async () => {
+    if (!selectedAssignee || !recruiterUser) return;
     const sel_user_id = selectedAssignee.user_id;
     const assigned_user_id = recruiterUser.user_id;
 
-    const sessionNames = sessions.map(
-      (session) => session.interview_session.name,
-    );
+    const sessionNames: string[] = sessions
+      .map((session) => session?.interview_session?.name)
+      .filter((name): name is string => Boolean(name));
 
     try {
       if (!sel_user_id) return;
@@ -114,16 +116,16 @@ export const useScheduleRequest = () => {
       const request_id = res.data;
 
       if (note && (res.status === 201 || res.status === 200)) {
-        await updateRequestNotes({
-          id: uuidv4(),
-          request_id,
+        const payload = {
           note,
+          request_id,
           updated_at: dayjsLocal().toISOString(),
-        });
+        };
+        updateRequestNote(payload);
         if (assigned_user_id !== recruiterUser.user_id) {
           router.push(
-            ROUTES['/requests/[id]']({
-              id: res.data,
+            ROUTES['/requests/[request]']({
+              request: res.data,
             }),
           );
         }
@@ -132,8 +134,8 @@ export const useScheduleRequest = () => {
         });
       } else if (res.status === 201 || res.status === 200) {
         router.push(
-          ROUTES['/requests/[id]']({
-            id: res.data,
+          ROUTES['/requests/[request]']({
+            request: res.data,
           }),
         );
         utils.application.applicationRequest.invalidate({

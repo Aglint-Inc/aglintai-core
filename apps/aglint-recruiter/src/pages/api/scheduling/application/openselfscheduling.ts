@@ -1,9 +1,8 @@
-/* eslint-disable security/detect-object-injection */
 /* eslint-disable no-console */
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { addScheduleActivity } from '@/utils/scheduling/utils';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export interface ApiBodyOpenSelfScheduling {
   filter_id: string;
@@ -19,6 +18,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { filter_id, timezone, application_id, sesssion_name, candidate_id } =
       req.body as ApiBodyOpenSelfScheduling;
+    const supabaseAdmin = getSupabaseServer();
+
     if (
       filter_id &&
       timezone &&
@@ -64,7 +65,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         );
     }
   } catch (error) {
-    // console.log('error', error);
+    console.log('error', error);
     res.status(400).send(error.message);
   }
 };

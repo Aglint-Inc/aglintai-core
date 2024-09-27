@@ -2,10 +2,9 @@
 import { type TargetApiPayloadType } from '@aglint/shared-types';
 import { type ProgressLoggerType, supabaseWrap } from '@aglint/shared-utils';
 import { candidate_avail_request_schema } from '@aglint/shared-utils/src/scheduling/apiSchemas';
-import * as v from 'valibot';
 
 import { mailSender } from '@/utils/mailSender';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export const candidateAvailRequest = async ({
   cloned_sessn_ids,
@@ -26,13 +25,9 @@ export const candidateAvailRequest = async ({
   reqProgressLogger: ProgressLoggerType;
   mail_payload: any;
 }) => {
-  const {
-    application_id,
-    number_of_days,
-    number_of_slots,
-    recruiter_id,
-    api_options,
-  } = v.parse(candidate_avail_request_schema, req_body);
+  const { application_id, number_of_days, number_of_slots, recruiter_id } =
+    candidate_avail_request_schema.parse(req_body);
+  const supabaseAdmin = getSupabaseServer();
 
   supabaseWrap(
     await supabaseAdmin
@@ -52,11 +47,10 @@ export const candidateAvailRequest = async ({
         date_range: [start_date_str, end_date_str],
         total_slots: null,
         availability: {
-          day_offs: api_options.include_conflicting_slots.day_off,
-          free_keywords: api_options.include_free_time,
-          outside_work_hours:
-            api_options.include_conflicting_slots.out_of_working_hrs,
-          recruiting_block_keywords: api_options.use_recruiting_blocks,
+          day_offs: true,
+          free_keywords: true,
+          outside_work_hours: true,
+          recruiting_block_keywords: true,
         },
         request_id: request_id,
       })

@@ -1,9 +1,12 @@
 import { Card, CardContent } from '@components/ui/card';
-import { PersonStanding } from 'lucide-react';
+import { User } from 'lucide-react';
 import { useState } from 'react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
+import MoveToQualifiedDialog from '@/interview-pool/details/dialogs/MoveToQualified';
+import { api } from '@/trpc/client';
 
 import AddMemberDialog from '../../../dialogs/AddMemberDialog';
 import DeleteMemberDialog from '../../../dialogs/DeleteMemberDialog';
@@ -14,6 +17,7 @@ import { useProgressModuleUsers } from '../../../hooks/useProgressModuleUsers';
 import {
   setIsAddMemberDialogOpen,
   setTrainingStatus,
+  useModulesStore,
 } from '../../../stores/store';
 import EnableDisable from './EnableDisable';
 import IndividualRow from './IndividualRow';
@@ -40,27 +44,35 @@ function Training() {
     actions: '',
   };
 
+  const utils = api.useUtils();
+  const selUser = useModulesStore((state) => state.selUser);
+
   return (
     <>
       <DeleteMemberDialog />
       <AddMemberDialog />
       <PauseDialog />
       <ResumeMemberDialog />
-
+      <MoveToQualifiedDialog
+        refetch={async () => {
+          await utils.interview_pool.module_and_users.invalidate({
+            module_id: selUser.module_id,
+          });
+        }}
+      />
       <EnableDisable />
 
       {editModule?.settings?.require_training && (
         <>
           <div className='flex justify-between'>
             <UITextField
-              placeholder='Search interviewers...'
-              className='max-w-sm bg-white'
+              placeholder='Search trainee...'
+              className='w-64 bg-white'
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
             <UIButton
               variant='default'
-              leftIcon={<PersonStanding />}
               onClick={() => {
                 setIsAddMemberDialogOpen(true);
                 setTrainingStatus('training');
@@ -71,9 +83,9 @@ function Training() {
           </div>
           <Card>
             <CardContent className='p-0'>
-              <table className='w-full'>
-                <thead>
-                  <tr >
+              <table className='w-full overflow-hidden'>
+                <thead className='border-b'>
+                  <tr>
                     {Object.keys(headers).map((key) => (
                       <th
                         key={key}
@@ -88,7 +100,7 @@ function Training() {
                   {trainingUsers.length === 0 && (
                     <tr>
                       <td colSpan={5} className='p-4'>
-                        No data found
+                        <GlobalEmpty iconSlot={<User strokeWidth={1.5} className='mb-2 h-10 w-10 text-muted-foreground'/>} text={'No trainee found'} height='250px'/>
                       </td>
                     </tr>
                   )}

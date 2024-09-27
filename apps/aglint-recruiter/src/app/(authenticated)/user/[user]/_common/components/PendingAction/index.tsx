@@ -1,41 +1,36 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { AlertTriangle } from 'lucide-react';
+import { type Key } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
-export const PendingActions = ({ interviewer }) => {
+import UISectionCard from '@/components/Common/UISectionCard';
+
+export const PendingActions = () => {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className='text-xl'>Pending Actions</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className='space-y-4'>
-          {interviewer.pendingActions.map((action, index) => (
-            <div
-              key={index}
-              className='flex items-center justify-between rounded-lg border border-yellow-200 bg-yellow-50 p-4'
-            >
-              <div className='flex items-start space-x-3'>
-                <AlertTriangle className='mt-1 h-5 w-5 text-yellow-500' />
-                <div>
-                  <h3 className='font-medium text-yellow-800'>{action.type}</h3>
-                  <p className='text-sm text-yellow-700'>{action.details}</p>
-                  <p className='mt-1 text-xs text-yellow-600'>
-                    Deadline: {action.deadline}
-                  </p>
-                </div>
+    <UISectionCard title='Pending Actions'>
+      <div className='space-y-4'>
+        {[1, 2, 3, 4].map((action: Key | null | undefined) => (
+          <div
+            key={action}
+            className='flex items-center justify-between rounded-lg border border-yellow-200 bg-yellow-50 p-4'
+          >
+            <div className='flex items-start space-x-3'>
+              <AlertTriangle className='mt-1 h-5 w-5 text-yellow-500' />
+              <div>
+                <h3 className='font-medium text-yellow-800'>type</h3>
+                <p className='text-sm text-yellow-700'>details</p>
+                <p className='mt-1 text-xs text-yellow-600'>Deadline</p>
               </div>
-              <UIButton
-                size='sm'
-                variant='outline'
-                className='border-yellow-300 text-yellow-700 hover:bg-yellow-100'
-              >
-                Take Action
-              </UIButton>
             </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+            <UIButton
+              size='sm'
+              variant='outline'
+              className='border-yellow-300 text-yellow-700 hover:bg-yellow-100'
+            >
+              Take Action
+            </UIButton>
+          </div>
+        ))}
+      </div>
+    </UISectionCard>
   );
 };

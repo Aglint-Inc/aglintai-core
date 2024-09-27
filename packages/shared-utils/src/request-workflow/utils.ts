@@ -28,21 +28,10 @@ export const createRequestProgressLogger = ({
     >
   ) => {
     let progress_id = uuidv4();
-    if (payload.is_progress_step === false) {
-      const [progress] = supabaseWrap(
-        await supabaseAdmin
-          .from('request_progress')
-          .select()
-          .eq('event_type', event_type)
-          .eq('is_progress_step', false)
-          .eq('request_id', request_id),
-        false
-      );
-      if (progress) {
-        progress_id = progress.id;
-      }
+    if (payload?.id) {
+      progress_id = payload.id;
     }
-    const [rec] = await supabaseWrap(
+    const rec = await supabaseWrap(
       await supabaseAdmin
         .from('request_progress')
         .upsert({
@@ -50,15 +39,16 @@ export const createRequestProgressLogger = ({
           created_at: dayjsLocal().toISOString(),
           meta: {
             event_run_id,
-            ...(payload.meta ?? {}),
+            ...(payload?.meta ?? {}),
           },
-          log: payload.log,
+          log: payload?.log,
           id: progress_id,
           event_type: event_type,
-          status: payload.status,
-          is_progress_step: payload.is_progress_step,
+          status: payload?.status,
+          is_progress_step: payload?.is_progress_step,
         })
         .select()
+        .single()
     );
     return rec;
   };
@@ -84,21 +74,21 @@ export async function executeWorkflowAction<T1 extends any, U extends unknown>(
   callback1: AsyncCallbackFunction<T1, U>,
   args: T1,
   logger: ProgressLoggerType,
+  log_id = uuidv4(),
   logger_args?: Pick<DatabaseTableInsert['request_progress'], 'meta'>
-): Promise<U> {
-  let progress_id = uuidv4();
+): Promise<U | null> {
   try {
     await logger({
       ...(logger_args ?? {}),
       status: 'in_progress',
       is_progress_step: false,
-      id: progress_id,
+      id: log_id,
     });
     const res = await callback1(args);
     await logger({
       ...(logger_args ?? {}),
       status: 'completed',
-      id: progress_id,
+      id: log_id,
       is_progress_step: false,
     });
     return res;
@@ -106,15 +96,14 @@ export async function executeWorkflowAction<T1 extends any, U extends unknown>(
     let err_log = 'Something wrong happenned';
     if (err instanceof CApiError && err.type === 'CLIENT') {
       err_log = err.message;
-      await logger({
-        ...(logger_args ?? {}),
-        status: 'failed',
-        id: progress_id,
-        log: err_log,
-        is_progress_step: false,
-      });
-    } else {
-      throw new CApiError('WORKFLOW_ACTION', err.message, 500);
     }
+    await logger({
+      ...(logger_args ?? {}),
+      status: 'failed',
+      id: log_id,
+      log: err_log,
+      is_progress_step: false,
+    });
+    throw new CApiError('WORKFLOW_ACTION', err.message, 500);
   }
 }

@@ -5,6 +5,7 @@ import type {
   DatabaseTableUpdate,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { toast as specialToast } from '@components/hooks/use-toast';
 import { type RealtimePostgresInsertPayload } from '@supabase/supabase-js';
 import {
   type MutationFilters,
@@ -18,7 +19,6 @@ import {
 import { useCallback } from 'react';
 
 import { supabase } from '@/utils/supabase/client';
-import aglintToast from '@/utils/toast';
 
 import { appKey, GC_TIME } from '..';
 import {
@@ -180,9 +180,13 @@ export const useRequestsCreate = () => {
         ),
       ]);
     },
-    onError: () => aglintToast.error('Unable to create requests'),
+    onError: () =>
+      specialToast({
+        variant: 'destructive',
+        title: 'Unable to create requests',
+      }),
     onSuccess: (_, { toast = true }) =>
-      toast && aglintToast.success('Requests created successfully'),
+      toast && specialToast({ title: 'Requests created successfully' }),
   });
   const mutationState = useMutationState(
     requestQueries.requests_mutationOptions('create'),
@@ -212,9 +216,13 @@ export const useRequestsUpdate = () => {
         ),
       ]);
     },
-    onError: () => aglintToast.error('Unable to update request'),
+    onError: () =>
+      specialToast({
+        variant: 'destructive',
+        title: 'Unable to update request',
+      }),
     onSuccess: (_, { toast = true }) =>
-      toast && aglintToast.success('Request updated successfully'),
+      toast && specialToast({ title: 'Request updated successfully' }),
   });
   const mutationState = useMutationState(
     requestQueries.requests_mutationOptions('update'),
@@ -244,9 +252,13 @@ export const useRequestsDelete = () => {
         ),
       ]);
     },
-    onError: () => aglintToast.error('Unable to delete request'),
+    onError: () =>
+      specialToast({
+        variant: 'destructive',
+        title: 'Unable to delete request',
+      }),
     onSuccess: (_, { toast = true }) =>
-      toast && aglintToast.success('Request deleted successfully'),
+      toast && specialToast({ title: 'Request deleted successfully' }),
   });
   const mutationState = useMutationState(
     requestQueries.requests_mutationOptions('delete'),
@@ -601,14 +613,14 @@ export const getRequestProgress = async ({ request_id }: GetRequestProgress) =>
   ).data;
 
 type CreateRequests = DatabaseFunctions['create_session_request']['Args'];
-export const createRequests = async (requestPayload: CreateRequests) =>
+const createRequests = async (requestPayload: CreateRequests) =>
   await supabase.rpc('create_session_request', requestPayload).throwOnError();
 
 type UpdateRequest = {
   requestId: DatabaseTable['request']['id'];
   requestPayload: Omit<DatabaseTableUpdate['request'], 'id'>;
 };
-export const updateRequest = async ({
+const updateRequest = async ({
   requestId,
   requestPayload,
 }: UpdateRequest) =>
@@ -621,5 +633,5 @@ export const updateRequest = async ({
 type DeleteRequest = {
   requestId: DatabaseTable['request']['id'];
 };
-export const deleteRequest = async ({ requestId }: DeleteRequest) =>
+const deleteRequest = async ({ requestId }: DeleteRequest) =>
   await supabase.from('request').delete().eq('id', requestId).throwOnError();

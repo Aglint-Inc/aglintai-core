@@ -1,43 +1,27 @@
 /* eslint-disable security/detect-object-injection */
-import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import dayjs from 'dayjs';
 
 import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 
-export function getLastDayOfMonth(date: string) {
-  return dayjs(date).endOf('month').date();
-}
-
-export function convertTimeZoneToAbbreviation(sourceTimeZone) {
+export function convertTimeZoneToAbbreviation(sourceTimeZone: string) {
   const date = new Date();
   const formatter = new Intl.DateTimeFormat('en-US', {
     timeZone: sourceTimeZone,
     timeZoneName: 'short',
   });
   const timeZoneAbbreviation = formatter
-    .formatToParts(date)
-    .find((part) => part.type === 'timeZoneName').value;
+    ?.formatToParts(date)
+    ?.find((part) => part.type === 'timeZoneName')?.value;
 
   const abbreviationMapping = {
     'GMT+5:30': 'IST',
     'GMT+9:30': 'ACST',
   };
 
-  return abbreviationMapping[timeZoneAbbreviation] || timeZoneAbbreviation;
+  return timeZoneAbbreviation
+    ? abbreviationMapping[timeZoneAbbreviation]
+    : timeZoneAbbreviation;
 }
-
-export const getScheduleName = ({
-  job_title,
-  first_name,
-  last_name,
-}: {
-  job_title: string;
-  first_name: string;
-  last_name: string;
-}) => {
-  return `Interview for ${job_title} - ${getFullName(first_name, last_name)}`;
-};
 
 export const formatTimeWithTimeZone = ({
   start_time,
@@ -45,7 +29,7 @@ export const formatTimeWithTimeZone = ({
   timeZone, // send time zone like Asia/Calcutta
 }: {
   start_time: string;
-  end_time: string;
+  end_time: string | null;
   timeZone?: string;
 }) => {
   const tZTime = dayjsLocal(end_time)

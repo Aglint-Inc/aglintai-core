@@ -2,6 +2,7 @@ import { getFullName } from '@aglint/shared-utils';
 import { Minus, Plus } from 'lucide-react';
 
 import { UIButton } from '@/components/Common/UIButton';
+import { UIDivider } from '@/components/Common/UIDivider';
 import UITextField from '@/components/Common/UITextField';
 import { SessionIcon } from '@/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
 import { numberToOrdinalText } from '@/utils/number/numberToOrdinalText';
@@ -37,11 +38,12 @@ function CollapseTrainingProgress({
     <>
       <div className='w-full'>
         <div>
-          <div className='flex flex-col gap-3 p-4 sm:p-5'>
-            <div className='flex flex-col gap-4'>
+          <div className='flex flex-col gap-3 p-4'>
+            <div className='flex flex-col gap-4 w-full'>
               {
                 <>
-                  TrainingStatus
+                <div className="text-sm text-muted-foreground">TrainingStatus</div>
+                  
                   {shadowProgress.map((prog, ind) => (
                     <TrainingDetailList
                       key={ind}
@@ -182,6 +184,9 @@ function CollapseTrainingProgress({
             <div className='hidden flex-row gap-5 pt-4'></div>
           </div>
         </div>
+        <div className='mb-4'>
+          <UIDivider/>
+        </div>
         <div className='flex flex-row space-x-3 px-4 pb-4'>
           <div className='flex items-center space-x-1'>
             <span>Shadow</span>
@@ -203,7 +208,7 @@ function CollapseTrainingProgress({
               }}
             />
             <UITextField
-              style={{ width: '70px' }}
+              style={{ width: '60px' , height:'28px' }}
               fieldSize='small'
               type='number'
               value={mutatedShadowProgress.length + shadowProgress.length}
@@ -251,7 +256,7 @@ function CollapseTrainingProgress({
               }}
             />
             <UITextField
-              style={{ width: '70px' }}
+              style={{ width: '60px' , height:'28px' }}
               fieldSize='small'
               type='number'
               value={

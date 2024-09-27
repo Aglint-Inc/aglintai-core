@@ -1,6 +1,9 @@
+import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 
+import { useInvalidateJobQueries } from '@/queries/job';
 import { api, type Unvoid } from '@/trpc/client';
+import ROUTES from '@/utils/routing/routes';
 import toast from '@/utils/toast';
 
 import { useApplicationsActions } from './useApplicationsActions';
@@ -9,22 +12,18 @@ import { useCurrentJob } from './useCurrentJob';
 
 export const useApplicationsMove = () => {
   const { job_id } = useCurrentJob();
-  const utils = api.useUtils();
-  const status = useApplicationsStore((state) => state.status);
+  const { push } = useRouter();
+  const { revalidateJobQueries } = useInvalidateJobQueries();
   const checklist = useApplicationsStore((state) => state.checklist);
   const { resetChecklist, resetActionPopup } = useApplicationsActions();
   const mutation = api.jobs.job.applications.move.useMutation({
     onSuccess: (_, data) => {
-      if (data) {
-        toast.success('Moved application/s successfully');
-        utils.jobs.job.applications.read.invalidate({ status, job_id });
-        utils.jobs.job.applications.read.refetch({
-          status: data.status,
-          job_id,
-        });
-        resetChecklist();
-        resetActionPopup();
-      }
+      toast.success('Moved application/s successfully');
+      if (data && data.status === 'interview' && data.body)
+        push(ROUTES['/requests']());
+      revalidateJobQueries(job_id);
+      resetChecklist();
+      resetActionPopup();
     },
     onError: () => toast.error('Unable to move application/s'),
   });

@@ -1,21 +1,34 @@
 import capitalize from 'lodash/capitalize';
+import Image from 'next/image';
 
 import { IntegrationCard } from '../components/IntegrationCard';
 import { type MessagingToolsType } from '../types';
-// import SlackLogo from '@public/images/svg/slack-logo.svg';
 
 function MessagingTools() {
   const messagingTools = [
     {
       name: 'slack' as MessagingToolsType,
       url: 'slack.com',
-      // logo: <SlackLogo />,
-      logo: <></>,
+      logo: (
+        <Image
+          src={'/images/integration/slack-logo.svg'}
+          alt={'Slack'}
+          width={40}
+          height={40}
+        />
+      ),
     },
     // {
     //   name: 'teams' as MessagingToolsType,
     //   url: 'teams.live.com',
-    //   logo: <TeamsLogo />,
+    //   logo: (
+    //     <Image
+    //       src={'/images/integration/teams-logo.svg'}
+    //       alt={'Teams'}
+    //       width={40}
+    //       height={40}
+    //     />
+    //   ),
     // },
   ];
 

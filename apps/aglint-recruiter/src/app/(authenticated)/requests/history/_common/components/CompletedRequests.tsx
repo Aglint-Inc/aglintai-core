@@ -1,3 +1,4 @@
+import { dayjsLocal } from '@aglint/shared-utils';
 import {
   Accordion,
   AccordionContent,
@@ -18,12 +19,17 @@ import { useCompletedRequestsStore } from '@requestHistory/contexts/completedReq
 import { RequestCard } from '@requests/components/RequestCard';
 import RequestHistoryFilter from '@requests/components/RequestHistoryFilter';
 import { useCompletedRequests } from '@requests/hooks';
-import { AlertCircle, ChevronDown, ChevronUp, Loader2 } from 'lucide-react';
+import {
+  AlertCircle,
+  ChevronDown,
+  ChevronUp,
+  Home,
+  Loader2,
+} from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { RequestProvider } from '@/context/RequestContext';
 import type { Request } from '@/queries/requests/types';
-import dayjs from '@/utils/dayjs';
 
 function CompletedRequests() {
   const { completedFilters } = useCompletedRequestsStore();
@@ -84,7 +90,9 @@ function CompletedRequests() {
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem>
-                    <BreadcrumbLink href='/'>Home</BreadcrumbLink>
+                    <BreadcrumbLink href='/'>
+                      <Home className='h-4 w-4' />
+                    </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
                   <BreadcrumbItem>
@@ -144,7 +152,8 @@ function CompletedRequests() {
                     >
                       <AccordionItem value={date}>
                         <AccordionTrigger className='text-md py-4 font-semibold'>
-                          {dayjs(date).fromNow()} ({requests.length} requests)
+                          {dayjsLocal(date).fromNow()} ({requests.length}{' '}
+                          requests)
                         </AccordionTrigger>
                         <AccordionContent>
                           <div className='flex flex-col overflow-hidden rounded-lg border'>

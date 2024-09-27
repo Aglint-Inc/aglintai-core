@@ -1,10 +1,13 @@
-import type { CustomAgentInstructionPayload } from '@aglint/shared-types';
+import { type z } from 'zod';
 
-export const AI_RESPONSE_PLACEHOLDER: CustomAgentInstructionPayload['agent']['ai_response'] =
-  {
-    candidateAvailability: null,
-    prefferredInterviewers: [],
-    maxTotalSlots: 10,
-    includeAllSoftConflictSlots: true,
-    overrideSoftConflicts: [],
-  } as const;
+import { type agentSelfScheduleInstruction } from '@/services/api-schedulings/textTransforms/selfScheduleLinkInstruction';
+
+export const AI_RESPONSE_PLACEHOLDER: z.infer<
+  typeof agentSelfScheduleInstruction
+> = {
+  candidateAvailability: null,
+  include_outside_working_hours: false,
+  maxTotalSlots: 10,
+  includeAllSoftConflictSlots: true,
+  overrideSoftConflicts: [],
+} as const;

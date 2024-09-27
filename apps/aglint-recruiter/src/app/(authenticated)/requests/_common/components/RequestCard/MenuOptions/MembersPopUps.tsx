@@ -1,4 +1,5 @@
 import { getFullName } from '@aglint/shared-utils';
+import { toast } from '@components/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import {
@@ -19,7 +20,6 @@ import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useRequests } from '@/context/RequestsContext';
 import { type Request } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import toast from '@/utils/toast';
 
 function MembersPopUps({
   setOpenAssigneePopup,
@@ -28,7 +28,7 @@ function MembersPopUps({
 }: {
   setOpenAssigneePopup?: any;
   openAssigneePopup?: boolean;
-  selectedRequest?: Request;
+  selectedRequest?: Request | null;
 }) {
   const { data: members, status } = useMemberList();
   const [filteredMembers, setFilteredMembers] = useState<MemberType[]>([]);
@@ -38,7 +38,7 @@ function MembersPopUps({
       setFilteredMembers(members);
     }
   }, [members]);
-  const [selectedMember, setSelectedMember] = useState<MemberType>(null);
+  const [selectedMember, setSelectedMember] = useState<MemberType | null>(null);
   const { handleAsyncUpdateRequest } = useRequests();
 
   const handleConfirm = async () => {
@@ -46,7 +46,7 @@ function MembersPopUps({
       setOpenAssigneePopup(false);
       await handleAsyncUpdateRequest({
         payload: {
-          requestId: selectedRequest?.id,
+          requestId: selectedRequest?.id ?? '',
           requestPayload: {
             assignee_id: selectedMember?.user_id,
           },
@@ -54,11 +54,11 @@ function MembersPopUps({
         loading: false,
         toast: false,
       });
-      toast.success(
-        `Request reassigned to ${getFullName(selectedMember.first_name, selectedMember.last_name)}`,
-      );
+      toast({
+        title: `Request reassigned to ${getFullName(selectedMember.first_name, selectedMember.last_name)}`,
+      });
     } else {
-      toast.message('Please select a member');
+      toast({ title: 'Please select a member' });
     }
   };
 
@@ -80,9 +80,11 @@ function MembersPopUps({
             onChange={(e) => {
               const text = e.target.value.toLowerCase();
               setFilteredMembers(
-                members.filter((ele) =>
-                  ele.first_name.toLowerCase().includes(text),
-                ),
+                members
+                  ? members.filter((ele) =>
+                      ele.first_name.toLowerCase().includes(text),
+                    )
+                  : [],
               );
             }}
           />

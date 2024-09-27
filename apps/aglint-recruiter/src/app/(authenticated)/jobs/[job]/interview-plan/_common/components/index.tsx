@@ -18,8 +18,8 @@ import {
 } from '@components/ui/tooltip';
 import { useQueryClient } from '@tanstack/react-query';
 import {
+  ChartNoAxesGantt,
   Edit,
-  Kanban,
   PauseCircle,
   Pencil,
   Plus,
@@ -135,9 +135,9 @@ const InterviewPlanPage = () => {
           </div>
           <div className='w-9/12 pl-12'>
             <div className='flex flex-row justify-between'>
-              <div className='flex flex-col gap-2'>
-                <h2 className='mb-2 text-xl font-bold'>Interview Plan</h2>
-                <p className='mb-4 text-sm text-gray-600'>
+              <div className='flex flex-col gap-1'>
+                <h2 className='text-lg font-medium'>Interview Plan</h2>
+                <p className='text-sm text-gray-600'>
                   Set up your interview plan here. Changes will be saved
                   automatically.
                 </p>
@@ -421,19 +421,19 @@ const InterviewPlan = ({
           slotInputButton={
             // Start of Selection
             <div className='flex items-center gap-2'>
-              <UITextField ref={planRef} defaultValue={data.name} fullWidth />
+              <UITextField
+                ref={planRef}
+                defaultValue={data.name}
+                fullWidth
+                style={{ height: '36px' }}
+              />
               <UIButton
-                size='sm'
                 variant='default'
                 onClick={() => handleUpdatePlan(planRef.current.value)}
               >
                 Update
               </UIButton>
-              <UIButton
-                size='sm'
-                variant='secondary'
-                onClick={() => handleEditPlan()}
-              >
+              <UIButton variant='secondary' onClick={() => handleEditPlan()}>
                 Cancel
               </UIButton>
             </div>
@@ -494,7 +494,7 @@ const InterviewPlan = ({
                     <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
                   ) : (
                     <div className='flex h-64 flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300'>
-                      <Kanban className='mb-4 h-4 w-4 text-gray-400' />
+                      <ChartNoAxesGantt className='mb-4 h-4 w-4 text-gray-400' />
                       <p className='mb-4 text-gray-500'>
                         No interview plan found
                       </p>
@@ -878,7 +878,7 @@ const InterviewSessionMembers = ({ members }: InterviewSessionMembersProps) => {
       />
     );
   return members.map((member) => (
-    <div className='mt-2' key={member.user_id}>
+    <div className='mt-3' key={member.user_id}>
       <InterviewSessionMember member={member} />
     </div>
   ));
@@ -890,11 +890,13 @@ const InterviewSessionMember = ({ member }: InterviewSessionMemberProps) => {
   return (
     <div className='mb-1 flex flex-row gap-3'>
       <div className='flex items-center space-x-3'>
-        <Avatar className='h-8 w-8 rounded-sm'>
+        <Avatar className='h-10 w-10 rounded-sm'>
           <AvatarImage src={member.profile_image} alt={name} />
-          <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+          <AvatarFallback className='h-10 w-10 rounded-sm'>
+            {name.charAt(0)}
+          </AvatarFallback>
         </Avatar>
-        <div>
+        <div className='flex flex-col gap-1'>
           <p className='text-sm font-medium leading-none'>{name}</p>
           {member.position && (
             <p className='text-sm text-muted-foreground'>{member.position}</p>

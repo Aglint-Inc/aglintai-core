@@ -17,17 +17,18 @@ export const Resume = () => {
   if (status === 'success' && typeof file_url !== 'string') return 'Not Found';
   if (status === 'error') return <>Something went wrong</>;
 
-  const url = data?.file_url;
+  const url = data?.file_url ?? '';
   const exten = getExtension(url);
 
   if (exten === '.docx' || exten === '.doc' || exten === '.pdf')
     return (
       <>
         <embed
-          src={`https://view.officeapps.live.com/op/embed.aspx?src=${url}`}
+          src={`https://docs.google.com/gview?url=${url}&embedded=true`}
           title='resume'
-          width='1000px'
-          height='1000px'
+          width='100%'
+          height='1250px'
+          className='rounded-lg overflow-hidden'
         />
       </>
     );
@@ -35,7 +36,7 @@ export const Resume = () => {
 
 const ResumeLayout = (props: PropsWithChildren) => {
   return (
-    <div className='relative flex h-full max-h-[1000px] w-full max-w-[1000px] items-center justify-center'>
+    <div className='relative flex h-full  w-full  items-center justify-center'>
       {props.children}
     </div>
   );
@@ -45,6 +46,8 @@ const getExtension = (url: string) => {
   return url.slice(url.lastIndexOf('.'), url.length);
 };
 
+// src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(url)}`}
+// src={`https://view.officeapps.live.com/op/embed.aspx?src=${url}`}
 // src={`https://docs.google.com/gview?url=${url}&embedded=true`}
 // import '@react-pdf-viewer/core/lib/styles/index.css';
 // import '@react-pdf-viewer/default-layout/lib/styles/index.css';

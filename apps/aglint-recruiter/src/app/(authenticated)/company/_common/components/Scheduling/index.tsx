@@ -8,20 +8,14 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 import { type schedulingSettingType } from '@aglint/shared-types';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@components/ui/card';
 
+import InterviewLimitInput from '@/authenticated/components/InterviewLoad';
+import UISectionCard from '@/components/Common/UISectionCard';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
+import KeywordSection from '../../../../_common/components/KeywordSection';
 import { LoadMax } from '../Holidays';
 import DebriefDefaults from './DebriefDefaults';
-import InterviewLimitInput from './InterviewLoad';
-import KeywordSection from './KeywordSection';
 
 let schedulingSettingObj = {};
 let changeValue = null;
@@ -91,17 +85,21 @@ function SchedulingSettings({ updateSettings }) {
             : value,
     }));
   };
-  const handleType = (type: 'Hours' | 'Interviews') => {
-    setDailyLimit((pre) => ({
-      ...pre,
-      type,
-    }));
-    setWeeklyLimit((pre) => ({
-      ...pre,
-      type,
-    }));
-    handleDailyValue(dailyLmit.value);
-    handleWeeklyValue(weeklyLmit.value);
+  const handleType = (type: 'Hours' | 'Interviews', mode: 'day' | 'week') => {
+    if (mode === 'day') {
+      setDailyLimit((pre) => ({
+        ...pre,
+        type,
+      }));
+      handleDailyValue(dailyLmit.value);
+    }
+    if (mode === 'week') {
+      setWeeklyLimit((pre) => ({
+        ...pre,
+        type,
+      }));
+      handleWeeklyValue(weeklyLmit.value);
+    }
   };
 
   ///////////// DayOff Popup //////////////
@@ -212,118 +210,99 @@ function SchedulingSettings({ updateSettings }) {
     };
   }, [recruiter?.scheduling_settings]);
 
+  const keywords = [
+    {
+      title: 'Free',
+      description:
+        'When these keywords appear in a calendar event title, overlapping interviews will not be considered scheduling conflicts.',
+      value: freeKeyWords,
+      handleChange: setFreeKeywords,
+    },
+    {
+      title: ' Soft Conflicts',
+      description:
+        ' When these keywords are found in a calendar event title, overlapping interviews will be marked as soft conflicts and will require your confirmation to schedule.',
+      value: softConflictsKeyWords,
+      handleChange: setSoftConflictsKeyWords,
+    },
+    {
+      title: 'Out of Office',
+      description:
+        'When any of these specified keywords appear in a calendar event  title, the day will be considered an Out of Office day, and interviews will not be scheduled.',
+      value: outOfOffice,
+      handleChange: setOutOfOffice,
+    },
+    {
+      title: 'Recruiting Blocks',
+      description:
+        ' If these keywords are found in a calendar event title, these blocks will be given first preference for scheduling interviews.',
+      value: recruitingBlocks,
+      handleChange: setRecruitingBlocks,
+    },
+  ];
   return (
-    <div className='flex flex-col space-y-4'>
-      {dailyLmit.type && weeklyLmit.type && (
-        <Card>
-          <CardHeader>
-            <CardTitle className='text-lg font-semibold'>
-              Interview Load
-            </CardTitle>
-            <CardDescription>
-              Setup maximum interviews per day and week.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className='space-y-2'>
-              <InterviewLimitInput
-                value={dailyLmit.value}
-                max={dailyLmit.max}
-                type={dailyLmit.type}
-                onValueChange={handleDailyValue}
-                onTypeChange={handleType}
-              />
-              <InterviewLimitInput
-                value={weeklyLmit.value}
-                max={weeklyLmit.max}
-                type={weeklyLmit.type}
-                onValueChange={handleWeeklyValue}
-                onTypeChange={handleType}
-              />
-            </div>
-          </CardContent>
-        </Card>
-      )}
-      <Card>
-        <CardHeader>
-          <CardTitle className='text-lg font-semibold'>
-            Debrief Defaults
-          </CardTitle>
-          <CardDescription>
-            Setup a default company wide setting for scheduling debrief
-            sessions.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <DebriefDefaults
-            value={debriefDefaults}
-            setValue={setDebriefDefaults}
-          />
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle className='text-lg font-semibold'>Free</CardTitle>
-          <CardDescription>
-            When these keywords appear in a calendar event title, overlapping
-            interviews will not be considered scheduling conflicts.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <KeywordSection
-            keywords={freeKeyWords}
-            setKeywords={setFreeKeywords}
-          />
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle className='text-lg font-semibold'>
-            Soft Conflicts
-          </CardTitle>
-          <CardDescription>
-            When these keywords are found in a calendar event title, overlapping
-            interviews will be marked as soft conflicts and will require your
-            confirmation to schedule.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <KeywordSection
-            keywords={softConflictsKeyWords}
-            setKeywords={setSoftConflictsKeyWords}
-          />
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle className='text-lg font-semibold'>Out of Office</CardTitle>
-          <CardDescription>
-            When any of these specified keywords appear in a calendar event
-            title, the day will be considered an Out of Office day, and
-            interviews will not be scheduled.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <KeywordSection keywords={outOfOffice} setKeywords={setOutOfOffice} />
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle className='text-lg font-semibold'>
-            Recruiting Blocks
-          </CardTitle>
-          <CardDescription>
-            If these keywords are found in a calendar event title, these blocks
-            will be given first preference for scheduling interviews.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <KeywordSection
-            keywords={recruitingBlocks}
-            setKeywords={setRecruitingBlocks}
-          />
-        </CardContent>
-      </Card>
+    <div>
+      <div className='flex flex-col'>
+        <div className='mb-6'>
+          <h2 className='mb-1 text-xl font-semibold'>Scheduling Information</h2>
+          <p className='text-gray-600'>
+            Update the settings here changes will be saved automatically.
+          </p>
+        </div>
+        <div className='flex flex-col gap-5'>
+          {dailyLmit.type && weeklyLmit.type && (
+            <UISectionCard
+              title=' Interview Load'
+              description='Setup maximum interviews per day and week.'
+            >
+              <div className='space-y-2'>
+                <InterviewLimitInput
+                  value={dailyLmit.value}
+                  max={dailyLmit.max}
+                  type={dailyLmit.type}
+                  onValueChange={handleDailyValue}
+                  onTypeChange={handleType}
+                  mode='day'
+                />
+                <InterviewLimitInput
+                  value={weeklyLmit.value}
+                  max={weeklyLmit.max}
+                  type={weeklyLmit.type}
+                  onValueChange={handleWeeklyValue}
+                  onTypeChange={handleType}
+                  mode='week'
+                />
+              </div>
+            </UISectionCard>
+          )}
+          <UISectionCard
+            title='Debrief Defaults'
+            description='Setup a default company wide setting for scheduling debrief sessions.'
+          >
+            <DebriefDefaults
+              value={debriefDefaults}
+              setValue={setDebriefDefaults}
+            />
+          </UISectionCard>
+
+          {keywords.map((keyword) => {
+            return (
+              <>
+                <UISectionCard
+                  key={keyword.title}
+                  title={keyword.title}
+                  description={keyword.description}
+                >
+                  <KeywordSection
+                    keywords={keyword.value}
+                    setKeywords={keyword.handleChange}
+                  />
+                </UISectionCard>
+              </>
+            );
+          })}
+        </div>{' '}
+      </div>
     </div>
   );
 }

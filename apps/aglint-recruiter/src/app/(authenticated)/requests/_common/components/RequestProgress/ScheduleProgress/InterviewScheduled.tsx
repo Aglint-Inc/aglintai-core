@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseEnums } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
+import { toast } from '@components/hooks/use-toast';
 import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import axios from 'axios';
@@ -11,7 +12,6 @@ import { ShowCode } from '@/components/Common/ShowCode';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
 import { supabase } from '@/utils/supabase/client';
-import toast from '@/utils/toast';
 
 import { useRequestProgressProvider } from '../progressCtx';
 import { RequestProgressTracker } from '../RequestProgressTracker';
@@ -51,6 +51,7 @@ const InterviewScheduled = () => {
             target_api: target_api as any,
             order: 0,
             action_type: 'slack',
+            workflow_id: null,
           },
         ],
         recruiter_id: recruiter.id,
@@ -59,7 +60,7 @@ const InterviewScheduled = () => {
       });
       await request_workflow.refetch();
     } catch (err) {
-      toast.error('Failed to add action');
+      toast({ title: 'Failed to add action', variant: 'destructive' });
     }
   };
 
@@ -69,7 +70,7 @@ const InterviewScheduled = () => {
       await deleteRequestWorkflowAction(workflowActionId);
       await request_workflow.refetch();
     } catch (err) {
-      toast.error('Failed to remove action');
+      toast({ title: 'Failed to remove action', variant: 'destructive' });
     }
   };
   // eslint-disable-next-line no-unused-vars
@@ -94,7 +95,7 @@ const InterviewScheduled = () => {
         );
       }
     } catch (err) {
-      toast.error('Failed to send RSVP reminder');
+      toast({ title: 'Failed to send RSVP reminder', variant: 'destructive' });
       setRsvpSending(false);
     }
   };

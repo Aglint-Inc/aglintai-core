@@ -12,7 +12,7 @@ export const useInterviewModules = () => {
   const { queryKey } = interviewModuleKeys.interview_module();
   const response = useQuery({
     queryKey,
-    queryFn: () => getInterviewModulesAPI(recruiter_id),
+    queryFn: () => getInterviewModulesAPI(recruiter_id as string),
     enabled: !!recruiter_id,
   });
   const refetch = async () => {

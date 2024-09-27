@@ -64,7 +64,8 @@ const useActionsContext = () => {
                   subject: emailTemplate?.subject ?? '',
                 },
               },
-            });
+              workflow_id: null,
+            } as any);
           }
           break;
         case 'slack':
@@ -75,7 +76,8 @@ const useActionsContext = () => {
               target_api,
               order,
               payload: null,
-            });
+              workflow_id: null,
+            } as any);
           }
           break;
         case 'end_point':
@@ -86,6 +88,7 @@ const useActionsContext = () => {
               target_api,
               order,
               payload: null,
+              workflow_id: null,
             });
           }
           break;
@@ -96,13 +99,15 @@ const useActionsContext = () => {
               action_type,
               target_api,
               order,
+              workflow_id: null,
+
               payload: {
                 agent: {
                   instruction: '',
                   ai_response: AI_RESPONSE_PLACEHOLDER,
                 },
               },
-            });
+            } as any);
           }
           break;
       }

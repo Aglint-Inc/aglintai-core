@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import { createPrivateClient } from '@/server/db';
 
 const applicationRequestSchema = z.object({
   application_id: z.string().uuid(),
@@ -19,15 +20,15 @@ export const applicationRequest = privateProcedure
 const getApplicationRequests = async (
   ctx: PrivateProcedure<typeof applicationRequestSchema>,
 ) => {
+  const db = createPrivateClient();
   const {
-    ctx: { db },
     input: { application_id },
   } = ctx;
   return (
     await db
       .from('request')
       .select(
-        '*,assignee_details:recruiter_user!request_assignee_id_fkey(first_name, last_name, profile_image),request_relation(*)',
+        '*,assignee_details:recruiter_user!request_assignee_id_fkey(first_name, last_name, profile_image),request_relation(*,interview_session(id,name,session_duration,session_type)),applications(id, job_id, recruiter_id, public_jobs(id,job_title,departments(name)))',
       )
       .eq('application_id', application_id)
       .order('created_at', { ascending: false })

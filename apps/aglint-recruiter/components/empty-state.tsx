@@ -4,6 +4,7 @@ import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
 import {
   Briefcase,
+  Calendar,
   CalendarClock,
   FileBarChart,
   FileText,
@@ -20,7 +21,9 @@ interface EmptyStateProps {
     | 'applications'
     | 'candidates'
     | 'interviewReports'
-    | 'dashboard';
+    | 'dashboard'
+    | 'interviews';
+
   title: string;
   description?: string; // Made optional
   actionLabel?: string; // Made optional
@@ -34,6 +37,7 @@ const moduleIcons: Record<EmptyStateProps['module'], LucideIcon> = {
   candidates: Users,
   interviewReports: FileBarChart,
   dashboard: LayoutDashboard,
+  interviews: Calendar,
 };
 
 export function EmptyState({
@@ -74,55 +78,3 @@ export function EmptyState({
 }
 
 // Example usage
-export function ExampleUsage() {
-  const handleAction = () => {
-    //
-  };
-
-  return (
-    <div className='space-y-8'>
-      <EmptyState
-        module='jobs'
-        title='No jobs found'
-        description='Get started by creating a new job posting.'
-        actionLabel='Create Job'
-        onAction={handleAction}
-      />
-      <EmptyState
-        module='interviewPlan'
-        title='No interview plans'
-        description='Start by creating an interview plan for your candidates.'
-        actionLabel='Create Plan'
-        onAction={handleAction}
-      />
-      <EmptyState
-        module='applications'
-        title='No applications yet'
-        description='Applications for your job postings will appear here.'
-        actionLabel='Post a Job'
-        onAction={handleAction}
-      />
-      <EmptyState
-        module='candidates'
-        title='No candidates'
-        description='Start adding candidates to your pipeline.'
-        actionLabel='Add Candidate'
-        onAction={handleAction}
-      />
-      <EmptyState
-        module='interviewReports'
-        title='No interview reports'
-        description='Interview reports will be displayed here once created.'
-        actionLabel='Create Report'
-        onAction={handleAction}
-      />
-      <EmptyState
-        module='dashboard'
-        title='Dashboard is empty'
-        description='Add widgets to customize your dashboard view.'
-        actionLabel='Add Widget'
-        onAction={handleAction}
-      />
-    </div>
-  );
-}

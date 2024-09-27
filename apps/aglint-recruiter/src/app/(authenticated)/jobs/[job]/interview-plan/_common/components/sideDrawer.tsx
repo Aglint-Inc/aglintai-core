@@ -186,6 +186,7 @@ const CreateSession = ({
   const { handleCreateSession } = useJobInterviewPlan();
   const [fields, setFields] = useState(getSessionFields(initialSessionFields));
   const [sessionCreation, setSessionCreation] = useState(false);
+
   const handleAdd = async () => {
     if (!sessionCreation) {
       setSessionCreation(true);
@@ -194,8 +195,9 @@ const CreateSession = ({
       else {
         const payload = getSessionPayload(fields, order + 1, interview_plan_id);
         await handleCreateSession(payload);
-        handleClose();
+        +handleClose();
       }
+
       setSessionCreation(false);
     } else {
       toast({

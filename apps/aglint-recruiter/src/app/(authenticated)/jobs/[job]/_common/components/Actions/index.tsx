@@ -36,9 +36,6 @@ export const Actions = () => {
             <span className='text-sm text-gray-600'>
               {`Move ${count} selected candidate${count === 1 ? '' : 's'} to:`}
             </span>
-            <Button variant='outline' onClick={() => setActionPopup('new')}>
-              New
-            </Button>
             {enabled && emailVisibilities.new && (
               <Button variant='outline' onClick={() => setActionPopup('new')}>
                 New
@@ -129,27 +126,30 @@ const MoveCandidateNew = () => {
 const MoveCandidateInterview = () => {
   const { isShowFeature } = useAuthDetails();
   const { mutate, isPending } = useApplicationsMove();
-
   const [request, setRequest] = useState<DatabaseTableInsert['request']>(null);
   const [priority, setPriority] = useState<'urgent' | 'standard'>('standard');
   const [note, setNote] = useState<string>('');
   const [selectedSession, setSelectedSession] = useState<SessionType[]>([]);
+  const showRequest = isShowFeature('SCHEDULING') && selectedSession.length > 0;
 
-  const buttonText = isShowFeature('SCHEDULING') ? 'Request and Move' : 'Move';
+  const buttonText = showRequest ? 'Request and Move' : 'Move';
   const hideRequestBox = isShowFeature('SCHEDULING') ? '' : 'hidden';
 
   const { buttons, title, description } = useMeta(
     () => {
       mutate({
         status: 'interview',
-        request: { ...request, note },
-        sessions: selectedSession.map(({ id }) => id),
+        body: showRequest
+          ? {
+              request: { ...request, note },
+              sessions: selectedSession.map(({ id }) => id),
+            }
+          : null,
       });
     },
     isPending,
     buttonText,
   );
-
   return (
     <Popup
       title={title}

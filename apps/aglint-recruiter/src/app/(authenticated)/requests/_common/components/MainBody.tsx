@@ -1,4 +1,3 @@
-
 import { Button } from '@components/ui/button';
 import AgentChats from '@requests/components/AgentChats';
 import { AgentIEditorProvider } from '@requests/components/AgentChats/AgentEditorContext';
@@ -13,9 +12,8 @@ import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
 import { SafeObject } from '@/utils/safeObject';
 
-import Header from './Header';
-import { RequestEmpty } from './RequestEmpty';
 import RequestListContent from './RequestListContent';
+import Header from './ui/Header';
 
 const MainBody = () => {
   const {
@@ -44,8 +42,9 @@ const MainBody = () => {
     !isPlaceholderData &&
     !checkFiltersApplied({ filters }) &&
     Boolean(
-      !(SafeObject.values(requestList) ?? []).flatMap((requests) => requests)
-        .length,
+      !(SafeObject.values(requestList ?? []) ?? []).flatMap(
+        (requests) => requests,
+      ).length,
     );
 
   const isRequestListEmpty =
@@ -54,11 +53,10 @@ const MainBody = () => {
     defaults.flatMap((d) => d.requests).length === 0;
 
   const open_request = requestCount?.all_open_request || 0;
+  const completed_request = requestCount?.card.completed_request || 0;
   const completed_percentage =
     Math.floor(
-      (requestCount?.card.completed_request /
-        (open_request + requestCount?.card.completed_request)) *
-        100,
+      (completed_request / (open_request + completed_request)) * 100,
     ) || 0;
 
   useEffect(() => {
@@ -107,37 +105,36 @@ const MainBody = () => {
 
       {/* Main Content */}
       <div
-        className={`z-10 flex-1  overflow-x-hidden pt-0 ${
+        className={`z-10 flex-1 overflow-x-hidden pt-0 ${
           openChat ? 'w-[calc(100%-450px)]' : ''
         }`}
       >
-        {showEmptyPage ? (
-          <RequestEmpty />
-        ) : (
-          <>
-            <Header
-              completed_percentage={completed_percentage}
-              open_request={open_request}
-              recruiterUser={recruiterUser}
-              requestCount={requestCount}
-              setView={setView}
-              view={view}
-            />
+        <div>
+          <Header
+            completed_percentage={completed_percentage}
+            open_request={open_request}
+            recruiterUser={recruiterUser}
+            requestCount={requestCount}
+            setView={setView}
+            view={view}
+          />
 
-            {isRequestListEmpty ? (
+          {isRequestListEmpty || showEmptyPage ? (
+            <div className='container-lg mx-auto w-full px-12 py-8'>
               <GlobalEmpty
+                height='300px'
                 text={'No requests found'}
                 iconSlot={<Info className='text-gray-500' />}
               />
-            ) : (
-              <RequestListContent
-                view={view}
-                defaults={defaults}
-                isFetched={isFetched}
-              />
-            )}
-          </>
-        )}
+            </div>
+          ) : (
+            <RequestListContent
+              view={view}
+              defaults={defaults}
+              isFetched={isFetched}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

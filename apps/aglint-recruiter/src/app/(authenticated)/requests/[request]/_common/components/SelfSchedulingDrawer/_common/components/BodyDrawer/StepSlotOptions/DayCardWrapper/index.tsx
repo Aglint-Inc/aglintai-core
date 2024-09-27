@@ -1,4 +1,5 @@
 import { type MultiDayPlanType } from '@aglint/shared-types';
+import { toast } from '@components/hooks/use-toast';
 import { Checkbox } from '@components/ui/checkbox';
 import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
@@ -8,7 +9,6 @@ import React, { type Dispatch, useEffect, useMemo, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';
-import toast from '@/utils/toast';
 
 import { DayCard } from '../../../ui/DayCard';
 import { EmptySlotReason } from '../../../ui/EmptySlotReason';
@@ -151,22 +151,25 @@ function DayCardWrapper({
             onClick={() => {
               const slotsNo = slotsWithDaySessions.length;
               if (slotsNo > 100) {
-                toast.error('It has more slots');
+                toast({ title: 'It has more slots' });
                 return;
               }
-              setSelectedCombIds(
-                isSelected
-                  ? selectedCombIds.filter((id) =>
-                      slotsWithDaySessions.every(
-                        (slot) => slot.plan_comb_id !== id,
-                      ),
-                    )
-                  : [
-                      ...selectedCombIds,
-                      ...slotsWithDaySessions.map((slot) => slot.plan_comb_id),
-                    ],
-              );
-              setCalendarDate(dayjs(dates[0]).toISOString());
+              setSelectedCombIds &&
+                setSelectedCombIds(
+                  isSelected
+                    ? selectedCombIds.filter((id) =>
+                        slotsWithDaySessions.every(
+                          (slot) => slot.plan_comb_id !== id,
+                        ),
+                      )
+                    : [
+                        ...selectedCombIds,
+                        ...slotsWithDaySessions.map(
+                          (slot) => slot.plan_comb_id,
+                        ),
+                      ],
+                );
+              setCalendarDate && setCalendarDate(dayjs(dates[0]).toISOString());
             }}
           />
         }
@@ -192,10 +195,12 @@ function DayCardWrapper({
                                         slot.plan_comb_id,
                                       )}
                                       onClick={() => {
-                                        onClickSelect(slot.plan_comb_id);
-                                        setCalendarDate(
-                                          dayjs(dates[0]).toISOString(),
-                                        );
+                                        onClickSelect &&
+                                          onClickSelect(slot.plan_comb_id);
+                                        setCalendarDate &&
+                                          setCalendarDate(
+                                            dayjs(dates[0]).toISOString(),
+                                          );
                                         setTimeout(() => {
                                           const element =
                                             document.getElementById(
@@ -221,10 +226,12 @@ function DayCardWrapper({
                                           slot.plan_comb_id,
                                         )}
                                         onClick={() => {
-                                          onClickSelect(slot.plan_comb_id);
-                                          setCalendarDate(
-                                            dayjs(dates[0]).toISOString(),
-                                          );
+                                          onClickSelect &&
+                                            onClickSelect(slot.plan_comb_id);
+                                          setCalendarDate &&
+                                            setCalendarDate(
+                                              dayjs(dates[0]).toISOString(),
+                                            );
                                           setTimeout(() => {
                                             const element =
                                               document.getElementById(

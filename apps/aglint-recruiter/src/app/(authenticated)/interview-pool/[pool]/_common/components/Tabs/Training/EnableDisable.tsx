@@ -46,8 +46,7 @@ function EnableDisable() {
       ) : (
         <>
           {
-            <div className='flex flex-col gap-2'>
-              <p className='font-semibold'>Trainee</p>
+            <div className='flex flex-col gap-2 w-full'>
               <TrainingSetting
                 isApprovalVisible={editModule?.settings?.reqruire_approval}
                 isDisable={!editModule?.settings?.require_training}

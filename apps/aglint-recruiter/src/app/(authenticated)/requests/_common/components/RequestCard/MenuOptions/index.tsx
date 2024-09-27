@@ -21,7 +21,7 @@ function MenuOptions({ request_id }: { request_id: string }) {
   const {
     requests: { data: requestsList },
   } = useRequests();
-  const selectedRequest = Object.values(requestsList)
+  const selectedRequest = Object.values(requestsList ?? [])
     ?.flat()
     ?.find((ele) => ele.id === request_id);
 

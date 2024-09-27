@@ -1,10 +1,10 @@
-import type { DatabaseTable, Type } from '@aglint/shared-types';
+import type { Custom, DatabaseTable } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 import { Combobox } from '@components/combobox';
 import { Textarea } from '@components/ui/textarea';
 import type { DateRange as DateRangeType } from 'react-day-picker';
 
 import DateRangePicker from '@/components/Common/DateRange';
-import dayjs from '@/utils/dayjs';
 
 import { useCreateRequest, useCreateRequestActions } from '../../hooks';
 
@@ -29,7 +29,7 @@ const Dates = () => {
   };
   return (
     <DateRangePicker
-      value={[dayjs(start_date), dayjs(end_date)]}
+      value={[dayjsLocal(start_date), dayjsLocal(end_date)]}
       onChange={onChange}
       disablePast
       className='w-full'
@@ -65,7 +65,7 @@ const Priority = () => {
 };
 
 const priorityOptions: Required<
-  Type<
+  Custom<
     Parameters<typeof Combobox>[0]['options'],
     { value: DatabaseTable['request']['priority'] }
   >[number]

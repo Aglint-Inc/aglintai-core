@@ -6,17 +6,16 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import type { DatabaseTable, RecursiveRequired } from '@aglint/shared-types';
+import type { DatabaseTable } from '@aglint/shared-types';
 import { initTRPC, TRPCError } from '@trpc/server';
 import type { ProcedureBuilder } from '@trpc/server/unstable-core-do-not-import';
 import superjson from 'superjson';
 import { type TypeOf, ZodError, type ZodSchema } from 'zod';
 
-import { getDecryptKey } from '@/api/sync/greenhouse/util';
-
 import { createPrivateClient, createPublicClient } from '../db';
 import { UNAUTHENTICATED, UNAUTHORIZED } from '../enums';
 import { authorize } from '../utils';
+import { getDecryptKey } from './routers/ats/greenhouse/util';
 
 /**
  * 1. CONTEXT
@@ -31,8 +30,7 @@ import { authorize } from '../utils';
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const adminDb = createPublicClient();
-  return { ...opts, adminDb };
+  return opts;
 };
 
 /**
@@ -100,6 +98,7 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
 });
 
 const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
+  const adminDb = createPublicClient();
   const input = await getRawInput();
   const recruiter_id = (input as any)
     .recruiter_id as DatabaseTable['recruiter']['id'];
@@ -109,7 +108,7 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
       message: 'Invalid payload',
     });
   const { ats } = (
-    await ctx.adminDb
+    await adminDb
       .from('recruiter_preferences')
       .select('ats')
       .eq('recruiter_id', recruiter_id)
@@ -123,7 +122,7 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
     });
   let decryptKey: string;
   const { greenhouse_key, greenhouse_metadata, ashby_key, lever_key } = (
-    await ctx.adminDb
+    await adminDb
       .from('integrations')
       .select('greenhouse_key, greenhouse_metadata, lever_key, ashby_key')
       .eq('recruiter_id', recruiter_id)
@@ -157,7 +156,7 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
       ...ctx,
       ats,
       greenhouse_metadata,
-      decryptKey,
+      decryptKey: decryptKey!,
     },
   });
 });
@@ -172,6 +171,8 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
   if (!user) {
     throw new TRPCError({ code: 'FORBIDDEN', message: UNAUTHENTICATED });
   }
+
+  const user_id = user.id;
 
   const { data } = await db
     .from('recruiter_relation')
@@ -204,8 +205,7 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
   return await next({
     ctx: {
       ...ctx,
-      db,
-      user,
+      user_id,
       recruiter_id,
     },
   });
@@ -220,12 +220,12 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
  */
 
 export const publicProcedure = t.procedure.use(timingMiddleware);
-export type PublicProcedure<T> = Procedure<T, typeof publicProcedure>;
+export type PublicProcedure<T = unknown> = Procedure<typeof publicProcedure, T>;
 
 export const atsProcedure = t.procedure
   .use(timingMiddleware)
   .use(atsMiddleware);
-export type ATSProcedure<T> = Procedure<T, typeof atsProcedure>;
+export type ATSProcedure<T = unknown> = Procedure<typeof atsProcedure, T>;
 
 /**
  * Private (authenticated) procedure
@@ -238,11 +238,14 @@ export type ATSProcedure<T> = Procedure<T, typeof atsProcedure>;
 export const privateProcedure = t.procedure
   .use(timingMiddleware)
   .use(authMiddleware);
-export type PrivateProcedure<T> = Procedure<T, typeof privateProcedure>;
+export type PrivateProcedure<T = unknown> = Procedure<
+  typeof privateProcedure,
+  T
+>;
 
 type Procedure<
-  T,
   U extends ProcedureBuilder<any, any, any, any, any, any, any, any>,
+  T = unknown,
 > = T extends ZodSchema
   ? U extends ProcedureBuilder<
       infer TContext,
@@ -256,7 +259,21 @@ type Procedure<
     >
     ? {
         ctx: TContext & TContextOverrides;
-        input: RecursiveRequired<TypeOf<T>>;
+        input: Required<TypeOf<T>>;
       }
     : never
-  : never;
+  : U extends ProcedureBuilder<
+        infer TContext,
+        any,
+        infer TContextOverrides,
+        any,
+        any,
+        any,
+        any,
+        any
+      >
+    ? {
+        ctx: TContext & TContextOverrides;
+        input: undefined;
+      }
+    : never;

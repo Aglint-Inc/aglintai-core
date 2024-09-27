@@ -14,12 +14,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@radix-ui/react-popover';
-import { MoreVertical, PersonStanding } from 'lucide-react';
+import { MoreVertical, User } from 'lucide-react';
 import { Pause, Play, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
 import { getPauseMemberText } from '@/authenticated/utils';
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
@@ -79,13 +80,12 @@ function Interviewers() {
       <div className='mb-4 flex justify-between'>
         <UITextField
           placeholder='Search interviewers...'
-          className='max-w-sm bg-white'
+          className='w-64 bg-white '
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
         <UIButton
           variant='default'
-          leftIcon={<PersonStanding />}
           onClick={() => {
             setIsAddMemberDialogOpen(true);
             setTrainingStatus('qualified');
@@ -98,7 +98,7 @@ function Interviewers() {
         <CardContent className='p-0'>
           <Table className='overflow-hidden'>
             <TableHeader>
-              <TableRow>
+              <TableRow className="border-b-gray-200" >
                 <TableHead className='w-4/12'>Name</TableHead>
                 <TableHead className='w-2/12'>Today</TableHead>
                 <TableHead className='w-2/12'>Week</TableHead>
@@ -110,7 +110,7 @@ function Interviewers() {
               {filtererdUsers.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={5} className='text-center'>
-                    No data found
+                    <GlobalEmpty iconSlot={<User strokeWidth={1.5} className='mb-2 h-10 w-10 text-muted-foreground'/>} text={'No interviewers found'} height='250px'/>
                   </TableCell>
                 </TableRow>
               ) : (

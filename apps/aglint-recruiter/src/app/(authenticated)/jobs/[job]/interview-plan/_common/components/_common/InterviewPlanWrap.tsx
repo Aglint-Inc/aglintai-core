@@ -44,13 +44,13 @@ export function InterviewPlanWrap({
     >
       <Collapsible open={isOpen} onOpenChange={setIsOpen} className='w-full'>
         <Card className='w-full'>
-          <CardHeader className='px-6 py-3'>
+          <CardHeader className='px-4 py-3'>
             {isInputVisible ? (
               <div className='w-full'>{slotInputButton}</div>
             ) : (
               <CollapsibleTrigger asChild>
                 <div className='flex h-[40px] w-full cursor-pointer items-center justify-between'>
-                  <div className='flex items-center gap-2'>
+                  <div className='flex items-center'>
                     <CardTitle className='text-md'>{textStageName}</CardTitle>
                     <div
                       className={`flex items-center gap-2 transition-opacity duration-300 ${hover ? 'opacity-100' : 'opacity-0'}`}
@@ -71,7 +71,7 @@ export function InterviewPlanWrap({
             )}
           </CardHeader>
           <CollapsibleContent>
-            <CardContent>
+            <CardContent className='px-4 pb-0 pt-0'>
               {isSlotInterviewPlanVisible && (
                 <div className='flex flex-col gap-2'>
                   {slotInterviewPlanDetail ?? <InterviewPlanDetail />}

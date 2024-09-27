@@ -10,7 +10,6 @@ import React, { useState } from 'react';
 import {
   FacebookShareButton,
   LinkedinShareButton,
-  RedditShareButton,
   TwitterShareButton,
 } from 'react-share';
 
@@ -258,7 +257,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                   >
                     <Avatar>
                       <AvatarImage
-                        src='/images/logo/linkedin.svg'
+                        src='/images/social/linkedin.svg'
                         alt='LinkedIn'
                       />
                     </Avatar>
@@ -269,7 +268,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                   >
                     <Avatar>
                       <AvatarImage
-                        src='/images/logo/twitter.svg'
+                        src='/images/social/twitter.svg'
                         alt='Twitter'
                       />
                     </Avatar>
@@ -277,19 +276,11 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                   <FacebookShareButton url={window.location.href}>
                     <Avatar>
                       <AvatarImage
-                        src='/images/logo/facebook.svg'
+                        src='/images/social/facebook.svg'
                         alt='Facebook'
                       />
                     </Avatar>
                   </FacebookShareButton>
-                  <RedditShareButton
-                    url={window.location.href}
-                    title={`Job Post - ${post.job_title}`}
-                  >
-                    <Avatar>
-                      <AvatarImage src='/images/logo/reddit.svg' alt='Reddit' />
-                    </Avatar>
-                  </RedditShareButton>
                 </div>
               </div>
             </div>

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev:build": "npm run build --workspace=@aglint/shared-utils",
-    "dev": "npm run dev:build && tsup --watch --onSuccess \"node dist/index.js && console-ninja",
+    "dev": "npm run dev:build && tsup --watch --onSuccess \"node dist/index.js\" && console-ninja",
     "build": "tsup",
     "lint": "gts lint && npm run build",
     "start": "set NODE_ENV=development&& node dist/index.js",
@@ -39,7 +39,6 @@
     "retell-sdk": "2.4.0",
     "supabase": "^1.150.0",
     "twilio": "^4.21.0",
-    "valibot": "^0.41.0",
     "winston": "^3.13.0",
     "ws": "^8.18.0",
     "zod": "^3.22.4",

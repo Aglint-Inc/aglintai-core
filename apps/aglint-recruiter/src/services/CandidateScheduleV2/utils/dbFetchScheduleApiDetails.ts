@@ -11,7 +11,7 @@ import {
 } from '@aglint/shared-types';
 import { CApiError, ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
 
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import {
   type DbFetchScheduleApiDetailsParams,
@@ -159,6 +159,8 @@ export const fetchAndVerifyDb = async (
   params: ScheduleDBDetailsParams,
   meeting_details_dates: ScheduleApiDetails['schedule_dates'],
 ) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const r = supabaseWrap(
     await supabaseAdmin.rpc('get_interview_session_data', {
       session_ids: params.session_ids,
@@ -298,6 +300,8 @@ const getInterviewersMeetings = (
 };
 
 const geAllIntsFromModules = async (session_ids: string[]) => {
+  const supabaseAdmin = getSupabaseServer();
+
   const sesn_data = supabaseWrap(
     await supabaseAdmin
       .from('interview_session')
@@ -314,26 +318,24 @@ const geAllIntsFromModules = async (session_ids: string[]) => {
         sesn_data.map((s) => s.module_id),
       ),
   );
-  const sesn_ints: SessionInterviewerType[] = module_ints
-    .filter((i) => i.training_status === 'qualified')
-    .map((m) => {
-      return {
-        email: m.recruiter_user.email,
-        first_name: m.recruiter_user.first_name,
-        last_name: m.recruiter_user.last_name,
-        profile_image: m.recruiter_user.profile_image,
-        user_id: m.recruiter_user.user_id,
-        session_id: sesn_data.find((s) => s.module_id === m.module_id).id,
-        interviewer_type: 'qualified',
-        training_type: 'qualified',
-        position: m.recruiter_user.position,
-        int_tz: m.recruiter_user.scheduling_settings.timeZone.tzCode,
-        scheduling_settings: m.recruiter_user.scheduling_settings,
-        interview_module_relation_id: m.id,
-        pause_json: m.pause_json,
-        schedule_auth: m.recruiter_user.schedule_auth,
-      };
-    });
+  const sesn_ints: SessionInterviewerType[] = module_ints.map((m) => {
+    return {
+      email: m.recruiter_user.email,
+      first_name: m.recruiter_user.first_name,
+      last_name: m.recruiter_user.last_name,
+      profile_image: m.recruiter_user.profile_image,
+      user_id: m.recruiter_user.user_id,
+      session_id: sesn_data.find((s) => s.module_id === m.module_id).id,
+      interviewer_type: 'qualified',
+      training_type: 'qualified',
+      position: m.recruiter_user.position,
+      int_tz: m.recruiter_user.scheduling_settings.timeZone.tzCode,
+      scheduling_settings: m.recruiter_user.scheduling_settings,
+      interview_module_relation_id: m.id,
+      pause_json: m.pause_json,
+      schedule_auth: m.recruiter_user.schedule_auth,
+    };
+  });
 
   return sesn_ints;
 };

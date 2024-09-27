@@ -2,10 +2,9 @@
 import { type TargetApiPayloadType } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { candidate_avail_request_schema } from '@aglint/shared-utils/src/scheduling/apiSchemas';
-import * as v from 'valibot';
 
 import { mailSender } from '@/utils/mailSender';
-import { supabaseAdmin } from '@/utils/supabase/supabaseAdmin';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export const candidateAvailReRequest = async ({
   end_date_str,
@@ -22,13 +21,9 @@ export const candidateAvailReRequest = async ({
   end_date_str;
   request_id: string;
 }) => {
-  const {
-    application_id,
-    number_of_days,
-    number_of_slots,
-    recruiter_id,
-    api_options,
-  } = v.parse(candidate_avail_request_schema, req_body);
+  const { application_id, number_of_days, number_of_slots, recruiter_id } =
+    candidate_avail_request_schema.parse(req_body);
+  const supabaseAdmin = getSupabaseServer();
 
   const [cand_avail] = supabaseWrap(
     await supabaseAdmin
@@ -43,11 +38,10 @@ export const candidateAvailReRequest = async ({
         visited: false,
         slots: null,
         availability: {
-          day_offs: api_options.include_conflicting_slots.day_off,
-          free_keywords: api_options.include_free_time,
-          outside_work_hours:
-            api_options.include_conflicting_slots.out_of_working_hrs,
-          recruiting_block_keywords: api_options.use_recruiting_blocks,
+          day_offs: false,
+          outside_work_hours: true,
+          free_keywords: true,
+          recruiting_block_keywords: true,
         },
       })
       .select(),

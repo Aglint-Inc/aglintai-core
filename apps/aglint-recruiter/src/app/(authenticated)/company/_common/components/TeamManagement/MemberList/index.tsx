@@ -1,4 +1,3 @@
-import type { RecruiterUserType } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
@@ -10,6 +9,7 @@ import { Globe, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
+import type { useTeamMembers } from '@/company/hooks/useTeamMembers';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 
@@ -17,31 +17,31 @@ import { UserListThreeDot } from './ThreeDot';
 
 dayjs.extend(relativeTime);
 
-const Member = ({ member }: { member: RecruiterUserType }) => {
+const Member = ({
+  member,
+}: {
+  member: ReturnType<typeof useTeamMembers>['data'][number];
+}) => {
   const { checkPermissions } = useRolesAndPermissions();
-  const { recruiterUser } = useAuthDetails();
+  const { recruiterUser: tempRecruiterUser } = useAuthDetails();
+  const recruiterUser = tempRecruiterUser!;
 
   const canManage = checkPermissions(['manage_users']);
-
+  const fullName = getFullName(member.first_name, member.last_name || '');
   return (
     <TableRow>
       <TableCell>
         <div className='flex items-center space-x-3'>
           <Avatar className='h-8 w-8'>
-            <AvatarImage
-              src={member.profile_image}
-              alt={getFullName(member.first_name, member.last_name)}
-            />
-            <AvatarFallback>
-              {getFullName(member.first_name, member.last_name).charAt(0)}
-            </AvatarFallback>
+            <AvatarImage src={member.profile_image || ''} alt={fullName} />
+            <AvatarFallback>{fullName.charAt(0)}</AvatarFallback>
           </Avatar>
           <div>
             <Link
               href={`/user/${member.user_id}`}
               className='font-medium hover:underline'
             >
-              {getFullName(member.first_name, member.last_name)}
+              {fullName}
               {member.user_id === recruiterUser?.user_id && ' (You)'}
             </Link>
             <p className='text-sm text-muted-foreground'>

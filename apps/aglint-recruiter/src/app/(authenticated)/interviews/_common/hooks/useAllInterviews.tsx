@@ -33,13 +33,24 @@ export const useAllInterviews = (filters: ScheduleFilerType) => {
     queryFn: () =>
       getAllInterviews({
         filters,
-        recruiter_id,
+        recruiter_id: recruiter_id ?? '',
       }),
     gcTime: 20000,
     enabled: !!recruiter_id,
   });
   const refetch = () =>
-    queryClient.invalidateQueries({ queryKey: ['get_All_Interviews'] });
+    queryClient.invalidateQueries({
+      queryKey: [
+        'get_All_Interviews',
+        ...status,
+        ...jobs,
+        ...schedule_types,
+        ...interviewers,
+        ...date,
+        ...session_types,
+        searchText,
+      ],
+    });
   return { ...query, refetch };
 };
 
@@ -78,7 +89,7 @@ export async function getAllInterviews({
   }
 
   if (date.length > 0) {
-    let selectedDate = null;
+    let selectedDate: string | null = null;
     if (date[0] === 'today') {
       selectedDate = dayjsLocal().format('YYYY-MM-DD');
     }
@@ -133,5 +144,5 @@ export async function getAllInterviews({
   const { data: schedules } = await filtersAll
     .order('start_time', { ascending: true })
     .throwOnError();
-  return schedules;
+  return schedules ?? [];
 }
