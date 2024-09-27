@@ -170,7 +170,7 @@ export default function UITabs({
           <motion.div
             key='activeIndicator'
             className={`absolute bg-primary ${
-              vertical ? 'left-0 w-0.5' : '-bottom-2 h-0.5'
+              vertical ? '-left-2 w-0.5' : '-bottom-2 h-0.5'
             }`}
             initial={false}
             animate={getTabPosition(activeTab)}
