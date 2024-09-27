@@ -85,17 +85,21 @@ function SchedulingSettings({ updateSettings }) {
             : value,
     }));
   };
-  const handleType = (type: 'Hours' | 'Interviews') => {
-    setDailyLimit((pre) => ({
-      ...pre,
-      type,
-    }));
-    setWeeklyLimit((pre) => ({
-      ...pre,
-      type,
-    }));
-    handleDailyValue(dailyLmit.value);
-    handleWeeklyValue(weeklyLmit.value);
+  const handleType = (type: 'Hours' | 'Interviews', mode: 'day' | 'week') => {
+    if (mode === 'day') {
+      setDailyLimit((pre) => ({
+        ...pre,
+        type,
+      }));
+      handleDailyValue(dailyLmit.value);
+    }
+    if (mode === 'week') {
+      setWeeklyLimit((pre) => ({
+        ...pre,
+        type,
+      }));
+      handleWeeklyValue(weeklyLmit.value);
+    }
   };
 
   ///////////// DayOff Popup //////////////
@@ -250,6 +254,7 @@ function SchedulingSettings({ updateSettings }) {
               type={dailyLmit.type}
               onValueChange={handleDailyValue}
               onTypeChange={handleType}
+              mode='day'
             />
             <InterviewLimitInput
               value={weeklyLmit.value}
@@ -257,6 +262,7 @@ function SchedulingSettings({ updateSettings }) {
               type={weeklyLmit.type}
               onValueChange={handleWeeklyValue}
               onTypeChange={handleType}
+              mode='week'
             />
           </div>
         </SectionCard>

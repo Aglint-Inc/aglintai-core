@@ -155,7 +155,7 @@ export default function ViewRequestDetails() {
                       }) + '?tab=scoring'
                     }
                   >
-                    <span>
+                    <span className='duration-300 hover:text-black hover:underline'>
                       {getFullName(
                         candidateDetails?.first_name ?? '',
                         candidateDetails?.last_name ?? '',
@@ -171,9 +171,9 @@ export default function ViewRequestDetails() {
                   <Link
                     href={ROUTES['/jobs/[job]']({ job: jobDetails?.id ?? '' })}
                   >
-                  <div className="hover:underline hover:text-black duration-300">
-                    <span>{jobDetails?.job_title}</span>
-                    </div>
+                    <span className='duration-300 hover:text-black hover:underline'>
+                      {jobDetails?.job_title}
+                    </span>
                   </Link>
                 </div>
                 {/* <span>•</span> */}
