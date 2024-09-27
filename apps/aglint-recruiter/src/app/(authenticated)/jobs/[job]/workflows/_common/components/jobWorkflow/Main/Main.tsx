@@ -14,7 +14,8 @@ import { TriggerCategory } from '@/job/workflows/lib/constants';
 import { AutomationAccordion } from './AutomationAccordion';
 
 export default function Main() {
-  const { jobWorkflowActions } = useJobAutomationStore();
+  const { jobWorkflowTriggers, jobWorkflowActions } = useJobAutomationStore();
+
   const allCategories: TriggerCategory[] = [
     TriggerCategory.CandidateExperience,
     TriggerCategory.InterviewerManagement,
@@ -33,9 +34,19 @@ export default function Main() {
         </CardHeader>
         <CardContent>
           <Accordion type='single' collapsible className='w-full'>
-            {allCategories.map((categ, idx) => (
-              <AutomationAccordion key={idx} category={categ} />
-            ))}
+            {allCategories.map((categ, idx) => {
+              const currentTriggers = jobWorkflowTriggers.filter(
+                (trig) => trig.category === categ,
+              );
+              return (
+                <AutomationAccordion
+                  key={idx}
+                  category={categ}
+                  currentTriggers={currentTriggers}
+                  currentActions={jobWorkflowActions}
+                />
+              );
+            })}
           </Accordion>
         </CardContent>
       </Card>

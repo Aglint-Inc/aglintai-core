@@ -10,6 +10,7 @@ import { Switch } from '@components/ui/switch';
 import { Calendar, Clock, User, UserCheck } from 'lucide-react';
 
 import {
+  JobAutomationState,
   updateWAction,
   updateWTrigger,
   useJobAutomationStore,
@@ -24,11 +25,13 @@ import { ActionsContainer } from './ActionsContainer';
 
 export const AutomationAccordion = ({
   category,
+  currentActions,
+  currentTriggers,
 }: {
   category: TriggerCategory;
+  currentTriggers: JobAutomationState['jobWorkflowTriggers'];
+  currentActions: JobAutomationState['jobWorkflowActions'];
 }) => {
-  const { jobWorkflowTriggers, jobWorkflowActions } = useJobAutomationStore();
-
   return (
     <AccordionItem key={category} value={category}>
       <AccordionTrigger>
@@ -39,19 +42,17 @@ export const AutomationAccordion = ({
           </div>
           <Badge
             variant={
-              jobWorkflowTriggers.some((s) => s.is_active)
-                ? 'default'
-                : 'secondary'
+              currentTriggers.some((s) => s.is_active) ? 'default' : 'secondary'
             }
           >
-            {jobWorkflowTriggers.filter((a) => !a.is_active).length} /{' '}
-            {jobWorkflowTriggers.length} enabled
+            {currentTriggers.filter((a) => a.is_active).length} /{' '}
+            {currentTriggers.length} enabled
           </Badge>
         </div>
       </AccordionTrigger>
       <AccordionContent>
         <div className='space-y-4'>
-          {jobWorkflowTriggers
+          {currentTriggers
             .filter((w) => triggerToCategoryMap[w.trigger] === category)
             .map((wTrigger) => {
               return (
@@ -76,7 +77,7 @@ export const AutomationAccordion = ({
                   </div>
                   {wTrigger.is_active && (
                     <div className='mt-2 space-y-4'>
-                      {jobWorkflowActions
+                      {currentActions
                         .filter((act) => act.workflow_id === wTrigger.id)
                         .map((action, actionIndex) => {
                           return (
