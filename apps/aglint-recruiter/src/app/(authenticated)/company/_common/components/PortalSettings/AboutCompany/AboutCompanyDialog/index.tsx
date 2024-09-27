@@ -48,7 +48,7 @@ export const AboutCompanyDialog = ({ isDialogOpen, setIsDialogOpen }) => {
         Edit the about section of your company.
       </DialogDescription>
 
-      <div className='rounded-md border border-muted-foreground bg-background'>
+      <div className='mt-4 rounded-md border border-muted-foreground bg-background'>
         <TipTapAIEditor
           enablAI={false}
           placeholder={''}

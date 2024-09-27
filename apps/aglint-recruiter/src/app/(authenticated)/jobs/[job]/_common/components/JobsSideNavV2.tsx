@@ -9,8 +9,8 @@ import {
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import {
-  BarChart,
   Calendar,
+  CircleDashed,
   CircleUser,
   FileText,
   UserPlus,
@@ -46,7 +46,7 @@ const JobsSideNavV2 = () => {
       show: true,
     },
     {
-      icon: <BarChart className='h-5 w-5' />,
+      icon: <CircleDashed className='h-5 w-5' />,
       label: 'Profile Score',
       route: 'profile-score',
       show: isScoringEnabled,

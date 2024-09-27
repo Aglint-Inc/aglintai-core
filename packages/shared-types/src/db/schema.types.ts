@@ -4114,7 +4114,7 @@ export type Database = {
           description: string | null
           id: string
           interval: number
-          is_paused: boolean
+          is_active: boolean
           phase: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id: string
           request_id: string | null
@@ -4128,7 +4128,7 @@ export type Database = {
           description?: string | null
           id?: string
           interval?: number
-          is_paused?: boolean
+          is_active?: boolean
           phase: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id: string
           request_id?: string | null
@@ -4142,7 +4142,7 @@ export type Database = {
           description?: string | null
           id?: string
           interval?: number
-          is_paused?: boolean
+          is_active?: boolean
           phase?: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id?: string
           request_id?: string | null

@@ -1,4 +1,3 @@
-import { toast } from '@components/hooks/use-toast';
 import OptimisticWrapper from '@components/loadingWapper';
 import { Button } from '@components/ui/button';
 import {
@@ -13,11 +12,6 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 import { useAllIntegrations } from '@/authenticated/hooks';
-import { useCompanySetup } from '@/authenticated/hooks/useCompanySetup';
-import {
-  setIsOnboardOpen,
-  useOnboard,
-} from '@/authenticated/store/OnboardStore';
 import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -33,14 +27,15 @@ import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
 import LeverModalComp from './AddJobWithIntegrations/LeverModal';
 import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';
+
 const DashboardComp = () => {
-  const { ifAllowed } = useRolesAndPermissions();
   const router = useRouterPro();
   const {
     manageJob,
     jobs: { data },
     initialLoad,
   } = useJobs();
+  const { ifAllowed } = useRolesAndPermissions();
   const {
     jobs,
     filterOptions,
@@ -125,8 +120,6 @@ export function AddJob() {
   const integration = useIntegrationStore((state) => state.integrations);
   const { setIntegrations } = useIntegrationActions();
   const { data: integrations } = useAllIntegrations();
-  const { isJobSetupPending } = useCompanySetup();
-  const { isOpen } = useOnboard();
 
   return (
     <div className='flex flex-row items-center gap-1'>
@@ -141,16 +134,11 @@ export function AddJob() {
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end' className='w-56'>
           <DropdownMenuItem
-            onSelect={() => {
-              if (isJobSetupPending) {
-                if (!isOpen) toast({ title: 'Please complete this Steps' });
-                setIsOnboardOpen(true);
-              } else router.push(ROUTES['/jobs/create']());
-            }}
+            onSelect={() => router.push(ROUTES['/jobs/create']())}
             className='cursor-pointer'
           >
             <PlusCircle className='mr-2 h-4 w-4' />
-            <span>Create Job </span>
+            <span>Create Job</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             onSelect={() => {

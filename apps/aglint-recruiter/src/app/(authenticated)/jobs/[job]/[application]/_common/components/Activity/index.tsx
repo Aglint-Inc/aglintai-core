@@ -1,10 +1,11 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
 import dayjs from 'dayjs';
-import { ChevronDown, ChevronUp, Circle, Loader2 } from 'lucide-react';
+import { ChevronDown, ChevronUp, Circle, Clock, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
 import SlotContent from '@/components/Activities/SlotWidgets';
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
 import { useApplicationActivity } from '../../hooks/useApplicationActivity';
@@ -22,7 +23,7 @@ export const Activity = () => {
     );
   if (status === 'error')
     return <div className='text-red-500'>Something went wrong</div>;
-  if (!data || data.length === 0) return 'No activities found';
+  if (!data || data.length === 0) return <GlobalEmpty iconSlot={<Clock/>} text={'No activities found'} height='300px'/>;
 
   const displayedActivities = showAll ? data : data.slice(0, 10);
   const count = displayedActivities.length;
@@ -33,7 +34,7 @@ export const Activity = () => {
         <div key={activity.id} className='relative w-full last:pb-0'>
           {i !== count - 1 && (
             <span
-              className='absolute left-2 top-4 -ml-px h-full w-0.5 bg-gray-200'
+              className='absolute left-[9px] top-4 -ml-px h-full w-[1px] rounded-full bg-gray-200'
               aria-hidden='true'
             ></span>
           )}
@@ -41,19 +42,19 @@ export const Activity = () => {
             <div>
               <span className='flex h-4 w-4 items-center justify-center'>
                 <Circle
-                  className='mt-1.5 h-4 w-4 fill-gray-400 text-gray-400'
+                  className='mt-1.5 h-2 w-2 fill-gray-400 text-gray-400'
                   aria-hidden='true'
                 />
               </span>
             </div>
-            <div className='flex w-full min-w-0 flex-1 justify-between space-x-2'>
+            <div className='flex w-full min-w-0 flex-1 justify-between gap-1'>
               <div className='w-full'>
-                <p className='text-sm font-medium text-gray-900'>
+                <p className='text-md font-normal text-gray-900'>
                   {activity.title || '---'}
                 </p>
-                <p className='mt-0.5 text-xs text-gray-500'>
-                  {activity.description}
-                </p>
+                {activity.description && (
+                  <p className='mt-0.5 text-sm'>{activity.description}</p>
+                )}
                 {activity.metadata && (
                   <SlotContent
                     act={{
@@ -71,7 +72,7 @@ export const Activity = () => {
                     }}
                   />
                 )}
-                <div className='pt-2 text-right text-xs text-gray-500'>
+                <div className='pt-1 text-left text-sm text-muted-foreground'>
                   <time dateTime={activity.created_at}>
                     {dayjs(activity.created_at).fromNow()}
                   </time>
@@ -94,8 +95,8 @@ export const Activity = () => {
       ))}
       {data.length > 5 && (
         <Button
-          variant='ghost'
-          size='sm'
+          variant='secondary'
+          size='md'
           className='mt-2 w-full'
           onClick={() => setShowAll(!showAll)}
         >

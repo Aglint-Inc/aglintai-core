@@ -32,16 +32,16 @@ const DefaultProfileImage = () => (
   <Image
     src={'/images/default/user.svg'}
     alt={'Greenhouse'}
-    width={40}
-    height={40}
+    width={20}
+    height={20}
   />
 );
 const DefaultCompanyLogo = () => (
   <Image
     src={'/images/default/company.svg'}
     alt={'Greenhouse'}
-    width={40}
-    height={40}
+    width={20}
+    height={20}
   />
 );
 

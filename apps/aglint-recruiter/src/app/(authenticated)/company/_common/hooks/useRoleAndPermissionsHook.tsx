@@ -35,9 +35,10 @@ export const useRoleAndPermissionsHook = () => {
     }
   }, [query.isFetched]);
 
-  const [selectRole, setSelectRole] = useState<string>(null);
+  const [selectRole, setSelectRole] = useState<string | null>(null);
 
-  const role = query.data?.rolesAndPermissions?.[selectRole] || null;
+  const role =
+    (selectRole ? query.data?.rolesAndPermissions?.[selectRole] : null) || null;
   const roleDetails = app_modules.reduce(
     (acc, curr) => {
       if (
@@ -46,9 +47,11 @@ export const useRoleAndPermissionsHook = () => {
       ) {
         acc[curr.name] = {
           description: curr.description,
-          permissions: curr.permissions.map((permission) =>
-            role?.permissions.find((pre) => pre.name == permission),
-          ),
+          permissions: curr.permissions
+            .map((permission) =>
+              role?.permissions.find((pre) => pre.name == permission),
+            )
+            .filter((item) => !!item),
         };
       }
       return acc;
@@ -56,7 +59,7 @@ export const useRoleAndPermissionsHook = () => {
     {} as {
       [key: string]: {
         description: string;
-        permissions: (typeof role)['permissions'];
+        permissions: NonNullable<typeof role>['permissions'];
       };
     },
   );
@@ -66,8 +69,8 @@ export const useRoleAndPermissionsHook = () => {
   };
   const [lastState, setLastState] = useState<{
     index: number;
-    permission: (typeof role)['permissions'][number];
-  }>(null);
+    permission: NonNullable<typeof role>['permissions'][number];
+  } | null>(null);
   const { mutate: mutateAsync } = useMutation({
     mutationFn: updateRole,
     onMutate({ add, delete: toDelete, role_id }) {
@@ -150,7 +153,7 @@ export const useRoleAndPermissionsHook = () => {
 
   const handelSelectRole = (role_id: string, addMode?: boolean) => {
     setSelectRole(role_id);
-    const role = query.data?.rolesAndPermissions[role_id]?.name || null;
+    const role = query.data?.rolesAndPermissions[role_id]?.name || undefined;
     setQueryParams({ role, add: addMode });
   };
   return {

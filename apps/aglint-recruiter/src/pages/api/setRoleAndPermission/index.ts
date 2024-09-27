@@ -23,7 +23,7 @@ export default async function handler(
     'POST',
     async ({ requesterDetails, body }) => {
       const { recruiter_id, user_id } = requesterDetails;
-      const { add, delete: toDelete, role_id } = body;
+      const { add, delete: toDelete, role_id } = body!;
       const roleMeta = await checkRole(role_id);
 
       if (!roleMeta || (roleMeta.role === 'auth' && roleMeta.id !== user_id))
@@ -48,8 +48,9 @@ export default async function handler(
           .throwOnError();
       }
 
-      let temp_added: SetRoleAndPermissionAPI['response']['addedPermissions'] =
-        null;
+      let temp_added:
+        | SetRoleAndPermissionAPI['response']['addedPermissions']
+        | null = null;
 
       if (add && permission_dependency) {
         const toAddArray = [
@@ -57,33 +58,38 @@ export default async function handler(
           ...(permission_dependency?.meta?.dependency_tree?.child || []),
         ].map((pId) => ({ recruiter_id, permission_id: Number(pId), role_id }));
 
-        const { data } = await supabase
-          .from('role_permissions')
-          .insert(toAddArray)
-          .select('id, permission_id')
-          .throwOnError();
-        temp_added = data.map((data) => ({
-          id: data.permission_id,
-          relation_id: data.id,
-        }));
+        const data = (
+          await supabase
+            .from('role_permissions')
+            .insert(toAddArray)
+            .select('id, permission_id')
+            .throwOnError()
+        ).data!;
+        temp_added =
+          data.map((data) => ({
+            id: data.permission_id,
+            relation_id: data.id,
+          })) || [];
       }
-      return { success: true, addedPermissions: temp_added };
+      return { success: true, addedPermissions: temp_added! };
     },
     ['role_id'],
   );
 }
 
 const checkRole = async (role_id: string) => {
-  return supabase
-    .from('roles')
-    .select('name, recruiter(primary_admin)')
-    .eq('id', role_id)
-    .throwOnError()
-    .single()
-    .then(({ data }) => ({
-      role: data.name,
-      id: data.recruiter.primary_admin,
-    }));
+  const data = (
+    await supabase
+      .from('roles')
+      .select('name, recruiter(primary_admin)')
+      .eq('id', role_id)
+      .throwOnError()
+      .single()
+  ).data!;
+  return {
+    role: data.name,
+    id: data.recruiter!.primary_admin,
+  };
 };
 
 const getPermissions = async ({
@@ -94,7 +100,7 @@ const getPermissions = async ({
   rel_ids: string;
 }) => {
   let permissions: (DatabaseTable['permissions'] & {
-    role_permissions_id: string;
+    role_permissions_id: string | null;
   })[];
   if (ids) {
     permissions = (
@@ -105,7 +111,7 @@ const getPermissions = async ({
         // .eq('id', ids)
         // .single()
         .throwOnError()
-    ).data.map((permission) => ({
+    ).data!.map((permission) => ({
       ...permission,
       role_permissions_id: null,
     }));
@@ -117,7 +123,7 @@ const getPermissions = async ({
         .eq('is_enable', true)
         .eq('role_permissions.id', rel_ids)
         .throwOnError()
-    ).data.map((permission) => ({
+    ).data!.map((permission) => ({
       ...permission,
       role_permissions: undefined,
       role_permissions_id: permission.role_permissions?.[0]?.id,
@@ -127,7 +133,7 @@ const getPermissions = async ({
   const temp_permissions = permissions.find((pre) =>
     ids ? pre.id == ids : Boolean(pre.role_permissions_id),
   );
-  if (temp_permissions.meta?.dependency_tree?.child.length)
+  if (temp_permissions?.meta?.dependency_tree?.child.length)
     // @ts-expect-error
     temp_permissions.meta.dependency_tree.child =
       temp_permissions.meta.dependency_tree.child.map(

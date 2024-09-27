@@ -1,15 +1,7 @@
-import {
-  Briefcase,
-  Calendar,
-  CalendarIcon,
-  CheckCircle2,
-  Coffee,
-  MessageSquare,
-  Projector,
-  UserCircle,
-} from 'lucide-react';
+import { debounce } from 'lodash';
+import { useCallback, useEffect, useState } from 'react';
 
-import { UIButton } from '@/components/Common/UIButton';
+import UITabs from '@/components/Common/UITabs';
 
 import { type sectionKeys } from '..';
 
@@ -21,79 +13,56 @@ export const SideBar = ({
   scrollToSection: (sectionKey: sectionKeys) => void;
   activeSection: string;
 }) => {
-  return (
-    <nav className='space-y-1'>
-      <SideNavItem
-        icon={UserCircle}
-        label='Overview'
-        active={activeSection === 'overview'}
-        onClick={() => scrollToSection('overview')}
-      />
-      <SideNavItem
-        icon={CheckCircle2}
-        label='Qualifications'
-        active={activeSection === 'qualifications'}
-        onClick={() => scrollToSection('qualifications')}
-      />
+  const tabs = [
+    { icon: 'CircleUserRound', name: 'Overview', id: 'overview' },
+    { icon: 'CircleCheck', name: 'Qualifications', id: 'qualifications' },
+    {
+      icon: 'Calendar',
+      name: 'Upcoming Interviews',
+      id: 'upcomingInterviews',
+    },
+    { icon: 'Briefcase', name: 'Recent Interviews', id: 'recentInterviews' },
+    {
+      icon: 'MessageSquare',
+      name: 'Interview Feedback',
+      id: 'interviewFeedback',
+    },
+    { icon: 'Projector', name: 'Meeting Overview', id: 'meetingOverview' },
+    {
+      icon: 'Coffee',
+      name: 'Schedule Availability',
+      id: 'scheduleAvailabilityRef',
+    },
+    { icon: 'Calendar', name: 'Calendar', id: 'calendar' },
+  ];
 
-      <SideNavItem
-        icon={CalendarIcon}
-        label='Upcoming Interviews'
-        active={activeSection === 'upcomingInterviews'}
-        onClick={() => scrollToSection('upcomingInterviews')}
-      />
-      <SideNavItem
-        icon={Briefcase}
-        label='Recent Interviews'
-        active={activeSection === 'recentInterviews'}
-        onClick={() => scrollToSection('recentInterviews')}
-      />
-      <SideNavItem
-        icon={MessageSquare}
-        label='Interview Feedback'
-        active={activeSection === 'interviewFeedback'}
-        onClick={() => scrollToSection('interviewFeedback')}
-      />
-      <SideNavItem
-        icon={Coffee}
-        label='Schedule Availability'
-        active={activeSection === 'scheduleAvailabilityRef'}
-        onClick={() => scrollToSection('scheduleAvailabilityRef')}
-      />
-      <SideNavItem
-        icon={Projector}
-        label='Meeting Overview'
-        active={activeSection === 'meetingOverview'}
-        onClick={() => scrollToSection('meetingOverview')}
-      />
-      <SideNavItem
-        icon={Calendar}
-        label='Calendar'
-        active={activeSection === 'calendar'}
-        onClick={() => scrollToSection('calendar')}
+  const [inputValue, setInputValue] = useState(activeSection);
+
+  const debouncedChangeHandler = useCallback(
+    debounce(
+      (value) => {
+        setInputValue(value);
+      },
+      500,
+      { leading: false, trailing: true },
+    ),
+    [],
+  );
+
+  useEffect(() => {
+    debouncedChangeHandler(activeSection);
+  }, [activeSection, inputValue]);
+
+  return (
+    <nav className='w-[250px]'>
+      <UITabs
+        tabs={tabs}
+        vertical
+        defaultValue={inputValue || tabs[0].id}
+        onClick={(value) => {
+          scrollToSection(value as sectionKeys);
+        }}
       />
     </nav>
   );
 };
-
-const SideNavItem = ({
-  icon: Icon,
-  label,
-  active = false,
-  onClick,
-}: {
-  icon: any;
-  // icon: ReactElement;
-  label: string;
-  active: boolean;
-  onClick: () => void;
-}) => (
-  <UIButton
-    variant={active ? 'secondary' : 'ghost'}
-    className='w-full justify-start'
-    onClick={onClick}
-  >
-    <Icon className='mr-2 h-5 w-5' />
-    {label}
-  </UIButton>
-);

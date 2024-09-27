@@ -7,11 +7,11 @@ import { useInterviewsByUserId } from '@interviews/hooks/useInterviewsByUserId';
 import { useParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
-import { SectionCard } from '@/authenticated/components/SectionCard';
 import { useFlags } from '@/company/hooks/useFlags';
 import CalendarComp from '@/components/Common/Calendar/Calendar';
 import Heatmap from '@/components/Common/Heatmap/HeatmapUser';
 import { Loader } from '@/components/Common/Loader';
+import UISectionCard from '@/components/Common/UISectionCard';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import {
@@ -65,23 +65,29 @@ export default function InterviewerDetailsPage() {
   const userCardRef = useRef<HTMLDivElement>(null);
 
   const handleScroll = () => {
-    // const scrollPosition = window.scrollY;
-    // const userCardBottom = userCardRef.current?.getBoundingClientRect().bottom;
-    // setIsTopBarVisible(!!userCardBottom && scrollPosition > userCardBottom);
-
     Object.entries(sectionRefs).forEach(([key, ref]) => {
-      if (ref.current && ref.current.getBoundingClientRect().top < 100) {
+      if (
+        ref.current &&
+        ref.current.getBoundingClientRect().top < 90 &&
+        ref.current.getBoundingClientRect().top > 0
+      ) {
         setActiveSection(key);
       }
     });
   };
+
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollToSection = (sectionKey: sectionKeys) => {
-    sectionRefs[sectionKey].current?.scrollIntoView({ behavior: 'smooth' });
+    const section = sectionRefs[sectionKey].current;
+
+    if (section) {
+      const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: sectionTop - 80, behavior: 'smooth' });
+    }
   };
 
   //----------------------- page data
@@ -122,9 +128,10 @@ export default function InterviewerDetailsPage() {
     >;
 
   const interviewerName = getFullName(
-    interviewerDetails?.first_name || '',
-    interviewerDetails?.last_name || '',
+    interviewerDetails?.first_name ?? '',
+    interviewerDetails?.last_name ?? '',
   );
+
   //--------------------------------------
   if (isLoading)
     return (
@@ -134,18 +141,6 @@ export default function InterviewerDetailsPage() {
     );
   return (
     <div className='container mx-auto'>
-      {/* <Top
-        interviewer={{
-          avatar: interviewerDetails?.avatar || '',
-          department: interviewerDetails?.department || '-',
-          name: interviewerName,
-          role: interviewerDetails?.role || '',
-          //need to change dynamic values
-          calendarConnected: false,
-          gmailConnected: false,
-        }}
-        isTopBarVisible={isTopBarVisible}
-      /> */}
       <div className='relative'>
         <div className='sticky top-0 z-10 bg-gray-50'>
           <BreadCrumb name={interviewerDetails?.first_name || ''} />
@@ -164,7 +159,7 @@ export default function InterviewerDetailsPage() {
           />
         </div>
         {isShowFeature('SCHEDULING') && (
-          <div className='relative flex gap-8'>
+          <div className='relative flex gap-5'>
             <div className='sticky top-20 self-start' style={{ top: '90px' }}>
               <aside>
                 <SideBar
@@ -220,9 +215,9 @@ export default function InterviewerDetailsPage() {
               </section>
 
               <section ref={sectionRefs.meetingOverview}>
-                <SectionCard title='Meetings overview'>
+                <UISectionCard title='Meetings overview'>
                   <Heatmap loadSetting={interviewLoad} />
-                </SectionCard>
+                </UISectionCard>
               </section>
               <section ref={sectionRefs.scheduleAvailabilityRef}>
                 <ScheduleAvailability
@@ -231,14 +226,14 @@ export default function InterviewerDetailsPage() {
                 />
               </section>
               <section ref={sectionRefs.calendar}>
-                <SectionCard title='Schedule Calendar'>
+                <UISectionCard title='Schedule Calendar'>
                   <CalendarComp
                     allSchedules={allSchedules ?? []}
                     isLoading={iscalendarLoading}
                     filter={filter}
                     setFilter={setFilter}
                   />
-                </SectionCard>
+                </UISectionCard>
               </section>
             </main>
           </div>
@@ -272,4 +267,24 @@ export default function InterviewerDetailsPage() {
   /* <section ref={sectionRefs.recentActivity}>
             <RecentActivity interviewer={interviewer} />
           </section> */
+}
+
+// const [isTopBarVisible, setIsTopBarVisible] = useState<boolean>(false);
+// const scrollPosition = window.scrollY;
+// const userCardBottom = userCardRef.current?.getBoundingClientRect().bottom;
+// setIsTopBarVisible(!!userCardBottom && scrollPosition > userCardBottom);
+
+{
+  /* <Top
+        interviewer={{
+          avatar: interviewerDetails?.avatar || '',
+          department: interviewerDetails?.department || '-',
+          name: interviewerName,
+          role: interviewerDetails?.role || '',
+          //need to change dynamic values
+          calendarConnected: false,
+          gmailConnected: false,
+        }}
+        isTopBarVisible={isTopBarVisible}
+      /> */
 }

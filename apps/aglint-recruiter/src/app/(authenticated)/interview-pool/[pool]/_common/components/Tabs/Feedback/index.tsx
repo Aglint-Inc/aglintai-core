@@ -28,7 +28,7 @@ function Feedback() {
 
   return (
     <>
-      <div className='flex justify-between'>
+      <div className='mb-4 flex justify-between'>
         <UITextField
           placeholder='Search Candidates...'
           className='w-64 bg-white'
@@ -65,7 +65,16 @@ function Feedback() {
                   {filteredData.length === 0 && (
                     <tr>
                       <td colSpan={5} className='p-4'>
-                      <GlobalEmpty iconSlot={<MessageSquare strokeWidth={1.5} className='mb-2 h-10 w-10 text-muted-foreground'/>} text={'No feedback found'} height='250px'/>
+                        <GlobalEmpty
+                          iconSlot={
+                            <MessageSquare
+                              strokeWidth={1.5}
+                              className='mb-2 h-10 w-10 text-muted-foreground'
+                            />
+                          }
+                          text={'No feedback found'}
+                          height='250px'
+                        />
                       </td>
                     </tr>
                   )}

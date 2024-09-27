@@ -1,8 +1,7 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
-import { updateRequestNotes } from '@requests/functions';
+import { useUpdateRequestNote } from '@requests/hooks/useRequestNotes';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import { useTenant } from '@/company/hooks';
 import { useMemberList } from '@/hooks/useMemberList';
@@ -32,6 +31,8 @@ export const useScheduleRequest = () => {
     requestType,
     selectedAssignee,
   } = useApplicationDetailStore();
+  const { updateRequestNote } = useUpdateRequestNote();
+
   const [isSaving, setIsSaving] = useState(false);
   const { data: members, status: membersStatus } = useMemberList();
   const { recruiter_user } = useTenant();
@@ -115,12 +116,12 @@ export const useScheduleRequest = () => {
       const request_id = res.data;
 
       if (note && (res.status === 201 || res.status === 200)) {
-        await updateRequestNotes({
-          id: uuidv4(),
-          request_id,
+        const payload = {
           note,
+          request_id,
           updated_at: dayjsLocal().toISOString(),
-        });
+        };
+        updateRequestNote(payload);
         if (assigned_user_id !== recruiter_user.user_id) {
           router.push(
             ROUTES['/requests/[request]']({

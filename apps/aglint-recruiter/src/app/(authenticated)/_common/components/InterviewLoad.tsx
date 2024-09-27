@@ -9,7 +9,8 @@ type InterviewLimitInputProps = {
   max: number;
   type: 'Hours' | 'Interviews';
   onValueChange: (value: number) => void;
-  onTypeChange: (type: 'Hours' | 'Interviews') => void;
+  onTypeChange: (_type: 'Hours' | 'Interviews', _mode: 'day' | 'week') => void;
+  mode: 'day' | 'week';
 };
 
 const InterviewLimitInput: React.FC<InterviewLimitInputProps> = ({
@@ -18,9 +19,14 @@ const InterviewLimitInput: React.FC<InterviewLimitInputProps> = ({
   type,
   onValueChange,
   onTypeChange,
+  mode,
 }) => {
+  const tabs = ['Interviews', 'Hours'];
   return (
     <div className='flex flex-row items-center gap-4'>
+      <p className='w-[150px] text-base leading-5 tracking-tight'>
+        {mode === 'day' ? 'Daily' : 'Weekly'} {type}
+      </p>
       <Input
         type='number'
         value={value}
@@ -31,10 +37,12 @@ const InterviewLimitInput: React.FC<InterviewLimitInputProps> = ({
       <Tabs
         defaultValue={type}
         value={type}
-        onValueChange={(value) => onTypeChange(value as 'Hours' | 'Interviews')}
+        onValueChange={(value: 'Hours' | 'Interviews') => {
+          onTypeChange(value, mode);
+        }}
       >
         <TabsList>
-          {['Interviews', 'Hours'].map((ele) => (
+          {tabs.map((ele) => (
             <TabsTrigger key={ele} value={ele}>
               {capitalize(ele.replaceAll('_', ' '))}
             </TabsTrigger>

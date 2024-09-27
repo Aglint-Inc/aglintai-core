@@ -1,6 +1,6 @@
 import { Progress } from '@components/ui/progress';
 
-import { SectionCard } from '@/authenticated/components/SectionCard';
+import UISectionCard from '@/components/Common/UISectionCard';
 
 export const Performance = () => {
   const performances = [
@@ -18,7 +18,7 @@ export const Performance = () => {
     },
   ];
   return (
-    <SectionCard title='Performance Metrics'>
+    <UISectionCard title='Performance Metrics'>
       <div className='space-y-4'>
         {performances.map((performance) => (
           <div key={performance.title}>
@@ -34,6 +34,6 @@ export const Performance = () => {
           </div>
         ))}
       </div>
-    </SectionCard>
+    </UISectionCard>
   );
 };

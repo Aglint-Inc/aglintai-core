@@ -195,7 +195,7 @@ const CreateSession = ({
       else {
         const payload = getSessionPayload(fields, order + 1, interview_plan_id);
         await handleCreateSession(payload);
-        handleClose();
+        +handleClose();
       }
 
       setSessionCreation(false);

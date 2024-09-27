@@ -69,6 +69,7 @@ export const EditAvailabilityForm = ({
           type={dailyLimit.type}
           onValueChange={handleDailyValue}
           onTypeChange={handleType}
+          mode='day'
         />
         <InterviewLimitInput
           value={weeklyLmit.value}
@@ -76,6 +77,7 @@ export const EditAvailabilityForm = ({
           type={weeklyLmit.type}
           onValueChange={handleWeeklyValue}
           onTypeChange={handleType}
+          mode='week'
         />
       </div>
       <div className='mb-4 flex flex-col gap-4'>

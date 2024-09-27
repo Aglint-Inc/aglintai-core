@@ -50,7 +50,7 @@ function ApplicationDetailComp() {
     <div className='container-lg mx-auto h-full w-full px-12'>
       <div className='mb-6 flex items-center justify-between'>
         <div>
-          <h1 className='mb-2 text-2xl font-bold'>Application Details</h1>
+          <h1 className='mb-2 text-2xl font-medium  '>Application Details</h1>
           <BreadCrumb />
         </div>
       </div>
@@ -61,22 +61,22 @@ function ApplicationDetailComp() {
           {renderTabContent()}
         </div>
         <div className='w-3/12'>
-          <div className='flex flex-col space-y-4'>
+          <div className='flex flex-col space-y-4 pt-[90px]'>
             {isShowFeature('SCHEDULING') ? (
               <Card>
-                <CardHeader>
-                  <CardTitle className='text-lg'>Requests</CardTitle>
+                <CardHeader className='p-4 '>
+                  <CardTitle className='text-lg font-medium'>Requests</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className='p-4 pt-0'>
                   <Requests />
                 </CardContent>
               </Card>
             ) : null}
             <Card>
-              <CardHeader>
-                <CardTitle className='text-lg'>Activity</CardTitle>
+              <CardHeader className='p-4 '>
+                <CardTitle className='text-lg font-medium'>Activity</CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className='p-4 pt-0'>
                 <Activity />
               </CardContent>
             </Card>

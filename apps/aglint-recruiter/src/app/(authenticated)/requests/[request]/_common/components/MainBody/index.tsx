@@ -27,6 +27,7 @@ import {
   Coffee,
   Edit2,
   Eye,
+  Home,
   MapPin,
   User,
 } from 'lucide-react';
@@ -125,7 +126,9 @@ export default function ViewRequestDetails() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href='/'>Home</BreadcrumbLink>
+                <BreadcrumbLink href='/'>
+                  <Home className='h-4 w-4' />
+                </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
@@ -155,7 +158,7 @@ export default function ViewRequestDetails() {
                       }) + '?tab=scoring'
                     }
                   >
-                    <span>
+                    <span className='duration-300 hover:text-black hover:underline'>
                       {getFullName(
                         candidateDetails?.first_name ?? '',
                         candidateDetails?.last_name ?? '',
@@ -169,11 +172,13 @@ export default function ViewRequestDetails() {
                 <div className='flex items-center space-x-1'>
                   <Briefcase className='h-4 w-4' />
                   <Link
-                    href={ROUTES['/jobs/[job]']({ job: jobDetails?.id ?? '' })}
+                    href={ROUTES['/jobs/[job]']({
+                      job: jobDetails?.id ?? '',
+                    })}
                   >
-                  <div className="hover:underline hover:text-black duration-300">
-                    <span>{jobDetails?.job_title}</span>
-                    </div>
+                    <span className='duration-300 hover:text-black hover:underline'>
+                      {jobDetails?.job_title}
+                    </span>
                   </Link>
                 </div>
                 {/* <span>•</span> */}
@@ -223,8 +228,9 @@ export default function ViewRequestDetails() {
                       alt='Avatar'
                     />
                     <AvatarFallback>
-                      {selectedMember?.first_name.slice(0, 1)}
-                      {selectedMember?.last_name.slice(0, 1)}
+                      <span className='text-md'>
+                        {selectedMember?.first_name.slice(0, 1)}
+                      </span>
                     </AvatarFallback>
                   </Avatar>
                   <p className='font-medium'>
@@ -518,41 +524,6 @@ export default function ViewRequestDetails() {
                   ) : null}
                 </CardContent>
               </Card>
-
-              {/* <Card className='mb-4'>
-              <CardHeader>
-                <CardTitle className='text-md'>Add Automations</CardTitle>
-                <CardDescription>
-                  Streamline your workflow with these automations:
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className='space-y-4'>
-                  <div>
-                    <div className='space-y-2'>
-                      <div className='flex items-center justify-between'>
-                        <span className='text-sm'>Add Candidate Reminders</span>
-                        <Button size='sm' variant='outline'>
-                          Add
-                        </Button>
-                      </div>
-                      <div className='flex items-center justify-between'>
-                        <span className='text-sm'>RSVP Via Slack</span>
-                        <Button size='sm' variant='outline'>
-                          Add
-                        </Button>
-                      </div>
-                      <div className='flex items-center justify-between'>
-                        <span className='text-sm'>Sync with Calendar</span>
-                        <Button size='sm' variant='outline'>
-                          Add
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card> */}
             </div>
           </div>
         </div>
@@ -679,103 +650,106 @@ function SessionCards({
 
 function ViewRequestDetailsSkeleton() {
   return (
-    <div className='container-lg mx-auto w-full px-12'>
-      {/* Breadcrumb */}
-      <div className='flex items-center space-x-2 text-sm text-gray-500'>
-        <span>Home</span>
-        <span>/</span>
-        <span>Requests</span>
-        <span>/</span>
-        {/* <span>Schedule Requests</span> */}
-        {/* <span>/</span> */}
-        <span className='font-medium text-gray-900'>Request Details</span>
-      </div>
-
-      {/* Header */}
-      <div className='flex flex-row items-start justify-between pb-2'>
-        <div>
-          <h1 className='mb-2 text-2xl font-bold text-gray-900'>
-            Schedule Request Details
-          </h1>
-          <Skeleton className='h-4 w-96' />
-        </div>
-        <div className='flex flex-col gap-4'>
-          <div className='flex flex-row gap-2'>
-            <Skeleton className='h-6 w-20' />
-            <Skeleton className='h-6 w-20' />
+    <div className='container-lg mx-auto w-full px-16'>
+      <div className='space-y-8'>
+        {/* Breadcrumb */}
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href='/'>
+                <Home className='h-4 w-4' />
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href='/requests'>Requests</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href='#' className='font-medium text-gray-900'>
+                Request Details
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        {/* Header */}
+        <div className='flex flex-row items-start justify-between pb-2'>
+          <div>
+            <h1 className='mb-2 text-2xl font-bold text-gray-900'>
+              <Skeleton className='h-10 w-96' />
+            </h1>
+            <Skeleton className='h-4 w-96' />
           </div>
-          <div className='flex items-center gap-2'>
-            <Skeleton className='h-4 w-24' />
-            <Skeleton className='h-6 w-6 rounded-full' />
-            <Skeleton className='h-4 w-24' />
-          </div>
-        </div>
-      </div>
-
-      {/* Progress Holder */}
-      <Alert>
-        <Bot className='h-4 w-4' />
-        <AlertTitle>Next Step</AlertTitle>
-        <AlertDescription>
-          <Skeleton className='h-4 w-64' />
-        </AlertDescription>
-        <div className='mt-4 flex flex-row justify-end gap-2'>
-          <Skeleton className='h-9 w-32' />
-          <Skeleton className='h-9 w-40' />
-        </div>
-      </Alert>
-
-      {/* Request Details Card */}
-      <Card className='bg-white shadow-sm'>
-        <CardHeader className='flex flex-row items-start justify-between pb-2'>
-          <CardTitle className='mb-2 text-xl font-semibold'>
-            Request Details
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className='grid grid-cols-3 gap-6'>
-            {/* Left column */}
-            <div className='col-span-2 grid grid-cols-2 gap-6'>
-              {[...Array(4)].map((_, index) => (
-                <div key={index} className='space-y-4'>
-                  <Skeleton className='h-4 w-24' />
-                  <Skeleton className='h-6 w-32' />
-                </div>
-              ))}
+          <div className='flex flex-col items-end gap-4'>
+            <div className='item-center flex flex-row gap-2'>
+              <Skeleton className='h-6 w-20' />
+              <Skeleton className='h-6 w-20' />
             </div>
-            {/* Right column */}
-            <div className='space-y-4'>
+            <div className='flex items-center gap-2'>
               <Skeleton className='h-4 w-24' />
-              <Skeleton className='h-6 w-32' />
+              <Skeleton className='h-6 w-6 rounded-full' />
+              <Skeleton className='h-4 w-24' />
             </div>
           </div>
-
-          {/* Sessions */}
-          <div className='mt-8'>
-            <div className='my-4 flex items-center justify-between'>
-              <Skeleton className='h-6 w-24' />
-              <Skeleton className='h-6 w-24' />
-            </div>
-            <div className='space-y-2 rounded-lg border p-4'>
-              {[...Array(3)].map((_, index) => (
-                <Card key={index} className='border-0 shadow-none'>
-                  <CardHeader className='px-4 py-2'>
-                    <div className='flex items-center justify-between'>
-                      <Skeleton className='h-4 w-64' />
-                      <div className='flex items-center space-x-2'>
-                        <Skeleton className='h-6 w-20' />
-                        <Skeleton className='h-8 w-20' />
-                        <Skeleton className='h-8 w-24' />
-                        <Skeleton className='h-4 w-4' />
-                      </div>
+        </div>
+        {/* Request Details Card */}
+        <div className='flex'>
+          <div className='flex w-8/12 flex-col space-y-4 pb-6 pr-4'>
+            <Card className='bg-white shadow-sm'>
+              <CardHeader className='flex flex-row items-start justify-between pb-2'>
+                <Skeleton className='h-8 w-1/4' />
+              </CardHeader>
+              <CardContent className='space-y-4'>
+                <div className='grid grid-cols-3 gap-6'>
+                  <div className='col-span-2 grid grid-cols-2 gap-6'>
+                    <div className='space-y-4'>
+                      <Skeleton className='h-4 w-full' />
+                      <Skeleton className='h-4 w-full' />
                     </div>
-                  </CardHeader>
-                </Card>
-              ))}
-            </div>
+                    <div className='space-y-4'>
+                      <Skeleton className='h-4 w-full' />
+                      <Skeleton className='h-4 w-full' />
+                    </div>
+                  </div>
+                  <div className='space-y-4'>
+                    <Skeleton className='h-4 w-full' />
+                  </div>
+                </div>
+                <Skeleton className='h-20 w-full' />
+                <Skeleton className='h-20 w-full' />
+              </CardContent>
+            </Card>
+            <Card className='bg-white shadow-sm'>
+              <CardHeader className='flex flex-row items-start justify-between pb-2'>
+                <Skeleton className='h-8 w-1/4' />
+              </CardHeader>
+              <CardContent>
+                <Skeleton className='h-20 w-full' />
+              </CardContent>
+            </Card>
           </div>
-        </CardContent>
-      </Card>
+          <div className='flex w-4/12 flex-col space-y-4'>
+            <Card className='bg-white shadow-sm'>
+              <CardHeader className='flex flex-row items-start justify-between pb-2'>
+                <Skeleton className='h-8 w-1/4' />
+              </CardHeader>
+              <CardContent className='space-y-4'>
+                <Skeleton className='h-10 w-full' />
+              </CardContent>
+            </Card>
+            <Card className='bg-white shadow-sm'>
+              <CardHeader className='flex flex-row items-start justify-between pb-2'>
+                <Skeleton className='h-8 w-1/4' />
+              </CardHeader>
+              <CardContent className='space-y-4'>
+                <Skeleton className='h-10 w-full' />
+                <Skeleton className='h-10 w-full' />
+                <Skeleton className='h-10 w-full' />
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
