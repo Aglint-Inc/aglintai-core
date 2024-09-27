@@ -6,10 +6,6 @@ export const TYPE_SAFE_PARAMS = {
     '/interview-pool/[pool]': [
       'pool'
     ],
-    '/jobs/[job]/[application]': [
-      'job',
-      'application'
-    ],
     '/jobs/[job]/candidate-plan': [
       'job'
     ],
@@ -36,6 +32,10 @@ export const TYPE_SAFE_PARAMS = {
     ],
     '/jobs/[job]/workflows': [
       'job'
+    ],
+    '/jobs/[job]/[application]': [
+      'job',
+      'application'
     ],
     '/requests/[request]': [
       'request'
