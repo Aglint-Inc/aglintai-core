@@ -23,7 +23,9 @@ import { createQueryClient } from './query-client';
 // import { splitLink } from '@trpc/client/links/splitLink';
 
 let clientQueryClientSingleton: QueryClient | undefined = undefined;
-const getQueryClient = (logout?: () => Promise<void>) => {
+const getQueryClient = (
+  logout?: (_queryClient: QueryClient) => Promise<void>,
+) => {
   if (typeof window === 'undefined') {
     // Server: always make a new query client
     return createQueryClient();

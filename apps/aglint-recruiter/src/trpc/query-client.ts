@@ -18,16 +18,22 @@ export const STALE_TIME = 5 * 1000;
 export const REFETCH_ON_MOUNT = true;
 export const REFETCH_ON_WINDOW_FOCUS = true;
 
-export const createQueryClient = (logout?: () => Promise<void>) => {
+export const createQueryClient = (
+  logout?: (_queryClient: QueryClient) => Promise<void>,
+) => {
   let queryClient: QueryClient;
   queryClient = new QueryClient({
     queryCache: new QueryCache({
       onError: (error) =>
-        onError(error as unknown as TRPCErrorShape<TRPCError>, logout),
+        onError(error as unknown as TRPCErrorShape<TRPCError>, () =>
+          logout(queryClient),
+        ),
     }),
     mutationCache: new MutationCache({
       onError: (error) =>
-        onError(error as unknown as TRPCErrorShape<TRPCError>, logout),
+        onError(error as unknown as TRPCErrorShape<TRPCError>, () =>
+          logout(queryClient),
+        ),
       onSuccess: () => queryClient.invalidateQueries(),
     }),
     defaultOptions: {
@@ -51,10 +57,7 @@ export const createQueryClient = (logout?: () => Promise<void>) => {
   return queryClient;
 };
 
-const onError = async (
-  error: TRPCErrorShape<TRPCError>,
-  logout?: () => Promise<void>,
-) => {
+const onError = (error: TRPCErrorShape<TRPCError>, logout?: () => void) => {
   if (!logout) return;
-  if (error.data.code === ERRORS.UNAUTHORIZED.code) void (await logout());
+  if (error?.data?.code ?? null === ERRORS.UNAUTHORIZED.code) void logout();
 };
