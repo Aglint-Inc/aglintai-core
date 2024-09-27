@@ -2,7 +2,6 @@
 import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { DialogDescription, DialogTitle } from '@components/ui/dialog';
-import { useRequestSetupProgress } from '@requests/hooks/useRequestSetupProgress';
 import { FileQuestion } from 'lucide-react';
 import { useState } from 'react';
 
@@ -188,7 +187,6 @@ const CreateSession = ({
   const [fields, setFields] = useState(getSessionFields(initialSessionFields));
   const [sessionCreation, setSessionCreation] = useState(false);
 
-  const { refetch } = useRequestSetupProgress();
   const handleAdd = async () => {
     if (!sessionCreation) {
       setSessionCreation(true);
@@ -197,8 +195,7 @@ const CreateSession = ({
       else {
         const payload = getSessionPayload(fields, order + 1, interview_plan_id);
         await handleCreateSession(payload);
-        await refetch();
-        handleClose();
+        +handleClose();
       }
 
       setSessionCreation(false);
