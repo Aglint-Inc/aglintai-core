@@ -64,10 +64,10 @@ function ApplicationDetailComp() {
           <div className='flex flex-col space-y-4'>
             {isShowFeature('SCHEDULING') ? (
               <Card>
-                <CardHeader>
-                  <CardTitle className='text-lg'>Requests</CardTitle>
+                <CardHeader className='p-4 '>
+                  <CardTitle className='text-lg font-medium'>Requests</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className='p-4 pt-0'>
                   <Requests />
                 </CardContent>
               </Card>
