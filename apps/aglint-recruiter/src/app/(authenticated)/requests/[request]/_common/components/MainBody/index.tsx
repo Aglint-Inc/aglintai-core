@@ -226,8 +226,9 @@ export default function ViewRequestDetails() {
                       alt='Avatar'
                     />
                     <AvatarFallback>
-                      {selectedMember?.first_name.slice(0, 1)}
-                      {selectedMember?.last_name.slice(0, 1)}
+                      <span className='text-md'>
+                        {selectedMember?.first_name.slice(0, 1)}
+                      </span>
                     </AvatarFallback>
                   </Avatar>
                   <p className='font-medium'>
