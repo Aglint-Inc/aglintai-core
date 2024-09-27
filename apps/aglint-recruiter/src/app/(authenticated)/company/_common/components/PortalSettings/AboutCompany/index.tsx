@@ -1,8 +1,9 @@
-import { Button } from '@components/ui/button';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Parser } from 'html-to-react';
+import { PencilIcon, Plus } from 'lucide-react';
 import { useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import UISectionCard from '@/components/Common/UISectionCard';
 
 import { usePortalSettings } from '../../../hooks/hook';
@@ -23,6 +24,26 @@ export default function AboutCompany() {
         title='Company About'
         description='  This section content will be displayed on the candidate portal as
               the about section.'
+        emptyStateMessage={data.about ? '' : 'About Company not available'}
+        action={
+          data?.about?.length ? (
+            <UIButton
+              variant='outline'
+              onClick={() => setIsDialogOpen(true)}
+              size='sm'
+              icon={<PencilIcon className='mr-2 h-3 w-3' />}
+            />
+          ) : (
+            <UIButton
+              variant='outline'
+              size='sm'
+              onClick={() => setIsDialogOpen(true)}
+              leftIcon={<Plus />}
+            >
+              Add
+            </UIButton>
+          )
+        }
       >
         {data?.about && (
           <ScrollArea className='w-full rounded-md border bg-gray-100'>
@@ -31,13 +52,6 @@ export default function AboutCompany() {
             </div>
           </ScrollArea>
         )}
-        <Button
-          variant='outline'
-          className='mt-4'
-          onClick={() => setIsDialogOpen(true)}
-        >
-          {data?.about?.length ? 'Edit Company About' : 'Add Company About'}
-        </Button>
       </UISectionCard>
     </>
   );

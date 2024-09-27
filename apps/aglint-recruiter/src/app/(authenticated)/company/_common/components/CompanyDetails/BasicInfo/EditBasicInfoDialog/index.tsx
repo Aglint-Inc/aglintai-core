@@ -187,7 +187,7 @@ const EditBasicInfoDialog = ({
         )}
 
         <div className='flex items-center space-x-4'>
-          <div>
+          <div className='max-w-[64px]'>
             <ImageUploadManual
               image={logo}
               size={64}

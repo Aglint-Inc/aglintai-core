@@ -91,7 +91,7 @@ export function CoverImage() {
                   accept='image/*'
                   className='hidden'
                 />
-                Edit Cover Image
+                Change Cover Image
               </Button>
 
               <Button

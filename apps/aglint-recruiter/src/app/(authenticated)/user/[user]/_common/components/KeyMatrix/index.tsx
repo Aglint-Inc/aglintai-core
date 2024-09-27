@@ -1,6 +1,6 @@
 import { dayjsLocal } from '@aglint/shared-utils';
 
-import { SectionCard } from '@/authenticated/components/SectionCard';
+import UISectionCard from '@/components/Common/UISectionCard';
 
 export const KeyMatrics = ({
   totalHour,
@@ -14,7 +14,7 @@ export const KeyMatrics = ({
   const completedHour = dayjsLocal.duration(+totalHour, 'minutes').asHours();
   return (
     <>
-      <SectionCard title='Key Metrics'>
+      <UISectionCard title='Key Metrics'>
         <div className='grid grid-cols-2 gap-4 sm:grid-cols-4'>
           <Card color='green' title='Interview Hours' value={completedHour} />
           <Card
@@ -24,7 +24,7 @@ export const KeyMatrics = ({
           />
           <Card color='red' title='Declines' value={declineCount} />
         </div>
-      </SectionCard>
+      </UISectionCard>
     </>
   );
 };

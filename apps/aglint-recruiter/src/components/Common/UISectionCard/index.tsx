@@ -1,10 +1,10 @@
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { Loader2 } from 'lucide-react';
-import React from 'react';
+import React, { useState } from 'react';
 
 interface InfoCardProps {
   title: string;
-  description: string;
+  description?: string;
   titleAddon?: React.ReactNode;
   descriptionAddon?: React.ReactNode;
   action?: React.ReactNode;
@@ -29,8 +29,15 @@ export default function UISectionCard({
   emptyStateMessage,
   type = 'info',
 }: InfoCardProps) {
+  const [isHover, setIsHover] = useState(false);
   return (
-    <Card className={`w-full ${type === 'graph' ? 'bg-background' : ''}`}>
+    <Card
+      className={`w-full ${type === 'graph' ? 'bg-background' : ''}`}
+      onMouseEnter={() => setIsHover(true)}
+      onFocus={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
+      onBlur={() => setIsHover(false)}
+    >
       <CardHeader>
         <div className='flex items-start justify-between'>
           <div className='flex-1'>
@@ -43,7 +50,13 @@ export default function UISectionCard({
               {descriptionAddon && <span>{descriptionAddon}</span>}
             </div>
           </div>
-          {action && <div className='ml-4 flex-shrink-0'>{action}</div>}
+          {action && (
+            <div
+              className={`ml-4 flex-shrink-0 ${isHover ? 'opacity-100' : 'opacity-0'} transition`}
+            >
+              {action}
+            </div>
+          )}
         </div>
       </CardHeader>
       <CardContent>

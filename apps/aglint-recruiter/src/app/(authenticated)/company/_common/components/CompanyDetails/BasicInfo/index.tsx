@@ -31,10 +31,8 @@ export const BasicInfo = () => {
               variant='outline'
               size='sm'
               onClick={() => setEditDrawer(true)}
-            >
-              <PencilIcon className='mr-2 h-3 w-3' />
-              Edit
-            </UIButton>
+              icon={<PencilIcon className='mr-2 h-3 w-3' />}
+            />
           )
         }
       >

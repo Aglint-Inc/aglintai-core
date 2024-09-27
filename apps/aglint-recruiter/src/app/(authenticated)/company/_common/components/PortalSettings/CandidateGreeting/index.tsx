@@ -1,7 +1,8 @@
-import { Button } from '@components/ui/button';
 import { ScrollArea } from '@components/ui/scroll-area';
+import { PencilIcon, Plus } from 'lucide-react';
 import { useState } from 'react';
 
+import { UIButton } from '@/components/Common/UIButton';
 import UISectionCard from '@/components/Common/UISectionCard';
 
 import { usePortalSettings } from '../../../hooks/hook';
@@ -26,21 +27,37 @@ export default function CandidateGreeting() {
         title='Candidate Greeting'
         description='This section content will be displayed on the candidate portal as
             the greeting message to the candidate.'
+        emptyStateMessage={
+          data.greetings ? '' : 'Candidate Greeting not available'
+        }
+        action={
+          data.greetings ? (
+            <UIButton
+              variant='outline'
+              size='sm'
+              icon={<PencilIcon className='h-3 w-3' />}
+              onClick={() => {
+                setIsDialogOpen(true);
+              }}
+            />
+          ) : (
+            <UIButton
+              size='sm'
+              onClick={() => {
+                setIsDialogOpen(true);
+              }}
+              leftIcon={<Plus />}
+            >
+              Add
+            </UIButton>
+          )
+        }
       >
         {data?.greetings?.length && (
           <ScrollArea className='max-h-40 w-full rounded-md border bg-gray-100'>
             <div className='w-full space-y-4 p-4'>{data?.greetings}</div>
           </ScrollArea>
         )}
-        <Button
-          className='mt-4'
-          variant='outline'
-          onClick={() => {
-            setIsDialogOpen(true);
-          }}
-        >
-          {text.length ? 'Edit Candidate Greeting' : 'Add Candidate Greeting'}
-        </Button>
       </UISectionCard>
     </>
   );
