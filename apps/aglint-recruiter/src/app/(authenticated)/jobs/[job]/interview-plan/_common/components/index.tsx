@@ -20,7 +20,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import {
   ChartNoAxesGantt,
   Edit,
-  Kanban,
   PauseCircle,
   Pencil,
   Plus,
