@@ -1,3 +1,11 @@
+/**
+ *
+ * React Context + Zustand Store for performant and non-re-rendering store
+ *
+ * @link https://tkdodo.eu/blog/zustand-and-react-context
+ *
+ */
+import type { DatabaseView } from '@aglint/shared-types';
 import { createContext, memo, type PropsWithChildren, useState } from 'react';
 import { createStore } from 'zustand';
 
@@ -6,7 +14,15 @@ import {
   getContextIntials,
 } from '@/utils/zustandContextHelpers';
 
-type States = {};
+type Selections = string[];
+
+type States = {
+  search: string;
+  job: string[];
+  tags: DatabaseView['workflow_view']['tags'];
+  open: boolean;
+  selections: Selections;
+};
 
 const initial: States = Object.freeze({
   search: '',

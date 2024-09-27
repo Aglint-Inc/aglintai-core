@@ -22,7 +22,7 @@ import {
   useJobWorkflowConnect,
   useJobWorkflowDisconnect,
   useJobWorkflowMutations,
-} from '@/queries/job-workflow';
+} from '@/queries/(old)-job-workflow';
 import { useWorkflowQuery } from '@/queries/workflow';
 import { type Workflow } from '@/types/workflow.types';
 import { capitalizeSentence } from '@/utils/text/textUtils';
