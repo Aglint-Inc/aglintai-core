@@ -9,7 +9,6 @@ import {
   type TRPCError,
   type TRPCErrorShape,
 } from '@trpc/server/unstable-core-do-not-import';
-import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import superjson from 'superjson';
 
 import { ERRORS } from '@/server/enums';
@@ -19,16 +18,16 @@ export const STALE_TIME = 5 * 1000;
 export const REFETCH_ON_MOUNT = true;
 export const REFETCH_ON_WINDOW_FOCUS = true;
 
-export const createQueryClient = (router?: AppRouterInstance) => {
+export const createQueryClient = (logout?: () => Promise<void>) => {
   let queryClient: QueryClient;
   queryClient = new QueryClient({
     queryCache: new QueryCache({
       onError: (error) =>
-        onError(error as unknown as TRPCErrorShape<TRPCError>, router),
+        onError(error as unknown as TRPCErrorShape<TRPCError>, logout),
     }),
     mutationCache: new MutationCache({
       onError: (error) =>
-        onError(error as unknown as TRPCErrorShape<TRPCError>, router),
+        onError(error as unknown as TRPCErrorShape<TRPCError>, logout),
       onSuccess: () => queryClient.invalidateQueries(),
     }),
     defaultOptions: {
@@ -52,10 +51,10 @@ export const createQueryClient = (router?: AppRouterInstance) => {
   return queryClient;
 };
 
-const onError = (
+const onError = async (
   error: TRPCErrorShape<TRPCError>,
-  router?: AppRouterInstance,
+  logout?: () => Promise<void>,
 ) => {
-  if (!router) return;
-  if (error.data.code === ERRORS.UNAUTHORIZED.code) router.push('/login');
+  if (!logout) return;
+  if (error.data.code === ERRORS.UNAUTHORIZED.code) void (await logout());
 };
