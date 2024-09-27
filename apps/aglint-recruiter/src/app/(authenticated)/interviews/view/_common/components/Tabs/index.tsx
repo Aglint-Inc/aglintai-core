@@ -1,49 +1,49 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
+import UITabs from '@/components/Common/UITabs';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import ROUTES from '@/utils/routing/routes';
 
 import FeedbackWindow from '../Feedback';
 import ScheduleDetailInstructions from '../Instructions';
 import JobDetails from '../JobDetails';
 import Overview from '../Overview';
-
 function ScheduleDetailsTabs() {
   const tabs = [
     {
       name: 'Overview',
-      value: 'details',
-      comp: <Overview />,
+      id: 'details',
+      content: <Overview />,
     },
     {
       name: 'Job Description',
-      value: 'password',
-      comp: <JobDetails />,
+      id: 'password',
+      content: <JobDetails />,
     },
     {
       name: 'Interview Instructions',
-      value: 'instructions',
-      comp: <ScheduleDetailInstructions />,
+      id: 'instructions',
+      content: <ScheduleDetailInstructions />,
     },
     {
       name: 'Interview Feedback',
-      value: 'feedback',
-      comp: <FeedbackWindow />,
+      id: 'feedback',
+      content: <FeedbackWindow />,
     },
   ];
 
+  const router = useRouterPro();
+  const tab = router.queryParams.tab as string;
+  const meeting_id = router.queryParams.meeting_id as string;
+
   return (
-    <Tabs defaultValue='details'>
-      <TabsList>
-        {tabs.map((tab) => (
-          <TabsTrigger key={tab.value} value={tab.value}>
-            {tab.name}
-          </TabsTrigger>
-        ))}
-      </TabsList>
-      {tabs.map((tab) => (
-        <TabsContent key={tab.value} value={tab.value}>
-          {tab.comp}
-        </TabsContent>
-      ))}
-    </Tabs>
+    <UITabs
+      tabs={tabs}
+      defaultValue={tab || tabs[0].id}
+      onClick={(value: string) => {
+        router.replace(
+          `${ROUTES['/interviews/view']()}?meeting_id=${meeting_id}&tab=${value}`,
+        );
+      }}
+    />
   );
 }
 

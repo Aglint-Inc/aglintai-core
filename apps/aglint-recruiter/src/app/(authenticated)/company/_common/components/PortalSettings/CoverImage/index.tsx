@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { type ChangeEvent, type DragEvent, useRef, useState } from 'react';
 
 import { Loader } from '@/components/Common/Loader';
+import UISectionCard from '@/components/Common/UISectionCard';
 
 import { usePortalSettings } from '../../../hooks/hook';
 
@@ -41,14 +42,11 @@ export function CoverImage() {
 
   return (
     <div>
-      <div className='w-full max-w-2xl space-y-4'>
-        <div className='flex flex-col'>
-          <h1 className='text-md font-semibold'>Company Cover Image</h1>
-          <p className='text-sm text-muted-foreground'>
-            This image will be displayed on the candidate portal as the cover
-            image.
-          </p>
-        </div>
+      <UISectionCard
+        description=' This image will be displayed on the candidate portal as the cover
+              image.'
+        title='Company Cover Image'
+      >
         <div className='flex flex-col'>
           {/* if there is no image show this button */}
           {data?.banner_image ? (
@@ -93,7 +91,7 @@ export function CoverImage() {
                   accept='image/*'
                   className='hidden'
                 />
-                Edit Cover Image
+                Change Cover Image
               </Button>
 
               <Button
@@ -106,7 +104,7 @@ export function CoverImage() {
             </div>
           )}
         </div>
-      </div>
+      </UISectionCard>
     </div>
   );
 }

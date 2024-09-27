@@ -19,8 +19,8 @@ import {
   useState,
 } from 'react';
 
-import { SectionCard } from '@/authenticated/components/SectionCard';
 import TimePicker from '@/components/Common/TimePicker';
+import UISectionCard from '@/components/Common/UISectionCard';
 
 interface BreakTime {
   start_time: string;
@@ -45,11 +45,10 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   return (
-    <SectionCard
+    <UISectionCard
       title='Break Time'
       description=" Set the default break time for your company's working hours."
-      isTopActionStick={isPopoverOpen}
-      topAction={
+      action={
         <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
           <PopoverTrigger asChild>
             <Button
@@ -91,7 +90,7 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
           </div>
         </div>
       </div>
-    </SectionCard>
+    </UISectionCard>
   );
 };
 

@@ -27,6 +27,7 @@ import {
   Coffee,
   Edit2,
   Eye,
+  Home,
   MapPin,
   User,
 } from 'lucide-react';
@@ -125,7 +126,9 @@ export default function ViewRequestDetails() {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href='/'>Home</BreadcrumbLink>
+                <BreadcrumbLink href='/'>
+                  <Home className='h-4 w-4' />
+                </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
@@ -155,12 +158,14 @@ export default function ViewRequestDetails() {
                       }) + '?tab=scoring'
                     }
                   >
-                    <span>
-                      {getFullName(
-                        candidateDetails?.first_name ?? '',
-                        candidateDetails?.last_name ?? '',
-                      )}
-                    </span>
+                    <div className='duration-300 hover:text-black hover:underline'>
+                      <span>
+                        {getFullName(
+                          candidateDetails?.first_name ?? '',
+                          candidateDetails?.last_name ?? '',
+                        )}
+                      </span>
+                    </div>
                   </Link>
                 </div>
                 <span>•</span>
@@ -171,8 +176,8 @@ export default function ViewRequestDetails() {
                   <Link
                     href={ROUTES['/jobs/[job]']({ job: jobDetails?.id ?? '' })}
                   >
-                  <div className="hover:underline hover:text-black duration-300">
-                    <span>{jobDetails?.job_title}</span>
+                    <div className='duration-300 hover:text-black hover:underline'>
+                      <span>{jobDetails?.job_title}</span>
                     </div>
                   </Link>
                 </div>

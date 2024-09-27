@@ -1,8 +1,8 @@
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 
-import { SectionCard } from '@/authenticated/components/SectionCard';
 import { UIButton } from '@/components/Common/UIButton';
+import UISectionCard from '@/components/Common/UISectionCard';
 import { useAllOfficeLocations } from '@/queries/officeLocations';
 import timeZone from '@/utils/timeZone';
 
@@ -31,11 +31,11 @@ export const Location = () => {
         }}
       />
       <DeleteLocationDialog dialog={DeleteDialog} setDialog={setDeleteDialog} />
-      <SectionCard
+      <UISectionCard
         title=' Office Locations'
         description='Include office locations to organize data, schedule effectively,
       and identify correct time zones'
-        topAction={
+        action={
           <UIButton
             variant='outline'
             size='sm'
@@ -74,7 +74,7 @@ export const Location = () => {
             );
           })}
         </div>
-      </SectionCard>
+      </UISectionCard>
     </>
   );
 };

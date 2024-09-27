@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 
-import { SectionCard } from '@/authenticated/components/SectionCard';
+import UISectionCard from '@/components/Common/UISectionCard';
 
 import { DeleteReasonDialog } from './DeleteReasonDialog';
 import { ReasonCardUI } from './ui/ReasonCardUI';
@@ -105,7 +105,7 @@ function ReasonSection({
         setIsDeleteDialogOpen={setIsDeleteDialogOpen}
       />
 
-      <SectionCard title={title} description={description}>
+      <UISectionCard title={title} description={description}>
         <ReasonCardUI
           editingIndex={editingIndex}
           reasons={reasons}
@@ -121,7 +121,7 @@ function ReasonSection({
           setNewReason={setNewReason}
           newReason={newReason}
         />
-      </SectionCard>
+      </UISectionCard>
     </>
   );
 }

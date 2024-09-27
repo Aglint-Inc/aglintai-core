@@ -10,8 +10,8 @@ import { PopoverClose } from '@radix-ui/react-popover';
 import { Clock, Edit } from 'lucide-react';
 import { type FC, useEffect, useRef, useState } from 'react';
 
-import { SectionCard } from '@/authenticated/components/SectionCard';
 import TimezonePicker from '@/components/Common/TimezonePicker';
+import UISectionCard from '@/components/Common/UISectionCard';
 import { type TimezoneObj } from '@/utils/timeZone';
 
 interface TimeZoneProps {
@@ -47,11 +47,10 @@ const TimeZone: FC<TimeZoneProps> = ({
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   return (
-    <SectionCard
+    <UISectionCard
       title='Time Zone'
       description='Set the default time zone for your company.'
-      isTopActionStick={isPopoverOpen}
-      topAction={
+      action={
         <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
           <PopoverTrigger asChild>
             <Button variant='outline' size='sm' className=''>
@@ -86,7 +85,7 @@ const TimeZone: FC<TimeZoneProps> = ({
           </div>
         </div>
       </div>
-    </SectionCard>
+    </UISectionCard>
   );
 };
 
