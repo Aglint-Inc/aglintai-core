@@ -6,7 +6,6 @@ import { Input } from '@components/ui/input';
 import { Skeleton } from '@components/ui/skeleton';
 import axios from 'axios';
 import Image from 'next/image';
-import posthog from 'posthog-js';
 import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -114,7 +113,6 @@ export function AshbyModalComp() {
       toast.error(
         'Sorry unable to import. Please try again later or contact support.',
       );
-      posthog.capture('Error Importing Asbhy Jobs');
       resetIntegrations();
     }
   };
@@ -144,7 +142,7 @@ export function AshbyModalComp() {
         if (responseRec.status === 200 && responseRec.data[0]?.ashby_key) {
           setPostings(response.data?.results);
           setInitialFetch(false);
-          posthog.capture('Asbhy Data Fetched');
+
           setTimeout(() => {
             setIntegrations({
               ashby: {
@@ -233,7 +231,6 @@ export function AshbyModalComp() {
                 disabled={selectedAshbyPostings.length === 0}
                 onClick={() => {
                   importAshby();
-                  posthog.capture('Ashby Jobs successfully imported');
                 }}
                 className='w-full'
               >

@@ -13,7 +13,6 @@ import Link from 'next/link';
 
 import { useTenant } from '@/company/hooks';
 import { useFlags } from '@/company/hooks/useFlags';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import PERMISSIONS from '@/utils/routing/permissions';
@@ -43,7 +42,6 @@ const DefaultCompanyLogo = () => (
 
 export default function AppLayout({ children, appRouter = false }) {
   const { checkPermissions } = useRolesAndPermissions();
-  const { handleLogout } = useAuthDetails();
   const { isShowFeature } = useFlags();
   const { recruiter, recruiter_user } = useTenant();
   const router = useRouterPro();
@@ -98,7 +96,7 @@ export default function AppLayout({ children, appRouter = false }) {
               </Link>
             </Button>
 
-            <Button variant='link' onClick={handleLogout} asChild>
+            <Button variant='link' onClick={() => {}} asChild>
               <Link href='#'>
                 <LogOut className='mr-2 h-5 w-5' strokeWidth={1.5} />
               </Link>
@@ -155,7 +153,7 @@ export default function AppLayout({ children, appRouter = false }) {
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger>
-                  <Button variant='link' onClick={handleLogout}>
+                  <Button variant='link' onClick={() => {}}>
                     <LogOut className='h-5 w-5' strokeWidth={1.5} />
                   </Button>
                 </TooltipTrigger>

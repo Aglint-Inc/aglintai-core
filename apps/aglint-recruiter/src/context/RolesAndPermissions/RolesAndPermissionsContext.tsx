@@ -6,8 +6,6 @@ import { createContext, type ReactNode, useContext } from 'react';
 
 import { useTenant } from '@/company/hooks';
 
-import { useAuthDetails } from '../AuthContext/AuthContext';
-
 /* eslint-disable no-unused-vars */
 type RolesAndPermissionsContextType = {
   checkPermissions?: (x: DatabaseTable['permissions']['name'][]) => boolean;

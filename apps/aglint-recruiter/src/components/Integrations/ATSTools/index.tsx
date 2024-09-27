@@ -64,7 +64,7 @@ function ATSTools({
                 responseRec.status === 200 &&
                 responseRec.data[0]?.greenhouse_key
               ) {
-                // Removedposthog.capture('Greenhouse Data Fetched');
+                //
               }
             } else {
               toast({
@@ -110,7 +110,7 @@ function ATSTools({
                 responseRec.status === 200 &&
                 responseRec.data[0]?.ashby_key
               ) {
-                //Removedposthog posthog.capture('Ashby Data Fetched');
+                //
               }
             } else {
               toast({
@@ -156,7 +156,7 @@ function ATSTools({
                 responseRec.status === 200 &&
                 responseRec.data[0]?.lever_key
               ) {
-                // Removed posthog.capture('Lever Data Fetched');
+                //
               }
             } else {
               toast({

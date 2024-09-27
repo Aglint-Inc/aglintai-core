@@ -1,9 +1,31 @@
 'use client';
 
-import { type ReactNode } from 'react';
+import { TooltipProvider } from '@radix-ui/react-tooltip';
+import type { PropsWithChildren } from 'react';
 
-import { PrivateProviders } from '@/context/Providers';
+import AppLayout from '@/components/AppLayout';
+import { BreadcrumProvider } from '@/context/BreadcrumContext/BreadcrumContext';
+import { PublicProviders } from '@/context/Providers';
+import { RolesAndPermissionsProvider } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { JobsProvider } from '@/jobs/contexts';
+import { WorkflowsProvider } from '@/workflows/contexts';
 
-export default function RootLayout({ children }: { children: ReactNode }) {
-  return <PrivateProviders appRouter>{children}</PrivateProviders>;
-}
+const Layout = ({ children }: PropsWithChildren) => {
+  return (
+    <PublicProviders>
+      <RolesAndPermissionsProvider>
+        <BreadcrumProvider>
+          <JobsProvider>
+            <WorkflowsProvider>
+              <TooltipProvider>
+                <AppLayout>{children}</AppLayout>
+              </TooltipProvider>
+            </WorkflowsProvider>
+          </JobsProvider>
+        </BreadcrumProvider>
+      </RolesAndPermissionsProvider>
+    </PublicProviders>
+  );
+};
+
+export default Layout;
