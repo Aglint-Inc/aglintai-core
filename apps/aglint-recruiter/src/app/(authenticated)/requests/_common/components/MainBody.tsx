@@ -12,7 +12,6 @@ import { useFlags } from '@/company/hooks/useFlags';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useRequests } from '@/context/RequestsContext';
 import { SafeObject } from '@/utils/safeObject';
-import { SafeObject } from '@/utils/safeObject';
 
 import RequestListContent from './RequestListContent';
 import Header from './ui/Header';

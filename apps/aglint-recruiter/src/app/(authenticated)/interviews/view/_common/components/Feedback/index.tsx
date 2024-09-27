@@ -26,6 +26,7 @@ import { useMemo, useState } from 'react';
 
 import axios from '@/client/axios';
 import { useTenant } from '@/company/hooks';
+import { Loader } from '@/components/Common/Loader';
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import UIDialog from '@/components/Common/UIDialog';
@@ -41,7 +42,7 @@ import {
   saveInterviewerFeedback,
   useInterviewerRelations,
 } from './util.function';
-import { Loader } from '@/components/Common/Loader';
+
 type FeedbackWindowInterviewersType = {
   [key: string]: {
     feedback: {
@@ -213,8 +214,8 @@ const FeedbackWindow = () => {
     <>
       <ShowCode>
         <ShowCode.When isTrue={isLoading}>
-          <div className='flex items-center justify-center h-60'>
-            <Loader/>
+          <div className='flex h-60 items-center justify-center'>
+            <Loader />
           </div>
         </ShowCode.When>
         <ShowCode.When

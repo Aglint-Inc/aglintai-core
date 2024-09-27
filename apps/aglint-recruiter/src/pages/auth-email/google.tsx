@@ -4,16 +4,13 @@ import { Loader2 } from 'lucide-react';
 import { useEffect } from 'react';
 
 import { useTenant } from '@/company/hooks';
-import { AuthProvider } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { api } from '@/trpc/client';
 
 const AuthHoc = () => {
   return (
     <>
-      <AuthProvider>
-        <Google />
-      </AuthProvider>
+      <Google />
     </>
   );
 };
