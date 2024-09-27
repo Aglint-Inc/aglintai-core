@@ -10,7 +10,7 @@ import axios from 'axios';
 import { Edit, Lock, Mail, MoreHorizontal, Power, Trash } from 'lucide-react';
 import { useState } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { updateMember } from '@/context/AuthContext/utils';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type API_reset_password } from '@/pages/api/reset_password/type';
@@ -22,7 +22,7 @@ export const UserListThreeDot = ({ member }) => {
   const { toast } = useToast();
   const [dialogReason, setDialogReason] = useState(null);
   const router = useRouterPro();
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
 
   const canSuspend = member.role !== 'admin';
 
@@ -32,7 +32,7 @@ export const UserListThreeDot = ({ member }) => {
         router.push(`/user/${member.user_id}?edit_enable=true`);
         break;
       case 'resend':
-        reinviteUser(member.email, recruiterUser.user_id).then(
+        reinviteUser(member.email, recruiter_user.user_id).then(
           ({ error, emailSend }) => {
             if (!error && emailSend) {
               toast({ description: 'Invite sent successfully.' });
@@ -115,7 +115,7 @@ export const UserListThreeDot = ({ member }) => {
           )}
           {canSuspend &&
             member.status === 'active' &&
-            recruiterUser.user_id !== member.user_id && (
+            recruiter_user.user_id !== member.user_id && (
               <DropdownMenuItem onClick={() => handleAction('suspend')}>
                 <Power className='mr-2 h-4 w-4' /> Suspend
               </DropdownMenuItem>
@@ -126,7 +126,7 @@ export const UserListThreeDot = ({ member }) => {
             </DropdownMenuItem>
           )}
           {member.status !== 'invited' &&
-            recruiterUser.user_id !== member.user_id && (
+            recruiter_user.user_id !== member.user_id && (
               <DropdownMenuItem onClick={() => handleAction('reset_password')}>
                 <Lock className='mr-2 h-4 w-4' /> Reset Password
               </DropdownMenuItem>

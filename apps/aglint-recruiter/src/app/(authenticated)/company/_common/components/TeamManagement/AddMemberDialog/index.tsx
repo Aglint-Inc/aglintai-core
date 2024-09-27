@@ -11,9 +11,9 @@ import {
   useTenantOfficeLocations,
   useTenantRoles,
 } from '@/company/hooks';
+import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useAllDepartments } from '@/queries/departments';
 import timeZone from '@/utils/timeZone';
 
@@ -64,7 +64,7 @@ const AddMember = ({
   };
 }) => {
   const { toast } = useToast();
-  const { recruiter, recruiterUser } = useAuthDetails();
+  const { recruiter, recruiter_user } = useTenant();
   const { data: locations } = useTenantOfficeLocations();
   const { data: departments } = useAllDepartments();
   const { refetchMembers } = useTenantMembers();
@@ -109,10 +109,7 @@ const AddMember = ({
       temp = { ...temp, email: true };
       flag = true;
     } else if (
-      !(
-        form?.email?.split('@')[1] === recruiter?.email?.split('@')[1] ||
-        recruiterUser.primary
-      )
+      !(form?.email?.split('@')[1] === recruiter?.email?.split('@')[1])
     ) {
       toast({
         variant: 'destructive',
@@ -267,7 +264,7 @@ const AddMember = ({
         pendingList={pendingList}
         isResendDisable={isResendDisable}
         setResendDisable={setResendDisable}
-        recruiterUser={recruiterUser}
+        recruiterUser={recruiter_user}
       />
     </UIDialog>
   );

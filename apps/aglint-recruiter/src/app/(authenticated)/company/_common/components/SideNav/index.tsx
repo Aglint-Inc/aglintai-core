@@ -5,16 +5,17 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getUrlPro, useRouterPro } from '@/hooks/useRouterPro';
 import { emailTemplateQueries } from '@/queries/email-templates';
 
+import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import type { CompanySettingTabsType } from './utils';
 
 function VerticalNav() {
   const router = useRouterPro();
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const emailTemplates = useQuery(
     emailTemplateQueries.emailTemplates(recruiter.id),
   );

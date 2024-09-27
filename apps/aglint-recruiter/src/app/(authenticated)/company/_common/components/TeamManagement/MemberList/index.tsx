@@ -9,8 +9,8 @@ import { Globe, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
+import { useTenant } from '@/company/hooks';
 import type { useTeamMembers } from '@/company/hooks/useTeamMembers';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 
 import { UserListThreeDot } from './ThreeDot';
@@ -23,7 +23,7 @@ const Member = ({
   member: ReturnType<typeof useTeamMembers>['data'][number];
 }) => {
   const { checkPermissions } = useRolesAndPermissions();
-  const { recruiterUser: tempRecruiterUser } = useAuthDetails();
+  const { recruiter_user: tempRecruiterUser, recruiter } = useTenant();
   const recruiterUser = tempRecruiterUser!;
 
   const canManage = checkPermissions(['manage_users']);
@@ -74,7 +74,7 @@ const Member = ({
         {canManage &&
           (member.role !== 'admin' ||
             member.status === 'invited' ||
-            recruiterUser.primary ||
+            recruiter.primary_admin === recruiterUser.user_id ||
             recruiterUser.user_id === member.user_id) && (
             <UserListThreeDot member={member} />
           )}

@@ -17,9 +17,9 @@ import get from 'lodash/get';
 import { Terminal } from 'lucide-react';
 import React, { useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import { UIDivider } from '@/components/Common/UIDivider';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
 import {
   availReminder,
@@ -37,7 +37,7 @@ import {
 } from './dialogCtx';
 
 const WorkflowActionDialog = () => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { request_workflow, requestDetails: currentRequest } = useRequest();
   const {
     reqTriggerActionsMap,

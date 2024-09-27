@@ -5,15 +5,15 @@ import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import { Loader } from '@/components/Common/Loader';
 import { ShowCode } from '@/components/Common/ShowCode';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { mailSender } from '@/utils/mailSender';
 
 import { useCandidateAvailabilitySchedulingFlowStore } from '../contexts/CandidateAvailabilityFlowStore';
 
 function EmailTemplate({ application_id }: { application_id?: string }) {
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
   const { reRequestAvailability, candidateAvailabilityIdForReRequest } =
     useCandidateAvailabilitySchedulingFlowStore();
   const [emailData, setEmailData] = useState<{ html: string; subject: string }>(
@@ -28,7 +28,7 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
       preview_details: {
         application_id: application_id,
       },
-      organizer_user_id: recruiterUser?.user_id ?? '',
+      organizer_user_id: recruiter_user?.user_id ?? '',
       is_preview: true,
     };
 
@@ -39,7 +39,7 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
         {
           is_preview: true,
           avail_req_id: candidateAvailabilityIdForReRequest,
-          recruiter_user_id: recruiterUser?.user_id ?? '',
+          recruiter_user_id: recruiter_user?.user_id ?? '',
         };
       mailSender({
         target_api: 'availabilityReqResend_email_candidate',

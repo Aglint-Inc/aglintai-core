@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { createContext, useCallback, useContext, useMemo } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { emailTemplateQueries } from '@/queries/email-templates';
 import type { WorkflowAction } from '@/types/workflow.types';
 import toast from '@/utils/toast';
@@ -14,7 +14,7 @@ import {
 } from '@/workflows/constants';
 
 const useActionsContext = () => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { data: all_company_email_template } = useQuery(
     emailTemplateQueries.emailTemplates(recruiter.id),
   );

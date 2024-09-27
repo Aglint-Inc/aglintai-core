@@ -2,7 +2,7 @@ import { dayjsLocal } from '@aglint/shared-utils';
 import { type CompletedRequests } from '@requestHistory/contexts/completedRequeststore';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { REQUEST_SELECT } from '@/queries/requests';
 import { supabase } from '@/utils/supabase/client';
 
@@ -11,8 +11,8 @@ export const useCompletedRequests = ({
 }: {
   completedFilters: CompletedRequests['completedFilters'];
 }) => {
-  const { recruiterUser } = useAuthDetails();
-  const user_id = recruiterUser?.user_id ?? '';
+  const { recruiter_user } = useTenant();
+  const user_id = recruiter_user?.user_id ?? '';
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ['get_Completed_Requests', user_id, completedFilters],

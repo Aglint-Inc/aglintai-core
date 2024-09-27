@@ -2,8 +2,8 @@ import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Send } from 'lucide-react';
 import React, { useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
 
 import { type selectedItemsType } from '../utils';
@@ -19,7 +19,7 @@ function CreateSchedulePopUp({
   setText: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const { handleAsyncCreateRequests } = useRequests();
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
   const [loading, setLoading] = useState(false);
   const [selectedDateRange, setSelectedDateRange] = useState({
     start_date: dayjsLocal().toString(),
@@ -28,7 +28,7 @@ function CreateSchedulePopUp({
   const assigner = 'user';
   const assignerText =
     assigner === 'user'
-      ? `assign to ${getFullName(recruiterUser.first_name, recruiterUser.last_name)}`
+      ? `assign to ${getFullName(recruiter_user.first_name, recruiter_user.last_name)}`
       : assigner === 'email'
         ? 'send an email'
         : assigner === 'phone'
@@ -51,9 +51,9 @@ function CreateSchedulePopUp({
         payload: {
           request: {
             priority: 'standard',
-            assigner_id: recruiterUser.user_id,
-            assignee_id: recruiterUser.user_id,
-            title: `${getFullName(recruiterUser.first_name, recruiterUser.last_name)} requested to schedule a ${selectedSession.map((ele) => ele.name).join(' ,')} for ${selectedItems.applicant_name[0].name}`,
+            assigner_id: recruiter_user.user_id,
+            assignee_id: recruiter_user.user_id,
+            title: `${getFullName(recruiter_user.first_name, recruiter_user.last_name)} requested to schedule a ${selectedSession.map((ele) => ele.name).join(' ,')} for ${selectedItems.applicant_name[0].name}`,
             status: 'in_progress',
             type: 'schedule_request',
             schedule_start_date: selectedDateRange.start_date,

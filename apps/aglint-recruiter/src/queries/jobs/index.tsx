@@ -2,7 +2,7 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { isEqual } from 'lodash';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
@@ -12,7 +12,7 @@ import { jobsQueryKeys } from './keys';
 import { type Job, type JobCreate, type JobInsert } from './types';
 
 export const useJobsRead = (manageJob = false) => {
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   const { queryKey } = jobsQueryKeys.jobs();
   return useQuery({
     queryKey,
@@ -34,7 +34,7 @@ export const useJobsSync = () => {
 };
 
 export const useJobCreate = () => {
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   const { queryKey } = jobsQueryKeys.jobs();
   const queryClient = useQueryClient();
   const mutation = useMutation({

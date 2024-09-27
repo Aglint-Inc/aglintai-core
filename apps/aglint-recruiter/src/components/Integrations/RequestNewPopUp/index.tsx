@@ -14,11 +14,11 @@ import axios from 'axios';
 import { ThumbsUp } from 'lucide-react';
 import { useRef, useState } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { supabase } from '@/utils/supabase/client';
 
 function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { toast } = useToast();
   const descriptionRef = useRef<HTMLInputElement>();
   const nameRef = useRef<HTMLInputElement>();

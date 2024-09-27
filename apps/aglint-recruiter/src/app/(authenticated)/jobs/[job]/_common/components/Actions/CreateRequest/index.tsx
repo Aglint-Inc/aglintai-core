@@ -5,10 +5,10 @@ import { Edit2 } from 'lucide-react';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import { type MemberType } from 'src/app/_common/types/memberType';
 
+import { useTenant } from '@/company/hooks';
 import MemberCard from '@/components/Common/MemberCard';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 import UpdateMembers from '@/components/Common/UpdateMembers';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useMemberList } from '@/hooks/useMemberList';
 import { useJob } from '@/job/hooks';
 import { ScheduleInterviewPop } from '@/jobs/job/application/components/InterviewTab/ScheduleInterviewPop';
@@ -36,7 +36,7 @@ function CreateRequest({
   const {
     job: { hiring_manager, recruiting_coordinator, sourcer, recruiter },
   } = useJob();
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
   const selectedMember =
     membersStatus === 'success' &&
     members.find(
@@ -84,7 +84,7 @@ function CreateRequest({
             sourcer ||
             recruiter,
 
-          assigner_id: recruiterUser.user_id,
+          assigner_id: recruiter_user.user_id,
           type: 'schedule_request',
           status: 'to_do',
         };

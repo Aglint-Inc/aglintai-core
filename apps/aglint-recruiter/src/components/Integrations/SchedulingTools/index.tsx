@@ -7,8 +7,8 @@ import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
+import { useTenant } from '@/company/hooks';
 import { ShowCode } from '@/components/Common/ShowCode';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import { IntegrationCard } from '../components/IntegrationCard';
 import SchedulingPopUps from '../SchedulingToolPopUps';
@@ -16,7 +16,7 @@ import { type SchedulingReasonTypes, type schedulingToolsType } from '../types';
 import { updateIntegrations } from '../utils';
 
 function Scheduling({ allIntegrations }) {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [hideApiKey, setHideApiKey] = useState(true);

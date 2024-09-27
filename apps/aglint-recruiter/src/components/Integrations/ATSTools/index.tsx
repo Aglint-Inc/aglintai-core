@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useRef, useState } from 'react';
 
 import type { useAllIntegrations } from '@/authenticated/hooks';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
 import ATSPopUps from '../ATSPopUps';
@@ -21,7 +21,7 @@ function ATSTools({
 }: Pick<ReturnType<typeof useAllIntegrations>, 'data' | 'invalidate'>) {
   const { toast } = useToast();
   const router = useRouterPro();
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [reason, setReason] = useState<PopUpReasonTypes>();

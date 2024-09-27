@@ -8,8 +8,8 @@ import axios from 'axios';
 import { Lightbulb, Plus } from 'lucide-react';
 import React from 'react';
 
+import { useTenant } from '@/company/hooks';
 import { ShowCode } from '@/components/Common/ShowCode';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
 import { supabase } from '@/utils/supabase/client';
 
@@ -29,7 +29,7 @@ type TenseType = 'past' | 'present' | 'future' | 'error';
 const InterviewScheduled = () => {
   const { reqTriggerActionsMap: triggerActionMp, reqProgressMap } =
     useRequestProgressProvider();
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { request_workflow, requestDetails: currentRequest } = useRequest();
   const [, setRsvpSending] = React.useState(false);
   const event_status =

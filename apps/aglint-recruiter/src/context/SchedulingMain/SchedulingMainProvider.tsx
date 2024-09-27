@@ -2,7 +2,7 @@ import axios from 'axios';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { type MemberType } from 'src/app/_common/types/memberType';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import {
   type ApiFetchUserDetails,
   type BodyParamsFetchUserDetails,
@@ -25,7 +25,7 @@ const AllSchedulingContext =
   createContext<InterviewScheduleContextType>(initialState);
 
 const SchedulingProvider = ({ children }) => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const [loading, setLoading] = useState(true);
   const [members, setMembers] = useState<
     InterviewScheduleContextType['members']

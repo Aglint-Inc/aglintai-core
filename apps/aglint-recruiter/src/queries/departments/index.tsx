@@ -1,10 +1,10 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { supabase } from '@/utils/supabase/client';
 
 export const useAllDepartments = () => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const queryClient = useQueryClient();
   const recruiter_id = recruiter?.id;
   const query = useQuery({

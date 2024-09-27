@@ -1,9 +1,8 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { type Dispatch, type SetStateAction, useState } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { supabase } from '@/utils/supabase/client';
-
 
 export const usePortalSettings = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<
@@ -19,7 +18,7 @@ export const usePortalSettings = () => {
   const {
     recruiter: { name },
     recruiter_id,
-  } = useAuthDetails();
+  } = useTenant();
   const fetchPortalSettings = async () => {
     return (
       await supabase

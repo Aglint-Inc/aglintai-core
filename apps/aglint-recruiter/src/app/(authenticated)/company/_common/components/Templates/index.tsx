@@ -19,10 +19,10 @@ import { debounce } from 'lodash';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import EmailPreviewPopover from '@/components/Common/EmailTemplateEditor/EmailPreviewPopover';
 import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import { UIButton } from '@/components/Common/UIButton';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { emailTemplateCopy } from '@/types/companyEmailTypes';
@@ -38,7 +38,7 @@ import {
 } from './utils';
 
 function SchedulerEmailTemps() {
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   const [templates, setTemplates] = useState<
     DatabaseTable['company_email_template'][]
   >([]);

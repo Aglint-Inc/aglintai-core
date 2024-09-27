@@ -105,7 +105,7 @@ const JobsSideNavV2 = () => {
       </nav>
 
       {manageJob && (
-        <div className=' rounded-md border p-4 bg-white'>
+        <div className='rounded-md border bg-white p-4'>
           <h4 className='mb-1 text-sm font-semibold'>
             {job?.status !== 'published' ? 'Delete' : 'Close'} Job
           </h4>

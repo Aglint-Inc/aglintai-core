@@ -5,8 +5,8 @@ import { AlertCircle } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import UITypography from '@/components/Common/UITypography';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
 import { mailSender } from '@/utils/mailSender';
 
@@ -30,7 +30,7 @@ function StepSlotOptions() {
     (state) => state.filteredSchedulingOptions,
   );
 
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
 
   const {
     requests: { data: requestList },
@@ -57,7 +57,7 @@ function StepSlotOptions() {
   const payload: TargetApiPayloadType<'sendSelfScheduleRequest_email_applicant'> =
     {
       is_preview: true,
-      organizer_id: recruiterUser?.user_id ?? '',
+      organizer_id: recruiter_user?.user_id ?? '',
       application_id: selectedRequest?.application_id,
     };
 

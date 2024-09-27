@@ -4,8 +4,8 @@ import { Skeleton } from '@components/ui/skeleton';
 import React, { useEffect, useMemo } from 'react';
 
 import { fetchEmailTemplates } from '@/company/components/Templates/utils';
+import { useTenant } from '@/company/hooks';
 import { ShowCode } from '@/components/Common/ShowCode';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequest } from '@/context/RequestContext';
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
@@ -24,7 +24,7 @@ function RequestProgress() {
     interval: number;
   }>({ interval: 0, trigger: 'onRequestSchedule' });
   const [showEditDialog, setShowEditDialog] = React.useState(false);
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const [companyEmailTemplates, setCompanyEmailTemplates] = React.useState<
     DatabaseTable['company_email_template'][]
   >([]);

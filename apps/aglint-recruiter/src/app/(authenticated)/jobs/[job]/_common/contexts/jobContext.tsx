@@ -10,7 +10,7 @@ import {
   useRef,
 } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import {
   getDetailsValidity,
@@ -39,7 +39,7 @@ const useJobContext = () => {
       'Invalid pathname, context must be wrapped to a page with [job]',
     );
 
-  const { recruiter_id, recruiter } = useAuthDetails();
+  const { recruiter_id, recruiter } = useTenant();
   const { isScoringEnabled } = useRolesAndPermissions();
   const { mutateAsync: syncJob } = useJobSync();
 

@@ -1,7 +1,7 @@
 import { useMutationState } from '@tanstack/react-query';
 import { createContext, type PropsWithChildren } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { useJob } from '@/job/hooks';
 import { useCompanyMembers } from '@/queries/company-members';
 import { useInterviewModules } from '@/queries/interview-modules';
@@ -24,7 +24,7 @@ import {
 import { interviewSessionMutationKeys } from '@/queries/interview-plans/keys';
 
 const useJobInterviewPlanContext = () => {
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   const { job, interviewPlans, jobLoad, manageJob } = useJob();
   const companyMembers = useCompanyMembers();
   const interviewModules = useInterviewModules();

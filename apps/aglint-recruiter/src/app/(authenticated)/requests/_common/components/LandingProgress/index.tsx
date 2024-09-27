@@ -14,8 +14,8 @@ import { useRequestSetupProgress } from '@requests/hooks/useRequestSetupProgress
 import { AlertCircle, Check } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import UITypography from '@/components/Common/UITypography';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 interface StepType {
@@ -29,7 +29,7 @@ export default function LandingProgress() {
   const { data } = useRequestSetupProgress();
   const [progress, setProgress] = useState(0);
   const [steps, setSteps] = useState<StepType[]>([]);
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
 
   useEffect(() => {
     if (data) {
@@ -66,8 +66,8 @@ export default function LandingProgress() {
   }, [data]);
 
   const name = getFullName(
-    recruiterUser?.first_name || '',
-    recruiterUser?.last_name || '',
+    recruiter_user?.first_name || '',
+    recruiter_user?.last_name || '',
   );
   if (steps?.length > 0)
     return (

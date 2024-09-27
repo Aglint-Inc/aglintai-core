@@ -16,7 +16,7 @@ import {
 import converter from 'number-to-words';
 import { type Dispatch, type SetStateAction } from 'react';
 
-import type { useTenantRoles } from '@/company/hooks';
+import type { useTenant, useTenantRoles } from '@/company/hooks';
 import type { useTenantOfficeLocations } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
@@ -41,7 +41,7 @@ type Props = {
   pendingList: RecruiterUserType[];
   isResendDisable: string;
   setResendDisable: Dispatch<SetStateAction<string>>;
-  recruiterUser: RecruiterUserType;
+  recruiterUser: ReturnType<typeof useTenant>['recruiter_user'];
 };
 
 export const AddMemberDialogUI = ({

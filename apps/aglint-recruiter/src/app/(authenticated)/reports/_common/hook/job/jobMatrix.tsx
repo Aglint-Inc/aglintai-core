@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 
 import { useAnalyticsContext } from '../../context/AnalyticsContext/AnalyticsContextProvider';
 
 export function useJobLocations() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
   const [view, setView] = useState<'city' | 'state' | 'country'>('city');
   const { data, isFetching, isError } =
@@ -65,7 +65,7 @@ export function useJobLocations() {
 }
 
 export function useCandidateExp() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
 
   const { data, isFetching, isError } =
@@ -126,7 +126,7 @@ export function useCandidateExp() {
 }
 
 export function useCandidateSkills() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
   const [view, setView] = useState<'Top skills' | 'JD Skills'>('Top skills');
   const { data: skills } = useQuery({

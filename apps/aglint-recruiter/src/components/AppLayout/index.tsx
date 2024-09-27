@@ -11,6 +11,7 @@ import DefaultCompanyLogo from '@public/images/default/company.svg';
 import { LogOut, Settings } from 'lucide-react';
 import Link from 'next/link';
 
+import { useTenant } from '@/company/hooks';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useMemberList } from '@/hooks/useMemberList';
@@ -25,15 +26,15 @@ import SideNavbar from './SideNavbar';
 
 export default function AppLayout({ children, appRouter = false }) {
   const { checkPermissions } = useRolesAndPermissions();
-  const { recruiter, recruiterUser, isShowFeature, handleLogout } =
-    useAuthDetails();
+  const { isShowFeature, handleLogout } = useAuthDetails();
+  const { recruiter, recruiter_user } = useTenant();
   const router = useRouterPro();
   const logo = recruiter?.logo;
 
   const { data: members } = useMemberList();
 
   const userDetails = members?.find(
-    (member) => member.user_id === recruiterUser.user_id,
+    (member) => member.user_id === recruiter_user.user_id,
   );
 
   const isHorizontalNav = !isShowFeature('SCHEDULING');
@@ -69,7 +70,7 @@ export default function AppLayout({ children, appRouter = false }) {
               <Link
                 href={
                   ROUTES['/user/[user]']({
-                    user_id: recruiterUser?.user_id,
+                    user_id: recruiter_user?.user_id,
                   }) + '?profile=true'
                 }
               >
@@ -116,7 +117,7 @@ export default function AppLayout({ children, appRouter = false }) {
                     <Link
                       href={
                         ROUTES['/user/[user]']({
-                          user_id: recruiterUser?.user_id,
+                          user_id: recruiter_user?.user_id,
                         }) + '?profile=true'
                       }
                     >

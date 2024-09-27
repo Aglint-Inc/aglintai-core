@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { useMemberList } from '@/hooks/useMemberList';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type APICreateScheduleRequest } from '@/pages/api/request/schedule-request';
@@ -34,7 +34,7 @@ export const useScheduleRequest = () => {
   } = useApplicationDetailStore();
   const [isSaving, setIsSaving] = useState(false);
   const { data: members, status: membersStatus } = useMemberList();
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
   const { application_id } = useApplicationMeta();
   const { data: stages } = useInterviewStages();
   const { data: requests } = useApplicationRequests();
@@ -84,9 +84,9 @@ export const useScheduleRequest = () => {
   }, [optionsAssignees?.length, membersStatus]);
 
   const handleCreateRequest = async () => {
-    if (!selectedAssignee || !recruiterUser) return;
+    if (!selectedAssignee || !recruiter_user) return;
     const sel_user_id = selectedAssignee.user_id;
-    const assigned_user_id = recruiterUser.user_id;
+    const assigned_user_id = recruiter_user.user_id;
 
     const sessionNames: string[] = sessions
       .map((session) => session?.interview_session?.name)
@@ -121,7 +121,7 @@ export const useScheduleRequest = () => {
           note,
           updated_at: dayjsLocal().toISOString(),
         });
-        if (assigned_user_id !== recruiterUser.user_id) {
+        if (assigned_user_id !== recruiter_user.user_id) {
           router.push(
             ROUTES['/requests/[request]']({
               request: res.data,

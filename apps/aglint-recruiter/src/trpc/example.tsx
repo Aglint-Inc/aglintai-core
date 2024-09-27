@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { createContext, type ReactNode, useContext } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 
 import { api } from './client';
 

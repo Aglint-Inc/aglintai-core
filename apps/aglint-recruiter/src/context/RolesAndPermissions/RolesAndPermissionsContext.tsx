@@ -4,7 +4,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { createContext, type ReactNode, useContext } from 'react';
 
-import { useAuthDetails } from '../AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 
 /* eslint-disable no-unused-vars */
 type RolesAndPermissionsContextType = {
@@ -37,7 +37,7 @@ export const RolesAndPermissionsProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const { userPermissions, recruiter } = useAuthDetails();
+  const { userPermissions, recruiter } = useTenant();
   const checkPermissions: RolesAndPermissionsContextType['checkPermissions'] = (
     permissions,
   ) => {

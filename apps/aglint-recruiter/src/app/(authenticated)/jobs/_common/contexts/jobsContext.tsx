@@ -3,7 +3,7 @@ import { createContext, memo, type ReactNode } from 'react';
 import { useCallback, useMemo } from 'react';
 
 import { handleJobApi } from '@/apiUtils/job/utils';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import {
   useJobCreate,
@@ -14,7 +14,7 @@ import {
 } from '@/queries/jobs';
 
 const useJobContext = () => {
-  const { recruiter, recruiter_id } = useAuthDetails();
+  const { recruiter, recruiter_id } = useTenant();
 
   const { checkPermissions, devlinkProps: getDevlinkProps } =
     useRolesAndPermissions();
