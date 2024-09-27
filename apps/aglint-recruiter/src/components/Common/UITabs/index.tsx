@@ -113,7 +113,7 @@ export default function UITabs({
   return (
     <div className={`w-full ${vertical ? 'flex' : ''}`}>
       <div
-        className={`${vertical ? 'border-r' : 'border-b'} border-gray-200 ${
+        className={`w-full ${vertical ? 'border-none' : 'border-b'} border-gray-200 ${
           vertical ? 'pr-2' : 'pb-2'
         }`}
       >

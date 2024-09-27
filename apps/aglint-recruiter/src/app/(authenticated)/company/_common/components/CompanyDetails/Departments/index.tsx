@@ -5,8 +5,8 @@ import { Button } from '@components/ui/button';
 import { Plus } from 'lucide-react';
 import * as React from 'react';
 
-import { SectionCard } from '@/authenticated/components/SectionCard';
 import AddChip from '@/components/Common/AddChip';
+import UISectionCard from '@/components/Common/UISectionCard';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { manageDepartments } from '@/context/AuthContext/utils';
 import { useAllDepartments } from '@/queries/departments';
@@ -86,7 +86,7 @@ export default function Departments() {
           id={deleteDialog.id as number}
         />
       )}
-      <SectionCard
+      <UISectionCard
         title='Departments'
         description='Catalog your departments to sort and filter data efficiently,
               aiding in job posting and scheduling.'
@@ -112,7 +112,7 @@ export default function Departments() {
             handleRemoveKeyword(id);
           }}
         />
-      </SectionCard>
+      </UISectionCard>
     </>
   );
 }
