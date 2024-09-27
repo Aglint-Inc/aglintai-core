@@ -32,16 +32,11 @@ function RequestNotes() {
   const { updateRequestNote, isPending } = useUpdateRequestNote();
   const debouncedUpsertRequestNotes = useCallback(
     debounce(async (noteValue: string, noteId?: string) => {
-      // await updateRequestNotes({
-      //   id: request_id as string,
-      //   note: noteValue,
-      //   request_id: requestId,
-      //   updated_at: dayjsLocal().toISOString(),
-      // });
       const payload = {
         id: noteId,
         note: noteValue,
         request_id: requestId,
+        updated_at: dayjsLocal().toISOString(),
       };
       if (!noteId) delete payload.id;
       updateRequestNote(payload);

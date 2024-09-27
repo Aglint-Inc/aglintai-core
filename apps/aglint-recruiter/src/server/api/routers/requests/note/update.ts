@@ -7,7 +7,7 @@ import { createPrivateClient } from '@/server/db';
 type Input = ZodSchema<
   Pick<
     DatabaseTableUpdate['request_note'],
-    'id' | 'note' | 'pinned' | 'request_id'
+    'id' | 'note' | 'pinned' | 'request_id' | 'updated_at'
   >
 >;
 
@@ -16,6 +16,7 @@ const requestUpdateSchema = z.object({
   note: z.string().optional().nullable(),
   pinned: z.boolean().optional(),
   request_id: z.string().uuid(),
+  updated_at: z.string().optional(),
 }) satisfies Input;
 
 const query = async ({
