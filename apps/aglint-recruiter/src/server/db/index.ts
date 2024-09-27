@@ -38,10 +38,3 @@ export function createPublicClient() {
     process.env.SUPABASE_SERVICE_ROLE_KEY,
   );
 }
-
-async () => {
-  const a = (
-    await createPrivateClient().from('application_logs').select().single()
-  ).data!;
-  a.created_by.length;
-};

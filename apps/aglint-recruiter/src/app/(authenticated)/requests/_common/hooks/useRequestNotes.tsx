@@ -1,31 +1,25 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { toast } from '@components/hooks/use-toast';
 
-import { supabase } from '@/utils/supabase/client';
+import { api, type RouterInputs, type Unvoid } from '@/trpc/client';
+export const useReadNotes = api.requests.note.read.useQuery;
 
-export const useRequestNotes = ({ request_id }: { request_id: string }) => {
-  const queryClient = useQueryClient();
-
-  const query = useQuery({
-    queryKey: ['get_request_notes', request_id],
-    queryFn: () => getRequestNotes(request_id),
-    enabled: !!request_id,
-    gcTime: 20000,
-    refetchOnMount: true,
+export const useUpdateRequestNote = () => {
+  const utils = api.useUtils();
+  const mutation = api.requests.note.updateNote.useMutation({
+    onSuccess: () => {
+      utils.requests.note.read.invalidate();
+    },
+    onError: (e) => {
+      toast({ variant: 'destructive', title: e.shape.message });
+    },
   });
-  const refetch = () => {
-    queryClient.invalidateQueries({
-      queryKey: ['get_request_notes', request_id],
+
+  const updateRequestNote = (
+    payload: Unvoid<RouterInputs['requests']['note']['updateNote']>,
+  ) => {
+    mutation.mutate({
+      ...payload,
     });
   };
-  return { ...query, refetch };
+  return { ...mutation, updateRequestNote };
 };
-
-export async function getRequestNotes(request_id: string) {
-  const { data } = await supabase
-    .from('request_note')
-    .select('*')
-    .eq('request_id', request_id)
-    .throwOnError();
-
-  return data;
-}
