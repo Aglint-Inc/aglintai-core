@@ -7,7 +7,7 @@ export default function Component() {
   const navItems = [
     {
       name: 'Interview Metrics',
-      icon: 'PieChart',
+      icon: 'ChartPie',
       id: 'interviewMetrics',
     },
     {

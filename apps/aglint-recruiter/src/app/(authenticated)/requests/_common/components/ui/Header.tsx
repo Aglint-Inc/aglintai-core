@@ -1,9 +1,9 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Progress } from '@components/ui/progress';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { formatRequestHeadingText } from '@requests/utils/formatRequestHeadingText';
 import { Columns, LayoutList } from 'lucide-react';
 
+import { formatRequestHeadingText } from '../../utils';
 import { CreateRequestWidget } from '../createRequestWidget';
 import RequestListFilter from '../RequestListFilter';
 
@@ -41,7 +41,7 @@ function Header({
         </div>
         <div className='flex flex-col gap-1'>
           <h3 className='text-sm font-semibold text-muted-foreground'>
-            {open_request + 1} Open Requests ({completed_percentage}% complete)
+            {open_request} Open Requests ({completed_percentage}% complete)
           </h3>
           <Progress value={completed_percentage} className='w-full' />
         </div>

@@ -2,10 +2,7 @@
   "editor.codeActionsOnSave": {
     // "source.fixAll": "always" // use always for both manual and auto saves
   },
-  "eslint.workingDirectories": [
-    "./apps/aglint-recruiter",
-    "./apps/mobile-backend"
-  ],
+  "eslint.workingDirectories": ["./apps/aglint-recruiter"],
   "cSpell.words": [
     "aglint",
     "asce",

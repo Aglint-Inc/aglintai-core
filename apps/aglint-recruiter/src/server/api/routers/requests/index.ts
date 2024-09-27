@@ -1,8 +1,8 @@
 import { createTRPCRouter } from '../../trpc';
 import { create } from './create';
-import { setup } from './setup';
+import { note } from './note';
 
 export const requests = createTRPCRouter({
   create,
-  setup,
+  note,
 });

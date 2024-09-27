@@ -7,8 +7,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import DefaultCompanyLogo from '@public/images/default/company.svg';
 import { LogOut, Settings } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
@@ -19,9 +19,26 @@ import PERMISSIONS from '@/utils/routing/permissions';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-import DefaultProfileImage from '../../../public/images/default/user.svg';
 import { NotFound } from '../Common/404';
+import { OnboardPending } from './OnboardPending';
 import SideNavbar from './SideNavbar';
+
+const DefaultProfileImage = () => (
+  <Image
+    src={'/images/default/user.svg'}
+    alt={'Greenhouse'}
+    width={20}
+    height={20}
+  />
+);
+const DefaultCompanyLogo = () => (
+  <Image
+    src={'/images/default/company.svg'}
+    alt={'Greenhouse'}
+    width={20}
+    height={20}
+  />
+);
 
 export default function AppLayout({ children, appRouter = false }) {
   const { checkPermissions } = useRolesAndPermissions();
@@ -40,6 +57,7 @@ export default function AppLayout({ children, appRouter = false }) {
 
   return (
     <>
+      <OnboardPending />
       {isHorizontalNav && (
         <nav className='sticky top-0 z-50 flex w-full items-center justify-between border-b bg-white p-2'>
           <div className='flex items-center space-x-4'>
