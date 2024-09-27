@@ -1,8 +1,8 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Calendar } from 'lucide-react';
 
-import { SectionCard } from '@/authenticated/components/SectionCard';
 import { UIButton } from '@/components/Common/UIButton';
+import UISectionCard from '@/components/Common/UISectionCard';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
 import { type InterviewerDetailType } from '../../hooks/useInterviewer';
@@ -14,7 +14,7 @@ export const UpcomingInterview = ({
 }) => {
   return (
     <>
-      <SectionCard title='Upcoming Interviews'>
+      <UISectionCard title='Upcoming Interviews'>
         {interviews?.length > 0 ? (
           <div className='space-y-4'>
             {interviews.map((interview) => (
@@ -29,7 +29,7 @@ export const UpcomingInterview = ({
             </p>
           </div>
         )}
-      </SectionCard>
+      </UISectionCard>
     </>
   );
 };

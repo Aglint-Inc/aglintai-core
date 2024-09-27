@@ -9,8 +9,8 @@ import {
   useState,
 } from 'react';
 
-import { SectionCard } from '@/authenticated/components/SectionCard';
 import { UIButton } from '@/components/Common/UIButton';
+import UISectionCard from '@/components/Common/UISectionCard';
 
 import { WorkTimeUI } from './ui/WorkTimeUI';
 import { WorkTimeEditDialog } from './WorkTimeEditDialog';
@@ -63,10 +63,10 @@ const WorkTime: FC<WorkTimeProps> = ({
         setWorkingHours={setWorkingHours}
         workingHours={workingHours}
       />
-      <SectionCard
+      <UISectionCard
         title='Working Hours'
         description="Set your company's operational hours for each day of the week."
-        topAction={
+        action={
           <UIButton variant='outline' size='sm' onClick={() => setIsOpen(true)}>
             <Edit className='h-3 w-3' />
             <span className='sr-only'>Edit Working Hours</span>
@@ -74,7 +74,7 @@ const WorkTime: FC<WorkTimeProps> = ({
         }
       >
         <WorkTimeUI workingHours={workingHours} />
-      </SectionCard>
+      </UISectionCard>
     </>
   );
 };

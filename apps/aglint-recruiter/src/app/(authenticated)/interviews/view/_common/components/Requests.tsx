@@ -18,7 +18,7 @@ function Requests({ session_id }) {
 
   return (
     <div className='rounded-md border border-gray-200 bg-white p-4 shadow-sm'>
-      <h3 className='mb-3 text-sm font-medium text-muted-foreground'>Request History</h3>
+      <h3 className='mb-3 text-sm font-semibold'>Request History</h3>
       {isLoading ? (
         <Loader />
       ) : (
@@ -27,13 +27,12 @@ function Requests({ session_id }) {
             <GlobalEmpty
               iconSlot={<Calendar className='text-gray-500' />}
               text={'No requests found'}
-              height='200px'
             />
           )}
           {requests?.map((request) => (
             <Card
               key={request.id}
-              className='cursor-pointer border-none shadow-none hover:bg-gray-100 p-4 bg-gray-50 duration-300'
+              className='cursor-pointer border-none p-3 shadow-none hover:bg-gray-50'
               onClick={() => {
                 router.push(
                   ROUTES['/requests/[request]']({
@@ -48,10 +47,9 @@ function Requests({ session_id }) {
                 </CardTitle>
               </CardHeader>
               <CardContent className='p-0'>
-                <div className='flex items-center gap-4'>
-                
+                <div className='flex items-center justify-between'>
                   <div className='flex items-center space-x-2'>
-                    <Avatar className='h-5 w-5 rounded-sm'>
+                    <Avatar className='h-6 w-6'>
                       <AvatarImage
                         src={
                           request?.assignee_details?.profile_image ??
@@ -62,7 +60,7 @@ function Requests({ session_id }) {
                           request?.assignee_details?.last_name ?? '',
                         )}
                       />
-                      <AvatarFallback className='text-xs h-5 w-5 rounded-sm'>
+                      <AvatarFallback className='text-xs'>
                         {getFullName(
                           request?.assignee_details?.first_name ?? '',
                           request?.assignee_details?.last_name ?? '',
@@ -91,7 +89,6 @@ function Requests({ session_id }) {
                               : 'neutral'
                     }
                   />
-
                 </div>
               </CardContent>
             </Card>

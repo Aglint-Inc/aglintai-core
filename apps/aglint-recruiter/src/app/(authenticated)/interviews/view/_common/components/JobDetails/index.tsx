@@ -14,7 +14,7 @@ function JobDetails() {
     extensions: [StarterKit],
   });
   return (
-    <Card className='p-4 min-h-80'>
+    <Card className='p-4'>
       <EditorContent editor={editor} />
     </Card>
   );
