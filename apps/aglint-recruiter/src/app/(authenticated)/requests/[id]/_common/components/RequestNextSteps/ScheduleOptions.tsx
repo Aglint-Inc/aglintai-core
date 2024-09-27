@@ -5,12 +5,12 @@ import {
   setCandidateAvailabilityDrawerOpen,
   setCandidateAvailabilityIdForReRequest,
   setReRequestAvailability,
-} from '@request/components/CandidateAvailability/store';
+} from '@request/components/CandidateAvailability/_common/contexts/CandidateAvailabilityFlowStore';
 import {
   setApplicationIdForConfirmAvailability,
   setCandidateAvailabilityId,
   useConfirmAvailabilitySchedulingFlowStore,
-} from '@request/components/ConfirmAvailability/store';
+} from '@request/components/ConfirmAvailability/_common/contexts/AvailabilitySchedulingStore';
 import { useSelfSchedulingDrawer } from '@request/components/SelfSchedulingDrawer/_common/hooks/hooks';
 import {
   initialFilters,
