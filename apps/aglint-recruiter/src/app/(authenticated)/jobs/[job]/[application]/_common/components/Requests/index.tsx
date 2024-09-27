@@ -21,12 +21,17 @@ function Requests() {
             href={ROUTES['/requests/[request]']({
               request: req.id,
             })}
+            className=''
           >
-            <div className='mb-2 flex justify-between gap-1'>
-              <p className='text-sm font-medium'>{req.title}</p>
-              <UIBadge
+            <div className='mb-2 flex flex-col items-start gap-1'>
+            
+              <p className='text-md font-normal hover:underline duration-300'>{req.title}</p>
+              
+            </div>
+            <div className='flex items-center gap-3'>
+            <UIBadge
                 size='sm'
-                className='min-w-[70px] justify-center text-center'
+                className=' justify-center text-center px-1 min-h-[22px] '
                 textBadge={capitalizeFirstLetter(req.status)}
                 color={
                   req.status === 'to_do'
@@ -40,11 +45,8 @@ function Requests() {
                           : 'neutral'
                 }
               />
-            </div>
-            <div className='flex items-center space-x-2'>
-              <p className='text-xs text-muted-foreground'>Assigned to</p>
               <div className='flex items-center space-x-2'>
-                <Avatar className='h-5 w-5'>
+                <Avatar className='h-5 w-5 rounded-sm'>
                   <AvatarImage
                     src={req?.assignee_details?.profile_image ?? ''}
                     alt={getFullName(
@@ -52,14 +54,14 @@ function Requests() {
                       req?.assignee_details?.last_name ?? '',
                     )}
                   />
-                  <AvatarFallback>
+                  <AvatarFallback className='h-5 w-5 rounded-sm'>
                     {getFullName(
                       req?.assignee_details?.first_name ?? '',
                       req?.assignee_details?.last_name ?? '',
                     ).charAt(0)}
                   </AvatarFallback>
                 </Avatar>
-                <span className='text-xs'>
+                <span className='text-sm'>
                   {getFullName(
                     req?.assignee_details?.first_name ?? '',
                     req?.assignee_details?.last_name ?? '',
