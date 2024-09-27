@@ -1,8 +1,9 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Calendar } from 'lucide-react';
+import { LayoutList } from 'lucide-react';
 import Link from 'next/link';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIBadge } from '@/components/Common/UIBadge';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
@@ -73,9 +74,8 @@ function Requests() {
         ))}
 
       {!requests?.length && (
-        <div className='flex flex-col items-center justify-center rounded-lg bg-gray-100 p-4'>
-          <Calendar className='mb-2 h-8 w-8 text-gray-400' />
-          <p className='text-sm text-gray-500'>No requests found</p>
+        <div className='text-muted-foreground'>
+          <GlobalEmpty iconSlot={<LayoutList className='w-10 h-10' strokeWidth={1} />} text={'No requests found'} height='250px'/>
         </div>
       )}
     </div>
