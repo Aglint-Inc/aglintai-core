@@ -289,7 +289,7 @@ function ATSTools({
     {
       name: 'greenhouse' as ATSType,
       url: 'greenhouse.com',
-      isVisibile: recruiter.recruiter_preferences.ats === 'Greenhouse' || true,
+      isVisibile: recruiter.recruiter_preferences.ats === 'Greenhouse',
       isConnected: Boolean(data?.greenhouse_key),
       logo: (
         <Image

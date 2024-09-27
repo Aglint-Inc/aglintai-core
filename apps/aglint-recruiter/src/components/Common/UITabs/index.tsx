@@ -10,7 +10,9 @@ export type UITabType = {
     id: string;
     name: string;
     content?: JSX.Element;
-    icon: IconName;
+
+    icon?: IconName;
+    iconComp?: JSX.Element;
   };
   horizontal: {
     id: string;
@@ -107,7 +109,7 @@ export default function UITabs({
 
   useEffect(() => {
     setActiveTab(defaultValue || tabs[0].id);
-  }, []);
+  }, [defaultValue]);
 
   const isContentPreset = !!tabs.filter((tab) => tab.content)?.length;
   return (
@@ -157,12 +159,16 @@ export default function UITabs({
                   activeTab === tab.id
                     ? 'text-primary'
                     : 'text-gray-500 hover:text-primary'
-                } ${vertical ? 'flex w-full items-center gap-3 text-left' : ''}`}
+                } ${vertical ? 'flex items-center gap-3 text-left' : ''}`}
                 role='tab'
                 aria-selected={activeTab === tab.id}
                 tabIndex={activeTab === tab.id ? 0 : -1}
               >
-                <span>{tab.icon && Icon && <Icon size={16} />}</span>
+                <span>
+                  {tab.iconComp
+                    ? tab.iconComp
+                    : tab.icon && Icon && <Icon size={16} />}
+                </span>
                 <span>{tab.name}</span>
               </button>
             );

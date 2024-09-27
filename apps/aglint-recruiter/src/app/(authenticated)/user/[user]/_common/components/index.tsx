@@ -45,7 +45,7 @@ export type sectionKeys =
 export default function InterviewerDetailsPage() {
   //scrolling-------------------
   const [activeSection, setActiveSection] = useState('overview');
-  // const [isTopBarVisible, setIsTopBarVisible] = useState<boolean>(false);
+
   const { isShowFeature } = useAuthDetails();
   const sectionRefs = {
     overview: useRef<HTMLDivElement>(null),
@@ -65,16 +65,17 @@ export default function InterviewerDetailsPage() {
   const userCardRef = useRef<HTMLDivElement>(null);
 
   const handleScroll = () => {
-    // const scrollPosition = window.scrollY;
-    // const userCardBottom = userCardRef.current?.getBoundingClientRect().bottom;
-    // setIsTopBarVisible(!!userCardBottom && scrollPosition > userCardBottom);
-
     Object.entries(sectionRefs).forEach(([key, ref]) => {
-      if (ref.current && ref.current.getBoundingClientRect().top < 90) {
+      if (
+        ref.current &&
+        ref.current.getBoundingClientRect().top < 90 &&
+        ref.current.getBoundingClientRect().top > 0
+      ) {
         setActiveSection(key);
       }
     });
   };
+
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -127,9 +128,10 @@ export default function InterviewerDetailsPage() {
     >;
 
   const interviewerName = getFullName(
-    interviewerDetails?.first_name || '',
-    interviewerDetails?.last_name || '',
+    interviewerDetails?.first_name ?? '',
+    interviewerDetails?.last_name ?? '',
   );
+
   //--------------------------------------
   if (isLoading)
     return (
@@ -139,18 +141,6 @@ export default function InterviewerDetailsPage() {
     );
   return (
     <div className='container mx-auto'>
-      {/* <Top
-        interviewer={{
-          avatar: interviewerDetails?.avatar || '',
-          department: interviewerDetails?.department || '-',
-          name: interviewerName,
-          role: interviewerDetails?.role || '',
-          //need to change dynamic values
-          calendarConnected: false,
-          gmailConnected: false,
-        }}
-        isTopBarVisible={isTopBarVisible}
-      /> */}
       <div className='relative'>
         <div className='sticky top-0 z-10 bg-gray-50'>
           <BreadCrumb name={interviewerDetails?.first_name || ''} />
@@ -277,4 +267,24 @@ export default function InterviewerDetailsPage() {
   /* <section ref={sectionRefs.recentActivity}>
             <RecentActivity interviewer={interviewer} />
           </section> */
+}
+
+// const [isTopBarVisible, setIsTopBarVisible] = useState<boolean>(false);
+// const scrollPosition = window.scrollY;
+// const userCardBottom = userCardRef.current?.getBoundingClientRect().bottom;
+// setIsTopBarVisible(!!userCardBottom && scrollPosition > userCardBottom);
+
+{
+  /* <Top
+        interviewer={{
+          avatar: interviewerDetails?.avatar || '',
+          department: interviewerDetails?.department || '-',
+          name: interviewerName,
+          role: interviewerDetails?.role || '',
+          //need to change dynamic values
+          calendarConnected: false,
+          gmailConnected: false,
+        }}
+        isTopBarVisible={isTopBarVisible}
+      /> */
 }
