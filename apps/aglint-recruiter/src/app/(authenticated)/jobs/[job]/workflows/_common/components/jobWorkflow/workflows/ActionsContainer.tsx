@@ -45,7 +45,7 @@ const ActionsContainer = ({
         <ActionDetailsComponent
           action_type='email'
           props={{
-            body: wAction.payload.email.body,
+            body: wAction.payload?.email?.body ?? '',
             isTemplateLoading: false,
             setBody: (bodyStr) => {
               updateWAction({
@@ -71,7 +71,7 @@ const ActionsContainer = ({
                 },
               });
             },
-            subject: wAction.payload.email.subject,
+            subject: wAction.payload?.email?.subject ?? '',
             targetAPI: wAction.target_api,
           }}
         />

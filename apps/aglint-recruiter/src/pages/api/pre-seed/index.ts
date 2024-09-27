@@ -1,4 +1,7 @@
-import { type DatabaseTable } from '@aglint/shared-types';
+import {
+  CustomAgentInstructionPayload,
+  type DatabaseTable,
+} from '@aglint/shared-types';
 import {
   defaultRolePermissionRelation,
   defaultRoles,
@@ -155,7 +158,7 @@ const seedWorkFlow = async (
           interval: work_flow_act.workflow.interval,
           title: work_flow_act.workflow.title,
           recruiter_id,
-          is_paused: false,
+          is_active: true,
           workflow_type: work_flow_act.workflow.workflow_type,
         })
         .select(),
@@ -166,12 +169,32 @@ const seedWorkFlow = async (
           const temp = company_email_template.find(
             (temp) => temp.type === action.target_api,
           );
+          let payload = null;
+          if (action.action_type === 'email') {
+            payload = {
+              email: {
+                body: temp ? temp.body : undefined,
+                subject: temp ? temp.subject : undefined,
+              },
+            };
+          } else if (action.action_type === 'agent_instruction') {
+            let ag_payload = action.payload as CustomAgentInstructionPayload;
+            payload = {
+              agent: {
+                instruction: ag_payload.agent.instruction,
+              },
+            };
+          } else if (action.action_type === 'slack') {
+            payload = {
+              slack: null,
+            };
+          } else if (action.action_type === 'end_point') {
+            payload = {
+              end_point: null,
+            };
+          }
           return {
-            payload: {
-              body: temp ? temp.body : undefined,
-              subject: temp ? temp.subject : undefined,
-              ...(action?.payload ?? {}),
-            },
+            payload,
             order: action.order,
             workflow_id: workflow.id,
             target_api: action.target_api,

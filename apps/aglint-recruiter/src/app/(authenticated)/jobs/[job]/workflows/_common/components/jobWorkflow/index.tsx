@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 import { initiateJobAutomationState } from '../../contexts/workflowsStoreContext';
 import { useGetJobWorkflow } from '../../hooks';
-import Main from './Main/Main';
+import Main from './workflows';
 import { Summary } from './Summary';
 
 export default function EnhancedAutomationPage() {
@@ -23,7 +23,7 @@ export default function EnhancedAutomationPage() {
           <Main />
         </div>
         <div className='md:col-span-1'>
-          <Summary automationCategories={[]} toggleActionEdit={() => {}} />
+          <Summary />
         </div>
       </div>
     </div>
