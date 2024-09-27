@@ -4,13 +4,12 @@ import {
   useJobAutomationStore,
 } from '@/job/workflows/contexts/workflowsStoreContext';
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+import { DatabaseTable } from '@aglint/shared-types';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import placeholder from '@tiptap/extension-placeholder';
 import {
   Command,
   CommandEmpty,
@@ -57,6 +56,11 @@ const AddActionMenu = ({
           <Command>
             <CommandList>
               <CommandGroup>
+                <CommandEmpty>
+                  <p className='text-sm text-muted-foreground'>
+                    No Actions found.
+                  </p>
+                </CommandEmpty>
                 {filteredActions.map((action) => {
                   return (
                     <CommandItem

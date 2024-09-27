@@ -12,6 +12,7 @@ import { useJobAutomationStore } from '@/job/workflows/contexts/workflowsStoreCo
 import { TriggerCategory } from '@/job/workflows/lib/constants';
 
 import { AutomationAccordion } from './AutomationAccordion';
+import { UIButton } from '@/components/Common/UIButton';
 
 export default function Main() {
   const { jobWorkflowTriggers, jobWorkflowActions } = useJobAutomationStore();
@@ -50,8 +51,9 @@ export default function Main() {
           </Accordion>
         </CardContent>
       </Card>
-      <div className='mt-6 flex justify-end'>
-        <Button>Save</Button>
+      <div className='mt-6 flex justify-end space-x-1'>
+        {/* <UIButton variant='outline'>Reset</UIButton> */}
+        <UIButton>Save</UIButton>
       </div>
     </div>
   );

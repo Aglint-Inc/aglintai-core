@@ -18,12 +18,14 @@ import { Label } from '@components/ui/label';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Textarea } from '@components/ui/textarea';
 import { Bot, Edit2, Mail, MessageSquare, Slack, Zap } from 'lucide-react';
+import { useJobAutomationStore } from '../../contexts/workflowsStoreContext';
+import { triggerToQuestion } from '../../lib/constants';
+import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
-export const Summary = ({ automationCategories, toggleActionEdit }) => {
-  const enabledAutomations = automationCategories.flatMap((category) =>
-    category.automations.filter((automation) => automation.enabled),
-  );
+export const Summary = () => {
+  const { jobWorkflowActions, jobWorkflowTriggers } = useJobAutomationStore();
 
+  const enabledAutomations = jobWorkflowTriggers.filter((j) => j.is_active);
   if (enabledAutomations.length === 0) {
     return renderAIAutomationCTA();
   }
@@ -37,64 +39,38 @@ export const Summary = ({ automationCategories, toggleActionEdit }) => {
       <CardContent>
         <ScrollArea className='h-[calc(100vh-200px)] pr-4'>
           <ul className='space-y-4'>
-            {enabledAutomations.map((automation) => (
-              <li key={automation.id} className='border-b pb-4 last:border-b-0'>
-                <h4 className='mb-2 font-semibold'>{automation.question}</h4>
-                <ul className='space-y-2'>
-                  {automation.actions.map((action) => (
-                    <li key={action.id}>
-                      <div className='mb-1 flex items-center space-x-2'>
-                        {renderActionBadge(action.type)}
-                      </div>
-                      {action.type === 'ai' ? (
-                        <div className='rounded bg-gray-100 p-2 text-sm'>
-                          <p className='font-medium'>AI Instructions:</p>
-                          <p>{action.content}</p>
-                        </div>
-                      ) : (
-                        <Accordion type='single' collapsible>
-                          <AccordionItem value={action.id}>
-                            <AccordionTrigger className='text-sm'>
-                              View Content
-                            </AccordionTrigger>
-                            <AccordionContent>
-                              <div className='relative'>
-                                {action.type === 'email' && (
-                                  <div className='mb-2'>
-                                    <Label className='text-sm font-medium'>
-                                      Subject:
-                                    </Label>
-                                    <Input
-                                      value={action.subject}
-                                      readOnly
-                                      className='mt-1'
-                                    />
-                                  </div>
-                                )}
-                                <Textarea
-                                  value={action.content}
-                                  readOnly
-                                  rows={4}
-                                  className='pr-8'
-                                />
-                                <Button
-                                  variant='ghost'
-                                  size='sm'
-                                  className='absolute right-2 top-2'
-                                  onClick={() => toggleActionEdit(action.id)}
-                                >
-                                  <Edit2 className='h-4 w-4' />
-                                </Button>
+            {jobWorkflowTriggers
+              .filter((j) => j.is_active)
+              .map((wTrigger) => {
+                return (
+                  <li
+                    key={wTrigger.id}
+                    className='border-b pb-4 last:border-b-0'
+                  >
+                    <h4 className='mb-2 font-semibold'>
+                      {triggerToQuestion[wTrigger.trigger]}
+                    </h4>
+                    <ul className='space-y-2'>
+                      {jobWorkflowActions
+                        .filter((j) => j.workflow_id === wTrigger.id)
+                        .map((action) => {
+                          const target_api_details = ACTION_TRIGGER_MAP[
+                            wTrigger.trigger
+                          ].find(
+                            (j) => j.value.target_api === action.target_api,
+                          );
+                          return (
+                            <li key={action.id}>
+                              <div className='rounded bg-gray-100 p-2 text-sm'>
+                                <p>{target_api_details.name}</p>
                               </div>
-                            </AccordionContent>
-                          </AccordionItem>
-                        </Accordion>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))}
+                            </li>
+                          );
+                        })}
+                    </ul>
+                  </li>
+                );
+              })}
           </ul>
         </ScrollArea>
       </CardContent>
