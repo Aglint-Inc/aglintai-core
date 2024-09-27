@@ -37,9 +37,8 @@ export const useRoleAndPermissionsHook = () => {
 
   const [selectRole, setSelectRole] = useState<string | null>(null);
 
-  const role = selectRole
-    ? query.data?.rolesAndPermissions?.[selectRole]
-    : null || null;
+  const role =
+    (selectRole ? query.data?.rolesAndPermissions?.[selectRole] : null) || null;
   const roleDetails = app_modules.reduce(
     (acc, curr) => {
       if (
