@@ -1,8 +1,8 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Calendar } from 'lucide-react';
 
-import UISectionCard from '@/components/Common/UISectionCard';
 import { UIButton } from '@/components/Common/UIButton';
+import UISectionCard from '@/components/Common/UISectionCard';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
 import { type InterviewerDetailType } from '../../hooks/useInterviewer';
