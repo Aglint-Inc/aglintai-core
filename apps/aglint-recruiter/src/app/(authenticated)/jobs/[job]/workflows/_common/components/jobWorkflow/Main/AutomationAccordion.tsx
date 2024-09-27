@@ -20,8 +20,7 @@ import {
   triggerToCategoryMap,
   triggerToQuestion,
 } from '@/job/workflows/lib/constants';
-
-import { ActionsContainer } from './ActionsContainer';
+import ActionsContainer from './ActionsContainer';
 
 export const AutomationAccordion = ({
   category,
