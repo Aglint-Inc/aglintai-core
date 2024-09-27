@@ -162,7 +162,7 @@ export default function UITabs({
                 aria-selected={activeTab === tab.id}
                 tabIndex={activeTab === tab.id ? 0 : -1}
               >
-                <span>{tab.icon && <Icon size={16} />}</span>
+                <span>{tab.icon && Icon && <Icon size={16} />}</span>
                 <span>{tab.name}</span>
               </button>
             );
