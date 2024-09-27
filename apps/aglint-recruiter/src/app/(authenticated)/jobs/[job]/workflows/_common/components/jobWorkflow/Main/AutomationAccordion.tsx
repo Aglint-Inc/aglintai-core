@@ -9,7 +9,11 @@ import { Label } from '@components/ui/label';
 import { Switch } from '@components/ui/switch';
 import { Calendar, Clock, User, UserCheck } from 'lucide-react';
 
-import { useJobAutomationStore } from '@/job/workflows/contexts/workflowsStoreContext';
+import {
+  updateWAction,
+  updateWTrigger,
+  useJobAutomationStore,
+} from '@/job/workflows/contexts/workflowsStoreContext';
 import {
   type TriggerCategory,
   triggerToCategoryMap,
@@ -35,12 +39,12 @@ export const AutomationAccordion = ({
           </div>
           <Badge
             variant={
-              jobWorkflowTriggers.some((s) => !s.is_paused)
+              jobWorkflowTriggers.some((s) => s.is_active)
                 ? 'default'
                 : 'secondary'
             }
           >
-            {jobWorkflowTriggers.filter((a) => !a.is_paused).length} /{' '}
+            {jobWorkflowTriggers.filter((a) => !a.is_active).length} /{' '}
             {jobWorkflowTriggers.length} enabled
           </Badge>
         </div>
@@ -61,13 +65,16 @@ export const AutomationAccordion = ({
                     </Label>
                     <Switch
                       id={wTrigger.id}
-                      checked={wTrigger.is_paused}
+                      checked={wTrigger.is_active}
                       onCheckedChange={(checked) => {
-                        // onChangeTriggerPause(wTrigger.id, checked)
+                        updateWTrigger({
+                          ...wTrigger,
+                          is_active: checked,
+                        });
                       }}
                     />
                   </div>
-                  {wTrigger.is_paused && (
+                  {wTrigger.is_active && (
                     <div className='mt-2 space-y-4'>
                       {jobWorkflowActions
                         .filter((act) => act.workflow_id === wTrigger.id)
@@ -75,14 +82,7 @@ export const AutomationAccordion = ({
                           return (
                             <ActionsContainer
                               key={action.id}
-                              action={action}
-                              categoryIndex={categoryIndex}
-                              automationIndex={automationIndex}
-                              actionIndex={actionIndex}
-                              toggleActionEdit={toggleActionEdit}
-                              editingActions={editingActions}
-                              handleActionChange={handleActionChange}
-                              removeAction={removeAction}
+                              wAction={action}
                             />
                           );
                         })}

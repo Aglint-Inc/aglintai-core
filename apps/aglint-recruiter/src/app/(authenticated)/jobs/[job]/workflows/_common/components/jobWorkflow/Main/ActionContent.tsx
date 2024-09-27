@@ -5,8 +5,6 @@ import { Textarea } from '@components/ui/textarea';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
 
-import { type Action } from '../type';
-
 export const ActionContent = ({
   action,
   categoryIndex,

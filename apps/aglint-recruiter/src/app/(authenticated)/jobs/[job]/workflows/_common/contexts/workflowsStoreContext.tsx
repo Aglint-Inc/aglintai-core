@@ -63,7 +63,8 @@ export const initiateJobAutomationState = (
         ...workflow,
         category: triggerToCategoryMap[workflow.trigger],
       };
-    }),
-    jobWorkflowActions: data.job_workflow_actions,
+    }) as JobAutomationState['jobWorkflowTriggers'],
+    jobWorkflowActions:
+      data.job_workflow_actions as JobAutomationState['jobWorkflowActions'],
   });
 };

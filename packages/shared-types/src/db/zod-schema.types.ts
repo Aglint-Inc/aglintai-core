@@ -857,7 +857,7 @@ export const candidatesRowSchema = z.object({
   last_updated: z.string(),
   linkedin: z.string().nullable(),
   phone: z.string().nullable(),
-  recruiter_id: z.string(),
+  recruiter_id: z.string().nullable(),
   state: z.string().nullable(),
   timezone: z.string().nullable(),
 });
@@ -878,7 +878,7 @@ export const candidatesInsertSchema = z.object({
   last_updated: z.string().optional(),
   linkedin: z.string().optional().nullable(),
   phone: z.string().optional().nullable(),
-  recruiter_id: z.string(),
+  recruiter_id: z.string().optional().nullable(),
   state: z.string().optional().nullable(),
   timezone: z.string().optional().nullable(),
 });
@@ -899,7 +899,7 @@ export const candidatesUpdateSchema = z.object({
   last_updated: z.string().optional(),
   linkedin: z.string().optional().nullable(),
   phone: z.string().optional().nullable(),
-  recruiter_id: z.string().optional(),
+  recruiter_id: z.string().optional().nullable(),
   state: z.string().optional().nullable(),
   timezone: z.string().optional().nullable(),
 });
@@ -4277,7 +4277,7 @@ export const workflowInsertSchema = z.object({
   description: z.string().optional().nullable(),
   id: z.string().optional(),
   interval: z.number().optional(),
-  is_paused: z.boolean().optional(),
+  is_active: z.boolean().optional(),
   phase: workflowPhaseSchema,
   recruiter_id: z.string(),
   request_id: z.string().optional().nullable(),
@@ -4292,7 +4292,7 @@ export const workflowUpdateSchema = z.object({
   description: z.string().optional().nullable(),
   id: z.string().optional(),
   interval: z.number().optional(),
-  is_paused: z.boolean().optional(),
+  is_active: z.boolean().optional(),
   phase: workflowPhaseSchema.optional(),
   recruiter_id: z.string().optional(),
   request_id: z.string().optional().nullable(),
@@ -4833,7 +4833,6 @@ export const jobViewRowSchema = z.object({
   section_count: jsonSchema.nullable(),
   sourcer: z.string().nullable(),
   status: publicJobStatusSchema.nullable(),
-  syncable: z.boolean().nullable(),
   workplace_type: publicJobWorkplaceSchema.nullable(),
 });
 
@@ -5880,7 +5879,7 @@ export const workflowRowSchema = z.object({
   description: z.string().nullable(),
   id: z.string(),
   interval: z.number(),
-  is_paused: z.boolean(),
+  is_active: z.boolean(),
   phase: workflowPhaseSchema,
   recruiter_id: z.string(),
   request_id: z.string().nullable(),

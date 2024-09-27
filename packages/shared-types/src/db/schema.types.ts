@@ -823,7 +823,7 @@ export type Database = {
           last_updated: string
           linkedin: string | null
           phone: string | null
-          recruiter_id: string
+          recruiter_id: string | null
           state: string | null
           timezone: string | null
         }
@@ -843,7 +843,7 @@ export type Database = {
           last_updated?: string
           linkedin?: string | null
           phone?: string | null
-          recruiter_id: string
+          recruiter_id?: string | null
           state?: string | null
           timezone?: string | null
         }
@@ -863,7 +863,7 @@ export type Database = {
           last_updated?: string
           linkedin?: string | null
           phone?: string | null
-          recruiter_id?: string
+          recruiter_id?: string | null
           state?: string | null
           timezone?: string | null
         }
@@ -4114,7 +4114,7 @@ export type Database = {
           description: string | null
           id: string
           interval: number
-          is_paused: boolean
+          is_active: boolean
           phase: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id: string
           request_id: string | null
@@ -4128,7 +4128,7 @@ export type Database = {
           description?: string | null
           id?: string
           interval?: number
-          is_paused?: boolean
+          is_active?: boolean
           phase: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id: string
           request_id?: string | null
@@ -4142,7 +4142,7 @@ export type Database = {
           description?: string | null
           id?: string
           interval?: number
-          is_paused?: boolean
+          is_active?: boolean
           phase?: Database["public"]["Enums"]["workflow_phase"]
           recruiter_id?: string
           request_id?: string | null
@@ -4691,7 +4691,6 @@ export type Database = {
           section_count: Json | null
           sourcer: string | null
           status: Database["public"]["Enums"]["public_job_status"] | null
-          syncable: boolean | null
           workplace_type:
             | Database["public"]["Enums"]["public_job_workplace"]
             | null
