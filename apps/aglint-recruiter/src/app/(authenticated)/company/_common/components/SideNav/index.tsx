@@ -6,11 +6,11 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
+import { useFlags } from '@/company/hooks/useFlags';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getUrlPro, useRouterPro } from '@/hooks/useRouterPro';
 import { emailTemplateQueries } from '@/queries/email-templates';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import type { CompanySettingTabsType } from './utils';
 
 function VerticalNav() {
@@ -29,7 +29,7 @@ function VerticalNav() {
       );
     }
   }, [emailTemplates.isFetched, router.queryParams.email]);
-  const { isShowFeature } = useAuthDetails();
+  const { isShowFeature } = useFlags();
 
   const settingsItems = [
     {

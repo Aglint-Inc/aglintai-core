@@ -18,8 +18,8 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
+import { useFlags } from '@/company/hooks/useFlags';
 import { UIButton } from '@/components/Common/UIButton';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJob } from '@/job/hooks';
@@ -31,7 +31,7 @@ const JobsSideNavV2 = () => {
   const { isScoringEnabled } = useRolesAndPermissions();
   const [isCloseJobDialogOpen, setIsCloseJobDialogOpen] = useState(false);
   const [confirmText, setConfirmText] = useState('');
-  const { isShowFeature } = useAuthDetails();
+  const { isShowFeature } = useFlags();
   const handlePush = (route: string) => {
     router.push(ROUTES[route]({ job: job?.id }));
   };

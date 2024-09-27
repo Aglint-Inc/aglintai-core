@@ -8,10 +8,10 @@ import { useParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 import { SectionCard } from '@/authenticated/components/SectionCard';
+import { useFlags } from '@/company/hooks/useFlags';
 import CalendarComp from '@/components/Common/Calendar/Calendar';
 import Heatmap from '@/components/Common/Heatmap/HeatmapUser';
 import { Loader } from '@/components/Common/Loader';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import {
@@ -46,7 +46,7 @@ export default function InterviewerDetailsPage() {
   //scrolling-------------------
   const [activeSection, setActiveSection] = useState('overview');
   // const [isTopBarVisible, setIsTopBarVisible] = useState<boolean>(false);
-  const { isShowFeature } = useAuthDetails();
+  const { isShowFeature } = useFlags();
   const sectionRefs = {
     overview: useRef<HTMLDivElement>(null),
     qualifications: useRef<HTMLDivElement>(null),

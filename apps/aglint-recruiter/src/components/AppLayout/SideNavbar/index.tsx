@@ -20,7 +20,8 @@ import {
 import Link from 'next/link';
 import { useEffect } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
+import { useFlags } from '@/company/hooks/useFlags';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
@@ -32,20 +33,22 @@ function SideNavbar() {
   const pathName = router.pathName;
   const { checkPermissions } = useRolesAndPermissions();
   const { toast } = useToast();
-  const { isShowFeature } = useAuthDetails();
+  const { isShowFeature } = useFlags();
+  const { userPermissions } = useTenant();
   useEffect(() => {
     const tempR = navList.find((item) => {
       return pathName?.includes(item.route.split('?')[0]);
     })?.permission;
-    if (tempR && !checkPermissions(tempR)) {
-      toast({
-        variant: 'destructive',
-        title: 'Access Denied',
-        description:
-          'This section of the application is not accessible to you.',
-      });
-      router.back();
-    }
+
+    // if (tempR && !checkPermissions(tempR)) {
+    //   toast({
+    //     variant: 'destructive',
+    //     title: 'Access Denied',
+    //     description:
+    //       'This section of the application is not accessible to you.',
+    //   });
+    //   router.back();
+    // }
   }, [pathName, checkPermissions, router, toast]);
 
   return (

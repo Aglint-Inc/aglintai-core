@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
 import { useAllIntegrations } from '@/authenticated/hooks';
-import { useTenantMembers } from '@/company/hooks';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant, useTenantMembers } from '@/company/hooks';
+import { useFlags } from '@/company/hooks/useFlags';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
@@ -44,21 +44,18 @@ export function useCompanySetup() {
   //states ---
   const [steps, setSteps] = useState<SetupStepType[]>([]);
   //Hooks ---
-  const { recruiter, loading: recruiterLoading } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { data: integrations, isLoading: integrationLoading } =
     useAllIntegrations();
   const { allMembers, isLoading: memberLoading } = useTenantMembers();
   const { data: compandDetails, isLoading: companySettingLoading } =
     useFetchcompanySetup();
 
-  const { isShowFeature } = useAuthDetails();
+  const { isShowFeature } = useFlags();
 
   //loading ---
   const isLoading =
-    recruiterLoading ||
-    memberLoading ||
-    integrationLoading ||
-    companySettingLoading;
+    memberLoading || integrationLoading || companySettingLoading;
 
   //checking --- jobs
   const isIntegrationsPresent =
@@ -234,7 +231,7 @@ export function useCompanySetup() {
 }
 
 const useFetchcompanySetup = () => {
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   return useQuery({
     queryKey: ['company_setup'],
     queryFn: () => fetchCompanySetup(recruiter_id ? recruiter_id : ''),

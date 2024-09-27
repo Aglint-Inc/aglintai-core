@@ -8,9 +8,10 @@ import { Info, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
+import { useFlags } from '@/company/hooks/useFlags';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRequests } from '@/context/RequestsContext';
+import { SafeObject } from '@/utils/safeObject';
 import { SafeObject } from '@/utils/safeObject';
 
 import RequestListContent from './RequestListContent';
@@ -22,7 +23,7 @@ const MainBody = () => {
     filters,
   } = useRequests();
   const { recruiter_user } = useTenant();
-  const { isShowFeature } = useAuthDetails();
+  const { isShowFeature } = useFlags();
   const [openChat, setOpenChat] = useState(
     localStorage.getItem('openChat') === 'true' && isShowFeature('AGENT')
       ? true

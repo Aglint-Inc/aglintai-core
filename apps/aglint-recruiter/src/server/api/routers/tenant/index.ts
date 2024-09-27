@@ -1,5 +1,6 @@
 import { createTRPCRouter } from '../../trpc';
 import { departmentsUsage } from './departmentsUsage';
+import { flags } from './flags';
 import { members } from './members';
 import { officeLocations } from './officeLocations';
 import { read } from './read';
@@ -13,4 +14,5 @@ export const tenant = createTRPCRouter({
   updateTenant,
   officeLocations,
   members,
+  flags,
 });

@@ -1,8 +1,8 @@
 import ReorderableInterviewPlan from '@components/reorderable-interview-plan';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 
+import { useFlags } from '@/company/hooks/useFlags';
 import { Loader } from '@/components/Common/Loader';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { Resume } from '@/jobs/job/application/components/Resume';
 import { Details } from '@/jobs/job/application/components/Scoring';
@@ -20,7 +20,7 @@ function ApplicationDetailComp() {
   const tab = router.queryParams.tab as TabsType;
   const application_id = router.params.application;
   const { isLoading } = useApplicationMeta();
-  const { isShowFeature } = useAuthDetails();
+  const { isShowFeature } = useFlags();
 
   if (isLoading) {
     return <Loader />;

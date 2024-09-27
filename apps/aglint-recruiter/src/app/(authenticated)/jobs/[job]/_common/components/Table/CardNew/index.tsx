@@ -1,7 +1,7 @@
 // import OptimisticWrapper from '@components/loadingWapper';
 import { memo, useCallback, useMemo } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useFlags } from '@/company/hooks/useFlags';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -33,7 +33,7 @@ const ApplicationCard = memo(
     const { setChecklist } = useApplicationsActions();
     const { isScoringEnabled } = useRolesAndPermissions();
     const { pressed: shift } = useKeyPress('Shift');
-    const { isShowFeature } = useAuthDetails();
+    const { isShowFeature } = useFlags();
     const isChecked = useMemo(
       () => checklist.includes(application.id),
       [application, checklist],

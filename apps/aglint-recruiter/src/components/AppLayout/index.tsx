@@ -12,9 +12,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { useTenant } from '@/company/hooks';
+import { useFlags } from '@/company/hooks/useFlags';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useMemberList } from '@/hooks/useMemberList';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import PERMISSIONS from '@/utils/routing/permissions';
 import ROUTES from '@/utils/routing/routes';
@@ -43,17 +43,11 @@ const DefaultCompanyLogo = () => (
 
 export default function AppLayout({ children, appRouter = false }) {
   const { checkPermissions } = useRolesAndPermissions();
-  const { isShowFeature, handleLogout } = useAuthDetails();
+  const { handleLogout } = useAuthDetails();
+  const { isShowFeature } = useFlags();
   const { recruiter, recruiter_user } = useTenant();
   const router = useRouterPro();
   const logo = recruiter?.logo;
-
-  const { data: members } = useMemberList();
-
-  const userDetails = members?.find(
-    (member) => member.user_id === recruiter_user.user_id,
-  );
-
   const isHorizontalNav = !isShowFeature('SCHEDULING');
 
   return (
@@ -94,7 +88,7 @@ export default function AppLayout({ children, appRouter = false }) {
               >
                 <Avatar className='h-[32px] w-[32px] cursor-pointer rounded-[4px]'>
                   <AvatarImage
-                    src={userDetails?.profile_image || ''}
+                    src={recruiter_user?.profile_image || ''}
                     alt='@shadcn'
                   />
                   <AvatarFallback className='rounded-[4px]'>
@@ -141,7 +135,7 @@ export default function AppLayout({ children, appRouter = false }) {
                     >
                       <Avatar className='h-[32px] w-[32px] cursor-pointer rounded-[4px]'>
                         <AvatarImage
-                          src={userDetails?.profile_image || ''}
+                          src={recruiter_user?.profile_image || ''}
                           alt='@shadcn'
                         />
                         <AvatarFallback className='rounded-[4px]'>
@@ -154,7 +148,8 @@ export default function AppLayout({ children, appRouter = false }) {
                 </TooltipTrigger>
                 <TooltipContent align='start' side='right'>
                   <p>
-                    {capitalizeAll(userDetails?.first_name) || 'Your profile'}
+                    {capitalizeAll(recruiter_user?.first_name) ||
+                      'Your profile'}
                   </p>
                 </TooltipContent>
               </Tooltip>

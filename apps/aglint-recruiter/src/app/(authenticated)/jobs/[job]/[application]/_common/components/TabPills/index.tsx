@@ -1,7 +1,7 @@
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useEffect } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useFlags } from '@/company/hooks/useFlags';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -14,7 +14,7 @@ function TabsComp() {
   const tab = router.queryParams.tab as TabsType;
 
   const { isScoringEnabled } = useRolesAndPermissions();
-  const { isShowFeature } = useAuthDetails();
+  const { isShowFeature } = useFlags();
 
   const job_id = router.params.job;
   const application_id = router.params.application;
