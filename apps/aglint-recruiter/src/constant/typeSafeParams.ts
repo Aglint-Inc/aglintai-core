@@ -15,7 +15,6 @@ export const TYPE_SAFE_PARAMS = {
     '/jobs/[job]/workflows/previousVersion/components': ['job'],
     '/jobs/[job]/workflows/previousVersion/contexts': ['job'],
     '/jobs/[job]/workflows/previousVersion/hooks': ['job'],
-    '/jobs/[job]/[application]': ['job', 'application'],
     '/requests/[request]': ['request'],
     '/user/[user]': ['user'],
     '/workflows/[workflow]': ['workflow'],

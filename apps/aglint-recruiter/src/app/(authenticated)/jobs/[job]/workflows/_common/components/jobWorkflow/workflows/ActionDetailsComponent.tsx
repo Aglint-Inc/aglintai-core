@@ -1,8 +1,9 @@
+import { type DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
+
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import { UIAlert } from '@/components/Common/UIAlert';
 import UITypography from '@/components/Common/UITypography';
-import { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 
 export type WActionProps =
   | {
@@ -40,8 +41,8 @@ type EmailTemplateProps = {
   targetAPI: DatabaseEnums['email_slack_types'];
   subject: string;
   body: string;
-  setBody: (body: string) => any;
-  setSubject: (body: string) => any;
+  setBody: (_body: string) => any;
+  setSubject: (_body: string) => any;
 };
 
 const EmailTemplate = ({

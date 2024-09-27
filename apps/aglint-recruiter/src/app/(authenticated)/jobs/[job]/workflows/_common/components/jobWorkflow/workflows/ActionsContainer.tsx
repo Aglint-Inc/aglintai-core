@@ -1,12 +1,13 @@
+import { type DatabaseTable } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
 
-import { DatabaseTable } from '@aglint/shared-types';
-import ActionDetailsComponent from './ActionDetailsComponent';
-import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 import {
   deleteWAcion,
   updateWAction,
 } from '@/job/workflows/contexts/workflowsStoreContext';
+import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
+
+import ActionDetailsComponent from './ActionDetailsComponent';
 
 const ActionsContainer = ({
   wAction,

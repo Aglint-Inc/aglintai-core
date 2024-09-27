@@ -4,22 +4,20 @@ import {
   AccordionTrigger,
 } from '@components/ui/accordion';
 import { Badge } from '@components/ui/badge';
-import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
 import { Switch } from '@components/ui/switch';
 import { Calendar, Clock, User, UserCheck } from 'lucide-react';
 
 import {
-  JobAutomationState,
-  updateWAction,
+  type JobAutomationState,
   updateWTrigger,
-  useJobAutomationStore,
 } from '@/job/workflows/contexts/workflowsStoreContext';
 import {
   type TriggerCategory,
   triggerToCategoryMap,
   triggerToQuestion,
 } from '@/job/workflows/lib/constants';
+
 import ActionsContainer from './ActionsContainer';
 import AddActionMenu from './AddActionMenu';
 
@@ -79,7 +77,7 @@ export const AutomationAccordion = ({
                     <div className='mt-2 space-y-4'>
                       {currentActions
                         .filter((act) => act.workflow_id === wTrigger.id)
-                        .map((action, actionIndex) => {
+                        .map((action) => {
                           return (
                             <ActionsContainer
                               key={action.id}

@@ -1,5 +1,5 @@
 import {
-  CustomAgentInstructionPayload,
+  type CustomAgentInstructionPayload,
   type DatabaseTable,
 } from '@aglint/shared-types';
 import {
@@ -178,7 +178,7 @@ const seedWorkFlow = async (
               },
             };
           } else if (action.action_type === 'agent_instruction') {
-            let ag_payload = action.payload as CustomAgentInstructionPayload;
+            const ag_payload = action.payload as CustomAgentInstructionPayload;
             payload = {
               agent: {
                 instruction: ag_payload.agent.instruction,

@@ -1,26 +1,17 @@
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@components/ui/accordion';
-import { Badge } from '@components/ui/badge';
-import { Button } from '@components/ui/button';
-import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from '@components/ui/card';
-import { Input } from '@components/ui/input';
-import { Label } from '@components/ui/label';
 import { ScrollArea } from '@components/ui/scroll-area';
-import { Textarea } from '@components/ui/textarea';
-import { Bot, Edit2, Mail, MessageSquare, Slack, Zap } from 'lucide-react';
+import { Zap } from 'lucide-react';
+
+import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
+
 import { useJobAutomationStore } from '../../contexts/workflowsStoreContext';
 import { triggerToQuestion } from '../../lib/constants';
-import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
 export const Summary = () => {
   const { jobWorkflowActions, jobWorkflowTriggers } = useJobAutomationStore();
@@ -108,39 +99,4 @@ const renderAIAutomationCTA = () => {
       </CardContent>
     </Card>
   );
-};
-
-const renderActionBadge = (type: string) => {
-  switch (type) {
-    case 'email':
-      return (
-        <Badge variant='secondary' className='bg-blue-100 text-blue-800'>
-          <Mail className='mr-1 h-3 w-3' />
-          {type}
-        </Badge>
-      );
-    case 'slack':
-      return (
-        <Badge variant='secondary' className='bg-green-100 text-green-800'>
-          <Slack className='mr-1 h-3 w-3' />
-          {type}
-        </Badge>
-      );
-    case 'message':
-      return (
-        <Badge variant='secondary' className='bg-yellow-100 text-yellow-800'>
-          <MessageSquare className='mr-1 h-3 w-3' />
-          {type}
-        </Badge>
-      );
-    case 'ai':
-      return (
-        <Badge variant='secondary' className='bg-purple-100 text-purple-800'>
-          <Bot className='mr-1 h-3 w-3' />
-          {type}
-        </Badge>
-      );
-    default:
-      return null;
-  }
 };
