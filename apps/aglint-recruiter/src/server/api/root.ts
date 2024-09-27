@@ -37,7 +37,6 @@ export const appRouter = createTRPCRouter({
   workflows,
   get_last_login,
   user,
-  get_members_with_role,
   rolesAndPermissions,
 });
 

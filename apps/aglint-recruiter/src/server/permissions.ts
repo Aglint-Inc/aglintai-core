@@ -19,6 +19,5 @@ export const API_PERMISSIONS: ApiPermissions = {
     update_current_user: ['authorized'],
     get_oauth_user: ['authorized'],
   },
-  get_members_with_role: ['view_users'],
   rolesAndPermissions: [],
 };
