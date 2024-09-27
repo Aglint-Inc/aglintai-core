@@ -3,8 +3,10 @@ import { Card } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import { Textarea } from '@components/ui/textarea';
 import { cn } from '@lib/utils';
-import { updateRequestNotes } from '@requests/functions';
-import { useRequestNotes } from '@requests/hooks';
+import {
+  useReadNotes,
+  useUpdateRequestNote,
+} from '@requests/hooks/useRequestNotes';
 import debounce from 'lodash/debounce';
 import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -15,16 +17,11 @@ function RequestNotes() {
   const params = useParams();
   const requestId = params?.request as string;
 
-  const {
-    data: requestNotes,
-    isFetched,
-    refetch,
-  } = useRequestNotes({
+  const { data: requestNotes, isFetched } = useReadNotes({
     request_id: requestId,
   });
   const [note, setNote] = useState('');
   const [editorEnabled, setEditorEnabled] = useState(false);
-  const [saving, setSaving] = useState(false);
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
@@ -32,17 +29,22 @@ function RequestNotes() {
       setNote(requestNotes?.[0]?.note || '');
     }
   }, [isFetched]);
-
+  const { updateRequestNote, isPending } = useUpdateRequestNote();
   const debouncedUpsertRequestNotes = useCallback(
-    debounce(async (noteValue, request_id) => {
-      await updateRequestNotes({
-        id: request_id as string,
+    debounce(async (noteValue: string, noteId?: string) => {
+      // await updateRequestNotes({
+      //   id: request_id as string,
+      //   note: noteValue,
+      //   request_id: requestId,
+      //   updated_at: dayjsLocal().toISOString(),
+      // });
+      const payload = {
+        id: noteId,
         note: noteValue,
         request_id: requestId,
-        updated_at: dayjsLocal().toISOString(),
-      });
-      setSaving(false);
-      refetch();
+      };
+      if (!noteId) delete payload.id;
+      updateRequestNote(payload);
     }, 500),
     [],
   );
@@ -78,7 +80,6 @@ function RequestNotes() {
                     value={note || ''}
                     onChange={async (e) => {
                       setNote(e.target.value);
-                      setSaving(true);
                       debouncedUpsertRequestNotes(
                         e.target.value,
                         requestNotes?.[0]?.id,
@@ -117,7 +118,7 @@ function RequestNotes() {
                   'hh:mm A, MMM DD',
                 )}
           </p>
-          {saving && <p className='text-xs text-neutral-500'>Saving...</p>}
+          {isPending && <p className='text-xs text-neutral-500'>Saving...</p>}
         </div>
       </Card>
     </div>
