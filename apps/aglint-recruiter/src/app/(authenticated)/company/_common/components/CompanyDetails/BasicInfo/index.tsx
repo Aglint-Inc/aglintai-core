@@ -1,8 +1,8 @@
 import { PencilIcon } from 'lucide-react';
 import { useState } from 'react';
 
-import { SectionCard } from '@/authenticated/components/SectionCard';
 import { UIButton } from '@/components/Common/UIButton';
+import UISectionCard from '@/components/Common/UISectionCard';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 
@@ -22,10 +22,10 @@ export const BasicInfo = () => {
         setEditDialog={setEditDrawer}
       />
 
-      <SectionCard
+      <UISectionCard
         title='Basic company Details'
         description='Edit company name, Add and edit social links and more.'
-        topAction={
+        action={
           !isFormDisabled && (
             <UIButton
               variant='outline'
@@ -39,7 +39,7 @@ export const BasicInfo = () => {
         }
       >
         <BasicInfoUI recruiter={recruiter} />
-      </SectionCard>
+      </UISectionCard>
     </>
   );
 };

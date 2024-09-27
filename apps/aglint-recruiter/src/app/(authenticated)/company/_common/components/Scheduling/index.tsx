@@ -10,7 +10,7 @@ dayjs.extend(timezone);
 import { type schedulingSettingType } from '@aglint/shared-types';
 
 import InterviewLimitInput from '@/authenticated/components/InterviewLoad';
-import { SectionCard } from '@/authenticated/components/SectionCard';
+import UISectionCard from '@/components/Common/UISectionCard';
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import KeywordSection from '../../../../_common/components/KeywordSection';
@@ -237,56 +237,66 @@ function SchedulingSettings({ updateSettings }) {
     },
   ];
   return (
-    <div className='flex flex-col'>
-      {dailyLmit.type && weeklyLmit.type && (
-        <SectionCard
-          title=' Interview Load'
-          description='Setup maximum interviews per day and week.'
-        >
-          <div className='space-y-2'>
-            <InterviewLimitInput
-              value={dailyLmit.value}
-              max={dailyLmit.max}
-              type={dailyLmit.type}
-              onValueChange={handleDailyValue}
-              onTypeChange={handleType}
-            />
-            <InterviewLimitInput
-              value={weeklyLmit.value}
-              max={weeklyLmit.max}
-              type={weeklyLmit.type}
-              onValueChange={handleWeeklyValue}
-              onTypeChange={handleType}
-            />
-          </div>
-        </SectionCard>
-      )}
-      <SectionCard
-        title='Debrief Defaults'
-        description='Setup a default company wide setting for scheduling debrief sessions.'
-      >
-        <DebriefDefaults
-          value={debriefDefaults}
-          setValue={setDebriefDefaults}
-        />
-      </SectionCard>
-
-      {keywords.map((keyword) => {
-        return (
-          <>
-            <SectionCard
-              key={keyword.title}
-              title={keyword.title}
-              description={keyword.description}
+    <div>
+      <div className='flex flex-col'>
+        <div className='mb-6'>
+          <h2 className='mb-1 text-xl font-semibold'>Scheduling Information</h2>
+          <p className='text-gray-600'>
+            Update the settings here changes will be saved automatically.
+          </p>
+        </div>
+        <div className='flex flex-col gap-5'>
+          {dailyLmit.type && weeklyLmit.type && (
+            <UISectionCard
+              title=' Interview Load'
+              description='Setup maximum interviews per day and week.'
             >
-              <KeywordSection
-                keywords={keyword.value}
-                setKeywords={keyword.handleChange}
-              />
-            </SectionCard>
-          </>
-        );
-      })}
+              <div className='space-y-2'>
+                <InterviewLimitInput
+                  value={dailyLmit.value}
+                  max={dailyLmit.max}
+                  type={dailyLmit.type}
+                  onValueChange={handleDailyValue}
+                  onTypeChange={handleType}
+                />
+                <InterviewLimitInput
+                  value={weeklyLmit.value}
+                  max={weeklyLmit.max}
+                  type={weeklyLmit.type}
+                  onValueChange={handleWeeklyValue}
+                  onTypeChange={handleType}
+                />
+              </div>
+            </UISectionCard>
+          )}
+          <UISectionCard
+            title='Debrief Defaults'
+            description='Setup a default company wide setting for scheduling debrief sessions.'
+          >
+            <DebriefDefaults
+              value={debriefDefaults}
+              setValue={setDebriefDefaults}
+            />
+          </UISectionCard>
+
+          {keywords.map((keyword) => {
+            return (
+              <>
+                <UISectionCard
+                  key={keyword.title}
+                  title={keyword.title}
+                  description={keyword.description}
+                >
+                  <KeywordSection
+                    keywords={keyword.value}
+                    setKeywords={keyword.handleChange}
+                  />
+                </UISectionCard>
+              </>
+            );
+          })}
+        </div>{' '}
+      </div>
     </div>
   );
 }
