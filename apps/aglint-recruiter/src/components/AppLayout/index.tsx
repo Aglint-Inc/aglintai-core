@@ -11,13 +11,13 @@ import { LogOut, Settings } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { useLogout } from '@/authenticated/hooks/useLogout';
 import { useTenant } from '@/company/hooks';
 import { useFlags } from '@/company/hooks/useFlags';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import PERMISSIONS from '@/utils/routing/permissions';
 import ROUTES from '@/utils/routing/routes';
-import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { NotFound } from '../Common/404';
@@ -43,21 +43,12 @@ const DefaultCompanyLogo = () => (
 
 export default function AppLayout({ children }) {
   const { checkPermissions } = useRolesAndPermissions();
-  const { superPush } = useRouterPro();
+  const { logout } = useLogout();
   const { isShowFeature } = useFlags();
   const { recruiter, recruiter_user } = useTenant();
   const router = useRouterPro();
   const logo = recruiter?.logo;
   const isHorizontalNav = !isShowFeature('SCHEDULING');
-
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut({
-      scope: 'local',
-    });
-    if (!error) {
-      superPush('/login');
-    }
-  };
 
   return (
     <>
@@ -164,7 +155,7 @@ export default function AppLayout({ children }) {
               </Tooltip>
               <Tooltip>
                 <TooltipTrigger>
-                  <Button variant='link' onClick={handleLogout}>
+                  <Button variant='link' onClick={logout}>
                     <LogOut className='h-5 w-5' strokeWidth={1.5} />
                   </Button>
                 </TooltipTrigger>
