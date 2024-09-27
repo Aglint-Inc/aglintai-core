@@ -9,5 +9,5 @@ export const Badge = () => {
   if (data?.processing_status !== 'success' || data?.resume_score === undefined)
     return null;
 
-  return <ScoreTag score={Number(data?.activity_count)} />;
+  return <ScoreTag score={Number(data?.resume_score)} />;
 };
