@@ -1,4 +1,3 @@
-import { useToast } from '@components/hooks/use-toast';
 import {
   Tooltip,
   TooltipContent,
@@ -18,9 +17,7 @@ import {
   Workflow,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect } from 'react';
 
-import { useTenant } from '@/company/hooks';
 import { useFlags } from '@/company/hooks/useFlags';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -29,27 +26,9 @@ import { type LinkProps } from './type';
 import { navList } from './utils';
 
 function SideNavbar() {
-  const router = useRouterPro();
-  const pathName = router.pathName;
   const { checkPermissions } = useRolesAndPermissions();
-  const { toast } = useToast();
-  const { isShowFeature } = useFlags();
-  const { userPermissions } = useTenant();
-  useEffect(() => {
-    const tempR = navList.find((item) => {
-      return pathName?.includes(item.route.split('?')[0]);
-    })?.permission;
 
-    // if (tempR && !checkPermissions(tempR)) {
-    //   toast({
-    //     variant: 'destructive',
-    //     title: 'Access Denied',
-    //     description:
-    //       'This section of the application is not accessible to you.',
-    //   });
-    //   router.back();
-    // }
-  }, [pathName, checkPermissions, router, toast]);
+  const { isShowFeature } = useFlags();
 
   return (
     <div className='flex w-16 flex-col items-center space-y-3 p-4'>
