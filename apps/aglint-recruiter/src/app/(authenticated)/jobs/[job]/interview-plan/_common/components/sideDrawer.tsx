@@ -355,7 +355,9 @@ const CreateDebrief = ({
   const { handleCreateDebriefSession } = useJobInterviewPlan();
   const [fields, setFields] = useState(
     getDebriefFields(initialDebriefFields, {
+      // @ts-ignore
       members_meta: recruiter?.scheduling_settings?.debrief_defaults,
+      // TODO: fix with null checks
     }),
   );
   const { toast } = useToast();

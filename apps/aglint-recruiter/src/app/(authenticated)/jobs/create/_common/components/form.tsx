@@ -135,7 +135,9 @@ JobCompany.displayName = 'JobCompany';
 const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
   const { recruiter } = useTenant();
   const options = (recruiter?.office_locations ?? []).map((s) => ({
+    // @ts-ignore
     name: formatOfficeLocation(s),
+    // TODO: fix with null checks
     value: s.id,
   }));
   return (
