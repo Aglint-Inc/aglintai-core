@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@components/ui/card';
-import { Check, CheckCircle2, Circle } from 'lucide-react';
+import { CheckCircle2, Circle } from 'lucide-react';
 
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
@@ -31,17 +31,6 @@ export function SetupCard({
   navLink,
 }: SetupCardProps) {
   const router = useRouterPro();
-
-  const renderBulletPoint = (point: string, isFeature: boolean = false) => (
-    <li className='flex items-start space-x-2'>
-      {isFeature ? (
-        <Check className='text-success mt-0.5 h-5 w-5 flex-shrink-0' />
-      ) : (
-        <Circle className='mt-2 h-2 w-2 flex-shrink-0 text-muted-foreground' />
-      )}
-      <span>{point}</span>
-    </li>
-  );
 
   return (
     <Card className='h-full w-full border-none bg-gray-50'>
@@ -97,13 +86,23 @@ export function SetupCard({
           </h3>
         </div>
         <ul className='space-y-2 text-foreground'>
-          {bulletPoints.map((point) => renderBulletPoint(point))}
+          {bulletPoints.map((point) => (
+            <li key={point} className='flex items-start space-x-2'>
+              <Circle className='mt-2 h-2 w-2 flex-shrink-0 text-muted-foreground' />
+              <span>{point}</span>
+            </li>
+          ))}
         </ul>
         {scoringPoints && scoringPoints.length > 0 && (
           <div className='mt-8'>
             <h4 className='mb-2 font-semibold text-foreground'>Scoring:</h4>
             <ul className='space-y-2 text-foreground'>
-              {scoringPoints.map((point) => renderBulletPoint(point, true))}
+              {scoringPoints.map((point) => (
+                <li key={point} className='flex items-start space-x-2'>
+                  <Circle className='mt-2 h-2 w-2 flex-shrink-0 text-muted-foreground' />
+                  <span>{point}</span>
+                </li>
+              ))}
             </ul>
           </div>
         )}

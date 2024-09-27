@@ -15,6 +15,7 @@ import {
 import { UIButton } from '@/components/Common/UIButton';
 
 import { SetupCard } from './SetupCard';
+import UITabs from '@/components/Common/UITabs';
 
 export const OnboardPending = () => {
   const { isCompanySetupPending, companySetupProgress, companySetupSteps } =
@@ -64,6 +65,23 @@ export const OnboardPending = () => {
     }
   };
 
+  const tabs = companySetupSteps.map((step, i) => ({
+    id: step.id,
+    name: step.title,
+
+    iconComp: (
+      <div
+        className={`flex h-4 w-4 items-center justify-center rounded-full ${step.isCompleted ? 'bg-green-500' : 'bg-transparent'}`}
+      >
+        {step.isCompleted ? (
+          <Check className='text-white' size={12} />
+        ) : (
+          <AlertCircle className='text-gray-500' size={15} />
+        )}
+      </div>
+    ),
+  }));
+
   if (companySetupSteps?.length && isCompanySetupPending)
     return (
       <div className='fixed bottom-4 right-4 z-50'>
@@ -73,7 +91,7 @@ export const OnboardPending = () => {
           </Button>
         )}
         {isOpen && (
-          <Card className='w-[800px] shadow-lg'>
+          <Card className='w-[900px] shadow-lg'>
             <CardHeader className='flex flex-col space-y-1.5 pb-4'>
               <div className='flex items-center justify-between'>
                 <CardTitle className='text-xl font-semibold'>
@@ -93,22 +111,25 @@ export const OnboardPending = () => {
               </p>
             </CardHeader>
             <CardContent className='p-4'>
-              <div className='grid gap-6 md:grid-cols-3'>
-                <div className='space-y-2 md:col-span-1'>
-                  {companySetupSteps.map((step, i) => (
-                    <NavList
-                      key={i}
-                      selectedStep={selectedStep}
-                      step={step}
-                      onClick={() => {
-                        setSelectedIndex(i);
-                        setSelectedStep(step);
-                      }}
-                    />
-                  ))}
+              <div className='grid gap-6 md:grid-cols-12'>
+                <div className='space-y-2 md:col-span-4'>
+                  <UITabs
+                    tabs={tabs}
+                    defaultValue={selectedStep?.id}
+                    vertical
+                    onClick={(value) => {
+                      const step = companySetupSteps.find(
+                        (compStep) => compStep.id === value,
+                      );
+                      const stepIndex = companySetupSteps.findIndex(
+                        (compStep) => compStep.id === value,
+                      );
+                      setSelectedIndex(stepIndex);
+                      setSelectedStep(step);
+                    }}
+                  />
                 </div>
-
-                <div className='h-full md:col-span-2'>
+                <div className='h-full md:col-span-8'>
                   {selectedStep && <Content selectedStep={selectedStep} />}
                 </div>
               </div>
