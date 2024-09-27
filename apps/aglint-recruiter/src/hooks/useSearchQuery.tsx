@@ -7,7 +7,7 @@ export function useSearchQuery<
   const router = useRouter();
   const pathName = usePathname();
   const queryParams = {} as T;
-  for (const [key, value] of searchParams.entries()) {
+  for (const [key, value] of searchParams?.entries() || []) {
     (queryParams as any)[String(key)] = value;
   }
   const setQueryParams = (data: Partial<T>) => {

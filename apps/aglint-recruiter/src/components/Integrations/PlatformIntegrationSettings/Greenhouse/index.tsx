@@ -10,7 +10,10 @@ import { Lightbulb, Loader2 } from 'lucide-react';
 import React from 'react';
 
 import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useGreenhouseDetails } from '@/queries/greenhouse';
+import {
+  useGreenhouseDetails,
+  useUpdateGreenhouseDetails,
+} from '@/queries/greenhouse';
 import { api } from '@/trpc/client';
 
 dayjs.extend(relativeTime);
@@ -19,7 +22,9 @@ function GreenhouseSettings() {
   const { recruiter } = useAuthDetails();
   const { mutateAsync: getGreenhouseSync } =
     api.ats.greenhouse.fullSync.useMutation();
-  const { data, isPending, setOptions, refetch } = useGreenhouseDetails();
+  const { data, isPending, refetch } = useGreenhouseDetails();
+  const { setGreenhouseDetails: setOptions } = useUpdateGreenhouseDetails();
+
   const timeStamp = data && data.last_sync['full_sync'];
   const last_sync = timeStamp ? dayjs(timeStamp).fromNow() : 'Never';
 

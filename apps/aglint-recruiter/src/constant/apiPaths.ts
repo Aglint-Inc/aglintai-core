@@ -130,7 +130,6 @@ export const API_PATHS = [
   '/api/candidate_portal/get_profile',
   '/api/candidate_portal/home_page',
   '/api/candidate_portal/update_profile',
-  '/api/integrations/greenhouse',
   '/api/trpc/[trpc]',
   '/api/emails/mail/InterviewCancelReq_email_recruiter',
   '/api/emails/mail/agent_email_candidate',
