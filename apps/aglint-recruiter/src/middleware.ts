@@ -27,9 +27,10 @@ export async function middleware(req: NextRequest) {
 
   // 2. Check if the current route is protected or public
   const path = req.nextUrl.pathname;
-  const isPublicRoute = publicRoutes.includes(
-    path as (typeof publicRoutes)[number],
-  );
+  const isPublicRoute =
+    publicRoutes.includes(path as (typeof publicRoutes)[number]) ||
+    dynamicPublicRoutes.some((regex) => regex.test(path));
+
   const supabase = createPrivateClient();
   const { data, error } = await supabase.auth.getSession();
   if (error) NextResponse.redirect(new URL('/', req.nextUrl));
@@ -65,3 +66,10 @@ export const config = {
     '/((?!_next/static|_next/image|favicon.ico|.*.svg$|sitemap.xml|robots.txt).*)',
   ],
 };
+
+const dynamicPublicRoutes = [
+  /^\/scheduling\/invite\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
+  /^\/scheduling\/request-availability\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
+  /^\/company-postings\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
+  /^\/job-post\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
+];

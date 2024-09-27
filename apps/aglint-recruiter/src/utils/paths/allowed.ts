@@ -3,22 +3,18 @@ import { type PATHS } from '@/constant/allPaths';
 import { cronPaths } from './cron';
 type t = (typeof PATHS)[number];
 export const allowedPaths = new Set<t>([
-  '/company-postings/[id]',
   '/dashboards',
   '/dashboards/interviewer',
   '/forgot-password',
-  '/job-post/[id]',
   '/login',
   '/portal',
   '/reset-password',
-  '/scheduling/invite/[id]',
-  '/scheduling/request-availability/[request_id]',
   '/signup',
   '/api/testx',
   '/login',
   '/signup',
   '/api/signup',
-  '/forgot-passwor',
+  '/forgot-password',
   '/api/auth/send-reset-email',
   '/api/pre-seed',
   '/api/unauthorized',

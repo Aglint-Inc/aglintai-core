@@ -1,4 +1,3 @@
-import { createClient } from '@supabase/supabase-js';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import timezone from 'dayjs/plugin/timezone';
@@ -10,13 +9,12 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 
-import { type DatabaseTable, type DB } from '@aglint/shared-types';
-import { type SessionsCombType } from '@aglint/shared-types';
+import {
+  type DatabaseTable,
+  type SessionsCombType,
+} from '@aglint/shared-types';
 
-const supabase = createClient<DB>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY,
-);
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export type BodyParamsCandidateInvite = {
   application_id: string;
@@ -87,7 +85,8 @@ const getScheduleDetails = async (
   application_id: string,
   filter_id: string,
 ) => {
-  const { data: sch, error: errSch } = await supabase
+  const db = getSupabaseServer();
+  const { data: sch, error: errSch } = await db
     .from('applications')
     .select(
       '*, public_jobs(id,job_title,recruiter_id),candidates(*,recruiter(id,logo,name)),candidate_files(id,file_url,candidate_id,resume_json,type),interview_filter_json(*)',
@@ -106,7 +105,8 @@ const getScheduleDetails = async (
 };
 
 const getInterviewSessionsMeetings = async (session_ids: string[]) => {
-  const { data: intSes, error: errSes } = await supabase
+  const db = getSupabaseServer();
+  const { data: intSes, error: errSes } = await db
     .from('interview_session')
     .select('*,interview_meeting(*)')
     .in('id', session_ids)
