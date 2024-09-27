@@ -198,6 +198,7 @@ async function mapSaveInterviewPlans(
           session_duration: session.estimated_minutes,
           session_order: index,
           session_type: 'panel',
+          recruiter_id,
         } as DatabaseTableInsert['interview_session'];
       });
     })
