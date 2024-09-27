@@ -95,90 +95,110 @@ export const OnboardPending = () => {
               <div className='grid gap-6 md:grid-cols-3'>
                 <div className='space-y-2 md:col-span-1'>
                   {companySetupSteps.map((step, i) => (
-                    <div
-                      key={step.id}
-                      className={`flex cursor-pointer items-center gap-2 rounded-lg p-2 transition-all ${
-                        selectedStep?.id === step.id
-                          ? 'bg-primary/10'
-                          : 'hover:bg-secondary'
-                      }`}
+                    <NavList
+                      key={i}
+                      selectedStep={selectedStep}
+                      step={step}
                       onClick={() => {
                         setSelectedIndex(i);
                         setSelectedStep(step);
                       }}
-                    >
-                      <div
-                        className={`flex h-4 w-4 items-center justify-center rounded-full ${step.isCompleted ? 'bg-green-500' : 'bg-transparent'}`}
-                      >
-                        {step.isCompleted ? (
-                          <Check className='text-white' size={12} />
-                        ) : (
-                          <AlertCircle className='text-gray-500' size={15} />
-                        )}
-                      </div>
-                      <h3
-                        className={`text-sm font-medium ${step.isCompleted ? 'text-muted-foreground' : ''}`}
-                      >
-                        {step.title}
-                      </h3>
-                    </div>
+                    />
                   ))}
                 </div>
-                {selectedStep && (
-                  <>
-                    <div className='rounded-lg bg-secondary p-4 md:col-span-2'>
-                      <h2 className='mb-2 text-lg font-semibold'>
-                        {selectedStep.title}
-                      </h2>
-                      {selectedStep.isCompleted ? (
-                        <>Setup Completed</>
-                      ) : (
-                        <>
-                          <p className='mb-4 text-muted-foreground'>
-                            {selectedStep.description}
-                          </p>
-                          <div className='space-y-4'>
-                            <p className='text-sm'>
-                              Complete this step to progress in your onboarding
-                              process.
-                            </p>
-                            <Link
-                              href={selectedStep.navLink}
-                              className='inline-block'
-                            >
-                              <Button variant='secondary'>
-                                Go to {selectedStep.title}
-                              </Button>
-                            </Link>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </>
-                )}
+
+                <div className='rounded-lg bg-secondary p-4 md:col-span-2'>
+                  {selectedStep && <Content selectedStep={selectedStep} />}
+                </div>
               </div>
             </CardContent>
-            <div className='flex justify-between border-t p-4'>
-              <Button
-                variant='outline'
-                size='sm'
-                onClick={goToPreviousStep}
-                disabled={selectedIndex === 0}
-              >
-                <ArrowLeft className='mr-2 h-4 w-4' /> Previous
-              </Button>
-              <Button
-                size='sm'
-                onClick={goToNextStep}
-                disabled={selectedIndex === companySetupSteps.length - 1}
-              >
-                Next <ArrowRight className='ml-2 h-4 w-4' />
-              </Button>
-            </div>
+            <Footer
+              goToPreviousStep={goToPreviousStep}
+              goToNextStep={goToNextStep}
+              companySetupSteps={companySetupSteps}
+              selectedIndex={selectedIndex}
+            />
           </Card>
         )}
       </div>
     );
 
   return <></>;
+};
+
+const Footer = ({
+  goToPreviousStep,
+  goToNextStep,
+  companySetupSteps,
+  selectedIndex,
+}) => {
+  return (
+    <div className='flex justify-between border-t p-4'>
+      <Button
+        variant='outline'
+        size='sm'
+        onClick={goToPreviousStep}
+        disabled={selectedIndex === 0}
+      >
+        <ArrowLeft className='mr-2 h-4 w-4' /> Previous
+      </Button>
+      <Button
+        size='sm'
+        onClick={goToNextStep}
+        disabled={selectedIndex === companySetupSteps.length - 1}
+      >
+        Next <ArrowRight className='ml-2 h-4 w-4' />
+      </Button>
+    </div>
+  );
+};
+const Content = ({ selectedStep }) => {
+  return (
+    <>
+      <h2 className='mb-2 text-lg font-semibold'>{selectedStep.title}</h2>
+      {selectedStep.isCompleted ? (
+        <>Setup Completed</>
+      ) : (
+        <>
+          <p className='mb-4 text-muted-foreground'>
+            {selectedStep.description}
+          </p>
+          <div className='space-y-4'>
+            <p className='text-sm'>
+              Complete this step to progress in your onboarding process.
+            </p>
+            <Link href={selectedStep.navLink} className='inline-block'>
+              <Button variant='secondary'>Go to {selectedStep.title}</Button>
+            </Link>
+          </div>
+        </>
+      )}
+    </>
+  );
+};
+const NavList = ({ step, selectedStep, onClick }) => {
+  return (
+    <div
+      key={step.id}
+      className={`flex cursor-pointer items-center gap-2 rounded-lg p-2 transition-all ${
+        selectedStep?.id === step.id ? 'bg-primary/10' : 'hover:bg-secondary'
+      }`}
+      onClick={onClick}
+    >
+      <div
+        className={`flex h-4 w-4 items-center justify-center rounded-full ${step.isCompleted ? 'bg-green-500' : 'bg-transparent'}`}
+      >
+        {step.isCompleted ? (
+          <Check className='text-white' size={12} />
+        ) : (
+          <AlertCircle className='text-gray-500' size={15} />
+        )}
+      </div>
+      <h3
+        className={`text-sm font-medium ${step.isCompleted ? 'text-muted-foreground' : ''}`}
+      >
+        {step.title}
+      </h3>
+    </div>
+  );
 };
