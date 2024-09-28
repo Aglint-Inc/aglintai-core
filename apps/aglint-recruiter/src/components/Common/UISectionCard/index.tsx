@@ -12,6 +12,7 @@ interface InfoCardProps {
   isLoading?: boolean;
   emptyStateIcon?: React.ReactNode;
   emptyStateHeading?: string;
+  isHoverEffect?: boolean;
   emptyStateMessage?: string;
   type?: 'graph' | 'info';
 }
@@ -23,6 +24,7 @@ export default function UISectionCard({
   descriptionAddon,
   action,
   children,
+  isHoverEffect = true,
   isLoading = false,
   emptyStateIcon,
   emptyStateHeading,
@@ -52,7 +54,7 @@ export default function UISectionCard({
           </div>
           {action && (
             <div
-              className={`ml-4 flex-shrink-0 ${isHover ? 'opacity-100' : 'opacity-0'} transition`}
+              className={`ml-4 flex-shrink-0 ${isHover || !isHoverEffect ? 'opacity-100' : 'opacity-0'} transition`}
             >
               {action}
             </div>
