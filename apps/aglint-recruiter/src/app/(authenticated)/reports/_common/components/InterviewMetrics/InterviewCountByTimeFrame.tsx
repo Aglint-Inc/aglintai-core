@@ -3,12 +3,13 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@components/ui/chart';
-import { ToggleGroup, ToggleGroupItem } from '@components/ui/toggle-group';
+import { TabsList, TabsTrigger } from '@components/ui/tabs';
+import { Tabs } from '@radix-ui/react-tabs';
 import { useState } from 'react';
 import { Cell, Pie, PieChart } from 'recharts';
 import { useInterviewCount } from 'src/app/(authenticated)/reports/_common/hook/interview/interview.hook';
 
-import ReportCard from '@/components/Common/ReportBlocks/ReportCard';
+import UISectionCard from '@/components/Common/UISectionCard';
 
 export default function InterviewCountByTimeFrame() {
   const [timeFrame, setTimeFrame] = useState<
@@ -16,12 +17,22 @@ export default function InterviewCountByTimeFrame() {
   >('day');
   const { average, isFetching, isError } = useInterviewCount(timeFrame);
   return (
-    <ReportCard
+    <UISectionCard
       title={'Interview Count'}
-      isEmpty={!average?.length}
-      error={isError ? 'Error fetching data' : undefined}
+      isHoverEffect={false}
+      emptyStateMessage={
+        !average?.length ? (
+          <div className='flex h-[100px] items-center justify-center text-muted-foreground'>
+            No data available
+          </div>
+        ) : isError ? (
+          'Error fetching data'
+        ) : (
+          ''
+        )
+      }
       isLoading={isFetching}
-      headerSlot={
+      action={
         <TimeFrameToggle
           value={timeFrame}
           onValueChange={(value) =>
@@ -90,7 +101,7 @@ export default function InterviewCountByTimeFrame() {
           </div>
         ))}
       </div>
-    </ReportCard>
+    </UISectionCard>
   );
 }
 
@@ -102,14 +113,16 @@ interface TimeFrameToggleProps {
 
 const TimeFrameToggle = ({ value, onValueChange }: TimeFrameToggleProps) => {
   return (
-    <div className='mb-4 flex items-center justify-between'>
+    <div className='flex items-center justify-between gap-3'>
       <h2 className='text-md font-semibold'>Interview Count</h2>
-      <ToggleGroup type='single' value={value} onValueChange={onValueChange}>
-        <ToggleGroupItem value='today'>Today</ToggleGroupItem>
-        <ToggleGroupItem value='day'>Day</ToggleGroupItem>
-        <ToggleGroupItem value='week'>Week</ToggleGroupItem>
-        <ToggleGroupItem value='month'>Month</ToggleGroupItem>
-      </ToggleGroup>
+      <Tabs value={value} onValueChange={onValueChange}>
+        <TabsList>
+          <TabsTrigger value='today'>Today</TabsTrigger>
+          <TabsTrigger value='day'>Day</TabsTrigger>
+          <TabsTrigger value='week'>Week</TabsTrigger>
+          <TabsTrigger value='month'>Month</TabsTrigger>
+        </TabsList>
+      </Tabs>
     </div>
   );
 };

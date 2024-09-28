@@ -12,7 +12,7 @@ import {
 } from 'recharts';
 import { useDeclineCount } from 'src/app/(authenticated)/reports/_common/hook/interview/interview.hook';
 
-import ReportCard from '@/components/Common/ReportBlocks/ReportCard';
+import UISectionCard from '@/components/Common/UISectionCard';
 
 const chartConfig = {
   // desktop: {
@@ -25,12 +25,22 @@ export default function DeclineLeadTimeChart() {
   const { average, scatterData, isFetching, isError } = useDeclineCount();
   const averageLeadTime = average || 0;
   return (
-    <ReportCard
+    <UISectionCard
       title={'Decline lead time'}
-      isEmpty={!scatterData.filter((item) => item.cancelled).length}
-      error={isError ? 'Error fetching data' : undefined}
+      emptyStateMessage={
+        !scatterData.filter((item) => item.cancelled).length ? (
+          <div className='flex h-[100px] items-center justify-center text-muted-foreground'>
+            No data available
+          </div>
+        ) : isError ? (
+          'Error fetching data'
+        ) : (
+          ''
+        )
+      }
       isLoading={isFetching}
-      headerSlot={
+      isHoverEffect={false}
+      action={
         <div className='flex flex-row items-center justify-between gap-2 space-y-0 pb-2'>
           <div>
             <p className='text-sm text-muted-foreground'>
@@ -67,6 +77,6 @@ export default function DeclineLeadTimeChart() {
           <Scatter data={scatterData} fill='#22c55e' />
         </ScatterChart>
       </ChartContainer>
-    </ReportCard>
+    </UISectionCard>
   );
 }

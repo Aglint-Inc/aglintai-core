@@ -1,6 +1,6 @@
-import { Button } from '@components/ui/button';
 import { type ChartConfig, ChartContainer } from '@components/ui/chart';
-import React, { useState } from 'react';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { useState } from 'react';
 import {
   CartesianGrid,
   Line,
@@ -10,7 +10,7 @@ import {
   YAxis,
 } from 'recharts';
 
-import ReportCard from '@/components/Common/ReportBlocks/ReportCard';
+import UISectionCard from '@/components/Common/UISectionCard';
 
 import { useCandidateExp } from '../../hook/job/jobMatrix';
 
@@ -26,26 +26,31 @@ export default function CandidatesByExperienceChart() {
   const { data, isFetching, isError } = useCandidateExp();
 
   return (
-    <ReportCard
+    <UISectionCard
       title={'Candidates By'}
-      isEmpty={!data?.[view]}
-      error={isError ? 'Error fetching data' : undefined}
+      emptyStateMessage={
+        !data?.[view] ? (
+          <div className='flex h-[100px] items-center justify-center text-muted-foreground'>
+            No data available
+          </div>
+        ) : isError ? (
+          'Error fetching data'
+        ) : (
+          ''
+        )
+      }
       isLoading={isFetching}
-      headerSlot={
-        <div className='flex space-x-2'>
-          <Button
-            variant={view === 'Experience' ? 'default' : 'outline'}
-            onClick={() => setView('Experience')}
-          >
-            Experience
-          </Button>
-          <Button
-            variant={view === 'Tenure' ? 'default' : 'outline'}
-            onClick={() => setView('Tenure')}
-          >
-            Tenure
-          </Button>
-        </div>
+      isHoverEffect={false}
+      action={
+        <Tabs
+          value={view}
+          onValueChange={(value) => setView(value as typeof view)}
+        >
+          <TabsList>
+            <TabsTrigger value={'Experience'}>Experience</TabsTrigger>
+            <TabsTrigger value={'Tenure'}>Tenure</TabsTrigger>
+          </TabsList>
+        </Tabs>
       }
     >
       <ChartContainer
@@ -88,6 +93,6 @@ export default function CandidatesByExperienceChart() {
           />
         </LineChart>
       </ChartContainer>
-    </ReportCard>
+    </UISectionCard>
   );
 }

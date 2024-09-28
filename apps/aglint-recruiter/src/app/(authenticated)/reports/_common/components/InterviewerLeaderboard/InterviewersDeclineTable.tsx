@@ -12,7 +12,7 @@ import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { ClockIcon, DownloadIcon } from 'lucide-react';
 import { useMemberList } from 'src/app/_common/hooks/members';
 
-import ReportCard from '@/components/Common/ReportBlocks/ReportCard';
+import UISectionCard from '@/components/Common/UISectionCard';
 
 import { useInterviewerDeclines } from '../../hook/interview/interviewerMatrix.hook';
 
@@ -20,12 +20,22 @@ export default function InterviewersDeclineTable() {
   const { data: members } = useMemberList();
   const { data, isFetching, isError } = useInterviewerDeclines();
   return (
-    <ReportCard
+    <UISectionCard
       title={'Interviewers'}
-      isEmpty={!data?.length}
-      error={isError ? 'Error fetching data' : undefined}
+      emptyStateMessage={
+        !data?.length ? (
+          <div className='flex h-[100px] items-center justify-center text-muted-foreground'>
+            No data available
+          </div>
+        ) : isError ? (
+          'Error fetching data'
+        ) : (
+          ''
+        )
+      }
       isLoading={isFetching}
-      headerSlot={
+      isHoverEffect={false}
+      action={
         <div className='flex items-center space-x-2'>
           <Tabs defaultValue='declines'>
             <TabsList>
@@ -92,6 +102,6 @@ export default function InterviewersDeclineTable() {
           })}
         </TableBody>
       </Table>
-    </ReportCard>
+    </UISectionCard>
   );
 }
