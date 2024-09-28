@@ -102,7 +102,13 @@ export default function AppLayout({ children }) {
               </Link>
             </Button>
 
-            <Button variant='link' onClick={() => {}} asChild>
+            <Button
+              variant='link'
+              onClick={() => {
+                logout(queryClient);
+              }}
+              asChild
+            >
               <Link href='#'>
                 <LogOut className='mr-2 h-5 w-5' strokeWidth={1.5} />
               </Link>
