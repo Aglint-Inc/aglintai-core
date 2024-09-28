@@ -1,3 +1,5 @@
+'use client';
+
 import { useToast } from '@components/hooks/use-toast';
 import axios from 'axios';
 import { Loader2 } from 'lucide-react';

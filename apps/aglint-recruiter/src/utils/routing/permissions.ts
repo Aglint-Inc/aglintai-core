@@ -23,7 +23,6 @@ const PERMISSIONS: Permissions = {
    */
 
   //
-  '/supervisor': ['authorized'],
   '/api/job/candidateUpload/csvUpload': ['job_module', 'manage_job'],
   '/api/job/profileScore': ['job_module', 'manage_job'],
   '/api/job/candidateUpload/manualUpload': ['job_module', 'manage_job'],
@@ -55,6 +54,7 @@ const PERMISSIONS: Permissions = {
   '/integrations/[platform]': ['integrations_module'],
   '/company': ['company_settings_module'],
   '/user/[user]': ['authorized'],
+  '/reports': ['view_scheduling_reports'],
 
   //  For candidateDB module
   '/interviewers': ['authorized'],

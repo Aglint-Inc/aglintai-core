@@ -1,8 +1,4 @@
 'use client';
-import '@styles/globals.css';
-import 'regenerator-runtime/runtime';
-import '@styles/globals.css';
-
 import React from 'react';
 
 import DashboardDataFilter from './_common/components/DashboardDataFilter';
