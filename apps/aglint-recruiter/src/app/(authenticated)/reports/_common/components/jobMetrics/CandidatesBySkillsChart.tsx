@@ -1,39 +1,43 @@
-import { Button } from '@components/ui/button';
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from '@components/ui/chart';
-import React from 'react';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 
-import ReportCard from '@/components/Common/ReportBlocks/ReportCard';
+import UISectionCard from '@/components/Common/UISectionCard';
 
 import { useCandidateSkills } from '../../hook/job/jobMatrix';
 
 export default function CandidatesBySkillsChart() {
   const { data, view, setView, isFetching, isError } = useCandidateSkills();
   return (
-    <ReportCard
+    <UISectionCard
       title={'Candidates By'}
-      isEmpty={!data?.length}
       isLoading={isFetching}
-      error={isError ? 'Error fetching data' : undefined}
-      headerSlot={
-        <div className='flex space-x-2'>
-          <Button
-            variant={view === 'Top skills' ? 'default' : 'outline'}
-            onClick={() => setView('Top skills')}
-          >
-            Top skills
-          </Button>
-          <Button
-            variant={view === 'JD Skills' ? 'default' : 'outline'}
-            onClick={() => setView('JD Skills')}
-          >
-            Skills mentioned in JD
-          </Button>
-        </div>
+      emptyStateMessage={
+        !data?.length ? (
+          <div className='flex h-[100px] items-center justify-center text-muted-foreground'>
+            No data available
+          </div>
+        ) : isError ? (
+          'Error fetching data'
+        ) : (
+          ''
+        )
+      }
+      isHoverEffect={false}
+      action={
+        <Tabs
+          value={view}
+          onValueChange={(value) => setView(value as typeof view)}
+        >
+          <TabsList>
+            <TabsTrigger value='Top skills'>Top skills</TabsTrigger>
+            <TabsTrigger value='JD Skills'>Skills mentioned in JD</TabsTrigger>
+          </TabsList>
+        </Tabs>
       }
     >
       <ChartContainer
@@ -58,6 +62,6 @@ export default function CandidatesBySkillsChart() {
           <Bar dataKey='frequency' radius={[0, 5, 5, 0]} />
         </BarChart>
       </ChartContainer>
-    </ReportCard>
+    </UISectionCard>
   );
 }

@@ -18,7 +18,7 @@ import { useState } from 'react';
 import { useMemberList } from 'src/app/_common/hooks/members';
 import { useInterviewerLeaderboard } from 'src/app/(authenticated)/reports/_common/hook/interview/interviewerMatrix.hook';
 
-import ReportCard from '@/components/Common/ReportBlocks/ReportCard';
+import UISectionCard from '@/components/Common/UISectionCard';
 
 export default function InterviewerLeaderboardWidget() {
   const { data, isFetching } = useInterviewerLeaderboard();
@@ -35,11 +35,20 @@ export default function InterviewerLeaderboardWidget() {
   });
   return (
     <>
-      <ReportCard
+      <UISectionCard
         title={'Interviewer Leaderboard'}
-        isEmpty={!sortedData?.length}
+        emptyStateMessage={
+          !sortedData?.length ? (
+            <div className='flex h-[100px] items-center justify-center text-muted-foreground'>
+              No data available
+            </div>
+          ) : (
+            ''
+          )
+        }
         isLoading={isFetchingMem || isFetching}
-        headerSlot={
+        isHoverEffect={false}
+        action={
           <div className='flex items-center space-x-2'>
             <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className='w-[140px]'>
@@ -91,7 +100,7 @@ export default function InterviewerLeaderboardWidget() {
             );
           })}
         </div>
-      </ReportCard>
+      </UISectionCard>
     </>
   );
 }

@@ -13,7 +13,7 @@ interface InfoCardProps {
   emptyStateIcon?: React.ReactNode;
   emptyStateHeading?: string;
   isHoverEffect?: boolean;
-  emptyStateMessage?: string;
+  emptyStateMessage?: string | React.ReactNode;
   type?: 'graph' | 'info';
 }
 

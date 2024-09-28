@@ -6,11 +6,11 @@ import InterviewCountByTimeFrame from './InterviewCountByTimeFrame';
 
 const InterviewCount = () => {
   return (
-    <>
+    <div className='flex flex-col gap-4 pb-4'>
       <InterviewCountByTimeFrame />
       <HistoricInterviews />
       <DeclineLeadTimeChart />
-    </>
+    </div>
   );
 };
 
