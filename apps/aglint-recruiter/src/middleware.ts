@@ -1,7 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { createPrivateClient } from './server/db';
-import { allowedPaths } from './utils/paths/allowed';
+import { allowedPaths, dynamicPublicRoutes } from './utils/paths/allowed';
 
 const corsOptions = {
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
@@ -66,10 +66,3 @@ export const config = {
     '/((?!_next/static|_next/image|favicon.ico|.*.svg$|sitemap.xml|robots.txt).*)',
   ],
 };
-
-const dynamicPublicRoutes = [
-  /^\/scheduling\/invite\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
-  /^\/scheduling\/request-availability\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
-  /^\/company-postings\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
-  /^\/job-post\/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/,
-];
