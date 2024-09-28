@@ -1,3 +1,4 @@
+'use client';
 import Seo from '@/components/Common/Seo';
 import Integrations from '@/components/Integrations';
 

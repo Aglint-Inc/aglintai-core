@@ -170,3 +170,20 @@ export const allowedPaths = new Set<t>([
   '/auth/redirect',
   ...cronPaths,
 ] as t[]);
+
+// Define route prefixes that expect a UUID at the end
+const dynamicPublicRoutePrefixes = [
+  '/scheduling/invite',
+  '/scheduling/request-availability',
+  '/company-postings',
+  '/job-post',
+];
+
+const uuidPattern =
+  '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}';
+
+// Build regex patterns dynamically for each route prefix
+export const dynamicPublicRoutes = dynamicPublicRoutePrefixes.map(
+  // eslint-disable-next-line security/detect-non-literal-regexp
+  (prefix) => new RegExp(`^${prefix}/${uuidPattern}$`),
+);
