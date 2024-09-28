@@ -3,6 +3,7 @@ import { Skeleton } from '@components/ui/skeleton';
 import { type FC, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
+import UISectionCard from '@/components/Common/UISectionCard';
 import { useMetricsExperienceAndTenure } from '@/job/hooks';
 
 export const TenureAndExpSummary: FC = () => {
@@ -59,12 +60,12 @@ const Content = () => {
 const Tenure: FC<{ average_tenure: number }> = ({ average_tenure }) => {
   const years = (average_tenure / 12).toFixed(1);
   return (
-    <MetricCard
-      title='Average Tenure'
-      value={years}
-      unit='Years'
-      description='Average time before switching companies.'
-    />
+    <UISectionCard title='Average Tenure'>
+      <div className='text-2xl font-bold'>Years {years}</div>
+      <p className='text-xs text-muted-foreground'>
+        Average time before switching companies.
+      </p>
+    </UISectionCard>
   );
 };
 
@@ -73,33 +74,14 @@ const Experience: FC<{ average_experience: number }> = ({
 }) => {
   const years = (average_experience / 12).toFixed(1);
   return (
-    <MetricCard
-      title='Average Experience'
-      value={years}
-      unit='Years'
-      description='Average of total full time experience of the candidates'
-    />
+    <UISectionCard title='Average Experience'>
+      <div className='text-2xl font-bold'>Years {years}</div>
+      <p className='text-xs text-muted-foreground'>
+        Average of total full time experience of the candidates.
+      </p>
+    </UISectionCard>
   );
 };
-
-const MetricCard: FC<{
-  title: string;
-  value: string;
-  unit: string;
-  description: string;
-}> = ({ title, value, unit, description }) => (
-  <Card>
-    <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-      <CardTitle className='text-sm font-medium'>{title}</CardTitle>
-    </CardHeader>
-    <CardContent>
-      <div className='text-2xl font-bold'>
-        {value} {unit}
-      </div>
-      <p className='text-xs text-muted-foreground'>{description}</p>
-    </CardContent>
-  </Card>
-);
 
 const NoDataCard: FC<{ title: string }> = ({ title }) => (
   <Card>
