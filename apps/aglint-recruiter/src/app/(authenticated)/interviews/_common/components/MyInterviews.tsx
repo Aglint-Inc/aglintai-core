@@ -1,13 +1,9 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import { AlertTriangle, Calendar, Info } from 'lucide-react';
-import Link from 'next/link';
+import { Calendar, Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { transformDataSchedules } from 'src/app/_common/utils/schedules-query';
 
-import { useAllIntegrations } from '@/authenticated/hooks';
 import { useTenant } from '@/company/hooks';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
@@ -45,13 +41,8 @@ function MyInterviews() {
   });
   const schedules = data?.schedules ?? [];
   const allSchedules = schedules;
-  const { data: allIntegrations, isLoading: integrationLoading } =
-    useAllIntegrations();
 
-  return (!!allIntegrations?.service_json &&
-    allIntegrations?.google_workspace_domain?.split('//')[1] ===
-      recruiter_user?.email.split('@')[1]) ||
-    !!(recruiter_user?.schedule_auth as any)?.access_token ? (
+  return (
     <>
       <InterviewMemberSide
         propsGrids={{ style: { maxWidth: 'none' } }}
@@ -133,44 +124,7 @@ function MyInterviews() {
         }
       />
     </>
-  ) : (
-    <IntegrationNotFound loading={integrationLoading} />
   );
 }
 
 export default MyInterviews;
-
-function IntegrationNotFound({ loading }: { loading: boolean }) {
-  const { recruiter_user } = useTenant();
-  return (
-    <Card className='mb-6'>
-      <CardHeader>
-        <div className='flex items-center justify-between'>
-          <CardTitle className='text-lg font-semibold'>My Interviews</CardTitle>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className='flex h-full flex-col'>
-          <div className='max-w-900px flex h-full flex-col gap-2.5 overflow-auto'>
-            {loading ? (
-              <div className='flex h-20 w-full items-center justify-center'>
-                <Loader className='h-8 w-8 animate-spin' />
-              </div>
-            ) : (
-              <Alert variant='warning'>
-                <AlertTriangle className='h-4 w-4' />
-                <AlertTitle>Warning</AlertTitle>
-                <AlertDescription>
-                  Your calendar is not connected to the scheduling app. Please
-                  <Link href={`/user/${recruiter_user?.user_id}`}>
-                    connect it in your profile settings.
-                  </Link>
-                </AlertDescription>
-              </Alert>
-            )}
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
