@@ -23,7 +23,7 @@ function DeleteDepartmentsDialog({
   id: number;
   handleDelete: () => void;
 }) {
-  const { data: usage, isPending } = useDepartmentsUsage({ id });
+  const { data: usage, isPending } = useDepartmentsUsage({ id: Number(id) });
 
   const isJobEmpty = usage?.jobUsage.length === 0;
   const isUserEmpty = usage?.userUsage.length === 0;
