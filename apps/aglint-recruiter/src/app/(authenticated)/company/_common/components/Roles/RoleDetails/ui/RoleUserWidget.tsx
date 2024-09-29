@@ -4,17 +4,13 @@ import Link from 'next/link';
 import React from 'react';
 
 import type { useTenantMembers } from '@/company/hooks';
-import { type GetRoleAndPermissionsAPI } from '@/pages/api/getRoleAndPermissions/type';
+import type { useRoleData } from '@/company/hooks/useRoleAndPermissionsHook';
 
 export const RoleUserWidget = ({
   role,
   members,
 }: {
-  role: Awaited<
-    GetRoleAndPermissionsAPI['response']
-  >['rolesAndPermissions'][string] & {
-    name: string;
-  };
+  role: ReturnType<typeof useRoleData>['role'];
   members: ReturnType<typeof useTenantMembers>['members'];
 }) => {
   return (

@@ -6,8 +6,8 @@ import { createPublicClient } from '@/server/db';
 import type { SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
 const body = z.object({
-  delete: z.string(),
-  add: z.number(),
+  delete: z.string().nullable(),
+  add: z.number().nullable(),
   role_id: z.string(),
 });
 
@@ -23,7 +23,7 @@ export const post = privateProcedure
       throw new Error('No permission added or deleted is required');
     const permission_dependency = await getPermissions(db, {
       ids: add,
-      rel_ids: toDelete,
+      rel_id: toDelete,
     });
 
     if (toDelete && permission_dependency) {
@@ -87,15 +87,15 @@ const getPermissions = async (
   supabase: SupabaseClientType,
   {
     ids,
-    rel_ids,
+    rel_id,
   }: {
-    ids: number;
-    rel_ids: string;
+    ids: number | null;
+    rel_id: string | null;
   },
 ) => {
   let permissions: (DatabaseTable['permissions'] & {
     role_permissions_id: string | null;
-  })[];
+  })[] = [];
   if (ids) {
     permissions = (
       await supabase
@@ -109,13 +109,13 @@ const getPermissions = async (
       ...permission,
       role_permissions_id: null,
     }));
-  } else {
+  } else if (rel_id) {
     permissions = (
       await supabase
         .from('permissions')
         .select('*,role_permissions(id)')
         .eq('is_enable', true)
-        .eq('role_permissions.id', rel_ids)
+        .eq('role_permissions.id', rel_id)
         .throwOnError()
     ).data!.map((permission) => ({
       ...permission,

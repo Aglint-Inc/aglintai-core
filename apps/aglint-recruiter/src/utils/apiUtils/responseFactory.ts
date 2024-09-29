@@ -189,6 +189,7 @@ export function apiRequestHandlerFactory<T extends ApiInterface>(
         logger,
       });
     } catch (e) {
+      console.error(e);
       return getResponse({ error: e.message, logger }, 500);
     }
   }
