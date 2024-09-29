@@ -1,6 +1,8 @@
 import { ScrollArea } from '@components/ui/scroll-area';
 import { FileX } from 'lucide-react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
+import { UIButton } from '@/components/Common/UIButton';
 import UISectionCard from '@/components/Common/UISectionCard';
 
 import { type InterviewerDetailType } from '../../hooks/useInterviewer';
@@ -24,10 +26,12 @@ export const Qualifications = ({
                 />
               ))
             ) : (
-              <div className='flex h-[100px] w-full flex-col items-center justify-center space-y-2 text-gray-500'>
-                <FileX size={24} />
-                <p>No qualifications found</p>
-              </div>
+              <GlobalEmpty
+                icon={<FileX strokeWidth={1} className='h-10 w-10' />}
+                header='Not added to any interview pool'
+                description='Add to an interview pool to get started'
+                primaryAction={<UIButton>Add to Interview Pool</UIButton>}
+              />
             )}
           </div>
         </ScrollArea>

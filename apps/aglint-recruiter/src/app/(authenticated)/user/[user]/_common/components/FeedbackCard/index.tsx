@@ -1,5 +1,6 @@
 import { MessageSquareOff } from 'lucide-react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import UISectionCard from '@/components/Common/UISectionCard';
 
 import { type InterviewerDetailType } from '../../hooks/useInterviewer';
@@ -19,10 +20,10 @@ export const Feedback = ({
               <List key={feedback.session_name} feedback={feedback} />
             ))
           ) : (
-            <div className='flex h-[100px] w-full flex-col items-center justify-center space-y-2 text-gray-500'>
-              <MessageSquareOff className='h-8 w-8' />
-              <p>No feedback available</p>
-            </div>
+            <GlobalEmpty
+              icon={<MessageSquareOff strokeWidth={2} className='h-6 w-6' />}
+              description='No feedback available'
+            />
           )}
         </div>
       </UISectionCard>

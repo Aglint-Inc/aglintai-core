@@ -4,7 +4,7 @@ import { AgentIEditorProvider } from '@requests/components/AgentChats/AgentEdito
 import { REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
 import { useRequestCount } from '@requests/hooks';
 import { checkFiltersApplied } from '@requests/utils/checkFiltersApplied';
-import { Info, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { LayoutList, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
@@ -125,7 +125,13 @@ const MainBody = () => {
             <div className='container-lg mx-auto w-full px-12 py-8'>
               <GlobalEmpty
                 header={'No requests found'}
-                icon={<Info strokeWidth={1} className='h-10 w-10' />}
+                description='Requests are created when a interview process starts for candidates.'
+                icon={
+                  <LayoutList
+                    strokeWidth={2}
+                    className='h-6 w-6 text-muted-foreground'
+                  />
+                }
               />
             </div>
           ) : (
