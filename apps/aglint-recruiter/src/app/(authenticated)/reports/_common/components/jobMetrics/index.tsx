@@ -6,7 +6,7 @@ import CandidatesBySkillsChart from './CandidatesBySkillsChart';
 
 export default function JobMetrics() {
   return (
-    <>
+    <div className='flex flex-col gap-4 pb-4'>
       <CandidatesByLocationChart />
       <CandidatesBySkillsChart />
       <CandidatesByExperienceChart />
@@ -14,6 +14,6 @@ export default function JobMetrics() {
         <AverageExperience />
         <AverageTenure />
       </div>
-    </>
+    </div>
   );
 }

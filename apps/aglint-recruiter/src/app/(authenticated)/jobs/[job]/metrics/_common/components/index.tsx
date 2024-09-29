@@ -1,15 +1,17 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { useState } from 'react';
 
+import UISectionCard from '@/components/Common/UISectionCard';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { SharedActions } from '@/job/components/SharedTopNav/actions';
 import { SharedBreadCrumbs } from '@/job/components/SharedTopNav/breadcrumbs';
 import { useJob } from '@/job/hooks';
 import { type Job } from '@/queries/jobs/types';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
-import type { MetricsOptions } from '../types';
 import { DashboardBarChart } from './BarChart2';
 import { DashboardDoughnutChart } from './doughnut';
 import { DashboardLineChart } from './lineChart';
@@ -96,7 +98,7 @@ const Dashboard = () => {
   const score_matches = getMatches(job.application_match, Number(total) || 0);
 
   return (
-    <div className='container-lg mx-auto w-full px-12'>
+    <div className='container-lg mx-auto w-full px-12 pb-5'>
       <div className='mb-6 flex items-center justify-between'>
         <div>
           <h1 className='mb-2 text-2xl font-bold'>Job Analytics</h1>
@@ -198,103 +200,108 @@ const StatItem = ({ label, percentage, count, color }) => (
   </div>
 );
 
+type DoughnutType = 'city' | 'state' | 'country';
 const Doughnut = () => {
-  const options: MetricsOptions<'locationPool'> = {
-    city: 'City',
-    state: 'State',
-    country: 'Country',
-  };
+  const [currentTab, setCurrentTab] = useState<DoughnutType>('city');
+  const tabs: DoughnutType[] = ['city', 'state', 'country'];
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className='text-xl font-semibold'>
-          Location Distribution
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Tabs defaultValue='city'>
+    <UISectionCard
+      title=' Location Distribution'
+      isHoverEffect={false}
+      action={
+        <Tabs
+          value={currentTab}
+          onValueChange={(value) => {
+            const curTab = value as DoughnutType;
+            setCurrentTab(curTab);
+          }}
+        >
           <TabsList>
-            {Object.entries(options).map(([key, value]) => (
-              <TabsTrigger key={key} value={key}>
-                {value}
+            {tabs.map((tab) => (
+              <TabsTrigger key={tab} value={tab}>
+                {capitalizeAll(tab)}
               </TabsTrigger>
             ))}
           </TabsList>
-          {Object.keys(options).map((key) => (
-            <TabsContent key={key} value={key}>
-              <DashboardDoughnutChart option={key as keyof typeof options} />
-            </TabsContent>
-          ))}
         </Tabs>
-      </CardContent>
-    </Card>
+      }
+    >
+      <div className='h-[300px]'>
+        <DashboardDoughnutChart option={currentTab} />
+      </div>
+    </UISectionCard>
   );
 };
 
+type LineGraphType = 'experience' | 'tenure';
 const LineGraph = () => {
-  const options: {
-    [_id in keyof Pick<
-      MetricsOptions<'experienceAndTenure'>,
-      'experience' | 'tenure'
-    >]: string;
-  } = {
-    experience: 'Experience',
-    tenure: 'Tenure',
-  };
+  const [currentTab, setCurrentTab] = useState<LineGraphType>('experience');
+  const tabs: LineGraphType[] = ['experience', 'tenure'];
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className='text-xl font-semibold'>
-          Experience and Tenure
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Tabs defaultValue='experience'>
+    <UISectionCard
+      title='Experience and Tenure'
+      isHoverEffect={false}
+      action={
+        <Tabs
+          value={currentTab}
+          onValueChange={(value) => {
+            const curTab = value as LineGraphType;
+            setCurrentTab(curTab);
+          }}
+        >
           <TabsList>
-            {Object.entries(options).map(([key, value]) => (
-              <TabsTrigger key={key} value={key}>
-                {value}
+            {tabs.map((tab) => (
+              <TabsTrigger key={tab} value={tab}>
+                {capitalizeAll(tab)}
               </TabsTrigger>
             ))}
           </TabsList>
-          {Object.keys(options).map((key) => (
-            <TabsContent key={key} value={key}>
-              <DashboardLineChart option={key as keyof typeof options} />
-            </TabsContent>
-          ))}
         </Tabs>
-      </CardContent>
-    </Card>
+      }
+    >
+      <div className='h-[300px]'>
+        <DashboardLineChart option={currentTab} />
+      </div>
+    </UISectionCard>
   );
 };
+
+type BarsType = 'top_skills' | 'skills_mentioned_in_JD';
 
 const Bars = () => {
-  const options: MetricsOptions<'skillPool'> = {
-    top_skills: 'Top skills',
-    required_skills: 'Skills mentioned in JD',
-  };
+  const [currentTab, setCurrentTab] = useState<BarsType>('top_skills');
+  const tabs: BarsType[] = ['top_skills', 'skills_mentioned_in_JD'];
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className='text-xl font-semibold'>Skills</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Tabs defaultValue='top_skills'>
+    <UISectionCard
+      title='Skills'
+      isHoverEffect={false}
+      action={
+        <Tabs
+          value={currentTab}
+          onValueChange={(value) => {
+            const curTab = value as BarsType;
+            setCurrentTab(curTab);
+          }}
+        >
           <TabsList>
-            {Object.entries(options).map(([key, value]) => (
-              <TabsTrigger key={key} value={key}>
-                {value}
+            {tabs.map((tab) => (
+              <TabsTrigger key={tab} value={tab}>
+                {capitalizeAll(tab)}
               </TabsTrigger>
             ))}
           </TabsList>
-          {Object.keys(options).map((key) => (
-            <TabsContent key={key} value={key}>
-              <DashboardBarChart option={key as keyof typeof options} />
-            </TabsContent>
-          ))}
         </Tabs>
-      </CardContent>
-    </Card>
+      }
+    >
+      <div className='h-[300px]'>
+        <DashboardBarChart
+          option={
+            currentTab === 'top_skills' ? 'top_skills' : 'required_skills'
+          }
+        />
+      </div>
+    </UISectionCard>
   );
 };

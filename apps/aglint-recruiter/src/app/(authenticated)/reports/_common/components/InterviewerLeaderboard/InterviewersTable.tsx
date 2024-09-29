@@ -12,16 +12,25 @@ import { ArrowDownIcon } from 'lucide-react';
 import { useMemberList } from 'src/app/_common/hooks/members';
 import { useInterviewer_upcoming } from 'src/app/(authenticated)/reports/_common/hook/interview/interviewerMatrix.hook';
 
-import ReportCard from '@/components/Common/ReportBlocks/ReportCard';
+import UISectionCard from '@/components/Common/UISectionCard';
 
 export default function InterviewersTable() {
   const { data, isFetching } = useInterviewer_upcoming();
   return (
-    <ReportCard
+    <UISectionCard
       title={'Interviewers'}
-      isEmpty={!data?.length}
+      emptyStateMessage={
+        !data?.length ? (
+          <div className='flex h-[100px] items-center justify-center text-muted-foreground'>
+            No data available
+          </div>
+        ) : (
+          ''
+        )
+      }
       isLoading={isFetching}
-      headerSlot={
+      isHoverEffect={false}
+      action={
         <div className='flex items-center space-x-2'>
           <Tabs defaultValue='declines'>
             <TabsList>
@@ -62,7 +71,7 @@ export default function InterviewersTable() {
           })}
         </TableBody>
       </Table>
-    </ReportCard>
+    </UISectionCard>
   );
 }
 

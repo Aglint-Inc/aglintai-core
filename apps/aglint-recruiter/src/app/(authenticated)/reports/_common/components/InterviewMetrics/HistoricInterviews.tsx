@@ -3,35 +3,45 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@components/ui/chart';
-import { ToggleGroup, ToggleGroupItem } from '@components/ui/toggle-group';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useState } from 'react';
 import { Bar, BarChart, Legend, XAxis, YAxis } from 'recharts';
 import { useInterviewCount } from 'src/app/(authenticated)/reports/_common/hook/interview/interview.hook';
 
-import ReportCard from '@/components/Common/ReportBlocks/ReportCard';
+import UISectionCard from '@/components/Common/UISectionCard';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-
 export default function HistoricInterviews() {
   const [timeFrame, setTimeFrame] = useState<'day' | 'week' | 'month'>('day');
   const { groupedData, isFetching, isError } = useInterviewCount(timeFrame);
   return (
-    <ReportCard
+    <UISectionCard
       title={'Historic'}
-      isEmpty={!groupedData?.length}
-      error={isError ? 'Error fetching data' : undefined}
+      emptyStateMessage={
+        !groupedData?.length ? (
+          <div className='flex h-[100px] items-center justify-center text-muted-foreground'>
+            No data available
+          </div>
+        ) : isError ? (
+          'Error fetching data'
+        ) : (
+          ''
+        )
+      }
+      isHoverEffect={false}
       isLoading={isFetching}
-      headerSlot={
-        <ToggleGroup
-          type='single'
+      action={
+        <Tabs
           value={timeFrame}
           onValueChange={(value: typeof timeFrame) =>
             value && setTimeFrame(value)
           }
         >
-          <ToggleGroupItem value='day'>Day</ToggleGroupItem>
-          <ToggleGroupItem value='week'>Week</ToggleGroupItem>
-          <ToggleGroupItem value='month'>Month</ToggleGroupItem>
-        </ToggleGroup>
+          <TabsList>
+            <TabsTrigger value='day'>Day</TabsTrigger>
+            <TabsTrigger value='week'>Week</TabsTrigger>
+            <TabsTrigger value='month'>Month</TabsTrigger>
+          </TabsList>
+        </Tabs>
       }
     >
       <ChartContainer
@@ -56,6 +66,6 @@ export default function HistoricInterviews() {
           )}
         </BarChart>
       </ChartContainer>
-    </ReportCard>
+    </UISectionCard>
   );
 }

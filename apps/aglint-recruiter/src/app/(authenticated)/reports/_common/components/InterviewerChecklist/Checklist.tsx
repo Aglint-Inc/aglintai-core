@@ -10,7 +10,7 @@ import {
 import { Check, X } from 'lucide-react';
 import { useRequestMetics } from 'src/app/(authenticated)/reports/_common/hook/candidate/use-request_metrics';
 
-import ReportCard from '@/components/Common/ReportBlocks/ReportCard';
+import UISectionCard from '@/components/Common/UISectionCard';
 
 const CheckIcon = () => <Check className='h-4 w-4 text-green-500' />;
 const XIcon = () => <X className='h-4 w-4 text-red-500' />;
@@ -18,16 +18,25 @@ const XIcon = () => <X className='h-4 w-4 text-red-500' />;
 export default function Checklist() {
   const { data, isFetching, isError } = useRequestMetics();
   return (
-    <ReportCard
+    <UISectionCard
       title={'Coordinator Checklist'}
-      isEmpty={!data?.length}
-      error={isError ? 'Error fetching data' : undefined}
+      emptyStateMessage={
+        !data?.length ? (
+          <div className='flex h-[100px] items-center justify-center text-muted-foreground'>
+            No data available
+          </div>
+        ) : isError ? (
+          'Error fetching data'
+        ) : (
+          ''
+        )
+      }
       isLoading={isFetching}
     >
       <div className='overflow-x-auto'>
         <div className='w-max min-w-full'>
           <Table>
-            <ScrollArea className='h-[calc(100vh-15rem)]'>
+            <ScrollArea className='h-[calc(100vh-17rem)]'>
               <TableHeader>
                 <TableRow>
                   <TableHead className='w-[150px]'>Coordinator</TableHead>
@@ -72,6 +81,6 @@ export default function Checklist() {
           </Table>
         </div>
       </div>
-    </ReportCard>
+    </UISectionCard>
   );
 }

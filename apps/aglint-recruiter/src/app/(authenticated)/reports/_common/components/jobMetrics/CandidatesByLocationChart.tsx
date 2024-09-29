@@ -1,13 +1,12 @@
-import { Button } from '@components/ui/button';
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from '@components/ui/chart';
-import React from 'react';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { Cell, Legend, Pie, PieChart } from 'recharts';
 
-import ReportCard from '@/components/Common/ReportBlocks/ReportCard';
+import UISectionCard from '@/components/Common/UISectionCard';
 
 import { useJobLocations } from '../../hook/job/jobMatrix';
 
@@ -15,34 +14,32 @@ export default function CandidatesByLocationChart() {
   const { data, view, setView, isFetching, isError } = useJobLocations();
 
   return (
-    <ReportCard
+    <UISectionCard
       title={'Candidates By'}
-      isEmpty={!data?.length}
       isLoading={isFetching}
-      error={isError ? 'Error fetching data' : undefined}
-      headerSlot={
-        <div className='flex items-center space-x-2'>
-          <div className='flex space-x-2'>
-            <Button
-              variant={view === 'city' ? 'default' : 'outline'}
-              onClick={() => setView('city')}
-            >
-              City
-            </Button>
-            <Button
-              variant={view === 'state' ? 'default' : 'outline'}
-              onClick={() => setView('state')}
-            >
-              State
-            </Button>
-            <Button
-              variant={view === 'country' ? 'default' : 'outline'}
-              onClick={() => setView('country')}
-            >
-              Country
-            </Button>
+      emptyStateMessage={
+        !data?.length ? (
+          <div className='flex h-[100px] items-center justify-center text-muted-foreground'>
+            No data available
           </div>
-        </div>
+        ) : isError ? (
+          'Error fetching data'
+        ) : (
+          ''
+        )
+      }
+      isHoverEffect={false}
+      action={
+        <Tabs
+          value={view}
+          onValueChange={(value) => setView(value as typeof view)}
+        >
+          <TabsList>
+            <TabsTrigger value={'city'}>City</TabsTrigger>
+            <TabsTrigger value={'state'}>State</TabsTrigger>
+            <TabsTrigger value={'country'}>Country</TabsTrigger>
+          </TabsList>
+        </Tabs>
       }
     >
       <div className='flex justify-center'>
@@ -80,6 +77,6 @@ export default function CandidatesByLocationChart() {
           </PieChart>
         </ChartContainer>
       </div>
-    </ReportCard>
+    </UISectionCard>
   );
 }
