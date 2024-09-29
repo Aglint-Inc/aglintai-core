@@ -86,7 +86,7 @@ export default function EmailTemplateEditForm({
           <UITypography type='small' fontBold='normal'>
             Subject
           </UITypography>
-          <div className='mt-2 rounded-md border border-neutral-300'>
+          <div className='mt-2 rounded-md'>
             <TipTapAIEditor
               enablAI={false}
               toolbar={false}
@@ -109,7 +109,7 @@ export default function EmailTemplateEditForm({
         <UITypography type='small' fontBold='normal'>
           Message
         </UITypography>
-        <div className='mt-2 rounded-md border border-neutral-300'>
+        <div className='mt-2'>
           <TipTapAIEditor
             enablAI={false}
             placeholder={''}

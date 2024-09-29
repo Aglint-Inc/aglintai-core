@@ -5,7 +5,7 @@ import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
 import { Calendar, Linkedin } from 'lucide-react';
 
-import EmptyState from '@/candidate/authenticated/components/EmptyState';
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { useCandidatePortalInterviews } from '../hooks';
@@ -34,7 +34,10 @@ export default function InterviewsPage() {
             ))
           ) : (
             <div className='h-60'>
-              <EmptyState icon={Calendar} text='No upcoming interviews' />
+              <GlobalEmpty
+                icon={<Calendar strokeWidth={1} className='h-10 w-10' />}
+                header='No upcoming interviews'
+              />
             </div>
           )}
         </div>
@@ -46,7 +49,10 @@ export default function InterviewsPage() {
             ))
           ) : (
             <div className='h-60'>
-              <EmptyState icon={Calendar} text='No Past interviews' />
+              <GlobalEmpty
+                icon={<Calendar strokeWidth={1} className='h-10 w-10' />}
+                header='No Past interviews'
+              />
             </div>
           )}
         </div>

@@ -80,7 +80,7 @@ function Interviewers() {
       <div className='mb-4 flex justify-between'>
         <UITextField
           placeholder='Search interviewers...'
-          className='w-64 bg-white '
+          className='w-64 bg-white'
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -98,7 +98,7 @@ function Interviewers() {
         <CardContent className='p-0'>
           <Table className='overflow-hidden'>
             <TableHeader>
-              <TableRow className="border-b-gray-200" >
+              <TableRow className='border-b-gray-200'>
                 <TableHead className='w-4/12'>Name</TableHead>
                 <TableHead className='w-2/12'>Today</TableHead>
                 <TableHead className='w-2/12'>Week</TableHead>
@@ -110,7 +110,16 @@ function Interviewers() {
               {filtererdUsers.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={5} className='text-center'>
-                    <GlobalEmpty iconSlot={<User strokeWidth={1.5} className='mb-2 h-10 w-10 text-muted-foreground'/>} text={'No interviewers found'} height='250px'/>
+                    <GlobalEmpty
+                      icon={
+                        <User
+                          strokeWidth={1.5}
+                          className='mb-2 h-10 w-10 text-muted-foreground'
+                        />
+                      }
+                      header={'No interviewers found'}
+                      description='Create a new interview pool to get started.'
+                    />
                   </TableCell>
                 </TableRow>
               ) : (

@@ -100,7 +100,16 @@ function Training() {
                   {trainingUsers.length === 0 && (
                     <tr>
                       <td colSpan={5} className='p-4'>
-                        <GlobalEmpty iconSlot={<User strokeWidth={1.5} className='mb-2 h-10 w-10 text-muted-foreground'/>} text={'No trainee found'} height='250px'/>
+                        <GlobalEmpty
+                          icon={
+                            <User
+                              strokeWidth={1.5}
+                              className='mb-2 h-10 w-10 text-muted-foreground'
+                            />
+                          }
+                          header={'No trainee found'}
+                          description='Create a new interview pool to get started.'
+                        />
                       </td>
                     </tr>
                   )}

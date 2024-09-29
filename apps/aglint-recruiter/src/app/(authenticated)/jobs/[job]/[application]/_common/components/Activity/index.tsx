@@ -23,7 +23,15 @@ export const Activity = () => {
     );
   if (status === 'error')
     return <div className='text-red-500'>Something went wrong</div>;
-  if (!data || data.length === 0) return <GlobalEmpty iconSlot={<Clock/>} text={'No activities found'} height='300px'/>;
+  if (!data || data.length === 0)
+    return (
+      <div className='flex w-full items-center justify-center'>
+        <GlobalEmpty
+          icon={<Clock strokeWidth={1} className='h-10 w-10' />}
+          header={'No activities found'}
+        />
+      </div>
+    );
 
   const displayedActivities = showAll ? data : data.slice(0, 10);
   const count = displayedActivities.length;

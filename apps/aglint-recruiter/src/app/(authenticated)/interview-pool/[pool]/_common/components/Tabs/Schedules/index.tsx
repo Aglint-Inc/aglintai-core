@@ -26,7 +26,16 @@ function Schedules() {
         </div>
       ) : allSchedules.length === 0 ? (
         <div className='w-full'>
-          <GlobalEmpty iconSlot={<Calendar strokeWidth={1.5} className='mb-2 h-10 w-10 text-muted-foreground' />} text={'There are no schedules available at the moment.'} height='400px' />
+          <GlobalEmpty
+            icon={
+              <Calendar
+                strokeWidth={1.5}
+                className='mb-2 h-10 w-10 text-muted-foreground'
+              />
+            }
+            header={'There are no schedules available at the moment.'}
+            description='Create a new interview pool to get started.'
+          />
         </div>
       ) : (
         <Card className='p-4'>

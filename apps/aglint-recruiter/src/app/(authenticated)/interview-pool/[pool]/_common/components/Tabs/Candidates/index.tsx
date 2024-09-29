@@ -70,14 +70,14 @@ function Candidates() {
                       <td colSpan={6} className='p-4'>
                         <div>
                           <GlobalEmpty
-                            text={'No candidates found'}
-                            iconSlot={
+                            header={'No candidates found'}
+                            description='Create a new interview pool to get started.'
+                            icon={
                               <User
                                 strokeWidth={1.5}
                                 className='mb-2 h-10 w-10 text-muted-foreground'
                               />
                             }
-                            height={'250px'}
                           />
                         </div>
                       </td>
