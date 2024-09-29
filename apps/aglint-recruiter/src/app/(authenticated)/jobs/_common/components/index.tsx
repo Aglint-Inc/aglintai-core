@@ -23,13 +23,12 @@ import {
 import ROUTES from '@/utils/routing/routes';
 
 import { STATE_LEVER_DIALOG } from '../constants';
-import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
+import { EmptyJob } from './AddJobWithIntegrations/EmptyJob';
 import LeverModalComp from './AddJobWithIntegrations/LeverModal';
 import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';
 
 const DashboardComp = () => {
-  const router = useRouterPro();
   const {
     manageJob,
     jobs: { data },
@@ -50,6 +49,7 @@ const DashboardComp = () => {
 
   return (
     <div className='h-full w-full'>
+      <LeverModalComp />
       {!initialLoad ? (
         <div className='min-h-screen'>
           <div className='container-lg mx-auto w-full space-y-4 px-12'>
@@ -72,13 +72,7 @@ const DashboardComp = () => {
       ) : (
         <>
           {data?.length === 0 ? (
-            ifAllowed(
-              <EmptyJobDashboard
-                handleClickAddJob={() => router.push(ROUTES['/jobs/create']())}
-                heading={'Jobs'}
-              />,
-              ['manage_job'],
-            )
+            ifAllowed(<EmptyJob />, ['manage_job'])
           ) : (
             <div className='container-lg mx-auto w-full px-12'>
               <div className='flex flex-row justify-between'>
@@ -123,7 +117,6 @@ export function AddJob() {
 
   return (
     <div className='flex flex-row items-center gap-1'>
-      <LeverModalComp />
       <Sync />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

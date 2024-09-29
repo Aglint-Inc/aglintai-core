@@ -50,16 +50,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           recruiter_id: recruiter_id,
           public_job_id,
         });
-        const { data: integration } = await supabaseAdmin
+        const { data: integration, error: dsfdf } = await supabaseAdmin
           .from('integrations')
           .select()
           .single();
+        console.log('error :', dsfdf);
+        console.log('integration :', integration);
+        console.log('dbJob :', dbJob);
         const { data: newJobs, error } = await supabaseAdmin
           .from('public_jobs')
           .insert(dbJob)
           .select();
-
-        if (error?.code == '23505') throw new Error(error.code);
+        console.log('newJobs :', newJobs);
 
         if (!error) {
           await createJobApplications({
