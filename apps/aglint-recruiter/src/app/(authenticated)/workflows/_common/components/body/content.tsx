@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import { Skeleton } from '@components/ui/skeleton';
-import { Inbox, MoreHorizontal, Plus } from 'lucide-react';
+import { MoreHorizontal } from 'lucide-react';
 import Link from 'next/link';
 import { memo } from 'react';
 
@@ -135,22 +135,7 @@ const Cards = (props: {
       );
     },
   );
-  if (cards.length === 0)
-    return (
-      <div className='flex h-full flex-col items-center justify-center p-8 text-center'>
-        <div className='mb-4 rounded-full bg-muted p-3'>
-          <Inbox className='h-6 w-6 text-muted-foreground' />
-        </div>
-        <h3 className='text-lg font-semibold'>No workflows</h3>
-        <p className='mb-4 mt-2 text-sm text-muted-foreground'>
-          You haven&apos;t created any workflows yet. Start by creating a new
-          one.
-        </p>
-        <Button>
-          <Plus className='mr-2 h-4 w-4' /> Create Workflow
-        </Button>
-      </div>
-    );
+
   return <>{cards}</>;
 };
 

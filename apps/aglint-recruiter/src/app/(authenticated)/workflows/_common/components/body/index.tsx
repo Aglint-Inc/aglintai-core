@@ -1,5 +1,7 @@
 import Seo from '@/components/Common/Seo';
+import { useWorkflows } from '@/workflows/hooks';
 
+import { EmptyWorkflow } from '../EmptyWorkflow';
 import Content from './content';
 import Filters from './filters';
 
@@ -20,12 +22,24 @@ const Body = () => {
   //     setTip(false);
   //   } else setTip(true);
   // }, [handleCreateTourLog, firstVisit, open]);
+  const {
+    workflows: { data },
+  } = useWorkflows();
   return (
     <>
       <Seo title='Workflow | Aglint AI' description='AI for People Products' />
+
       <div className='flex flex-col gap-4'>
-        <Filters />
-        <Content />
+        {data?.length > 0 ? (
+          <>
+            <Filters />
+            <Content />
+          </>
+        ) : (
+          <>
+            <EmptyWorkflow />
+          </>
+        )}
       </div>
     </>
   );
