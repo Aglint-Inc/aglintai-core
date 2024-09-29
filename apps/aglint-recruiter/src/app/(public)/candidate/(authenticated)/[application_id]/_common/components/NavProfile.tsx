@@ -13,7 +13,7 @@ export default function NavProfile({
       <AvatarImage
         className='rounded-md object-cover'
         src={candidate?.avatar}
-        alt='@shadcn'
+        alt={candidate?.first_name}
       />
       <AvatarFallback className='rounded-md'>
         {candidate.first_name.charAt(0) + candidate.last_name.charAt(0)}
