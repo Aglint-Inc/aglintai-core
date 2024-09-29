@@ -3,7 +3,7 @@ import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
 import { useTenantMembers } from '@/company/hooks';
-import { useRoleAndPermissionsHook } from '@/company/hooks/useRoleAndPermissionsHook';
+import { useRoleData } from '@/company/hooks/useRoleAndPermissionsHook';
 import UIDialog from '@/components/Common/UIDialog';
 import { updateMember } from '@/context/AuthContext/utils';
 
@@ -19,7 +19,7 @@ function RoleEditDialog({
   close: () => void;
 }) {
   const { members } = useTenantMembers();
-  const { refetch } = useRoleAndPermissionsHook();
+  const { refetch } = useRoleData();
   const [search, setSearch] = useState('');
   const [selectedMember, setSelectedMember] = useState<
     (typeof members)[number] | null
@@ -37,7 +37,7 @@ function RoleEditDialog({
         `${member.first_name || ''} ${member.last_name || ''}`
           .toLowerCase()
           .includes(search.toLowerCase()) ||
-        member.role.toLowerCase().includes(search.toLowerCase()),
+        member.role?.toLowerCase().includes(search.toLowerCase()),
     );
 
   return (
@@ -53,15 +53,17 @@ function RoleEditDialog({
           <Button
             onClick={async () => {
               setIsLoading(true);
-              await updateMember({
-                data: {
-                  user_id: selectedMember.user_id,
-                  role_id: role.id,
-                },
-              });
-              refetch();
-              setIsLoading(false);
-              close();
+              if (selectedMember) {
+                await updateMember({
+                  data: {
+                    user_id: selectedMember.user_id,
+                    role_id: role.id,
+                  },
+                });
+                refetch();
+                setIsLoading(false);
+                close();
+              }
             }}
             disabled={!selectedMember || isLoading}
           >
@@ -77,7 +79,7 @@ function RoleEditDialog({
         filteredMember={filteredMember}
         role={role.role}
         search={search}
-        selectedMember={selectedMember}
+        selectedMember={selectedMember!}
         setSearch={setSearch}
         setSelectedMember={setSelectedMember}
       />

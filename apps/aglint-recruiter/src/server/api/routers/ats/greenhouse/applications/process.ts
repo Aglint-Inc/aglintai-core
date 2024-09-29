@@ -111,7 +111,7 @@ export async function syncJobApplications(
 
       if (matchingCandidate && matchingCandidate.id) {
         return {
-          applied_at: ref.created_at.toISOString(),
+          applied_at: ref.created_at as unknown as string,
           candidate_id: matchingCandidate.id,
           job_id: post.job_id,
           id: ref.application_id,

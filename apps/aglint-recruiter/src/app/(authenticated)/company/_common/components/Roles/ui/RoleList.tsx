@@ -4,13 +4,13 @@ import { TableCell, TableRow } from '@components/ui/table';
 import { CirclePlus } from 'lucide-react';
 
 import type { useTenantMembers } from '@/company/hooks';
-import { type getRoleAndPermissionsWithUserCount } from '@/company/hooks/useRoleAndPermissionsHook';
+import type { useRoleData } from '@/company/hooks/useRoleAndPermissionsHook';
 import { UIButton } from '@/components/Common/UIButton';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-type getRoleAndPermissionsWithUserCountType = Awaited<
-  ReturnType<typeof getRoleAndPermissionsWithUserCount>
->['rolesAndPermissions'][number];
+type getRoleAndPermissionsWithUserCountType = ReturnType<
+  typeof useRoleData
+>['role'];
 
 type Props = {
   role: getRoleAndPermissionsWithUserCountType;

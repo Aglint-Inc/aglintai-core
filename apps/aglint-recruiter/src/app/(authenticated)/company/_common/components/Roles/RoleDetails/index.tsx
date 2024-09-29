@@ -7,12 +7,14 @@ import { CirclePlus, Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { useTenantMembers } from '@/company/hooks';
-import { type useRoleAndPermissionsHook } from '@/company/hooks/useRoleAndPermissionsHook';
+import type {
+  useRoleData,
+  useRoleDataSetter,
+} from '@/company/hooks/useRoleAndPermissionsHook';
 import UISectionCard from '@/components/Common/UISectionCard';
 import { allPermissions } from '@/constant/role_and_permissions';
 import { useRolesAndPermissions as useRolesAndPermissionsContext } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSearchQuery } from '@/hooks/useSearchQuery';
-import { type GetRoleAndPermissionsAPI } from '@/pages/api/getRoleAndPermissions/type';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import RoleEditDialog from './RoleEditDialog';
@@ -25,9 +27,7 @@ function RoleDetails({
   AllRoles,
   updateRoles,
 }: {
-  role: GetRoleAndPermissionsAPI['response']['rolesAndPermissions'][string] & {
-    name: string;
-  };
+  role: ReturnType<typeof useRoleData>['role'];
   back: () => void;
   roleDetails: {
     [key: string]: {
@@ -43,9 +43,7 @@ function RoleDetails({
   }[];
   updateRoles: (
     // eslint-disable-next-line no-unused-vars
-    x: Parameters<
-      ReturnType<typeof useRoleAndPermissionsHook>['handelUpdateRole']
-    >[0],
+    x: Parameters<ReturnType<typeof useRoleDataSetter>['handelUpdateRole']>[0],
   ) => void;
 }) {
   const { checkPermissions } = useRolesAndPermissionsContext();
