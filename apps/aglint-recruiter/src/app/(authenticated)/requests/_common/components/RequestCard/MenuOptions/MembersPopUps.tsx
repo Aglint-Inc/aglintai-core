@@ -90,7 +90,10 @@ function MembersPopUps({
           />
 
           {filteredMembers.length === 0 ? (
-            <GlobalEmpty iconSlot={<Search />} text={'No members found'} />
+            <GlobalEmpty
+              icon={<Search strokeWidth={1} className='h-10 w-10' />}
+              header={'No members found'}
+            />
           ) : status === 'success' ? (
             <div className='mt-4 h-[150px] max-h-[150px] w-full overflow-auto'>
               {filteredMembers

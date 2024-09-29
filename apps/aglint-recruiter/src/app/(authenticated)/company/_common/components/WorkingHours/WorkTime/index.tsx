@@ -68,7 +68,7 @@ const WorkTime: FC<WorkTimeProps> = ({
         description="Set your company's operational hours for each day of the week."
         action={
           <UIButton variant='outline' size='sm' onClick={() => setIsOpen(true)}>
-            <Edit className='h-3 w-3' />
+            <Edit className='mr-2 h-3 w-3' /> Edit
             <span className='sr-only'>Edit Working Hours</span>
           </UIButton>
         }

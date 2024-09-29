@@ -58,7 +58,7 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
                 setIsPopoverOpen(true);
               }}
             >
-              <Edit className='h-3 w-3' />
+              <Edit className='mr-2 h-3 w-3' /> Edit
               <span className='sr-only'>Edit Break Time</span>
             </Button>
           </PopoverTrigger>

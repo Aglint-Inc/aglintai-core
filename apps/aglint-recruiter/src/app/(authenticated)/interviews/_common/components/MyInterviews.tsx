@@ -1,15 +1,15 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { EmptyState } from '@components/empty-state';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import { AlertTriangle, Calendar } from 'lucide-react';
+import { AlertTriangle, Calendar, Info } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { transformDataSchedules } from 'src/app/_common/utils/schedules-query';
 
 import { useAllIntegrations } from '@/authenticated/hooks';
 import { useTenant } from '@/company/hooks';
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 
 import {
@@ -19,7 +19,6 @@ import {
 import { InterviewMemberSide } from './ui/InterviewMemberSide';
 import { NewMyScheduleCard } from './ui/NewMyScheduleCard';
 import ScheduleMeetingCard from './ui/ScheduleMeetingCard';
-
 function MyInterviews() {
   const { recruiter_user } = useTenant();
   const [filter, setFilter] =
@@ -124,9 +123,9 @@ function MyInterviews() {
                 );
               })}
             {scheduleFetched && allSchedules.length === 0 && (
-              <EmptyState
-                module='interviews'
-                title='No interviews found'
+              <GlobalEmpty
+                icon={<Info strokeWidth={1} className='h-10 w-10' />}
+                header='No interviews found'
                 description='There are no upcoming interviews.'
               />
             )}

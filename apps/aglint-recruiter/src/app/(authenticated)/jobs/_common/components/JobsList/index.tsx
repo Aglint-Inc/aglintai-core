@@ -18,7 +18,7 @@ import { AlertCircle, Briefcase, Clock, MapPin, Pin } from 'lucide-react';
 import Image from 'next/image';
 import React from 'react';
 
-import EmptyState from '@/components/Common/EmptyStates/EmptyStates';
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJobs } from '@/jobs/hooks';
 import { calculateTimeDifference } from '@/jobs/utils/calculateTimeDifference';
@@ -38,7 +38,12 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
   const router = useRouterPro();
 
   if (jobs?.length === 0) {
-    return <EmptyState type={'job-jobList'} />;
+    return (
+      <GlobalEmpty
+        icon={<Briefcase strokeWidth={1} className='h-10 w-10' />}
+        header='No jobs found'
+      />
+    );
   }
 
   return (

@@ -25,8 +25,8 @@ function Requests({ session_id }) {
         <div className='space-y-2'>
           {(requests ?? []).length === 0 && (
             <GlobalEmpty
-              iconSlot={<Calendar className='text-gray-500' />}
-              text={'No requests found'}
+              icon={<Calendar strokeWidth={1} className='h-10 w-10' />}
+              header={'No requests found'}
             />
           )}
           {requests?.map((request) => (
