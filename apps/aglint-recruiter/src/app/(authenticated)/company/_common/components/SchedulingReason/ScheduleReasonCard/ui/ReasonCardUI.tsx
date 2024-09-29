@@ -37,81 +37,74 @@ export const ReasonCardUI = ({
   newReason,
 }: Props) => {
   //list
-  const ReasonList = ({ reasonIndex, reason }) => {
-    return (
-      <li
-        key={reasonIndex}
-        className={`flex items-center justify-between rounded-md px-3 py-2 ${
-          editingIndex === reasonIndex
-            ? 'bg-gray-100'
-            : 'border border-gray-200'
-        } group`}
-      >
-        {editingIndex === reasonIndex ? (
-          <UITextField
-            value={editingReason}
-            onChange={(e) => setEditingReason(e.target.value)}
-            className='h-8.5 mr-2 flex-grow'
-          />
-        ) : (
-          <span>{reason}</span>
-        )}
-        <div className='opacity-0 transition-opacity group-hover:opacity-100'>
-          {editingIndex === reasonIndex ? (
-            <>
-              <div className='flex flex-row items-center'>
-                <UIButton
-                  variant='ghost'
-                  size='sm'
-                  onClick={handleUpdate}
-                  className='mr-1 hover:bg-green-50'
-                >
-                  <Check className='h-3.5 w-3.5' />
-                </UIButton>
-                <UIButton
-                  variant='ghost'
-                  size='sm'
-                  onClick={() => setEditingIndex(null)}
-                  className='hover:bg-red-50'
-                >
-                  <X className='h-3.5 w-3.5' />
-                </UIButton>
-              </div>
-            </>
-          ) : (
-            <div>
-              <UIButton
-                variant='ghost'
-                size='sm'
-                onClick={() => handleEdit(reasonIndex)}
-                className='mr-1'
-              >
-                <Pencil className='h-3 w-3 font-semibold' />
-              </UIButton>
-              <UIButton
-                variant='ghost'
-                size='sm'
-                onClick={() => handleDelete(reasonIndex)}
-                className='text-red-500 hover:text-red-600'
-              >
-                <Trash2 className='h-3 w-3' />
-              </UIButton>
-            </div>
-          )}
-        </div>
-      </li>
-    );
-  };
 
   return (
     <>
       <ul className='space-y-2'>
         {reasons.map((reason, reasonIndex) => (
-          <ReasonList
+          <li
             key={reasonIndex}
-            reason={reason}
-            reasonIndex={reasonIndex}
-          />
+            className={`flex items-center justify-between rounded-md px-3 py-2 ${
+              editingIndex === reasonIndex
+                ? 'bg-gray-100'
+                : 'border border-gray-200'
+            } group`}
+          >
+            {editingIndex === reasonIndex ? (
+              <UITextField
+                value={editingReason}
+                onChange={(e) => setEditingReason(e.target.value)}
+                className='h-8.5 mr-2 flex-grow'
+                // eslint-disable-next-line jsx-a11y/no-autofocus
+                autoFocus={true}
+              />
+            ) : (
+              <span>{reason}</span>
+            )}
+            <div className='opacity-0 transition-opacity group-hover:opacity-100'>
+              {editingIndex === reasonIndex ? (
+                <>
+                  <div className='flex flex-row items-center'>
+                    <UIButton
+                      variant='ghost'
+                      size='sm'
+                      onClick={handleUpdate}
+                      className='mr-1 hover:bg-green-50'
+                    >
+                      <Check className='h-3.5 w-3.5' />
+                    </UIButton>
+                    <UIButton
+                      variant='ghost'
+                      size='sm'
+                      onClick={() => setEditingIndex(null)}
+                      className='hover:bg-red-50'
+                    >
+                      <X className='h-3.5 w-3.5' />
+                    </UIButton>
+                  </div>
+                </>
+              ) : (
+                <div>
+                  <UIButton
+                    variant='ghost'
+                    size='sm'
+                    onClick={() => handleEdit(reasonIndex)}
+                    className='mr-1'
+                  >
+                    <Pencil className='h-3 w-3 font-semibold' />
+                  </UIButton>
+                  <UIButton
+                    variant='ghost'
+                    size='sm'
+                    onClick={() => handleDelete(reasonIndex)}
+                    className='text-red-500 hover:text-red-600'
+                  >
+                    <Trash2 className='h-3 w-3' />
+                  </UIButton>
+                </div>
+              )}
+            </div>
+          </li>
         ))}
         {isAddingNew && (
           <li className='flex items-center justify-between rounded-md bg-gray-100 px-3 py-2'>
