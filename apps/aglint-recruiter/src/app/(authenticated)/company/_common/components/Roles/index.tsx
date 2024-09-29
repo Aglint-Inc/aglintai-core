@@ -8,8 +8,8 @@ import {
 
 import { useTenantMembers } from '@/company/hooks';
 import {
-  type getRoleAndPermissionsWithUserCount,
-  useRoleAndPermissionsHook,
+  useRoleData,
+  useRoleDataSetter,
 } from '@/company/hooks/useRoleAndPermissionsHook';
 import { rolesOrder } from '@/constant/role_and_permissions';
 
@@ -21,11 +21,11 @@ function RolesAndPermissionsComponent() {
   const {
     data,
     isPending: loading,
-    handelUpdateRole,
     role,
-    roleDetails,
     setSelectRole,
-  } = useRoleAndPermissionsHook();
+    roleDetails,
+  } = useRoleData();
+  const { handelUpdateRole } = useRoleDataSetter();
   return (
     <>
       {role ? ( // roleDetailsComponent
@@ -77,9 +77,7 @@ const RoleTable = ({
   setRole,
 }: {
   loading: boolean;
-  roles: Awaited<
-    ReturnType<typeof getRoleAndPermissionsWithUserCount>
-  >['rolesAndPermissions'];
+  roles: ReturnType<typeof useRoleData>['data']['rolesAndPermissions'];
   setRole: (_role_id: string, _addMode?: boolean) => void;
 }) => {
   const { members } = useTenantMembers();

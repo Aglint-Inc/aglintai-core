@@ -14,7 +14,9 @@ type props = {
   setSearch: Dispatch<SetStateAction<string>>;
   filteredMember: ReturnType<typeof useTenantMembers>['members'];
   setSelectedMember: Dispatch<
-    SetStateAction<ReturnType<typeof useTenantMembers>['members'][number]>
+    SetStateAction<
+      ReturnType<typeof useTenantMembers>['members'][number] | null
+    >
   >;
   role;
 };
@@ -43,7 +45,7 @@ export const RoleEditDialogUI = ({
             <Card className='flex items-center p-4'>
               <Avatar className='mr-4 h-12 w-12'>
                 <AvatarImage
-                  src={selectedMember.profile_image}
+                  src={selectedMember.profile_image || ''}
                   alt={`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}
                 />
                 <AvatarFallback>
@@ -63,7 +65,7 @@ export const RoleEditDialogUI = ({
             <Card className='flex items-center border border-dashed p-4'>
               <Avatar className='mr-4 h-12 w-12'>
                 <AvatarImage
-                  src={selectedMember.profile_image}
+                  src={selectedMember.profile_image || ''}
                   alt={`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}
                 />
                 <AvatarFallback>
@@ -97,7 +99,7 @@ export const RoleEditDialogUI = ({
               >
                 <Avatar className='mr-4 h-10 w-10'>
                   <AvatarImage
-                    src={member.profile_image}
+                    src={member.profile_image || ''}
                     alt={`${member.first_name || ''} ${member.last_name || ''}`.trim()}
                   />
                   <AvatarFallback>
