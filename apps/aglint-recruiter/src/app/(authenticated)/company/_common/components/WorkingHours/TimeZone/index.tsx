@@ -54,7 +54,7 @@ const TimeZone: FC<TimeZoneProps> = ({
         <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
           <PopoverTrigger asChild>
             <Button variant='outline' size='sm' className=''>
-              <Edit className='h-3 w-3' />
+              <Edit className='mr-2 h-3 w-3' /> Edit
               <span className='sr-only'>Edit Time Zone</span>
             </Button>
           </PopoverTrigger>

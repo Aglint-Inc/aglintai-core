@@ -66,14 +66,14 @@ function Feedback() {
                     <tr>
                       <td colSpan={5} className='p-4'>
                         <GlobalEmpty
-                          iconSlot={
+                          icon={
                             <MessageSquare
                               strokeWidth={1.5}
                               className='mb-2 h-10 w-10 text-muted-foreground'
                             />
                           }
-                          text={'No feedback found'}
-                          height='250px'
+                          header={'No feedback found'}
+                          description='Create a new interview pool to get started.'
                         />
                       </td>
                     </tr>

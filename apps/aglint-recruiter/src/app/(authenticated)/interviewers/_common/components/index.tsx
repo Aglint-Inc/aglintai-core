@@ -109,7 +109,11 @@ function Interviewers() {
             </Table>
             {filteredInterviewers?.length === 0 ? (
               <div className='flex w-full items-center justify-center'>
-               <GlobalEmpty iconSlot={<Users strokeWidth={1} className="w-10 h-10" />} text={'No Interviewers found'} height='400px'/>
+                <GlobalEmpty
+                  icon={<Users strokeWidth={1} className='h-10 w-10' />}
+                  header={'No Interviewers found'}
+                  description='Create a new interview pool to get started.'
+                />
               </div>
             ) : (
               <></>

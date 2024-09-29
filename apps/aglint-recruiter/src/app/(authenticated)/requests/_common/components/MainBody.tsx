@@ -124,9 +124,8 @@ const MainBody = () => {
           {isRequestListEmpty || showEmptyPage ? (
             <div className='container-lg mx-auto w-full px-12 py-8'>
               <GlobalEmpty
-                height='300px'
-                text={'No requests found'}
-                iconSlot={<Info className='text-gray-500' />}
+                header={'No requests found'}
+                icon={<Info strokeWidth={1} className='h-10 w-10' />}
               />
             </div>
           ) : (

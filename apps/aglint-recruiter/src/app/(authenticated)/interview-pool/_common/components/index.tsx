@@ -129,11 +129,9 @@ export default function InterviewTypesPage() {
             {filteredInterviewModules?.length === 0 ? (
               <div className='flex w-full items-center justify-center'>
                 <GlobalEmpty
-                  iconSlot={
-                    <LibraryBig strokeWidth={1} className='h-10 w-10' />
-                  }
-                  text={'No Interview pools found'}
-                  height='400px'
+                  icon={<LibraryBig strokeWidth={1} className='h-10 w-10' />}
+                  header={'No Interview pools found'}
+                  description='Create a new interview pool to get started.'
                 />
               </div>
             ) : (

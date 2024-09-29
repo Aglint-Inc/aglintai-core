@@ -3,7 +3,7 @@ import './EditorStyle.css'; // We will define some styles here
 
 import { CommandShortcut } from '@components/ui/command';
 import { Command } from 'cmdk';
-import { ArrowDown, ArrowUp } from 'lucide-react';
+import { ArrowDown, ArrowUp, Clock, Info } from 'lucide-react';
 import React, { type Dispatch, type SetStateAction, useState } from 'react';
 import { Mention, MentionsInput } from 'react-mentions';
 
@@ -281,14 +281,14 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
                 {selectedItems?.applicant_name[0]?.name ? (
                   <>
                     <GlobalEmpty
-                      iconSlot={''}
-                      text={`There are no session found for ${selectedItems?.applicant_name[0]?.name}`}
+                      icon={<Clock strokeWidth={1} className='h-10 w-10' />}
+                      header={`There are no session found for ${selectedItems?.applicant_name[0]?.name}`}
                     />
                   </>
                 ) : (
                   <GlobalEmpty
-                    iconSlot={''}
-                    text={`Please select an application first`}
+                    icon={<Info strokeWidth={1} className='h-10 w-10' />}
+                    header={`Please select an application first`}
                   />
                 )}
               </ShowCode>
@@ -299,7 +299,10 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
                   (triggerType === '/' && requestList.length === 0)
                 }
               >
-                <GlobalEmpty iconSlot={''} text={`Results not found`} />
+                <GlobalEmpty
+                  icon={<Info strokeWidth={1} className='h-10 w-10' />}
+                  header={`Results not found`}
+                />
               </ShowCode.When>
             </ShowCode>
             {children}
