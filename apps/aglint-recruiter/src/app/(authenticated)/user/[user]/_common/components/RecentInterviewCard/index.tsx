@@ -1,6 +1,7 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Calendar } from 'lucide-react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
 import UISectionCard from '@/components/Common/UISectionCard';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -22,10 +23,10 @@ export const RecentInterviews = ({
             ))}
           </div>
         ) : (
-          <div className='flex h-[100px] w-full flex-col items-center justify-center space-y-2 text-gray-500'>
-            <Calendar className='h-8 w-8' />
-            <p>No recent interviews</p>
-          </div>
+          <GlobalEmpty
+            icon={<Calendar strokeWidth={2} className='h-6 w-6' />}
+            description='No recent interviews'
+          />
         )}
       </UISectionCard>
     </>

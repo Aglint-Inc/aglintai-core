@@ -2,7 +2,7 @@ import { getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { useQuery } from '@tanstack/react-query';
-import { Calendar } from 'lucide-react';
+import { LayoutList } from 'lucide-react';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
@@ -25,8 +25,14 @@ function Requests({ session_id }) {
         <div className='space-y-2'>
           {(requests ?? []).length === 0 && (
             <GlobalEmpty
-              icon={<Calendar strokeWidth={1} className='h-10 w-10' />}
               header={'No requests found'}
+              description='Requests are created when a interview process starts for candidates.'
+              icon={
+                <LayoutList
+                  strokeWidth={2}
+                  className='h-6 w-6 text-muted-foreground'
+                />
+              }
             />
           )}
           {requests?.map((request) => (
