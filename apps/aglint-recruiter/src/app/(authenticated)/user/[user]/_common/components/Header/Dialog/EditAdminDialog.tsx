@@ -1,18 +1,17 @@
-import { type employmentTypeEnum } from '@aglint/shared-types';
 import _ from 'lodash';
 import { useEffect, useRef, useState } from 'react';
-import { type MemberType } from 'src/app/_common/types/memberType';
 
-import axios from '@/client/axios';
 import {
   useTenant,
+  useTenantMembers,
   useTenantOfficeLocations,
   useTenantRoles,
 } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { type API_setMembersWithRole } from '@/pages/api/setMembersWithRole/type';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { useAllDepartments } from '@/queries/departments';
+import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
@@ -23,7 +22,7 @@ export type EditAdminFormType = {
   last_name: string;
   linked_in: string;
   location_id: number | null;
-  employment: employmentTypeEnum;
+  employment: 'fulltime' | 'parttime' | 'contractor';
   position: string;
   department_id: number | null;
   role: string;
@@ -46,26 +45,28 @@ export type EditAdminFormErrorType = {
 
 const EditAdminDialog = ({
   open,
-  member,
-  refetch,
   memberList,
   onClose,
 }: {
   open: boolean;
   refetch: any;
-  member: MemberType;
   memberList: { id: string; name: string }[];
   onClose: () => void;
 }) => {
-  const { data: roleOptions } = useTenantRoles();
   const { recruiter_user } = useTenant();
+  const { data: roleOptions } = useTenantRoles();
   const { data: departments } = useAllDepartments();
   const { data: officeLocations } = useTenantOfficeLocations();
   const [isUpdating, setIsUpdating] = useState(false);
   const imageFile = useRef<File>(null);
+  const { mutateAsync } = api.user.update_user.useMutation();
 
   const [isImageChanged, setIsImageChanged] = useState(false);
   const [isProfileChanged, setIsProfileChanged] = useState(false);
+
+  const { allMembers } = useTenantMembers();
+  const router = useRouterPro();
+  const member = allMembers.find((mem) => mem.user_id === router?.params?.user);
 
   const initForm: EditAdminFormType = {
     first_name: member?.first_name,
@@ -194,22 +195,20 @@ const EditAdminDialog = ({
         first_name: form?.first_name,
         last_name: form?.last_name,
         linked_in: form?.linked_in,
+        office_location_id: form?.location_id,
         employment: form?.employment,
-        profile_image: profile_image,
         position: form?.position,
+        department_id: form?.department_id,
         role_id: form?.role_id,
+        role: form?.role,
         phone: form?.phone,
         manager_id: form?.manager_id,
-        department_id: form?.department_id,
-        office_location_id: form?.location_id,
         user_id: member.user_id,
+        profile_image: profile_image,
       };
-      await axios
-        .call<API_setMembersWithRole>('POST', '/api/setMembersWithRole', {
-          data,
-        })
-        .then((res) => res.data);
-      await refetch();
+
+      await mutateAsync({ ...data });
+
       const profile_pic = profile_image as string;
       setForm({ ...form, profile_image: profile_pic });
       onClose();

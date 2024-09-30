@@ -13,10 +13,13 @@ import {
   type MutableRefObject,
   type SetStateAction,
 } from 'react';
-import { type MemberType } from 'src/app/_common/types/memberType';
 
-import type { useTenant, useTenantRoles } from '@/company/hooks';
 import type { useTenantOfficeLocations } from '@/company/hooks';
+import {
+  type useTenant,
+  type useTenantMembers,
+  type useTenantRoles,
+} from '@/company/hooks';
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
 import UITypography from '@/components/Common/UITypography';
 import { type useAllDepartments } from '@/queries/departments';
@@ -34,7 +37,7 @@ type Props = {
   setForm: Dispatch<SetStateAction<EditAdminFormType>>;
   formError: EditAdminFormErrorType;
   officeLocations: ReturnType<typeof useTenantOfficeLocations>['data'];
-  member: MemberType;
+  member: ReturnType<typeof useTenantMembers>['allMembers'][number];
   recruiterUser: ReturnType<typeof useTenant>['recruiter_user'];
   departments: ReturnType<typeof useAllDepartments>['data'];
   roleOptions: ReturnType<typeof useTenantRoles>['data'];
