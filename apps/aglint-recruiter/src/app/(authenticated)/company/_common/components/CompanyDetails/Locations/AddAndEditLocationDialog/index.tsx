@@ -43,10 +43,13 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
   const countryRef = useRef<HTMLInputElement>(null);
   const zipRef = useRef<HTMLInputElement>(null);
 
-  const [selectedTimeZone, setSelectedTimeZone] = useState<TimeZoneType>(null);
+  const [selectedTimeZone, setSelectedTimeZone] = useState<TimeZoneType | null>(
+    null,
+  );
   const [loading, setLoading] = useState(false);
-  const [initialValue, setInitialValue] =
-    useState<(typeof office_locations)[number]>(null);
+  const [initialValue, setInitialValue] = useState<
+    (typeof office_locations)[number] | null
+  >(null);
 
   const hasHeadquarter = office_locations?.some(
     (location) => location.is_headquarter === true,
@@ -57,11 +60,11 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
   const handleAddLocation = async () => {
     setLoading(true);
     if (
-      !address1Ref.current.value ||
-      !cityRef.current.value ||
-      !regionRef.current.value ||
-      !countryRef.current.value ||
-      !zipRef.current.value ||
+      !address1Ref.current?.value ||
+      !cityRef.current?.value ||
+      !regionRef.current?.value ||
+      !countryRef.current?.value ||
+      !zipRef.current?.value ||
       !selectedTimeZone
     ) {
       toast({ title: 'Please fill in all required fields.' });
@@ -78,7 +81,7 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
           country: countryRef.current.value,
           is_headquarter: Boolean(isHeadQ),
           line1: address1Ref.current.value,
-          line2: address2Ref.current.value,
+          line2: address2Ref.current?.value || '',
           region: regionRef.current.value,
           timezone: selectedTimeZone.tzCode,
           zipcode: zipRef.current.value,
@@ -94,12 +97,14 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
   useEffect(() => {
     if (recruiter && office_locations?.length) {
       const initialValue = office_locations.find((item) => item.id === edit);
-      setHeadQ(initialValue?.is_headquarter);
-      const initialTimeZone = timeZone.find(
-        (item) => item.tzCode === initialValue?.timezone,
-      );
-      setInitialValue(initialValue);
-      setSelectedTimeZone(initialTimeZone);
+      if (initialValue) {
+        setHeadQ(initialValue.is_headquarter);
+        const initialTimeZone = timeZone.find(
+          (item) => item.tzCode === initialValue?.timezone,
+        );
+        setInitialValue(initialValue);
+        setSelectedTimeZone(initialTimeZone || null);
+      }
     }
   }, [recruiter, office_locations, edit]);
 
@@ -317,7 +322,7 @@ const geoCodeLocation = async (address: string) => {
     }
     const result = (locationData as any)?.data?.results[0];
 
-    let add = null;
+    let add: { region: string; country: string };
     if (result?.address_components[4]) {
       add = {
         region: result?.address_components[3]?.long_name ?? '',

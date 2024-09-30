@@ -45,19 +45,18 @@ const EditBasicInfoDialog = ({
 }) => {
   const { recruiter } = useTenant();
   const [isError, setError] = useState(false);
-  const [logo, setLogo] = useState(null);
+  const [logo, setLogo] = useState<string | null>(null);
   const [nameError, setNameError] = useState(false);
   const { checkPermissions } = useRolesAndPermissions();
   const isFormDisabled = !checkPermissions(['manage_company']);
   const imageFile = useRef(null);
   const [isImageChanged, setIsImageChanged] = useState(false);
-  const [recruiterLocal, setRecruiterLocal] = useState<typeof recruiter | null>(
-    recruiter,
-  );
+  const [recruiterLocal, setRecruiterLocal] =
+    useState<typeof recruiter>(recruiter);
   const { toast } = useToast();
 
   useEffect(() => {
-    setLogo(recruiter?.logo);
+    setLogo(recruiter?.logo || null);
   }, [recruiter]);
 
   const handleChange = async (recruit: typeof recruiter) => {
@@ -98,19 +97,22 @@ const EditBasicInfoDialog = ({
       // setIsLoading(true);
       let logo = recruiter.logo;
       if (isImageChanged) {
-        const { data } = await supabase.storage
-          .from('company-logo')
-          .upload(`public/${recruiter.id}`, imageFile.current, {
-            cacheControl: '3600',
-            upsert: true,
-          });
-        if (data?.path && imageFile?.current?.size) {
-          logo = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/company-logo/${data?.path}?t=${new Date().toISOString()}`;
-          setError(false);
-        } else {
-          logo = null;
+        if (imageFile?.current) {
+          const { data } = await supabase.storage
+            .from('company-logo')
+            .upload(`public/${recruiter.id}`, imageFile.current, {
+              cacheControl: '3600',
+              upsert: true,
+            });
+          // @ts-ignore
+          if (data?.path && imageFile?.current?.size) {
+            logo = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/company-logo/${data?.path}?t=${new Date().toISOString()}`;
+            setError(false);
+          } else {
+            logo = null;
+          }
+          setIsImageChanged(false);
         }
-        setIsImageChanged(false);
       }
       await mutateAsync({
         name: recruiterLocal.name ? recruiterLocal.name : recruiter?.name,
@@ -212,6 +214,7 @@ const EditBasicInfoDialog = ({
             <Input
               id='company-name'
               placeholder='Ex. Acme Inc.'
+              // @ts-ignore
               value={recruiterLocal?.name}
               onChange={(e) => {
                 handleChange({
@@ -234,6 +237,7 @@ const EditBasicInfoDialog = ({
             <Input
               id='industry'
               placeholder='Ex. Healthcare'
+              // @ts-ignore
               value={recruiterLocal?.industry}
               onChange={(e) => {
                 handleChange({
@@ -251,6 +255,7 @@ const EditBasicInfoDialog = ({
                 name: size,
                 value: size,
               }))}
+              // @ts-ignore
               value={recruiterLocal?.employee_size}
               onValueChange={(value) => {
                 handleChange({
@@ -265,6 +270,7 @@ const EditBasicInfoDialog = ({
             <Input
               id='company-website'
               placeholder='https://companydomain.com'
+              // @ts-ignore
               value={recruiterLocal?.company_website}
               onChange={(e) => {
                 handleChange({

@@ -17,7 +17,10 @@ export const Location = () => {
     open: false,
     edit: -1,
   });
-  const [DeleteDialog, setDeleteDialog] = useState({
+  const [DeleteDialog, setDeleteDialog] = useState<{
+    open: boolean;
+    id: number | null;
+  }>({
     open: false,
     id: null,
   });
