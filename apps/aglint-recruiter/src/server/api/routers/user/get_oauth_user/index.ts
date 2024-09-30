@@ -30,7 +30,7 @@ const mutation = async ({ input }: PrivateProcedure<typeof schema>) => {
     auth: oAuth2Client,
   });
 
-  let userEmail = '';
+  let userEmail: string = '';
 
   // Get user's profile information
   peopleApiClient.people.get(
@@ -42,7 +42,9 @@ const mutation = async ({ input }: PrivateProcedure<typeof schema>) => {
       if (error) {
         throw new Error(error.message);
       }
-      userEmail = response.data.emailAddresses[0].value;
+      userEmail = response?.data?.emailAddresses
+        ? (response?.data?.emailAddresses[0]?.value ?? '')
+        : '';
       return;
     },
   );

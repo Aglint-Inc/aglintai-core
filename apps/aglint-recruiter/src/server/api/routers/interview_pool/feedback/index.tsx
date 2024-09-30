@@ -13,22 +13,24 @@ const query = async ({
 }: PrivateProcedure<typeof feedbackPoolSchema>) => {
   const db = createPrivateClient();
   const response = (
-    await db
-      .from('interview_session')
-      .select(
-        '*,interview_meeting(*,applications(id,candidates(first_name,last_name))),interview_session_relation(feedback,interview_module_relation(*,recruiter_user(user_id,first_name,last_name)))',
-      )
-      .eq('module_id', module_id)
-      .neq('session_type', 'debrief')
-      .in('interview_meeting.status', ['completed'])
-      .not('interview_meeting', 'is', null)
-      .not('interview_session_relation', 'is', null)
-  ).data.flatMap((app) =>
+    (
+      await db
+        .from('interview_session')
+        .select(
+          '*,interview_meeting!inner(*,applications!inner(id,candidates!inner(first_name,last_name))),interview_session_relation!inner(feedback,interview_module_relation!inner(*,recruiter_user!inner(user_id,first_name,last_name)))',
+        )
+        .eq('module_id', module_id)
+        .neq('session_type', 'debrief')
+        .in('interview_meeting.status', ['completed'])
+        .not('interview_meeting', 'is', null)
+        .not('interview_session_relation', 'is', null)
+    ).data || []
+  )?.flatMap((app) =>
     app.interview_session_relation
       .filter((ses) => ses.feedback)
       .map((rel) => ({
-        recommendation: rel.feedback.recommendation,
-        objective: rel.feedback.objective,
+        recommendation: rel?.feedback?.recommendation,
+        objective: rel?.feedback?.objective,
         interviewer: getFullName(
           rel.interview_module_relation.recruiter_user.first_name,
           rel.interview_module_relation.recruiter_user.last_name,

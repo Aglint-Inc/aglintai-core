@@ -91,18 +91,19 @@
         "name": "next"
       }
     ],
-    "strict": false,
-    "strictNullChecks": false
+    "strict": true,
+    "strictNullChecks": true
   },
   "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.jsx",
-    "**/*.js",
-    "src/components/Feedback/Session/index.jsx",
-    "src/pages/api/getJobsPublic.js",
-    ".next/types/**/*.ts"
+    // "next-env.d.ts",
+    // "**/*.ts",
+    // "**/*.tsx",
+    // "**/*.jsx",
+    // "**/*.js",
+    // "src/components/Feedback/Session/index.jsx",
+    // "src/pages/api/getJobsPublic.js",
+    // ".next/types/**/*.ts",
+    "src/app/(authenticated)/interview-pool"
   ],
-  "exclude": ["node_modules", ".next"]
+  "exclude": ["node_modules", ".next", "components"]
 }

@@ -8,6 +8,7 @@ const mutation = async ({
   ctx,
 }: PrivateProcedure<typeof CustomRecruiterUserUpdateSchema>) => {
   const db = createPrivateClient();
+
   await db
     .from('recruiter_user')
     //@ts-ignore  remove ignore when strict mode is enabled in tsconfig
