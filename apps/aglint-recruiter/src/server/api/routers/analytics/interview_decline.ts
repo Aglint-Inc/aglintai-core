@@ -60,8 +60,8 @@ export const interview_decline = privateProcedure
         location_id,
       );
     }
-    const result = (await query.throwOnError()).data.map((item) => ({
-      created_at: item.created_at,
+    const result = (await query.throwOnError()).data?.map((item) => ({
+      created_at: item?.created_at,
       status: 'cancelled',
     }));
     return result;

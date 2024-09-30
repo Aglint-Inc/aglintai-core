@@ -20,5 +20,10 @@ export const interviewer_performance = privateProcedure
         })
         .throwOnError()
     ).data;
+
+    if (!data) {
+      return null;
+    }
+
     return data[0];
   });

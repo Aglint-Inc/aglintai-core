@@ -20,5 +20,9 @@ export const interview_statistics = privateProcedure
         })
         .throwOnError()
     ).data;
+
+    if (!data) {
+      return null;
+    }
     return data[0];
   });

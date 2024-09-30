@@ -20,5 +20,9 @@ export const candidate_pipeline = privateProcedure
         })
         .throwOnError()
     ).data;
+
+    if (!data) {
+      return null;
+    }
     return data[0];
   });
