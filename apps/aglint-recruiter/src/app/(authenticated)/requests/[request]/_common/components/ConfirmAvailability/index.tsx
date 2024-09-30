@@ -4,8 +4,8 @@ import {
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
-import { updateCandidateRequestAvailability } from '@requests/functions';
 import { useRequestAvailabilityDetails } from '@requests/hooks';
+import { useUpdateCandidateAvailability } from '@requests/hooks/useRequestAvailabilityDetails';
 import axios from 'axios';
 import { Check, Loader2 } from 'lucide-react';
 import { nanoid } from 'nanoid';
@@ -31,7 +31,7 @@ import { useAvailabilityContext } from './_common/contexts/RequestAvailabilityCo
 function ConfirmAvailability() {
   const params = useParams();
   const requestId = params?.request as string;
-
+  const { updateRequestAvailability } = useUpdateCandidateAvailability();
   const {
     setSelectedDayAvailableBlocks,
     selectedDateSlots,
@@ -108,11 +108,9 @@ function ConfirmAvailability() {
         );
 
         if (res.status === 200) {
-          await updateCandidateRequestAvailability({
+          updateRequestAvailability({
             id: candidateAvailabilityId,
-            data: {
-              booking_confirmed: true,
-            },
+            booking_confirmed: true,
           });
         } else {
           throw new Error('Booking failed');
