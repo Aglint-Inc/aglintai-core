@@ -52,7 +52,7 @@ export const useWorkflowDelete = () => {
     mutationKey,
     onSuccess: (_data, variables) => {
       const prevWorkflows = queryClient.getQueryData<Workflow[]>(queryKey);
-      const newWorkflows = structuredClone(prevWorkflows).reduce(
+      const newWorkflows = structuredClone(prevWorkflows!).reduce(
         (acc, curr) => {
           if (curr.id !== variables.id) acc.push(curr);
           return acc;
@@ -85,8 +85,8 @@ export const useWorkflowUpdate = () => {
       const { queryKey: actionQueryKey } =
         workflowActionQueryKeys.workflowAction({ workflow_id: variables.id });
       const previousWorkflows = queryClient.getQueryData<Workflow[]>(queryKey);
-      let previousWorkflow: Workflow = null;
-      const newWorkflows = structuredClone(previousWorkflows).reduce(
+      let previousWorkflow: Workflow | null = null;
+      const newWorkflows = structuredClone(previousWorkflows!).reduce(
         (acc, curr) => {
           if (curr.id === variables.id) {
             previousWorkflow = structuredClone(curr);
@@ -101,7 +101,7 @@ export const useWorkflowUpdate = () => {
       queryClient.setQueryData<Workflow[]>(queryKey, newWorkflows);
       if (
         variables.payload.trigger &&
-        previousWorkflow.trigger !== variables.payload.trigger
+        previousWorkflow!.trigger !== variables.payload.trigger
       ) {
         triggerChange = true;
         queryClient.setQueryData<WorkflowAction[]>(actionQueryKey, []);
@@ -116,7 +116,7 @@ export const useWorkflowUpdate = () => {
     onError: (_error, variables, context) => {
       toast.error('Unable to update workflow');
       const previousWorkflows = queryClient.getQueryData<Workflow[]>(queryKey);
-      const newWorkflows = structuredClone(previousWorkflows).reduce(
+      const newWorkflows = structuredClone(previousWorkflows!).reduce(
         (acc, curr) => {
           if (curr.id !== variables.id) acc.push(curr);
           return acc;
@@ -124,10 +124,10 @@ export const useWorkflowUpdate = () => {
         [] as Workflow[],
       );
       queryClient.setQueryData<Workflow[]>(queryKey, newWorkflows);
-      if (context.triggerChange) {
+      if (context!.triggerChange) {
         queryClient.setQueryData<WorkflowAction[]>(
-          context.actionQueryKey,
-          context.previousWorkflowActions,
+          context!.actionQueryKey,
+          context!.previousWorkflowActions,
         );
       }
     },
@@ -159,7 +159,7 @@ export const useWorkflowCreate = () => {
     onMutate: ({ id, payload }) => {
       const previousWorkflows = queryClient.getQueryData<Workflow[]>(queryKey);
       const newWorkflows = structuredClone(previousWorkflows);
-      newWorkflows.push({
+      newWorkflows!.push({
         ...(payload as Workflow),
         id,
       });
@@ -168,7 +168,7 @@ export const useWorkflowCreate = () => {
     onError: (_error, variables) => {
       toast.error('Unable to create workflow');
       const previousWorkflows = queryClient.getQueryData<Workflow[]>(queryKey);
-      const newWorkflows = structuredClone(previousWorkflows).reduce(
+      const newWorkflows = structuredClone(previousWorkflows!).reduce(
         (acc, curr) => {
           if (curr.id !== variables.id) acc.push(curr);
           return acc;
@@ -219,8 +219,8 @@ export const useWorkflowRefresh = () => {
     onError: () => toast.error('Unable to refresh workflow'),
     onSuccess: (data) => {
       const prevCache = queryClient.getQueryData<Workflow[]>(queryKey);
-      const newCache = prevCache.reduce((acc, curr) => {
-        if (curr.id === data.id) acc.push(data);
+      const newCache = prevCache!.reduce((acc, curr) => {
+        if (curr.id === data!.id) acc.push(data!);
         else acc.push(curr);
         return acc;
       }, [] as Workflow[]);
