@@ -21,7 +21,7 @@ import {
 import { useMeetingList } from '@requests/hooks';
 import {
   Bot,
-  Briefcase,
+  BriefcaseBusiness,
   Calendar,
   ChevronDown,
   Coffee,
@@ -170,7 +170,7 @@ export default function ViewRequestDetails() {
                 {/* <span>{candidateDetails?.current_job_title}</span>
                 <span>•</span> */}
                 <div className='flex items-center space-x-1'>
-                  <Briefcase className='h-4 w-4' />
+                  <BriefcaseBusiness className='h-4 w-4' />
                   <Link
                     href={ROUTES['/jobs/[job]']({
                       job: jobDetails?.id ?? '',

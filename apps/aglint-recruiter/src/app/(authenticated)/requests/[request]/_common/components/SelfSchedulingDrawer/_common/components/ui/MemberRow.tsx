@@ -1,5 +1,5 @@
 'use client';
-import { Briefcase } from 'lucide-react';
+import { BriefcaseBusiness } from 'lucide-react';
 import React from 'react';
 
 import UITypography from '@/components/Common/UITypography';
@@ -34,7 +34,7 @@ export function MemberRow({
             {textName}
           </UITypography>
           <div className='text-neutral flex items-center text-sm'>
-            <Briefcase className='h-3 w-3 text-neutral-500' />
+            <BriefcaseBusiness className='h-3 w-3 text-neutral-500' />
             <UITypography type='extraSmall' className='ml-1'>
               {textRole}
             </UITypography>

@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
-import { Briefcase } from 'lucide-react';
+import { BriefcaseBusiness } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -31,7 +31,7 @@ const Experience = () => {
         <AccordionTrigger>
           <div className='flex w-full items-center justify-between'>
             <div className='flex items-center space-x-2'>
-              <Briefcase size={16} />
+              <BriefcaseBusiness size={16} />
               <span className='font-medium'>Experience</span>
             </div>
             {companyLogos.length > 0 && (
@@ -84,7 +84,7 @@ const Content = () => {
   )
     return (
       <div className='flex flex-col items-center justify-center p-4'>
-        <Briefcase className='mb-2 h-12 w-12 text-gray-500' />
+        <BriefcaseBusiness className='mb-2 h-12 w-12 text-gray-500' />
         <p className='text-sm text-gray-600'>No experience found</p>
       </div>
     );

@@ -1,6 +1,7 @@
 import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
 import { Input } from '@components/ui/input';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { capitalize } from 'lodash';
@@ -235,7 +236,7 @@ export default function LeverModalComp() {
                 <TabsTrigger value='closed'>Closed</TabsTrigger>
               </TabsList>
             </Tabs>
-            <div className='max-h-[400px] space-y-2 overflow-y-auto'>
+            <div className='space-y-2'>
               {!initialFetch ? (
                 leverPostings.filter(
                   (job) => leverFilter === 'all' || job.state === leverFilter,
@@ -244,42 +245,46 @@ export default function LeverModalComp() {
                     <UITypography type='small' variant='p'>
                       Select a job to import
                     </UITypography>
-                    {leverPostings
-                      .filter(
-                        (job) =>
-                          leverFilter === 'all' || job.state === leverFilter,
-                      )
-                      .map((post) => (
-                        <Card
-                          key={post.id}
-                          onClick={() => setSelectedLeverPostings(post)}
-                          className='cursor-pointer hover:bg-gray-50'
-                        >
-                          <CardContent className='flex items-center justify-between p-4'>
-                            <div>
-                              <p className='font-medium'>{post.text}</p>
-                              <p className='text-sm text-gray-500'>
-                                {post.categories.location}
-                              </p>
-                              <p
-                                className={`text-sm ${getLeverStatusColorClass(post.state)}`}
-                              >
-                                {capitalize(post.state)}
-                              </p>
-                            </div>
+                    <ScrollArea className='h-[400px]'>
+                      {leverPostings
+                        .filter(
+                          (job) =>
+                            leverFilter === 'all' || job.state === leverFilter,
+                        )
+                        .map((post) => (
+                          <Card
+                            key={post.id}
+                            onClick={() => setSelectedLeverPostings(post)}
+                            className='cursor-pointer hover:bg-gray-50'
+                          >
+                            <CardContent className='flex items-center justify-between p-4'>
+                              <div>
+                                <p className='font-medium'>{post.text}</p>
+                                <p className='text-sm text-gray-500'>
+                                  {post.categories.location}
+                                </p>
+                                <p
+                                  className={`text-sm ${getLeverStatusColorClass(post.state)}`}
+                                >
+                                  {capitalize(post.state)}
+                                </p>
+                              </div>
 
-                            <div className='flex items-center'>
-                              <input
-                                type='radio'
-                                name='option'
-                                id='option1'
-                                className='h-4 w-4 text-red-600 accent-neutral-700 focus:accent-neutral-600'
-                                checked={selectedLeverPostings?.id === post.id}
-                              />
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
+                              <div className='flex items-center'>
+                                <input
+                                  type='radio'
+                                  name='option'
+                                  id='option1'
+                                  className='h-4 w-4 text-red-600 accent-neutral-700 focus:accent-neutral-600'
+                                  checked={
+                                    selectedLeverPostings?.id === post.id
+                                  }
+                                />
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+                    </ScrollArea>
                   </>
                 ) : (
                   <NoAtsResult />

@@ -44,7 +44,7 @@ function CalendarFilter({ setFilter, filter }) {
             }
           }}
         />
-        <Label htmlFor='cancelled'>Cancelled</Label>
+        <Label htmlFor='cancelled'>Canceled</Label>
       </div>
     </div>
   );
