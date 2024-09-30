@@ -20,7 +20,7 @@ export const CandidatePlan = () => {
   const { job } = useParams();
   const job_id = job as string;
   return (
-    <div className='container mx-auto'>
+    <div className='container-lg mx-auto'>
       <div className='mb-6 flex items-center justify-between'>
         <div>
           <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
