@@ -14,10 +14,11 @@ import { useJobAutomationStore } from '../../contexts/workflowsStoreContext';
 import { triggerToQuestion } from '../../lib/constants';
 
 export const Summary = () => {
-  const { jobWorkflowActions, jobWorkflowTriggers } = useJobAutomationStore();
+  const { jobWorkflowActions, jobWorkflowTriggers, isStateUpdating } =
+    useJobAutomationStore();
 
   const enabledAutomations = jobWorkflowTriggers.filter((j) => j.is_active);
-  if (enabledAutomations.length === 0) {
+  if (enabledAutomations.length === 0 || isStateUpdating) {
     return renderAIAutomationCTA();
   }
 

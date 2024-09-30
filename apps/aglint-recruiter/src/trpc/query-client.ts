@@ -60,5 +60,5 @@ export const createQueryClient = (
 
 const onError = (error: TRPCErrorShape<TRPCError>, logout?: () => void) => {
   if (!logout) return;
-  if (error?.data?.code ?? null === ERRORS.UNAUTHORIZED.code) void logout();
+  if ((error?.data?.code ?? null) === ERRORS.UNAUTHORIZED.code) void logout();
 };
