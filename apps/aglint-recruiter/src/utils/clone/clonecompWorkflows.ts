@@ -44,7 +44,7 @@ export const cloneCompWorkflowsForJob = async ({
         trigger: w.trigger,
         auto_connect: w.auto_connect,
         interval: w.interval,
-        is_active: w.is_active,
+        is_active: false,
         title: w.title,
         workflow_type: 'job',
       })
