@@ -1,4 +1,5 @@
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 import { type PropsWithChildren } from 'react';
 
 import { api, HydrateClient } from '@/trpc/server';
