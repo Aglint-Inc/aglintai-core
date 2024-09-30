@@ -12,6 +12,7 @@ import CalendarComp from '@/components/Common/Calendar/Calendar';
 import Heatmap from '@/components/Common/Heatmap/HeatmapUser';
 import { Loader } from '@/components/Common/Loader';
 import UISectionCard from '@/components/Common/UISectionCard';
+import UITypography from '@/components/Common/UITypography';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import {
@@ -92,7 +93,7 @@ export default function InterviewerDetailsPage() {
 
   //----------------------- page data
 
-  const { data: interviewerDetails, isLoading } = useInterviewer();
+  const { data: interviewerDetails, isLoading, error } = useInterviewer();
 
   //------------------------ calendar data
   const param = useParams() as { user: string };
@@ -139,6 +140,14 @@ export default function InterviewerDetailsPage() {
         <Loader />
       </div>
     );
+
+  if (!interviewerDetails || error)
+    return (
+      <div className='flex min-h-screen w-full items-center justify-center'>
+        <UITypography>Fetching Error</UITypography>
+      </div>
+    );
+
   return (
     <div className='container mx-auto'>
       <div className='relative'>

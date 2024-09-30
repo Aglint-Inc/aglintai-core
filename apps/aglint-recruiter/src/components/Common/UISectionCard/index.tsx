@@ -67,7 +67,7 @@ export default function UISectionCard({
             <Loader2 className='h-8 w-8 animate-spin text-muted-foreground' />
           </div>
         ) : emptyStateHeading || emptyStateMessage ? (
-          <div className='flex h-32 flex-col items-center justify-center text-center'>
+          <div className='flex-col items-center justify-center text-center'>
             {emptyStateIcon && <div className='mb-2'>{emptyStateIcon}</div>}
             {emptyStateHeading && (
               <h4 className='mb-1 text-lg font-semibold'>

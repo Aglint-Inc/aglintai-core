@@ -1,4 +1,4 @@
-import { PencilIcon } from 'lucide-react';
+import { SquarePen } from 'lucide-react';
 import { useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
@@ -31,8 +31,10 @@ export const BasicInfo = () => {
               variant='outline'
               size='sm'
               onClick={() => setEditDrawer(true)}
-              icon={<PencilIcon className='mr-2 h-3 w-3' />}
-            />
+              leftIcon={<SquarePen className='mr-2 h-3 w-3' />}
+            >
+              Edit
+            </UIButton>
           )
         }
       >
