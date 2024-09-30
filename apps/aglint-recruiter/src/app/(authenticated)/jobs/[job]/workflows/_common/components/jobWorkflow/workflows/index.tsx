@@ -7,10 +7,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@components/ui/card';
+import { Skeleton } from '@components/ui/skeleton';
 
 import { UIButton } from '@/components/Common/UIButton';
 import {
   initiateJobAutomationState,
+  updateJobAutomationState,
   useJobAutomationStore,
 } from '@/job/workflows/contexts/workflowsStoreContext';
 import { useGetJobWorkflow } from '@/job/workflows/hooks';
@@ -20,8 +22,12 @@ import { api } from '@/trpc/client';
 import { AutomationAccordion } from './AutomationAccordion';
 
 export default function Main() {
-  const { jobWorkflowTriggers, jobWorkflowActions, isWorkflowsUpdated } =
-    useJobAutomationStore();
+  const {
+    jobWorkflowTriggers,
+    jobWorkflowActions,
+    isWorkflowsChanged,
+    isStateUpdating,
+  } = useJobAutomationStore();
   const { data } = useGetJobWorkflow();
   const { mutate: updateJobWorkflowsActions } =
     api.jobs.job.workflow.updateJobWorkflowsActions.useMutation();
@@ -56,7 +62,11 @@ export default function Main() {
     }
   };
   const handleReset = () => {
+    updateJobAutomationState(true);
     initiateJobAutomationState(data);
+    setTimeout(() => {
+      updateJobAutomationState(false);
+    }, 1000);
   };
   return (
     <div className='md:col-span-2'>
@@ -68,27 +78,30 @@ export default function Main() {
             {jobWorkflowActions.length}
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <Accordion type='single' collapsible className='w-full'>
-            {allCategories.map((categ, idx) => {
-              const currentTriggers = jobWorkflowTriggers.filter(
-                (trig) => trig.category === categ,
-              );
-              return (
-                <AutomationAccordion
-                  key={idx}
-                  category={categ}
-                  currentTriggers={currentTriggers}
-                  currentActions={jobWorkflowActions}
-                />
-              );
-            })}
-          </Accordion>
-        </CardContent>
+        {isStateUpdating && <Skeleton className='h-[500px] w-full' />}
+        {!isStateUpdating && (
+          <CardContent>
+            <Accordion type='single' collapsible className='w-full'>
+              {allCategories.map((categ, idx) => {
+                const currentTriggers = jobWorkflowTriggers.filter(
+                  (trig) => trig.category === categ,
+                );
+                return (
+                  <AutomationAccordion
+                    key={idx}
+                    category={categ}
+                    currentTriggers={currentTriggers}
+                    currentActions={jobWorkflowActions}
+                  />
+                );
+              })}
+            </Accordion>
+          </CardContent>
+        )}
       </Card>
       <div className='mt-6 flex flex-row justify-end space-x-1'>
         <UIButton
-          disabled={!isWorkflowsUpdated}
+          disabled={!isWorkflowsChanged}
           variant='destructive'
           onClick={handleReset}
         >

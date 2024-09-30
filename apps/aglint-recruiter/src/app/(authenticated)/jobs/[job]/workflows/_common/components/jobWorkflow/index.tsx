@@ -9,7 +9,10 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 import { cloneCompWorkflows } from '@/utils/clone/clonecompWorkflows';
 import { supabase } from '@/utils/supabase/client';
 
-import { initiateJobAutomationState } from '../../contexts/workflowsStoreContext';
+import {
+  initiateJobAutomationState,
+  updateJobAutomationState,
+} from '../../contexts/workflowsStoreContext';
 import { useGetJobWorkflow } from '../../hooks';
 import { Summary } from './Summary';
 import Main from './workflows';
@@ -22,8 +25,12 @@ export default function EnhancedAutomationPage() {
   const { recruiter_id } = useTenant();
   useEffect(() => {
     // TODO: handle diff cases
+    if (status === 'pending') {
+      updateJobAutomationState(true);
+    }
     if (status === 'success' && data) {
       initiateJobAutomationState(data);
+      updateJobAutomationState(false);
     }
   }, [status, data]);
 

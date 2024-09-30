@@ -10,19 +10,26 @@ export interface JobAutomationState {
     category: TriggerCategory;
   })[];
   jobWorkflowActions: DatabaseTable['workflow_action'][];
-  isWorkflowsUpdated;
+  isWorkflowsChanged: boolean; // for discard feature
+  isStateUpdating: boolean; // for loading state
 }
 
 const initialState: JobAutomationState = {
   jobWorkflowTriggers: [],
   jobWorkflowActions: [],
-  isWorkflowsUpdated: false,
+  isWorkflowsChanged: false,
+  isStateUpdating: false,
 };
 
 export const useJobAutomationStore = create<JobAutomationState>()(() => ({
   ...initialState,
 }));
 
+export const updateJobAutomationState = (isStateUpdating) => {
+  useJobAutomationStore.setState({
+    isStateUpdating,
+  });
+};
 export const resetJobAutomation = () =>
   useJobAutomationStore.setState({
     ...initialState,
@@ -35,7 +42,7 @@ export const updateWTrigger = (
     jobWorkflowTriggers: state.jobWorkflowTriggers.map((trigger) =>
       trigger.id === jobWorkflowTriggers.id ? jobWorkflowTriggers : trigger,
     ),
-    isWorkflowsUpdated: true,
+    isWorkflowsChanged: true,
   }));
 };
 
@@ -46,7 +53,7 @@ export const updateWAction = (
     jobWorkflowActions: state.jobWorkflowActions.map((action) =>
       action.id === jobWorkflowActions.id ? jobWorkflowActions : action,
     ),
-    isWorkflowsUpdated: true,
+    isWorkflowsChanged: true,
   }));
 };
 
@@ -55,7 +62,7 @@ export const addWaction = (
 ) => {
   useJobAutomationStore.setState((state) => ({
     jobWorkflowActions: [...state.jobWorkflowActions, jobWorkflowActions],
-    isWorkflowsUpdated: true,
+    isWorkflowsChanged: true,
   }));
 };
 export const deleteWAcion = (id: string, workflowId: string) => {
@@ -75,7 +82,7 @@ export const deleteWAcion = (id: string, workflowId: string) => {
       jobWorkflowTriggers: state.jobWorkflowTriggers.map((workflow) =>
         workflow.id === workflowId ? parentWorkflow : workflow,
       ),
-      isWorkflowsUpdated: true,
+      isWorkflowsChanged: true,
     };
   });
 };
@@ -91,6 +98,6 @@ export const initiateJobAutomationState = (
     }) as JobAutomationState['jobWorkflowTriggers'],
     jobWorkflowActions:
       data.job_workflow_actions as JobAutomationState['jobWorkflowActions'],
-    isWorkflowsUpdated: false,
+    isWorkflowsChanged: false,
   });
 };
