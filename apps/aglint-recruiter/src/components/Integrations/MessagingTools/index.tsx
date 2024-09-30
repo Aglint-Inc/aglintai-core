@@ -33,21 +33,24 @@ function MessagingTools() {
   ];
 
   return (
-    <div className='grid gap-4'>
-      {messagingTools.map((item, i) => (
-        <IntegrationCard
-          key={i}
-          slotLogo={item.logo}
-          textName={capitalize(item.name)}
-          textLink={item.url}
-          onClick={() => {
-            window.open(
-              'https://' + item.url.replace('slack.com', 'slack.com/signin'),
-            );
-          }}
-        />
-      ))}
-    </div>
+    <>
+      <div className='grid gap-4'>
+        {messagingTools.map((item, i) => (
+          <IntegrationCard
+            key={i}
+            slotLogo={item.logo}
+            textName={capitalize(item.name)}
+            textLink={item.url}
+            isConnected={true}
+            primaryText='Contact Support'
+            primaryAction={() => {
+              // @ts-ignore
+              window.location = 'mailto:support@aglinthq.com';
+            }}
+          />
+        ))}
+      </div>
+    </>
   );
 }
 

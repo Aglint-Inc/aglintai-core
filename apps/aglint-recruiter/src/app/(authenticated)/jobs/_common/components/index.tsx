@@ -6,6 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 import { MoreHorizontal, PlusCircle, RefreshCw } from 'lucide-react';
 import Image from 'next/image';
@@ -74,7 +75,7 @@ const DashboardComp = () => {
           {data?.length === 0 ? (
             ifAllowed(<EmptyJob />, ['manage_job'])
           ) : (
-            <div className='container-lg mx-auto w-full px-12'>
+            <div className='container-lg mx-auto w-full px-4'>
               <div className='flex flex-row justify-between'>
                 <h1 className='mb-4 text-2xl font-bold'>Jobs</h1>
                 <div className='ml-4'>{manageJob && <AddJob />}</div>
@@ -95,9 +96,9 @@ const DashboardComp = () => {
                   </div>
                   {/* <div className='ml-4'>{manageJob && <AddJob />}</div> */}
                 </div>
-                <div className='overflow-x-auto rounded-lg bg-white shadow'>
+                <ScrollArea className='h-[70vh]'>
                   <JobsList jobs={jobs} />
-                </div>
+                </ScrollArea>
               </div>
             </div>
           )}

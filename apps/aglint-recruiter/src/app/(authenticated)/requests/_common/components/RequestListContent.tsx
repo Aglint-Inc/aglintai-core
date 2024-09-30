@@ -35,7 +35,7 @@ function RequestListContent({
         <ScrollableSection section={urgentRequests} isFetched={isFetched} />
       )}
 
-      <div className='container-lg mx-auto w-full px-12'>
+      <div className='container-lg mx-auto w-full px-4'>
         <div
           className={`${view === 'kanban' ? 'grid grid-cols-4 gap-4' : 'space-y-4'}`}
         >

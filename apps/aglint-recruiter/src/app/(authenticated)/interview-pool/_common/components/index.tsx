@@ -69,12 +69,9 @@ export default function InterviewTypesPage() {
     : archiveFiltered;
 
   return (
-    <div className='container-lg mx-auto w-full px-12'>
+    <div className='container-lg mx-auto w-full px-4'>
       <div>
         <div className='flex flex-row justify-between'>
-          <h1 className='mb-8 text-3xl font-bold text-gray-900'>
-            Interview Pools
-          </h1>
           <Tabs
             value={activeTab}
             onValueChange={handleTabChange}
