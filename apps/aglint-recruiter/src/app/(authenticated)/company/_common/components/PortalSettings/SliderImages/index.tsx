@@ -7,10 +7,12 @@ import { usePortalSettings } from '@/company/hooks/usePortalSettings';
 import UISectionCard from '@/components/Common/UISectionCard';
 
 import { SliderImageUploadDialog } from './SliderImageUploadDialog';
+import { useFlags } from '@/company/hooks/useFlags';
 
 export function SliderImages() {
-  const { data, deleteImages, isImageRemoving } = usePortalSettings();
+  const { deleteImages, loading } = usePortalSettings();
 
+  const { company_images } = useFlags();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
@@ -19,9 +21,9 @@ export function SliderImages() {
       description=' These images will be displayed on the candidate portal as the
             slider.'
     >
-      <div className='grid auto-rows-auto grid-cols-4 gap-4'>
+      <div className='flex flex-wrap gap-4'>
         {/* 5 Grey Background Divs */}
-        {data?.company_images?.map((image, index) => (
+        {company_images?.map((image, index) => (
           <div
             key={index}
             className='group relative flex h-[150px] w-[150px] items-center justify-center overflow-hidden rounded-md bg-gray-300'
@@ -42,7 +44,7 @@ export function SliderImages() {
               height={150}
               className='relative z-10 h-full w-full object-cover'
             />
-            {isImageRemoving === image && (
+            {loading.isImageRemoving.includes(image) && (
               <div className='absolute left-0 top-0 z-[21] flex h-[150px] w-[150px] items-center justify-center bg-white'>
                 Removing ...
               </div>

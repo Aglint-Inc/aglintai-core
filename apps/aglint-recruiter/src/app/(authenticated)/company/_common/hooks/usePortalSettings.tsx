@@ -1,67 +1,45 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { type Dispatch, type SetStateAction, useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
 import { supabase } from '@/utils/supabase/client';
 
+import { useFlags } from './useFlags';
+import { api } from '@/trpc/client';
+import { toast } from '@components/hooks/use-toast';
+
 export const usePortalSettings = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<
     'greetings' | 'about' | 'images' | null
   >(null);
-
-  const [isCoverUploading, setIsCoverUploading] = useState<boolean>(false);
-  const [isCoverRemoving, setIsCoverRemoving] = useState<boolean>(false);
-  const [isImageRemoving, setIsImageRemoving] = useState<string>(null);
-  const [isPortalUpdating, setIsPortalUpdating] = useState<boolean>(false);
-  const [isImageUploading, setIsImageUploading] = useState<boolean>(false);
-  const queryClient = useQueryClient();
   const {
     recruiter: { name },
-    recruiter_id,
   } = useTenant();
-  const fetchPortalSettings = async () => {
-    return (
-      await supabase
-        .from('recruiter_preferences')
-        .select('banner_image,company_images,greetings,about')
-        .eq('recruiter_id', recruiter_id)
-        .single()
-        .throwOnError()
-    ).data;
-  };
-
-  const query = useQuery({
-    queryKey: ['portalSettings'],
-    queryFn: () => fetchPortalSettings(),
-    enabled: !!recruiter_id,
+  const { about, greetings, banner_image, company_images } = useFlags();
+  const { mutateAsync } = api.tenant.updateCandidatePortal.useMutation();
+  const [loading, setLoading] = useState<{
+    isCoverUploading: boolean;
+    isCoverRemoving: boolean;
+    isImageRemoving: string[] | null;
+    isImageUploading: boolean;
+    isGreetingUpdating: boolean;
+    isAboutUpdating: boolean;
+  }>({
+    isCoverUploading: false,
+    isCoverRemoving: false,
+    isImageRemoving: [],
+    isImageUploading: false,
+    isGreetingUpdating: false,
+    isAboutUpdating: false,
   });
-
-  const updatePortalSetting = async (
-    arg: Awaited<ReturnType<typeof fetchPortalSettings>>,
-  ) => {
-    setIsPortalUpdating(true);
-    const { error } = await supabase
-      .from('recruiter_preferences')
-      .update(arg)
-      .eq('recruiter_id', recruiter_id);
-
-    if (error) {
-      throw new Error(error.message);
-    }
-
-    await queryClient.invalidateQueries({
-      queryKey: ['portalSettings'],
-    });
-    setIsPortalUpdating(false);
-  };
 
   const updateImages = async (
     images: File[],
     setSelectedImages: Dispatch<SetStateAction<File[]>>,
   ) => {
-    const newImages = [];
+    const newImages: string[] = [];
     try {
-      setIsImageUploading(true);
+      setLoading((pre) => ({ ...pre, isImageUploading: true }));
       for (const image of images) {
         const fileName = removeSpaces(`${name}-image-${Date.now()}`);
 
@@ -80,74 +58,96 @@ export const usePortalSettings = () => {
         }
       }
 
-      const previewImages = query.data?.company_images || [];
-      await updatePortalSetting({
-        ...query.data,
-        company_images: [...previewImages, ...newImages],
-      });
+      const new_company_images = [...(company_images || []), ...newImages];
+      await mutateAsync({ company_images: new_company_images });
       setSelectedImages([]);
     } catch (err) {
-      // console.error('Error uploading images: ', error.message);
-      //chandruAddToast
-      return null;
+      toast({ title: 'Images upload failed', description: err?.message });
     } finally {
-      setIsImageUploading(false);
+      setLoading((pre) => ({ ...pre, isImageUploading: false }));
     }
   };
 
   const deleteImages = async (imageUrl: string) => {
     try {
-      setIsImageRemoving(imageUrl);
+      setLoading((pre) => ({
+        ...pre,
+        isImageRemoving: [imageUrl, ...pre.isImageRemoving],
+      }));
       const path = extractPath(imageUrl);
       if (path.length === 0) throw new Error('wrong image');
 
-      const { data, error } = await supabase.storage
-        .from('company-images')
-        .remove(path);
+      await supabase.storage.from('company-images').remove(path);
 
-      if (data.length === 0 || error) {
-        throw new Error(`Image deleting failed : ${error?.message}`);
-      }
+      // const { data, error } = await supabase.storage
+      //   .from('company-images')
+      //   .remove(path);
 
-      await updatePortalSetting({
-        ...query.data,
-        company_images: query.data.company_images.filter(
+      // if (data.length === 0 || error ) {
+      //   throw new Error(`Image deleting failed : ${error?.message}`);
+      // }
+
+      await mutateAsync({
+        company_images: company_images.filter(
           (image) => !imageUrl.includes(image),
         ),
       });
     } catch (error) {
-      //chandruAddToast
-      // console.error('Error uploading images: ', error?.message);
+      toast({ title: 'Images delete failed', description: error?.message });
     } finally {
-      setIsImageRemoving(null);
+      setLoading((pre) => ({
+        ...pre,
+        isImageRemoving: pre.isImageRemoving.filter(
+          (imageRem) => imageRem !== imageUrl,
+        ),
+      }));
     }
   };
 
   const updateGreetings = async (message: string) => {
     try {
-      await updatePortalSetting({ ...query.data, greetings: message });
-      //chandruAddToast
+      setLoading((pre) => ({
+        ...pre,
+        isGreetingUpdating: true,
+      }));
+      await mutateAsync({
+        greetings: message,
+      });
     } catch (e) {
-      //chandruAddToast
-      // console.log('greeting update failed:', e.message);
+      //
+    } finally {
+      setLoading((pre) => ({
+        ...pre,
+        isGreetingUpdating: false,
+      }));
     }
   };
   const updateAbout = async (about: string) => {
     try {
-      await updatePortalSetting({ ...query.data, about: about });
-      //chandruAddToasts
+      setLoading((pre) => ({
+        ...pre,
+        isAboutUpdating: true,
+      }));
+      await mutateAsync({
+        about,
+      });
     } catch (e) {
-      //chandruAddToasts
-      // console.log('about update failed:', e.message);
+      //
+    } finally {
+      setLoading((pre) => ({
+        ...pre,
+        isAboutUpdating: false,
+      }));
     }
   };
 
   const updateCover = async (image: File, oldCover: string) => {
     try {
-      setIsCoverUploading(true);
+      setLoading((pre) => ({ ...pre, isCoverUploading: true }));
+
       const fileName = removeSpaces(`${name}-cover-${Date.now()}`);
 
-      await removeCover(oldCover);
+      if (oldCover) await removeCover(oldCover);
 
       const { data, error } = await supabase.storage
         .from('company-images')
@@ -162,22 +162,19 @@ export const usePortalSettings = () => {
         img = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/company-images/${data?.path}?t=${new Date().toISOString()}`;
       }
 
-      await updatePortalSetting({
-        ...query.data,
-        banner_image: img || query.data?.banner_image,
+      await mutateAsync({
+        banner_image: img || banner_image,
       });
     } catch (error) {
-      // console.error('Error uploading cover: ', error.message);
-      //ChandurAddToast
-      return null;
+      toast({ title: 'update cover failed', description: error?.message });
     } finally {
-      setIsCoverUploading(false);
+      setLoading((pre) => ({ ...pre, isCoverUploading: false }));
     }
   };
 
   const removeCover = async (imageUrl: string) => {
     try {
-      setIsCoverRemoving(true);
+      setLoading((pre) => ({ ...pre, isCoverRemoving: true }));
       const path = extractPath(imageUrl);
       if (path.length === 0) throw new Error('wrong image');
 
@@ -186,37 +183,33 @@ export const usePortalSettings = () => {
         .remove(path);
 
       if (data.length === 0 || error) {
-        throw new Error(`cover remove failed : ${error?.message}`);
+        throw new Error(error.message);
       }
 
-      await updatePortalSetting({
-        ...query.data,
+      await mutateAsync({
         banner_image: null,
       });
     } catch (error) {
-      // console.error('Error uploading images: ', error?.message);
-      //chandruAddToast
+      toast({
+        title: 'Remove cover image failed',
+        description: error.message,
+        variant: 'destructive',
+      });
     } finally {
-      setIsCoverRemoving(false);
+      setLoading((pre) => ({ ...pre, isCoverRemoving: false }));
     }
   };
 
   return {
-    ...query,
     updateCover,
     removeCover,
-    updatePortalSetting,
     updateImages,
     deleteImages,
     updateAbout,
     updateGreetings,
     setIsDialogOpen,
     isDialogOpen,
-    isCoverUploading,
-    isCoverRemoving,
-    isImageUploading,
-    isImageRemoving,
-    isPortalUpdating,
+    loading,
   };
 };
 

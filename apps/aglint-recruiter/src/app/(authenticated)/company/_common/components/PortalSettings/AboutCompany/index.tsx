@@ -8,9 +8,10 @@ import { UIButton } from '@/components/Common/UIButton';
 import UISectionCard from '@/components/Common/UISectionCard';
 
 import { AboutCompanyDialog } from './AboutCompanyDialog';
+import { useFlags } from '@/company/hooks/useFlags';
 
 export default function AboutCompany() {
-  const { data } = usePortalSettings();
+  const { about } = useFlags();
 
   const htmlParser = Parser();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -24,9 +25,9 @@ export default function AboutCompany() {
         title='Company About'
         description='  This section content will be displayed on the candidate portal as
               the about section.'
-        emptyStateMessage={data.about ? '' : 'About Company not available'}
+        emptyStateMessage={about ? '' : 'About Company not available'}
         action={
-          data?.about?.length ? (
+          about?.length ? (
             <UIButton
               variant='outline'
               onClick={() => setIsDialogOpen(true)}
@@ -45,10 +46,10 @@ export default function AboutCompany() {
           )
         }
       >
-        {data?.about && (
+        {about && (
           <ScrollArea className='w-full rounded-md border bg-gray-100'>
             <div className='max-h-72 w-full space-y-4 p-4'>
-              {htmlParser.parse(data?.about)}
+              {htmlParser.parse(about)}
             </div>
           </ScrollArea>
         )}

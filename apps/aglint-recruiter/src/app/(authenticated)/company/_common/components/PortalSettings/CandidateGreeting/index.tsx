@@ -7,11 +7,11 @@ import { UIButton } from '@/components/Common/UIButton';
 import UISectionCard from '@/components/Common/UISectionCard';
 
 import { GreetingEditDialog } from './GreetingEditDialog';
+import { useFlags } from '@/company/hooks/useFlags';
 
 export default function CandidateGreeting() {
-  const { data } = usePortalSettings();
-  const [text, setText] = useState<string>(data.greetings || '');
-
+  const { greetings } = useFlags();
+  const [text, setText] = useState<string>(greetings || '');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
@@ -27,11 +27,9 @@ export default function CandidateGreeting() {
         title='Candidate Greeting'
         description='This section content will be displayed on the candidate portal as
             the greeting message to the candidate.'
-        emptyStateMessage={
-          data.greetings ? '' : 'Candidate Greeting not available'
-        }
+        emptyStateMessage={greetings ? '' : 'Candidate Greeting not available'}
         action={
-          data.greetings ? (
+          greetings ? (
             <UIButton
               variant='outline'
               size='sm'
@@ -53,9 +51,9 @@ export default function CandidateGreeting() {
           )
         }
       >
-        {data?.greetings?.length && (
+        {greetings?.length && (
           <ScrollArea className='max-h-40 w-full rounded-md border bg-gray-100'>
-            <div className='w-full space-y-4 p-4'>{data?.greetings}</div>
+            <div className='w-full space-y-4 p-4'>{greetings}</div>
           </ScrollArea>
         )}
       </UISectionCard>

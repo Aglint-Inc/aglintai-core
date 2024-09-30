@@ -5,10 +5,12 @@ import { usePortalSettings } from '@/company/hooks/usePortalSettings';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
+import { useFlags } from '@/company/hooks/useFlags';
 
 export const AboutCompanyDialog = ({ isDialogOpen, setIsDialogOpen }) => {
-  const { data, updateAbout, isPortalUpdating } = usePortalSettings();
-  const [text, setText] = useState(data?.about || '');
+  const { updateAbout, loading } = usePortalSettings();
+  const { about } = useFlags();
+  const [text, setText] = useState(about || '');
   const handleTextChange = (value) => {
     setText(value);
   };
@@ -23,7 +25,7 @@ export const AboutCompanyDialog = ({ isDialogOpen, setIsDialogOpen }) => {
             variant='secondary'
             className='w-full'
             onClick={() => {
-              setText(data?.about || '');
+              setText(about || '');
               setIsDialogOpen(null); // Updated to close the dialog
             }}
           >
@@ -32,8 +34,8 @@ export const AboutCompanyDialog = ({ isDialogOpen, setIsDialogOpen }) => {
           <UIButton
             type='submit'
             className='w-full'
-            isLoading={isPortalUpdating}
-            disabled={isPortalUpdating}
+            isLoading={loading.isAboutUpdating}
+            disabled={loading.isAboutUpdating}
             onClick={async () => {
               await updateAbout(text);
               setIsDialogOpen(false);
@@ -58,7 +60,7 @@ export const AboutCompanyDialog = ({ isDialogOpen, setIsDialogOpen }) => {
           editor_type='email'
           isSize
           handleChange={handleTextChange}
-          initialValue={data?.about}
+          initialValue={about}
         />
       </div>
     </UIDialog>
