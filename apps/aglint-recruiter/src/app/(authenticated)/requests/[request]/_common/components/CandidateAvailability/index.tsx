@@ -17,7 +17,7 @@ import {
   insertCandidateRequestAvailability,
   updateCandidateRequestAvailability,
 } from '@requests/functions';
-import { useCandidateAvailability, useMeetingList } from '@requests/hooks';
+import { useMeetingList } from '@requests/hooks';
 import { type Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
 
@@ -39,6 +39,7 @@ import {
   setReRequestAvailability,
   useCandidateAvailabilitySchedulingFlowStore,
 } from './_common/contexts/CandidateAvailabilityFlowStore';
+import { useCandidateAvailability } from './_common/hooks';
 
 function CandidateAvailability({
   selectedRequest,
@@ -71,7 +72,7 @@ function CandidateAvailability({
   const { data: sessions } = useMeetingList();
 
   const { data: candidateAvailability } = useCandidateAvailability({
-    candidateAvailabilityId: candidateAvailabilityIdForReRequest,
+    candidate_availability_id: candidateAvailabilityIdForReRequest,
   });
 
   useEffect(() => {

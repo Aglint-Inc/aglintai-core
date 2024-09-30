@@ -1,4 +1,3 @@
-export { useCandidateAvailability } from './useCandidateAvailability';
 export { useCompletedRequests } from './useCompletedRequests';
 export { useMeetingList } from './useMeetingList';
 export { useRequestAvailabilityDetails } from './useRequestAvailabilityDetails';
