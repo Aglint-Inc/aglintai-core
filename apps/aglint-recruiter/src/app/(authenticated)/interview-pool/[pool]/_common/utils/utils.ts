@@ -1,16 +1,10 @@
-import {
-  type DatabaseTable,
-  type DatabaseTableInsert,
-  type PauseJson,
-} from '@aglint/shared-types';
+import { type DatabaseTable, type PauseJson } from '@aglint/shared-types';
 import axios from 'axios';
 import { type MemberType } from 'src/app/_common/types/memberType';
 
 import { supabase } from '@/utils/supabase/client';
 
 import { schedulesSupabase } from '../../../../../_common/utils/schedules-query';
-import { type useModuleAndUsers } from '../hooks/useModuleAndUsers';
-import { type StatusTraining } from '../types/pool';
 
 export const fetchSchedulesCountByModule = async (module_id: string) => {
   const { data } = await supabase
@@ -189,7 +183,3 @@ export const deleteRelationByUserDbDelete = async ({
     return true;
   }
 };
-
-
-
-

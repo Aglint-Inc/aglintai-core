@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
-import { customRecruiterUpdateSchema } from '@aglint/shared-types/src/db/tables/recruiter.types';
+import { customInterviewModuleUpdateSchema } from '@aglint/shared-types/src/db/tables/interview_module';
+import { type customRecruiterUpdateSchema } from '@aglint/shared-types/src/db/tables/recruiter.types';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
@@ -11,12 +12,12 @@ const mutation = async ({
   const db = createPrivateClient();
 
   await db
-    .from('recruiter')
+    .from('interview_module')
     //@ts-ignore  remove ignore when strict mode is enabled in tsconfig
     .update({ ...input })
     .eq('id', recruiter_id);
 };
 
-export const updateTenant = privateProcedure
-  .input(customRecruiterUpdateSchema)
+export const updateInterviewPool = privateProcedure
+  .input(customInterviewModuleUpdateSchema)
   .mutation(mutation);

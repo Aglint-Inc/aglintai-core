@@ -169,9 +169,11 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
 
   let user: User | null = null;
 
-  if (process.env.NODE_ENV === 'development')
+  if (process.env.NEXT_PUBLIC_HOST_NAME === 'http://localhost:3000') {
     user = (await db.auth.getSession()).data.session.user;
-  else user = (await db.auth.getUser()).data.user;
+  } else {
+    user = (await db.auth.getUser()).data.user;
+  }
 
   if (!user) throw new TRPCError(ERRORS.UNAUTHORIZED);
 

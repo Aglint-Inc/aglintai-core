@@ -2,12 +2,9 @@ import UITabs, { type UITabType } from '@/components/Common/UITabs';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 
-import AddMemberDialog from '../../dialogs/AddMemberDialog';
-import DeleteMemberDialog from '../../dialogs/DeleteMemberDialog';
-import PauseDialog from '../../dialogs/PauseDialog';
-import ResumeMemberDialog from '../../dialogs/ResumeMemberDialog';
 import { usePrefetchTabs } from '../../hooks/usePrefetchTabs';
 import Candidates from './Candidates';
+import Dialogs from './Dialogs';
 import Feedback from './Feedback';
 import InstructionsComp from './Instructions';
 import Interviewers from './Interviewers';
@@ -50,9 +47,10 @@ function InterviewDetailsTabs() {
     },
   ];
 
-  usePrefetchTabs();
+  void usePrefetchTabs();
 
   const type_id = router.params.pool;
+
   return (
     <>
       <UITabs
@@ -68,10 +66,7 @@ function InterviewDetailsTabs() {
           );
         }}
       />
-      <DeleteMemberDialog />
-      <AddMemberDialog />
-      <PauseDialog />
-      <ResumeMemberDialog />
+      <Dialogs />
     </>
   );
 }

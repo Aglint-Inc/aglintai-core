@@ -6,14 +6,12 @@ import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import MoveToQualifiedDialog from '@/interview-pool/details/dialogs/MoveToQualified';
-import { api } from '@/trpc/client';
 
 import { useModuleAndUsers } from '../../../hooks/useModuleAndUsers';
 import { useProgressModuleUsers } from '../../../hooks/useProgressModuleUsers';
 import {
   setIsAddMemberDialogOpen,
   setTrainingStatus,
-  useModulesStore,
 } from '../../../stores/store';
 import EnableDisable from './EnableDisable';
 import IndividualRow from './IndividualRow';
@@ -40,18 +38,9 @@ function Training() {
     actions: '',
   };
 
-  const utils = api.useUtils();
-  const selUser = useModulesStore((state) => state.selUser);
-
   return (
-    <>
-      <MoveToQualifiedDialog
-        refetch={async () => {
-          await utils.interview_pool.module_and_users.invalidate({
-            module_id: selUser.module_id,
-          });
-        }}
-      />
+    <div className='flex-col space-y-2'>
+      <MoveToQualifiedDialog />
       <EnableDisable />
 
       {editModule?.settings?.require_training && (
@@ -126,7 +115,7 @@ function Training() {
           </Card>
         </>
       )}
-    </>
+    </div>
   );
 }
 
