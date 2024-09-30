@@ -29,7 +29,7 @@ const Layout = ({ children }: PropsWithChildren) => {
             enableSystem={false}
             disableTransitionOnChange
           >
-            <div className='flex h-screen w-full'>
+            <div className=' fixed flex h-screen w-full'>
               <TRPCReactProvider>
                 <HydrateClient>{children}</HydrateClient>
               </TRPCReactProvider>
