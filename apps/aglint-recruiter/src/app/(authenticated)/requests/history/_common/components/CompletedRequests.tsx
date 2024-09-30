@@ -43,7 +43,9 @@ function CompletedRequests() {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   // Group completed requests by date
-  const groupedRequests = groupRequestsByDate(completedRequests as Request[]);
+  const groupedRequests = groupRequestsByDate(
+    (completedRequests || []) as Request[],
+  );
   const hasRequests = Object.keys(groupedRequests).length > 0;
 
   // Simulated function to load more data
