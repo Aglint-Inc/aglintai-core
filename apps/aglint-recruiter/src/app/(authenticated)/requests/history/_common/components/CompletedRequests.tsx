@@ -34,7 +34,7 @@ import type { Request } from '@/queries/requests/types';
 function CompletedRequests() {
   const { completedFilters } = useCompletedRequestsStore();
   const { data: completedRequests, isFetched } = useCompletedRequests({
-    completedFilters,
+    ...completedFilters,
   });
   const [allExpanded, setAllExpanded] = useState(false);
   const [hasMore, setHasMore] = useState(true); // Assume there's more data initially
@@ -43,7 +43,9 @@ function CompletedRequests() {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   // Group completed requests by date
-  const groupedRequests = groupRequestsByDate(completedRequests ?? []);
+  const groupedRequests = groupRequestsByDate(
+    (completedRequests || []) as Request[],
+  );
   const hasRequests = Object.keys(groupedRequests).length > 0;
 
   // Simulated function to load more data

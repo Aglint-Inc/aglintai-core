@@ -1,6 +1,7 @@
 import { analytics } from './routers/analytics';
 import { application } from './routers/application';
 import { ats } from './routers/ats';
+import { candidate_availability } from './routers/candidate_availability';
 import { candidatePortal } from './routers/candidatePortal';
 import { example, exampleSchema } from './routers/example';
 import { get_last_login } from './routers/get_last_login';
@@ -38,6 +39,7 @@ export const appRouter = createTRPCRouter({
   get_last_login,
   user,
   rolesAndPermissions,
+  candidate_availability,
 });
 
 export const appRouterSchema = {

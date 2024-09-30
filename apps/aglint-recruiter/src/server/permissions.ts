@@ -20,4 +20,5 @@ export const API_PERMISSIONS: ApiPermissions = {
     get_oauth_user: ['authorized'],
   },
   rolesAndPermissions: [],
+  candidate_availability: ['request_candidate_availability'],
 };
