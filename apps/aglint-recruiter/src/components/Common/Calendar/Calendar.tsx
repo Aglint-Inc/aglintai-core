@@ -19,6 +19,7 @@ import {
 import { Loader } from '@/components/Common/Loader';
 
 import { type SchedulesSupabase } from '../../../app/_common/utils/schedules-query';
+import UISectionCard from '../UISectionCard';
 import UITypography from '../UITypography';
 import CalendarHeader from './CalendarHeader';
 import { type event, type Modes, type Types } from './calendarTypes';
@@ -97,7 +98,11 @@ function CalendarComp({
           <Loader />
         </div>
       ) : (
-        <>
+        <UISectionCard
+          title='Schedule Calendar'
+          isHoverEffect={false}
+          action={<CalendarFilter filter={filter} setFilter={setFilter} />}
+        >
           <CalendarHeader
             calendarApi={calendarApi}
             currentDate={currentDate}
@@ -106,7 +111,7 @@ function CalendarComp({
             mode={viewMode}
             type={viewType}
           />
-          <div>
+          <div className='mt-4'>
             <FullCalendar
               key={events?.length}
               ref={calendarRef}
@@ -137,8 +142,7 @@ function CalendarComp({
               }}
             />
           </div>
-          <CalendarFilter filter={filter} setFilter={setFilter} />
-        </>
+        </UISectionCard>
       )}
     </div>
   );

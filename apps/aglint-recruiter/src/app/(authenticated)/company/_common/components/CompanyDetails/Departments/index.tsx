@@ -2,18 +2,16 @@
 
 import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
-import { MapPin, Plus } from 'lucide-react';
+import { BookOpen, Plus } from 'lucide-react';
 import * as React from 'react';
 
 import { useTenant } from '@/company/hooks';
 import AddChip from '@/components/Common/AddChip';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
-import { UIButton } from '@/components/Common/UIButton';
 import UISectionCard from '@/components/Common/UISectionCard';
 import { manageDepartments } from '@/context/AuthContext/utils';
 import { useAllDepartments } from '@/queries/departments';
 
-import AddDepartment from './AddDepartment';
 import DeleteDepartmentsDialog from './DeleteDepartmentDialog';
 
 export default function Departments() {
@@ -38,9 +36,7 @@ export default function Departments() {
     id: null,
   });
 
-  const [isAdding, setIsAdding] = React.useState(false);
   const handleAddDepartment = async ({ name: department }) => {
-    setIsAdding(true);
     if (department.trim() !== '') {
       await manageDepartments({
         type: 'insert',
@@ -54,7 +50,6 @@ export default function Departments() {
         });
       });
       await refetchDepartments();
-      setIsAdding(false);
     }
   };
   let initialDepartments = [];
@@ -112,7 +107,7 @@ export default function Departments() {
             btn={
               <Button variant='outline' size='sm' className='rounded-full'>
                 <Plus className='mr-2 h-4 w-4' />
-                Add keyword
+                Add Department
               </Button>
             }
             handleRemoveKeyword={({ id }) => {
@@ -122,7 +117,7 @@ export default function Departments() {
         ) : (
           <GlobalEmpty
             icon={
-              <MapPin
+              <BookOpen
                 strokeWidth={2}
                 className='h-6 w-6 text-muted-foreground'
               />

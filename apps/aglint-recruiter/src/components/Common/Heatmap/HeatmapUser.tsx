@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { HeatMapGrid } from 'react-grid-heatmap';
 
 import { UIButton } from '../UIButton';
+import UISectionCard from '../UISectionCard';
 import { type Meeting } from './type';
 import {
   filling2dArray,
@@ -23,7 +24,7 @@ export default function Heatmap({
   const [arrayDates, setArrayDates] = useState([]);
   const [dayCount, setDayCount] = useState<{ start: number; end: number }>({
     start: -7,
-    end: 24,
+    end: 25,
   });
   const [maxCount, setMaxCountInterviews] = useState(
     loadSetting.dailyLimit.value,
@@ -85,9 +86,20 @@ export default function Heatmap({
       {isLoading ? (
         <Skeleton className='h-[150] w-[1000px]' />
       ) : (
-        <div className='m-2'>
-          <div className='mb-4 flex max-w-[1000px] items-center justify-between'>
-            <div className='flex items-center space-x-1'>
+        <UISectionCard
+          title='Meetings overview'
+          isHoverEffect={false}
+          action={
+            <div className='mb-4 flex max-w-[1000px] items-center gap-2'>
+              <div className='flex space-x-1'>
+                <p className='font-medium'>Daily :</p>
+                <p>{loadSetting?.dailyLimit.value}</p>
+                <p>{todayTypeText}</p>
+                <p className='font-medium'> Weekly : </p>
+                <p>{loadSetting?.weeklyLimit.value}</p>
+                <p>{weeklyTypeText}</p>
+              </div>
+              <div className='w-[10px]'>|</div>
               <p className='min-w-[280px]'>
                 Activity on{' '}
                 <span className='font-medium'>
@@ -117,79 +129,64 @@ export default function Heatmap({
                 icon={<ChevronRight className='h-4 w-4' />}
               />
             </div>
+          }
+        >
+          <div className=''>
+            <HeatMapGrid
+              data={mapDatas}
+              xLabels={xLabel}
+              yLabels={yLabel}
+              square
+              cellHeight='30.5px'
+              xLabelsPos='bottom'
+              onClick={(x, y) => {
+                if (heatMapData[x][y].meeting_id)
+                  router.push(
+                    `/interviews/view?meeting_id=${heatMapData[x][y].meeting_id}&tab=candidate_details`,
+                  );
+              }}
+              yLabelsPos='left'
+              xLabelsStyle={(index) => {
+                const isToday = dayjsLocal(arrayDates[index]).isToday();
+                return {
+                  visibility: isToday ? 'visible' : 'hidden',
+                  backgroundColor: isToday
+                    ? 'hsl(var(--chart-5))'
+                    : 'transparent',
+                  borderRadius: '20px',
+                  height: '2px ',
+                  padding: 0,
+                  marginTop: '2px',
+                  width: '30.5px',
+                };
+              }}
+              yLabelsStyle={(index) => ({
+                color: index % 1 === 0 ? '#777' : 'transparent',
+                fontSize: '10px',
+              })}
+              cellStyle={(x: number, y: number) => {
+                const value = heatMapData[x][y];
 
-            <div className='flex space-x-1'>
-              <div className='flex space-x-1'>
-                <p className='font-medium'>Daily :</p>
-                <p>{loadSetting?.dailyLimit.value}</p>
-                <p>{todayTypeText}</p>
-                <p className='font-medium'> Weekly : </p>
-                <p>{loadSetting?.weeklyLimit.value}</p>
-                <p>{weeklyTypeText}</p>
-              </div>
-            </div>
+                return {
+                  background:
+                    value?.status === 'completed'
+                      ? `hsl(var(--chart-1))`
+                      : value?.status === 'confirmed'
+                        ? `hsl(var(--chart-4))` // need confirm color
+                        : value?.status === 'cancelled'
+                          ? `hsl(var(--chart-2))`
+                          : '#ebebeb',
+
+                  fontSize: '4px',
+                  borderRadius: '3px',
+                  width: '29px',
+                  height: '29px',
+                  color: 'white',
+                };
+              }}
+            />
           </div>
-          <HeatMapGrid
-            data={mapDatas}
-            xLabels={xLabel}
-            yLabels={yLabel}
-            square
-            cellHeight='30.5px'
-            xLabelsPos='bottom'
-            onClick={(x, y) => {
-              if (heatMapData[x][y].meeting_id)
-                router.push(
-                  `/interviews/view?meeting_id=${heatMapData[x][y].meeting_id}&tab=candidate_details`,
-                );
-            }}
-            yLabelsPos='left'
-            xLabelsStyle={(index) => {
-              const isToday = dayjsLocal(arrayDates[index]).isToday();
-              return {
-                visibility: isToday ? 'visible' : 'hidden',
-                backgroundColor: isToday
-                  ? 'hsl(var(--chart-5))'
-                  : 'transparent',
-                borderRadius: '20px',
-                height: '2px ',
-                padding: 0,
-                marginTop: '2px',
-                width: '30.5px',
-              };
-            }}
-            yLabelsStyle={(index) => ({
-              color: index % 1 === 0 ? '#777' : 'transparent',
-              fontSize: '10px',
-            })}
-            cellStyle={(x: number, y: number) => {
-              const value = heatMapData[x][y];
-
-              return {
-                background:
-                  value?.status === 'completed'
-                    ? `hsl(var(--chart-1))`
-                    : value?.status === 'confirmed'
-                      ? `hsl(var(--chart-4))` // need confirm color
-                      : value?.status === 'cancelled'
-                        ? `hsl(var(--chart-2))`
-                        : '#ebebeb',
-                // background:
-                //   value?.status === 'completed'
-                //     ? `bg-green-${900 - x * 100}`
-                //     : value?.status === 'confirmed'
-                //       ? `bg-blue-${900 - x * 100}`
-                //       : value?.status === 'cancelled'
-                //         ? `bg-red-${900 - x * 100}`
-                //         : 'grey',
-                fontSize: '4px',
-                borderRadius: '3px',
-                width: '29px',
-                height: '29px',
-                color: 'white',
-              };
-            }}
-          />
-        </div>
+        </UISectionCard>
       )}
     </>
   );

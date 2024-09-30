@@ -11,7 +11,6 @@ import { useFlags } from '@/company/hooks/useFlags';
 import CalendarComp from '@/components/Common/Calendar/Calendar';
 import Heatmap from '@/components/Common/Heatmap/HeatmapUser';
 import { Loader } from '@/components/Common/Loader';
-import UISectionCard from '@/components/Common/UISectionCard';
 import UITypography from '@/components/Common/UITypography';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
@@ -224,9 +223,7 @@ export default function InterviewerDetailsPage() {
               </section>
 
               <section ref={sectionRefs.meetingOverview}>
-                <UISectionCard title='Meetings overview'>
-                  <Heatmap loadSetting={interviewLoad} />
-                </UISectionCard>
+                <Heatmap loadSetting={interviewLoad} />
               </section>
               <section ref={sectionRefs.scheduleAvailabilityRef}>
                 <ScheduleAvailability
@@ -235,14 +232,12 @@ export default function InterviewerDetailsPage() {
                 />
               </section>
               <section ref={sectionRefs.calendar}>
-                <UISectionCard title='Schedule Calendar'>
-                  <CalendarComp
-                    allSchedules={allSchedules ?? []}
-                    isLoading={iscalendarLoading}
-                    filter={filter}
-                    setFilter={setFilter}
-                  />
-                </UISectionCard>
+                <CalendarComp
+                  allSchedules={allSchedules ?? []}
+                  isLoading={iscalendarLoading}
+                  filter={filter}
+                  setFilter={setFilter}
+                />
               </section>
             </main>
           </div>
