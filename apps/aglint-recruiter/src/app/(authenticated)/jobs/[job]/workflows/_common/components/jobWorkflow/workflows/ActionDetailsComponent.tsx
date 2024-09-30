@@ -22,7 +22,6 @@ export type WActionProps =
     };
 
 const ActionDetailsComponent = (props: WActionProps) => {
-  console.log('props', props);
   switch (props.action_type) {
     case 'email':
       return <EmailTemplate {...props.props} />;

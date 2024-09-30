@@ -2,7 +2,7 @@ import { v4 } from 'uuid';
 
 import { type SupabaseClientType } from '../supabase/supabaseAdmin';
 
-export const cloneCompWorkflows = async ({
+export const cloneCompWorkflowsForJob = async ({
   job_id,
   company_id,
   supabase,
@@ -26,14 +26,16 @@ export const cloneCompWorkflows = async ({
     )
     .throwOnError();
 
-  const workflows = await supabase
-    .from('workflow')
-    .select('*,workflow_action(*)')
-    .eq('recruiter_id', company_id)
-    .eq('workflow_type', 'company')
-    .throwOnError();
+  const workflows = (
+    await supabase
+      .from('workflow')
+      .select('*,workflow_action(*)')
+      .eq('recruiter_id', company_id)
+      .eq('workflow_type', 'company')
+      .throwOnError()
+  ).data.filter((w) => w.workflow_action && w.is_active);
 
-  const promises = workflows.data.map(async (w) => {
+  const promises = workflows.map(async (w) => {
     const jobTrigger = await supabase
       .from('workflow')
       .insert({

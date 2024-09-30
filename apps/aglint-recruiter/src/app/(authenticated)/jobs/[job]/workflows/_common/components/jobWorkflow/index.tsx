@@ -24,9 +24,12 @@ export default function EnhancedAutomationPage() {
 
   const { recruiter_id } = useTenant();
   useEffect(() => {
-    // TODO: handle diff cases
+    // TODO: handle Error cases
     if (status === 'pending') {
       updateJobAutomationState(true);
+    }
+    if (status === 'error') {
+      updateJobAutomationState(false);
     }
     if (status === 'success' && data) {
       initiateJobAutomationState(data);
@@ -34,7 +37,6 @@ export default function EnhancedAutomationPage() {
     }
   }, [status, data]);
 
-  // TODO:dev only
   const handleCloneWfs = async () => {
     try {
       await cloneCompWorkflows({
