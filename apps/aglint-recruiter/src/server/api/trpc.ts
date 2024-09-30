@@ -167,9 +167,7 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
     data: { user },
   } = await db.auth.getUser();
 
-  if (!user) {
-    throw new TRPCError(ERRORS.UNAUTHORIZED);
-  }
+  if (!user) throw new TRPCError(ERRORS.UNAUTHORIZED);
 
   const user_id = user.id;
 
@@ -182,9 +180,7 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
     .single()
     .throwOnError();
 
-  if (!data) {
-    throw new TRPCError(ERRORS.UNAUTHORIZED);
-  }
+  if (!data) throw new TRPCError(ERRORS.UNAUTHORIZED);
 
   const {
     recruiter_id,
