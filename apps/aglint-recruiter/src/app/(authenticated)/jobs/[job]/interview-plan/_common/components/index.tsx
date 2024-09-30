@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { getFullName } from '@aglint/shared-utils';
 import OptimisticWrapper from '@components/loadingWapper';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   Breadcrumb,
@@ -68,7 +69,6 @@ import InterviewDeletePopup, {
   type InterviewDeletePopupType,
 } from './deletePopup';
 import InterviewDrawers from './sideDrawer';
-import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 
 export type CompanyMember = CompanyMemberGlobal & { paused: boolean };
 
@@ -138,7 +138,7 @@ const InterviewPlanPage = () => {
             <div className='flex flex-row justify-between'>
               <div className='flex flex-col gap-1'>
                 <h2 className='text-lg font-medium'>Interview Plan</h2>
-                <p className='text-muted-foreground text-sm'>
+                <p className='text-sm text-muted-foreground'>
                   Set up your interview plan here. Changes will be saved
                   automatically.
                 </p>
@@ -157,14 +157,15 @@ const InterviewPlanPage = () => {
                 ))
               ) : (
                 <Alert>
-                  <AlertCircle className="h-4 w-4" />
+                  <AlertCircle className='h-4 w-4' />
                   <AlertTitle>Create Interview Stages</AlertTitle>
                   <AlertDescription>
                     Create your interview stages for the job to ensure a
                     structured evaluation process. Add different interview types
-                    such as "Initial Screening" or "Technical Interview." Use this
-                    template each time you schedule interviews for candidates to
-                    maintain consistency and efficiency.
+                    such as &quot;Initial Screening&quot; or &quot;Technical
+                    Interview.&quot; Use this template each time you schedule
+                    interviews for candidates to maintain consistency and
+                    efficiency.
                   </AlertDescription>
                 </Alert>
               )}
