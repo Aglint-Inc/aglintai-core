@@ -161,6 +161,7 @@ export const PATHS = [
   '/api/automation/get_users',
   '/api/automation/get_users_not_in_constantEmails',
   '/api/automation/reschedule_request',
+  '/api/automation/reset-job-workflows',
   '/api/automation/schedule_auth_update',
   '/api/automation/seed_default_data',
   '/api/automation/send_availability_reminder',

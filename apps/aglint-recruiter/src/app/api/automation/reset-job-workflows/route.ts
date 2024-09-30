@@ -16,11 +16,15 @@ const resetJobWorkflows = async ({ company_id }: z.infer<typeof schema>) => {
       .eq('recruiter_id', company_id)
       .throwOnError()
   ).data;
-  await cloneCompWorkflowsForJob({
-    company_id,
-    job_id: allJobIds[0].id,
-    supabase,
+  const allJobs = allJobIds.map(async (job) => {
+    supabase.from('workflow_job_relation').delete().eq('job_id', job.id);
+    await cloneCompWorkflowsForJob({
+      company_id,
+      job_id: job.id,
+      supabase,
+    });
   });
+  await Promise.all(allJobs);
   return 'ok';
 };
 
