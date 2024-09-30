@@ -69,11 +69,14 @@ function CandidateAvailability({
   });
   dayjsLocal;
   const [submitting, setSubmitting] = useState(false);
-  const { data: sessions } = useMeetingList();
+  const { data: sessions } = useMeetingList({ request_id: selectedRequest.id });
 
-  const { data: candidateAvailability } = useCandidateAvailability({
-    candidate_availability_id: candidateAvailabilityIdForReRequest,
-  });
+  const { data: candidateAvailability } = useCandidateAvailability(
+    {
+      candidate_availability_id: candidateAvailabilityIdForReRequest,
+    },
+    { enabled: !!candidateAvailabilityIdForReRequest },
+  );
 
   useEffect(() => {
     if (candidateAvailability?.id) {

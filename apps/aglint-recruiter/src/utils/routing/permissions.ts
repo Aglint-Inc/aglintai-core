@@ -62,7 +62,6 @@ const PERMISSIONS: Permissions = {
   /** Any one of the permission is required to access this apis
    * permission will reduced  using 'or'
    */
-  '/api/scheduling/application/fetchInterviewSessionByRequest': ['authorized'],
   '/api/scheduling/get_interview_plans': ['scheduling_module'],
   '/api/greenhouse/getPostings': ['manage_job'],
   '/api/lever/createjob': ['manage_job'],

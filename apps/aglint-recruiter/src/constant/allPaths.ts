@@ -57,7 +57,6 @@ export const PATHS = [
   '/api/save_interview_feedback',
   '/api/scheduling/application/cancelschedule',
   '/api/scheduling/application/debrief-add-users',
-  '/api/scheduling/application/fetchInterviewSessionByRequest',
   '/api/scheduling/application/fetchfeedbackdetails',
   '/api/scheduling/application/mailthankyou',
   '/api/scheduling/application/openselfscheduling',

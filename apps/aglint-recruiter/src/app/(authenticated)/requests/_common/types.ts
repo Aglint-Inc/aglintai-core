@@ -1,6 +1,5 @@
 import { type DateRangePlansType } from '@aglint/shared-types';
 
-import { type fetchSessionDetails } from '@/pages/api/scheduling/application/mailthankyou';
 import type { RequestResponse } from '@/queries/requests/types';
 import type { Request as RequestType } from '@/queries/requests/types';
 import { type CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
@@ -40,16 +39,6 @@ export type responseCreatedCompletedType = {
 export type SectionRequests = {
   // eslint-disable-next-line no-unused-vars
   [_id in keyof RequestResponse | 'standard_request']: number;
-};
-
-export type ApiInterviewSessionRequest = {
-  request: {
-    request_id: string;
-  };
-  response: {
-    success: boolean;
-    sessions: Awaited<ReturnType<typeof fetchSessionDetails>>;
-  };
 };
 
 export type ApiResponseFindAvailability = {
