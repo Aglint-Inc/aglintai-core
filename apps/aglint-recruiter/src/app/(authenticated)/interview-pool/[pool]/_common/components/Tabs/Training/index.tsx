@@ -8,10 +8,6 @@ import UITextField from '@/components/Common/UITextField';
 import MoveToQualifiedDialog from '@/interview-pool/details/dialogs/MoveToQualified';
 import { api } from '@/trpc/client';
 
-import AddMemberDialog from '../../../dialogs/AddMemberDialog';
-import DeleteMemberDialog from '../../../dialogs/DeleteMemberDialog';
-import PauseDialog from '../../../dialogs/PauseDialog';
-import ResumeMemberDialog from '../../../dialogs/ResumeMemberDialog';
 import { useModuleAndUsers } from '../../../hooks/useModuleAndUsers';
 import { useProgressModuleUsers } from '../../../hooks/useProgressModuleUsers';
 import {
@@ -49,10 +45,6 @@ function Training() {
 
   return (
     <>
-      <DeleteMemberDialog />
-      <AddMemberDialog />
-      <PauseDialog />
-      <ResumeMemberDialog />
       <MoveToQualifiedDialog
         refetch={async () => {
           await utils.interview_pool.module_and_users.invalidate({

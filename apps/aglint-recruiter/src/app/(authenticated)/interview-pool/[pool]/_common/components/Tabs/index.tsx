@@ -1,10 +1,12 @@
-import UITabs from '@/components/Common/UITabs';
+import UITabs, { type UITabType } from '@/components/Common/UITabs';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 
-import { usePoolCandidates } from '../../hooks/useCandidateModule';
-import { usePoolFeedbacks } from '../../hooks/usePoolFeedback';
-import { usePoolSchedules } from '../../hooks/useSchedulesPool';
+import AddMemberDialog from '../../dialogs/AddMemberDialog';
+import DeleteMemberDialog from '../../dialogs/DeleteMemberDialog';
+import PauseDialog from '../../dialogs/PauseDialog';
+import ResumeMemberDialog from '../../dialogs/ResumeMemberDialog';
+import { usePrefetchTabs } from '../../hooks/usePrefetchTabs';
 import Candidates from './Candidates';
 import Feedback from './Feedback';
 import InstructionsComp from './Instructions';
@@ -14,7 +16,7 @@ import Training from './Training';
 
 function InterviewDetailsTabs() {
   const router = useRouterPro();
-  const tabs = [
+  const tabs: UITabType['horizontal'][] = [
     {
       name: 'Interviewers',
       id: 'interviewers',
@@ -44,15 +46,11 @@ function InterviewDetailsTabs() {
     {
       name: 'Feedback',
       id: 'feedback',
-      tabComp: <Feedback />,
+      content: <Feedback />,
     },
   ];
 
-  usePoolSchedules({
-    filters: ['confirmed', 'completed', 'cancelled'],
-  });
-  usePoolCandidates();
-  usePoolFeedbacks();
+  usePrefetchTabs();
 
   const type_id = router.params.pool;
   return (
@@ -70,6 +68,10 @@ function InterviewDetailsTabs() {
           );
         }}
       />
+      <DeleteMemberDialog />
+      <AddMemberDialog />
+      <PauseDialog />
+      <ResumeMemberDialog />
     </>
   );
 }

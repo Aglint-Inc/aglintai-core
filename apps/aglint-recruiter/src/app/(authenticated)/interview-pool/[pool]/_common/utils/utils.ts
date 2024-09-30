@@ -190,49 +190,6 @@ export const deleteRelationByUserDbDelete = async ({
   }
 };
 
-export const addMemberbyUserIds = async ({
-  user_ids,
-  module_id,
-  training_status,
-  number_of_reverse_shadow,
-  number_of_shadow,
-}: {
-  user_ids: string[];
-  module_id: string;
-  training_status: StatusTraining;
-  number_of_reverse_shadow: number;
-  number_of_shadow: number;
-}) => {
-  const interviewModRelations: DatabaseTableInsert['interview_module_relation'][] =
-    user_ids.map((user_id) => ({
-      user_id: user_id,
-      module_id: module_id,
-      training_status: training_status,
-      number_of_reverse_shadow,
-      number_of_shadow,
-    }));
 
-  await supabase
-    .from('interview_module_relation')
-    .insert(interviewModRelations)
-    .throwOnError();
-};
 
-export const updateRelations = async (
-  archivedRelations: ReturnType<typeof useModuleAndUsers>['data']['relations'],
-  training_status: DatabaseTable['interview_module_relation']['training_status'],
-) => {
-  const upsertRelations: DatabaseTableInsert['interview_module_relation'][] =
-    archivedRelations.map((user) => ({
-      id: user.id,
-      user_id: user.user_id,
-      module_id: user.module_id,
-      training_status: training_status,
-      is_archived: false,
-    }));
 
-  await supabase
-    .from('interview_module_relation')
-    .upsert(upsertRelations)
-    .throwOnError();
-};
