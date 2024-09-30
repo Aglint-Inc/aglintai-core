@@ -2,7 +2,7 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { CircleUser, Plus, SquarePen } from 'lucide-react';
 import { useState } from 'react';
 
-import { usePortalSettings } from '@/company/hooks/usePortalSettings';
+import { useFlags } from '@/company/hooks/useFlags';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
 import UISectionCard from '@/components/Common/UISectionCard';
@@ -10,9 +10,8 @@ import UISectionCard from '@/components/Common/UISectionCard';
 import { GreetingEditDialog } from './GreetingEditDialog';
 
 export default function CandidateGreeting() {
-  const { data } = usePortalSettings();
-  const [text, setText] = useState<string>(data.greetings || '');
-
+  const { greetings } = useFlags();
+  const [text, setText] = useState<string>(greetings || '');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
@@ -29,7 +28,7 @@ export default function CandidateGreeting() {
         description='This section content will be displayed on the candidate portal as
             the greeting message to the candidate.'
         emptyStateMessage={
-          !data.greetings && (
+          !greetings && (
             <GlobalEmpty
               icon={
                 <CircleUser
@@ -51,7 +50,7 @@ export default function CandidateGreeting() {
           )
         }
         action={
-          data?.greetings?.length > 0 && (
+          !!greetings && (
             <UIButton
               variant='outline'
               onClick={() => setIsDialogOpen(true)}
@@ -63,9 +62,9 @@ export default function CandidateGreeting() {
           )
         }
       >
-        {data?.greetings?.length && (
+        {greetings?.length && (
           <ScrollArea className='max-h-40 w-full rounded-md border bg-gray-100'>
-            <div className='w-full space-y-4 p-4'>{data?.greetings}</div>
+            <div className='w-full space-y-4 p-4'>{greetings}</div>
           </ScrollArea>
         )}
       </UISectionCard>
