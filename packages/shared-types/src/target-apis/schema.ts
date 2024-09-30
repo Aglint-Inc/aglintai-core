@@ -32,6 +32,7 @@ import {
   onTrainingCompleteSlackApproverForTraineeMeetingQualificationSchema,
   onRequestCancelSlackInterviewersOrganizerSchema,
   interviewStartSlackInterviewersSchema,
+  onReceivingAvailReqSlackSuggestSlotsSchema,
 } from '../aglint-mail/api_schema';
 export const TargetApiSchema = {
   debrief_email_interviewer: debriefEmailInterviewerSchema,
@@ -116,4 +117,6 @@ export const TargetApiSchema = {
     interviewEndEmailOrganizerForMeetingStatusSchema,
   onRequestCancel_slack_interviewersOrganizer:
     onRequestCancelSlackInterviewersOrganizerSchema,
+  onReceivingAvailReq_slack_suggestSlots:
+    onReceivingAvailReqSlackSuggestSlotsSchema,
 } as const;

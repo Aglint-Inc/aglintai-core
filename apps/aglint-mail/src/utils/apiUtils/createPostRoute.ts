@@ -20,6 +20,9 @@ export const createPostRoute = (schema: any, func: any, is_form?: boolean) => {
       }
 
       const response = await func(parsed_body);
+      if (!response) {
+        return NextResponse.json(null, { status: 204 });
+      }
       return NextResponse.json(response, {
         status: 200,
       });
