@@ -115,7 +115,12 @@ function MyInterviews() {
               })}
             {scheduleFetched && allSchedules.length === 0 && (
               <GlobalEmpty
-                icon={<Info strokeWidth={1} className='h-10 w-10' />}
+                icon={
+                  <Info
+                    strokeWidth={2}
+                    className='h-6 w-6 text-muted-foreground'
+                  />
+                }
                 header='No interviews found'
                 description='There are no upcoming interviews.'
               />
