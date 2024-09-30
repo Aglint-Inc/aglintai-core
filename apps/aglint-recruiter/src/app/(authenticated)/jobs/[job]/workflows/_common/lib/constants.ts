@@ -14,7 +14,6 @@ type JobRelatedCTriggers = Extract<
   | 'sendAvailReqReminder'
   | 'interviewerConfirmation'
   | 'interviewEnd'
-  | 'meetingDeclined'
   | 'meetingAccepted'
   | 'candidateBook'
   | 'onReceivingAvailReq'
@@ -22,25 +21,25 @@ type JobRelatedCTriggers = Extract<
   | 'onRequestCancel'
   | 'onRequestReschedule'
   | 'onRequestInterviewerDecline'
+  | 'interviewEnd'
 >;
 
 export const triggerToCategoryMap: Record<
   JobRelatedCTriggers,
   TriggerCategory
 > = {
-  interviewEnd: TriggerCategory.InterviewerManagement,
-  onRequestCancel: TriggerCategory.CandidateExperience,
+  onRequestCancel: TriggerCategory.InterviewerManagement,
   onRequestReschedule: TriggerCategory.CandidateExperience,
-  candidateBook: TriggerCategory.InterviewerManagement,
+  candidateBook: TriggerCategory.CandidateExperience,
   meetingAccepted: TriggerCategory.InterviewerManagement,
-  meetingDeclined: TriggerCategory.InterviewerManagement,
   interviewStart: TriggerCategory.InterviewProcess,
+  interviewEnd: TriggerCategory.InterviewProcess,
   interviewerConfirmation: TriggerCategory.SchedulingManagement,
   onReceivingAvailReq: TriggerCategory.SchedulingManagement,
-  onRequestInterviewerDecline: TriggerCategory.SchedulingManagement,
+  onRequestInterviewerDecline: TriggerCategory.InterviewerManagement,
   onRequestSchedule: TriggerCategory.SchedulingManagement,
-  selfScheduleReminder: TriggerCategory.SchedulingManagement,
-  sendAvailReqReminder: TriggerCategory.SchedulingManagement,
+  selfScheduleReminder: TriggerCategory.CandidateExperience,
+  sendAvailReqReminder: TriggerCategory.CandidateExperience,
 };
 
 export const triggerToQuestion: Record<JobRelatedCTriggers, string> = {
@@ -53,10 +52,18 @@ export const triggerToQuestion: Record<JobRelatedCTriggers, string> = {
   interviewerConfirmation:
     'How do we confirm when an interviewer accepts an invitation ?',
   interviewEnd: 'What happens after an interview ends ?',
-  meetingDeclined: 'How do we handle declined interview invitations ?',
   meetingAccepted: 'What happens when an interviewer confirms ?',
   onReceivingAvailReq: 'What happens after reciving candidate availability ?',
   onRequestSchedule: 'What our process after reciveing schedule request ?',
   onRequestInterviewerDecline:
     'What happens when interviewer decline request ?',
+};
+
+export const agentInstructionEmailTargetApi: Partial<
+  Record<DatabaseEnums['email_slack_types'], DatabaseEnums['email_slack_types']>
+> = {
+  onRequestSchedule_emailLink_sendSelfSchedulingLink:
+    'sendSelfScheduleRequest_email_applicant',
+  onRequestSchedule_emailLink_getCandidateAvailability:
+    'sendAvailabilityRequest_email_applicant',
 };

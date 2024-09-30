@@ -21,6 +21,7 @@ import {
   addWaction,
   useJobAutomationStore,
 } from '@/job/workflows/contexts/workflowsStoreContext';
+import { agentInstructionEmailTargetApi } from '@/job/workflows/lib/constants';
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
 const AddActionMenu = ({
@@ -30,7 +31,7 @@ const AddActionMenu = ({
 }) => {
   const [open, setOpen] = useState<boolean>(false);
 
-  const { jobWorkflowActions } = useJobAutomationStore();
+  const { jobWorkflowActions, company_templates } = useJobAutomationStore();
   const actions = ACTION_TRIGGER_MAP[wTrigger.trigger];
   const filteredActions = actions.filter((action) => {
     return !jobWorkflowActions.find(
@@ -67,12 +68,25 @@ const AddActionMenu = ({
                       key={action.value.target_api}
                       value={action.value.target_api}
                       onSelect={() => {
+                        const templateData = company_templates.find(
+                          (temp) =>
+                            temp.type ===
+                            (agentInstructionEmailTargetApi[
+                              action.value.target_api
+                            ] ?? action.value.target_api),
+                        );
                         addWaction({
                           workflow_id: wTrigger.id,
                           action_type: action.value.action_type as any,
                           target_api: action.value.target_api as any,
                           order: 0,
-                          payload: action.value.payload as any,
+                          payload: {
+                            ...(action.value.payload ?? {}),
+                            email: {
+                              body: templateData?.body,
+                              subject: templateData?.subject,
+                            },
+                          },
                           created_at: dayjsLocal().toISOString(),
                           id: v4(),
                         });

@@ -253,6 +253,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
           agent: {
             instruction: `Pick maximum slots of 5 without any conflicts and candidate preferred time is morning 9 to 12`,
           },
+          email: null,
         },
       },
     },
@@ -263,26 +264,6 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
         action_type: 'email',
         payload: {
           email: null,
-        },
-      },
-    },
-    {
-      name: 'Self Schedule with Agent via mail',
-      value: {
-        target_api: 'onRequestSchedule_emailAgent_selfSchedule',
-        action_type: 'end_point',
-        payload: {
-          end_point: null,
-        },
-      },
-    },
-    {
-      name: 'Self Schedule with Agent via Phone',
-      value: {
-        action_type: 'end_point',
-        target_api: 'onRequestSchedule_phoneAgent_selfSchedule',
-        payload: {
-          end_point: null,
         },
       },
     },
