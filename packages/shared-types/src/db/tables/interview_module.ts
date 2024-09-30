@@ -1,3 +1,5 @@
+import { z } from "zod";
+import { interviewModuleUpdateSchema } from "../zod-schema.types";
 import type { TableType } from "./index.types";
 
 export type CustomModule = TableType<
@@ -11,3 +13,15 @@ export type CustomModule = TableType<
     };
   }
 >;
+
+export const customInterviewModuleUpdateSchema =
+  interviewModuleUpdateSchema.extend({
+    settings: z
+      .object({
+        require_training: z.boolean(),
+        noShadow: z.number(),
+        noReverseShadow: z.number(),
+        reqruire_approval: z.boolean(),
+      })
+      .optional(),
+  });
