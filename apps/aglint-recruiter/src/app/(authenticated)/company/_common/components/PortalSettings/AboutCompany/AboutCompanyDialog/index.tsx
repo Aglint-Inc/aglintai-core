@@ -1,11 +1,11 @@
 import { DialogDescription } from '@components/ui/dialog';
 import { useState } from 'react';
 
+import { useFlags } from '@/company/hooks/useFlags';
 import { usePortalSettings } from '@/company/hooks/usePortalSettings';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useFlags } from '@/company/hooks/useFlags';
 
 export const AboutCompanyDialog = ({ isDialogOpen, setIsDialogOpen }) => {
   const { updateAbout, loading } = usePortalSettings();

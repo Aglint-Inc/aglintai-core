@@ -2,13 +2,12 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { CircleUser, Plus, SquarePen } from 'lucide-react';
 import { useState } from 'react';
 
-import { usePortalSettings } from '@/company/hooks/usePortalSettings';
+import { useFlags } from '@/company/hooks/useFlags';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
 import UISectionCard from '@/components/Common/UISectionCard';
 
 import { GreetingEditDialog } from './GreetingEditDialog';
-import { useFlags } from '@/company/hooks/useFlags';
 
 export default function CandidateGreeting() {
   const { greetings } = useFlags();

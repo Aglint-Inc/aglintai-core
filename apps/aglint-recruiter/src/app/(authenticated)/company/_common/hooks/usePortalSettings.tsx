@@ -1,12 +1,11 @@
-import { useQueryClient } from '@tanstack/react-query';
+import { toast } from '@components/hooks/use-toast';
 import { type Dispatch, type SetStateAction, useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
+import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 
 import { useFlags } from './useFlags';
-import { api } from '@/trpc/client';
-import { toast } from '@components/hooks/use-toast';
 
 export const usePortalSettings = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<
@@ -15,7 +14,7 @@ export const usePortalSettings = () => {
   const {
     recruiter: { name },
   } = useTenant();
-  const { about, greetings, banner_image, company_images } = useFlags();
+  const { banner_image, company_images } = useFlags();
   const { mutateAsync } = api.tenant.updateCandidatePortal.useMutation();
   const [loading, setLoading] = useState<{
     isCoverUploading: boolean;
