@@ -57,7 +57,12 @@ const Create = () => {
 
   return (
     <>
-      <UIButton leftIcon={<Plus/>} size='md' variant='default' onClick={() => setPopup({ open: true })}>
+      <UIButton
+        leftIcon={<Plus />}
+        size='md'
+        variant='default'
+        onClick={() => setPopup({ open: true })}
+      >
         Create
       </UIButton>
       <Dialog open={open} onOpenChange={handleClose}>
