@@ -65,28 +65,22 @@ const ApplicationsComponent = () => {
   return (
     <DNDProvider>
       <div className='container-lg mx-auto w-full px-4'>
-        <div className='mb-6 flex items-center justify-between'>
+        <div className='mb-2 flex items-center justify-between'>
           <div>
-            <h1 className='mb-2 text-2xl font-bold'>Job Details </h1>
+            {/* <h1 className='mb-2 text-2xl font-bold'>Job Details </h1> */}
             <SharedBreadCrumbs />
           </div>
           <SharedActions />
         </div>
 
         <div className='mb-6 flex flex-col gap-6'>
-          <div className='rounded-lg bg-white p-4 shadow'>
-            <div className='mb-4'>
-              <Tabs />
-            </div>
-            <div className='my-2'>
-              {checklist.length === 0 ? <Filters /> : <Actions />}
-            </div>
-            <div className=''>
-              <ScrollArea>
-                <Table />
-              </ScrollArea>
-            </div>
+          <div className='mb-2'>
+            <Tabs />
           </div>
+            {checklist.length === 0 ? <Filters /> : <Actions />}
+          <ScrollArea>
+            <Table />
+          </ScrollArea>
         </div>
       </div>
     </DNDProvider>
