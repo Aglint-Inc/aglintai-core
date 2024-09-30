@@ -37,7 +37,6 @@ function ATSPopUps({
   const atsName = reason?.split('_')[1];
 
   const handleAction = async () => {
-    // console.log('handleAction');
     // try {
     const result = await action();
     if (result) {
