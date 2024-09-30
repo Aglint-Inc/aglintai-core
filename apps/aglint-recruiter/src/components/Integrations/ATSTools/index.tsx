@@ -1,6 +1,5 @@
 'use client';
 import { useToast } from '@components/hooks/use-toast';
-import { Input } from '@components/ui/input';
 import axios from 'axios';
 import capitalize from 'lodash/capitalize';
 import Image from 'next/image';
@@ -10,6 +9,7 @@ import type { useAllIntegrations } from '@/authenticated/hooks';
 import { useTenant } from '@/company/hooks';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
+import PasswordFiled from '../../../app/_common/components/passwordField';
 import ATSPopUps from '../ATSPopUps';
 import { IntegrationCard } from '../components/IntegrationCard';
 import { type ATSType, type PopUpReasonTypes } from '../types';
@@ -328,7 +328,7 @@ function ATSTools({
       secondaryText: data?.lever_key ? null : 'Learn How',
       primaryAction: () => {
         setLoading(false);
-        if (data.lever_key) updateApi('lever');
+        if (data?.lever_key) updateApi('lever');
         else connectApi('lever');
       },
       secondaryAction: () => {
@@ -376,7 +376,7 @@ function ATSTools({
                 slotLogo={item.logo}
                 textName={capitalize(item.name)}
                 textLink={item.url}
-                isConnected={item.isConnected}
+                // isConnected={item.isConnected}
                 primaryText={item.primaryText}
                 secondaryText={item.secondaryText || undefined}
                 primaryAction={item.primaryAction}
@@ -388,7 +388,7 @@ function ATSTools({
           })}
       </>
       <ATSPopUps // popup for Hr tools
-        popUpBody={<Input ref={inputRef} placeholder='Enter API Key' />}
+        popUpBody={<PasswordFiled ref={inputRef} placeholder='Enter API Key' />}
         close={close}
         isOpen={isOpen}
         action={action}

@@ -68,15 +68,13 @@ export default function Main() {
       updateJobAutomationState(false);
     }, 1000);
   };
+
   return (
     <div className='md:col-span-2'>
       <Card className='border-0 shadow-none'>
         <CardHeader>
           <CardTitle>Job Automation Setup</CardTitle>
-          <CardDescription>
-            Configure automated actions for this job. Total automations set:{' '}
-            {jobWorkflowActions.length}
-          </CardDescription>
+          <CardDescription></CardDescription>
         </CardHeader>
         {isStateUpdating && <Skeleton className='h-[500px] w-full' />}
         {!isStateUpdating && (

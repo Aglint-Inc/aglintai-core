@@ -20,18 +20,8 @@ function Interviews() {
     !!(recruiter_user?.schedule_auth as any)?.access_token
   ) {
     return (
-      <div className='container-lg mx-auto w-full px-12'>
-        <header>
-          <div className='mb-4 flex items-center justify-between'>
-            <div>
-              <h1 className='text-3xl font-semibold'>Interviews</h1>
-              <p className='mb-4 text-gray-600'>
-                Connect your favorite tools to streamline your recruitment
-                process.
-              </p>
-            </div>
-          </div>
-        </header>
+      <div className='container-lg mx-auto w-full px-4'>
+        <header></header>
         <div className='flex w-full flex-row'>
           {/* Left Column: All Upcoming Interviews */}
           <div className='w-7/12 space-y-4 pr-6'>

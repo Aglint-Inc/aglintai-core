@@ -1,9 +1,10 @@
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Parser } from 'html-to-react';
-import { PencilIcon, Plus } from 'lucide-react';
+import { Building2, Plus, SquarePen } from 'lucide-react';
 import { useState } from 'react';
 
 import { usePortalSettings } from '@/company/hooks/usePortalSettings';
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
 import UISectionCard from '@/components/Common/UISectionCard';
 
@@ -25,23 +26,37 @@ export default function AboutCompany() {
         title='Company About'
         description='  This section content will be displayed on the candidate portal as
               the about section.'
-        emptyStateMessage={about ? '' : 'About Company not available'}
+        emptyStateMessage={
+          !data.about && (
+            <GlobalEmpty
+              icon={
+                <Building2
+                  strokeWidth={2}
+                  className='h-6 w-6 text-muted-foreground'
+                />
+              }
+              header={`No about company found`}
+              description={`Add the about company for candidate portal`}
+              primaryAction={
+                <UIButton
+                  onClick={() => setIsDialogOpen(true)}
+                  leftIcon={<Plus />}
+                >
+                  Add About
+                </UIButton>
+              }
+            />
+          )
+        }
         action={
           about?.length ? (
             <UIButton
               variant='outline'
               onClick={() => setIsDialogOpen(true)}
               size='sm'
-              icon={<PencilIcon className='mr-2 h-3 w-3' />}
-            />
-          ) : (
-            <UIButton
-              variant='outline'
-              size='sm'
-              onClick={() => setIsDialogOpen(true)}
-              leftIcon={<Plus />}
+              leftIcon={<SquarePen className='mr-2 h-3 w-3' />}
             >
-              Add
+              Edit
             </UIButton>
           )
         }

@@ -16,16 +16,9 @@ function Integrations() {
 
   return (
     <>
-      <div className='container-lg mx-auto w-full px-12'>
+      <div className='container-lg mx-auto w-full px-4'>
         <header className='mb-4'>
           <div className='flex items-center justify-between'>
-            <div>
-              <h1 className='text-xl font-semibold'>Integrations</h1>
-              <p className='mb-4 text-gray-600'>
-                Connect your favorite tools to streamline your recruitment
-                process.
-              </p>
-            </div>
             <UIButton
               size='md'
               variant='default'

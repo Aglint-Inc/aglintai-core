@@ -28,6 +28,8 @@ export const triggerToCategoryMap: Record<
   JobRelatedCTriggers,
   TriggerCategory
 > = {
+  selfScheduleReminder: TriggerCategory.CandidateExperience,
+  sendAvailReqReminder: TriggerCategory.CandidateExperience,
   onRequestCancel: TriggerCategory.InterviewerManagement,
   onRequestReschedule: TriggerCategory.CandidateExperience,
   candidateBook: TriggerCategory.CandidateExperience,
@@ -38,8 +40,6 @@ export const triggerToCategoryMap: Record<
   onReceivingAvailReq: TriggerCategory.SchedulingManagement,
   onRequestInterviewerDecline: TriggerCategory.InterviewerManagement,
   onRequestSchedule: TriggerCategory.SchedulingManagement,
-  selfScheduleReminder: TriggerCategory.CandidateExperience,
-  sendAvailReqReminder: TriggerCategory.CandidateExperience,
 };
 
 export const triggerToQuestion: Record<JobRelatedCTriggers, string> = {

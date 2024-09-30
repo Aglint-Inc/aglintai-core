@@ -1,11 +1,12 @@
 import { useToast } from '@components/hooks/use-toast';
 import { Input } from '@components/ui/input';
-import { Toggle } from '@components/ui/toggle';
+import { Label } from '@components/ui/label';
 import axios from 'axios';
-import { Loader2, Upload } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import PasswordField from 'src/app/_common/components/passwordField';
 
 import { useTenant } from '@/company/hooks';
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -19,7 +20,6 @@ function Scheduling({ allIntegrations }) {
   const { recruiter } = useTenant();
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
-  const [hideApiKey, setHideApiKey] = useState(true);
 
   const [reason, setReason] = useState<SchedulingReasonTypes>();
   const [isLoading, setLoading] = useState(false);
@@ -56,13 +56,6 @@ function Scheduling({ allIntegrations }) {
         );
       }
     }
-    // if (reason === 'disconnect_google_workSpace') {
-    //   await updateIntegrations({ service_json: null }, recruiter.id);
-    // }
-
-    // if (reason === 'disconnect_zoom') {
-    //   await updateIntegrations({ zoom_auth: null }, recruiter.id);
-    // }
     if (reason === 'connect_zoom') {
       const client_id = clientIdRef.current.value;
       const client_secret = clientSecretRef.current.value;
@@ -132,15 +125,6 @@ function Scheduling({ allIntegrations }) {
         });
     }
   }
-  // function disConnectApi(source: schedulingToolsType) {
-  //   setIsOpen(true);
-  //   if (source === 'google_workspace') {
-  //     setReason('disconnect_google_workSpace');
-  //   }
-  //   if (source === 'zoom') {
-  //     setReason('disconnect_zoom');
-  //   }
-  // }
   function readDocs(source: schedulingToolsType) {
     if (source === 'google_workspace')
       window.open('https://workspace.google.com');
@@ -207,7 +191,6 @@ function Scheduling({ allIntegrations }) {
         'https://marketplace.zoom.us/develop/applications/6yi2AYxkRASH4rVcP-8c9Q/information?mode=dev',
     },
   ];
-
   const { getRootProps, getInputProps } = useDropzone({
     multiple: false,
     accept: {
@@ -272,6 +255,7 @@ function Scheduling({ allIntegrations }) {
           onClick={() => window.open('https://' + item.url)}
         />
       ))}
+
       <SchedulingPopUps
         close={close}
         isOpen={isOpen}
@@ -285,19 +269,21 @@ function Scheduling({ allIntegrations }) {
                 reason === 'update_google_workspace'
               }
             >
-              <div className='space-y-2'>
-                <p className='text-base font-normal'>Domain Name</p>
-                <Input
-                  defaultValue={allIntegrations?.google_workspace_domain}
-                  placeholder='Ex : https://aglinthq.com'
-                  ref={domainRef}
-                />
+              <div className='flex flex-col gap-2 space-y-2'>
+                <div className='flex flex-col gap-1'>
+                  <Label className='text-base font-normal'>Domain Name</Label>
+                  <Input
+                    defaultValue={allIntegrations?.google_workspace_domain}
+                    placeholder='Ex : https://aglinthq.com'
+                    ref={domainRef}
+                  />
+                </div>
                 <ShowCode>
                   <ShowCode.When isTrue={fileData}>
-                    <>
+                    <div>
                       <p className='text-base font-normal'>Service Key</p>
                       <Input disabled value={fileData} />
-                    </>
+                    </div>
                   </ShowCode.When>
                   <ShowCode.Else>
                     <ShowCode>
@@ -307,13 +293,22 @@ function Scheduling({ allIntegrations }) {
                         </div>
                       </ShowCode.When>
                       <ShowCode.Else>
-                        <div {...getRootProps()} className='cursor-pointer'>
-                          <input {...getInputProps()} />
-                          <div className='flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-6'>
-                            <Upload className='h-12 w-12 text-gray-400' />
-                            <p className='mt-2 text-center text-sm text-gray-600'>
-                              Drag & drop a file here, or click to select a file
-                            </p>
+                        <div className='flex flex-col gap-1'>
+                          <Label className='text-base font-normal'>
+                            Upload File
+                          </Label>
+                          <div {...getRootProps()} className='cursor-pointer'>
+                            <input {...getInputProps()} />
+                            <div className='flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-6'>
+                              <p className='text-center text-sm text-gray-600'>
+                                Drag & drop a file here, or click to select a
+                                file
+                              </p>
+                            </div>
+                          </div>
+                          <div className='mt-4 text-sm text-muted-foreground'>
+                            Your connection details are encrypted and secured
+                            with our platform.
                           </div>
                         </div>
                       </ShowCode.Else>
@@ -326,27 +321,33 @@ function Scheduling({ allIntegrations }) {
               isTrue={reason === 'connect_zoom' || reason === 'update_zoom'}
             >
               <div className='space-y-4'>
-                <div className='flex items-center justify-end space-x-2'>
-                  <Toggle
-                    pressed={!hideApiKey}
-                    onPressedChange={() => setHideApiKey((prev) => !prev)}
+                <div>
+                  <Label>Account ID</Label>
+                  <Input
+                    type={'text'}
+                    placeholder='Enter Account ID'
+                    ref={accountIdRef}
                   />
                 </div>
-                <Input
-                  type={hideApiKey ? 'password' : 'text'}
-                  placeholder='Enter Account ID'
-                  ref={accountIdRef}
-                />
-                <Input
-                  type={hideApiKey ? 'password' : 'text'}
-                  placeholder='Enter Client Id'
-                  ref={clientIdRef}
-                />
-                <Input
-                  type={hideApiKey ? 'password' : 'text'}
-                  placeholder='Enter Client Secret'
-                  ref={clientSecretRef}
-                />
+                <div>
+                  <Label>Client ID</Label>
+                  <Input
+                    type={'text'}
+                    placeholder='Enter Client Id'
+                    ref={clientIdRef}
+                  />
+                </div>
+                <div>
+                  <Label>Client Secret</Label>
+                  <PasswordField
+                    placeholder='Enter Client Secret'
+                    ref={clientSecretRef}
+                  />
+                </div>
+                <div className='mt-4 text-sm text-muted-foreground'>
+                  Your connection details are encrypted and secured with our
+                  platform.
+                </div>
               </div>
             </ShowCode.When>
           </ShowCode>

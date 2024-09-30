@@ -120,7 +120,7 @@ const InterviewPlanPage = () => {
 
   return (
     <>
-      <div className='container-lg mx-auto w-full px-12'>
+      <div className='container-lg mx-auto w-full px-4'>
         <div className='mb-6 flex items-center justify-between'>
           <div>
             <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>

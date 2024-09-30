@@ -2,7 +2,6 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { LibraryBig } from 'lucide-react';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
-import { UIButton } from '@/components/Common/UIButton';
 import UISectionCard from '@/components/Common/UISectionCard';
 
 import { type InterviewerDetailType } from '../../hooks/useInterviewer';
@@ -16,7 +15,7 @@ export const Qualifications = ({
   return (
     <>
       <UISectionCard title='Qualifications'>
-        <ScrollArea className='h-[360px] w-full'>
+        <ScrollArea className='max-h-[360px] w-full'>
           <div className='space-y-4'>
             {interview_types?.length ? (
               interview_types?.map((interview_type) => (
@@ -33,9 +32,7 @@ export const Qualifications = ({
                     className='h-6 w-6 text-muted-foreground'
                   />
                 }
-                header='Not added to any interview pool'
-                description='Add to an interview pool to get started'
-                primaryAction={<UIButton>Add to Interview Pool</UIButton>}
+                header='No Qualifications interview pro'
               />
             )}
           </div>

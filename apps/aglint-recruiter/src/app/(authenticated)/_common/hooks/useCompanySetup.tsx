@@ -59,7 +59,11 @@ export function useCompanySetup() {
   const { recruiter } = useTenant();
   const { data: integrations, isLoading: integrationLoading } =
     useAllIntegrations();
-  const { allMembers, isLoading: memberLoading } = useTenantMembers();
+  const {
+    allMembers,
+    isLoading: memberLoading,
+    isFetched: isMembersFetched,
+  } = useTenantMembers();
   const { data: compandDetails, isLoading: companySettingLoading } =
     useFetchcompanySetup();
 
@@ -259,7 +263,7 @@ export function useCompanySetup() {
         .sort((a, b) => Number(b?.isCompleted) - Number(a?.isCompleted));
       setSteps(newSteps);
     }
-  }, [recruiter, integrations, allMembers]);
+  }, [recruiter, integrations, isMembersFetched]);
 
   return {
     isLoading,
