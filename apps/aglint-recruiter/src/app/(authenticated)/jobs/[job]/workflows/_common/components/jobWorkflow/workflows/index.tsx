@@ -1,3 +1,4 @@
+import { toast } from '@components/hooks/use-toast';
 import { Accordion } from '@components/ui/accordion';
 import {
   Card,
@@ -9,18 +10,47 @@ import {
 
 import { UIButton } from '@/components/Common/UIButton';
 import { useJobAutomationStore } from '@/job/workflows/contexts/workflowsStoreContext';
+import { useGetJobWorkflow } from '@/job/workflows/hooks';
 import { TriggerCategory } from '@/job/workflows/lib/constants';
+import { api } from '@/trpc/client';
 
 import { AutomationAccordion } from './AutomationAccordion';
 
 export default function Main() {
   const { jobWorkflowTriggers, jobWorkflowActions } = useJobAutomationStore();
+  const { data } = useGetJobWorkflow();
+  const { mutate: updateJobWorkflowsActions } =
+    api.jobs.job.workflow.updateJobWorkflowsActions.useMutation();
   const allCategories: TriggerCategory[] = [
     TriggerCategory.CandidateExperience,
     TriggerCategory.InterviewerManagement,
     TriggerCategory.SchedulingManagement,
     TriggerCategory.InterviewProcess,
   ];
+  const handleSave = async () => {
+    try {
+      const deleted_actions = data.job_workflow_actions
+        .filter(
+          (act) =>
+            jobWorkflowActions.findIndex((jwa) => jwa.id === act.id) === -1,
+        )
+        .map((act) => act.id);
+      await updateJobWorkflowsActions({
+        deleted_actions: deleted_actions,
+        updated_actions: jobWorkflowActions,
+        workflows: jobWorkflowTriggers,
+      });
+      toast({
+        title: 'Job Automation Saved',
+        variant: 'default',
+      });
+    } catch (error) {
+      toast({
+        title: 'Something went wrong',
+        variant: 'destructive',
+      });
+    }
+  };
   return (
     <div className='md:col-span-2'>
       <Card className='border-0 shadow-none'>
@@ -50,7 +80,7 @@ export default function Main() {
         </CardContent>
       </Card>
       <div className='mt-6 flex justify-end space-x-1'>
-        <UIButton>Save</UIButton>
+        <UIButton onClick={handleSave}>Save</UIButton>
       </div>
     </div>
   );

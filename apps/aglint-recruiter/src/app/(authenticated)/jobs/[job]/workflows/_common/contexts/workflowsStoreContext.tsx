@@ -53,27 +53,36 @@ export const addWaction = (
     jobWorkflowActions: [...state.jobWorkflowActions, jobWorkflowActions],
   }));
 };
-export const deleteWAcion = (id: string) => {
-  useJobAutomationStore.setState((state) => ({
-    jobWorkflowActions: state.jobWorkflowActions.filter(
-      (action) => action.id !== id,
-    ),
-  }));
+export const deleteWAcion = (id: string, workflowId: string) => {
+  useJobAutomationStore.setState((state) => {
+    const parentWorkflow = state.jobWorkflowTriggers.find(
+      (workflow) => workflow.id === workflowId,
+    );
+    if (
+      state.jobWorkflowActions.filter((action) => action.id === id).length === 1
+    ) {
+      parentWorkflow.is_active = false;
+    }
+    return {
+      jobWorkflowActions: state.jobWorkflowActions.filter(
+        (action) => action.id !== id,
+      ),
+      jobWorkflowTriggers: state.jobWorkflowTriggers.map((workflow) =>
+        workflow.id === workflowId ? parentWorkflow : workflow,
+      ),
+    };
+  });
 };
 export const initiateJobAutomationState = (
   data: ReturnType<typeof useGetJobWorkflow>['data'],
 ) => {
   useJobAutomationStore.setState({
-    jobWorkflowTriggers: data.job_workflows
-      .filter((j) => {
-        return j.trigger in triggerToCategoryMap;
-      })
-      .map((workflow) => {
-        return {
-          ...workflow,
-          category: triggerToCategoryMap[workflow.trigger],
-        };
-      }) as JobAutomationState['jobWorkflowTriggers'],
+    jobWorkflowTriggers: data.job_workflows.map((workflow) => {
+      return {
+        ...workflow,
+        category: triggerToCategoryMap[workflow.trigger],
+      };
+    }) as JobAutomationState['jobWorkflowTriggers'],
     jobWorkflowActions:
       data.job_workflow_actions as JobAutomationState['jobWorkflowActions'],
   });

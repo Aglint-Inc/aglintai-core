@@ -1,6 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { z } from 'zod';
 
+import { triggerToCategoryMap } from '@/job/workflows/lib/constants';
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
@@ -16,7 +17,6 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
       .from('workflow_job_relation')
       .select('*,workflow!inner(*)')
       .eq('job_id', input.job_id)
-      .eq('job_id', input.job_id)
       .throwOnError()
   ).data;
   const workflow_actions = (
@@ -25,7 +25,11 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
       .select('*')
       .in(
         'workflow_id',
-        workflows.map((workflow) => workflow.workflow_id),
+        workflows
+          .filter((j) => {
+            return j.workflow.trigger in triggerToCategoryMap;
+          })
+          .map((workflow) => workflow.workflow_id),
       )
       .throwOnError()
   ).data;

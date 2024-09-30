@@ -30,7 +30,7 @@ const ActionsContainer = ({
           variant='ghost'
           size='sm'
           onClick={() => {
-            deleteWAcion(wAction.id);
+            deleteWAcion(wAction.id, wAction.workflow_id);
           }}
         >
           Remove
