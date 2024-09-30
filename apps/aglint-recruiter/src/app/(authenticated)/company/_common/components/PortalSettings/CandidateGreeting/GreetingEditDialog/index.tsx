@@ -1,5 +1,6 @@
 import { DialogDescription } from '@components/ui/dialog';
 
+import { useFlags } from '@/company/hooks/useFlags';
 import { usePortalSettings } from '@/company/hooks/usePortalSettings';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
@@ -11,7 +12,8 @@ export const GreetingEditDialog = ({
   setText,
   text,
 }) => {
-  const { data, updateGreetings, isPortalUpdating } = usePortalSettings();
+  const { updateGreetings, loading } = usePortalSettings();
+  const { greetings } = useFlags();
 
   const handleTextChange = (event) => {
     setText(event.target.value);
@@ -29,7 +31,7 @@ export const GreetingEditDialog = ({
             className='w-full'
             onClick={() => {
               setIsDialogOpen(false);
-              setText(data?.greetings || '');
+              setText(greetings || '');
             }}
           >
             Cancel
@@ -37,8 +39,8 @@ export const GreetingEditDialog = ({
           <UIButton
             type='submit'
             className='w-full'
-            isLoading={isPortalUpdating}
-            disabled={isPortalUpdating}
+            isLoading={loading.isGreetingUpdating}
+            disabled={loading.isGreetingUpdating}
             onClick={async () => {
               await updateGreetings(text);
               setIsDialogOpen(false);
