@@ -74,21 +74,8 @@ export const addWaction = (
   if (email_target_api in agentInstructionEmailTargetApi) {
     email_target_api = agentInstructionEmailTargetApi[email_target_api];
   }
-  const actionTrigger = jobWorkflowAction.target_api.split(
-    '_',
-  )[0] as keyof typeof ACTION_TRIGGER_MAP;
+
   useJobAutomationStore.setState((state) => {
-    const templateData = state.company_templates.find(
-      (temp) => temp.type === email_target_api,
-    );
-    if (templateData) {
-      jobWorkflowAction.payload = {
-        email: {
-          subject: templateData.subject,
-          body: templateData.body,
-        },
-      };
-    }
     return {
       jobWorkflowActions: [...state.jobWorkflowActions, jobWorkflowAction],
       isWorkflowsChanged: true,
