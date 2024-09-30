@@ -5,7 +5,6 @@ import {
 } from '@aglint/shared-types';
 
 import axios from '@/client/axios';
-import { type GetUserDetailsAPI } from '@/pages/api/getUserDetails/type';
 import { type API_setMembersWithRole } from '@/pages/api/setMembersWithRole/type';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
@@ -18,10 +17,6 @@ export const isRoutePublic = (path = '') => {
     }
   }
 };
-
-export async function getUserDetails() {
-  return axios.call<GetUserDetailsAPI>('GET', '/api/getUserDetails', {});
-}
 
 export const updateJoinedStatus = async (user_id: string) => {
   await supabase
