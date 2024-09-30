@@ -27,13 +27,13 @@ export const createQueryClient = (
     queryCache: new QueryCache({
       onError: (error) =>
         onError(error as unknown as TRPCErrorShape<TRPCError>, () => {
-          // logout(queryClient),
+          logout(queryClient);
         }),
     }),
     mutationCache: new MutationCache({
       onError: (error) =>
         onError(error as unknown as TRPCErrorShape<TRPCError>, () => {
-          // logout(queryClient),
+          logout(queryClient);
         }),
       onSuccess: () => queryClient.invalidateQueries(),
     }),
