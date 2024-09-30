@@ -15,7 +15,6 @@ export const PATHS = [
   '/api/decryptApiKey',
   '/api/encryptData',
   '/api/getRoleAndPermissions',
-  '/api/getUserDetails',
   '/api/get_scheduling_reason',
   '/api/google/overview-handler',
   '/api/google/overview',

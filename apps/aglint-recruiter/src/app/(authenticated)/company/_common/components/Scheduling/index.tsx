@@ -243,7 +243,7 @@ function SchedulingSettings() {
       <div className='flex flex-col'>
         <div className='mb-6'>
           <h2 className='mb-1 text-xl font-semibold'>Scheduling Information</h2>
-          <p className='text-gray-600'>
+          <p className='text-sm text-muted-foreground'>
             Update the settings here changes will be saved automatically.
           </p>
         </div>

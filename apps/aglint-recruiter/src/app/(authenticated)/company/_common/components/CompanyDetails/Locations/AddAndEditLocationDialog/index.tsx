@@ -48,7 +48,7 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
   const [initialValue, setInitialValue] =
     useState<(typeof office_locations)[number]>(null);
 
-  const hasHeadquarter = office_locations.some(
+  const hasHeadquarter = office_locations?.some(
     (location) => location.is_headquarter === true,
   );
 
@@ -92,7 +92,7 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
     setLoading(false);
   };
   useEffect(() => {
-    if (recruiter && office_locations.length) {
+    if (recruiter && office_locations?.length) {
       const initialValue = office_locations.find((item) => item.id === edit);
       setHeadQ(initialValue?.is_headquarter);
       const initialTimeZone = timeZone.find(

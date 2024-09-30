@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { getFullName } from '@aglint/shared-utils';
 import OptimisticWrapper from '@components/loadingWapper';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   Breadcrumb,
@@ -18,6 +19,7 @@ import {
 } from '@components/ui/tooltip';
 import { useQueryClient } from '@tanstack/react-query';
 import {
+  AlertCircle,
   ChartNoAxesGantt,
   Edit,
   PauseCircle,
@@ -123,7 +125,6 @@ const InterviewPlanPage = () => {
       <div className='container-lg mx-auto w-full px-4'>
         <div className='mb-6 flex items-center justify-between'>
           <div>
-            <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
             <BreadCrumbs />
           </div>
           {/* <Settings /> */}
@@ -137,7 +138,7 @@ const InterviewPlanPage = () => {
             <div className='flex flex-row justify-between'>
               <div className='flex flex-col gap-1'>
                 <h2 className='text-lg font-medium'>Interview Plan</h2>
-                <p className='text-sm text-gray-600'>
+                <p className='text-sm text-muted-foreground'>
                   Set up your interview plan here. Changes will be saved
                   automatically.
                 </p>
@@ -155,14 +156,18 @@ const InterviewPlanPage = () => {
                   />
                 ))
               ) : (
-                <p className='text-gray-600'>
-                  Create your interview stages for the job to ensure a
-                  structured evaluation process. Add different interview types
-                  such as &quot;Initial Screening&quot; or &quot;Technical
-                  Interview.&quot; Use this template each time you schedule
-                  interviews for candidates to maintain consistency and
-                  efficiency.
-                </p>
+                <Alert>
+                  <AlertCircle className='h-4 w-4' />
+                  <AlertTitle>Create Interview Stages</AlertTitle>
+                  <AlertDescription>
+                    Create your interview stages for the job to ensure a
+                    structured evaluation process. Add different interview types
+                    such as &quot;Initial Screening&quot; or &quot;Technical
+                    Interview.&quot; Use this template each time you schedule
+                    interviews for candidates to maintain consistency and
+                    efficiency.
+                  </AlertDescription>
+                </Alert>
               )}
 
               <AddStageComponent handleCreate={handleCreate} />

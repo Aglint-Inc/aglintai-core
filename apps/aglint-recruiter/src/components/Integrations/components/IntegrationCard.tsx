@@ -83,11 +83,10 @@ export function IntegrationCard({
             href={learnHowLink || ''}
             target='_blank'
             rel='noopener noreferrer'
+            className='flex items-center'
           >
-            <Button variant='link'>
               Learn How
               <ExternalLink className='ml-1 h-4 w-4' />
-            </Button>
           </Link>
         ) : (
           Boolean(secondaryText) && (

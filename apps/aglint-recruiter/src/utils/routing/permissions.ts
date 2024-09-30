@@ -112,7 +112,6 @@ const PERMISSIONS: Permissions = {
   '/api/setMembersWithRole': ['manage_users'],
   '/api/getRoleAndPermissions': ['view_roles'],
   '/api/setRoleAndPermission': ['manage_roles'],
-  '/api/getUserDetails': ['authorized'],
   '/api/invite_user': ['view_users'],
   '/api/invite_user/resend': ['view_users'],
   '/api/decryptApiKey': ['manage_company'],
