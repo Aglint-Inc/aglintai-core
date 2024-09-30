@@ -10,8 +10,9 @@ import {
   AlertDialogTitle,
 } from '@components/ui/alert-dialog';
 import { Label } from '@components/ui/label';
-import { Skeleton } from '@components/ui/skeleton';
 import { type ReactNode } from 'react';
+
+import { Loader } from '@/components/Common/Loader';
 
 import { ShowCode } from '../../Common/ShowCode';
 import { type PopUpReasonTypes } from '../types';
@@ -95,7 +96,7 @@ function ATSPopUps({
         <ShowCode>
           <ShowCode.When isTrue={isLoading}>
             <div className='flex flex-col items-center justify-center space-y-2'>
-              <Skeleton className='h-8 w-8' />
+              <Loader />
               <p className='text-sm'>
                 {reason?.startsWith('connect') ? 'Connecting' : 'Reconnecting'}{' '}
                 to {atsName}
@@ -126,7 +127,9 @@ function ATSPopUps({
               <AlertDialogTitle>
                 {reason?.includes('connect')
                   ? `Connect ${atsName}`
-                  : atsName || 'Unknown Action'}
+                  : atsName
+                    ? atsName.charAt(0).toUpperCase() + atsName.slice(1)
+                    : 'Unknown Action'}
               </AlertDialogTitle>
             </AlertDialogHeader>
             <AlertDialogDescription>
