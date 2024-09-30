@@ -1,4 +1,4 @@
-import { Briefcase } from 'lucide-react';
+import { BriefcaseBusiness } from 'lucide-react';
 
 import { useCreateRequestActions, useCreateRequestJobs } from '../../hooks';
 import { RequestBoundaries } from '../common/requestBoundaries';
@@ -18,7 +18,7 @@ const Content = () => {
   return (
     <RequestList
       onSelect={selectJob}
-      icon={<Briefcase className='mr-2 h-4 w-4' />}
+      icon={<BriefcaseBusiness className='mr-2 h-4 w-4' />}
       {...props}
     />
   );

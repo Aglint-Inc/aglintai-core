@@ -24,7 +24,7 @@ function CancelBanners({
           <UIAlert
             key={cancel.interview_session_cancel.id}
             color={'error'}
-            title={`${cancel?.recruiter_user?.user_id === recruiter_user?.user_id ? 'You have' : getFullName(cancel?.recruiter_user?.first_name ?? '', cancel?.recruiter_user?.last_name ?? '')} cancelled this schedule`}
+            title={`${cancel?.recruiter_user?.user_id === recruiter_user?.user_id ? 'You have' : getFullName(cancel?.recruiter_user?.first_name ?? '', cancel?.recruiter_user?.last_name ?? '')} canceled this schedule`}
             description={`Reason: ${cancel.interview_session_cancel.reason}`}
             notes={
               (
