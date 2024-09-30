@@ -13,7 +13,7 @@ const Layout = ({ children }: PropsWithChildren) => {
   } = useWorkflows();
   return (
     <WorkflowsStoreProvider>
-      <div className='container-lg mx-auto w-full px-12'>
+      <div className='container-lg mx-auto w-full px-4'>
         <header className='mb-4'>
           <div className='flex items-center justify-between'>
             <div>

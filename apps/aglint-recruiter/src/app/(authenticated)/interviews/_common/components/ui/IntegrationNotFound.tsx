@@ -15,7 +15,7 @@ export function IntegrationNotFound({
   recruiter_id: any;
 }) {
   return (
-    <div className='container-lg mx-auto w-full px-12'>
+    <div className='container-lg mx-auto w-full px-4'>
       <div className='flex h-full flex-col'>
         <div className='mx-auto flex h-full max-w-2xl flex-col gap-2.5'>
           {loading ? (

@@ -31,7 +31,7 @@ function SideNavbar() {
   const { isShowFeature } = useFlags();
 
   return (
-    <div className='flex w-16 flex-col items-center space-y-3 p-4'>
+    <div className='mt-4 flex flex-col items-center space-y-3 p-2'>
       {navList
         .filter((item) =>
           item.permission ? checkPermissions(item.permission) : true,

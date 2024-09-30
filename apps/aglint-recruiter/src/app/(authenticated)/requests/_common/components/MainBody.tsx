@@ -122,7 +122,7 @@ const MainBody = () => {
           />
 
           {isRequestListEmpty || showEmptyPage ? (
-            <div className='container-lg mx-auto w-full px-12 py-8'>
+            <div className='container-lg mx-auto w-full px-4 py-8'>
               <GlobalEmpty
                 header={'No requests found'}
                 description='Requests are created when a interview process starts for candidates.'

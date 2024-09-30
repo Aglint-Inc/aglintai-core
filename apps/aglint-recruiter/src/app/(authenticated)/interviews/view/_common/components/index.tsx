@@ -53,7 +53,7 @@ function SchedulingViewComp() {
 
   return (
     <>
-      <div className='container-lg mx-auto w-full px-12'>
+      <div className='container-lg mx-auto w-full px-4'>
         <div className=''>
           <div className='flex flex-col space-y-4'>
             <Breadcrumb>

@@ -38,7 +38,7 @@ const DefaultProfileImage = () => (
 const DefaultCompanyLogo = () => (
   <Image
     src={'/images/default/company.svg'}
-    alt={'Greenhouse'}
+    alt={'Brand'}
     width={20}
     height={20}
   />
@@ -57,7 +57,7 @@ export default function AppLayout({ children }) {
   return (
     <>
       <OnboardPending />
-      <div className='flex w-full flex-col'>
+      <div className='flex w-full flex-col bg-gray-50'>
         {isHorizontalNav && (
           <nav className='sticky top-0 z-50 flex w-full items-center justify-between border-b bg-white p-2'>
             <div className='flex items-center space-x-4'>
@@ -117,23 +117,21 @@ export default function AppLayout({ children }) {
             </div>
           </nav>
         )}
-        <div className='flex flex-1'>
-          {!isHorizontalNav && (
-            <nav className='fixed z-20 flex h-[100vh] w-16 flex-col justify-between border-r bg-white'>
-              <div className='flex flex-grow flex-col items-center py-3'>
-                <Button variant='link' className='mt-4' asChild>
-                  <Link href='/jobs'>
-                    <Avatar className='h-[32px] w-[32px] cursor-pointer rounded-[4px]'>
-                      <AvatarImage src={logo || ''} alt={recruiter?.name} />
-                      <AvatarFallback className='rounded-[4px]'>
-                        <DefaultCompanyLogo />
-                      </AvatarFallback>
-                    </Avatar>
-                  </Link>
-                </Button>
-                <SideNavbar />
-              </div>
-              <div className='mb-3 flex flex-col items-center'>
+        {!isHorizontalNav && (
+          <>
+            <div className='flex w-full flex-row items-center justify-between'>
+              <Button variant='link' className='mt-2 p-2' asChild>
+                <Link href='/jobs'>
+                  <Avatar>
+                    <AvatarImage src={logo || ''} alt={recruiter?.name} />
+                    <AvatarFallback>
+                      <DefaultCompanyLogo />
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className='ml-1'>{recruiter?.name}</span>
+                </Link>
+              </Button>
+              <div className='mr-2 flex flex-row items-center'>
                 <Tooltip>
                   <TooltipTrigger>
                     <Button variant='link' asChild>
@@ -178,22 +176,21 @@ export default function AppLayout({ children }) {
                   </TooltipContent>
                 </Tooltip>
               </div>
-            </nav>
-          )}
-          <div
-            className={`flex w-full overflow-auto bg-gray-50 ${
-              isHorizontalNav ? '' : 'ml-16'
-            }`}
-          >
-            <div className='w-full py-8'>
-              {checkPermissions(PERMISSIONS[String(router.pathName)]) ? (
-                children
-              ) : (
-                <NotFound />
-              )}
             </div>
-          </div>
-        </div>
+            <div className='flex w-full flex-row'>
+              <nav className='h-[calc(100vh-64px) flex flex-col justify-between'>
+                <SideNavbar />
+              </nav>
+              <div className='mx-2 mt-2 w-full rounded-lg border bg-white py-4'>
+                {checkPermissions(PERMISSIONS[String(router.pathName)]) ? (
+                  children
+                ) : (
+                  <NotFound />
+                )}
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </>
   );
