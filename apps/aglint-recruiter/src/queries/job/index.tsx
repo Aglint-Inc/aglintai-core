@@ -32,19 +32,19 @@ export const jobQueries = {
     queryOptions({
       queryKey: [...jobsQueryKeys.jobs().queryKey, { id }],
       enabled,
-      initialData,
+      initialData: initialData!,
       refetchOnMount,
       queryFn: async () => {
         const job = await readJob(id);
         const { queryKey } = jobsQueryKeys.jobs();
-        const jobs = queryClient.getQueryData<Job[]>(queryKey);
-        queryClient.setQueryData<Job[]>(
+        const jobs = queryClient!.getQueryData<Job[]>(queryKey)!;
+        queryClient!.setQueryData<Job[]>(
           queryKey,
           jobs.reduce((acc, curr) => {
             if (curr.id === id) acc.push(job);
             else acc.push(curr);
             return acc;
-          }, []),
+          }, [] as Job[]),
         );
         return job;
       },
@@ -73,10 +73,10 @@ export const jobQueries = {
     });
   },
   refresh: async ({ id, queryClient }: Pollers) => {
-    await queryClient.invalidateQueries({
+    await queryClient!.invalidateQueries({
       predicate: (query) =>
         query.queryKey.includes(jobKey) &&
-        query.queryKey.find((key) => (key as any)?.id === id) &&
+        !!query.queryKey.find((key) => (key as any)?.id === id) &&
         !query.queryKey.includes(noPollingKey),
     });
   },
@@ -102,7 +102,7 @@ export const useInvalidateJobQueries = () => {
     (id): QueryFilters['predicate'] =>
       (query) =>
         query.queryKey.includes(jobKey) &&
-        query.queryKey.find((key) => (key as any)?.id === id) &&
+        Boolean(query.queryKey.find((key) => (key as any)?.id === id)) &&
         !query.queryKey.includes(noPollingKey),
     [jobKey, noPollingKey],
   );
@@ -116,7 +116,7 @@ export const useInvalidateJobQueries = () => {
         type: 'inactive',
         predicate: predicateFn(id),
       }),
-      utils.jobs.job.applications.read.invalidate({ job_id: id }),
+      utils.jobs.job.applications.read.invalidate({ job_id: id! }),
     ]);
 
   return { revalidateJobQueries };
@@ -139,7 +139,7 @@ export const readJob = async (id: string) =>
       .eq('id', id)
       .throwOnError()
       .single()
-  ).data;
+  ).data!;
 
 type ApplicationsAllQueryPrerequistes = {
   recruiter_id: DatabaseTable['recruiter']['id'];
