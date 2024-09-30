@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog';
-import { Briefcase } from 'lucide-react';
+import { BriefcaseBusiness } from 'lucide-react';
 import { useState } from 'react';
 
 import { NotFound } from '@/components/Common/404';
@@ -73,7 +73,7 @@ const ConnectedJobs = () => {
   if (count === 0)
     return (
       <div className='flex flex-col items-center justify-center p-6 text-center'>
-        <Briefcase size={30} className='mb-4 text-gray-400' />
+        <BriefcaseBusiness size={30} className='mb-4 text-gray-400' />
         <UITypography variant='p' type='small'>
           No jobs connected
         </UITypography>

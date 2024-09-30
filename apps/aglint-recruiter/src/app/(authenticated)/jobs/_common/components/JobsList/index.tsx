@@ -14,7 +14,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { AlertCircle, Briefcase, Clock, MapPin, Pin } from 'lucide-react';
+import {
+  AlertCircle,
+  BriefcaseBusiness,
+  Clock,
+  MapPin,
+  Pin,
+  Search,
+} from 'lucide-react';
 import Image from 'next/image';
 import React from 'react';
 
@@ -40,8 +47,10 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
   if (jobs?.length === 0) {
     return (
       <GlobalEmpty
-        icon={<Briefcase strokeWidth={1} className='h-10 w-10' />}
-        header='No jobs found'
+        icon={
+          <Search strokeWidth={2} className='h-6 w-6 text-muted-foreground' />
+        }
+        description='No matching jobs found for this search query.'
       />
     );
   }
@@ -79,7 +88,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
               <div className='flex flex-col'>
                 <div className='flex items-center space-x-2'>
                   {getAtsBadge(job.posted_by) || (
-                    <Briefcase className='h-5 w-5 px-1 text-gray-400' />
+                    <BriefcaseBusiness className='h-5 w-5 px-1 text-gray-400' />
                   )}
                   <span>{capitalizeSentence(job?.job_title ?? '---')}</span>
                 </div>

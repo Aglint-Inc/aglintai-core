@@ -1,4 +1,4 @@
-import { Briefcase } from 'lucide-react';
+import { BriefcaseBusiness } from 'lucide-react';
 
 import {
   useCreateRequestActions,
@@ -21,7 +21,7 @@ const Content = () => {
   return (
     <RequestList
       onSelect={selectAssignee}
-      icon={<Briefcase className='mr-2 h-4 w-4' />}
+      icon={<BriefcaseBusiness className='mr-2 h-4 w-4' />}
       {...props}
     />
   );
