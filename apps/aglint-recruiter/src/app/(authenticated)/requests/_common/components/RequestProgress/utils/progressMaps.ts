@@ -21,7 +21,7 @@ export const apiTargetToEvents: ApiTargetToEvents = {
   onRequestCancel_agent_cancelEvents: 'CANCEL_INTERVIEW_MEETINGS',
   onRequestCancel_slack_interviewersOrganizer:
     'MEETING_CANCEL_INFORM_INTERVIEWER_ORGANIZER',
-  onReceivingAvailReq_slack_suggestSlots: 'SLOT_SUGGESTION',
+  onReceivingAvailReq_agent_suggestSlots: 'SLOT_SUGGESTION',
 };
 
 type GroupeTriggerEvent =

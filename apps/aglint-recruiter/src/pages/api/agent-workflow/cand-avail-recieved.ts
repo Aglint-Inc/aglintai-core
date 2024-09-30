@@ -93,7 +93,7 @@ const candAvailRecieved = async (req_body: BodyParams) => {
     reqProgressLogger,
   );
 
-  if (target_api === 'onReceivingAvailReq_slack_suggestSlots') {
+  if (target_api === 'onReceivingAvailReq_agent_suggestSlots') {
     await executeWorkflowAction(
       slackSuggestSlots,
       {

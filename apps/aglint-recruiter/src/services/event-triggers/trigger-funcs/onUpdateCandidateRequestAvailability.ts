@@ -69,7 +69,7 @@ const triggerActions = async (
 
   try {
     const allowed_end_points: DatabaseEnums['email_slack_types'][] = [
-      'onReceivingAvailReq_slack_suggestSlots',
+      'onReceivingAvailReq_agent_suggestSlots',
       'onReceivingAvailReq_agent_sendSelfScheduleRequest',
     ];
 

@@ -7,31 +7,30 @@ import { getUserIdByEmail } from '../../../../utils/slack/utils';
 
 const func = async ({
   plans,
-  request_assignee_id,
+  request_id,
 }: z.infer<typeof TargetApiSchema.onReceivingAvailReq_slack_suggestSlots>) => {
   const slackWeb = getSlackWeb();
   const supabaseAdmin = getSupabaseServer();
 
   const organizer = (
     await supabaseAdmin
-      .from('recruiter_user')
-      .select()
-      .eq('user_id', request_assignee_id)
+      .from('request')
+      .select('*, recruiter_user(*)')
+      .eq('id', request_id)
       .single()
       .throwOnError()
   ).data;
 
-  const slack_user_id = await getUserIdByEmail(organizer.email);
+  const slack_user_id = await getUserIdByEmail(organizer.recruiter_user.email);
   await slackWeb.chat.postMessage({
     channel: slack_user_id,
     metadata: {
       event_type: 'onReceivingAvailReq_slack_suggestSlots',
       event_payload: {
-        // name: 'shadow_complete_trainee_confirmation',
-        // session_relation_id: trainee.session_relation_id,
+        interview_plans: plans,
+        request_id,
       },
     },
-
     blocks: [
       {
         type: 'section',

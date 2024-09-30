@@ -6596,7 +6596,7 @@ export type Database = {
         | "onRequestSchedule_emailAgent_getCandidateAvailability"
         | "onRequestSchedule_emailLink_getCandidateAvailability"
         | "onReceivingAvailReq_agent_sendSelfScheduleRequest"
-        | "onReceivingAvailReq_slack_suggestSlots"
+        | "onReceivingAvailReq_agent_suggestSlots"
         | "onRequestSchedule_emailLink_sendSelfSchedulingLink"
         | "onRequestSchedule_phoneAgent_selfSchedule"
         | "onRequestSchedule_emailAgent_selfSchedule"

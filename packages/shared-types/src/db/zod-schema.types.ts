@@ -163,7 +163,7 @@ export const emailSlackTypesSchema = z.union([
   z.literal("onRequestSchedule_emailAgent_getCandidateAvailability"),
   z.literal("onRequestSchedule_emailLink_getCandidateAvailability"),
   z.literal("onReceivingAvailReq_agent_sendSelfScheduleRequest"),
-  z.literal("onReceivingAvailReq_slack_suggestSlots"),
+  z.literal("onReceivingAvailReq_agent_suggestSlots"),
   z.literal("onRequestSchedule_emailLink_sendSelfSchedulingLink"),
   z.literal("onRequestSchedule_phoneAgent_selfSchedule"),
   z.literal("onRequestSchedule_emailAgent_selfSchedule"),
