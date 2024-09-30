@@ -6,6 +6,7 @@ import { Toaster } from '@components/ui/toaster';
 import React, { type PropsWithChildren } from 'react';
 
 import { TRPCReactProvider } from '@/trpc/client';
+import { HydrateClient } from '@/trpc/server';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -29,7 +30,9 @@ const Layout = ({ children }: PropsWithChildren) => {
             disableTransitionOnChange
           >
             <div className='flex h-screen w-full'>
-              <TRPCReactProvider>{children}</TRPCReactProvider>
+              <TRPCReactProvider>
+                <HydrateClient>{children}</HydrateClient>
+              </TRPCReactProvider>
             </div>
             <Toaster />
           </ThemeProvider>

@@ -1,18 +1,25 @@
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog'; // Import AlertDialog components
 import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
 import { Input } from '@components/ui/input';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { capitalize } from 'lodash';
-import { Loader2 } from 'lucide-react';
-import Image from 'next/image';
+import { ExternalLink, Eye, EyeOff, Loader2 } from 'lucide-react';
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
 import { useAllIntegrations } from '@/authenticated/hooks';
 import axios from '@/client/axios';
 import { useTenant } from '@/company/hooks';
-import UIDialog from '@/components/Common/UIDialog';
+import { Loader } from '@/components/Common/Loader';
+import { UIBadge } from '@/components/Common/UIBadge';
 import UITypography from '@/components/Common/UITypography';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { STATE_LEVER_DIALOG } from '@/jobs/constants';
@@ -45,6 +52,7 @@ export default function LeverModalComp() {
   const [error, setError] = useState<boolean>(false);
   const apiRef = useRef(null);
   const { data: integrations } = useAllIntegrations();
+  const [showApiKey, setShowApiKey] = useState(false);
 
   useEffect(() => {
     if (jobs.status === 'success' && integrations?.lever_key) {
@@ -101,16 +109,27 @@ export default function LeverModalComp() {
     }
   };
 
-  function getLeverStatusColorClass(state: string): string {
+  function getLeverStatusColor(
+    state: string,
+  ):
+    | 'default'
+    | 'secondary'
+    | 'accent'
+    | 'info'
+    | 'success'
+    | 'warning'
+    | 'error'
+    | 'purple'
+    | 'neutral' {
     switch (state.toLowerCase()) {
       case 'published':
-        return 'text-green-500';
+        return 'success';
       case 'internal':
-        return 'text-blue-500';
+        return 'info';
       case 'closed':
-        return 'text-red-500';
+        return 'error';
       default:
-        return 'text-gray-500';
+        return 'neutral';
     }
   }
 
@@ -159,165 +178,200 @@ export default function LeverModalComp() {
   };
 
   return (
-    <UIDialog
-      open={integration.lever.open}
-      onClose={resetIntegrations}
-      slotButtons={<></>}
-      title={
-        <Image
-          src={'/images/ats/lever.png'}
-          width={80}
-          height={20}
-          alt='Lever logo'
-        />
-      }
-    >
-      <div className='flex flex-col space-y-4'>
-        {integration.lever.step === STATE_LEVER_DIALOG.API ||
-        integration.lever.step === STATE_LEVER_DIALOG.ERROR ? (
-          <div className='space-y-4'>
-            <Input
-              ref={apiRef}
-              type='password'
-              placeholder='API key'
-              className={error ? 'border-red-500' : ''}
-            />
-            {error && (
-              <p className='text-sm text-red-500'>Please enter an API key</p>
-            )}
-            <Button
-              variant='default'
-              disabled={loading}
-              onClick={submitApiKey}
-              className='w-full'
-            >
-              {loading ? 'Submitting...' : 'Submit'}
-            </Button>
-            {integration.lever.step === STATE_LEVER_DIALOG.ERROR && (
-              <p className='text-sm text-red-500'>
-                Invalid API key. Please try again.
-              </p>
-            )}
-            <Button
-              variant='outline'
-              onClick={() =>
-                window.open(
-                  'https://help.lever.co/hc/en-us/articles/360042364412-Generating-and-using-API-credentials',
-                  '_blank',
-                )
-              }
-              className='w-full'
-            >
-              Support
-            </Button>
-          </div>
-        ) : integration.lever.step === STATE_LEVER_DIALOG.FETCHING ? (
-          <div className='flex flex-col items-center space-y-4'>
-            <Image
-              src={'/images/ats/leverbig.svg'}
-              width={50}
-              height={50}
-              alt='Lever logo'
-            />
-            <p className='mb-2 text-sm text-gray-600'>
-              Fetching data from Lever...
-            </p>
-            <div className='flex h-24 w-24 items-center justify-center'>
-              <Loader2 className='h-12 w-12 animate-spin text-gray-500' />
-            </div>
-          </div>
-        ) : integration.lever.step === STATE_LEVER_DIALOG.LISTJOBS ? (
-          <div className='flex h-full flex-col space-y-4 overflow-hidden'>
-            <Tabs value={leverFilter} onValueChange={setLeverFilter}>
-              <TabsList className='grid w-full grid-cols-4'>
-                <TabsTrigger value='all'>All</TabsTrigger>
-                <TabsTrigger value='published'>Published</TabsTrigger>
-                <TabsTrigger value='internal'>Internal</TabsTrigger>
-                <TabsTrigger value='closed'>Closed</TabsTrigger>
-              </TabsList>
-            </Tabs>
-            <div className='space-y-2'>
-              {!initialFetch ? (
-                leverPostings.filter(
-                  (job) => leverFilter === 'all' || job.state === leverFilter,
-                ).length > 0 ? (
-                  <>
-                    <UITypography type='small' variant='p'>
-                      Select a job to import
-                    </UITypography>
-                    <ScrollArea className='h-[400px]'>
-                      {leverPostings
-                        .filter(
-                          (job) =>
-                            leverFilter === 'all' || job.state === leverFilter,
-                        )
-                        .map((post) => (
-                          <Card
-                            key={post.id}
-                            onClick={() => setSelectedLeverPostings(post)}
-                            className='cursor-pointer hover:bg-gray-50'
-                          >
-                            <CardContent className='flex items-center justify-between p-4'>
-                              <div>
-                                <p className='font-medium'>{post.text}</p>
-                                <p className='text-sm text-gray-500'>
-                                  {post.categories.location}
-                                </p>
-                                <p
-                                  className={`text-sm ${getLeverStatusColorClass(post.state)}`}
-                                >
-                                  {capitalize(post.state)}
-                                </p>
-                              </div>
-
-                              <div className='flex items-center'>
-                                <input
-                                  type='radio'
-                                  name='option'
-                                  id='option1'
-                                  className='h-4 w-4 text-red-600 accent-neutral-700 focus:accent-neutral-600'
-                                  checked={
-                                    selectedLeverPostings?.id === post.id
-                                  }
-                                />
-                              </div>
-                            </CardContent>
-                          </Card>
-                        ))}
-                    </ScrollArea>
-                  </>
-                ) : (
-                  <NoAtsResult />
-                )
-              ) : (
+    <AlertDialog open={integration.lever.open} onOpenChange={resetIntegrations}>
+      <AlertDialogContent>
+        <AlertDialogTitle>Lever</AlertDialogTitle>
+        <AlertDialogDescription>
+          <div className='flex flex-col'>
+            {integration.lever.step === STATE_LEVER_DIALOG.API ||
+            integration.lever.step === STATE_LEVER_DIALOG.ERROR ? (
+              <div className='space-y-4'>
+                <div className='relative'>
+                  <Input
+                    ref={apiRef}
+                    type={showApiKey ? 'text' : 'password'}
+                    placeholder='API key'
+                    className={error ? 'border-red-500 pr-10' : 'pr-10'}
+                  />
+                  <Button
+                    variant='ghost'
+                    onClick={() => setShowApiKey(!showApiKey)}
+                    className='absolute inset-y-0 right-0 flex items-center pr-3'
+                  >
+                    {showApiKey ? (
+                      <EyeOff className='h-5 w-5 text-gray-400' />
+                    ) : (
+                      <Eye className='h-5 w-5 text-gray-400' />
+                    )}
+                  </Button>
+                </div>
+                {integration.lever.step === STATE_LEVER_DIALOG.ERROR && (
+                  <p className='text-sm text-red-500'>
+                    Invalid API key. Please try again.
+                  </p>
+                )}
+                {error && (
+                  <p className='text-sm text-red-500'>
+                    Please enter an API key
+                  </p>
+                )}
+                <p className='text-sm text-gray-600'>
+                  Your connection details are encrypted and secure with our
+                  platform.
+                </p>
+              </div>
+            ) : integration.lever.step === STATE_LEVER_DIALOG.FETCHING ? (
+              <div className='flex flex-col items-center space-y-4'>
+                <p className='mb-2 text-sm text-gray-600'>
+                  <Loader />
+                  Fetching data from Lever...
+                </p>
+              </div>
+            ) : integration.lever.step === STATE_LEVER_DIALOG.LISTJOBS ? (
+              <div className='flex h-full flex-col space-y-4 overflow-hidden'>
+                <Tabs value={leverFilter} onValueChange={setLeverFilter}>
+                  <TabsList className='grid w-full grid-cols-4'>
+                    <TabsTrigger value='all'>All</TabsTrigger>
+                    <TabsTrigger value='published'>Published</TabsTrigger>
+                    <TabsTrigger value='internal'>Internal</TabsTrigger>
+                    <TabsTrigger value='closed'>Closed</TabsTrigger>
+                  </TabsList>
+                </Tabs>
                 <>
-                  <Skeleton className='mb-2 h-16 w-full' />
-                  <Skeleton className='mb-2 h-16 w-full' />
-                  <Skeleton className='mb-2 h-16 w-full' />
-                  <Skeleton className='mb-2 h-16 w-full' />
-                  <Skeleton className='mb-2 h-16 w-full' />
-                  <Skeleton className='mb-2 h-16 w-full' />
+                  {!initialFetch ? (
+                    leverPostings.filter(
+                      (job) =>
+                        leverFilter === 'all' || job.state === leverFilter,
+                    ).length > 0 ? (
+                      <>
+                        <UITypography type='small' variant='p'>
+                          Select a job to import. You can import only one job at
+                          a time.
+                        </UITypography>
+                        <ScrollArea className='h-[400px]'>
+                          {leverPostings
+                            .filter(
+                              (job) =>
+                                leverFilter === 'all' ||
+                                job.state === leverFilter,
+                            )
+                            .map((post) => (
+                              <Card
+                                key={post.id}
+                                onClick={() => setSelectedLeverPostings(post)}
+                                className='my-2 cursor-pointer hover:bg-gray-50'
+                              >
+                                <CardContent className='flex items-center justify-between p-4'>
+                                  <div>
+                                    <p className='font-medium'>{post.text}</p>
+                                    <p className='text-sm text-gray-500'>
+                                      {post.categories.location}
+                                    </p>
+                                    <UIBadge
+                                      textBadge={
+                                        post.state.charAt(0).toUpperCase() +
+                                        post.state.slice(1)
+                                      }
+                                      color={getLeverStatusColor(post.state)}
+                                      size='sm'
+                                    />
+                                  </div>
+
+                                  <div className='flex items-center'>
+                                    <input
+                                      type='radio'
+                                      name='option'
+                                      id='option1'
+                                      className='h-4 w-4 text-red-600 accent-neutral-700 focus:accent-neutral-600'
+                                      checked={
+                                        selectedLeverPostings?.id === post.id
+                                      }
+                                    />
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            ))}
+                        </ScrollArea>
+                      </>
+                    ) : (
+                      <NoAtsResult />
+                    )
+                  ) : (
+                    <>
+                      <Skeleton className='mb-2 h-16 w-full' />
+                      <Skeleton className='mb-2 h-16 w-full' />
+                      <Skeleton className='mb-2 h-16 w-full' />
+                      <Skeleton className='mb-2 h-16 w-full' />
+                      <Skeleton className='mb-2 h-16 w-full' />
+                      <Skeleton className='mb-2 h-16 w-full' />
+                    </>
+                  )}
+                </>
+                <Button
+                  variant='default'
+                  disabled={!selectedLeverPostings}
+                  onClick={() => {
+                    importLever();
+                  }}
+                  className='w-full'
+                >
+                  Import
+                </Button>
+              </div>
+            ) : integration.lever.step === STATE_LEVER_DIALOG.IMPORTING ? (
+              <div className='flex h-[508px] flex-col items-center justify-center space-y-4'>
+                <Loader2 className='h-8 w-8 animate-spin text-gray-500' />
+                <p className='text-gray-600'>Importing from Lever</p>
+              </div>
+            ) : null}
+          </div>
+        </AlertDialogDescription>
+        <AlertDialogFooter>
+          {integrations?.lever_key ? ( // Check if API key is present
+            <div className='flex flex-row space-x-2'>
+              <Button variant='default' onClick={resetIntegrations}>
+                Cancel
+              </Button>
+              <Button
+                variant='outline'
+                onClick={importLever}
+                disabled={!selectedLeverPostings}
+              >
+                Import
+              </Button>
+            </div>
+          ) : (
+            <div className='mt-4 flex w-full flex-row justify-between'>
+              {loading ? null : ( // Hide the link and button if loading
+                <>
+                  <Link
+                    href='https://help.lever.co/hc/en-us/articles/360042364412-Generating-and-using-API-credentials'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='flex items-center text-sm text-muted-foreground'
+                  >
+                    How to get my API key
+                    <ExternalLink
+                      size={16}
+                      className='ml-2 text-muted-foreground'
+                    />
+                  </Link>
+                  <Button disabled={loading} onClick={submitApiKey}>
+                    {loading ? (
+                      <>
+                        <Loader />
+                        Submitting...
+                      </>
+                    ) : (
+                      'Submit'
+                    )}
+                  </Button>
                 </>
               )}
             </div>
-            <Button
-              variant='default'
-              disabled={!selectedLeverPostings}
-              onClick={() => {
-                importLever();
-              }}
-              className='w-full'
-            >
-              Import
-            </Button>
-          </div>
-        ) : integration.lever.step === STATE_LEVER_DIALOG.IMPORTING ? (
-          <div className='flex h-[508px] flex-col items-center justify-center space-y-4'>
-            <Loader2 className='h-8 w-8 animate-spin text-gray-500' />
-            <p className='text-gray-600'>Importing from Lever</p>
-          </div>
-        ) : null}
-      </div>
-    </UIDialog>
+          )}
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

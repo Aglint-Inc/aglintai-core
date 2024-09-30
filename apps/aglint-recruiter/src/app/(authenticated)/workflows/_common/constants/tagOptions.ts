@@ -31,7 +31,7 @@ const TAG_MAP: WorkflowTagOptionsType = {
   sendAvailReqReminder: 'Availiability Request Reminder',
   email: 'Email',
   slack: 'Slack',
-  system: 'Aglint AI',
+  company: 'Aglint AI',
 };
 
 export const TAG_OPTIONS = SafeObject.entries(TAG_MAP).reduce(
@@ -56,7 +56,7 @@ export const TAG_OPTIONS = SafeObject.entries(TAG_MAP).reduce(
           payload['icon'] = getWorkflowTagIcon('slack');
         }
         break;
-      case 'system':
+      case 'company':
         {
           payload['color'] = 'accent';
           payload['icon'] = getWorkflowTagIcon('end_point');
