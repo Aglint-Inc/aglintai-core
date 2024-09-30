@@ -18,7 +18,7 @@ export const KeyMatrics = ({
     completedHour == 0 && completedCount == 0 && declineCount == 0;
   return (
     <>
-      <UISectionCard title='Key Metrics'>
+      <UISectionCard title='Key Metrics' type='compact'>
         {isEmpty ? (
           <GlobalEmpty
             icon={

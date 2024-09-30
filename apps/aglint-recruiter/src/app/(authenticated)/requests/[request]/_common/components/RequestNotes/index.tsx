@@ -3,10 +3,7 @@ import { Card } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import { Textarea } from '@components/ui/textarea';
 import { cn } from '@lib/utils';
-import {
-  useReadNotes,
-  useUpdateRequestNote,
-} from '@requests/hooks/useRequestNotes';
+import { useReadNotes, useUpdateRequestNote } from '@requests/hooks';
 import debounce from 'lodash/debounce';
 import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
