@@ -102,7 +102,7 @@ export default function Main() {
       <div className='mt-6 flex flex-row justify-end space-x-1'>
         <UIButton
           disabled={!isWorkflowsChanged}
-          variant='destructive'
+          variant='secondary'
           onClick={handleReset}
         >
           Reset
