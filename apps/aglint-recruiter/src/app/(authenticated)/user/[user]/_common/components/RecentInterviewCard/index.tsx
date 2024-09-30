@@ -24,8 +24,13 @@ export const RecentInterviews = ({
           </div>
         ) : (
           <GlobalEmpty
-            icon={<Calendar strokeWidth={2} className='h-6 w-6' />}
-            description='No recent interviews'
+            icon={
+              <Calendar
+                strokeWidth={2}
+                className='h-6 w-6 text-muted-foreground'
+              />
+            }
+            header='No recent interviews'
           />
         )}
       </UISectionCard>
