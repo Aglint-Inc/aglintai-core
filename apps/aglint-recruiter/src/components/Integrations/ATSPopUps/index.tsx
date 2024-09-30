@@ -34,7 +34,7 @@ function ATSPopUps({
   inputValue: string;
 }) {
   const { toast } = useToast();
-  const isDisconnect = reason?.startsWith('disconnect_');
+  // const isDisconnect = reason?.startsWith('disconnect_');
   const atsName = reason?.split('_')[1];
 
   const handleAction = async () => {
@@ -43,52 +43,12 @@ function ATSPopUps({
     if (result) {
       toast({
         title: 'Success',
-        description: isDisconnect
-          ? `Disconnected from ${atsName} successfully`
-          : 'Action completed successfully',
+        description: 'Action completed successfully',
         variant: 'default',
       });
     }
-    //  else {
-    //   throw new Error('Action failed');
-    // }
     close();
-    // } catch (error) {
-    //   toast({
-    //     title: 'Error',
-    //     description: 'An error occurred. Please try again.',
-    //     variant: 'destructive',
-    //   });
-    // } finally {
-    //   close();
-    // }
   };
-
-  if (isDisconnect) {
-    return (
-      <AlertDialog open={isOpen} onOpenChange={close}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Disconnect {atsName}</AlertDialogTitle>
-          </AlertDialogHeader>
-          <AlertDialogDescription>
-            By clicking <strong>Disconnect</strong>, {atsName} will be
-            disconnected from Aglint and will no longer be accessible in this
-            application. You can reconnect again on the Integrations page.
-          </AlertDialogDescription>
-          <AlertDialogFooter>
-            <AlertDialogCancel onClick={close}>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleAction}
-              className='bg-red-600 font-bold hover:bg-red-700'
-            >
-              Disconnect
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    );
-  }
 
   return (
     <AlertDialog open={isOpen} onOpenChange={close}>
@@ -146,8 +106,8 @@ function ATSPopUps({
                 </ShowCode.Else>
               </div>
             </AlertDialogDescription>
-            <AlertDialogFooter>
-              <AlertDialogCancel onClick={close}>Cancel</AlertDialogCancel>
+            <AlertDialogFooter className='-mx-6 -mb-6 mt-6 rounded-b-lg bg-secondary p-4'>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction onClick={handleAction}>
                 {reason?.startsWith('connect') ? 'Connect' : 'Update'}
               </AlertDialogAction>

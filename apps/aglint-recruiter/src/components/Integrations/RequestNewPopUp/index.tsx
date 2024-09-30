@@ -107,7 +107,7 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
                 />
               </div>
             </div>
-            <DialogFooter>
+            <DialogFooter className='-mx-6 -mb-6 mt-6 rounded-b-lg bg-secondary p-4'>
               <Button
                 variant='outline'
                 onClick={() => {
