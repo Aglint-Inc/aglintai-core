@@ -21,8 +21,13 @@ export const Feedback = ({
             ))
           ) : (
             <GlobalEmpty
-              icon={<MessageSquareOff strokeWidth={2} className='h-6 w-6' />}
-              description='No feedback available'
+              icon={
+                <MessageSquareOff
+                  strokeWidth={2}
+                  className='h-6 w-6 text-muted-foreground'
+                />
+              }
+              header='No feedback available'
             />
           )}
         </div>

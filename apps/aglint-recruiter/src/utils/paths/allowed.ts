@@ -168,6 +168,7 @@ export const allowedPaths = new Set<t>([
   '/api/request/execute-workflow',
   '/auth/callback',
   '/auth/redirect',
+  '/api/automation/reset-job-workflows',
   ...cronPaths,
 ] as t[]);
 

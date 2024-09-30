@@ -24,7 +24,7 @@ function Header({
   setView: (value: 'list' | 'kanban') => void;
 }) {
   return (
-    <div className='container-lg mx-auto w-full px-12'>
+    <div className='container-lg mx-auto w-full px-4'>
       <div className='flex items-end justify-between'>
         <div className='flex flex-col gap-1'>
           <h1 className='text-lg font-semibold'>

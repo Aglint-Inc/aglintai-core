@@ -98,7 +98,7 @@ const Dashboard = () => {
   const score_matches = getMatches(job.application_match, Number(total) || 0);
 
   return (
-    <div className='container-lg mx-auto w-full px-12 pb-5'>
+    <div className='container-lg mx-auto w-full px-4 pb-5'>
       <div className='mb-6 flex items-center justify-between'>
         <div>
           <h1 className='mb-2 text-2xl font-bold'>Job Analytics</h1>

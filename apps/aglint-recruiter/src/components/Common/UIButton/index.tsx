@@ -1,6 +1,6 @@
 import { Button, type ButtonProps } from '@components/ui/button';
 import { cn } from '@lib/utils';
-import { Loader2 } from 'lucide-react';
+import { Loader } from 'lucide-react';
 import React from 'react';
 
 interface ExtendedButtonProps extends ButtonProps {
@@ -75,14 +75,14 @@ const UIButton = React.forwardRef<HTMLButtonElement, ExtendedButtonProps>(
       >
         {icon ? (
           isLoading ? (
-            <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+            <Loader className='mr-2 h-4 w-4 animate-spin' />
           ) : (
             IconWithClass
           )
         ) : (
           <>
             {isLoading ? (
-              <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+              <Loader className='mr-2 h-4 w-4 animate-spin' />
             ) : (
               <>
                 {LeftIconWithClass && (

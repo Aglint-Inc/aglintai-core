@@ -1,7 +1,9 @@
 import { Button } from '@components/ui/button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog';
@@ -47,10 +49,12 @@ function SchedulingPopUps({
           </DialogTitle>
         </DialogHeader>
         {popUpBody}
-        <div className='mt-6 flex justify-end space-x-2'>
-          <Button variant='outline' onClick={close}>
-            Cancel
-          </Button>
+        <DialogFooter className='-mx-6 -mb-6 mt-6 rounded-b-lg bg-secondary p-4'>
+          <DialogClose asChild>
+            <Button variant='outline' onClick={close}>
+              Cancel
+            </Button>
+          </DialogClose>
           <Button onClick={action}>
             {reason === 'connect_google_workSpace' || reason === 'connect_zoom'
               ? 'Connect'
@@ -58,7 +62,7 @@ function SchedulingPopUps({
                   reason === 'update_zoom') &&
                 'Update'}
           </Button>
-        </div>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

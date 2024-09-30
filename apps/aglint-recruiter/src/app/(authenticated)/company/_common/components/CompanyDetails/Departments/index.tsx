@@ -2,11 +2,12 @@
 
 import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
-import { Plus } from 'lucide-react';
+import { BookOpen, Plus } from 'lucide-react';
 import * as React from 'react';
 
 import { useTenant } from '@/company/hooks';
 import AddChip from '@/components/Common/AddChip';
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import UISectionCard from '@/components/Common/UISectionCard';
 import { manageDepartments } from '@/context/AuthContext/utils';
 import { useAllDepartments } from '@/queries/departments';
@@ -48,16 +49,16 @@ export default function Departments() {
           description: '',
         });
       });
-      refetchDepartments();
+      await refetchDepartments();
     }
   };
-  let initialDepartments = [];
+  const initialDepartments = [];
 
-  if (localStorage?.getItem('departments')) {
-    if (Array.isArray(JSON.parse(localStorage?.getItem('departments')))) {
-      initialDepartments = JSON.parse(localStorage?.getItem('departments'));
-    }
-  }
+  // if (localStorage?.getItem('departments')) {
+  //   if (Array.isArray(JSON.parse(localStorage?.getItem('departments')))) {
+  //     initialDepartments = JSON.parse(localStorage?.getItem('departments'));
+  //   }
+  // }
 
   const current_departments = departments.map((d) =>
     d.name.replace(/\s+/g, '').toLowerCase(),
@@ -91,27 +92,63 @@ export default function Departments() {
         description='Catalog your departments to sort and filter data efficiently,
               aiding in job posting and scheduling.'
       >
-        <AddChip
-          options={departments.map((item) => ({
-            name: item.name,
-            id: String(item.id),
-          }))}
-          suggestionsList={suggestionsList.map((item) => ({
-            name: item,
-            id: String(item),
-          }))}
-          handleAddDepartment={handleAddDepartment}
-          placeholder='Enter new value...'
-          btn={
-            <Button variant='outline' size='sm' className='rounded-full'>
-              <Plus className='mr-2 h-4 w-4' />
-              Add keyword
-            </Button>
-          }
-          handleRemoveKeyword={({ id }) => {
-            handleRemoveKeyword(id);
-          }}
-        />
+        {departments?.length > 0 ? (
+          <AddChip
+            options={departments.map((item) => ({
+              name: item.name,
+              id: String(item.id),
+            }))}
+            suggestionsList={suggestionsList.map((item) => ({
+              name: item,
+              id: String(item),
+            }))}
+            handleAddDepartment={handleAddDepartment}
+            placeholder='Enter new value...'
+            btn={
+              <Button variant='outline' size='sm' className='rounded-full'>
+                <Plus className='mr-2 h-4 w-4' />
+                Add Department
+              </Button>
+            }
+            handleRemoveKeyword={({ id }) => {
+              handleRemoveKeyword(id);
+            }}
+          />
+        ) : (
+          <GlobalEmpty
+            icon={
+              <BookOpen
+                strokeWidth={2}
+                className='h-6 w-6 text-muted-foreground'
+              />
+            }
+            header='No Departments yet'
+            description='Add the company departments'
+            primaryAction={
+              <AddChip
+                options={departments.map((item) => ({
+                  name: item.name,
+                  id: String(item.id),
+                }))}
+                suggestionsList={suggestionsList.map((item) => ({
+                  name: item,
+                  id: String(item),
+                }))}
+                handleAddDepartment={handleAddDepartment}
+                placeholder='Enter new value...'
+                btn={
+                  <Button>
+                    <Plus className='mr-2 h-4 w-4' />
+                    Add keyword
+                  </Button>
+                }
+                handleRemoveKeyword={({ id }) => {
+                  handleRemoveKeyword(id);
+                }}
+              />
+            }
+          />
+        )}
       </UISectionCard>
     </>
   );

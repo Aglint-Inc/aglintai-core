@@ -1,18 +1,24 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
 
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import {
   deleteWAcion,
+  type JobAutomationState,
   updateWAction,
+  updateWTrigger,
 } from '@/job/workflows/contexts/workflowsStoreContext';
+import { agentInstructionEmailTargetApi } from '@/job/workflows/lib/constants';
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
 import ActionDetailsComponent from './ActionDetailsComponent';
 
 const ActionsContainer = ({
   wAction,
+  wTrigger,
 }: {
   wAction: DatabaseTable['workflow_action'];
+  wTrigger: JobAutomationState['jobWorkflowTriggers'][number];
 }) => {
   const trigger = wAction.target_api.split(
     '_',
@@ -30,11 +36,31 @@ const ActionsContainer = ({
           variant='ghost'
           size='sm'
           onClick={() => {
-            deleteWAcion(wAction.id);
+            deleteWAcion(wAction.id, wAction.workflow_id);
           }}
         >
           Remove
         </Button>
+      </div>
+      <div className='mb-4'>
+        {(trigger === 'sendAvailReqReminder' ||
+          trigger === 'selfScheduleReminder') && (
+          <UISelectDropDown
+            label='Remind After'
+            value={String(wTrigger.interval)}
+            onValueChange={(interval) => {
+              updateWTrigger({
+                ...wTrigger,
+                interval: Number(interval),
+              });
+            }}
+            menuOptions={[
+              { name: '1 day', value: String(24 * 60) },
+              { name: '2 day', value: String(48 * 60) },
+              { name: '3 day', value: String(72 * 60) },
+            ]}
+          />
+        )}
       </div>
       {wAction.action_type === 'slack' && (
         <ActionDetailsComponent action_type='slack' />
@@ -84,9 +110,41 @@ const ActionsContainer = ({
             agentInstructions: wAction.payload.agent.instruction,
             emailTemplateTargetAPI: wAction.target_api,
             isTemplateLoading: false,
-            setAgentInstructions: () => {},
-            isShowEmailTemplate: false,
-            emailTempParams: null,
+            setAgentInstructions: () => {
+              //TODO: finish this
+            },
+            isShowEmailTemplate:
+              wAction.target_api in agentInstructionEmailTargetApi,
+            emailTempParams: {
+              body: wAction.payload.email?.body ?? '',
+              subject: wAction.payload.email?.subject ?? '',
+              isTemplateLoading: false,
+              setBody: (bodyStr) => {
+                updateWAction({
+                  ...wAction,
+                  payload: {
+                    ...wAction.payload,
+                    email: {
+                      ...wAction.payload.email,
+                      body: bodyStr,
+                    },
+                  },
+                });
+              },
+              setSubject: (subjectStr) => {
+                updateWAction({
+                  ...wAction,
+                  payload: {
+                    ...wAction.payload,
+                    email: {
+                      ...wAction.payload.email,
+                      subject: subjectStr,
+                    },
+                  },
+                });
+              },
+              targetAPI: agentInstructionEmailTargetApi[wAction.target_api],
+            },
           }}
         />
       )}

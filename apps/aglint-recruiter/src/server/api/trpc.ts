@@ -7,6 +7,7 @@
  * need to use are documented accordingly near the end.
  */
 import type { DatabaseTable } from '@aglint/shared-types';
+import type { User } from '@supabase/supabase-js';
 import { initTRPC, TRPCError } from '@trpc/server';
 import type { ProcedureBuilder } from '@trpc/server/unstable-core-do-not-import';
 import superjson from 'superjson';
@@ -92,8 +93,10 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
   const result = await next();
 
   const end = Date.now();
-  // eslint-disable-next-line no-console
-  console.log(`[TRPC] ${path} took ${end - start}ms to execute`);
+  if (process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line no-console
+    console.log(`[TRPC] ${path} took ${end - start}ms to execute`);
+  }
   return result;
 });
 
@@ -163,13 +166,14 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
 
 const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
   const db = createPrivateClient();
-  const {
-    data: { user },
-  } = await db.auth.getUser();
 
-  if (!user) {
-    throw new TRPCError(ERRORS.UNAUTHORIZED);
-  }
+  let user: User | null = null;
+
+  if (process.env.NODE_ENV === 'development')
+    user = (await db.auth.getSession()).data.session.user;
+  else user = (await db.auth.getUser()).data.user;
+
+  if (!user) throw new TRPCError(ERRORS.UNAUTHORIZED);
 
   const user_id = user.id;
 
@@ -182,9 +186,7 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
     .single()
     .throwOnError();
 
-  if (!data) {
-    throw new TRPCError(ERRORS.UNAUTHORIZED);
-  }
+  if (!data) throw new TRPCError(ERRORS.UNAUTHORIZED);
 
   const {
     recruiter_id,

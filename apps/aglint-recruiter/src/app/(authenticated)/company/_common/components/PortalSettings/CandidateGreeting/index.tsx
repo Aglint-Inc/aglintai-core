@@ -1,8 +1,9 @@
 import { ScrollArea } from '@components/ui/scroll-area';
-import { PencilIcon, Plus } from 'lucide-react';
+import { CircleUser, Plus, SquarePen } from 'lucide-react';
 import { useState } from 'react';
 
 import { usePortalSettings } from '@/company/hooks/usePortalSettings';
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
 import UISectionCard from '@/components/Common/UISectionCard';
 
@@ -28,27 +29,36 @@ export default function CandidateGreeting() {
         description='This section content will be displayed on the candidate portal as
             the greeting message to the candidate.'
         emptyStateMessage={
-          data.greetings ? '' : 'Candidate Greeting not available'
+          !data.greetings && (
+            <GlobalEmpty
+              icon={
+                <CircleUser
+                  strokeWidth={2}
+                  className='h-6 w-6 text-muted-foreground'
+                />
+              }
+              header={`No Candidate Greeting found`}
+              description={`Add the Greeting  for candidate portal`}
+              primaryAction={
+                <UIButton
+                  onClick={() => setIsDialogOpen(true)}
+                  leftIcon={<Plus />}
+                >
+                  Add Greeting
+                </UIButton>
+              }
+            />
+          )
         }
         action={
-          data.greetings ? (
+          data?.greetings?.length > 0 && (
             <UIButton
               variant='outline'
+              onClick={() => setIsDialogOpen(true)}
               size='sm'
-              icon={<PencilIcon className='h-3 w-3' />}
-              onClick={() => {
-                setIsDialogOpen(true);
-              }}
-            />
-          ) : (
-            <UIButton
-              size='sm'
-              onClick={() => {
-                setIsDialogOpen(true);
-              }}
-              leftIcon={<Plus />}
+              leftIcon={<SquarePen className='mr-2 h-3 w-3' />}
             >
-              Add
+              Edit
             </UIButton>
           )
         }

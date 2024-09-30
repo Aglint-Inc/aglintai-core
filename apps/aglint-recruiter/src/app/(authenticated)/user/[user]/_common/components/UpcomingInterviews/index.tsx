@@ -24,8 +24,13 @@ export const UpcomingInterview = ({
           </div>
         ) : (
           <GlobalEmpty
-            icon={<Calendar strokeWidth={2} className='h-6 w-6' />}
-            description='No upcoming interviews found'
+            icon={
+              <Calendar
+                strokeWidth={2}
+                className='h-6 w-6 text-muted-foreground'
+              />
+            }
+            header='No upcoming interviews found'
           />
         )}
       </UISectionCard>

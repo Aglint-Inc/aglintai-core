@@ -1,7 +1,13 @@
-import { Button } from '@components/ui/button';
-import { Briefcase } from 'lucide-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@components/ui/tooltip';
+import { Briefcase, TriangleAlert } from 'lucide-react';
 
 import { useAllIntegrations } from '@/authenticated/hooks';
+import { useCompanySetup } from '@/authenticated/hooks/useCompanySetup';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -25,6 +31,7 @@ export const EmptyJob = () => {
   const router = useRouterPro();
   const { setIntegrations } = useIntegrationActions();
   const integration = useIntegrationStore((state) => state.integrations);
+  const { isJobSetupPending } = useCompanySetup();
   return (
     <div className='mt-[200px]'>
       <GlobalEmpty
@@ -59,13 +66,28 @@ export const EmptyJob = () => {
           </UIButton>
         }
         secondaryAction={
-          <Button
+          <UIButton
             variant='outline'
             onClick={() => router.push(ROUTES['/jobs/create']())}
             className='w-full'
+            leftIcon={
+              // <TriangleAlert />
+              isJobSetupPending && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <TriangleAlert size={14} />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      First complete the company setup
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )
+            }
           >
             Add Job
-          </Button>
+          </UIButton>
         }
       />
     </div>

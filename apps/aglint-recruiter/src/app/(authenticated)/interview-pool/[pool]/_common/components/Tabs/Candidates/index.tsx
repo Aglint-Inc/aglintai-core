@@ -71,7 +71,7 @@ function Candidates() {
                         <div>
                           <GlobalEmpty
                             header={'No candidates found'}
-                            description='Create a new interview pool to get started.'
+                            description='This section lists all candidates across all jobs taken this interview.'
                             icon={
                               <User
                                 strokeWidth={1.5}

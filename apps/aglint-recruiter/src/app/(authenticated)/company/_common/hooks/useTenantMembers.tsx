@@ -13,6 +13,7 @@ export const useTenantMembers = () => {
     allMembers,
     refetchMembers: query.refetch,
     members,
+    isFetched: query.isFetched,
     isLoading: query.isLoading,
   };
 };

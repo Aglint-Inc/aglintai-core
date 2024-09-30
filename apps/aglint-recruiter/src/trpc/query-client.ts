@@ -27,13 +27,13 @@ export const createQueryClient = (
     queryCache: new QueryCache({
       onError: (error) =>
         onError(error as unknown as TRPCErrorShape<TRPCError>, () => {
-          // logout(queryClient),
+          logout(queryClient);
         }),
     }),
     mutationCache: new MutationCache({
       onError: (error) =>
         onError(error as unknown as TRPCErrorShape<TRPCError>, () => {
-          // logout(queryClient),
+          logout(queryClient);
         }),
       onSuccess: () => queryClient.invalidateQueries(),
     }),
@@ -60,5 +60,5 @@ export const createQueryClient = (
 
 const onError = (error: TRPCErrorShape<TRPCError>, logout?: () => void) => {
   if (!logout) return;
-  if (error?.data?.code ?? null === ERRORS.UNAUTHORIZED.code) void logout();
+  if ((error?.data?.code ?? null) === ERRORS.UNAUTHORIZED.code) void logout();
 };
