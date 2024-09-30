@@ -79,7 +79,7 @@ function AllInterviewFilters() {
             name: 'Status',
             options: [
               { id: 'completed', label: 'Completed' },
-              { id: 'cancelled', label: 'Cancelled' },
+              { id: 'cancelled', label: 'Canceled' },
               { id: 'confirmed', label: 'Confirmed' },
               { id: 'waiting', label: 'Waiting' },
             ],

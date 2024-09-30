@@ -1,4 +1,4 @@
-import { Briefcase, ChevronDown, MapPin } from 'lucide-react';
+import { BriefcaseBusiness, ChevronDown, MapPin } from 'lucide-react';
 
 import UITypography from '@/components/Common/UITypography';
 
@@ -129,7 +129,7 @@ export function MyScheduleSubCard({
               <div className='flex items-center gap-3'>
                 <div className='flex items-center gap-1'>
                   <div className='flex items-center justify-center'>
-                    <Briefcase size={14} />
+                    <BriefcaseBusiness size={14} />
                   </div>
                   <UITypography variant='p' type='small'>
                     {textJob}

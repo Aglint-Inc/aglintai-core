@@ -60,7 +60,7 @@ export function StatusBadge({
           <UIBadge
             icon={<CircleX size={12} />}
             color='error'
-            textBadge={'Cancelled'}
+            textBadge={'Canceled'}
           />
         </div>
       )}

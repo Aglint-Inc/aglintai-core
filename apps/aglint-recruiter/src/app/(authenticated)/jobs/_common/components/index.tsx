@@ -135,7 +135,7 @@ export function AddJob() {
           </DropdownMenuItem>
           <DropdownMenuItem
             onSelect={() => {
-              if (!integrations.lever_key) {
+              if (!integrations?.lever_key) {
                 setIntegrations({
                   ...integration,
                   lever: { open: true, step: STATE_LEVER_DIALOG.API },
