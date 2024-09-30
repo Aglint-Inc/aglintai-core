@@ -93,9 +93,9 @@ export const Summary = () => {
 
 const renderAIAutomationCTA = () => {
   return (
-    <Card className='h-fit'>
+    <Card className='h-fit border-0 shadow-none bg-secondary'>
       <CardHeader>
-        <CardTitle className='flex items-center'>
+        <CardTitle className='flex items-center text-xl'>
           <Zap className='mr-2 h-5 w-5 text-yellow-500' />
           Supercharge Your Hiring
         </CardTitle>
@@ -109,7 +109,7 @@ const renderAIAutomationCTA = () => {
             <li>Improve candidate satisfaction by 35%</li>
             <li>Save hours on manual tasks daily</li>
           </ul>
-          <div className='mt-4 rounded-md bg-secondary p-4'>
+          <div>
             <p className='mb-2 font-semibold'>Get Started:</p>
             <ol className='list-inside list-decimal space-y-1'>
               <li>Enable an automation in the left panel</li>

@@ -130,15 +130,15 @@ function ReasonSection({
             icon={
               <Archive
                 strokeWidth={2}
-                className='h-6 w-6 text-muted-foreground'
+                className='h-4 w-4 text-muted-foreground'
               />
             }
-            header={`No ${title} yet`}
-            description={`Add the ${title}`}
+            description={`No ${title} added yet.`}
             primaryAction={
               <UIButton
                 onClick={() => setIsAddingNew(true)}
-                leftIcon={<Plus className='mr-2 h-4 w-4' />}
+                leftIcon={<Plus />}
+                size='sm'
               >
                 Add Reason
               </UIButton>

@@ -87,6 +87,7 @@ export default function Heatmap({
         <Skeleton className='h-[150] w-[1000px]' />
       ) : (
         <UISectionCard
+        type='compact'
           title='Meetings overview'
           isHoverEffect={false}
           action={

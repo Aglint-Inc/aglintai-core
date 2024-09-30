@@ -14,7 +14,7 @@ export const HolidayTable = (props: Props) => {
       <div className='flex items-start justify-between'>
         <div>
           <h2 className='mb-1 text-xl font-semibold'>Standard Days Off</h2>
-          <p className='text-gray-600'>
+          <p className='text-sm text-muted-foreground'>
             List company holidays to exclude them from scheduling.
           </p>
         </div>

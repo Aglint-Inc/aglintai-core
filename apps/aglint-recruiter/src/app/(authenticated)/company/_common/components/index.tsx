@@ -19,12 +19,12 @@ const CompanyDetailComp = () => {
   const tab = router?.queryParams?.tab as CompanySettingTabsType;
   return (
     <div className='mb-6 flex gap-6'>
-      <div className='w-1/6'>
+      <div className='w-[240px]'>
         <div className='sticky top-[32px] w-full'>
           <SettingsSubNabItem />
         </div>
       </div>
-      <div className='w-3/4'>
+      <div className='flex-1 pr-4'>
         <ScrollArea>
           {tab === 'company-info' && <CompanyInfoComp />}
           {tab === 'team' && <TeamManagement />}

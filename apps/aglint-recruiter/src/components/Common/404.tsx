@@ -1,5 +1,5 @@
 import { Button } from '@components/ui/button';
-import { FileQuestion, Home } from 'lucide-react';
+import { FileQuestion } from 'lucide-react';
 import Link from 'next/link';
 
 interface NotFoundProps {
@@ -12,18 +12,23 @@ export function NotFound({
   description = "Oops! The page you're looking for doesn't exist or has been moved.",
 }: NotFoundProps) {
   return (
-    <div className='container-lg mx-auto w-full px-4'>
-      <div className='flex min-h-screen items-center justify-center bg-gray-100'>
-        <div className='w-full max-w-md space-y-6 rounded-lg bg-white p-8 text-center shadow-lg'>
+    <div className='container-lg mx-auto mt-20 flex w-full flex-col items-center justify-center px-4'>
+      <div className='flex items-center justify-center'>
+        <div className='flex w-full flex-col gap-2 rounded-lg bg-white p-8 text-center'>
           <div className='flex justify-center'>
-            <FileQuestion strokeWidth={1} className='h-24 w-24' />
+            <FileQuestion strokeWidth={1} className='h-16 w-16' />
           </div>
-          <h1 className='text-4xl font-bold text-gray-800'>404</h1>
-          <h2 className='text-2xl font-semibold text-gray-600'>{title}</h2>
-          <p className='text-gray-500'>{description}</p>
+          <h1 className='text-3xl font-medium text-gray-800'>404</h1>
+          <div className='flex flex-col items-center justify-center gap-1'>
+            <h2 className='text-lg font-normal text-gray-600'>{title}</h2>
+            <p className='text-sm text-gray-500'>{description}</p>
+          </div>
+
           <Link href='/' passHref>
-            <Button className='inline-flex items-center'>
-              <Home className='mr-2 h-4 w-4' />
+            <Button
+              variant='secondary'
+              className='mt-2 inline-flex items-center'
+            >
               Back to Home
             </Button>
           </Link>

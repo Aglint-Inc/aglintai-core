@@ -73,7 +73,7 @@ export default function Main() {
     <div className='md:col-span-2'>
       <Card className='border-0 shadow-none'>
         <CardHeader>
-          <CardTitle>Job Automation Setup</CardTitle>
+          <CardTitle>Automations</CardTitle>
           <CardDescription></CardDescription>
         </CardHeader>
         {isStateUpdating && <Skeleton className='h-[500px] w-full' />}

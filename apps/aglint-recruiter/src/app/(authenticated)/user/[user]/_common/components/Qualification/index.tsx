@@ -14,7 +14,7 @@ export const Qualifications = ({
 }) => {
   return (
     <>
-      <UISectionCard title='Qualifications'>
+      <UISectionCard title='Qualifications' type='compact'>
         <ScrollArea className='max-h-[360px] w-full'>
           <div className='space-y-4'>
             {interview_types?.length ? (
