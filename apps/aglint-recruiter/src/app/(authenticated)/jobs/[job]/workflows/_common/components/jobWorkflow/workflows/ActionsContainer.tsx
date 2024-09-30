@@ -5,6 +5,7 @@ import {
   deleteWAcion,
   updateWAction,
 } from '@/job/workflows/contexts/workflowsStoreContext';
+import { agentInstructionEmailTargetApi } from '@/job/workflows/lib/constants';
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
 import ActionDetailsComponent from './ActionDetailsComponent';
@@ -84,9 +85,41 @@ const ActionsContainer = ({
             agentInstructions: wAction.payload.agent.instruction,
             emailTemplateTargetAPI: wAction.target_api,
             isTemplateLoading: false,
-            setAgentInstructions: () => {},
-            isShowEmailTemplate: false,
-            emailTempParams: null,
+            setAgentInstructions: () => {
+              //TODO: finish this
+            },
+            isShowEmailTemplate:
+              wAction.target_api in agentInstructionEmailTargetApi,
+            emailTempParams: {
+              body: wAction.payload.email?.body ?? '',
+              subject: wAction.payload.email?.subject ?? '',
+              isTemplateLoading: false,
+              setBody: (bodyStr) => {
+                updateWAction({
+                  ...wAction,
+                  payload: {
+                    ...wAction.payload,
+                    email: {
+                      ...wAction.payload.email,
+                      body: bodyStr,
+                    },
+                  },
+                });
+              },
+              setSubject: (subjectStr) => {
+                updateWAction({
+                  ...wAction,
+                  payload: {
+                    ...wAction.payload,
+                    email: {
+                      ...wAction.payload.email,
+                      subject: subjectStr,
+                    },
+                  },
+                });
+              },
+              targetAPI: agentInstructionEmailTargetApi[wAction.target_api],
+            },
           }}
         />
       )}

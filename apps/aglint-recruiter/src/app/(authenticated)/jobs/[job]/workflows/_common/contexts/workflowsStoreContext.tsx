@@ -1,12 +1,16 @@
 /* eslint-disable no-unused-vars */
-import { type DatabaseTable } from '@aglint/shared-types';
+import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { template } from 'lodash';
 import { create } from 'zustand';
 
-import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
+import { type ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
 import { type useGetJobWorkflow } from '../hooks';
-import { type TriggerCategory, triggerToCategoryMap } from '../lib/constants';
+import {
+  agentInstructionEmailTargetApi,
+  type TriggerCategory,
+  triggerToCategoryMap,
+} from '../lib/constants';
 
 export interface JobAutomationState {
   jobWorkflowTriggers: (DatabaseTable['workflow'] & {
@@ -65,31 +69,25 @@ export const updateWAction = (
 export const addWaction = (
   jobWorkflowAction: JobAutomationState['jobWorkflowActions'][number],
 ) => {
+  const target_api = jobWorkflowAction.target_api;
+  let email_target_api: DatabaseEnums['email_slack_types'] = target_api;
+  if (email_target_api in agentInstructionEmailTargetApi) {
+    email_target_api = agentInstructionEmailTargetApi[email_target_api];
+  }
   const actionTrigger = jobWorkflowAction.target_api.split(
     '_',
   )[0] as keyof typeof ACTION_TRIGGER_MAP;
   useJobAutomationStore.setState((state) => {
     const templateData = state.company_templates.find(
-      (temp) => temp.type === jobWorkflowAction.target_api,
+      (temp) => temp.type === email_target_api,
     );
     if (templateData) {
-      if (jobWorkflowAction.action_type === 'email') {
-        jobWorkflowAction.payload = {
-          email: {
-            subject: templateData.subject,
-            body: templateData.body,
-          },
-        };
-      } else {
-        const actionDetails = ACTION_TRIGGER_MAP[actionTrigger].find(
-          (action) => {
-            action.value.target_api === jobWorkflowAction.target_api;
-          },
-        );
-        if (actionDetails) {
-          jobWorkflowAction.payload = actionDetails.value.payload as any; // TODO: null chck
-        }
-      }
+      jobWorkflowAction.payload = {
+        email: {
+          subject: templateData.subject,
+          body: templateData.body,
+        },
+      };
     }
     return {
       jobWorkflowActions: [...state.jobWorkflowActions, jobWorkflowAction],
@@ -103,7 +101,9 @@ export const deleteWAcion = (id: string, workflowId: string) => {
       (workflow) => workflow.id === workflowId,
     );
     if (
-      state.jobWorkflowActions.filter((action) => action.id === id).length === 1
+      state.jobWorkflowActions.filter(
+        (action) => action.workflow_id === parentWorkflow.id,
+      ).length === 1
     ) {
       parentWorkflow.is_active = false;
     }
@@ -122,6 +122,8 @@ export const initiateJobAutomationState = (
   data: ReturnType<typeof useGetJobWorkflow>['data'],
 ) => {
   useJobAutomationStore.setState({
+    company_templates:
+      data.company_email_templates as JobAutomationState['company_templates'],
     jobWorkflowTriggers: data.job_workflows.map((workflow) => {
       return {
         ...workflow,

@@ -60,3 +60,12 @@ export const triggerToQuestion: Record<JobRelatedCTriggers, string> = {
   onRequestInterviewerDecline:
     'What happens when interviewer decline request ?',
 };
+
+export const agentInstructionEmailTargetApi: Partial<
+  Record<DatabaseEnums['email_slack_types'], DatabaseEnums['email_slack_types']>
+> = {
+  onRequestSchedule_emailLink_sendSelfSchedulingLink:
+    'sendSelfScheduleRequest_email_applicant',
+  onRequestSchedule_emailLink_getCandidateAvailability:
+    'sendAvailabilityRequest_email_applicant',
+};
