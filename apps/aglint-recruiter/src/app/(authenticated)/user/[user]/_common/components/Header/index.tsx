@@ -57,45 +57,55 @@ export const Header = ({
     <>
       {/* Eidt Dialog  */}
       <EditUser isOpen={isOpen} setIsOpen={setIsOpen} />
-      <Card className='mb-8' ref={userCardRef}>
-        <CardContent className='p-6'>
-          <div className='flex justify-between'>
-            <div className='flex items-center space-x-4'>
-              <Avatar className='h-24 w-24'>
-                <AvatarImage src={avatar} alt={name} />
-                <AvatarFallback>
-                  <User className='text-gray-700' size={40} strokeWidth={1} />
-                </AvatarFallback>
-              </Avatar>
+      <Card className='shadow-none border-none bg-slate-50' ref={userCardRef}>
+        <CardContent className='p-4'>
+          <div className='flex flex-col items-start'>
+            <div className='flex flex-col gap-2 '>
+              <div className='flex flex-row items-center gap-2'>
+                <Avatar className='h-12 w-12 rounded-md'>
+                  <AvatarImage src={avatar} alt={name} />
+                  <AvatarFallback className='h-12 w-12 rounded-md bg-gray-200'>
+                    <User
+                      className='h-6 w-6 text-gray-600'
+                      size={40}
+                      strokeWidth={1.5}
+                    />
+                  </AvatarFallback>
+                </Avatar>
+                <div className='flex flex-col'>
+                  <div className='text-md font-medium text-gray-900'>
+                    {name}
+                  </div>
+                  <p className='text-sm text-gray-600'>
+                    {role} - {department}
+                  </p>
+                </div>
+              </div>
 
-              <div>
-                <h2 className='text-2xl font-bold text-gray-900'>{name}</h2>
-                <p className='text-gray-600'>
-                  {role} - {department}
-                </p>
-                <div className='mt-2 flex items-center space-x-4'>
-                  <span className='flex items-center text-sm text-gray-500'>
+              <div className='ml-2'>
+                <div className='mt-2 flex flex-col gap-2 '>
+                  <span className='flex items-center text-sm '>
                     <MapPin className='mr-1 h-4 w-4' />
                     {location}
                   </span>
-                  <span className='flex items-center text-sm text-gray-500'>
+                  <span className='flex items-center text-sm '>
                     <Clock className='mr-1 h-4 w-4' />
                     {timeZone}
                   </span>
                 </div>
-                <div className='mt-2 flex items-center space-x-4'>
-                  <span className='flex items-center text-sm text-gray-500'>
+                <div className='mt-2 flex flex-col gap-2 '>
+                  <span className='flex items-center text-sm '>
                     <Mail className='mr-1 h-4 w-4' />
                     {email}
                   </span>
-                  <span className='flex items-center text-sm text-gray-500'>
+                  <span className='flex items-center text-sm '>
                     <Phone className='mr-1 h-4 w-4' />
                     {phone}
                   </span>
                 </div>
               </div>
             </div>
-            <div className='flex gap-3'>
+            <div className='flex gap-3 mt-2'>
               {recruiter_user?.user_id === user_id &&
                 !recruiter_user.is_calendar_connected && (
                   <UIButton onClick={getConsent}>Connect Calendar</UIButton>
