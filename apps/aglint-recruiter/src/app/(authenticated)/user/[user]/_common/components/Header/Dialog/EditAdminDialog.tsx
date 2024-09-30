@@ -1,3 +1,4 @@
+import { getFullName } from '@aglint/shared-utils';
 import _ from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 
@@ -7,6 +8,7 @@ import {
   useTenantOfficeLocations,
   useTenantRoles,
 } from '@/company/hooks';
+import { useTeamMembers } from '@/company/hooks/useTeamMembers';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -45,12 +47,9 @@ export type EditAdminFormErrorType = {
 
 const EditAdminDialog = ({
   open,
-  memberList,
   onClose,
 }: {
   open: boolean;
-  refetch: any;
-  memberList: { id: string; name: string }[];
   onClose: () => void;
 }) => {
   const { recruiter_user } = useTenant();
@@ -65,8 +64,16 @@ const EditAdminDialog = ({
   const [isProfileChanged, setIsProfileChanged] = useState(false);
 
   const { allMembers } = useTenantMembers();
+  const { activeMembers } = useTeamMembers();
   const router = useRouterPro();
   const member = allMembers.find((mem) => mem.user_id === router?.params?.user);
+
+  const memberList = activeMembers
+    .map((mem) => ({
+      id: mem.user_id ?? '',
+      name: getFullName(mem?.first_name ?? '', mem?.last_name ?? ''),
+    }))
+    .filter((mem) => mem.id !== recruiter_user.user_id);
 
   const initForm: EditAdminFormType = {
     first_name: member?.first_name,

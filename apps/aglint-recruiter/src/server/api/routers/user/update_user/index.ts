@@ -1,36 +1,48 @@
-import { z } from 'zod';
+import { recruiterRelationUpdateSchema } from '@aglint/shared-types';
+import {} from '@aglint/shared-types/src/db/tables/recruiter.types';
+import { CustomRecruiterUserUpdateSchema } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
+import { TRPCError } from '@trpc/server';
 
 import { type PrivateProcedure, publicProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
-const employmentTypeEnum = z.enum(['fulltime', 'parttime', 'contractor']);
-const UserSchema = z.object({
-  first_name: z.string().nullable(),
-  last_name: z.string().nullable(),
-  linked_in: z.string().nullable(),
-  office_location_id: z.number().nullable(),
-  employment: employmentTypeEnum,
-  position: z.string().nullable(),
-  department_id: z.number().nullable(),
-  role_id: z.string().nullable(),
-  role: z.string().nullable(),
-  phone: z.string().nullable(),
-  manager_id: z.string().nullable(),
-  user_id: z.string(),
-  profile_image: z.string().nullable(),
+import { ERRORS } from '@/server/enums';
+
+const RecruiterUserSchema = CustomRecruiterUserUpdateSchema.pick({
+  first_name: true,
+  last_name: true,
+  linked_in: true,
+  office_location_id: true,
+  employment: true,
+  position: true,
+  department_id: true,
+  phone: true,
+  user_id: true,
+  profile_image: true,
 });
+
+const RecruiterRelationSchema = recruiterRelationUpdateSchema.pick({
+  role_id: true,
+  role: true,
+  manager_id: true,
+});
+
+const Schema = RecruiterUserSchema.merge(RecruiterRelationSchema);
 
 const mutation = async ({
   input,
   ctx: { recruiter_id },
-}: PrivateProcedure<typeof UserSchema>) => {
+}: PrivateProcedure<typeof Schema>) => {
   const db = createPrivateClient();
   const { user_id, role_id, role, manager_id, ...newValue } = input;
 
-  //update member
+  if (role !== 'admin') throw new TRPCError(ERRORS.FORBIDDEN);
+
+  // RPC.throwOnError()
+
   const userData = (
     await db
       .from('recruiter_user')
-      .update(newValue)
+      .update({ ...newValue })
       .eq('user_id', user_id)
       .throwOnError()
   ).data;
@@ -42,17 +54,9 @@ const mutation = async ({
       .update({ manager_id, role_id, role })
       .eq('user_id', user_id)
       .eq('recruiter_id', recruiter_id)
-      .select('role_id, manager_id, roles(name)')
       .single()
-      .then(({ data, error }) => {
-        if (error) throw new Error(error.message);
-        return {
-          role: data.roles.name,
-          role_id: data.role_id,
-          manager_id: data.manager_id,
-        };
-      });
+      .throwOnError();
   }
 };
 
-export const updateUser = publicProcedure.input(UserSchema).mutation(mutation);
+export const updateUser = publicProcedure.input(Schema).mutation(mutation);
