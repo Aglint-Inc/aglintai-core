@@ -9,7 +9,9 @@ import {
   TableRow,
 } from '@components/ui/table';
 import { capitalize } from 'lodash';
+import { Calendar } from 'lucide-react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import UITypography from '@/components/Common/UITypography';
 
 import { type InterviewLoadItemType, type ScheduleKeywordType } from '..';
@@ -152,18 +154,30 @@ const KeywordViewSection = ({
         {description}
       </UITypography>
       <div className='flex flex-wrap gap-2'>
-        {keywords.map((keyword, i) => {
-          return (
-            <div
-              key={i}
-              className='w-fit rounded-full bg-gray-100 px-4 py-1 text-gray-900'
-            >
-              <UITypography type='small' variant='p'>
-                {keyword}
-              </UITypography>
-            </div>
-          );
-        })}
+        {keywords?.length > 0 ? (
+          keywords.map((keyword, i) => {
+            return (
+              <div
+                key={i}
+                className='w-fit rounded-full bg-gray-100 px-4 py-1 text-gray-900'
+              >
+                <UITypography type='small' variant='p'>
+                  {keyword}
+                </UITypography>
+              </div>
+            );
+          })
+        ) : (
+          <GlobalEmpty
+            icon={
+              <Calendar
+                strokeWidth={2}
+                className='h-6 w-6 text-muted-foreground'
+              />
+            }
+            header={'No ' + title}
+          />
+        )}
       </div>
     </div>
   );

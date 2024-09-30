@@ -1,7 +1,10 @@
 'use client';
 
+import { Archive, Plus } from 'lucide-react';
 import React, { useState } from 'react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
+import { UIButton } from '@/components/Common/UIButton';
 import UISectionCard from '@/components/Common/UISectionCard';
 
 import { DeleteReasonDialog } from './DeleteReasonDialog';
@@ -106,21 +109,42 @@ function ReasonSection({
       />
 
       <UISectionCard title={title} description={description}>
-        <ReasonCardUI
-          editingIndex={editingIndex}
-          reasons={reasons}
-          editingReason={editingReason}
-          setEditingReason={setEditingReason}
-          setEditingIndex={setEditingIndex}
-          isAddingNew={isAddingNew}
-          setIsAddingNew={setIsAddingNew}
-          handleAdd={handleAdd}
-          handleDelete={handleDelete}
-          handleEdit={handleEdit}
-          handleUpdate={handleUpdate}
-          setNewReason={setNewReason}
-          newReason={newReason}
-        />
+        {reasons?.length > 0 || isAddingNew ? (
+          <ReasonCardUI
+            editingIndex={editingIndex}
+            reasons={reasons}
+            editingReason={editingReason}
+            setEditingReason={setEditingReason}
+            setEditingIndex={setEditingIndex}
+            isAddingNew={isAddingNew}
+            setIsAddingNew={setIsAddingNew}
+            handleAdd={handleAdd}
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
+            handleUpdate={handleUpdate}
+            setNewReason={setNewReason}
+            newReason={newReason}
+          />
+        ) : (
+          <GlobalEmpty
+            icon={
+              <Archive
+                strokeWidth={2}
+                className='h-6 w-6 text-muted-foreground'
+              />
+            }
+            header={`No ${title} yet`}
+            description={`Add the ${title}`}
+            primaryAction={
+              <UIButton
+                onClick={() => setIsAddingNew(true)}
+                leftIcon={<Plus className='mr-2 h-4 w-4' />}
+              >
+                Add Reason
+              </UIButton>
+            }
+          />
+        )}
       </UISectionCard>
     </>
   );

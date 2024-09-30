@@ -1,4 +1,6 @@
+'use client';
 import { Button } from '@components/ui/button';
+import { Skeleton } from '@components/ui/skeleton';
 import AgentChats from '@requests/components/AgentChats';
 import { AgentIEditorProvider } from '@requests/components/AgentChats/AgentEditorContext';
 import { REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
@@ -7,20 +9,24 @@ import { checkFiltersApplied } from '@requests/utils/checkFiltersApplied';
 import { LayoutList, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import { useCompanySetup } from '@/authenticated/hooks/useCompanySetup';
 import { useTenant } from '@/company/hooks';
 import { useFlags } from '@/company/hooks/useFlags';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useRequests } from '@/context/RequestsContext';
 import { SafeObject } from '@/utils/safeObject';
 
+import { CreateRequestWidget } from './createRequestWidget';
 import RequestListContent from './RequestListContent';
 import Header from './ui/Header';
 
 const MainBody = () => {
   const {
-    requests: { data: requestList, isPlaceholderData, isFetched },
+    requests: { data: requestList, isPlaceholderData, isFetched, isLoading },
     filters,
   } = useRequests();
+  const { isRequestSetupPending, isLoading: isLoadingCompanySetup } =
+    useCompanySetup();
   const { recruiter_user } = useTenant();
   const { isShowFeature } = useFlags();
   const [openChat, setOpenChat] = useState(
@@ -69,6 +75,14 @@ const MainBody = () => {
     );
   }, [localStorage.getItem('openChat')]);
 
+  if (isLoading || !isFetched || isLoadingCompanySetup)
+    return (
+      <>
+        <Skeleton className='mb-2 h-6 w-40' />
+        <Skeleton className='mb-4 h-[200px] w-full' />
+        <Skeleton className='mb-4 h-[200px] w-full' />
+      </>
+    );
   return (
     <div className='flex w-full overflow-hidden'>
       {/* Dock to Right Button */}
@@ -112,17 +126,8 @@ const MainBody = () => {
         }`}
       >
         <div>
-          <Header
-            completed_percentage={completed_percentage}
-            open_request={open_request}
-            recruiterUser={recruiter_user}
-            requestCount={requestCount}
-            setView={setView}
-            view={view}
-          />
-
           {isRequestListEmpty || showEmptyPage ? (
-            <div className='container-lg mx-auto w-full px-4 py-8'>
+            <div className='container-lg mx-auto mt-[200px] w-full px-12 py-8'>
               <GlobalEmpty
                 header={'No requests found'}
                 description='Requests are created when a interview process starts for candidates.'
@@ -132,14 +137,27 @@ const MainBody = () => {
                     className='h-6 w-6 text-muted-foreground'
                   />
                 }
+                primaryAction={
+                  !isRequestSetupPending && <CreateRequestWidget />
+                }
               />
             </div>
           ) : (
-            <RequestListContent
-              view={view}
-              defaults={defaults}
-              isFetched={isFetched}
-            />
+            <>
+              <Header
+                completed_percentage={completed_percentage}
+                open_request={open_request}
+                recruiterUser={recruiter_user}
+                requestCount={requestCount}
+                setView={setView}
+                view={view}
+              />
+              <RequestListContent
+                view={view}
+                defaults={defaults}
+                isFetched={isFetched}
+              />
+            </>
           )}
         </div>
       </div>
