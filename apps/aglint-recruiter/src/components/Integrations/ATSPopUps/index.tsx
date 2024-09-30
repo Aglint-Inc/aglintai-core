@@ -37,28 +37,31 @@ function ATSPopUps({
   const atsName = reason?.split('_')[1];
 
   const handleAction = async () => {
-    try {
-      const result = await action();
-      if (result) {
-        toast({
-          title: 'Success',
-          description: isDisconnect
-            ? `Disconnected from ${atsName} successfully`
-            : 'Action completed successfully',
-          variant: 'default',
-        });
-      } else {
-        throw new Error('Action failed');
-      }
-    } catch (error) {
+    // console.log('handleAction');
+    // try {
+    const result = await action();
+    if (result) {
       toast({
-        title: 'Error',
-        description: 'An error occurred. Please try again.',
-        variant: 'destructive',
+        title: 'Success',
+        description: isDisconnect
+          ? `Disconnected from ${atsName} successfully`
+          : 'Action completed successfully',
+        variant: 'default',
       });
-    } finally {
-      close();
     }
+    //  else {
+    //   throw new Error('Action failed');
+    // }
+    close();
+    // } catch (error) {
+    //   toast({
+    //     title: 'Error',
+    //     description: 'An error occurred. Please try again.',
+    //     variant: 'destructive',
+    //   });
+    // } finally {
+    //   close();
+    // }
   };
 
   if (isDisconnect) {
