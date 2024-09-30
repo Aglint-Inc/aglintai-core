@@ -13,7 +13,7 @@ import {
   useModulesStore,
 } from '../../stores/store';
 
-function MoveToQualifiedDialog({ refetch }: { refetch: () => void }) {
+function MoveToQualifiedDialog() {
   const { toast } = useToast();
   const { recruiter_user } = useTenant();
   const { data: members } = useMemberList();
@@ -34,7 +34,6 @@ function MoveToQualifiedDialog({ refetch }: { refetch: () => void }) {
         })
         .eq('id', selUser.id)
         .throwOnError();
-      refetch();
     } catch (error) {
       toast({
         variant: 'destructive',

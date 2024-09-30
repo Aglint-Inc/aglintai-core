@@ -1,5 +1,5 @@
 import { useToast } from '@components/hooks/use-toast';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
@@ -7,7 +7,6 @@ import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainPro
 import { api } from '@/trpc/client';
 
 import MembersAutoComplete from '../../../../../../_common/components/MembersTextField';
-import { useAddMemberHandler } from '../../hooks/useAddMemberHandler';
 import { useModuleAndUsers } from '../../hooks/useModuleAndUsers';
 import {
   setIsAddMemberDialogOpen,
@@ -18,21 +17,16 @@ import {
 
 function AddMemberDialog() {
   const { toast } = useToast();
-  const utils = api.useUtils();
   const { members } = useSchedulingContext();
-  const [loading, setLoading] = useState(false);
   const isAddMemberDialogOpen = useModulesStore(
     (state) => state.isAddMemberDialogOpen,
   );
   const selectedUsers = useModulesStore((state) => state.selectedUsers);
   const trainingStatus = useModulesStore((state) => state.trainingStatus);
   const initalOpen = useModulesStore((state) => state.initalOpen);
-
   const { data: editModule } = useModuleAndUsers();
 
-  const { addMemberHandler } = useAddMemberHandler({
-    editModule,
-  });
+  const { mutateAsync, isPending } = api.interview_pool.add_users.useMutation();
 
   const relations = editModule?.relations.filter((rel) => !rel.is_archived);
 
@@ -43,27 +37,24 @@ function AddMemberDialog() {
 
   const onClickAddMember = async () => {
     try {
-      setLoading(true);
-      await addMemberHandler({
+      await mutateAsync({
         selectedUsers: selectedUsers,
         trainingStatus: trainingStatus,
+        relations: editModule.relations,
+        pool: {
+          id: editModule.id,
+          noReverseShadow: editModule.settings.noReverseShadow,
+          noShadow: editModule.settings.noShadow,
+        },
       });
       setIsAddMemberDialogOpen(false);
       setSelectedUsers([]);
-      await utils.interview_pool.module_and_users.invalidate({
-        module_id: editModule.id,
-      });
     } catch {
       toast({
         variant: 'destructive',
         title: 'Error',
         description: 'Error adding member.',
       });
-    } finally {
-      // extra time for refetching
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
     }
   };
 
@@ -99,10 +90,10 @@ function AddMemberDialog() {
 
           <UIButton
             variant='default'
-            isLoading={loading}
+            isLoading={isPending}
             disabled={selectedUsers.length === 0}
             onClick={() => {
-              if (!loading) onClickAddMember();
+              if (!isPending) onClickAddMember();
             }}
           >
             Add
