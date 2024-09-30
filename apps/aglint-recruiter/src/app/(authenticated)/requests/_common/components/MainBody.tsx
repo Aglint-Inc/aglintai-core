@@ -25,7 +25,8 @@ const MainBody = () => {
     requests: { data: requestList, isPlaceholderData, isFetched, isLoading },
     filters,
   } = useRequests();
-  const { isRequestSetupPending } = useCompanySetup();
+  const { isRequestSetupPending, isLoading: isLoadingCompanySetup } =
+    useCompanySetup();
   const { recruiter_user } = useTenant();
   const { isShowFeature } = useFlags();
   const [openChat, setOpenChat] = useState(
@@ -74,7 +75,7 @@ const MainBody = () => {
     );
   }, [localStorage.getItem('openChat')]);
 
-  if (isLoading || !isFetched)
+  if (isLoading || !isFetched || isLoadingCompanySetup)
     return (
       <>
         <Skeleton className='mb-2 h-6 w-40' />

@@ -1,8 +1,9 @@
 import { Button } from '@components/ui/button';
-import { Plus } from 'lucide-react';
+import { CalendarDays, Plus } from 'lucide-react';
 import React from 'react';
 
 import AddChip from '@/components/Common/AddChip';
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import toast from '@/utils/toast';
 
 interface KeywordSectionProps {
@@ -32,7 +33,7 @@ const KeywordSection: React.FC<KeywordSectionProps> = ({
     setKeywords((prev) => prev.filter((item) => item !== itemToDelete));
   };
 
-  return (
+  return keywords?.length > 0 ? (
     <AddChip
       options={keywords.map((item) => ({ name: item, id: item }))}
       suggestionsList={[]}
@@ -47,6 +48,28 @@ const KeywordSection: React.FC<KeywordSectionProps> = ({
       handleRemoveKeyword={({ name }) => {
         handleDelete(name);
       }}
+    />
+  ) : (
+    <GlobalEmpty
+      icon={<CalendarDays />}
+      header='No Keywords available '
+      primaryAction={
+        <AddChip
+          options={keywords.map((item) => ({ name: item, id: item }))}
+          suggestionsList={[]}
+          handleAddDepartment={handleAdd}
+          placeholder='Enter new value...'
+          btn={
+            <Button size='sm'>
+              <Plus className='mr-2 h-4 w-4' />
+              Add keyword
+            </Button>
+          }
+          handleRemoveKeyword={({ name }) => {
+            handleDelete(name);
+          }}
+        />
+      }
     />
   );
 };
