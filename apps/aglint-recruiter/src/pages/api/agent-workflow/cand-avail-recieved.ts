@@ -7,8 +7,8 @@ import {
 import { apiTargetToEvents } from '@requests/components/RequestProgress/utils/progressMaps';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
-import { confirmSlotFromCandidateAvailability } from '@/services/api-schedulings/confirmSlotFromCandidateAvailability';
 import { findCandSelectedSlots } from '@/services/api-schedulings/findCandSelectedSlots';
+import { slackSuggestSlots } from '@/services/api-schedulings/slackSuggestSlots';
 import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
@@ -93,9 +93,9 @@ const candAvailRecieved = async (req_body: BodyParams) => {
     reqProgressLogger,
   );
 
-  if (target_api === 'onReceivingAvailReq_agent_confirmSlot') {
+  if (target_api === 'onReceivingAvailReq_slack_suggestSlots') {
     await executeWorkflowAction(
-      confirmSlotFromCandidateAvailability,
+      slackSuggestSlots,
       {
         avail_plans: cand_picked_slots,
         cand_avail_rec: avail_record,

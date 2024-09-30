@@ -8,7 +8,7 @@ import type { CandidatesSchedulingV2 } from '../CandidateScheduleV2/CandidatesSc
 import { bookRecruiterSelectedOption } from '../CandidateScheduleV2/utils/bookingUtils/bookRecruiterSelectedOption';
 import { fetchCandAvailForBooking } from '../CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchCandidateAvailability';
 
-export const confirmSlotFromCandidateAvailability = async ({
+export const slackSuggestSlots = async ({
   avail_plans,
   cand_avail_rec,
   cand_schedule,
