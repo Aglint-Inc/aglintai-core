@@ -10,6 +10,7 @@ const query = async ({ ctx }: PrivateProcedure) => {
       .select()
       .order('created_at')
       .eq('recruiter_id', ctx.recruiter_id)
+      .eq('workflow_type', 'company')
   ).data;
 };
 
