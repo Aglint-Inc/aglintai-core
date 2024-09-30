@@ -214,7 +214,7 @@ const MoveCandidateDisqualified = () => {
               title={`You are about to ${description}`}
               description={
                 <div className='pt-1'>
-                  <li>All the schedules will be cancelled</li>
+                  <li>All the schedules will be canceled</li>
                   <li>All the related requests will be closed</li>
                   <li>You can still view the candidate details</li>
                   <li>Move to new state to start the process again</li>

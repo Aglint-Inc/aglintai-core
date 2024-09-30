@@ -1,7 +1,7 @@
 'use client';
 
 import { cn } from '@lib/utils';
-import { Briefcase, Globe, User } from 'lucide-react';
+import { BriefcaseBusiness, Globe, User } from 'lucide-react';
 import React from 'react';
 
 import UITypography from '@/components/Common/UITypography';
@@ -45,7 +45,7 @@ export function GlobalUserDetail({
               <div className='text-neutral-500'>
                 {slotRole ?? (
                   <div className='flex items-center space-x-1'>
-                    <Briefcase className='h-4 w-4' />
+                    <BriefcaseBusiness className='h-4 w-4' />
                     <UITypography type='small' className='text-neutral-500'>
                       {textRole}
                     </UITypography>

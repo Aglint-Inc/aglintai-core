@@ -8,7 +8,7 @@ import {
 } from '@components/ui/tooltip';
 import {
   ArrowRight,
-  Briefcase,
+  BriefcaseBusiness,
   Calendar,
   CheckCircle,
   Clock,
@@ -121,7 +121,7 @@ export const InterviewPoolList = ({
                   variant='outline'
                   className='border-indigo-200 bg-indigo-50 text-indigo-800'
                 >
-                  <Briefcase className='mr-1 h-3 w-3' /> {` - `}
+                  <BriefcaseBusiness className='mr-1 h-3 w-3' /> {` - `}
                   {interviewType.job_names
                     ?.slice(0, 2)
                     .map((job) => job)

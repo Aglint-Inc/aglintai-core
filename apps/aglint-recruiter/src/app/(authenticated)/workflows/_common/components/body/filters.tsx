@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
-import { Briefcase } from 'lucide-react';
+import { BriefcaseBusiness } from 'lucide-react';
 import { memo, useMemo } from 'react';
 
 import { UIBadge } from '@/components/Common/UIBadge';
@@ -64,7 +64,7 @@ type FilterIconProps = {
 const FilterIcon = ({ filter }: FilterIconProps) => {
   switch (filter) {
     case 'job':
-      return <Briefcase size={12} />;
+      return <BriefcaseBusiness size={12} />;
     case 'tags':
       return <></>;
   }
