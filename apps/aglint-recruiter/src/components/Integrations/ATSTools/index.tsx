@@ -263,7 +263,7 @@ function ATSTools({
         .then(({ data }) => {
           if (data) {
             setTimeout(() => {
-              // inputRef.current.value = (data as string) || '';
+              inputRef.current.value = (data as string) || '';
               setInputValue(data);
             }, 10);
           }
@@ -328,7 +328,7 @@ function ATSTools({
       secondaryText: data?.lever_key ? null : 'Learn How',
       primaryAction: () => {
         setLoading(false);
-        if (data.lever_key) updateApi('lever');
+        if (data?.lever_key) updateApi('lever');
         else connectApi('lever');
       },
       secondaryAction: () => {

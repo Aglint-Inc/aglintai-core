@@ -9,12 +9,7 @@ const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(
     const [showKey, setShowKey] = useState(false);
     return (
       <div className='relative w-full'>
-        <Input
-          ref={inputRef}
-          type={showKey ? 'text' : 'password'}
-          readOnly
-          {...props}
-        />
+        <Input ref={inputRef} type={showKey ? 'text' : 'password'} {...props} />
         <Button
           variant='ghost'
           size='sm'
