@@ -33,7 +33,7 @@ export function SetupCard({
   const router = useRouterPro();
 
   return (
-    <Card className='h-full w-full border-none bg-gray-50'>
+    <Card className='h-full w-full border-none bg-gray-50 shadow-none'>
       <CardHeader className=''>
         <div className='flex items-start justify-between'>
           <div className='flex flex-col'>

@@ -52,13 +52,13 @@ export default function Departments() {
       await refetchDepartments();
     }
   };
-  let initialDepartments = [];
+  const initialDepartments = [];
 
-  if (localStorage?.getItem('departments')) {
-    if (Array.isArray(JSON.parse(localStorage?.getItem('departments')))) {
-      initialDepartments = JSON.parse(localStorage?.getItem('departments'));
-    }
-  }
+  // if (localStorage?.getItem('departments')) {
+  //   if (Array.isArray(JSON.parse(localStorage?.getItem('departments')))) {
+  //     initialDepartments = JSON.parse(localStorage?.getItem('departments'));
+  //   }
+  // }
 
   const current_departments = departments.map((d) =>
     d.name.replace(/\s+/g, '').toLowerCase(),
