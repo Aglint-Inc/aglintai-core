@@ -328,7 +328,7 @@ function ATSTools({
       secondaryText: data?.lever_key ? null : 'Learn How',
       primaryAction: () => {
         setLoading(false);
-        if (data.lever_key) updateApi('lever');
+        if (data?.lever_key) updateApi('lever');
         else connectApi('lever');
       },
       secondaryAction: () => {
