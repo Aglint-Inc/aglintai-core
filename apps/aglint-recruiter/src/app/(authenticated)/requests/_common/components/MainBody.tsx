@@ -67,14 +67,12 @@ const MainBody = () => {
     ) || 0;
 
   useEffect(() => {
-    if (typeof window !== 'undefined')
-      setOpenChat(
-        window.localStorage.getItem('openChat') === 'true' &&
-          isShowFeature('AGENT')
-          ? true
-          : false,
-      );
-  }, [window.localStorage.getItem('openChat')]);
+    setOpenChat(
+      localStorage.getItem('openChat') === 'true' && isShowFeature('AGENT')
+        ? true
+        : false,
+    );
+  }, [localStorage.getItem('openChat')]);
 
   if (isLoading || !isFetched)
     return (
@@ -94,7 +92,7 @@ const MainBody = () => {
             size='sm'
             onClick={() => {
               const newOpenChat = !openChat;
-              // window.localStorage.setItem('openChat', newOpenChat.toString());
+              localStorage.setItem('openChat', newOpenChat.toString());
               setOpenChat(newOpenChat);
             }}
           >
