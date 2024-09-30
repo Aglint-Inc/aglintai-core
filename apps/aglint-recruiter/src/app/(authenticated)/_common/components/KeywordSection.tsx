@@ -52,7 +52,7 @@ const KeywordSection: React.FC<KeywordSectionProps> = ({
   ) : (
     <GlobalEmpty
       icon={<CalendarDays />}
-      header='No Keywords available '
+      description='No keywords added yet. Add now.'
       primaryAction={
         <AddChip
           options={keywords.map((item) => ({ name: item, id: item }))}

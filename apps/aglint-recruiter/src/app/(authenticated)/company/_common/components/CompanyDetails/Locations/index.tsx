@@ -82,18 +82,17 @@ export const Location = () => {
               icon={
                 <MapPin
                   strokeWidth={2}
-                  className='h-6 w-6 text-muted-foreground'
+                  className='h-4 w-4 text-muted-foreground'
                 />
               }
-              header='No Locations yet'
-              description='Add the company locations'
+              description='No company locations found. Add the company locations'
               primaryAction={
                 <UIButton
                   onClick={() => {
                     setAddEditDialog({ open: true, edit: -1 });
                   }}
-                  className='mb-2 w-full'
                   leftIcon={<Plus />}
+                  size='sm'
                 >
                   Add Locations
                 </UIButton>
