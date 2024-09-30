@@ -111,6 +111,7 @@ export default function ScheduleAvailability({
         isEditOpen={isEditOpen}
       />
       <UISectionCard
+      type='compact'
         title='Availability'
         action={
           <UIButton

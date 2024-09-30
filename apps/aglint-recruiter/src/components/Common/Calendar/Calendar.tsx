@@ -99,6 +99,7 @@ function CalendarComp({
         </div>
       ) : (
         <UISectionCard
+          type='compact'
           title='Schedule Calendar'
           isHoverEffect={false}
           action={<CalendarFilter filter={filter} setFilter={setFilter} />}
