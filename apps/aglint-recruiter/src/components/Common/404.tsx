@@ -12,7 +12,7 @@ export function NotFound({
   description = "Oops! The page you're looking for doesn't exist or has been moved.",
 }: NotFoundProps) {
   return (
-    <div className='container-lg mx-auto w-full px-12'>
+    <div className='container-lg mx-auto w-full px-4'>
       <div className='flex min-h-screen items-center justify-center bg-gray-100'>
         <div className='w-full max-w-md space-y-6 rounded-lg bg-white p-8 text-center shadow-lg'>
           <div className='flex justify-center'>

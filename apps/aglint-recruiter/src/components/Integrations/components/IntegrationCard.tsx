@@ -98,6 +98,7 @@ export function IntegrationCard({
         )}
         <Button
           variant={
+            primaryText === 'Contact Support' ||
             primaryText === 'Edit' ||
             primaryText === 'Re-Connect' ||
             primaryText === 'Re-Upload' ||
