@@ -83,7 +83,6 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/get-accesstoken': ['scheduling_module'],
   '/api/scheduling/application/schedulewithagent': ['scheduling_module'],
   //v1 apis
-  '/api/scheduling/v1/get-candidate-selected-slots': ['scheduling_module'],
   '/api/scheduling/v1/event_attendee_status': ['scheduling_module'],
   // request availability apis
   '/api/scheduling/request_availability/getCandidateRequestData': [
