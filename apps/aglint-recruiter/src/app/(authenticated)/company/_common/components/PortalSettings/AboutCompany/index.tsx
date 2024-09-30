@@ -3,7 +3,7 @@ import { Parser } from 'html-to-react';
 import { Building2, Plus, SquarePen } from 'lucide-react';
 import { useState } from 'react';
 
-import { usePortalSettings } from '@/company/hooks/usePortalSettings';
+import { useFlags } from '@/company/hooks/useFlags';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
 import UISectionCard from '@/components/Common/UISectionCard';
@@ -11,7 +11,7 @@ import UISectionCard from '@/components/Common/UISectionCard';
 import { AboutCompanyDialog } from './AboutCompanyDialog';
 
 export default function AboutCompany() {
-  const { data } = usePortalSettings();
+  const { about } = useFlags();
 
   const htmlParser = Parser();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -26,7 +26,7 @@ export default function AboutCompany() {
         description='  This section content will be displayed on the candidate portal as
               the about section.'
         emptyStateMessage={
-          !data.about && (
+          !about && (
             <GlobalEmpty
               icon={
                 <Building2
@@ -48,7 +48,7 @@ export default function AboutCompany() {
           )
         }
         action={
-          data?.about?.length > 0 && (
+          !!about?.length && (
             <UIButton
               variant='outline'
               onClick={() => setIsDialogOpen(true)}
@@ -60,10 +60,10 @@ export default function AboutCompany() {
           )
         }
       >
-        {data?.about && (
+        {about && (
           <ScrollArea className='w-full rounded-md border bg-gray-100'>
             <div className='max-h-72 w-full space-y-4 p-4'>
-              {htmlParser.parse(data?.about)}
+              {htmlParser.parse(about)}
             </div>
           </ScrollArea>
         )}
