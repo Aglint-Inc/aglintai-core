@@ -116,13 +116,13 @@ function MyInterviews() {
             {scheduleFetched && allSchedules.length === 0 && (
               <GlobalEmpty
                 icon={
-                  <Info
+                  <Calendar
                     strokeWidth={2}
                     className='h-6 w-6 text-muted-foreground'
                   />
                 }
                 header='No interviews found'
-                description='There are no upcoming interviews.'
+                description='There are no upcoming interviews for you.'
               />
             )}
           </>
