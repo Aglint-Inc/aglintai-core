@@ -51,7 +51,7 @@ export default function CandidateGreeting() {
           )
         }
         action={
-          greetings ? (
+          !!greetings && (
             <UIButton
               variant='outline'
               onClick={() => setIsDialogOpen(true)}

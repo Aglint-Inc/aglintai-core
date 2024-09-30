@@ -27,7 +27,7 @@ export default function AboutCompany() {
         description='  This section content will be displayed on the candidate portal as
               the about section.'
         emptyStateMessage={
-          !data.about && (
+          !about && (
             <GlobalEmpty
               icon={
                 <Building2
@@ -49,7 +49,7 @@ export default function AboutCompany() {
           )
         }
         action={
-          about?.length ? (
+          !!about?.length && (
             <UIButton
               variant='outline'
               onClick={() => setIsDialogOpen(true)}
