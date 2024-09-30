@@ -30,7 +30,9 @@ export const cloneWorkflows = async ({
     false,
   );
 
-  const filtered_workflows: typeof job_workflows = [...job_workflows];
+  const filtered_workflows: typeof job_workflows = [...job_workflows].filter(
+    (w) => w.workflow.is_active,
+  );
 
   const new_relations_promises = filtered_workflows.map(async (j_w) => {
     const [req_workflow] = supabaseWrap(
