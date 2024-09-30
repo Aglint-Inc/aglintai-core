@@ -3,7 +3,7 @@ import { Badge } from '@components/ui/badge';
 import { TableCell, TableRow } from '@components/ui/table';
 import {
   BookOpen,
-  Briefcase,
+  BriefcaseBusiness,
   Clock,
   Clock8,
   GraduationCap,
@@ -119,7 +119,7 @@ export const InterviewerList = ({
       <TableCell>
         <div className='flex items-center space-x-2'>
           <Badge variant='secondary' className='bg-green-100 text-green-800'>
-            <Briefcase className='mr-1 h-3 w-3' />
+            <BriefcaseBusiness className='mr-1 h-3 w-3' />
             {interviewer.completed_count}
           </Badge>
         </div>

@@ -1,6 +1,6 @@
 import { cn } from '@lib/utils';
 import {
-  Briefcase,
+  BriefcaseBusiness,
   Calendar,
   ChevronDown,
   Clock,
@@ -118,7 +118,7 @@ export function GlobalScheduleCard({
                 <div className='flex gap-4'>
                   {isRoleVisible && (
                     <div className='flex items-center gap-1'>
-                      <Briefcase className='h-4 w-4' />
+                      <BriefcaseBusiness className='h-4 w-4' />
                       <UITypography type='small'>{textRole}</UITypography>
                     </div>
                   )}

@@ -1,6 +1,6 @@
 'use client';
 import {
-  Briefcase,
+  BriefcaseBusiness,
   LinkedinIcon,
   Mail,
   MapPin,
@@ -24,7 +24,7 @@ export function ApplicantInfoBox({
       {/* Work Information */}
       {isDepartmentVisible && (
         <div className='flex items-center'>
-          <Briefcase className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
+          <BriefcaseBusiness className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
           <div>
             <dt className='sr-only'>Department</dt>
             <dd className='truncate'>{textDepartment}</dd>

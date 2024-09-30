@@ -1,7 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
-import { Briefcase } from 'lucide-react';
+import { BriefcaseBusiness } from 'lucide-react';
 
 import { UIAlert } from '@/components/Common/UIAlert';
 import UITypography from '@/components/Common/UITypography';
@@ -76,7 +76,7 @@ function CollapseContent({
                         </p>
                         {candidate.current_job_title && (
                           <div className='mt-1 flex items-center text-xs text-gray-500'>
-                            <Briefcase className='mr-1 h-3 w-3' />
+                            <BriefcaseBusiness className='mr-1 h-3 w-3' />
                             <span>{candidate.current_job_title}</span>
                           </div>
                         )}

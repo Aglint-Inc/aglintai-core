@@ -26,7 +26,13 @@ import {
   startOfYear,
   subDays,
 } from 'date-fns';
-import { Briefcase, Building2, CalendarIcon, MapPin, X } from 'lucide-react';
+import {
+  BriefcaseBusiness,
+  Building2,
+  CalendarIcon,
+  MapPin,
+  X,
+} from 'lucide-react';
 import React, { useState } from 'react';
 import { useAnalyticsContext } from 'src/app/(authenticated)/reports/_common/context/AnalyticsContext/AnalyticsContextProvider';
 
@@ -138,7 +144,7 @@ export default function Component() {
             (job) => handleFilterChange({ job: job }),
             'job',
             filtersOptions.job,
-            <Briefcase className='h-4 w-4' />,
+            <BriefcaseBusiness className='h-4 w-4' />,
           )}
 
           {renderSelect(
