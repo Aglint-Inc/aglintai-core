@@ -82,6 +82,7 @@ export const AutomationAccordion = ({
                             <ActionsContainer
                               key={action.id}
                               wAction={action}
+                              wTrigger={wTrigger}
                             />
                           );
                         })}
