@@ -9,7 +9,10 @@ import {
 } from '@components/ui/card';
 
 import { UIButton } from '@/components/Common/UIButton';
-import { useJobAutomationStore } from '@/job/workflows/contexts/workflowsStoreContext';
+import {
+  initiateJobAutomationState,
+  useJobAutomationStore,
+} from '@/job/workflows/contexts/workflowsStoreContext';
 import { useGetJobWorkflow } from '@/job/workflows/hooks';
 import { TriggerCategory } from '@/job/workflows/lib/constants';
 import { api } from '@/trpc/client';
@@ -17,7 +20,8 @@ import { api } from '@/trpc/client';
 import { AutomationAccordion } from './AutomationAccordion';
 
 export default function Main() {
-  const { jobWorkflowTriggers, jobWorkflowActions } = useJobAutomationStore();
+  const { jobWorkflowTriggers, jobWorkflowActions, isWorkflowsUpdated } =
+    useJobAutomationStore();
   const { data } = useGetJobWorkflow();
   const { mutate: updateJobWorkflowsActions } =
     api.jobs.job.workflow.updateJobWorkflowsActions.useMutation();
@@ -51,6 +55,9 @@ export default function Main() {
       });
     }
   };
+  const handleReset = () => {
+    initiateJobAutomationState(data);
+  };
   return (
     <div className='md:col-span-2'>
       <Card className='border-0 shadow-none'>
@@ -79,7 +86,14 @@ export default function Main() {
           </Accordion>
         </CardContent>
       </Card>
-      <div className='mt-6 flex justify-end space-x-1'>
+      <div className='mt-6 flex flex-row justify-end space-x-1'>
+        <UIButton
+          disabled={!isWorkflowsUpdated}
+          variant='destructive'
+          onClick={handleReset}
+        >
+          Reset
+        </UIButton>
         <UIButton onClick={handleSave}>Save</UIButton>
       </div>
     </div>
