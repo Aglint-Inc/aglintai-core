@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,6 +18,7 @@ import {
   useState,
 } from 'react';
 
+import { useCompanySetup } from '@/authenticated/hooks/useCompanySetup';
 import { useTenant } from '@/company/hooks';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJobs } from '@/jobs/hooks';
@@ -49,6 +51,7 @@ const JobCreateComponent = () => {
 
 const JobCreate = () => {
   const { recruiter } = useTenant();
+  const { isJobSetupPending, jobSetupSteps } = useCompanySetup();
   const initialCompany = recruiter?.name ?? '';
   const initialTitle = recruiter?.name ? `${initialCompany}'s first job` : '';
   const [fields, setFields] = useState<Form>({
@@ -120,13 +123,18 @@ const JobCreate = () => {
     },
   });
 
+  const pendingCompanySettingforJob = jobSetupSteps
+    .filter((job) => !job.isCompleted)
+    .map((set) => set.title)
+    .join(', ');
+
   return (
     <div className='mx-auto max-w-2xl p-4'>
       <div className='mb-4 flex items-center'>
         {/* <Button variant='outline' onClick={() => push(ROUTES['/jobs']())}>
           Back
           </Button> */}
-        <div className='flex flex-col items-center space-x-2'>
+        <div className='m-0 flex w-full flex-col space-x-2'>
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -138,7 +146,17 @@ const JobCreate = () => {
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          <h1 className='ml-4 mt-4 text-2xl font-bold'>Create Job</h1>
+          <h1 className='m-0 text-2xl font-bold'>Create Job</h1>
+          {isJobSetupPending && (
+            <Alert variant='warning' className='ml-[-20px] mt-4'>
+              <AlertTitle>Company setup is pending </AlertTitle>
+              <AlertDescription>
+                First complete the onboarding progress then only you can create
+                a job.
+                <li> {pendingCompanySettingforJob}</li>
+              </AlertDescription>
+            </Alert>
+          )}
         </div>
       </div>
       <JobCreateForm fields={fields} setFields={setFields} />
