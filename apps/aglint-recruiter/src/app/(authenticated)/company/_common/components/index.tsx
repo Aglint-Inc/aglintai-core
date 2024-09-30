@@ -1,3 +1,5 @@
+import { ScrollArea } from '@components/ui/scroll-area';
+
 import { useRouterPro } from '@/hooks/useRouterPro';
 
 import CompanyInfoComp from './CompanyDetails';
@@ -16,14 +18,14 @@ const CompanyDetailComp = () => {
   const router = useRouterPro();
   const tab = router?.queryParams?.tab as CompanySettingTabsType;
   return (
-    <div className='container mx-auto'>
-      <div className='mb-6 flex gap-6'>
-        <div className='w-1/6'>
-          <div className='sticky top-[32px] w-full'>
-            <SettingsSubNabItem />
-          </div>
+    <div className='mb-6 flex gap-6'>
+      <div className='w-1/6'>
+        <div className='sticky top-[32px] w-full'>
+          <SettingsSubNabItem />
         </div>
-        <div className='w-3/4'>
+      </div>
+      <div className='w-3/4'>
+        <ScrollArea>
           {tab === 'company-info' && <CompanyInfoComp />}
           {tab === 'team' && <TeamManagement />}
           {tab === 'roles' && <RolesAndPermissionsComponent />}
@@ -36,7 +38,7 @@ const CompanyDetailComp = () => {
             tab === 'slackTemplate' ||
             tab === 'agentTemplate' ||
             tab === 'calenderTemplate') && <SchedulerEmailTemps />}
-        </div>
+        </ScrollArea>
       </div>
     </div>
   );
