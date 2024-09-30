@@ -167,7 +167,7 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
 const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
   const db = createPrivateClient();
 
-  let user: User | null = null;
+  let user: User = null;
 
   if (process.env.NODE_ENV === 'development')
     user = (await db.auth.getSession()).data.session.user;
