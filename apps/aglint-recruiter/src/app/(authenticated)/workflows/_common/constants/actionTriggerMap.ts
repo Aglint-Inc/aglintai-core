@@ -271,7 +271,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
   onReceivingAvailReq: [
     {
       value: {
-        target_api: 'onReceivingAvailReq_agent_confirmSlot',
+        target_api: 'onReceivingAvailReq_slack_suggestSlots',
         action_type: 'end_point',
         payload: {
           end_point: null,
