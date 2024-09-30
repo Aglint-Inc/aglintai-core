@@ -1,6 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import { Calendar, Info } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { transformDataSchedules } from 'src/app/_common/utils/schedules-query';
 
@@ -115,9 +115,14 @@ function MyInterviews() {
               })}
             {scheduleFetched && allSchedules.length === 0 && (
               <GlobalEmpty
-                icon={<Info strokeWidth={1} className='h-10 w-10' />}
+                icon={
+                  <Calendar
+                    strokeWidth={2}
+                    className='h-6 w-6 text-muted-foreground'
+                  />
+                }
                 header='No interviews found'
-                description='There are no upcoming interviews.'
+                description='There are no upcoming interviews for you.'
               />
             )}
           </>

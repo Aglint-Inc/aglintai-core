@@ -1,5 +1,5 @@
 import { ScrollArea } from '@components/ui/scroll-area';
-import { FileX } from 'lucide-react';
+import { LibraryBig } from 'lucide-react';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import UISectionCard from '@/components/Common/UISectionCard';
@@ -27,7 +27,7 @@ export const Qualifications = ({
             ) : (
               <GlobalEmpty
                 icon={
-                  <FileX
+                  <LibraryBig
                     strokeWidth={2}
                     className='h-6 w-6 text-muted-foreground'
                   />

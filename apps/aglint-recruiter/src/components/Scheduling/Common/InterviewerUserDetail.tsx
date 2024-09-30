@@ -6,7 +6,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { Briefcase } from 'lucide-react';
+import { BriefcaseBusiness } from 'lucide-react';
 
 import { getPauseMemberText } from '@/authenticated/utils';
 import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerAcceptDeclineIcon';
@@ -79,7 +79,7 @@ function InterviewerUserDetail({
           </p>
           {userDetails?.position && (
             <div className='flex items-center text-xs text-gray-600'>
-              <Briefcase className='mr-1 h-3 w-3' />
+              <BriefcaseBusiness className='mr-1 h-3 w-3' />
               <span>{userDetails.position}</span>
             </div>
           )}

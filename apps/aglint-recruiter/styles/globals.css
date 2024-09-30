@@ -603,4 +603,11 @@
     --destructive-foreground: 210 20% 98%;
     --ring: 263.4 70% 50.4%;
   }
+  a {
+    @apply transition-all duration-200 ease-in-out;
+  }
+  
+  a:hover {
+    @apply underline;
+  }
 }

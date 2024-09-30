@@ -10,8 +10,9 @@ import {
   AlertDialogTitle,
 } from '@components/ui/alert-dialog';
 import { Label } from '@components/ui/label';
-import { Skeleton } from '@components/ui/skeleton';
 import { type ReactNode } from 'react';
+
+import { Loader } from '@/components/Common/Loader';
 
 import { ShowCode } from '../../Common/ShowCode';
 import { type PopUpReasonTypes } from '../types';
@@ -37,28 +38,30 @@ function ATSPopUps({
   const atsName = reason?.split('_')[1];
 
   const handleAction = async () => {
-    try {
-      const result = await action();
-      if (result) {
-        toast({
-          title: 'Success',
-          description: isDisconnect
-            ? `Disconnected from ${atsName} successfully`
-            : 'Action completed successfully',
-          variant: 'default',
-        });
-      } else {
-        throw new Error('Action failed');
-      }
-    } catch (error) {
+    // try {
+    const result = await action();
+    if (result) {
       toast({
-        title: 'Error',
-        description: 'An error occurred. Please try again.',
-        variant: 'destructive',
+        title: 'Success',
+        description: isDisconnect
+          ? `Disconnected from ${atsName} successfully`
+          : 'Action completed successfully',
+        variant: 'default',
       });
-    } finally {
-      close();
     }
+    //  else {
+    //   throw new Error('Action failed');
+    // }
+    close();
+    // } catch (error) {
+    //   toast({
+    //     title: 'Error',
+    //     description: 'An error occurred. Please try again.',
+    //     variant: 'destructive',
+    //   });
+    // } finally {
+    //   close();
+    // }
   };
 
   if (isDisconnect) {
@@ -93,7 +96,7 @@ function ATSPopUps({
         <ShowCode>
           <ShowCode.When isTrue={isLoading}>
             <div className='flex flex-col items-center justify-center space-y-2'>
-              <Skeleton className='h-8 w-8' />
+              <Loader />
               <p className='text-sm'>
                 {reason?.startsWith('connect') ? 'Connecting' : 'Reconnecting'}{' '}
                 to {atsName}
@@ -124,7 +127,9 @@ function ATSPopUps({
               <AlertDialogTitle>
                 {reason?.includes('connect')
                   ? `Connect ${atsName}`
-                  : atsName || 'Unknown Action'}
+                  : atsName
+                    ? atsName.charAt(0).toUpperCase() + atsName.slice(1)
+                    : 'Unknown Action'}
               </AlertDialogTitle>
             </AlertDialogHeader>
             <AlertDialogDescription>

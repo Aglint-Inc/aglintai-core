@@ -1,5 +1,6 @@
-import { Calendar } from 'lucide-react';
+import { Search } from 'lucide-react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 
 import { useScheduleStatesContext } from '../contexts/ScheduleStatesContext';
@@ -17,21 +18,13 @@ function UpComingInterviews() {
       <UpComingInterviewFilters />
       {!isFetched && <Loader />}
       {isFetched && (schedules ?? [])?.length === 0 && (
-        <div className='mt-4 flex min-h-[500px] items-center justify-center'>
-          <div className='mx-auto flex w-full max-w-md flex-col items-center border-none px-6 pb-8 pt-6 text-center shadow-none'>
-            <div className='mb-4 flex items-center justify-center'>
-              <Calendar
-                className='h-16 w-16 text-primary'
-                strokeWidth={0.5}
-                size={48}
-              />
-            </div>
-            <h3 className='mb-2 text-lg font-semibold'>No interviews found</h3>
-            <p className='mb-6 text-muted-foreground'>
-              There are no upcoming interviews.
-            </p>
-          </div>
-        </div>
+        <GlobalEmpty
+          icon={
+            <Search className='h-6 w-6 text-muted-foreground' strokeWidth={2} />
+          }
+          header='No interviews found'
+          description='There are no interviews matching your filters.'
+        />
       )}
       {isFetched && (schedules ?? [])?.length > 0 && (
         <ScheduleMeetingList filterSchedules={schedules ?? []} />
