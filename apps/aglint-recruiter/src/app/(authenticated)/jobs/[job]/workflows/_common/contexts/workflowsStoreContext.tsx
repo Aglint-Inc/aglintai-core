@@ -45,11 +45,11 @@ export const resetJobAutomation = () =>
   });
 
 export const updateWTrigger = (
-  jobWorkflowTriggers: JobAutomationState['jobWorkflowTriggers'][number],
+  jobWorkflowTrigger: JobAutomationState['jobWorkflowTriggers'][number],
 ) => {
   useJobAutomationStore.setState((state) => ({
     jobWorkflowTriggers: state.jobWorkflowTriggers.map((trigger) =>
-      trigger.id === jobWorkflowTriggers.id ? jobWorkflowTriggers : trigger,
+      trigger.id === jobWorkflowTrigger.id ? jobWorkflowTrigger : trigger,
     ),
     isWorkflowsChanged: true,
   }));

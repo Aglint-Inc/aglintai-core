@@ -1,11 +1,10 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { useTenant } from '@/company/hooks';
 import { supabase } from '@/utils/supabase/client';
 
 export const useAllDepartments = () => {
   const { recruiter } = useTenant();
-  const queryClient = useQueryClient();
   const recruiter_id = recruiter?.id;
   const query = useQuery({
     queryKey: ['departments'],
@@ -15,12 +14,13 @@ export const useAllDepartments = () => {
     placeholderData: [],
   });
 
-  const refetch = () => {
-    queryClient.invalidateQueries({
-      queryKey: ['departments'],
-    });
-  };
-  return { ...query, refetch };
+  // const queryClient = useQueryClient();
+  // const refetch = () => {
+  //   queryClient.invalidateQueries({
+  //     queryKey: ['departments'],
+  //   });
+  // };
+  return { ...query };
 };
 
 const fetchDepartments = async (rec_id: string) => {

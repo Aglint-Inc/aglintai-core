@@ -1,9 +1,12 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
 
+import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import {
   deleteWAcion,
+  type JobAutomationState,
   updateWAction,
+  updateWTrigger,
 } from '@/job/workflows/contexts/workflowsStoreContext';
 import { agentInstructionEmailTargetApi } from '@/job/workflows/lib/constants';
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
@@ -12,8 +15,10 @@ import ActionDetailsComponent from './ActionDetailsComponent';
 
 const ActionsContainer = ({
   wAction,
+  wTrigger,
 }: {
   wAction: DatabaseTable['workflow_action'];
+  wTrigger: JobAutomationState['jobWorkflowTriggers'][number];
 }) => {
   const trigger = wAction.target_api.split(
     '_',
@@ -36,6 +41,26 @@ const ActionsContainer = ({
         >
           Remove
         </Button>
+      </div>
+      <div className='mb-4'>
+        {(trigger === 'sendAvailReqReminder' ||
+          trigger === 'selfScheduleReminder') && (
+          <UISelectDropDown
+            label='Remind After'
+            value={String(wTrigger.interval)}
+            onValueChange={(interval) => {
+              updateWTrigger({
+                ...wTrigger,
+                interval: Number(interval),
+              });
+            }}
+            menuOptions={[
+              { name: '1 day', value: String(24 * 60) },
+              { name: '2 day', value: String(48 * 60) },
+              { name: '3 day', value: String(72 * 60) },
+            ]}
+          />
+        )}
       </div>
       {wAction.action_type === 'slack' && (
         <ActionDetailsComponent action_type='slack' />

@@ -1,5 +1,5 @@
 import { type SchedulingSettingType } from '@aglint/shared-types';
-import { Pencil } from 'lucide-react';
+import { SquarePen } from 'lucide-react';
 import { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -117,8 +117,10 @@ export default function ScheduleAvailability({
             size='sm'
             variant='secondary'
             onClick={() => setIsEditOpen(true)}
-            icon={<Pencil />}
-          />
+            leftIcon={<SquarePen />}
+          >
+            Edit
+          </UIButton>
         }
       >
         <ScheduleAvailabilityUI
