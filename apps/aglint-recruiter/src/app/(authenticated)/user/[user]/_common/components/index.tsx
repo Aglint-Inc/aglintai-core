@@ -3,6 +3,7 @@ import {
   type SchedulingSettingType,
 } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { useInterviewsByUserId } from '@interviews/hooks/useInterviewsByUserId';
 import { useParams } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
@@ -148,13 +149,14 @@ export default function InterviewerDetailsPage() {
     );
 
   return (
-    <div className='container mx-auto'>
-      <div className='relative'>
-        <div className='sticky top-0 z-10 bg-gray-50'>
-          <BreadCrumb name={interviewerDetails?.first_name || ''} />
-        </div>
-        <div>
-          <Header
+    <div className=''>
+      <div className=''>
+        {isShowFeature('SCHEDULING') && (
+          <div className='relative flex gap-5'>
+            <div className='flex flex-col w-3/12 ml-4'>
+            <BreadCrumb name={interviewerDetails?.first_name || ''} />
+            <div className='mb-4'>
+            <Header
             avatar={interviewerDetails?.avatar || ''}
             name={interviewerName}
             role={capitalizeAll(interviewerDetails?.role || ' - ')}
@@ -165,10 +167,8 @@ export default function InterviewerDetailsPage() {
             phone={interviewerDetails?.phone || ' - '}
             userCardRef={userCardRef}
           />
-        </div>
-        {isShowFeature('SCHEDULING') && (
-          <div className='relative flex gap-5'>
-            <div className='sticky top-20 self-start' style={{ top: '90px' }}>
+          </div>
+            <div>
               <aside>
                 <SideBar
                   activeSection={activeSection}
@@ -176,7 +176,9 @@ export default function InterviewerDetailsPage() {
                 />
               </aside>
             </div>
-            <main className='relative z-0 space-y-6'>
+            </div>
+            <ScrollArea className='overflow-auto w-9/12 ' style={{height:'calc(100vh - 66px)'}}>
+            <main className='relative z-0 flex flex-col gap-10 ' >
               <section ref={sectionRefs.overview}>
                 <KeyMatrics
                   declineCount={
@@ -240,6 +242,7 @@ export default function InterviewerDetailsPage() {
                 />
               </section>
             </main>
+            </ScrollArea>
           </div>
         )}
       </div>

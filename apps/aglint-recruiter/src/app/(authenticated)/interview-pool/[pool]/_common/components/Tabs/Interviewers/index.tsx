@@ -14,8 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@radix-ui/react-popover';
-import { MoreVertical, User } from 'lucide-react';
-import { Pause, Play, Trash2 } from 'lucide-react';
+import { MoreVertical, Pause, Play, Trash2, User } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -26,10 +25,6 @@ import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import ROUTES from '@/utils/routing/routes';
 
-import AddMemberDialog from '../../../dialogs/AddMemberDialog';
-import DeleteMemberDialog from '../../../dialogs/DeleteMemberDialog';
-import PauseDialog from '../../../dialogs/PauseDialog';
-import ResumeMemberDialog from '../../../dialogs/ResumeMemberDialog';
 import { useModuleAndUsers } from '../../../hooks/useModuleAndUsers';
 import {
   setIsAddMemberDialogOpen,
@@ -73,10 +68,6 @@ function Interviewers() {
 
   return (
     <>
-      <DeleteMemberDialog />
-      <AddMemberDialog />
-      <PauseDialog />
-      <ResumeMemberDialog />
       <div className='mb-4 flex justify-between'>
         <UITextField
           placeholder='Search interviewers...'
@@ -231,44 +222,6 @@ function Interviewers() {
                           </div>
                         </PopoverContent>
                       </Popover>
-                      {/* <div className='invisible flex space-x-2 group-hover:visible'>
-                        <UIButton
-                          variant='destructive'
-                          size='sm'
-                          onClick={() => {
-                            setSelUser(interviewer.rel);
-                            setIsDeleteMemberDialogOpen(true);
-                          }}
-                        >
-                          <Trash2 className='mr-2 h-4 w-4' />
-                          Remove
-                        </UIButton>
-                        {interviewer.rel.pause_json ? (
-                          <UIButton
-                            variant='ghost'
-                            size='sm'
-                            onClick={() => {
-                              setSelUser(interviewer.rel);
-                              setIsResumeDialogOpen(true);
-                            }}
-                          >
-                            <Play className='mr-2 h-4 w-4' />
-                            Resume
-                          </UIButton>
-                        ) : (
-                          <UIButton
-                            variant='ghost'
-                            size='sm'
-                            onClick={() => {
-                              setSelUser(interviewer.rel);
-                              setIsPauseDialogOpen(true);
-                            }}
-                          >
-                            <Pause className='mr-2 h-4 w-4' />
-                            Pause
-                          </UIButton>
-                        )}
-                      </div> */}
                     </TableCell>
                   </TableRow>
                 ))

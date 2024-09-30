@@ -47,8 +47,8 @@ import { useMemberList } from '@/hooks/useMemberList';
 import SideDrawerEdit from '@/jobs/job/application/components/EditDrawer';
 import CollapseContent from '@/jobs/job/application/components/InterviewStage/IndividualSession/Collapse';
 import { useEditSession } from '@/jobs/job/application/components/InterviewTab/hooks/useEditSession';
-import { type ApiInterviewSessionRequest } from '@/pages/api/scheduling/application/fetchInterviewSessionByRequest';
 import { type Request } from '@/queries/requests/types';
+import { type fetchSessionDetails } from '@/server/api/routers/requests/utils/requestSessions';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import ROUTES from '@/utils/routing/routes';
 import { breakDurations } from '@/utils/scheduling/const';
@@ -74,7 +74,11 @@ export default function ViewRequestDetails() {
     requests: { data: requestList, isPlaceholderData },
     handleAsyncUpdateRequest,
   } = useRequests();
-  const { data: sessions, status, refetch: refetchMeetings } = useMeetingList();
+  const {
+    data: sessions,
+    status,
+    refetch: refetchMeetings,
+  } = useMeetingList({ request_id: requestId || '' });
 
   const { data: members } = useMemberList();
 
@@ -464,7 +468,11 @@ export default function ViewRequestDetails() {
 
                   <SessionCards
                     refetchMeetings={refetchMeetings}
-                    sessions={sessions ?? []}
+                    sessions={
+                      sessions as Awaited<
+                        ReturnType<typeof fetchSessionDetails>
+                      >
+                    }
                   />
                 </CardContent>
               </Card>
@@ -535,8 +543,8 @@ function SessionCards({
   sessions,
   refetchMeetings,
 }: {
-  sessions: ApiInterviewSessionRequest['response']['sessions'];
-  refetchMeetings: () => Promise<void>;
+  sessions: Awaited<ReturnType<typeof fetchSessionDetails>>;
+  refetchMeetings: () => void;
 }) {
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const { onClickEdit } = useEditSession();
