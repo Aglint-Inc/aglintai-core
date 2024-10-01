@@ -50,9 +50,10 @@ export const ScheduleAvailabilityUI = ({
           Set your company&apos;s working hours to define the availability for
           interviews.
         </p>
-        <Table className='border-gray-200'>
+        <div className='border rounded-md overflow-hidden'>
+        <Table>
           <TableHeader>
-            <TableRow>
+            <TableRow className='bg-gray-100'>
               <TableHead>Day</TableHead>
               <TableHead>Hours</TableHead>
             </TableRow>
@@ -63,6 +64,7 @@ export const ScheduleAvailabilityUI = ({
             ))}
           </TableBody>
         </Table>
+        </div>
       </SectionSubCard>
       <SectionSubCard title='Scheduling Keywords'>
         {scheduleKeywords.map((keyword) => {
@@ -147,11 +149,11 @@ const KeywordViewSection = ({
       <UITypography
         variant='p'
         type='small'
-        className='mb-1 text-lg font-semibold'
+        className='mb-1 text-md font-medium'
       >
         {title}
       </UITypography>
-      <UITypography variant='p' type='small' className='mb-4'>
+      <UITypography variant='p' type='small' className='mb-4 text-muted-foreground'>
         {description}
       </UITypography>
       <div className='flex flex-wrap gap-2'>
