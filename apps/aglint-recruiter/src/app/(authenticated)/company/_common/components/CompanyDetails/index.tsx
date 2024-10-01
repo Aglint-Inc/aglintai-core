@@ -4,7 +4,7 @@ import { Location } from './Locations';
 
 const CompanyInfoComp = () => {
   return (
-    <div>
+    <div className='max-w-[60%]'>
       <div className='flex flex-col'>
         <div className='mb-6'>
           <h2 className='mb-1 text-xl font-semibold'>Company Information</h2>
