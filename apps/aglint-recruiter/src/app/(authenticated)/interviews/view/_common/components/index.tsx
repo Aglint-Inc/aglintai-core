@@ -5,7 +5,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { Home, User } from 'lucide-react';
+import { BriefcaseBusiness, Home, MapPin, User } from 'lucide-react';
 import { useEffect } from 'react';
 
 import { useTenant } from '@/company/hooks';
@@ -71,9 +71,9 @@ function SchedulingViewComp() {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <div className='w-fullflex-row flex justify-between pr-6'>
-          <div>
-            <h1 className='text-3xl font-bold text-gray-900'>
+        <div className='flex items-start justify-between pt-4'>
+          <div className=''>
+            <h1 className='text-2xl font-medium text-gray-900'>
               {schedule?.interview_session.name}
             </h1>
             <p className='text-md mt-2 pb-2 text-gray-600'>
@@ -88,22 +88,27 @@ function SchedulingViewComp() {
               </a>{' '}
               - {capitalizeFirstLetter(job?.departments?.name ?? '')}
             </p>
-            <div className='flex items-center text-sm text-muted-foreground'>
-              <User className='mr-2 h-4 w-4' />
-              <span>
-                {schedule?.candidates?.first_name}{' '}
-                {schedule?.candidates?.last_name}
-              </span>
-              {schedule?.candidates?.current_job_title && (
-                <span className='ml-2'>
-                  • {schedule?.candidates?.current_job_title}
+            <div className='flex items-center gap-4 text-sm text-muted-foreground'>
+              <div className='flex items-center gap-0.5'>
+                <User className='mr-2 h-4 w-4' />
+                <span>
+                  {schedule?.candidates?.first_name}{' '}
+                  {schedule?.candidates?.last_name}
                 </span>
+              </div>
+              {schedule?.candidates?.current_job_title && (
+                <div className='flex items-center gap-0.5'>
+                  <BriefcaseBusiness className='h-4 w-4' />
+                  <span className='ml-2'>
+                    {schedule?.candidates?.current_job_title}
+                  </span>
+                </div>
               )}
               {schedule?.candidates?.city && (
-                <span className='ml-2'>• {schedule?.candidates.city}</span>
-              )}{' '}
-              {schedule?.candidates?.timezone && (
-                <span className='ml-2'>• {schedule?.candidates.timezone}</span>
+                <div className='flex items-center gap-0.5'>
+                  <MapPin className='h-4 w-4' />
+                  <span className='ml-2'>{schedule?.candidates.city}</span>
+                </div>
               )}
             </div>
           </div>
@@ -111,7 +116,9 @@ function SchedulingViewComp() {
         </div>
         <Banners />
         {data?.schedule_data ? (
-          <ScheduleDetailsTabs />
+          <div className='mt-4'>
+            <ScheduleDetailsTabs />
+          </div>
         ) : (
           <div className='p-2'>
             <UIAlert title={'Meeting Not Found'} iconName={'Calendar'} />
