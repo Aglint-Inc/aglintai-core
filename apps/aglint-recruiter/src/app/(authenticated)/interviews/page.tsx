@@ -9,12 +9,12 @@ import UpComingInterviews from '@interviews/components/UpComingInterviews';
 import { ScheduleStatesProvider } from '@interviews/contexts/ScheduleStatesContext';
 import React from 'react';
 
-import { useAllIntegrations } from '@/authenticated/hooks';
+import { useIntegrations } from '@/authenticated/hooks';
 import { useTenant } from '@/company/hooks';
 
 function InterviewsPage() {
   const { data: allIntegrations, isLoading: integrationLoading } =
-    useAllIntegrations();
+    useIntegrations();
   const { recruiter_user } = useTenant();
 
   if (
