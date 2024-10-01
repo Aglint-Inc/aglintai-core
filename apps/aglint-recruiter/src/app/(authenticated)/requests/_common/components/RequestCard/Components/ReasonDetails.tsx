@@ -4,7 +4,9 @@ import React from 'react';
 function ReasonDetails() {
   return (
     <div className='flex flex-row items-center space-x-1'>
-      <Label className='flex items-center text-sm text-gray-500'>TBD</Label>
+      <Label className='flex items-center text-sm text-muted-foreground'>
+        TBD
+      </Label>
     </div>
   );
 }

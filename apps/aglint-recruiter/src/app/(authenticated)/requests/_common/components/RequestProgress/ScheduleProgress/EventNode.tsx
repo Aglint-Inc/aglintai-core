@@ -115,7 +115,7 @@ const EventNode = ({
           }
           slotLoader={
             tense === 'present' ? (
-              <Loader className='h-4 w-4 animate-spin text-gray-500' />
+              <Loader className='h-4 w-4 animate-spin text-muted-foreground' />
             ) : undefined
           }
           slotAiText={
@@ -134,7 +134,7 @@ const EventNode = ({
                     return (
                       <Label
                         key={prg.id}
-                        className='flex items-center text-sm text-gray-500'
+                        className='flex items-center text-sm text-muted-foreground'
                       >
                         {prg.log}
                       </Label>

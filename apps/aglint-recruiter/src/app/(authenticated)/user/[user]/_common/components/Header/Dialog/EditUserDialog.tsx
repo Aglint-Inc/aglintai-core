@@ -247,7 +247,7 @@ export const EditUserDialog = ({
               <span className='text-red-500'>Change profile photo</span>{' '}
               (optional)
             </p>
-            <p className='text-sm text-gray-500'>
+            <p className='text-sm text-muted-foreground'>
               Upload a square profile image (PNG or JPEG). Maximum size: 5 MB.
             </p>
             {isError && (

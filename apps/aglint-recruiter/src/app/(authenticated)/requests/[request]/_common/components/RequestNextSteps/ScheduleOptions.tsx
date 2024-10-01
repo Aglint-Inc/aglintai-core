@@ -36,9 +36,14 @@ const ScheduleOptions = () => {
   const { handleAsyncUpdateRequest } = useRequests();
   const { candidateAvailabilityId } =
     useConfirmAvailabilitySchedulingFlowStore();
-  const { isFetching } = useRequestAvailabilityDetails({
-    availability_id: candidateAvailabilityId,
-  });
+  const { isFetching } = useRequestAvailabilityDetails(
+    {
+      availability_id: candidateAvailabilityId,
+    },
+    {
+      enabled: !!candidateAvailabilityId,
+    },
+  );
   const addedWorkflow = request_workflow.data.find(
     (w) => w.trigger === 'onRequestSchedule',
   );

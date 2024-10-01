@@ -15,7 +15,7 @@ export const UpcomingInterview = ({
 }) => {
   return (
     <>
-      <UISectionCard title='Upcoming Interviews'>
+      <UISectionCard title='Upcoming Interviews' type='compact'>
         {interviews?.length > 0 ? (
           <div className='space-y-4'>
             {interviews.map((interview) => (
@@ -53,8 +53,8 @@ const List = ({
             interview?.candidate?.last_name || '',
           )}
         </h3>
-        <p className='text-sm text-gray-500'>{interview.job}</p>
-        <p className='text-sm text-gray-500'>
+        <p className='text-sm text-muted-foreground'>{interview.job}</p>
+        <p className='text-sm text-muted-foreground'>
           {`${dayjsLocal(interview.start_time).format('YYYY-MM-DD')} at ${dayjsLocal(interview.start_time).format('hh:mm A')}`}
         </p>
       </div>

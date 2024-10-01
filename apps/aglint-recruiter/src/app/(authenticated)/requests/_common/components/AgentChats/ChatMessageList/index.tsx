@@ -1,11 +1,11 @@
-import { getFullName } from '@aglint/shared-utils';
+// import { getFullName } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Separator } from '@components/ui/separator';
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { useTenant } from '@/company/hooks';
+// import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';
 
@@ -23,7 +23,7 @@ import {
 } from './store';
 
 function ChatMessageList() {
-  const { recruiter_user } = useTenant();
+  // const { recruiter_user } = useTenant();
   const [fetchingChat, setFetchingChat] = useState(false);
   const { isFetchingNextPage, chatList, viewHistory, tempLoading, viewList } =
     useAgentChatStore((state) => ({
@@ -57,19 +57,19 @@ function ChatMessageList() {
             />
           </div>
           <div className='flex flex-col gap-2 text-center'>
-            <UITypography type='small'>
+            {/* <UITypography type='small'>
               {`Good morning, ${getFullName(recruiter_user.first_name, '')}. I am Aglint AI, your Scheduling co-pilot.`}
-            </UITypography>
+            </UITypography> */}
             <UITypography variant='p' type='extraSmall' color='gray-500'>
               Aglint AI makes scheduling and rescheduling interviews easy.
             </UITypography>
           </div>
           <div className='mt-4 flex w-full items-center justify-center'>
-            <div className='flex-grow border-t border-gray-300'></div>
+            <div className='flex-grow border-t border-border'></div>
             <UITypography type='small' color='gray-500' className='mx-4'>
               Getting started? Try these:
             </UITypography>
-            <div className='flex-grow border-t border-gray-300'></div>
+            <div className='flex-grow border-t border-border'></div>
           </div>
           <div className='mt-4 flex w-full flex-col gap-2'>
             <CommandShortCuts />

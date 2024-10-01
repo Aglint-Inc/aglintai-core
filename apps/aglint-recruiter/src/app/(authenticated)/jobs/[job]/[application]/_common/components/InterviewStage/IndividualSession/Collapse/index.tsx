@@ -75,12 +75,12 @@ function CollapseContent({
                           {candidate.name}
                         </p>
                         {candidate.current_job_title && (
-                          <div className='mt-1 flex items-center text-xs text-gray-500'>
+                          <div className='mt-1 flex items-center text-xs text-muted-foreground'>
                             <BriefcaseBusiness className='mr-1 h-3 w-3' />
                             <span>{candidate.current_job_title}</span>
                           </div>
                         )}
-                        <p className='mt-1 text-xs text-gray-500'>
+                        <p className='mt-1 text-xs text-muted-foreground'>
                           {interview_meeting?.start_time
                             ? formatTimeWithTimeZone({
                                 start_time: interview_meeting.start_time,

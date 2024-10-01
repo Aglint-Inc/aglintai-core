@@ -56,11 +56,11 @@ function LocationCard({
       </div>
       <div className='mt-2'>
         <div className='flex items-center'>
-          <MapPin className='mr-2 h-4 w-4 text-gray-500' />
+          <MapPin className='mr-2 h-4 w-4 text-muted-foreground' />
           <p>{address || '-'}</p>
         </div>
         <div className='mt-1 flex items-center'>
-          <Clock className='mr-2 h-4 w-4 text-gray-500' />
+          <Clock className='mr-2 h-4 w-4 text-muted-foreground' />
           <p>{timeZone}</p>
         </div>
       </div>

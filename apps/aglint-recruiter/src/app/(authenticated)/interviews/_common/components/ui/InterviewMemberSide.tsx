@@ -20,7 +20,7 @@ export function InterviewMemberSide({
 }) {
   return (
     <>
-      <Card className='mb-6'>
+      <Card className='mb-6 border-none shadow-none'>
         <CardHeader>
           <div className='flex items-center justify-between'>
             <CardTitle className='text-lg font-semibold'>

@@ -352,15 +352,15 @@ const AdminFeedback = ({
                     <CardHeader className='space-y-2'>
                       <div className='flex items-center space-x-2'>
                         {session[0].session.session_type === 'panel' ? (
-                          <Users size={18} className='text-gray-500' />
+                          <Users size={18} className='text-muted-foreground' />
                         ) : (
-                          <User size={18} className='text-gray-500' />
+                          <User size={18} className='text-muted-foreground' />
                         )}
                         <span className='text-lg font-medium'>
                           {session[0].session.title}
                         </span>
                       </div>
-                      <div className='flex items-center space-x-2 text-sm text-gray-500'>
+                      <div className='flex items-center space-x-2 text-sm text-muted-foreground'>
                         <Calendar className='h-4 w-4' />
                         <span>
                           {dayjsLocal(session[0].session.time.start).format(
@@ -368,7 +368,7 @@ const AdminFeedback = ({
                           )}
                         </span>
                       </div>
-                      <div className='flex items-center space-x-2 text-sm text-gray-500'>
+                      <div className='flex items-center space-x-2 text-sm text-muted-foreground'>
                         <Clock className='h-4 w-4' />
                         <span>
                           {`${dayjsLocal(session[0].session.time.start).format('hh:mm')} - ${dayjsLocal(session[0].session.time.end).format('hh:mm')}`}

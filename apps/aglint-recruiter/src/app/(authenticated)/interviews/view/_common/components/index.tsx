@@ -92,7 +92,7 @@ function SchedulingViewComp() {
                   </a>{' '}
                   - {capitalizeFirstLetter(job?.departments?.name ?? '')}
                 </p>
-                <div className='flex items-center text-sm text-gray-500'>
+                <div className='flex items-center text-sm text-muted-foreground'>
                   <User className='mr-2 h-4 w-4' />
                   <span>
                     {schedule?.candidates?.first_name}{' '}

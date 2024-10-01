@@ -65,7 +65,7 @@ function InterviewerUserDetail({
               </AvatarFallback>
             </Avatar>
           ) : (
-            <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 text-sm font-medium text-gray-500'>
+            <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 text-sm font-medium text-muted-foreground'>
               {getFullName(
                 userDetails.first_name,
                 userDetails.last_name,
@@ -96,7 +96,7 @@ function InterviewerUserDetail({
                 })
               : 'Time not set'}
           </p>
-          <p className='text-xs text-gray-500'>
+          <p className='text-xs text-muted-foreground'>
             {getShortTimeZone(interviewerTimeZone)}
           </p>
         </div>

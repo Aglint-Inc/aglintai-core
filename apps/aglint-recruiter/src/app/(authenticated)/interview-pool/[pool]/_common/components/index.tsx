@@ -78,8 +78,8 @@ export default function InterviewTypeDetail({
                   textBadge={editModule.is_archived ? 'Archived' : 'Active'}
                   color={editModule.is_archived ? 'error' : 'success'}
                 />
-                <span className='text-gray-500'>•</span>
-                <span className='text-gray-500'>
+                <span className='text-muted-foreground'>•</span>
+                <span className='text-muted-foreground'>
                   {editModule.department.name}
                 </span>
               </div>

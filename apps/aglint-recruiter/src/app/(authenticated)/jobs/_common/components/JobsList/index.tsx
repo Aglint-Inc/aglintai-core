@@ -125,7 +125,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
             <TableCell>
               <div className='flex items-center space-x-2'>
                 <Clock className='h-4 w-4 text-gray-400' />
-                <span className='text-sm text-gray-500'>
+                <span className='text-sm text-muted-foreground'>
                   {getTimestamp(job)}
                 </span>
               </div>

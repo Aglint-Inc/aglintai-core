@@ -47,13 +47,13 @@ const UpcomingCard = ({
     <>
       <div className='flex items-center gap-3'>
         <div className='flex w-24 flex-col items-center justify-center rounded-lg bg-gray-100 py-2'>
-          <span className='text-sm font-normal text-gray-500'>
+          <span className='text-sm font-normal text-muted-foreground'>
             {dayjsLocal(latestUpcoming.start_time).format('MMMM')}
           </span>
           <span className='my-1 text-2xl font-medium'>
             {dayjsLocal(latestUpcoming.start_time).format('DD')}
           </span>
-          <span className='text-sm font-medium text-gray-500'>
+          <span className='text-sm font-medium text-muted-foreground'>
             {dayjsLocal(latestUpcoming.start_time).format('dddd')}
           </span>
         </div>

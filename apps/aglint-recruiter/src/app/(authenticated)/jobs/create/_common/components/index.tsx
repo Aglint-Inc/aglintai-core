@@ -10,7 +10,7 @@ import {
 } from '@components/ui/breadcrumb';
 import { Button } from '@components/ui/button';
 import { Dialog, DialogContent } from '@components/ui/dialog';
-import { AlertTriangle, Loader2 } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 import {
   type Dispatch,
   type SetStateAction,
@@ -20,6 +20,7 @@ import {
 
 import { useCompanySetup } from '@/authenticated/hooks/useCompanySetup';
 import { useTenant } from '@/company/hooks';
+import { Loader } from '@/components/Common/Loader';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJobs } from '@/jobs/hooks';
 import type { Form } from '@/jobs/types';
@@ -39,7 +40,7 @@ const JobCreateComponent = () => {
   if (status === 'pending')
     return (
       <div className='flex h-full w-full items-center justify-center'>
-        <Loader2 className='animate-spin' />
+        <Loader />
       </div>
     );
   return (
@@ -129,12 +130,12 @@ const JobCreate = () => {
     .join(', ');
 
   return (
-    <div className='mx-auto max-w-2xl p-4'>
-      <div className='mb-4 flex items-center'>
+    <div className='container mx-auto max-w-6xl p-4'>
+      <div className='flex items-center'>
         {/* <Button variant='outline' onClick={() => push(ROUTES['/jobs']())}>
           Back
           </Button> */}
-        <div className='m-0 flex w-full flex-col space-x-2'>
+        <div className='m-0 flex w-full flex-col'>
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -147,19 +148,22 @@ const JobCreate = () => {
             </BreadcrumbList>
           </Breadcrumb>
           <h1 className='m-0 text-2xl font-bold'>Create Job</h1>
+        </div>
+      </div>
+      <div className='flex w-full flex-row'>
+        <div className='w-3/4'>
           {isJobSetupPending && (
-            <Alert variant='warning' className='ml-[-20px] mt-4'>
+            <Alert variant='warning' className='my-4'>
               <AlertTitle>Company setup is pending </AlertTitle>
               <AlertDescription>
                 First complete the onboarding progress then only you can create
-                a job.
-                <li> {pendingCompanySettingforJob}</li>
+                a job. {pendingCompanySettingforJob}
               </AlertDescription>
             </Alert>
           )}
+          <JobCreateForm fields={fields} setFields={setFields} />
         </div>
       </div>
-      <JobCreateForm fields={fields} setFields={setFields} />
     </div>
   );
 };
@@ -254,7 +258,7 @@ const JobCreateForm = ({
       <Dialog open={modal} onOpenChange={setModal}>
         <DialogContent>
           <div className='flex min-h-[200px] items-center justify-center'>
-            <Loader2 className='animate-spin' />
+            <Loader />
             <span className='ml-2'>Please wait job is creating...</span>
           </div>
         </DialogContent>
@@ -305,26 +309,12 @@ const JobForms = ({
 
   return (
     <div className='space-y-6'>
-      <div className='rounded-md border bg-white p-4'>
-        <h2 className='mb-4 text-lg font-semibold'>Job Details</h2>
-        <div className='text-sm text-gray-500'>
+      <div>
+        <h2 className='text-md font-semibold'>Job Details</h2>
+        <div className='mb-2 text-sm text-muted-foreground'>
           Add job details to help candidates understand the role and apply.
         </div>
         {forms}
-      </div>
-      <div className='rounded-md border bg-white p-4'>
-        <h2 className='mb-4 text-lg font-semibold'>Hiring Team</h2>
-        <div className='text-sm text-gray-500'>
-          Add the hiring team so they can manage the job.
-        </div>
-        {roleForms}
-      </div>
-      <div className='rounded-md border bg-white p-4'>
-        <h2 className='mb-4 text-lg font-semibold'>Job Description</h2>
-        <div className='text-sm text-gray-500'>
-          Add a detailed job description to help candidates understand the role
-          and apply.
-        </div>
         <div className='mt-4'>{description}</div>
         {fields.description.error.value && (
           <div className='mt-2 flex items-center text-red-500'>
@@ -332,6 +322,13 @@ const JobForms = ({
             <span>{fields.description.error.helper}</span>
           </div>
         )}
+      </div>
+      <div>
+        <h2 className='text-md font-semibold'>Hiring Team</h2>
+        <div className='mb-2 text-sm text-muted-foreground'>
+          Add the hiring team so they can manage the job.
+        </div>
+        {roleForms}
       </div>
       <div className='flex justify-end space-x-4'>
         <Button variant='outline' onClick={handleCancel}>
