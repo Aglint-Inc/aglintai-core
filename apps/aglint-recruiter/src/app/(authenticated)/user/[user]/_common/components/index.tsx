@@ -79,11 +79,11 @@ export default function InterviewerDetailsPage() {
             <BreadCrumb name={interviewerDetails?.first_name || ''} />
             <Header userCardRef={userCardRef} />
             {isShowFeature('SCHEDULING') && (
-            <SideBar
-              activeSection={activeSection}
-              scrollToSection={scrollToSection}
-            />
-          )}
+              <SideBar
+                activeSection={activeSection}
+                scrollToSection={scrollToSection}
+              />
+            )}
           </div>
         }
         sidebarPosition='left'
