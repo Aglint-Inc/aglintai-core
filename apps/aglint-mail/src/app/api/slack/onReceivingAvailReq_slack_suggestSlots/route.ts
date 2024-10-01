@@ -15,7 +15,7 @@ const func = async ({
   const organizer = (
     await supabaseAdmin
       .from('request')
-      .select('*, recruiter_user(*)')
+      .select('*, recruiter_user!request_assignee_id_fkey!inner(*)')
       .eq('id', request_id)
       .single()
       .throwOnError()
