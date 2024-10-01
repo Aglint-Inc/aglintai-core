@@ -22,7 +22,7 @@ export const BasicInfoUI = ({ recruiter }) => {
             {recruiter.name}
             <div className='flex flex-row gap-4'>
               <div className='flex items-center space-x-2'>
-                <Globe className='h-4 w-4 text-gray-500' />
+                <Globe className='h-4 w-4 text-muted-foreground' />
                 {recruiter.company_website && (
                   <Link
                     href={recruiter.company_website}
@@ -34,11 +34,11 @@ export const BasicInfoUI = ({ recruiter }) => {
                 )}
               </div>
               <div className='flex items-center space-x-2'>
-                <Building2 className='h-4 w-4 text-gray-500' />
+                <Building2 className='h-4 w-4 text-muted-foreground' />
                 <span>{recruiter.industry}</span>
               </div>
               <div className='flex items-center space-x-2'>
-                <Users2 className='h-4 w-4 text-gray-500' />
+                <Users2 className='h-4 w-4 text-muted-foreground' />
                 <span>{`${recruiter.employee_size} People`}</span>
               </div>
             </div>

@@ -51,8 +51,8 @@ function RolesAndPermissionsComponent() {
         />
       ) : (
         <div>
-          <h1 className='mb-4 text-lg font-semibold'>Roles & Permissions</h1>
-          <p className='mb-6 text-sm text-muted-foreground'>
+          <h1 className='text-lg font-semibold'>Roles & Permissions</h1>
+          <p className='mb-6 max-w-4xl text-sm text-muted-foreground'>
             Customize permissions for each role and control access by enabling
             or disabling the toggle next to each permission.
           </p>

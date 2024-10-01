@@ -87,7 +87,7 @@ function InterviewCard({
                 {dayjsLocal(interview.start_time).format('hh:mm A  - ')}
                 {dayjsLocal(interview.end_time).format('hh:mm A ')}
               </p>
-              <p className='text-xs text-gray-500'>
+              <p className='text-xs text-muted-foreground'>
                 {capitalizeAll(interview.schedule_type)}
               </p>
             </div>
@@ -109,7 +109,9 @@ function InterviewCard({
                 <Linkedin className='ml-2 h-4 w-4 cursor-pointer text-blue-500' />
               </div>
               {participant.position && (
-                <p className='text-xs text-gray-500'>{participant.position}</p>
+                <p className='text-xs text-muted-foreground'>
+                  {participant.position}
+                </p>
               )}
             </div>
           </div>

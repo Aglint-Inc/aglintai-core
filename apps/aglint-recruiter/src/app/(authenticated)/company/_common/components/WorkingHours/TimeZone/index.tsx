@@ -78,7 +78,6 @@ const TimeZone: FC<TimeZoneProps> = ({
     >
       <div className='flex items-center space-x-2'>
         <div>
-          <p className='text-sm font-medium'>Current Time Zone</p>
           <div className='flex items-center space-x-2'>
             <Clock className='h-4 w-4 text-muted-foreground' />
             <p>{timeZone}</p>

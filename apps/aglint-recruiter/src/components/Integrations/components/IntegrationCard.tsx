@@ -41,7 +41,7 @@ export function IntegrationCard({
         <div className='flex items-center space-x-4'>
           {slotLogo || (
             <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-100'>
-              <span className='text-xl font-bold text-gray-500'>
+              <span className='text-xl font-bold text-muted-foreground'>
                 {(textName as string).charAt(0)}
               </span>
             </div>
@@ -50,7 +50,7 @@ export function IntegrationCard({
             <h3 className='text-md font-semibold'>{textName}</h3>
             <Link
               href='#'
-              className='text-sm text-gray-500 hover:underline'
+              className='text-sm text-muted-foreground hover:underline'
               onClick={(e) => {
                 e.preventDefault();
                 onClick && onClick();
@@ -85,8 +85,8 @@ export function IntegrationCard({
             rel='noopener noreferrer'
             className='flex items-center'
           >
-              Learn How
-              <ExternalLink className='ml-1 h-4 w-4' />
+            Learn How
+            <ExternalLink className='ml-1 h-4 w-4' />
           </Link>
         ) : (
           Boolean(secondaryText) && (

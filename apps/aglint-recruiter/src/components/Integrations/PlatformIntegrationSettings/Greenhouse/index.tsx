@@ -9,7 +9,10 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { Lightbulb, Loader2 } from 'lucide-react';
 
 import { useTenant } from '@/company/hooks';
-import { useGreenhouseDetails, useUpdateGreenhouseDetails } from '@/queries/greenhouse';
+import {
+  useGreenhouseDetails,
+  useUpdateGreenhouseDetails,
+} from '@/queries/greenhouse';
 import { api } from '@/trpc/client';
 
 dayjs.extend(relativeTime);
@@ -44,7 +47,7 @@ function GreenhouseSettings() {
           </Badge>
         </CardHeader>
         <CardContent>
-          <p className='mb-4 text-sm text-gray-500'>
+          <p className='mb-4 text-sm text-muted-foreground'>
             Select the entities you want to sync: Jobs, Interview Plans,
             Candidates, Applications, Users, Office Locations, and Departments.
           </p>
@@ -80,7 +83,7 @@ function GreenhouseSettings() {
                 ))}
               </div>
               <div className='mt-4 flex items-center justify-between rounded-md bg-gray-100 p-4'>
-                <p className='text-sm text-gray-500'>{`Last synchronized on: ${last_sync}`}</p>
+                <p className='text-sm text-muted-foreground'>{`Last synchronized on: ${last_sync}`}</p>
                 <Button
                   size='sm'
                   onClick={() => {
@@ -123,7 +126,7 @@ function GreenhouseSettings() {
                 Use Aglint AI to automate tasks directly from comments in
                 Greenhouse.
               </label>
-              <p className='mt-1 text-sm text-gray-500'>
+              <p className='mt-1 text-sm text-muted-foreground'>
                 Mention `@aglintai` in a comment, then include the task details.
                 Aglint AI will handle the rest.
               </p>

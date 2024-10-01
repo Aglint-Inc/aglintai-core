@@ -329,7 +329,7 @@ const SectionHeader: FC<{ type: Sections; weight: number; color: string }> = ({
     <div className='flex items-center space-x-2'>
       <CircleDot className='h-4 w-4' style={{ color }} />
       <span className='font-medium'>{capitalize(type)}</span>
-      <span className='text-sm text-gray-500'>({weight}%)</span>
+      <span className='text-sm text-muted-foreground'>({weight}%)</span>
     </div>
   );
 };

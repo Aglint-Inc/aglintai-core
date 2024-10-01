@@ -166,7 +166,7 @@ const JobEmailTemplates = ({ setSaving }) => {
         <Card>
           <CardHeader>
             <CardTitle>{emailTemplateCopy[editTemp.type].heading}</CardTitle>
-            <p className='text-sm text-gray-500'>
+            <p className='text-sm text-muted-foreground'>
               {emailTemplateCopy[editTemp.type].description}
             </p>
           </CardHeader>

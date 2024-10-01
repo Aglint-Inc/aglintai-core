@@ -498,9 +498,9 @@ const InterviewPlan = ({
                   {sessionsCount ? (
                     <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
                   ) : (
-                    <div className='flex h-64 flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300'>
+                    <div className='flex h-64 flex-col items-center justify-center rounded-lg border-2 border-dashed border-border'>
                       <ChartNoAxesGantt className='mb-4 h-4 w-4 text-gray-400' />
-                      <p className='mb-4 text-gray-500'>
+                      <p className='mb-4 text-muted-foreground'>
                         No interview plan found
                       </p>
                       <UIButton

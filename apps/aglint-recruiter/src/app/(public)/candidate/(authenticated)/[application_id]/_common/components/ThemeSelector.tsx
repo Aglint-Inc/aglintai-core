@@ -55,7 +55,7 @@ export function ThemeSelector() {
           >
             <CardContent className='flex flex-col items-center justify-between p-4'>
               <Palette
-                className={`mb-2 h-6 w-6 ${theme === pageTheme.value ? `text-${pageTheme.value}-500` : 'text-gray-500'}`}
+                className={`mb-2 h-6 w-6 ${theme === pageTheme.value ? `text-${pageTheme.value}-500` : 'text-muted-foreground'}`}
               />
               <span
                 className={`text-sm font-medium ${theme === pageTheme.value ? `text-${pageTheme.value}-700` : 'text-gray-700'}`}

@@ -65,7 +65,7 @@ export const RoleList = ({
               )}
             </>
           ) : (
-            <p className='text-sm text-gray-500'>
+            <p className='text-sm text-muted-foreground'>
               {`No users with ${details.name}`}
             </p>
           )}

@@ -70,7 +70,7 @@ function Instructions({
         </div>
       ) : (
         <div
-          className='overflow-auto text-sm text-gray-500'
+          className='overflow-auto text-sm text-muted-foreground'
           dangerouslySetInnerHTML={{
             __html: marked(instruction || 'Instructions not given'),
           }}

@@ -73,7 +73,6 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
     >
       <div className='flex items-center space-x-2'>
         <div>
-          <p className='text-sm font-medium'>Default Break Times</p>
           <div className='flex items-center space-x-2'>
             <Coffee className='h-4 w-4 text-muted-foreground' />
             <p>

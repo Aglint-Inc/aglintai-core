@@ -16,7 +16,7 @@ function Integrations() {
 
   return (
     <>
-      <div className='container-lg mx-auto w-full px-4'>
+      <div className='p-4'>
         <header className='mb-4 flex flex-row justify-between'>
           <div className='flex flex-col'>
             <h1 className='text-2xl font-semibold'>Integrations</h1>

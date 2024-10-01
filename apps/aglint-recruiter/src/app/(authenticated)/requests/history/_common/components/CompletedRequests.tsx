@@ -193,7 +193,7 @@ function CompletedRequests() {
                         </Button>
                       )}
                     </div>
-                    <p className='text-center text-sm text-gray-500'>
+                    <p className='text-center text-sm text-muted-foreground'>
                       {isLoadingMore
                         ? 'Loading more requests...'
                         : 'Scroll down or click to load more'}

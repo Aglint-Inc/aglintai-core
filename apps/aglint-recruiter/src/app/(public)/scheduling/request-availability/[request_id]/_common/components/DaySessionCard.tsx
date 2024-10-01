@@ -184,7 +184,7 @@ export function SelectedSlot({
   return (
     <div className='mb-4 flex w-full flex-row gap-4'>
       <div className='flex flex-col items-start gap-2'>
-        {/* <Calendar className='h-4 w-4 text-gray-500' /> */}
+        {/* <Calendar className='h-4 w-4 text-muted-foreground' /> */}
         <span className='text-sm font-medium text-gray-700'>{textDate}</span>
         <div className='flex flex-wrap gap-1'>{slotBadge}</div>
       </div>
