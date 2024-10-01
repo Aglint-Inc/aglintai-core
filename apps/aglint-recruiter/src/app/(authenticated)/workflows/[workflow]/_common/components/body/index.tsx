@@ -12,7 +12,6 @@ import { useState } from 'react';
 
 import { NotFound } from '@/components/Common/404';
 import { Loader } from '@/components/Common/Loader';
-import Seo from '@/components/Common/Seo';
 import { UIBadge } from '@/components/Common/UIBadge';
 import UITypography from '@/components/Common/UITypography';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
@@ -38,34 +37,21 @@ const Body = () => {
   if (workflow === null) return <Loader />;
   if (workflow === undefined) return <NotFound />;
   return (
-    <>
-      <Seo title='Workflow | Aglint AI' description='AI for People Products' />
-      <div className='flex flex-row'>
-        <div className='w-7/12 pr-16'>
-          <>
-            <Edit />
-            <Trigger />
-            <ActionsProvider>
-              <Actions />
-            </ActionsProvider>
-          </>
-        </div>
-        <div className='w-4/12 flex-row space-y-1'>
-          <div className='mb-4 flex items-center font-medium text-neutral-900'>
-            Connected Jobs
-          </div>
-          <div className='flex flex-col space-y-2'>
-            <ConnectedJobs />
-          </div>
-        </div>
+    <div className='mx-auto flex max-w-4xl flex-row'>
+      <div className='flex flex-col gap-4'>
+        <Edit />
+        <Trigger />
+        <ActionsProvider>
+          <Actions />
+        </ActionsProvider>
       </div>
-    </>
+    </div>
   );
 };
 
 export default Body;
 
-const ConnectedJobs = () => {
+export const ConnectedJobs = () => {
   const { workflow } = useWorkflow();
   const { devlinkProps } = useRolesAndPermissions();
   const devlink = devlinkProps(['manage_job']);

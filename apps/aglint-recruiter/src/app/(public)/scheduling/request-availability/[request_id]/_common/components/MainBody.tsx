@@ -6,7 +6,6 @@ import { AlertCircle } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { ConfirmedInvitePage } from 'src/app/(public)/scheduling/invite/[id]/_common/components/CandidateConfirm';
 
-import Footer from '@/components/Common/Footer';
 import { Loader } from '@/components/Common/Loader';
 import timeZones from '@/utils/timeZone';
 
@@ -131,27 +130,15 @@ function CandidateAvailability() {
   }
 
   return (
-    <>
-      <div
-        className='w-full bg-gray-50 px-10 py-10'
-        style={{ minHeight: 'calc(100vh - 50px)' }}
-      >
-        <div className='mx-auto flex w-full max-w-4xl flex-col items-center gap-4 rounded-lg border border-neutral-200 bg-white p-6'>
-          <Header
-            candidateRequestAvailability={candidateRequestAvailability}
-            isSubmitted={isSubmitted}
-          />
-          {isSubmitted && <SlotsSubmitted />}
-          {!isSubmitted && multiDaySessions.length === 1 && (
-            <SingleDaySessions />
-          )}
-          {!isSubmitted && multiDaySessions.length > 1 && <MultiDaySessions />}
-        </div>
-      </div>
-      <div className='h-[50px] bg-gray-50'>
-        <Footer brand={true} />
-      </div>
-    </>
+    <div className='mx-auto flex w-full max-w-screen-md flex-col items-center gap-4 rounded-lg border border-border bg-white p-6'>
+      <Header
+        candidateRequestAvailability={candidateRequestAvailability}
+        isSubmitted={isSubmitted}
+      />
+      {isSubmitted && <SlotsSubmitted />}
+      {!isSubmitted && multiDaySessions.length === 1 && <SingleDaySessions />}
+      {!isSubmitted && multiDaySessions.length > 1 && <MultiDaySessions />}
+    </div>
   );
 }
 
