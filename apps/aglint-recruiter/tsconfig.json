@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es2015",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
@@ -16,10 +20,18 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/definitions/*": ["./src/definitions/*"],
-      "@/api/*": ["./src/app/api/*"],
-      "@/authenticated/*": ["./src/app/(authenticated)/_common/*"],
-      "@/company/*": ["./src/app/(authenticated)/company/_common/*"],
+      "@/definitions/*": [
+        "./src/definitions/*"
+      ],
+      "@/api/*": [
+        "./src/app/api/*"
+      ],
+      "@/authenticated/*": [
+        "./src/app/(authenticated)/_common/*"
+      ],
+      "@/company/*": [
+        "./src/app/(authenticated)/company/_common/*"
+      ],
       "@/candidate/authenticated/*": [
         "./src/app/(public)/candidate/(authenticated)/[application_id]/_common/*"
       ],
@@ -29,10 +41,18 @@
       "@/interview-pool/*": [
         "./src/app/(authenticated)/interview-pool/_common/*"
       ],
-      "@/jobs/*": ["./src/app/(authenticated)/jobs/_common/*"],
-      "@/scheduling/*": ["./src/app/(authenticated)/scheduling/_common/*"],
-      "@/jobs/create/*": ["./src/app/(authenticated)/jobs/create/_common/*"],
-      "@/job/*": ["./src/app/(authenticated)/jobs/[job]/_common/*"],
+      "@/jobs/*": [
+        "./src/app/(authenticated)/jobs/_common/*"
+      ],
+      "@/scheduling/*": [
+        "./src/app/(authenticated)/scheduling/_common/*"
+      ],
+      "@/jobs/create/*": [
+        "./src/app/(authenticated)/jobs/create/_common/*"
+      ],
+      "@/job/*": [
+        "./src/app/(authenticated)/jobs/[job]/_common/*"
+      ],
       "@/job/interview-plan/*": [
         "./src/app/(authenticated)/jobs/[job]/interview-plan/_common/*"
       ],
@@ -54,37 +74,87 @@
       "@/jobs/job/application/*": [
         "./src/app/(authenticated)/jobs/[job]/[application]/_common/*"
       ],
-      "@/workflows/*": ["./src/app/(authenticated)/workflows/_common/*"],
+      "@/workflows/*": [
+        "./src/app/(authenticated)/workflows/_common/*"
+      ],
       "@/workflow/*": [
         "./src/app/(authenticated)/workflows/[workflow]/_common/*"
       ],
-      "@requests/*": ["./src/app/(authenticated)/requests/_common/*"],
-      "@request/*": ["./src/app/(authenticated)/requests/[request]/_common/*"],
+      "@requests/*": [
+        "./src/app/(authenticated)/requests/_common/*"
+      ],
+      "@request/*": [
+        "./src/app/(authenticated)/requests/[request]/_common/*"
+      ],
       "@requestHistory/*": [
         "./src/app/(authenticated)/requests/history/_common/*"
       ],
-      "@interviews/*": ["./src/app/(authenticated)/interviews/_common/*"],
-      "@interviewers/*": ["./src/app/(authenticated)/interviewers/_common/*"],
-      "@/apiUtils/*": ["./src/apiUtils/*"],
-      "@/client/*": ["./src/client/*"],
-      "@/components/*": ["./src/components/*"],
-      "@/constant/*": ["./src/constant/*"],
-      "@/context/*": ["./src/context/*"],
-      "@/extended/*": ["./src/extended/*"],
-      "@/hooks/*": ["./src/hooks/*"],
-      "@/interface/*": ["./src/interface/*"],
-      "@/pages/*": ["./src/pages/*"],
-      "@/queries/*": ["./src/queries/*"],
-      "@/server/*": ["./src/server/*"],
-      "@/services/*": ["./src/services/*"],
-      "@/sqlFiles/*": ["./src/sqlFiles/*"],
-      "@/trpc/*": ["./src/trpc/*"],
-      "@/types/*": ["./src/types/*"],
-      "@/utils/*": ["./src/utils/*"],
-      "@components/*": ["./components/*"],
-      "@styles/*": ["./styles/*"],
-      "@public/*": ["./public/*"],
-      "@lib/*": ["./lib/*"]
+      "@interviews/*": [
+        "./src/app/(authenticated)/interviews/_common/*"
+      ],
+      "@interviewers/*": [
+        "./src/app/(authenticated)/interviewers/_common/*"
+      ],
+      "@/apiUtils/*": [
+        "./src/apiUtils/*"
+      ],
+      "@/client/*": [
+        "./src/client/*"
+      ],
+      "@/components/*": [
+        "./src/components/*"
+      ],
+      "@/constant/*": [
+        "./src/constant/*"
+      ],
+      "@/context/*": [
+        "./src/context/*"
+      ],
+      "@/extended/*": [
+        "./src/extended/*"
+      ],
+      "@/hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@/interface/*": [
+        "./src/interface/*"
+      ],
+      "@/pages/*": [
+        "./src/pages/*"
+      ],
+      "@/queries/*": [
+        "./src/queries/*"
+      ],
+      "@/server/*": [
+        "./src/server/*"
+      ],
+      "@/services/*": [
+        "./src/services/*"
+      ],
+      "@/sqlFiles/*": [
+        "./src/sqlFiles/*"
+      ],
+      "@/trpc/*": [
+        "./src/trpc/*"
+      ],
+      "@/types/*": [
+        "./src/types/*"
+      ],
+      "@/utils/*": [
+        "./src/utils/*"
+      ],
+      "@components/*": [
+        "./components/*"
+      ],
+      "@styles/*": [
+        "./styles/*"
+      ],
+      "@public/*": [
+        "./public/*"
+      ],
+      "@lib/*": [
+        "./lib/*"
+      ]
     },
     "plugins": [
       {
@@ -103,7 +173,12 @@
     // "src/components/Feedback/Session/index.jsx",
     // "src/pages/api/getJobsPublic.js",
     // ".next/types/**/*.ts",
-    "src/app/(authenticated)/interview-pool"
+    "src/app/(authenticated)/interview-pool",
+    ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules", ".next", "components"]
+  "exclude": [
+    "node_modules",
+    ".next",
+    "components"
+  ]
 }

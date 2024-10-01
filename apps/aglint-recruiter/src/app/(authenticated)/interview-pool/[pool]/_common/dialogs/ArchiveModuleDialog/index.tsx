@@ -1,106 +1,54 @@
 import { useToast } from '@components/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { AlertCircle } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { api } from '@/trpc/client';
-import { supabase } from '@/utils/supabase/client';
 
 import { useModuleAndUsers } from '../../hooks/useModuleAndUsers';
 import { setIsArchiveDialogOpen, useModulesStore } from '../../stores/store';
 
 function ArchiveModuleDialog() {
   const { toast } = useToast();
-  const utils = api.useUtils();
   const isArchiveDialogOpen = useModulesStore(
     (state) => state.isArchiveDialogOpen,
   );
-  const [isFetching, setIsFetching] = useState(true);
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<string[]>([]);
-
   const { data: editModule } = useModuleAndUsers();
+  const { mutateAsync, isPending } = api.interview_pool.update.useMutation();
+  const { data, isLoading } = api.interview_pool.archive_get_sessions.useQuery(
+    {
+      id: editModule?.id ?? '',
+    },
+    {
+      enabled: !!editModule?.id,
+    },
+  );
+  const moduleName = (editModule?.name ?? '').trim();
 
-  useEffect(() => {
-    if (editModule?.id) fetchMeetings();
-  }, [editModule?.id]);
-
-  const fetchMeetings = async () => {
-    try {
-      const { data } = await supabase
-        .from('interview_session')
-        .select(
-          '*,interview_meeting(*),interview_plan(public_jobs(id,job_title))',
-        )
-        .eq('module_id', editModule.id);
-
-      const connectedJobs: string[] = data
-        .filter((ses) => !!ses.interview_plan_id)
-        .map((ses) => ses.interview_plan?.public_jobs?.job_title);
-
-      const uniqueJobs = [...new Set(connectedJobs)];
-
-      const isActiveMeeting = data.some(
-        (meet) =>
-          meet.interview_meeting &&
-          (meet.interview_meeting.status === 'confirmed' ||
-            meet.interview_meeting.status === 'waiting'),
-      );
-
-      if (isActiveMeeting) {
-        errors.push(
-          'Please wait until the ongoing schedules are completed to archive this interview type.',
-        );
-      }
-      if (uniqueJobs.length) {
-        uniqueJobs.map((job) => {
-          errors.push(`Remove this type from  ${job} job's interview plan.`);
-        });
-      }
-      setErrors([...errors]);
-    } catch (e) {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: 'Error fetching meetings.',
-      });
-    } finally {
-      setIsFetching(false);
-    }
-  };
+  const errors = data?.errors ?? [];
 
   const archiveModule = async () => {
-    if (!loading) {
+    if (!isPending && editModule?.id) {
       try {
-        setLoading(true);
-        const { error } = await supabase
-          .from('interview_module')
-          .update({
-            is_archived: true,
-          })
-          .eq('id', editModule.id);
-        if (!error) {
-          await utils.interview_pool.module_and_users.invalidate({
-            module_id: editModule.id,
-          });
-          toast({
-            title: 'Interview type archived successfully.',
-          });
-          onClose();
-        } else {
-          throw new Error();
-        }
+        await mutateAsync({
+          id: editModule.id,
+          is_archived: true,
+        });
+        onClose();
       } catch {
         toast({
           variant: 'destructive',
           title: 'Error',
           description: 'Error archiving interview type.',
         });
-      } finally {
-        setLoading(false);
       }
+    }
+  };
+
+  const onClose = () => {
+    if (!isPending) {
+      setIsArchiveDialogOpen(false);
     } else {
       toast({
         variant: 'destructive',
@@ -108,21 +56,6 @@ function ArchiveModuleDialog() {
       });
     }
   };
-
-  const moduleName = (editModule?.name ?? '').trim();
-
-  const onClose = useCallback(() => {
-    if (!loading) {
-      setIsArchiveDialogOpen(false);
-      setErrors([]);
-      setIsFetching(true);
-    } else {
-      toast({
-        variant: 'destructive',
-        title: 'Please wait until the ongoing process is complete.',
-      });
-    }
-  }, [loading]);
 
   return (
     <>
@@ -137,10 +70,10 @@ function ArchiveModuleDialog() {
             </UIButton>
             <UIButton
               size='md'
-              isLoading={loading}
-              disabled={isFetching || errors.length > 0}
+              isLoading={isPending}
+              disabled={isLoading || errors.length > 0}
               onClick={() => {
-                if (editModule.id) archiveModule();
+                if (editModule?.id) archiveModule();
               }}
             >
               Archive

@@ -1,30 +1,33 @@
+import { type SupabaseType } from '@aglint/shared-types';
 import { type QueryData } from '@supabase/supabase-js';
 
 import { supabase } from '@/utils/supabase/client';
 
-export const schedulesSupabase = (db = supabase) =>
+export const schedulesSupabase = (db: SupabaseType = supabase) =>
   db
     .from('meeting_details')
     .select(
-      '*,applications(candidates(first_name,last_name)), public_jobs(id,job_title), meeting_interviewers!public_interview_session_meeting_id_fkey(*)',
+      '*,applications!inner(candidates!inner(first_name,last_name)), public_jobs!inner(id,job_title), meeting_interviewers!public_interview_session_meeting_id_fkey(*)',
     );
 
 export type SchedulesSupabase = QueryData<ReturnType<typeof schedulesSupabase>>;
 
 export function transformDataSchedules(inputData: SchedulesSupabase) {
-  const transformedData = {};
+  const transformedData: { [key: string]: SchedulesSupabase } = {};
 
   inputData?.forEach((item) => {
-    const date = item.start_time?.split('T')[0]; // Extracting date from start_time
-    if (!transformedData[String(date)]) {
-      transformedData[String(date)] = [];
+    const date = item.start_time?.split('T')[0];
+    if (date) {
+      if (!transformedData[date]) {
+        transformedData[date] = [];
+      }
+      transformedData[date].push(item);
     }
-    transformedData[String(date)].push(item);
   });
 
   const result: { [key: string]: SchedulesSupabase }[] = [];
   for (const date in transformedData) {
-    result.push({ [date]: transformedData[String(date)] });
+    result.push({ [date]: transformedData[date] });
   }
 
   const resultSorted = result.sort((a, b) => {
