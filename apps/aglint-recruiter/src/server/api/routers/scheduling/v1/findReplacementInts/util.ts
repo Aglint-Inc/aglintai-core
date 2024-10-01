@@ -6,9 +6,9 @@ import { CApiError, dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 
 import { type PrivateProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
+import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 
 import { type schemaFindAlternativeSlots } from './schema';
-import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 
 export const findReplacementIntsUtil = async ({
   input,
