@@ -1,7 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { triggerToCategoryMap } from 'src/app/(authenticated)/jobs/[job]/(jobEdit)/workflows/_common/lib/constants';
 import { z } from 'zod';
 
-import { triggerToCategoryMap } from '@/job/workflows/lib/constants';
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 

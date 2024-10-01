@@ -27,7 +27,7 @@ import { UIDatePicker } from '@/components/Common/UIDatePicker';
 import UIDrawer from '@/components/Common/UIDrawer';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { type Request as RequestType } from '@/queries/requests/types';
-import { getCompanyDaysCnt } from '@/services/CandidateScheduleV2/utils/companyWorkingDays';
+import { getCompanyDaysCnt } from '@/services/CandidateSchedule/utils/companyWorkingDays';
 import { mailSender } from '@/utils/mailSender';
 import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsertMeetingsWithOrganizerId';
 import { supabase } from '@/utils/supabase/client';

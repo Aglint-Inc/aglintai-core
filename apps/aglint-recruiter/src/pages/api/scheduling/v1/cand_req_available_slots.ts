@@ -9,14 +9,14 @@ import {
 import { type z } from 'zod';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
-import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const candidateAvailReqSlots = async (
   parsed_body: z.infer<typeof schema_candidate_req_availabale_slots>,
 ) => {
   const fetched_details = await fetchDetails(parsed_body);
-  const cand_schedule = new CandidatesSchedulingV2(
+  const cand_schedule = new CandidatesScheduling(
     fetched_details.updated_api_options,
   );
   await cand_schedule.fetchDetails({

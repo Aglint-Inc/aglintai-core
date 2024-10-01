@@ -35,7 +35,7 @@ export const TeamManagementUI = ({
   isTableLoading: boolean;
 }) => {
   return (
-    <div className='flex flex-col'>
+    <div className='flex max-w-[80%] flex-col'>
       <div className='flex justify-between'>
         <div>
           <h2 className='mb-1 text-xl font-semibold'>Manage User</h2>

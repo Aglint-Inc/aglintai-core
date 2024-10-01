@@ -6,7 +6,7 @@ import { CApiError, dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 
 import { type PrivateProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
-import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 
 import { type schemaFindAlternativeSlots } from './schema';
 
@@ -47,7 +47,7 @@ export const findReplacementIntsUtil = async ({
       `${parsed_body.declined_int_sesn_reln_id} is not confirmed interviwer`,
     );
   }
-  const cand_schedule = new CandidatesSchedulingV2({
+  const cand_schedule = new CandidatesScheduling({
     return_empty_slots_err: true,
     include_conflicting_slots: {
       day_off: true,

@@ -4,9 +4,9 @@ import type {
 } from '@aglint/shared-types';
 import { CApiError, type ProgressLoggerType } from '@aglint/shared-utils';
 
-import { type ScheduleApiDetails } from '../CandidateScheduleV2/types';
-import { bookRecruiterSelectedOption } from '../CandidateScheduleV2/utils/bookingUtils/bookRecruiterSelectedOption';
-import { fetchCandAvailForBooking } from '../CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchCandidateAvailability';
+import { type ScheduleApiDetails } from '../CandidateSchedule/types';
+import { bookRecruiterSelectedOption } from '../CandidateSchedule/utils/bookingUtils/bookRecruiterSelectedOption';
+import { fetchCandAvailForBooking } from '../CandidateSchedule/utils/bookingUtils/dbFetch/fetchCandidateAvailability';
 
 export const confirmSlotFromCandidateAvailability = async ({
   avail_plans,
