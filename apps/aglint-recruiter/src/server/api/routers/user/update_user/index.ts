@@ -1,11 +1,10 @@
 import { recruiterRelationUpdateSchema } from '@aglint/shared-types';
 import {} from '@aglint/shared-types/src/db/tables/recruiter.types';
 import { CustomRecruiterUserUpdateSchema } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
-import { TRPCError } from '@trpc/server';
+import { type z } from 'zod';
 
 import { type PrivateProcedure, publicProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
-import { ERRORS } from '@/server/enums';
 
 const RecruiterUserSchema = CustomRecruiterUserUpdateSchema.pick({
   first_name: true,
@@ -18,45 +17,57 @@ const RecruiterUserSchema = CustomRecruiterUserUpdateSchema.pick({
   phone: true,
   user_id: true,
   profile_image: true,
+  scheduling_settings: true,
 });
 
 const RecruiterRelationSchema = recruiterRelationUpdateSchema.pick({
   role_id: true,
-  role: true,
   manager_id: true,
+  recruiter_id: true,
 });
 
 const Schema = RecruiterUserSchema.merge(RecruiterRelationSchema);
 
-const mutation = async ({
-  input,
-  ctx: { recruiter_id },
-}: PrivateProcedure<typeof Schema>) => {
+export type UserUpdateType = z.infer<typeof Schema>;
+
+const mutation = async ({ input }: PrivateProcedure<typeof Schema>) => {
   const db = createPrivateClient();
-  const { user_id, role_id, role, manager_id, ...newValue } = input;
 
-  if (role !== 'admin') throw new TRPCError(ERRORS.FORBIDDEN);
+  const {
+    user_id,
+    role_id,
+    manager_id,
+    department_id,
+    employment,
+    first_name,
+    last_name,
+    linked_in,
+    office_location_id,
+    phone,
+    position,
+    recruiter_id,
+    scheduling_settings,
+    profile_image,
+  } = input;
 
-  // RPC.throwOnError()
-
-  const userData = (
-    await db
-      .from('recruiter_user')
-      .update({ ...newValue })
-      .eq('user_id', user_id)
-      .throwOnError()
-  ).data;
-
-  //update relation
-  if (userData && role == 'admin') {
-    await db
-      .from('recruiter_relation')
-      .update({ manager_id, role_id, role })
-      .eq('user_id', user_id)
-      .eq('recruiter_id', recruiter_id)
-      .single()
-      .throwOnError();
-  }
+  await db
+    .rpc('update_user', {
+      department_id,
+      employment,
+      first_name,
+      last_name,
+      linked_in,
+      manager_id,
+      office_location_id,
+      phone,
+      position,
+      profile_image,
+      recruiter_id,
+      role_id,
+      scheduling_settings,
+      user_id,
+    })
+    .throwOnError();
 };
 
 export const updateUser = publicProcedure.input(Schema).mutation(mutation);

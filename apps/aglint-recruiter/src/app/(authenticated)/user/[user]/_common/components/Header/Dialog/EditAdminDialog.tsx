@@ -1,4 +1,5 @@
 import { getFullName } from '@aglint/shared-utils';
+import { toast } from '@components/hooks/use-toast';
 import _ from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 
@@ -13,11 +14,19 @@ import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useAllDepartments } from '@/queries/departments';
+import { type UserUpdateType } from '@/server/api/routers/user/update_user';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
-import toast from '@/utils/toast';
 
 import { Form } from './EditAdminDialogUI';
+
+type roleEnum =
+  | 'recruiter'
+  | 'hiring_manager'
+  | 'recruiting_coordinator'
+  | 'sourcer'
+  | 'admin'
+  | 'interviewer';
 
 export type EditAdminFormType = {
   first_name: string;
@@ -27,7 +36,7 @@ export type EditAdminFormType = {
   employment: 'fulltime' | 'parttime' | 'contractor';
   position: string;
   department_id: number | null;
-  role: string;
+  role: roleEnum;
   role_id: string;
   manager_id: string;
   phone: string;
@@ -85,7 +94,7 @@ const EditAdminDialog = ({
     profile_image: member?.profile_image,
     department_id: member?.department_id,
     position: member?.position,
-    role: member?.role,
+    role: member?.role as roleEnum,
     role_id: member?.role_id,
     manager_id: member?.manager_id,
   };
@@ -159,25 +168,28 @@ const EditAdminDialog = ({
         form?.role === 'admin' &&
         recruiter_user?.created_by === member.user_id
       ) {
-        toast.error('Permission Denied');
+        toast({ title: 'Permission Denied' });
 
         return false;
       } else if (
         form?.role === 'admin' &&
         recruiter_user?.user_id !== member.created_by
       ) {
-        toast.error('Permission Denied');
+        toast({ title: 'Permission Denied' });
         // toast.error('You cannot edit another admin detail');
         return false;
       }
     }
-    toast.error('Permission Denied');
+    toast({ title: 'Permission Denied' });
     // toast.error('Admin only edit Team member details');
     return false;
   }
 
   const updateHandle = async () => {
     try {
+      if (recruiter_user?.role !== 'admin')
+        return toast({ title: 'Permission Denied' });
+
       setIsUpdating(true);
 
       let profile_image: string | null = member.profile_image;
@@ -198,20 +210,21 @@ const EditAdminDialog = ({
         setIsImageChanged(false);
       }
 
-      const data = {
+      const data: UserUpdateType = {
         first_name: form?.first_name,
         last_name: form?.last_name,
         linked_in: form?.linked_in,
         office_location_id: form?.location_id,
-        employment: form?.employment,
+        employment: form?.employment as 'fulltime' | 'parttime' | 'contractor',
         position: form?.position,
         department_id: form?.department_id,
         role_id: form?.role_id,
-        role: form?.role,
         phone: form?.phone,
         manager_id: form?.manager_id,
         user_id: member.user_id,
+        scheduling_settings: member.scheduling_settings,
         profile_image: profile_image,
+        recruiter_id: recruiter_user.recruiter_id,
       };
 
       await mutateAsync({ ...data });
@@ -220,7 +233,11 @@ const EditAdminDialog = ({
       setForm({ ...form, profile_image: profile_pic });
       onClose();
     } catch (e) {
-      console.error(e);
+      toast({
+        title: 'Profile update Failed',
+        description: e.message,
+        variant: 'destructive',
+      });
     } finally {
       setIsUpdating(false);
     }
