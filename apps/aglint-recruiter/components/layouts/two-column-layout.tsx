@@ -11,6 +11,7 @@ import {
 interface TwoColumnLayoutProps {
   children: React.ReactNode;
   header?: React.ReactNode;
+  filter?: React.ReactNode;
   sidebar?: React.ReactNode;
   sidebarPosition?: 'left' | 'right';
   sidebarWidth?: string | number;
@@ -19,6 +20,7 @@ interface TwoColumnLayoutProps {
 export function TwoColumnLayout({
   children,
   header,
+  filter,
   sidebar,
   sidebarPosition = 'left',
   sidebarWidth = '16rem',
@@ -31,6 +33,7 @@ export function TwoColumnLayout({
         )}
         <LayoutContent>
           {header && <LayoutHeader>{header}</LayoutHeader>}
+          {filter && <LayoutHeader>{filter}</LayoutHeader>}
           {children}
         </LayoutContent>
         {sidebarPosition === 'right' && sidebar && (

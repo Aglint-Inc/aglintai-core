@@ -1,5 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-
 import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';
 
@@ -11,7 +9,6 @@ export function InterviewMemberSide({
   onClickCompleted = {},
   onClickCancelled = {},
   isCancelActive = false,
-  propsGrids = {},
   slotInterview,
   textUpcomingCount,
   textCancelledCount,
@@ -20,38 +17,25 @@ export function InterviewMemberSide({
 }) {
   return (
     <>
-      <Card className='mb-6 border-none shadow-none'>
-        <CardHeader>
-          <div className='flex items-center justify-between'>
-            <CardTitle className='text-lg font-semibold'>
-              My Interviews
-            </CardTitle>
-            <Tabs
-              isUpcomingActive={isUpcomingActive}
-              onClickUpcoming={onClickUpcoming}
-              onClickCompleted={onClickCompleted}
-              onClickCancelled={onClickCancelled}
-              isCompletedActive={isCompletedActive}
-              isCancelActive={isCancelActive}
-              slotInterview={slotInterview}
-              textUpcomingCount={textUpcomingCount}
-              textCancelledCount={textCancelledCount}
-              textPastCount={textPastCount}
-              isMenuTabVisible={isMenuTabVisible}
-            />
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className='flex h-full flex-col'>
-            <div
-              className='max-w-900px flex h-full flex-col gap-2.5 overflow-auto'
-              {...propsGrids}
-            >
-              {slotInterviewCard}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      <div className='flex flex-col gap-2'>
+        <div className='flex items-center justify-between'>
+          <h2 className='text-lg font-bold'>My Interviews</h2>
+          <Tabs
+            isUpcomingActive={isUpcomingActive}
+            onClickUpcoming={onClickUpcoming}
+            onClickCompleted={onClickCompleted}
+            onClickCancelled={onClickCancelled}
+            isCompletedActive={isCompletedActive}
+            isCancelActive={isCancelActive}
+            slotInterview={slotInterview}
+            textUpcomingCount={textUpcomingCount}
+            textCancelledCount={textCancelledCount}
+            textPastCount={textPastCount}
+            isMenuTabVisible={isMenuTabVisible}
+          />
+        </div>
+        {slotInterviewCard}
+      </div>
     </>
   );
 }
