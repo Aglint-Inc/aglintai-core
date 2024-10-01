@@ -275,12 +275,11 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
         action_type: 'agent_instruction',
         payload: {
           agent: {
-            instruction:
-              'Pick Suitable slot/s and suggest to the Meeting Organizer',
+            instruction: 'TODO:dileep',
           },
         },
       },
-      name: 'Pick Suitable slot/s and suggest to the Meeting Organizer',
+      name: 'Pick Suitable slot/s and suggest to the Meeting Organizer in slack',
     },
     {
       value: {
