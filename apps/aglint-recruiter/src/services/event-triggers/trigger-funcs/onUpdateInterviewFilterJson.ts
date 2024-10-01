@@ -34,7 +34,7 @@ const stopSelfScheduleReminder = async (
         .eq('related_table_pkey', new_data.id)
         .eq('meta->>target_api', 'selfScheduleReminder_email_applicant'),
     );
-  } catch (err) {
+  } catch (err: any) {
     console.error('Failed to stop self schedule reminder', err.message);
   }
 };
@@ -61,7 +61,7 @@ const candConfirmSlot = async (
         })
         .eq('id', new_data.request_id),
     );
-  } catch (err) {
+  } catch (err: any) {
     console.error('Failed to candConfirmSlot', err.message);
   }
 };

@@ -2,13 +2,20 @@ import { OAuth2Client } from 'google-auth-library';
 import { google } from 'googleapis';
 
 import type { GetAuthParams } from '../event_book/types';
+import { CApiError } from '@aglint/shared-utils';
 
 export const getUserCalAuth = async ({
   company_cred,
   recruiter,
-}: GetAuthParams) => {
+}: {
+  company_cred: GetAuthParams['company_cred'];
+  recruiter: GetAuthParams['recruiter'];
+}) => {
   try {
-    if (recruiter.schedule_auth) {
+    if (!recruiter) {
+      throw new CApiError('SERVER_ERROR', 'Recruiter not found');
+    }
+    if (recruiter && recruiter.schedule_auth) {
       const oAuth2Client = new OAuth2Client(
         process.env.GOOGLE_SCHEDULE_CLIENT_ID,
         process.env.GOOGLE_SCHEDULE_CLIENT_SECRET,
@@ -21,6 +28,9 @@ export const getUserCalAuth = async ({
       });
       return oAuth2Client;
     } else {
+      if (!company_cred) {
+        throw new CApiError('SERVER_ERROR', 'Company cred not found');
+      }
       const jwtClient = new google.auth.JWT({
         email: company_cred.client_email,
         key: company_cred.private_key,

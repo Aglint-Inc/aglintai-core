@@ -2,7 +2,7 @@ import {
   type CalendarEvent,
   type NewCalenderEvent,
 } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { CApiError, supabaseWrap } from '@aglint/shared-utils';
 import { google } from 'googleapis';
 
 import {
@@ -14,6 +14,7 @@ import { getUserCalAuth } from '@/utils/scheduling/getUserCalAuth';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { decrypt_string } from '../../utils/integrations/crypt-funcs';
+import { fetchRecruiterDBAuthDetails } from './utils';
 
 export class GoogleCalender {
   private recruiter_user_id;
@@ -23,8 +24,9 @@ export class GoogleCalender {
   constructor(
     _comp_domain_cred_hash: string | null,
     _recruiter_auth: CalEventAttendeesAuthDetails | null,
-    _recruiter_user_id: string = null,
+    _recruiter_user_id: string | null = null,
   ) {
+    this.user_auth = null;
     this.auth_details = {
       company_cred: _comp_domain_cred_hash
         ? JSON.parse(decrypt_string(_comp_domain_cred_hash))
@@ -38,36 +40,16 @@ export class GoogleCalender {
 
   public async authorizeUser() {
     if (this.recruiter_user_id) {
-      const [rec_relns] = supabaseWrap(
-        await this.supabaseAdmin
-          .from('recruiter_relation')
-          .select(
-            'recruiter(integrations(service_json)),recruiter_user!public_recruiter_relation_user_id_fkey(email,schedule_auth)',
-          )
-          .eq('user_id', this.recruiter_user_id)
-          .then(({ data, error }) => ({
-            data: data.filter((d) => d.recruiter_user),
-            error,
-          })),
+      const { auth_details, user_auth } = await fetchRecruiterDBAuthDetails(
+        this.recruiter_user_id,
+        this.supabaseAdmin,
       );
-      this.auth_details = {
-        company_cred: null,
-        recruiter: {
-          email: rec_relns.recruiter_user.email,
-          schedule_auth: rec_relns.recruiter_user.schedule_auth,
-          user_id: this.recruiter_user_id,
-        },
-      };
-      if (rec_relns.recruiter.integrations.service_json) {
-        this.auth_details.company_cred = JSON.parse(
-          decrypt_string(rec_relns.recruiter.integrations.service_json),
-        );
-      }
-      this.user_auth = await getUserCalAuth({
-        recruiter: this.auth_details.recruiter,
-        company_cred: this.auth_details.company_cred,
-      });
+      this.user_auth = user_auth;
+      this.auth_details = auth_details;
     } else {
+      if (!this.auth_details) {
+        throw new CApiError('SERVER_ERROR', 'Auth Details not found');
+      }
       this.user_auth = await getUserCalAuth({
         recruiter: this.auth_details.recruiter,
         company_cred: this.auth_details.company_cred,
@@ -76,12 +58,19 @@ export class GoogleCalender {
     return this.user_auth;
   }
   public async authSuperAdmin(company_id: string) {
-    const [company] = supabaseWrap(
+    const company = (
       await this.supabaseAdmin
         .from('recruiter_relation')
-        .select('recruiter(integrations(service_json,domain_admin_email))')
-        .eq('recruiter_id', company_id),
-    );
+        .select(
+          'recruiter!inner(integrations!inner(service_json,domain_admin_email))',
+        )
+        .eq('recruiter_id', company_id)
+        .single()
+        .throwOnError()
+    ).data;
+    if (!company) {
+      throw new CApiError('SERVER_ERROR', 'Company not found');
+    }
     if (!company.recruiter.integrations.service_json) {
       throw new Error('Invalid Company Service Cred');
     }
@@ -133,7 +122,7 @@ export class GoogleCalender {
     //@ts-expect-error
     return response.data as CalendarEvent;
   }
-  public async importEvent(event, attendeeEmail) {
+  public async importEvent(event: CalendarEvent, attendeeEmail: string) {
     const calendar = google.calendar({ version: 'v3', auth: this.user_auth });
     //@ts-expect-error
     const response = await calendar.events.import({
@@ -216,7 +205,7 @@ export class GoogleCalender {
     let syncToken = sync_token; // Initially, this will be null for the first sync
 
     do {
-      const requestParams = {
+      const requestParams: any = {
         calendarId: 'primary',
         singleEvents: true,
         showDeleted: true,
@@ -234,6 +223,9 @@ export class GoogleCalender {
         events = events.concat(response.data.items as CalendarEvent[]);
       }
       pageToken = response.data.nextPageToken;
+      if (response.data.nextSyncToken === undefined) {
+        throw new CApiError('SERVER_ERROR', 'Sync Token not found');
+      }
 
       syncToken = response.data.nextSyncToken;
     } while (pageToken);

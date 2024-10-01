@@ -1821,7 +1821,7 @@ export type Database = {
           is_resolved: boolean
           other_details: Json | null
           reason: string
-          request_id: string | null
+          request_id: string
           session_id: string
           session_relation_id: string | null
           type: Database["public"]["Enums"]["cancel_type"]
@@ -1835,7 +1835,7 @@ export type Database = {
           is_resolved?: boolean
           other_details?: Json | null
           reason: string
-          request_id?: string | null
+          request_id: string
           session_id: string
           session_relation_id?: string | null
           type?: Database["public"]["Enums"]["cancel_type"]
@@ -1849,7 +1849,7 @@ export type Database = {
           is_resolved?: boolean
           other_details?: Json | null
           reason?: string
-          request_id?: string | null
+          request_id?: string
           session_id?: string
           session_relation_id?: string | null
           type?: Database["public"]["Enums"]["cancel_type"]

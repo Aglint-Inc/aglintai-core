@@ -40,7 +40,7 @@ export const fetchCandDetailsForDebreifBooking = async (
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        '*,applications(id,candidates(first_name,last_name,timezone),public_jobs(job_title),recruiter(id,name))',
+        '*,applications!inner(id,candidates!inner(first_name,last_name,timezone),public_jobs!inner(job_title),recruiter!inner(id,name))',
       )
       .eq('id', req_body.filter_id)
       .single()
@@ -48,20 +48,6 @@ export const fetchCandDetailsForDebreifBooking = async (
   ).data;
   if (!cand_debreif_details) {
     throw new CApiError('CLIENT', 'Filter does not exist');
-  }
-
-  if (!cand_debreif_details.applications) {
-    throw new CApiError('CLIENT', 'application not found');
-  }
-
-  if (!cand_debreif_details.applications.candidates) {
-    throw new CApiError('CLIENT', 'candidate not found');
-  }
-  if (!cand_debreif_details.applications.recruiter) {
-    throw new CApiError('CLIENT', 'recruiter not found');
-  }
-  if (!cand_debreif_details.applications.public_jobs) {
-    throw new CApiError('CLIENT', 'job not found');
   }
 
   const fetchedData: DebriefFetchResponse = {

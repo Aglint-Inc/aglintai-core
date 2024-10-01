@@ -18,7 +18,7 @@ export const fetchDBScheduleDetails = async (
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        '*,applications(id,candidate_id,candidates(email,first_name,last_name,recruiter(id,name)),public_jobs(job_title))',
+        '*,applications!inner(id,candidate_id,candidates!inner(email,first_name,last_name,recruiter!inner(id,name)),public_jobs!inner(job_title))',
       )
       .eq('id', parsed_body.filter_id)
       .single()
@@ -26,21 +26,6 @@ export const fetchDBScheduleDetails = async (
   ).data;
   if (!filter_json_data) {
     throw new CApiError('CLIENT', 'Filter does not exist');
-  }
-  if (!filter_json_data.applications) {
-    throw new CApiError('CLIENT', 'application not found');
-  }
-  if (!filter_json_data.applications.candidates) {
-    throw new CApiError('CLIENT', 'Candidate not found');
-  }
-  if (!filter_json_data.applications.candidates.recruiter) {
-    throw new CApiError('CLIENT', 'Recruiter not found');
-  }
-  if (!filter_json_data.applications.public_jobs) {
-    throw new CApiError('CLIENT', 'Job not found');
-  }
-  if (filter_json_data.request_id === null) {
-    throw new CApiError('CLIENT', 'request id not found');
   }
 
   const email_templates = (

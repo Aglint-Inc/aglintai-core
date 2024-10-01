@@ -1,5 +1,4 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
@@ -25,13 +24,12 @@ export const declineRequestCompletion = async ({
   try {
     const supabaseAdmin = getSupabaseServer();
 
-    supabaseWrap(
-      await supabaseAdmin
-        .from('request')
-        .update({ status: 'completed' })
-        .eq('id', new_data.request_id),
-    );
-  } catch (err) {
+    await supabaseAdmin
+      .from('request')
+      .update({ status: 'completed' })
+      .eq('id', new_data.request_id)
+      .throwOnError();
+  } catch (err: any) {
     //
   }
 };

@@ -35,7 +35,7 @@ export const fetchCandAvailForBooking = async (
     await supabaseAdmin
       .from('candidate_request_availability')
       .select(
-        '*, recruiter(id,name),applications(id,candidates(first_name,last_name,timezone),public_jobs(job_title)), request_session_relation(session_id)',
+        '*, recruiter!inner(id,name),applications!inner(id,candidates!inner(first_name,last_name,timezone),public_jobs!inner(job_title)), request_session_relation!inner(session_id)',
       )
       .eq('id', req_body.availability_req_id)
       .single()
@@ -43,20 +43,9 @@ export const fetchCandAvailForBooking = async (
   ).data;
 
   if (!avail_details) {
-    throw new Error('Availabiluty does not exist');
+    throw new CApiError('SERVER_ERROR', 'Availabiluty does not exist');
   }
-  if (!avail_details.applications) {
-    throw new CApiError('CLIENT', 'application');
-  }
-  if (!avail_details.applications.candidates) {
-    throw new CApiError('CLIENT', 'Candidate not found');
-  }
-  if (!avail_details.applications.public_jobs) {
-    throw new CApiError('CLIENT', 'Job not found');
-  }
-  if (!avail_details.recruiter) {
-    throw new CApiError('CLIENT', 'Recruiter not found');
-  }
+
   const fetched_details: DbFetchCandAvailForBooking = {
     session_ids: avail_details.request_session_relation.map(
       (s) => s.session_id,

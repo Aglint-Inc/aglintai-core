@@ -4,8 +4,8 @@ import type {
 } from '@aglint/shared-types';
 
 export type GetAuthParams = {
-  company_cred: CompServiceKeyCred;
-  recruiter: CalEventAttendeesAuthDetails;
+  company_cred: CompServiceKeyCred | null;
+  recruiter: CalEventAttendeesAuthDetails | null;
 };
 
 export type CalEventAttendeesAuthDetails = Pick<
