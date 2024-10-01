@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { tokens } = await oAuth2Client.getToken(code);
     oAuth2Client.setCredentials(tokens);
     return res.status(200).json(tokens);
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).send(error.message);
   }
 };

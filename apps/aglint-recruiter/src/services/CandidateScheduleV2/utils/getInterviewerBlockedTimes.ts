@@ -4,9 +4,9 @@ import {
   type SchedulingSettingType,
   type TimeDurationDayjsType,
 } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 
 import { isTimeChunksEnclosed } from './time_range_utils';
-import { userTzDayjs } from './userTzDayjs';
 
 /**
  * @param comp_shedule_settings company schedule setting
@@ -63,16 +63,16 @@ export const getInterviewerBlockedTimes = (
   //filter any events that are inside of free events
   const blocked_times: TimeDurationDayjsType[] = busy_time_events
     .map((e) => ({
-      startTime: userTzDayjs(e.start.dateTime).tz(cand_tz),
-      endTime: userTzDayjs(e.end.dateTime).tz(cand_tz),
+      startTime: dayjsLocal(e.start.dateTime).tz(cand_tz),
+      endTime: dayjsLocal(e.end.dateTime).tz(cand_tz),
     }))
     .filter(
       (block) =>
         !free_time_events.some((free_block) => {
           return isTimeChunksEnclosed(
             {
-              startTime: userTzDayjs(free_block.start.dateTime).tz(cand_tz),
-              endTime: userTzDayjs(free_block.end.dateTime).tz(cand_tz),
+              startTime: dayjsLocal(free_block.start.dateTime).tz(cand_tz),
+              endTime: dayjsLocal(free_block.end.dateTime).tz(cand_tz),
             },
             block,
           );

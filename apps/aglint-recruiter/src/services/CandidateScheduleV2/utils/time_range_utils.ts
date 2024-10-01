@@ -5,7 +5,6 @@ import {
 import { dayjsLocal } from '@aglint/shared-utils';
 import { type Dayjs } from 'dayjs';
 
-import { userTzDayjs } from './userTzDayjs';
 const precission = 'minutes';
 /**
  * @param chunk1 time chunk
@@ -121,13 +120,13 @@ export const convertTimeDurStrToDayjsChunk = (
   let chunk: TimeDurationDayjsType;
   if (tz) {
     chunk = {
-      startTime: userTzDayjs(chunk_str.startTime).tz(tz),
-      endTime: userTzDayjs(chunk_str.endTime).tz(tz),
+      startTime: dayjsLocal(chunk_str.startTime).tz(tz),
+      endTime: dayjsLocal(chunk_str.endTime).tz(tz),
     };
   } else {
     chunk = {
-      startTime: userTzDayjs(chunk_str.startTime),
-      endTime: userTzDayjs(chunk_str.endTime),
+      startTime: dayjsLocal(chunk_str.startTime),
+      endTime: dayjsLocal(chunk_str.endTime),
     };
   }
 

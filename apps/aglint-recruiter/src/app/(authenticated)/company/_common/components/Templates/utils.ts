@@ -94,7 +94,7 @@ export const allTempKeys: DatabaseEnums['email_slack_types'][] = [
   ...calenderTempKeys,
 ];
 
-export const fetchEmailTemplates = async (recruiter_id) => {
+export const fetchEmailTemplates = async (recruiter_id: string) => {
   const templates = supabaseWrap(
     await supabase
       .from('company_email_template')

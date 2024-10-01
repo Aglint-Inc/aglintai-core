@@ -1,5 +1,6 @@
 import { type DatabaseEnums } from '@aglint/shared-types';
 import {
+  CApiError,
   createRequestProgressLogger,
   executeWorkflowAction,
   type ProgressLoggerType,
@@ -19,7 +20,11 @@ type BodyParams = {
 };
 
 const interviewerDecline = async (req_body: BodyParams) => {
-  const target_api = req_body.target_api as DatabaseEnums['email_slack_types'];
+  const target_api = req_body.target_api as keyof typeof apiTargetToEvents;
+  if (!apiTargetToEvents[target_api]) {
+    throw new CApiError('SERVER_ERROR', 'eventAction not found');
+  }
+
   const supabaseAdmin = getSupabaseServer();
 
   const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({

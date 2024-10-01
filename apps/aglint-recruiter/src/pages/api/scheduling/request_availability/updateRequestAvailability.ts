@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 import { type DB } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 import { createClient } from '@supabase/supabase-js';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import type { fetchAllActivities } from '../fetch_activities';
@@ -44,7 +44,7 @@ export default async function handler(
           .single();
         await supabaseAdmin
           .from('candidates')
-          .update({ timezone: userTzDayjs.tz.guess() })
+          .update({ timezone: dayjsLocal.tz.guess() })
           .eq('id', candidateAvailability?.applications?.candidates?.id)
           .throwOnError();
         if (!error) {

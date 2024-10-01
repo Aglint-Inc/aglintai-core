@@ -1,18 +1,20 @@
-import { scheduling_options_schema, supabaseWrap } from '@aglint/shared-utils';
+import { scheduling_options_schema } from '@aglint/shared-utils';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export const fetchCandidateAvailability = async (request_id: string) => {
   const supabaseAdmin = getSupabaseServer();
 
-  const [avail_details] = supabaseWrap(
+  const avail_details = (
     await supabaseAdmin
       .from('candidate_request_availability')
       .select(
         'slots,availability,date_range,applications(candidates(timezone)),recruiter_id, request_session_relation(session_id)',
       )
-      .eq('id', request_id),
-  );
+      .eq('id', request_id)
+      .single()
+      .throwOnError()
+  ).data;
   if (!avail_details) {
     throw new Error('Availabiluty does not exist');
   }

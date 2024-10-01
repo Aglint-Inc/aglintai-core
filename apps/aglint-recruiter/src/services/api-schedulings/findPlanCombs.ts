@@ -1,5 +1,5 @@
 import { type SessionInterviewerType } from '@aglint/shared-types';
-import { getFullName } from '@aglint/shared-utils';
+import { CApiError, getFullName } from '@aglint/shared-utils';
 import type { ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
 import { filterSchedulingOptionsArray } from '@request/components/SelfSchedulingDrawer/_common/components/BodyDrawer/ScheduleFilter/utils';
 import { type SelfSchedulingFlow } from '@request/components/SelfSchedulingDrawer/_common/store/store';
@@ -42,6 +42,12 @@ export const findPlanCombs = async ({
       session_ids: session_ids,
     },
   });
+  if (!cand_schedule.db_details) {
+    throw new CApiError(
+      'SERVER_ERROR',
+      'No data found for the given session ids',
+    );
+  }
   const all_inters: (Pick<SessionInterviewerType, 'user_id'> & {
     full_name: string;
   })[] = cand_schedule.db_details.all_inters.map((int) => ({

@@ -79,7 +79,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .eq('id', id)
       .throwOnError();
     return res.status(200).send('OK');
-  } catch (error) {
+  } catch (error: any) {
     console.error(error.message);
     console.error('Error stack', error.stack);
     await supabaseAdmin

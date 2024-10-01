@@ -1,17 +1,12 @@
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
-dayjs.extend(utc);
-dayjs.extend(timezone);
 import {
   type APICandScheduleMailThankYou,
   type CandidateDirectBookingType,
   type PlanCombinationRespType,
 } from '@aglint/shared-types';
+import { CApiError } from '@aglint/shared-utils';
 import axios from 'axios';
 
-import { type CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
-
+import { type ScheduleApiDetails } from '../../types';
 import { confirmInterviewers } from './confirmInterviewers';
 import { createMeetingEvents } from './createMeetingEvents';
 import { sendMailsToOrganizer } from './sendMailsToOrganizer';
@@ -22,10 +17,13 @@ import { updateTrainingStatus } from './updateTrainingStatus';
 
 export const bookCandidateSelectedOption = async (
   parsed_body: CandidateDirectBookingType,
-  cand_schedule: CandidatesSchedulingV2,
+  cand_schedule_db_details: ScheduleApiDetails,
   verified_slot: PlanCombinationRespType,
   fetched_cand_details: FetchDBScheduleDetails,
 ) => {
+  if (fetched_cand_details.request_id === null) {
+    throw new CApiError('CLIENT', 'Request ID not found');
+  }
   const db_details: ScheduleDBDetails = {
     application: {
       id: fetched_cand_details.application_id,
@@ -41,10 +39,11 @@ export const bookCandidateSelectedOption = async (
     job: {
       job_title: fetched_cand_details.job.job_title,
     },
+    request_id: fetched_cand_details.request_id,
   };
   // create calender events for all sessions
   const booked_meeting_details = await createMeetingEvents(
-    cand_schedule,
+    cand_schedule_db_details,
     verified_slot.sessions,
     db_details,
   );
@@ -54,7 +53,7 @@ export const bookCandidateSelectedOption = async (
   await updateMeetingEventDetails(
     booked_meeting_details,
     parsed_body.cand_tz,
-    fetched_cand_details.filter_json_data.request_id,
+    fetched_cand_details.request_id,
   );
   await updateConfirmTime(parsed_body.filter_id);
   await sendMailsToOrganizer(db_details, booked_meeting_details);
@@ -62,7 +61,7 @@ export const bookCandidateSelectedOption = async (
     cand_tz: parsed_body.cand_tz,
     filter_id: parsed_body.filter_id,
     application_id: fetched_cand_details.application_id,
-    session_ids: fetched_cand_details.filter_json_data.session_ids,
+    session_ids: fetched_cand_details.session_ids,
     availability_request_id: null,
     is_debreif: false,
   };

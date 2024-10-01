@@ -7,7 +7,7 @@ import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/Candidate
 import { combineSlots } from '@/utils/scheduling_v2/utils';
 
 const findInterviewSlot = async (
-  parsedData: z.infer<typeof schema_find_interview_slot>,
+  parsedData: NonNullable<z.infer<typeof schema_find_interview_slot>>,
 ) => {
   const cand_schedule = new CandidatesSchedulingV2(parsedData.options);
 

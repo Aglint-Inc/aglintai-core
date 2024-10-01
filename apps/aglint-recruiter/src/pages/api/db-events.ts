@@ -19,8 +19,10 @@ export const config = {
 
 const dbEvents = async (req_body: BodyParams) => {
   const payload = req_body as BodyParams;
-  const trigger = `${payload.operation_type}_${payload.table_name}`;
+  const trigger =
+    `${payload.operation_type}_${payload.table_name}` as keyof typeof db_event_triggers;
   console.info(`executing `, trigger);
+
   const trigger_to_exec = db_event_triggers[trigger];
   if (trigger_to_exec) {
     await trigger_to_exec({ ...payload });
