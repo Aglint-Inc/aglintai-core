@@ -14,6 +14,7 @@ interface FullWidthLayoutProps {
   header?: React.ReactNode;
   filter?: React.ReactNode;
   sidebar?: React.ReactNode;
+  sidebarPosition?: 'left' | 'right';
 }
 
 export function FullWidthLayout({
@@ -21,10 +22,11 @@ export function FullWidthLayout({
   header,
   filter,
   sidebar,
+  sidebarPosition = 'left',
 }: FullWidthLayoutProps) {
   return (
     <Layout>
-      <LayoutBody>
+      <LayoutBody sidebarPosition={sidebarPosition}>
         {sidebar && <LayoutSidebar>{sidebar}</LayoutSidebar>}
         <LayoutContent>
           {header && <LayoutHeader>{header}</LayoutHeader>}
