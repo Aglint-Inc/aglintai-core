@@ -1,15 +1,14 @@
 'use client';
-import Seo from '@/components/Common/Seo';
-import Integrations from '@/components/Integrations';
+import { FullWidthLayout } from '@components/layouts/full-width-layout';
+
+import { Integrations, IntegrationsHeader } from '@/components/Integrations';
 
 function IntegrationsPage() {
   return (
     <>
-      <Seo
-        title={`Integrations | Aglint AI`}
-        description='AI for People Products'
-      />
-      <Integrations />
+      <FullWidthLayout header={<IntegrationsHeader />}>
+        <Integrations />
+      </FullWidthLayout>
     </>
   );
 }
