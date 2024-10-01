@@ -7,10 +7,10 @@ export const List = ({
 }) => {
   return (
     <div className='rounded-lg bg-gray-50 p-4'>
-      <h3 className='mb-2 text-base font-medium'>
+      <div className='mb-2 text-sm font-medium'>
         {interviewType.module_name}
-      </h3>
-      <div className='grid grid-cols-2 gap-4 sm:grid-cols-4'>
+      </div>
+      <div className='flex flex-col gap-2'>
         <Card
           title='Duration'
           value={interviewType.completed_meeting_duration || 0}
@@ -33,9 +33,10 @@ export const List = ({
 };
 const Card = ({ title, value }: { title: string; value: string | number }) => {
   return (
-    <div>
-      <p className='text-sm text-muted-foreground'>{title}</p>
-      <p className='text-base font-bold'>{value} min</p>
+    <div className='flex flex-row gap-2 items-center'>
+      <p className='text-sm text-muted-foreground w-3/5'>{title}</p>
+      <p className='text-sm text-muted-foreground'>:</p>
+      <p className='text-sm font-medium'>{value} min</p>
     </div>
   );
 };
