@@ -15,8 +15,8 @@ export const Qualifications = ({
   return (
     <>
       <UISectionCard title='Qualifications' type='compact'>
-        <ScrollArea className='max-h-[360px] w-full'>
-          <div className='space-y-4'>
+        <ScrollArea className='w-full'>
+          <div className='grid grid-cols-3 gap-4'>
             {interview_types?.length ? (
               interview_types?.map((interview_type) => (
                 <List
@@ -25,6 +25,7 @@ export const Qualifications = ({
                 />
               ))
             ) : (
+              <div className='col-span-3'>
               <GlobalEmpty
                 icon={
                   <LibraryBig
@@ -32,8 +33,9 @@ export const Qualifications = ({
                     className='h-6 w-6 text-muted-foreground'
                   />
                 }
-                header='No Qualifications interview pro'
+                header='No qualifications found'
               />
+              </div>
             )}
           </div>
         </ScrollArea>
