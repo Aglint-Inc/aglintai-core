@@ -1,13 +1,18 @@
 'use client';
-import { FullWidthLayout } from '@components/layouts/full-width-layout';
+import { TwoColumnLayout } from '@components/layouts/two-column-layout';
 
 import SchedulingViewComp from './_common/components';
+import Requests from './_common/components/Requests';
 
 function Page() {
   return (
-    <FullWidthLayout>
-      <SchedulingViewComp />
-    </FullWidthLayout>
+    <TwoColumnLayout
+      sidebarPosition='right'
+      sidebarWidth={460}
+      sidebar={<Requests />}
+    >
+      <SchedulingViewComp /> {/* Added JobHiringTeamDashboard component */}
+    </TwoColumnLayout>
   );
 }
 
