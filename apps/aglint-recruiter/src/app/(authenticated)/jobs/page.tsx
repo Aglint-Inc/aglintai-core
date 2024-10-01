@@ -1,13 +1,17 @@
 'use client';
 
-import DashboardComp from '@/jobs/components';
+import { FullWidthLayout } from '@components/layouts/full-width-layout';
+
+import { Body, Filter, Header } from '@/jobs/components';
 
 import { IntegrationStoreProvider } from './_common/contexts';
 
 const Page = () => {
   return (
     <IntegrationStoreProvider>
-      <DashboardComp />
+      <FullWidthLayout header={<Header />} filter={<Filter />}>
+        <Body />
+      </FullWidthLayout>
     </IntegrationStoreProvider>
   );
 };

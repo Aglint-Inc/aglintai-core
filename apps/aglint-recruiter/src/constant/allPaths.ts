@@ -106,7 +106,6 @@ export const PATHS = [
   '/auth/callback',
   '/auth/redirect',
   '/auth-cal',
-  '/auth-email',
   '/company',
   '/integrations/[platform]',
   '/integrations',

@@ -5,7 +5,6 @@ import { Loader } from '@/components/Common/Loader';
 
 import { useScheduleStatesContext } from '../contexts/ScheduleStatesContext';
 import { useAllInterviews } from '../hooks/useAllInterviews';
-import UpComingInterviewFilters from './Filters/upComingFilter';
 import ScheduleMeetingList from './ui/ScheduleMeetingList';
 
 function UpComingInterviews() {
@@ -14,8 +13,7 @@ function UpComingInterviews() {
     ...upcomingFilterState,
   });
   return (
-    <>
-      <UpComingInterviewFilters />
+    <div className='px-4'>
       {!isFetched && <Loader />}
       {isFetched && (schedules ?? [])?.length === 0 && (
         <GlobalEmpty
@@ -29,7 +27,7 @@ function UpComingInterviews() {
       {isFetched && (schedules ?? [])?.length > 0 && (
         <ScheduleMeetingList filterSchedules={schedules ?? []} />
       )}
-    </>
+    </div>
   );
 }
 

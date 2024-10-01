@@ -54,6 +54,7 @@ const EditBasicInfoDialog = ({
   const [recruiterLocal, setRecruiterLocal] = useState<typeof recruiter | null>(
     recruiter,
   );
+
   const { toast } = useToast();
 
   useEffect(() => {

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import UITabs from '@/components/Common/UITabs';
 
-import { type sectionKeys } from '..';
+import { type sectionKeys } from '../../hooks/useScrollnavigation';
 
 export const SideBar = ({
   scrollToSection,

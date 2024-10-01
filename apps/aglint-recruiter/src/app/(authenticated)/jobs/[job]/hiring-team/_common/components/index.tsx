@@ -19,7 +19,6 @@ import {
 import { Loader } from '@/components/Common/Loader';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { JobNotFound } from '@/job/components/JobNotFound';
-import JobsSideNavV2 from '@/job/components/JobsSideNavV2';
 import { useJob } from '@/job/hooks';
 import {
   type JobMetaFormProps,
@@ -101,17 +100,7 @@ const JobEdit = () => {
 
   return (
     <div className='container-lg mx-auto w-full px-4'>
-      <div className='mb-6 flex items-center justify-between'>
-        <div>
-          <BreadCrumbs job={job} />
-        </div>
-        {/* <Settings /> */}
-      </div>
-
       <div className='mb-6 flex gap-6'>
-        <div className='w-2/12'>
-          <JobsSideNavV2 />
-        </div>
         <div className='w-9/12'>
           <div className='flex flex-row justify-between'>
             <div className='flex flex-col gap-2'>
@@ -150,7 +139,7 @@ const JobEdit = () => {
   );
 };
 
-const BreadCrumbs = ({ job }: { job: Job }) => {
+export const BreadCrumbs = ({ job }: { job: Job }) => {
   const { push } = useRouterPro();
 
   return (

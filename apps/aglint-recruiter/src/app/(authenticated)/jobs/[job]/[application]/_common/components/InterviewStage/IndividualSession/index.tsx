@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { useState } from 'react';
 import { MeetingStatusBadge } from 'src/app/_common/components/MeetingStatusBadge';
 
-import { useAllIntegrations } from '@/authenticated/hooks';
+import { useIntegrations } from '@/authenticated/hooks';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerAcceptDeclineIcon';
@@ -48,7 +48,7 @@ function ScheduleIndividualCard({
   hideDateAndTime?: boolean;
 }) {
   const [collapsed, setCollapsed] = useState(false);
-  const { data: allIntegrations } = useAllIntegrations();
+  const { data: allIntegrations } = useIntegrations();
 
   const users = session.users;
   const interview_meeting = session.interview_meeting;

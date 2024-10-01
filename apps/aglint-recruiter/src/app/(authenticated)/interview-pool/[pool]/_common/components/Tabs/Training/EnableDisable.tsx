@@ -46,7 +46,7 @@ function EnableDisable() {
       ) : (
         <>
           {
-            <div className='flex flex-col gap-2 w-full'>
+            <div className='flex w-full flex-col gap-2'>
               <TrainingSetting
                 isApprovalVisible={editModule?.settings?.reqruire_approval}
                 isDisable={!editModule?.settings?.require_training}
@@ -59,7 +59,7 @@ function EnableDisable() {
                 textShadow={`${editModule.settings.noShadow} shadow interviews required by each trainee`}
                 textReverseShadow={`${editModule.settings.noReverseShadow} reverse shadow interviews required by each trainee`}
                 slotButton={
-                  checkPermissions(['interview_types']) ? (
+                  checkPermissions && checkPermissions(['interview_types']) ? (
                     <Button variant='outline' onClick={() => setOpen(true)}>
                       <Settings className='mr-2 h-4 w-4' />
                       Settings
