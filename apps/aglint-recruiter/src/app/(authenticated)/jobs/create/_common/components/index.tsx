@@ -24,33 +24,35 @@ import { Loader } from '@/components/Common/Loader';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJobs } from '@/jobs/hooks';
 import type { Form } from '@/jobs/types';
-import { useCompanyMembers } from '@/queries/company-members';
 import ROUTES from '@/utils/routing/routes';
 
 import { type JobMetaFormProps, useJobForms } from './form';
 
-const JobCreateComponent = () => {
-  const { status } = useCompanyMembers();
-  if (status === 'error')
-    return (
-      <div className='flex h-full w-full items-center justify-center'>
-        <div>Error</div>
-      </div>
-    );
-  if (status === 'pending')
-    return (
-      <div className='flex h-full w-full items-center justify-center'>
-        <Loader />
-      </div>
-    );
+export const JobCreateHeader = () => {
   return (
-    <div className='container'>
-      <JobCreate />;
+    <div className='flex items-center'>
+      {/* <Button variant='outline' onClick={() => push(ROUTES['/jobs']())}>
+        Back
+      </Button> */}
+      <div className='m-0 flex w-full flex-col'>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href='/jobs'>Jobs</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Create</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <h1 className='m-0 text-2xl font-bold'>Create Job</h1>
+      </div>
     </div>
   );
 };
 
-const JobCreate = () => {
+export const JobCreate = () => {
   const { recruiter } = useTenant();
   const { isJobSetupPending, jobSetupSteps } = useCompanySetup();
   const initialCompany = recruiter?.name ?? '';
@@ -131,25 +133,6 @@ const JobCreate = () => {
 
   return (
     <div className='container mx-auto max-w-6xl p-4'>
-      <div className='flex items-center'>
-        {/* <Button variant='outline' onClick={() => push(ROUTES['/jobs']())}>
-          Back
-          </Button> */}
-        <div className='m-0 flex w-full flex-col'>
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href='/jobs'>Jobs</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Create</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-          <h1 className='m-0 text-2xl font-bold'>Create Job</h1>
-        </div>
-      </div>
       <div className='flex w-full flex-row'>
         <div className='w-3/4'>
           {isJobSetupPending && (
@@ -339,5 +322,3 @@ const JobForms = ({
     </div>
   );
 };
-
-export default JobCreateComponent;
