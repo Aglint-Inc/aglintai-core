@@ -264,7 +264,7 @@ export default function LeverModalComp() {
                                 <CardContent className='flex items-center justify-between p-4'>
                                   <div>
                                     <p className='font-medium'>{post.text}</p>
-                                    <p className='text-sm text-gray-500'>
+                                    <p className='text-sm text-muted-foreground'>
                                       {post.categories.location}
                                     </p>
                                     <UIBadge
@@ -320,7 +320,7 @@ export default function LeverModalComp() {
               </div>
             ) : integration.lever.step === STATE_LEVER_DIALOG.IMPORTING ? (
               <div className='flex h-[508px] flex-col items-center justify-center space-y-4'>
-                <Loader2 className='h-8 w-8 animate-spin text-gray-500' />
+                <Loader2 className='h-8 w-8 animate-spin text-muted-foreground' />
                 <p className='text-gray-600'>Importing from Lever</p>
               </div>
             ) : null}

@@ -180,7 +180,7 @@ export function Stepper({
               ? 'border-blue-500 bg-blue-500 text-white'
               : isCurrent
                 ? 'border-blue-500 text-blue-500'
-                : 'border-gray-300 text-gray-300',
+                : 'border-border text-gray-300',
           )}
           onClick={isCompleted ? onClickCompleted : undefined}
         >
@@ -206,7 +206,7 @@ export function Stepper({
             ? 'text-blue-500'
             : isCompleted
               ? 'text-blue-500'
-              : 'text-gray-500',
+              : 'text-muted-foreground',
         )}
       >
         {textStepName}

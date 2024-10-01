@@ -70,7 +70,9 @@ const LinkIcon = ({
 }) => {
   const baseClasses =
     'flex flex-col items-center space-y-2 p-2 rounded-md transition-colors duration-200';
-  const activeClasses = active ? 'bg-gray-200 text-black' : 'text-gray-500';
+  const activeClasses = active
+    ? 'bg-gray-200 text-black'
+    : 'text-muted-foreground';
   const hoverClasses = 'hover:bg-gray-200';
 
   const iconMap = {

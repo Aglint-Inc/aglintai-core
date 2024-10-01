@@ -33,10 +33,10 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
             </Avatar>
             <div>
               <CardTitle>{recruiter.name}</CardTitle>
-              <p className='text-sm text-gray-500'>
+              <p className='text-sm text-muted-foreground'>
                 {recruiter.industry || '--'}
               </p>
-              <p className='text-sm text-gray-500'>
+              <p className='text-sm text-muted-foreground'>
                 {recruiter.employee_size || '--'} employees
               </p>
             </div>
@@ -96,7 +96,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
                         <p className='font-semibold'>
                           {capitalizeAll(loc.city)}
                         </p>
-                        <p className='text-sm text-gray-500'>
+                        <p className='text-sm text-muted-foreground'>
                           {[
                             capitalizeAll(loc.region),
                             capitalizeAll(loc.country),
@@ -117,7 +117,9 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
               Open Positions ({filteredJobs.length})
             </h3>
             {filteredJobs.length === 0 ? (
-              <p className='text-center text-gray-500'>No Jobs Found.</p>
+              <p className='text-center text-muted-foreground'>
+                No Jobs Found.
+              </p>
             ) : (
               <div className='space-y-4'>
                 {filteredJobs.map((job, index) => (
@@ -128,7 +130,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
                           <h4 className='font-semibold'>
                             {job.job_title || '--'}
                           </h4>
-                          <p className='text-sm text-gray-500'>
+                          <p className='text-sm text-muted-foreground'>
                             {job.departments?.name || '--'}
                           </p>
                           <div className='mt-2 flex space-x-2'>

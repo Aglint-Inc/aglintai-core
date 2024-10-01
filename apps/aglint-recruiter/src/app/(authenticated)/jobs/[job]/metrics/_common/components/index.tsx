@@ -98,15 +98,12 @@ const Dashboard = () => {
   const score_matches = getMatches(job.application_match, Number(total) || 0);
 
   return (
-    <div className='container-lg mx-auto w-full px-4 pb-5'>
-      <div className='mb-6 flex items-center justify-between'>
-        <div>
-          <h1 className='mb-2 text-2xl font-bold'>Job Analytics</h1>
-          <SharedBreadCrumbs />
-        </div>
+    <div className='w-full'>
+      <div className='flex items-center justify-between px-4 pt-2'>
+        <SharedBreadCrumbs />
         <SharedActions />
       </div>
-      <div className='mb-6 flex flex-col gap-6'>
+      <div className='mb-6 flex flex-col gap-6 px-4'>
         <div>
           <div className='flex flex-col gap-4 py-4'>
             <div className='space-y-4 rounded-lg border bg-white p-4'>
@@ -194,7 +191,7 @@ const StatItem = ({ label, percentage, count, color }) => (
             aria-valuemax={100}
           ></div>
         </div>
-        <div className='mt-1 text-xs text-gray-500'>({count})</div>
+        <div className='mt-1 text-xs text-muted-foreground'>({count})</div>
       </div>
     </div>
   </div>

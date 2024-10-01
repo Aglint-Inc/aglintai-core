@@ -20,7 +20,7 @@ const StageProgressPill = memo(
           className={`relative flex h-8 items-center ${isActive ? 'bg-blue-100' : 'bg-gray-100'} ${isLast ? 'rounded-r-md' : ''} z-1 px-3`}
         >
           <span
-            className={`ml-2 block w-fit text-sm ${isActive ? 'text-blue-600' : 'text-gray-500'}`}
+            className={`ml-2 block w-fit text-sm ${isActive ? 'text-blue-600' : 'text-muted-foreground'}`}
           >
             {pillProps.name}
           </span>

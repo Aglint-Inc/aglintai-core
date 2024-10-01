@@ -66,7 +66,7 @@ function IndividualRow({
     <>
       <tr
         key={relation.id}
-        className='border-b last:border-b-0 hover:bg-gray-50 '
+        className='border-b last:border-b-0 hover:bg-gray-50'
       >
         <td className='p-4'>
           <Link
@@ -97,7 +97,7 @@ function IndividualRow({
                     />
                   )}
                 </div>
-                <div className='text-sm text-gray-500'>
+                <div className='text-sm text-muted-foreground'>
                   {relation.recruiter_user.position}
                 </div>
               </div>
@@ -120,16 +120,16 @@ function IndividualRow({
         </td>
         <td className='p-4'>
           <div className='flex items-center'>
-          <div className='flex flex-row gap-0.5 overflow-hidden rounded-md'>
-            {pills.map((pill, i) => (
-              <HistoryPillShadcn
-                key={i}
-                isShadow={pill.sessionType === 'shadow'}
-                isReverseShadow={pill.sessionType === 'rshadow'}
-                isActive={pill.completed}
-              />
-            ))}
-          </div>
+            <div className='flex flex-row gap-0.5 overflow-hidden rounded-md'>
+              {pills.map((pill, i) => (
+                <HistoryPillShadcn
+                  key={i}
+                  isShadow={pill.sessionType === 'shadow'}
+                  isReverseShadow={pill.sessionType === 'rshadow'}
+                  isActive={pill.completed}
+                />
+              ))}
+            </div>
           </div>
         </td>
         <td className='p-4'>

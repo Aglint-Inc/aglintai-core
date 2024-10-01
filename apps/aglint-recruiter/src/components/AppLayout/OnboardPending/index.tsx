@@ -129,7 +129,7 @@ const MainContent = ({
           {step.isCompleted ? (
             <Check className='text-white' size={12} />
           ) : (
-            <AlertCircle className='text-gray-500' size={15} />
+            <AlertCircle className='text-muted-foreground' size={15} />
           )}
         </div>
       ),

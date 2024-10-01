@@ -57,19 +57,19 @@ function ChatMessageList() {
             />
           </div>
           <div className='flex flex-col gap-2 text-center'>
-            <UITypography type='small'>
+            {/* <UITypography type='small'>
               {`Good morning, ${getFullName(recruiter_user.first_name, '')}. I am Aglint AI, your Scheduling co-pilot.`}
-            </UITypography>
+            </UITypography> */}
             <UITypography variant='p' type='extraSmall' color='gray-500'>
               Aglint AI makes scheduling and rescheduling interviews easy.
             </UITypography>
           </div>
           <div className='mt-4 flex w-full items-center justify-center'>
-            <div className='flex-grow border-t border-gray-300'></div>
+            <div className='flex-grow border-t border-border'></div>
             <UITypography type='small' color='gray-500' className='mx-4'>
               Getting started? Try these:
             </UITypography>
-            <div className='flex-grow border-t border-gray-300'></div>
+            <div className='flex-grow border-t border-border'></div>
           </div>
           <div className='mt-4 flex w-full flex-col gap-2'>
             <CommandShortCuts />

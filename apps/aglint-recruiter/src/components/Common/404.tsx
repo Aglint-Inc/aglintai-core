@@ -21,7 +21,7 @@ export function NotFound({
           <h1 className='text-3xl font-medium text-gray-800'>404</h1>
           <div className='flex flex-col items-center justify-center gap-1'>
             <h2 className='text-lg font-normal text-gray-600'>{title}</h2>
-            <p className='text-sm text-gray-500'>{description}</p>
+            <p className='text-sm text-muted-foreground'>{description}</p>
           </div>
 
           <Link href='/' passHref>
