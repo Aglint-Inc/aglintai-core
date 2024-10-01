@@ -1,11 +1,19 @@
 'use client';
 
+import { FullWidthLayout } from '@components/layouts/full-width-layout';
 import React from 'react';
 
-import InterviewTypesPage from './_common/components';
+import InterviewTypesPage, { HeaderPropProvider } from './_common/components';
+import { InterviewPoolHeader } from './_common/components/Header';
 
 function Page() {
-  return <InterviewTypesPage />;
+  return (
+    <HeaderPropProvider>
+      <FullWidthLayout header={<InterviewPoolHeader />}>
+        <InterviewTypesPage />
+      </FullWidthLayout>
+    </HeaderPropProvider>
+  );
 }
 
 export default Page;

@@ -1,5 +1,3 @@
-import { type Dispatch, type SetStateAction } from 'react';
-
 import FilterHeader from '@/components/Common/FilterHeader';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
@@ -7,15 +5,17 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { useAllDepartments } from '@/queries/departments';
 
 import { setIsCreateDialogOpen } from '../../[pool]/_common/stores/store';
+import { useHeaderProp } from '.';
 import CreateModuleDialog from './CreateModuleDialog';
 
-export const Header = ({
-  isFilterApplied,
-  searchText,
-  selectedDepartments,
-  setSearchText,
-  setDepartments,
-}: HeaderProps) => {
+export const InterviewPoolHeader = () => {
+  const {
+    searchText,
+    selectedDepartments,
+    setDepartments,
+    setSearchText,
+    isFilterApplied,
+  } = useHeaderProp();
   const { data: departments } = useAllDepartments();
   const { checkPermissions } = useRolesAndPermissions();
 
@@ -75,12 +75,4 @@ export const Header = ({
       </div>
     </>
   );
-};
-
-type HeaderProps = {
-  isFilterApplied: boolean;
-  searchText: string;
-  selectedDepartments: string[];
-  setSearchText: Dispatch<SetStateAction<string>>;
-  setDepartments: Dispatch<SetStateAction<string[]>>;
 };
