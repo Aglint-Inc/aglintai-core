@@ -11,6 +11,15 @@ export function ModuleSetting({
   slotApprovalDoneInput,
   isRequireTrainingVisible = false,
   isDisable = false,
+}: {
+  as?: React.ElementType;
+  slotInputNoOfShadow: React.ReactNode;
+  slotInputNoOfReverse: React.ReactNode;
+  slotCheckbox: React.ReactNode;
+  isApprovalDoneVisible?: boolean;
+  slotApprovalDoneInput: React.ReactNode;
+  isRequireTrainingVisible?: boolean;
+  isDisable?: boolean;
 }) {
   return (
     <div className='relative mb-3 rounded-lg bg-white p-4'>

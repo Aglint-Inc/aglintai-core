@@ -5,7 +5,7 @@ import capitalize from 'lodash/capitalize';
 import Image from 'next/image';
 import { useRef, useState } from 'react';
 
-import type { useAllIntegrations } from '@/authenticated/hooks';
+import type { useIntegrations } from '@/authenticated/hooks';
 import { useTenant } from '@/company/hooks';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
@@ -18,7 +18,7 @@ import { updateIntegrations } from '../utils';
 function ATSTools({
   data,
   invalidate,
-}: Pick<ReturnType<typeof useAllIntegrations>, 'data' | 'invalidate'>) {
+}: Pick<ReturnType<typeof useIntegrations>, 'data' | 'invalidate'>) {
   const { toast } = useToast();
   const router = useRouterPro();
   const { recruiter } = useTenant();

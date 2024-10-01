@@ -1,6 +1,6 @@
 import { ScheduleStatesProvider } from '@interviews/contexts/ScheduleStatesContext';
 
-import { useAllIntegrations } from '@/authenticated/hooks';
+import { useIntegrations } from '@/authenticated/hooks';
 import { useTenant } from '@/company/hooks';
 
 import MyInterviews from './MyInterviews';
@@ -10,7 +10,7 @@ import UpComingInterviews from './UpComingInterviews';
 
 function Interviews() {
   const { data: allIntegrations, isLoading: integrationLoading } =
-    useAllIntegrations();
+    useIntegrations();
   const { recruiter_user } = useTenant();
 
   if (

@@ -26,9 +26,13 @@ function CollapseTrainingProgress({
   reverse_shadow_to_complete: number;
   module_realtion_id: string;
   mutatedShadowProgress: any[];
-  shadowProgress: ReturnType<typeof useProgressModuleUsers>['data'];
+  shadowProgress: NonNullable<
+    ReturnType<typeof useProgressModuleUsers>['data']
+  >;
   mutatedReverseShadowProgress: any[];
-  reverseShadowProgress: ReturnType<typeof useProgressModuleUsers>['data'];
+  reverseShadowProgress: NonNullable<
+    ReturnType<typeof useProgressModuleUsers>['data']
+  >;
 }) {
   const { approveTrainingProgress } = useApproveUsers();
 
@@ -39,11 +43,13 @@ function CollapseTrainingProgress({
       <div className='w-full'>
         <div>
           <div className='flex flex-col gap-3 p-4'>
-            <div className='flex flex-col gap-4 w-full'>
+            <div className='flex w-full flex-col gap-4'>
               {
                 <>
-                <div className="text-sm text-muted-foreground">TrainingStatus</div>
-                  
+                  <div className='text-sm text-muted-foreground'>
+                    TrainingStatus
+                  </div>
+
                   {shadowProgress.map((prog, ind) => (
                     <TrainingDetailList
                       key={ind}
@@ -185,7 +191,7 @@ function CollapseTrainingProgress({
           </div>
         </div>
         <div className='mb-4'>
-          <UIDivider/>
+          <UIDivider />
         </div>
         <div className='flex flex-row space-x-3 px-4 pb-4'>
           <div className='flex items-center space-x-1'>
@@ -208,7 +214,7 @@ function CollapseTrainingProgress({
               }}
             />
             <UITextField
-              style={{ width: '60px' , height:'28px' }}
+              style={{ width: '60px', height: '28px' }}
               fieldSize='small'
               type='number'
               value={mutatedShadowProgress.length + shadowProgress.length}
@@ -256,7 +262,7 @@ function CollapseTrainingProgress({
               }}
             />
             <UITextField
-              style={{ width: '60px' , height:'28px' }}
+              style={{ width: '60px', height: '28px' }}
               fieldSize='small'
               type='number'
               value={

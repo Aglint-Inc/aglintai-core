@@ -43,12 +43,14 @@ function Interviewers() {
 
   const filtererdUsers: {
     name: string;
-    image: string;
-    role: string;
+    image: string | null;
+    role: string | null;
     today: string;
     week: string;
     load: number;
-    rel: ReturnType<typeof useModuleAndUsers>['data']['relations'][0];
+    rel: NonNullable<
+      ReturnType<typeof useModuleAndUsers>['data']
+    >['relations'][0];
   }[] = allUsers
     .filter(
       (rel) =>
@@ -121,14 +123,18 @@ function Interviewers() {
                   >
                     <TableCell className='w-4/12'>
                       <Link
-                        href={ROUTES['/user/[user]']({
-                          user_id: interviewer.rel.recruiter_user.user_id,
-                        })}
+                        href={
+                          interviewer.rel.recruiter_user.user_id
+                            ? ROUTES['/user/[user]']({
+                                user_id: interviewer.rel.recruiter_user.user_id,
+                              })
+                            : ''
+                        }
                       >
                         <div className='flex items-center space-x-3'>
                           <Avatar className='h-8 w-8'>
                             <AvatarImage
-                              src={interviewer.image}
+                              src={interviewer.image ?? ''}
                               alt={interviewer.name}
                             />
                             <AvatarFallback>
