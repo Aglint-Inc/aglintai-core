@@ -2,7 +2,7 @@ import {
   type DatabaseTable,
   type SchedulingSettingType,
 } from '@aglint/shared-types';
-import { ScrollArea } from '@components/ui/scroll-area';
+import { TwoColumnLayout } from '@components/layouts/two-column-layout';
 import { useInterviewsByUserId } from '@interviews/hooks/useInterviewsByUserId';
 import { useParams } from 'next/navigation';
 import { useRef, useState } from 'react';
@@ -72,8 +72,61 @@ export default function InterviewerDetailsPage() {
     interviewerDetails?.interview_type as InterviewerDetailType['interview_type'];
 
   return (
-    <div className=''>
-      <div className=''>
+    <div>
+      <TwoColumnLayout
+        sidebar={
+          <div className='flex flex-col gap-4'>
+            <BreadCrumb name={interviewerDetails?.first_name || ''} />
+            <Header userCardRef={userCardRef} />
+            {isShowFeature('SCHEDULING') && (
+            <SideBar
+              activeSection={activeSection}
+              scrollToSection={scrollToSection}
+            />
+          )}
+          </div>
+        }
+        sidebarPosition='left'
+        sidebarWidth='480'
+      >
+        <main className='relative z-0 flex flex-col gap-10'>
+          <section ref={sectionRefs.overview}>
+            <KeyMatrics />
+          </section>
+
+          <section ref={sectionRefs.qualifications}>
+            <Qualifications interview_types={interviewType} />
+          </section>
+
+          <section ref={sectionRefs.upcomingInterviews}>
+            <UpcomingInterview />
+          </section>
+
+          <section ref={sectionRefs.recentInterviews}>
+            <RecentInterviews />
+          </section>
+          <section ref={sectionRefs.interviewFeedback}>
+            <Feedback />
+          </section>
+
+          <section ref={sectionRefs.meetingOverview}>
+            <Heatmap loadSetting={interviewLoad} />
+          </section>
+          <section ref={sectionRefs.scheduleAvailabilityRef}>
+            <ScheduleAvailability />
+          </section>
+          <section ref={sectionRefs.calendar}>
+            <CalendarComp
+              allSchedules={allSchedules ?? []}
+              isLoading={iscalendarLoading}
+              filter={filter}
+              setFilter={setFilter}
+            />
+          </section>
+        </main>
+      </TwoColumnLayout>
+
+      {/* <div className=''>
         {isShowFeature('SCHEDULING') && (
           <div className='relative flex gap-5'>
             <div className='ml-4 flex w-3/12 flex-col'>
@@ -132,7 +185,7 @@ export default function InterviewerDetailsPage() {
             </ScrollArea>
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }
