@@ -18,7 +18,6 @@ import {
   type ScheduleApiDetails,
   type ScheduleDBDetailsParams,
 } from '../types';
-import { userTzDayjs } from './userTzDayjs';
 
 export type UserMeetingDetails = {
   [user_id: string]: {
@@ -143,7 +142,7 @@ const mapInt = (i: SessionInterviewerType) => {
   const int: SessionInterviewerApiRespType = {
     email: i.email,
     first_name: i.first_name,
-    interview_module_relation_id: i.interview_module_relation_id,
+    interviewer_module_relation_id: i.interviewer_module_relation_id,
     interviewer_type: i.interviewer_type,
     last_name: i.last_name,
     profile_image: i.profile_image,

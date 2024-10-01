@@ -1,13 +1,12 @@
 import { type APIScheduleDebreif } from '@aglint/shared-types';
 import {
   CApiError,
+  dayjsLocal,
   type scheduling_options_schema,
 } from '@aglint/shared-utils';
 import { type z } from 'zod';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
-
-import { userTzDayjs } from '../../userTzDayjs';
 
 type DebriefFetchResponse = {
   application_id: string;
@@ -29,6 +28,7 @@ type DebriefFetchResponse = {
   };
   api_options: z.infer<typeof scheduling_options_schema>;
   cand_tz: string;
+  request_id: string;
 };
 
 export const fetchCandDetailsForDebreifBooking = async (
@@ -81,18 +81,17 @@ export const fetchCandDetailsForDebreifBooking = async (
       job_title: cand_debreif_details.applications.public_jobs.job_title ?? '',
     },
     dates: {
-      start_date_str: userTzDayjs(
-        req_body.selectedOption.sessions[0].start_time,
-      )
+      start_date_str: dayjsLocal(req_body.selectedOption.sessions[0].start_time)
         .tz(req_body.user_tz)
         .format('DD/MM/YYYY'),
-      end_date_str: userTzDayjs(req_body.selectedOption.sessions[0].start_time)
+      end_date_str: dayjsLocal(req_body.selectedOption.sessions[0].start_time)
         .tz(req_body.user_tz)
         .format('DD/MM/YYYY'),
     },
     api_options:
       req_body.options ?? ({} as z.infer<typeof scheduling_options_schema>),
     cand_tz: req_body.user_tz,
+    request_id: cand_debreif_details.request_id,
   };
 
   return fetchedData;

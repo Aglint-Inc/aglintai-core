@@ -667,7 +667,7 @@ export type Database = {
           number_of_days: number | null
           number_of_slots: number | null
           recruiter_id: string
-          request_id: string | null
+          request_id: string
           slots: Json[] | null
           total_slots: number | null
           user_timezone: string | null
@@ -686,7 +686,7 @@ export type Database = {
           number_of_days?: number | null
           number_of_slots?: number | null
           recruiter_id: string
-          request_id?: string | null
+          request_id: string
           slots?: Json[] | null
           total_slots?: number | null
           user_timezone?: string | null
@@ -705,7 +705,7 @@ export type Database = {
           number_of_days?: number | null
           number_of_slots?: number | null
           recruiter_id?: string
-          request_id?: string | null
+          request_id?: string
           slots?: Json[] | null
           total_slots?: number | null
           user_timezone?: string | null
@@ -1039,7 +1039,7 @@ export type Database = {
           filter_json: Json
           id: string
           is_flow_agent: boolean
-          request_id: string | null
+          request_id: string
           schedule_options: Json | null
           selected_options: Json[] | null
           session_ids: string[]
@@ -1053,7 +1053,7 @@ export type Database = {
           filter_json: Json
           id?: string
           is_flow_agent?: boolean
-          request_id?: string | null
+          request_id: string
           schedule_options?: Json | null
           selected_options?: Json[] | null
           session_ids?: string[]
@@ -1067,7 +1067,7 @@ export type Database = {
           filter_json?: Json
           id?: string
           is_flow_agent?: boolean
-          request_id?: string | null
+          request_id?: string
           schedule_options?: Json | null
           selected_options?: Json[] | null
           session_ids?: string[]
@@ -1693,7 +1693,7 @@ export type Database = {
           location: string | null
           meeting_id: string | null
           members_meta: Json
-          module_id: string | null
+          module_id: string
           name: string
           parent_session_id: string | null
           recruiter_id: string
@@ -1711,7 +1711,7 @@ export type Database = {
           location?: string | null
           meeting_id?: string | null
           members_meta?: Json
-          module_id?: string | null
+          module_id: string
           name?: string
           parent_session_id?: string | null
           recruiter_id: string
@@ -1729,7 +1729,7 @@ export type Database = {
           location?: string | null
           meeting_id?: string | null
           members_meta?: Json
-          module_id?: string | null
+          module_id?: string
           name?: string
           parent_session_id?: string | null
           recruiter_id?: string

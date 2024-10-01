@@ -3,7 +3,7 @@
  *@author Dileep BC
  */
 
-import { Dayjs } from 'dayjs';
+import { type Dayjs } from 'dayjs';
 
 import { CalendarEvent, ScheduleAuthType } from './calEvent.types';
 import {
@@ -22,32 +22,26 @@ export type PauseJson = {
   isManual: boolean;
 };
 
-export type SessionInterviewerType = Pick<
-  RecruiterUserType,
-  | 'first_name'
-  | 'last_name'
-  | 'email'
-  | 'profile_image'
-  | 'schedule_auth'
-  | 'scheduling_settings'
-  | 'user_id'
-  | 'position'
-> &
-  Pick<
-    InterviewerSessionRelation,
-    | 'training_type'
-    | 'session_id'
-    | 'interviewer_type'
-    | 'interview_module_relation_id'
-  > & {
-    pause_json: PauseJson;
-  } & {
-    int_tz: string;
-  };
+export type SessionInterviewerType = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  profile_image: string;
+  schedule_auth: ScheduleAuthType | null;
+  scheduling_settings: SchedulingSettingType;
+  user_id: string;
+  position: string;
+  training_type: InterviewerSessionRelation['training_type'];
+  session_id: string;
+  interviewer_type: InterviewerSessionRelation['interviewer_type'];
+  interviewer_module_relation_id: string;
+  pause_json: PauseJson;
+  int_tz: string;
+};
 
 export type InterviewSessionApiType = {
   session_id: InterviewSession['id'];
-  meeting_id: InterviewSession['meeting_id'];
+  meeting_id: NonNullable<InterviewSession['meeting_id']>;
   module_id: InterviewSession['module_id'];
   session_name: InterviewSession['name'];
   duration: InterviewSession['session_duration'];

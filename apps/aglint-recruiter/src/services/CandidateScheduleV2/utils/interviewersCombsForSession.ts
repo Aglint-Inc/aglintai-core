@@ -1,8 +1,9 @@
 import { type InterviewSessionApiRespType } from '@aglint/shared-types';
+import { CApiError } from '@aglint/shared-utils';
 
 const calcInterversCombsForSesson = (
   sessions: InterviewSessionApiRespType[],
-  is_training_optional,
+  is_training_optional: boolean,
 ) => {
   const findCombinationOfStrings = (str_arr: string[], comb: number) => {
     const total_combs: string[][] = [];
@@ -49,6 +50,12 @@ const calcInterversCombsForSesson = (
     for (const comb of combs) {
       const qualifiedIntervs = comb.map((id) => {
         const inter = session.qualifiedIntervs.find((i) => i.user_id === id);
+        if (!inter) {
+          throw new CApiError(
+            'SERVER_ERROR',
+            'qualified Interviewer not found',
+          );
+        }
         return {
           ...inter,
         };
@@ -83,7 +90,7 @@ const calcInterversCombsForSesson = (
 };
 export const calcIntsCombsForEachSessionRound = (
   session_rounds: InterviewSessionApiRespType[][],
-  is_training_optional,
+  is_training_optional: boolean,
 ) => {
   const ints_combs_for_each_round: InterviewSessionApiRespType[][][] = [];
 

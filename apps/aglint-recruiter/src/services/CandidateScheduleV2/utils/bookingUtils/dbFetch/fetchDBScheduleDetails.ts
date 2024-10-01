@@ -1,4 +1,7 @@
-import { type PlanCombinationRespType } from '@aglint/shared-types';
+import {
+  type DatabaseTable,
+  type PlanCombinationRespType,
+} from '@aglint/shared-types';
 import { type SchemaCandidateDirectBooking } from '@aglint/shared-types/src/aglintApi/zodSchemas/candidate-self-schedule';
 import { CApiError } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
@@ -39,6 +42,7 @@ export const fetchDBScheduleDetails = async (
   if (filter_json_data.request_id === null) {
     throw new CApiError('CLIENT', 'request id not found');
   }
+
   const email_templates = (
     await supabaseAdmin
       .from('company_email_template')
@@ -72,15 +76,47 @@ export const fetchDBScheduleDetails = async (
       );
       return updated_plan;
     }) ?? [];
-  return {
-    filered_selected_options,
-    filter_json_data,
-    candidate: filter_json_data.applications.candidates,
-    application_id: filter_json_data.application_id,
-    email_templates,
+  const fetchDetails: FetchDBScheduleDetailsType = {
+    filtered_selected_options: filered_selected_options,
+    candidate: {
+      email: filter_json_data.applications.candidates.email,
+      first_name: filter_json_data.applications.candidates.first_name,
+      last_name: filter_json_data.applications.candidates.last_name ?? '',
+    },
     company: filter_json_data.applications.candidates.recruiter,
     job: filter_json_data.applications.public_jobs,
-    start_date_str,
-    end_date_str,
+    application_id: filter_json_data.application_id,
+    email_templates: email_templates,
+    session_ids: filter_json_data.session_ids,
+    dates: {
+      start_date_str: start_date_str,
+      end_date_str: end_date_str,
+    },
+    request_id: filter_json_data.request_id,
   };
+  return fetchDetails;
+};
+
+type FetchDBScheduleDetailsType = {
+  filtered_selected_options: PlanCombinationRespType[];
+  candidate: {
+    email: string;
+    first_name: string;
+    last_name: string;
+  };
+  company: {
+    id: string;
+    name: string;
+  };
+  job: {
+    job_title: string;
+  };
+  application_id: string;
+  request_id: string;
+  email_templates: DatabaseTable['company_email_template'][];
+  dates: {
+    start_date_str: string;
+    end_date_str: string;
+  };
+  session_ids: string[];
 };

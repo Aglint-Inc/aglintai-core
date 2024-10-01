@@ -5,9 +5,9 @@ import {
   type TimeDurationDayjsType,
   type TimeDurationType,
 } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 
 import { type DayjsTimeRange, type FuncParams } from '../types';
-import { userTzDayjs } from './userTzDayjs';
 
 export const findCommonTimeRangeUtil = (
   ints_meta: FuncParams[],
@@ -20,13 +20,13 @@ export const findCommonTimeRangeUtil = (
     time_ranges: i.time_ranges
       .sort((time1, time2) => {
         return (
-          userTzDayjs(time1.startTime).unix() -
-          userTzDayjs(time2.startTime).unix()
+          dayjsLocal(time1.startTime).unix() -
+          dayjsLocal(time2.startTime).unix()
         );
       })
       .map((t) => ({
-        startTime: userTzDayjs(t.startTime),
-        endTime: userTzDayjs(t.endTime),
+        startTime: dayjsLocal(t.startTime),
+        endTime: dayjsLocal(t.endTime),
       })),
   }));
 
@@ -103,7 +103,7 @@ export const findCommonTimeRangeUtil = (
         )
       ) {
         new_intersection.push({
-          startTime: userTzDayjs(
+          startTime: dayjsLocal(
             Math.max(
               current_time_ranges[k].startTime.unix(),
               curr_intersection[j].startTime.unix(),
@@ -121,7 +121,7 @@ export const findCommonTimeRangeUtil = (
       ) {
         new_intersection.push({
           startTime: current_time_ranges[k].startTime,
-          endTime: userTzDayjs(
+          endTime: dayjsLocal(
             Math.min(
               current_time_ranges[k].endTime.unix(),
               curr_intersection[j].endTime.unix(),
@@ -137,7 +137,7 @@ export const findCommonTimeRangeUtil = (
     curr_intersection = [...new_intersection];
   }
   return curr_intersection.map((t) => ({
-    startTime: userTzDayjs(t.startTime).tz(resp_tz).format(),
-    endTime: userTzDayjs(t.endTime).tz(resp_tz).format(),
+    startTime: dayjsLocal(t.startTime).tz(resp_tz).format(),
+    endTime: dayjsLocal(t.endTime).tz(resp_tz).format(),
   }));
 };

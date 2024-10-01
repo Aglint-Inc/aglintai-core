@@ -24,6 +24,7 @@ export const updateMeetingEventDetails = async (
 
     if (
       cal_event.conferenceData &&
+      cal_event.conferenceData.conferenceSolution &&
       cal_event.conferenceData.conferenceSolution.name === 'zoom'
     ) {
       meeting_link = cal_event.conferenceData.entryPoints[0].uri;

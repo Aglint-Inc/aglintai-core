@@ -4,11 +4,10 @@ import {
   type InterDetailsType,
   type SchedulingSettingType,
 } from '@aglint/shared-types';
-import { getFullName } from '@aglint/shared-utils';
+import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 
 import { GoogleCalender } from '../../GoogleCalender/google-calender';
 import { type ScheduleApiDetails } from '../types';
-import { userTzDayjs } from './userTzDayjs';
 
 export const fetchIntsCalEventsDetails = async (
   db_details: ScheduleApiDetails,
@@ -47,7 +46,7 @@ export const fetchIntsCalEventsDetails = async (
       };
       const cal_event_map: InterDetailsType['cal_date_events'] = {};
       ints_events_map[i.user_id].all_events.forEach((cal_event) => {
-        const cal_event_date = userTzDayjs(cal_event.start.dateTime)
+        const cal_event_date = dayjsLocal(cal_event.start.dateTime)
           .tz(db_details.req_user_tz)
           .startOf('day')
           .format();
