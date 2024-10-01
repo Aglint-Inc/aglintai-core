@@ -154,7 +154,6 @@ const JobEdit = () => {
     <div className='container-lg mx-auto w-full px-4'>
       <div className='mb-6 flex items-center justify-between'>
         <div>
-          <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
           <BreadCrumbs job={job} />
         </div>
         {/* <Settings /> */}
@@ -167,7 +166,6 @@ const JobEdit = () => {
         <div className='w-9/12'>
           <div className='flex flex-row justify-between'>
             <div>
-              <h2 className='mb-2 text-xl font-bold'>Job Details</h2>
               <p className='mb-4 text-sm text-gray-600'>
                 Update the job details here; changes will be saved
                 automatically.
@@ -317,7 +315,7 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
   );
 
   return (
-    <div className='rounded-lg bg-white p-6 shadow-md'>
+    <div>
       <div className='mb-6 grid grid-cols-2 gap-4'>{forms}</div>
       <div
         className={`rounded-md ${fields.description.error.value ? 'outline-red-500' : ''}`}

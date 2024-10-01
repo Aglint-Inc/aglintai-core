@@ -37,9 +37,9 @@ export const TeamManagementUI = ({
   return (
     <div className='flex flex-col'>
       <div className='flex justify-between'>
-        <div className='max-w-[700px]'>
+        <div>
           <h2 className='mb-1 text-xl font-semibold'>Manage User</h2>
-          <p className='mb-6 text-gray-600'>
+          <p className='mb-6 text-sm text-muted-foreground'>
             Invite your hiring team members and manage their roles and profile
             details in one place. Assign roles such as interviewer, hiring
             manager, or recruiter to ensure an organized team structure and

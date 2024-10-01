@@ -1,42 +1,29 @@
-/* eslint-disable no-console */
 import { type DatabaseTable, type SupabaseType } from '@aglint/shared-types';
-import { type NextApiRequest, type NextApiResponse } from 'next';
+import { z } from 'zod';
 
+import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import { createPrivateClient } from '@/server/db';
 import { interviewCancelReasons, userDetails } from '@/utils/scheduling/const';
-import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-export type ApiInterviewSessionRequest = {
-  request: {
-    request_id: string;
-  };
-  response: {
-    success: boolean;
-    sessions: Awaited<ReturnType<typeof fetchSessionDetails>>;
-  };
+const schema = z.object({
+  request_id: z.string().uuid(),
+});
+
+const query = async ({ input }: PrivateProcedure<typeof schema>) => {
+  const { request_id } = input;
+  const sessions = await fetchDetails(request_id);
+  return sessions as Awaited<ReturnType<typeof fetchSessionDetails>>;
 };
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    const { request_id } = req.body as ApiInterviewSessionRequest['request'];
-    const sessions = await fetchDetails(request_id);
-    return res.status(200).send({
-      success: true,
-      sessions,
-    });
-  } catch (error) {
-    res.status(400).send(error.message);
-  }
-};
-
-export default handler;
+export const requestSessions = privateProcedure.input(schema).query(query);
 
 const fetchDetails = async (request_id: string) => {
-  const supabaseAdmin = getSupabaseServer();
+  const db = createPrivateClient();
 
   const [resSessions] = await Promise.all([
     fetchSessionDetails({
       request_id,
-      supabaseCaller: supabaseAdmin,
+      supabaseCaller: db,
     }),
   ]);
 
@@ -56,7 +43,7 @@ const fetchDetails = async (request_id: string) => {
   return sessions;
 };
 
-const fetchSessionDetails = async ({
+export const fetchSessionDetails = async ({
   request_id,
   supabaseCaller,
 }: {

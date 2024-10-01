@@ -17,7 +17,13 @@ function Integrations() {
   return (
     <>
       <div className='container-lg mx-auto w-full px-4'>
-        <header className='mb-4'>
+        <header className='mb-4 flex flex-row justify-between'>
+          <div className='flex flex-col'>
+            <h1 className='text-2xl font-semibold'>Integrations</h1>
+            <p className='mb-4 text-sm text-muted-foreground'>
+              Connect your favorite tools to streamline your workflow.
+            </p>
+          </div>
           <div className='flex items-center justify-between'>
             <UIButton
               size='md'
@@ -36,7 +42,7 @@ function Integrations() {
         <div className='flex flex-col gap-12'>
           <section>
             <h2 className='text-md font-semibold'>ATS</h2>
-            <p className='mb-4 text-gray-600'>
+            <p className='mb-4 text-sm text-muted-foreground'>
               Easily manage job postings and candidate information by connecting
               your preferred ATS.
             </p>
@@ -47,7 +53,7 @@ function Integrations() {
 
           <section>
             <h2 className='text-md font-semibold'>Scheduling Tools</h2>
-            <p className='mb-4 text-gray-600'>
+            <p className='mb-4 text-sm text-muted-foreground'>
               Connect your calendar and video conferencing tools to simplify
               interview scheduling.
             </p>
@@ -58,7 +64,7 @@ function Integrations() {
 
           <section>
             <h2 className='text-md font-semibold'>Communication Platforms</h2>
-            <p className='mb-4 text-gray-600'>
+            <p className='mb-4 text-sm text-muted-foreground'>
               Connect popular communication tools to enhance your team&apos;s
               coordination.
             </p>

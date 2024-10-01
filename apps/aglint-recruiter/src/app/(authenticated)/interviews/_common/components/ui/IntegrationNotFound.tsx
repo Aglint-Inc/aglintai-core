@@ -16,6 +16,18 @@ export function IntegrationNotFound({
 }) {
   return (
     <div className='container-lg mx-auto w-full px-4'>
+      <div className='mx-auto flex w-full max-w-md flex-col items-center border-none px-6 pb-8 pt-6 text-center shadow-none'>
+        <GlobalEmpty
+          icon={
+            <Calendar
+              className='h-6 w-6 text-muted-foreground'
+              strokeWidth={2}
+            />
+          }
+          header='No interviews found'
+          description='There are no upcoming interviews.'
+        />
+      </div>
       <div className='flex h-full flex-col'>
         <div className='mx-auto flex h-full max-w-2xl flex-col gap-2.5'>
           {loading ? (
@@ -49,18 +61,6 @@ export function IntegrationNotFound({
             </Alert>
           )}
         </div>
-      </div>
-      <div className='mx-auto flex w-full max-w-md flex-col items-center border-none px-6 pb-8 pt-6 text-center shadow-none'>
-        <GlobalEmpty
-          icon={
-            <Calendar
-              className='h-6 w-6 text-muted-foreground'
-              strokeWidth={2}
-            />
-          }
-          header='No interviews found'
-          description='There are no upcoming interviews.'
-        />
       </div>
     </div>
   );

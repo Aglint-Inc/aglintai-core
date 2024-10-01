@@ -103,7 +103,6 @@ const JobEdit = () => {
     <div className='container-lg mx-auto w-full px-4'>
       <div className='mb-6 flex items-center justify-between'>
         <div>
-          <h1 className='mb-2 text-2xl font-bold'>Job Settings</h1>
           <BreadCrumbs job={job} />
         </div>
         {/* <Settings /> */}
@@ -260,7 +259,7 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
   );
 
   return (
-    <div className='rounded-lg bg-white p-6 shadow-md'>
+    <div>
       <div className='grid grid-cols-2 gap-4'>{forms}</div>
     </div>
   );

@@ -62,7 +62,6 @@ const PERMISSIONS: Permissions = {
   /** Any one of the permission is required to access this apis
    * permission will reduced  using 'or'
    */
-  '/api/scheduling/application/fetchInterviewSessionByRequest': ['authorized'],
   '/api/scheduling/get_interview_plans': ['scheduling_module'],
   '/api/greenhouse/getPostings': ['manage_job'],
   '/api/lever/createjob': ['manage_job'],
@@ -84,7 +83,6 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/get-accesstoken': ['scheduling_module'],
   '/api/scheduling/application/schedulewithagent': ['scheduling_module'],
   //v1 apis
-  '/api/scheduling/v1/get-candidate-selected-slots': ['scheduling_module'],
   '/api/scheduling/v1/event_attendee_status': ['scheduling_module'],
   // request availability apis
   '/api/scheduling/request_availability/getCandidateRequestData': [
@@ -114,7 +112,6 @@ const PERMISSIONS: Permissions = {
   '/api/setMembersWithRole': ['manage_users'],
   '/api/getRoleAndPermissions': ['view_roles'],
   '/api/setRoleAndPermission': ['manage_roles'],
-  '/api/getUserDetails': ['authorized'],
   '/api/invite_user': ['view_users'],
   '/api/invite_user/resend': ['view_users'],
   '/api/decryptApiKey': ['manage_company'],

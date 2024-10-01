@@ -43,5 +43,5 @@ export const useFlags = () => {
     [preferences],
   );
 
-  return { isShowFeature };
+  return { ...preferences, isShowFeature };
 };

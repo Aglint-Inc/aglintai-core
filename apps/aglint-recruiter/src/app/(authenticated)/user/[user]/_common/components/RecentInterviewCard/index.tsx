@@ -15,7 +15,7 @@ export const RecentInterviews = ({
 }) => {
   return (
     <>
-      <UISectionCard title='Recent Interviews'>
+      <UISectionCard title='Recent Interviews' type='compact'>
         {interviews?.length ? (
           <div className='space-y-4'>
             {interviews.map((interview) => (
