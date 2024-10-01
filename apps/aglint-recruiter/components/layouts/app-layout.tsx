@@ -17,7 +17,7 @@ export function AdminAppLayout({
       {topbar && <nav>{topbar}</nav>}
       <div className='flex w-full'>
         {sidebar && <nav>{sidebar}</nav>}
-        <main className='flex w-full flex-row'>{children}</main>
+        <main className='flex w-full flex-row pl-2 pr-4 pt-2'>{children}</main>
       </div>
     </>
   );
