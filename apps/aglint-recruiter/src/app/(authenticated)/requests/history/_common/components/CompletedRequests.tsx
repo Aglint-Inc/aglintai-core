@@ -6,28 +6,15 @@ import {
   AccordionTrigger,
 } from '@components/ui/accordion';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@components/ui/breadcrumb';
 import { Button } from '@components/ui/button';
 import { useCompletedRequestsStore } from '@requestHistory/contexts/completedRequeststore';
 import { RequestCard } from '@requests/components/RequestCard';
 import RequestHistoryFilter from '@requests/components/RequestHistoryFilter';
 import { useCompletedRequests } from '@requests/hooks';
-import {
-  AlertCircle,
-  ChevronDown,
-  ChevronUp,
-  Home,
-  Loader2,
-} from 'lucide-react';
+import { AlertCircle, Loader2 } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
+import { Loader } from '@/components/Common/Loader';
 import { RequestProvider } from '@/context/RequestContext';
 import type { Request } from '@/queries/requests/types';
 
@@ -84,138 +71,84 @@ function CompletedRequests() {
   }, [hasMore, isFetched, page]);
 
   return (
-    <>
-      <div className='container-lg mx-auto w-full px-16'>
-        <div className='w-[960px]'>
-          <div className='sticky top-0 z-10'>
-            <div className='my-4'>
-              <Breadcrumb>
-                <BreadcrumbList>
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href='/'>
-                      <Home className='h-4 w-4' />
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbLink href='/requests'>Requests</BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator />
-                  <BreadcrumbItem>
-                    <BreadcrumbPage>Completed Requests</BreadcrumbPage>
-                  </BreadcrumbItem>
-                </BreadcrumbList>
-              </Breadcrumb>
-            </div>
-            <div className='flex flex-row justify-between'>
-              <h2 className='text-2xl font-bold'>All Completed Requests</h2>
-              <div className='lex justify-end'>
-                <Button
-                  variant='ghost'
-                  onClick={() => setAllExpanded(!allExpanded)}
-                  className='mr-2 w-[150px]'
-                >
-                  {allExpanded ? (
-                    <ChevronUp className='mr-2 h-4 w-4' />
-                  ) : (
-                    <ChevronDown className='mr-2 h-4 w-4' />
-                  )}
-                  {!allExpanded ? 'Expand All' : 'Collapse All'}
-                </Button>
-              </div>
-            </div>
-          </div>
-          <div className=''>
-            <div className='my-8'>
-              <RequestHistoryFilter />
-            </div>
-
-            {!isFetched && (
-              <div className='flex items-center justify-center'>
-                <Loader2 className='h-6 w-6 animate-spin' />
-              </div>
-            )}
-            {isFetched && hasRequests ? (
-              <>
-                {Object.entries(groupedRequests).map(
-                  ([date, requests], index) => (
-                    <Accordion
-                      key={date}
-                      type='single'
-                      collapsible
-                      className='w-full'
-                      defaultValue={index === 0 ? date : undefined}
-                      value={allExpanded ? date : undefined}
-                      onValueChange={(value) => {
-                        if (!value && index === 0) {
-                          setAllExpanded(false);
-                        }
-                      }}
-                    >
-                      <AccordionItem value={date}>
-                        <AccordionTrigger className='text-md py-4 font-semibold'>
-                          {dayjsLocal(date).fromNow()} ({requests.length}{' '}
-                          requests)
-                        </AccordionTrigger>
-                        <AccordionContent>
-                          <div className='flex flex-col overflow-hidden rounded-lg border'>
-                            {requests.map((request, i) => (
-                              <React.Fragment key={request.id ?? i}>
-                                <RequestProvider request_id={request.id}>
-                                  <RequestCard
-                                    mode='compact-list'
-                                    {...request}
-                                  />
-                                </RequestProvider>
-                                {i !== requests.length - 1 &&
-                                  requests.length > 1 && (
-                                    <hr
-                                      className='my-0 border-t border-gray-200'
-                                      style={{ borderTopWidth: '0.5px' }}
-                                    />
-                                  )}
-                              </React.Fragment>
-                            ))}
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
-                  ),
-                )}
-                {hasMore && (
-                  <>
-                    <div ref={loaderRef} className='py-4 text-center'>
-                      {isLoadingMore ? (
-                        <Loader2 className='mx-auto h-6 w-6 animate-spin' />
-                      ) : (
-                        <Button onClick={loadMore} disabled={isLoadingMore}>
-                          Load More
-                        </Button>
-                      )}
-                    </div>
-                    <p className='text-center text-sm text-muted-foreground'>
-                      {isLoadingMore
-                        ? 'Loading more requests...'
-                        : 'Scroll down or click to load more'}
-                    </p>
-                  </>
-                )}
-              </>
-            ) : null}
-            {isFetched && !hasRequests && (
-              <Alert>
-                <AlertCircle className='h-4 w-4' />
-                <AlertTitle>No requests found</AlertTitle>
-                <AlertDescription>
-                  There are no completed requests matching your current filters.
-                  Try adjusting your filters or check back later.
-                </AlertDescription>
-              </Alert>
-            )}
-          </div>
+    <div className='px-4'>
+      <RequestHistoryFilter />
+      {!isFetched && (
+        <div className='flex items-center justify-center'>
+          <Loader />
         </div>
-      </div>
-    </>
+      )}
+      {isFetched && hasRequests ? (
+        <>
+          {Object.entries(groupedRequests).map(([date, requests], index) => (
+            <Accordion
+              key={date}
+              type='single'
+              collapsible
+              className='w-full'
+              defaultValue={index === 0 ? date : undefined}
+              value={allExpanded ? date : undefined}
+              onValueChange={(value) => {
+                if (!value && index === 0) {
+                  setAllExpanded(false);
+                }
+              }}
+            >
+              <AccordionItem value={date}>
+                <AccordionTrigger className='text-md py-4 font-semibold'>
+                  {dayjsLocal(date).fromNow()} ({requests.length} requests)
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className='flex flex-col overflow-hidden rounded-lg border'>
+                    {requests.map((request, i) => (
+                      <React.Fragment key={request.id ?? i}>
+                        <RequestProvider request_id={request.id}>
+                          <RequestCard mode='compact-list' {...request} />
+                        </RequestProvider>
+                        {i !== requests.length - 1 && requests.length > 1 && (
+                          <hr
+                            className='my-0 border-t border-gray-200'
+                            style={{ borderTopWidth: '0.5px' }}
+                          />
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          ))}
+          {hasMore && (
+            <>
+              <div ref={loaderRef} className='py-4 text-center'>
+                {isLoadingMore ? (
+                  <Loader2 className='mx-auto h-6 w-6 animate-spin' />
+                ) : (
+                  <Button onClick={loadMore} disabled={isLoadingMore}>
+                    Load More
+                  </Button>
+                )}
+              </div>
+              <p className='text-center text-sm text-muted-foreground'>
+                {isLoadingMore
+                  ? 'Loading more requests...'
+                  : 'Scroll down or click to load more'}
+              </p>
+            </>
+          )}
+        </>
+      ) : null}
+      {isFetched && !hasRequests && (
+        <Alert>
+          <AlertCircle className='h-4 w-4' />
+          <AlertTitle>No requests found</AlertTitle>
+          <AlertDescription>
+            There are no completed requests matching your current filters. Try
+            adjusting your filters or check back later.
+          </AlertDescription>
+        </Alert>
+      )}
+    </div>
   );
 }
 
