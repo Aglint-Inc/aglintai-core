@@ -5,22 +5,26 @@ import {
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
 import { SchemaCandidateDirectBooking } from '@aglint/shared-types/src/aglintApi/zodSchemas/candidate-self-schedule';
-import { ScheduleUtils, scheduling_options_schema } from '@aglint/shared-utils';
+import {
+  CApiError,
+  dayjsLocal,
+  ScheduleUtils,
+  scheduling_options_schema,
+} from '@aglint/shared-utils';
 import { type z } from 'zod';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { bookCandidateSelectedOption } from '@/services/CandidateScheduleV2/utils/bookingUtils/bookCandidateSelectedOption';
 import { fetchDBScheduleDetails } from '@/services/CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchDBScheduleDetails';
-import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 
 const candidateSelfSchedule = async (
   parsed: z.infer<typeof SchemaCandidateDirectBooking>,
 ) => {
   const schedule_db_details = await fetchDBScheduleDetails(parsed);
 
-  const { filered_selected_options, company } = schedule_db_details;
-  const interviewer_selected_options = filered_selected_options;
+  const { filtered_selected_options, company } = schedule_db_details;
+  const interviewer_selected_options = filtered_selected_options;
 
   const cand_filtered_plans: PlanCombinationRespType[] = getCandFilteredSlots(
     interviewer_selected_options,
@@ -40,14 +44,17 @@ const candidateSelfSchedule = async (
   await cand_schedule.fetchDetails({
     params: {
       req_user_tz: parsed.cand_tz,
-      start_date_str: schedule_db_details.start_date_str,
-      end_date_str: schedule_db_details.end_date_str,
+      start_date_str: schedule_db_details.dates.start_date_str,
+      end_date_str: schedule_db_details.dates.end_date_str,
       company_id: company.id,
       session_ids: interviewer_selected_options[0].sessions.map(
         (s) => s.session_id,
       ),
     },
   });
+  if (!cand_schedule.db_details) {
+    throw new CApiError('SERVER_ERROR', 'No db details found');
+  }
 
   const verified_plans =
     cand_schedule.verifyIntSelectedSlots(cand_filtered_plans);
@@ -57,7 +64,7 @@ const candidateSelfSchedule = async (
 
   await bookCandidateSelectedOption(
     parsed,
-    cand_schedule,
+    cand_schedule.db_details,
     verified_plans[0],
     schedule_db_details,
   );
@@ -95,10 +102,10 @@ const getCandFilteredSlots = (
       ++curr_round_idx
     ) {
       if (
-        userTzDayjs(session_rounds[curr_round_idx][0].start_time)
+        dayjsLocal(session_rounds[curr_round_idx][0].start_time)
           .tz(parsed_body.cand_tz)
           .format() !== parsed_body.selected_plan[curr_round_idx].start_time &&
-        userTzDayjs(
+        dayjsLocal(
           session_rounds[curr_round_idx][
             session_rounds[curr_round_idx].length - 1
           ].end_time,

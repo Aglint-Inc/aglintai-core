@@ -12,7 +12,7 @@ export type ApiResponseFindAvailability = {
 };
 
 const findAvailability = async (
-  parsedData: z.infer<typeof schema_find_availability_payload>,
+  parsedData: NonNullable<z.output<typeof schema_find_availability_payload>>,
 ) => {
   parsedData.options.return_empty_slots_err = true;
   const cand_schedule = new CandidatesSchedulingV2(parsedData.options);

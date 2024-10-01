@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import {
+  CApiError,
   createRequestProgressLogger,
   type ProgressLoggerType,
   supabaseWrap,
@@ -55,7 +56,8 @@ export const onUpdateCandidateRequestAvailability = async ({
   if (
     old_data.visited &&
     !new_data.visited &&
-    old_data?.slots.length > 0 &&
+    old_data.slots &&
+    old_data.slots.length > 0 &&
     new_data.slots === null
   ) {
     reRequestingAvailability(new_data);
@@ -73,15 +75,19 @@ const triggerActions = async (
       'onReceivingAvailReq_agent_sendSelfScheduleRequest',
     ];
 
-    const [applications] = supabaseWrap(
+    const application = (
       await supabaseAdmin
         .from('applications')
         .select('*,public_jobs(*)')
-        .eq('id', new_data.application_id),
-    );
-
+        .eq('id', new_data.application_id)
+        .single()
+        .throwOnError()
+    ).data;
+    if (!application || !application.public_jobs) {
+      throw new CApiError('SERVER_ERROR', 'Application not found');
+    }
     const { request_workflows } = await getWActions({
-      company_id: applications.public_jobs.recruiter_id,
+      company_id: application.public_jobs.recruiter_id,
       request_id: new_data.request_id,
     });
 
@@ -109,7 +115,7 @@ const triggerActions = async (
         );
       });
     await Promise.allSettled(promises);
-  } catch (err) {
+  } catch (err: any) {
     console.error(err.message);
   }
 };

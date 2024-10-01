@@ -21,7 +21,7 @@ const createRequestWorkflows = async ({
     await cloneWorkflows({
       request_id: new_data.id,
     });
-  } catch (err) {
+  } catch (err: any) {
     console.error('Failed onInsertRequest createRequestWorkflows', err.message);
   }
 };

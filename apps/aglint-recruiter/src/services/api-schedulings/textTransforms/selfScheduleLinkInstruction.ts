@@ -1,4 +1,4 @@
-import { dayjsLocal, ScheduleUtils } from '@aglint/shared-utils';
+import { CApiError, dayjsLocal, ScheduleUtils } from '@aglint/shared-utils';
 import OpenAI from 'openai';
 import { zodResponseFormat } from 'openai/helpers/zod';
 import { z } from 'zod';
@@ -8,15 +8,13 @@ const TimeSchema = z.object({
   endTime: z.string().describe('24 hour HH:MM format'),
 });
 
-const candidateAvailabilitySchema = z
-  .object({
-    prefferredTime: TimeSchema,
-    preferredDates: z.object({
-      startDate: z.string().describe('date in DD/MM/YYYY'),
-      endDate: z.string().describe('date in DD/MM/YYYY'),
-    }),
-  })
-  .nullable();
+const candidateAvailabilitySchema = z.object({
+  prefferredTime: TimeSchema,
+  preferredDates: z.object({
+    startDate: z.string().describe('date in DD/MM/YYYY'),
+    endDate: z.string().describe('date in DD/MM/YYYY'),
+  }),
+});
 
 export const agentSelfScheduleInstruction = z.object({
   candidateAvailability: candidateAvailabilitySchema,
@@ -86,6 +84,12 @@ export const selfScheduleLinkInstruction = async ({
   });
 
   const availability = completion.choices[0].message.parsed;
+  if (!availability) {
+    throw new CApiError(
+      'SERVER_ERROR',
+      'Failed to parse the candidate availability information',
+    );
+  }
   const pref_dates =
     availability.candidateAvailability.preferredDates ??
     default_preferred_dates;

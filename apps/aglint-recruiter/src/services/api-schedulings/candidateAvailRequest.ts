@@ -1,6 +1,10 @@
 /* eslint-disable security/detect-object-injection */
 import { type TargetApiPayloadType } from '@aglint/shared-types';
-import { type ProgressLoggerType, supabaseWrap } from '@aglint/shared-utils';
+import {
+  CApiError,
+  type ProgressLoggerType,
+  supabaseWrap,
+} from '@aglint/shared-utils';
 import { candidate_avail_request_schema } from '@aglint/shared-utils/src/scheduling/apiSchemas';
 
 import { mailSender } from '@/utils/mailSender';
@@ -19,8 +23,8 @@ export const candidateAvailRequest = async ({
   req_body: any;
   organizer_id: string;
   cloned_sessn_ids: string[];
-  start_date_str;
-  end_date_str;
+  start_date_str: string;
+  end_date_str: string;
   request_id: string;
   reqProgressLogger: ProgressLoggerType;
   mail_payload: any;
@@ -35,7 +39,7 @@ export const candidateAvailRequest = async ({
       .delete()
       .eq('request_id', request_id),
   );
-  const [avail_req] = supabaseWrap(
+  const avail_req = (
     await supabaseAdmin
       .from('candidate_request_availability')
       .insert({
@@ -54,8 +58,13 @@ export const candidateAvailRequest = async ({
         },
         request_id: request_id,
       })
-      .select(),
-  );
+      .select()
+      .single()
+      .throwOnError()
+  ).data;
+  if (!avail_req) {
+    throw new CApiError('SERVER_ERROR', 'No availability request found');
+  }
   supabaseWrap(
     await supabaseAdmin.from('request_session_relation').insert(
       cloned_sessn_ids.map((s_id) => ({
@@ -70,6 +79,8 @@ export const candidateAvailRequest = async ({
       organizer_user_id: organizer_id,
       avail_req_id: avail_req.id,
       overridedMailSubBody: mail_payload,
+      is_preview: false,
+      preview_details: null,
     };
 
   await mailSender({

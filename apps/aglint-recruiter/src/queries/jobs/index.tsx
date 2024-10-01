@@ -9,7 +9,12 @@ import toast from '@/utils/toast';
 
 import { useInvalidateJobQueries } from '../job';
 import { jobsQueryKeys } from './keys';
-import { type Job, type JobCreate, type JobInsert } from './types';
+import {
+  type Job,
+  type JobCreate,
+  type JobInsert,
+  type JobUpdate,
+} from './types';
 
 export const useJobsRead = (manageJob = false) => {
   const { recruiter_id } = useTenant();
@@ -169,7 +174,7 @@ const createJob = async (job: JobInsert) => {
   return d2[0] as unknown as Job;
 };
 
-const updateJob = async (job: JobInsert) => {
+const updateJob = async (job: JobUpdate) => {
   const { error: e1 } = await supabase
     .from('public_jobs')
     .update(job)

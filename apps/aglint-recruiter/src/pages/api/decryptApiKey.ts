@@ -1,12 +1,12 @@
 import crypto from 'crypto';
 
-export default async function handler(req, res) {
+export default async function handler(req: any, res: any) {
   const { encryptData } = req.body;
   const data = decrypt(encryptData, process.env.ENCRYPTION_KEY);
   res.status(200).json(data);
 }
 
-export function decrypt(encryptedData, encryptionKey) {
+export function decrypt(encryptedData: string, encryptionKey: string) {
   const iv = Buffer.from(encryptedData.slice(0, 32), 'hex');
   const encryptedText = encryptedData.slice(32);
   //@ts-ignore

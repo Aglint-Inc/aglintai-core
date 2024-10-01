@@ -11,9 +11,9 @@ import {
 import { supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 
-import { type CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
+import { type ScheduleApiDetails } from '../../types';
 import { confirmInterviewers } from './confirmInterviewers';
 import { createMeetingEvents } from './createMeetingEvents';
 import { sendMailsToOrganizer } from './sendMailsToOrganizer';
@@ -23,7 +23,7 @@ import { updateTrainingStatus } from './updateTrainingStatus';
 
 export const bookRecruiterSelectedOption = async (
   req_body: APIConfirmRecruiterSelectedOption,
-  cand_schedule: CandidatesSchedulingV2,
+  cand_schedule_api_details: ScheduleApiDetails,
   verified_slot: PlanCombinationRespType,
   fetched_cand_details: FetchedCandAvailType,
 ) => {
@@ -31,11 +31,11 @@ export const bookRecruiterSelectedOption = async (
 
   const db_details: ScheduleDBDetails = {
     application: {
-      id: fetched_cand_details.application.id,
+      id: fetched_cand_details.application_id,
     },
     candidate: {
-      first_name: fetched_cand_details.application.candidates.first_name,
-      last_name: fetched_cand_details.application.candidates.last_name,
+      first_name: fetched_cand_details.candidate.first_name,
+      last_name: fetched_cand_details.candidate.last_name ?? '',
     },
     company: {
       id: fetched_cand_details.company.id,
@@ -44,10 +44,11 @@ export const bookRecruiterSelectedOption = async (
     job: {
       job_title: fetched_cand_details.job.job_title,
     },
+    request_id: fetched_cand_details.request_id,
   };
   // create calender events for all sessions
   const booked_meeting_details = await createMeetingEvents(
-    cand_schedule,
+    cand_schedule_api_details,
     verified_slot.sessions,
     db_details,
   );
@@ -61,9 +62,9 @@ export const bookRecruiterSelectedOption = async (
   );
   await sendMailsToOrganizer(db_details, booked_meeting_details);
   const payload: APICandScheduleMailThankYou = {
-    cand_tz: fetched_cand_details.cand_tz,
+    cand_tz: fetched_cand_details.candidate.timezone,
     filter_id: null,
-    application_id: fetched_cand_details.application.id,
+    application_id: fetched_cand_details.application_id,
     session_ids: fetched_cand_details.session_ids,
     availability_request_id: req_body.availability_req_id,
     is_debreif: false,
