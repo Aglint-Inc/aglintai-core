@@ -1,5 +1,6 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { useRequestAvailabilityDetails } from '@requests/hooks';
+import { type ApiResponseFindAvailability } from '@requests/types';
 import { useEffect, useMemo } from 'react';
 import { getStringColor } from 'src/app/_common/utils/getColorForText';
 
@@ -18,18 +19,24 @@ function Calendar() {
     useConfirmAvailabilitySchedulingFlowStore();
   const { selectedDateSlots, selectedDayAvailableBlocks } =
     useAvailabilityContext();
-  const { data: availableSlots, isLoading } = useRequestAvailabilityDetails({
-    availability_id: candidateAvailabilityId,
-  });
+  const { data: availableSlots, isLoading } = useRequestAvailabilityDetails(
+    {
+      availability_id: candidateAvailabilityId,
+    },
+    {
+      enabled: !!candidateAvailabilityId,
+    },
+  );
+
+  const availabilities =
+    availableSlots?.availabilities as ApiResponseFindAvailability['availabilities'];
 
   useEffect(() => {
     if (selectedDayAvailableBlocks && selectedDayAvailableBlocks[0]?.curr_date)
       setCalendarDate(selectedDayAvailableBlocks[0].curr_date);
   }, [selectedDayAvailableBlocks]);
 
-  const { events, resources } = transformAvailability(
-    availableSlots?.availabilities || {},
-  );
+  const { events, resources } = transformAvailability(availabilities || {});
 
   const selectedIds = selectedDateSlots
     .map((ele) => ele.selected_dates)

@@ -13,11 +13,11 @@ import { Card, CardContent } from '@components/ui/card';
 import { Label } from '@components/ui/label';
 import { SelectItem } from '@components/ui/select';
 import { DAYS_LIST, SLOTS_LIST } from '@requests/constant';
+import { useMeetingList } from '@requests/hooks';
 import {
-  insertCandidateRequestAvailability,
-  updateCandidateRequestAvailability,
-} from '@requests/functions';
-import { useCandidateAvailability, useMeetingList } from '@requests/hooks';
+  useCreateCandidateAvailability,
+  useUpdateCandidateAvailability,
+} from '@requests/hooks/useRequestAvailabilityDetails';
 import { type Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
 
@@ -39,6 +39,7 @@ import {
   setReRequestAvailability,
   useCandidateAvailabilitySchedulingFlowStore,
 } from './_common/contexts/CandidateAvailabilityFlowStore';
+import { useCandidateAvailability } from './_common/hooks';
 
 function CandidateAvailability({
   selectedRequest,
@@ -51,6 +52,7 @@ function CandidateAvailability({
     candidateAvailabilityIdForReRequest,
   } = useCandidateAvailabilitySchedulingFlowStore();
   const { recruiter, recruiter_user } = useTenant();
+  const { updateRequestAvailability } = useUpdateCandidateAvailability();
   const selectedSessions = selectedRequest.request_relation;
   // states
   const [selectedDays, setSelectedDays] = useState(DAYS_LIST[1]);
@@ -68,11 +70,15 @@ function CandidateAvailability({
   });
   dayjsLocal;
   const [submitting, setSubmitting] = useState(false);
-  const { data: sessions } = useMeetingList();
+  const { data: sessions } = useMeetingList({ request_id: selectedRequest.id });
 
-  const { data: candidateAvailability } = useCandidateAvailability({
-    candidateAvailabilityId: candidateAvailabilityIdForReRequest,
-  });
+  const { data: candidateAvailability } = useCandidateAvailability(
+    {
+      candidate_availability_id: candidateAvailabilityIdForReRequest,
+    },
+    { enabled: !!candidateAvailabilityIdForReRequest },
+  );
+  const { createRequestAvailability } = useCreateCandidateAvailability();
 
   useEffect(() => {
     if (candidateAvailability?.id) {
@@ -95,17 +101,15 @@ function CandidateAvailability({
   async function handleSubmit() {
     setSubmitting(true);
     if (reRequestAvailability) {
-      await updateCandidateRequestAvailability({
-        data: {
-          slots: null,
-          visited: false,
-          number_of_days: selectedDays.value,
-          number_of_slots: selectedSlots.value,
-          date_range: [
-            selectedDate?.start_date.format('DD/MM/YYYY'),
-            selectedDate?.end_date.format('DD/MM/YYYY'),
-          ],
-        },
+      updateRequestAvailability({
+        slots: null,
+        visited: false,
+        number_of_days: selectedDays.value,
+        number_of_slots: selectedSlots.value,
+        date_range: [
+          selectedDate?.start_date.format('DD/MM/YYYY'),
+          selectedDate?.end_date.format('DD/MM/YYYY'),
+        ],
         id: candidateAvailabilityIdForReRequest,
       });
       try {
@@ -142,7 +146,7 @@ function CandidateAvailability({
         : [],
       supabase,
     });
-    const result = await insertCandidateRequestAvailability({
+    const result = await createRequestAvailability({
       application_id: String(selectedRequest.application_id),
       recruiter_id: String(recruiter?.id),
       availability: {

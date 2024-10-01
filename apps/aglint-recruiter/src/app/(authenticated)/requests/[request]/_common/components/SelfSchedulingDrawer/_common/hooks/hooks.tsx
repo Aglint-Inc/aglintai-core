@@ -12,6 +12,7 @@ import type {
   ApiResponseSelfSchedule,
 } from '@/pages/api/scheduling/application/sendselfschedule';
 import { type ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
+import { type fetchSessionDetails } from '@/server/api/routers/requests/utils/requestSessions';
 
 import { filterSchedulingOptionsArray } from '../components/BodyDrawer/ScheduleFilter/utils';
 import {
@@ -42,8 +43,12 @@ export const useSelfSchedulingDrawer = () => {
 
   const { recruiter, recruiter_user } = useTenant();
   const request_id = requestId || '';
-  const { data } = useMeetingList();
-  const allSessions = data || [];
+  const { data } = useMeetingList({
+    request_id: request_id,
+  });
+  const allSessions = (data || []) as Awaited<
+    ReturnType<typeof fetchSessionDetails>
+  >;
   const selectedSessionIds = allSessions?.map(
     (session) => session.interview_session.id,
   );
