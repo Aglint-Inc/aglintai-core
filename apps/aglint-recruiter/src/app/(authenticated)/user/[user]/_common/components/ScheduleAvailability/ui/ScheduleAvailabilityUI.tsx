@@ -124,10 +124,10 @@ const WorkHourList = ({
 const LoadCard = ({ load }: { load: InterviewLoadItemType }) => {
   return (
     <div className='h-fit min-w-[150px] rounded-sm bg-gray-50'>
-      <UITypography className='px-4 pt-2 text-md'>
+      <UITypography className='px-4 pt-2 text-sm'>
         {load.title}
       </UITypography>
-      <div className='flex flex-col gap-1 px-4 py-2'>
+      <div className='flex flex-col gap-1 px-4 py-2 '>
         <UITypography className='text-xl font-medium'>{load.count}</UITypography>
         <UITypography className='text-sm text-muted-foreground'>{load.type}</UITypography>
       </div>
@@ -149,11 +149,11 @@ const KeywordViewSection = ({
       <UITypography
         variant='p'
         type='small'
-        className='mb-1 text-md font-medium'
+        className='mb-1 text-sm font-medium'
       >
         {title}
       </UITypography>
-      <UITypography variant='p' type='small' className='mb-4 text-muted-foreground'>
+      <UITypography variant='p' type='small' className='mb-2 text-muted-foreground'>
         {description}
       </UITypography>
       <div className='flex flex-wrap gap-2'>
@@ -162,7 +162,7 @@ const KeywordViewSection = ({
             return (
               <div
                 key={i}
-                className='w-fit rounded-full bg-gray-100 px-4 py-1 text-gray-900'
+                className='w-fit rounded-sm bg-gray-100 px-4 py-1 text-gray-900'
               >
                 <UITypography type='small' variant='p'>
                   {keyword}
