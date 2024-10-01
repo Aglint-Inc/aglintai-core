@@ -1,4 +1,5 @@
 import { type CustomSchedulingSettings } from '@aglint/shared-types/src/db/tables/common.types';
+import { toast } from '@components/hooks/use-toast';
 import { type Dispatch, type SetStateAction, useRef, useState } from 'react';
 import {
   type FormFields,
@@ -13,11 +14,10 @@ import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 import type timeZone from '@/utils/timeZone';
-import toast from '@/utils/toast';
 
+import { useUserUpdate } from '../../../hooks/useMemberUpdate';
 import { ProfileForms } from './EditUserDialogUI';
 const initialFormValues: FormValues = {
   value: '',
@@ -46,7 +46,7 @@ export const EditUserDialog = ({
   const [selectedTimeZone, setSelectedTimeZone] = useState(
     recruiter_user?.scheduling_settings.timeZone || null,
   );
-  const { mutateAsync } = api.user.update_user.useMutation();
+  const { mutateAsync } = useUserUpdate();
 
   const recruUser = recruiter_user;
   const initialProfileFormFields: FormFields = {
@@ -135,56 +135,54 @@ export const EditUserDialog = ({
 
   async function onUpdateSubmit() {
     try {
-      if (!profileChange && !isImageChanged) {
-        toast.error('No changes.');
-      } else {
-        const { error } = handleValidate(profile);
+      const { error } = handleValidate(profile);
 
-        if (error) return;
-        let profile_image = recruiter_user?.profile_image;
-        setLoading(true);
+      if (error) return;
+      let profile_image = recruiter_user?.profile_image;
+      setLoading(true);
 
-        if (isImageChanged && imageFile.current) {
-          const { data } = await supabase.storage
-            .from('recruiter-user')
-            .upload(`public/${recruiter_user?.user_id}`, imageFile.current, {
-              cacheControl: '3600',
-              upsert: true,
-            });
+      if (isImageChanged && imageFile.current) {
+        const { data } = await supabase.storage
+          .from('recruiter-user')
+          .upload(`public/${recruiter_user?.user_id}`, imageFile.current, {
+            cacheControl: '3600',
+            upsert: true,
+          });
 
-          if (data?.path && imageFile?.current?.size) {
-            profile_image = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/recruiter-user/${data?.path}?t=${new Date().toISOString()}`;
-            setError(false);
-          } else {
-            profile_image = null;
-          }
-          setIsImageChanged(false);
+        if (data?.path && imageFile?.current?.size) {
+          profile_image = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/recruiter-user/${data?.path}?t=${new Date().toISOString()}`;
+          setError(false);
+        } else {
+          profile_image = null;
         }
-
-        const scheduling_settings = {
-          ...recruiter_user?.scheduling_settings,
-          timeZone: selectedTimeZone,
-        } as CustomSchedulingSettings;
-
-        const { user_id } = recruiter_user;
-        const data = {
-          first_name: profile.first_name.value,
-          last_name: profile.last_name.value,
-          phone: profile.phone.value,
-          linked_in: profile.linked_in.value,
-          profile_image,
-          scheduling_settings,
-          user_id,
-        };
-
-        await mutateAsync({ ...data });
-        // const profile_img = profile_image;
-
-        setProfileChange(false);
-        setIsOpen(false);
+        setIsImageChanged(false);
       }
+
+      const scheduling_settings = {
+        ...recruiter_user?.scheduling_settings,
+        timeZone: selectedTimeZone,
+      } as CustomSchedulingSettings;
+
+      const { user_id } = recruiter_user;
+      const data = {
+        first_name: profile.first_name.value,
+        last_name: profile.last_name.value,
+        phone: profile.phone.value,
+        linked_in: profile.linked_in.value,
+        profile_image,
+        scheduling_settings,
+        user_id,
+      };
+
+      await mutateAsync({ ...data });
+      // const profile_img = profile_image;
+
+      setProfileChange(false);
+      setIsOpen(false);
+
+      toast({ title: 'profile update successfully' });
     } catch (e) {
-      toast.error('Unable to udpate profile. Please contact support');
+      toast({ title: 'profile update failed', description: e.message });
     } finally {
       setLoading(false);
     }
@@ -214,6 +212,7 @@ export const EditUserDialog = ({
           </UIButton>
           <UIButton
             variant='default'
+            disabled={!profileChange && !isImageChanged}
             isLoading={Loading}
             onClick={() => {
               if (!Loading) {
