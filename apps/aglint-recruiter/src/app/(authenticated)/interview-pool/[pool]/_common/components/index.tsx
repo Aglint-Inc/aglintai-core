@@ -81,7 +81,7 @@ export default function InterviewTypeDetail({
                 />
                 <span className='text-muted-foreground'>•</span>
                 <span className='text-muted-foreground'>
-                  {editModule?.department.name}
+                  {editModule?.department?.name}
                 </span>
               </div>
             </div>

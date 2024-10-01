@@ -39,7 +39,7 @@ function ResumeMemberDialog() {
             variant='default'
             size='sm'
             onClick={async () => {
-              if (isSaving) return;
+              if (isSaving || !editModule || !selUser) return;
               else {
                 setIsSaving(true);
                 await resumeHandler({

@@ -2,16 +2,10 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
 import { useState } from 'react';
 
-import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
-
-import { useModuleAndUsers } from './useModuleAndUsers';
 
 export const useAlterCount = () => {
   const [isSaving, setIsSaving] = useState(false);
-  const utils = api.useUtils();
-
-  const { data: editModule } = useModuleAndUsers();
 
   const alterCount = async ({
     type,
@@ -47,9 +41,6 @@ export const useAlterCount = () => {
           })
           .eq('id', module_relation_id);
       }
-      utils.interview_pool.module_and_users.invalidate({
-        module_id: editModule.id,
-      });
     } catch (e) {
       console.error(e);
     } finally {
