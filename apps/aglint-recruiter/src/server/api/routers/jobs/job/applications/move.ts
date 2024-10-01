@@ -6,7 +6,11 @@ import type {
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type RequiredPayload,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 import { formatSessions } from '@/utils/formatSessions';
 
@@ -56,7 +60,10 @@ const moveToInterview = async ({
       recruiter_id: ctx.recruiter_id,
       ...rest,
     }));
-    return await db.from('applications').upsert(payload).throwOnError();
+    return await db
+      .from('applications')
+      .upsert(payload as RequiredPayload<(typeof payload)[number]>[])
+      .throwOnError();
   }
 
   const [{ data }, { data: session_names }] = await Promise.all([
@@ -114,7 +121,10 @@ const moveToNonInterview = async ({
     recruiter_id: ctx.recruiter_id,
     ...rest,
   }));
-  return await db.from('applications').upsert(payload).throwOnError();
+  return await db
+    .from('applications')
+    .upsert(payload as RequiredPayload<typeof payload>)
+    .throwOnError();
 };
 
 const mutation = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {

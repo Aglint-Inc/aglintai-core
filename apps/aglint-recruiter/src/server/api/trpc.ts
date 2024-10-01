@@ -291,3 +291,6 @@ type Procedure<
         input: undefined;
       }
     : never;
+
+export type RequiredPayload<T extends Record<any, any>[] | Record<any, any>> =
+  T extends Record<any, any>[] ? Required<T[number]>[] : Required<T>;
