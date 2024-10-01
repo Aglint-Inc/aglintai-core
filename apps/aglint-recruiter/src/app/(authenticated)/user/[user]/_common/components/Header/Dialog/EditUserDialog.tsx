@@ -169,7 +169,7 @@ export const EditUserDialog = ({
           timeZone: selectedTimeZone,
         } as CustomSchedulingSettings;
 
-        const user_id = recruiter_user?.user_id as string;
+        const { user_id } = recruiter_user;
         const data = {
           first_name: profile.first_name.value,
           last_name: profile.last_name.value,
