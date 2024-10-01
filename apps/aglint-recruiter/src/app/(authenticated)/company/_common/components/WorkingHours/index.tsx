@@ -66,7 +66,7 @@ export default function WorkingHour() {
   };
 
   return (
-    <div className='mb-8 flex flex-col gap-4'>
+    <div className='mb-8 flex max-w-[60%] flex-col gap-4'>
       <div className='flex flex-col'>
         <h2 className='mb-1 text-xl font-semibold'>Working Hours</h2>
         <p className='text-sm text-muted-foreground'>
