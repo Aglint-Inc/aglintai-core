@@ -9,8 +9,8 @@ import { apiTargetToEvents } from '@requests/components/RequestProgress/utils/pr
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { confirmSlotFromCandidateAvailability } from '@/services/api-schedulings/confirmSlotFromCandidateAvailability';
 import { findCandSelectedSlots } from '@/services/api-schedulings/findCandSelectedSlots';
-import { CandidatesScheduling } from '@/services/CandidateScheduleV2/CandidatesScheduling';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
+import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 
 type BodyParams = {
   candidate_availability_request_id: string;

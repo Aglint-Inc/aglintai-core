@@ -38,24 +38,9 @@ export const useRequestActions = ({ request_id }: RequestParams) => {
   );
 
   const requestDetails = useMemo(() => {
-    return request_id
-      ? Object.values(requests)
-          .flat()
-          ?.find((request) => request.id === request_id)
-      : {
-          id: null,
-          status: null,
-          workflow_id: null,
-          recruiter_id: null,
-          candidate_id: null,
-          job_id: null,
-          created_at: null,
-          updated_at: null,
-          deleted_at: null,
-          request_payload: null,
-          request_workflow: null,
-          request_progress: null,
-        };
+    return Object.values(requests)
+      .flat()
+      ?.find((request) => request.id === request_id);
   }, [requests, request_id]);
 
   const handleUpdateRequest = useCallback(

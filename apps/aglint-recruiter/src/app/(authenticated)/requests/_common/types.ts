@@ -2,7 +2,7 @@ import { type DateRangePlansType } from '@aglint/shared-types';
 
 import type { RequestResponse } from '@/queries/requests/types';
 import type { Request as RequestType } from '@/queries/requests/types';
-import { type CandidatesScheduling } from '@/services/CandidateScheduleV2/CandidatesScheduling';
+import { type CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 
 export type barChartDataType = {
   name: string;

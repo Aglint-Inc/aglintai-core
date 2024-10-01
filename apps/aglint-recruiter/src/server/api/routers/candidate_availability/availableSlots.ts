@@ -1,7 +1,7 @@
 import { dayjsLocal } from '@aglint/shared-utils';
 import { z } from 'zod';
 
-import { CandidatesScheduling } from '@/services/CandidateScheduleV2/CandidatesScheduling';
+import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 import { fetchCandidateAvailability } from '@/services/CandidateSchedule/utils/fetchCandidateAvailability';
 
 import { type PrivateProcedure, privateProcedure } from '../../trpc';
