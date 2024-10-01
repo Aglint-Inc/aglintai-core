@@ -23,7 +23,13 @@ export const Header = ({
   const isInitalOpen = router.queryParams.edit_enable as unknown as boolean;
   const [isOpen, setIsOpen] = useState<boolean>(isInitalOpen || false);
 
+  const { recruiter_user } = useTenant();
+  const param = useParams() as { user: string };
+  const user_id = param.user as string;
   const { data: interviewerDetails } = useInterviewer();
+
+  if (!interviewerDetails) return <>Fetching error</>;
+
   const {
     avatar,
     first_name,
@@ -35,9 +41,6 @@ export const Header = ({
     email,
     phone,
   } = interviewerDetails;
-  const { recruiter_user } = useTenant();
-  const param = useParams() as { user: string };
-  const user_id = param.user as string;
 
   const getConsent = async () => {
     try {

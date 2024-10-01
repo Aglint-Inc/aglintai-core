@@ -1,9 +1,12 @@
+import { type customSchedulingSettingsSchema } from '@aglint/shared-types/src/db/common.zod';
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
 import { type PublicProcedure, publicProcedure } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
 const userSchema = z.object({ user_id: z.string().uuid() });
+type CustomSchedulingSettings = z.infer<typeof customSchedulingSettingsSchema>;
 
 const query = async ({
   input: { user_id },
@@ -46,11 +49,16 @@ const query = async ({
       .eq('is_confirmed', true)
       .throwOnError(),
   ]);
-
   const user = res1.data;
   const interview = res2.data;
   const interview_type = res3.data;
   const meeting_interviewers = res4.data;
+
+  if (!user || !interview || !interview_type || !meeting_interviewers)
+    throw new TRPCError({
+      code: 'NOT_FOUND',
+      message: 'Interviewer detail fetch failed',
+    });
 
   const newinterview = {
     total_hours_this_week: interview?.total_hours_this_week ?? 0,
@@ -103,18 +111,26 @@ const query = async ({
   // ----------------------
 
   const structuredData = {
-    avatar: user?.profile_image ?? '',
-    first_name: user?.first_name ?? '',
-    last_name: user?.last_name ?? '',
-    position: user?.position ?? '',
-    phone: user?.phone ?? '',
-    email: user?.email ?? '',
-    empolyment: user?.employment ?? '',
-    Linkedin: user?.linked_in ?? '',
-    department: user?.departments?.name ?? '',
-    user_id: user?.user_id ?? '',
-    scheduling_settings: user?.scheduling_settings,
-    schedule_auth: user?.schedule_auth,
+    first_name: user.first_name,
+    email: user.email,
+    empolyment: user.employment,
+    user_id: user.user_id,
+    schedule_auth: user.schedule_auth,
+    avatar: user.profile_image ?? '',
+    last_name: user.last_name ?? '',
+    position: user.position ?? '',
+    phone: user.phone ?? '',
+    Linkedin: user.linked_in ?? '',
+    department: user.departments?.name ?? '',
+    scheduling_settings: user.scheduling_settings as CustomSchedulingSettings,
+    linked_in: user.linked_in,
+    office_location_id: user?.office_locations?.id,
+    employment: user?.employment,
+    profile_image: user.profile_image,
+    department_id: user.departments?.id,
+    role_id: user?.recruiter_relation?.[0]?.roles?.id,
+    manager_id: user?.recruiter_relation?.[0]?.manager_id,
+    role: user?.recruiter_relation?.[0]?.roles?.name,
 
     location: [
       user?.office_locations?.city,
@@ -124,7 +140,6 @@ const query = async ({
       .filter((loc) => loc)
       .join(', '),
     timeZone: user?.scheduling_settings?.timeZone?.tzCode,
-    role: user?.recruiter_relation?.[0]?.roles?.name,
     meeting_count: {
       completed:
         allMeetingDetails?.filter((meet) => meet.status === 'completed')

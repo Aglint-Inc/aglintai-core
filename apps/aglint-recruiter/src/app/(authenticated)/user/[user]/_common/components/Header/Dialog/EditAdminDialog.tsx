@@ -14,34 +14,13 @@ import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useAllDepartments } from '@/queries/departments';
-import { type UserUpdateType } from '@/server/api/routers/user/update_admin_user';
+import { type UserAdminUpdateType } from '@/server/api/routers/user/update_admin_user';
 import { supabase } from '@/utils/supabase/client';
 
 import { useAdminUpdate } from '../../../hooks/useAdminUpdate';
+import { useInterviewer } from '../../../hooks/useInterviewer';
 import { Form } from './EditAdminDialogUI';
 
-type roleEnum =
-  | 'recruiter'
-  | 'hiring_manager'
-  | 'recruiting_coordinator'
-  | 'sourcer'
-  | 'admin'
-  | 'interviewer';
-
-export type EditAdminFormType = {
-  first_name: string;
-  last_name: string;
-  linked_in: string;
-  location_id: number | null;
-  employment: 'fulltime' | 'parttime' | 'contractor';
-  position: string;
-  department_id: number | null;
-  role: roleEnum;
-  role_id: string;
-  manager_id: string;
-  phone: string;
-  profile_image: string;
-};
 export type EditAdminFormErrorType = {
   first_name: boolean;
   department: boolean;
@@ -53,6 +32,22 @@ export type EditAdminFormErrorType = {
   role: boolean;
   manager: boolean;
 };
+
+export type EditAdminFormType = Pick<
+  NonNullable<ReturnType<typeof useInterviewer>['data']>,
+  | 'first_name'
+  | 'last_name'
+  | 'phone'
+  | 'linked_in'
+  | 'office_location_id'
+  | 'employment'
+  | 'profile_image'
+  | 'department_id'
+  | 'position'
+  | 'role_id'
+  | 'role'
+  | 'manager_id'
+>;
 
 const EditAdminDialog = ({
   open,
@@ -75,7 +70,26 @@ const EditAdminDialog = ({
   const { allMembers } = useTenantMembers();
   const { activeMembers } = useTeamMembers();
   const router = useRouterPro();
-  const member = allMembers.find((mem) => mem.user_id === router?.params?.user);
+  const member = allMembers.find(
+    (mem) => mem.user_id === router?.params?.user,
+  ) as ReturnType<typeof useTenantMembers>['allMembers'][number];
+
+  const { data: interviewerDetail } = useInterviewer();
+
+  const [form, setForm] = useState<EditAdminFormType>({
+    first_name: '',
+    last_name: '',
+    phone: '',
+    linked_in: '',
+    office_location_id: undefined,
+    employment: 'fulltime',
+    profile_image: null,
+    department_id: undefined,
+    position: '',
+    role_id: undefined,
+    manager_id: null,
+    role: '',
+  });
 
   const memberList = activeMembers
     .map((mem) => ({
@@ -84,21 +98,6 @@ const EditAdminDialog = ({
     }))
     .filter((mem) => mem.id !== recruiter_user.user_id);
 
-  const initForm: EditAdminFormType = {
-    first_name: member?.first_name,
-    last_name: member?.last_name,
-    phone: member?.phone,
-    linked_in: member?.linked_in,
-    location_id: member?.office_location_id,
-    employment: member?.employment,
-    profile_image: member?.profile_image,
-    department_id: member?.department_id,
-    position: member?.position,
-    role: member?.role as roleEnum,
-    role_id: member?.role_id,
-    manager_id: member?.manager_id,
-  };
-  const [form, setForm] = useState<EditAdminFormType>(initForm);
   useEffect(() => {
     if (_.isEqual(initForm, form)) {
       setIsProfileChanged(false);
@@ -106,6 +105,10 @@ const EditAdminDialog = ({
       setIsProfileChanged(true);
     }
   }, [form]);
+
+  useEffect(() => {
+    if (member) setForm(initForm);
+  }, []);
 
   const [formError, setFormError] = useState<EditAdminFormErrorType>({
     first_name: false,
@@ -122,6 +125,23 @@ const EditAdminDialog = ({
   useEffect(() => {
     if (member?.user_id) setForm(initForm);
   }, [member?.user_id]);
+
+  if (!member || !interviewerDetail) return <>Error </>;
+
+  const initForm: EditAdminFormType = {
+    first_name: interviewerDetail.first_name,
+    last_name: interviewerDetail.last_name ?? '',
+    phone: interviewerDetail?.phone,
+    linked_in: interviewerDetail?.linked_in,
+    office_location_id: interviewerDetail?.office_location_id,
+    employment: interviewerDetail?.employment,
+    profile_image: interviewerDetail?.profile_image,
+    department_id: interviewerDetail?.department_id,
+    position: interviewerDetail?.position,
+    role_id: interviewerDetail?.role_id,
+    manager_id: interviewerDetail?.manager_id,
+    role: interviewerDetail?.role,
+  };
 
   const checkValidation = () => {
     const temp = { ...formError };
@@ -160,28 +180,26 @@ const EditAdminDialog = ({
     if (recruiter_user?.role === 'admin') {
       if (
         recruiter_user?.user_id === member.user_id ||
-        form?.role !== 'admin' ||
+        form.role !== 'admin' ||
         recruiter_user?.user_id === member.created_by
       ) {
         return true;
       } else if (
-        form?.role === 'admin' &&
+        form.role === 'admin' &&
         recruiter_user?.created_by === member.user_id
       ) {
         toast({ title: 'Permission Denied' });
 
         return false;
       } else if (
-        form?.role === 'admin' &&
+        form.role === 'admin' &&
         recruiter_user?.user_id !== member.created_by
       ) {
         toast({ title: 'Permission Denied' });
-        // toast.error('You cannot edit another admin detail');
         return false;
       }
     }
     toast({ title: 'Permission Denied' });
-    // toast.error('Admin only edit Team member details');
     return false;
   }
 
@@ -210,11 +228,11 @@ const EditAdminDialog = ({
         setIsImageChanged(false);
       }
 
-      const data: UserUpdateType = {
+      const data: UserAdminUpdateType = {
         first_name: form?.first_name,
         last_name: form?.last_name,
         linked_in: form?.linked_in,
-        office_location_id: form?.location_id,
+        office_location_id: form?.office_location_id,
         employment: form?.employment as 'fulltime' | 'parttime' | 'contractor',
         position: form?.position,
         department_id: form?.department_id,
@@ -229,10 +247,10 @@ const EditAdminDialog = ({
 
       await mutateAsync({ ...data });
 
-      const profile_pic = profile_image as string;
+      const profile_pic = profile_image as string | null;
       setForm({ ...form, profile_image: profile_pic });
       onClose();
-    } catch (e) {
+    } catch (e: any) {
       toast({
         title: 'Profile update Failed',
         description: e.message,

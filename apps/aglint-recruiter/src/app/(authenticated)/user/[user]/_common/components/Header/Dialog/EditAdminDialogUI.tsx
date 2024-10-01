@@ -61,7 +61,7 @@ export const Form = ({
       <div className='flex items-center space-x-4'>
         <div className='max-w-[64px]'>
           <ImageUploadManual
-            image={form.profile_image}
+            image={form.profile_image ?? ''}
             size={64}
             imageFile={imageFile}
             setChanges={() => {
@@ -88,7 +88,9 @@ export const Form = ({
             id='first_name'
             placeholder='Enter first name'
             value={form.first_name}
-            onChange={(e) => setForm({ ...form, first_name: e.target.value })}
+            onChange={(e) =>
+              setForm({ ...form, first_name: e.target.value || '' })
+            }
             className={formError.first_name ? 'border-red-500' : ''}
           />
         </div>
@@ -97,7 +99,7 @@ export const Form = ({
           <Input
             id='last_name'
             placeholder='Enter last name'
-            value={form.last_name}
+            value={form.last_name ?? ''}
             onChange={(e) => setForm({ ...form, last_name: e.target.value })}
           />
         </div>
@@ -108,7 +110,7 @@ export const Form = ({
         <Input
           id='linked_in'
           placeholder='Enter linkedin url'
-          value={form.linked_in}
+          value={form.linked_in ?? ''}
           onChange={(e) =>
             setForm({ ...form, linked_in: e.target.value.trim() })
           }
@@ -153,9 +155,9 @@ export const Form = ({
         <div className='space-y-2'>
           <Label htmlFor='location'>Location</Label>
           <Select
-            value={form.location_id?.toString()}
+            value={form.office_location_id?.toString()}
             onValueChange={(value) =>
-              setForm({ ...form, location_id: parseInt(value) })
+              setForm({ ...form, office_location_id: parseInt(value) })
             }
           >
             <SelectTrigger>
@@ -250,7 +252,7 @@ export const Form = ({
               <div className='space-y-2'>
                 <Label htmlFor='manager'>Manager</Label>
                 <Select
-                  value={form.manager_id}
+                  value={form?.manager_id || ''}
                   onValueChange={(value) =>
                     setForm({ ...form, manager_id: value })
                   }

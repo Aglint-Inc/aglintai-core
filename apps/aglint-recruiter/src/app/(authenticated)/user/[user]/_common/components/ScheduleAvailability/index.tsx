@@ -22,10 +22,12 @@ export type ScheduleKeywordType = {
 };
 
 export default function ScheduleAvailability() {
-  const {
-    data: { scheduling_settings, interview_week_today },
-  } = useInterviewer();
+  const { data } = useInterviewer();
   const [isEditOpen, setIsEditOpen] = useState(false);
+
+  if (!data) return <></>;
+
+  const { scheduling_settings, interview_week_today } = data;
   const {
     total_hours_this_week,
     total_interviews_this_week,

@@ -43,9 +43,12 @@ export const EditUserDialog = ({
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { recruiter_user } = useTenant();
-  const [selectedTimeZone, setSelectedTimeZone] = useState(
-    recruiter_user?.scheduling_settings.timeZone || null,
-  );
+
+  const initialTimeZone = recruiter_user?.scheduling_settings?.timeZone
+    ? recruiter_user.scheduling_settings.timeZone
+    : null;
+
+  const [selectedTimeZone, setSelectedTimeZone] = useState(initialTimeZone);
   const { mutateAsync } = useUserUpdate();
 
   const recruUser = recruiter_user;
@@ -181,7 +184,7 @@ export const EditUserDialog = ({
       setIsOpen(false);
 
       toast({ title: 'profile update successfully' });
-    } catch (e) {
+    } catch (e: any) {
       toast({ title: 'profile update failed', description: e.message });
     } finally {
       setLoading(false);
@@ -196,7 +199,7 @@ export const EditUserDialog = ({
       title='Edit Profile'
       onClose={() => {
         setProfile(structuredClone(initialProfileFormFields));
-        setSelectedTimeZone(recruUser.scheduling_settings.timeZone);
+        setSelectedTimeZone(initialTimeZone);
         setIsOpen(false);
       }}
       slotButtons={

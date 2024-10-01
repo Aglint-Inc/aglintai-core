@@ -7,15 +7,18 @@ import { useInterviewer } from '../../hooks/useInterviewer';
 import { List } from './ui/List';
 
 export const Feedback = () => {
-  const {
-    data: { feedbacks },
-  } = useInterviewer();
+  const { data } = useInterviewer();
 
+  if (!data) {
+    return <>Data fetching error</>;
+  }
+
+  const { feedbacks } = data;
   return (
     <>
       <UISectionCard title='Interview Feedback Provided' type='compact'>
         <div className='space-y-4'>
-          {feedbacks?.length ? (
+          {data.feedbacks?.length ? (
             feedbacks.map((feedback) => (
               <List key={feedback.session_name} feedback={feedback} />
             ))

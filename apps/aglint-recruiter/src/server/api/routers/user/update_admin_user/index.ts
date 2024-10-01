@@ -28,7 +28,7 @@ const RecruiterRelationSchema = recruiterRelationUpdateSchema.pick({
 
 const Schema = RecruiterUserSchema.merge(RecruiterRelationSchema);
 
-export type UserUpdateType = z.infer<typeof Schema>;
+export type UserAdminUpdateType = z.infer<typeof Schema>;
 
 const mutation = async ({ input }: PrivateProcedure<typeof Schema>) => {
   const db = createPrivateClient();
@@ -49,22 +49,23 @@ const mutation = async ({ input }: PrivateProcedure<typeof Schema>) => {
     scheduling_settings,
     profile_image,
   } = input;
+
   await db
     .rpc('update_user', {
-      department_id,
       employment,
       first_name,
+      recruiter_id,
+      scheduling_settings,
+      user_id,
       last_name,
+      department_id,
       linked_in,
       manager_id,
       office_location_id,
       phone,
       position,
       profile_image,
-      recruiter_id,
       role_id,
-      scheduling_settings,
-      user_id,
     })
     .throwOnError();
 };
