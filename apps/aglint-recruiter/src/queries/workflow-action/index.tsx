@@ -76,7 +76,7 @@ export const useWorkflowActionDelete = (args: WorkflowActionKeys) => {
     onSuccess: (_data, variables) => {
       refresh({ id: args.workflow_id });
       const prevWorkflowActions =
-        queryClient.getQueryData<WorkflowAction[]>(queryKey);
+        queryClient.getQueryData<WorkflowAction[]>(queryKey)!;
       const newWorkflowActions = structuredClone(prevWorkflowActions).reduce(
         (acc, curr) => {
           if (curr.id !== variables.id) acc.push(curr);
@@ -112,7 +112,7 @@ export const useWorkflowActionUpdate = (args: WorkflowActionKeys) => {
     mutationKey,
     onMutate: (variables) => {
       const previousWorkflowActions =
-        queryClient.getQueryData<WorkflowAction[]>(queryKey);
+        queryClient.getQueryData<WorkflowAction[]>(queryKey)!;
       const newWorkflowActions = structuredClone(
         previousWorkflowActions,
       ).reduce((acc, curr) => {
@@ -133,7 +133,7 @@ export const useWorkflowActionUpdate = (args: WorkflowActionKeys) => {
         queryClient.getQueryData<WorkflowAction[]>(queryKey);
       const newWorkflowActions = structuredClone(
         previousWorkflowActions,
-      ).reduce((acc, curr) => {
+      )!.reduce((acc, curr) => {
         if (curr.id !== variables.id) acc.push(curr);
         return acc;
       }, [] as WorkflowAction[]);
@@ -148,7 +148,7 @@ const updateWorkflowAction = async (payload: UpdateWorkflowAction) => {
   const { data, error } = await supabase
     .from('workflow_action')
     .update(payload)
-    .eq('id', payload.id)
+    .eq('id', payload.id!)
     .select('*');
   if (error) throw new Error(error.message);
   return data;
@@ -165,7 +165,7 @@ export const useWorkflowActionCreate = (args: WorkflowActionKeys) => {
     onMutate: (payload) => {
       const previousWorkflowActions =
         queryClient.getQueryData<WorkflowAction[]>(queryKey);
-      const newWorkflowActions = structuredClone(previousWorkflowActions);
+      const newWorkflowActions = structuredClone(previousWorkflowActions)!;
       newWorkflowActions.push(payload as WorkflowAction);
       queryClient.setQueryData<WorkflowAction[]>(queryKey, newWorkflowActions);
       return { action: 'create' } as Context;
@@ -173,7 +173,7 @@ export const useWorkflowActionCreate = (args: WorkflowActionKeys) => {
     onError: (_error, variables) => {
       toast.error('Unable to create action');
       const previousWorkflowActions =
-        queryClient.getQueryData<WorkflowAction[]>(queryKey);
+        queryClient.getQueryData<WorkflowAction[]>(queryKey)!;
       const newWorkflowActions = structuredClone(
         previousWorkflowActions,
       ).reduce((acc, curr) => {
@@ -188,7 +188,7 @@ export const useWorkflowActionCreate = (args: WorkflowActionKeys) => {
         queryClient.getQueryData<WorkflowAction[]>(queryKey);
       const newWorkflowActions = structuredClone(
         previousWorkflowActions,
-      ).reduce((acc, curr) => {
+      )!.reduce((acc, curr) => {
         if (curr.id === variables.id) acc.push(data);
         else acc.push(curr);
         return acc;

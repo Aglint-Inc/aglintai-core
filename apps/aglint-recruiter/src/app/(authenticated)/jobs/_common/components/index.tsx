@@ -12,7 +12,7 @@ import { MoreHorizontal, PlusCircle, RefreshCw } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { useAllIntegrations } from '@/authenticated/hooks';
+import { useIntegrations } from '@/authenticated/hooks';
 import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -114,7 +114,7 @@ export function AddJob() {
   const router = useRouterPro();
   const integration = useIntegrationStore((state) => state.integrations);
   const { setIntegrations } = useIntegrationActions();
-  const { data: integrations } = useAllIntegrations();
+  const { data: integrations } = useIntegrations();
 
   return (
     <div className='flex flex-row items-center gap-1'>

@@ -12,7 +12,7 @@ export const schedulesSupabase = (db = supabase) =>
 export type SchedulesSupabase = QueryData<ReturnType<typeof schedulesSupabase>>;
 
 export function transformDataSchedules(inputData: SchedulesSupabase) {
-  const transformedData: { [key: string]: SchedulesSupabase[] } = {};
+  const transformedData: { [key: string]: SchedulesSupabase } = {};
 
   inputData?.forEach((item) => {
     const date = item.start_time?.split('T')[0]; // Extracting date from start_time

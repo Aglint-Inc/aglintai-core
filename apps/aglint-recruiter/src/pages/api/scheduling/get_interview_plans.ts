@@ -76,5 +76,5 @@ const getInterviewPlans = async ({ job_id }: { job_id: string }) => {
     });
   }
 
-  return response;
+  return response ?? [];
 };

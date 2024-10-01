@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
 import { createPrivateClient } from '@/server/db';
@@ -20,6 +21,12 @@ const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
       .throwOnError()
   ).data;
 
+  if (!temp_user)
+    throw new TRPCError({
+      code: 'UNPROCESSABLE_CONTENT',
+      message: 'Departments not found',
+    });
+
   const jobs = (
     await db
       .from('public_jobs')
@@ -28,7 +35,7 @@ const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
       .throwOnError()
   ).data;
 
-  const jobUsage = jobs.map((job) => job.job_title);
+  const jobUsage = (jobs ?? []).map((job) => job.job_title);
   const userUsage = temp_user.recruiter_user;
 
   return { name: temp_user.name, jobUsage, userUsage };
