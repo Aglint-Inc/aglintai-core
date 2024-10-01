@@ -25,7 +25,7 @@ const Layout = ({ children }: PropsWithChildren) => {
         header={<BreadCrumbs />}
         sidebarPosition='left'
       >
-        {children}
+        <div className='w-[80%] p-4'>{children}</div>
       </FullWidthLayout>
     </JobProvider>
   );

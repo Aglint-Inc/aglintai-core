@@ -106,7 +106,7 @@ const InterviewPlanPage = () => {
 
   return (
     <>
-      <div className='w-full p-4'>
+      <div className='w-full'>
         <div className='flex flex-row justify-between'>
           <div className='flex flex-col gap-1'>
             <h2 className='text-lg font-medium'>Interview Plan</h2>
