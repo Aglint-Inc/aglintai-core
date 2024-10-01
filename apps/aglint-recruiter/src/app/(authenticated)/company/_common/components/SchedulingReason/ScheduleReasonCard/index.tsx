@@ -39,8 +39,10 @@ export function ScheduleReasonCard({
     <div className='w-full py-6'>
       {isMainHeadingVisible && (
         <div className='mb-6'>
-          <h2 className='mb-2 text-lg font-bold'>{textMainHeading}</h2>
-          <p className='text-sm text-gray-500'>{textMainHelperText}</p>
+          <h2 className='text-lg font-bold'>{textMainHeading}</h2>
+          <p className='max-w-4xl text-sm text-muted-foreground'>
+            {textMainHelperText}
+          </p>
         </div>
       )}
       <div className='space-y-6'>

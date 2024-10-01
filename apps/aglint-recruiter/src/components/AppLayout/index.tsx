@@ -190,8 +190,8 @@ export default function AppLayout({ children }) {
                 )}
               </div> */}
               <div className="ml-0.5 mt-2 mr-3  w-full">
-      <ScrollArea className="h-[calc(100vh-64px)] rounded-lg border bg-white">
-        <div className="p-4">
+      <ScrollArea className="h-[calc(100vh-64px)] rounded-lg border bg-white overflow-auto">
+        <div className="">
           {checkPermissions(PERMISSIONS[String(router.pathName)]) ? (
             children
           ) : (

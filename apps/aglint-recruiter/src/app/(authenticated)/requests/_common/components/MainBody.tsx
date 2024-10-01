@@ -29,11 +29,7 @@ const MainBody = () => {
     useCompanySetup();
   const { recruiter_user } = useTenant();
   const { isShowFeature } = useFlags();
-  const [openChat, setOpenChat] = useState(
-    localStorage.getItem('openChat') === 'true' && isShowFeature('AGENT')
-      ? true
-      : false,
-  );
+  const [openChat, setOpenChat] = useState(false);
   const [view, setView] = useState<'list' | 'kanban'>('list');
 
   const { data: requestCount } = useRequestCount();
@@ -68,12 +64,14 @@ const MainBody = () => {
     ) || 0;
 
   useEffect(() => {
-    setOpenChat(
-      localStorage.getItem('openChat') === 'true' && isShowFeature('AGENT')
-        ? true
-        : false,
-    );
-  }, [localStorage.getItem('openChat')]);
+    if (isShowFeature) {
+      setOpenChat(
+        localStorage.getItem('openChat') === 'true' && isShowFeature('AGENT')
+          ? true
+          : false,
+      );
+    }
+  }, [isShowFeature]);
 
   if (isLoading || !isFetched || isLoadingCompanySetup)
     return (
@@ -86,7 +84,7 @@ const MainBody = () => {
   return (
     <div className='flex w-full overflow-hidden'>
       {/* Dock to Right Button */}
-      {isShowFeature('AGENT') ? (
+      {localStorage.getItem('openChat') === 'true' && isShowFeature('AGENT') ? (
         <div className='fixed left-[20] top-4 z-50'>
           <Button
             variant='link'
@@ -98,9 +96,9 @@ const MainBody = () => {
             }}
           >
             {openChat ? (
-              <PanelLeftClose className='h-6 w-6 text-gray-500' />
+              <PanelLeftClose className='h-6 w-6 text-muted-foreground' />
             ) : (
-              <PanelLeftOpen className='h-6 w-6 text-gray-500' />
+              <PanelLeftOpen className='h-6 w-6 text-muted-foreground' />
             )}
           </Button>
         </div>

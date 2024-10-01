@@ -67,13 +67,13 @@ export const ImportResume = () => {
       name='file'
       types={FILE_TYPES}
     >
-      <div className='flex h-full items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-slate-50'>
+      <div className='flex h-full items-center justify-center rounded-lg border-2 border-dashed border-border bg-slate-50'>
         <div className='text-center'>
           <Upload strokeWidth={1.5} className='mx-auto h-12 w-12' />
           <h3 className='mt-2 text-sm font-semibold text-gray-900'>
             Import Resume
           </h3>
-          <p className='mt-1 text-sm text-gray-500'>
+          <p className='mt-1 text-sm text-muted-foreground'>
             Drag and drop or click to upload
           </p>
         </div>
@@ -95,7 +95,7 @@ export const ImportResume = () => {
               <File className='h-5 w-5 text-green-500' />
             )}
             <span className='ml-2 flex-1 truncate'>{file.name}</span>
-            <span className='text-sm text-gray-500'>
+            <span className='text-sm text-muted-foreground'>
               {formatFileSize(file.size)}
             </span>
             <Button
@@ -127,7 +127,7 @@ export const ImportResume = () => {
             Add More Resume
           </Button>
         </FileUploader>
-        <span className='text-sm text-gray-500'>
+        <span className='text-sm text-muted-foreground'>
           {selectedFiles.length} Resumes
         </span>
       </div>

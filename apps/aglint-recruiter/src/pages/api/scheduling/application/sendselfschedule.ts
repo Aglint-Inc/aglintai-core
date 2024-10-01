@@ -9,15 +9,14 @@ import {
 import dayjs from 'dayjs';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
+import { type fetchSessionDetails } from '@/server/api/routers/requests/utils/requestSessions';
 import { selfScheduleMailToCandidate } from '@/utils/scheduling/mailUtils';
 import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsertMeetingsWithOrganizerId';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-import { type ApiInterviewSessionRequest } from './fetchInterviewSessionByRequest';
-
 export interface ApiBodyParamsSelfSchedule {
-  allSessions: ApiInterviewSessionRequest['response']['sessions'];
+  allSessions: Awaited<ReturnType<typeof fetchSessionDetails>>;
   application_id: string;
   dateRange: {
     start_date: string;

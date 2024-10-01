@@ -27,7 +27,7 @@ export const ResumeScore = ({
       case 'processed':
         return <ScoreTag score={resume_score} />;
       case 'unscorable':
-        return <span className='text-gray-500'>---</span>;
+        return <span className='text-muted-foreground'>---</span>;
       default:
         return null;
     }

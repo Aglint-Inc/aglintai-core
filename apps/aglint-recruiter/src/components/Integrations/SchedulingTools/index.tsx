@@ -299,7 +299,7 @@ function Scheduling({ allIntegrations }) {
                           </Label>
                           <div {...getRootProps()} className='cursor-pointer'>
                             <input {...getInputProps()} />
-                            <div className='flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-6'>
+                            <div className='flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border p-6'>
                               <p className='text-center text-sm text-gray-600'>
                                 Drag & drop a file here, or click to select a
                                 file

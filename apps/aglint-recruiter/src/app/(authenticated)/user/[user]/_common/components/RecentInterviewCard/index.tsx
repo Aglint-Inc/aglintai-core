@@ -15,7 +15,7 @@ export const RecentInterviews = ({
 }) => {
   return (
     <>
-      <UISectionCard title='Recent Interviews'>
+      <UISectionCard title='Recent Interviews' type='compact'>
         {interviews?.length ? (
           <div className='space-y-4'>
             {interviews.map((interview) => (
@@ -55,8 +55,8 @@ const List = ({
     <div className='flex items-center justify-between rounded-lg bg-gray-50 p-4'>
       <div>
         <h3 className='font-medium'>{name}</h3>
-        <p className='text-sm text-gray-500'>{interview.job}</p>
-        <p className='text-sm text-gray-500'>{date}</p>
+        <p className='text-sm text-muted-foreground'>{interview.job}</p>
+        <p className='text-sm text-muted-foreground'>{date}</p>
       </div>
       <UIButton
         onClick={() => {

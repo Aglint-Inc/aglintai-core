@@ -13,7 +13,7 @@ export const Feedback = ({
 }) => {
   return (
     <>
-      <UISectionCard title='Interview Feedback Provided'>
+      <UISectionCard title='Interview Feedback Provided' type='compact'>
         <div className='space-y-4'>
           {feedbacks?.length ? (
             feedbacks.map((feedback) => (

@@ -146,7 +146,7 @@ const WorkflowJob = ({
             <DialogTitle>Unlink confirmation</DialogTitle>
           </DialogHeader>
           <div className='py-4'>
-            <p className='text-sm text-gray-500'>
+            <p className='text-sm text-muted-foreground'>
               Are you sure to unlink this job from this workflow?
             </p>
           </div>

@@ -47,8 +47,8 @@ import { useMemberList } from '@/hooks/useMemberList';
 import SideDrawerEdit from '@/jobs/job/application/components/EditDrawer';
 import CollapseContent from '@/jobs/job/application/components/InterviewStage/IndividualSession/Collapse';
 import { useEditSession } from '@/jobs/job/application/components/InterviewTab/hooks/useEditSession';
-import { type ApiInterviewSessionRequest } from '@/pages/api/scheduling/application/fetchInterviewSessionByRequest';
 import { type Request } from '@/queries/requests/types';
+import { type fetchSessionDetails } from '@/server/api/routers/requests/utils/requestSessions';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import ROUTES from '@/utils/routing/routes';
 import { breakDurations } from '@/utils/scheduling/const';
@@ -74,7 +74,11 @@ export default function ViewRequestDetails() {
     requests: { data: requestList, isPlaceholderData },
     handleAsyncUpdateRequest,
   } = useRequests();
-  const { data: sessions, status, refetch: refetchMeetings } = useMeetingList();
+  const {
+    data: sessions,
+    status,
+    refetch: refetchMeetings,
+  } = useMeetingList({ request_id: requestId || '' });
 
   const { data: members } = useMemberList();
 
@@ -147,7 +151,7 @@ export default function ViewRequestDetails() {
               <h1 className='mb-2 text-2xl text-gray-900'>
                 {capitalizeFirstLetter(selectedRequest?.title ?? '')}
               </h1>
-              <div className='flex items-center space-x-4 text-sm text-gray-500'>
+              <div className='flex items-center space-x-4 text-sm text-muted-foreground'>
                 <div className='flex items-center space-x-1'>
                   <User className='h-4 w-4' />
                   <Link
@@ -198,14 +202,14 @@ export default function ViewRequestDetails() {
               <div className='flex flex-row items-center gap-2'>
                 {selectedRequest.status === 'completed' ? (
                   <>
-                    <h3 className='text-sm font-medium text-gray-500'>
+                    <h3 className='text-sm font-medium text-muted-foreground'>
                       Completed at:
                     </h3>
                     <p>{dayjsLocal(selectedRequest?.completed_at).fromNow()}</p>
                   </>
                 ) : (
                   <>
-                    <h3 className='text-sm font-medium text-gray-500'>
+                    <h3 className='text-sm font-medium text-muted-foreground'>
                       Created at:
                     </h3>
                     <p>{dayjsLocal(selectedRequest?.created_at).fromNow()}</p>
@@ -213,7 +217,7 @@ export default function ViewRequestDetails() {
                 )}
               </div>
               <div className='flex-center flex items-center gap-2'>
-                <h3 className='text-sm font-medium text-gray-500'>
+                <h3 className='text-sm font-medium text-muted-foreground'>
                   Assigned to:
                 </h3>
                 <Link
@@ -259,7 +263,7 @@ export default function ViewRequestDetails() {
                       <div className='space-y-4'>
                         <div className='group space-y-2'>
                           <div className='flex items-center justify-between'>
-                            <span className='text-sm font-medium text-gray-500'>
+                            <span className='text-sm font-medium text-muted-foreground'>
                               Status
                             </span>
                             <div className='hidden group-hover:block'>
@@ -299,7 +303,7 @@ export default function ViewRequestDetails() {
                         </div>
                         <div className='group space-y-2'>
                           <div className='flex items-center justify-between'>
-                            <span className='text-sm font-medium text-gray-500'>
+                            <span className='text-sm font-medium text-muted-foreground'>
                               Priority
                             </span>
                             <div className='hidden group-hover:block'>
@@ -334,7 +338,7 @@ export default function ViewRequestDetails() {
                       <div className='space-y-4'>
                         <div className='group space-y-2'>
                           <div className='flex items-center justify-between'>
-                            <span className='text-sm font-medium text-gray-500'>
+                            <span className='text-sm font-medium text-muted-foreground'>
                               Interview Date
                             </span>
                             <div className='hidden group-hover:block'>
@@ -380,7 +384,7 @@ export default function ViewRequestDetails() {
                         </div>
                         <div className='group relative space-y-2'>
                           <div className='flex items-center justify-between'>
-                            <h3 className='text-sm font-medium text-gray-500'>
+                            <h3 className='text-sm font-medium text-muted-foreground'>
                               Assigned to
                             </h3>
                             <div className='hidden group-hover:block'>
@@ -418,7 +422,7 @@ export default function ViewRequestDetails() {
                     <div className='space-y-4'>
                       <div className='group relative space-y-2'>
                         <div className='flex items-center justify-between'>
-                          <span className='text-sm font-medium text-gray-500'>
+                          <span className='text-sm font-medium text-muted-foreground'>
                             Request Type
                           </span>
                           <div className='hidden group-hover:block'>
@@ -451,7 +455,7 @@ export default function ViewRequestDetails() {
                             }
                             className='gap-1'
                           >
-                            <Calendar className='h-4 w-4 text-gray-500' />
+                            <Calendar className='h-4 w-4 text-muted-foreground' />
                             <p>
                               {capitalizeFirstLetter(selectedRequest?.type)}
                             </p>
@@ -464,7 +468,11 @@ export default function ViewRequestDetails() {
 
                   <SessionCards
                     refetchMeetings={refetchMeetings}
-                    sessions={sessions ?? []}
+                    sessions={
+                      sessions as Awaited<
+                        ReturnType<typeof fetchSessionDetails>
+                      >
+                    }
                   />
                 </CardContent>
               </Card>
@@ -535,8 +543,8 @@ function SessionCards({
   sessions,
   refetchMeetings,
 }: {
-  sessions: ApiInterviewSessionRequest['response']['sessions'];
-  refetchMeetings: () => Promise<void>;
+  sessions: Awaited<ReturnType<typeof fetchSessionDetails>>;
+  refetchMeetings: () => void;
 }) {
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const { onClickEdit } = useEditSession();
