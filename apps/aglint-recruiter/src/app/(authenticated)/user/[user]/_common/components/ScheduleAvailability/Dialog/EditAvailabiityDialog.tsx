@@ -37,7 +37,7 @@ export const EditAvailabiityDialog = ({
   const user_id = router?.params?.user as string;
   const member = allMembers.find((mem) => mem.user_id === user_id);
 
-  const schedulingSettings = member.scheduling_settings;
+  const schedulingSettings = member?.scheduling_settings;
 
   const [isSaving, setIsSaving] = useState(false);
 
