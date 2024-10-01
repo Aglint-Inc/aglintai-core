@@ -4,7 +4,6 @@ import { useTenant } from '@/company/hooks';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 
-import { useInterviewer } from '../../hooks/useInterviewer';
 import EditAdminDialog from './Dialog/EditAdminDialog';
 import { EditUserDialog } from './Dialog/EditUserDialog';
 
@@ -17,10 +16,7 @@ export const EditUser = ({
 }) => {
   const router = useRouterPro();
   const { recruiter_user } = useTenant();
-
   const user_id = router.params.user as string;
-  const { refetch: interviewerDetailsRefetch } = useInterviewer();
-
   const isAdmin = recruiter_user?.role === 'admin';
 
   return (
@@ -38,11 +34,7 @@ export const EditUser = ({
           }}
         />
       ) : (
-        <EditUserDialog
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          interviewerDetailsRefetch={interviewerDetailsRefetch}
-        />
+        <EditUserDialog isOpen={isOpen} setIsOpen={setIsOpen} />
       )}
     </>
   );

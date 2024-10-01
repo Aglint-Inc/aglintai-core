@@ -13,13 +13,12 @@ import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
+import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 import type timeZone from '@/utils/timeZone';
 import toast from '@/utils/toast';
 
-import { useMemberUpdate } from '../../../hooks/useMemberUpdate';
 import { ProfileForms } from './EditUserDialogUI';
-
 const initialFormValues: FormValues = {
   value: '',
   label: '',
@@ -39,17 +38,15 @@ const initialFormValues: FormValues = {
 export const EditUserDialog = ({
   isOpen,
   setIsOpen,
-  interviewerDetailsRefetch,
 }: {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  interviewerDetailsRefetch: () => void;
 }) => {
   const { recruiter_user } = useTenant();
   const [selectedTimeZone, setSelectedTimeZone] = useState(
     recruiter_user?.scheduling_settings.timeZone || null,
   );
-  const { mutateAsync } = useMemberUpdate();
+  const { mutateAsync } = api.user.update_user.useMutation();
 
   const recruUser = recruiter_user;
   const initialProfileFormFields: FormFields = {
@@ -179,22 +176,10 @@ export const EditUserDialog = ({
           scheduling_settings,
           user_id,
         };
-        // await supabase
-        //   .from('recruiter_user')
-        //   .update({
-        //     first_name: profile.first_name.value,
-        //     last_name: profile.last_name.value,
-        //     phone: profile.phone.value,
-        //     linked_in: profile.linked_in.value,
-        //     profile_image,
-        //     scheduling_settings,
-        //   })
-        //   .eq('user_id', user_id);
 
         await mutateAsync({ ...data });
         // const profile_img = profile_image;
 
-        await interviewerDetailsRefetch();
         setProfileChange(false);
         setIsOpen(false);
       }

@@ -34,27 +34,39 @@ const mutation = async ({ input }: PrivateProcedure<typeof Schema>) => {
   const db = createPrivateClient();
 
   const {
+    user_id,
+    role_id,
+    manager_id,
+    department_id,
+    employment,
     first_name,
     last_name,
+    linked_in,
+    office_location_id,
     phone,
+    position,
+    recruiter_id,
     scheduling_settings,
     profile_image,
-    linked_in,
-    user_id,
   } = input;
-
   await db
-    .from('recruiter_user')
-    .update({
-      first_name: first_name,
-      last_name: last_name,
-      phone: phone,
-      linked_in: linked_in,
+    .rpc('update_user', {
+      department_id,
+      employment,
+      first_name,
+      last_name,
+      linked_in,
+      manager_id,
+      office_location_id,
+      phone,
+      position,
       profile_image,
+      recruiter_id,
+      role_id,
       scheduling_settings,
+      user_id,
     })
-    .eq('user_id', user_id)
     .throwOnError();
 };
 
-export const updateUser = publicProcedure.input(Schema).mutation(mutation);
+export const updateAdminUser = publicProcedure.input(Schema).mutation(mutation);

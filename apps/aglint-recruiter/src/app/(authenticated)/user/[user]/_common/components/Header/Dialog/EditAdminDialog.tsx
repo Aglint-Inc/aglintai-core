@@ -14,7 +14,7 @@ import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useAllDepartments } from '@/queries/departments';
-import { type UserUpdateType } from '@/server/api/routers/user/update_user';
+import { type UserUpdateType } from '@/server/api/routers/user/update_admin_user';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 
@@ -67,7 +67,7 @@ const EditAdminDialog = ({
   const { data: officeLocations } = useTenantOfficeLocations();
   const [isUpdating, setIsUpdating] = useState(false);
   const imageFile = useRef<File>(null);
-  const { mutateAsync } = api.user.update_user.useMutation();
+  const { mutateAsync } = api.user.update_admin_user.useMutation();
 
   const [isImageChanged, setIsImageChanged] = useState(false);
   const [isProfileChanged, setIsProfileChanged] = useState(false);
