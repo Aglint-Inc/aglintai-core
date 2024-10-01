@@ -2,20 +2,24 @@ import {
   type ScheduleAuthType,
   type SchedulingSettingType,
 } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { CApiError, supabaseWrap } from '@aglint/shared-utils';
 
 import { getSupabaseServer } from '../supabase/supabaseAdmin';
-export const fetchMeetingsInfo = async (meeting_ids) => {
+export const fetchMeetingsInfo = async (meeting_ids: string[]) => {
   const supabaseAdmin = getSupabaseServer();
 
   const meetings = supabaseWrap(
     await supabaseAdmin
       .from('interview_meeting')
       .select(
-        'id,recruiter_user(email,schedule_auth,user_id,scheduling_settings)',
+        'id,recruiter_user!inner(email,schedule_auth,user_id,scheduling_settings)',
       )
-      .in('id', meeting_ids),
+      .in('id', meeting_ids)
+      .throwOnError(),
   );
+  if (!meetings) {
+    throw new CApiError('SERVER_ERROR', 'Meetings not found');
+  }
   const meetings_info = meetings.map((meeting) => ({
     meeting_id: meeting.id,
     organizer_id: meeting.recruiter_user.user_id,

@@ -42,10 +42,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { data: rec } = await supabase
       .from('recruiter')
       .insert({
-        email: email,
-        recruiter_type: 'Company',
         id: rec_id,
         primary_admin: user_id,
+        name: 'Temp',
       })
       .select()
       .single()

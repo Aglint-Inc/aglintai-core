@@ -116,7 +116,6 @@ const EditBasicInfoDialog = ({
       }
       await mutateAsync({
         name: recruiterLocal.name ? recruiterLocal.name : recruiter?.name,
-        email: recruiterLocal.email,
         industry: recruiterLocal.industry,
         company_website: recruiterLocal.company_website,
         socials: recruiterLocal.socials,

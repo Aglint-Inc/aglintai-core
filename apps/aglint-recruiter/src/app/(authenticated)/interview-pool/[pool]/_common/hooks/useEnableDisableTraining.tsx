@@ -35,11 +35,13 @@ export const useEnableDisableTraining = () => {
     }, 5000);
   };
 
-  const approvers = members.filter((member) =>
-    editModule.settings.approve_users.includes(member.user_id),
+  const approvers = members.filter(
+    (member) =>
+      editModule && editModule.settings.approve_users.includes(member.user_id),
   );
 
   const updateModule = async () => {
+    if (!localModule || !editModule) return;
     if (localModule.settings.reqruire_approval) {
       if (selectedUsers.length === 0) {
         setErrorApproval(true);
@@ -55,7 +57,6 @@ export const useEnableDisableTraining = () => {
         setErrorApproval(true);
         return;
       }
-
       await supabase
         .from('interview_module')
         .update({
@@ -109,6 +110,7 @@ export const useEnableDisableTraining = () => {
   }: {
     type: 'enable' | 'disable';
   }) => {
+    if (!localModule || !editModule) return;
     try {
       setBannerLoading(true);
       await supabase

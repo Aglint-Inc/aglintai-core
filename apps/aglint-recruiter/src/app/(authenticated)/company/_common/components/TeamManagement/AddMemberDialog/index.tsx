@@ -6,6 +6,7 @@ import {
 import { useToast } from '@components/hooks/use-toast';
 import { useState } from 'react';
 
+import { useIntegrations } from '@/authenticated/hooks';
 import {
   useTenantMembers,
   useTenantOfficeLocations,
@@ -81,6 +82,7 @@ const AddMember = ({
     role: defaultRole?.role ? defaultRole.role : null,
     manager_id: null,
   };
+  const { data: integrations } = useIntegrations();
   const [form, setForm] = useState<InviteUserFormType>(initform);
 
   const [formError, setFormError] = useState<InviteUserFormErrorType>({
@@ -109,7 +111,10 @@ const AddMember = ({
       temp = { ...temp, email: true };
       flag = true;
     } else if (
-      !(form?.email?.split('@')[1] === recruiter?.email?.split('@')[1])
+      !(
+        form?.email?.split('@')[1] ===
+        integrations?.google_workspace_domain?.split('//')[1]
+      )
     ) {
       toast({
         variant: 'destructive',

@@ -12,16 +12,19 @@ const query = async ({ input: { id } }: PrivateProcedure<typeof schema>) => {
   const errors: string[] = [];
   const { data } = await db
     .from('interview_session')
-    .select('*,interview_meeting(*),interview_plan(public_jobs(id,job_title))')
+    .select(
+      '*,interview_meeting!inner(*),interview_plan!inner(public_jobs!inner(id,job_title))',
+    )
     .eq('module_id', id);
 
-  const connectedJobs: string[] = data
+  const connectedJobs: string[] = (data || [])
     .filter((ses) => !!ses.interview_plan_id)
-    .map((ses) => ses.interview_plan?.public_jobs?.job_title);
+    .map((ses) => ses.interview_plan?.public_jobs?.job_title)
+    .filter((job) => job !== null);
 
   const uniqueJobs = [...new Set(connectedJobs)];
 
-  const isActiveMeeting = data.some(
+  const isActiveMeeting = (data || []).some(
     (meet) =>
       meet.interview_meeting &&
       (meet.interview_meeting.status === 'confirmed' ||

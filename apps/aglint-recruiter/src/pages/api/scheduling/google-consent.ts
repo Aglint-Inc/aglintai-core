@@ -23,7 +23,7 @@ const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
     });
 
     return res.status(200).json(authUrl);
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).send(error.message);
   }
 };

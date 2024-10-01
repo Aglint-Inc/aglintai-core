@@ -36,6 +36,7 @@ function AddMemberDialog() {
   );
 
   const onClickAddMember = async () => {
+    if (!editModule || selectedUsers.length === 0) return;
     try {
       await mutateAsync({
         selectedUsers: selectedUsers,

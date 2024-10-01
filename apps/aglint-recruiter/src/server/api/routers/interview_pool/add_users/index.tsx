@@ -5,7 +5,6 @@ import {
 } from '@aglint/shared-types';
 import { z } from 'zod';
 
-import { type useModuleAndUsers } from '@/interview-pool/details/hooks/useModuleAndUsers';
 import { type StatusTraining } from '@/interview-pool/details/types/pool';
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
@@ -22,7 +21,8 @@ const UserSchema = z.object({
 const schema = z.object({
   selectedUsers: z.array(UserSchema),
   relations: z.array(interviewModuleRelationInsertSchema),
-  trainingStatus: interviewModuleRelationInsertSchema.shape.training_status,
+  trainingStatus:
+    interviewModuleRelationInsertSchema.required().shape.training_status,
   pool: z.object({
     id: z.string(),
     noReverseShadow: z.number(),
@@ -57,12 +57,14 @@ const mutation = async ({
       number_of_shadow: pool.noShadow,
     });
   }
+
+  return { success: true };
 };
 
 export const addUsers = privateProcedure.input(schema).mutation(mutation);
 
 export const updateRelations = async (
-  archivedRelations: ReturnType<typeof useModuleAndUsers>['data']['relations'],
+  archivedRelations: z.infer<typeof schema>['relations'],
   training_status: DatabaseTable['interview_module_relation']['training_status'],
 ) => {
   const db = createPrivateClient();

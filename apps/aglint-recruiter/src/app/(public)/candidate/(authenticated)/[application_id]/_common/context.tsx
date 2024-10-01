@@ -19,8 +19,9 @@ const useCandidatePortalContext = () => {
   return { application_id };
 };
 
-export const CandidatePortalContext =
-  createContext<ReturnType<typeof useCandidatePortalContext>>(undefined);
+export const CandidatePortalContext = createContext<
+  ReturnType<typeof useCandidatePortalContext> | undefined
+>(undefined);
 
 export const CandidatePortalProvider = async ({
   children,

@@ -15,7 +15,7 @@ import { ExternalLink, Eye, EyeOff, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
-import { useAllIntegrations } from '@/authenticated/hooks';
+import { useIntegrations } from '@/authenticated/hooks';
 import axios from '@/client/axios';
 import { useTenant } from '@/company/hooks';
 import { Loader } from '@/components/Common/Loader';
@@ -51,7 +51,7 @@ export default function LeverModalComp() {
   const [initialFetch, setInitialFetch] = useState(true);
   const [error, setError] = useState<boolean>(false);
   const apiRef = useRef(null);
-  const { data: integrations } = useAllIntegrations();
+  const { data: integrations } = useIntegrations();
   const [showApiKey, setShowApiKey] = useState(false);
 
   useEffect(() => {

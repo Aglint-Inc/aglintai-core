@@ -4,18 +4,18 @@ import { type schema_find_availability_payload } from '@aglint/shared-utils';
 import { type z } from 'zod';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
-import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 
 export type ApiResponseFindAvailability = {
   slots: DateRangePlansType[];
-  availabilities: CandidatesSchedulingV2['calendar_events'];
+  availabilities: CandidatesScheduling['calendar_events'];
 };
 
 const findAvailability = async (
-  parsedData: z.infer<typeof schema_find_availability_payload>,
+  parsedData: NonNullable<z.output<typeof schema_find_availability_payload>>,
 ) => {
   parsedData.options.return_empty_slots_err = true;
-  const cand_schedule = new CandidatesSchedulingV2(parsedData.options);
+  const cand_schedule = new CandidatesScheduling(parsedData.options);
 
   await cand_schedule.fetchDetails({
     params: {

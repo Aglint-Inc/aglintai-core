@@ -1,6 +1,7 @@
 import { TRPCError } from '@trpc/server';
 
 import { createPrivateClient } from '@/server/db';
+import { ERRORS } from '@/server/enums';
 
 import { type PrivateProcedure, privateProcedure } from '../../trpc';
 
@@ -11,25 +12,24 @@ const query = async ({ ctx }: PrivateProcedure) => {
       .from('recruiter_relation')
       .select(
         `*, 
-        recruiter(*, office_locations(*), recruiter_preferences(*), departments(id,name)), 
-        recruiter_user!public_recruiter_relation_user_id_fkey(*), 
+        recruiter!inner(*, office_locations(*), recruiter_preferences(*), departments(id,name)), 
+        recruiter_user!public_recruiter_relation_user_id_fkey!inner(*), 
         manager_details:recruiter_user!recruiter_relation_manager_id_fkey(first_name,last_name,position), 
-        roles(name,role_permissions(permissions!inner(name)))`,
+        roles!inner(name,role_permissions!inner(permissions!inner(name)))`,
       )
       .match({ user_id: ctx.user_id, is_active: true })
       .single()
       .throwOnError()
   ).data;
 
-  if (!data)
-    throw new TRPCError({ code: 'UNAUTHORIZED', message: 'No user found' });
+  if (!data) throw new TRPCError(ERRORS.FORBIDDEN);
 
   const recruiter_user = {
     ...data.recruiter_user,
     role: data.roles!.name,
     role_id: data.role_id,
-    department: data.recruiter?.departments?.find(
-      (dep) => dep.id == data.recruiter_user!.department_id,
+    department: data.recruiter.departments.find(
+      (dep) => dep.id == data.recruiter_user.department_id,
     ),
     office_location: data.recruiter?.office_locations?.find(
       (loc) => loc.id == data.recruiter_user!.office_location_id,

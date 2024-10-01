@@ -49,6 +49,7 @@ export default function InterviewTypeDetail({
   }, [editModule?.id]);
 
   const unArcheive = async () => {
+    if (!editModule) return;
     const isUnArchived = await unArchiveModuleById(editModule.id);
     if (isUnArchived) {
       refetch();
@@ -75,12 +76,12 @@ export default function InterviewTypeDetail({
               </h1>
               <div className='mt-2 flex items-center space-x-2'>
                 <UIBadge
-                  textBadge={editModule.is_archived ? 'Archived' : 'Active'}
-                  color={editModule.is_archived ? 'error' : 'success'}
+                  textBadge={editModule?.is_archived ? 'Archived' : 'Active'}
+                  color={editModule?.is_archived ? 'error' : 'success'}
                 />
                 <span className='text-muted-foreground'>•</span>
                 <span className='text-muted-foreground'>
-                  {editModule.department.name}
+                  {editModule?.department?.name}
                 </span>
               </div>
             </div>

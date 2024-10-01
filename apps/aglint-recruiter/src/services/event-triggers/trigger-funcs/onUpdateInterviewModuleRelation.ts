@@ -1,5 +1,5 @@
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { CApiError, supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
@@ -27,15 +27,24 @@ const addToQueue = async (
   try {
     const supabaseAdmin = getSupabaseServer();
 
-    const [int_module] = supabaseWrap(
-      await supabaseAdmin.from('interview_module').select(),
-    );
+    const int_module = (
+      await supabaseAdmin
+        .from('interview_module')
+        .select()
+        .single()
+        .throwOnError()
+    ).data;
+    if (!int_module) {
+      throw new CApiError('SERVER_ERROR', 'Interview module not found');
+    }
+
     const trig_actions: DatabaseEnums['email_slack_types'][] = [
       'onQualified_email_trainee',
       'onQualified_slack_trainee',
     ];
     const { company_actions } = await getWActions({
       company_id: int_module.recruiter_id,
+      request_id: null,
     });
 
     const act_promises = company_actions
@@ -63,7 +72,7 @@ const addToQueue = async (
       });
 
     await Promise.allSettled(act_promises);
-  } catch (err) {
+  } catch (err: any) {
     console.error(
       'Failed to addTo Queue onUpdateInterviewModuleRelation',
       err.message,

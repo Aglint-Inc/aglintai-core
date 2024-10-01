@@ -6,13 +6,20 @@ import { UIButton } from '@/components/Common/UIButton';
 import UISectionCard from '@/components/Common/UISectionCard';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
-import { type InterviewerDetailType } from '../../hooks/useInterviewer';
+import {
+  type InterviewerDetailType,
+  useInterviewer,
+} from '../../hooks/useInterviewer';
 
-export const UpcomingInterview = ({
-  interviews,
-}: {
-  interviews: NonNullable<InterviewerDetailType['all_meetings']>;
-}) => {
+export const UpcomingInterview = () => {
+  const {
+    data: { all_meetings },
+  } = useInterviewer();
+
+  const interviews = all_meetings?.length
+    ? all_meetings.filter((meeting) => meeting.status === 'confirmed')
+    : [];
+
   return (
     <>
       <UISectionCard title='Upcoming Interviews' type='compact'>
@@ -45,20 +52,21 @@ const List = ({
 }) => {
   const router = useRouterPro();
   return (
-    <div className='flex items-center justify-between rounded-lg bg-gray-50 p-4'>
-      <div>
-        <h3 className='font-medium'>
+    <div className='flex items-center gap-4 rounded-lg'>
+       <div className='w-[90px] h-[94px] bg-gray-50 rounded-sm flex flex-col items-center justify-center'>      
+          <div className='text-sm'>{dayjsLocal(interview.start_time).format('MMMM')}</div>
+          <div className='text-2xl font-semibold text-black'>{dayjsLocal(interview.start_time).format('DD')}</div>
+          <div className='text-sm'>{dayjsLocal(interview.start_time).format('dddd')}</div>
+  </div>
+      <div className='flex flex-col gap-2 items-start'>
+        <h3 className='text-md font-medium'>
           {getFullName(
             interview?.candidate?.first_name || '',
             interview?.candidate?.last_name || '',
-          )}
+          )} for {interview.job}
         </h3>
-        <p className='text-sm text-muted-foreground'>{interview.job}</p>
-        <p className='text-sm text-muted-foreground'>
-          {`${dayjsLocal(interview.start_time).format('YYYY-MM-DD')} at ${dayjsLocal(interview.start_time).format('hh:mm A')}`}
-        </p>
-      </div>
-      <UIButton
+        <p className='text-sm text-muted-foreground'> {dayjsLocal(interview.start_time).format('hh:mm A')} to {dayjsLocal(interview.end_time).format('hh:mm A')}</p>
+        <UIButton
         onClick={() => {
           router.push(
             `/interviews/view?meeting_id=${interview.id}&tab=candidate_details`,
@@ -69,6 +77,9 @@ const List = ({
       >
         View Details
       </UIButton>
+        
+      </div>
+      
     </div>
   );
 };

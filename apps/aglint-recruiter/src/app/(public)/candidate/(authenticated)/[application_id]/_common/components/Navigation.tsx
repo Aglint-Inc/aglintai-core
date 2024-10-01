@@ -38,7 +38,8 @@ export default function Navigation() {
     return <CandidatePortalLoader loadingText='Loading Candidate Portal..' />;
   const messageNewCount = messages?.filter((mes) => mes.isNew).length || 0;
 
-  const { company } = data;
+  const company = data?.company;
+
   return (
     <div className='sticky top-3 z-50 flex w-full items-center justify-center px-5'>
       <header className='container mx-auto w-full max-w-screen-xl rounded-md border border-border bg-background/80 p-0 shadow-sm backdrop-blur-sm'>
@@ -115,13 +116,15 @@ export default function Navigation() {
               }}
             >
               {signingOut ? 'Signing out...' : 'Logout'}
+              {data?.candidate && (
+                <Link href={`/candidate/${application_id}/profile`}>
+                  <NavProfile
+                    application_id={application_id}
+                    candidate={data.candidate}
+                  />
+                </Link>
+              )}
             </Button>
-            <Link href={`/candidate/${application_id}/profile`}>
-              <NavProfile
-                application_id={application_id}
-                candidate={data?.candidate}
-              />
-            </Link>
           </div>
         </div>
       </header>

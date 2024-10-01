@@ -1,14 +1,14 @@
 'use client';
 
-import { ApplicationsDashboard } from '@/job/components';
+import { FullWidthLayout } from '@components/layouts/full-width-layout';
 
-import { ApplicationsStoreProvider } from './_common/contexts';
+import { ApplicationsComponent, JobDetailsHeader } from '@/job/components';
 
 const Page = () => {
   return (
-    <ApplicationsStoreProvider>
-      <ApplicationsDashboard />
-    </ApplicationsStoreProvider>
+    <FullWidthLayout header={<JobDetailsHeader />}>
+      <ApplicationsComponent />
+    </FullWidthLayout>
   );
 };
 

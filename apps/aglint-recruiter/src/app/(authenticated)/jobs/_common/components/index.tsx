@@ -1,3 +1,4 @@
+import { PageHeader } from '@components/layouts/page-header';
 import OptimisticWrapper from '@components/loadingWapper';
 import { Button } from '@components/ui/button';
 import {
@@ -12,7 +13,7 @@ import { MoreHorizontal, PlusCircle, RefreshCw } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { useAllIntegrations } from '@/authenticated/hooks';
+import { useIntegrations } from '@/authenticated/hooks';
 import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -29,24 +30,13 @@ import LeverModalComp from './AddJobWithIntegrations/LeverModal';
 import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';
 
-const DashboardComp = () => {
+export const Body = () => {
   const {
-    manageJob,
     jobs: { data },
     initialLoad,
   } = useJobs();
+  const { jobs } = useJobFilterAndSort(data ?? []);
   const { ifAllowed } = useRolesAndPermissions();
-  const {
-    jobs,
-    filterOptions,
-    filterValues,
-    setFilterValues,
-    setSort,
-    sortOptions,
-    sortValue,
-    searchText,
-    setSearchText,
-  } = useJobFilterAndSort(data ?? []);
 
   return (
     <div className='h-full w-full'>
@@ -75,32 +65,9 @@ const DashboardComp = () => {
           {data?.length === 0 ? (
             ifAllowed(<EmptyJob />, ['manage_job'])
           ) : (
-            <div className='container-lg mx-auto w-full px-4'>
-              <div className='flex flex-row justify-between'>
-                <h1 className='mb-4 text-2xl font-bold'>Jobs</h1>
-                <div className='ml-4'>{manageJob && <AddJob />}</div>
-              </div>
-              <div className='mb-4 flex flex-col gap-4'>
-                <div className='flex items-center justify-between'>
-                  <div className='flex-grow'>
-                    <FilterJobDashboard
-                      filterOptions={filterOptions}
-                      filterValues={filterValues}
-                      setFilterValues={setFilterValues}
-                      setSort={setSort}
-                      sortOptions={sortOptions}
-                      sortValue={sortValue}
-                      searchText={searchText}
-                      handlerFilter={setSearchText}
-                    />
-                  </div>
-                  {/* <div className='ml-4'>{manageJob && <AddJob />}</div> */}
-                </div>
-                <ScrollArea className='h-[70vh]'>
-                  <JobsList jobs={jobs} />
-                </ScrollArea>
-              </div>
-            </div>
+            <ScrollArea className='h-[70vh]'>
+              <JobsList jobs={jobs} />
+            </ScrollArea>
           )}
         </>
       )}
@@ -108,13 +75,16 @@ const DashboardComp = () => {
   );
 };
 
-export default DashboardComp;
+export const Header = () => {
+  const { manageJob } = useJobs();
+  return <PageHeader title='Jobs'>{manageJob && <AddJob />}</PageHeader>;
+};
 
 export function AddJob() {
   const router = useRouterPro();
   const integration = useIntegrationStore((state) => state.integrations);
   const { setIntegrations } = useIntegrationActions();
-  const { data: integrations } = useAllIntegrations();
+  const { data: integrations } = useIntegrations();
 
   return (
     <div className='flex flex-row items-center gap-1'>
@@ -164,6 +134,34 @@ export function AddJob() {
     </div>
   );
 }
+
+export const Filter = () => {
+  const {
+    jobs: { data },
+  } = useJobs();
+  const {
+    filterOptions,
+    filterValues,
+    setFilterValues,
+    setSort,
+    sortOptions,
+    sortValue,
+    searchText,
+    setSearchText,
+  } = useJobFilterAndSort(data ?? []);
+  return (
+    <FilterJobDashboard
+      filterOptions={filterOptions}
+      filterValues={filterValues}
+      setFilterValues={setFilterValues}
+      setSort={setSort}
+      sortOptions={sortOptions}
+      sortValue={sortValue}
+      searchText={searchText}
+      handlerFilter={setSearchText}
+    />
+  );
+};
 
 const Sync = () => {
   const { recruiter } = useTenant();

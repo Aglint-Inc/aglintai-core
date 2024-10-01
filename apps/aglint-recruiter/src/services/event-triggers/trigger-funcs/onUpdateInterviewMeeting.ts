@@ -1,5 +1,5 @@
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { CApiError, supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
@@ -33,28 +33,41 @@ const addJobsToQueue = async (new_data: DatabaseTable['interview_meeting']) => {
       'interviewEnd_slack_shadowTraineeForMeetingAttendence',
     ]);
     await stopJobPreviouslyQueuedJobs(new_data);
-    const [schedule_application] = supabaseWrap(
+    const schedule_application = (
       await supabaseAdmin
         .from('applications')
         .select('*,public_jobs(*)')
-        .eq('id', new_data.application_id),
-    );
+        .eq('id', new_data.application_id)
+        .single()
+        .throwOnError()
+    ).data;
+    if (!schedule_application) {
+      throw new CApiError('SERVER_ERROR', 'Application not found');
+    }
+    if (!schedule_application.public_jobs) {
+      throw new CApiError('SERVER_ERROR', 'Job not found');
+    }
 
     const { request_workflows, company_actions } = await getWActions({
       company_id: schedule_application.public_jobs.recruiter_id,
       request_id: new_data.schedule_request_id,
     });
-    const [meeting_details] = supabaseWrap(
+    const meeting_details = (
       await supabaseAdmin
         .from('meeting_details')
         .select()
-        .eq('id', new_data.id),
-    );
+        .eq('id', new_data.id)
+        .single()
+        .throwOnError()
+    ).data;
+    if (!meeting_details) {
+      throw new CApiError('SERVER_ERROR', 'Meeting details not found');
+    }
     const all_actions = [...request_workflows, ...company_actions]
       .filter((act) => jobs_set.has(act.target_api))
       .map(async (act) => {
         let base_time = dayjsLocal().toISOString();
-        if (act.workflow.trigger === 'interviewEnd') {
+        if (act.workflow.trigger === 'interviewEnd' && new_data.end_time) {
           base_time = new_data.end_time;
         }
         supabaseWrap(
@@ -79,7 +92,7 @@ const addJobsToQueue = async (new_data: DatabaseTable['interview_meeting']) => {
         );
       });
     await Promise.allSettled(all_actions);
-  } catch (err) {
+  } catch (err: any) {
     console.error('Failed to perform', err.message);
   }
 };

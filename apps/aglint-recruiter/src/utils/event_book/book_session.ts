@@ -55,7 +55,7 @@ export const bookSession = async ({
       ],
     },
     conferenceData: {
-      createRequest: null,
+      createRequest: undefined,
     },
     description: event_description,
   };

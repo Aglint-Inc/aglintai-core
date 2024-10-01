@@ -17,7 +17,7 @@ export const onInsertRequestProgress = async ({
         .eq('id', new_data.request_id)
         .eq('status', 'to_do'),
     );
-  } catch (err) {
+  } catch (err: any) {
     console.error('Failed onInsertRequestProgress', err.message);
   }
 };

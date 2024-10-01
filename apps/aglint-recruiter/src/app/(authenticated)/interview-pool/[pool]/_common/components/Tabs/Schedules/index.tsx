@@ -24,7 +24,7 @@ function Schedules() {
         <div className='flex h-[400px] w-full items-center justify-center'>
           <Loader />
         </div>
-      ) : allSchedules.length === 0 ? (
+      ) : (allSchedules || []).length === 0 ? (
         <div className='w-full'>
           <GlobalEmpty
             icon={
