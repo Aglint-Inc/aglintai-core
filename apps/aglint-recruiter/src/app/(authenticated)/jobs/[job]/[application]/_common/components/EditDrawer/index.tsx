@@ -1,8 +1,8 @@
 import { UIButton } from '@/components/Common/UIButton';
 import UIDrawer from '@/components/Common/UIDrawer';
 import UITextField from '@/components/Common/UITextField';
-import { ScheduleTypeField } from '@/job/interview-plan/components/sessionForms';
 
+import { ScheduleTypeField } from '../../../../(jobEdit)/interview-plan/_common/components/sessionForms';
 import { useEditSession } from '../../hooks/useEditSession';
 import {
   setEditSession,
