@@ -1,11 +1,11 @@
-import { getFullName } from '@aglint/shared-utils';
+// import { getFullName } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Separator } from '@components/ui/separator';
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { useTenant } from '@/company/hooks';
+// import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';
 
@@ -23,7 +23,7 @@ import {
 } from './store';
 
 function ChatMessageList() {
-  const { recruiter_user } = useTenant();
+  // const { recruiter_user } = useTenant();
   const [fetchingChat, setFetchingChat] = useState(false);
   const { isFetchingNextPage, chatList, viewHistory, tempLoading, viewList } =
     useAgentChatStore((state) => ({
