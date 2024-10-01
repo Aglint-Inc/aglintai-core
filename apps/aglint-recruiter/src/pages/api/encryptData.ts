@@ -1,12 +1,12 @@
 import crypto from 'crypto';
 
-export default async function handler(req, res) {
+export default async function handler(req: any, res: any) {
   const { planData } = req.body;
   const data = encrypt(planData, process.env.ENCRYPTION_KEY);
   res.status(200).json(data);
 }
 
-export function encrypt(data, encryptionKey) {
+export function encrypt(data: any, encryptionKey: any) {
   const iv = crypto.randomBytes(16);
   //@ts-ignore
   const cipher = crypto.createCipheriv(

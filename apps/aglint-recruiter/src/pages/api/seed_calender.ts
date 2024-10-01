@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
+import { dayjsLocal } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { dayjsLocal } from '@/services/CandidateScheduleV2/utils/dayjsLocal';
 import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
 import {
   type MeetingLimitsConfig,
@@ -27,6 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const interviewer_info = interview_type_details.find(
         (i) => i.user_id === inter,
       )?.recruiter_user;
+      if (!interviewer_info) continue;
       if (interviewer_info.email !== 'dileep@aglinthq.com') continue;
       const int_meeting_cnt: MeetingLimitsConfig = {
         [MeetingTypeEnum.OtherMeetings]: {
@@ -85,7 +86,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     return res.status(200).send('ok');
-  } catch (error) {
+  } catch (error: any) {
     console.log('error', error);
     res.status(400).send(error.message);
   }

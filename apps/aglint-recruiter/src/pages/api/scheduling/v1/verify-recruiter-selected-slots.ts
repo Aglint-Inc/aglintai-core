@@ -6,7 +6,7 @@ import {
   type SessionCombinationRespType,
   type SessionsCombType,
 } from '@aglint/shared-types';
-import { dayjsLocal, ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
+import { dayjsLocal, ScheduleUtils } from '@aglint/shared-utils';
 import { nanoid } from 'nanoid';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
@@ -65,12 +65,14 @@ const fetch_details_from_db = async (
 ) => {
   const supabaseAdmin = getSupabaseServer();
 
-  const [filter_json_data] = supabaseWrap(
+  const filter_json_data = (
     await supabaseAdmin
       .from('interview_filter_json')
-      .select('*, applications(public_jobs(id,recruiter_id))')
-      .eq('id', req_body.filter_json_id),
-  );
+      .select('*, applications!inner(public_jobs!inner(id,recruiter_id))')
+      .eq('id', req_body.filter_json_id)
+      .single()
+      .throwOnError()
+  ).data;
   if (!filter_json_data) throw new Error('invalid filter_json_id');
   let start_date_str = filter_json_data.filter_json.start_date;
   let end_date_str = filter_json_data.filter_json.end_date;

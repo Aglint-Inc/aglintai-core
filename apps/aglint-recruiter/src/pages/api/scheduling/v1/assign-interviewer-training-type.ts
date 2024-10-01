@@ -1,4 +1,4 @@
-import { supabaseWrap } from '@aglint/shared-utils';
+import { CApiError, supabaseWrap } from '@aglint/shared-utils';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
@@ -14,23 +14,30 @@ const assignInterviewerTraining = async (req_body: BodyParams) => {
   const { training_ints } = req_body as BodyParams;
   const supabaseAdmin = getSupabaseServer();
 
-  const module_relations = supabaseWrap(
+  const module_relations = (
     await supabaseAdmin
       .from('module_relations_view')
       .select()
       .in(
         'id',
         training_ints.map((int) => int.interviewer_module_relation_id),
-      ),
-  );
+      )
+      .throwOnError()
+  ).data;
+  if (!module_relations) {
+    throw new CApiError('SERVER_ERROR', 'No module relations found');
+  }
 
   const promises = training_ints.map(async (training_int) => {
     const int_module_data = module_relations.find(
       (reln) => reln.id === training_int.interviewer_module_relation_id,
     );
-    const required_shadows = int_module_data.number_of_shadow;
+    if (!int_module_data) {
+      throw new CApiError('SERVER_ERROR', 'No module relations found');
+    }
+    const required_shadows = int_module_data.number_of_shadow ?? 0;
 
-    const shadow_meetings_cnt = int_module_data.shadow_completed_count;
+    const shadow_meetings_cnt = int_module_data.shadow_completed_count ?? 0;
     let is_shadow = true;
     if (shadow_meetings_cnt < required_shadows) {
       is_shadow = true;

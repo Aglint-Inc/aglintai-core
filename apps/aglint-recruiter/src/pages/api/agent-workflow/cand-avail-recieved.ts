@@ -76,7 +76,9 @@ const candAvailRecieved = async (req_body: BodyParams) => {
     },
     return_empty_slots_err: true,
   });
-
+  if (!cand_schedule.db_details) {
+    throw new CApiError('SERVER_ERROR', 'No db details found');
+  }
   await cand_schedule.fetchDetails({
     params: {
       session_ids,
@@ -104,7 +106,7 @@ const candAvailRecieved = async (req_body: BodyParams) => {
       {
         avail_plans: cand_picked_slots ?? [],
         cand_avail_rec: avail_record,
-        cand_schedule: cand_schedule,
+        cand_schedule_db: cand_schedule.db_details,
         reqProgressLogger,
         request_id,
       },

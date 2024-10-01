@@ -2619,7 +2619,7 @@ export type Database = {
           jd_changed?: boolean | null
           jd_json?: Json | null
           job_criteria?: Json | null
-          job_title: string
+          job_title?: string
           job_type?: Database["public"]["Enums"]["public_job_type"] | null
           location_id?: number | null
           new_screening_setting?: Json
@@ -2872,7 +2872,7 @@ export type Database = {
           id?: string
           industry?: string | null
           logo?: string | null
-          name: string
+          name?: string
           phone_number?: string | null
           primary_admin: string
           scheduling_reason?: Json | null

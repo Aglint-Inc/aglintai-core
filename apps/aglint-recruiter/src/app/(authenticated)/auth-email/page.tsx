@@ -45,7 +45,7 @@ const Google = () => {
           };
 
           await mutateAsync({
-            email_auth: authEmailDetails,
+            schedule_auth: authEmailDetails,
             user_id: recruiter_user.user_id,
           });
 

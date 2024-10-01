@@ -1,10 +1,10 @@
 /* eslint-disable security/detect-object-injection */
 import { type CandReqAvailableSlots } from '@aglint/shared-types';
 import {
+  CApiError,
   ScheduleUtils,
   scheduling_options_schema,
   schema_candidate_req_availabale_slots,
-  supabaseWrap,
 } from '@aglint/shared-utils';
 import { type z } from 'zod';
 
@@ -40,14 +40,19 @@ const candidateAvailReqSlots = async (
 const fetchDetails = async (payload: CandReqAvailableSlots) => {
   const supabaseAdmin = getSupabaseServer();
 
-  const [avail_req_details] = supabaseWrap(
+  const avail_req_details = (
     await supabaseAdmin
       .from('candidate_request_availability')
       .select(
-        '*,request_session_relation(interview_session(id,break_duration,session_duration))',
+        '*,request_session_relation!inner(interview_session!inner(id,break_duration,session_duration))',
       )
-      .eq('id', payload.avail_req_id),
-  );
+      .eq('id', payload.avail_req_id)
+      .single()
+      .throwOnError()
+  ).data;
+  if (!avail_req_details) {
+    throw new CApiError('SERVER_ERROR', 'No availability request found');
+  }
   const updated_api_options = scheduling_options_schema.parse({
     options: {
       include_conflicting_slots: {},
@@ -59,6 +64,7 @@ const fetchDetails = async (payload: CandReqAvailableSlots) => {
   updated_api_options.include_conflicting_slots.out_of_working_hrs = false;
   updated_api_options.use_recruiting_blocks =
     avail_req_details.availability.recruiting_block_keywords;
+
   const session_rounds = ScheduleUtils.getSessionRounds(
     avail_req_details.request_session_relation.map((s, idx) => ({
       ...s,
