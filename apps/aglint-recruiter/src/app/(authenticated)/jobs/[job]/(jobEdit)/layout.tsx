@@ -21,8 +21,12 @@ const Layout = ({ children }: PropsWithChildren) => {
   return (
     <JobProvider>
       <FullWidthLayout
-        sidebar={<JobsSideNavV2 />}
-        header={<BreadCrumbs />}
+        sidebar={
+          <div>
+            <BreadCrumbs />
+            <JobsSideNavV2 />
+          </div>
+        }
         sidebarPosition='left'
       >
         <div className='w-[80%] p-4'>{children}</div>

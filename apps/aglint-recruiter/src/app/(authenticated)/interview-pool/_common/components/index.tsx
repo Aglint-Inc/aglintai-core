@@ -7,7 +7,6 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
-import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { LibraryBig } from 'lucide-react';
 import {
   createContext,
@@ -22,17 +21,25 @@ import { Loader } from '@/components/Common/Loader';
 import { useAllDepartments } from '@/queries/departments';
 
 import { InterviewPoolList } from './InterviewPoolList';
-
 const useHeaderPropContext = () => {
   const [searchText, setSearchText] = useState('');
   const [selectedDepartments, setDepartments] = useState<string[]>([]);
   const isFilterApplied = !!selectedDepartments?.length || !!searchText?.length;
+  const [activeTab, setActiveTab] = useState<'active' | 'archived'>('active');
+  const handleTabChange = (value: string) => {
+    if (value === 'active' || value === 'archived') {
+      setActiveTab(value);
+    }
+  };
   return {
     searchText,
     setSearchText,
     selectedDepartments,
     setDepartments,
     isFilterApplied,
+    activeTab,
+    setActiveTab,
+    handleTabChange,
   };
 };
 
@@ -54,8 +61,8 @@ export const useHeaderProp = () => {
 };
 
 export default function InterviewTypesPage() {
-  const { searchText, selectedDepartments, isFilterApplied } = useHeaderProp();
-  const [activeTab, setActiveTab] = useState<'active' | 'archived'>('active');
+  const { searchText, selectedDepartments, isFilterApplied, activeTab } =
+    useHeaderProp();
 
   const { data: allModules, isLoading: modulesLoading } =
     useAllInterviewModules();
@@ -67,12 +74,6 @@ export default function InterviewTypesPage() {
         <Loader />
       </div>
     );
-
-  const handleTabChange = (value: string) => {
-    if (value === 'active' || value === 'archived') {
-      setActiveTab(value);
-    }
-  };
 
   //filtering
 
@@ -102,28 +103,6 @@ export default function InterviewTypesPage() {
   return (
     <div className='p-4'>
       <div>
-        <div className='flex flex-row justify-between'>
-          <Tabs
-            value={activeTab}
-            onValueChange={handleTabChange}
-            className='mb-6'
-          >
-            <TabsList className='rounded-lg bg-gray-100 p-1'>
-              <TabsTrigger
-                value='active'
-                className='data-[state=active]:bg-white data-[state=active]:shadow'
-              >
-                Active
-              </TabsTrigger>
-              <TabsTrigger
-                value='archived'
-                className='data-[state=active]:bg-white data-[state=active]:shadow'
-              >
-                Archived
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
         <Card className='w-full'>
           <CardContent className='p-0'>
             <Table>

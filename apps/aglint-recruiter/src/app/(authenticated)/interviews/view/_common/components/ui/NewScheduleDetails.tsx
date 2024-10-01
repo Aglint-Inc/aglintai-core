@@ -1,4 +1,6 @@
 'use client';
+import { Clock, Hourglass } from 'lucide-react';
+
 import UITypography from '@/components/Common/UITypography';
 
 type MeetingDetails = {
@@ -59,9 +61,9 @@ export function NewScheduleDetail({
   textInterviewer = 'Interviewers',
 }: MeetingDetails) {
   return (
-    <div className='flex w-full flex-col gap-6 rounded-lg border bg-white p-6'>
+    <div className='flex w-full flex-col gap-6 rounded-lg border-none bg-white '>
       <div className='flex items-start justify-between'>
-        <div className='flex items-start gap-6'>
+        <div className='flex items-start gap-4'>
           {isDateCardVisible && (
             <div className='flex h-20 w-20 flex-col items-center justify-center rounded-md bg-neutral-100'>
               <UITypography
@@ -74,7 +76,7 @@ export function NewScheduleDetail({
               <UITypography
                 variant='p'
                 type='large'
-                className='text-2xl font-bold text-neutral-800'
+                className='text-2xl font-medium text-neutral-800'
               >
                 {textDate}
               </UITypography>
@@ -89,26 +91,28 @@ export function NewScheduleDetail({
           )}
           <div className='flex flex-col gap-2'>
             <div className='flex items-center gap-2'>
-              <div>{slotPanelIcon}</div>
+              <div className='hidden'>{slotPanelIcon}</div>
               <UITypography
-                variant='h2'
+                variant='p'
                 type='medium'
-                className='text-xl font-semibold'
+                className='text-md font-medium'
               >
                 {textPanelName}
               </UITypography>
               <div>{slotStatusBadge}</div>
             </div>
-            <div className='flex items-center gap-4 text-sm text-neutral-600'>
+            <div className='flex items-center gap-3 text-sm text-neutral-600'>
               {isTimingVisible && (
                 <div className='flex items-center gap-1'>
-                  <div>{slotMeetingIcon}</div>
+                  <div className='hidden'>{slotMeetingIcon}</div>
+                  <Clock className='w-4 h-4'/>
                   <UITypography variant='p' type='small'>
                     {textTime}
                   </UITypography>
                 </div>
               )}
-              <UITypography variant='p' type='small'>
+              <UITypography variant='p' type='small' className='flex flex-row gap-1 items-center'>
+                <Hourglass className='w-4 h-4'/>
                 {textDuration}
               </UITypography>
             </div>
@@ -118,14 +122,14 @@ export function NewScheduleDetail({
                 type='small'
                 className='text-neutral-600'
               >
-                {textMeetingPlatform}
+                {textMeetingPlatform}:
               </UITypography>
               {isMeetingLinkVisible && (
                 <div className='flex items-center gap-1'>
                   <UITypography
                     variant='p'
                     type='small'
-                    className='text-primary'
+                    className='text-primary hidden'
                   >
                     {textMeetingLink}
                   </UITypography>
@@ -138,11 +142,11 @@ export function NewScheduleDetail({
       </div>
       <div className='flex h-full w-full items-stretch justify-start gap-12'>
         <div className='flex h-full w-2/3 flex-col gap-6'>
-          <div className='flex flex-col gap-4'>
+          <div className='flex flex-col gap-2'>
             <UITypography
               variant='h3'
               type='medium'
-              className='text-lg font-semibold'
+              className='text-sm text-muted-foreground'
             >
               Candidate
             </UITypography>
@@ -150,18 +154,18 @@ export function NewScheduleDetail({
             {isCandidateButtonVisible && <div>{slotCandidateButton}</div>}
           </div>
           <div className='flex flex-col gap-4'>
-            <div className='flex items-center gap-2'>
+            <div className='flex items-center gap-1'>
               <UITypography
                 variant='h3'
                 type='medium'
-                className='text-lg font-semibold'
+                className='text-sm text-muted-foreground'
               >
                 {textInterviewer}
               </UITypography>
               <UITypography
                 variant='p'
                 type='small'
-                className='text-sm text-neutral-600'
+                className='text-sm text-muted-foreground'
               >
                 {textInterviewerCount}
               </UITypography>
@@ -175,7 +179,7 @@ export function NewScheduleDetail({
             <UITypography
               variant='h3'
               type='medium'
-              className='text-lg font-semibold'
+              className='text-sm text-muted-foreground'
             >
               Interview Type
             </UITypography>
@@ -185,7 +189,7 @@ export function NewScheduleDetail({
             <UITypography
               variant='h3'
               type='medium'
-              className='text-lg font-semibold'
+              className='text-sm text-muted-foreground'
             >
               Organizer & Hiring Team
             </UITypography>
