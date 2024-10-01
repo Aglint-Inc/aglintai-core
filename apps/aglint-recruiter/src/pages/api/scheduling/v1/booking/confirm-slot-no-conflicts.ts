@@ -8,9 +8,9 @@ import {
 import { type z } from 'zod';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
-import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { confirmSlotNoConflict } from '@/services/CandidateScheduleV2/utils/bookingUtils/confirmSlotNoConflict';
-import { fetchDBScheduleDetails } from '@/services/CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchDBScheduleDetails';
+import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
+import { confirmSlotNoConflict } from '@/services/CandidateSchedule/utils/bookingUtils/confirmSlotNoConflict';
+import { fetchDBScheduleDetails } from '@/services/CandidateSchedule/utils/bookingUtils/dbFetch/fetchDBScheduleDetails';
 
 const confirmSlotNoConflicts = async (
   parsed: z.infer<typeof SchemaConfirmSlotNoConflict>,
@@ -31,7 +31,7 @@ const confirmSlotNoConflicts = async (
   const selected_date = dayjsLocal(parsed.selected_slot.slot_start_time)
     .tz(parsed.cand_tz)
     .format('DD/MM/YYYY');
-  const cand_schedule = new CandidatesSchedulingV2(zod_options);
+  const cand_schedule = new CandidatesScheduling(zod_options);
 
   await cand_schedule.fetchDetails({
     params: {

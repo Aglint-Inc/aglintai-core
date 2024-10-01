@@ -2,7 +2,7 @@ import { type DateRangePlansType } from '@aglint/shared-types';
 
 import type { RequestResponse } from '@/queries/requests/types';
 import type { Request as RequestType } from '@/queries/requests/types';
-import { type CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { type CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 
 export type barChartDataType = {
   name: string;
@@ -43,5 +43,5 @@ export type SectionRequests = {
 
 export type ApiResponseFindAvailability = {
   slots: DateRangePlansType[];
-  availabilities: CandidatesSchedulingV2['calendar_events'];
+  availabilities: CandidatesScheduling['calendar_events'];
 };

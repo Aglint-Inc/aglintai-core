@@ -5,7 +5,7 @@ import { filterSchedulingOptionsArray } from '@request/components/SelfScheduling
 import { type SelfSchedulingFlow } from '@request/components/SelfSchedulingDrawer/_common/store/store';
 
 // import { filterSchedulingOptionsArray } from '@/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/_common/components/BodyDrawer/ScheduleFilter/utils';
-import { CandidatesSchedulingV2 } from '../CandidateScheduleV2/CandidatesSchedulingV2';
+import { CandidatesScheduling } from '../CandidateSchedule/CandidatesScheduling';
 import { extractPreferredInterviewers } from './textTransforms/extractPreferredInterviewers';
 
 export const findPlanCombs = async ({
@@ -25,7 +25,7 @@ export const findPlanCombs = async ({
   schedule_filters: SelfSchedulingFlow['filters'];
   agent_instruction: string;
 }) => {
-  const cand_schedule = new CandidatesSchedulingV2({
+  const cand_schedule = new CandidatesScheduling({
     include_conflicting_slots: {
       out_of_office: false,
       out_of_working_hrs: true,

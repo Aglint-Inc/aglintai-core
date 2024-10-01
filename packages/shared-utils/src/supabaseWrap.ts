@@ -1,3 +1,5 @@
+import { CApiError } from './customApiError';
+
 export const supabaseWrap = <T extends unknown, U extends unknown>(
   {
     data,
@@ -8,16 +10,15 @@ export const supabaseWrap = <T extends unknown, U extends unknown>(
   },
   handle_empty_records = true
 ) => {
-  // eslint-disable-next-line @typescript-eslint/no-throw-literal
   if (error) {
-    let err = new Error(); // for including stack trace
-
-    err.message = JSON.stringify(error);
+    let err = new CApiError('CLIENT', (error as any).message, error as any); // for including stack trace
     throw err;
   }
-  if (handle_empty_records && Array.isArray(data)) {
-    const recs = data as any;
-    if (recs.length === 0) throw new Error('No records found');
+  if (handle_empty_records) {
+    if (data === null || (Array.isArray(data) && data.length === 0)) {
+      throw new CApiError('SUPABASE_ERROR', 'No records found');
+    }
   }
-  return data;
+
+  return data as NonNullable<T>;
 };

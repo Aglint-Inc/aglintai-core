@@ -45,7 +45,7 @@ import {
   isTimeChunksOverLapps,
 } from './utils/time_range_utils';
 
-export class CandidatesSchedulingV2 {
+export class CandidatesScheduling {
   public db_details: ScheduleApiDetails | null;
   private api_options: APIOptions;
   public intervs_details_map: IntervsWorkHrsEventMapType;
