@@ -1,14 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@components/ui/breadcrumb';
 import { Button } from '@components/ui/button';
 import {
   Card,
@@ -27,14 +19,11 @@ import { useCallback, useState } from 'react';
 import { useTenant } from '@/company/hooks';
 import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
 import { Loader } from '@/components/Common/Loader';
-import { UIPageLayout } from '@/components/Common/UIPageLayout';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import { emailTemplateCopy } from '@/types/companyEmailTypes';
-import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
-import { capitalize } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 
 const templates_order: DatabaseEnums['email_slack_types'][] = [
@@ -50,41 +39,12 @@ export const JobEmailTemplatesDashboard = () => {
       {isFetching ? (
         <Loader />
       ) : (
-        <UIPageLayout
-          slotTopbarLeft={<JobEmailTemplatesDashboardBreadCrumbs />}
-          slotTopbarRight={<Settings />}
-          slotSaving={<></>}
-          slotBody={<JobEmailTemplates setSaving={setSaving} />}
-        />
+        <>
+          <Settings />
+          <JobEmailTemplates setSaving={setSaving} />
+        </>
       )}
     </div>
-  );
-};
-
-const JobEmailTemplatesDashboardBreadCrumbs = () => {
-  const { push } = useRouterPro();
-  const { job } = useJob();
-
-  return (
-    <Breadcrumb>
-      <BreadcrumbList>
-        <BreadcrumbItem>
-          <BreadcrumbLink href='#' onClick={() => push(ROUTES['/jobs']())}>
-            Jobs
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbLink href='#' onClick={() => push(`/jobs/${job?.id}`)}>
-            {capitalize(job?.job_title ?? 'Job')}
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbPage>Email Templates</BreadcrumbPage>
-        </BreadcrumbItem>
-      </BreadcrumbList>
-    </Breadcrumb>
   );
 };
 
