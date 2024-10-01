@@ -3,14 +3,14 @@ import { type APIScheduleDebreif } from '@aglint/shared-types';
 import { CApiError } from '@aglint/shared-utils';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
-import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { bookRecruiterSelectedDebreif } from '@/services/CandidateScheduleV2/utils/bookingUtils/bookRecruiterSelectedDebreif';
-import { fetchCandDetailsForDebreifBooking } from '@/services/CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchCandDetailsForDebreifBooking';
+import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
+import { bookRecruiterSelectedDebreif } from '@/services/CandidateSchedule/utils/bookingUtils/bookRecruiterSelectedDebreif';
+import { fetchCandDetailsForDebreifBooking } from '@/services/CandidateSchedule/utils/bookingUtils/dbFetch/fetchCandDetailsForDebreifBooking';
 
 const scheduleDebrief = async (req_body: APIScheduleDebreif) => {
   const body = req_body;
   const fetched_details = await fetchCandDetailsForDebreifBooking(body);
-  const cand_schedule = new CandidatesSchedulingV2(fetched_details.api_options);
+  const cand_schedule = new CandidatesScheduling(fetched_details.api_options);
   await cand_schedule.fetchDetails({
     params: {
       req_user_tz: body.user_tz,

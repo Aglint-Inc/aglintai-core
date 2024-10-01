@@ -6,8 +6,8 @@ import {
 import { dayjsLocal } from '@aglint/shared-utils';
 import { type ApiResponseFindAvailability } from '@requests/types';
 
-import { createCombsForMultiDaySlots } from '@/services/CandidateScheduleV2/utils/createCombsForMultiDaySlots';
-import { compareTimes } from '@/services/CandidateScheduleV2/utils/time_range_utils';
+import { createCombsForMultiDaySlots } from '@/services/CandidateSchedule/utils/createCombsForMultiDaySlots';
+import { compareTimes } from '@/services/CandidateSchedule/utils/time_range_utils';
 
 import { type SelfSchedulingFlow } from '../../../store/store';
 

@@ -1,8 +1,8 @@
 import { dayjsLocal } from '@aglint/shared-utils';
 import { z } from 'zod';
 
-import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { fetchCandidateAvailability } from '@/services/CandidateScheduleV2/utils/fetchCandidateAvailability';
+import { CandidatesScheduling } from '@/services/CandidateScheduleV2/CandidatesScheduling';
+import { fetchCandidateAvailability } from '@/services/CandidateSchedule/utils/fetchCandidateAvailability';
 
 import { type PrivateProcedure, privateProcedure } from '../../trpc';
 
@@ -21,7 +21,7 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
     end_date_str,
     recruiter_id,
   } = await fetchCandidateAvailability(availability_id);
-  const cand_schedule = new CandidatesSchedulingV2(api_options);
+  const cand_schedule = new CandidatesScheduling(api_options);
   await cand_schedule.fetchDetails({
     params: {
       company_id: recruiter_id,

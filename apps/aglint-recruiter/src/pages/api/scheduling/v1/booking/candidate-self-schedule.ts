@@ -14,9 +14,9 @@ import {
 import { type z } from 'zod';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
-import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { bookCandidateSelectedOption } from '@/services/CandidateScheduleV2/utils/bookingUtils/bookCandidateSelectedOption';
-import { fetchDBScheduleDetails } from '@/services/CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchDBScheduleDetails';
+import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
+import { bookCandidateSelectedOption } from '@/services/CandidateSchedule/utils/bookingUtils/bookCandidateSelectedOption';
+import { fetchDBScheduleDetails } from '@/services/CandidateSchedule/utils/bookingUtils/dbFetch/fetchDBScheduleDetails';
 
 const candidateSelfSchedule = async (
   parsed: z.infer<typeof SchemaCandidateDirectBooking>,
@@ -39,7 +39,7 @@ const candidateSelfSchedule = async (
   zod_options.include_conflicting_slots.show_soft_conflicts = true;
   zod_options.include_conflicting_slots.out_of_working_hrs = true;
 
-  const cand_schedule = new CandidatesSchedulingV2(zod_options);
+  const cand_schedule = new CandidatesScheduling(zod_options);
 
   await cand_schedule.fetchDetails({
     params: {
