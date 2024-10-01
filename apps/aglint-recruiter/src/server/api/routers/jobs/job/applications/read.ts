@@ -150,13 +150,13 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
 
   const { data, count } = await query.throwOnError();
 
-  const safeData = data.map((data, i) => ({
+  const safeData = (data ?? []).map((data, i) => ({
     ...data,
     cursor: cursor + i,
   }));
 
   const nextCursor =
-    cursor < count && safeData[safeData.length - 1]
+    cursor < (count ?? 0) && safeData[safeData.length - 1]
       ? safeData[safeData.length - 1].cursor + 1
       : null;
 

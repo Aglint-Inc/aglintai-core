@@ -23,7 +23,8 @@ export const tourQuery = {
   tours: (recruiter_relation_id?: TourQuery['recruiter_relation_id']) =>
     queryOptions({
       queryKey: [...tourQuery.all().queryKey],
-      queryFn: () => getTours({ recruiter_relation_id }),
+      queryFn: () =>
+        getTours({ recruiter_relation_id: recruiter_relation_id! }),
       enabled: !!recruiter_relation_id,
     }),
 };
@@ -45,8 +46,8 @@ export const useCreateTourLog = () => {
   return useMutation({
     mutationFn: insertNewTourLog,
     onMutate: (variables) => {
-      const oldTours = queryClient.getQueryData(queryKey);
-      const newTours = [...oldTours, variables.type];
+      const oldTours = queryClient.getQueryData(queryKey)!;
+      const newTours = [...oldTours, variables.type!];
       queryClient.setQueryData(queryKey, newTours);
     },
   });

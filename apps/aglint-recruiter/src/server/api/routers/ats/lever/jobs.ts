@@ -12,13 +12,15 @@ export const leverJobsMutation = async ({
 }: ATSProcedure<typeof schema>) => {
   const adminDb = createPublicClient();
   const jobs = (
-    await adminDb
-      .from('public_jobs')
-      .select('id')
-      .eq('recruiter_id', input.recruiter_id)
-      .eq('posted_by', 'Lever')
-      .throwOnError()
-  ).data.map(({ id }) => id);
+    (
+      await adminDb
+        .from('public_jobs')
+        .select('id')
+        .eq('recruiter_id', input.recruiter_id)
+        .eq('posted_by', 'Lever')
+        .throwOnError()
+    ).data ?? []
+  ).map(({ id }) => id);
   const promises = jobs.map((job_id) =>
     fetch(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/lever/candidateSync`, {
       method: 'POST',
