@@ -63,6 +63,9 @@ export class CandidatesSchedulingV2 {
         ...(_api_options?.include_conflicting_slots ?? {}),
       },
     });
+    if (!parsed_api_options) {
+      throw new CApiError('CLIENT', 'invalid api options');
+    }
     this.api_options = { ...parsed_api_options };
     this.intervs_details_map = new Map();
   }
@@ -180,6 +183,9 @@ export class CandidatesSchedulingV2 {
   ) => {
     if (!this.db_details) {
       throw new CApiError('SERVER_ERROR', 'DB details not set');
+    }
+    if (!cand_selected_slots) {
+      throw new CApiError('CLIENT', 'Invalid selected');
     }
     const session_rounds = this.getSessionRounds();
     const ints_combs_for_each_round = calcIntsCombsForEachSessionRound(

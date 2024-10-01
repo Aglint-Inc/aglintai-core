@@ -35,7 +35,7 @@ export type APIFindAltenativeTimeSlot = z.infer<
 >;
 
 export type APICandScheduleMailThankYou = {
-  availability_request_id?: string;
+  availability_request_id: string | null;
   cand_tz: string;
   session_ids: string[];
   application_id: string;
@@ -45,7 +45,7 @@ export type APICandScheduleMailThankYou = {
 };
 type t = typeof schema_find_availability_payload;
 
-export type APIOptions = z.infer<typeof scheduling_options_schema>;
+export type APIOptions = NonNullable<z.infer<typeof scheduling_options_schema>>;
 
 export type APIFindAvailability = z.infer<
   typeof schema_find_availability_payload

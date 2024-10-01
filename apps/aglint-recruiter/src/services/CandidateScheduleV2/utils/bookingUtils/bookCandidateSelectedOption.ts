@@ -8,6 +8,7 @@ import {
   type CandidateDirectBookingType,
   type PlanCombinationRespType,
 } from '@aglint/shared-types';
+import { CApiError } from '@aglint/shared-utils';
 import axios from 'axios';
 
 import { type CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
@@ -26,6 +27,9 @@ export const bookCandidateSelectedOption = async (
   verified_slot: PlanCombinationRespType,
   fetched_cand_details: FetchDBScheduleDetails,
 ) => {
+  if (fetched_cand_details.filter_json_data.request_id === null) {
+    throw new CApiError('CLIENT', 'Request ID not found');
+  }
   const db_details: ScheduleDBDetails = {
     application: {
       id: fetched_cand_details.application_id,

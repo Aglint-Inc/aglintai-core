@@ -1,6 +1,6 @@
 import { type PlanCombinationRespType } from '@aglint/shared-types';
 import { type SchemaCandidateDirectBooking } from '@aglint/shared-types/src/aglintApi/zodSchemas/candidate-self-schedule';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { CApiError } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { type z } from 'zod';
 
@@ -11,26 +11,45 @@ export const fetchDBScheduleDetails = async (
 ) => {
   const supabaseAdmin = getSupabaseServer();
 
-  const [filter_json_data] = supabaseWrap(
+  const filter_json_data = (
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
         '*,applications(id,candidate_id,candidates(email,first_name,last_name,recruiter(id,name)),public_jobs(job_title))',
       )
-      .eq('id', parsed_body.filter_id),
-  );
-  const email_templates = supabaseWrap(
+      .eq('id', parsed_body.filter_id)
+      .single()
+      .throwOnError()
+  ).data;
+  if (!filter_json_data) {
+    throw new CApiError('CLIENT', 'Filter does not exist');
+  }
+  if (!filter_json_data.applications) {
+    throw new CApiError('CLIENT', 'application not found');
+  }
+  if (!filter_json_data.applications.candidates) {
+    throw new CApiError('CLIENT', 'Candidate not found');
+  }
+  if (!filter_json_data.applications.candidates.recruiter) {
+    throw new CApiError('CLIENT', 'Recruiter not found');
+  }
+  if (!filter_json_data.applications.public_jobs) {
+    throw new CApiError('CLIENT', 'Job not found');
+  }
+  if (filter_json_data.request_id === null) {
+    throw new CApiError('CLIENT', 'request id not found');
+  }
+  const email_templates = (
     await supabaseAdmin
       .from('company_email_template')
       .select()
-      .eq(
-        'recruiter_id',
-        filter_json_data.applications.candidates.recruiter.id,
-      ),
-  );
-  if (!filter_json_data) {
-    throw new Error('invalid filter id');
+      .eq('recruiter_id', filter_json_data.applications.candidates.recruiter.id)
+      .throwOnError()
+  ).data;
+  if (!email_templates) {
+    throw new CApiError('CLIENT', 'Email templates not found');
   }
+
   const sorted_plan = parsed_body.selected_plan.sort(
     (p1, p2) =>
       dayjsLocal(p1.start_time).unix() - dayjsLocal(p2.start_time).unix(),

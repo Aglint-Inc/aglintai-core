@@ -1,5 +1,5 @@
 import { type APIConfirmRecruiterSelectedOption } from '@aglint/shared-types';
-import { scheduling_options_schema, supabaseWrap } from '@aglint/shared-utils';
+import { CApiError, scheduling_options_schema } from '@aglint/shared-utils';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 export const fetchCandAvailForBooking = async (
@@ -7,16 +7,24 @@ export const fetchCandAvailForBooking = async (
 ) => {
   const supabaseAdmin = getSupabaseServer();
 
-  const [avail_details] = supabaseWrap(
+  const avail_details = (
     await supabaseAdmin
       .from('candidate_request_availability')
       .select(
         'user_timezone,slots,availability,date_range,recruiter_id,recruiter(id,name),applications(id,candidates(first_name,last_name,timezone),public_jobs(job_title)), request_session_relation(session_id)',
       )
-      .eq('id', req_body.availability_req_id),
-  );
+      .eq('id', req_body.availability_req_id)
+      .single()
+      .throwOnError()
+  ).data;
   if (!avail_details) {
     throw new Error('Availabiluty does not exist');
+  }
+  if (!avail_details.applications) {
+    throw new CApiError('CLIENT', 'application');
+  }
+  if (!avail_details.applications.candidates) {
+    throw new CApiError('CLIENT', 'Candidate not found');
   }
   const zod_options = scheduling_options_schema.parse({
     include_conflicting_slots: {
