@@ -1,4 +1,4 @@
-import { type DB } from '@aglint/shared-types';
+import type { DatabaseTableInsert, DB } from '@aglint/shared-types';
 import {
   type PostgrestError,
   type SupabaseClient,
@@ -8,15 +8,16 @@ export type Supabase = SupabaseClient<DB>;
 
 export type ManualUploadApi = {
   request: {
-    [UploadApiFormData.PARAMS]: {
-      first_name: string;
-      last_name: string;
-      email: string;
-      phone: string;
-      linkedin: string;
-      recruiter_id: string;
-      job_id: string;
-    };
+    [UploadApiFormData.PARAMS]: Pick<
+      DatabaseTableInsert['candidates'],
+      | 'email'
+      | 'first_name'
+      | 'last_name'
+      | 'phone'
+      | 'linkedin'
+      | 'recruiter_id'
+    > &
+      Pick<DatabaseTableInsert['applications'], 'job_id'>;
     [UploadApiFormData.FILES]: FormData;
   };
   response: {

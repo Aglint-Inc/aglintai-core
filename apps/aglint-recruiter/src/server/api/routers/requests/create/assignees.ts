@@ -34,16 +34,16 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
     ascending: false,
   });
   const { data, count } = await query.throwOnError();
-  const safeData = data
+  const safeData = (data ?? [])
     .flatMap(({ recruiter_user }) => recruiter_user)
-    .filter(Boolean)
+    .filter((recruiter_user) => recruiter_user !== null)
     .map(({ first_name, last_name, user_id }, i) => ({
       id: user_id,
       label: `${first_name ?? ''} ${last_name ?? ''}`,
       cursor: cursor + i,
     }));
   const nextCursor =
-    cursor < count && safeData[safeData.length - 1]
+    cursor < (count ?? 0) && safeData[safeData.length - 1]
       ? safeData[safeData.length - 1].cursor + 1
       : null;
   return {
