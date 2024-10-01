@@ -100,7 +100,7 @@ export const JobProfileScoreDashboard = () => {
 const ProfileScorePage = () => {
   return (
     <>
-      <div className='w-full'>
+      <div className='w-full p-4'>
         <h2 className='mb-2 text-xl font-bold'>Profile Scoring</h2>
         <p className='mb-4 text-sm text-gray-600'>
           Profile scoring helps evaluate candidates objectively, assigning

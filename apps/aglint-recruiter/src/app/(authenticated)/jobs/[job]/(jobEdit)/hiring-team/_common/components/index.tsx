@@ -87,7 +87,7 @@ const JobEdit = () => {
   }, [saving]);
 
   return (
-    <div className='w-full'>
+    <div className='w-full p-4'>
       <div className='flex flex-row justify-between'>
         <div className='flex flex-col gap-2'>
           <h2 className='mb-2 text-xl font-bold'>Hiring Team</h2>

@@ -138,7 +138,7 @@ const JobEdit = () => {
   }, [saving]);
 
   return (
-    <div className='w-full'>
+    <div className='w-full p-4'>
       <div className='flex flex-row justify-between'>
         <div>
           <p className='mb-4 text-sm text-gray-600'>

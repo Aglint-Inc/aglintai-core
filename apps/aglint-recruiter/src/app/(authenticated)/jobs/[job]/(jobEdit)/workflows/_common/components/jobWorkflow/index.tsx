@@ -27,7 +27,7 @@ export default function EnhancedAutomationPage() {
   }, [status, data]);
 
   return (
-    <div className='container mx-auto'>
+    <div className='w-full p-4'>
       <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
         <div className='md:col-span-2'>
           <Main />

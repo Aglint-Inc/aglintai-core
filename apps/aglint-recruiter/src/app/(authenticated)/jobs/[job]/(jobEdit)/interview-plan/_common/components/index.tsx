@@ -106,7 +106,7 @@ const InterviewPlanPage = () => {
 
   return (
     <>
-      <div className='w-9/12 pl-12'>
+      <div className='w-full p-4'>
         <div className='flex flex-row justify-between'>
           <div className='flex flex-col gap-1'>
             <h2 className='text-lg font-medium'>Interview Plan</h2>
@@ -117,7 +117,7 @@ const InterviewPlanPage = () => {
           </div>
         </div>
 
-        <div className='my-4 mb-10 max-w-2xl space-y-4'>
+        <div className='mb-10 max-w-2xl space-y-4'>
           {data?.length ? (
             data.map((plan) => (
               <InterviewPlan

@@ -20,7 +20,11 @@ import { capitalizeSentence } from '@/utils/text/textUtils';
 const Layout = ({ children }: PropsWithChildren) => {
   return (
     <JobProvider>
-      <FullWidthLayout sidebar={<JobsSideNavV2 />} header={<BreadCrumbs />}>
+      <FullWidthLayout
+        sidebar={<JobsSideNavV2 />}
+        header={<BreadCrumbs />}
+        sidebarPosition='left'
+      >
         {children}
       </FullWidthLayout>
     </JobProvider>
