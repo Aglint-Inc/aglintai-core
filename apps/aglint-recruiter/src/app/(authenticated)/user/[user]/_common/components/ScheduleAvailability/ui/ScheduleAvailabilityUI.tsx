@@ -31,7 +31,7 @@ export const ScheduleAvailabilityUI = ({
   return (
     <>
       <SectionSubCard title='Time Zone'>
-        <UITypography variant='p' type='small'>
+        <UITypography variant='p' type='small' className=''>
           {timeZone || ' - '}
         </UITypography>
       </SectionSubCard>

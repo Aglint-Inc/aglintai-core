@@ -59,23 +59,64 @@ const List = ({
   );
   const date = `${dayjsLocal(interview.start_time).format('YYYY-MM-DD')} at ${dayjsLocal(interview.start_time).format('hh:mm A')}`;
   return (
-    <div className='flex items-center justify-between rounded-lg bg-gray-50 p-4'>
-      <div>
-        <h3 className='font-medium'>{name}</h3>
-        <p className='text-sm text-muted-foreground'>{interview.job}</p>
-        <p className='text-sm text-muted-foreground'>{date}</p>
+    <>
+      <div className='flex items-center justify-between rounded-lg bg-gray-50 p-4'>
+        <div>
+          <h3 className='font-medium'>{name}</h3>
+          <p className='text-sm text-muted-foreground'>{interview.job}</p>
+          <p className='text-sm text-muted-foreground'>{date}</p>
+        </div>
+        <UIButton
+          onClick={() => {
+            router.push(
+              `/interviews/view?meeting_id=${interview.id}&tab=candidate_details`,
+            );
+          }}
+          variant='outline'
+          size='sm'
+        >
+          View Details
+        </UIButton>
       </div>
-      <UIButton
-        onClick={() => {
-          router.push(
-            `/interviews/view?meeting_id=${interview.id}&tab=candidate_details`,
-          );
-        }}
-        variant='outline'
-        size='sm'
-      >
-        View Details
-      </UIButton>
-    </div>
+{/* Alternate card */}
+      <div className='flex items-center gap-4 rounded-lg'>
+        <div className='flex h-[94px] w-[90px] flex-col items-center justify-center rounded-sm bg-gray-50'>
+          <div className='text-sm'>
+            {dayjsLocal(interview.start_time).format('MMMM')}
+          </div>
+          <div className='text-2xl font-semibold text-black'>
+            {dayjsLocal(interview.start_time).format('DD')}
+          </div>
+          <div className='text-sm'>
+            {dayjsLocal(interview.start_time).format('dddd')}
+          </div>
+        </div>
+        <div className='flex flex-col items-start gap-2'>
+          <h3 className='text-md font-medium'>
+            {getFullName(
+              interview?.candidate?.first_name || '',
+              interview?.candidate?.last_name || '',
+            )}{' '}
+            for {interview.job}
+          </h3>
+          <p className='text-sm text-muted-foreground'>
+            {' '}
+            {dayjsLocal(interview.start_time).format('hh:mm A')} to{' '}
+            {dayjsLocal(interview.end_time).format('hh:mm A')}
+          </p>
+          <UIButton
+            onClick={() => {
+              router.push(
+                `/interviews/view?meeting_id=${interview.id}&tab=candidate_details`,
+              );
+            }}
+            variant='outline'
+            size='sm'
+          >
+            View Details
+          </UIButton>
+        </div>
+      </div>
+    </>
   );
 };
