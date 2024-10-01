@@ -259,7 +259,7 @@ type Procedure<
     >
     ? {
         ctx: TContext & TContextOverrides;
-        input: Required<TypeOf<T>>;
+        input: TypeOf<T>;
       }
     : never
   : U extends ProcedureBuilder<

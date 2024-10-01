@@ -6,13 +6,13 @@ export const schedulesSupabase = (db = supabase) =>
   db
     .from('meeting_details')
     .select(
-      '*,applications(candidates(first_name,last_name)), public_jobs(id,job_title), meeting_interviewers!public_interview_session_meeting_id_fkey(*)',
+      '*,applications!inner(candidates!inner(first_name,last_name)), public_jobs!inner(id,job_title), meeting_interviewers!public_interview_session_meeting_id_fkey(*)',
     );
 
 export type SchedulesSupabase = QueryData<ReturnType<typeof schedulesSupabase>>;
 
 export function transformDataSchedules(inputData: SchedulesSupabase) {
-  const transformedData = {};
+  const transformedData: { [key: string]: SchedulesSupabase[] } = {};
 
   inputData?.forEach((item) => {
     const date = item.start_time?.split('T')[0]; // Extracting date from start_time

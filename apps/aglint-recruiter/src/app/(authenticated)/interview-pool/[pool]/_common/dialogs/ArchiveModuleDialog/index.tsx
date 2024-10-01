@@ -28,6 +28,7 @@ function ArchiveModuleDialog() {
   }, [editModule?.id]);
 
   const fetchMeetings = async () => {
+    if (!editModule?.id) return;
     try {
       const { data } = await supabase
         .from('interview_session')
@@ -36,13 +37,14 @@ function ArchiveModuleDialog() {
         )
         .eq('module_id', editModule.id);
 
-      const connectedJobs: string[] = data
+      const connectedJobs: string[] = (data || [])
         .filter((ses) => !!ses.interview_plan_id)
-        .map((ses) => ses.interview_plan?.public_jobs?.job_title);
+        .map((ses) => ses.interview_plan?.public_jobs?.job_title)
+        .filter((job) => job !== null && job !== undefined);
 
       const uniqueJobs = [...new Set(connectedJobs)];
 
-      const isActiveMeeting = data.some(
+      const isActiveMeeting = (data || []).some(
         (meet) =>
           meet.interview_meeting &&
           (meet.interview_meeting.status === 'confirmed' ||
