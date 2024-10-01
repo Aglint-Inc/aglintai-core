@@ -6467,6 +6467,25 @@ export type Database = {
         }
         Returns: boolean
       }
+      update_user: {
+        Args: {
+          first_name: string
+          last_name: string
+          linked_in: string
+          office_location_id: number
+          employment: string
+          position: string
+          department_id: number
+          phone: string
+          profile_image: string
+          scheduling_settings: Json
+          user_id: string
+          manager_id: string
+          role_id: string
+          recruiter_id: string
+        }
+        Returns: undefined
+      }
       updatequestionorder: {
         Args: {
           start_point: number

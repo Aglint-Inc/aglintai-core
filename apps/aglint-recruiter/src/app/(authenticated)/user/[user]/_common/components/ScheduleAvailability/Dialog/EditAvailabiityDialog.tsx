@@ -5,18 +5,15 @@ import {
 import { toast } from '@components/hooks/use-toast';
 import { ScrollArea } from '@components/ui/scroll-area';
 import cloneDeep from 'lodash/cloneDeep';
-import { useParams } from 'next/navigation';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
+import { useTenantMembers } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { supabase } from '@/utils/supabase/client';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import { api } from '@/trpc/client';
 import { type timeZone as timeZones } from '@/utils/timeZone';
 
-import {
-  type InterviewerDetailType,
-  useInterviewer,
-} from '../../../hooks/useInterviewer';
 import { EditAvailabilityForm } from './ui/EditAvailabilityFormUI';
 
 export const LoadMax = {
@@ -29,15 +26,23 @@ export const LoadMax = {
 type TimeZoneType = (typeof timeZones)[number];
 
 export const EditAvailabiityDialog = ({
-  schedulingSettings,
   setIsEditOpen,
   isEditOpen,
 }: {
   setIsEditOpen: Dispatch<SetStateAction<boolean>>;
   isEditOpen: boolean;
-  schedulingSettings: InterviewerDetailType['scheduling_settings'];
 }) => {
+  const { allMembers } = useTenantMembers();
+  const router = useRouterPro();
+  const user_id = router?.params?.user as string;
+  const member = allMembers.find((mem) => mem.user_id === user_id);
+
+  const schedulingSettings = member.scheduling_settings;
+
   const [isSaving, setIsSaving] = useState(false);
+
+  const { mutateAsync } = api.user.update_user.useMutation();
+  //local state -----------
   const [workingHours, setWorkingHours] = useState<
     SchedulingSettingType['workingHours']
   >([]);
@@ -58,9 +63,6 @@ export const EditAvailabiityDialog = ({
     value: 10,
     max: LoadMax.weeklyHours,
   });
-  const { refetch } = useInterviewer();
-  const param = useParams() as { user: string };
-  const user_id = param.user as string;
 
   const handleDailyValue = (value: number) => {
     setDailyLimit((pre) => ({
@@ -173,19 +175,12 @@ export const EditAvailabiityDialog = ({
           recruitingBlocks: recruitingBlocks,
         },
       } as SchedulingSettingType;
-      await supabase
-        .from('recruiter_user')
-        .update({
-          scheduling_settings: schedulingSettingObj,
-        })
-        .eq('user_id', user_id)
-        .throwOnError();
 
-      await refetch();
+      await mutateAsync({ scheduling_settings: schedulingSettingObj, user_id });
       toast({ title: 'Availability update Successfully' });
       setIsEditOpen(false);
     } catch (e) {
-      //   console.log(e);
+      toast({ title: 'Availability update failed', variant: 'destructive' });
     } finally {
       setIsSaving(false);
     }
