@@ -6,13 +6,20 @@ import { UIButton } from '@/components/Common/UIButton';
 import UISectionCard from '@/components/Common/UISectionCard';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
-import { type InterviewerDetailType } from '../../hooks/useInterviewer';
+import {
+  type InterviewerDetailType,
+  useInterviewer,
+} from '../../hooks/useInterviewer';
 
-export const RecentInterviews = ({
-  interviews,
-}: {
-  interviews: InterviewerDetailType['all_meetings'];
-}) => {
+export const RecentInterviews = () => {
+  const {
+    data: { all_meetings },
+  } = useInterviewer();
+
+  const interviews = all_meetings?.length
+    ? all_meetings.filter((meeting) => meeting.status === 'completed')
+    : [];
+
   return (
     <>
       <UISectionCard title='Recent Interviews' type='compact'>

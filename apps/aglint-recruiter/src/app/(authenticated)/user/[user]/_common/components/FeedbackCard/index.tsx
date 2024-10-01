@@ -3,14 +3,14 @@ import { MessageSquareOff } from 'lucide-react';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import UISectionCard from '@/components/Common/UISectionCard';
 
-import { type InterviewerDetailType } from '../../hooks/useInterviewer';
+import { useInterviewer } from '../../hooks/useInterviewer';
 import { List } from './ui/List';
 
-export const Feedback = ({
-  feedbacks,
-}: {
-  feedbacks: NonNullable<InterviewerDetailType>['feedbacks'];
-}) => {
+export const Feedback = () => {
+  const {
+    data: { feedbacks },
+  } = useInterviewer();
+
   return (
     <>
       <UISectionCard title='Interview Feedback Provided' type='compact'>
