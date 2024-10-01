@@ -6,7 +6,7 @@ import {
 } from '@components/ui/tooltip';
 import { Briefcase, TriangleAlert } from 'lucide-react';
 
-import { useAllIntegrations } from '@/authenticated/hooks';
+import { useIntegrations } from '@/authenticated/hooks';
 import { useCompanySetup } from '@/authenticated/hooks/useCompanySetup';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
@@ -16,7 +16,7 @@ import { useIntegrationActions, useIntegrationStore } from '@/jobs/hooks';
 import ROUTES from '@/utils/routing/routes';
 
 export const EmptyJob = () => {
-  const { data: allIntegrations, isLoading } = useAllIntegrations();
+  const { data: allIntegrations, isLoading } = useIntegrations();
   const isATSConnected =
     allIntegrations?.greenhouse_key ||
     allIntegrations?.ashby_key ||

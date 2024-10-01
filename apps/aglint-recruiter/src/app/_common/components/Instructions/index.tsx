@@ -11,7 +11,7 @@ function Instructions({
   updateInstruction,
   showEditButton,
 }: {
-  instruction: string;
+  instruction: string | null;
   updateInstruction: any;
   showEditButton: boolean;
   setTextValue: any;
@@ -65,7 +65,7 @@ function Instructions({
               setEditedInstruction(html);
               setTextValue(html);
             }}
-            initialValue={editedInstruction}
+            initialValue={editedInstruction ?? undefined}
           />
         </div>
       ) : (

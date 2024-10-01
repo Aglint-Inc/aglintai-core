@@ -9,7 +9,7 @@ export function useInterviewStatistics(module_id: string) {
         module_id,
       },
       {
-        enabled: !!recruiter.id,
+        enabled: !!recruiter?.id,
       },
     );
   return {
@@ -48,7 +48,7 @@ export function useCandidatePipeline(module_id: string) {
         module_id,
       },
       {
-        enabled: !!recruiter.id,
+        enabled: !!recruiter?.id,
       },
     );
   return { data, isFetched };
@@ -62,7 +62,7 @@ export function useInterviewerPerformance(module_id: string) {
         module_id,
       },
       {
-        enabled: !!recruiter.id,
+        enabled: !!recruiter?.id,
       },
     );
   return {

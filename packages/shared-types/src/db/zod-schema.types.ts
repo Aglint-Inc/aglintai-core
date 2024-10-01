@@ -744,7 +744,7 @@ export const candidateRequestAvailabilityUpdateSchema = z.object({
 export const candidateRequestAvailabilityRelationshipsSchema = z.tuple([
   z.object({
     foreignKeyName: z.literal(
-      "candidate_request_availability_application_id_fkey"
+      "candidate_request_availability_application_id_fkey",
     ),
     columns: z.tuple([z.literal("application_id")]),
     isOneToOne: z.literal(false),
@@ -753,7 +753,7 @@ export const candidateRequestAvailabilityRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "candidate_request_availability_application_id_fkey"
+      "candidate_request_availability_application_id_fkey",
     ),
     columns: z.tuple([z.literal("application_id")]),
     isOneToOne: z.literal(false),
@@ -762,7 +762,7 @@ export const candidateRequestAvailabilityRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "candidate_request_availability_application_id_fkey"
+      "candidate_request_availability_application_id_fkey",
     ),
     columns: z.tuple([z.literal("application_id")]),
     isOneToOne: z.literal(false),
@@ -771,7 +771,7 @@ export const candidateRequestAvailabilityRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "candidate_request_availability_application_id_fkey"
+      "candidate_request_availability_application_id_fkey",
     ),
     columns: z.tuple([z.literal("application_id")]),
     isOneToOne: z.literal(false),
@@ -780,7 +780,7 @@ export const candidateRequestAvailabilityRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "candidate_request_availability_recruiter_id_fkey"
+      "candidate_request_availability_recruiter_id_fkey",
     ),
     columns: z.tuple([z.literal("recruiter_id")]),
     isOneToOne: z.literal(false),
@@ -789,7 +789,7 @@ export const candidateRequestAvailabilityRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "public_candidate_request_availability_request_id_fkey"
+      "public_candidate_request_availability_request_id_fkey",
     ),
     columns: z.tuple([z.literal("request_id")]),
     isOneToOne: z.literal(false),
@@ -1823,7 +1823,7 @@ export const interviewSessionRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "public_interview_session_interview_plan_id_fkey"
+      "public_interview_session_interview_plan_id_fkey",
     ),
     columns: z.tuple([z.literal("interview_plan_id")]),
     isOneToOne: z.literal(false),
@@ -1982,7 +1982,7 @@ export const interviewSessionCancelRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "interview_session_cancel_session_relation_id_fkey"
+      "interview_session_cancel_session_relation_id_fkey",
     ),
     columns: z.tuple([z.literal("session_relation_id")]),
     isOneToOne: z.literal(false),
@@ -1991,7 +1991,7 @@ export const interviewSessionCancelRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "interview_session_cancel_session_relation_id_fkey"
+      "interview_session_cancel_session_relation_id_fkey",
     ),
     columns: z.tuple([z.literal("session_relation_id")]),
     isOneToOne: z.literal(false),
@@ -2040,7 +2040,7 @@ export const interviewSessionRelationUpdateSchema = z.object({
 export const interviewSessionRelationRelationshipsSchema = z.tuple([
   z.object({
     foreignKeyName: z.literal(
-      "public_interview_session_relation_interview_module_relation_id_"
+      "public_interview_session_relation_interview_module_relation_id_",
     ),
     columns: z.tuple([z.literal("interview_module_relation_id")]),
     isOneToOne: z.literal(false),
@@ -2049,7 +2049,7 @@ export const interviewSessionRelationRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "public_interview_session_relation_interview_module_relation_id_"
+      "public_interview_session_relation_interview_module_relation_id_",
     ),
     columns: z.tuple([z.literal("interview_module_relation_id")]),
     isOneToOne: z.literal(false),
@@ -2079,7 +2079,7 @@ export const interviewSessionRelationRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "public_inteview_session_relation_session_id_fkey"
+      "public_inteview_session_relation_session_id_fkey",
     ),
     columns: z.tuple([z.literal("session_id")]),
     isOneToOne: z.literal(false),
@@ -2088,7 +2088,7 @@ export const interviewSessionRelationRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "public_inteview_session_relation_session_id_fkey"
+      "public_inteview_session_relation_session_id_fkey",
     ),
     columns: z.tuple([z.literal("session_id")]),
     isOneToOne: z.literal(false),
@@ -2097,7 +2097,7 @@ export const interviewSessionRelationRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "public_inteview_session_relation_session_id_fkey"
+      "public_inteview_session_relation_session_id_fkey",
     ),
     columns: z.tuple([z.literal("session_id")]),
     isOneToOne: z.literal(false),
@@ -2106,7 +2106,7 @@ export const interviewSessionRelationRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "public_inteview_session_relation_session_id_fkey"
+      "public_inteview_session_relation_session_id_fkey",
     ),
     columns: z.tuple([z.literal("session_id")]),
     isOneToOne: z.literal(false),
@@ -2145,7 +2145,7 @@ export const interviewTrainingProgressUpdateSchema = z.object({
 export const interviewTrainingProgressRelationshipsSchema = z.tuple([
   z.object({
     foreignKeyName: z.literal(
-      "interview_training_progress_approved_user_id_fkey"
+      "interview_training_progress_approved_user_id_fkey",
     ),
     columns: z.tuple([z.literal("approved_user_id")]),
     isOneToOne: z.literal(false),
@@ -2154,7 +2154,7 @@ export const interviewTrainingProgressRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "interview_training_progress_approved_user_id_fkey"
+      "interview_training_progress_approved_user_id_fkey",
     ),
     columns: z.tuple([z.literal("approved_user_id")]),
     isOneToOne: z.literal(false),
@@ -2163,7 +2163,7 @@ export const interviewTrainingProgressRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "interview_training_progress_approved_user_id_fkey"
+      "interview_training_progress_approved_user_id_fkey",
     ),
     columns: z.tuple([z.literal("approved_user_id")]),
     isOneToOne: z.literal(false),
@@ -2172,7 +2172,7 @@ export const interviewTrainingProgressRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "interview_training_progress_session_relation_id_fkey"
+      "interview_training_progress_session_relation_id_fkey",
     ),
     columns: z.tuple([z.literal("session_relation_id")]),
     isOneToOne: z.literal(false),
@@ -2181,7 +2181,7 @@ export const interviewTrainingProgressRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "interview_training_progress_session_relation_id_fkey"
+      "interview_training_progress_session_relation_id_fkey",
     ),
     columns: z.tuple([z.literal("session_relation_id")]),
     isOneToOne: z.literal(false),
@@ -2942,23 +2942,17 @@ export const recruiterRowSchema = z.object({
   company_overview: z.string().nullable(),
   company_website: z.string().nullable(),
   created_at: z.string(),
-  e_o_statement: z.string().nullable(),
-  email: z.string().nullable(),
   employee_size: z.string().nullable(),
   employment_type: jsonSchema,
-  hr_contact: jsonSchema.nullable(),
   id: z.string(),
   industry: z.string().nullable(),
   logo: z.string().nullable(),
-  m_v_statement: z.string().nullable(),
-  name: z.string().nullable(),
+  name: z.string(),
   phone_number: z.string().nullable(),
   primary_admin: z.string(),
-  primary_contact: jsonSchema.nullable(),
-  recruiter_type: z.string().nullable(),
   scheduling_reason: jsonSchema.nullable(),
-  scheduling_settings: jsonSchema.nullable(),
-  socials: jsonSchema.nullable(),
+  scheduling_settings: jsonSchema,
+  socials: jsonSchema,
   workplace_type: jsonSchema,
 });
 
@@ -2966,23 +2960,17 @@ export const recruiterInsertSchema = z.object({
   company_overview: z.string().optional().nullable(),
   company_website: z.string().optional().nullable(),
   created_at: z.string().optional(),
-  e_o_statement: z.string().optional().nullable(),
-  email: z.string().optional().nullable(),
   employee_size: z.string().optional().nullable(),
   employment_type: jsonSchema.optional(),
-  hr_contact: jsonSchema.optional().nullable(),
   id: z.string().optional(),
   industry: z.string().optional().nullable(),
   logo: z.string().optional().nullable(),
-  m_v_statement: z.string().optional().nullable(),
-  name: z.string().optional().nullable(),
+  name: z.string(),
   phone_number: z.string().optional().nullable(),
   primary_admin: z.string(),
-  primary_contact: jsonSchema.optional().nullable(),
-  recruiter_type: z.string().optional().nullable(),
   scheduling_reason: jsonSchema.optional().nullable(),
-  scheduling_settings: jsonSchema.optional().nullable(),
-  socials: jsonSchema.optional().nullable(),
+  scheduling_settings: jsonSchema.optional(),
+  socials: jsonSchema.optional(),
   workplace_type: jsonSchema.optional(),
 });
 
@@ -2990,23 +2978,17 @@ export const recruiterUpdateSchema = z.object({
   company_overview: z.string().optional().nullable(),
   company_website: z.string().optional().nullable(),
   created_at: z.string().optional(),
-  e_o_statement: z.string().optional().nullable(),
-  email: z.string().optional().nullable(),
   employee_size: z.string().optional().nullable(),
   employment_type: jsonSchema.optional(),
-  hr_contact: jsonSchema.optional().nullable(),
   id: z.string().optional(),
   industry: z.string().optional().nullable(),
   logo: z.string().optional().nullable(),
-  m_v_statement: z.string().optional().nullable(),
-  name: z.string().optional().nullable(),
+  name: z.string().optional(),
   phone_number: z.string().optional().nullable(),
   primary_admin: z.string().optional(),
-  primary_contact: jsonSchema.optional().nullable(),
-  recruiter_type: z.string().optional().nullable(),
   scheduling_reason: jsonSchema.optional().nullable(),
-  scheduling_settings: jsonSchema.optional().nullable(),
-  socials: jsonSchema.optional().nullable(),
+  scheduling_settings: jsonSchema.optional(),
+  socials: jsonSchema.optional(),
   workplace_type: jsonSchema.optional(),
 });
 
@@ -3104,36 +3086,36 @@ export const recruiterPreferencesRelationshipsSchema = z.tuple([
   }),
 ]);
 
-export const userRolesSchema = z.union([
-  z.literal("admin"),
-  z.literal("recruiter"),
-  z.literal("interviewer"),
-  z.literal("recruiting_coordinator"),
-  z.literal("sourcer"),
-  z.literal("hiring_manager"),
-]);
+export const recruiterRelationRowSchema = z.object({
+  created_at: z.string(),
+  created_by: z.string().nullable(),
+  id: z.number(),
+  is_active: z.boolean(),
+  manager_id: z.string().nullable(),
+  recruiter_id: z.string(),
+  role_id: z.string(),
+  user_id: z.string(),
+});
 
 export const recruiterRelationInsertSchema = z.object({
   created_at: z.string().optional(),
-  created_by: z.string().optional(),
+  created_by: z.string().optional().nullable(),
   id: z.number().optional(),
   is_active: z.boolean().optional(),
   manager_id: z.string().optional().nullable(),
   recruiter_id: z.string(),
-  role: userRolesSchema,
-  role_id: z.string().optional().nullable(),
+  role_id: z.string(),
   user_id: z.string(),
 });
 
 export const recruiterRelationUpdateSchema = z.object({
   created_at: z.string().optional(),
-  created_by: z.string().optional(),
+  created_by: z.string().optional().nullable(),
   id: z.number().optional(),
   is_active: z.boolean().optional(),
   manager_id: z.string().optional().nullable(),
   recruiter_id: z.string().optional(),
-  role: userRolesSchema.optional(),
-  role_id: z.string().optional().nullable(),
+  role_id: z.string().optional(),
   user_id: z.string().optional(),
 });
 
@@ -3215,13 +3197,11 @@ export const recruiterUserInsertSchema = z.object({
   created_at: z.string().optional(),
   department_id: z.number().optional().nullable(),
   email: z.string(),
-  email_auth: jsonSchema.optional().nullable(),
-  email_outreach_templates: z.array(jsonSchema).optional().nullable(),
   employment: employmentTypeEnumSchema.optional(),
   first_name: z.string(),
   is_calendar_connected: z.boolean().optional(),
   joined_at: z.string().optional().nullable(),
-  last_name: z.string().optional().nullable(),
+  last_name: z.string().optional(),
   linked_in: z.string().optional().nullable(),
   office_location_id: z.number().optional().nullable(),
   phone: z.string().optional().nullable(),
@@ -3229,8 +3209,8 @@ export const recruiterUserInsertSchema = z.object({
   profile_image: z.string().optional().nullable(),
   remote_id: z.string().optional().nullable(),
   schedule_auth: jsonSchema.optional().nullable(),
-  scheduling_settings: jsonSchema.optional().nullable(),
-  status: z.string(),
+  scheduling_settings: jsonSchema.optional(),
+  status: z.string().optional(),
   user_id: z.string(),
 });
 
@@ -3240,13 +3220,11 @@ export const recruiterUserUpdateSchema = z.object({
   created_at: z.string().optional(),
   department_id: z.number().optional().nullable(),
   email: z.string().optional(),
-  email_auth: jsonSchema.optional().nullable(),
-  email_outreach_templates: z.array(jsonSchema).optional().nullable(),
   employment: employmentTypeEnumSchema.optional(),
   first_name: z.string().optional(),
   is_calendar_connected: z.boolean().optional(),
   joined_at: z.string().optional().nullable(),
-  last_name: z.string().optional().nullable(),
+  last_name: z.string().optional(),
   linked_in: z.string().optional().nullable(),
   office_location_id: z.number().optional().nullable(),
   phone: z.string().optional().nullable(),
@@ -3254,7 +3232,7 @@ export const recruiterUserUpdateSchema = z.object({
   profile_image: z.string().optional().nullable(),
   remote_id: z.string().optional().nullable(),
   schedule_auth: jsonSchema.optional().nullable(),
-  scheduling_settings: jsonSchema.optional().nullable(),
+  scheduling_settings: jsonSchema.optional(),
   status: z.string().optional(),
   user_id: z.string().optional(),
 });
@@ -3657,7 +3635,7 @@ export const requestSessionRelationUpdateSchema = z.object({
 export const requestSessionRelationRelationshipsSchema = z.tuple([
   z.object({
     foreignKeyName: z.literal(
-      "request_availability_relation_request_availability_id_fkey"
+      "request_availability_relation_request_availability_id_fkey",
     ),
     columns: z.tuple([z.literal("request_availability_id")]),
     isOneToOne: z.literal(false),
@@ -3873,7 +3851,7 @@ export const schedulingAgentChatHistoryUpdateSchema = z.object({
 export const schedulingAgentChatHistoryRelationshipsSchema = z.tuple([
   z.object({
     foreignKeyName: z.literal(
-      "public_scheduling-agent-chat-history_application_id_fkey"
+      "public_scheduling-agent-chat-history_application_id_fkey",
     ),
     columns: z.tuple([z.literal("application_id")]),
     isOneToOne: z.literal(false),
@@ -3882,7 +3860,7 @@ export const schedulingAgentChatHistoryRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "public_scheduling-agent-chat-history_application_id_fkey"
+      "public_scheduling-agent-chat-history_application_id_fkey",
     ),
     columns: z.tuple([z.literal("application_id")]),
     isOneToOne: z.literal(false),
@@ -3891,7 +3869,7 @@ export const schedulingAgentChatHistoryRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "public_scheduling-agent-chat-history_application_id_fkey"
+      "public_scheduling-agent-chat-history_application_id_fkey",
     ),
     columns: z.tuple([z.literal("application_id")]),
     isOneToOne: z.literal(false),
@@ -3900,7 +3878,7 @@ export const schedulingAgentChatHistoryRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "public_scheduling-agent-chat-history_application_id_fkey"
+      "public_scheduling-agent-chat-history_application_id_fkey",
     ),
     columns: z.tuple([z.literal("application_id")]),
     isOneToOne: z.literal(false),
@@ -3909,7 +3887,7 @@ export const schedulingAgentChatHistoryRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "public_scheduling-agent-chat-history_company_id_fkey"
+      "public_scheduling-agent-chat-history_company_id_fkey",
     ),
     columns: z.tuple([z.literal("company_id")]),
     isOneToOne: z.literal(false),
@@ -3918,7 +3896,7 @@ export const schedulingAgentChatHistoryRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "public_scheduling-agent-chat-history_filter_json_id_fkey"
+      "public_scheduling-agent-chat-history_filter_json_id_fkey",
     ),
     columns: z.tuple([z.literal("filter_json_id")]),
     isOneToOne: z.literal(true),
@@ -3927,7 +3905,7 @@ export const schedulingAgentChatHistoryRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "public_scheduling-agent-chat-history_job_id_fkey"
+      "public_scheduling-agent-chat-history_job_id_fkey",
     ),
     columns: z.tuple([z.literal("job_id")]),
     isOneToOne: z.literal(false),
@@ -3936,7 +3914,7 @@ export const schedulingAgentChatHistoryRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "public_scheduling-agent-chat-history_job_id_fkey"
+      "public_scheduling-agent-chat-history_job_id_fkey",
     ),
     columns: z.tuple([z.literal("job_id")]),
     isOneToOne: z.literal(false),
@@ -3945,7 +3923,7 @@ export const schedulingAgentChatHistoryRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "public_scheduling-agent-chat-history_task_id_fkey"
+      "public_scheduling-agent-chat-history_task_id_fkey",
     ),
     columns: z.tuple([z.literal("task_id")]),
     isOneToOne: z.literal(false),
@@ -3954,7 +3932,7 @@ export const schedulingAgentChatHistoryRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "public_scheduling-agent-chat-history_task_id_fkey"
+      "public_scheduling-agent-chat-history_task_id_fkey",
     ),
     columns: z.tuple([z.literal("task_id")]),
     isOneToOne: z.literal(false),
@@ -5173,7 +5151,7 @@ export const meetingInterviewersRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "public_interview_session_relation_interview_module_relation_id_"
+      "public_interview_session_relation_interview_module_relation_id_",
     ),
     columns: z.tuple([z.literal("interview_module_relation_id")]),
     isOneToOne: z.literal(false),
@@ -5182,7 +5160,7 @@ export const meetingInterviewersRelationshipsSchema = z.tuple([
   }),
   z.object({
     foreignKeyName: z.literal(
-      "public_interview_session_relation_interview_module_relation_id_"
+      "public_interview_session_relation_interview_module_relation_id_",
     ),
     columns: z.tuple([z.literal("interview_module_relation_id")]),
     isOneToOne: z.literal(false),
@@ -5554,6 +5532,15 @@ export const templateTypeSchema = z.union([
   z.literal("typing"),
 ]);
 
+export const userRolesSchema = z.union([
+  z.literal("admin"),
+  z.literal("recruiter"),
+  z.literal("interviewer"),
+  z.literal("recruiting_coordinator"),
+  z.literal("sourcer"),
+  z.literal("hiring_manager"),
+]);
+
 export const locationTypeSchema = z.object({
   city: z.string().nullable(),
   state: z.string().nullable(),
@@ -5838,31 +5825,17 @@ export const questionBankRowSchema = z.object({
   type: questionTypeSchema,
 });
 
-export const recruiterRelationRowSchema = z.object({
-  created_at: z.string(),
-  created_by: z.string(),
-  id: z.number(),
-  is_active: z.boolean(),
-  manager_id: z.string().nullable(),
-  recruiter_id: z.string(),
-  role: userRolesSchema,
-  role_id: z.string().nullable(),
-  user_id: z.string(),
-});
-
 export const recruiterUserRowSchema = z.object({
   calendar_sync: jsonSchema.nullable(),
   calendar_sync_token: z.string().nullable(),
   created_at: z.string(),
   department_id: z.number().nullable(),
   email: z.string(),
-  email_auth: jsonSchema.nullable(),
-  email_outreach_templates: z.array(jsonSchema).nullable(),
   employment: employmentTypeEnumSchema,
   first_name: z.string(),
   is_calendar_connected: z.boolean(),
   joined_at: z.string().nullable(),
-  last_name: z.string().nullable(),
+  last_name: z.string(),
   linked_in: z.string().nullable(),
   office_location_id: z.number().nullable(),
   phone: z.string().nullable(),
@@ -5870,7 +5843,7 @@ export const recruiterUserRowSchema = z.object({
   profile_image: z.string().nullable(),
   remote_id: z.string().nullable(),
   schedule_auth: jsonSchema.nullable(),
-  scheduling_settings: jsonSchema.nullable(),
+  scheduling_settings: jsonSchema,
   status: z.string(),
   user_id: z.string(),
 });

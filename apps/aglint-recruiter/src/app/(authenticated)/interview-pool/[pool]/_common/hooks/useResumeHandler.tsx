@@ -13,7 +13,7 @@ export const useResumeHandler = () => {
     module_id: string;
     user_id: string;
     editModule: ReturnType<typeof useModuleAndUsers>['data'];
-  }): Promise<boolean> => {
+  }) => {
     if (user_id && editModule) {
       const isUpdated = await resumePauseDbUpdate({ module_id, user_id });
       if (isUpdated) {
