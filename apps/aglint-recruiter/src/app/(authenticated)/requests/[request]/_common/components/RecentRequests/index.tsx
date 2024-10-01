@@ -14,7 +14,7 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
   });
   const recentRequests =
     status === 'success'
-      ? (requestList ?? []).filter((item) => item.id !== requestId)
+      ? requestList.filter((item) => item.id !== requestId)
       : [];
   if (status === 'pending') {
     return (

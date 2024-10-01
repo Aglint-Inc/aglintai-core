@@ -222,15 +222,19 @@ function CompletedRequests() {
 export interface GroupedRequests {
   [date: string]: Request[];
 }
+
 function groupRequestsByDate(requests: Request[]): GroupedRequests {
-  return requests.reduce((acc, request) => {
-    const date = new Date(request.completed_at).toISOString();
-    if (!acc[date]) {
-      acc[date] = [];
-    }
-    acc[date].push(request);
-    return acc;
-  }, {} as GroupedRequests);
+  return requests
+    .filter((request) => request.completed_at !== null)
+    .reduce((acc, request) => {
+      const completedAt = request?.completed_at ?? '';
+      const date = new Date(completedAt).toISOString(); // Ensure date is valid
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(request);
+      return acc;
+    }, {} as GroupedRequests);
 }
 
 export default CompletedRequests;

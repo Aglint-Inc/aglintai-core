@@ -31,13 +31,14 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
       end_date_str: end_date_str,
     },
   });
+
   const all_combs = cand_schedule.getCandidateSelectedSlots(
     candidate_selected_slots,
   );
 
   return {
-    slots: all_combs,
-    availabilities: cand_schedule.calendar_events,
+    slots: all_combs ?? [],
+    availabilities: cand_schedule.calendar_events ?? [],
   };
 };
 

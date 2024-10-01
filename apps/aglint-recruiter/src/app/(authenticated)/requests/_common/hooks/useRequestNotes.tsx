@@ -10,7 +10,7 @@ export const useUpdateRequestNote = () => {
       utils.requests.note.read.invalidate();
     },
     onError: (e) => {
-      toast({ variant: 'destructive', title: e.shape.message });
+      toast({ variant: 'destructive', title: e.shape?.message });
     },
   });
 

@@ -35,10 +35,11 @@ const MainBody = () => {
   const { data: requestCount } = useRequestCount();
 
   const defaults = REQUEST_SESSIONS_DEFAULT_DATA.map(
-    ({ sectionName, ...rest }) => ({
-      ...rest,
+    ({ sectionName, color, sectionIconName }) => ({
       sectionName,
-      requests: requestList?.[sectionName],
+      color,
+      sectionIconName,
+      requests: requestList?.[sectionName] ?? [],
     }),
   );
 
@@ -152,7 +153,7 @@ const MainBody = () => {
               />
               <RequestListContent
                 view={view}
-                defaults={defaults}
+                defaults={[...defaults]}
                 isFetched={isFetched}
               />
             </>
