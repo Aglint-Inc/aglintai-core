@@ -18,6 +18,6 @@ const mutation = async ({
   return true;
 };
 
-export const updateUser = publicProcedure
+export const updateCurrentUser = publicProcedure
   .input(customRecruiterUserUpdateSchema)
   .mutation(mutation);
