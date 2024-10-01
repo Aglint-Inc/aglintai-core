@@ -1,5 +1,6 @@
-import { type Dispatch, type SetStateAction } from 'react';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 
+import { useAllInterviewModules } from '@/authenticated/hooks';
 import FilterHeader from '@/components/Common/FilterHeader';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
@@ -7,15 +8,19 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { useAllDepartments } from '@/queries/departments';
 
 import { setIsCreateDialogOpen } from '../../[pool]/_common/stores/store';
+import { useHeaderProp } from '.';
 import CreateModuleDialog from './CreateModuleDialog';
 
-export const Header = ({
-  isFilterApplied,
-  searchText,
-  selectedDepartments,
-  setSearchText,
-  setDepartments,
-}: HeaderProps) => {
+export const InterviewPoolHeader = () => {
+  const {
+    searchText,
+    selectedDepartments,
+    setDepartments,
+    setSearchText,
+    isFilterApplied,
+    handleTabChange,
+    activeTab,
+  } = useHeaderProp();
   const { data: departments } = useAllDepartments();
   const { checkPermissions } = useRolesAndPermissions();
 
@@ -28,6 +33,12 @@ export const Header = ({
     setSearchText('');
   };
 
+  const { data: allModules } = useAllInterviewModules();
+
+  const archivedLength =
+    allModules?.length > 0
+      ? allModules?.filter((mod) => mod.is_archived).length
+      : 0;
   return (
     <>
       <CreateModuleDialog />
@@ -40,13 +51,12 @@ export const Header = ({
           className='w-[250px]'
         />
         <div className='flex items-center gap-2'>
-          {isFilterApplied ? (
+          {isFilterApplied && (
             <UIButton variant='ghost' size='sm' onClick={resetAllFilter}>
               Reset all
             </UIButton>
-          ) : (
-            <></>
           )}
+
           <FilterHeader
             filters={[
               {
@@ -61,6 +71,7 @@ export const Header = ({
               },
             ]}
           />
+
           {checkPermissions && checkPermissions(['interview_types']) && (
             <UIButton
               variant='default'
@@ -71,16 +82,26 @@ export const Header = ({
               Create
             </UIButton>
           )}
+          {archivedLength > 0 && (
+            <Tabs value={activeTab} onValueChange={handleTabChange}>
+              <TabsList className='rounded-lg bg-gray-100 p-1'>
+                <TabsTrigger
+                  value='active'
+                  className='data-[state=active]:bg-white data-[state=active]:shadow'
+                >
+                  Active
+                </TabsTrigger>
+                <TabsTrigger
+                  value='archived'
+                  className='data-[state=active]:bg-white data-[state=active]:shadow'
+                >
+                  Archived
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          )}
         </div>
       </div>
     </>
   );
-};
-
-type HeaderProps = {
-  isFilterApplied: boolean;
-  searchText: string;
-  selectedDepartments: string[];
-  setSearchText: Dispatch<SetStateAction<string>>;
-  setDepartments: Dispatch<SetStateAction<string[]>>;
 };
