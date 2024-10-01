@@ -153,7 +153,7 @@ export default function InterviewerDetailsPage() {
       <div className=''>
         {isShowFeature('SCHEDULING') && (
           <div className='relative flex gap-5'>
-            <div className='flex flex-col w-3/12 ml-4'>
+            <div className='flex flex-col w-3/12 px-4 border-r '>
             <BreadCrumb name={interviewerDetails?.first_name || ''} />
             <div className='mb-4'>
             <Header
@@ -178,8 +178,8 @@ export default function InterviewerDetailsPage() {
             </div>
             </div>
             <ScrollArea className='overflow-auto w-9/12 ' style={{height:'calc(100vh - 66px)'}}>
-            <main className='relative z-0 flex flex-col gap-10 ' >
-              <section ref={sectionRefs.overview}>
+            <main className='relative z-0 flex flex-col gap-10 py-6 pr-6' >
+              <section ref={sectionRefs.overview} className='pr-4'>
                 <KeyMatrics
                   declineCount={
                     interviewerDetails?.meeting_count.cancelled || 0
@@ -193,11 +193,11 @@ export default function InterviewerDetailsPage() {
                 />
               </section>
 
-              <section ref={sectionRefs.qualifications}>
+              <section ref={sectionRefs.qualifications} className=''>
                 <Qualifications interview_types={interviewType} />
               </section>
 
-              <section ref={sectionRefs.upcomingInterviews}>
+              <section ref={sectionRefs.upcomingInterviews} className=''>
                 <UpcomingInterview
                   interviews={
                     interviewerDetails?.all_meetings?.length
@@ -209,7 +209,7 @@ export default function InterviewerDetailsPage() {
                 />
               </section>
 
-              <section ref={sectionRefs.recentInterviews}>
+              <section ref={sectionRefs.recentInterviews} className=''>
                 <RecentInterviews
                   interviews={
                     interviewerDetails?.all_meetings?.length
@@ -220,20 +220,20 @@ export default function InterviewerDetailsPage() {
                   }
                 />
               </section>
-              <section ref={sectionRefs.interviewFeedback}>
+              <section ref={sectionRefs.interviewFeedback} className=''>
                 <Feedback feedbacks={feedbacks} />
               </section>
 
-              <section ref={sectionRefs.meetingOverview}>
+              <section ref={sectionRefs.meetingOverview} className=''>
                 <Heatmap loadSetting={interviewLoad} />
               </section>
-              <section ref={sectionRefs.scheduleAvailabilityRef}>
+              <section ref={sectionRefs.scheduleAvailabilityRef} className=''>
                 <ScheduleAvailability
                   schedulingSettings={schedulingSettings}
                   interviewTodayWeek={interviewTodayWeek}
                 />
               </section>
-              <section ref={sectionRefs.calendar}>
+              <section ref={sectionRefs.calendar} className='mr-4'>
                 <CalendarComp
                   allSchedules={allSchedules ?? []}
                   isLoading={iscalendarLoading}

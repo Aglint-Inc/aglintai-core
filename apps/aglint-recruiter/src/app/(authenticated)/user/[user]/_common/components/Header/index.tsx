@@ -57,14 +57,14 @@ export const Header = ({
     <>
       {/* Eidt Dialog  */}
       <EditUser isOpen={isOpen} setIsOpen={setIsOpen} />
-      <Card className='shadow-none border-none bg-slate-50' ref={userCardRef}>
+      <Card className='shadow-none border-none bg-gray-100' ref={userCardRef}>
         <CardContent className='p-4'>
           <div className='flex flex-col items-start'>
             <div className='flex flex-col gap-2 '>
               <div className='flex flex-row items-center gap-2'>
-                <Avatar className='h-12 w-12 rounded-md'>
+                <Avatar className='h-10 w-10 rounded-md'>
                   <AvatarImage src={avatar} alt={name} />
-                  <AvatarFallback className='h-12 w-12 rounded-md bg-gray-200'>
+                  <AvatarFallback className='h-10 w-10 rounded-md bg-gray-200'>
                     <User
                       className='h-6 w-6 text-gray-600'
                       size={40}
@@ -76,13 +76,13 @@ export const Header = ({
                   <div className='text-md font-medium text-gray-900'>
                     {name}
                   </div>
-                  <p className='text-sm text-gray-600'>
+                  <p className='text-sm text-gray-600 line-clamp-1'>
                     {role} - {department}
                   </p>
                 </div>
               </div>
 
-              <div className='ml-2'>
+              <div className='ml-0'>
                 <div className='mt-2 flex flex-col gap-2 '>
                   <span className='flex items-center text-sm '>
                     <MapPin className='mr-1 h-4 w-4' />
@@ -105,7 +105,7 @@ export const Header = ({
                 </div>
               </div>
             </div>
-            <div className='flex gap-3 mt-2'>
+            <div className='flex gap-3 mt-4'>
               {recruiter_user?.user_id === user_id &&
                 !recruiter_user.is_calendar_connected && (
                   <UIButton onClick={getConsent}>Connect Calendar</UIButton>

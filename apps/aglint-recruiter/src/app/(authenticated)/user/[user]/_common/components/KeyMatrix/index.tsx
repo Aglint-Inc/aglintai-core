@@ -30,7 +30,7 @@ export const KeyMatrics = ({
             header='No Metrics'
           />
         ) : (
-          <div className='grid grid-cols-2 gap-4 sm:grid-cols-4'>
+          <div className='flex flex-row gap-3'>
             <Card color='green' title='Interview Hours' value={completedHour} />
             <Card
               color='green'
@@ -55,8 +55,8 @@ const Card = ({
   color: 'green' | 'red' | 'blue';
 }) => {
   return (
-    <div className='text-center'>
-      <p className={`text-xl font-bold text-${color}-600`}>{value}</p>
+    <div className='text-left flex flex-col gap-1 p-4 bg-gray-50 rounded-md'>
+      <p className={`text-2xl font-medium text-${color}-600`}>{value}</p>
       <div className='text-sm text-muted-foreground'>{title}</div>
     </div>
   );
