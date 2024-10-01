@@ -13,14 +13,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       process.env.GOOGLE_SCHEDULE_CLIENT_SECRET,
     );
     res.status(200).send(newAccessToken);
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).send(error.message);
   }
 };
 
 export default handler;
 
-async function refreshAccessToken(refreshToken, clientId, clientSecret) {
+async function refreshAccessToken(
+  refreshToken: string,
+  clientId: string,
+  clientSecret: string,
+) {
   const tokenEndpoint = 'https://oauth2.googleapis.com/token';
 
   const requestBody = new URLSearchParams();

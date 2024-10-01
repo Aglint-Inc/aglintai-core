@@ -43,7 +43,7 @@ export default function InterviewTypesPage() {
 
   //filtering
 
-  const archiveFiltered = allModules.filter((module) => {
+  const archiveFiltered = (allModules || []).filter((module) => {
     return activeTab === 'active' ? !module.is_archived : module.is_archived;
   });
 
@@ -54,13 +54,13 @@ export default function InterviewTypesPage() {
         const isSearch =
           searchText.length !== 0
             ? interviewType?.name
-                .toLocaleLowerCase()
+                ?.toLocaleLowerCase()
                 .includes(searchText.toLocaleLowerCase())
             : true;
 
         const isDepartment = selectedDepartments?.length
           ? selectedDepartments.includes(
-              interviewType.department_id?.toString(),
+              interviewType?.department_id?.toString() ?? '',
             )
           : true;
 

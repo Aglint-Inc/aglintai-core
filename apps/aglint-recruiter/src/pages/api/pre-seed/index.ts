@@ -123,7 +123,7 @@ const removeAllTemps = async (recruiter_id: string) => {
   );
 };
 
-const seedCompTemplate = async (recruiter_id) => {
+const seedCompTemplate = async (recruiter_id: string) => {
   const supabaseAdmin = getSupabaseServer();
 
   const all_templates = supabaseWrap(

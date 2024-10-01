@@ -1,15 +1,15 @@
 import { type SessionCombinationRespType } from '@aglint/shared-types';
-import { getFullName } from '@aglint/shared-utils';
+import { CApiError, getFullName } from '@aglint/shared-utils';
 
 import { bookSession } from '@/utils/event_book/book_session';
 import { fetchMeetingsInfo } from '@/utils/event_book/fetchMeetingsInfo';
 import type { CalEventAttendeesAuthDetails } from '@/utils/event_book/types';
 
-import { type CandidatesSchedulingV2 } from '../../CandidatesSchedulingV2';
+import { type ScheduleApiDetails } from '../../types';
 import { type ConfirmInt, type ScheduleDBDetails } from './types';
 
 export const createMeetingEvents = async (
-  cand_schedule: CandidatesSchedulingV2,
+  cand_db_details: ScheduleApiDetails,
   sesn_slots: SessionCombinationRespType[],
   schedule_db_details: ScheduleDBDetails,
 ) => {
@@ -21,8 +21,11 @@ export const createMeetingEvents = async (
     const meeting_info = meetings_info.find(
       (m) => m.meeting_id === session.meeting_id,
     );
+    if (!meeting_info) {
+      throw new CApiError('CLIENT', 'Meeting info not found');
+    }
     const sess_inters_full_details =
-      cand_schedule.db_details.all_session_int_details[session.session_id];
+      cand_db_details.all_session_int_details[session.session_id];
 
     const meeting_attendees_auth: CalEventAttendeesAuthDetails[] = [
       ...session.qualifiedIntervs.filter(
@@ -55,7 +58,7 @@ export const createMeetingEvents = async (
       job_title: schedule_db_details.job.job_title,
       cal_event_organizer: meeting_organizer_auth,
       cal_event_attendees: meeting_attendees_auth,
-      company_cred_hash_str: cand_schedule.db_details.company_cred_hash_str,
+      company_cred_hash_str: cand_db_details.company_cred_hash_str,
     });
     const meeting_organizer =
       sess_inters_full_details.interviewers[
@@ -65,9 +68,9 @@ export const createMeetingEvents = async (
       meeting_organizer,
       ...meeting_attendees_auth.map(
         (attendee): ConfirmInt => ({
-          interview_module_relation_id:
+          interviewer_module_relation_id:
             sess_inters_full_details.interviewers[attendee.user_id]
-              .interview_module_relation_id,
+              .interviewer_module_relation_id,
           session_id: session.session_id,
           user_id: attendee.user_id,
         }),

@@ -103,7 +103,7 @@ export const isIntervLoadPassed = (
         week_load_density: hrs_week_load_density,
       };
     }
-  } else if (week_limit.type === 'Interviews') {
+  } else {
     if (week_limit.value >= weekly_load.total_interview) {
       if (day_limit.type === 'Hours') {
         return {

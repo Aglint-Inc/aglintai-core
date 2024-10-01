@@ -1,8 +1,5 @@
-import {
-  type holidayType,
-  type SchedulingSettingType,
-} from '@aglint/shared-types';
-import { ScheduleUtils } from '@aglint/shared-utils';
+import { type SchedulingSettingType } from '@aglint/shared-types';
+import { CApiError, ScheduleUtils } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 // return working day count between two dates
@@ -34,19 +31,21 @@ export const getCompanyDaysCnt = (
 
   while (curr_date.isSameOrBefore(end_date)) {
     let add_curr_day = false;
-    const is_holiday = comp_schedule_setting.totalDaysOff.find(
-      (holiday: holidayType) =>
-        curr_date.isSame(
-          dayjsLocal(holiday.date, 'DD MMM YYYY').tz(
-            comp_schedule_setting.timeZone.tzCode,
-          ),
-          'date',
+    const is_holiday = comp_schedule_setting.totalDaysOff.find((holiday) =>
+      curr_date.isSame(
+        dayjsLocal(holiday.date, 'DD MMM YYYY').tz(
+          comp_schedule_setting.timeZone.tzCode,
         ),
+        'date',
+      ),
     );
 
     const workDay = comp_schedule_setting.workingHours.find(
       (day) => curr_date.format('dddd').toLowerCase() === day.day,
     );
+    if (!workDay) {
+      throw new CApiError('SERVER_ERROR', 'Invalid working day');
+    }
     if (
       (workDay.isWorkDay && !is_holiday) ||
       (!workDay.isWorkDay && count_day_off) ||

@@ -28,7 +28,7 @@ const Layout = ({ children }: PropsWithChildren) => {
             <div className='mb-4 flex flex-col'>
               <h2 className='text-lg font-semibold'>Automation Details</h2>
               <p className='mb-4 text-sm text-gray-600'>
-                All the Reports can be found here.
+                All AI automation workflows can be found here.
               </p>
               <BreadCrumbs />
             </div>

@@ -12,10 +12,10 @@ export const createCombsForMultiDaySlots = (
 ) => {
   const total_rounds = all_combs[0].interview_rounds.length;
   const findMultiDaySlot = (
-    final_combs: MultiDayPlanType,
+    final_combs: MultiDayPlanType | null,
     curr_int_day_combs: DateRangePlansType['interview_rounds'],
     curr_round_idx: number,
-  ): MultiDayPlanType => {
+  ): MultiDayPlanType | null => {
     if (curr_round_idx === total_rounds) {
       return final_combs;
     }

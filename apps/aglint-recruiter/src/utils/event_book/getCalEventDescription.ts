@@ -1,4 +1,4 @@
-export const getCalEventDescription = (meeting_id) => {
+export const getCalEventDescription = (meeting_id: string) => {
   const instruction_link = `${process.env.NEXT_PUBLIC_HOST_NAME}/interviews/view?meeting_id=${meeting_id}&tab=instructions`;
   const profile_link = `${process.env.NEXT_PUBLIC_HOST_NAME}/interviews/view?meeting_id=${meeting_id}&tab=candidate_details`;
   const feedback_link = `${process.env.NEXT_PUBLIC_HOST_NAME}/interviews/view?meeting_id=${meeting_id}&tab=feedback`;

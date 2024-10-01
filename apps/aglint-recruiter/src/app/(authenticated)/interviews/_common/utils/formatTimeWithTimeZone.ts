@@ -1,7 +1,5 @@
 import { dayjsLocal } from '@aglint/shared-utils';
 
-import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
-
 export const formatTimeWithTimeZone = ({
   start_time,
   end_time,
@@ -12,7 +10,7 @@ export const formatTimeWithTimeZone = ({
   timeZone?: string;
 }) => {
   const tZTime = dayjsLocal(end_time)
-    .tz(timeZone || userTzDayjs.tz.guess())
+    .tz(timeZone || dayjsLocal.tz.guess())
     .format('zzz');
   const timezone = tZTime
     .split(' ')
@@ -20,9 +18,9 @@ export const formatTimeWithTimeZone = ({
     .join('');
   return start_time
     ? `${dayjsLocal(start_time)
-        .tz(timeZone || userTzDayjs.tz.guess())
+        .tz(timeZone || dayjsLocal.tz.guess())
         .format('hh:mm A')} - ${dayjsLocal(end_time)
-        .tz(timeZone || userTzDayjs.tz.guess())
+        .tz(timeZone || dayjsLocal.tz.guess())
         .format('hh:mm A')} ${timeZone ? timezone : ''}`
     : '--';
 };

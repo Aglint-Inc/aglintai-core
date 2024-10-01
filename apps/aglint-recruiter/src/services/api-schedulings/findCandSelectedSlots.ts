@@ -22,9 +22,12 @@ export const findCandSelectedSlots = async ({
   request_assignee_tz: string;
   cand_schedule: CandidatesSchedulingV2;
 }) => {
-  const ai_response: z.infer<typeof agentSelfScheduleInstruction> = {
+  const ai_response: z.output<typeof agentSelfScheduleInstruction> = {
     candidateAvailability: {
-      preferredDates: null,
+      preferredDates: {
+        endDate: '2022-02-28', // TODO:dileep
+        startDate: '2022-02-21',
+      },
       prefferredTime: {
         startTime: '09:00',
         endTime: '17:00',
@@ -33,6 +36,7 @@ export const findCandSelectedSlots = async ({
     maxTotalSlots: 5,
     includeAllSoftConflictSlots: false,
     overrideSoftConflicts: [],
+    include_outside_working_hours: true,
   };
   const cand_picked_slots = cand_schedule.getCandidateSelectedSlots(cand_avail);
   const flatted_plans = cand_picked_slots
