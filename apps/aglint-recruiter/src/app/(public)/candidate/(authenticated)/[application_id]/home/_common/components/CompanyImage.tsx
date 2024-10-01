@@ -8,7 +8,9 @@ function CompanyImage({
   altText = 'Company Name',
   coverSrc,
 }: {
-  candidate: ReturnType<typeof usePortalHomePage>['data']['candidate'];
+  candidate: NonNullable<
+    ReturnType<typeof usePortalHomePage>['data']
+  >['candidate'];
   altText?: string;
   coverSrc: string;
 }) {

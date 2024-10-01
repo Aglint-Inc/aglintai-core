@@ -7,7 +7,7 @@ import { type BookedMeetingDetails } from './types';
 
 type ConfirmInt = Pick<
   SessionInterviewerType,
-  'session_id' | 'user_id' | 'interview_module_relation_id'
+  'session_id' | 'user_id' | 'interviewer_module_relation_id'
 >;
 
 export const confirmInterviewers = async (
@@ -23,7 +23,7 @@ export const confirmInterviewers = async (
   }
   await Promise.all(
     inters.map(async (int) => {
-      if (!is_debreif) {
+      if (!is_debreif && int.interviewer_module_relation_id) {
         supabaseWrap(
           await supabaseAdmin
             .from('interview_session_relation')
@@ -32,7 +32,7 @@ export const confirmInterviewers = async (
             })
             .eq(
               'interview_module_relation_id',
-              int.interview_module_relation_id,
+              int.interviewer_module_relation_id,
             )
             .eq('session_id', int.session_id),
         );

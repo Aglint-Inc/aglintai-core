@@ -17,20 +17,20 @@ export type TimeSlotType = {
 
 export type NewCalenderEvent = {
   summary: string;
-  location?: string;
+  location?: string | null;
   start: {
     dateTime: string;
-    timeZone: string;
+    timeZone: string | undefined;
   };
   end: {
     dateTime: string;
-    timeZone: string;
+    timeZone: string | undefined;
   };
   attendees: { email: string }[];
   reminders: {
     useDefault: boolean;
     overrides: { method: string; minutes: number }[];
-  };
+  } | null;
   conferenceData: {
     createRequest?: { requestId: string };
     conferenceSolution?: {
@@ -74,7 +74,7 @@ export type CalendarEvent = {
   sequence: number;
   attendees: {
     email: string;
-    responseStatus?: "accepted" | "declined" | "tentative" | "needsAction";
+    responseStatus?: 'accepted' | 'declined' | 'tentative' | 'needsAction';
     organizer: boolean;
   }[];
   eventType: string;

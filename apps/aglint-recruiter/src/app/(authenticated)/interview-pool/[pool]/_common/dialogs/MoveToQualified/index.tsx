@@ -24,6 +24,7 @@ function MoveToQualifiedDialog() {
   const [isSaving, setIsSaving] = useState(false);
 
   const moveToQualified = async () => {
+    if (!selUser) return null;
     try {
       setIsSaving(true);
       await supabase

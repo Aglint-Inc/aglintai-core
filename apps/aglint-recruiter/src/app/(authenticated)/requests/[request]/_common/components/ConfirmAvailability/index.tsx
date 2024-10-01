@@ -3,6 +3,7 @@ import {
   type CandReqSlotsType,
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { useRequestAvailabilityDetails } from '@requests/hooks';
 import { useUpdateCandidateAvailability } from '@requests/hooks/useRequestAvailabilityDetails';
@@ -16,7 +17,6 @@ import { useEffect, useState } from 'react';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDrawer from '@/components/Common/UIDrawer';
-import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 
 import DayCardWrapper from '../SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
 import Calendar from './_common/components/Calender';
@@ -97,7 +97,7 @@ function ConfirmAvailability() {
           sessions: allSessions, // sessions
           no_slot_reasons: [],
         },
-        user_tz: userTzDayjs.tz.guess(),
+        user_tz: dayjsLocal.tz.guess(),
         request_id: requestId,
       };
 
@@ -115,7 +115,7 @@ function ConfirmAvailability() {
         } else {
           throw new Error('Booking failed');
         }
-      } catch (error) {
+      } catch (error: any) {
         toast({ variant: 'destructive', title: error.message });
       }
       setLoading(false);

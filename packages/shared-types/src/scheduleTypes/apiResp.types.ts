@@ -62,17 +62,18 @@ export type SessionCombinationRespType = InterviewSessionApiRespType & {
 
 export type SessionInterviewerApiRespType = Pick<
   SessionInterviewerType,
-  | 'first_name'
-  | 'last_name'
-  | 'email'
-  | 'profile_image'
   | 'user_id'
   | 'position'
   | 'training_type'
-  | 'interviewer_type'
-  | 'interview_module_relation_id'
+  | 'first_name'
+  | 'email'
   | 'int_tz'
+  | 'last_name'
+  | 'profile_image'
+  | 'interviewer_module_relation_id'
+  | 'interviewer_type'
 >;
+
 // planCombination reponse types
 export type PlanCombinationRespType = {
   plan_comb_id: string;

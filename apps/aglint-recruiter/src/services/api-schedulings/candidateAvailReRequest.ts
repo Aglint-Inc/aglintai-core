@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { type TargetApiPayloadType } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { CApiError, supabaseWrap } from '@aglint/shared-utils';
 import { candidate_avail_request_schema } from '@aglint/shared-utils/src/scheduling/apiSchemas';
 
 import { mailSender } from '@/utils/mailSender';
@@ -17,15 +17,15 @@ export const candidateAvailReRequest = async ({
   req_body: any;
   organizer_id: string;
   cloned_sessn_ids: string[];
-  start_date_str;
-  end_date_str;
+  start_date_str: string;
+  end_date_str: string;
   request_id: string;
 }) => {
   const { application_id, number_of_days, number_of_slots, recruiter_id } =
     candidate_avail_request_schema.parse(req_body);
   const supabaseAdmin = getSupabaseServer();
 
-  const [cand_avail] = supabaseWrap(
+  const cand_avail = (
     await supabaseAdmin
       .from('candidate_request_availability')
       .insert({
@@ -44,8 +44,13 @@ export const candidateAvailReRequest = async ({
           recruiting_block_keywords: true,
         },
       })
-      .select(),
-  );
+      .select()
+      .single()
+      .throwOnError()
+  ).data;
+  if (!cand_avail) {
+    throw new CApiError('CLIENT', 'No candidate availability found');
+  }
   supabaseWrap(
     await supabaseAdmin.from('request_session_relation').insert(
       cloned_sessn_ids.map((s) => ({
@@ -59,6 +64,8 @@ export const candidateAvailReRequest = async ({
     {
       recruiter_user_id: organizer_id,
       avail_req_id: cand_avail.id,
+      is_preview: false,
+      overridedMailSubBody: null,
     };
 
   await mailSender({

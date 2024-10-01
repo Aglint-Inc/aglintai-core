@@ -1,6 +1,5 @@
 import {
   type APIOptions,
-  type holidayType,
   type InterDayFreeTime,
   type InterDayHolidayOff,
   type InterDayWorkHr,
@@ -8,7 +7,7 @@ import {
   type TimeDurationDayjsType,
   type TimeDurationType,
 } from '@aglint/shared-types';
-import { ScheduleUtils } from '@aglint/shared-utils';
+import { CApiError, dayjsLocal, ScheduleUtils } from '@aglint/shared-utils';
 import { type Dayjs } from 'dayjs';
 
 import { type ScheduleApiDetails } from '../types';
@@ -21,7 +20,6 @@ import {
   isTimeChunksLeftOverlapped,
   isTimeChunksOverLapps,
 } from './time_range_utils';
-import { userTzDayjs } from './userTzDayjs';
 
 // private util functions
 /**
@@ -87,6 +85,9 @@ export const calcEachIntsAPIDetails = (
     const work_day = int_schedule_setting.workingHours.find(
       (day) => current_day.format('dddd').toLowerCase() === day.day,
     );
+    if (!work_day) {
+      throw new CApiError('SERVER_ERROR', 'Invalid working day');
+    }
     const work_hour = {
       startTime: ScheduleUtils.setTimeInDay(
         current_day.format(),
@@ -111,9 +112,9 @@ export const calcEachIntsAPIDetails = (
     };
 
     const is_holiday = api_details.comp_schedule_setting.totalDaysOff.find(
-      (holiday: holidayType) =>
+      (holiday) =>
         current_day.isSame(
-          userTzDayjs(holiday.date, 'DD MMM YYYY').tz(
+          dayjsLocal(holiday.date, 'DD MMM YYYY').tz(
             api_details.comp_schedule_setting.timeZone.tzCode,
           ),
           'date',
@@ -164,8 +165,8 @@ export const calcEachIntsAPIDetails = (
 
     if (current_day.isSame(nearest_curr_time, 'day')) {
       current_day_blocked_times.push({
-        startTime: userTzDayjs(current_day),
-        endTime: userTzDayjs(nearest_curr_time),
+        startTime: dayjsLocal(current_day),
+        endTime: dayjsLocal(nearest_curr_time),
       });
     }
 
@@ -187,25 +188,25 @@ export const calcEachIntsAPIDetails = (
       endTime: current_day.set('hour', api_options.cand_end_time),
     };
     const day1_interviewer_time: TimeDurationDayjsType & { day: string } = {
-      startTime: userTzDayjs(current_day.startOf('day').toISOString()).tz(
+      startTime: dayjsLocal(current_day.startOf('day').toISOString()).tz(
         int_timezone,
       ),
-      endTime: userTzDayjs(current_day.startOf('day').toISOString())
+      endTime: dayjsLocal(current_day.startOf('day').toISOString())
         .tz(int_timezone)
         .endOf('day'),
-      day: userTzDayjs(current_day.startOf('day').format())
+      day: dayjsLocal(current_day.startOf('day').format())
         .tz(int_timezone)
         .format('dddd'),
     };
 
     const day2_interviewer_time: TimeDurationDayjsType & { day: string } = {
-      startTime: userTzDayjs(current_day.endOf('day').toISOString())
+      startTime: dayjsLocal(current_day.endOf('day').toISOString())
         .tz(int_timezone)
         .startOf('day'),
-      endTime: userTzDayjs(current_day.endOf('day').toISOString()).tz(
+      endTime: dayjsLocal(current_day.endOf('day').toISOString()).tz(
         int_timezone,
       ),
-      day: userTzDayjs(current_day.endOf('day').format())
+      day: dayjsLocal(current_day.endOf('day').format())
         .tz(int_timezone)
         .format('dddd'),
     };
@@ -221,10 +222,10 @@ export const calcEachIntsAPIDetails = (
     if (day1_details.work_hour) {
       const curr_day_work_hrs = getWorkHourFromIntAvil(
         {
-          startTime: userTzDayjs(day1_details.work_hour.startTime).tz(
+          startTime: dayjsLocal(day1_details.work_hour.startTime).tz(
             int_timezone,
           ),
-          endTime: userTzDayjs(day1_details.work_hour.endTime).tz(int_timezone),
+          endTime: dayjsLocal(day1_details.work_hour.endTime).tz(int_timezone),
         },
         day1_interviewer_time,
       );
@@ -269,10 +270,10 @@ export const calcEachIntsAPIDetails = (
       if (day2_work_hours.work_hour) {
         const curr_day_work_hrs = getWorkHourFromIntAvil(
           {
-            startTime: userTzDayjs(day2_work_hours.work_hour.startTime).tz(
+            startTime: dayjsLocal(day2_work_hours.work_hour.startTime).tz(
               int_timezone,
             ),
-            endTime: userTzDayjs(day2_work_hours.work_hour.endTime).tz(
+            endTime: dayjsLocal(day2_work_hours.work_hour.endTime).tz(
               int_timezone,
             ),
           },
@@ -399,8 +400,8 @@ export const calcEachIntsAPIDetails = (
     const work_hr_chunks: TimeDurationDayjsType[] = work_hours_range
       .map((work) => {
         return {
-          startTime: userTzDayjs(work.startTime).tz(api_details.req_user_tz),
-          endTime: userTzDayjs(work.endTime).tz(api_details.req_user_tz),
+          startTime: dayjsLocal(work.startTime).tz(api_details.req_user_tz),
+          endTime: dayjsLocal(work.endTime).tz(api_details.req_user_tz),
         };
       })
       .sort((e1, e2) => {

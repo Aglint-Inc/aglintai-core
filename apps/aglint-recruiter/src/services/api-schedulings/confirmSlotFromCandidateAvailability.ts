@@ -4,23 +4,26 @@ import type {
 } from '@aglint/shared-types';
 import { CApiError, type ProgressLoggerType } from '@aglint/shared-utils';
 
-import type { CandidatesSchedulingV2 } from '../CandidateScheduleV2/CandidatesSchedulingV2';
+import { type ScheduleApiDetails } from '../CandidateScheduleV2/types';
 import { bookRecruiterSelectedOption } from '../CandidateScheduleV2/utils/bookingUtils/bookRecruiterSelectedOption';
 import { fetchCandAvailForBooking } from '../CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchCandidateAvailability';
 
 export const confirmSlotFromCandidateAvailability = async ({
   avail_plans,
   cand_avail_rec,
-  cand_schedule,
+  cand_schedule_db,
   reqProgressLogger,
   request_id,
 }: {
   avail_plans: PlanCombinationRespType[];
   cand_avail_rec: DatabaseTable['candidate_request_availability'];
-  cand_schedule: CandidatesSchedulingV2;
+  cand_schedule_db: ScheduleApiDetails;
   reqProgressLogger: ProgressLoggerType;
   request_id: string;
 }) => {
+  if (!cand_avail_rec.user_timezone) {
+    throw new CApiError('CLIENT', 'User timezone is not available');
+  }
   if (avail_plans.every((plan) => plan.no_slot_reasons.length > 0)) {
     const no_slot_reasons = avail_plans
       .map((plan) => plan.no_slot_reasons.map((reason) => reason.reason))
@@ -61,7 +64,7 @@ export const confirmSlotFromCandidateAvailability = async ({
       user_tz: cand_avail_rec.user_timezone,
       request_id,
     },
-    cand_schedule,
+    cand_schedule_db,
     plan,
     fetched_cand_details,
   );

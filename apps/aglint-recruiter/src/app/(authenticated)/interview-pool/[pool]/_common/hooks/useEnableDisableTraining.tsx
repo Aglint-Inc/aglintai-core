@@ -110,6 +110,7 @@ export const useEnableDisableTraining = () => {
   }: {
     type: 'enable' | 'disable';
   }) => {
+    if (!localModule || !editModule) return;
     try {
       setBannerLoading(true);
       await supabase

@@ -74,6 +74,8 @@ function ArchiveModuleDialog() {
   };
 
   const archiveModule = async () => {
+    if (!editModule) return null;
+
     if (!loading) {
       try {
         setLoading(true);
@@ -142,7 +144,7 @@ function ArchiveModuleDialog() {
               isLoading={loading}
               disabled={isFetching || errors.length > 0}
               onClick={() => {
-                if (editModule.id) archiveModule();
+                if (editModule?.id) archiveModule();
               }}
             >
               Archive

@@ -61,7 +61,7 @@ export const Header = ({
               },
             ]}
           />
-          {checkPermissions(['interview_types']) && (
+          {checkPermissions && checkPermissions(['interview_types']) && (
             <UIButton
               variant='default'
               onClick={() => {

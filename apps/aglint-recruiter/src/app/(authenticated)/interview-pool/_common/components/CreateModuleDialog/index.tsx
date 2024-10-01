@@ -28,8 +28,9 @@ function CreateModuleDialog() {
   const { isCreateDialogOpen } = useModulesStore();
   const [name, setName] = useState('');
   const [objective, setObjective] = useState('');
-  const [selDepartment, setSelDepartment] =
-    useState<DatabaseTable['departments']>(null);
+  const [selDepartment, setSelDepartment] = useState<
+    DatabaseTable['departments'] | null
+  >(null);
   const [isTraining, setIsTraining] = useState(false);
   const [nameError, setNameError] = useState(false);
   const [departmentError, setDepartmentError] = useState(false);
@@ -54,17 +55,19 @@ function CreateModuleDialog() {
   const createModuleHandler = async () => {
     if (!validate() && !isPending) {
       try {
-        await mutateAsync({
-          name: name,
-          description: objective,
-          isTraining: isTraining,
-          department_id: selDepartment.id,
-        });
-        setIsCreateDialogOpen(null);
+        if (selDepartment?.id) {
+          await mutateAsync({
+            name: name,
+            description: objective,
+            isTraining: isTraining,
+            department_id: selDepartment?.id,
+          });
+        }
+        setIsCreateDialogOpen(false);
         setSelectedUsers([]);
       } catch (e) {
         toast.error(e.message);
-        setIsCreateDialogOpen(null);
+        setIsCreateDialogOpen(false);
       }
     }
   };
@@ -107,12 +110,12 @@ function CreateModuleDialog() {
               label='Department'
               value={selDepartment?.id.toString() || ''}
               onValueChange={(value) => {
-                const department = departments.find(
+                const department = (departments || []).find(
                   (d) => d.id.toString() === value,
                 );
                 setSelDepartment(department || null);
               }}
-              menuOptions={departments.map((department) => ({
+              menuOptions={(departments || []).map((department) => ({
                 name: capitalize(department.name),
                 value: department.id.toString(),
               }))}

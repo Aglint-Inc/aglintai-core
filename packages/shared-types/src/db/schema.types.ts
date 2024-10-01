@@ -667,7 +667,7 @@ export type Database = {
           number_of_days: number | null
           number_of_slots: number | null
           recruiter_id: string
-          request_id: string | null
+          request_id: string
           slots: Json[] | null
           total_slots: number | null
           user_timezone: string | null
@@ -686,7 +686,7 @@ export type Database = {
           number_of_days?: number | null
           number_of_slots?: number | null
           recruiter_id: string
-          request_id?: string | null
+          request_id: string
           slots?: Json[] | null
           total_slots?: number | null
           user_timezone?: string | null
@@ -705,7 +705,7 @@ export type Database = {
           number_of_days?: number | null
           number_of_slots?: number | null
           recruiter_id?: string
-          request_id?: string | null
+          request_id?: string
           slots?: Json[] | null
           total_slots?: number | null
           user_timezone?: string | null
@@ -1039,7 +1039,7 @@ export type Database = {
           filter_json: Json
           id: string
           is_flow_agent: boolean
-          request_id: string | null
+          request_id: string
           schedule_options: Json | null
           selected_options: Json[] | null
           session_ids: string[]
@@ -1053,7 +1053,7 @@ export type Database = {
           filter_json: Json
           id?: string
           is_flow_agent?: boolean
-          request_id?: string | null
+          request_id: string
           schedule_options?: Json | null
           selected_options?: Json[] | null
           session_ids?: string[]
@@ -1067,7 +1067,7 @@ export type Database = {
           filter_json?: Json
           id?: string
           is_flow_agent?: boolean
-          request_id?: string | null
+          request_id?: string
           schedule_options?: Json | null
           selected_options?: Json[] | null
           session_ids?: string[]
@@ -1821,7 +1821,7 @@ export type Database = {
           is_resolved: boolean
           other_details: Json | null
           reason: string
-          request_id: string | null
+          request_id: string
           session_id: string
           session_relation_id: string | null
           type: Database["public"]["Enums"]["cancel_type"]
@@ -1835,7 +1835,7 @@ export type Database = {
           is_resolved?: boolean
           other_details?: Json | null
           reason: string
-          request_id?: string | null
+          request_id: string
           session_id: string
           session_relation_id?: string | null
           type?: Database["public"]["Enums"]["cancel_type"]
@@ -1849,7 +1849,7 @@ export type Database = {
           is_resolved?: boolean
           other_details?: Json | null
           reason?: string
-          request_id?: string | null
+          request_id?: string
           session_id?: string
           session_relation_id?: string | null
           type?: Database["public"]["Enums"]["cancel_type"]
@@ -2582,7 +2582,7 @@ export type Database = {
           jd_changed: boolean | null
           jd_json: Json | null
           job_criteria: Json | null
-          job_title: string | null
+          job_title: string
           job_type: Database["public"]["Enums"]["public_job_type"] | null
           location_id: number | null
           new_screening_setting: Json
@@ -2619,7 +2619,7 @@ export type Database = {
           jd_changed?: boolean | null
           jd_json?: Json | null
           job_criteria?: Json | null
-          job_title?: string | null
+          job_title: string
           job_type?: Database["public"]["Enums"]["public_job_type"] | null
           location_id?: number | null
           new_screening_setting?: Json
@@ -2656,7 +2656,7 @@ export type Database = {
           jd_changed?: boolean | null
           jd_json?: Json | null
           job_criteria?: Json | null
-          job_title?: string | null
+          job_title?: string
           job_type?: Database["public"]["Enums"]["public_job_type"] | null
           location_id?: number | null
           new_screening_setting?: Json
@@ -5694,8 +5694,8 @@ export type Database = {
         Args: {
           session_ids: string[]
           company_id: string
-          meet_start_date: string
-          meet_end_date: string
+          meet_start_date?: string
+          meet_end_date?: string
         }
         Returns: {
           interview_sessions: Json[]
@@ -6912,3 +6912,4 @@ export type Enums<
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
     : never
+
