@@ -302,7 +302,7 @@ export const useRequestRealtime = () => {
           queryClient.setQueryData<RequestResponse>(
             queryKey,
             getRequests(
-              Object.values(queryData)
+              Object.values(queryData!)
                 .flatMap((entry) => entry)
                 .reduce((acc, curr) => {
                   if (curr.id === payload.new.id)
@@ -332,7 +332,7 @@ export const useRequestRealtime = () => {
           queryClient.setQueryData<RequestResponse>(
             queryKey,
             getRequests(
-              Object.values(queryData)
+              Object.values(queryData!)
                 .flatMap((entry) => entry)
                 .reduce((acc, curr) => {
                   if (curr.id !== (payload.old as any).id) acc.push(curr);
@@ -355,7 +355,7 @@ export const useRequestRealtime = () => {
         .forEach(([queryKey, queryData]) => {
           queryClient.setQueryData<RequestProgress[]>(
             queryKey,
-            [...queryData, payload.new].toSorted(
+            [...queryData!, payload.new].toSorted(
               (a, z) =>
                 dayjsLocal(a.created_at).date() -
                 dayjsLocal(z.created_at).date(),
@@ -376,7 +376,7 @@ export const useRequestRealtime = () => {
         .forEach(([queryKey, queryData]) => {
           queryClient.setQueryData<RequestProgress[]>(
             queryKey,
-            queryData.reduce((acc, curr) => {
+            queryData!.reduce((acc, curr) => {
               if (curr.id === payload.new.id) acc.push(payload.new);
               else acc.push(curr);
               return acc;
@@ -395,7 +395,7 @@ export const useRequestRealtime = () => {
         .forEach(([queryKey, queryData]) => {
           queryClient.setQueryData<RequestProgress[]>(
             queryKey,
-            queryData.reduce((acc, curr) => {
+            queryData!.reduce((acc, curr) => {
               if (curr.id !== (payload.old as any).id) acc.push(curr);
               return acc;
             }, [] as RequestProgress[]),
@@ -620,10 +620,7 @@ type UpdateRequest = {
   requestId: DatabaseTable['request']['id'];
   requestPayload: Omit<DatabaseTableUpdate['request'], 'id'>;
 };
-const updateRequest = async ({
-  requestId,
-  requestPayload,
-}: UpdateRequest) =>
+const updateRequest = async ({ requestId, requestPayload }: UpdateRequest) =>
   await supabase
     .from('request')
     .update(requestPayload)

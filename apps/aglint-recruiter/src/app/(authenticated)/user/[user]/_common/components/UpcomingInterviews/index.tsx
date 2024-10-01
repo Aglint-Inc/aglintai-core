@@ -53,8 +53,8 @@ const List = ({
             interview?.candidate?.last_name || '',
           )}
         </h3>
-        <p className='text-sm text-gray-500'>{interview.job}</p>
-        <p className='text-sm text-gray-500'>
+        <p className='text-sm text-muted-foreground'>{interview.job}</p>
+        <p className='text-sm text-muted-foreground'>
           {`${dayjsLocal(interview.start_time).format('YYYY-MM-DD')} at ${dayjsLocal(interview.start_time).format('hh:mm A')}`}
         </p>
       </div>

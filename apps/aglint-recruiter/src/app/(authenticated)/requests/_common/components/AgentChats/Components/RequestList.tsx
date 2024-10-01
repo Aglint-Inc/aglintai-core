@@ -39,12 +39,12 @@ const RequestList = ({ requests }: { requests: RequestListProps[] }) => {
     <div className='space-y-1'>
       {requests.length === 0 ? (
         <div className='space-y-1 text-neutral-500'>
-          <p className='text-sm text-gray-500'>No requests found.</p>
+          <p className='text-sm text-muted-foreground'>No requests found.</p>
         </div>
       ) : (
         <>
           <div className='text-neutral-500'>
-            <p className='text-base font-normal text-gray-500'>
+            <p className='text-base font-normal text-muted-foreground'>
               Here are the list of requests :
             </p>
           </div>

@@ -46,11 +46,15 @@ function DefaultViewRequestCard({
           isCompactList && 'px-2 py-3',
         )}
       >
-        <Link href={`/requests/${props.id}`} passHref className='flex-grow cursor-pointer '>
-          <div className='flex items-center space-x-2 cursor-pointer hover:underline'>
+        <Link
+          href={`/requests/${props.id}`}
+          passHref
+          className='flex-grow cursor-pointer'
+        >
+          <div className='flex cursor-pointer items-center space-x-2 hover:underline'>
             <Label
               className={cn(
-                'line-clamp-1 flex-grow whitespace-normal cursor-pointer break-words text-md ',
+                'text-md line-clamp-1 flex-grow cursor-pointer whitespace-normal break-words',
                 {
                   'font-medium': !isCompactList,
                   'text-sm font-normal': isCompactList,
@@ -97,8 +101,8 @@ function DefaultViewRequestCard({
           >
             <div className='space-y-3'>
               <div className='flex gap-2'>
-              <Badge
-              className='text-xs'
+                <Badge
+                  className='text-xs'
                   variant={
                     props?.status === 'to_do'
                       ? 'secondary'
@@ -112,7 +116,7 @@ function DefaultViewRequestCard({
                   {capitalizeFirstLetter(props.status)}
                 </Badge>
                 <Badge
-                className='text-xs'
+                  className='text-xs'
                   variant={
                     props?.type === 'decline_request'
                       ? 'destructive'
@@ -121,7 +125,7 @@ function DefaultViewRequestCard({
                 >
                   {capitalizeFirstLetter(props.type)}
                 </Badge>
-              
+
                 {props?.request_note[0]?.note && (
                   <TooltipProvider>
                     <Tooltip>
@@ -164,8 +168,8 @@ function DefaultViewRequestCard({
                                 : ''}
                             </Link>
                           </div>
-                          <div className='text-sm flex items-center'>
-                          <Clock strokeWidth={1.5} className="w-4 h-4 mr-1" />
+                          <div className='flex items-center text-sm'>
+                            <Clock strokeWidth={1.5} className='mr-1 h-4 w-4' />
                             {dayjsLocal(props.created_at).fromNow()}{' '}
                           </div>
                         </div>
@@ -251,20 +255,20 @@ const InfoItem = ({
 }) => {
   if (variant === 'column') {
     return (
-      <div className='flex flex-col items-start space-x-2 '>
-        <div className='flex flex-row items-center gap-1 mt-1'>
+      <div className='flex flex-col items-start space-x-2'>
+        <div className='mt-1 flex flex-row items-center gap-1'>
           <div className=''>
             {React.cloneElement(icon as React.ReactElement, {
               className: 'w-4 h-4',
             })}
           </div>
-          <p className='text-sm text-gray-500'>{label}</p>
+          <p className='text-sm text-muted-foreground'>{label}</p>
         </div>
         <div className='flex flex-row items-start gap-1 pl-2'>
           {typeof value === 'string' ? (
             <p className='ml-3 text-sm font-medium'>{value}</p>
           ) : (
-            <p className='text-sm '>{value}</p>
+            <p className='text-sm'>{value}</p>
           )}
         </div>
       </div>
@@ -280,7 +284,7 @@ const InfoItem = ({
         })}
       </div>
       <div className='flex flex-row items-center gap-2'>
-        <p className='text-2xs text-gray-500'>{label}</p>
+        <p className='text-2xs text-muted-foreground'>{label}</p>
         {typeof value === 'string' ? (
           <p className='text-xs font-medium'>{value}</p>
         ) : (

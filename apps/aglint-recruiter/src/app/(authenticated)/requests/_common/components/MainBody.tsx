@@ -96,9 +96,9 @@ const MainBody = () => {
             }}
           >
             {openChat ? (
-              <PanelLeftClose className='h-6 w-6 text-gray-500' />
+              <PanelLeftClose className='h-6 w-6 text-muted-foreground' />
             ) : (
-              <PanelLeftOpen className='h-6 w-6 text-gray-500' />
+              <PanelLeftOpen className='h-6 w-6 text-muted-foreground' />
             )}
           </Button>
         </div>

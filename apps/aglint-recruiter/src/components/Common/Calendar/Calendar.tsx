@@ -155,7 +155,7 @@ function onEventContent() {
   return (
     <div className='flex flex-col items-center gap-3'>
       <Calendar size={30} className='text-gray-400' />
-      <UITypography type='small' variant='p' className='text-gray-500'>
+      <UITypography type='small' variant='p' className='text-muted-foreground'>
         No events
       </UITypography>
     </div>

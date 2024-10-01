@@ -268,7 +268,7 @@ export const useReorderInterviewSessions = () => {
         queryClient.getQueryData<InterviewPlansType>(queryKey);
       queryClient.setQueryData<InterviewPlansType>(
         queryKey,
-        oldInterviewPlan.map((item) =>
+        (oldInterviewPlan ?? []).map((item) =>
           item.id === payload.interviewPlanId
             ? { ...item, interview_session: payload.updatedInterviewSessions }
             : item,
@@ -280,7 +280,7 @@ export const useReorderInterviewSessions = () => {
       toast.error('Unable to reorder sessions');
       queryClient.setQueryData<InterviewPlansType>(
         queryKey,
-        context.oldInterviewPlan,
+        context!.oldInterviewPlan!,
       );
     },
   });

@@ -1,7 +1,11 @@
 import { interviewModuleInsertSchema } from '@aglint/shared-types';
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type RequiredPayload,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 const schema = interviewModuleInsertSchema.extend({
@@ -15,19 +19,20 @@ const mutation = async ({
 }: PrivateProcedure<typeof schema>) => {
   const db = createPrivateClient();
   delete input.isTraining;
+  const payload = {
+    ...input,
+    recruiter_id,
+    settings: {
+      require_training: input.isTraining,
+      noShadow: 2,
+      noReverseShadow: 2,
+      reqruire_approval: false,
+    },
+  };
   return (
     await db
       .from('interview_module')
-      .insert({
-        ...input,
-        recruiter_id,
-        settings: {
-          require_training: input.isTraining,
-          noShadow: 2,
-          noReverseShadow: 2,
-          reqruire_approval: false,
-        },
-      })
+      .insert(payload as RequiredPayload<typeof payload>)
       .select('id')
       .single()
       .throwOnError()

@@ -42,7 +42,7 @@ const mutation = async ({ input }: PrivateProcedure<typeof schema>) => {
       if (error) {
         throw new Error(error.message);
       }
-      userEmail = response.data.emailAddresses[0].value;
+      userEmail = response?.data?.emailAddresses?.[0].value ?? '';
       return;
     },
   );

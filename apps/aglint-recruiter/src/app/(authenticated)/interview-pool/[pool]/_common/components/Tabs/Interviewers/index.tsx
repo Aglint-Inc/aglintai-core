@@ -148,7 +148,7 @@ function Interviewers() {
                                 />
                               )}
                             </div>
-                            <div className='text-sm text-gray-500'>
+                            <div className='text-sm text-muted-foreground'>
                               {interviewer.role}
                             </div>
                           </div>
