@@ -104,6 +104,6 @@ export async function executeWorkflowAction<T1 extends any, U extends unknown>(
       log: err_log,
       is_progress_step: false,
     });
-    throw new CApiError('WORKFLOW_ACTION', err.message, 500);
+    throw new CApiError('WORKFLOW_ACTION', err.message, undefined, 500);
   }
 }

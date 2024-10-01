@@ -8,7 +8,7 @@ import { type ProgressLoggerType } from '@aglint/shared-utils/src/request-workfl
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { type z } from 'zod';
 
-import type { CandidatesSchedulingV2 } from '../CandidateScheduleV2/CandidatesSchedulingV2';
+import type { CandidatesScheduling } from '../CandidateSchedule/CandidatesScheduling';
 import { type agentSelfScheduleInstruction } from './textTransforms/selfScheduleLinkInstruction';
 
 export const findCandSelectedSlots = async ({
@@ -20,7 +20,7 @@ export const findCandSelectedSlots = async ({
   cand_avail: DatabaseTable['candidate_request_availability']['slots'];
   reqProgressLogger: ProgressLoggerType;
   request_assignee_tz: string;
-  cand_schedule: CandidatesSchedulingV2;
+  cand_schedule: CandidatesScheduling;
 }) => {
   const ai_response: z.output<typeof agentSelfScheduleInstruction> = {
     candidateAvailability: {

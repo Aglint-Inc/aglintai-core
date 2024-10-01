@@ -10,8 +10,8 @@ import { dayjsLocal, ScheduleUtils } from '@aglint/shared-utils';
 import { nanoid } from 'nanoid';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
-import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { planCombineSlots } from '@/services/CandidateScheduleV2/utils/planCombine';
+import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
+import { planCombineSlots } from '@/services/CandidateSchedule/utils/planCombine';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const verifyRecruiterSelectedSlots = async (
@@ -27,7 +27,7 @@ const verifyRecruiterSelectedSlots = async (
   } = await fetch_details_from_db(req_body);
   const selected_options = filered_selected_options;
 
-  const cand_schedule = new CandidatesSchedulingV2({
+  const cand_schedule = new CandidatesScheduling({
     include_conflicting_slots: {
       out_of_office: true,
       out_of_working_hrs: true,

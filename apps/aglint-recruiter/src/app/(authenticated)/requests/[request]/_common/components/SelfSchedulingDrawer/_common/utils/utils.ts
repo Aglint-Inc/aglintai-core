@@ -11,7 +11,7 @@ export const transformAvailability = (
 ) => {
   const intArray = availabilities
     ? Object?.entries(availabilities)?.map(([, value]) => ({
-        ...value,
+        ...(value as any),
       }))
     : [];
 

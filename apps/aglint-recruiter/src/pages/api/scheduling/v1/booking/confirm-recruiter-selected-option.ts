@@ -3,16 +3,16 @@ import { type APIConfirmRecruiterSelectedOption } from '@aglint/shared-types';
 import { CApiError } from '@aglint/shared-utils';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
-import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { bookRecruiterSelectedOption } from '@/services/CandidateScheduleV2/utils/bookingUtils/bookRecruiterSelectedOption';
-import { fetchCandAvailForBooking } from '@/services/CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchCandidateAvailability';
+import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
+import { bookRecruiterSelectedOption } from '@/services/CandidateSchedule/utils/bookingUtils/bookRecruiterSelectedOption';
+import { fetchCandAvailForBooking } from '@/services/CandidateSchedule/utils/bookingUtils/dbFetch/fetchCandidateAvailability';
 
 const confirmRecruiterSelectedOptions = async (
   req_body: APIConfirmRecruiterSelectedOption,
 ) => {
   const fetched_details = await fetchCandAvailForBooking(req_body);
 
-  const cand_schedule = new CandidatesSchedulingV2(fetched_details.zod_options);
+  const cand_schedule = new CandidatesScheduling(fetched_details.zod_options);
 
   await cand_schedule.fetchDetails({
     params: {
