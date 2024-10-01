@@ -5,14 +5,17 @@ import {
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
 import { SchemaCandidateDirectBooking } from '@aglint/shared-types/src/aglintApi/zodSchemas/candidate-self-schedule';
-import { ScheduleUtils, scheduling_options_schema } from '@aglint/shared-utils';
+import {
+  dayjsLocal,
+  ScheduleUtils,
+  scheduling_options_schema,
+} from '@aglint/shared-utils';
 import { type z } from 'zod';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { bookCandidateSelectedOption } from '@/services/CandidateScheduleV2/utils/bookingUtils/bookCandidateSelectedOption';
 import { fetchDBScheduleDetails } from '@/services/CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchDBScheduleDetails';
-import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 
 const candidateSelfSchedule = async (
   parsed: z.infer<typeof SchemaCandidateDirectBooking>,
@@ -95,10 +98,10 @@ const getCandFilteredSlots = (
       ++curr_round_idx
     ) {
       if (
-        userTzDayjs(session_rounds[curr_round_idx][0].start_time)
+        dayjsLocal(session_rounds[curr_round_idx][0].start_time)
           .tz(parsed_body.cand_tz)
           .format() !== parsed_body.selected_plan[curr_round_idx].start_time &&
-        userTzDayjs(
+        dayjsLocal(
           session_rounds[curr_round_idx][
             session_rounds[curr_round_idx].length - 1
           ].end_time,

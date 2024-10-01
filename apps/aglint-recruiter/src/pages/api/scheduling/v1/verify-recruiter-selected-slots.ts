@@ -6,14 +6,12 @@ import {
   type SessionCombinationRespType,
   type SessionsCombType,
 } from '@aglint/shared-types';
-import { ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
-import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { dayjsLocal, ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
 import { nanoid } from 'nanoid';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { planCombineSlots } from '@/services/CandidateScheduleV2/utils/planCombine';
-import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const verifyRecruiterSelectedSlots = async (
@@ -136,7 +134,7 @@ const convertOptionsToDateRangeSlots = (
   } = {};
 
   for (const slot_option of verified_options) {
-    const int_start_date = userTzDayjs(slot_option.sessions[0].start_time)
+    const int_start_date = dayjsLocal(slot_option.sessions[0].start_time)
       .tz(candidate_tz)
       .startOf('day')
       .format();

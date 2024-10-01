@@ -3,7 +3,7 @@
 /* eslint-disable no-console */
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
+import { dayjsLocal } from '@/services/CandidateScheduleV2/utils/dayjsLocal';
 import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
 import {
   type MeetingLimitsConfig,
@@ -12,8 +12,8 @@ import {
 import { seedCalendersUtil } from '@/utils/seed_calender/util';
 // Define an enumeration for meeting types
 
-const cal_start_date = userTzDayjs('2024/06/14').startOf('day').format();
-const cal_end_date = userTzDayjs('2024/08/01').startOf('day').format();
+const cal_start_date = dayjsLocal('2024/06/14').startOf('day').format();
+const cal_end_date = dayjsLocal('2024/08/01').startOf('day').format();
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -68,7 +68,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await deleteAllMeetings(google_cal);
       console.log('deleting completed');
 
-      let cal_day = userTzDayjs(cal_start_date)
+      let cal_day = dayjsLocal(cal_start_date)
         .tz(int_schd_sett.timeZone.tzCode)
         .startOf('day');
       while (cal_day.isSameOrBefore(cal_end_date, 'day')) {

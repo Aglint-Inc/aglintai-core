@@ -1693,7 +1693,7 @@ export type Database = {
           location: string | null
           meeting_id: string | null
           members_meta: Json
-          module_id: string
+          module_id: string | null
           name: string
           parent_session_id: string | null
           recruiter_id: string
@@ -1711,7 +1711,7 @@ export type Database = {
           location?: string | null
           meeting_id?: string | null
           members_meta?: Json
-          module_id: string
+          module_id?: string | null
           name?: string
           parent_session_id?: string | null
           recruiter_id: string
@@ -1729,7 +1729,7 @@ export type Database = {
           location?: string | null
           meeting_id?: string | null
           members_meta?: Json
-          module_id?: string
+          module_id?: string | null
           name?: string
           parent_session_id?: string | null
           recruiter_id?: string
@@ -2850,69 +2850,51 @@ export type Database = {
           company_overview: string | null
           company_website: string | null
           created_at: string
-          e_o_statement: string | null
-          email: string | null
           employee_size: string | null
           employment_type: Json
-          hr_contact: Json | null
           id: string
           industry: string | null
           logo: string | null
-          m_v_statement: string | null
           name: string
           phone_number: string | null
           primary_admin: string
-          primary_contact: Json | null
-          recruiter_type: string | null
           scheduling_reason: Json | null
-          scheduling_settings: Json | null
-          socials: Json | null
+          scheduling_settings: Json
+          socials: Json
           workplace_type: Json
         }
         Insert: {
           company_overview?: string | null
           company_website?: string | null
           created_at?: string
-          e_o_statement?: string | null
-          email?: string | null
           employee_size?: string | null
           employment_type?: Json
-          hr_contact?: Json | null
           id?: string
           industry?: string | null
           logo?: string | null
-          m_v_statement?: string | null
           name: string
           phone_number?: string | null
           primary_admin: string
-          primary_contact?: Json | null
-          recruiter_type?: string | null
           scheduling_reason?: Json | null
-          scheduling_settings?: Json | null
-          socials?: Json | null
+          scheduling_settings?: Json
+          socials?: Json
           workplace_type?: Json
         }
         Update: {
           company_overview?: string | null
           company_website?: string | null
           created_at?: string
-          e_o_statement?: string | null
-          email?: string | null
           employee_size?: string | null
           employment_type?: Json
-          hr_contact?: Json | null
           id?: string
           industry?: string | null
           logo?: string | null
-          m_v_statement?: string | null
           name?: string
           phone_number?: string | null
           primary_admin?: string
-          primary_contact?: Json | null
-          recruiter_type?: string | null
           scheduling_reason?: Json | null
-          scheduling_settings?: Json | null
-          socials?: Json | null
+          scheduling_settings?: Json
+          socials?: Json
           workplace_type?: Json
         }
         Relationships: [
@@ -3010,35 +2992,32 @@ export type Database = {
       recruiter_relation: {
         Row: {
           created_at: string
-          created_by: string
+          created_by: string | null
           id: number
           is_active: boolean
           manager_id: string | null
           recruiter_id: string
-          role: Database["public"]["Enums"]["user_roles"]
-          role_id: string | null
+          role_id: string
           user_id: string
         }
         Insert: {
           created_at?: string
-          created_by?: string
+          created_by?: string | null
           id?: number
           is_active?: boolean
           manager_id?: string | null
           recruiter_id: string
-          role: Database["public"]["Enums"]["user_roles"]
-          role_id?: string | null
+          role_id: string
           user_id: string
         }
         Update: {
           created_at?: string
-          created_by?: string
+          created_by?: string | null
           id?: number
           is_active?: boolean
           manager_id?: string | null
           recruiter_id?: string
-          role?: Database["public"]["Enums"]["user_roles"]
-          role_id?: string | null
+          role_id?: string
           user_id?: string
         }
         Relationships: [
@@ -3114,13 +3093,11 @@ export type Database = {
           created_at: string
           department_id: number | null
           email: string
-          email_auth: Json | null
-          email_outreach_templates: Json[] | null
           employment: Database["public"]["Enums"]["employment_type_enum"]
           first_name: string
           is_calendar_connected: boolean
           joined_at: string | null
-          last_name: string | null
+          last_name: string
           linked_in: string | null
           office_location_id: number | null
           phone: string | null
@@ -3128,7 +3105,7 @@ export type Database = {
           profile_image: string | null
           remote_id: string | null
           schedule_auth: Json | null
-          scheduling_settings: Json | null
+          scheduling_settings: Json
           status: string
           user_id: string
         }
@@ -3138,13 +3115,11 @@ export type Database = {
           created_at?: string
           department_id?: number | null
           email: string
-          email_auth?: Json | null
-          email_outreach_templates?: Json[] | null
           employment?: Database["public"]["Enums"]["employment_type_enum"]
           first_name: string
           is_calendar_connected?: boolean
           joined_at?: string | null
-          last_name?: string | null
+          last_name?: string
           linked_in?: string | null
           office_location_id?: number | null
           phone?: string | null
@@ -3152,8 +3127,8 @@ export type Database = {
           profile_image?: string | null
           remote_id?: string | null
           schedule_auth?: Json | null
-          scheduling_settings?: Json | null
-          status: string
+          scheduling_settings?: Json
+          status?: string
           user_id: string
         }
         Update: {
@@ -3162,13 +3137,11 @@ export type Database = {
           created_at?: string
           department_id?: number | null
           email?: string
-          email_auth?: Json | null
-          email_outreach_templates?: Json[] | null
           employment?: Database["public"]["Enums"]["employment_type_enum"]
           first_name?: string
           is_calendar_connected?: boolean
           joined_at?: string | null
-          last_name?: string | null
+          last_name?: string
           linked_in?: string | null
           office_location_id?: number | null
           phone?: string | null
@@ -3176,7 +3149,7 @@ export type Database = {
           profile_image?: string | null
           remote_id?: string | null
           schedule_auth?: Json | null
-          scheduling_settings?: Json | null
+          scheduling_settings?: Json
           status?: string
           user_id?: string
         }

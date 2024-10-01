@@ -6,9 +6,8 @@ import {
   type NewCalenderEvent,
   type SchedulingSettingType,
 } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 
-import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 import { type GoogleCalender } from '@/services/GoogleCalender/google-calender';
 
 import { getSupabaseServer } from '../supabase/supabaseAdmin';
@@ -109,8 +108,8 @@ export const seedCalendersUtil = (
   };
   const deleteAllMeetings = async (google_cal: GoogleCalender) => {
     const cal_events = await google_cal.getAllCalenderEvents(
-      userTzDayjs(cal_start_date).toISOString(),
-      userTzDayjs(cal_end_date).toISOString(),
+      dayjsLocal(cal_start_date).toISOString(),
+      dayjsLocal(cal_end_date).toISOString(),
     );
 
     for (const evt of cal_events) {
@@ -242,7 +241,7 @@ export const seedCalendersUtil = (
       [MeetingTypeEnum.RecruiterBlock]: { occ_cnt: 0 },
       [MeetingTypeEnum.NOMeeting]: { occ_cnt: 0 },
     };
-    let curr_time = userTzDayjs(curr_day)
+    let curr_time = dayjsLocal(curr_day)
       .tz(int_schd_sett.timeZone.tzCode)
       .startOf('day')
       .set('hours', 9);
@@ -253,7 +252,7 @@ export const seedCalendersUtil = (
     ) {
       return;
     }
-    const work_end_time = userTzDayjs(curr_day)
+    const work_end_time = dayjsLocal(curr_day)
       .tz(int_schd_sett.timeZone.tzCode)
       .startOf('day')
       .set('hours', 17);

@@ -7,7 +7,7 @@ import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { confirmSlotNoConflict } from '@/services/CandidateScheduleV2/utils/bookingUtils/confirmSlotNoConflict';
 import { fetchDBScheduleDetails } from '@/services/CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchDBScheduleDetails';
-import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
+import { dayjsLocal } from '@/services/CandidateScheduleV2/utils/dayjsLocal';
 
 const confirmSlotNoConflicts = async (
   parsed: z.infer<typeof SchemaConfirmSlotNoConflict>,
@@ -26,7 +26,7 @@ const confirmSlotNoConflicts = async (
   const zod_options = scheduling_options_schema.parse({
     include_conflicting_slots: {},
   });
-  const selected_date = userTzDayjs(parsed.selected_slot.slot_start_time)
+  const selected_date = dayjsLocal(parsed.selected_slot.slot_start_time)
     .tz(parsed.cand_tz)
     .format('DD/MM/YYYY');
   const cand_schedule = new CandidatesSchedulingV2(zod_options);

@@ -1,3 +1,15 @@
+alter table "public"."candidate_request_availability" alter column "request_id" set not null;
+
+alter table "public"."interview_filter_json" alter column "request_id" set not null;
+
+alter table "public"."public_jobs" alter column "job_title" set not null;
+
+alter table "public"."recruiter" alter column "name" set not null;
+
+
+alter table "public"."interview_session_cancel" alter column "request_id" set not null;
+
+
 set check_function_bodies = off;
 
 CREATE OR REPLACE FUNCTION public.get_interview_session_data(session_ids uuid[], company_id uuid, meet_start_date timestamp without time zone DEFAULT NULL::timestamp without time zone, meet_end_date timestamp without time zone DEFAULT NULL::timestamp without time zone)
