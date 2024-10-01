@@ -51,16 +51,16 @@ const List = ({
   interview: NonNullable<InterviewerDetailType['all_meetings']>[number];
 }) => {
   const router = useRouterPro();
-  const candidate = interview?.candidate;
+  // const candidate = interview?.candidate;
 
-  const name = getFullName(
-    candidate?.first_name ?? '',
-    candidate?.last_name ?? '',
-  );
-  const date = `${dayjsLocal(interview.start_time).format('YYYY-MM-DD')} at ${dayjsLocal(interview.start_time).format('hh:mm A')}`;
+  // const name = getFullName(
+  //   candidate?.first_name ?? '',
+  //   candidate?.last_name ?? '',
+  // );
+  // const date = `${dayjsLocal(interview.start_time).format('YYYY-MM-DD')} at ${dayjsLocal(interview.start_time).format('hh:mm A')}`;
   return (
     <>
-      <div className='flex items-center justify-between rounded-lg bg-gray-50 p-4'>
+      {/* <div className='flex items-center justify-between rounded-lg bg-gray-50 p-4'>
         <div>
           <h3 className='font-medium'>{name}</h3>
           <p className='text-sm text-muted-foreground'>{interview.job}</p>
@@ -77,8 +77,8 @@ const List = ({
         >
           View Details
         </UIButton>
-      </div>
-{/* Alternate card */}
+      </div>     */}
+    {/* Alternate card */}
       <div className='flex items-center gap-4 rounded-lg'>
         <div className='flex h-[94px] w-[90px] flex-col items-center justify-center rounded-sm bg-gray-50'>
           <div className='text-sm'>

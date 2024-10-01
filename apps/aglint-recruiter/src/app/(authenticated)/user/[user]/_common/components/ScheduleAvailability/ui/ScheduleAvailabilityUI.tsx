@@ -31,13 +31,14 @@ export const ScheduleAvailabilityUI = ({
   return (
     <>
       <SectionSubCard title='Time Zone'>
-        <UITypography variant='p' type='small' className=''>
+
+        <UITypography variant='p' type='small' >
           {timeZone || ' - '}
         </UITypography>
       </SectionSubCard>
 
       <SectionSubCard title='Interview Load'>
-        <div className='flex gap-5'>
+        <div className='flex gap-3'>
           {interviewLoads.map((load) => {
             return <LoadCard key={load.title} load={load} />;
           })}
@@ -49,7 +50,7 @@ export const ScheduleAvailabilityUI = ({
           Set your company&apos;s working hours to define the availability for
           interviews.
         </p>
-        <Table>
+        <Table className='border-gray-200'>
           <TableHeader>
             <TableRow>
               <TableHead>Day</TableHead>
@@ -88,7 +89,7 @@ const SectionSubCard = ({
 }) => {
   return (
     <div className='mb-6'>
-      <h3 className='mb-2 text-lg font-semibold'>{title}</h3>
+      <h3 className='mb-2 text-md font-medium'>{title}</h3>
       <div>{children}</div>
     </div>
   );
@@ -120,13 +121,13 @@ const WorkHourList = ({
 
 const LoadCard = ({ load }: { load: InterviewLoadItemType }) => {
   return (
-    <div className='h-fit min-w-[150px] rounded-sm border-[1px]'>
-      <UITypography className='bg-gray-100 px-4 py-2 text-lg font-semibold'>
+    <div className='h-fit min-w-[150px] rounded-sm bg-gray-50'>
+      <UITypography className='px-4 pt-2 text-md'>
         {load.title}
       </UITypography>
-      <div className='flex gap-2 px-4 py-2'>
-        <UITypography className='text-sm font-bold'>{load.count}</UITypography>
-        <UITypography className='text-sm'>{load.type}</UITypography>
+      <div className='flex flex-col gap-1 px-4 py-2'>
+        <UITypography className='text-xl font-medium'>{load.count}</UITypography>
+        <UITypography className='text-sm text-muted-foreground'>{load.type}</UITypography>
       </div>
     </div>
   );

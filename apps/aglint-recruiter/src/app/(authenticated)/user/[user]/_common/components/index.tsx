@@ -89,7 +89,7 @@ export default function InterviewerDetailsPage() {
         sidebarPosition='left'
         sidebarWidth='480'
       >
-        <main className='relative z-0 flex flex-col gap-10'>
+        <main className='relative z-0 flex flex-col gap-10 pl-4'>
           <section ref={sectionRefs.overview}>
             <KeyMatrics />
           </section>
