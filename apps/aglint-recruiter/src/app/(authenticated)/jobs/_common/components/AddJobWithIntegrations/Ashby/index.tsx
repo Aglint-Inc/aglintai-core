@@ -244,10 +244,12 @@ export function AshbyModalComp() {
                         <CardContent className='flex items-center justify-between p-4'>
                           <div>
                             <p className='font-medium'>{post.title}</p>
-                            <p className='text-sm text-gray-500'>
+                            <p className='text-sm text-muted-foreground'>
                               {post.location}
                             </p>
-                            <p className='text-sm text-gray-500'>Live</p>
+                            <p className='text-sm text-muted-foreground'>
+                              Live
+                            </p>
                           </div>
                           <Checkbox
                             checked={selectedAshbyPostings?.some(

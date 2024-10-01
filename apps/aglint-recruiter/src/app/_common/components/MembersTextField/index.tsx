@@ -77,7 +77,7 @@ function MembersAutoComplete({
                     selectedUsers.filter((us) => us.user_id !== user.user_id),
                   );
                 }}
-                className='ml-1 text-gray-500 hover:text-gray-700'
+                className='ml-1 text-muted-foreground hover:text-gray-700'
               >
                 <X size={12} />
               </button>
@@ -101,7 +101,7 @@ function MembersAutoComplete({
           }}
         >
           {renderUsers.length === 0 ? (
-            <div className='cursor-default px-2 py-1 italic text-gray-500'>
+            <div className='cursor-default px-2 py-1 italic text-muted-foreground'>
               {emptyListText}
             </div>
           ) : (
@@ -144,7 +144,7 @@ function MembersAutoComplete({
                       {getFullName(option.first_name, option.last_name)}
                     </div>
                     <div
-                      className='text-xs text-gray-500'
+                      className='text-xs text-muted-foreground'
                       style={{ textTransform: 'capitalize' }}
                     >
                       {option.position || ''}

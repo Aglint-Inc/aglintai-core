@@ -100,7 +100,7 @@ export const ImportCsv: React.FC = () => {
             <div className='flex items-center justify-between overflow-hidden'>
               <label
                 htmlFor='file-upload'
-                className='flex cursor-pointer items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50'
+                className='flex cursor-pointer items-center justify-center rounded-md border border-border bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50'
               >
                 <Upload className='mr-2 h-5 w-5 text-gray-400' />
                 Re-Upload
@@ -133,9 +133,12 @@ export const ImportCsv: React.FC = () => {
                   handleFileUpload(file);
                 }}
               >
-                <div className='rounded-lg border-2 border-dashed border-gray-300 bg-slate-50  text-center h-[450px] flex flex-col items-center justify-center'>
-                  <FileText className='mx-auto mb-4 h-12 w-12' strokeWidth={1.5}/>
-                  <p className='text-gray-500'>
+                <div className='flex h-[450px] flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-slate-50 text-center'>
+                  <FileText
+                    className='mx-auto mb-4 h-12 w-12'
+                    strokeWidth={1.5}
+                  />
+                  <p className='text-muted-foreground'>
                     Upload a CSV file to import candidates
                   </p>
                 </div>

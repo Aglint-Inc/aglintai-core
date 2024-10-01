@@ -52,7 +52,7 @@ export const InterviewerList = ({
           </Avatar>
           <div>
             <div className='font-medium'>{interviewer.name}</div>
-            <div className='text-sm text-gray-500'>
+            <div className='text-sm text-muted-foreground'>
               {interviewer.role || '-'}
             </div>
           </div>

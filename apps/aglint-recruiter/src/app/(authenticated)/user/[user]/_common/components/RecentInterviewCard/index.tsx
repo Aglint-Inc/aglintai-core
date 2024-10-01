@@ -62,8 +62,8 @@ const List = ({
     <div className='flex items-center justify-between rounded-lg bg-gray-50 p-4'>
       <div>
         <h3 className='font-medium'>{name}</h3>
-        <p className='text-sm text-gray-500'>{interview.job}</p>
-        <p className='text-sm text-gray-500'>{date}</p>
+        <p className='text-sm text-muted-foreground'>{interview.job}</p>
+        <p className='text-sm text-muted-foreground'>{date}</p>
       </div>
       <UIButton
         onClick={() => {

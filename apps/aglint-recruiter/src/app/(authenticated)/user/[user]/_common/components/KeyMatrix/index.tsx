@@ -60,7 +60,7 @@ const Card = ({
   return (
     <div className='text-center'>
       <p className={`text-xl font-bold text-${color}-600`}>{value}</p>
-      <div className='text-sm text-gray-500'>{title}</div>
+      <div className='text-sm text-muted-foreground'>{title}</div>
     </div>
   );
 };

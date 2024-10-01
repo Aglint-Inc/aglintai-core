@@ -100,7 +100,7 @@ function Overview() {
                   schedule?.organizer?.last_name ?? '',
                 )}
               </Link>
-              <p className='text-xs text-gray-500'>
+              <p className='text-xs text-muted-foreground'>
                 {schedule.organizer.position}
               </p>
             </div>
@@ -157,7 +157,7 @@ function Overview() {
         <div className='flex w-full items-center justify-between'>
           <div className='flex items-center space-x-4'>
             <div className='flex-shrink-0'>
-              <div className='flex h-12 w-12 items-center justify-center rounded-full bg-gray-200 text-lg font-medium text-gray-500'>
+              <div className='flex h-12 w-12 items-center justify-center rounded-full bg-gray-200 text-lg font-medium text-muted-foreground'>
                 <User className='h-6 w-6' />
               </div>
             </div>
@@ -181,7 +181,7 @@ function Overview() {
                 })}
               </span>
             </div>
-            <p className='text-xs text-gray-500'>
+            <p className='text-xs text-muted-foreground'>
               {getShortTimeZone(schedule?.candidates?.timezone ?? '')}
             </p>
           </div>

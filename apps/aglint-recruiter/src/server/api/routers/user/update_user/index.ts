@@ -1,4 +1,5 @@
 import { recruiterRelationUpdateSchema } from '@aglint/shared-types';
+import { type CustomSchedulingSettings } from '@aglint/shared-types/src/db/tables/common.types';
 import {} from '@aglint/shared-types/src/db/tables/recruiter.types';
 import { CustomRecruiterUserUpdateSchema } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
 import { type z } from 'zod';
@@ -43,6 +44,7 @@ const mutation = async ({ input }: PrivateProcedure<typeof Schema>) => {
     user_id,
   } = input;
 
+  const newSchedulingSettings = scheduling_settings as CustomSchedulingSettings;
   await db
     .from('recruiter_user')
     .update({
@@ -51,7 +53,7 @@ const mutation = async ({ input }: PrivateProcedure<typeof Schema>) => {
       phone: phone,
       linked_in: linked_in,
       profile_image,
-      scheduling_settings,
+      scheduling_settings: newSchedulingSettings,
     })
     .eq('user_id', user_id)
     .throwOnError();

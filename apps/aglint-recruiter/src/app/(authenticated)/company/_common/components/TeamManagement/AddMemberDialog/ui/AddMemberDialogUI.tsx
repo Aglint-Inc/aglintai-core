@@ -233,7 +233,7 @@ export const AddMemberDialogUI = ({
         </>
       ) : menu === 'pendingMember' ? (
         <div className='space-y-4'>
-          <p className='text-sm text-gray-500'>
+          <p className='text-sm text-muted-foreground'>
             You currently have {converter.toWords(pendingList?.length)} pending
             invites awaiting your response.
           </p>

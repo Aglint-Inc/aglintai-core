@@ -58,7 +58,7 @@ function AllRolesMeetings() {
                   item?.details?.last_name ?? '',
                 )}
               </Link>
-              <p className='text-xs text-gray-500'>{item.label}</p>
+              <p className='text-xs text-muted-foreground'>{item.label}</p>
             </div>
           </div>
         );

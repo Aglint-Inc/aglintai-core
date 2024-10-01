@@ -61,7 +61,7 @@ function HiringTeam({ chat }: { chat: ChatType }) {
               >
                 {item.name}
               </Link>
-              <p className='text-sm text-gray-500'>{item.role}</p>
+              <p className='text-sm text-muted-foreground'>{item.role}</p>
             </div>
           </div>
         );

@@ -43,7 +43,7 @@ export const RequestEmpty = () => {
                   <Check
                     className={`mr-2 h-5 w-5 ${index < 2 ? 'text-green-500' : 'text-gray-300'}`}
                   />
-                  <span className={index < 2 ? 'text-gray-500' : ''}>
+                  <span className={index < 2 ? 'text-muted-foreground' : ''}>
                     {item}
                   </span>
                 </li>
@@ -72,7 +72,7 @@ export const RequestEmpty = () => {
                   <Check
                     className={`mr-2 h-5 w-5 ${index < 2 ? 'text-green-500' : 'text-gray-300'}`}
                   />
-                  <span className={index < 2 ? 'text-gray-500' : ''}>
+                  <span className={index < 2 ? 'text-muted-foreground' : ''}>
                     {item}
                   </span>
                 </li>

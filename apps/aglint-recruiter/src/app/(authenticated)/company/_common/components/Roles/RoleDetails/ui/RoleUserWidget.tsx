@@ -37,7 +37,7 @@ const UserCard = ({ member }) => {
           <Link href={`/user/${member.user_id}`} className='font-medium'>
             {`${member.first_name || ''} ${member.last_name || ''}`.trim()}
           </Link>
-          <p className='text-sm text-gray-500'>{member.position}</p>
+          <p className='text-sm text-muted-foreground'>{member.position}</p>
         </div>
         <div>
           <Badge variant={member.is_suspended ? 'destructive' : 'default'}>

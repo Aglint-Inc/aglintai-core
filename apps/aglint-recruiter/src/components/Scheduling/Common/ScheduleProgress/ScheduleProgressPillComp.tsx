@@ -73,7 +73,7 @@ const ProgressIcon = ({
       );
     default:
       return (
-        <div className='text-gray-500'>
+        <div className='text-muted-foreground'>
           <NotScheduledIcon />
         </div>
       );

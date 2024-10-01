@@ -69,8 +69,15 @@ export default function InterviewTypesPage() {
     : archiveFiltered;
 
   return (
-    <div className='container-lg mx-auto w-full px-4'>
+    <div className='p-4'>
       <div>
+        <Header
+          searchText={searchText}
+          setSearchText={setSearchText}
+          isFilterApplied={isFilterApplied}
+          selectedDepartments={selectedDepartments}
+          setDepartments={setDepartments}
+        />
         <div className='flex flex-row justify-between'>
           <Tabs
             value={activeTab}
@@ -93,13 +100,6 @@ export default function InterviewTypesPage() {
             </TabsList>
           </Tabs>
         </div>
-        <Header
-          searchText={searchText}
-          setSearchText={setSearchText}
-          isFilterApplied={isFilterApplied}
-          selectedDepartments={selectedDepartments}
-          setDepartments={setDepartments}
-        />
         <Card className='w-full'>
           <CardContent className='p-0'>
             <Table>

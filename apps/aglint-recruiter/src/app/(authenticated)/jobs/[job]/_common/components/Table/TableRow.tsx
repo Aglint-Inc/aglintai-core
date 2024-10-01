@@ -76,7 +76,7 @@ export function TableRow({
         </div>
         <div className='truncate'>
           <div className='truncate font-medium'>{application.name}</div>
-          <div className='truncate text-gray-500'>
+          <div className='truncate text-muted-foreground'>
             {application.current_job_title || '---'}
           </div>
         </div>

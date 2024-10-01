@@ -123,7 +123,7 @@ function MembersPopUps({
                       <p className='mb-1 font-semibold'>
                         {getFullName(member.first_name, member.last_name)}
                       </p>
-                      <p className='text-sm text-gray-500'>
+                      <p className='text-sm text-muted-foreground'>
                         {capitalizeFirstLetter(member.role)}
                       </p>
                     </div>

@@ -115,7 +115,7 @@ const UISelectDropDown = ({
             {children ? (
               children
             ) : menuOptions.length === 0 ? (
-              <div className='cursor-default px-2 py-1 italic text-gray-500'>
+              <div className='cursor-default px-2 py-1 italic text-muted-foreground'>
                 No options available
               </div>
             ) : (

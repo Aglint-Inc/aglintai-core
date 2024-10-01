@@ -47,15 +47,6 @@ export default function InterviewerDetailsPage() {
     member_id: user_id,
   });
 
-  const allSchedules = data?.schedules;
-  // ---------------- data
-
-  const interviewLoad = interviewerDetails?.scheduling_settings
-    ?.interviewLoad as SchedulingSettingType['interviewLoad'];
-
-  const interviewType =
-    interviewerDetails?.interview_type as InterviewerDetailType['interview_type'];
-
   //--------------------------------------
   if (isLoading)
     return (
@@ -70,6 +61,15 @@ export default function InterviewerDetailsPage() {
         <UITypography>Fetching Error</UITypography>
       </div>
     );
+
+  const allSchedules = data?.schedules;
+  // ---------------- data
+
+  const interviewLoad = interviewerDetails.scheduling_settings
+    .interviewLoad as SchedulingSettingType['interviewLoad'];
+
+  const interviewType =
+    interviewerDetails?.interview_type as InterviewerDetailType['interview_type'];
 
   return (
     <div className=''>

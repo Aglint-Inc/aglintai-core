@@ -39,7 +39,7 @@ export const TeamManagementUI = ({
       <div className='flex justify-between'>
         <div>
           <h2 className='mb-1 text-xl font-semibold'>Manage User</h2>
-          <p className='mb-6 text-sm text-muted-foreground'>
+          <p className='mb-6 max-w-4xl text-sm text-muted-foreground'>
             Invite your hiring team members and manage their roles and profile
             details in one place. Assign roles such as interviewer, hiring
             manager, or recruiter to ensure an organized team structure and
@@ -126,7 +126,7 @@ export const TeamManagementUI = ({
                   <h3 className='mb-1 text-lg font-medium text-gray-900'>
                     No team members
                   </h3>
-                  <p className='text-sm text-gray-500'>
+                  <p className='text-sm text-muted-foreground'>
                     Get started by adding a new team member.
                   </p>
                 </div>

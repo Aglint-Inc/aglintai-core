@@ -1,4 +1,3 @@
-import { type customSchedulingSettingsSchema } from '@aglint/shared-types/src/db/common.zod';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
@@ -6,7 +5,6 @@ import { type PublicProcedure, publicProcedure } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
 const userSchema = z.object({ user_id: z.string().uuid() });
-type CustomSchedulingSettings = z.infer<typeof customSchedulingSettingsSchema>;
 
 const query = async ({
   input: { user_id },
@@ -122,7 +120,7 @@ const query = async ({
     phone: user.phone ?? '',
     Linkedin: user.linked_in ?? '',
     department: user.departments?.name ?? '',
-    scheduling_settings: user.scheduling_settings as CustomSchedulingSettings,
+    scheduling_settings: user.scheduling_settings,
     linked_in: user.linked_in,
     office_location_id: user?.office_locations?.id,
     employment: user?.employment,

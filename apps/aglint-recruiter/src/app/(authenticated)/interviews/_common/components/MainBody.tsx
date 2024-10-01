@@ -20,11 +20,10 @@ function Interviews() {
     !!(recruiter_user?.schedule_auth as any)?.access_token
   ) {
     return (
-      <div className='container-lg mx-auto w-full px-4'>
-        <header></header>
+      <div className=''>
         <div className='flex w-full flex-row'>
           {/* Left Column: All Upcoming Interviews */}
-          <div className='w-7/12 space-y-4 pr-6'>
+          <div className='w-8/12 space-y-4 pr-6'>
             <h2 className='text-lg font-semibold'>Upcoming Interviews</h2>
             <ScheduleStatesProvider>
               <UpComingInterviews />
@@ -32,8 +31,7 @@ function Interviews() {
           </div>
 
           {/* Right Column: My Interviews and Recently Completed Interviews */}
-          <div className='flex w-5/12 flex-col'>
-            <div className='p-12'></div>
+          <div className='flex w-4/12 flex-col border-l'>
             <MyInterviews />
             <RecentCompletedInterviews />
           </div>
