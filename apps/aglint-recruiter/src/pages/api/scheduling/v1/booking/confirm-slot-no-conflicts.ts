@@ -1,13 +1,16 @@
 /* eslint-disable security/detect-object-injection */
 import { SchemaConfirmSlotNoConflict } from '@aglint/shared-types/src/aglintApi/zodSchemas/candidate-self-schedule';
-import { scheduling_options_schema } from '@aglint/shared-utils';
+import {
+  CApiError,
+  dayjsLocal,
+  scheduling_options_schema,
+} from '@aglint/shared-utils';
 import { type z } from 'zod';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
 import { confirmSlotNoConflict } from '@/services/CandidateScheduleV2/utils/bookingUtils/confirmSlotNoConflict';
 import { fetchDBScheduleDetails } from '@/services/CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchDBScheduleDetails';
-import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 
 const confirmSlotNoConflicts = async (
   parsed: z.infer<typeof SchemaConfirmSlotNoConflict>,
@@ -22,11 +25,10 @@ const confirmSlotNoConflicts = async (
       },
     ],
   });
-  const { filter_json_data } = schedule_db_details;
   const zod_options = scheduling_options_schema.parse({
     include_conflicting_slots: {},
   });
-  const selected_date = userTzDayjs(parsed.selected_slot.slot_start_time)
+  const selected_date = dayjsLocal(parsed.selected_slot.slot_start_time)
     .tz(parsed.cand_tz)
     .format('DD/MM/YYYY');
   const cand_schedule = new CandidatesSchedulingV2(zod_options);
@@ -36,10 +38,13 @@ const confirmSlotNoConflicts = async (
       req_user_tz: parsed.cand_tz,
       start_date_str: selected_date,
       end_date_str: selected_date,
-      company_id: filter_json_data.applications.candidates.recruiter.id,
-      session_ids: filter_json_data.session_ids,
+      company_id: schedule_db_details.company.id,
+      session_ids: schedule_db_details.session_ids,
     },
   });
+  if (!cand_schedule.db_details) {
+    throw new CApiError('SERVER_ERROR', 'No db details found');
+  }
 
   const [first_day_slots] = cand_schedule.findCandSlotForTheDay();
 
@@ -51,7 +56,7 @@ const confirmSlotNoConflicts = async (
   });
   await confirmSlotNoConflict(
     parsed,
-    cand_schedule,
+    cand_schedule.db_details,
     curr_time_slots[0],
     schedule_db_details,
   );

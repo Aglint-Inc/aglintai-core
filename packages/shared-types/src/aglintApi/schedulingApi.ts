@@ -35,17 +35,17 @@ export type APIFindAltenativeTimeSlot = z.infer<
 >;
 
 export type APICandScheduleMailThankYou = {
-  availability_request_id?: string;
+  availability_request_id: string | null;
   cand_tz: string;
   session_ids: string[];
   application_id: string;
   is_debreif: boolean;
-  filter_id?: string;
+  filter_id: string | null;
   booking_request_from?: 'phone_agent' | 'email_agent' | 'candidate';
 };
 type t = typeof schema_find_availability_payload;
 
-export type APIOptions = z.infer<typeof scheduling_options_schema>;
+export type APIOptions = z.output<typeof scheduling_options_schema>;
 
 export type APIFindAvailability = z.infer<
   typeof schema_find_availability_payload
@@ -74,7 +74,7 @@ export type APIVerifyRecruiterSelectedSlots = {
 };
 
 export type AssignTrainingInt = {
-  interviewer_module_relation_id: string;
+  interviewer_module_relation_id: string | null;
   session_id: string;
 };
 export type APIAssignTrainingInterviewerType = {

@@ -94,18 +94,31 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
 
   const [meeting_details] = await Promise.all([
     (async () => {
-      const [meeting_details] = supabaseWrap(
+      const meeting_details = (
         await supabaseAdmin
           .from('meeting_details')
           .select()
-          .eq('session_id', session_id),
-      );
-      const [rec_auth] = await supabaseWrap(
+          .eq('session_id', session_id)
+          .single()
+          .throwOnError()
+      ).data;
+      if (!meeting_details) {
+        throw new CApiError('SERVER_ERROR', 'No meeting found');
+      }
+      if (!meeting_details.organizer_id) {
+        throw new CApiError('SERVER_ERROR', 'No organizer found');
+      }
+      const rec_auth = await (
         await supabaseAdmin
           .from('recruiter_user')
           .select('user_id,email,schedule_auth')
-          .eq('user_id', meeting_details.organizer_id),
-      );
+          .eq('user_id', meeting_details.organizer_id)
+          .single()
+          .throwOnError()
+      ).data;
+      if (!rec_auth) {
+        throw new CApiError('SERVER_ERROR', 'No organizer auth found');
+      }
       return {
         ...meeting_details,
         organizer_email: rec_auth.email,
@@ -114,18 +127,23 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
       };
     })(),
   ]);
-
-  await createSesnRelnIfNotExists({
-    module_id: meeting_details.module_id,
-    session_id,
-    user_id: payload.new_int_user_id,
-  });
-  const session_intes = supabaseWrap(
+  if (meeting_details.module_id) {
+    await createSesnRelnIfNotExists({
+      module_id: meeting_details.module_id,
+      session_id,
+      user_id: payload.new_int_user_id,
+    });
+  }
+  const session_intes = (
     await supabaseAdmin
       .from('meeting_interviewers')
       .select()
-      .eq('session_id', session_id),
-  );
+      .eq('session_id', session_id)
+      .throwOnError()
+  ).data;
+  if (!session_intes) {
+    throw new CApiError('SERVER_ERROR', 'No interviewers found');
+  }
 
   const meeting_organizer_auth: Omit<
     CalEventAttendeesAuthDetails,
@@ -136,31 +154,40 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
     user_id: meeting_details.organizer_id,
   };
 
-  const session_ints_auth_details = await supabaseWrap(
+  const session_ints_auth_details = await (
     await supabaseAdmin
       .from('recruiter_relation')
       .select(
-        'recruiter(id,integrations(service_json)),recruiter_user!public_recruiter_relation_user_id_fkey(user_id, email,schedule_auth)',
+        'recruiter!inner(id,integrations!inner(service_json)),recruiter_user!public_recruiter_relation_user_id_fkey!inner(user_id, email,schedule_auth)',
       )
       .in(
         'user_id',
         session_intes.map((i) => i.user_id),
-      ),
-  );
+      )
+      .throwOnError()
+  ).data;
+  if (!session_ints_auth_details) {
+    throw new CApiError('SERVER_ERROR', 'No interviewers found');
+  }
+
   const session_ints_auth: (CalEventAttendeesAuthDetails & {
     session_relation_id: string;
     is_confirmed: boolean;
-  })[] = session_ints_auth_details.map((int) => ({
-    email: int.recruiter_user.email,
-    schedule_auth: int.recruiter_user.schedule_auth as ScheduleAuthType,
-    user_id: int.recruiter_user.user_id,
-    is_confirmed: session_intes.find(
+  })[] = session_ints_auth_details.map((int) => {
+    const int_details = session_intes.find(
       (s_int) => s_int.user_id === int.recruiter_user.user_id,
-    ).is_confirmed,
-    session_relation_id: session_intes.find(
-      (s_int) => s_int.user_id === int.recruiter_user.user_id,
-    ).session_relation_id,
-  }));
+    );
+    if (!int_details) {
+      throw new CApiError('SERVER_ERROR', 'No interviewers found');
+    }
+    return {
+      email: int.recruiter_user.email,
+      schedule_auth: int.recruiter_user.schedule_auth as ScheduleAuthType,
+      user_id: int.recruiter_user.user_id,
+      is_confirmed: int_details.is_confirmed ?? false,
+      session_relation_id: int_details.session_relation_id as string,
+    };
+  });
   const hashed_comp_cred =
     session_ints_auth_details[0].recruiter.integrations.service_json;
 
@@ -193,7 +220,13 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
   };
 };
 
-const updateInterviewers = async ({ id, is_confirmed }) => {
+const updateInterviewers = async ({
+  id,
+  is_confirmed,
+}: {
+  id: string;
+  is_confirmed: boolean;
+}) => {
   const supabaseAdmin = getSupabaseServer();
 
   supabaseWrap(
@@ -224,20 +257,26 @@ const createSesnRelnIfNotExists = async ({
 }) => {
   const supabaseAdmin = getSupabaseServer();
 
-  const [new_int_module_reln] = supabaseWrap(
+  const new_int_module_reln = (
     await supabaseAdmin
       .from('interview_module_relation')
       .select()
       .eq('user_id', user_id)
-      .eq('module_id', module_id),
-  );
-  const [sesnReln] = supabaseWrap(
+      .eq('module_id', module_id)
+      .single()
+      .throwOnError()
+  ).data;
+  if (!new_int_module_reln) {
+    throw new CApiError('SERVER_ERROR', 'No interview module relation found');
+  }
+  const sesnReln = (
     await supabaseAdmin
       .from('interview_session_relation')
       .select()
-      .eq('interview_module_relation_id', new_int_module_reln.id),
-    false,
-  );
+      .eq('interview_module_relation_id', new_int_module_reln.id)
+      .single()
+      .throwOnError()
+  ).data;
   if (!sesnReln) {
     await supabaseWrap(
       await supabaseAdmin.from('interview_session_relation').insert({

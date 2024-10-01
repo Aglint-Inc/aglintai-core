@@ -96,6 +96,7 @@ function TrainingSettingDrawer(
         </>
       }
       onClose={() => {
+        if (!editModule || !localModule) return;
         if (
           !_.isEqual(
             {
@@ -129,25 +130,26 @@ function TrainingSettingDrawer(
             <div
               className={`space-y-4 ${!localModule?.settings?.require_training ? 'pointer-events-none opacity-50' : ''}`}
             >
-              <div className='flex flex-col items-left gap-2'>
-                <div className="flex items-center gap-2">
-                <Checkbox
-                  checked={localModule?.settings?.reqruire_approval}
-                  onCheckedChange={(checked) => {
-                    setLocalModule({
-                      ...localModule,
-                      settings: {
-                        ...localModule.settings,
-                        reqruire_approval: checked === true,
-                      },
-                    });
-                  }}
-                  id='require-approval'
-                />
-                <Label htmlFor='require-approval'>Require Approval</Label>
+              <div className='items-left flex flex-col gap-2'>
+                <div className='flex items-center gap-2'>
+                  <Checkbox
+                    checked={localModule?.settings?.reqruire_approval}
+                    onCheckedChange={(checked) => {
+                      setLocalModule({
+                        ...localModule,
+                        settings: {
+                          ...localModule.settings,
+                          reqruire_approval: checked === true,
+                        },
+                      });
+                    }}
+                    id='require-approval'
+                  />
+                  <Label htmlFor='require-approval'>Require Approval</Label>
                 </div>
-                <div className="text-sm text-muted-foreground">
-                By selecting this option, the approval of the chosen members is required to move a trainee to the qualified stage.
+                <div className='text-sm text-muted-foreground'>
+                  By selecting this option, the approval of the chosen members
+                  is required to move a trainee to the qualified stage.
                 </div>
               </div>
 

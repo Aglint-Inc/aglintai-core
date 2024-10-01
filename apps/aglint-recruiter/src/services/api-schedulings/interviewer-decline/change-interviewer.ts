@@ -16,13 +16,17 @@ type FuncParams = {
 export const changeInterviewer = async (payload: FuncParams) => {
   const supabaseAdmin = getSupabaseServer();
 
-  const [cancel_rec] = supabaseWrap(
+  const cancel_rec = (
     await supabaseAdmin
       .from('interview_session_cancel')
       .select()
-      .eq('request_id', payload.request_id),
-  );
-
+      .eq('request_id', payload.request_id)
+      .single()
+      .throwOnError()
+  ).data;
+  if (!cancel_rec || !cancel_rec.session_relation_id) {
+    throw new CApiError('CLIENT', 'No cancel record found');
+  }
   const alternate_slots: APIRespFindReplaceMentInts =
     await findReplacementIntsUtil({
       input: {

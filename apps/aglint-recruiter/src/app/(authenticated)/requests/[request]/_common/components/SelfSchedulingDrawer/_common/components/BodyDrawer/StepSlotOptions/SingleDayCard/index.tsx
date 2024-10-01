@@ -1,4 +1,5 @@
 import { type SessionCombinationRespType } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
 import dayjs from 'dayjs';
 import { ChevronDown } from 'lucide-react';
@@ -6,7 +7,6 @@ import React, { useEffect } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
-import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 
 import ConflictWithHover from '../../../ui/ConflictWithHover';
 import { SingleDaySchedule } from '../../../ui/SingleDaySchedule';
@@ -37,7 +37,7 @@ function SingleDayCard({
   const totalTimeRange = formatTimeWithTimeZone({
     start_time: sessions[0].start_time,
     end_time: sessions[sessions.length - 1].end_time,
-    timeZone: userTzDayjs.tz.guess(),
+    timeZone: dayjsLocal.tz.guess(),
   });
 
   const sesAllConflicts = sessions.flatMap((session) =>

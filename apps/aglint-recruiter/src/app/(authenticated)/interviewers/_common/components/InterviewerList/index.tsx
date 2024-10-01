@@ -19,7 +19,9 @@ import { type useAllInterviewers } from '../../hooks/useAllInterviewers';
 export const InterviewerList = ({
   interviewer,
 }: {
-  interviewer: ReturnType<typeof useAllInterviewers>['data'][number];
+  interviewer: NonNullable<
+    ReturnType<typeof useAllInterviewers>['data']
+  >[number];
 }) => {
   const location = [
     interviewer.location?.city,
