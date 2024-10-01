@@ -4,7 +4,6 @@ import '@styles/globals.css';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
-import { ScrollArea } from '@components/ui/scroll-area';
 import {
   Tooltip,
   TooltipContent,
@@ -179,7 +178,7 @@ export default function AppLayout({ children }) {
               </div>
             </div>
             <div className='flex w-full flex-row'>
-              <nav className='h-[calc(100vh-64px)] flex flex-col justify-between'>
+              <nav className='flex h-[calc(100vh-64px)] flex-col justify-between'>
                 <SideNavbar />
               </nav>
               {/* <div className='h-[calc(100vh-64px)] overflow-auto mx-2 mt-2 w-full rounded-lg border bg-white py-4'>
@@ -189,17 +188,15 @@ export default function AppLayout({ children }) {
                   <NotFound />
                 )}
               </div> */}
-              <div className="ml-0.5 mt-2 mr-3  w-full">
-      <ScrollArea className="h-[calc(100vh-64px)] rounded-lg border bg-white overflow-auto">
-        <div className="">
-          {checkPermissions(PERMISSIONS[String(router.pathName)]) ? (
-            children
-          ) : (
-            <NotFound />
-          )}
-        </div>
-      </ScrollArea>
-    </div>
+              <div className='ml-0.5 mr-3 mt-2 w-full'>
+                <div className=''>
+                  {checkPermissions(PERMISSIONS[String(router.pathName)]) ? (
+                    children
+                  ) : (
+                    <NotFound />
+                  )}
+                </div>
+              </div>
             </div>
           </>
         )}

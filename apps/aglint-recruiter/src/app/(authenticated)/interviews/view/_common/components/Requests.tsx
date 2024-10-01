@@ -7,18 +7,25 @@ import { LayoutList } from 'lucide-react';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
+import { WithPermission } from '@/components/withPermission';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-function Requests({ session_id }) {
+import { useScheduleDetails } from '../hooks/useScheduleDetails';
+
+function Component() {
   const router = useRouterPro();
+  const { data } = useScheduleDetails();
+
+  const schedule = data?.schedule_data;
+  const session_id = schedule?.interview_session?.id;
   const { data: requests, isLoading } = useSessionRequests({ id: session_id });
 
   return (
-    <div className='rounded-md border border-gray-200 bg-white p-4 shadow-sm'>
-      <h3 className='mb-3 text-sm font-semibold'>Request History</h3>
+    <div className=''>
+      <h2 className='mb-2 text-lg font-semibold'>Request History</h2>
       {isLoading ? (
         <Loader />
       ) : (
@@ -104,6 +111,14 @@ function Requests({ session_id }) {
     </div>
   );
 }
+
+const Requests = () => {
+  return (
+    <WithPermission permission={['scheduling_actions']}>
+      <Component />
+    </WithPermission>
+  );
+};
 
 export default Requests;
 
