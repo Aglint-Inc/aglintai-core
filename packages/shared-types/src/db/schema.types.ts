@@ -5721,8 +5721,8 @@ export type Database = {
         Args: {
           session_ids: string[]
           company_id: string
-          meet_start_date: string
-          meet_end_date: string
+          meet_start_date?: string
+          meet_end_date?: string
         }
         Returns: {
           interview_sessions: Json[]

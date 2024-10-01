@@ -84,7 +84,7 @@ type FetchCalEventsParams = {
     'email' | 'tokens' | 'interviewer_id' | 'isCalenderConnected' | 'all_events'
   > & {
     name: string;
-    profile_image: string;
+    profile_image: string | null;
     position: string;
   })[];
   company_cred_hash_str: string | null;
@@ -126,7 +126,7 @@ const fetchIntsCalEvents = async (params: FetchCalEventsParams) => {
       | 'interviewer_id'
       | 'isCalenderConnected'
       | 'all_events'
-    > & { name: string; profile_image: string; position: string }
+    > & { name: string; profile_image: string | null; position: string }
   > = {};
   ints_events.forEach((i) => {
     ints_events_map[i.interviewer_id] = {

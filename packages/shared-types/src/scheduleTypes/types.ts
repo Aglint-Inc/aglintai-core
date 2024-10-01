@@ -26,7 +26,7 @@ export type SessionInterviewerType = {
   first_name: string;
   last_name: string;
   email: string;
-  profile_image: string;
+  profile_image: string | null;
   schedule_auth: ScheduleAuthType | null;
   scheduling_settings: SchedulingSettingType;
   user_id: string;

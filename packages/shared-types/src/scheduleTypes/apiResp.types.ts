@@ -71,6 +71,7 @@ export type SessionInterviewerApiRespType = Pick<
   | 'last_name'
   | 'profile_image'
   | 'interviewer_module_relation_id'
+  | 'interviewer_type'
 >;
 
 // planCombination reponse types

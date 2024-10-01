@@ -9,7 +9,7 @@ import {
   type SessionInterviewerApiRespType,
   type SessionInterviewerType,
 } from '@aglint/shared-types';
-import { CApiError, ScheduleUtils, supabaseWrap } from '@aglint/shared-utils';
+import { CApiError, dayjsLocal, ScheduleUtils } from '@aglint/shared-utils';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
@@ -57,7 +57,7 @@ export const dbFetchScheduleApiDetails = async ({
     company_cred_hash_str,
   } = await fetchAndVerifyDb(
     params,
-    is_fetch_meeting_data ? schedule_dates : undefined,
+    is_fetch_meeting_data ? schedule_dates : null,
   );
 
   let interviewers: SessionInterviewerType[] = [];
@@ -77,6 +77,13 @@ export const dbFetchScheduleApiDetails = async ({
   let db_ses_with_ints: InterviewSessionApiType[] = [];
   db_ses_with_ints = interview_sessions
     .map((s) => {
+      const int_module = int_modules.find((m) => m.id === s.module_id);
+      if (!int_module) {
+        throw new CApiError('CLIENT', 'Module not found');
+      }
+      if (!s.meeting_id) {
+        throw new CApiError('CLIENT', 'Meeting ID not found');
+      }
       const session: InterviewSessionApiType = {
         duration: s.session_duration,
         schedule_type: s.schedule_type,
@@ -85,7 +92,7 @@ export const dbFetchScheduleApiDetails = async ({
         session_name: s.name,
         break_duration: s.break_duration,
         module_id: s.module_id,
-        module_name: int_modules.find((m) => m.id === s.module_id)?.name,
+        module_name: int_module.name,
         interviewer_cnt: s.interviewer_cnt,
         session_order: s.session_order,
         qualifiedIntervs: interviewers.filter(
@@ -156,22 +163,22 @@ const mapInt = (i: SessionInterviewerType) => {
 
 export const fetchAndVerifyDb = async (
   params: ScheduleDBDetailsParams,
-  meeting_details_dates: ScheduleApiDetails['schedule_dates'],
+  meeting_details_dates: ScheduleApiDetails['schedule_dates'] | null,
 ) => {
   const supabaseAdmin = getSupabaseServer();
 
-  const r = supabaseWrap(
+  const r = (
     await supabaseAdmin.rpc('get_interview_session_data', {
       session_ids: params.session_ids,
       company_id: params.company_id,
-      meet_start_date:
-        meeting_details_dates &&
-        meeting_details_dates.user_start_date_js.subtract(7, 'days').format(),
-      meet_end_date:
-        meeting_details_dates &&
-        meeting_details_dates.user_end_date_js.add(7, 'days').format(),
-    }),
-  );
+      meet_start_date: meeting_details_dates
+        ? meeting_details_dates.user_start_date_js.subtract(7, 'days').format()
+        : undefined,
+      meet_end_date: meeting_details_dates
+        ? meeting_details_dates.user_end_date_js.add(7, 'days').format()
+        : undefined,
+    })
+  ).data as any;
 
   const db_resp = {
     comp_schedule_setting: (r[0].comp_schedule_setting ??
@@ -235,7 +242,7 @@ const getAllSessionIntDetails = (
       all_session_int_detail[s.session_id].interviewers[int.user_id] = {
         email: int.email,
         first_name: int.first_name,
-        interview_module_relation_id: int.interview_module_relation_id,
+        interviewer_module_relation_id: int.interviewer_module_relation_id,
         interviewer_type: int.interviewer_type,
         last_name: int.last_name,
         pause_json: int.pause_json,
@@ -266,8 +273,10 @@ const getInterviewersMeetings = (
     }
   }
   int_meetings.map((meeting) => {
-    const meeting_start_time = userTzDayjs(meeting.meeting_start_time).tz(
-      ints_map.get(meeting.interv_user_id).scheduling_settings.timeZone.tzCode,
+    const int_details = ints_map.get(meeting.interv_user_id);
+    if (!int_details) throw new CApiError('CLIENT', 'Interviewer not found');
+    const meeting_start_time = dayjsLocal(meeting.meeting_start_time).tz(
+      int_details.scheduling_settings.timeZone.tzCode,
     );
     const meeting_date = meeting_start_time.startOf('day');
     const week_start_time = meeting_start_time.startOf('week').startOf('day');
@@ -301,39 +310,52 @@ const getInterviewersMeetings = (
 const geAllIntsFromModules = async (session_ids: string[]) => {
   const supabaseAdmin = getSupabaseServer();
 
-  const sesn_data = supabaseWrap(
+  const sesn_data = (
     await supabaseAdmin
       .from('interview_session')
       .select('*,interview_module(*)')
-      .in('id', session_ids),
-  );
-
-  const module_ints = supabaseWrap(
+      .in('id', session_ids)
+  ).data;
+  if (!sesn_data) {
+    throw new CApiError('CLIENT', 'Session not found');
+  }
+  const module_ints = (
     await supabaseAdmin
       .from('interview_module_relation')
       .select('*,recruiter_user(*),interview_module(*)')
       .in(
         'module_id',
         sesn_data.map((s) => s.module_id),
-      ),
-  );
+      )
+  ).data;
+  if (!module_ints) {
+    throw new CApiError('CLIENT', 'Module not found');
+  }
   const sesn_ints: SessionInterviewerType[] = module_ints.map((m) => {
-    return {
+    if (!m.recruiter_user) {
+      throw new CApiError('CLIENT', 'user not found');
+    }
+    const session_id = sesn_data.find((s) => s.module_id === m.module_id);
+    if (!session_id) {
+      throw new CApiError('CLIENT', 'Session not found');
+    }
+    const int_details: SessionInterviewerType = {
       email: m.recruiter_user.email,
       first_name: m.recruiter_user.first_name,
-      last_name: m.recruiter_user.last_name,
-      profile_image: m.recruiter_user.profile_image,
+      last_name: m.recruiter_user.last_name ?? '',
+      profile_image: m.recruiter_user.profile_image ?? null,
       user_id: m.recruiter_user.user_id,
-      session_id: sesn_data.find((s) => s.module_id === m.module_id).id,
+      session_id: session_id.id,
       interviewer_type: 'qualified',
       training_type: 'qualified',
-      position: m.recruiter_user.position,
+      position: m.recruiter_user.position ?? '',
       int_tz: m.recruiter_user.scheduling_settings.timeZone.tzCode,
       scheduling_settings: m.recruiter_user.scheduling_settings,
-      interview_module_relation_id: m.id,
+      interviewer_module_relation_id: m.id,
       pause_json: m.pause_json,
       schedule_auth: m.recruiter_user.schedule_auth,
     };
+    return int_details;
   });
 
   return sesn_ints;

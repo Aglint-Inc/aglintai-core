@@ -16,6 +16,7 @@ import {
 } from '@aglint/shared-types';
 import {
   CApiError,
+  dayjsLocal,
   getFullName,
   ScheduleUtils,
   scheduling_options_schema,
@@ -43,7 +44,6 @@ import {
   isTimeChunksEnclosed,
   isTimeChunksOverLapps,
 } from './utils/time_range_utils';
-import { userTzDayjs } from './utils/userTzDayjs';
 
 export class CandidatesSchedulingV2 {
   public db_details: ScheduleApiDetails | null;
@@ -159,7 +159,7 @@ export class CandidatesSchedulingV2 {
         ) as unknown as SessionCombinationRespType[][];
       let is_option_verified = true;
       for (const curr_round_sess of session_rounds) {
-        const cand_date = userTzDayjs(curr_round_sess[0].start_time)
+        const cand_date = dayjsLocal(curr_round_sess[0].start_time)
           .tz(this.db_details.req_user_tz)
           .startOf('day');
         const { verifyCurrDaySlot } = this.calcMeetingCombinsForPlan(
@@ -201,7 +201,7 @@ export class CandidatesSchedulingV2 {
       const current_round_int_combs = ints_combs_for_each_round[curr_round_idx];
       const current_round_combs: DateRangePlansType['interview_rounds'] = [];
       for (const curr_date_slots of cand_selected_slots[curr_round_idx].dates) {
-        const cand_date = userTzDayjs(curr_date_slots.curr_day).tz(
+        const cand_date = dayjsLocal(curr_date_slots.curr_day).tz(
           this.db_details.req_user_tz,
         );
 
@@ -431,8 +431,8 @@ export class CandidatesSchedulingV2 {
         })
         .sort((slot1, slot2) => {
           return (
-            userTzDayjs(slot1.sessions[0].start_time).unix() -
-            userTzDayjs(slot2.sessions[0].start_time).unix()
+            dayjsLocal(slot1.sessions[0].start_time).unix() -
+            dayjsLocal(slot2.sessions[0].start_time).unix()
           );
         });
     }
@@ -555,7 +555,7 @@ export class CandidatesSchedulingV2 {
     if (!this.db_details) {
       throw new CApiError('SERVER_ERROR', 'DB details not set');
     }
-    return userTzDayjs(time).tz(this.db_details.req_user_tz);
+    return dayjsLocal(time).tz(this.db_details.req_user_tz);
   };
   private getTimeIntTimeZone = (
     time_str: string,
@@ -565,7 +565,7 @@ export class CandidatesSchedulingV2 {
     if (!this.db_details) {
       throw new CApiError('SERVER_ERROR', 'DB details not set');
     }
-    return userTzDayjs(time_str).tz(
+    return dayjsLocal(time_str).tz(
       this.db_details.all_session_int_details[session_id].interviewers[
         interview_id
       ].scheduling_settings.timeZone.tzCode,
@@ -961,10 +961,10 @@ export class CandidatesSchedulingV2 {
           is_slot_day_off = isTimeChunksOverLapps(
             convertTimeDurStrToDayjsChunk(t, this.db_details.req_user_tz),
             {
-              startTime: userTzDayjs(upd_sess_slot.start_time).tz(
+              startTime: dayjsLocal(upd_sess_slot.start_time).tz(
                 this.db_details.req_user_tz,
               ),
-              endTime: userTzDayjs(upd_sess_slot.end_time).tz(
+              endTime: dayjsLocal(upd_sess_slot.end_time).tz(
                 this.db_details.req_user_tz,
               ),
             },
@@ -996,10 +996,10 @@ export class CandidatesSchedulingV2 {
           const flag = isTimeChunksOverLapps(
             convertTimeDurStrToDayjsChunk(t, this.db_details.req_user_tz),
             {
-              startTime: userTzDayjs(upd_sess_slot.start_time).tz(
+              startTime: dayjsLocal(upd_sess_slot.start_time).tz(
                 this.db_details.req_user_tz,
               ),
-              endTime: userTzDayjs(upd_sess_slot.end_time).tz(
+              endTime: dayjsLocal(upd_sess_slot.end_time).tz(
                 this.db_details.req_user_tz,
               ),
             },
@@ -1031,10 +1031,10 @@ export class CandidatesSchedulingV2 {
           return isTimeChunksEnclosed(
             convertTimeDurStrToDayjsChunk(t, this.db_details.req_user_tz),
             {
-              startTime: userTzDayjs(upd_sess_slot.start_time).tz(
+              startTime: dayjsLocal(upd_sess_slot.start_time).tz(
                 this.db_details.req_user_tz,
               ),
-              endTime: userTzDayjs(upd_sess_slot.end_time).tz(
+              endTime: dayjsLocal(upd_sess_slot.end_time).tz(
                 this.db_details.req_user_tz,
               ),
             },
@@ -1123,7 +1123,7 @@ export class CandidatesSchedulingV2 {
       );
       if (
         curr_time.isSameOrAfter(
-          userTzDayjs(upd_sess_slot.start_time).tz(this.db_details.req_user_tz),
+          dayjsLocal(upd_sess_slot.start_time).tz(this.db_details.req_user_tz),
           'day',
         )
       ) {
@@ -1363,7 +1363,7 @@ export class CandidatesSchedulingV2 {
       if (!this.db_details) {
         throw new CApiError('SERVER_ERROR', 'DB details not set');
       }
-      const slot_start_time = userTzDayjs(slot[0].start_time).tz(
+      const slot_start_time = dayjsLocal(slot[0].start_time).tz(
         this.db_details.req_user_tz,
       );
       const slot_comb_conflicts = getSessionsAvailability(
