@@ -38,7 +38,7 @@ function MoveToQualifiedDialog() {
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: error.message,
+        description: (error as Error).message,
       });
     } finally {
       setIsSaving(false);
@@ -75,7 +75,7 @@ function MoveToQualifiedDialog() {
         </>
       }
     >
-      {`Are you sure you want to move ${getFullName(user?.first_name, user?.last_name)} to qualified?`}
+      {`Are you sure you want to move ${getFullName(user?.first_name ?? '', user?.last_name ?? '')} to qualified?`}
     </UIDialog>
   );
 }

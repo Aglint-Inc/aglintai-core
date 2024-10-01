@@ -2,7 +2,7 @@
 import { Send } from 'lucide-react';
 import { useState } from 'react';
 
-import { useAllIntegrations } from '@/authenticated/hooks';
+import { useIntegrations } from '@/authenticated/hooks';
 
 import { UIButton } from '../Common/UIButton';
 import ATSTools from './ATSTools';
@@ -11,7 +11,7 @@ import RequestNew from './RequestNewPopUp';
 import Scheduling from './SchedulingTools';
 
 function Integrations() {
-  const { data, invalidate } = useAllIntegrations();
+  const { data, invalidate } = useIntegrations();
   const [isRequestNewOpen, setIsRequestNewOpen] = useState(false);
 
   return (

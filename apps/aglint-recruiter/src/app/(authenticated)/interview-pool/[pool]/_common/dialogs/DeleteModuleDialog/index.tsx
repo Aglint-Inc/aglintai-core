@@ -35,13 +35,14 @@ function DeleteModuleDialog({
   }, [editModule?.id]);
 
   const fetchMeetings = async () => {
+    if (!editModule?.id) return;
     try {
       const { data } = await supabase
         .from('interview_session')
         .select('*')
         .eq('module_id', editModule.id);
 
-      if (data.length > 0) {
+      if (data?.length && data?.length > 0) {
         setIsSessionExist(true);
       }
     } catch {
@@ -52,7 +53,7 @@ function DeleteModuleDialog({
   };
 
   const deleteModule = async () => {
-    if (!loading) {
+    if (!loading && editModule?.id) {
       try {
         setLoading(true);
         const { data } = await supabase
@@ -60,7 +61,7 @@ function DeleteModuleDialog({
           .select('*')
           .eq('module_id', editModule.id);
 
-        if (data.length === 0) {
+        if (data?.length === 0) {
           const isdeleted = await deleteModuleById(editModule.id);
           if (isdeleted) {
             router.push(`${ROUTES['/interview-pool']()}`);
@@ -115,7 +116,7 @@ function DeleteModuleDialog({
                 isFetching || isSessionExist || moduleName !== value.trim()
               }
               onClick={() => {
-                if (editModule.id) deleteModule();
+                if (editModule?.id) deleteModule();
               }}
             >
               Delete
@@ -154,7 +155,7 @@ function DeleteModuleDialog({
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     if (value === moduleName) {
-                      if (editModule.id) deleteModule();
+                      if (editModule?.id) deleteModule();
                     }
                   }
                 }}

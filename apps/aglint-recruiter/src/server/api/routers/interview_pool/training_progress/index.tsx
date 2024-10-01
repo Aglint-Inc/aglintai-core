@@ -26,14 +26,14 @@ export const fetchProgress = async (
   const { data } = await db
     .from('interview_training_progress')
     .select(
-      '*,interview_session_relation(*,interview_session(id,name,session_type,interview_meeting(id,status)),interview_module_relation(id)),recruiter_user(first_name,last_name)',
+      '*,interview_session_relation!inner(*,interview_session!inner(id,name,session_type,interview_meeting!inner(id,status)),interview_module_relation!inner(id)),recruiter_user!inner(first_name,last_name)',
     )
     .in('interview_session_relation.interview_module_relation_id', trainer_ids)
     .eq('interview_session_relation.is_confirmed', true)
     .order('created_at', { ascending: false })
     .not('interview_session_relation', 'is', null)
     .throwOnError();
-  const resRel = data
+  const resRel = (data || [])
     .filter(
       (ses) =>
         ses.interview_session_relation.interview_session.interview_meeting

@@ -1,12 +1,12 @@
 import { recruiterRelationUpdateSchema } from '@aglint/shared-types';
 import {} from '@aglint/shared-types/src/db/tables/recruiter.types';
-import { CustomRecruiterUserUpdateSchema } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
+import { customRecruiterUserUpdateSchema } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
 import { type z } from 'zod';
 
 import { type PrivateProcedure, publicProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
-const RecruiterUserSchema = CustomRecruiterUserUpdateSchema.pick({
+const RecruiterUserSchema = customRecruiterUserUpdateSchema.pick({
   first_name: true,
   last_name: true,
   linked_in: true,
