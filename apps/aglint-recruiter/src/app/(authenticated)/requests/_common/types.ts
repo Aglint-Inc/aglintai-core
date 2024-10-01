@@ -49,3 +49,6 @@ export type ApiResponseFindAvailability = {
 
 export type ApplicantRequest =
   RouterOutputs['requests']['read']['applicantRequest'][number];
+
+export type MeetingSessions =
+  RouterOutputs['requests']['utils']['requestSessions'];

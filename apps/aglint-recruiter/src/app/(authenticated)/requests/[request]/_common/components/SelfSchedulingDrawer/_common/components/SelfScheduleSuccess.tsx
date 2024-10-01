@@ -1,7 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { useMeetingList } from '@requests/hooks';
 import { CheckCircle2, Copy } from 'lucide-react';
-import { useParams } from 'next/navigation';
 import React from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -10,11 +9,7 @@ import { useSelfSchedulingFlowStore } from '../store/store';
 
 function SelfScheduleSuccess() {
   const [isCopied, setIsCopied] = React.useState(false);
-  const params = useParams();
-  const requestId = params?.request as string;
-  const { data } = useMeetingList({
-    request_id: requestId,
-  });
+  const { data } = useMeetingList();
   const allSessions = data;
 
   const application_id = allSessions[0]?.interview_meeting.application_id;

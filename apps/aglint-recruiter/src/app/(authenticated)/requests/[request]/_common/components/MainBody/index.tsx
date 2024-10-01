@@ -69,16 +69,11 @@ import UpdateDetails from '../UpdateDetails';
 export default function ViewRequestDetails() {
   const params = useParams();
   const requestId = params?.request as string;
-
   const {
     requests: { data: requestList, isPlaceholderData },
     handleAsyncUpdateRequest,
   } = useRequests();
-  const {
-    data: sessions,
-    status,
-    refetch: refetchMeetings,
-  } = useMeetingList({ request_id: requestId || '' });
+  const { data: sessions, status, refetch: refetchMeetings } = useMeetingList();
 
   const { data: members } = useMemberList();
 
