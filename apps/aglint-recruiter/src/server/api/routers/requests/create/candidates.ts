@@ -24,13 +24,13 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
   if (input.search) query.ilike('name', `%${input.search}%`);
   query.order('id');
   const { data, count } = await query.throwOnError();
-  const safeData = data.map(({ id, name }, i) => ({
+  const safeData = (data ?? []).map(({ id, name }, i) => ({
     id,
     label: name,
     cursor: cursor + i,
   }));
   const nextCursor =
-    cursor < count && safeData[safeData.length - 1]
+    cursor < (count ?? 0) && safeData[safeData.length - 1]
       ? safeData[safeData.length - 1].cursor + 1
       : null;
   return {

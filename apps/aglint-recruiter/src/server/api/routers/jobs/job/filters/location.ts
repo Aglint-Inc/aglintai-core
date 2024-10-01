@@ -12,7 +12,10 @@ const schema = z.object({
 
 const query = async ({ input }: PrivateProcedure<typeof schema>) => {
   const db = createPrivateClient();
-  (await db.rpc('get_applicant_locations', input).single()).data.locations;
+  return (
+    (await db.rpc('get_applicant_locations', input).single()).data?.locations ??
+    null
+  );
 };
 
 export const locations = privateProcedure.input(schema).query(query);

@@ -110,7 +110,7 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
       code: 'UNPROCESSABLE_CONTENT',
       message: 'Invalid payload',
     });
-  const { ats } = (
+  const recruiter_preferences = (
     await adminDb
       .from('recruiter_preferences')
       .select('ats')
@@ -118,13 +118,19 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
       .single()
       .throwOnError()
   ).data;
+  if (!recruiter_preferences)
+    throw new TRPCError({
+      code: 'UNPROCESSABLE_CONTENT',
+      message: 'No preference found',
+    });
+  const { ats } = recruiter_preferences;
   if (ats === 'Aglint')
     throw new TRPCError({
       code: 'FORBIDDEN',
       message: 'Not supported',
     });
   let decryptKey: string;
-  const { greenhouse_key, greenhouse_metadata, ashby_key, lever_key } = (
+  const integrations = (
     await adminDb
       .from('integrations')
       .select('greenhouse_key, greenhouse_metadata, lever_key, ashby_key')
@@ -132,6 +138,13 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
       .single()
       .throwOnError()
   ).data;
+  if (!integrations)
+    throw new TRPCError({
+      code: 'UNPROCESSABLE_CONTENT',
+      message: 'No integrations found',
+    });
+  const { greenhouse_key, greenhouse_metadata, ashby_key, lever_key } =
+    integrations;
   if (ats === 'Greenhouse') {
     if (!greenhouse_key)
       throw new TRPCError({
@@ -170,7 +183,7 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
   let user: User | null = null;
 
   if (process.env.NODE_ENV === 'development')
-    user = (await db.auth.getSession()).data.session.user;
+    user = (await db.auth.getSession())?.data?.session?.user ?? null;
   else user = (await db.auth.getUser()).data.user;
 
   if (!user) throw new TRPCError(ERRORS.UNAUTHORIZED);
@@ -180,13 +193,14 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
   const { data } = await db
     .from('recruiter_relation')
     .select(
-      'recruiter_id, roles(name, role_permissions(permissions(name, is_enable)))',
+      'recruiter_id, roles!inner(name, role_permissions!inner(permissions!inner(name, is_enable)))',
     )
     .eq('user_id', user.id)
     .single()
     .throwOnError();
 
-  if (!data) throw new TRPCError(ERRORS.UNAUTHORIZED);
+  if (!data || !data?.roles?.role_permissions)
+    throw new TRPCError(ERRORS.UNAUTHORIZED);
 
   const {
     recruiter_id,
@@ -259,7 +273,7 @@ type Procedure<
     >
     ? {
         ctx: TContext & TContextOverrides;
-        input: Required<TypeOf<T>>;
+        input: TypeOf<T>;
       }
     : never
   : U extends ProcedureBuilder<
