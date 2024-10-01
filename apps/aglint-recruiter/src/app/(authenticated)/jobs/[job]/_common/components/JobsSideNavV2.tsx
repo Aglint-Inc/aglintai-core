@@ -8,22 +8,17 @@ import {
   DialogTitle,
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
-import {
-  Calendar,
-  CircleDashed,
-  CircleUser,
-  FileText,
-  UserPlus,
-  Workflow,
-} from 'lucide-react';
+import type * as Icons from 'lucide-react';
 import { useState } from 'react';
 
 import { useFlags } from '@/company/hooks/useFlags';
-import { UIButton } from '@/components/Common/UIButton';
+import UITabs from '@/components/Common/UITabs';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJob } from '@/job/hooks';
 import ROUTES from '@/utils/routing/routes';
+
+type IconName = keyof typeof Icons;
 
 const JobsSideNavV2 = () => {
   const router = useRouterPro();
@@ -38,42 +33,47 @@ const JobsSideNavV2 = () => {
 
   const currentTab = router.pathName.split('/').filter((job) => job)[2];
 
-  const navItems = [
+  const navItems: {
+    name: string;
+    id: string;
+    show: boolean;
+    icon: IconName;
+  }[] = [
     {
-      icon: <FileText className='h-5 w-5' />,
-      label: 'Job Details',
-      route: 'job-details',
+      name: 'Job Details',
+      id: 'job-details',
       show: true,
+      icon: 'FileText',
     },
     {
-      icon: <CircleDashed className='h-5 w-5' />,
-      label: 'Profile Score',
-      route: 'profile-score',
+      name: 'Profile Score',
+      id: 'profile-score',
       show: isScoringEnabled,
+      icon: 'CircleDashed',
     },
     {
-      icon: <UserPlus className='h-5 w-5' />,
-      label: 'Hiring Team',
-      route: 'hiring-team',
+      name: 'Hiring Team',
+      id: 'hiring-team',
       show: true,
+      icon: 'UserPlus',
     },
     {
-      icon: <Calendar className='h-5 w-5' />,
-      label: 'Interview Plan',
-      route: 'interview-plan',
+      name: 'Interview Plan',
+      id: 'interview-plan',
       show: isShowFeature('SCHEDULING'),
+      icon: 'Calendar',
     },
     {
-      icon: <Workflow className='h-5 w-5' />,
-      label: 'Automations',
-      route: 'workflows',
+      name: 'Automations',
+      id: 'workflows',
       show: isShowFeature('WORKFLOW'),
+      icon: 'Workflow',
     },
     {
-      icon: <CircleUser className='h-5 w-5' />,
-      label: 'Candidate Plan',
-      route: 'candidate-plan',
+      name: 'Candidate Plan',
+      id: 'candidate-plan',
       show: isShowFeature('CANDIDATE_PORTAL'),
+      icon: 'CircleUser',
     },
   ];
 
@@ -88,7 +88,19 @@ const JobsSideNavV2 = () => {
   return (
     <>
       <nav className='space-y-2 py-4'>
-        {navItems.map(
+        <UITabs
+          vertical
+          tabs={navItems.map((tab) => ({
+            icon: tab.icon,
+            name: tab.name,
+            id: tab.id,
+          }))}
+          defaultValue={currentTab}
+          onClick={(value) => {
+            handlePush(`/jobs/[job]/${value}`);
+          }}
+        />
+        {/* {navItems.map(
           (item, index) =>
             item.show && (
               <UIButton
@@ -101,7 +113,7 @@ const JobsSideNavV2 = () => {
                 <span className='ml-2'>{item.label}</span>
               </UIButton>
             ),
-        )}
+        )} */}
       </nav>
 
       {manageJob && (

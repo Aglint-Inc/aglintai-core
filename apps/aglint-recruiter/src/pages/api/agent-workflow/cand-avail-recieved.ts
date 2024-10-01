@@ -9,7 +9,7 @@ import { apiTargetToEvents } from '@requests/components/RequestProgress/utils/pr
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { confirmSlotFromCandidateAvailability } from '@/services/api-schedulings/confirmSlotFromCandidateAvailability';
 import { findCandSelectedSlots } from '@/services/api-schedulings/findCandSelectedSlots';
-import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 type BodyParams = {
@@ -69,7 +69,7 @@ const candAvailRecieved = async (req_body: BodyParams) => {
   const session_ids = avail_record.request_session_relation.map(
     (s) => s.session_id,
   );
-  const cand_schedule = new CandidatesSchedulingV2({
+  const cand_schedule = new CandidatesScheduling({
     include_conflicting_slots: {
       show_soft_conflicts: true,
       out_of_working_hrs: true,

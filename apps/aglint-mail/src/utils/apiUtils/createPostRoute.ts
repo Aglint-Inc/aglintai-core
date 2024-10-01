@@ -1,3 +1,4 @@
+import { CApiError } from '@aglint/shared-utils';
 import { NextResponse } from 'next/server';
 import { ZodError } from 'zod';
 import { fromError } from 'zod-validation-error';
@@ -24,10 +25,18 @@ export const createPostRoute = (schema: any, func: any, is_form?: boolean) => {
         status: 200,
       });
     } catch (error: any) {
-      console.error(error);
       if (error instanceof ZodError) {
         const validationError = fromError(error);
+        console.error(validationError);
         return NextResponse.json({ error: validationError }, { status: 500 });
+      }
+      if (error instanceof CApiError) {
+        console.error(error.type, error.message);
+        console.error(error.type, error.structuredErrorData);
+        return NextResponse.json(
+          { error: error.message },
+          { status: error.status },
+        );
       }
       return NextResponse.json({ error: error.message }, { status: 500 });
     }

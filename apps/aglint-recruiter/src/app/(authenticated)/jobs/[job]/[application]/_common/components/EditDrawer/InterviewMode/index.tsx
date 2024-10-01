@@ -1,10 +1,10 @@
 import MembersAutoComplete from 'src/app/_common/components/MembersTextField';
+import { InterviewMode } from 'src/app/(authenticated)/jobs/[job]/(jobEdit)/interview-plan/_common/components/_common/InterviewMode';
 
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import { UISwitch } from '@/components/Common/UISwitch';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { InterviewMode } from '@/job/interview-plan/components/_common/InterviewMode';
 import { useInterviewModules } from '@/queries/interview-modules';
 import ROUTES from '@/utils/routing/routes';
 

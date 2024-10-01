@@ -1,6 +1,4 @@
-import {
-  type DatabaseTable
-} from '@aglint/shared-types';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { useToast } from '@components/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useState } from 'react';
@@ -102,7 +100,7 @@ const SchedulingReasons = () => {
   };
 
   return (
-    <div>
+    <div className='max-w-[70%]'>
       <Tabs value={tab} onValueChange={(value) => setTab(value as typeof tab)}>
         <TabsList className=''>
           {(
