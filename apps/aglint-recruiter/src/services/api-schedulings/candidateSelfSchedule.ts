@@ -8,7 +8,6 @@ import {
   DAYJS_FORMATS,
   dayjsLocal,
   type ProgressLoggerType,
-  supabaseWrap,
 } from '@aglint/shared-utils';
 import { type z } from 'zod';
 
@@ -92,7 +91,7 @@ export const candidateSelfSchedule = async ({
     date_filtered_slots,
     formatted_ai_reponse.maxTotalSlots,
   );
-  const [filter_json] = supabaseWrap(
+  const filter_json = (
     await supabaseAdmin
       .from('interview_filter_json')
       .insert({
@@ -105,9 +104,13 @@ export const candidateSelfSchedule = async ({
         request_id: parsed_body.request_id,
         application_id: parsed_body.application_id,
       })
-      .select(),
-  );
-
+      .select()
+      .single()
+      .throwOnError()
+  ).data;
+  if (!filter_json) {
+    throw new CApiError('SERVER_ERROR', 'Failed to insert filter json');
+  }
   await mailSender({
     target_api: 'sendSelfScheduleRequest_email_applicant',
     payload: {

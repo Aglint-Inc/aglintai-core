@@ -53,7 +53,7 @@ export class CandidatesSchedulingV2 {
     | Awaited<ReturnType<typeof fetchIntsCalEventsDetails>>['ints_events_map']
     | null;
 
-  constructor(_api_options: z.infer<typeof scheduling_options_schema>) {
+  constructor(_api_options: z.input<typeof scheduling_options_schema>) {
     this.db_details = null;
     this.calendar_events = null;
     // scheduling_options_schema;

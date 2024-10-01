@@ -2,7 +2,7 @@ import {
   type CalendarEvent,
   type NewCalenderEvent,
 } from '@aglint/shared-types';
-import { CApiError, supabaseWrap } from '@aglint/shared-utils';
+import { CApiError } from '@aglint/shared-utils';
 import { google } from 'googleapis';
 
 import {

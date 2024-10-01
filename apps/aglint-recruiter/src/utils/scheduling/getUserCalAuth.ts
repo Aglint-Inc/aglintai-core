@@ -1,8 +1,8 @@
+import { CApiError } from '@aglint/shared-utils';
 import { OAuth2Client } from 'google-auth-library';
 import { google } from 'googleapis';
 
 import type { GetAuthParams } from '../event_book/types';
-import { CApiError } from '@aglint/shared-utils';
 
 export const getUserCalAuth = async ({
   company_cred,

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 const scheduling_options_schema = z
   .object({
@@ -25,7 +25,8 @@ const scheduling_options_schema = z
       .optional()
       .default({}),
   })
-  .optional();
+  .optional()
+  .default({});
 
 const schema_find_availability_payload = z.object({
   session_ids: z.array(z.string()),

@@ -45,7 +45,7 @@ export type APICandScheduleMailThankYou = {
 };
 type t = typeof schema_find_availability_payload;
 
-export type APIOptions = NonNullable<z.infer<typeof scheduling_options_schema>>;
+export type APIOptions = z.output<typeof scheduling_options_schema>;
 
 export type APIFindAvailability = z.infer<
   typeof schema_find_availability_payload
