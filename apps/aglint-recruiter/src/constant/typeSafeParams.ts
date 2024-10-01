@@ -13,9 +13,6 @@ export const TYPE_SAFE_PARAMS = {
     '/jobs/[job]/candidate-plan': [
       'job'
     ],
-    '/jobs/[job]/email-templates': [
-      'job'
-    ],
     '/jobs/[job]/hiring-team': [
       'job'
     ],
@@ -23,12 +20,6 @@ export const TYPE_SAFE_PARAMS = {
       'job'
     ],
     '/jobs/[job]/job-details': [
-      'job'
-    ],
-    '/jobs/[job]/metrics': [
-      'job'
-    ],
-    '/jobs/[job]': [
       'job'
     ],
     '/jobs/[job]/profile-score': [

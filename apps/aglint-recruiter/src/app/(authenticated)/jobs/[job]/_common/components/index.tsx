@@ -74,7 +74,7 @@ export const ApplicationsComponent = () => {
   const checklist = useApplicationsStore((state) => state.checklist);
   return (
     <DNDProvider>
-      <div className='mb-6 flex flex-col gap-6'>
+      <div className='mb-6 flex flex-col gap-6 p-4'>
         <div className='mb-2'>
           <Tabs />
         </div>
