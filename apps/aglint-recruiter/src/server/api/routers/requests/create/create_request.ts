@@ -1,4 +1,5 @@
 import type { DatabaseFunctions, ZodTypeToSchema } from '@aglint/shared-types';
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
@@ -32,25 +33,34 @@ const mutation = async ({
   input,
 }: PrivateProcedure<typeof createRequestSchema>) => {
   const db = createPrivateClient();
-  const [
-    {
-      data: { name },
-    },
-    { data: session_names },
-  ] = await Promise.all([
-    db
-      .from('application_view')
-      .select('name')
-      .eq('id', input.application)
-      .single()
-      .throwOnError(),
-    db
-      .from('interview_session')
-      .select('name')
-      .in('id', input.sessions)
-      .throwOnError(),
-  ]);
-  const sessions = formatSessions(session_names.map(({ name }) => name));
+  const [{ data: application }, { data: interview_session }] =
+    await Promise.all([
+      db
+        .from('application_view')
+        .select('name')
+        .eq('id', input.application)
+        .single()
+        .throwOnError(),
+      db
+        .from('interview_session')
+        .select('name')
+        .in('id', input.sessions)
+        .throwOnError(),
+    ]);
+  if (!application)
+    throw new TRPCError({
+      code: 'UNPROCESSABLE_CONTENT',
+      message: 'Application not found',
+    });
+  if (!interview_session)
+    throw new TRPCError({
+      code: 'UNPROCESSABLE_CONTENT',
+      message: 'Interview session not found',
+    });
+  const sessions = formatSessions(
+    interview_session.map(({ name }) => name).filter((name) => name !== null),
+  );
+
   await db
     .rpc('create_session_request', {
       ...input,

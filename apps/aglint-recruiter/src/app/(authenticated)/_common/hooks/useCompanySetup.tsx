@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
-import { useAllIntegrations } from '@/authenticated/hooks';
+import { useIntegrations } from '@/authenticated/hooks';
 import { useTenant, useTenantMembers } from '@/company/hooks';
 import { useFlags } from '@/company/hooks/useFlags';
 import ROUTES from '@/utils/routing/routes';
@@ -58,7 +58,7 @@ export function useCompanySetup() {
   //Hooks ---
   const { recruiter } = useTenant();
   const { data: integrations, isLoading: integrationLoading } =
-    useAllIntegrations();
+    useIntegrations();
   const {
     allMembers,
     isLoading: memberLoading,

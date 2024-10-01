@@ -5,7 +5,7 @@ import { Dialog, DialogContent } from '@components/ui/dialog';
 import { Skeleton } from '@components/ui/skeleton';
 import { useEffect, useState } from 'react';
 
-import { useAllIntegrations } from '@/authenticated/hooks';
+import { useIntegrations } from '@/authenticated/hooks';
 import { STATE_GREENHOUSE_DIALOG } from '@/jobs/constants';
 import {
   useIntegrationActions,
@@ -29,7 +29,7 @@ export function GreenhouseModal() {
     JobGreenhouse[]
   >([]);
   const [initialFetch, setInitialFetch] = useState<boolean>(true);
-  const { data: allIntegrations } = useAllIntegrations();
+  const { data: allIntegrations } = useIntegrations();
 
   useEffect(() => {
     if (jobs.status === 'success' && allIntegrations?.greenhouse_key) {

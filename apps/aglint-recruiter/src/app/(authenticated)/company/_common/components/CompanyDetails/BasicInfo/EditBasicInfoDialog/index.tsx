@@ -54,6 +54,7 @@ const EditBasicInfoDialog = ({
   const [recruiterLocal, setRecruiterLocal] = useState<typeof recruiter | null>(
     recruiter,
   );
+
   const { toast } = useToast();
 
   useEffect(() => {
@@ -114,7 +115,6 @@ const EditBasicInfoDialog = ({
       }
       await mutateAsync({
         name: recruiterLocal.name ? recruiterLocal.name : recruiter?.name,
-        email: recruiterLocal.email,
         industry: recruiterLocal.industry,
         company_website: recruiterLocal.company_website,
         socials: recruiterLocal.socials,

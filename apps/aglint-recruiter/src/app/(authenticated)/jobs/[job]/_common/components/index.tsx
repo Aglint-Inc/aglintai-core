@@ -60,28 +60,28 @@ export const ApplicationsDashboard = () => {
   );
 };
 
-const ApplicationsComponent = () => {
+export const JobDetailsHeader = () => (
+  <div className='mb-2 flex items-center justify-between'>
+    <div>
+      <h1 className='mb-2 text-2xl font-bold'>Job Details </h1>
+      <SharedBreadCrumbs />
+    </div>
+    <SharedActions />
+  </div>
+);
+
+export const ApplicationsComponent = () => {
   const checklist = useApplicationsStore((state) => state.checklist);
   return (
     <DNDProvider>
-      <div className='container-lg mx-auto w-full px-4'>
-        <div className='mb-2 flex items-center justify-between'>
-          <div>
-            {/* <h1 className='mb-2 text-2xl font-bold'>Job Details </h1> */}
-            <SharedBreadCrumbs />
-          </div>
-          <SharedActions />
+      <div className='mb-6 flex flex-col gap-6'>
+        <div className='mb-2'>
+          <Tabs />
         </div>
-
-        <div className='mb-6 flex flex-col gap-6'>
-          <div className='mb-2'>
-            <Tabs />
-          </div>
-            {checklist.length === 0 ? <Filters /> : <Actions />}
-          <ScrollArea>
-            <Table />
-          </ScrollArea>
-        </div>
+        {checklist.length === 0 ? <Filters /> : <Actions />}
+        <ScrollArea>
+          <Table />
+        </ScrollArea>
       </div>
     </DNDProvider>
   );
