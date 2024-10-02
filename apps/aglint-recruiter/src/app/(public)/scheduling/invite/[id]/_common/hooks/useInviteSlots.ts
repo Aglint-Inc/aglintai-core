@@ -6,8 +6,7 @@ import { useCandidateInviteStore } from '../store';
 export const useInviteSlots = () => {
   const timezone = useCandidateInviteStore((state) => state.timezone);
   const router = useRouterPro();
-
-  return api.scheduling.candidate_invite.slots.useQuery({
+  const query = api.scheduling.candidate_invite.slots.useQuery({
     filter_json_id: router.queryParams.filter_id as string,
     candidate_tz: timezone.tzCode,
     api_options: {
@@ -18,4 +17,5 @@ export const useInviteSlots = () => {
       },
     },
   });
+  return { ...query, data: query.data! };
 };

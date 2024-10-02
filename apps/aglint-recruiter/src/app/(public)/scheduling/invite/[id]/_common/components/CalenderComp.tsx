@@ -9,7 +9,9 @@ import { CandidateCalender } from './ui/CandidateCalender';
 export type CandidateInviteCalendarProps = {
   sessions: {
     date: string;
-    slots: ReturnType<typeof useInviteSlots>['data'][number][number];
+    slots: NonNullable<
+      NonNullable<ReturnType<typeof useInviteSlots>>['data']
+    >[number][number];
   }[];
   selections: CandidateInviteType['selectedSlots'];
   handleSelect: (
@@ -25,10 +27,10 @@ const CandidateInviteCalendar = (props: CandidateInviteCalendarProps) => {
   const sessions = props.sessions;
   const startMonth = sessions[0]?.date
     ? dayJS(sessions[0].date, props.tz).format('MMMM YYYY')
-    : null;
+    : '';
   const endMonth = sessions[sessions.length - 1]?.date
     ? dayJS(sessions[sessions.length - 1].date, props.tz).format('MMMM YYYY')
-    : null;
+    : '';
   const displayMonth =
     startMonth === endMonth ? startMonth : `${startMonth} - ${endMonth}`;
 

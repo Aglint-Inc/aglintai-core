@@ -2,21 +2,16 @@
 /* eslint-disable security/detect-object-injection */
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import { Skeleton } from '@components/ui/skeleton';
 import { Building2 } from 'lucide-react';
 import Image from 'next/image';
-import { useEffect } from 'react';
 
 import { NotFound } from '@/components/Common/404';
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
-import toast from '@/utils/toast';
 
 import { Loader } from '../../../../../../../components/Common/Loader';
 import { ConfirmedInvitePage } from '../../../../../../_common/components/CandidateConfirm';
-import useInviteActions from '../hooks/useInviteActions';
 import { useInviteMeta } from '../hooks/useInviteMeta';
-import { useInviteSlots } from '../hooks/useInviteSlots';
 import {
   setDetailPopup,
   setSelectedSlots,
@@ -27,12 +22,8 @@ import {
   type ScheduleCardProps,
   type ScheduleCardsProps,
 } from '../types/types';
-import CandidateInviteCalendar, {
-  type CandidateInviteCalendarProps,
-} from './CalenderComp';
 import { DetailsPopup } from './DetailsPopup';
 import MultiDay from './MultiDay';
-import { SingleDayConfirmation } from './SingleDay/SingleDayConfirmation';
 import { SingleDay } from './SingleDay';
 
 const CandidateInviteNew = () => {
@@ -151,8 +142,8 @@ const CandidateInvitePlanPage = () => {
         <CardHeader className='space-y-2 text-center'>
           <div className='flex w-full justify-center'>
             <Logo
-              companyName={meta?.recruiter.name}
-              logo={meta?.recruiter.logo}
+              companyName={meta.recruiter.name}
+              logo={meta.recruiter.logo ?? ''}
             />
           </div>
           <CardTitle className='text-2xl font-medium'>

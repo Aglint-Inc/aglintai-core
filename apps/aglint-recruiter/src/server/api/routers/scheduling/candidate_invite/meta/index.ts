@@ -29,6 +29,11 @@ const query = async ({
     recruiter: recruiter,
     meetings: resMeetings,
   };
+
+  if (!redRes) {
+    throw new Error();
+  }
+
   return redRes;
 };
 
@@ -42,7 +47,7 @@ const getScheduleDetails = async (
   const { data: sch, error: errSch } = await db
     .from('applications')
     .select(
-      '*, public_jobs(id,job_title,recruiter_id),candidates(*,recruiter(id,logo,name)),candidate_files(id,file_url,candidate_id,resume_json,type),interview_filter_json(*)',
+      '*, public_jobs!inner(id,job_title,recruiter_id),candidates!inner(*,recruiter!inner(id,logo,name)),candidate_files(id,file_url,candidate_id,resume_json,type),interview_filter_json!inner(*)',
     )
     .eq('id', application_id)
     .eq('interview_filter_json.id', filter_id)
@@ -61,7 +66,7 @@ const getInterviewSessionsMeetings = async (session_ids: string[]) => {
   const db = createPublicClient();
   const { data: intSes, error: errSes } = await db
     .from('interview_session')
-    .select('*,interview_meeting(*)')
+    .select('*,interview_meeting!inner(*)')
     .in('id', session_ids)
     .order('session_order', {
       ascending: true,

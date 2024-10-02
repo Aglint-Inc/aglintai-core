@@ -41,7 +41,7 @@ const confirmSlots = async (bodyParams: CandidateDirectBookingType) => {
     );
     if (res.status !== 200) throw new Error('Internal server error');
   } catch (e) {
-    throw new Error(e);
+    throw new Error((e as Error).message);
   }
 };
 const confirmSlotNoConflict = async (
