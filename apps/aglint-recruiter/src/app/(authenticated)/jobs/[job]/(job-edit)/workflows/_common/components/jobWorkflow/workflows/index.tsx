@@ -1,12 +1,5 @@
 import { toast } from '@components/hooks/use-toast';
 import { Accordion } from '@components/ui/accordion';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -71,32 +64,24 @@ export default function Main() {
 
   return (
     <div className='md:col-span-2'>
-      <Card className='border-0 shadow-none'>
-        <CardHeader>
-          <CardTitle>Automations</CardTitle>
-          <CardDescription></CardDescription>
-        </CardHeader>
-        {isStateUpdating && <Skeleton className='h-[500px] w-full' />}
-        {!isStateUpdating && (
-          <CardContent>
-            <Accordion type='single' collapsible className='w-full'>
-              {allCategories.map((categ, idx) => {
-                const currentTriggers = jobWorkflowTriggers.filter(
-                  (trig) => trig.category === categ,
-                );
-                return (
-                  <AutomationAccordion
-                    key={idx}
-                    category={categ}
-                    currentTriggers={currentTriggers}
-                    currentActions={jobWorkflowActions}
-                  />
-                );
-              })}
-            </Accordion>
-          </CardContent>
-        )}
-      </Card>
+      {isStateUpdating && <Skeleton className='h-[500px] w-full' />}
+      {!isStateUpdating && (
+        <Accordion type='single' collapsible className='w-full'>
+          {allCategories.map((categ, idx) => {
+            const currentTriggers = jobWorkflowTriggers.filter(
+              (trig) => trig.category === categ,
+            );
+            return (
+              <AutomationAccordion
+                key={idx}
+                category={categ}
+                currentTriggers={currentTriggers}
+                currentActions={jobWorkflowActions}
+              />
+            );
+          })}
+        </Accordion>
+      )}
       <div className='mt-6 flex flex-row justify-end space-x-1'>
         <UIButton
           disabled={!isWorkflowsChanged}

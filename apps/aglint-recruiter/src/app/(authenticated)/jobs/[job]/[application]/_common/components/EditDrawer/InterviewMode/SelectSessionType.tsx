@@ -2,7 +2,7 @@ import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import {
   IndividualIcon,
   PanelIcon,
-} from 'src/app/(authenticated)/jobs/[job]/(jobEdit)/interview-plan/_common/components/sessionForms';
+} from 'src/app/(authenticated)/jobs/[job]/(job-edit)/interview-plan/_common/components/sessionForms';
 
 import {
   setEditSession,

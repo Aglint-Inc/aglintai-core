@@ -1,14 +1,20 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@components/ui/accordion';
+  Page,
+  PageActions,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
-import { Card, CardContent } from '@components/ui/card';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@components/ui/collapsible';
 import { Input } from '@components/ui/input';
 import { Skeleton } from '@components/ui/skeleton';
 import { capitalize } from 'lodash';
@@ -99,25 +105,29 @@ export const JobProfileScoreDashboard = () => {
 
 const ProfileScorePage = () => {
   return (
-    <>
-      <div className='w-full'>
-        <h2 className='mb-2 text-xl font-bold'>Profile Scoring</h2>
-        <p className='mb-4 text-sm text-gray-600'>
-          Profile scoring helps evaluate candidates objectively, assigning
-          numerical values to their qualifications and experience to streamline
-          the hiring process and identify the best-fit applicants efficiently.
-        </p>
-        <div className='flex'>
-          <div className='mr-4 flex-1'>
-            <ProfileScore />
-          </div>
-          <div className='w-1/3'>
-            <ProfileScoreControls />
-            <Tips />
-          </div>
+    <Page>
+      <PageHeader>
+        <PageHeaderText>
+          <PageTitle>Profile Scoring</PageTitle>
+          <PageDescription>
+            Profile scoring helps evaluate candidates objectively, assigning
+            numerical values to their qualifications and experience to
+            streamline the hiring process and identify the best-fit applicants
+            efficiently.
+          </PageDescription>
+        </PageHeaderText>
+        <PageActions></PageActions>
+      </PageHeader>
+      <div className='flex'>
+        <div className='mr-4 flex-1'>
+          <ProfileScore />
+        </div>
+        <div className='w-1/3'>
+          <Tips />
+          <ProfileScoreControls />
         </div>
       </div>
-    </>
+    </Page>
   );
 };
 
@@ -248,48 +258,52 @@ const ProfileScore = () => {
           <LoaadingSkeleton />
         </div>
       ) : (
-        <Card className='w-full'>
-          <CardContent className='pt-6'>
-            <Accordion type='single' defaultValue='experience' collapsible>
-              <AccordionItem value='experience'>
-                <AccordionTrigger>
+        <div>
+          <div>
+            <Collapsible defaultOpen>
+              <div>
+                <CollapsibleTrigger>
                   <SectionHeader
                     type='experience'
                     weight={parameter_weights.experience}
                     color='#30aabc'
                   />
-                </AccordionTrigger>
-                <AccordionContent>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
                   <SectionContent type='experience' />
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value='skills'>
-                <AccordionTrigger>
+                </CollapsibleContent>
+              </div>
+            </Collapsible>
+            <Collapsible defaultOpen>
+              <div>
+                <CollapsibleTrigger>
                   <SectionHeader
                     type='skills'
                     weight={parameter_weights.skills}
                     color='#886bd8'
                   />
-                </AccordionTrigger>
-                <AccordionContent>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
                   <SectionContent type='skills' />
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value='education'>
-                <AccordionTrigger>
+                </CollapsibleContent>
+              </div>
+            </Collapsible>
+            <Collapsible defaultOpen>
+              <div>
+                <CollapsibleTrigger>
                   <SectionHeader
                     type='education'
                     weight={parameter_weights.education}
                     color='#5d7df5'
                   />
-                </AccordionTrigger>
-                <AccordionContent>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
                   <SectionContent type='education' />
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </CardContent>
-        </Card>
+                </CollapsibleContent>
+              </div>
+            </Collapsible>
+          </div>
+        </div>
       )}
     </div>
   );
@@ -301,7 +315,7 @@ const SectionHeader: FC<{ type: Sections; weight: number; color: string }> = ({
   color,
 }) => {
   return (
-    <div className='flex items-center space-x-2'>
+    <div className='mb-4 flex items-center space-x-2'>
       <CircleDot className='h-4 w-4' style={{ color }} />
       <span className='font-medium'>{capitalize(type)}</span>
       <span className='text-sm text-muted-foreground'>({weight}%)</span>
@@ -371,7 +385,7 @@ const SectionContent: FC<{ type: Sections }> = ({ type }) => {
   };
 
   return (
-    <div className='space-y-4'>
+    <div className='mb-8 space-y-4'>
       <div className='flex flex-wrap gap-2'>
         {jd_json[section].map((item, index) => (
           <Tag
@@ -541,30 +555,28 @@ const Tips = () => {
   return (
     <>
       {firstVisit && (
-        <div className='mx-4 mt-4'>
-          <div className='flex items-start space-x-4 rounded-md bg-purple-100 p-4'>
-            <Lightbulb className='h-6 w-6 flex-shrink-0 text-purple-500' />
-            <div className='flex-grow'>
-              <h4 className='mb-1 text-lg font-semibold text-purple-700'>
-                Pro Tip
-              </h4>
-              <p className='text-sm text-purple-600'>
-                Tailor the evaluation criteria to match the specific needs of
-                the role you are hiring for by adjusting the weightages.
-              </p>
-            </div>
-            <Button
-              variant='ghost'
-              size='sm'
-              onClick={handleTip}
-              className='text-purple-500 hover:text-purple-700'
-            >
-              <X className='h-4 w-4' />
-            </Button>
+        <div className='flex items-start space-x-4 rounded-md bg-purple-100 p-4'>
+          <Lightbulb className='h-6 w-6 flex-shrink-0 text-purple-500' />
+          <div className='flex-grow'>
+            <h4 className='mb-1 text-lg font-semibold text-purple-700'>
+              Pro Tip
+            </h4>
+            <p className='text-sm text-purple-600'>
+              Tailor the evaluation criteria to match the specific needs of the
+              role you are hiring for by adjusting the weightages.
+            </p>
           </div>
+          <Button
+            variant='ghost'
+            size='sm'
+            onClick={handleTip}
+            className='text-purple-500 hover:text-purple-700'
+          >
+            <X className='h-4 w-4' />
+          </Button>
         </div>
       )}
-      <div className='mx-4 mt-8 flex flex-col gap-1 rounded-md border p-4'>
+      <div className='flex flex-col gap-1 rounded-md border p-4'>
         <p className='text-sm font-semibold text-info'>How It Works</p>
         <p className='text-sm text-muted-foreground'>
           Adjust the weightage for Experience, Skills, and Education to

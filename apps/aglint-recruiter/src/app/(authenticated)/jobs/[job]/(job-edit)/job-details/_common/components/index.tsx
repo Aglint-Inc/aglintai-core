@@ -1,6 +1,15 @@
 /* eslint-disable security/detect-object-injection */
+import AutoSave from '@components/auto-save';
+import {
+  Page,
+  PageActions,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import { Skeleton } from '@components/ui/skeleton';
-import { AlertTriangle, CheckIcon } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 import {
   type Dispatch,
   type SetStateAction,
@@ -9,7 +18,6 @@ import {
   useState,
 } from 'react';
 
-import { Loader } from '@/components/Common/Loader';
 import { JobNotFound } from '@/job/components/JobNotFound';
 // import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
@@ -128,8 +136,14 @@ const JobEdit = () => {
       },
     },
   });
+
   const [saving, setSaving] = useState(false);
-  const [show, setShow] = useState(false);
+  const [_, setShow] = useState(false);
+
+  const handleSave = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    setSaving(false);
+  };
 
   useEffect(() => {
     if (saving) setShow(true);
@@ -138,37 +152,25 @@ const JobEdit = () => {
   }, [saving]);
 
   return (
-    <div className='w-full'>
-      <div className='flex flex-row justify-between'>
-        <div>
-          <p className='mb-4 text-sm text-gray-600'>
+    <Page>
+      <PageHeader>
+        <PageHeaderText>
+          <PageTitle>Edit job details</PageTitle>
+          <PageDescription>
             Update the job details here; changes will be saved automatically.
-          </p>
-        </div>
-        <div
-          className={`transition-opacity duration-300 ${show ? 'opacity-100' : 'opacity-0'}`}
-        >
-          <div className='flex items-center space-x-2 text-sm text-gray-600'>
-            {saving ? (
-              <>
-                <Loader />
-                <span>Saving changes...</span>
-              </>
-            ) : (
-              <>
-                <CheckIcon className='h-4 w-4 text-green-500' />
-                <span>Changes saved</span>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
+          </PageDescription>
+        </PageHeaderText>
+        <PageActions>
+          <AutoSave onSave={handleSave} saveInterval={5000} />
+        </PageActions>
+      </PageHeader>
       <JobEditForm
         fields={fields}
         setFields={setFields}
         setSaving={setSaving}
+        onSave={handleSave} // Pass handleSave to JobEditForm
       />
-    </div>
+    </Page>
   );
 };
 
@@ -199,10 +201,12 @@ const JobEditForm = ({
   fields,
   setFields,
   setSaving,
+  onSave, // Add onSave prop
 }: {
   fields: JobDetailsForm;
   setFields: Dispatch<SetStateAction<JobDetailsForm>>;
   setSaving: Dispatch<SetStateAction<boolean>>;
+  onSave: () => Promise<void>; // Update type
 }) => {
   const initialRef = useRef(false);
   const { job, handleJobAsyncUpdate } = useJob();
@@ -216,6 +220,7 @@ const JobEditForm = ({
     setSaving(true);
     await handleJobAsyncUpdate({ draft: { ...job.draft, ...newJob } });
     setSaving(false);
+    await onSave(); // Call the onSave function
   };
 
   const handleChange = (name: keyof Form, value: string | number) => {
