@@ -1,7 +1,11 @@
 'use client';
 
-import { FullWidthLayout } from '@components/layouts/full-width-layout';
-import { PageHeader } from '@components/layouts/page-header';
+import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
+import {
+  PageHeader,
+  PageHeaderDescription,
+  PageHeaderTitle,
+} from '@components/layouts/page-header';
 
 import { Actions } from '@/workflows/components/actions';
 
@@ -16,12 +20,13 @@ const Page = () => {
   } = useWorkflows();
   return (
     <>
-      <FullWidthLayout
+      <OneColumnPageLayout
         header={
-          <PageHeader
-            title='Automations'
-            description='You can create automations to streamline your workflow.'
-          >
+          <PageHeader>
+            <PageHeaderTitle>Automations</PageHeaderTitle>
+            <PageHeaderDescription>
+              You can create automations to streamline your workflow.
+            </PageHeaderDescription>
             <Actions />
           </PageHeader>
         }
@@ -36,7 +41,7 @@ const Page = () => {
             <EmptyWorkflow />
           </>
         )}
-      </FullWidthLayout>
+      </OneColumnPageLayout>
     </>
   );
 };

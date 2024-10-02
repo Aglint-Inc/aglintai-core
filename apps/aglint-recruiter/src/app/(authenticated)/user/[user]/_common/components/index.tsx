@@ -2,7 +2,7 @@ import {
   type DatabaseTable,
   type SchedulingSettingType,
 } from '@aglint/shared-types';
-import { TwoColumnLayout } from '@components/layouts/two-column-layout';
+import { TwoColumnPageLayout } from '@components/layouts/two-column-page-layout';
 import { useInterviewsByUserId } from '@interviews/hooks/useInterviewsByUserId';
 import { useParams } from 'next/navigation';
 import { useRef, useState } from 'react';
@@ -73,7 +73,7 @@ export default function InterviewerDetailsPage() {
 
   return (
     <div>
-      <TwoColumnLayout
+      <TwoColumnPageLayout
         sidebar={
           <div className='flex flex-col gap-4'>
             <BreadCrumb name={interviewerDetails?.first_name || ''} />
@@ -124,7 +124,7 @@ export default function InterviewerDetailsPage() {
             />
           </section>
         </main>
-      </TwoColumnLayout>
+      </TwoColumnPageLayout>
 
       {/* <div className=''>
         {isShowFeature('SCHEDULING') && (

@@ -1,14 +1,14 @@
 'use client';
 
-import { FullWidthLayout } from '@components/layouts/full-width-layout';
+import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
 
 import { ApplicationsComponent, JobDetailsHeader } from '@/job/components';
 
 const Page = () => {
   return (
-    <FullWidthLayout header={<JobDetailsHeader />}>
+    <OneColumnPageLayout header={<JobDetailsHeader />}>
       <ApplicationsComponent />
-    </FullWidthLayout>
+    </OneColumnPageLayout>
   );
 };
 

@@ -1,6 +1,7 @@
 'use client';
 
-import { TwoColumnLayout } from '@components/layouts/two-column-layout';
+import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
+import { TwoColumnPageLayout } from '@components/layouts/two-column-page-layout';
 import UpComingInterviewFilters from '@interviews/components/Filters/upComingFilter';
 import MyInterviews from '@interviews/components/MyInterviews';
 import RecentCompletedInterviews from '@interviews/components/RecentCompletedInterviews';
@@ -24,7 +25,7 @@ function InterviewsPage() {
     !!(recruiter_user?.schedule_auth as any)?.access_token
   ) {
     return (
-      <TwoColumnLayout
+      <TwoColumnPageLayout
         sidebarPosition='right'
         sidebarWidth={600}
         sidebar={
@@ -39,14 +40,16 @@ function InterviewsPage() {
         <ScheduleStatesProvider>
           <UpComingInterviews />
         </ScheduleStatesProvider>
-      </TwoColumnLayout>
+      </TwoColumnPageLayout>
     );
   } else {
     return (
-      <IntegrationNotFound
-        recruiter_id={recruiter_user?.user_id}
-        loading={integrationLoading}
-      />
+      <OneColumnPageLayout>
+        <IntegrationNotFound
+          recruiter_id={recruiter_user?.user_id}
+          loading={integrationLoading}
+        />
+      </OneColumnPageLayout>
     );
   }
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { FullWidthLayout } from '@components/layouts/full-width-layout';
+import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
 import { type PropsWithChildren } from 'react';
 
 import { useBreadcrumContext } from '@/context/BreadcrumContext/BreadcrumContext';
@@ -10,7 +10,7 @@ const Layout = ({ children }: PropsWithChildren) => {
   const { breadcrum } = useBreadcrumContext();
   return (
     <SchedulingProvider>
-      <FullWidthLayout
+      <OneColumnPageLayout
         header={
           <nav className='mb-6 flex items-center space-x-2 text-sm text-gray-600'>
             {breadcrum}
@@ -18,7 +18,7 @@ const Layout = ({ children }: PropsWithChildren) => {
         }
       >
         {children}
-      </FullWidthLayout>
+      </OneColumnPageLayout>
     </SchedulingProvider>
   );
 };

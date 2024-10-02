@@ -1,6 +1,6 @@
 'use client';
 
-import { FullWidthLayout } from '@components/layouts/full-width-layout';
+import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
 import React from 'react';
 
 import InterviewTypesPage, { HeaderPropProvider } from './_common/components';
@@ -9,9 +9,9 @@ import { InterviewPoolHeader } from './_common/components/Header';
 function Page() {
   return (
     <HeaderPropProvider>
-      <FullWidthLayout header={<InterviewPoolHeader />}>
+      <OneColumnPageLayout header={<InterviewPoolHeader />}>
         <InterviewTypesPage />
-      </FullWidthLayout>
+      </OneColumnPageLayout>
     </HeaderPropProvider>
   );
 }

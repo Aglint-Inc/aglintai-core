@@ -1,3 +1,10 @@
+import {
+  Page,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import { useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
@@ -7,12 +14,25 @@ import { AddHolidayDialog } from './AddHolidayDialog';
 import { HolidayActions } from './ui/HolidayActions';
 import { HolidayRow } from './ui/HolidayRow';
 import { HolidayTable } from './ui/HolidayTable';
-
 function Holidays() {
   return (
-    <HolidayTable actions={<Actions />}>
-      <List />
-    </HolidayTable>
+    <Page>
+      <PageHeader>
+        <PageHeaderText>
+          <PageTitle>Holidays</PageTitle>
+          <PageDescription>
+            {' '}
+            List company holidays to exclude them from scheduling.
+          </PageDescription>
+        </PageHeaderText>
+        <Actions />
+      </PageHeader>
+      <div className='flex flex-col gap-4'>
+        <HolidayTable>
+          <List />
+        </HolidayTable>
+      </div>
+    </Page>
   );
 }
 
