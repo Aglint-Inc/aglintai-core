@@ -9,9 +9,8 @@ import List from './List';
 import { TableHeader } from './TableHeader';
 
 export const Table = memo(() => {
-  const {
-    job: { section_count },
-  } = useJob();
+  const { job } = useJob();
+  const section_count = job?.section_count;
   const status = useApplicationsStore((state) => state.status);
   const { query } = useApplications();
 

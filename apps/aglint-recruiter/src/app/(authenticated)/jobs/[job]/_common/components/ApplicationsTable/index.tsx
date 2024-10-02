@@ -10,9 +10,8 @@ import DNDCard from '../Table/CardNew/DNDCard';
 import { EmptyList } from '../Table/Common/EmptyList';
 
 const ApplicationsTable: React.FC = () => {
-  const {
-    job: { section_count },
-  } = useJob();
+  const { job } = useJob();
+  const section_count = job?.section_count;
   const section = useApplicationsStore((state) => state.status);
   const { query, applications } = useApplications();
   const { hasNextPage, isFetchingNextPage, fetchNextPage, status } = query;
