@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
 import { Loader } from '@/components/Common/Loader';
-import { UIAlert } from '@/components/Common/UIAlert';
+import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';
 import { useRequests } from '@/context/RequestsContext';
@@ -107,9 +107,8 @@ function EmailPreviewSelfSchedule() {
       ) : (
         <>
           <div className='flex w-full flex-row items-center justify-between gap-4'>
-            <UIAlert
-              type='inline'
-              title='This is a preview only. All actions in this email are disabled.'
+            <UIBadge
+              textBadge='This is a preview only.'
               iconName='Info'
               color={'warning'}
             />

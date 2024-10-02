@@ -1,16 +1,13 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { type ApplicantRequest } from '@requests/types';
 import Link from 'next/link';
 
 import { UIBadge } from '@/components/Common/UIBadge';
-import { type useApplicationRequests } from '@/jobs/job/application/hooks/useApplicationRequests';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-type RequestProps = Awaited<
-  ReturnType<typeof useApplicationRequests>
->['data'][number];
-function RequestCard({ request }: { request: RequestProps }) {
+function RequestCard({ request }: { request: ApplicantRequest }) {
   return (
     <Link
       key={request.id}

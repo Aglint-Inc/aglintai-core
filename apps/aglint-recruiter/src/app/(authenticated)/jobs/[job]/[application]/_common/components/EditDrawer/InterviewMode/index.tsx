@@ -1,5 +1,5 @@
 import MembersAutoComplete from 'src/app/_common/components/MembersTextField';
-import { InterviewMode } from 'src/app/(authenticated)/jobs/[job]/(jobEdit)/interview-plan/_common/components/_common/InterviewMode';
+import { InterviewMode } from 'src/app/(authenticated)/jobs/[job]/(job-edit)/interview-plan/_common/components/_common/InterviewMode';
 
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';

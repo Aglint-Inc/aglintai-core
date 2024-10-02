@@ -47,9 +47,9 @@ function RequestListContent({
               {isFetched ? (
                 view === 'list' ? (
                   <ListSection
-                    collapseScheduleRequestSections={
-                      urgentRequests && !urgentRequests.requests.length
-                    }
+                    collapseScheduleRequestSections={Boolean(
+                      urgentRequests && !!urgentRequests.requests.length,
+                    )}
                     sectionName={sectionName}
                     requests={requests}
                     expandedSections={expandedSections}

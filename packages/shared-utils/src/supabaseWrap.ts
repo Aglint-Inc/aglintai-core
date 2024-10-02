@@ -15,7 +15,7 @@ export const supabaseWrap = <T extends unknown, U extends unknown>(
     throw err;
   }
   if (handle_empty_records) {
-    if (data === null || (Array.isArray(data) && data.length === 0)) {
+    if (Array.isArray(data) && data.length === 0) {
       throw new CApiError('SUPABASE_ERROR', 'No records found');
     }
   }

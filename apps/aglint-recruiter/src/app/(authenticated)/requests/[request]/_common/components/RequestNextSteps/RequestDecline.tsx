@@ -27,9 +27,7 @@ const RequestDecline = () => {
     React.useState(false);
 
   const { requestDetails } = useRequest();
-  const { data: meetingTime, refetch } = useMeetingList({
-    request_id: requestDetails?.id,
-  });
+  const { data: meetingTime, refetch } = useMeetingList();
   const declinedUserDetails = (meetingTime ?? [])
     .flat()
     .map((item) => item.cancel_reasons)

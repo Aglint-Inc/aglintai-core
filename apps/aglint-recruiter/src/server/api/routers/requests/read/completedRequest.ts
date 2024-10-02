@@ -78,7 +78,7 @@ const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
   query.order('completed_at', {
     ascending: false,
   });
-  return (await query).data;
+  return (await query).data ?? [];
 };
 
 export const completedRequest = privateProcedure.input(schema).query(query);
