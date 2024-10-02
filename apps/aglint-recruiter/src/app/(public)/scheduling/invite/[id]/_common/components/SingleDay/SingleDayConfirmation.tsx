@@ -2,16 +2,21 @@ import { useEffect, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useCandidateInvite } from '@/context/CandidateInviteContext';
 
-import { dayJS } from '../utils/utils';
-import { CandidateScheduleCard } from './Components/CandidateScheduleCard';
-import { SelectedDateAndTime } from './Components/SelectedDateAndTime';
-import { SessionAndTime } from './Components/SessionAndTime';
+import useInviteActions from '../../hooks/useInviteActions';
+import {
+  type CandidateInviteType,
+  setSelectedSlots,
+  useCandidateInviteStore,
+} from '../../store';
+import { dayJS } from '../../utils/utils';
+import { CandidateScheduleCard } from '../ui/CandidateScheduleCard';
+import { SelectedDateAndTime } from '../ui/SelectedDateAndTime';
+import { SessionAndTime } from '../ui/SessionAndTime';
 
 export const SingleDayConfirmation = () => {
-  const { selectedSlots, setSelectedSlots, handleSubmit, timezone } =
-    useCandidateInvite();
+  const { selectedSlots, timezone } = useCandidateInviteStore();
+  const { handleSubmit, isPending } = useInviteActions();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -19,6 +24,7 @@ export const SingleDayConfirmation = () => {
   }, [selectedSlots.length]);
 
   const handleClose = () => {
+    if (isPending) return;
     setOpen(false);
     setTimeout(() => setSelectedSlots([]), 200);
   };
@@ -59,7 +65,11 @@ export const SingleDayConfirmation = () => {
           <UIButton variant='secondary' onClick={() => handleClose()}>
             Cancel
           </UIButton>
-          <UIButton variant='default' onClick={() => handleSubmit()}>
+          <UIButton
+            isLoading={isPending}
+            variant='default'
+            onClick={() => handleSubmit()}
+          >
             Confirm
           </UIButton>
         </>
@@ -96,7 +106,7 @@ type SingleDaySessionsProps = {
 };
 
 const SingleDaySessions = (props: SingleDaySessionsProps) => {
-  const { selectedSlots } = useCandidateInvite();
+  const { selectedSlots } = useCandidateInviteStore();
   const sessions = (selectedSlots?.[props.index]?.sessions ?? []).map(
     (session) => (
       <SingleDaySession key={session.session_id} session={session} />
@@ -106,13 +116,11 @@ const SingleDaySessions = (props: SingleDaySessionsProps) => {
 };
 
 type SingleDaySessionProps = {
-  session: ReturnType<
-    typeof useCandidateInvite
-  >['selectedSlots'][number]['sessions'][number];
+  session: CandidateInviteType['selectedSlots'][number]['sessions'][number];
 };
 
 const SingleDaySession = (props: SingleDaySessionProps) => {
-  const { timezone } = useCandidateInvite();
+  const { timezone } = useCandidateInviteStore();
   const name = props.session.session_name;
   const duration = `${dayJS(props.session.start_time, timezone.tzCode).format(
     'hh:mm A',

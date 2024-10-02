@@ -9,21 +9,27 @@ import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
+import { api } from '@/trpc/client';
 
 function RequestNotes() {
   const params = useParams();
   const requestId = params?.request as string;
-
-  const { data: requestNotes, isFetched } = useReadNotes({
-    request_id: requestId,
-  });
-  const [note, setNote] = useState('');
+  api.requests.note.read;
+  const { data: notes, isFetched } = useReadNotes(
+    {
+      request_id: requestId,
+    },
+    {
+      enabled: !!requestId,
+    },
+  );
+  const [note, setNote] = useState<string | null>('');
   const [editorEnabled, setEditorEnabled] = useState(false);
-
+  const requestNotes = notes;
   const inputRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
-    if (isFetched) {
-      setNote(requestNotes?.[0]?.note || '');
+    if (requestNotes) {
+      setNote(requestNotes.note);
     }
   }, [isFetched]);
   const { updateRequestNote, isPending } = useUpdateRequestNote();

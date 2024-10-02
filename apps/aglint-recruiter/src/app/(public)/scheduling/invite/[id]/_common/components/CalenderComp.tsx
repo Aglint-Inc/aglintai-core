@@ -1,21 +1,22 @@
 import { dayjsLocal } from '@aglint/shared-utils';
-import { Calendar } from 'lucide-react';
+import { UITimeRangeCard } from 'src/app/_common/components/UITimeRangeCard';
 
-import { UITimeRangeCard } from '@/components/Common/UITimeRangeCard';
-import { type useCandidateInvite } from '@/context/CandidateInviteContext';
-import { type useInviteSlots } from '@/queries/candidate-invite';
-
+import { type useInviteSlots } from '../hooks/useInviteSlots';
+import { type CandidateInviteType } from '../store';
 import { dayJS } from '../utils/utils';
+import { CandidateCalender } from './ui/CandidateCalender';
 
 export type CandidateInviteCalendarProps = {
   sessions: {
     date: string;
-    slots: ReturnType<typeof useInviteSlots>['data'][number][number];
+    slots: NonNullable<
+      NonNullable<ReturnType<typeof useInviteSlots>>['data']
+    >[number][number];
   }[];
-  selections: ReturnType<typeof useCandidateInvite>['selectedSlots'];
+  selections: CandidateInviteType['selectedSlots'];
   handleSelect: (
     // eslint-disable-next-line no-unused-vars
-    session: ReturnType<typeof useCandidateInvite>['selectedSlots'][number],
+    session: CandidateInviteType['selectedSlots'][number],
   ) => void;
   tz: Parameters<typeof dayJS>[1];
 };
@@ -26,10 +27,10 @@ const CandidateInviteCalendar = (props: CandidateInviteCalendarProps) => {
   const sessions = props.sessions;
   const startMonth = sessions[0]?.date
     ? dayJS(sessions[0].date, props.tz).format('MMMM YYYY')
-    : null;
+    : '';
   const endMonth = sessions[sessions.length - 1]?.date
     ? dayJS(sessions[sessions.length - 1].date, props.tz).format('MMMM YYYY')
-    : null;
+    : '';
   const displayMonth =
     startMonth === endMonth ? startMonth : `${startMonth} - ${endMonth}`;
 
@@ -44,30 +45,6 @@ const CandidateInviteCalendar = (props: CandidateInviteCalendarProps) => {
 };
 
 export default CandidateInviteCalendar;
-
-function CandidateCalender({
-  slotDayColumn,
-
-  textMonth,
-}: {
-  slotDayColumn: React.ReactNode;
-
-  textMonth: string;
-}) {
-  return (
-    <div className='flex h-[500px] flex-col overflow-hidden rounded-md border border-neutral-200 bg-white'>
-      <div className='flex h-10 items-center justify-between border-b border-neutral-200 bg-neutral-100 px-4'>
-        <div className='flex items-center space-x-1'>
-          <Calendar className='h-5 w-5 text-neutral-700' />
-          <span className='font-medium'>{textMonth}</span>
-        </div>
-      </div>
-      <div className='flex items-center justify-center gap-2 overflow-auto p-2'>
-        {slotDayColumn}
-      </div>
-    </div>
-  );
-}
 
 const Columns = (props: CandidateInviteCalendarProps) => {
   const columns = props.sessions.map((session) => (

@@ -9,7 +9,7 @@ export const useCreateCandidateAvailability = () => {
   const createMutation = api.candidate_availability.create.useMutation({
     onError: (e) => {
       toast({
-        title: e.shape.message,
+        title: e.shape?.message,
       });
     },
   });
@@ -30,7 +30,7 @@ export const useUpdateCandidateAvailability = () => {
   const updateMutation = api.candidate_availability.update.useMutation({
     onError: (e) => {
       toast({
-        title: e.shape.message,
+        title: e.shape?.message,
       });
     },
   });

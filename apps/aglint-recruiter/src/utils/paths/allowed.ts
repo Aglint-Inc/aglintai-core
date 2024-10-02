@@ -61,7 +61,6 @@ export const allowedPaths = new Set<t>([
   '/api/scheduling/list-events',
   '/api/scheduling/list-availability',
   '/api/supabase/getCandidate-files',
-  '/api/scheduling/invite',
   `/api/candidate-assessment/assessment-details`,
   `/api/candidate-assessment/assessment-answers`,
   '/api/candidate-assessment/assessment-result-create',

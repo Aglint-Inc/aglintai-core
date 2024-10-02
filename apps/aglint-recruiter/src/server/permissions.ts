@@ -5,7 +5,11 @@ export const API_PERMISSIONS: ApiPermissions = {
   tenant: [],
   workflows: [],
   jobs: ['job_module'],
-  scheduling: ['scheduling_module'],
+  scheduling: {
+    candidate_invite: [],
+    details: ['scheduling_module'],
+    v1: [],
+  },
   integrations: ['integrations_module'],
   interviewers: ['job_module'],
   interview_pool: {
