@@ -19,27 +19,29 @@ import type { useAllInterviewModulesType } from '@/authenticated/types';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useAllDepartments } from '@/queries/departments';
-import ROUTES from '@/utils/routing/routes';
+
 export const InterviewPoolList = ({
   interviewType,
 }: {
-  interviewType: useAllInterviewModulesType[number];
+  interviewType: NonNullable<useAllInterviewModulesType>[number];
 }) => {
-  const router = useRouterPro();
+  const { superPush } = useRouterPro();
   const { data: departments } = useAllDepartments();
 
-  const department = departments?.find(
+  const department = departments.find(
     (dep) => dep.id === interviewType.department_id,
-  ).name;
+  )?.name;
 
   return (
     <TableRow
       key={interviewType.id}
       className='cursor-pointer hover:bg-gray-50'
       onClick={() => {
-        router.push(
-          ROUTES['/interview-pool/[pool]']({ type_id: interviewType.id }),
-        );
+        superPush('/interview-pool/[pool]', {
+          params: {
+            pool: interviewType.id as string,
+          },
+        });
       }}
     >
       <TableCell className='font-medium'>{interviewType.name}</TableCell>
@@ -116,7 +118,7 @@ export const InterviewPoolList = ({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              {interviewType.job_names?.length > 0 ? (
+              {(interviewType?.job_names || [])?.length > 0 ? (
                 <Badge
                   variant='outline'
                   className='border-indigo-200 bg-indigo-50 text-indigo-800'
@@ -126,8 +128,8 @@ export const InterviewPoolList = ({
                     ?.slice(0, 2)
                     .map((job) => job)
                     .join(', ')}
-                  {interviewType.job_names?.length > 2 ? (
-                    <span>{` + ${interviewType.job_names?.length - 2}`}</span>
+                  {(interviewType?.job_names || [])?.length > 2 ? (
+                    <span>{` + ${(interviewType?.job_names || [])?.length - 2}`}</span>
                   ) : null}
                 </Badge>
               ) : (

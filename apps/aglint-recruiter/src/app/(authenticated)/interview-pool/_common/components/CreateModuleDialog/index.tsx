@@ -66,7 +66,7 @@ function CreateModuleDialog() {
         setIsCreateDialogOpen(false);
         setSelectedUsers([]);
       } catch (e) {
-        toast.error(e.message);
+        toast.error((e as Error).message);
         setIsCreateDialogOpen(false);
       }
     }

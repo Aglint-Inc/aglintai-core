@@ -63,7 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).send(resAgent);
   } catch (error) {
     // console.log('error', error);
-    res.status(400).send(error.message);
+    res.status(400).send((error as Error).message);
   }
 };
 

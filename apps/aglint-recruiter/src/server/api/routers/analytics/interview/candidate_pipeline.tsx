@@ -19,6 +19,6 @@ export const candidate_pipeline = privateProcedure
           module_id,
         })
         .throwOnError()
-    ).data;
+    ).data!;
     return data[0];
   });

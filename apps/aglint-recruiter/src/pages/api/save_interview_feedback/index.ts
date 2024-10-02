@@ -36,7 +36,7 @@ export default async function handler(
     } catch (error) {
       return res.status(200).send(
         getResponse({
-          error: error || 'Internal Server Error.',
+          error: (error as Error).message || 'Internal Server Error.',
         }),
       );
     }

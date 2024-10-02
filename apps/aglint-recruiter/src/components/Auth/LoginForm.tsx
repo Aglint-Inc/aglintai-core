@@ -80,7 +80,7 @@ export default function LoginForm() {
     }
   };
 
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams()!;
   const resetRequested = searchParams.get('resetRequested');
 
   return (
