@@ -1,17 +1,11 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Button } from '@components/ui/button';
-import { Card } from '@components/ui/card';
-import {
-  AlertCircle,
-  Globe,
-  SquareArrowOutUpRight,
-  User,
-  Users,
-} from 'lucide-react';
+import { AlertCircle, Globe, SquareArrowOutUpRight, User } from 'lucide-react';
 import Link from 'next/link';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 
@@ -23,7 +17,6 @@ import { useScheduleDetails } from '../../hooks/useScheduleDetails';
 import { NewScheduleDetail } from '../ui/NewScheduleDetails';
 import AllRolesMeetings from './AllRolesMeetings';
 import InterviewerListCard from './InterviewerListCard';
-import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 
 function Overview() {
   const { checkPermissions } = useRolesAndPermissions();
@@ -143,7 +136,7 @@ function Overview() {
         <MeetingStatusBadge status={schedule.interview_meeting.status} />
       }
       slotInterviewTypeButton={
-        <Button
+        <UIButton
           variant='outline'
           size='sm'
           onClick={() => {
@@ -158,7 +151,7 @@ function Overview() {
         >
           {schedule?.interview_module?.name}
           <SquareArrowOutUpRight className='ml-2 h-4 w-4' />
-        </Button>
+        </UIButton>
       }
       slotCandidateList={
         <div className='flex w-full items-center justify-between'>
