@@ -18,7 +18,7 @@ function ScrollableSection({
   return (
     <div key={section.sectionName}>
       {isFetched ? (
-        <div style={{ paddingLeft: '3rem', paddingRight: '3rem' }}>
+        <div className='px-4'>
           <div className='container-lg mx-auto w-full'>
             <div className='flex-center text-md mb-2 flex w-full items-center justify-between font-semibold'>
               <p>{capitalizeFirstLetter(section.sectionName)}</p>
@@ -35,7 +35,7 @@ function ScrollableSection({
       )}
       <div className='mb-10 flex w-full items-start'>
         <ScrollArea style={{ width: 'calc(100vw - 65px)' }} className=''>
-          <div style={{ paddingLeft: '3rem', paddingRight: '3rem' }}>
+          <div className='px-4'>
             <div className='container-lg'>
               <div className='flex'>
                 {isFetched ? (
