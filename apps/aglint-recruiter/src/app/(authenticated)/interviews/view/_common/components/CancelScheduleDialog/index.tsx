@@ -10,7 +10,7 @@ import { Label } from '@components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import axios from 'axios';
 import { Loader2 } from 'lucide-react';
-import React, { type Dispatch, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
@@ -26,7 +26,7 @@ function CancelScheduleDialog({
   application_log_id,
 }: {
   isDeclineOpen: boolean;
-  setIsDeclineOpen: Dispatch<React.SetStateAction<boolean>>;
+  setIsDeclineOpen: (_open: boolean) => void;
   refetch: () => void;
   metaDetails: {
     meeting_id: string;

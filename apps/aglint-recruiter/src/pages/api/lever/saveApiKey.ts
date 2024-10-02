@@ -1,10 +1,15 @@
 /* eslint-disable no-console */
 
+import { type NextApiRequest, type NextApiResponse } from 'next';
+
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { encrypt } from '../encryptData';
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   const apiKey = req.body.apiKey;
   const recruiterId = req.body.recruiterId;
   const supabaseAdmin = getSupabaseServer();

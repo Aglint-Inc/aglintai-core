@@ -1,15 +1,14 @@
 import { type DatabaseEnums } from '@aglint/shared-types';
 import {
+  CApiError,
   createRequestProgressLogger,
   executeWorkflowAction,
-  supabaseWrap,
 } from '@aglint/shared-utils';
 import { apiTargetToEvents } from '@requests/components/RequestProgress/utils/progressMaps';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { findCandSelectedSlots } from '@/services/api-schedulings/findCandSelectedSlots';
-import { slackSuggestSlots } from '@/services/api-schedulings/slackSuggestSlots';
-import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 type BodyParams = {
@@ -30,6 +29,9 @@ const candAvailRecieved = async (req_body: BodyParams) => {
   } = req_body;
   const supabaseAdmin = getSupabaseServer();
   const event = apiTargetToEvents[target_api];
+  if (!event) {
+    throw new CApiError('SERVER_ERROR', 'eventAction not found');
+  }
   const reqProgressLogger = createRequestProgressLogger({
     request_id,
     event_run_id,
@@ -38,40 +40,44 @@ const candAvailRecieved = async (req_body: BodyParams) => {
   });
   await reqProgressLogger.resetEventProgress();
 
-  const [request_rec] = supabaseWrap(
+  const request_rec = (
     await supabaseAdmin
       .from('request')
-      .select('*,recruiter_user!request_assignee_id_fkey(*)')
-      .eq('id', request_id),
-  );
+      .select('*,recruiter_user!request_assignee_id_fkey!inner(*)')
+      .eq('id', request_id)
+      .single()
+  ).data;
+  if (!request_rec) {
+    throw new CApiError('SERVER_ERROR', 'No request record found');
+  }
   const request_assignee_tz =
     request_rec.recruiter_user.scheduling_settings.timeZone.tzCode;
-  const [avail_record] = supabaseWrap(
+  const avail_record = (
     await supabaseAdmin
       .from('candidate_request_availability')
-      .select('*,request_session_relation(*)')
-      .eq('id', candidate_availability_request_id),
-  );
+      .select('*,request_session_relation!inner(*)')
+      .eq('id', candidate_availability_request_id)
+      .single()
+      .throwOnError()
+  ).data;
 
-  const meeting_details = supabaseWrap(
-    await supabaseAdmin
-      .from('meeting_details')
-      .select()
-      .in(
-        'session_id',
-        avail_record.request_session_relation.map((s) => s.session_id),
-      ),
-  );
-  const session_ids = meeting_details.map((m) => m.session_id);
+  if (!avail_record) {
+    throw new CApiError('SERVER_ERROR', 'No availability record found');
+  }
 
-  const cand_schedule = new CandidatesSchedulingV2({
+  const session_ids = avail_record.request_session_relation.map(
+    (s) => s.session_id,
+  );
+  const cand_schedule = new CandidatesScheduling({
     include_conflicting_slots: {
       show_soft_conflicts: true,
       out_of_working_hrs: true,
     },
     return_empty_slots_err: true,
   });
-
+  if (!cand_schedule.db_details) {
+    throw new CApiError('SERVER_ERROR', 'No db details found');
+  }
   await cand_schedule.fetchDetails({
     params: {
       session_ids,
@@ -97,9 +103,9 @@ const candAvailRecieved = async (req_body: BodyParams) => {
     await executeWorkflowAction(
       slackSuggestSlots,
       {
-        avail_plans: cand_picked_slots,
+        avail_plans: cand_picked_slots ?? [],
         cand_avail_rec: avail_record,
-        cand_schedule: cand_schedule,
+        cand_schedule_db: cand_schedule.db_details,
         reqProgressLogger,
         request_id,
       },

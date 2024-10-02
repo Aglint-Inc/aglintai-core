@@ -1,4 +1,11 @@
 import { type SchedulingSettingType } from '@aglint/shared-types';
+import {
+  Page,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import { cloneDeep, debounce } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { LoadMax } from 'src/app/(authenticated)/user/[user]/_common/components/ScheduleAvailability/Dialog/EditAvailabiityDialog';
@@ -239,14 +246,17 @@ function SchedulingSettings() {
     },
   ];
   return (
-    <div>
-      <div className='flex flex-col'>
-        <div className='mb-6'>
-          <h2 className='mb-1 text-xl font-semibold'>Scheduling Information</h2>
-          <p className='text-sm text-muted-foreground'>
+    <Page>
+      <PageHeader>
+        <PageHeaderText>
+          <PageTitle>Scheduling</PageTitle>
+          <PageDescription>
+            {' '}
             Update the settings here changes will be saved automatically.
-          </p>
-        </div>
+          </PageDescription>
+        </PageHeaderText>
+      </PageHeader>
+      <div className='flex flex-col gap-4'>
         <div className='flex flex-col gap-5'>
           {dailyLmit.type && weeklyLmit.type && (
             <UISectionCard
@@ -301,7 +311,7 @@ function SchedulingSettings() {
           })}
         </div>{' '}
       </div>
-    </div>
+    </Page>
   );
 }
 

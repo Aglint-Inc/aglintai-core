@@ -667,7 +667,7 @@ export type Database = {
           number_of_days: number | null
           number_of_slots: number | null
           recruiter_id: string
-          request_id: string | null
+          request_id: string
           slots: Json[] | null
           total_slots: number | null
           user_timezone: string | null
@@ -686,7 +686,7 @@ export type Database = {
           number_of_days?: number | null
           number_of_slots?: number | null
           recruiter_id: string
-          request_id?: string | null
+          request_id: string
           slots?: Json[] | null
           total_slots?: number | null
           user_timezone?: string | null
@@ -705,7 +705,7 @@ export type Database = {
           number_of_days?: number | null
           number_of_slots?: number | null
           recruiter_id?: string
-          request_id?: string | null
+          request_id?: string
           slots?: Json[] | null
           total_slots?: number | null
           user_timezone?: string | null
@@ -1039,7 +1039,7 @@ export type Database = {
           filter_json: Json
           id: string
           is_flow_agent: boolean
-          request_id: string | null
+          request_id: string
           schedule_options: Json | null
           selected_options: Json[] | null
           session_ids: string[]
@@ -1053,7 +1053,7 @@ export type Database = {
           filter_json: Json
           id?: string
           is_flow_agent?: boolean
-          request_id?: string | null
+          request_id: string
           schedule_options?: Json | null
           selected_options?: Json[] | null
           session_ids?: string[]
@@ -1067,7 +1067,7 @@ export type Database = {
           filter_json?: Json
           id?: string
           is_flow_agent?: boolean
-          request_id?: string | null
+          request_id?: string
           schedule_options?: Json | null
           selected_options?: Json[] | null
           session_ids?: string[]
@@ -1821,7 +1821,7 @@ export type Database = {
           is_resolved: boolean
           other_details: Json | null
           reason: string
-          request_id: string | null
+          request_id: string
           session_id: string
           session_relation_id: string | null
           type: Database["public"]["Enums"]["cancel_type"]
@@ -1835,7 +1835,7 @@ export type Database = {
           is_resolved?: boolean
           other_details?: Json | null
           reason: string
-          request_id?: string | null
+          request_id: string
           session_id: string
           session_relation_id?: string | null
           type?: Database["public"]["Enums"]["cancel_type"]
@@ -1849,7 +1849,7 @@ export type Database = {
           is_resolved?: boolean
           other_details?: Json | null
           reason?: string
-          request_id?: string | null
+          request_id?: string
           session_id?: string
           session_relation_id?: string | null
           type?: Database["public"]["Enums"]["cancel_type"]
@@ -2582,7 +2582,7 @@ export type Database = {
           jd_changed: boolean | null
           jd_json: Json | null
           job_criteria: Json | null
-          job_title: string | null
+          job_title: string
           job_type: Database["public"]["Enums"]["public_job_type"] | null
           location_id: number | null
           new_screening_setting: Json
@@ -2619,7 +2619,7 @@ export type Database = {
           jd_changed?: boolean | null
           jd_json?: Json | null
           job_criteria?: Json | null
-          job_title?: string | null
+          job_title: string
           job_type?: Database["public"]["Enums"]["public_job_type"] | null
           location_id?: number | null
           new_screening_setting?: Json
@@ -2656,7 +2656,7 @@ export type Database = {
           jd_changed?: boolean | null
           jd_json?: Json | null
           job_criteria?: Json | null
-          job_title?: string | null
+          job_title?: string
           job_type?: Database["public"]["Enums"]["public_job_type"] | null
           location_id?: number | null
           new_screening_setting?: Json
@@ -2850,69 +2850,51 @@ export type Database = {
           company_overview: string | null
           company_website: string | null
           created_at: string
-          e_o_statement: string | null
-          email: string | null
           employee_size: string | null
           employment_type: Json
-          hr_contact: Json | null
           id: string
           industry: string | null
           logo: string | null
-          m_v_statement: string | null
-          name: string | null
+          name: string
           phone_number: string | null
           primary_admin: string
-          primary_contact: Json | null
-          recruiter_type: string | null
           scheduling_reason: Json | null
-          scheduling_settings: Json | null
-          socials: Json | null
+          scheduling_settings: Json
+          socials: Json
           workplace_type: Json
         }
         Insert: {
           company_overview?: string | null
           company_website?: string | null
           created_at?: string
-          e_o_statement?: string | null
-          email?: string | null
           employee_size?: string | null
           employment_type?: Json
-          hr_contact?: Json | null
           id?: string
           industry?: string | null
           logo?: string | null
-          m_v_statement?: string | null
-          name?: string | null
+          name: string
           phone_number?: string | null
           primary_admin: string
-          primary_contact?: Json | null
-          recruiter_type?: string | null
           scheduling_reason?: Json | null
-          scheduling_settings?: Json | null
-          socials?: Json | null
+          scheduling_settings?: Json
+          socials?: Json
           workplace_type?: Json
         }
         Update: {
           company_overview?: string | null
           company_website?: string | null
           created_at?: string
-          e_o_statement?: string | null
-          email?: string | null
           employee_size?: string | null
           employment_type?: Json
-          hr_contact?: Json | null
           id?: string
           industry?: string | null
           logo?: string | null
-          m_v_statement?: string | null
-          name?: string | null
+          name?: string
           phone_number?: string | null
           primary_admin?: string
-          primary_contact?: Json | null
-          recruiter_type?: string | null
           scheduling_reason?: Json | null
-          scheduling_settings?: Json | null
-          socials?: Json | null
+          scheduling_settings?: Json
+          socials?: Json
           workplace_type?: Json
         }
         Relationships: [
@@ -3010,35 +2992,32 @@ export type Database = {
       recruiter_relation: {
         Row: {
           created_at: string
-          created_by: string
+          created_by: string | null
           id: number
           is_active: boolean
           manager_id: string | null
           recruiter_id: string
-          role: Database["public"]["Enums"]["user_roles"]
-          role_id: string | null
+          role_id: string
           user_id: string
         }
         Insert: {
           created_at?: string
-          created_by?: string
+          created_by?: string | null
           id?: number
           is_active?: boolean
           manager_id?: string | null
           recruiter_id: string
-          role: Database["public"]["Enums"]["user_roles"]
-          role_id?: string | null
+          role_id: string
           user_id: string
         }
         Update: {
           created_at?: string
-          created_by?: string
+          created_by?: string | null
           id?: number
           is_active?: boolean
           manager_id?: string | null
           recruiter_id?: string
-          role?: Database["public"]["Enums"]["user_roles"]
-          role_id?: string | null
+          role_id?: string
           user_id?: string
         }
         Relationships: [
@@ -3114,13 +3093,11 @@ export type Database = {
           created_at: string
           department_id: number | null
           email: string
-          email_auth: Json | null
-          email_outreach_templates: Json[] | null
           employment: Database["public"]["Enums"]["employment_type_enum"]
           first_name: string
           is_calendar_connected: boolean
           joined_at: string | null
-          last_name: string | null
+          last_name: string
           linked_in: string | null
           office_location_id: number | null
           phone: string | null
@@ -3128,7 +3105,7 @@ export type Database = {
           profile_image: string | null
           remote_id: string | null
           schedule_auth: Json | null
-          scheduling_settings: Json | null
+          scheduling_settings: Json
           status: string
           user_id: string
         }
@@ -3138,13 +3115,11 @@ export type Database = {
           created_at?: string
           department_id?: number | null
           email: string
-          email_auth?: Json | null
-          email_outreach_templates?: Json[] | null
           employment?: Database["public"]["Enums"]["employment_type_enum"]
           first_name: string
           is_calendar_connected?: boolean
           joined_at?: string | null
-          last_name?: string | null
+          last_name?: string
           linked_in?: string | null
           office_location_id?: number | null
           phone?: string | null
@@ -3152,8 +3127,8 @@ export type Database = {
           profile_image?: string | null
           remote_id?: string | null
           schedule_auth?: Json | null
-          scheduling_settings?: Json | null
-          status: string
+          scheduling_settings?: Json
+          status?: string
           user_id: string
         }
         Update: {
@@ -3162,13 +3137,11 @@ export type Database = {
           created_at?: string
           department_id?: number | null
           email?: string
-          email_auth?: Json | null
-          email_outreach_templates?: Json[] | null
           employment?: Database["public"]["Enums"]["employment_type_enum"]
           first_name?: string
           is_calendar_connected?: boolean
           joined_at?: string | null
-          last_name?: string | null
+          last_name?: string
           linked_in?: string | null
           office_location_id?: number | null
           phone?: string | null
@@ -3176,7 +3149,7 @@ export type Database = {
           profile_image?: string | null
           remote_id?: string | null
           schedule_auth?: Json | null
-          scheduling_settings?: Json | null
+          scheduling_settings?: Json
           status?: string
           user_id?: string
         }
@@ -3206,50 +3179,50 @@ export type Database = {
       }
       request: {
         Row: {
-          application_id: string | null
-          assignee_id: string | null
-          assigner_id: string | null
+          application_id: string
+          assignee_id: string
+          assigner_id: string
           completed_at: string | null
           created_at: string
           id: string
           is_new: boolean
           priority: string
-          schedule_end_date: string | null
-          schedule_start_date: string | null
+          schedule_end_date: string
+          schedule_start_date: string
           status: string
-          title: string | null
+          title: string
           type: string
           updated_at: string
         }
         Insert: {
-          application_id?: string | null
-          assignee_id?: string | null
-          assigner_id?: string | null
+          application_id?: string
+          assignee_id?: string
+          assigner_id?: string
           completed_at?: string | null
           created_at?: string
           id?: string
           is_new?: boolean
           priority?: string
-          schedule_end_date?: string | null
-          schedule_start_date?: string | null
+          schedule_end_date: string
+          schedule_start_date: string
           status?: string
-          title?: string | null
+          title: string
           type: string
           updated_at?: string
         }
         Update: {
-          application_id?: string | null
-          assignee_id?: string | null
-          assigner_id?: string | null
+          application_id?: string
+          assignee_id?: string
+          assigner_id?: string
           completed_at?: string | null
           created_at?: string
           id?: string
           is_new?: boolean
           priority?: string
-          schedule_end_date?: string | null
-          schedule_start_date?: string | null
+          schedule_end_date?: string
+          schedule_start_date?: string
           status?: string
-          title?: string | null
+          title?: string
           type?: string
           updated_at?: string
         }
@@ -5721,8 +5694,8 @@ export type Database = {
         Args: {
           session_ids: string[]
           company_id: string
-          meet_start_date: string
-          meet_end_date: string
+          meet_start_date?: string
+          meet_end_date?: string
         }
         Returns: {
           interview_sessions: Json[]
@@ -6493,6 +6466,25 @@ export type Database = {
           job_id: string
         }
         Returns: boolean
+      }
+      update_user: {
+        Args: {
+          first_name: string
+          last_name: string
+          linked_in: string
+          office_location_id: number
+          employment: string
+          position: string
+          department_id: number
+          phone: string
+          profile_image: string
+          scheduling_settings: Json
+          user_id: string
+          manager_id: string
+          role_id: string
+          recruiter_id: string
+        }
+        Returns: undefined
       }
       updatequestionorder: {
         Args: {

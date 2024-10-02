@@ -9,7 +9,7 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { useAllIntegrations } from '@/authenticated/hooks';
+import { useIntegrations } from '@/authenticated/hooks';
 import { useTenant } from '@/company/hooks';
 import { Loader } from '@/components/Common/Loader';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -42,7 +42,7 @@ export function AshbyModalComp() {
   const [initialFetch, setInitialFetch] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
   const apiRef = useRef(null);
-  const { data: allIntegrations } = useAllIntegrations();
+  const { data: allIntegrations } = useIntegrations();
 
   useEffect(() => {
     if (jobs.status === 'success' && allIntegrations?.ashby_key) {
@@ -244,10 +244,12 @@ export function AshbyModalComp() {
                         <CardContent className='flex items-center justify-between p-4'>
                           <div>
                             <p className='font-medium'>{post.title}</p>
-                            <p className='text-sm text-gray-500'>
+                            <p className='text-sm text-muted-foreground'>
                               {post.location}
                             </p>
-                            <p className='text-sm text-gray-500'>Live</p>
+                            <p className='text-sm text-muted-foreground'>
+                              Live
+                            </p>
                           </div>
                           <Checkbox
                             checked={selectedAshbyPostings?.some(

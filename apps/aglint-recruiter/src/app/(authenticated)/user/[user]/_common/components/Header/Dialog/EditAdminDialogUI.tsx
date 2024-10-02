@@ -13,10 +13,13 @@ import {
   type MutableRefObject,
   type SetStateAction,
 } from 'react';
-import { type MemberType } from 'src/app/_common/types/memberType';
 
-import type { useTenant, useTenantRoles } from '@/company/hooks';
 import type { useTenantOfficeLocations } from '@/company/hooks';
+import {
+  type useTenant,
+  type useTenantMembers,
+  type useTenantRoles,
+} from '@/company/hooks';
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
 import UITypography from '@/components/Common/UITypography';
 import { type useAllDepartments } from '@/queries/departments';
@@ -34,7 +37,7 @@ type Props = {
   setForm: Dispatch<SetStateAction<EditAdminFormType>>;
   formError: EditAdminFormErrorType;
   officeLocations: ReturnType<typeof useTenantOfficeLocations>['data'];
-  member: MemberType;
+  member: ReturnType<typeof useTenantMembers>['allMembers'][number];
   recruiterUser: ReturnType<typeof useTenant>['recruiter_user'];
   departments: ReturnType<typeof useAllDepartments>['data'];
   roleOptions: ReturnType<typeof useTenantRoles>['data'];
@@ -58,7 +61,7 @@ export const Form = ({
       <div className='flex items-center space-x-4'>
         <div className='max-w-[64px]'>
           <ImageUploadManual
-            image={form.profile_image}
+            image={form.profile_image ?? ''}
             size={64}
             imageFile={imageFile}
             setChanges={() => {
@@ -72,7 +75,7 @@ export const Form = ({
             <span className='text-red-500'>Change profile photo</span>{' '}
             (optional)
           </p>
-          <p className='text-sm text-gray-500'>
+          <p className='text-sm text-muted-foreground'>
             Upload a square profile image (PNG or JPEG). Maximum size: 5 MB.
           </p>
         </div>
@@ -85,7 +88,9 @@ export const Form = ({
             id='first_name'
             placeholder='Enter first name'
             value={form.first_name}
-            onChange={(e) => setForm({ ...form, first_name: e.target.value })}
+            onChange={(e) =>
+              setForm({ ...form, first_name: e.target.value || '' })
+            }
             className={formError.first_name ? 'border-red-500' : ''}
           />
         </div>
@@ -94,7 +99,7 @@ export const Form = ({
           <Input
             id='last_name'
             placeholder='Enter last name'
-            value={form.last_name}
+            value={form.last_name ?? ''}
             onChange={(e) => setForm({ ...form, last_name: e.target.value })}
           />
         </div>
@@ -105,7 +110,7 @@ export const Form = ({
         <Input
           id='linked_in'
           placeholder='Enter linkedin url'
-          value={form.linked_in}
+          value={form.linked_in ?? ''}
           onChange={(e) =>
             setForm({ ...form, linked_in: e.target.value.trim() })
           }
@@ -150,9 +155,9 @@ export const Form = ({
         <div className='space-y-2'>
           <Label htmlFor='location'>Location</Label>
           <Select
-            value={form.location_id?.toString()}
+            value={form.office_location_id?.toString()}
             onValueChange={(value) =>
-              setForm({ ...form, location_id: parseInt(value) })
+              setForm({ ...form, office_location_id: parseInt(value) })
             }
           >
             <SelectTrigger>
@@ -247,7 +252,7 @@ export const Form = ({
               <div className='space-y-2'>
                 <Label htmlFor='manager'>Manager</Label>
                 <Select
-                  value={form.manager_id}
+                  value={form?.manager_id || ''}
                   onValueChange={(value) =>
                     setForm({ ...form, manager_id: value })
                   }

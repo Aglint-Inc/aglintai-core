@@ -1,7 +1,15 @@
-import { Check, Edit, X } from 'lucide-react';
+import {
+  Section,
+  SectionActions,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
+import { Check, Edit, FileText, X } from 'lucide-react';
 import { marked } from 'marked';
 import { useState } from 'react';
 
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import { UIButton } from '@/components/Common/UIButton';
 
@@ -11,7 +19,7 @@ function Instructions({
   updateInstruction,
   showEditButton,
 }: {
-  instruction: string;
+  instruction: string | null;
   updateInstruction: any;
   showEditButton: boolean;
   setTextValue: any;
@@ -30,53 +38,61 @@ function Instructions({
   };
 
   return (
-    <div className='rounded-lg border bg-white p-4 shadow-sm'>
-      <div className='mb-2 flex items-center justify-between'>
-        <h2 className='text-base font-medium text-gray-900'>Instructions</h2>
-        {showEditButton && !isEditing && (
-          <UIButton
-            variant='ghost'
-            size='sm'
-            onClick={() => setIsEditing(true)}
-          >
-            <Edit className='mr-1 h-4 w-4' />
-            Edit
-          </UIButton>
-        )}
-        {isEditing && (
-          <div className='flex gap-2'>
-            <UIButton variant='ghost' size='sm' onClick={handleCancel}>
-              <X className='mr-1 h-4 w-4' />
-              Cancel
+    <Section>
+      <SectionHeader>
+        <SectionHeaderText>
+          <SectionTitle>Instructions</SectionTitle>
+        </SectionHeaderText>
+        <SectionActions>
+          {showEditButton && !isEditing && (
+            <UIButton
+              variant='ghost'
+              size='sm'
+              onClick={() => setIsEditing(true)}
+            >
+              <Edit className='mr-1 h-4 w-4' />
+              Edit
             </UIButton>
-            <UIButton variant='default' size='sm' onClick={handleSave}>
-              <Check className='mr-1 h-4 w-4' />
-              Save
-            </UIButton>
-          </div>
-        )}
-      </div>
+          )}
+          {isEditing && (
+            <div className='flex gap-2'>
+              <UIButton variant='ghost' size='sm' onClick={handleCancel}>
+                <X className='mr-1 h-4 w-4' />
+                Cancel
+              </UIButton>
+              <UIButton variant='default' size='sm' onClick={handleSave}>
+                <Check className='mr-1 h-4 w-4' />
+                Save
+              </UIButton>
+            </div>
+          )}
+        </SectionActions>
+      </SectionHeader>
       {isEditing ? (
-        <div className='mt-2'>
-          <TipTapAIEditor
-            enablAI={false}
-            placeholder='Instructions'
-            handleChange={(html) => {
-              setEditedInstruction(html);
-              setTextValue(html);
-            }}
-            initialValue={editedInstruction}
-          />
-        </div>
-      ) : (
+        <TipTapAIEditor
+          enablAI={false}
+          placeholder='Instructions'
+          handleChange={(html) => {
+            setEditedInstruction(html);
+            setTextValue(html);
+          }}
+          initialValue={editedInstruction ?? undefined}
+        />
+      ) : instruction ? (
         <div
-          className='overflow-auto text-sm text-gray-500'
+          className='prose prose-sm max-w-none overflow-auto text-sm text-muted-foreground'
           dangerouslySetInnerHTML={{
-            __html: marked(instruction || 'Instructions not given'),
+            __html: marked(instruction || ''),
           }}
         />
+      ) : (
+        <GlobalEmpty
+          icon={<FileText className='h-10 w-10' />}
+          header='No instructions'
+          description='Instructions for the interviewers have not been added yet.'
+        />
       )}
-    </div>
+    </Section>
   );
 }
 

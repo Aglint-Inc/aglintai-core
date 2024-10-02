@@ -31,7 +31,7 @@ export function SliderImages() {
             {/* Show delete button on hover */}
             <button
               onClick={() => deleteImages(image)}
-              className='absolute right-2 top-2 z-20 flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm border border-gray-300 bg-white opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100'
+              className='absolute right-2 top-2 z-20 flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm border border-border bg-white opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100'
               aria-label='Delete image' // Added for accessibility
             >
               <X strokeWidth={1} className='h-3 w-3' />

@@ -27,7 +27,7 @@ export const handleJobApi = async <T extends keyof ApiRouteTypes>(
       .reduce((acc, [key, value]) => {
         if (value) acc.push(`${key}=${encodeURIComponent(value as string)}`);
         return acc;
-      }, [])
+      }, [] as string[])
       .join('&');
     const { data } = await axios<ApiRouteTypes[T]['response']>({
       method: 'post',

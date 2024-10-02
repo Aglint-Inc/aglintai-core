@@ -9,7 +9,12 @@ import toast from '@/utils/toast';
 
 import { useInvalidateJobQueries } from '../job';
 import { jobsQueryKeys } from './keys';
-import { type Job, type JobCreate, type JobInsert } from './types';
+import {
+  type Job,
+  type JobCreate,
+  type JobInsert,
+  type JobUpdate,
+} from './types';
 
 export const useJobsRead = (manageJob = false) => {
   const { recruiter_id } = useTenant();
@@ -75,7 +80,7 @@ export const useJobCreate = () => {
     },
     onSuccess: (data) => {
       if (data)
-        queryClient.setQueryData<Job[]>(queryKey, (prev) => [data, ...prev]);
+        queryClient.setQueryData<Job[]>(queryKey, (prev) => [data, ...prev!]);
       else queryClient.invalidateQueries({ queryKey });
     },
   });
@@ -89,7 +94,7 @@ export const useJobUpdate = () => {
   const mutation = useMutation({
     mutationFn: (job: Parameters<typeof updateJob>[0]) => updateJob(job),
     onMutate: (job) => {
-      const previousJobs = queryClient.getQueryData<Job[]>(queryKey);
+      const previousJobs = queryClient.getQueryData<Job[]>(queryKey)!;
       const newJobs = previousJobs.reduce((acc, curr) => {
         if (curr.id === job.id) {
           const safeJob = {
@@ -108,12 +113,12 @@ export const useJobUpdate = () => {
         parameter_weights ||
         (draft && jd_json && !isEqual(draft.jd_json, jd_json))
       ) {
-        revalidateJobQueries(id);
+        revalidateJobQueries(id!);
       }
     },
     onError: (_, __, context) => {
       toast.error('Unable to update job');
-      queryClient.setQueryData<Job[]>(queryKey, context.previousJobs);
+      queryClient.setQueryData<Job[]>(queryKey, context!.previousJobs);
     },
   });
   return mutation;
@@ -125,14 +130,14 @@ export const useJobDelete = () => {
   const mutation = useMutation({
     mutationFn: (id: Job['id']) => deleteJob(id),
     onMutate: (id) => {
-      const previousJobs = queryClient.getQueryData<Job[]>(queryKey);
+      const previousJobs = queryClient.getQueryData<Job[]>(queryKey)!;
       const newJobs = previousJobs.filter((job) => job.id !== id);
       queryClient.setQueryData<Job[]>(queryKey, newJobs);
       return { previousJobs, newJobs };
     },
     onError: (_, __, context) => {
       toast.error('Unable to delete job');
-      queryClient.setQueryData<Job[]>(queryKey, context.previousJobs);
+      queryClient.setQueryData<Job[]>(queryKey, context!.previousJobs);
     },
     onSuccess: () => {
       toast.success('Job deleted successfully.');
@@ -169,16 +174,16 @@ const createJob = async (job: JobInsert) => {
   return d2[0] as unknown as Job;
 };
 
-const updateJob = async (job: JobInsert) => {
+const updateJob = async (job: JobUpdate) => {
   const { error: e1 } = await supabase
     .from('public_jobs')
     .update(job)
-    .eq('id', job.id);
+    .eq('id', job.id!);
 
   if (e1) throw new Error(e1.message);
 };
 
 const deleteJob = async (id: Job['id']) => {
-  const { error } = await supabase.from('public_jobs').delete().eq('id', id);
+  const { error } = await supabase.from('public_jobs').delete().eq('id', id!);
   if (error) throw new Error(error.message);
 };

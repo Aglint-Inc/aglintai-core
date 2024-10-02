@@ -19,6 +19,6 @@ export const interview_statistics = privateProcedure
           module_id,
         })
         .throwOnError()
-    ).data;
+    ).data!;
     return data[0];
   });

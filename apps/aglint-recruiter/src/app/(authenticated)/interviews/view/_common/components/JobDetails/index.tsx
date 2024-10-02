@@ -1,4 +1,8 @@
-import { Card } from '@components/ui/card';
+import {
+  Section,
+  SectionHeader,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
@@ -14,9 +18,12 @@ function JobDetails() {
     extensions: [StarterKit],
   });
   return (
-    <Card className='p-4'>
+    <Section>
+      <SectionHeader>
+        <SectionTitle>Job Details</SectionTitle>
+      </SectionHeader>
       <EditorContent editor={editor} />
-    </Card>
+    </Section>
   );
 }
 

@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import Link from 'next/link';
 import React from 'react';
 
@@ -21,23 +20,19 @@ function RecentCompletedInterviews() {
     <>
       {/* {!isFetched && <Loader />} */}
       {isFetched && (schedules ?? [])?.length > 1 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className='text-lg font-semibold'>
-              <div className='flex justify-between'>
-                <h1>Recently Completed</h1>
-                <Link href={'/interviews/all'}>
-                  <UIButton size='sm' variant='ghost'>
-                    View All
-                  </UIButton>
-                </Link>
-              </div>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ScheduleMeetingList filterSchedules={(schedules??[]).slice(0, 5)} />
-          </CardContent>
-        </Card>
+        <div className='flex flex-col gap-2'>
+          <div className='flex items-center justify-between'>
+            <h1 className='text-lg font-bold'>Recently Completed</h1>
+            <Link href={'/interviews/all'}>
+              <UIButton size='sm' variant='ghost'>
+                View All
+              </UIButton>
+            </Link>
+          </div>
+          <ScheduleMeetingList
+            filterSchedules={(schedules ?? []).slice(0, 5)}
+          />
+        </div>
       )}
     </>
   );

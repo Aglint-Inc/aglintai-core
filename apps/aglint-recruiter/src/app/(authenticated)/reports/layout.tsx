@@ -1,4 +1,10 @@
 'use client';
+import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
+import {
+  SectionDescription,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import React from 'react';
 
 import DashboardDataFilter from './_common/components/DashboardDataFilter';
@@ -11,26 +17,25 @@ export default function AnalyticsLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className='container-lg mx-auto w-full px-4'>
-      <div className='mb-4'>
-        <div className='flex flex-row'>
-          <div className='flex w-2/12 flex-col'>
-            <h2 className='text-lg font-semibold'>Reports</h2>
-            <p className='mb-4 text-sm text-gray-600'>
-              All the Reports can be found here.
-            </p>
+    <AnalyticsProvider>
+      <OneColumnPageLayout
+        sidebar={
+          <>
+            <SectionHeaderText>
+              <SectionTitle>Reports</SectionTitle>
+              <SectionDescription>
+                All the Reports can be found here.
+              </SectionDescription>
+            </SectionHeaderText>
             <InterviewDashboardSideNav />
-          </div>
-          <div className='flex w-10/12 flex-grow flex-col pl-8'>
-            <AnalyticsProvider>
-              <div className='mb-6'>
-                <DashboardDataFilter />
-              </div>
-              {children}
-            </AnalyticsProvider>
-          </div>
-        </div>
-      </div>
-    </div>
+          </>
+        }
+        filter={<DashboardDataFilter />}
+        sidebarPosition='left'
+        sidebarWidth={320}
+      >
+        {children}
+      </OneColumnPageLayout>
+    </AnalyticsProvider>
   );
 }

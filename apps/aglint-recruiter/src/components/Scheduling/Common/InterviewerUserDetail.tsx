@@ -6,14 +6,14 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { BriefcaseBusiness } from 'lucide-react';
+import { BriefcaseBusiness, Globe } from 'lucide-react';
 
 import { getPauseMemberText } from '@/authenticated/utils';
 import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerAcceptDeclineIcon';
 import { UIBadge } from '@/components/Common/UIBadge';
 
 import InterviewerTrainingTypeIcon from '../../Common/Icons/InterviewerTrainingTypeIcon';
-import { formatTimeWithTimeZone, getShortTimeZone } from '../utils';
+import { formatTimeWithTimeZone } from '../utils';
 
 function InterviewerUserDetail({
   interview_meeting,
@@ -48,16 +48,16 @@ function InterviewerUserDetail({
   interviewerType: DatabaseTable['interview_session_relation']['interviewer_type'];
 }) {
   return (
-    <div className='flex items-center justify-between rounded-lg bg-gray-50 p-3'>
+    <div className='flex items-center'>
       <div className='flex items-center space-x-4'>
         <div className='flex-shrink-0'>
           {userDetails.profile_image ? (
-            <Avatar className='h-10 w-10'>
+            <Avatar className=' h-12 w-12 rounded-md'>
               <AvatarImage
                 src={userDetails.profile_image}
                 alt={getFullName(userDetails.first_name, userDetails.last_name)}
               />
-              <AvatarFallback>
+              <AvatarFallback className='h-12 w-12 rounded-md '>
                 {getFullName(
                   userDetails.first_name,
                   userDetails.last_name,
@@ -65,7 +65,7 @@ function InterviewerUserDetail({
               </AvatarFallback>
             </Avatar>
           ) : (
-            <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 text-sm font-medium text-gray-500'>
+            <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 text-sm font-medium text-muted-foreground'>
               {getFullName(
                 userDetails.first_name,
                 userDetails.last_name,
@@ -73,34 +73,12 @@ function InterviewerUserDetail({
             </div>
           )}
         </div>
-        <div className='flex flex-col'>
-          <p className='text-sm font-semibold'>
+        <div className='flex flex-col gap-1'>
+          <div className='flex flex-row gap-2'>
+          <p className='text-md '>
             {getFullName(userDetails.first_name, userDetails.last_name)}
           </p>
-          {userDetails?.position && (
-            <div className='flex items-center text-xs text-gray-600'>
-              <BriefcaseBusiness className='mr-1 h-3 w-3' />
-              <span>{userDetails.position}</span>
-            </div>
-          )}
-        </div>
-      </div>
-      <div className='flex items-center space-x-4'>
-        <div className='text-right'>
-          <p className='text-sm font-medium'>
-            {interview_meeting?.start_time
-              ? formatTimeWithTimeZone({
-                  start_time: interview_meeting.start_time,
-                  end_time: interview_meeting.end_time,
-                  timeZone: interviewerTimeZone,
-                })
-              : 'Time not set'}
-          </p>
-          <p className='text-xs text-gray-500'>
-            {getShortTimeZone(interviewerTimeZone)}
-          </p>
-        </div>
-        <div className='flex items-center space-x-2'>
+          <div className='flex items-center space-x-2'>
           {trainingType ? (
             <InterviewerTrainingTypeIcon type={trainingType} />
           ) : interviewerType !== 'qualified' &&
@@ -152,6 +130,32 @@ function InterviewerUserDetail({
               </>
             )}
         </div>
+          </div>
+          
+          <div className='flex flex-row items-center gap-4  text-gray-500 text-sm'>
+          <div className='flex flex-row gap-1 items-center'>
+          <Globe className=' h-3 w-3' />
+          <p className=''>
+            {interview_meeting?.start_time
+              ? formatTimeWithTimeZone({
+                  start_time: interview_meeting.start_time,
+                  end_time: interview_meeting.end_time,
+                  timeZone: interviewerTimeZone,
+                })
+              : 'Time not set'}
+          </p>
+          </div>
+          {userDetails?.position && (
+            <div className='flex items-center gap-1'>
+              <BriefcaseBusiness className=' h-3 w-3' />
+              <span>{userDetails.position}</span>
+            </div>
+          )}
+          </div>
+        </div>
+      </div>
+      <div className='flex items-center space-x-4'>
+        
       </div>
     </div>
   );

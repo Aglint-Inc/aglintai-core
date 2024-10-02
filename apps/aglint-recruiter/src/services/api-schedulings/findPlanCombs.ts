@@ -1,11 +1,11 @@
 import { type SessionInterviewerType } from '@aglint/shared-types';
-import { getFullName } from '@aglint/shared-utils';
+import { CApiError, getFullName } from '@aglint/shared-utils';
 import type { ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
 import { filterSchedulingOptionsArray } from '@request/components/SelfSchedulingDrawer/_common/components/BodyDrawer/ScheduleFilter/utils';
 import { type SelfSchedulingFlow } from '@request/components/SelfSchedulingDrawer/_common/store/store';
 
 // import { filterSchedulingOptionsArray } from '@/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/_common/components/BodyDrawer/ScheduleFilter/utils';
-import { CandidatesSchedulingV2 } from '../CandidateScheduleV2/CandidatesSchedulingV2';
+import { CandidatesScheduling } from '../CandidateSchedule/CandidatesScheduling';
 import { extractPreferredInterviewers } from './textTransforms/extractPreferredInterviewers';
 
 export const findPlanCombs = async ({
@@ -25,7 +25,7 @@ export const findPlanCombs = async ({
   schedule_filters: SelfSchedulingFlow['filters'];
   agent_instruction: string;
 }) => {
-  const cand_schedule = new CandidatesSchedulingV2({
+  const cand_schedule = new CandidatesScheduling({
     include_conflicting_slots: {
       out_of_office: false,
       out_of_working_hrs: true,
@@ -42,6 +42,12 @@ export const findPlanCombs = async ({
       session_ids: session_ids,
     },
   });
+  if (!cand_schedule.db_details) {
+    throw new CApiError(
+      'SERVER_ERROR',
+      'No data found for the given session ids',
+    );
+  }
   const all_inters: (Pick<SessionInterviewerType, 'user_id'> & {
     full_name: string;
   })[] = cand_schedule.db_details.all_inters.map((int) => ({

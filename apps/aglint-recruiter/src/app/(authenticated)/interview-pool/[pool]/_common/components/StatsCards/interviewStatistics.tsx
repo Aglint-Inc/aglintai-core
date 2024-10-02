@@ -7,9 +7,11 @@ import { useInterviewStatistics } from '../../hooks/useInterviewStatics';
 function InterviewStatistics({ module_id }: { module_id: string }) {
   const { data, isFetched } = useInterviewStatistics(module_id);
   return (
-    <Card className='border-t-4 border-t-blue-500 bg-white shadow-md'>
+    <Card className='border-t-4 border-t-blue-500 bg-white shadow-sm'>
       <CardHeader>
-        <CardTitle className='text-gray-800 text-lg font-medium'>Interview Statistics</CardTitle>
+        <CardTitle className='text-lg font-medium text-gray-800'>
+          Interview Statistics
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className='space-y-2'>
@@ -42,11 +44,7 @@ function InterviewStatistics({ module_id }: { module_id: string }) {
           <div className='flex justify-between'>
             <span className='text-gray-600'>Avg. Time to Schedule</span>
             <span className='font-bold text-gray-900'>
-              {isFetched ? (
-                data.interval
-              ) : (
-                <Skeleton className='h-6 w-10' />
-              )}
+              {isFetched ? data.interval : <Skeleton className='h-6 w-10' />}
             </span>
           </div>
         </div>

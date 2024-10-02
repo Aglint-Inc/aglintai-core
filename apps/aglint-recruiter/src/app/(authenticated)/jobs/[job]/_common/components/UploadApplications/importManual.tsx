@@ -82,7 +82,10 @@ export const ImportManual = () => {
   };
 
   return (
-    <Card className='flex flex-col border-0 shadow-none pt-2' style={{height:'550px'}}>
+    <Card
+      className='flex flex-col border-0 pt-2 shadow-none'
+      style={{ height: '550px' }}
+    >
       <div className='flex-grow overflow-auto'>
         <FormBody applicant={applicant} setApplicant={setApplicant} />
       </div>
@@ -122,7 +125,7 @@ const FormBody = ({ applicant, setApplicant }) => {
         />
       </div>
       <div className='flex flex-col gap-4'>
-      <FormField
+        <FormField
           label='Email'
           id='email'
           type='email'
@@ -177,7 +180,7 @@ const ResumeUploadComp = ({ value, handleChange, error }) => (
     </Label>
     <FileUploader handleChange={handleChange} types={fileTypes}>
       <div
-        className={`flex cursor-pointer items-center justify-center space-x-2 rounded-md border-2 h-[100px] border-dashed p-8 ${error ? 'border-red-500' : 'border-gray-300'} bg-gray-50`}
+        className={`flex h-[100px] cursor-pointer items-center justify-center space-x-2 rounded-md border-2 border-dashed p-8 ${error ? 'border-red-500' : 'border-border'} bg-gray-50`}
       >
         {value ? <FileIcon size={20} /> : <UploadCloud size={24} />}
         <span

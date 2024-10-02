@@ -34,7 +34,7 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
         .select()
         .then(async () => {
           await axios.post('/api/sendgrid', {
-            fromEmail: recruiter.email,
+            fromEmail: 'admin@aglinthq.com',
             fromName: recruiter?.name,
             email: 'ravi@aglinthq.com',
             subject: 'Integration Tool Request',

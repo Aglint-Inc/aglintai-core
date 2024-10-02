@@ -51,7 +51,7 @@ const Tab = forwardRef<HTMLButtonElement, TabProps>(
       >
         {status.charAt(0).toUpperCase() + status.slice(1)}
         <Badge variant='secondary' className='ml-2'>
-          {job.section_count[status]}
+          {job?.section_count[status]}
         </Badge>
       </Button>
     );

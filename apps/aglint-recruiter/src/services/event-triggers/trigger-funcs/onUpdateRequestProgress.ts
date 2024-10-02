@@ -1,5 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import {
+  CApiError,
   createRequestProgressLogger,
   dayjsLocal,
   type ProgressLoggerType,
@@ -53,12 +54,28 @@ export const selfScheduleReminder = async ({
     });
     await reqProgressLogger.resetEventProgress();
 
-    const [req_details] = supabaseWrap(
+    const req_details = (
       await supabase
         .from('request')
-        .select('applications(*,public_jobs(*))')
-        .eq('id', request_id),
-    );
+        .select('applications!inner(*,public_jobs!inner(*))')
+        .eq('id', request_id)
+        .single()
+        .throwOnError()
+    ).data;
+    const filter_json = (
+      await supabase
+        .from('interview_filter_json')
+        .select()
+        .eq('request_id', request_id)
+        .single()
+        .throwOnError()
+    ).data;
+    if (!req_details) {
+      throw new CApiError('SERVER_ERROR', 'Request not found');
+    }
+    if (!filter_json) {
+      throw new CApiError('SERVER_ERROR', 'Request not found');
+    }
     const { request_workflows } = await getWActions({
       company_id: req_details.applications.public_jobs.recruiter_id,
       request_id: request_id,
@@ -66,12 +83,7 @@ export const selfScheduleReminder = async ({
     const schedule_reminder_action = request_workflows.find(
       (j_l_a) => j_l_a.target_api === 'selfScheduleReminder_email_applicant',
     );
-    const [filter_json] = supabaseWrap(
-      await supabase
-        .from('interview_filter_json')
-        .select()
-        .eq('request_id', request_id),
-    );
+
     if (!schedule_reminder_action) return;
     const run_id = supabaseWrap(
       await supabase.rpc('create_new_workflow_action_log', {
@@ -92,7 +104,6 @@ export const selfScheduleReminder = async ({
     await reqProgressLogger({
       is_progress_step: false,
       status: 'completed',
-      meta: null,
     });
     await reqProgressLogger({
       is_progress_step: true,
@@ -125,18 +136,31 @@ export const availReminder = async ({
     });
     await reqProgressLogger.resetEventProgress();
 
-    const [req_details] = supabaseWrap(
+    const req_details = (
       await supabase
         .from('request')
-        .select('applications(*,public_jobs(*))')
-        .eq('id', request_id),
-    );
-    const [avail_req] = supabaseWrap(
+        .select('applications!inner(*,public_jobs!inner(*))')
+        .eq('id', request_id)
+        .single()
+        .throwOnError()
+    ).data;
+    if (!req_details) {
+      throw new CApiError('SERVER_ERROR', 'Request not found');
+    }
+    const avail_req = (
       await supabase
         .from('candidate_request_availability')
         .select()
-        .eq('request_id', request_id),
-    );
+        .eq('request_id', request_id)
+        .single()
+        .throwOnError()
+    ).data;
+    if (!avail_req) {
+      throw new CApiError(
+        'SERVER_ERROR',
+        'Candidate Request Availability not found',
+      );
+    }
     const { request_workflows } = await getWActions({
       company_id: req_details.applications.public_jobs.recruiter_id,
       request_id: request_id,

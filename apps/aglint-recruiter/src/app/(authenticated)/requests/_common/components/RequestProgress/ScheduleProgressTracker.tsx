@@ -37,7 +37,7 @@ function ScheduleProgressTracker({
                 'h-4 w-4 rounded-full border-2',
                 status === 'past'
                   ? 'border-green-500 bg-green-500'
-                  : 'border-gray-300',
+                  : 'border-border',
               )}
             >
               {status === 'past' && (

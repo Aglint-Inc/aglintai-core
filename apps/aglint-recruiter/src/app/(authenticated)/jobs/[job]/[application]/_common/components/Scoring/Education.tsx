@@ -87,7 +87,7 @@ const Content = () => {
   )
     return (
       <div className='flex flex-col items-center justify-center p-4'>
-        <School className='mb-2 h-12 w-12 text-gray-500' />
+        <School className='mb-2 h-12 w-12 text-muted-foreground' />
         <p className='text-sm text-gray-600'>No education found</p>
       </div>
     );

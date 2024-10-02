@@ -65,7 +65,7 @@ export async function POST(req) {
     const { data: application } = await supabaseAdmin
       .from('applications')
       .select(
-        'candidates(first_name,last_name,phone,email,linkedin,timezone,avatar,recruiter(id,name,email,logo,phone_number,socials,company_overview)),public_jobs(job_title,description)',
+        'candidates(first_name,last_name,phone,email,linkedin,timezone,avatar,recruiter(id,name,logo,phone_number,socials,company_overview)),public_jobs(job_title,description)',
       )
       .eq('id', application_id)
       .single()
@@ -95,7 +95,6 @@ export async function POST(req) {
 
     const companyData = {
       name: application.candidates.recruiter.name,
-      email: application.candidates.recruiter.email,
       logo: application.candidates.recruiter.logo,
       socials: application.candidates.recruiter.socials,
       phone: application.candidates.recruiter.phone_number,

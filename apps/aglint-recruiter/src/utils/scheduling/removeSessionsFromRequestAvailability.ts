@@ -47,6 +47,6 @@ export const removeSessionsFromRequestAvailability = async ({
     }
   } catch (e) {
     // eslint-disable-next-line no-console
-    console.log(e.message);
+    console.log((e as Error).message);
   }
 };

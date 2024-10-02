@@ -56,7 +56,6 @@ export const fetchInterviewModuleById = async (module_id: string) => {
   return { ...dataModule[0], relations: dataRel };
 };
 
-
 export const deleteModuleById = async (id: string) => {
   const { error } = await supabase
     .from('interview_module')
@@ -82,16 +81,6 @@ export const unArchiveModuleById = async (id: string) => {
     return true;
   }
 };
-
-export function customSortModules(a, b) {
-  if (a.is_archived === b.is_archived) {
-    return 0;
-  } else if (a.is_archived) {
-    return 1;
-  } else {
-    return -1;
-  }
-}
 
 export const deleteRelationByUserId = async ({
   user_id,

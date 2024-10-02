@@ -8,7 +8,7 @@ import { type ProgressLoggerType } from '@aglint/shared-utils/src/request-workfl
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { type z } from 'zod';
 
-import type { CandidatesSchedulingV2 } from '../CandidateScheduleV2/CandidatesSchedulingV2';
+import type { CandidatesScheduling } from '../CandidateSchedule/CandidatesScheduling';
 import { type agentSelfScheduleInstruction } from './textTransforms/selfScheduleLinkInstruction';
 
 export const findCandSelectedSlots = async ({
@@ -20,11 +20,14 @@ export const findCandSelectedSlots = async ({
   cand_avail: DatabaseTable['candidate_request_availability']['slots'];
   reqProgressLogger: ProgressLoggerType;
   request_assignee_tz: string;
-  cand_schedule: CandidatesSchedulingV2;
+  cand_schedule: CandidatesScheduling;
 }) => {
-  const ai_response: z.infer<typeof agentSelfScheduleInstruction> = {
+  const ai_response: z.output<typeof agentSelfScheduleInstruction> = {
     candidateAvailability: {
-      preferredDates: null,
+      preferredDates: {
+        endDate: '2022-02-28', // TODO:dileep
+        startDate: '2022-02-21',
+      },
       prefferredTime: {
         startTime: '09:00',
         endTime: '17:00',
@@ -33,6 +36,7 @@ export const findCandSelectedSlots = async ({
     maxTotalSlots: 5,
     includeAllSoftConflictSlots: false,
     overrideSoftConflicts: [],
+    include_outside_working_hours: true,
   };
   const cand_picked_slots = cand_schedule.getCandidateSelectedSlots(cand_avail);
   const flatted_plans = cand_picked_slots

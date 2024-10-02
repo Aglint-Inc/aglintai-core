@@ -1,3 +1,8 @@
+import {
+  Section,
+  SectionHeader,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import OptimisticWrapper from '@components/loadingWapper';
 import { Button } from '@components/ui/button';
 import {
@@ -11,10 +16,9 @@ import { BriefcaseBusiness } from 'lucide-react';
 import { useState } from 'react';
 
 import { NotFound } from '@/components/Common/404';
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
-import Seo from '@/components/Common/Seo';
 import { UIBadge } from '@/components/Common/UIBadge';
-import UITypography from '@/components/Common/UITypography';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import {
@@ -38,55 +42,53 @@ const Body = () => {
   if (workflow === null) return <Loader />;
   if (workflow === undefined) return <NotFound />;
   return (
-    <>
-      <Seo title='Workflow | Aglint AI' description='AI for People Products' />
-      <div className='flex flex-row'>
-        <div className='w-7/12 pr-16'>
-          <>
-            <Edit />
-            <Trigger />
-            <ActionsProvider>
-              <Actions />
-            </ActionsProvider>
-          </>
-        </div>
-        <div className='w-4/12 flex-row space-y-1'>
-          <div className='mb-4 flex items-center font-medium text-neutral-900'>
-            Connected Jobs
-          </div>
-          <div className='flex flex-col space-y-2'>
-            <ConnectedJobs />
-          </div>
-        </div>
+    <div className='mx-auto flex max-w-4xl flex-row'>
+      <div className='flex flex-col gap-4'>
+        <Edit />
+        <Trigger />
+        <ActionsProvider>
+          <Actions />
+        </ActionsProvider>
       </div>
-    </>
+    </div>
   );
 };
 
 export default Body;
 
-const ConnectedJobs = () => {
+export const ConnectedJobs = () => {
   const { workflow } = useWorkflow();
   const { devlinkProps } = useRolesAndPermissions();
   const devlink = devlinkProps(['manage_job']);
   const count = workflow?.jobs?.length ?? 0;
   if (count === 0)
     return (
-      <div className='flex flex-col items-center justify-center p-6 text-center'>
-        <BriefcaseBusiness size={30} className='mb-4 text-gray-400' />
-        <UITypography variant='p' type='small'>
-          No jobs connected
-        </UITypography>
-      </div>
+      <Section>
+        <SectionHeader>
+          <SectionTitle>Connected Jobs</SectionTitle>
+        </SectionHeader>
+        <GlobalEmpty
+          header='No jobs connected'
+          description='You can connect jobs to this workflow to automate your workflow.'
+          icon={<BriefcaseBusiness strokeWidth={2} className='h-6 w-6' />}
+        />
+      </Section>
     );
-  return (workflow?.jobs ?? []).map((job) => (
-    <WorkflowJob
-      key={job.id}
-      {...(job as Workflow['jobs'][number])}
-      devlinkProps={devlink}
-      workflow_id={workflow?.id}
-    />
-  ));
+  return (
+    <Section>
+      <SectionHeader>
+        <SectionTitle>Connected Jobs</SectionTitle>
+      </SectionHeader>
+      {(workflow?.jobs ?? []).map((job) => (
+        <WorkflowJob
+          key={job.id}
+          {...(job as Workflow['jobs'][number])}
+          devlinkProps={devlink}
+          workflow_id={workflow?.id}
+        />
+      ))}
+    </Section>
+  );
 };
 
 const WorkflowJob = ({
@@ -146,7 +148,7 @@ const WorkflowJob = ({
             <DialogTitle>Unlink confirmation</DialogTitle>
           </DialogHeader>
           <div className='py-4'>
-            <p className='text-sm text-gray-500'>
+            <p className='text-sm text-muted-foreground'>
               Are you sure to unlink this job from this workflow?
             </p>
           </div>

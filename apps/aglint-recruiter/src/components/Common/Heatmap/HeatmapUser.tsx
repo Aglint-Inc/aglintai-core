@@ -6,7 +6,6 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { HeatMapGrid } from 'react-grid-heatmap';
 
-import { UIButton } from '../UIButton';
 import UISectionCard from '../UISectionCard';
 import { type Meeting } from './type';
 import {
@@ -87,105 +86,155 @@ export default function Heatmap({
         <Skeleton className='h-[150] w-[1000px]' />
       ) : (
         <UISectionCard
-        type='compact'
+          type='compact'
           title='Meetings overview'
           isHoverEffect={false}
-          action={
-            <div className='mb-4 flex max-w-[1000px] items-center gap-2'>
-              <div className='flex space-x-1'>
-                <p className='font-medium'>Daily :</p>
-                <p>{loadSetting?.dailyLimit.value}</p>
-                <p>{todayTypeText}</p>
-                <p className='font-medium'> Weekly : </p>
-                <p>{loadSetting?.weeklyLimit.value}</p>
-                <p>{weeklyTypeText}</p>
-              </div>
-              <div className='w-[10px]'>|</div>
-              <p className='min-w-[280px]'>
-                Activity on{' '}
-                <span className='font-medium'>
-                  {startDateUI} - {endDateUI}
-                </span>
-              </p>
-              <UIButton
-                size='sm'
-                variant='secondary'
-                onClick={() =>
-                  setDayCount((pre) => ({
-                    start: pre.start === 21 ? -7 : pre.start - 28,
-                    end: pre.end - 28,
-                  }))
-                }
-                icon={<ChevronLeft className='h-4 w-4' />}
-              />
-              <UIButton
-                size='sm'
-                variant='secondary'
-                onClick={() =>
-                  setDayCount((pre) => ({
-                    start: pre.start === -7 ? 21 : pre.start + 28,
-                    end: pre.end + 28,
-                  }))
-                }
-                icon={<ChevronRight className='h-4 w-4' />}
-              />
-            </div>
-          }
+          // action={
+          //   <div className='mb-4 flex max-w-[1000px] items-center gap-2'>
+          //     <div className='flex space-x-1'>
+          //       <p className='font-medium'>Daily :</p>
+          //       <p>{loadSetting?.dailyLimit.value}</p>
+          //       <p>{todayTypeText}</p>
+          //       <p className='font-medium'> Weekly : </p>
+          //       <p>{loadSetting?.weeklyLimit.value}</p>
+          //       <p>{weeklyTypeText}</p>
+          //     </div>
+          //     <div className='w-[10px]'>|</div>
+          //     <p className='min-w-[280px]'>
+          //       Activity on{' '}
+          //       <span className='font-medium'>
+          //         {startDateUI} - {endDateUI}
+          //       </span>
+          //     </p>
+          //     <UIButton
+          //       size='sm'
+          //       variant='secondary'
+          //       onClick={() =>
+          //         setDayCount((pre) => ({
+          //           start: pre.start === 21 ? -7 : pre.start - 28,
+          //           end: pre.end - 28,
+          //         }))
+          //       }
+          //       icon={<ChevronLeft className='h-4 w-4' />}
+          //     />
+          //     <UIButton
+          //       size='sm'
+          //       variant='secondary'
+          //       onClick={() =>
+          //         setDayCount((pre) => ({
+          //           start: pre.start === -7 ? 21 : pre.start + 28,
+          //           end: pre.end + 28,
+          //         }))
+          //       }
+          //       icon={<ChevronRight className='h-4 w-4' />}
+          //     />
+          //   </div>
+          // }
         >
           <div className=''>
-            <HeatMapGrid
-              data={mapDatas}
-              xLabels={xLabel}
-              yLabels={yLabel}
-              square
-              cellHeight='30.5px'
-              xLabelsPos='bottom'
-              onClick={(x, y) => {
-                if (heatMapData[x][y].meeting_id)
-                  router.push(
-                    `/interviews/view?meeting_id=${heatMapData[x][y].meeting_id}&tab=candidate_details`,
-                  );
-              }}
-              yLabelsPos='left'
-              xLabelsStyle={(index) => {
-                const isToday = dayjsLocal(arrayDates[index]).isToday();
-                return {
-                  visibility: isToday ? 'visible' : 'hidden',
-                  backgroundColor: isToday
-                    ? 'hsl(var(--chart-5))'
-                    : 'transparent',
-                  borderRadius: '20px',
-                  height: '2px ',
-                  padding: 0,
-                  marginTop: '2px',
-                  width: '30.5px',
-                };
-              }}
-              yLabelsStyle={(index) => ({
-                color: index % 1 === 0 ? '#777' : 'transparent',
-                fontSize: '10px',
-              })}
-              cellStyle={(x: number, y: number) => {
-                const value = heatMapData[x][y];
+            <div className='ml-[-10px]' style={{ marginLeft: '-10px' }}>
+              <HeatMapGrid
+                data={mapDatas}
+                xLabels={xLabel}
+                yLabels={yLabel}
+                square
+                cellHeight='24px'
+                xLabelsPos='bottom'
+                onClick={(x, y) => {
+                  if (heatMapData[x][y].meeting_id)
+                    router.push(
+                      `/interviews/view?meeting_id=${heatMapData[x][y].meeting_id}&tab=candidate_details`,
+                    );
+                }}
+                yLabelsPos='left'
+                xLabelsStyle={(index) => {
+                  const isToday = dayjsLocal(arrayDates[index]).isToday();
+                  return {
+                    visibility: isToday ? 'visible' : 'hidden',
+                    backgroundColor: isToday
+                      ? 'hsl(var(--chart-5))'
+                      : 'transparent',
+                    borderRadius: '20px',
+                    height: '2px ',
+                    padding: 0,
+                    marginTop: '2px',
+                    width: '24px',
+                  };
+                }}
+                yLabelsStyle={(index) => ({
+                  color: index % 1 === 0 ? '#777' : 'transparent',
+                  fontSize: '10px',
+                })}
+                cellStyle={(x: number, y: number) => {
+                  const value = heatMapData[x][y];
 
-                return {
-                  background:
-                    value?.status === 'completed'
-                      ? `hsl(var(--chart-1))`
-                      : value?.status === 'confirmed'
-                        ? `hsl(var(--chart-4))` // need confirm color
-                        : value?.status === 'cancelled'
-                          ? `hsl(var(--chart-2))`
-                          : '#ebebeb',
+                  return {
+                    background:
+                      value?.status === 'completed'
+                        ? `hsl(var(--chart-1))`
+                        : value?.status === 'confirmed'
+                          ? `hsl(var(--chart-4))` // need confirm color
+                          : value?.status === 'cancelled'
+                            ? `hsl(var(--chart-2))`
+                            : '#ebebeb',
 
-                  fontSize: '4px',
-                  borderRadius: '3px',
-                  width: '29px',
-                  height: '29px',
-                  color: 'white',
-                };
-              }}
-            />
+                    fontSize: '4px',
+                    borderRadius: '3px',
+                    width: '24px',
+                    height: '24px',
+                    color: 'white',
+                  };
+                }}
+              />
+            </div>
+            <div
+              className='mt-1 flex items-center justify-between gap-2'
+              style={{ width: '790px' }}
+            >
+              <div className='flex gap-4'>
+                <div className='flex gap-1'>
+                  <p className='text-sm'>Daily :</p>
+                  <p className='text-sm'>{loadSetting?.dailyLimit.value}</p>
+                  <p className='text-sm'>{todayTypeText}</p>
+                </div>
+                <div className='flex gap-1'>
+                  <p className='text-sm'> Weekly : </p>
+                  <p className='text-sm'>{loadSetting?.weeklyLimit.value}</p>
+                  <p className='text-sm'>{weeklyTypeText}</p>
+                </div>
+              </div>
+
+              <div className='flex flex-row items-center gap-2'>
+                <p className='text-sm'>
+                  Activity on{' '}
+                  <span className=''>
+                    {startDateUI} - {endDateUI}
+                  </span>
+                </p>
+                <div
+                  className='flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm bg-gray-100'
+                  onClick={() =>
+                    setDayCount((pre) => ({
+                      start: pre.start === 21 ? -7 : pre.start - 28,
+                      end: pre.end - 28,
+                    }))
+                  }
+                >
+                  <ChevronLeft className='h-3 w-3' />
+                </div>
+                <div
+                  className='flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm bg-gray-100'
+                  onClick={() =>
+                    setDayCount((pre) => ({
+                      start: pre.start === -7 ? 21 : pre.start + 28,
+                      end: pre.end + 28,
+                    }))
+                  }
+                >
+                  <ChevronRight className='h-3 w-3' />
+                </div>
+              </div>
+            </div>
           </div>
         </UISectionCard>
       )}

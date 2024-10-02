@@ -9,16 +9,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const google_cal = new GoogleCalender(null, null, user_id);
     await google_cal.authorizeUser();
     const user = await getUser(user_id);
-    const resp = await google_cal.stopWatch(
-      user.calendar_sync.channelId,
-      user.calendar_sync.resourceId,
-    );
-    await updateUser({
-      user_id,
-    });
-    return res.status(200).json(resp);
+    if (user?.calendar_sync?.channelId && user.calendar_sync.resourceId) {
+      const resp = await google_cal.stopWatch(
+        user.calendar_sync.channelId,
+        user.calendar_sync.resourceId,
+      );
+      await updateUser({
+        user_id,
+      });
+      return res.status(200).json(resp);
+    } else {
+      return res.status(200).json('No channel found');
+    }
   } catch (err) {
-    return res.status(500).json(err.message);
+    return res.status(500).json((err as Error).message);
   }
 };
 export default handler;

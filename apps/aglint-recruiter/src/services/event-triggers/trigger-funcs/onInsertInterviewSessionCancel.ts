@@ -30,10 +30,10 @@ const createInterviewerDeclineRequest = async ({
       `${process.env.NEXT_PUBLIC_HOST_NAME}/api/request/interviewer-request`,
       payload,
     );
-  } catch (err) {
+  } catch (_err: any) {
     console.error(
       `Failed to perform createInterviewerDeclineRequest`,
-      err.message,
+      _err.message,
     );
   }
 };

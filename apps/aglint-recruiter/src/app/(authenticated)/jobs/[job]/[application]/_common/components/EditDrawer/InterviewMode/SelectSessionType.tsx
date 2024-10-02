@@ -1,9 +1,8 @@
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-
 import {
   IndividualIcon,
   PanelIcon,
-} from '@/job/interview-plan/components/sessionForms';
+} from 'src/app/(authenticated)/jobs/[job]/(job-edit)/interview-plan/_common/components/sessionForms';
 
 import {
   setEditSession,

@@ -1,7 +1,6 @@
 import { TooltipProvider } from '@radix-ui/react-tooltip';
 import { type PropsWithChildren } from 'react';
 
-import AppLayout from '@/components/AppLayout';
 import { JobsProvider } from '@/jobs/contexts';
 import { WorkflowsProvider } from '@/workflows/contexts';
 
@@ -16,9 +15,7 @@ export const PrivateProviders = ({ children }: PropsWithChildren) => {
         <BreadcrumProvider>
           <JobsProvider>
             <WorkflowsProvider>
-              <TooltipProvider>
-                <AppLayout>{children}</AppLayout>
-              </TooltipProvider>
+              <TooltipProvider>{children}</TooltipProvider>
             </WorkflowsProvider>
           </JobsProvider>
         </BreadcrumProvider>

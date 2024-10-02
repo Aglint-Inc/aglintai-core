@@ -1,3 +1,10 @@
+import {
+  Page,
+  PageActions,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
@@ -98,15 +105,17 @@ const Dashboard = () => {
   const score_matches = getMatches(job.application_match, Number(total) || 0);
 
   return (
-    <div className='container-lg mx-auto w-full px-4 pb-5'>
-      <div className='mb-6 flex items-center justify-between'>
-        <div>
-          <h1 className='mb-2 text-2xl font-bold'>Job Analytics</h1>
+    <Page>
+      <PageHeader>
+        <PageHeaderText>
+          <PageTitle>Job Metrics</PageTitle>
           <SharedBreadCrumbs />
-        </div>
-        <SharedActions />
-      </div>
-      <div className='mb-6 flex flex-col gap-6'>
+        </PageHeaderText>
+        <PageActions>
+          <SharedActions />
+        </PageActions>
+      </PageHeader>
+      <div className='mb-6 flex flex-col gap-6 px-4'>
         <div>
           <div className='flex flex-col gap-4 py-4'>
             <div className='space-y-4 rounded-lg border bg-white p-4'>
@@ -128,7 +137,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Page>
   );
 };
 
@@ -194,7 +203,7 @@ const StatItem = ({ label, percentage, count, color }) => (
             aria-valuemax={100}
           ></div>
         </div>
-        <div className='mt-1 text-xs text-gray-500'>({count})</div>
+        <div className='mt-1 text-xs text-muted-foreground'>({count})</div>
       </div>
     </div>
   </div>

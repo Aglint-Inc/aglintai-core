@@ -73,7 +73,6 @@ export const API_PATHS = [
   '/api/scheduling/get_interview_modules',
   '/api/scheduling/get_interview_plans',
   '/api/scheduling/google-consent',
-  '/api/scheduling/invite',
   '/api/scheduling/mail-agent/email-webhook',
   '/api/scheduling/mail-agent/init-agent',
   '/api/scheduling/refresh-tokens',

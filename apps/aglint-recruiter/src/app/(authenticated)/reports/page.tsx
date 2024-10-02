@@ -11,10 +11,9 @@ const Analytics = () => {
   const activeTab = useSearchParams().get('tab');
 
   return (
-    <div className='flex flex-col gap-6'>
+    <div className='px-4'>
       {activeTab === 'interviewMetrics' && <InterviewCount />}
       {activeTab === 'interviewerLeaderboard' && <InterviewerLeaderboard />}
-      {/* {activeTab === 'trainingMetrics' && <TrainingDashboard />} */}
       {activeTab === 'candidateMetrics' && <CandidateDropoutFunnelReport />}
       {activeTab === 'jobMetrics' && <JobMetrics />}
       {activeTab === 'requestMetrics' && <Checklist />}

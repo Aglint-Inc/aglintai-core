@@ -27,7 +27,7 @@ import { UIDatePicker } from '@/components/Common/UIDatePicker';
 import UIDrawer from '@/components/Common/UIDrawer';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { type Request as RequestType } from '@/queries/requests/types';
-import { getCompanyDaysCnt } from '@/services/CandidateScheduleV2/utils/companyWorkingDays';
+import { getCompanyDaysCnt } from '@/services/CandidateSchedule/utils/companyWorkingDays';
 import { mailSender } from '@/utils/mailSender';
 import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsertMeetingsWithOrganizerId';
 import { supabase } from '@/utils/supabase/client';
@@ -62,7 +62,7 @@ function CandidateAvailability({
     end_date: Dayjs;
   }>({
     start_date: dayjsLocal(
-      selectedRequest?.schedule_start_date || dayjsLocal().toISOString(),
+      selectedRequest.schedule_start_date || dayjsLocal().toISOString(),
     ),
     end_date: dayjsLocal(
       selectedRequest.schedule_end_date || dayjsLocal().toISOString(),
@@ -70,9 +70,9 @@ function CandidateAvailability({
   });
   dayjsLocal;
   const [submitting, setSubmitting] = useState(false);
-  const { data: sessions } = useMeetingList({ request_id: selectedRequest.id });
+  const { data: sessions } = useMeetingList();
 
-  const { data: candidateAvailability } = useCandidateAvailability(
+  const { data: candidateAvailability, isFetching } = useCandidateAvailability(
     {
       candidate_availability_id: candidateAvailabilityIdForReRequest,
     },
@@ -81,9 +81,9 @@ function CandidateAvailability({
   const { createRequestAvailability } = useCreateCandidateAvailability();
 
   useEffect(() => {
-    if (candidateAvailability?.id) {
-      const startDate = `${candidateAvailability?.date_range[0].split('/')[1]}-${candidateAvailability?.date_range[0].split('/')[0]}-${candidateAvailability?.date_range[0].split('/')[2]}`;
-      const endDate = `${candidateAvailability?.date_range[1].split('/')[1]}-${candidateAvailability?.date_range[1].split('/')[0]}-${candidateAvailability?.date_range[1].split('/')[2]}`;
+    if (isFetching && candidateAvailability) {
+      const startDate = `${candidateAvailability.date_range[0].split('/')[1]}-${candidateAvailability.date_range[0].split('/')[0]}-${candidateAvailability.date_range[0].split('/')[2]}`;
+      const endDate = `${candidateAvailability.date_range[1].split('/')[1]}-${candidateAvailability.date_range[1].split('/')[0]}-${candidateAvailability.date_range[1].split('/')[2]}`;
       setSelectedDays({
         value: candidateAvailability.number_of_days ?? 0,
         label: `${candidateAvailability.number_of_days} Days`,
@@ -117,6 +117,7 @@ function CandidateAvailability({
           {
             recruiter_user_id: recruiter_user?.user_id ?? '',
             avail_req_id: candidateAvailabilityIdForReRequest,
+            is_preview: true,
           };
         mailSender({
           target_api: 'availabilityReqResend_email_candidate',
@@ -134,7 +135,7 @@ function CandidateAvailability({
       return;
     }
     await handleMeetingsOrganizerResetRelations({
-      application_id: selectedRequest.application_id ?? '',
+      application_id: selectedRequest.application_id,
       meeting_flow: 'candidate_request',
       selectedSessions: sessions
         ? sessions.map((ses) => ({
@@ -165,51 +166,56 @@ function CandidateAvailability({
       total_slots: null,
       request_id: selectedRequest.id,
     });
-    await supabase.from('request_session_relation').insert(
-      (sessions ?? []).map((ele) => ({
-        session_id: ele?.interview_session?.id ?? '',
-        request_availability_id: result?.id ?? '',
-      })),
-    );
-
-    // send request availability email to candidate
-    try {
-      const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger(
-        {
-          request_id: selectedRequest.id,
-          supabaseAdmin: supabase,
-          event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
-        },
+    if (result) {
+      await supabase.from('request_session_relation').insert(
+        (sessions ?? []).map((ele) => ({
+          session_id: ele.interview_session.id,
+          request_availability_id: result.id,
+        })),
       );
-      const payload: TargetApiPayloadType<'sendAvailabilityRequest_email_applicant'> =
-        {
-          organizer_user_id: recruiter_user?.user_id ?? '',
-          avail_req_id: result?.id ?? '',
-        };
 
-      mailSender({
-        target_api: 'sendAvailabilityRequest_email_applicant',
-        payload,
-      });
-      await reqProgressLogger({
-        is_progress_step: false,
-        status: 'completed',
-      });
-      await reqProgressLogger({
-        is_progress_step: true,
-        status: 'completed',
-        meta: {
-          event_run_id: null,
-          avail_req_id: result?.id ?? '',
-        },
-      });
-    } catch (error) {
-      toast({ variant: 'destructive', title: 'Failed to send email' });
+      // send request availability email to candidate
+      try {
+        const reqProgressLogger: ProgressLoggerType =
+          createRequestProgressLogger({
+            request_id: selectedRequest.id,
+            supabaseAdmin: supabase,
+            event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
+          });
+        const payload: TargetApiPayloadType<'sendAvailabilityRequest_email_applicant'> =
+          {
+            organizer_user_id: recruiter_user?.user_id,
+            avail_req_id: result.id,
+            preview_details: {
+              application_id: selectedRequest.application_id,
+            },
+            is_preview: true,
+          };
+
+        mailSender({
+          target_api: 'sendAvailabilityRequest_email_applicant',
+          payload,
+        });
+        await reqProgressLogger({
+          is_progress_step: false,
+          status: 'completed',
+        });
+        await reqProgressLogger({
+          is_progress_step: true,
+          status: 'completed',
+          meta: {
+            event_run_id: null,
+            avail_req_id: result.id,
+          },
+        });
+      } catch (error) {
+        toast({ variant: 'destructive', title: 'Failed to send email' });
+      }
+
+      toast({ title: 'Request availability created successfully' });
+      setSubmitting(false);
+      setCandidateAvailabilityDrawerOpen(false);
     }
-
-    toast({ title: 'Request availability created successfully' });
-    setSubmitting(false);
-    setCandidateAvailabilityDrawerOpen(false);
   }
 
   const meetingsRound = ScheduleUtils.getSessionRounds(
@@ -223,9 +229,9 @@ function CandidateAvailability({
   const maxDays =
     getCompanyDaysCnt(
       //@ts-ignore
-      recruiter?.scheduling_settings,
-      selectedDate?.start_date.format('DD/MM/YYYY') ?? '',
-      selectedDate?.end_date.format('DD/MM/YYYY') ?? '',
+      recruiter.scheduling_settings,
+      selectedDate.start_date.format('DD/MM/YYYY'),
+      selectedDate.end_date.format('DD/MM/YYYY'),
     ) -
     (meetingsRound.length - 1);
   function closeDrawer() {
@@ -275,11 +281,11 @@ function CandidateAvailability({
           slotStartDateInput={
             <UIDatePicker
               closeOnSelect={true}
-              value={new Date(selectedDate?.start_date.toISOString())}
+              value={new Date(selectedDate.start_date.toISOString())}
               onAccept={(value: Date) => {
                 setSelectedDate({
                   start_date: dayjsLocal(value),
-                  end_date: selectedDate?.end_date,
+                  end_date: selectedDate.end_date,
                 });
               }}
             />
@@ -313,10 +319,13 @@ function CandidateAvailability({
                 const selectedOption = DAYS_LIST.find(
                   (option) => option.value === Number(value),
                 );
-                setSelectedDays({
-                  label: selectedOption?.label ?? '',
-                  value: selectedOption?.value ?? 0,
-                });
+
+                if (selectedOption) {
+                  setSelectedDays({
+                    label: selectedOption.label,
+                    value: selectedOption.value,
+                  });
+                }
               }}
             >
               {DAYS_LIST.map((option, index) => {
@@ -344,10 +353,12 @@ function CandidateAvailability({
                 const selectedOption = SLOTS_LIST.find(
                   (option) => option.value === Number(value),
                 );
-                setSelectedSlots({
-                  label: selectedOption?.label ?? '',
-                  value: selectedOption?.value ?? 0,
-                });
+                if (selectedOption) {
+                  setSelectedSlots({
+                    label: selectedOption.label,
+                    value: selectedOption.value,
+                  });
+                }
               }}
             >
               {SLOTS_LIST.map((option) => (

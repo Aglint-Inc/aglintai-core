@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react';
 import MembersAutoComplete, {
   type MemberTypeAutoComplete,
 } from 'src/app/_common/components/MembersTextField';
+import { ScheduleTypeField } from 'src/app/(authenticated)/jobs/[job]/(job-edit)/interview-plan/_common/components/sessionForms';
 
 import { useTenant } from '@/company/hooks';
 import UITextField from '@/components/Common/UITextField';
-import { ScheduleTypeField } from '@/job/interview-plan/components/sessionForms';
 import {
   type BodyParamsFetchUserDetails,
   type CompanyMembersAPI,

@@ -59,7 +59,7 @@ export const SharedActions = () => {
         <Publish />
         <Switcher />
         {/* <Dropdown /> */}
-        <Link href={`/jobs/${value.job.id}/job-details`}>
+        <Link href={`/jobs/${value?.job?.id}/job-details`}>
           <UIButton variant='outline'>Edit</UIButton>
         </Link>
       </div>
@@ -70,7 +70,7 @@ export const SharedActions = () => {
 const Sync = () => {
   const { job, handleJobSync } = useJob();
   const [load, setLoad] = useState(false);
-  if (!job.syncable) return <></>;
+  if (!job?.syncable) return <></>;
   const handleSync = async () => {
     if (load) return;
     setLoad(true);

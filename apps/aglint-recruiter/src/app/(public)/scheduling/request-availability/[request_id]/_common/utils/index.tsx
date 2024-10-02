@@ -3,8 +3,6 @@ import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import dayjs from 'dayjs';
 
-import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
-
 export function getLastDayOfMonth(date: string) {
   return dayjs(date).endOf('month').date();
 }
@@ -49,7 +47,7 @@ export const formatTimeWithTimeZone = ({
   timeZone?: string;
 }) => {
   const tZTime = dayjsLocal(end_time)
-    .tz(timeZone || userTzDayjs.tz.guess())
+    .tz(timeZone || dayjsLocal.tz.guess())
     .format('zzz');
   const timezone = tZTime
     .split(' ')
@@ -57,9 +55,9 @@ export const formatTimeWithTimeZone = ({
     .join('');
   return start_time
     ? `${dayjsLocal(start_time)
-        .tz(timeZone || userTzDayjs.tz.guess())
+        .tz(timeZone || dayjsLocal.tz.guess())
         .format('hh:mm A')} - ${dayjsLocal(end_time)
-        .tz(timeZone || userTzDayjs.tz.guess())
+        .tz(timeZone || dayjsLocal.tz.guess())
         .format('hh:mm A')} ${timeZone ? timezone : ''}`
     : '--';
 };
@@ -67,7 +65,7 @@ export const formatTimeWithTimeZone = ({
 //accept dayjs.tz only
 export const getShortTimeZone = (timeZone: string) => {
   const tZTime = dayjsLocal()
-    .tz(timeZone || userTzDayjs.tz.guess())
+    .tz(timeZone || dayjsLocal.tz.guess())
     .format('zzz');
   const timezone = tZTime
     .split(' ')

@@ -9,7 +9,7 @@ import {
 import { Home } from 'lucide-react';
 export const BreadCrumb = ({ name }: { name: string }) => {
   return (
-    <div className='py-6'>
+    <div className=''>
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>

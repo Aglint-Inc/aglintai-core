@@ -15,7 +15,7 @@ const ScheduleList = ({ schedules }: { schedules: ScheduleListProps[] }) => {
   return (
     <div className='space-y-1'>
       <div className='text-neutral-500'>
-        <p className='text-base font-normal text-gray-500'>Schedules</p>
+        <p className='text-base font-normal text-muted-foreground'>Schedules</p>
       </div>
       {schedules.map((schedule) => (
         <Link
@@ -30,16 +30,16 @@ const ScheduleList = ({ schedules }: { schedules: ScheduleListProps[] }) => {
           <div className='relative flex flex-row items-start space-x-3'>
             <div className='w-36'>
               <div className='text-neutral-500'>
-                <p className='text-base font-medium text-gray-500'>
+                <p className='text-base font-medium text-muted-foreground'>
                   {schedule.time}
                 </p>
-                <p className='text-sm text-gray-500'>{schedule.date}</p>
+                <p className='text-sm text-muted-foreground'>{schedule.date}</p>
               </div>
             </div>
             <div className='flex-1'>
               <div className='text-neutral-500'>
                 <p
-                  className='text-base font-normal text-gray-500'
+                  className='text-base font-normal text-muted-foreground'
                   style={{
                     display: '-webkit-box',
                     WebkitLineClamp: 2,

@@ -1,4 +1,11 @@
 import {
+  Page,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
+import {
   Table,
   TableBody,
   TableHead,
@@ -50,20 +57,25 @@ function RolesAndPermissionsComponent() {
           updateRoles={handelUpdateRole}
         />
       ) : (
-        <div>
-          <h1 className='mb-4 text-lg font-semibold'>Roles & Permissions</h1>
-          <p className='mb-6 text-sm text-muted-foreground'>
-            Customize permissions for each role and control access by enabling
-            or disabling the toggle next to each permission.
-          </p>
-          <div className='mt-6 overflow-x-auto rounded-lg border bg-white'>
+        <Page>
+          <PageHeader>
+            <PageHeaderText>
+              <PageTitle>Roles & Permissions</PageTitle>
+              <PageDescription>
+                {' '}
+                Customize permissions for each role and control access by
+                enabling or disabling the toggle next to each permission.
+              </PageDescription>
+            </PageHeaderText>
+          </PageHeader>
+          <div className='flex flex-col gap-4'>
             <RoleTable
               roles={data?.rolesAndPermissions || {}}
               loading={loading}
               setRole={setSelectRole}
             />
           </div>
-        </div>
+        </Page>
       )}
     </>
   );

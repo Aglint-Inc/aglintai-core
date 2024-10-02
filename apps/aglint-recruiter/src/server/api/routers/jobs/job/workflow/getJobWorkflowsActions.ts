@@ -1,7 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { triggerToCategoryMap } from 'src/app/(authenticated)/jobs/[job]/(job-edit)/workflows/_common/lib/constants';
 import { z } from 'zod';
 
-import { triggerToCategoryMap } from '@/job/workflows/lib/constants';
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
@@ -19,7 +19,7 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
   const workflows = (
     await db
       .from('workflow_job_relation')
-      .select('*,workflow!inner(*)')
+      .select('*, workflow!inner(*)')
       .eq('job_id', input.job_id)
       .throwOnError()
   ).data;
@@ -29,7 +29,7 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
       .select('*')
       .in(
         'workflow_id',
-        workflows
+        (workflows ?? [])
           .filter((j) => {
             return j.workflow.trigger in triggerToCategoryMap;
           })
@@ -45,9 +45,9 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
       .throwOnError()
   ).data;
   const responseQryReponse: QryReponse = {
-    job_workflows: workflows.map((workflow) => workflow.workflow),
-    job_workflow_actions: workflow_actions,
-    company_email_templates,
+    job_workflows: (workflows ?? []).map((workflow) => workflow.workflow),
+    job_workflow_actions: workflow_actions ?? [],
+    company_email_templates: company_email_templates ?? [],
   };
   return responseQryReponse;
 };

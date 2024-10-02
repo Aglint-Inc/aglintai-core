@@ -21,17 +21,21 @@ export const TYPE_SAFE_PARAMS = {
     '/jobs/[job]/job-details': [
       'job'
     ],
+    '/jobs/[job]/profile-score': [
+      'job'
+    ],
+    '/jobs/[job]/workflows': [
+      'job'
+    ],
     '/jobs/[job]/metrics': [
       'job'
     ],
     '/jobs/[job]': [
       'job'
     ],
-    '/jobs/[job]/profile-score': [
-      'job'
-    ],
-    '/jobs/[job]/workflows': [
-      'job'
+    '/jobs/[job]/[application]': [
+      'job',
+      'application'
     ],
     '/jobs/[job]/[application]': [
       'job',

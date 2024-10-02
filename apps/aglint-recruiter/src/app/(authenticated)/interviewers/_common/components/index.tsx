@@ -7,22 +7,63 @@ import {
   TableRow,
 } from '@components/ui/table';
 import { Users } from 'lucide-react';
-import { useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 
 import { useAllInterviewers } from '../hooks/useAllInterviewers';
-import { Header } from './Header';
 import { InterviewerList } from './InterviewerList';
 
-function Interviewers() {
-  const { data: interviewers, isLoading } = useAllInterviewers();
+const InterviewerHeader = createContext(undefined);
 
+const useInterviewHeader = () => {
   const [searchText, setSearchText] = useState('');
   const [selectedDepartments, setDepartments] = useState<string[]>([]);
   const [selectedLocations, setLocations] = useState<string[]>([]);
   const [selectedInterviewTypes, setInterviewTypes] = useState<string[]>([]);
+  const isFilterApplied =
+    !!selectedDepartments?.length ||
+    !!selectedInterviewTypes?.length ||
+    !!selectedLocations?.length ||
+    !!searchText?.length;
+
+  return {
+    isFilterApplied,
+    searchText,
+    setSearchText,
+    selectedDepartments,
+    setDepartments,
+    selectedLocations,
+    setLocations,
+    selectedInterviewTypes,
+    setInterviewTypes,
+  };
+};
+export const InterviewerHeaderProvider = ({ children }) => {
+  const values = useInterviewHeader();
+  return (
+    <InterviewerHeader.Provider value={{ ...values }}>
+      {children}
+    </InterviewerHeader.Provider>
+  );
+};
+
+export const useInterviewerHeaderContext = () => {
+  const context = useContext(InterviewerHeader);
+  if (!context) throw new Error('out of boundry');
+  return context;
+};
+
+function Interviewers() {
+  const { data: interviewers, isLoading } = useAllInterviewers();
+  const {
+    isFilterApplied,
+    searchText,
+    selectedDepartments,
+    selectedLocations,
+    selectedInterviewTypes,
+  } = useInterviewerHeaderContext();
 
   if (isLoading)
     return (
@@ -30,12 +71,6 @@ function Interviewers() {
         <Loader />
       </div>
     );
-
-  const isFilterApplied =
-    !!selectedDepartments?.length ||
-    !!selectedInterviewTypes?.length ||
-    !!selectedLocations?.length ||
-    !!searchText?.length;
 
   const filteredInterviewers = isFilterApplied
     ? interviewers.filter((interviewer) => {
@@ -70,20 +105,8 @@ function Interviewers() {
     : interviewers;
 
   return (
-    <div className='container-lg mx-auto w-full px-4'>
+    <div className='w-full p-4'>
       <div className=''>
-        <Header
-          isFilterApplied={isFilterApplied}
-          searchText={searchText}
-          selectedDepartments={selectedDepartments}
-          selectedLocations={selectedLocations}
-          selectedInterviewTypes={selectedInterviewTypes}
-          setSearchText={setSearchText}
-          setDepartments={setDepartments}
-          setLocations={setLocations}
-          setInterviewTypes={setInterviewTypes}
-        />
-
         <Card>
           <CardContent className='p-0'>
             <Table>

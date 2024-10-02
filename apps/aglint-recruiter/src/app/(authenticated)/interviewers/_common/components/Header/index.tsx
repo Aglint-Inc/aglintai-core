@@ -1,5 +1,3 @@
-import { type Dispatch, type SetStateAction } from 'react';
-
 import { useAllInterviewModules } from '@/authenticated/hooks';
 import { useTenantOfficeLocations } from '@/company/hooks';
 import FilterHeader from '@/components/Common/FilterHeader';
@@ -7,21 +5,24 @@ import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { useAllDepartments } from '@/queries/departments';
 
-export const Header = ({
-  isFilterApplied,
-  searchText,
-  selectedDepartments,
-  selectedLocations,
-  selectedInterviewTypes,
-  setSearchText,
-  setDepartments,
-  setLocations,
-  setInterviewTypes,
-}: HeaderProps) => {
+import { useInterviewerHeaderContext } from '..';
+
+export const Header = () => {
   const { data: departments } = useAllDepartments();
   const { data: locations } = useTenantOfficeLocations();
   const { data: InterivewTypes } = useAllInterviewModules();
 
+  const {
+    isFilterApplied,
+    searchText,
+    selectedDepartments,
+    selectedLocations,
+    selectedInterviewTypes,
+    setSearchText,
+    setDepartments,
+    setLocations,
+    setInterviewTypes,
+  } = useInterviewerHeaderContext();
   // options for filter ------------------------
   const locationList = locations?.length
     ? locations.map((loc) => ({
@@ -106,16 +107,4 @@ export const Header = ({
       </div>
     </>
   );
-};
-
-type HeaderProps = {
-  isFilterApplied: boolean;
-  searchText: string;
-  selectedDepartments: string[];
-  selectedLocations: string[];
-  selectedInterviewTypes: string[];
-  setSearchText: Dispatch<SetStateAction<string>>;
-  setDepartments: Dispatch<SetStateAction<string[]>>;
-  setLocations: Dispatch<SetStateAction<string[]>>;
-  setInterviewTypes: Dispatch<SetStateAction<string[]>>;
 };

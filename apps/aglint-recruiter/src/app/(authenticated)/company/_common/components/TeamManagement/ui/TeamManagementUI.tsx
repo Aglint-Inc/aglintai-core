@@ -1,3 +1,10 @@
+import {
+  PageActions,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import { Skeleton } from '@components/ui/skeleton';
 import {
   Table,
@@ -35,19 +42,18 @@ export const TeamManagementUI = ({
   isTableLoading: boolean;
 }) => {
   return (
-    <div className='flex flex-col'>
-      <div className='flex justify-between'>
-        <div>
-          <h2 className='mb-1 text-xl font-semibold'>Manage User</h2>
-          <p className='mb-6 text-sm text-muted-foreground'>
+    <div className='space-y-4'>
+      <PageHeader>
+        <PageHeaderText>
+          <PageTitle>Manage User</PageTitle>
+          <PageDescription>
             Invite your hiring team members and manage their roles and profile
             details in one place. Assign roles such as interviewer, hiring
             manager, or recruiter to ensure an organized team structure and
             compliance with user permissions in the organization.
-          </p>
-        </div>
-
-        <div className='row flex justify-end pb-4'>
+          </PageDescription>
+        </PageHeaderText>
+        <PageActions>
           {canManage &&
             (isRemoteSync ? (
               <div className='flex flex-col space-y-2'>
@@ -74,12 +80,12 @@ export const TeamManagementUI = ({
                 Invite Member
               </UIButton>
             ))}
-        </div>
-      </div>
+        </PageActions>
+      </PageHeader>
 
       {filter}
 
-      <div className='mt-6 overflow-x-auto rounded-lg border bg-white'>
+      <div className='rounded-lg border'>
         <Table>
           <TableHeader className='bg-gray-100'>
             <TableRow>
@@ -126,7 +132,7 @@ export const TeamManagementUI = ({
                   <h3 className='mb-1 text-lg font-medium text-gray-900'>
                     No team members
                   </h3>
-                  <p className='text-sm text-gray-500'>
+                  <p className='text-sm text-muted-foreground'>
                     Get started by adding a new team member.
                   </p>
                 </div>

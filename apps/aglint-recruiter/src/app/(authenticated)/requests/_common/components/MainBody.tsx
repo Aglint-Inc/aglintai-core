@@ -1,8 +1,6 @@
 'use client';
 import { Button } from '@components/ui/button';
 import { Skeleton } from '@components/ui/skeleton';
-import AgentChats from '@requests/components/AgentChats';
-import { AgentIEditorProvider } from '@requests/components/AgentChats/AgentEditorContext';
 import { REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
 import { useRequestCount } from '@requests/hooks';
 import { checkFiltersApplied } from '@requests/utils/checkFiltersApplied';
@@ -35,10 +33,11 @@ const MainBody = () => {
   const { data: requestCount } = useRequestCount();
 
   const defaults = REQUEST_SESSIONS_DEFAULT_DATA.map(
-    ({ sectionName, ...rest }) => ({
-      ...rest,
+    ({ sectionName, color, sectionIconName }) => ({
       sectionName,
-      requests: requestList?.[sectionName],
+      color,
+      sectionIconName,
+      requests: requestList?.[sectionName] ?? [],
     }),
   );
 
@@ -96,9 +95,9 @@ const MainBody = () => {
             }}
           >
             {openChat ? (
-              <PanelLeftClose className='h-6 w-6 text-gray-500' />
+              <PanelLeftClose className='h-6 w-6 text-muted-foreground' />
             ) : (
-              <PanelLeftOpen className='h-6 w-6 text-gray-500' />
+              <PanelLeftOpen className='h-6 w-6 text-muted-foreground' />
             )}
           </Button>
         </div>
@@ -106,59 +105,36 @@ const MainBody = () => {
         <></>
       )}
 
-      {/* AgentIEditorProvider Section */}
-      <AgentIEditorProvider>
-        <div
-          className={`transition-all duration-300 ease-in-out ${openChat ? 'w-[450px]' : 'w-0'} sticky left-0 top-0 h-screen overflow-hidden`}
-        >
-          <div className='h-full'>
-            <AgentChats />
-          </div>
-        </div>
-      </AgentIEditorProvider>
-
       {/* Main Content */}
-      <div
-        className={`z-10 flex-1 overflow-x-hidden pt-0 ${
-          openChat ? 'w-[calc(100%-450px)]' : ''
-        }`}
-      >
+      {isRequestListEmpty || showEmptyPage ? (
+        <GlobalEmpty
+          header={'No requests found'}
+          description='Requests are created when a interview process starts for candidates.'
+          icon={
+            <LayoutList
+              strokeWidth={2}
+              className='h-6 w-6 text-muted-foreground'
+            />
+          }
+          primaryAction={!isRequestSetupPending && <CreateRequestWidget />}
+        />
+      ) : (
         <div>
-          {isRequestListEmpty || showEmptyPage ? (
-            <div className='container-lg mx-auto mt-[200px] w-full px-12 py-8'>
-              <GlobalEmpty
-                header={'No requests found'}
-                description='Requests are created when a interview process starts for candidates.'
-                icon={
-                  <LayoutList
-                    strokeWidth={2}
-                    className='h-6 w-6 text-muted-foreground'
-                  />
-                }
-                primaryAction={
-                  !isRequestSetupPending && <CreateRequestWidget />
-                }
-              />
-            </div>
-          ) : (
-            <>
-              <Header
-                completed_percentage={completed_percentage}
-                open_request={open_request}
-                recruiterUser={recruiter_user}
-                requestCount={requestCount}
-                setView={setView}
-                view={view}
-              />
-              <RequestListContent
-                view={view}
-                defaults={defaults}
-                isFetched={isFetched}
-              />
-            </>
-          )}
+          <Header
+            completed_percentage={completed_percentage}
+            open_request={open_request}
+            recruiterUser={recruiter_user}
+            requestCount={requestCount}
+            setView={setView}
+            view={view}
+          />
+          <RequestListContent
+            view={view}
+            defaults={[...defaults]}
+            isFetched={isFetched}
+          />
         </div>
-      </div>
+      )}
     </div>
   );
 };

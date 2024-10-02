@@ -142,8 +142,12 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
               </Avatar>
               <div>
                 <CardTitle>{post?.job_title}</CardTitle>
-                <p className='text-sm text-gray-500'>{recruiter?.name}</p>
-                <p className='text-sm text-gray-500'>{recruiter?.industry}</p>
+                <p className='text-sm text-muted-foreground'>
+                  {recruiter?.name}
+                </p>
+                <p className='text-sm text-muted-foreground'>
+                  {recruiter?.industry}
+                </p>
               </div>
             </div>
           </CardHeader>
@@ -203,13 +207,13 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                               <h4 className='font-semibold'>
                                 {job.job_title || '--'}
                               </h4>
-                              <p className='text-sm text-gray-500'>
+                              <p className='text-sm text-muted-foreground'>
                                 {job.departments?.name || '--'}
                               </p>
-                              <p className='text-sm text-gray-500'>
+                              <p className='text-sm text-muted-foreground'>
                                 Location: --
                               </p>
-                              <p className='text-sm text-gray-500'>
+                              <p className='text-sm text-muted-foreground'>
                                 {job.job_type || '--'}
                               </p>
                             </div>
@@ -229,7 +233,9 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                     ))}
                   </div>
                 ) : (
-                  <p className='text-center text-gray-500'>No jobs found.</p>
+                  <p className='text-center text-muted-foreground'>
+                    No jobs found.
+                  </p>
                 )}
               </div>
 

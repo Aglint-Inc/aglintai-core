@@ -35,7 +35,7 @@ const query = async ({
     .throwOnError();
 
   return {
-    isOngoingSchedules: meetDet.data.length > 0,
+    isOngoingSchedules: meetDet?.data?.length ? meetDet.data.length > 0 : false,
     connectedJobs: jobs,
   };
 };
