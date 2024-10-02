@@ -15,7 +15,7 @@ const SectionHeader = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('flex flex-row items-center justify-between', className)}
+    className={cn('mb-4 flex flex-row items-center justify-between', className)}
     {...props}
   />
 ));
@@ -71,6 +71,7 @@ export {
   Section,
   SectionActions,
   SectionDescription,
+  SectionHeader,
   SectionHeaderText,
   SectionTitle,
 };

@@ -1,3 +1,10 @@
+import {
+  PageActions,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 
 import { useAllInterviewModules } from '@/authenticated/hooks';
@@ -41,67 +48,77 @@ export const InterviewPoolHeader = () => {
       : 0;
   return (
     <>
+      <PageHeader>
+        <PageHeaderText>
+          <PageTitle>Interview Pool</PageTitle>
+          <PageDescription>
+            Interview Pool is a collection of interview modules that you can use
+            to manage your interview process.
+          </PageDescription>
+        </PageHeaderText>
+        <PageActions>
+          <div className='flex items-center justify-between space-x-2'>
+            <UITextField
+              placeholder='Search pool name...'
+              fieldSize='medium'
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+              className='w-[250px]'
+            />
+            <div className='flex items-center gap-2'>
+              {isFilterApplied && (
+                <UIButton variant='ghost' size='sm' onClick={resetAllFilter}>
+                  Reset all
+                </UIButton>
+              )}
+
+              <FilterHeader
+                filters={[
+                  {
+                    type: 'filter',
+                    name: 'Department',
+                    value: selectedDepartments,
+                    options: departmentList,
+                    multiSelect: true,
+                    setValue: (value) => {
+                      setDepartments(value);
+                    },
+                  },
+                ]}
+              />
+
+              {checkPermissions && checkPermissions(['interview_types']) && (
+                <UIButton
+                  onClick={() => {
+                    setIsCreateDialogOpen(true);
+                  }}
+                >
+                  Create
+                </UIButton>
+              )}
+              {archivedLength > 0 && (
+                <Tabs value={activeTab} onValueChange={handleTabChange}>
+                  <TabsList className='rounded-lg bg-gray-100 p-1'>
+                    <TabsTrigger
+                      value='active'
+                      className='data-[state=active]:bg-white data-[state=active]:shadow'
+                    >
+                      Active
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value='archived'
+                      className='data-[state=active]:bg-white data-[state=active]:shadow'
+                    >
+                      Archived
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              )}
+            </div>
+          </div>
+        </PageActions>
+      </PageHeader>
       <CreateModuleDialog />
-      <div className='mb-6 flex items-center justify-between'>
-        <UITextField
-          placeholder='Search pool name...'
-          fieldSize='medium'
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-          className='w-[250px]'
-        />
-        <div className='flex items-center gap-2'>
-          {isFilterApplied && (
-            <UIButton variant='ghost' size='sm' onClick={resetAllFilter}>
-              Reset all
-            </UIButton>
-          )}
-
-          <FilterHeader
-            filters={[
-              {
-                type: 'filter',
-                name: 'Department',
-                value: selectedDepartments,
-                options: departmentList,
-                multiSelect: true,
-                setValue: (value) => {
-                  setDepartments(value);
-                },
-              },
-            ]}
-          />
-
-          {checkPermissions && checkPermissions(['interview_types']) && (
-            <UIButton
-              variant='default'
-              onClick={() => {
-                setIsCreateDialogOpen(true);
-              }}
-            >
-              Create
-            </UIButton>
-          )}
-          {archivedLength > 0 && (
-            <Tabs value={activeTab} onValueChange={handleTabChange}>
-              <TabsList className='rounded-lg bg-gray-100 p-1'>
-                <TabsTrigger
-                  value='active'
-                  className='data-[state=active]:bg-white data-[state=active]:shadow'
-                >
-                  Active
-                </TabsTrigger>
-                <TabsTrigger
-                  value='archived'
-                  className='data-[state=active]:bg-white data-[state=active]:shadow'
-                >
-                  Archived
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
-          )}
-        </div>
-      </div>
     </>
   );
 };
