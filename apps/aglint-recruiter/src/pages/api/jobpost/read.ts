@@ -61,6 +61,6 @@ const getJob = async (query: string) =>
       .or(query)
       .single()
       .throwOnError()
-  ).data;
+  ).data!;
 
 export type PublicJobAPI = Awaited<ReturnType<typeof getResponse>>;

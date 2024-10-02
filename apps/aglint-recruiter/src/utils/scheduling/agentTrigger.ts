@@ -80,7 +80,7 @@ export const agentTrigger = async ({
   }
 };
 
-function formatPhoneNumber(phoneNumber) {
+function formatPhoneNumber(phoneNumber: string) {
   // Remove all non-numeric characters except '+'
   const numericPhoneNumber = phoneNumber?.replace(/[^\d+]/g, '');
 

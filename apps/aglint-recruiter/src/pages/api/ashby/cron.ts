@@ -25,6 +25,7 @@ const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
         await Promise.all(
           data.map(async (rec) => {
             const integrations = rec.integrations;
+            if (!integrations) return;
             try {
               axios.post(`${url1}`, {
                 synctoken: integrations.ashby_sync_token,
@@ -34,8 +35,14 @@ const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
               console.log('Request successful for application:', rec.name);
               return res.status(200).send('success');
             } catch (error) {
-              console.error('Error for application:', rec.name, error.message);
-              return res.status(400).send(JSON.stringify(error.message));
+              console.error(
+                'Error for application:',
+                rec.name,
+                (error as Error).message,
+              );
+              return res
+                .status(400)
+                .send(JSON.stringify((error as Error).message));
               // You might want to handle errors here
             }
           }),
@@ -47,7 +54,7 @@ const handler = async (_req: NextApiRequest, res: NextApiResponse) => {
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).send(error.message);
+    return res.status(500).send((error as Error).message);
   }
 };
 

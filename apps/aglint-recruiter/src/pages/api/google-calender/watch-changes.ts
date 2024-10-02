@@ -9,14 +9,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const google_cal = new GoogleCalender(null, null, user_id);
     await google_cal.authorizeUser();
     const resp = await google_cal.watchEvents(user_id);
-    await updateUser({
-      channelId: resp.id,
-      resourceId: resp.resourceId,
-      user_id,
-    });
+    if (resp.id && resp.resourceId) {
+      await updateUser({
+        channelId: resp.id,
+        resourceId: resp.resourceId,
+        user_id,
+      });
+    }
     return res.status(200).json(resp);
   } catch (err) {
-    return res.status(500).json(err.message);
+    return res.status(500).json((err as Error).message);
   }
 };
 export default handler;

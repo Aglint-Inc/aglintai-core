@@ -15,6 +15,7 @@ export const selfScheduleMailToCandidate = async ({
       {
         filter_json_id: filter_id,
         organizer_id,
+        is_preview: false,
       };
     await mailSender({
       target_api: 'sendSelfScheduleRequest_email_applicant',

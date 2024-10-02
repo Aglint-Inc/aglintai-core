@@ -21,7 +21,6 @@ export default async function handler(
     'POST',
     async ({ body, requesterDetails: { user_id } }) => {
       const { users, recruiter_id } = body;
-
       try {
         for (const user of users) {
           const recUser = await registerMember(
@@ -98,7 +97,7 @@ export async function registerMember(
       employment: user.employment,
       status: 'invited',
       scheduling_settings: user.scheduling_settings,
-      remote_id: user.remote_id,
+      remote_id: user?.remote_id ?? '',
     })
     .select(
       '*,  office_location:office_locations(*), department:departments(id,name)',

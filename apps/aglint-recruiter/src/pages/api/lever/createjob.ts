@@ -6,7 +6,6 @@ import {
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { processEmailsInBatches } from '@/jobs/components/AddJobWithIntegrations/GreenhouseModal/utils';
 import { type LeverApplication } from '@/jobs/components/AddJobWithIntegrations/LeverModal/types/applications';
 import { type LeverJob } from '@/jobs/components/AddJobWithIntegrations/LeverModal/types/job';
 import {
@@ -15,6 +14,7 @@ import {
   splitFullName,
 } from '@/jobs/components/AddJobWithIntegrations/utils';
 import { apiRequestHandlerFactory } from '@/utils/apiUtils/responseFactory';
+import { processEmailsInBatches } from '@/utils/processEmailsInBatches';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { decrypt } from '../decryptApiKey';
@@ -43,32 +43,47 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     requestHandler(
       'POST',
       async ({ body }) => {
-        const { recruiter_id, leverPost } = body;
+        const { recruiter_id, leverPost } = body as {
+          recruiter_id: string;
+          leverPost: LeverJob;
+        };
         const ats_job_id = leverPost.id;
         const dbJob = await createJobObject({
           post: leverPost,
           recruiter_id: recruiter_id,
           public_job_id,
         });
-        const { data: integration } = await supabaseAdmin
-          .from('integrations')
-          .select()
-          .eq('recruiter_id', recruiter_id)
-          .single();
+        const integration = (
+          await supabaseAdmin
+            .from('integrations')
+            .select()
+            .single()
+            .throwOnError()
+        ).data!;
 
-        const { data: newJobs, error } = await supabaseAdmin
-          .from('public_jobs')
-          .insert(dbJob)
-          .select();
+        console.log('integration :', integration);
+        console.log('dbJob :', dbJob);
 
-        if (!error) {
-          await createJobApplications({
-            apiKey: decrypt(integration.lever_key, process.env.ENCRYPTION_KEY),
-            ats_job_id: ats_job_id,
-            public_job_id: newJobs[0].id,
-            recruiter_id: recruiter_id,
-          });
+        const newJobs = (
+          await supabaseAdmin
+            .from('public_jobs')
+            .insert(dbJob)
+            .select()
+            .throwOnError()
+        ).data!;
+
+        console.log('newJobs :', newJobs);
+
+        if (!integration?.lever_key) {
+          throw new Error('No Lever Key found');
         }
+
+        await createJobApplications({
+          apiKey: decrypt(integration?.lever_key, process.env.ENCRYPTION_KEY),
+          ats_job_id: ats_job_id,
+          public_job_id: newJobs[0].id,
+          recruiter_id: recruiter_id,
+        });
         return {
           success: true,
           public_job_id: newJobs[0].id,
@@ -82,7 +97,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .delete()
       .match({ id: public_job_id });
     // console.log('error', error);
-    return res.status(400).send(error.message);
+    return res.status(400).send((error as Error).message);
   }
 };
 
@@ -192,11 +207,8 @@ const createJobApplications = async ({
     ),
   ];
 
-  const checkCandidates = await processEmailsInBatches(
-    emails,
-    recruiter_id,
-    supabaseAdmin,
-  );
+  const checkCandidates =
+    (await processEmailsInBatches(emails, recruiter_id, supabaseAdmin)) || [];
 
   //new candidates insert flow
   const uniqueRefCandidates = refCandidates.filter((cand) => {
@@ -291,7 +303,6 @@ export const createJobObject = async ({
       skills: [],
       title: post.text,
     },
-    department_id: null,
   };
 
   const insertJob: DatabaseTableInsert['public_jobs'] = {

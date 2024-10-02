@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import axios from 'axios';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
@@ -21,7 +22,10 @@ export type SaveResumeAPI = {
 };
 const bucketName = 'resume-job-post';
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   if (req.method !== 'POST') {
     return res.status(405).end();
   }

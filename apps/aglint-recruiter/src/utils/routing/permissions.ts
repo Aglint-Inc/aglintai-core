@@ -13,7 +13,7 @@ type Permissions = {
 
 const DEFAULT: Permissions = Object.assign(
   {},
-  ...PATHS.map((route) => ({ [route]: null }) as Permissions),
+  ...PATHS.map((route) => ({ [route]: null }) as unknown as Permissions),
 );
 
 const PERMISSIONS: Permissions = {

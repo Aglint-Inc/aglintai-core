@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import { type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { encrypt } from '../encryptData';
 
@@ -9,7 +10,10 @@ const supabase = createClient<DB>(
   process.env.SUPABASE_SERVICE_ROLE_KEY,
 );
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   const apiKey = req.body.apiKey;
   const recruiterId = req.body.recruiterId;
 
