@@ -1,6 +1,6 @@
 'use client';
 
-import { TwoColumnLayout } from '@components/layouts/two-column-layout';
+import { TwoColumnPageLayout } from '@components/layouts/two-column-page-layout';
 import { Button } from '@components/ui/button';
 import {
   DropdownMenu,
@@ -26,7 +26,7 @@ const Layout = ({ children }: PropsWithChildren) => {
   return (
     <WorkflowsStoreProvider>
       <WorkflowProvider>
-        <TwoColumnLayout
+        <TwoColumnPageLayout
           sidebarPosition='right'
           sidebarWidth={480}
           sidebar={<ConnectedJobs />}
@@ -41,7 +41,7 @@ const Layout = ({ children }: PropsWithChildren) => {
           }
         >
           <div className='px-4'>{children}</div>
-        </TwoColumnLayout>
+        </TwoColumnPageLayout>
       </WorkflowProvider>
     </WorkflowsStoreProvider>
   );

@@ -1,22 +1,26 @@
 'use client';
 
-import { FullWidthLayout } from '@components/layouts/full-width-layout';
-import { PageHeader } from '@components/layouts/page-header';
+import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
+import {
+  PageDescription,
+  PageHeader,
+  PageTitle,
+} from '@components/layouts/page-header';
 import CompletedRequests from '@requestHistory/components/CompletedRequests';
 import React from 'react';
 
 function RequestHistoryPage() {
   return (
-    <FullWidthLayout
+    <OneColumnPageLayout
       header={
-        <PageHeader
-          title='Request History'
-          description='View your completed requests.'
-        />
+        <PageHeader>
+          <PageTitle>Request History</PageTitle>
+          <PageDescription>View your completed requests.</PageDescription>
+        </PageHeader>
       }
     >
       <CompletedRequests />
-    </FullWidthLayout>
+    </OneColumnPageLayout>
   );
 }
 

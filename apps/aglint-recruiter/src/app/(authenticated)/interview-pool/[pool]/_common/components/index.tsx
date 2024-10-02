@@ -32,7 +32,7 @@ export default function InterviewTypeDetail({
     refetch,
   } = useModuleAndUsers();
 
-  const { breadcrum, setBreadcrum } = useBreadcrumContext();
+  const { setBreadcrum } = useBreadcrumContext();
   useEffect(() => {
     if (editModule?.id) {
       setBreadcrum([
@@ -65,10 +65,6 @@ export default function InterviewTypeDetail({
         </div>
       ) : (
         <div className='container-lg mx-auto w-full px-4'>
-          <nav className='mb-6 flex items-center space-x-2 text-sm text-gray-600'>
-            {breadcrum}
-          </nav>
-
           <div className='mb-6 flex items-center justify-between'>
             <div>
               <h1 className='text-xl font-bold text-gray-900'>

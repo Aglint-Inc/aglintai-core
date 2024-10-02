@@ -14,7 +14,6 @@ const Analytics = () => {
     <div className='px-4'>
       {activeTab === 'interviewMetrics' && <InterviewCount />}
       {activeTab === 'interviewerLeaderboard' && <InterviewerLeaderboard />}
-      {/* {activeTab === 'trainingMetrics' && <TrainingDashboard />} */}
       {activeTab === 'candidateMetrics' && <CandidateDropoutFunnelReport />}
       {activeTab === 'jobMetrics' && <JobMetrics />}
       {activeTab === 'requestMetrics' && <Checklist />}

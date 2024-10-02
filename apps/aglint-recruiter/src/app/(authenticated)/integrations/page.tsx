@@ -1,14 +1,14 @@
 'use client';
-import { FullWidthLayout } from '@components/layouts/full-width-layout';
+import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
 
 import { Integrations, IntegrationsHeader } from '@/components/Integrations';
 
 function IntegrationsPage() {
   return (
     <>
-      <FullWidthLayout header={<IntegrationsHeader />}>
+      <OneColumnPageLayout header={<IntegrationsHeader />}>
         <Integrations />
-      </FullWidthLayout>
+      </OneColumnPageLayout>
     </>
   );
 }

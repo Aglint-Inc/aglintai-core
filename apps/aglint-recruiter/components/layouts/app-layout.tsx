@@ -1,17 +1,13 @@
 import React from 'react';
 
-interface AdminAppLayoutProps {
+interface AppLayoutProps {
   children: React.ReactNode;
   topbar?: React.ReactNode;
   sidebar?: React.ReactNode;
   className?: string;
 }
 
-export function AdminAppLayout({
-  children,
-  topbar,
-  sidebar,
-}: AdminAppLayoutProps) {
+export function AppLayout({ children, topbar, sidebar }: AppLayoutProps) {
   return (
     <>
       {topbar && <nav>{topbar}</nav>}

@@ -1,4 +1,11 @@
 'use client';
+import {
+  PageActions,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import { Send } from 'lucide-react';
 import { useState } from 'react';
 
@@ -15,14 +22,14 @@ export const IntegrationsHeader = () => {
   const [isRequestNewOpen, setIsRequestNewOpen] = useState(false);
 
   return (
-    <header className='mb-4 flex flex-row justify-between'>
-      <div className='flex flex-col'>
-        <h1 className='text-2xl font-semibold'>Integrations</h1>
-        <p className='mb-4 text-sm text-muted-foreground'>
+    <PageHeader>
+      <PageHeaderText>
+        <PageTitle>Integrations</PageTitle>
+        <PageDescription>
           Connect your favorite tools to streamline your workflow.
-        </p>
-      </div>
-      <div className='flex items-center justify-between'>
+        </PageDescription>
+      </PageHeaderText>
+      <PageActions>
         <UIButton
           size='md'
           variant='default'
@@ -35,8 +42,8 @@ export const IntegrationsHeader = () => {
           isOpen={isRequestNewOpen}
           close={() => setIsRequestNewOpen(false)}
         />
-      </div>
-    </header>
+      </PageActions>
+    </PageHeader>
   );
 };
 
