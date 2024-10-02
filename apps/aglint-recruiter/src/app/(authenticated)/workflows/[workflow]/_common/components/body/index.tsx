@@ -1,3 +1,8 @@
+import {
+  Section,
+  SectionHeader,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import OptimisticWrapper from '@components/loadingWapper';
 import { Button } from '@components/ui/button';
 import {
@@ -11,9 +16,9 @@ import { BriefcaseBusiness } from 'lucide-react';
 import { useState } from 'react';
 
 import { NotFound } from '@/components/Common/404';
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
-import UITypography from '@/components/Common/UITypography';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import {
@@ -31,12 +36,6 @@ import { WorkflowConnectedCard } from '../WorkflowConnectedCard';
 import Actions from './action';
 import { ActionsProvider } from './context';
 import Trigger from './trigger';
-import {
-  SectionHeader,
-  SectionTitle,
-  Section,
-} from '@components/layouts/sections-header';
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 
 const Body = () => {
   const { workflow } = useWorkflow();

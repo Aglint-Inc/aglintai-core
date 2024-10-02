@@ -1,16 +1,16 @@
 import {
+  Page,
+  PageActions,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
+import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import {
-  Page,
-  PageHeader,
-  PageHeaderText,
-  PageDescription,
-  PageTitle,
-  PageActions,
-} from '@components/layouts/page-header';
 import { Archive, ArchiveRestore, MoreVertical } from 'lucide-react';
 import { useEffect } from 'react';
 

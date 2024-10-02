@@ -1,3 +1,10 @@
+import {
+  PageActions,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 
 import { useAllInterviewModules } from '@/authenticated/hooks';
@@ -10,13 +17,6 @@ import { useAllDepartments } from '@/queries/departments';
 import { setIsCreateDialogOpen } from '../../[pool]/_common/stores/store';
 import { useHeaderProp } from '.';
 import CreateModuleDialog from './CreateModuleDialog';
-import {
-  PageHeader,
-  PageHeaderText,
-  PageDescription,
-  PageTitle,
-  PageActions,
-} from '@components/layouts/page-header';
 
 export const InterviewPoolHeader = () => {
   const {

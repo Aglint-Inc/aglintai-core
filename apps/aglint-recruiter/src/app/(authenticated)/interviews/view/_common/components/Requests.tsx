@@ -5,9 +5,11 @@ import {
   SectionTitle,
 } from '@components/layouts/sections-header';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Separator } from '@components/ui/separator';
 import { useQuery } from '@tanstack/react-query';
 import { LayoutList } from 'lucide-react';
 import Link from 'next/link';
+import React from 'react';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
@@ -18,8 +20,6 @@ import { supabase } from '@/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { useScheduleDetails } from '../hooks/useScheduleDetails';
-import { Separator } from '@components/ui/separator';
-import React from 'react';
 
 function Component() {
   const { data } = useScheduleDetails();

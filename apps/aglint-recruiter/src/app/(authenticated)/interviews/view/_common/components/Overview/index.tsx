@@ -2,7 +2,13 @@ import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import { Card } from '@components/ui/card';
-import { Globe, SquareArrowOutUpRight, User, Users } from 'lucide-react';
+import {
+  AlertCircle,
+  Globe,
+  SquareArrowOutUpRight,
+  User,
+  Users,
+} from 'lucide-react';
 import Link from 'next/link';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
@@ -10,15 +16,14 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { getBreakLabel } from '@/utils/getBreakLabel';
 
 import IconSessionType from '../../../../../../../components/Common/Icons/IconSessionType';
-import {
-  formatTimeWithTimeZone,
-} from '../../../../../../../components/Scheduling/utils';
+import { formatTimeWithTimeZone } from '../../../../../../../components/Scheduling/utils';
 import { getScheduleType } from '../../../../../../../utils/scheduling/colors_and_enums';
 import { MeetingStatusBadge } from '../../../../../../_common/components/MeetingStatusBadge';
 import { useScheduleDetails } from '../../hooks/useScheduleDetails';
 import { NewScheduleDetail } from '../ui/NewScheduleDetails';
 import AllRolesMeetings from './AllRolesMeetings';
 import InterviewerListCard from './InterviewerListCard';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 
 function Overview() {
   const { checkPermissions } = useRolesAndPermissions();
@@ -64,10 +69,13 @@ function Overview() {
             );
           })
         ) : (
-          <Card className='flex items-center justify-center bg-neutral-100 p-4 text-neutral-700'>
-            <Users className='mr-2 h-8 w-8' />
-            <p>Interviewers will be decided once interview is confirmed</p>
-          </Card>
+          <Alert variant='info'>
+            <AlertCircle strokeWidth={1.5} className='text-muted-foreground' />
+            <AlertTitle>No Interviewers Assigned</AlertTitle>
+            <AlertDescription>
+              Interviewers will be decided once the interview is confirmed.
+            </AlertDescription>
+          </Alert>
         )
       }
       slotHiringTeamList={<AllRolesMeetings />}
@@ -159,7 +167,7 @@ function Overview() {
               <User className='h-6 w-6' />
             </div>
             <div className='flex flex-col gap-0.5'>
-              <p className='text-md '>
+              <p className='text-md'>
                 {getFullName(
                   schedule?.candidates?.first_name ?? '',
                   schedule?.candidates?.last_name ?? '',
@@ -177,7 +185,6 @@ function Overview() {
               </div>
             </div>
           </div>
-        
         </div>
       }
       textMeetingLink={schedule.interview_meeting.meeting_link || '--'}
