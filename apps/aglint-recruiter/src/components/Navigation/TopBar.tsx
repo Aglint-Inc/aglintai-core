@@ -1,3 +1,5 @@
+'use client';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import {
@@ -5,11 +7,15 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
+import { useQueryClient } from '@tanstack/react-query';
 import { LogOut } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { useLogout } from '@/authenticated/hooks/useLogout';
+import { useTenant } from '@/company/hooks';
 import { capitalizeAll } from '@/utils/text/textUtils';
+
 const DefaultProfileImage = () => (
   <Image
     src={'/images/default/user.svg'}
@@ -27,14 +33,16 @@ const DefaultCompanyLogo = () => (
   />
 );
 
-const TopBar = ({
-  logo,
-  recruiterName,
-  profileImage,
-  userName,
-  onLogout,
-  userId,
-}) => {
+const TopBar = () => {
+  const { recruiter, recruiter_user } = useTenant();
+  const queryClient = useQueryClient();
+  const { logout } = useLogout();
+  const logo = recruiter?.logo;
+  const recruiterName = recruiter?.name;
+  const profileImage = recruiter_user?.profile_image;
+  const userName = recruiter_user?.first_name;
+  const userId = recruiter_user?.user_id;
+
   return (
     <div className='flex w-full flex-row items-center justify-between'>
       <Button variant='link' className='mt-2 p-2' asChild>
@@ -78,7 +86,7 @@ const TopBar = ({
         </Tooltip>
         <Tooltip>
           <TooltipTrigger>
-            <Button variant='link' onClick={onLogout}>
+            <Button variant='link' onClick={() => logout(queryClient)}>
               <LogOut className='h-5 w-5' strokeWidth={1.5} />
             </Button>
           </TooltipTrigger>

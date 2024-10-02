@@ -1,4 +1,4 @@
-import { PublicPageLayout } from '@components/layouts/public-page-layout';
+import { PublicPageLayout } from '@components/layouts/public-layout';
 import React, { type PropsWithChildren } from 'react';
 
 import Footer from '@/components/Common/Footer';

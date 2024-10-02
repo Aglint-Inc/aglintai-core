@@ -4,41 +4,39 @@ import {
   Layout,
   LayoutBody,
   LayoutContent,
+  LayoutFilter,
   LayoutHeader,
   LayoutSidebar,
 } from './layout';
 
-interface TwoColumnLayoutProps {
+interface OneColumnPageLayoutProps {
   children: React.ReactNode;
   header?: React.ReactNode;
   filter?: React.ReactNode;
   sidebar?: React.ReactNode;
-  sidebarPosition?: 'left' | 'right';
-  sidebarWidth?: string | number;
+  sidebarPosition?: 'left' | 'none';
+  sidebarWidth?: number;
 }
 
-export function TwoColumnLayout({
+export function OneColumnPageLayout({
   children,
   header,
   filter,
   sidebar,
-  sidebarPosition = 'left',
-  sidebarWidth = '16rem',
-}: TwoColumnLayoutProps) {
+  sidebarPosition = 'none',
+  sidebarWidth = 360,
+}: OneColumnPageLayoutProps) {
   return (
     <Layout>
       <LayoutBody sidebarPosition={sidebarPosition}>
-        {sidebarPosition === 'left' && sidebar && (
+        {sidebar && (
           <LayoutSidebar width={sidebarWidth}>{sidebar}</LayoutSidebar>
         )}
         <LayoutContent>
           {header && <LayoutHeader>{header}</LayoutHeader>}
-          {filter && <LayoutHeader>{filter}</LayoutHeader>}
+          {filter && <LayoutFilter>{filter}</LayoutFilter>}
           {children}
         </LayoutContent>
-        {sidebarPosition === 'right' && sidebar && (
-          <LayoutSidebar width={sidebarWidth}>{sidebar}</LayoutSidebar>
-        )}
       </LayoutBody>
     </Layout>
   );

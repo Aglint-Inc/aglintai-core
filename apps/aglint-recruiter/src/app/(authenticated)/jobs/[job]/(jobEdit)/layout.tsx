@@ -1,5 +1,5 @@
 'use client';
-import { FullWidthLayout } from '@components/layouts/full-width-layout';
+import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -20,7 +20,7 @@ import { capitalizeSentence } from '@/utils/text/textUtils';
 const Layout = ({ children }: PropsWithChildren) => {
   return (
     <JobProvider>
-      <FullWidthLayout
+      <OneColumnPageLayout
         sidebar={
           <div>
             <BreadCrumbs />
@@ -30,7 +30,7 @@ const Layout = ({ children }: PropsWithChildren) => {
         sidebarPosition='left'
       >
         <div className='w-[80%] p-4'>{children}</div>
-      </FullWidthLayout>
+      </OneColumnPageLayout>
     </JobProvider>
   );
 };

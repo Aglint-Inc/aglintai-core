@@ -1,6 +1,6 @@
-import '@styles/globals.css';
 import 'regenerator-runtime/runtime';
 
+import RootLayout from '@components/layouts/root-layout';
 import { ThemeProvider } from '@components/theme-provider';
 import { Toaster } from '@components/ui/toaster';
 import React, { type PropsWithChildren } from 'react';
@@ -20,21 +20,19 @@ export const metadata = {
 
 const Layout = ({ children }: PropsWithChildren) => {
   return (
-    <html lang='en' suppressHydrationWarning>
-      <body className='flex w-full flex-col bg-gray-50'>
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='system'
-          enableSystem={false}
-          disableTransitionOnChange
-        >
-          <TRPCReactProvider>
-            <HydrateClient>{children}</HydrateClient>
-          </TRPCReactProvider>
-          <Toaster />
-        </ThemeProvider>
-      </body>
-    </html>
+    <RootLayout>
+      <ThemeProvider
+        attribute='class'
+        defaultTheme='system'
+        enableSystem={false}
+        disableTransitionOnChange
+      >
+        <TRPCReactProvider>
+          <HydrateClient>{children}</HydrateClient>
+        </TRPCReactProvider>
+        <Toaster />
+      </ThemeProvider>
+    </RootLayout>
   );
 };
 

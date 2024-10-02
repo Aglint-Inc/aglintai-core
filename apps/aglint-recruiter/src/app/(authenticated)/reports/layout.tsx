@@ -1,5 +1,10 @@
 'use client';
-import { FullWidthLayout } from '@components/layouts/full-width-layout';
+import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
+import {
+  SectionDescription,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import React from 'react';
 
 import DashboardDataFilter from './_common/components/DashboardDataFilter';
@@ -13,13 +18,15 @@ export default function AnalyticsLayout({
 }) {
   return (
     <AnalyticsProvider>
-      <FullWidthLayout
+      <OneColumnPageLayout
         sidebar={
           <>
-            <h2 className='text-lg font-semibold'>Reports</h2>
-            <p className='mb-4 text-sm text-gray-600'>
-              All the Reports can be found here.
-            </p>
+            <SectionHeaderText>
+              <SectionTitle>Reports</SectionTitle>
+              <SectionDescription>
+                All the Reports can be found here.
+              </SectionDescription>
+            </SectionHeaderText>
             <InterviewDashboardSideNav />
           </>
         }
@@ -28,7 +35,7 @@ export default function AnalyticsLayout({
         sidebarWidth={320}
       >
         {children}
-      </FullWidthLayout>
+      </OneColumnPageLayout>
     </AnalyticsProvider>
   );
 }
