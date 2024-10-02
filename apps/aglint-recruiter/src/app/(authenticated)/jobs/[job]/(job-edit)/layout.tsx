@@ -22,14 +22,14 @@ const Layout = ({ children }: PropsWithChildren) => {
     <JobProvider>
       <OneColumnPageLayout
         sidebar={
-          <div>
+          <div className='flex h-full flex-col'>
             <BreadCrumbs />
             <JobsSideNavV2 />
           </div>
         }
         sidebarPosition='left'
       >
-        <div className='w-[80%] p-4'>{children}</div>
+        <div className='px-4'>{children}</div>
       </OneColumnPageLayout>
     </JobProvider>
   );

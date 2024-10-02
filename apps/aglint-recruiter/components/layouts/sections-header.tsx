@@ -5,19 +5,27 @@ const Section = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
+  <div ref={ref} className={cn('flex flex-col', className)} {...props} />
+));
+Section.displayName = 'Section';
+
+const SectionHeader = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('flex flex-col items-center justify-between', className)}
+    className={cn('flex flex-row items-center justify-between', className)}
     {...props}
   />
 ));
-Section.displayName = 'Section';
+SectionHeader.displayName = 'SectionHeader';
 
 const SectionHeaderText = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn('mb-4 flex flex-col', className)} {...props} />
+  <div ref={ref} className={cn('flex flex-col', className)} {...props} />
 ));
 SectionHeaderText.displayName = 'SectionHeaderText';
 

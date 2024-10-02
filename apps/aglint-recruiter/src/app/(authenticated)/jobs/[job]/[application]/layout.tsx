@@ -23,7 +23,7 @@ const Layout = ({ children }: PropsWithChildren) => {
           <Activity />
         </>
       }
-      sidebarWidth={300}
+      sidebarWidth={420}
     >
       {children}
     </TwoColumnPageLayout>

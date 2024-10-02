@@ -79,7 +79,7 @@ function RequestProgress() {
         setTriggerDetails,
       }}
     >
-      <div className='row-gap-1'>
+      <div className='row-gap-1 mt-8'>
         <ShowCode>
           <ShowCode.When isTrue={request_progress.status === 'pending'}>
             <RequestProgressSkeleton />

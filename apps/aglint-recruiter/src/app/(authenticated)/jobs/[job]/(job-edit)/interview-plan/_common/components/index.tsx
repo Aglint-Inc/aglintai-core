@@ -1,5 +1,11 @@
-/* eslint-disable security/detect-object-injection */
 import { getFullName } from '@aglint/shared-utils';
+import {
+  Page,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import OptimisticWrapper from '@components/loadingWapper';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
@@ -106,17 +112,16 @@ const InterviewPlanPage = () => {
 
   return (
     <>
-      <div className='w-full'>
-        <div className='flex flex-row justify-between'>
-          <div className='flex flex-col gap-1'>
-            <h2 className='text-lg font-medium'>Interview Plan</h2>
-            <p className='text-sm text-muted-foreground'>
+      <Page>
+        <PageHeader>
+          <PageHeaderText>
+            <PageTitle>Interview Plan</PageTitle>
+            <PageDescription>
               Set up your interview plan here. Changes will be saved
               automatically.
-            </p>
-          </div>
-        </div>
-
+            </PageDescription>
+          </PageHeaderText>
+        </PageHeader>
         <div className='mb-10 max-w-2xl space-y-4'>
           {data?.length ? (
             data.map((plan) => (
@@ -144,7 +149,8 @@ const InterviewPlanPage = () => {
 
           <AddStageComponent handleCreate={handleCreate} />
         </div>
-      </div>
+      </Page>
+
       <InterviewDrawers
         open={drawerModal}
         drawers={drawers}
