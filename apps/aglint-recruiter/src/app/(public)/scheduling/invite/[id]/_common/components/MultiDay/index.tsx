@@ -1,4 +1,3 @@
-import { type SessionsCombType } from '@aglint/shared-types';
 import { Coffee, Plus, Repeat } from 'lucide-react';
 import React, {
   type Dispatch,
@@ -11,13 +10,14 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useCandidateInvite } from '@/context/CandidateInviteContext';
-import { useInviteSlots } from '@/queries/candidate-invite';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import toast from '@/utils/toast';
 
 import { SessionIcon } from '../../../../../../../../components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
 import { getScheduleType } from '../../../../../../../../utils/scheduling/colors_and_enums';
+import useInviteActions from '../../hooks/useInviteActions';
+import { useInviteSlots } from '../../hooks/useInviteSlots';
+import { type CandidateInviteType, useCandidateInviteStore } from '../../store';
 import {
   type ScheduleCardProps,
   type ScheduleCardsProps,
@@ -25,15 +25,14 @@ import {
 import { dayJS, getDurationText } from '../../utils/utils';
 import CandidateInviteCalendar, {
   type CandidateInviteCalendarProps,
-} from '../calender';
-import { CandidateScheduleCard } from '../Components/CandidateScheduleCard';
-import { SelectedDateAndTime } from '../Components/SelectedDateAndTime';
-import { SessionAndTime } from '../Components/SessionAndTime';
-import { SessionInfo } from '../Components/SessionInfo';
+} from '../CalenderComp';
+import { CandidateScheduleCard } from '../ui/CandidateScheduleCard';
+import { SelectedDateAndTime } from '../ui/SelectedDateAndTime';
+import { SessionAndTime } from '../ui/SessionAndTime';
+import { SessionInfo } from '../ui/SessionInfo';
 
 const MultiDay = ({ rounds }: ScheduleCardsProps) => {
-  const { params } = useCandidateInvite();
-  const { status } = useInviteSlots(params);
+  const { status } = useInviteSlots();
   if (status === 'error') return <MultiDayError />;
   if (status === 'pending') return <MultiDayLoading />;
   return <MultiDaySuccess rounds={rounds} />;
@@ -42,8 +41,7 @@ const MultiDay = ({ rounds }: ScheduleCardsProps) => {
 export default MultiDay;
 
 const MultiDayError = () => {
-  const { params } = useCandidateInvite();
-  const { refetch } = useInviteSlots(params);
+  const { refetch } = useInviteSlots();
   useEffect(() => {
     toast.error('Something went wrong. Please try again.');
   }, []);
@@ -65,7 +63,7 @@ const MultiDayLoading = () => {
 };
 
 const MultiDaySuccess = (props: ScheduleCardsProps) => {
-  const { selectedSlots } = useCandidateInvite();
+  const { selectedSlots } = useCandidateInviteStore();
   const [open, setOpen] = useState(false);
   const enabled = selectedSlots.length === props.rounds.length;
   return (
@@ -98,15 +96,15 @@ type MultiDayConfirmationProps = {
 };
 
 const MultiDayConfirmation = (props: MultiDayConfirmationProps) => {
-  const { handleSubmit } = useCandidateInvite();
+  const { handleSubmit } = useInviteActions();
   const handleClose = () => {
     props.setOpen(false);
   };
-  const { selectedSlots, timezone } = useCandidateInvite();
+  const { selectedSlots, timezone } = useCandidateInviteStore();
 
   type SelectedDateAndSessionsType = {
     date: string;
-    sessions: SessionsCombType['sessions'] | null;
+    sessions: CandidateInviteType['selectedSlots'][0]['sessions'];
   }[];
   const [selectedDateAndSessions, setSelectedDateAndSessions] =
     useState<SelectedDateAndSessionsType>([]);
@@ -175,9 +173,9 @@ const ScheduleCards = (props: ScheduleCardsProps) => {
 };
 
 const ScheduleCard = (props: ScheduleCardProps) => {
-  const { params, selectedSlots, handleSelectSlot, timezone } =
-    useCandidateInvite();
-  const { data } = useInviteSlots(params);
+  const { selectedSlots, timezone } = useCandidateInviteStore();
+  const { handleSelectSlot } = useInviteActions();
+  const { data } = useInviteSlots();
 
   const [open, setOpen] = useState(false);
 
@@ -318,7 +316,7 @@ type SingleDaySessionsProps = {
   index: number;
 };
 const SingleDaySessions = (props: SingleDaySessionsProps) => {
-  const { selectedSlots } = useCandidateInvite();
+  const { selectedSlots } = useCandidateInviteStore();
   const sessions = (selectedSlots?.[props.index]?.sessions ?? []).map(
     (session) => (
       <SingleDaySession key={session.session_id} session={session} />
@@ -328,12 +326,10 @@ const SingleDaySessions = (props: SingleDaySessionsProps) => {
 };
 
 type SingleDaySessionProps = {
-  session: ReturnType<
-    typeof useCandidateInvite
-  >['selectedSlots'][number]['sessions'][number];
+  session: CandidateInviteType['selectedSlots'][number]['sessions'][number];
 };
 const SingleDaySession = (props: SingleDaySessionProps) => {
-  const { timezone } = useCandidateInvite();
+  const { timezone } = useCandidateInviteStore();
   const name = props.session.session_name;
   const duration = `${dayJS(props.session.start_time, timezone.tzCode).format(
     'hh:mm A',

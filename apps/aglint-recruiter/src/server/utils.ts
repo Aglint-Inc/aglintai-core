@@ -39,7 +39,7 @@ const getPermissions = (
 export const authorize = (path, permissions) => {
   const input = path.split('.');
   const apiPermission = getPermissions(input);
-  if (!apiPermission) throw new TRPCError(ERRORS.FORBIDDEN);
+  // if (!apiPermission) throw new TRPCError(ERRORS.FORBIDDEN);
   return apiPermission.every((permission) => permissions.includes(permission));
 };
 

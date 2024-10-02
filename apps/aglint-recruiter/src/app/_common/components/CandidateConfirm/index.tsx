@@ -11,7 +11,6 @@ import Footer from '@/components/Common/Footer';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
-import { type useCandidateInvite } from '@/context/CandidateInviteContext';
 import { type API_get_scheduling_reason } from '@/pages/api/get_scheduling_reason';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
@@ -19,21 +18,28 @@ import { supabase } from '@/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import { type TimezoneObj } from '@/utils/timeZone';
 
+import { type useInviteMeta } from '../../../(public)/scheduling/invite/[id]/_common/hooks/useInviteMeta';
+import { type CandidateInviteType } from '../../../(public)/scheduling/invite/[id]/_common/store';
 import {
   type ScheduleCardProps,
   type ScheduleCardsProps,
-} from '../../types/types';
-import { createRequest, dayJS, getCalenderEventUrl } from '../../utils/utils';
-import CancelRescheduleDialog from '../CancelScheduleDialog';
+} from '../../../(public)/scheduling/invite/[id]/_common/types/types';
+import {
+  createRequest,
+  dayJS,
+  getCalenderEventUrl,
+} from '../../../(public)/scheduling/invite/[id]/_common/utils/utils';
+import CancelRescheduleDialog from './CancelScheduleDialog';
 import InterviewConfirmed from './InterviewConfirmed';
 import { InterviewConfirmedCard } from './InterviewConfirmedCard';
+
 export const ConfirmedInvitePage = (
   props: ScheduleCardsProps &
     Pick<
-      Awaited<ReturnType<typeof useCandidateInvite>>['meta']['data'],
+      Awaited<ReturnType<typeof useInviteMeta>>['data'],
       'candidate' | 'meetings' | 'filter_json' | 'recruiter' | 'application_id'
-    > &
-    Pick<Awaited<ReturnType<typeof useCandidateInvite>>, 'timezone'> & {
+    > & {
+      timezone: CandidateInviteType['timezone'];
       avail_request_id?: string;
     },
 ) => {
