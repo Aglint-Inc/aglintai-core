@@ -61,7 +61,7 @@ function SchedulingViewComp() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href='/scheduling'>Scheduling</BreadcrumbLink>
+              <BreadcrumbLink href='/interviewers'>Scheduling</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
