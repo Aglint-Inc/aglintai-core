@@ -10,15 +10,7 @@ const Layout = ({ children }: PropsWithChildren) => {
   const { breadcrum } = useBreadcrumContext();
   return (
     <SchedulingProvider>
-      <OneColumnPageLayout
-        header={
-          <nav className='mb-6 flex items-center space-x-2 text-sm text-gray-600'>
-            {breadcrum}
-          </nav>
-        }
-      >
-        {children}
-      </OneColumnPageLayout>
+      <OneColumnPageLayout header={breadcrum}>{children}</OneColumnPageLayout>
     </SchedulingProvider>
   );
 };

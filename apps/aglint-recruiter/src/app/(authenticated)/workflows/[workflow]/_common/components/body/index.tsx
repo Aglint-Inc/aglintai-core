@@ -1,3 +1,8 @@
+import {
+  Section,
+  SectionHeader,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import OptimisticWrapper from '@components/loadingWapper';
 import { Button } from '@components/ui/button';
 import {
@@ -11,9 +16,9 @@ import { BriefcaseBusiness } from 'lucide-react';
 import { useState } from 'react';
 
 import { NotFound } from '@/components/Common/404';
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
-import UITypography from '@/components/Common/UITypography';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import {
@@ -58,21 +63,32 @@ export const ConnectedJobs = () => {
   const count = workflow?.jobs?.length ?? 0;
   if (count === 0)
     return (
-      <div className='flex flex-col items-center justify-center p-6 text-center'>
-        <BriefcaseBusiness size={30} className='mb-4 text-gray-400' />
-        <UITypography variant='p' type='small'>
-          No jobs connected
-        </UITypography>
-      </div>
+      <Section>
+        <SectionHeader>
+          <SectionTitle>Connected Jobs</SectionTitle>
+        </SectionHeader>
+        <GlobalEmpty
+          header='No jobs connected'
+          description='You can connect jobs to this workflow to automate your workflow.'
+          icon={<BriefcaseBusiness strokeWidth={2} className='h-6 w-6' />}
+        />
+      </Section>
     );
-  return (workflow?.jobs ?? []).map((job) => (
-    <WorkflowJob
-      key={job.id}
-      {...(job as Workflow['jobs'][number])}
-      devlinkProps={devlink}
-      workflow_id={workflow?.id}
-    />
-  ));
+  return (
+    <Section>
+      <SectionHeader>
+        <SectionTitle>Connected Jobs</SectionTitle>
+      </SectionHeader>
+      {(workflow?.jobs ?? []).map((job) => (
+        <WorkflowJob
+          key={job.id}
+          {...(job as Workflow['jobs'][number])}
+          devlinkProps={devlink}
+          workflow_id={workflow?.id}
+        />
+      ))}
+    </Section>
+  );
 };
 
 const WorkflowJob = ({

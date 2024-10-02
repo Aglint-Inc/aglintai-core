@@ -9,7 +9,7 @@ function CandidatePipeline({ module_id }: { module_id: string }) {
   const { data, isFetched } = useCandidatePipeline(module_id);
   const divider = (data?.applied || 0) / 100;
   return (
-    <Card className='border-t-4 border-t-purple-500 bg-white shadow-md'>
+    <Card className='border-t-4 border-t-purple-500 bg-white shadow-sm'>
       <CardHeader>
         <CardTitle className='text-lg font-medium text-gray-800'>
           Candidate Pipeline
