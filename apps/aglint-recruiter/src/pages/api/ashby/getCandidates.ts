@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { decrypt } from '../decryptApiKey';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -7,7 +8,7 @@ const supabaseAnonKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-export default function handler(req, res) {
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const apiKey = req.body.apiKey;
   const decryptedApiKey = decrypt(apiKey, process.env.ENCRYPTION_KEY);
   const base64decryptedApiKey = btoa(decryptedApiKey + ':');

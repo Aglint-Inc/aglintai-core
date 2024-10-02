@@ -4,19 +4,23 @@ import {
   type DatabaseTableInsert,
 } from '@aglint/shared-types';
 import axios from 'axios';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
-import { processEmailsInBatches } from '@/jobs/components/AddJobWithIntegrations/GreenhouseModal/utils';
 import { type LeverApplication } from '@/jobs/components/AddJobWithIntegrations/LeverModal/types/applications';
 import {
   extractLinkedInURL,
   splitFullName,
 } from '@/jobs/components/AddJobWithIntegrations/utils';
+import { processEmailsInBatches } from '@/utils/processEmailsInBatches';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { decrypt } from '../decryptApiKey';
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   const jobId = req.body.job_id;
   let previousApplications: DatabaseTable['applications'][] = [];
 
@@ -27,14 +31,16 @@ export default async function handler(req, res) {
   }
   const supabaseAdmin = getSupabaseServer();
 
-  const { data: job } = await supabaseAdmin
-    .from('public_jobs')
-    .select(
-      '*,company:recruiter!public_jobs_recruiter_id_fkey(integrations(*))',
-    )
-    .eq('id', jobId)
-    .single()
-    .throwOnError();
+  const job = (
+    await supabaseAdmin
+      .from('public_jobs')
+      .select(
+        '*,company:recruiter!public_jobs_recruiter_id_fkey(integrations(*))',
+      )
+      .eq('id', jobId)
+      .single()
+      .throwOnError()
+  ).data!;
 
   const ats_job_id = job.remote_id;
   const recruiter_id = job.recruiter_id;
@@ -46,17 +52,17 @@ export default async function handler(req, res) {
   }
 
   const apiKey = decrypt(
-    job.company.integrations.lever_key,
+    job?.company?.integrations?.lever_key ?? '',
     process.env.ENCRYPTION_KEY,
   );
 
-  const { data: app } = await supabaseAdmin
-    .from('applications')
-    .select('*')
-    .eq('job_id', jobId)
-    .throwOnError();
-
-  previousApplications = app;
+  previousApplications = (
+    await supabaseAdmin
+      .from('applications')
+      .select('*')
+      .eq('job_id', jobId)
+      .throwOnError()
+  ).data!;
 
   const leverApplications = await fetchAllOpporunities(apiKey, ats_job_id);
 
@@ -102,11 +108,8 @@ export default async function handler(req, res) {
     ),
   ];
 
-  const checkCandidates = await processEmailsInBatches(
-    emails,
-    recruiter_id,
-    supabaseAdmin,
-  );
+  const checkCandidates =
+    (await processEmailsInBatches(emails, recruiter_id, supabaseAdmin)) || [];
 
   //new candidates insert flow
   const uniqueRefCandidates = refCandidates.filter((cand) => {
@@ -169,8 +172,8 @@ export default async function handler(req, res) {
   //new candidates insert flow
 }
 
-const fetchAllOpporunities = async (apiKey, postingId) => {
-  let allJobs = [];
+const fetchAllOpporunities = async (apiKey: string, postingId: string) => {
+  let allApps: LeverApplication[] = [];
   let hasMore = true;
   let next = 0;
 
@@ -190,7 +193,7 @@ const fetchAllOpporunities = async (apiKey, postingId) => {
         },
       });
       if (response.data && response.data.data) {
-        allJobs = allJobs.concat(response.data.data);
+        allApps = allApps.concat(response.data.data);
         if (response.data.hasNext) {
           next = response.data.next;
         } else {
@@ -203,5 +206,5 @@ const fetchAllOpporunities = async (apiKey, postingId) => {
       hasMore = false; // Exit the loop in case of an error
     }
   }
-  return allJobs as LeverApplication[];
+  return allApps as LeverApplication[];
 };

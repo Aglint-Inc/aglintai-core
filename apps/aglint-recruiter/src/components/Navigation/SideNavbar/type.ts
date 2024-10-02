@@ -8,10 +8,6 @@ export type LinkProps =
       path: Path<'/requests'>;
     }
   | {
-      module: 'Agent';
-      path: Path<'/agent'>;
-    }
-  | {
       module: 'Jobs';
       path: Path<'/jobs'>;
     }
@@ -26,10 +22,6 @@ export type LinkProps =
   | {
       module: 'Phone Screening';
       path: Path<'/screening'>;
-    }
-  | {
-      module: 'Assessment';
-      path: Path<'/assessment-new'>;
     }
   | {
       module: 'Integrations';

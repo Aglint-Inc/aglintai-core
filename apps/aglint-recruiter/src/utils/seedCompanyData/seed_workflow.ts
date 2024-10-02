@@ -73,7 +73,7 @@ export const modified_seed_workflow_actions: {
         action_type: 'agent_instruction',
         payload: {
           agent: {
-            instruction: null,
+            instruction: '',
           },
         },
       },

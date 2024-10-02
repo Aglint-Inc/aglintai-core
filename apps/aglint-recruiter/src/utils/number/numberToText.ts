@@ -39,7 +39,7 @@ const tens = [
 ];
 const thousands = ['', 'thousand'];
 
-export function numberToText(num) {
+export function numberToText(num: number) {
   if (num === 0) return 'zero';
   let word = '';
   if (num < 0) {
@@ -58,7 +58,7 @@ export function numberToText(num) {
   return capitalize(word.trim());
 }
 
-function convertHundreds(num) {
+function convertHundreds(num: number) {
   let word = '';
   const hundreds = Math.floor(num / 100);
   const remainder = num % 100;
