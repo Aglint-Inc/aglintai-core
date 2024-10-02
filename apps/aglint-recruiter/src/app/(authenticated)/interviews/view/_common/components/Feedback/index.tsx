@@ -117,14 +117,16 @@ const FeedbackWindow = () => {
     const tempData = (
       (relationsData || []) as unknown as {
         session_id: string;
-        feedback: (typeof relationsData)[number]['feedback'];
-        interview_module_relation: (typeof relationsData)[number]['interview_module_relation'];
+        feedback: NonNullable<typeof relationsData>[number]['feedback'];
+        interview_module_relation: NonNullable<
+          typeof relationsData
+        >[number]['interview_module_relation'];
       }[]
     ).filter((item) => Boolean(item.interview_module_relation?.id));
 
     const tempRelation: {
       [key: string]: {
-        feedback: (typeof relationsData)[number]['feedback'];
+        feedback: NonNullable<typeof relationsData>[number]['feedback'];
         relation_id: string;
         user_id: string;
       }[];
@@ -132,10 +134,11 @@ const FeedbackWindow = () => {
 
     for (const item of tempData) {
       const temp = tempRelation[item.session_id] || [];
+      if (!item.interview_module_relation) continue;
       temp.push({
         feedback: item.feedback,
-        relation_id: item.interview_module_relation.id,
-        user_id: item.interview_module_relation.user_id,
+        relation_id: item.interview_module_relation?.id,
+        user_id: item.interview_module_relation?.user_id,
       });
       tempRelation[item.session_id] = temp;
     }
@@ -149,12 +152,13 @@ const FeedbackWindow = () => {
       interview_sessions.forEach((session) => {
         const temp = tempRelations[String(session.id)] || [];
         temp.forEach((memRelation) => {
-          const tempMem = relationsData.find(
+          const tempMem = relationsData?.find(
             (item) =>
-              item.interview_module_relation.user_id === memRelation.user_id,
-          ).interview_module_relation.recruiter_user;
+              item?.interview_module_relation?.user_id === memRelation?.user_id,
+          )?.interview_module_relation?.recruiter_user;
           if (!tempMem) return;
           interviewers[String(session.id)] = [
+            //@ts-ignore fix this
             ...(interviewers[String(session.id)] || []),
             {
               user_id: tempMem.user_id,
@@ -173,9 +177,9 @@ const FeedbackWindow = () => {
               first_name: tempMem.first_name,
               last_name: tempMem.last_name,
               email: tempMem.email,
-              profile_image: tempMem.profile_image,
-              position: tempMem.position,
-              feedback: memRelation.feedback,
+              profile_image: tempMem.profile_image ?? '',
+              position: tempMem.position ?? '',
+              feedback: memRelation.feedback!,
             },
           ];
         });
@@ -314,7 +318,7 @@ const AdminFeedback = ({
     session_id: string;
     relation_id: string;
     tool: 'email' | 'slack';
-    recruiter_user_id;
+    recruiter_user_id: string;
   }) => {
     e.stopPropagation();
 

@@ -19,10 +19,11 @@ export const useCreateInterviewPool = () => {
         title: 'Error',
         description: e.message,
       }),
-    onSuccess: ({ id }) => {
+    onSuccess: (res) => {
+      if (!res) return;
       superPush('/interview-pool/[pool]', {
         params: {
-          pool: id,
+          pool: res.id,
         },
       });
     },

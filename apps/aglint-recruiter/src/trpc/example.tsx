@@ -47,8 +47,9 @@ const useFooBarContext = () => {
   return { foo, handleBar };
 };
 
-const FooBarContext =
-  createContext<ReturnType<typeof useFooBarContext>>(undefined);
+const FooBarContext = createContext<
+  ReturnType<typeof useFooBarContext> | undefined
+>(undefined);
 
 const _FooBarProvider = ({ children }: { children: ReactNode }) => {
   const value = useFooBarContext();
