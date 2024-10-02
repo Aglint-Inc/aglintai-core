@@ -327,20 +327,7 @@ export default function LeverModalComp() {
           </div>
         </AlertDialogDescription>
         <AlertDialogFooter>
-          {integrations?.lever_key ? ( // Check if API key is present
-            <div className='flex flex-row space-x-2'>
-              <Button variant='default' onClick={resetIntegrations}>
-                Cancel
-              </Button>
-              <Button
-                variant='outline'
-                onClick={importLever}
-                disabled={!selectedLeverPostings}
-              >
-                Import
-              </Button>
-            </div>
-          ) : (
+          {!integrations?.lever_key && (
             <div className='mt-4 flex w-full flex-row justify-between'>
               {loading ? null : ( // Hide the link and button if loading
                 <>
