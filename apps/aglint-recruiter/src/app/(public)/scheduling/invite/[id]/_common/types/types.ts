@@ -1,4 +1,4 @@
-import { type useCandidateInvite } from '@/context/CandidateInviteContext';
+import { type useInviteMeta } from '../hooks/useInviteMeta';
 
 export type ScheduleCardProps = {
   round: ScheduleCardsProps['rounds'][number];
@@ -9,6 +9,6 @@ export type ScheduleCardProps = {
 export type ScheduleCardsProps = {
   rounds: {
     title: string;
-    sessions: ReturnType<typeof useCandidateInvite>['meta']['data']['meetings'];
+    sessions: ReturnType<typeof useInviteMeta>['data']['meetings'];
   }[];
 };

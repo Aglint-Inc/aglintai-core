@@ -2,51 +2,43 @@
 /* eslint-disable security/detect-object-injection */
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import { Skeleton } from '@components/ui/skeleton';
-import { Building2, Coffee } from 'lucide-react';
+import { Building2 } from 'lucide-react';
 import Image from 'next/image';
-import React, { useEffect } from 'react';
 
 import { NotFound } from '@/components/Common/404';
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
-import { useCandidateInvite } from '@/context/CandidateInviteContext';
-import { useInviteSlots } from '@/queries/candidate-invite';
-import { getBreakLabel } from '@/utils/getBreakLabel';
-import toast from '@/utils/toast';
 
-import IconScheduleType from '../../../../../../../components/Common/Icons/IconScheduleType';
 import { Loader } from '../../../../../../../components/Common/Loader';
-import { SessionIcon } from '../../../../../../../components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
-import { getScheduleType } from '../../../../../../../utils/scheduling/colors_and_enums';
+import { ConfirmedInvitePage } from '../../../../../../_common/components/CandidateConfirm';
+import { useInviteMeta } from '../hooks/useInviteMeta';
+import {
+  setDetailPopup,
+  setSelectedSlots,
+  setTimeZone,
+  useCandidateInviteStore,
+} from '../store';
 import {
   type ScheduleCardProps,
   type ScheduleCardsProps,
 } from '../types/types';
-import { getDurationText } from '../utils/utils';
-import CandidateInviteCalendar, {
-  type CandidateInviteCalendarProps,
-} from './calender';
-import { ConfirmedInvitePage } from './CandidateConfirm';
-import { CandidateScheduleCard } from './Components/CandidateScheduleCard';
-import { SessionInfo } from './Components/SessionInfo';
+import { DetailsPopup } from './DetailsPopup';
 import MultiDay from './MultiDay';
-import { SingleDayConfirmation } from './SingleDayConfirmation';
+import { SingleDay } from './SingleDay';
 
 const CandidateInviteNew = () => {
-  const load = useCandidateInvite();
+  const { isLoading, isError } = useInviteMeta();
 
   return (
     <div className='h-screen'>
       <div className='w-full py-10'>
-        {load === undefined ? (
+        {isLoading ? (
           <LoadingState />
-        ) : load === null ? (
+        ) : isError ? (
           <ErrorState />
         ) : (
           <>
-            <CandidateInvitePlanPage key={load.timezone.tzCode} />
+            <CandidateInvitePlanPage />
             <DetailsPopup />
           </>
         )}
@@ -90,27 +82,22 @@ const ErrorState = () => (
 );
 
 const CandidateInvitePlanPage = () => {
-  const {
-    setDetailsPop,
-    meta: {
-      data: { candidate, meetings, filter_json, recruiter, application_id },
-    },
-    timezone,
-    setSelectedSlots,
-    setTimezone,
-    handleViewedOn,
-  } = useCandidateInvite();
+  // const { handleViewedOn } = useCandidateInvite();
 
-  useEffect(() => {
-    if (filter_json?.id) {
-      handleViewedOn();
-    }
-  }, [filter_json]);
+  const { timezone } = useCandidateInviteStore();
 
-  const waiting = meetings.some(
+  const { data: meta } = useInviteMeta();
+
+  // useEffect(() => {
+  //   if (filter_json?.id) {
+  //     handleViewedOn();
+  //   }
+  // }, [filter_json]);
+
+  const waiting = (meta?.meetings || []).some(
     ({ interview_meeting: { status } }) => status === 'waiting',
   );
-  const { rounds } = meetings.reduce(
+  const { rounds } = (meta?.meetings || []).reduce(
     (acc, curr) => {
       const count = acc.rounds.length;
       if (
@@ -129,23 +116,23 @@ const CandidateInvitePlanPage = () => {
     { rounds: [] as ScheduleCardProps['round'][] },
   );
 
-  if (meetings.length === 0)
+  if (meta?.meetings.length === 0)
     return (
       <div className='h-screen w-full'>
         <NotFound />
       </div>
     );
 
-  if (!waiting)
+  if (!waiting && meta)
     return (
       <ConfirmedInvitePage
         rounds={rounds}
-        candidate={candidate}
-        filter_json={filter_json}
-        meetings={meetings}
-        recruiter={recruiter}
+        candidate={meta.candidate}
+        filter_json={meta.filter_json}
+        meetings={meta.meetings}
+        recruiter={meta.recruiter}
         timezone={timezone}
-        application_id={application_id}
+        application_id={meta.application_id}
       />
     );
 
@@ -154,7 +141,10 @@ const CandidateInvitePlanPage = () => {
       <Card className='border-neutral-6 w-full max-w-[900px] space-y-4'>
         <CardHeader className='space-y-2 text-center'>
           <div className='flex w-full justify-center'>
-            <Logo companyName={recruiter.name} logo={recruiter.logo} />
+            <Logo
+              companyName={meta.recruiter.name}
+              logo={meta.recruiter.logo ?? ''}
+            />
           </div>
           <CardTitle className='text-2xl font-medium'>
             Select a date and time that works best for you.
@@ -167,7 +157,7 @@ const CandidateInvitePlanPage = () => {
             <UIButton
               variant='ghost'
               onClick={() => {
-                setDetailsPop(true);
+                setDetailPopup(true);
               }}
             >
               View Schedule details
@@ -180,7 +170,7 @@ const CandidateInvitePlanPage = () => {
               <div className='w-[300px]'>
                 <TimezonePicker
                   onChange={(e) => {
-                    setTimezone(e);
+                    setTimeZone(e);
                     setSelectedSlots([]);
                   }}
                   value={timezone.tzCode}
@@ -195,178 +185,9 @@ const CandidateInvitePlanPage = () => {
   );
 };
 
-const DetailsPopup = () => {
-  const {
-    detailsPop,
-    setDetailsPop,
-    meta: {
-      data: { meetings },
-    },
-  } = useCandidateInvite();
-
-  const duration = meetings.reduce((acc, curr) => {
-    acc += curr.interview_session.session_duration;
-    return acc;
-  }, 0);
-
-  // const schedule_name = '';
-
-  return (
-    <UIDialog
-      open={detailsPop}
-      onClose={() => setDetailsPop(false)}
-      title='Schedule Details'
-      slotButtons={<></>}
-    >
-      <CandidateScheduleCard
-        isSelected={false}
-        slotButton={null}
-        textDuration={getDurationText(duration)}
-        slotSessionInfo={<Sessions sessions={meetings} showBreak={true} />}
-        isTitle={false}
-      />
-    </UIDialog>
-  );
-};
-
 const Invite = ({ rounds }: ScheduleCardsProps) => {
   if (rounds.length === 1) return <SingleDay />;
   return <MultiDay rounds={rounds} />;
-};
-
-const SingleDay = () => {
-  const { params } = useCandidateInvite();
-  const { status } = useInviteSlots(params);
-  if (status === 'error') return <SingleDayError />;
-  if (status === 'pending') return <SingleDayLoading />;
-  return <SingleDaySuccess />;
-};
-
-const SingleDayError = () => {
-  const { params } = useCandidateInvite();
-  const { refetch } = useInviteSlots(params);
-  useEffect(() => {
-    toast.error('Something went wrong. Please try again.');
-  }, []);
-  return (
-    <UIButton variant='default' onClick={() => refetch()}>
-      Try again
-    </UIButton>
-  );
-};
-
-const SingleDayLoading = () => {
-  return (
-    <div className='space-y-4'>
-      {[1, 2, 3].map((index) => (
-        <Card key={index}>
-          <CardHeader className='space-y-2'>
-            <Skeleton className='h-4 w-1/4' />
-          </CardHeader>
-          <CardContent className='space-y-2'>
-            <Skeleton className='h-4 w-full' />
-            <Skeleton className='h-4 w-4/5' />
-            <Skeleton className='h-4 w-3/5' />
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  );
-};
-
-const SingleDaySuccess = () => {
-  const { params, selectedSlots, handleSelectSlot, timezone } =
-    useCandidateInvite();
-  const { data } = useInviteSlots(params);
-  const sessions = data.reduce(
-    (acc, curr) => {
-      const { start_time } = curr[0][0].sessions[0];
-      acc.push({
-        date: start_time,
-        slots: curr[0],
-      });
-      return acc;
-    },
-    [] as CandidateInviteCalendarProps['sessions'],
-  );
-  return (
-    <>
-      <CandidateInviteCalendar
-        sessions={sessions}
-        selections={selectedSlots}
-        handleSelect={(id) => handleSelectSlot(0, id)}
-        tz={timezone.tzCode}
-      />
-      <SingleDayConfirmation />
-    </>
-  );
-};
-
-type SessionsProps = Pick<ScheduleCardProps['round'], 'sessions'> & {
-  showBreak: boolean;
-};
-
-const Sessions = (props: SessionsProps) => {
-  const sessions = props.sessions.reduce((acc, curr) => {
-    acc.push(
-      <>
-        <SessionCard
-          key={curr.interview_session.id + curr.interview_session.id}
-          session={curr}
-        />
-      </>,
-    );
-    if (curr.interview_session.break_duration !== 0 && props.showBreak)
-      acc.push(
-        <BreakCard break_duration={curr.interview_session.break_duration} />,
-      );
-    return acc;
-  }, [] as React.JSX.Element[]);
-  return <>{sessions}</>;
-};
-
-type SessionCardProps = {
-  session: SessionsProps['sessions'][number];
-};
-
-const SessionCard = ({ session: { interview_session } }: SessionCardProps) => {
-  const duration = getBreakLabel(interview_session.session_duration);
-  const scheduleType = getScheduleType(interview_session.schedule_type);
-  return (
-    <SessionInfo
-      textSessionName={interview_session.name}
-      textSessionDuration={duration}
-      textMeetingType={scheduleType}
-      slotMeetingTypeIcon={
-        <IconScheduleType type={interview_session.schedule_type} />
-      }
-      slotInterviewtypeIcon={
-        <SessionIcon session_type={interview_session.session_type} />
-      }
-      iconName={
-        interview_session.schedule_type === 'google_meet' ||
-        interview_session.schedule_type === 'zoom'
-          ? 'videocam'
-          : interview_session.schedule_type === 'phone_call'
-            ? 'call'
-            : 'person'
-      }
-    />
-  );
-};
-
-const BreakCard = ({ break_duration }: { break_duration: number }) => {
-  const duration = getBreakLabel(break_duration);
-  return (
-    <SessionInfo
-      textSessionName={'Break'}
-      textSessionDuration={duration}
-      textMeetingType={''}
-      slotMeetingTypeIcon={<></>}
-      slotInterviewtypeIcon={<Coffee size={16} className='text-neutral-100' />}
-      iconName={null}
-    />
-  );
 };
 
 const Logo = ({ companyName, logo }: { companyName: string; logo: string }) => {
