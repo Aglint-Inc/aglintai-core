@@ -2,9 +2,9 @@
 
 import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
 import {
+  PageDescription,
   PageHeader,
-  PageHeaderDescription,
-  PageHeaderTitle,
+  PageTitle,
 } from '@components/layouts/page-header';
 
 import { Actions } from '@/workflows/components/actions';
@@ -23,10 +23,10 @@ const Page = () => {
       <OneColumnPageLayout
         header={
           <PageHeader>
-            <PageHeaderTitle>Automations</PageHeaderTitle>
-            <PageHeaderDescription>
+            <PageTitle>Automations</PageTitle>
+            <PageDescription>
               You can create automations to streamline your workflow.
-            </PageHeaderDescription>
+            </PageDescription>
             <Actions />
           </PageHeader>
         }

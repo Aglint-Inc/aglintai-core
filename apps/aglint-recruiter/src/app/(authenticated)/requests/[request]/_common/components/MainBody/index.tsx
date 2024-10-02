@@ -1,5 +1,5 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
-import { TwoColumnLayout } from '@components/layouts/two-column-layout';
+import { TwoColumnPageLayout } from '@components/layouts/two-column-page-layout';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
@@ -126,7 +126,7 @@ export default function ViewRequestDetails() {
         <SideDrawerEdit refetch={refetchMeetings} />
         <SelfSchedulingDrawer />
 
-        <TwoColumnLayout
+        <TwoColumnPageLayout
           sidebarWidth={'35rem'}
           header={
             <div className='flex flex-col gap-6'>
@@ -543,7 +543,7 @@ export default function ViewRequestDetails() {
               applicationId={selectedRequest?.application_id ?? ''}
             />
           </div>
-        </TwoColumnLayout>
+        </TwoColumnPageLayout>
       </div>
     );
 }

@@ -2,9 +2,9 @@
 
 import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
 import {
+  PageDescription,
   PageHeader,
-  PageHeaderDescription,
-  PageHeaderTitle,
+  PageTitle,
 } from '@components/layouts/page-header';
 import CompletedRequests from '@requestHistory/components/CompletedRequests';
 import React from 'react';
@@ -14,10 +14,8 @@ function RequestHistoryPage() {
     <OneColumnPageLayout
       header={
         <PageHeader>
-          <PageHeaderTitle>Request History</PageHeaderTitle>
-          <PageHeaderDescription>
-            View your completed requests.
-          </PageHeaderDescription>
+          <PageTitle>Request History</PageTitle>
+          <PageDescription>View your completed requests.</PageDescription>
         </PageHeader>
       }
     >
