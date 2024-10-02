@@ -43,9 +43,7 @@ export const useSelfSchedulingDrawer = () => {
 
   const { recruiter, recruiter_user } = useTenant();
   const request_id = requestId || '';
-  const { data } = useMeetingList({
-    request_id: request_id,
-  });
+  const { data } = useMeetingList();
   const allSessions = (data || []) as Awaited<
     ReturnType<typeof fetchSessionDetails>
   >;

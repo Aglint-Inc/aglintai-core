@@ -12,7 +12,7 @@ import { mailSender } from '@/utils/mailSender';
 
 import { useCandidateAvailabilitySchedulingFlowStore } from '../contexts/CandidateAvailabilityFlowStore';
 
-function EmailTemplate({ application_id }: { application_id?: string }) {
+function EmailTemplate({ application_id }: { application_id: string }) {
   const { recruiter_user } = useTenant();
   const { reRequestAvailability, candidateAvailabilityIdForReRequest } =
     useCandidateAvailabilitySchedulingFlowStore();
@@ -28,7 +28,7 @@ function EmailTemplate({ application_id }: { application_id?: string }) {
       preview_details: {
         application_id: application_id,
       },
-      organizer_user_id: recruiter_user?.user_id ?? '',
+      organizer_user_id: recruiter_user.user_id,
       is_preview: true,
     };
 

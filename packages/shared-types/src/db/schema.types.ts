@@ -3179,50 +3179,50 @@ export type Database = {
       }
       request: {
         Row: {
-          application_id: string | null
-          assignee_id: string | null
-          assigner_id: string | null
+          application_id: string
+          assignee_id: string
+          assigner_id: string
           completed_at: string | null
           created_at: string
           id: string
           is_new: boolean
           priority: string
-          schedule_end_date: string | null
-          schedule_start_date: string | null
+          schedule_end_date: string
+          schedule_start_date: string
           status: string
-          title: string | null
+          title: string
           type: string
           updated_at: string
         }
         Insert: {
-          application_id?: string | null
-          assignee_id?: string | null
-          assigner_id?: string | null
+          application_id?: string
+          assignee_id?: string
+          assigner_id?: string
           completed_at?: string | null
           created_at?: string
           id?: string
           is_new?: boolean
           priority?: string
-          schedule_end_date?: string | null
-          schedule_start_date?: string | null
+          schedule_end_date: string
+          schedule_start_date: string
           status?: string
-          title?: string | null
+          title: string
           type: string
           updated_at?: string
         }
         Update: {
-          application_id?: string | null
-          assignee_id?: string | null
-          assigner_id?: string | null
+          application_id?: string
+          assignee_id?: string
+          assigner_id?: string
           completed_at?: string | null
           created_at?: string
           id?: string
           is_new?: boolean
           priority?: string
-          schedule_end_date?: string | null
-          schedule_start_date?: string | null
+          schedule_end_date?: string
+          schedule_start_date?: string
           status?: string
-          title?: string | null
+          title?: string
           type?: string
           updated_at?: string
         }

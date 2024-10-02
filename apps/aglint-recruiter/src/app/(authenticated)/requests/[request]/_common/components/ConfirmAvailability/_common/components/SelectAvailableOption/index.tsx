@@ -1,7 +1,4 @@
-import {
-  type CandReqSlotsType,
-  type PlanCombinationRespType,
-} from '@aglint/shared-types';
+import { type CandReqSlotsType } from '@aglint/shared-types';
 import { cn } from '@lib/utils';
 import { Check } from 'lucide-react';
 
@@ -79,28 +76,26 @@ function RequestAvailabilityBody({
     <div className='flex w-[500px] flex-col gap-2 p-4'>
       <div className='mb-2 flex w-full'>
         {availableSlots &&
-          [...availableSlots, [{}]]?.map(
-            (_ele: PlanCombinationRespType[][], i) => {
-              const firstIndex = 0;
-              const lastIndex = [...availableSlots, {}].length - 1;
+          availableSlots.map((_, i) => {
+            const firstIndex = 0;
+            const lastIndex = [...availableSlots, {}].length - 1;
 
-              return (
-                <Stepper
-                  key={i}
-                  isLeftLine={i !== firstIndex}
-                  isRightLine={i !== lastIndex}
-                  textStepName={i === lastIndex ? 'Final' : `Day ${i + 1}`}
-                  isCurrent={selectedIndex === i}
-                  isCompleted={i < selectedIndex}
-                  onClickCompleted={() => {
-                    if (i < lastIndex) {
-                      setSelectedIndex(i);
-                    }
-                  }}
-                />
-              );
-            },
-          )}
+            return (
+              <Stepper
+                key={i}
+                isLeftLine={i !== firstIndex}
+                isRightLine={i !== lastIndex}
+                textStepName={i === lastIndex ? 'Final' : `Day ${i + 1}`}
+                isCurrent={selectedIndex === i}
+                isCompleted={i < selectedIndex}
+                onClickCompleted={() => {
+                  if (i < lastIndex) {
+                    setSelectedIndex(i);
+                  }
+                }}
+              />
+            );
+          })}
       </div>
       <UIDivider />
       <div className='h-[calc(100vh - 123px)] flex flex-col gap-2 overflow-auto'>

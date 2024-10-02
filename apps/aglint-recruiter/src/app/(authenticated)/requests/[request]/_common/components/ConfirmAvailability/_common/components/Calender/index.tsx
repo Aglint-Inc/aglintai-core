@@ -1,3 +1,4 @@
+import { type CandReqSlotsType } from '@aglint/shared-types';
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { useRequestAvailabilityDetails } from '@requests/hooks';
 import { type ApiResponseFindAvailability } from '@requests/types';
@@ -19,7 +20,7 @@ function Calendar() {
     useConfirmAvailabilitySchedulingFlowStore();
   const { selectedDateSlots, selectedDayAvailableBlocks } =
     useAvailabilityContext();
-  const { data: availableSlots, isLoading } = useRequestAvailabilityDetails(
+  const { data: availableSlots, isFetched } = useRequestAvailabilityDetails(
     {
       availability_id: candidateAvailabilityId,
     },
@@ -29,10 +30,15 @@ function Calendar() {
   );
 
   const availabilities =
-    availableSlots?.availabilities as ApiResponseFindAvailability['availabilities'];
-
+    isFetched &&
+    availableSlots &&
+    (availableSlots.availabilities as ApiResponseFindAvailability['availabilities']);
+  const slots =
+    isFetched &&
+    availableSlots &&
+    (availableSlots?.slots as CandReqSlotsType[]);
   useEffect(() => {
-    if (selectedDayAvailableBlocks && selectedDayAvailableBlocks[0]?.curr_date)
+    if (selectedDayAvailableBlocks && selectedDayAvailableBlocks[0].curr_date)
       setCalendarDate(selectedDayAvailableBlocks[0].curr_date);
   }, [selectedDayAvailableBlocks]);
 
@@ -48,11 +54,13 @@ function Calendar() {
 
   const memoizedSelectedEvents = useMemo(() => {
     const selectedSessions =
-      availableSlots?.slots
-        .flatMap((item) => item.selected_dates)
-        .flatMap((item) => item.plans)
-        .filter((plan) => selectedIds.includes(plan.plan_comb_id))
-        .flatMap((plan) => plan.sessions) || [];
+      (slots &&
+        slots
+          .flatMap((item) => item.selected_dates)
+          .flatMap((item) => item.plans)
+          .filter((plan) => selectedIds.includes(plan.plan_comb_id))
+          .flatMap((plan) => plan.sessions)) ||
+      [];
 
     const convertSelectedSessionsToEvents: EventCalendar[] = selectedSessions
       .map((session) => {
@@ -105,16 +113,16 @@ function Calendar() {
 
   return (
     <>
-      {availableSlots?.availabilities &&
+      {availabilities &&
         selectedDayAvailableBlocks &&
-        selectedDayAvailableBlocks[0]?.curr_date && (
+        selectedDayAvailableBlocks[0].curr_date && (
           <CalendarResourceView
             events={[...events, ...memoizedSelectedEvents]}
             resources={resources}
             dateRange={dateRange}
             currentDate={calendarDate}
             setCurrentDate={setCalendarDate}
-            isLoading={isLoading}
+            isLoading={!isFetched}
           />
         )}
     </>
