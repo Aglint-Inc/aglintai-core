@@ -31,6 +31,12 @@ import { WorkflowConnectedCard } from '../WorkflowConnectedCard';
 import Actions from './action';
 import { ActionsProvider } from './context';
 import Trigger from './trigger';
+import {
+  SectionHeader,
+  SectionTitle,
+  Section,
+} from '@components/layouts/sections-header';
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 
 const Body = () => {
   const { workflow } = useWorkflow();
@@ -58,21 +64,32 @@ export const ConnectedJobs = () => {
   const count = workflow?.jobs?.length ?? 0;
   if (count === 0)
     return (
-      <div className='flex flex-col items-center justify-center p-6 text-center'>
-        <BriefcaseBusiness size={30} className='mb-4 text-gray-400' />
-        <UITypography variant='p' type='small'>
-          No jobs connected
-        </UITypography>
-      </div>
+      <Section>
+        <SectionHeader>
+          <SectionTitle>Connected Jobs</SectionTitle>
+        </SectionHeader>
+        <GlobalEmpty
+          header='No jobs connected'
+          description='You can connect jobs to this workflow to automate your workflow.'
+          icon={<BriefcaseBusiness strokeWidth={2} className='h-6 w-6' />}
+        />
+      </Section>
     );
-  return (workflow?.jobs ?? []).map((job) => (
-    <WorkflowJob
-      key={job.id}
-      {...(job as Workflow['jobs'][number])}
-      devlinkProps={devlink}
-      workflow_id={workflow?.id}
-    />
-  ));
+  return (
+    <Section>
+      <SectionHeader>
+        <SectionTitle>Connected Jobs</SectionTitle>
+      </SectionHeader>
+      {(workflow?.jobs ?? []).map((job) => (
+        <WorkflowJob
+          key={job.id}
+          {...(job as Workflow['jobs'][number])}
+          devlinkProps={devlink}
+          workflow_id={workflow?.id}
+        />
+      ))}
+    </Section>
+  );
 };
 
 const WorkflowJob = ({

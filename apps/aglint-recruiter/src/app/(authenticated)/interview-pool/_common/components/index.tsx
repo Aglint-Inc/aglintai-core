@@ -101,45 +101,39 @@ export default function InterviewTypesPage() {
     : archiveFiltered;
 
   return (
-    <div className='p-4'>
-      <div>
-        <Card className='w-full'>
-          <CardContent className='p-0'>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Department</TableHead>
-                  <TableHead>Monthly Schedules</TableHead>
-                  <TableHead>Avg. Duration</TableHead>
-                  <TableHead>Open Positions</TableHead>
-                  <TableHead></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredInterviewModules?.length > 0 ? (
-                  filteredInterviewModules.map((type, i) => (
-                    <InterviewPoolList interviewType={type} key={i} />
-                  ))
-                ) : (
-                  <></>
-                )}
-              </TableBody>
-            </Table>
-            {filteredInterviewModules?.length === 0 ? (
-              <div className='flex w-full items-center justify-center'>
-                <GlobalEmpty
-                  icon={<LibraryBig strokeWidth={1} className='h-10 w-10' />}
-                  header={'No Interview pools found'}
-                  description='Create a new interview pool to get started.'
-                />
-              </div>
-            ) : (
-              <></>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+    <>
+      <Table>
+        <TableHeader className='bg-gray-100'>
+          <TableRow>
+            <TableHead>Name</TableHead>
+            <TableHead>Department</TableHead>
+            <TableHead>Monthly Schedules</TableHead>
+            <TableHead>Avg. Duration</TableHead>
+            <TableHead>Open Positions</TableHead>
+            <TableHead></TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {filteredInterviewModules?.length > 0 ? (
+            filteredInterviewModules.map((type, i) => (
+              <InterviewPoolList interviewType={type} key={i} />
+            ))
+          ) : (
+            <></>
+          )}
+        </TableBody>
+      </Table>
+      {filteredInterviewModules?.length === 0 ? (
+        <div className='flex w-full items-center justify-center'>
+          <GlobalEmpty
+            icon={<LibraryBig strokeWidth={1} className='h-10 w-10' />}
+            header={'No Interview pools found'}
+            description='Create a new interview pool to get started.'
+          />
+        </div>
+      ) : (
+        <></>
+      )}
+    </>
   );
 }
