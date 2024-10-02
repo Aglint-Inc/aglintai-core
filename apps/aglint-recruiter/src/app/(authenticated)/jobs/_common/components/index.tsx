@@ -151,6 +151,7 @@ export const Filter = () => {
   const {
     jobs: { data },
   } = useJobs();
+
   const {
     filterOptions,
     filterValues,
@@ -161,6 +162,7 @@ export const Filter = () => {
     searchText,
     setSearchText,
   } = useJobFilterAndSort(data ?? []);
+
   return (
     <FilterJobDashboard
       filterOptions={filterOptions}
