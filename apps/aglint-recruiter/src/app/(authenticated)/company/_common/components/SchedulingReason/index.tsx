@@ -36,10 +36,10 @@ const SchedulingReasons = () => {
     useState<keyof DatabaseTable['recruiter']['scheduling_reason']>(
       'candidate',
     );
-  const reason: DatabaseTable['recruiter']['scheduling_reason'] = {
+  const reason = {
     ...initialReasons,
     ...(recruiter.scheduling_reason || {}),
-  };
+  } as DatabaseTable['recruiter']['scheduling_reason'];
 
   const { mutate } = api.tenant.updateTenant.useMutation({
     onError: () => {
@@ -57,7 +57,10 @@ const SchedulingReasons = () => {
     const temp = {
       ...reason,
     };
-    temp[tabKey] = { ...(temp[tabKey] || {}), ...updatedReason };
+    temp[tabKey] = {
+      ...(temp[tabKey] || {}),
+      ...updatedReason,
+    } as (typeof temp)[T];
     mutate({
       scheduling_reason: temp,
     });
