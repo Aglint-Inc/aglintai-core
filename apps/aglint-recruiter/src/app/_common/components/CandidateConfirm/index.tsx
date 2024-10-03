@@ -37,8 +37,10 @@ export const ConfirmedInvitePage = (
   props: ScheduleCardsProps &
     Pick<
       Awaited<ReturnType<typeof useInviteMeta>>['data'],
-      'candidate' | 'meetings' | 'filter_json' | 'recruiter' | 'application_id'
+      'meetings' | 'recruiter' | 'application_id'
     > & {
+      filter_json?: DatabaseTable['interview_filter_json'];
+      candidate: DatabaseTable['candidates'];
       timezone: CandidateInviteType['timezone'];
       avail_request_id?: string;
     },

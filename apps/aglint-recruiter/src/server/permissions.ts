@@ -47,5 +47,13 @@ export const API_PERMISSIONS: ApiPermissions = {
     update_admin_user: ['manage_users'],
   },
   rolesAndPermissions: [],
-  candidate_availability: ['request_candidate_availability'],
+  candidate_availability: {
+    availableSlots: ['request_candidate_availability'],
+    create: ['request_candidate_availability'],
+    readCandidateAvailability: ['request_candidate_availability'],
+    update: ['public'],
+    getMeetings: ['public'],
+    getCandidateAvailabilityData: ['public'],
+    getScheduledMeetings: ['public'],
+  },
 };
