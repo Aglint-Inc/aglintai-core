@@ -75,7 +75,7 @@ export default function CandidateDropoutFunnelReport() {
           </div>
         </div>
         <Table>
-          <TableHeader>
+          <TableHeader className='bg-gray-100'>
             <TableRow>
               <TableHead>Name of Candidate</TableHead>
               <TableHead>Stage Dropped Out</TableHead>

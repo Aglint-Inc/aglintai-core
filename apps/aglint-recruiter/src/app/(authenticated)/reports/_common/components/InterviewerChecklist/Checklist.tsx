@@ -37,7 +37,7 @@ export default function Checklist() {
         <div className='w-max min-w-full'>
           <Table>
             <ScrollArea className='h-[calc(100vh-17rem)]'>
-              <TableHeader>
+              <TableHeader className='bg-gray-100'>
                 <TableRow>
                   <TableHead className='w-[150px]'>Coordinator</TableHead>
                   <TableHead className='w-[150px]'>Candidate Name</TableHead>

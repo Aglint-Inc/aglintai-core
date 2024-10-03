@@ -252,7 +252,7 @@ export default function ReadOnlyCoordinatorChecklist() {
         <div className='w-max min-w-full'>
           <Table>
             <ScrollArea className='h-[calc(100vh-10rem)]'>
-              <TableHeader>
+              <TableHeader className='bg-gray-100'>
                 <TableRow>
                   {visibleColumns.includes('coordinator') && (
                     <TableHead className='w-[150px]'>Coordinator</TableHead>

@@ -57,8 +57,8 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
 
   return (
     <Table>
-      <TableHeader>
-        <TableRow className='border-b border-gray-200'>
+      <TableHeader className='bg-gray-100'>
+        <TableRow>
           <TableHead className='py-3 font-semibold text-gray-600'>
             Job Title
           </TableHead>
