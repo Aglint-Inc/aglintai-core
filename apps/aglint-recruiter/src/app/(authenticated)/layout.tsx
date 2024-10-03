@@ -5,7 +5,7 @@ import { type PropsWithChildren } from 'react';
 
 import { OnboardPending } from '@/components/Navigation/OnboardPending';
 import SideNavbar from '@/components/Navigation/SideNavbar';
-import { api } from '@/trpc/server';
+import { api, HydrateClient } from '@/trpc/server';
 
 import { Provider } from './providers';
 
@@ -19,12 +19,14 @@ const Layout = async ({ children }: PropsWithChildren) => {
   void api.tenant.flags.prefetch();
 
   return (
-    <Provider>
-      <AppLayout topbar={<TopBar />} sidebar={<SideNavbar />}>
-        {children}
-        <OnboardPending />
-      </AppLayout>
-    </Provider>
+    <HydrateClient>
+      <Provider>
+        <AppLayout topbar={<TopBar />} sidebar={<SideNavbar />}>
+          {children}
+          <OnboardPending />
+        </AppLayout>
+      </Provider>
+    </HydrateClient>
   );
 };
 

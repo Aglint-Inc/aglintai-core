@@ -1,11 +1,7 @@
 'use client';
 import { type QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import {
-  httpLink,
-  splitLink,
-  unstable_httpBatchStreamLink,
-} from '@trpc/client';
+import { httpLink } from '@trpc/client';
 import { loggerLink } from '@trpc/client/links/loggerLink';
 import { createTRPCReact } from '@trpc/react-query';
 import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server';
@@ -85,23 +81,10 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
             process.env.NODE_ENV === 'development' ||
             (opts.direction === 'down' && opts.result instanceof Error),
         }),
-        splitLink({
-          condition: (op) => op.context.disableBatch === true,
-          true: httpLink({
-            url: `${url}/api/trpc`,
-            transformer: superjson as any,
-            methodOverride: 'POST',
-          }),
-          false: unstable_httpBatchStreamLink({
-            transformer: superjson as any,
-            url: `${url}/api/trpc`,
-            methodOverride: 'POST',
-            headers: () => {
-              const headers = new Headers();
-              headers.set('x-trpc-source', 'nextjs-react');
-              return headers;
-            },
-          }),
+        httpLink({
+          url: `${url}/api/trpc`,
+          transformer: superjson as any,
+          methodOverride: 'POST',
         }),
       ],
     }),
@@ -124,11 +107,5 @@ function getBaseUrl() {
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
   return `http://localhost:${process.env.PORT ?? 3000}`;
 }
-
-export const TRPC_CLIENT_CONTEXT = {
-  context: {
-    disableBatch: true,
-  },
-} as const;
 
 export const api = createTRPCReact<AppRouter>();
