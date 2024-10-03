@@ -40,7 +40,7 @@ export const OnboardPending = () => {
 
   return (
     <>
-      {!isCompanySetupPending || isOnboardCompleteRemote ? (
+      {isOnboardCompleteRemote ? (
         <> </>
       ) : (
         companySetupSteps?.length &&

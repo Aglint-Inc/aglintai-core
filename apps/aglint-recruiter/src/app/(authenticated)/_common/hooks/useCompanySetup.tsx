@@ -183,16 +183,19 @@ export function useCompanySetup() {
     100;
 
   //complelet functions ------------------------
-  function currentStepMarkAsComplete(id: string) {
-    setSteps((pre) =>
-      pre.map((step) => {
-        if (step.id === id) return { ...step, isCompleted: true };
-        else return step;
-      }),
-    );
+  async function currentStepMarkAsComplete(id: string) {
+    if (steps.filter((step) => !step.isCompleted).length === 1) {
+      await MarkAallAsComplete();
+    } else
+      setSteps((pre) =>
+        pre.map((step) =>
+          step.id === id ? { ...step, isCompleted: true } : step,
+        ),
+      );
   }
 
   async function MarkAallAsComplete() {
+    await mutateAsync({ onboard_complete: true });
     setSteps((pre) => {
       return pre.map((step) => {
         return { ...step, isCompleted: true };
@@ -201,7 +204,6 @@ export function useCompanySetup() {
   }
 
   async function finishHandler() {
-    await mutateAsync({ onboard_complete: true });
     setIsOnboardOpen(false);
   }
 
