@@ -1,7 +1,7 @@
 import { TwoColumnPageLayout } from '@components/layouts/two-column-page-layout';
 import { unstable_noStore } from 'next/cache';
 
-import { api } from '@/trpc/server';
+import { api, HydrateClient } from '@/trpc/server';
 
 import { Activity } from './_common/components/Activity';
 import BreadCrumb from './_common/components/BreadCrumb';
@@ -24,32 +24,34 @@ const Layout = ({
   void api.application.application_meta.prefetch({
     application_id: params.application,
   });
-
   void api.application.application_activity.prefetch({
     application_id: params.application,
   });
   void api.application.application_request.prefetch({
     application_id: params.application,
   });
+  void api.interview_pool.get_all.prefetch();
   return (
-    <TwoColumnPageLayout
-      header={
-        <>
-          <BreadCrumb />
-          <CandidateInfo />
-        </>
-      }
-      sidebarPosition='right'
-      sidebar={
-        <>
-          <Requests />
-          <Activity />
-        </>
-      }
-      sidebarWidth={420}
-    >
-      {children}
-    </TwoColumnPageLayout>
+    <HydrateClient>
+      <TwoColumnPageLayout
+        header={
+          <>
+            <BreadCrumb />
+            <CandidateInfo />
+          </>
+        }
+        sidebarPosition='right'
+        sidebar={
+          <>
+            <Requests />
+            <Activity />
+          </>
+        }
+        sidebarWidth={420}
+      >
+        {children}
+      </TwoColumnPageLayout>
+    </HydrateClient>
   );
 };
 

@@ -70,7 +70,6 @@ export const API_PATHS = [
   '/api/scheduling/fetchUserDetails',
   '/api/scheduling/fetch_activities',
   '/api/scheduling/get-accesstoken',
-  '/api/scheduling/get_interview_modules',
   '/api/scheduling/get_interview_plans',
   '/api/scheduling/google-consent',
   '/api/scheduling/mail-agent/email-webhook',
