@@ -48,4 +48,6 @@ export const API_PERMISSIONS: ApiPermissions = {
   },
   rolesAndPermissions: [],
   candidate_availability: ['request_candidate_availability'],
+  utility: [],
+  email: [],
 };
