@@ -62,8 +62,6 @@ export const PATHS = [
   '/api/scheduling/application/schedulewithagent',
   '/api/scheduling/application/schedulewithagentwithouttaskid',
   '/api/scheduling/application/sendselfschedule',
-  '/api/scheduling/auth/outlook-req-tokens',
-  '/api/scheduling/auth/outlook',
   '/api/scheduling/calendar_check_recruiter',
   '/api/scheduling/debrief/auto-debrief.md',
   '/api/scheduling/debrief/schedule_individual',

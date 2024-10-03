@@ -1,16 +1,14 @@
 import type { z } from 'zod';
 import type { PlanCombinationRespType } from '@aglint/shared-types';
 import { TargetApiSchema } from '@aglint/shared-types';
-import {
-  DAYJS_FORMATS,
-  dayjsLocal,
-  getBreakLabel,
-  getFullName,
-} from '@aglint/shared-utils';
+import { getFullName } from '@aglint/shared-utils';
 import { createPostRoute } from '../../../../utils/apiUtils/createPostRoute';
 import { getSlackWeb } from '../../../../slack/slackWeb';
 import { getSupabaseServer } from '../../../../supabase/supabaseAdmin';
-import { getUserIdByEmail } from '../../../../utils/slack/utils';
+import {
+  getPlanDetailsBlock,
+  getUserIdByEmail,
+} from '../../../../utils/slack/utils';
 import { getSlotsCache } from '../../../../../redis-kv/redisKv';
 import type { SlackMetaSlotSuggestionType } from '../../../../types/slack.types';
 import { googleCalenderLogo } from '../../../../utils/slack/assests';
@@ -37,60 +35,15 @@ const func = async ({
   const cand_slots: PlanCombinationRespType[] = plans;
   const request_link = `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/requests/${request_details.id}`;
 
-  const slack_slot_suggestion = cand_slots.slice(0, 5).map((plan) => {
-    let plan_text = '';
-    plan.sessions.forEach((session) => {
-      const start_time = dayjsLocal(session.start_time)
-        .tz(organizer.scheduling_settings.timeZone.tzCode)
-        .format(DAYJS_FORMATS.STAR_TIME_FORMAT);
-      const end_time = dayjsLocal(session.end_time)
-        .tz(organizer.scheduling_settings.timeZone.tzCode)
-        .format(DAYJS_FORMATS.END_TIME_FORMAT);
-      const session_time = `${start_time} - ${end_time}`;
-      const qualified_ints = session.qualifiedIntervs.map((int) =>
-        getFullName(int.first_name, int.last_name),
-      );
-      const trainee_ints = session.trainingIntervs.map((int) =>
-        getFullName(int.first_name, int.last_name),
-      );
-      plan_text += `*${session.session_name} - ${session_time} *\n\n *Interviewer${qualified_ints.length > 1 ? 's' : ''}* : ${qualified_ints.join('.')}`;
-      if (trainee_ints.length > 0) {
-        plan_text += `\n\n *Trainee interviewer${trainee_ints.length > 1 ? 's' : ''}* : ${trainee_ints.join('.')}`;
-      }
-      if (session.break_duration !== 0) {
-        plan_text += `\n\n *Break* : ${getBreakLabel(session.break_duration)} minutes`;
-      }
-      plan_text += '\n\n';
-    });
-    const plan_section = {
-      type: 'section',
-      text: {
-        type: 'mrkdwn',
-        text: plan_text,
-      },
-      accessory: {
-        type: 'button',
-        text: {
-          type: 'plain_text',
-          emoji: true,
-          text: 'Choose',
-        },
-        value: plan.plan_comb_id,
-      },
-    };
-    return {
-      plan_section,
-      divider: {
-        type: 'divider',
-      },
-    };
-  });
+  const slack_slot_suggestion = cand_slots
+    .slice(0, 5)
+    .map((plan) =>
+      getPlanDetailsBlock(plan, cand_request_details.user_timezone),
+    );
 
   const meta_data: SlackMetaSlotSuggestionType = {
     request_id: request_details.id,
-    candidate_tz:
-      cand_request_details.user_timezone ??
-      organizer.scheduling_settings.timeZone.tzCode,
+    candidate_tz: cand_request_details.user_timezone,
     availability_req_id: cand_request_details.id,
   };
 
