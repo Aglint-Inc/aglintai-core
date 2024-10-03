@@ -1,4 +1,4 @@
-import { supabaseWrap } from '@aglint/shared-utils';
+import { CApiError, supabaseWrap } from '@aglint/shared-utils';
 import axios from 'axios';
 
 import { getSupabaseServer } from '../supabase/supabaseAdmin';
@@ -52,6 +52,9 @@ export class ZoomMeet {
     this.user_auth = data;
   }
   public async createMeeting(meet_info: ZoomCreateMeetingParams) {
+    if (!this.user_auth) {
+      throw new CApiError('SERVER_ERROR', 'Zoom not authorized');
+    }
     if (!this.user_auth.access_token) {
       throw new Error('zoom not authorized');
     }
