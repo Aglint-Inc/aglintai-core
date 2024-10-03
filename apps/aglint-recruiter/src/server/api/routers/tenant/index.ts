@@ -5,15 +5,15 @@ import { members } from './members';
 import { officeLocations } from './officeLocations';
 import { read } from './read';
 import { roles } from './roles';
-import { updateCandidatePortal } from './updateCandidatePortal';
 import { updateTenant } from './updateTenant';
+import { updateTenantPreference } from './updateTenantPreference';
 
 export const tenant = createTRPCRouter({
   read,
   roles,
   departmentsUsage,
   updateTenant,
-  updateCandidatePortal,
+  updateTenantPreference,
   officeLocations,
   members,
   flags,

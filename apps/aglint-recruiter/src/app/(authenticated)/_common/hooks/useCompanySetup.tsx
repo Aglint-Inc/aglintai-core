@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useIntegrations } from '@/authenticated/hooks';
 import { useTenant, useTenantMembers } from '@/company/hooks';
 import { useFlags } from '@/company/hooks/useFlags';
+import { api } from '@/trpc/client';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
@@ -59,8 +60,12 @@ export function useCompanySetup() {
   const [steps, setSteps] = useState<SetupStepType[]>([]);
   const [selectedStep, setSelectedStep] = useState<SetupStepType>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(null);
+  const [isOnboardCompleteRemote, setIsOnboardCompleteRemote] = useState(true);
+
+  const { mutateAsync } = api.tenant.updateTenantPreference.useMutation();
   //Hooks ---
   const { recruiter } = useTenant();
+
   const { data: integrations, isLoading: integrationLoading } =
     useIntegrations();
   const {
@@ -74,6 +79,14 @@ export function useCompanySetup() {
   const { isShowFeature } = useFlags();
 
   useEffect(() => {
+    if (recruiter.recruiter_preferences) {
+      setIsOnboardCompleteRemote(
+        recruiter.recruiter_preferences.onboard_complete,
+      );
+    }
+  }, [recruiter]);
+
+  useEffect(() => {
     const firstIncompleteStep = steps.find((step) => !step.isCompleted);
     const firstIncompleteStepIndex = steps.findIndex(
       (step) => !step.isCompleted,
@@ -83,12 +96,14 @@ export function useCompanySetup() {
     );
 
     if (firstIncompleteStepIndex) {
-      setSelectedIndex(firstIncompleteStepIndex?firstIncompleteStepIndex:selectedIndex);
+      setSelectedIndex(
+        firstIncompleteStepIndex ? firstIncompleteStepIndex : selectedIndex,
+      );
     }
-    if (isCompanySetupPending) {
+    if (isCompanySetupPending && !isOnboardCompleteRemote) {
       setIsOnboardOpen(true);
     }
-  }, [steps]);
+  }, [steps, recruiter]);
 
   //loading ---
   const isLoading =
@@ -177,12 +192,17 @@ export function useCompanySetup() {
     );
   }
 
-  function MarkAallAsComplete() {
+  async function MarkAallAsComplete() {
     setSteps((pre) => {
       return pre.map((step) => {
         return { ...step, isCompleted: true };
       });
     });
+  }
+
+  async function finishHandler() {
+    await mutateAsync({ onboard_complete: true });
+    setIsOnboardOpen(false);
   }
 
   useEffect(() => {
@@ -319,6 +339,8 @@ export function useCompanySetup() {
     setSelectedIndex,
     selectedStep,
     setSelectedStep,
+    isOnboardCompleteRemote,
+    finishHandler,
   };
 }
 

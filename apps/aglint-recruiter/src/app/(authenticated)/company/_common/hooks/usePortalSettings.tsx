@@ -15,7 +15,7 @@ export const usePortalSettings = () => {
     recruiter: { name },
   } = useTenant();
   const { banner_image, company_images } = useFlags();
-  const { mutateAsync } = api.tenant.updateCandidatePortal.useMutation();
+  const { mutateAsync } = api.tenant.updateTenantPreference.useMutation();
   const [loading, setLoading] = useState<{
     isCoverUploading: boolean;
     isCoverRemoving: boolean;

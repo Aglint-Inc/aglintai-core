@@ -25,7 +25,8 @@ import { useOnboarding } from './context/onboarding';
 import { SetupCard } from './SetupCard';
 
 export const OnboardPending = () => {
-  const { isCompanySetupPending, companySetupSteps } = useOnboarding();
+  const { isCompanySetupPending, companySetupSteps, isOnboardCompleteRemote } =
+    useOnboarding();
 
   const { isOpen } = useOnboard();
 
@@ -39,13 +40,19 @@ export const OnboardPending = () => {
 
   return (
     <>
-      {companySetupSteps?.length && isCompanySetupPending && !isOpen && (
-        <UIButton
-          onClick={toggleOpen}
-          className='fixed bottom-6 right-6 z-50 rounded-full shadow-lg'
-        >
-          Open Onboarding {pendingStepsCount}
-        </UIButton>
+      {!isCompanySetupPending || isOnboardCompleteRemote ? (
+        <> </>
+      ) : (
+        companySetupSteps?.length &&
+        isCompanySetupPending &&
+        !isOpen && (
+          <UIButton
+            onClick={toggleOpen}
+            className='fixed bottom-6 right-6 z-50 rounded-full shadow-lg'
+          >
+            Open Onboarding {pendingStepsCount}
+          </UIButton>
+        )
       )}
       <Dialog open={isOpen} onOpenChange={() => toggleOpen()}>
         <DialogContent className='mb-0 min-w-[900px] max-w-[900px] p-0'>
@@ -135,6 +142,7 @@ const MainContent = () => {
 const Footer = () => {
   const {
     currentStepMarkAsComplete,
+    finishHandler,
     MarkAallAsComplete,
     isCompanySetupPending,
     selectedStep,
@@ -181,7 +189,7 @@ const Footer = () => {
             Mark all complete
           </UIButton>
         )}
-        {!selectedStep.isCompleted && isCompanySetupPending && (
+        {!selectedStep?.isCompleted && isCompanySetupPending && (
           <UIButton
             size='sm'
             variant='outline'
@@ -192,7 +200,11 @@ const Footer = () => {
             Mark complete
           </UIButton>
         )}
-        {!isCompanySetupPending && <UIButton size='sm'>Finish</UIButton>}
+        {!isCompanySetupPending && (
+          <UIButton size='sm' onClick={finishHandler}>
+            Finish
+          </UIButton>
+        )}
         {isCompanySetupPending && (
           <UIButton
             size='sm'
