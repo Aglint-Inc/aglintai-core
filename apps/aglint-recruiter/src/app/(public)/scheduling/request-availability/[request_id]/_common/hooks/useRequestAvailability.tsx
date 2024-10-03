@@ -1,12 +1,7 @@
 import { toast } from '@components/hooks/use-toast';
 import { useParams } from 'next/navigation';
 
-import {
-  api,
-  type RouterInputs,
-  TRPC_CLIENT_CONTEXT,
-  type Unvoid,
-} from '@/trpc/client';
+import { api, type RouterInputs, type Unvoid } from '@/trpc/client';
 
 export const useCandidateAvailabilityMeetings = () => {
   const { data: candidateRequestAvailability } = useCandidateAvailabilityData();
@@ -18,14 +13,9 @@ export const useCandidateAvailabilityMeetings = () => {
       : [];
   const sessions_ids = interview_sessions.map((ele) => ele?.id ?? '');
 
-  return api.candidate_availability.getMeetings.useQuery(
-    {
-      sessions_ids: sessions_ids,
-    },
-    {
-      trpc: TRPC_CLIENT_CONTEXT,
-    },
-  );
+  return api.candidate_availability.getMeetings.useQuery({
+    sessions_ids: sessions_ids,
+  });
 };
 export const useCandidateAvailabilityScheduleDMeetings = () => {
   return api.candidate_availability.getScheduledMeetings.useQuery(
@@ -33,7 +23,6 @@ export const useCandidateAvailabilityScheduleDMeetings = () => {
       application_id: '',
     },
     {
-      trpc: TRPC_CLIENT_CONTEXT,
       enabled: false,
     },
   );
@@ -47,7 +36,6 @@ export const useCandidateAvailabilityData = () => {
     },
     {
       enabled: !!candidate_request_availability_id,
-      trpc: TRPC_CLIENT_CONTEXT,
     },
   );
 };
