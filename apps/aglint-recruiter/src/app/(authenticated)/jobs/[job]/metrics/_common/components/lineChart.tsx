@@ -37,7 +37,11 @@ const LineChart: React.FC<{
       acc.pointBackgroundColor.push('#8d8d8690');
       return acc;
     },
-    { names: [], counts: [], pointBackgroundColor: [] },
+    { names: [], counts: [], pointBackgroundColor: [] } as {
+      names: string[];
+      counts: number[];
+      pointBackgroundColor: string[];
+    },
   );
 
   const dataLines = {
@@ -46,7 +50,7 @@ const LineChart: React.FC<{
       {
         label: 'Candidates',
         fill: true,
-        backgroundColor: (context) => {
+        backgroundColor: (context: any) => {
           const bgColor = ['#68737d25', 'transparent'];
           if (!context.chart.chartArea) return;
           const {
@@ -141,7 +145,7 @@ const Content: FC<{
   >;
 }> = ({ option }) => {
   const [dataSet] = useMetricsExperienceAndTenure();
-  const experience = dataSet?.[option] ?? null;
+  const experience = (dataSet?.[option] ?? null)!;
   const total = experience
     ? Object.values(experience).reduce((acc, curr) => {
         acc += curr;

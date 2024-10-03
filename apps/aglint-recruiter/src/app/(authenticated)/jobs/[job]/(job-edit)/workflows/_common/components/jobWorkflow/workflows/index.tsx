@@ -32,7 +32,7 @@ export default function Main() {
   ];
   const handleSave = async () => {
     try {
-      const deleted_actions = data.job_workflow_actions
+      const deleted_actions = data!.job_workflow_actions
         .filter(
           (act) =>
             jobWorkflowActions.findIndex((jwa) => jwa.id === act.id) === -1,
@@ -56,7 +56,7 @@ export default function Main() {
   };
   const handleReset = () => {
     updateJobAutomationState(true);
-    initiateJobAutomationState(data);
+    initiateJobAutomationState(data!);
     setTimeout(() => {
       updateJobAutomationState(false);
     }, 1000);

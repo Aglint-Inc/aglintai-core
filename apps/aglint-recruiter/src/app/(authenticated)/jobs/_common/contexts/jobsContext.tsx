@@ -14,6 +14,7 @@ import {
   useJobsSync,
   useJobUpdate,
 } from '@/queries/jobs';
+import { JobUpdate } from '@/queries/jobs/types';
 
 const useJobContext = () => {
   const { recruiter, recruiter_id } = useTenant();
@@ -36,7 +37,7 @@ const useJobContext = () => {
     args: Pick<DatabaseView['job_view'], 'id' | 'is_pinned'>,
   ) => {
     try {
-      jobUpdate({ recruiter_id, ...args });
+      jobUpdate({ recruiter_id, ...args } as JobUpdate);
     } catch {
       //
     }
@@ -64,8 +65,8 @@ const useJobContext = () => {
   const handleJobCreate = async (newJob: Parameters<typeof jobCreate>[0]) => {
     if (recruiter) {
       try {
-        const data = await jobCreate(newJob);
-        handleGenerateJd(data.id);
+        const data = await jobCreate(newJob)!;
+        handleGenerateJd(data?.id ?? null!);
         return data;
       } catch {
         //
@@ -102,8 +103,9 @@ const useJobContext = () => {
   return value;
 };
 
-export const JobsContext =
-  createContext<ReturnType<typeof useJobContext>>(undefined);
+export const JobsContext = createContext<
+  ReturnType<typeof useJobContext> | undefined
+>(undefined);
 
 export const JobsProvider = memo(({ children }: { children: ReactNode }) => {
   const value = useJobContext();

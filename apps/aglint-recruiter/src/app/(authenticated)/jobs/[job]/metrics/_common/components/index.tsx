@@ -17,6 +17,7 @@ import { SharedActions } from '@/job/components/SharedTopNav/actions';
 import { SharedBreadCrumbs } from '@/job/components/SharedTopNav/breadcrumbs';
 import { useJob } from '@/job/hooks';
 import { type Job } from '@/queries/jobs/types';
+import { SafeObject } from '@/utils/safeObject';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { DashboardBarChart } from './BarChart2';
@@ -80,7 +81,7 @@ const getMatches = (
   application_match: Job['application_match'],
   total: number,
 ) => {
-  return Object.entries(application_match ?? {}).reduce(
+  return SafeObject.entries(application_match ?? {}).reduce(
     (acc, [key, value]) => {
       acc[key] = {
         count: Number(value),
@@ -141,7 +142,13 @@ const Dashboard = () => {
   );
 };
 
-const JobStats = ({ isScoringEnabled, score_matches }) => (
+const JobStats = ({
+  isScoringEnabled,
+  score_matches,
+}: {
+  isScoringEnabled: boolean;
+  score_matches: any;
+}) => (
   <div className='flex space-x-12 overflow-x-auto'>
     {isScoringEnabled && (
       <>
@@ -185,7 +192,17 @@ const JobStats = ({ isScoringEnabled, score_matches }) => (
   </div>
 );
 
-const StatItem = ({ label, percentage, count, color }) => (
+const StatItem = ({
+  label,
+  percentage,
+  count,
+  color,
+}: {
+  label: string;
+  percentage: string;
+  count: number;
+  color: string;
+}) => (
   <div className='mx-auto w-full max-w-4xl p-4'>
     <div className='flex cursor-pointer flex-col rounded-lg transition-colors duration-200 hover:bg-gray-100 sm:flex-row'>
       <div className='flex-1 p-2'>

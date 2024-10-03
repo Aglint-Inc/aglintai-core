@@ -92,11 +92,17 @@ export type CreateContextStore<
 type CreateContextStoreActions<T extends Record<string, any>> =
   keyof T extends infer U
     ? U extends string
-      ? { [_id in `set${Capitalize<U>}`]: (_x: Partial<T[U]>) => void } & {
+      ? { [_id in `set${Capitalize<U>}`]: (_x: Partiality<T[U]>) => void } & {
           [_id in `reset${Capitalize<U>}`]: () => void;
         }
       : never
     : never;
+
+type Partiality<T> = T extends any[]
+  ? T
+  : T extends Record<string, any>
+    ? Partial<T>
+    : T;
 
 type UnionToIntersection<U> = (
   U extends any ? (_arg: U) => void : never

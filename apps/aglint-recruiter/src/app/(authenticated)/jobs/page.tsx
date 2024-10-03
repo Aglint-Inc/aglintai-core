@@ -20,7 +20,9 @@ const Page = () => {
   const router = useRouterPro();
   return (
     <IntegrationStoreProvider>
-      {checkPermissions(PERMISSIONS[String(router.pathName)]) ? (
+      {checkPermissions(
+        PERMISSIONS[String(router.pathName) as keyof typeof PERMISSIONS],
+      ) ? (
         <>
           <OneColumnPageLayout
             header={initialLoad && data?.length !== 0 && <Header />}

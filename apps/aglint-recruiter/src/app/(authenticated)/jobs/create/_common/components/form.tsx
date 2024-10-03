@@ -167,7 +167,7 @@ JobLocation.displayName = 'JobLocation';
 
 type Defaults = {
   [id in keyof Pick<Form, 'workplace_type' | 'job_type'>]: {
-    value: Form[id]['value'];
+    value: NonNullable<Form[id]>['value'];
     label: string;
   }[];
 };
@@ -188,9 +188,9 @@ const defaults: Defaults = {
   ],
 };
 const getOptions = (type: keyof Defaults) => {
-  return defaults[type].reduce(
+  return defaults[type]!.reduce(
     (acc, { label, value }) => {
-      acc.push({ name: label, value });
+      acc.push({ name: label, value: value! });
       return acc;
     },
     [] as { name: string; value: string }[],
@@ -256,7 +256,9 @@ const JobDepartment: FC<MetaForms> = memo(({ name, value, onChange }) => {
 });
 JobDepartment.displayName = 'JobDepartment';
 
-type Roles = ReturnType<typeof useCompanyMembers>['data'][number]['role'];
+type Roles = NonNullable<
+  ReturnType<typeof useCompanyMembers>['data']
+>[number]['role'];
 
 const roles = {
   'hiring manager': () => [...new Set<Roles>(['admin', 'hiring manager'])],
@@ -310,10 +312,10 @@ export const JobCoordinator: FC<MetaForms & { label?: boolean }> = memo(
       <UISelectDropDown
         onValueChange={(value) => {
           if (value === '_') onChange(name, null);
-          const coordinator = data.find((c) => c.user_id === value);
+          const coordinator = (data ?? []).find((c) => c.user_id === value);
           if (coordinator) onChange(name, coordinator.user_id);
         }}
-        label={label && capitalizeAll(name)}
+        label={label ? capitalizeAll(name) : '---'}
         menuOptions={options}
         required={value.required}
         value={safeValue.toString()}
@@ -370,7 +372,7 @@ JobDescription.displayName = 'JobDescription';
 
 type MetaForms = {
   name: keyof Form;
-  value: Form[keyof Form];
+  value: NonNullable<Form[keyof Form]>;
   // eslint-disable-next-line no-unused-vars
   onChange: (name: keyof Form, value: any) => void;
 };

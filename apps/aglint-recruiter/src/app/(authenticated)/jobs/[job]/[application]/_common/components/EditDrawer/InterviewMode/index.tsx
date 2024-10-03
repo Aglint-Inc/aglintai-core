@@ -40,7 +40,7 @@ function InterviewModeComp() {
   let optionsInterviewers: EditSessionDrawer['selectedInterviewers'] = [];
   let optionTrainees: EditSessionDrawer['trainingInterviewers'] = [];
 
-  const filterArchivedModules = interviewModules?.data?.filter(
+  const filterArchivedModules = (interviewModules?.data ?? []).filter(
     (module) =>
       editSession?.interview_session.module_id === module.id ||
       !module.is_archived,
@@ -85,10 +85,12 @@ function InterviewModeComp() {
 
   return (
     <InterviewMode
-      isIndividual={editSession.interview_session.session_type === 'individual'}
+      isIndividual={
+        editSession!.interview_session.session_type === 'individual'
+      }
       isPanel={
         selectedInterviewers?.length > 1 &&
-        editSession.interview_session.session_type === 'panel'
+        editSession!.interview_session.session_type === 'panel'
       }
       isTraining={true}
       textToggleLabel={`Training ${trainingToggle ? 'On' : 'Off'}`}
@@ -138,7 +140,11 @@ function InterviewModeComp() {
               placeholder='Select Interviewers'
               renderUsers={optionsInterviewers}
               selectedUsers={selectedInterviewers}
-              setSelectedUsers={setSelectedInterviewers}
+              setSelectedUsers={
+                setSelectedInterviewers as Parameters<
+                  typeof MembersAutoComplete
+                >[0]['setSelectedUsers']
+              }
               pillColor='bg-neutral-200'
               error={
                 errorValidation.find(
@@ -175,7 +181,11 @@ function InterviewModeComp() {
           placeholder='Select Training Interviewers'
           renderUsers={optionTrainees}
           selectedUsers={trainingInterviewers}
-          setSelectedUsers={setTrainingInterviewers}
+          setSelectedUsers={
+            setTrainingInterviewers as Parameters<
+              typeof MembersAutoComplete
+            >[0]['setSelectedUsers']
+          }
           pillColor='bg-neutral-200'
           error={
             errorValidation.find((err) => err.field === 'training_interviewers')

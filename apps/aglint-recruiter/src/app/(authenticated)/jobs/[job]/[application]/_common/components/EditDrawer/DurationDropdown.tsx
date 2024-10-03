@@ -17,7 +17,7 @@ function SessionDuration() {
       <UISelectDropDown
         label='Session Duration'
         fullWidth
-        value={editSession.interview_session.session_duration.toString()}
+        value={editSession!.interview_session.session_duration.toString()}
         menuOptions={sessionDurations.map((dur) => ({
           name: getBreakLabel(dur),
           value: dur.toString(),
@@ -25,7 +25,7 @@ function SessionDuration() {
         onValueChange={(value) => {
           setEditSession({
             interview_session: {
-              ...editSession.interview_session,
+              ...editSession!.interview_session,
               session_duration: parseInt(value),
             },
           });
