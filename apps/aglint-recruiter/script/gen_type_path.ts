@@ -9,7 +9,7 @@ export async function generateSaveTypeSafePath() {
     while ((match = regex.exec(key)) !== null) {
       temp.push(match[1] as string);
     }
-    if (temp.length) res['pages'][key] = temp;
+    if (temp.length) (res['pages'] as any)[key] = temp;
   });
   return res;
 }

@@ -45,20 +45,19 @@ const EditBasicInfoDialog = ({
 }) => {
   const { recruiter } = useTenant();
   const [isError, setError] = useState(false);
-  const [logo, setLogo] = useState(null);
+  const [logo, setLogo] = useState<string | null>(null);
   const [nameError, setNameError] = useState(false);
   const { checkPermissions } = useRolesAndPermissions();
   const isFormDisabled = !checkPermissions(['manage_company']);
-  const imageFile = useRef(null);
+  const imageFile = useRef<File>(null);
   const [isImageChanged, setIsImageChanged] = useState(false);
-  const [recruiterLocal, setRecruiterLocal] = useState<typeof recruiter | null>(
-    recruiter,
-  );
+  const [recruiterLocal, setRecruiterLocal] =
+    useState<typeof recruiter>(recruiter);
 
   const { toast } = useToast();
 
   useEffect(() => {
-    setLogo(recruiter?.logo);
+    setLogo(recruiter.logo);
   }, [recruiter]);
 
   const handleChange = async (recruit: typeof recruiter) => {
@@ -98,7 +97,7 @@ const EditBasicInfoDialog = ({
     try {
       // setIsLoading(true);
       let logo = recruiter.logo;
-      if (isImageChanged) {
+      if (isImageChanged && imageFile.current) {
         const { data } = await supabase.storage
           .from('company-logo')
           .upload(`public/${recruiter.id}`, imageFile.current, {
@@ -121,7 +120,7 @@ const EditBasicInfoDialog = ({
         logo,
       });
       setEditDialog(false);
-    } catch (e) {
+    } catch (e: any) {
       toast({
         title: e.message,
         variant: 'destructive',
@@ -129,7 +128,10 @@ const EditBasicInfoDialog = ({
     }
   };
 
-  function compareObjects(obj1, obj2) {
+  function compareObjects(
+    obj1: Record<string, any>,
+    obj2: Record<string, any>,
+  ) {
     const propertiesToCompare: (keyof typeof recruiter)[] = [
       'name',
       'industry',
@@ -185,7 +187,7 @@ const EditBasicInfoDialog = ({
         <div className='flex items-center space-x-4'>
           <div className='max-w-[64px]'>
             <ImageUploadManual
-              image={logo}
+              image={logo!}
               size={70}
               imageFile={imageFile}
               setChanges={() => {
@@ -212,6 +214,7 @@ const EditBasicInfoDialog = ({
             <Input
               id='company-name'
               placeholder='Ex. Acme Inc.'
+              // @ts-ignore
               value={recruiterLocal?.name}
               onChange={(e) => {
                 handleChange({
@@ -234,7 +237,7 @@ const EditBasicInfoDialog = ({
             <Input
               id='industry'
               placeholder='Ex. Healthcare'
-              value={recruiterLocal?.industry}
+              value={recruiterLocal?.industry ?? undefined}
               onChange={(e) => {
                 handleChange({
                   ...recruiterLocal,
@@ -251,7 +254,7 @@ const EditBasicInfoDialog = ({
                 name: size,
                 value: size,
               }))}
-              value={recruiterLocal?.employee_size}
+              value={recruiterLocal?.employee_size ?? undefined}
               onValueChange={(value) => {
                 handleChange({
                   ...recruiterLocal,
@@ -265,7 +268,7 @@ const EditBasicInfoDialog = ({
             <Input
               id='company-website'
               placeholder='https://companydomain.com'
-              value={recruiterLocal?.company_website}
+              value={recruiterLocal?.company_website ?? undefined}
               onChange={(e) => {
                 handleChange({
                   ...recruiterLocal,

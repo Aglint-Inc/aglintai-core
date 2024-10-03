@@ -19,7 +19,7 @@ import KeywordSection from '../../../../_common/components/KeywordSection';
 import DebriefDefaults from './DebriefDefaults';
 
 let schedulingSettingObj = {};
-let changeValue = null;
+let changeValue: 'updating' | null = null;
 
 type interviewLoadType = {
   type: 'Hours' | 'Interviews';
@@ -30,7 +30,9 @@ type interviewLoadType = {
 function SchedulingSettings() {
   const { recruiter } = useTenant();
 
-  const [workingHours, setWorkingHours] = useState([]);
+  const [workingHours, setWorkingHours] = useState<
+    (typeof recruiter)['scheduling_settings']['workingHours']
+  >([]);
   const [debriefDefaults, setDebriefDefaults] = useState<
     SchedulingSettingType['debrief_defaults']
   >({
@@ -40,18 +42,22 @@ function SchedulingSettings() {
     sourcer: false,
     previous_interviewers: false,
   });
-  const [freeKeyWords, setFreeKeywords] = useState([]);
-  const [softConflictsKeyWords, setSoftConflictsKeyWords] = useState([]);
+  const [freeKeyWords, setFreeKeywords] = useState<
+    (typeof recruiter)['scheduling_settings']['schedulingKeyWords']['free']
+  >([]);
+  const [softConflictsKeyWords, setSoftConflictsKeyWords] = useState<
+    (typeof recruiter)['scheduling_settings']['schedulingKeyWords']['SoftConflicts']
+  >([]);
   const [outOfOffice, setOutOfOffice] = useState<string[]>([]);
   const [recruitingBlocks, setRecruitingBlocks] = useState<string[]>([]);
 
-  const [dailyLmit, setDailyLimit] = useState<interviewLoadType>({
-    type: null,
+  const [dailyLimit, setDailyLimit] = useState<interviewLoadType>({
+    type: 'Hours',
     value: 20,
     max: LoadMax.dailyHours,
   });
-  const [weeklyLmit, setWeeklyLimit] = useState<interviewLoadType>({
-    type: null,
+  const [weeklyLimit, setWeeklyLimit] = useState<interviewLoadType>({
+    type: 'Hours',
     value: 10,
     max: LoadMax.weeklyHours,
   });
@@ -92,14 +98,14 @@ function SchedulingSettings() {
         ...pre,
         type,
       }));
-      handleDailyValue(dailyLmit.value);
+      handleDailyValue(dailyLimit.value);
     }
     if (mode === 'week') {
       setWeeklyLimit((pre) => ({
         ...pre,
         type,
       }));
-      handleWeeklyValue(weeklyLmit.value);
+      handleWeeklyValue(weeklyLimit.value);
     }
   };
 
@@ -172,12 +178,12 @@ function SchedulingSettings() {
         ...recruiter.scheduling_settings,
         interviewLoad: {
           dailyLimit: {
-            type: dailyLmit.type,
-            value: dailyLmit.value,
+            type: dailyLimit.type,
+            value: dailyLimit.value,
           },
           weeklyLimit: {
-            type: weeklyLmit.type,
-            value: weeklyLmit.value,
+            type: weeklyLimit.type,
+            value: weeklyLimit.value,
           },
         },
         workingHours: workingHours,
@@ -197,8 +203,8 @@ function SchedulingSettings() {
       changeValue = 'updating';
     }
   }, [
-    dailyLmit,
-    weeklyLmit,
+    dailyLimit,
+    weeklyLimit,
     workingHours,
     freeKeyWords,
     softConflictsKeyWords,
@@ -258,24 +264,24 @@ function SchedulingSettings() {
       </PageHeader>
       <div className='flex flex-col gap-4'>
         <div className='flex flex-col gap-5'>
-          {dailyLmit.type && weeklyLmit.type && (
+          {dailyLimit.type && weeklyLimit.type && (
             <UISectionCard
               title=' Interview Load'
               description='Setup maximum interviews per day and week.'
             >
               <div className='space-y-2'>
                 <InterviewLimitInput
-                  value={dailyLmit.value}
-                  max={dailyLmit.max}
-                  type={dailyLmit.type}
+                  value={dailyLimit.value}
+                  max={dailyLimit.max}
+                  type={dailyLimit.type}
                   onValueChange={handleDailyValue}
                   onTypeChange={handleType}
                   mode='day'
                 />
                 <InterviewLimitInput
-                  value={weeklyLmit.value}
-                  max={weeklyLmit.max}
-                  type={weeklyLmit.type}
+                  value={weeklyLimit.value}
+                  max={weeklyLimit.max}
+                  type={weeklyLimit.type}
                   onValueChange={handleWeeklyValue}
                   onTypeChange={handleType}
                   mode='week'

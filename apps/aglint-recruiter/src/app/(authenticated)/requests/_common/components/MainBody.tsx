@@ -7,10 +7,10 @@ import { checkFiltersApplied } from '@requests/utils/checkFiltersApplied';
 import { LayoutList, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { useCompanySetup } from '@/authenticated/hooks/useCompanySetup';
 import { useTenant } from '@/company/hooks';
 import { useFlags } from '@/company/hooks/useFlags';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
+import { useOnboarding } from '@/components/Navigation/OnboardPending/context/onboarding';
 import { useRequests } from '@/context/RequestsContext';
 import { SafeObject } from '@/utils/safeObject';
 
@@ -24,7 +24,7 @@ const MainBody = () => {
     filters,
   } = useRequests();
   const { isRequestSetupPending, isLoading: isLoadingCompanySetup } =
-    useCompanySetup();
+    useOnboarding();
   const { recruiter_user } = useTenant();
   const { isShowFeature } = useFlags();
   const [openChat, setOpenChat] = useState(false);
@@ -80,6 +80,23 @@ const MainBody = () => {
         <Skeleton className='mb-4 h-[200px] w-full' />
       </>
     );
+
+  if (showEmptyPage)
+    return (
+      <div className='mt-40'>
+        <GlobalEmpty
+          header={'No requests found'}
+          description='Requests are created when a interview process starts for candidates.'
+          icon={
+            <LayoutList
+              strokeWidth={2}
+              className='h-6 w-6 text-muted-foreground'
+            />
+          }
+          primaryAction={!isRequestSetupPending && <CreateRequestWidget />}
+        />
+      </div>
+    );
   return (
     <div className='flex w-full overflow-hidden'>
       {/* Dock to Right Button */}
@@ -106,35 +123,37 @@ const MainBody = () => {
       )}
 
       {/* Main Content */}
-      {isRequestListEmpty || showEmptyPage ? (
-        <GlobalEmpty
-          header={'No requests found'}
-          description='Requests are created when a interview process starts for candidates.'
-          icon={
-            <LayoutList
-              strokeWidth={2}
-              className='h-6 w-6 text-muted-foreground'
-            />
-          }
-          primaryAction={!isRequestSetupPending && <CreateRequestWidget />}
+
+      <div className='w-full'>
+        <Header
+          completed_percentage={completed_percentage}
+          open_request={open_request}
+          recruiterUser={recruiter_user}
+          requestCount={requestCount}
+          setView={setView}
+          view={view}
         />
-      ) : (
-        <div>
-          <Header
-            completed_percentage={completed_percentage}
-            open_request={open_request}
-            recruiterUser={recruiter_user}
-            requestCount={requestCount}
-            setView={setView}
-            view={view}
-          />
+        {!isRequestListEmpty ? (
           <RequestListContent
             view={view}
             defaults={[...defaults]}
             isFetched={isFetched}
           />
-        </div>
-      )}
+        ) : (
+          <div className='mt-40 w-full'>
+            <GlobalEmpty
+              header={'No requests found'}
+              description='Requests are created when a interview process starts for candidates.'
+              icon={
+                <LayoutList
+                  strokeWidth={2}
+                  className='h-6 w-6 text-muted-foreground'
+                />
+              }
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -1,3 +1,5 @@
+'use client';
+
 import { Section, SectionTitle } from '@components/layouts/sections-header';
 import { Calendar } from 'lucide-react';
 import RequestCard from 'src/app/_common/components/Requests/RequestCard';

@@ -15,7 +15,7 @@ import {
 } from '@components/ui/tooltip';
 import { BarChart, Clock, ThumbsUp, Users, Zap } from 'lucide-react';
 import { useState } from 'react';
-import { useMemberList } from 'src/app/_common/hooks/members';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 import { useInterviewerLeaderboard } from 'src/app/(authenticated)/reports/_common/hook/interview/interviewerMatrix.hook';
 
 import UISectionCard from '@/components/Common/UISectionCard';

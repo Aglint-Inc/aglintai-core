@@ -11,8 +11,6 @@ import {
 } from '@trpc/server/unstable-core-do-not-import';
 import superjson from 'superjson';
 
-import { ERRORS } from '@/server/enums';
-
 export const GC_TIME = 5 * 60 * 1000;
 export const STALE_TIME = 5 * 1000;
 export const REFETCH_ON_MOUNT = true;
@@ -27,13 +25,13 @@ export const createQueryClient = (
     queryCache: new QueryCache({
       onError: (error) =>
         onError(error as unknown as TRPCErrorShape<TRPCError>, () => {
-          logout(queryClient);
+          logout && logout(queryClient);
         }),
     }),
     mutationCache: new MutationCache({
       onError: (error) =>
         onError(error as unknown as TRPCErrorShape<TRPCError>, () => {
-          logout(queryClient);
+          logout && logout(queryClient);
         }),
       onSuccess: () => queryClient.invalidateQueries(),
     }),
@@ -58,7 +56,10 @@ export const createQueryClient = (
   return queryClient;
 };
 
+/**
+ *  @see https://stackoverflow.com/questions/3297048/403-forbidden-vs-401-unauthorized-http-responses
+ */
 const onError = (error: TRPCErrorShape<TRPCError>, logout?: () => void) => {
   if (!logout) return;
-  if ((error?.data?.code ?? null) === ERRORS.UNAUTHORIZED.code) void logout();
+  if ((error?.data?.code ?? null) === 'UNAUTHORIZED') void logout();
 };

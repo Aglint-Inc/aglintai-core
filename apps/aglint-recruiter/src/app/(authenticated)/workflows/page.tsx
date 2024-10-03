@@ -23,15 +23,17 @@ const Page = () => {
     <>
       <OneColumnPageLayout
         header={
-          <PageHeader>
-            <PageHeaderText>
-              <PageTitle>Automations</PageTitle>
-              <PageDescription>
-                You can create automations to streamline your workflow.
-              </PageDescription>
-            </PageHeaderText>
-            <Actions />
-          </PageHeader>
+          data?.length !== 0 && (
+            <PageHeader>
+              <PageHeaderText>
+                <PageTitle>Automations</PageTitle>
+                <PageDescription>
+                  You can create automations to streamline your workflow.
+                </PageDescription>
+              </PageHeaderText>
+              <Actions />
+            </PageHeader>
+          )
         }
       >
         {data?.length > 0 ? (
@@ -40,9 +42,7 @@ const Page = () => {
             <Content />
           </div>
         ) : (
-          <>
-            <EmptyWorkflow />
-          </>
+          <EmptyWorkflow />
         )}
       </OneColumnPageLayout>
     </>

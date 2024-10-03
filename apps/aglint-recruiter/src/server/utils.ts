@@ -6,12 +6,11 @@ import {
 } from '@trpc/server/unstable-core-do-not-import';
 
 import type { AppRouter } from './api/root';
-import { ERRORS } from './enums';
 import { API_PERMISSIONS } from './permissions';
 
 type Procedures = AppRouter['_def']['procedures'];
 
-type Permissions = DatabaseTable['permissions']['name'][];
+type Permissions = (DatabaseTable['permissions']['name'] | 'public')[];
 
 type NestedPermissions<T> = T extends
   | QueryProcedure<any>
@@ -36,11 +35,24 @@ const getPermissions = (
   return getPermissions(input, level as unknown as ApiPermissions);
 };
 
-export const authorize = (path, permissions) => {
+export const authorize = (path: string, permissions: Permissions = []) => {
   const input = path.split('.');
   const apiPermission = getPermissions(input);
-  if (!apiPermission) throw new TRPCError(ERRORS.FORBIDDEN);
-  return apiPermission.every((permission) => permissions.includes(permission));
+  if (!apiPermission)
+    throw new TRPCError({
+      code: 'BAD_REQUEST',
+      message: `Path does not exist`,
+    });
+  return (
+    apiPermission.includes('public') ||
+    apiPermission.every((permission) => permissions.includes(permission))
+  );
 };
 
 export type ApiPermissions = NestedPermissions<Procedures>;
+
+export const trpcPublicRoutes = (requestUrl: string) => {
+  if (!requestUrl.startsWith('/api/trpc/')) return false;
+  const path = requestUrl.split('/api/trpc/')[1];
+  return authorize(path);
+};

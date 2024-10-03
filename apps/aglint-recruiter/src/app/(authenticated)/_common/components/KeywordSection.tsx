@@ -15,7 +15,7 @@ const KeywordSection: React.FC<KeywordSectionProps> = ({
   keywords,
   setKeywords,
 }) => {
-  const handleAdd = ({ name }) => {
+  const handleAdd = ({ name }: { name: string }) => {
     const newKeywords = String(name).split(',');
     newKeywords.forEach((item) => {
       const trimmedItem = item.trim();
@@ -29,7 +29,7 @@ const KeywordSection: React.FC<KeywordSectionProps> = ({
     });
   };
 
-  const handleDelete = (itemToDelete) => {
+  const handleDelete = (itemToDelete: string) => {
     setKeywords((prev) => prev.filter((item) => item !== itemToDelete));
   };
 

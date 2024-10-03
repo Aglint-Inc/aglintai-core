@@ -1,6 +1,13 @@
 import { type SchedulingSettingType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils';
 import {
+  Section,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
+import {
   Table,
   TableBody,
   TableCell,
@@ -29,70 +36,79 @@ export const ScheduleAvailabilityUI = ({
   scheduleKeywords,
 }: Props) => {
   return (
-    <>
-      <SectionSubCard title='Time Zone'>
+    <div className='flex flex-col space-y-8'>
+      <Section>
+        <SectionHeader>
+          <SectionHeaderText>
+            <SectionTitle>Time Zone</SectionTitle>
+          </SectionHeaderText>
+        </SectionHeader>
+        {timeZone || ' - '}
+      </Section>
 
-        <UITypography variant='p' type='small' >
-          {timeZone || ' - '}
-        </UITypography>
-      </SectionSubCard>
-
-      <SectionSubCard title='Interview Load'>
+      <Section>
+        <SectionHeader>
+          <SectionHeaderText>
+            <SectionTitle>Interview Load</SectionTitle>
+          </SectionHeaderText>
+        </SectionHeader>
         <div className='flex gap-3'>
           {interviewLoads.map((load) => {
             return <LoadCard key={load.title} load={load} />;
           })}
         </div>
-      </SectionSubCard>
+      </Section>
 
-      <SectionSubCard title='Working Hours'>
-        <p className='mb-4 text-sm text-muted-foreground'>
-          Set your company&apos;s working hours to define the availability for
-          interviews.
-        </p>
-        <div className='border rounded-md overflow-hidden'>
-        <Table>
-          <TableHeader>
-            <TableRow className='bg-gray-100'>
-              <TableHead>Day</TableHead>
-              <TableHead>Hours</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {workingHours.map((day, i) => (
-              <WorkHourList key={i} day={day} />
-            ))}
-          </TableBody>
-        </Table>
+      <Section>
+        <SectionHeader>
+          <SectionHeaderText>
+            <SectionTitle>Working Hours</SectionTitle>
+            <SectionDescription>
+              Set your company&apos;s working hours to define the availability
+              for interviews.
+            </SectionDescription>
+          </SectionHeaderText>
+        </SectionHeader>
+        <div className='overflow-hidden rounded-md border'>
+          <Table>
+            <TableHeader>
+              <TableRow className='bg-gray-100'>
+                <TableHead>Day</TableHead>
+                <TableHead>Hours</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {workingHours.map((day, i) => (
+                <WorkHourList key={i} day={day} />
+              ))}
+            </TableBody>
+          </Table>
         </div>
-      </SectionSubCard>
-      <SectionSubCard title='Scheduling Keywords'>
+      </Section>
+
+      <Section>
+        <SectionHeader>
+          <SectionHeaderText>
+            <SectionTitle>Scheduling Keywords</SectionTitle>
+            <SectionDescription>
+              Scheduling Keywords help candidates find your interviews
+              availability.
+            </SectionDescription>
+          </SectionHeaderText>
+        </SectionHeader>
         {scheduleKeywords.map((keyword) => {
           return (
-            <KeywordViewSection
-              key={keyword.title}
-              title={keyword.title}
-              description={keyword.description}
-              keywords={keyword.keywords}
-            />
+            <div key={keyword.title}>
+              <KeywordViewSection
+                key={keyword.title}
+                title={keyword.title}
+                description={keyword.description}
+                keywords={keyword.keywords}
+              />
+            </div>
           );
         })}
-      </SectionSubCard>
-    </>
-  );
-};
-
-const SectionSubCard = ({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) => {
-  return (
-    <div className='mb-6'>
-      <h3 className='mb-2 text-md font-medium'>{title}</h3>
-      <div>{children}</div>
+      </Section>
     </div>
   );
 };
@@ -124,12 +140,14 @@ const WorkHourList = ({
 const LoadCard = ({ load }: { load: InterviewLoadItemType }) => {
   return (
     <div className='h-fit min-w-[150px] rounded-sm bg-gray-50'>
-      <UITypography className='px-4 pt-2 text-sm'>
-        {load.title}
-      </UITypography>
-      <div className='flex flex-col gap-1 px-4 py-2 '>
-        <UITypography className='text-xl font-medium'>{load.count}</UITypography>
-        <UITypography className='text-sm text-muted-foreground'>{load.type}</UITypography>
+      <UITypography className='px-4 pt-2 text-sm'>{load.title}</UITypography>
+      <div className='flex flex-col gap-1 px-4 py-2'>
+        <UITypography className='text-xl font-medium'>
+          {load.count}
+        </UITypography>
+        <UITypography className='text-sm text-muted-foreground'>
+          {load.type}
+        </UITypography>
       </div>
     </div>
   );
@@ -145,7 +163,7 @@ const KeywordViewSection = ({
   keywords: string[];
 }) => {
   return (
-    <div className='mb-6'>
+    <>
       <UITypography
         variant='p'
         type='small'
@@ -153,7 +171,11 @@ const KeywordViewSection = ({
       >
         {title}
       </UITypography>
-      <UITypography variant='p' type='small' className='mb-2 text-muted-foreground'>
+      <UITypography
+        variant='p'
+        type='small'
+        className='mb-2 text-muted-foreground'
+      >
         {description}
       </UITypography>
       <div className='flex flex-wrap gap-2'>
@@ -182,6 +204,6 @@ const KeywordViewSection = ({
           />
         )}
       </div>
-    </div>
+    </>
   );
 };
