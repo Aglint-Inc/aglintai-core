@@ -5,6 +5,7 @@ import {
   type APIScheduleDebreif,
   type PlanCombinationRespType,
 } from '@aglint/shared-types';
+import { type schema_find_availability_payload } from '@aglint/shared-utils';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { type NextApiRequest, type NextApiResponse } from 'next';
@@ -141,7 +142,7 @@ const findAvailibilityNoConflictOnly = async ({
     end_date: string;
   };
 }) => {
-  const bodyParams: APIFindAvailability = {
+  const bodyParams: z.input<typeof schema_find_availability_payload> = {
     session_ids: [session_id],
     recruiter_id: recruiter_id,
     start_date_str: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
