@@ -10,7 +10,7 @@ import {
 } from '@components/ui/table';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { ClockIcon, DownloadIcon } from 'lucide-react';
-import { useMemberList } from 'src/app/_common/hooks/members';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
 import UISectionCard from '@/components/Common/UISectionCard';
 
@@ -50,7 +50,7 @@ export default function InterviewersDeclineTable() {
       }
     >
       <Table>
-        <TableHeader>
+        <TableHeader className='bg-gray-100'>
           <TableRow>
             <TableHead className='w-[200px]'>Name</TableHead>
             <TableHead>Declines</TableHead>

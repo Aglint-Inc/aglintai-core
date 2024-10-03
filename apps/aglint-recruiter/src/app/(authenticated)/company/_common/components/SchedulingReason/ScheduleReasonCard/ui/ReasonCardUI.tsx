@@ -4,11 +4,11 @@ import { type Dispatch, type SetStateAction } from 'react';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 type Props = {
-  editingIndex: number;
+  editingIndex: number | null;
   reasons: string[];
   editingReason: string;
   setEditingReason: Dispatch<SetStateAction<string>>;
-  setEditingIndex: Dispatch<SetStateAction<number>>;
+  setEditingIndex: Dispatch<SetStateAction<number | null>>;
   isAddingNew: boolean;
   setIsAddingNew: Dispatch<SetStateAction<boolean>>;
   handleAdd: () => void;

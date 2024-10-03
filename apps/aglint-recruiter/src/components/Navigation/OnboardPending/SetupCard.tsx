@@ -8,6 +8,7 @@ import {
 } from '@components/layouts/sections-header';
 import { CheckCircle2, Circle } from 'lucide-react';
 
+import { setIsOnboardOpen } from '@/authenticated/store/OnboardStore';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -108,6 +109,7 @@ export function SetupCard({
           <UIButton
             onClick={() => {
               router.push(navLink);
+              setIsOnboardOpen(false);
             }}
           >
             Complete Now

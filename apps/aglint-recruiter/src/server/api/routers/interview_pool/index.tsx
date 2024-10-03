@@ -5,6 +5,7 @@ import { candidatesModule } from './candidates';
 import { createInterviewPool } from './create_pool';
 import { deleteUser } from './delete_user';
 import { feedbackPool } from './feedback';
+import { getAllInterviewPool } from './get_all';
 import { interviewPools } from './interview_types';
 import { interviewPoolUsers } from './module_and_users';
 import { schedulesPool } from './schedules';
@@ -23,4 +24,5 @@ export const interview_pool = createTRPCRouter({
   delete_user: deleteUser,
   update: updateInterviewPool,
   archive_get_sessions: archiveGetSessions,
+  get_all: getAllInterviewPool,
 });

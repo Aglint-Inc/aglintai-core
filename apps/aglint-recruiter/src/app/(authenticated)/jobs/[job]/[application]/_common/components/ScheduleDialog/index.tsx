@@ -13,6 +13,7 @@ import { format } from 'date-fns';
 import { CalendarIcon, Edit2, FileBadge2 } from 'lucide-react';
 import React, { useEffect } from 'react';
 import type { DateRange } from 'react-day-picker';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import MemberCard from '@/components/Common/MemberCard';
@@ -20,7 +21,6 @@ import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UITextField from '@/components/Common/UITextField';
 import UpdateMembers from '@/components/Common/UpdateMembers';
-import { useMemberList } from '@/hooks/useMemberList';
 
 import { useApplicationMeta } from '../../hooks/useApplicationMeta';
 import { useScheduleRequest } from '../../hooks/useScheduleRequest';
@@ -248,9 +248,7 @@ export const RequestOption = ({
   setRequestType,
 }: {
   requestType: DatabaseTable['request']['priority'];
-  setRequestType: React.Dispatch<
-    React.SetStateAction<DatabaseTable['request']['priority']>
-  >;
+  setRequestType: (_: DatabaseTable['request']['priority']) => void;
 }) => {
   return (
     <div className='flex w-full flex-row space-x-2'>

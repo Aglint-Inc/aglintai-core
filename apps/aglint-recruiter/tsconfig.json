@@ -19,6 +19,7 @@
       "@/definitions/*": ["./src/definitions/*"],
       "@/api/*": ["./src/app/api/*"],
       "@/authenticated/*": ["./src/app/(authenticated)/_common/*"],
+
       "@/company/*": ["./src/app/(authenticated)/company/_common/*"],
       "@/candidate/authenticated/*": [
         "./src/app/(public)/candidate/(authenticated)/[application_id]/_common/*"

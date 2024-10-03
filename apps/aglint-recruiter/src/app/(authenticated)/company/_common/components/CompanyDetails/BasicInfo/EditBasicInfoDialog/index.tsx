@@ -97,7 +97,7 @@ const EditBasicInfoDialog = ({
     try {
       // setIsLoading(true);
       let logo = recruiter.logo;
-      if (isImageChanged) {
+      if (isImageChanged && imageFile.current) {
         const { data } = await supabase.storage
           .from('company-logo')
           .upload(`public/${recruiter.id}`, imageFile.current!, {
@@ -214,6 +214,7 @@ const EditBasicInfoDialog = ({
             <Input
               id='company-name'
               placeholder='Ex. Acme Inc.'
+              // @ts-ignore
               value={recruiterLocal?.name}
               onChange={(e) => {
                 handleChange({

@@ -143,7 +143,7 @@ export class AglintLogger {
     if (getId) {
       this.logDetails.parent_log_id = (
         await query.select('id').single().throwOnError()
-      ).data.id;
+      )?.data?.id;
       return;
     }
     await query.throwOnError();

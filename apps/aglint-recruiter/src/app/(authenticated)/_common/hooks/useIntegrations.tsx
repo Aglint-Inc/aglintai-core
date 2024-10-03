@@ -6,6 +6,7 @@ export const useIntegrations = () => {
   const query = api.integrations.read.useQuery();
   return {
     ...query,
+    data: query.data!,
     invalidate,
   };
 };

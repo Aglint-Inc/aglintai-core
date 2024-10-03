@@ -17,7 +17,10 @@ export const Location = () => {
     open: false,
     edit: -1,
   });
-  const [DeleteDialog, setDeleteDialog] = useState({
+  const [DeleteDialog, setDeleteDialog] = useState<{
+    open: boolean;
+    id: number | null;
+  }>({
     open: false,
     id: null,
   });
@@ -66,7 +69,7 @@ export const Location = () => {
                   id={loc.id}
                   location={location}
                   address={loc.line1}
-                  timeZone={selectedTimeZone?.label}
+                  timeZone={selectedTimeZone?.label || ''}
                   isHeadquarter={loc.is_headquarter}
                   onEdit={() => {
                     setAddEditDialog({ open: true, edit: loc.id });

@@ -17,7 +17,7 @@ export const cloneWorkflows = async ({
   const [request] = supabaseWrap(
     await supabaseAdmin
       .from('request')
-      .select('*,applications(*)')
+      .select('*,applications!inner(*)')
       .eq('id', request_id),
   );
   const job_id = request.applications.job_id;
@@ -25,7 +25,7 @@ export const cloneWorkflows = async ({
   const job_workflows = supabaseWrap(
     await supabaseAdmin
       .from('workflow_job_relation')
-      .select('*, workflow(*, workflow_action(*))')
+      .select('*, workflow!inner(*, workflow_action(*))')
       .eq('job_id', job_id),
     false,
   );

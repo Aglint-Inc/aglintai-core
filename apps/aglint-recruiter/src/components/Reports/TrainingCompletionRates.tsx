@@ -219,7 +219,7 @@ export default function Component() {
         </div>
         <div className='rounded-md border border-border'>
           <Table>
-            <TableHeader>
+            <TableHeader className='bg-gray-100'>
               <TableRow className='border-b border-border'>
                 <TableHead className='w-[200px]'>
                   <Button variant='ghost' onClick={() => handleSort('name')}>

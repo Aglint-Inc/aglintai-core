@@ -1,11 +1,11 @@
 import MembersAutoComplete from 'src/app/_common/components/MembersTextField';
+import { useInterviewPools } from 'src/app/_common/hooks/useInterviewPools';
 import { InterviewMode } from 'src/app/(authenticated)/jobs/[job]/(job-edit)/interview-plan/_common/components/_common/InterviewMode';
 
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import { UISwitch } from '@/components/Common/UISwitch';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { useInterviewModules } from '@/queries/interview-modules';
 import ROUTES from '@/utils/routing/routes';
 
 import {
@@ -35,7 +35,7 @@ function InterviewModeComp() {
     errorValidation: state.errorValidation,
   }));
 
-  const interviewModules = useInterviewModules();
+  const interviewModules = useInterviewPools();
 
   let optionsInterviewers: EditSessionDrawer['selectedInterviewers'] = [];
   let optionTrainees: EditSessionDrawer['trainingInterviewers'] = [];

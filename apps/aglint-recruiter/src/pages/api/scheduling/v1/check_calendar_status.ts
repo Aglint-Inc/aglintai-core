@@ -13,7 +13,7 @@ type BodyParams = {
   user_id: string;
 };
 
-const checkCalenderStatus = async (req_body: BodyParams) => {
+export const checkCalenderStatus = async (req_body: BodyParams) => {
   const { user_id } = req_body;
   const supabaseAdmin = getSupabaseServer();
   const rec_data = (
