@@ -66,7 +66,7 @@ const getComputed = getContextComputes<States>()((get, compute) => ({
   emailVisibilities: compute(
     () => [get().status],
     (status) =>
-      SafeObject.entries(EMAIL_VISIBILITIES ?? {}).reduce(
+      SafeObject.entries(EMAIL_VISIBILITIES).reduce(
         (acc, [key, value]) => {
           acc[key] = value.includes(status);
           return acc;
@@ -77,7 +77,7 @@ const getComputed = getContextComputes<States>()((get, compute) => ({
   cascadeVisibilites: compute(
     () => [get().status],
     (status) =>
-      SafeObject.entries(CASCADE_VISIBILITIES ?? {}).reduce(
+      SafeObject.entries(CASCADE_VISIBILITIES).reduce(
         (acc, [key, value]) => {
           acc[key] = value.includes(status);
           return acc;

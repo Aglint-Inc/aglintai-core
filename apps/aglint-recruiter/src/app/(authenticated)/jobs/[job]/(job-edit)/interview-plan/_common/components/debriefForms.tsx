@@ -20,7 +20,6 @@ import { type CompanyMember } from '@/queries/company-members';
 import { type CreateDebriefSession } from '@/queries/interview-plans';
 import { type InterviewSessionType } from '@/queries/interview-plans/types';
 import { type Job } from '@/queries/jobs/types';
-import { getBreakLabel } from '@/utils/getBreakLabel';
 import { SafeObject } from '@/utils/safeObject';
 import { capitalize } from '@/utils/text/textUtils';
 import { validateString } from '@/utils/validateString';

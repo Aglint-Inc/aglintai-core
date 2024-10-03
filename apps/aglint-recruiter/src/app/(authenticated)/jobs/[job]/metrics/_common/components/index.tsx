@@ -81,7 +81,7 @@ const getMatches = (
   application_match: Job['application_match'],
   total: number,
 ) => {
-  return SafeObject.entries(application_match ?? {}).reduce(
+  return SafeObject.entries(application_match!).reduce(
     (acc, [key, value]) => {
       acc[key] = {
         count: Number(value),
