@@ -8,14 +8,10 @@ import axios from 'axios';
 import { type z } from 'zod';
 
 import { type ScheduleApiDetails } from '../CandidateSchedule/types';
-import { bookRecruiterSelectedOption } from '../CandidateSchedule/utils/bookingUtils/bookRecruiterSelectedOption';
-import { fetchCandAvailForBooking } from '../CandidateSchedule/utils/bookingUtils/dbFetch/fetchCandidateAvailability';
 
 export const slackSuggestSlots = async ({
   avail_plans,
   cand_avail_rec,
-  cand_schedule_db,
-  reqProgressLogger,
   request_id,
 }: {
   avail_plans: PlanCombinationRespType[];
@@ -57,22 +53,10 @@ export const slackSuggestSlots = async ({
   > = {
     plans: no_conflict_plans,
     request_id,
-  });
-  await bookRecruiterSelectedOption(
-    {
-      availability_req_id: cand_avail_rec.id,
-      selectedOption: plan,
-      user_tz: cand_avail_rec.user_timezone,
-      request_id,
-    },
-    cand_schedule_db,
-    plan,
-    fetched_cand_details,
-  );
+  };
 
-  // await reqProgressLogger({
-  //   log: 'Successfully booked slot from candidate availability',
-  //   status: 'completed',
-  //   is_progress_step: true,
-  // });
+  await axios.post(
+    `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/onReceivingAvailReq_slack_suggestSlots`,
+    payload,
+  );
 };
