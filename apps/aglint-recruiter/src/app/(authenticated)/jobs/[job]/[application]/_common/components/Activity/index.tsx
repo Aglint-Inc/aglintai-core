@@ -9,19 +9,15 @@ import { useState } from 'react';
 
 import SlotContent from '@/components/Activities/SlotWidgets';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
-import { Loader } from '@/components/Common/Loader';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
 import { useApplicationActivity } from '../../hooks/useApplicationActivity';
 
 export const Activity = () => {
   const { push } = useRouterPro();
-  const { data, status } = useApplicationActivity();
+  const { data } = useApplicationActivity();
   const [showAll, setShowAll] = useState(false);
 
-  if (status === 'pending') return <Loader />;
-  if (status === 'error')
-    return <div className='text-red-500'>Something went wrong</div>;
   if (!data || data.length === 0)
     return (
       <div className='flex w-full items-center justify-center'>

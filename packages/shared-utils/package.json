@@ -20,6 +20,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@aglint/typescript-config": "*"
+    "@aglint/typescript-config": "*",
+    "@types/html-to-text": "^9.0.4"
   }
 }

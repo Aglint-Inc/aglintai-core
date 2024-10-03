@@ -94,30 +94,18 @@ export const allTempKeys: DatabaseEnums['email_slack_types'][] = [
   ...calenderTempKeys,
 ];
 
-export const fetchEmailTemplates = async (recruiter_id: string) => {
-  const templates = supabaseWrap(
-    await supabase
-      .from('company_email_template')
-      .select()
-      .eq('recruiter_id', recruiter_id),
-  );
-  return templates;
-};
-
 export const SortCurrentTabTemps = (
   templates: DatabaseTable['company_email_template'][],
 ) => {
   const curr_tab_temps = templates
     .filter((temp) => emailTemplateCopy[temp.type]?.heading)
     .sort((a, b) => {
-      const tempA = emailTemplateCopy[a.type]!;
-      const tempB = emailTemplateCopy[b.type]!;
-      if (tempA.heading > tempB.heading) {
-        return 1;
-      }
-      if (tempB.heading > tempA.heading) {
-        return -1;
-      }
+      const emailCopy1 = emailTemplateCopy[a.type];
+      const emailCopy2 = emailTemplateCopy[b.type];
+      if (!emailCopy1 || !emailCopy2) return 0;
+      if (!emailCopy1.heading || !emailCopy2.heading) return 0;
+      if (emailCopy1.heading > emailCopy2.heading) return 1;
+      if (emailCopy2.heading > emailCopy1.heading) return -1;
       return 0;
     });
 

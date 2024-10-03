@@ -13,119 +13,70 @@ import { Dialog, DialogContent } from '@components/ui/dialog';
 import { Progress } from '@components/ui/progress';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { AlertCircle, ArrowLeft, ArrowRight, Check } from 'lucide-react';
-import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
-import {
-  type SetupStepType,
-  useCompanySetup,
-} from '@/authenticated/hooks/useCompanySetup';
 import {
   setIsOnboardOpen,
   useOnboard,
 } from '@/authenticated/store/OnboardStore';
+import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import UITabs from '@/components/Common/UITabs';
 
+import { useOnboarding } from './context/onboarding';
 import { SetupCard } from './SetupCard';
 
 export const OnboardPending = () => {
-  const { isCompanySetupPending, companySetupProgress, companySetupSteps } =
-    useCompanySetup();
-
-  const [selectedStep, setSelectedStep] = useState<SetupStepType>(null);
-  const [selectedIndex, setSelectedIndex] = useState<number>(null);
+  const { isCompanySetupPending, companySetupSteps, isOnboardCompleteRemote } =
+    useOnboarding();
 
   const { isOpen } = useOnboard();
+
   const toggleOpen = () => {
     setIsOnboardOpen(!isOpen);
   };
 
-  useEffect(() => {
-    const firstIncompleteStep = companySetupSteps.find(
-      (step) => !step.isCompleted,
-    );
-    const firstIncompleteStepIndex = companySetupSteps.findIndex(
-      (step) => !step.isCompleted,
-    );
-    if (firstIncompleteStep) {
-      setSelectedStep(firstIncompleteStep);
-    }
-    if (firstIncompleteStepIndex) {
-      setSelectedIndex(firstIncompleteStepIndex);
-    }
-    if (isCompanySetupPending) {
-      setIsOnboardOpen(true);
-    }
-  }, [companySetupSteps]);
+  const pendingStepsCount = companySetupSteps.filter(
+    (step) => !step.isCompleted,
+  ).length;
 
-  if (companySetupSteps?.length && isCompanySetupPending)
-    return (
-      <div>
-        {!isOpen && (
-          <Button
-            onClick={toggleOpen}
-            className='fixed bottom-6 right-6 z-50 rounded-full shadow-lg'
-          >
-            Open Onboarding
-          </Button>
-        )}
-
-        <Dialog open={isOpen} onOpenChange={() => toggleOpen()}>
-          <DialogContent className='mb-0 min-w-[900px] max-w-[900px] p-0'>
-            <MainContent
-              companySetupSteps={companySetupSteps}
-              selectedStep={selectedStep}
-              setSelectedIndex={setSelectedIndex}
-              selectedIndex={selectedIndex}
-              setSelectedStep={setSelectedStep}
-              toggleOpen={toggleOpen}
-              companySetupProgress={companySetupProgress}
-            />
-          </DialogContent>
-        </Dialog>
-      </div>
-    );
-
-  return <></>;
+  return (
+    <>
+      {isOnboardCompleteRemote ? (
+        <> </>
+      ) : (
+        <>
+          {companySetupSteps?.length && isCompanySetupPending && !isOpen && (
+            <UIButton
+              className='fixed bottom-8 left-20 z-50 rounded-full shadow-lg'
+              onClick={toggleOpen}
+            >
+              Onboarding
+              <UIBadge
+                color='warning'
+                textBadge={pendingStepsCount + ' Steps Pending'}
+                className='-mr-2 ml-2 flex inline-flex rounded-full'
+              />
+            </UIButton>
+          )}
+        </>
+      )}
+      <Dialog open={isOpen} onOpenChange={() => toggleOpen()}>
+        <DialogContent className='mb-0 min-w-[900px] max-w-[900px] p-0'>
+          <MainContent />
+        </DialogContent>
+      </Dialog>
+    </>
+  );
 };
 
-const MainContent = ({
-  companySetupSteps,
-  selectedStep,
-  setSelectedIndex,
-  selectedIndex,
-  setSelectedStep,
-
-  companySetupProgress,
-}: {
-  companySetupSteps: SetupStepType[];
-  selectedStep: SetupStepType;
-  setSelectedIndex: Dispatch<SetStateAction<number>>;
-  selectedIndex: number;
-  setSelectedStep: Dispatch<SetStateAction<SetupStepType>>;
-  toggleOpen: () => void;
-  companySetupProgress: number;
-}) => {
-  const goToNextStep = () => {
-    const currentIndex = companySetupSteps.findIndex(
-      (step) => step.id === selectedStep?.id,
-    );
-    setSelectedIndex(currentIndex);
-    if (currentIndex < companySetupSteps.length - 1) {
-      setSelectedStep(companySetupSteps[currentIndex + 1]);
-      setSelectedIndex(currentIndex + 1);
-    }
-  };
-
-  const goToPreviousStep = () => {
-    const currentIndex = companySetupSteps.findIndex(
-      (step) => step.id === selectedStep?.id,
-    );
-    if (currentIndex > 0) {
-      setSelectedIndex(currentIndex - 1);
-      setSelectedStep(companySetupSteps[currentIndex - 1]);
-    }
-  };
+const MainContent = () => {
+  const {
+    companySetupSteps,
+    companySetupProgress,
+    setSelectedIndex,
+    selectedStep,
+    setSelectedStep,
+  } = useOnboarding();
 
   const tabs =
     companySetupSteps?.map((step) => ({
@@ -183,28 +134,51 @@ const MainContent = ({
         </div>
         <div className='space-y-2 md:col-span-8'>
           {selectedStep && (
-            <ScrollArea className='min-h-[500px] w-[100%]'>
+            <ScrollArea className='min-h-[420px] w-[100%]'>
               <Content selectedStep={selectedStep} />
             </ScrollArea>
           )}
         </div>
       </div>
-      <Footer
-        goToPreviousStep={goToPreviousStep}
-        goToNextStep={goToNextStep}
-        companySetupSteps={companySetupSteps}
-        selectedIndex={selectedIndex}
-      />
+      <Footer />
     </Section>
   );
 };
 
-const Footer = ({
-  goToPreviousStep,
-  goToNextStep,
-  companySetupSteps,
-  selectedIndex,
-}) => {
+const Footer = () => {
+  const {
+    currentStepMarkAsComplete,
+    finishHandler,
+    MarkAallAsComplete,
+    isCompanySetupPending,
+    selectedStep,
+    selectedIndex,
+    companySetupSteps,
+    setSelectedIndex,
+    setSelectedStep,
+  } = useOnboarding();
+
+  const goToNextStep = () => {
+    const currentIndex = companySetupSteps.findIndex(
+      (step) => step.id === selectedStep?.id,
+    );
+    setSelectedIndex(currentIndex);
+    if (currentIndex < companySetupSteps.length - 1) {
+      setSelectedStep(companySetupSteps[currentIndex + 1]);
+      setSelectedIndex(currentIndex + 1);
+    }
+  };
+
+  const goToPreviousStep = () => {
+    const currentIndex = companySetupSteps.findIndex(
+      (step) => step.id === selectedStep?.id,
+    );
+    if (currentIndex > 0) {
+      setSelectedIndex(currentIndex - 1);
+      setSelectedStep(companySetupSteps[currentIndex - 1]);
+    }
+  };
+
   return (
     <div className='flex justify-between rounded-b-md border-t bg-muted p-4'>
       <Button
@@ -216,20 +190,37 @@ const Footer = ({
         <ArrowLeft className='mr-2 h-4 w-4' /> Previous
       </Button>
       <div className='flex flex-row gap-2'>
-        <UIButton size='sm' variant='outline'>
-          Mark all complete
-        </UIButton>
-        <UIButton size='sm' variant='outline'>
-          Mark complete
-        </UIButton>
-        <UIButton
-          size='sm'
-          variant='outline'
-          onClick={goToNextStep}
-          disabled={selectedIndex === companySetupSteps.length - 1}
-        >
-          Next <ArrowRight className='ml-2 h-4 w-4' />
-        </UIButton>
+        {isCompanySetupPending && (
+          <UIButton size='sm' variant='outline' onClick={MarkAallAsComplete}>
+            Mark all complete
+          </UIButton>
+        )}
+        {!selectedStep?.isCompleted && isCompanySetupPending && (
+          <UIButton
+            size='sm'
+            variant='outline'
+            onClick={() => {
+              currentStepMarkAsComplete(selectedStep.id);
+            }}
+          >
+            Mark complete
+          </UIButton>
+        )}
+        {!isCompanySetupPending && (
+          <UIButton size='sm' onClick={finishHandler}>
+            Finish
+          </UIButton>
+        )}
+        {isCompanySetupPending && (
+          <UIButton
+            size='sm'
+            variant='outline'
+            onClick={goToNextStep}
+            disabled={selectedIndex === companySetupSteps.length - 1}
+          >
+            Next <ArrowRight className='ml-2 h-4 w-4' />
+          </UIButton>
+        )}
       </div>
     </div>
   );
