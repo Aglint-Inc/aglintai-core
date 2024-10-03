@@ -13,7 +13,7 @@ import {
 
 export class ZoomMeet {
   private recruiter_id;
-  private user_auth: TokenType;
+  private user_auth: TokenType | undefined;
   constructor(_recruiter_id: string) {
     this.recruiter_id = _recruiter_id;
   }

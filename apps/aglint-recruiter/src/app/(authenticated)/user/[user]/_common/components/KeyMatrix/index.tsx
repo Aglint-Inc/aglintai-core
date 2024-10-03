@@ -30,7 +30,7 @@ export const KeyMatrics = () => {
                 className='h-6 w-6 text-muted-foreground'
               />
             }
-            header='No Metrics'
+            description='No Metrics'
           />
         ) : (
           <div className='flex flex-row gap-3'>
@@ -58,7 +58,7 @@ const Card = ({
   color: 'green' | 'red' | 'blue';
 }) => {
   return (
-    <div className='text-left flex flex-col gap-1 p-4 bg-gray-50 rounded-md'>
+    <div className='flex flex-col gap-1 rounded-md bg-gray-50 p-4 text-left'>
       <p className={`text-2xl font-medium text-${color}-600`}>{value}</p>
       <div className='text-sm text-muted-foreground'>{title}</div>
     </div>

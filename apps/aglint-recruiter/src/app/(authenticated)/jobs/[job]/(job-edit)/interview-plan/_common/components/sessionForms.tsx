@@ -337,7 +337,7 @@ const Interview = ({
     training: trainingModuleMemberRecommendations,
   } = moduleMemberRecommendations.reduce(
     (acc, curr) => {
-      acc[curr.training_status].push(curr);
+      acc[curr.training_status].push(curr as any); //fix this
       return acc;
     },
     { qualified: [], training: [] } as {
@@ -696,7 +696,7 @@ const InterviewModulesField = ({
       placeholder='Select interview type'
       onValueChange={(value) => {
         const interview_module = data.find((m) => m.id === value);
-        if (interview_module) handleModuleChange(interview_module);
+        if (interview_module) handleModuleChange(interview_module as any); //fix this
       }}
       value={value?.id}
       menuOptions={options.map((ele) => ({
