@@ -12,16 +12,18 @@ export const HolidayTable = (
 ) => {
   const { children } = props;
   return (
-    <Table>
-      <TableHeader className='bg-gray-100'>
-        <TableRow>
-          <TableHead>Day Off</TableHead>
-          <TableHead>Date</TableHead>
-          <TableHead>Locations</TableHead>
-          <TableHead>Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>{children}</TableBody>
-    </Table>
+    <div className='rounded-lg border'>
+      <Table>
+        <TableHeader className='bg-gray-100'>
+          <TableRow>
+            <TableHead>Day Off</TableHead>
+            <TableHead>Date</TableHead>
+            <TableHead>Locations</TableHead>
+            <TableHead>Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>{children}</TableBody>
+      </Table>
+    </div>
   );
 };

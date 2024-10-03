@@ -56,7 +56,7 @@ export const OnboardPending = () => {
         {!isOpen && (
           <Button
             onClick={toggleOpen}
-            className='fixed bottom-4 right-4 z-50 rounded-full shadow-lg'
+            className='fixed bottom-6 right-6 z-50 rounded-full shadow-lg'
           >
             Open Onboarding
           </Button>

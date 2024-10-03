@@ -39,7 +39,7 @@ const LayoutBody = React.forwardRef<HTMLDivElement, LayoutBodyProps>(
     <div
       ref={ref}
       className={cn(
-        'w-full gap-[1px] overflow-hidden rounded-lg border border-border bg-gray-200 shadow-md',
+        'w-full gap-[1px] overflow-hidden rounded-lg border border-border bg-gray-200 shadow-sm',
         {
           'grid grid-cols-[max-content_1fr]': sidebarPosition === 'left',
           'grid grid-cols-[1fr_max-content]': sidebarPosition === 'right',
