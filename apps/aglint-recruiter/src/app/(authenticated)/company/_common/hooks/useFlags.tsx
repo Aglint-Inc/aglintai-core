@@ -26,7 +26,7 @@ export const useFlags = () => {
         const recruiterPref: Record<Features, boolean> = {
           SCORING: preferences.scoring,
           INTEGRATIONS: preferences.integrations,
-          ROLES: preferences.roles,
+          ROLES: Boolean(preferences.roles),
           REQUESTS: preferences.request,
           WORKFLOW: preferences.workflow,
           SCHEDULING: preferences.scheduling,

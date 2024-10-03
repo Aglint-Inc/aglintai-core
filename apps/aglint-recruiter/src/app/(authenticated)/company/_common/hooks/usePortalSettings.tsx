@@ -14,7 +14,8 @@ export const usePortalSettings = () => {
   const {
     recruiter: { name },
   } = useTenant();
-  const { banner_image, company_images } = useFlags();
+  const { banner_image, company_images: tempCompany_images } = useFlags();
+  const company_images = tempCompany_images || [];
   const { mutateAsync } = api.tenant.updateTenantPreference.useMutation();
   const [loading, setLoading] = useState<{
     isCoverUploading: boolean;
@@ -71,7 +72,7 @@ export const usePortalSettings = () => {
     try {
       setLoading((pre) => ({
         ...pre,
-        isImageRemoving: [imageUrl, ...pre.isImageRemoving],
+        isImageRemoving: [imageUrl, ...(pre.isImageRemoving || [])],
       }));
       const path = extractPath(imageUrl);
       if (path.length === 0) throw new Error('wrong image');
@@ -96,7 +97,7 @@ export const usePortalSettings = () => {
     } finally {
       setLoading((pre) => ({
         ...pre,
-        isImageRemoving: pre.isImageRemoving.filter(
+        isImageRemoving: (pre.isImageRemoving || []).filter(
           (imageRem) => imageRem !== imageUrl,
         ),
       }));
@@ -181,8 +182,12 @@ export const usePortalSettings = () => {
         .from('company-images')
         .remove(path);
 
-      if (data.length === 0 || error) {
+      if (error) {
         throw new Error(error.message);
+      }
+
+      if (data.length === 0) {
+        throw new Error('Image deleting failed');
       }
 
       await mutateAsync({

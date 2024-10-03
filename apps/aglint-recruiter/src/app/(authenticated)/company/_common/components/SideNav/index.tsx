@@ -1,25 +1,25 @@
-import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
-import { useTenant } from '@/company/hooks';
 import { useFlags } from '@/company/hooks/useFlags';
 import UITabs, { type UITabType } from '@/components/Common/UITabs';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { emailTemplateQueries } from '@/queries/email-templates';
+import { api } from '@/trpc/client';
 import ROUTES from '@/utils/routing/routes';
 
 function VerticalNav() {
-  const router = useRouterPro();
-  const { recruiter } = useTenant();
-  const emailTemplates = useQuery(
-    emailTemplateQueries.emailTemplates(recruiter.id),
-  );
-  const [firstTemplate, setFirstTemplate] = useState(null);
+  const router = useRouterPro<{
+    email: NonNullable<(typeof emailTemplates)['data']>[number]['type'];
+    tab: string;
+  }>();
+  const emailTemplates = api.email.template.get.useQuery();
+  const [firstTemplate, setFirstTemplate] = useState<
+    NonNullable<(typeof emailTemplates)['data']>[number]['type'] | null
+  >(null);
   const { checkPermissions } = useRolesAndPermissions();
 
   useEffect(() => {
-    if (emailTemplates.isFetched) {
+    if (emailTemplates.isFetched && emailTemplates?.data?.length) {
       setFirstTemplate(
         router.queryParams.email || emailTemplates.data[0]?.type,
       );
@@ -96,7 +96,9 @@ function VerticalNav() {
     <UITabs
       vertical
       tabs={filteredTabs}
-      defaultValue={(router.queryParams.tab as string) || filteredTabs[0].id}
+      defaultValue={
+        (router.queryParams.tab as unknown as string) || filteredTabs[0].id
+      }
       onClick={(value: string) => {
         router.replace(
           `${ROUTES['/company']()}?tab=${value}${value === 'emailTemplate' ? '&email=' + firstTemplate : ''}`,

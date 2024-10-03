@@ -24,9 +24,10 @@ function DeleteDepartmentsDialog({
   handleDelete: () => void;
 }) {
   const { data: usage, isPending } = useDepartmentsUsage({ id: Number(id) });
-
-  const isJobEmpty = usage?.jobUsage.length === 0;
-  const isUserEmpty = usage?.userUsage.length === 0;
+  const jobUsageCount = usage?.jobUsage.length || 0;
+  const isJobEmpty = jobUsageCount === 0;
+  const userUsageCount = usage?.userUsage.length || 0;
+  const isUserEmpty = userUsageCount === 0;
   const isBothEmpty = isJobEmpty && isUserEmpty;
 
   return (
@@ -46,8 +47,8 @@ function DeleteDepartmentsDialog({
           >
             <p className='font-bold'>Warning</p>
             <p>
-              Are you sure you want to delete the &quot;{usage.name}&quot;
-              department?
+              Are you sure you want to delete the &quot;{usage?.name || ''}
+              &quot; department?
             </p>
           </div>
         ) : (
@@ -58,26 +59,18 @@ function DeleteDepartmentsDialog({
             <p className='font-bold'>Warning</p>
             <p>
               Cannot delete this department. Disconnect the following
-              {!isUserEmpty
-                ? usage?.userUsage?.length > 1
-                  ? 'users '
-                  : 'user '
-                : ''}
+              {!isUserEmpty ? (userUsageCount > 1 ? 'users ' : 'user ') : ''}
               {!isUserEmpty && !isJobEmpty ? 'and ' : ''}
-              {!isJobEmpty
-                ? usage?.jobUsage?.length > 1
-                  ? 'jobs '
-                  : 'job'
-                : ''}
+              {!isJobEmpty ? (jobUsageCount > 1 ? 'jobs ' : 'job') : ''}
               first:
             </p>
             <ul className='mt-2 list-inside list-disc'>
               {!isUserEmpty && (
                 <li>
                   <span className='font-medium'>
-                    {`${usage?.userUsage?.length > 1 ? 'Users' : 'User'}: `}
+                    {`${userUsageCount > 1 ? 'Users' : 'User'}: `}
                   </span>
-                  {usage.userUsage
+                  {usage?.userUsage
                     .map((user) => getFullName(user.first_name, user.last_name))
                     .join(', ')}
                 </li>
@@ -85,9 +78,11 @@ function DeleteDepartmentsDialog({
               {!isJobEmpty && (
                 <li>
                   <span className='font-medium'>
-                    {`${usage?.jobUsage?.length > 1 ? 'Jobs' : 'Job'}: `}
+                    {`${jobUsageCount > 1 ? 'Jobs' : 'Job'}: `}
                   </span>
-                  {usage.jobUsage.map((job) => capitalizeAll(job)).join(', ')}
+                  {usage?.jobUsage
+                    .map((job) => capitalizeAll(job || ''))
+                    .join(', ')}
                 </li>
               )}
             </ul>

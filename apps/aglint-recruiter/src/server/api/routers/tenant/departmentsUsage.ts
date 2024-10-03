@@ -19,7 +19,7 @@ const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
       .eq('recruiter_id', ctx.recruiter_id)
       .single()
       .throwOnError()
-  ).data;
+  ).data!;
 
   if (!temp_user)
     throw new TRPCError({
@@ -33,7 +33,7 @@ const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
       .select('job_title,departments!inner(name)')
       .eq('departments.name', temp_user.name)
       .throwOnError()
-  ).data;
+  ).data!;
 
   const jobUsage = (jobs ?? []).map((job) => job.job_title);
   const userUsage = temp_user.recruiter_user;
