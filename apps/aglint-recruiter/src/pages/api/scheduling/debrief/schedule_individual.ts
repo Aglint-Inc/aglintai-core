@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable security/detect-object-injection */
 import {
-  type APIFindAvailability,
   type APIScheduleDebreif,
   type PlanCombinationRespType,
 } from '@aglint/shared-types';
@@ -9,6 +8,7 @@ import { type schema_find_availability_payload } from '@aglint/shared-utils';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { type NextApiRequest, type NextApiResponse } from 'next';
+import { type z } from 'zod';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 

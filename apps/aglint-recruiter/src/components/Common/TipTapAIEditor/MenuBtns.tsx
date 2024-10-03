@@ -14,7 +14,6 @@ import {
   AlignRight,
   Bold,
   ChevronDown,
-  ChevronUp,
   Italic,
   List,
   ListOrdered,

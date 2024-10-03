@@ -1,4 +1,3 @@
-import { type APIFindAvailability } from '@aglint/shared-types';
 import { type schema_find_availability_payload } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { useMeetingList } from '@requests/hooks';
