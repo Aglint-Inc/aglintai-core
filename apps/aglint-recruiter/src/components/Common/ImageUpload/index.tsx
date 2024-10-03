@@ -16,19 +16,18 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 
-/* eslint-disable */
 interface ImageUploadProps {
-  setImage?: (url: string) => void;
+  setImage?: (_url: string | null) => void;
   image: string;
   disabled?: boolean;
   size: number;
   table: 'company-logo' | 'recruiter-user';
-  handleUpdateProfile?: (data: {
+  handleUpdateProfile?: (_data: {
     profile_image: string | null;
   }) => Promise<void>;
   dynamic?: boolean;
-  changeCallback?: (url: string) => void;
-  error?: (hasError: boolean) => void;
+  changeCallback?: (_url: string) => void;
+  error?: (_hasError: boolean) => void;
 }
 /* eslint-enable */
 
@@ -85,7 +84,7 @@ function ImageUpload({
 
   const handleDelete = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    setImage?.(null);
+    setImage && setImage(null);
     handleUpdateProfile?.({ profile_image: null });
   };
 

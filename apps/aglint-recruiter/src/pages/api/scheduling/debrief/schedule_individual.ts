@@ -62,11 +62,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       dateRange,
     });
 
-    const firstSlot = availabilities.slots
+    const firstSlot = availabilities?.slots
       ?.flatMap((item) => item?.interview_rounds)
       ?.flatMap((item) => item?.plans);
 
-    if (availabilities.slots?.length > 0 && firstSlot?.length > 0) {
+    if (
+      firstSlot &&
+      availabilities &&
+      availabilities?.slots?.length > 0 &&
+      firstSlot?.length > 0
+    ) {
       await confirmSlot({
         task_id,
         user_tz,
@@ -85,8 +90,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).send('no availibity found');
     }
   } catch (error) {
-    console.log(error.message);
-    return res.status(500).send(error.message);
+    if (error instanceof Error) {
+      console.log(error.message);
+      return res.status(500).send(error.message);
+    }
   }
 };
 

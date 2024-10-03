@@ -49,7 +49,7 @@ const UISelectDropDown = ({
   label,
   labelSize = 'small',
   labelBold = 'default',
-  defaultLabelColor = null,
+  defaultLabelColor = '',
   id,
   className,
   fieldSize,

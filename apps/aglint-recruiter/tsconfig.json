@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "ES2023",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -92,8 +92,8 @@
         "name": "next"
       }
     ],
-    "strict": false,
-    "strictNullChecks": false
+    "strict": true,
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",
