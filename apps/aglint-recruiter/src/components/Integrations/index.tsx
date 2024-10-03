@@ -32,7 +32,7 @@ export const IntegrationsHeader = () => {
       <PageActions>
         <UIButton
           size='md'
-          variant='default'
+          variant='outline'
           leftIcon={<Send />}
           onClick={() => setIsRequestNewOpen(true)}
         >

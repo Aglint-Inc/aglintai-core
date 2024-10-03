@@ -37,7 +37,7 @@ export const RecentInterviews = () => {
                 className='h-6 w-6 text-muted-foreground'
               />
             }
-            header='No recent interviews'
+            description='No recent interviews'
           />
         )}
       </UISectionCard>
@@ -78,7 +78,7 @@ const List = ({
           View Details
         </UIButton>
       </div>     */}
-    {/* Alternate card */}
+      {/* Alternate card */}
       <div className='flex items-center gap-4 rounded-lg'>
         <div className='flex h-[94px] w-[90px] flex-col items-center justify-center rounded-sm bg-gray-50'>
           <div className='text-sm'>
