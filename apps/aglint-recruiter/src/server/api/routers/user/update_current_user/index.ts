@@ -1,6 +1,6 @@
 import { customRecruiterUserUpdateSchema } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
 
-import { privateProcedure, type PrivateProcedure } from '@/server/api/trpc';
+import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 const mutation = async ({

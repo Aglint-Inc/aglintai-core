@@ -1,16 +1,10 @@
-import { recruiterRelationUpdateSchema } from '@aglint/shared-types';
+import { customSchedulingSettingsSchema } from '@aglint/shared-types/src/db/common.zod';
 import { type CustomSchedulingSettings } from '@aglint/shared-types/src/db/tables/common.types';
 import {} from '@aglint/shared-types/src/db/tables/recruiter.types';
-import { customRecruiterUserUpdateSchema } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
 import { z } from 'zod';
 
-import {
-  privateProcedure,
-  type PrivateProcedure,
-  publicProcedure,
-} from '@/server/api/trpc';
+import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
-import { customSchedulingSettingsSchema } from '@aglint/shared-types/src/db/common.zod';
 
 const Schema = z.object({
   first_name: z.string(),

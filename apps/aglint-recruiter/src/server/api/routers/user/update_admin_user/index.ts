@@ -1,8 +1,8 @@
+import { customSchedulingSettingsUserSchema } from '@aglint/shared-types/src/db/common.zod';
 import { z } from 'zod';
 
-import { privateProcedure, type PrivateProcedure } from '@/server/api/trpc';
+import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
-import { customSchedulingSettingsUserSchema } from '@aglint/shared-types/src/db/common.zod';
 
 const Schema = z.object({
   first_name: z.string(),

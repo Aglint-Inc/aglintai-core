@@ -18,10 +18,7 @@ import { type UserAdminUpdateType } from '@/server/api/routers/user/update_admin
 import { supabase } from '@/utils/supabase/client';
 
 import { useAdminUpdate } from '../../../hooks/useAdminUpdate';
-import {
-  InterviewerDetailType,
-  useInterviewer,
-} from '../../../hooks/useInterviewer';
+import { useInterviewer } from '../../../hooks/useInterviewer';
 import { Form } from './EditAdminDialogUI';
 
 export type EditAdminFormErrorType = {
@@ -36,7 +33,7 @@ export type EditAdminFormErrorType = {
   manager: boolean;
 };
 
-type Formtype = Omit<UserAdminUpdateType, 'recruiter_id' | 'user_id'>;
+export type Formtype = Omit<UserAdminUpdateType, 'recruiter_id' | 'user_id'>;
 
 const EditAdminDialog = ({
   open,

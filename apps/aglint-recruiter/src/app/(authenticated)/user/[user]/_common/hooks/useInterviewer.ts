@@ -9,6 +9,5 @@ export const useInterviewer = () => {
   const user_id = router.params.user as string;
   const query = api.interviewers.get_user_details.useQuery({ user_id });
 
-  // if (!query.data) throw new Error('data doesnt exist');
-  return query;
+  return { ...query, data: query.data! };
 };
