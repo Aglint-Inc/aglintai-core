@@ -137,7 +137,7 @@ const SchedulingReasons = () => {
         ).map((tabKey) => (
           <TabsContent key={tabKey} value={tabKey} className='mt-0'>
             <ScheduleReasonCard
-              isMainHeadingVisible={true}
+              isMainHeadingVisible={false}
               textMainHeading={
                 <span className='font-semibold'>
                   {tabKey === 'candidate'

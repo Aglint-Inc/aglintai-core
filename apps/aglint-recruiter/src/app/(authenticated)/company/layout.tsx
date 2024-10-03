@@ -3,6 +3,7 @@ import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout'
 import {
   Section,
   SectionDescription,
+  SectionHeader,
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
@@ -14,12 +15,14 @@ const Layout = ({ children }: PropsWithChildren) => {
     <OneColumnPageLayout
       sidebar={
         <Section>
-          <SectionHeaderText>
-            <SectionTitle>Settings</SectionTitle>
-            <SectionDescription>
-              Manage your company settings and preferences.
-            </SectionDescription>
-          </SectionHeaderText>
+          <SectionHeader>
+            <SectionHeaderText>
+              <SectionTitle>Settings</SectionTitle>
+              <SectionDescription>
+                Manage your company settings and preferences.
+              </SectionDescription>
+            </SectionHeaderText>
+          </SectionHeader>
           <VerticalNav />
         </Section>
       }
