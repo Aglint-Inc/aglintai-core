@@ -48,7 +48,7 @@ const handler = async (
           reProcessApplication(supabase, application_id, candidate_file_id)
             .then((): ResumeReuploadApi['response'] => ({
               confirmation: true,
-              error: null as string,
+              error: null!,
             }))
             .catch((e: PostgrestError): ResumeReuploadApi['response'] => {
               Promise.allSettled([

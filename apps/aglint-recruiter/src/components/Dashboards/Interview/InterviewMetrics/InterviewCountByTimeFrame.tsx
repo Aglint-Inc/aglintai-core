@@ -42,7 +42,7 @@ export default function InterviewCountByTimeFrame() {
             >
               <PieChart>
                 <Pie
-                  data={[data, { name: 'Remaining', value: 100 - data.value }]}
+                  data={[data, { name: 'Remaining', value: 100 - data.value! }]}
                   cx='50%'
                   cy='50%'
                   startAngle={90}

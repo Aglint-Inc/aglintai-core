@@ -102,7 +102,10 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
               </Button>
             </p>
             <Avatar className='h-20 w-20'>
-              <AvatarImage src={recruiter?.logo} alt={recruiter?.name} />
+              <AvatarImage
+                src={recruiter?.logo ?? null!}
+                alt={recruiter?.name}
+              />
               <AvatarFallback>
                 <Building2 className='h-12 w-12' />
               </AvatarFallback>
@@ -135,7 +138,10 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
           <CardHeader>
             <div className='flex items-center space-x-4'>
               <Avatar className='h-20 w-20'>
-                <AvatarImage src={recruiter?.logo} alt={recruiter?.name} />
+                <AvatarImage
+                  src={recruiter?.logo ?? null!}
+                  alt={recruiter?.name}
+                />
                 <AvatarFallback>
                   <Building2 className='h-12 w-12' />
                 </AvatarFallback>
