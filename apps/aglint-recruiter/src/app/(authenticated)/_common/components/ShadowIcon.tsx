@@ -1,6 +1,6 @@
 import { CircleDot } from 'lucide-react';
 
-const ShadowIcon = (props) => {
+const ShadowIcon = (props: Parameters<typeof CircleDot>[0]) => {
   return <CircleDot {...props} />;
 };
 

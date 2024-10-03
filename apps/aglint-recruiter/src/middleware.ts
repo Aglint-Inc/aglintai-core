@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { createPrivateClient } from './server/db';
+import { trpcPublicRoutes } from './server/utils';
 import { server_check_permissions } from './utils/middleware/util';
 import { allowedPaths, dynamicPublicRoutes } from './utils/paths/allowed';
 import PERMISSIONS from './utils/routing/permissions';
@@ -35,6 +36,7 @@ export async function middleware(req: NextRequest) {
   // 2. Check if the current route is protected or public
   const path = req.nextUrl.pathname;
   const isPublicRoute =
+    trpcPublicRoutes(requestUrl) ||
     publicRoutes.includes(path as (typeof publicRoutes)[number]) ||
     dynamicPublicRoutes.some((regex) => regex.test(path));
 
