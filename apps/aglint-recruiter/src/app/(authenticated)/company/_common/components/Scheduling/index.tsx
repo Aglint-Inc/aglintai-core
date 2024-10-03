@@ -6,6 +6,13 @@ import {
   PageHeaderText,
   PageTitle,
 } from '@components/layouts/page-header';
+import {
+  Section,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import { cloneDeep, debounce } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { LoadMax } from 'src/app/(authenticated)/user/[user]/_common/components/ScheduleAvailability/Dialog/EditAvailabiityDialog';
@@ -269,7 +276,7 @@ function SchedulingSettings() {
               title=' Interview Load'
               description='Setup maximum interviews per day and week.'
             >
-              <div className='space-y-2'>
+              <div className='flex flex-row space-x-16'>
                 <InterviewLimitInput
                   value={dailyLimit.value}
                   max={dailyLimit.max}
@@ -289,6 +296,28 @@ function SchedulingSettings() {
               </div>
             </UISectionCard>
           )}
+
+          {keywords.map((keyword) => {
+            return (
+              <Section key={keyword.title}>
+                <SectionHeader>
+                  <SectionHeaderText>
+                    <SectionTitle className='text-base font-semibold'>
+                      {keyword.title}
+                    </SectionTitle>
+                    <SectionDescription>
+                      {keyword.description}
+                    </SectionDescription>
+                  </SectionHeaderText>
+                </SectionHeader>
+                <KeywordSection
+                  keywords={keyword.value}
+                  setKeywords={keyword.handleChange}
+                />
+              </Section>
+            );
+          })}
+
           <UISectionCard
             title='Debrief Defaults'
             description='Setup a default company wide setting for scheduling debrief sessions.'
@@ -298,23 +327,6 @@ function SchedulingSettings() {
               setValue={setDebriefDefaults}
             />
           </UISectionCard>
-
-          {keywords.map((keyword) => {
-            return (
-              <>
-                <UISectionCard
-                  key={keyword.title}
-                  title={keyword.title}
-                  description={keyword.description}
-                >
-                  <KeywordSection
-                    keywords={keyword.value}
-                    setKeywords={keyword.handleChange}
-                  />
-                </UISectionCard>
-              </>
-            );
-          })}
         </div>{' '}
       </div>
     </Page>
