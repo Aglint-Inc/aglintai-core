@@ -24,7 +24,7 @@ function PriorityList({ selectedFilter }: { selectedFilter: string }) {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-
+  const priority: Request['priority'][] = ['urgent', 'standard'];
   return (
     <>
       <UIButton variant='secondary' size='sm' onClick={handleClick}>
@@ -38,34 +38,38 @@ function PriorityList({ selectedFilter }: { selectedFilter: string }) {
         </PopoverTrigger>
         <PopoverContent className='w-[130px] p-0'>
           <div className='flex flex-col'>
-            {['urgent', 'standard'].map((priority: Request['priority']) => (
-              <PopoverClose asChild key={priority}>
-                <button
-                  className='w-full cursor-pointer p-2 hover:bg-gray-100'
-                  onClick={async () => {
-                    if (selectedFilter !== priority) {
-                      await handleAsyncUpdateRequest({
-                        payload: {
-                          requestId: requestId,
-                          requestPayload: {
-                            priority: priority,
+            {priority.map((priority) => {
+              return (
+                <PopoverClose asChild key={priority}>
+                  <button
+                    className='w-full cursor-pointer p-2 hover:bg-gray-100'
+                    onClick={async () => {
+                      if (selectedFilter !== priority) {
+                        await handleAsyncUpdateRequest({
+                          payload: {
+                            requestId: requestId,
+                            requestPayload: {
+                              priority: priority,
+                            },
                           },
-                        },
-                        loading: false,
-                        toast: false,
-                      });
-                      toast({ title: 'Request priority updated successfully' });
-                    }
-                  }}
-                >
-                  <UIBadge
-                    iconName={priority === 'urgent' ? 'ShieldAlert' : null}
-                    color={priority === 'urgent' ? 'warning' : 'neutral'}
-                    textBadge={capitalizeFirstLetter(priority)}
-                  />
-                </button>
-              </PopoverClose>
-            ))}
+                          loading: false,
+                          toast: false,
+                        });
+                        toast({
+                          title: 'Request priority updated successfully',
+                        });
+                      }
+                    }}
+                  >
+                    <UIBadge
+                      iconName={priority === 'urgent' ? 'ShieldAlert' : null}
+                      color={priority === 'urgent' ? 'warning' : 'neutral'}
+                      textBadge={capitalizeFirstLetter(priority)}
+                    />
+                  </button>
+                </PopoverClose>
+              );
+            })}
           </div>
         </PopoverContent>
       </Popover>

@@ -7,6 +7,11 @@ export function ScheduleOption({
   isCheckbox = true,
   slotSingleDaySchedule,
   slotCheckbox,
+}: {
+  isSelected?: boolean;
+  isCheckbox?: boolean;
+  slotSingleDaySchedule?: React.ReactNode;
+  slotCheckbox?: React.ReactNode;
 }) {
   return (
     <div className='relative flex w-full cursor-pointer flex-row flex-nowrap bg-white p-0'>

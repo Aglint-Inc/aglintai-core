@@ -33,7 +33,8 @@ function CalendarResourceView({
     end: string;
   };
   currentDate: string;
-  setCurrentDate: React.Dispatch<React.SetStateAction<string>>;
+  // eslint-disable-next-line no-unused-vars
+  setCurrentDate: (x: string) => void;
   isLoading?: boolean;
   businessHours?: {
     daysOfWeek: number[];
@@ -109,7 +110,8 @@ const CalendarHeader = ({
     start: string;
     end: string;
   };
-  setCurrentDate: React.Dispatch<React.SetStateAction<string>>;
+  // eslint-disable-next-line no-unused-vars
+  setCurrentDate: (x: string) => void;
   isLoading: boolean;
 }) => {
   if (isLoading) return null;

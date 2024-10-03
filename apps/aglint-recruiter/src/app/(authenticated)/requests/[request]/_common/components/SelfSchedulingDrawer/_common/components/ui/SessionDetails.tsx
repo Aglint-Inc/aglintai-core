@@ -4,12 +4,17 @@ import { Clock } from 'lucide-react';
 import UITypography from '@/components/Common/UITypography';
 
 export function SessionDetails({
-  as: _Component = 'div',
   slotSessionIcon,
   textSessionName = 'Behavioural Session',
   textSessionDuration = '30 Minutes',
   isMemberRow = true,
   slotMemberRow,
+}: {
+  slotSessionIcon?: React.ReactNode;
+  textSessionName?: string;
+  textSessionDuration?: string;
+  isMemberRow?: boolean;
+  slotMemberRow?: React.ReactNode;
 }) {
   return (
     <div className='mb-4 flex w-full flex-col flex-nowrap gap-3 rounded-lg bg-neutral-50 p-3'>
