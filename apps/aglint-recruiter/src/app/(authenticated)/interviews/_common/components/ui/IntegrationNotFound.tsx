@@ -1,7 +1,7 @@
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { AlertTriangle, Calendar } from 'lucide-react';
 import Link from 'next/link';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
@@ -14,6 +14,7 @@ export function IntegrationNotFound({
   loading: boolean;
   recruiter_id: any;
 }) {
+  const router = useRouter();
   return (
     <div className='container-lg mx-auto w-full px-4'>
       <div className='mx-auto flex w-full max-w-md flex-col items-center border-none px-6 pb-8 pt-6 text-center shadow-none'>
@@ -51,7 +52,7 @@ export function IntegrationNotFound({
                     variant='outline'
                     className='ml-2'
                     onClick={() => {
-                      Router.push(`/user/${recruiter_id}`);
+                      router.push(`/user/${recruiter_id}`);
                     }}
                   >
                     View Profile

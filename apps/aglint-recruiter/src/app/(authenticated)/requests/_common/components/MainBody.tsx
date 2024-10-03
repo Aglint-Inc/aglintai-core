@@ -80,6 +80,23 @@ const MainBody = () => {
         <Skeleton className='mb-4 h-[200px] w-full' />
       </>
     );
+
+  if (showEmptyPage)
+    return (
+      <div className='mt-40'>
+        <GlobalEmpty
+          header={'No requests found'}
+          description='Requests are created when a interview process starts for candidates.'
+          icon={
+            <LayoutList
+              strokeWidth={2}
+              className='h-6 w-6 text-muted-foreground'
+            />
+          }
+          primaryAction={!isRequestSetupPending && <CreateRequestWidget />}
+        />
+      </div>
+    );
   return (
     <div className='flex w-full overflow-hidden'>
       {/* Dock to Right Button */}
@@ -106,35 +123,37 @@ const MainBody = () => {
       )}
 
       {/* Main Content */}
-      {isRequestListEmpty || showEmptyPage ? (
-        <GlobalEmpty
-          header={'No requests found'}
-          description='Requests are created when a interview process starts for candidates.'
-          icon={
-            <LayoutList
-              strokeWidth={2}
-              className='h-6 w-6 text-muted-foreground'
-            />
-          }
-          primaryAction={!isRequestSetupPending && <CreateRequestWidget />}
+
+      <div className='w-full'>
+        <Header
+          completed_percentage={completed_percentage}
+          open_request={open_request}
+          recruiterUser={recruiter_user}
+          requestCount={requestCount}
+          setView={setView}
+          view={view}
         />
-      ) : (
-        <div>
-          <Header
-            completed_percentage={completed_percentage}
-            open_request={open_request}
-            recruiterUser={recruiter_user}
-            requestCount={requestCount}
-            setView={setView}
-            view={view}
-          />
+        {!isRequestListEmpty ? (
           <RequestListContent
             view={view}
             defaults={[...defaults]}
             isFetched={isFetched}
           />
-        </div>
-      )}
+        ) : (
+          <div className='mt-40 w-full'>
+            <GlobalEmpty
+              header={'No requests found'}
+              description='Requests are created when a interview process starts for candidates.'
+              icon={
+                <LayoutList
+                  strokeWidth={2}
+                  className='h-6 w-6 text-muted-foreground'
+                />
+              }
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

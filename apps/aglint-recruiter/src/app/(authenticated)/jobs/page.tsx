@@ -9,15 +9,23 @@ import { Body, Filter, Header } from '@/jobs/components';
 import PERMISSIONS from '@/utils/routing/permissions';
 
 import { IntegrationStoreProvider } from './_common/contexts';
+import { useJobs } from './_common/hooks';
 
 const Page = () => {
   const { checkPermissions } = useRolesAndPermissions();
+  const {
+    jobs: { data },
+    initialLoad,
+  } = useJobs();
   const router = useRouterPro();
   return (
     <IntegrationStoreProvider>
       {checkPermissions(PERMISSIONS[String(router.pathName)]) ? (
         <>
-          <OneColumnPageLayout header={<Header />} filter={<Filter />}>
+          <OneColumnPageLayout
+            header={initialLoad && data?.length !== 0 && <Header />}
+            filter={initialLoad && data?.length !== 0 && <Filter />}
+          >
             <Body />
           </OneColumnPageLayout>
         </>
