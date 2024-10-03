@@ -35,7 +35,7 @@ export function SetupCard({
   const router = useRouterPro();
 
   return (
-    <Section className='min-h-[500px] rounded-lg border-none bg-muted p-4'>
+    <Section className='min-h-[420px] rounded-lg border-none bg-muted p-4'>
       <SectionHeader>
         <SectionHeaderText>
           <SectionTitle>{title}</SectionTitle>

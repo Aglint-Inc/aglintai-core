@@ -2,12 +2,13 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { useToast } from '@components/hooks/use-toast';
 import {
   Page,
+  PageActions,
   PageDescription,
   PageHeader,
   PageHeaderText,
   PageTitle,
 } from '@components/layouts/page-header';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
@@ -117,44 +118,51 @@ const SchedulingReasons = () => {
             or reschedule their interviews.
           </PageDescription>
         </PageHeaderText>
+        <PageActions>
+          <Tabs
+            value={tab}
+            onValueChange={(value) => setTab(value as typeof tab)}
+          >
+            <TabsList className=''>
+              {(
+                Object.keys(
+                  reason,
+                ) as (keyof DatabaseTable['recruiter']['scheduling_reason'])[]
+              ).map((key) => (
+                <TabsTrigger key={key} value={key}>
+                  {capitalizeFirstLetter(key)}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
+        </PageActions>
       </PageHeader>
-      <Tabs value={tab} onValueChange={(value) => setTab(value as typeof tab)}>
-        <TabsList className=''>
-          {(
-            Object.keys(
-              reason,
-            ) as (keyof DatabaseTable['recruiter']['scheduling_reason'])[]
-          ).map((key) => (
-            <TabsTrigger key={key} value={key}>
-              {capitalizeFirstLetter(key)}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-        {(
-          Object.keys(
-            reason,
-          ) as (keyof DatabaseTable['recruiter']['scheduling_reason'])[]
-        ).map((tabKey) => (
-          <TabsContent key={tabKey} value={tabKey} className='mt-0'>
-            <ScheduleReasonCard
-              isMainHeadingVisible={false}
-              textMainHeading={
-                <span className='font-semibold'>
-                  {tabKey === 'candidate'
-                    ? 'Set Rescheduling & Cancellation Reasons'
-                    : 'Set Decline Rescheduling & Cancellation Reasons'}
-                </span>
-              }
-              textMainHelperText={
-                tabKey === 'candidate'
-                  ? 'Configure default reasons for candidates to cancel or reschedule their interviews. These reasons will be available as options for candidates when they request to modify their scheduled interviews.'
-                  : 'Set predefined reasons for interviewers to decline or request rescheduling, and for canceling interviews. These reasons will be available as options for interviewers when they need to modify their scheduled interviews.'
-              }
-              sections={getSections(tabKey)}
-            />
-          </TabsContent>
-        ))}
-      </Tabs>
+
+      {(
+        Object.keys(
+          reason,
+        ) as (keyof DatabaseTable['recruiter']['scheduling_reason'])[]
+      ).map((tabKey) => (
+        // Removed TabsContent wrapper
+        <div key={tabKey} className='mt-0'>
+          <ScheduleReasonCard
+            isMainHeadingVisible={false}
+            textMainHeading={
+              <span className='font-semibold'>
+                {tabKey === 'candidate'
+                  ? 'Set Rescheduling & Cancellation Reasons'
+                  : 'Set Decline Rescheduling & Cancellation Reasons'}
+              </span>
+            }
+            textMainHelperText={
+              tabKey === 'candidate'
+                ? 'Configure default reasons for candidates to cancel or reschedule their interviews. These reasons will be available as options for candidates when they request to modify their scheduled interviews.'
+                : 'Set predefined reasons for interviewers to decline or request rescheduling, and for canceling interviews. These reasons will be available as options for interviewers when they need to modify their scheduled interviews.'
+            }
+            sections={getSections(tabKey)}
+          />
+        </div>
+      ))}
     </Page>
   );
 };

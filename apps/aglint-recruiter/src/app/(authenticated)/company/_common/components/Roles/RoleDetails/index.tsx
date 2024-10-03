@@ -92,7 +92,7 @@ function RoleDetails({
       </div>
 
       {role.name === 'admin' && (
-        <Alert className='mb-6'>
+        <Alert variant='info'>
           <Info size={16} />
           <AlertDescription>
             You cannot edit the primary admin role permissions.
