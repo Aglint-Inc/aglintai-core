@@ -1,11 +1,11 @@
+import { useInterviewerHeaderContext } from '@interviewers/hooks/useInterviewerHeaderContext';
+
 import { useAllInterviewModules } from '@/authenticated/hooks';
 import { useTenantOfficeLocations } from '@/company/hooks';
 import FilterHeader from '@/components/Common/FilterHeader';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { useAllDepartments } from '@/queries/departments';
-
-import { useInterviewerHeaderContext } from '..';
 
 export const Header = () => {
   const { data: departments } = useAllDepartments();
