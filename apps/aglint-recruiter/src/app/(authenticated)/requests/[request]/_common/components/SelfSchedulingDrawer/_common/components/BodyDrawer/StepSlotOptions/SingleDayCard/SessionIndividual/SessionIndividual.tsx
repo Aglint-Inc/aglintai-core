@@ -1,10 +1,10 @@
 import { type PlanCombinationRespType } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
+import { getBreakLabel } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import InterviewerTrainingTypeIcon from '@/components/Common/Icons/InterviewerTrainingTypeIcon';
-import { getBreakLabel } from '@/utils/getBreakLabel';
 
 import ConflictWithHover from '../../../../ui/ConflictWithHover';
 import { MemberRow } from '../../../../ui/MemberRow';

@@ -1,4 +1,5 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
+import { getBreakLabel } from '@aglint/shared-utils';
 import {
   Section,
   SectionHeaderText,
@@ -55,7 +56,6 @@ import CollapseContent from '@/jobs/job/application/components/InterviewStage/In
 import { useEditSession } from '@/jobs/job/application/components/InterviewTab/hooks/useEditSession';
 import { type Request } from '@/queries/requests/types';
 import { type fetchSessionDetails } from '@/server/api/routers/requests/utils/requestSessions';
-import { getBreakLabel } from '@/utils/getBreakLabel';
 import ROUTES from '@/utils/routing/routes';
 import { breakDurations } from '@/utils/scheduling/const';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';

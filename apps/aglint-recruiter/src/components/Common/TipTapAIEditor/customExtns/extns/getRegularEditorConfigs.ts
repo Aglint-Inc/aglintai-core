@@ -8,7 +8,11 @@ import StarterKit from '@tiptap/starter-kit';
 
 import { EventHandler } from './pasteEventHandler';
 
-export const getRegularEditorConfigs = ({ placeholder }) => {
+export const getRegularEditorConfigs = ({
+  placeholder,
+}: {
+  placeholder?: string;
+}) => {
   return [
     StarterKit,
     EventHandler,
@@ -29,7 +33,11 @@ export const getRegularEditorConfigs = ({ placeholder }) => {
   ];
 };
 
-export const getRegularEditorNoHeadingsConfigs = ({ placeholder }) => {
+export const getRegularEditorNoHeadingsConfigs = ({
+  placeholder,
+}: {
+  placeholder?: string;
+}) => {
   return [
     StarterKit,
     EventHandler,

@@ -1,11 +1,13 @@
 import { getFullName } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { PageActions, PageHeaderText } from '@components/layouts/page-header';
+import { PageActions, PageHeaderText } from '@components/layouts/page-header';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Clock, Mail, MapPin, Phone, User } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
+import axios from '@/client/axios';
 import axios from '@/client/axios';
 import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
@@ -14,6 +16,7 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 import { useInterviewer } from '../../hooks/useInterviewer';
 import { EditUser } from './EditUser';
 
+export const Header = () => {
 export const Header = () => {
   const router = useRouterPro();
   const isInitalOpen = router.queryParams.edit_enable as unknown as boolean;

@@ -21,16 +21,17 @@ export const createPostRoute = (schema: any, func: any, is_form?: boolean) => {
       }
 
       const response = await func(parsed_body);
+      if (!response) {
+        return NextResponse.json(null, { status: 204 });
+      }
       return NextResponse.json(response, {
         status: 200,
       });
     } catch (error: any) {
       if (error instanceof ZodError) {
         const validationError = fromError(error);
-        console.error(validationError);
-        return NextResponse.json({ error: validationError }, { status: 500 });
-      }
-      if (error instanceof CApiError) {
+        return NextResponse.json({ error: validationError }, { status: 400 });
+      } else if (error instanceof CApiError) {
         console.error(error.type, error.message);
         console.error(error.type, error.structuredErrorData);
         return NextResponse.json(
@@ -38,7 +39,14 @@ export const createPostRoute = (schema: any, func: any, is_form?: boolean) => {
           { status: error.status },
         );
       }
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      console.error(error.type);
+      console.error(error.message);
+      console.error(error.stack);
+
+      return NextResponse.json(
+        { error: 'Some thing went wrong' },
+        { status: 500 },
+      );
     }
   };
   return POST;

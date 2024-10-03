@@ -46,13 +46,17 @@ export function UIDatePicker({
         <Calendar
           mode='single'
           selected={value}
-          onSelect={(date: Date) => {
-            onAccept(date);
-            closeOnSelect && setOpen(false);
+          onSelect={(date) => {
+            if (date) {
+              onAccept(date);
+              closeOnSelect && setOpen(false);
+            }
           }}
-          disabled={(date) =>
-            (minDate && date < minDate) || (maxDate && date > maxDate)
-          }
+          disabled={(date: Date) => {
+            return (minDate && date < minDate) || (maxDate && date > maxDate)
+              ? true
+              : false;
+          }}
         />
       </PopoverContent>
     </Popover>
