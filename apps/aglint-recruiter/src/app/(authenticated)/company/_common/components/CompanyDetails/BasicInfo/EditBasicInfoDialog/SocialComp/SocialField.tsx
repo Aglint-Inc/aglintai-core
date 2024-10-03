@@ -13,7 +13,7 @@ import React from 'react';
 import { socialPlaceholder } from './utils';
 
 interface SocialFieldProps {
-  socialName: string;
+  socialName: keyof typeof socialPlaceholder;
   value: string;
   disabled: boolean;
   error: { error: boolean; msg: string };

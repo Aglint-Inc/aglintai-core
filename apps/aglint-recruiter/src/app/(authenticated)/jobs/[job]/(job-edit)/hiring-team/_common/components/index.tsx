@@ -24,6 +24,7 @@ import {
   useJobForms,
 } from '@/jobs/create/components/form';
 import type { JobHiringTeamForm } from '@/jobs/types';
+import { SafeObject } from '@/utils/safeObject';
 import { validateString } from '@/utils/validateString';
 
 export const JobHiringTeamDashboard = () => {
@@ -56,7 +57,7 @@ const JobEdit = () => {
       value: hiring_manager,
       required: true,
       error: {
-        value: validateString(hiring_manager),
+        value: validateString(hiring_manager!),
         helper: 'Hiring manager must be selected',
       },
     },
@@ -64,7 +65,7 @@ const JobEdit = () => {
       value: recruiter,
       required: true,
       error: {
-        value: validateString(recruiter),
+        value: validateString(recruiter!),
         helper: 'Recruiter must be selected',
       },
     },
@@ -123,13 +124,13 @@ const JobEdit = () => {
 };
 
 const validateForms = (fields: JobHiringTeamForm) => {
-  return Object.entries(fields).reduce((acc, [key, value]) => {
+  return SafeObject.entries(fields).reduce((acc, [key, value]) => {
     acc[key] = {
       value: value.value,
       required: value.required,
       error: {
         value: value?.value
-          ? key === 'description'
+          ? key === ('description' as typeof key)
             ? value.value.length < 100
             : value.value.length === 0
           : value.required,
@@ -154,7 +155,7 @@ const JobEditForm = ({
   const initialRef = useRef(false);
   const { handleJobAsyncUpdate } = useJob();
 
-  const newJob = Object.entries(fields).reduce((acc, [key, { value }]) => {
+  const newJob = SafeObject.entries(fields).reduce((acc, [key, { value }]) => {
     acc[key] = value;
     return acc;
   }, {} as Payload);
@@ -185,7 +186,12 @@ const JobEditForm = ({
     return () => clearTimeout(timeout);
   }, [...Object.values(newJob)]);
 
-  return <JobForms fields={fields} handleChange={handleChange} />;
+  return (
+    <JobForms
+      fields={fields}
+      handleChange={handleChange as JobMetaFormProps['handleChange']}
+    />
+  );
 };
 
 const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {

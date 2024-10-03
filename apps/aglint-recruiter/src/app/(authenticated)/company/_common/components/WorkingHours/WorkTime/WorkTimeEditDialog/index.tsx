@@ -1,8 +1,10 @@
 import { dayjsLocal } from '@aglint/shared-utils';
+import type { Dispatch, SetStateAction } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 
+import type { WorkingHour } from '../ui/TimeList';
 import DayWithTime from './ui/DayWithTime';
 
 export const WorkTimeEditDialog = ({
@@ -11,6 +13,12 @@ export const WorkTimeEditDialog = ({
   workingHours,
   setWorkingHours,
   setIsOpen,
+}: {
+  isOpen: boolean;
+  handleUpdateAndClose: () => Promise<void>;
+  workingHours: WorkingHour[];
+  setWorkingHours: Dispatch<SetStateAction<WorkingHour[]>>;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
   return (
     <UIDialog

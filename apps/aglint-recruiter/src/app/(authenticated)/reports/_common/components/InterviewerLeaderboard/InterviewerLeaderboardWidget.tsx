@@ -73,7 +73,7 @@ export default function InterviewerLeaderboardWidget() {
             const tempMem =
               (members || []).find(
                 (member) => member.user_id === interviewer.user_id,
-              ) || ({} as (typeof members)[number]);
+              ) || ({} as NonNullable<typeof members>[number]);
             const mem = {
               ...tempMem,
               topSkills: [],

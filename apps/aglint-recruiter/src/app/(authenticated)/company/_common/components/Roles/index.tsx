@@ -111,7 +111,11 @@ const RoleTable = ({
         </TableHeader>
         <TableBody>
           {Object.entries(roles || {})
-            .sort((a, b) => rolesOrder[a[1].name] - rolesOrder[b[1].name])
+            .sort(
+              (a, b) =>
+                rolesOrder[a[1].name as keyof typeof rolesOrder] -
+                rolesOrder[b[1].name as keyof typeof rolesOrder],
+            )
             .map(([key, details], i) => {
               const role = details;
               const count = role.assignedTo.length;

@@ -7,7 +7,7 @@ export const getCityStateCountry = ({
 }) => {
   return (locations ?? []).reduce(
     (acc, curr, i) => {
-      let type: keyof typeof acc = null;
+      let type: keyof typeof acc = 'country';
       switch (i) {
         case 0:
           type = 'country';
@@ -20,10 +20,14 @@ export const getCityStateCountry = ({
           break;
       }
       acc[type].push(
-        curr.filter(({ status }) => status === 'active').map(({ id }) => id),
+        ...curr.filter(({ status }) => status === 'active').map(({ id }) => id),
       );
       return acc;
     },
-    { country: [], state: [], city: [] },
+    { country: [], state: [], city: [] } as {
+      country: string[];
+      state: string[];
+      city: string[];
+    },
   );
 };

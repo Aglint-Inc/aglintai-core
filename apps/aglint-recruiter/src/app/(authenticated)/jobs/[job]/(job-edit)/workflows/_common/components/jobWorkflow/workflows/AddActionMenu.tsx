@@ -84,8 +84,8 @@ const AddActionMenu = ({
                           payload: {
                             ...(action.value.payload ?? {}),
                             email: {
-                              body: templateData?.body,
-                              subject: templateData?.subject,
+                              body: templateData?.body ?? null!,
+                              subject: templateData?.subject ?? null!,
                             },
                           },
                           created_at: dayjsLocal().toISOString(),

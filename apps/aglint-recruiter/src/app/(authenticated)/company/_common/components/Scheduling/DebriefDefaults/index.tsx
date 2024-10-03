@@ -10,7 +10,6 @@ type MembersMeta = SchedulingSettingType['debrief_defaults'];
 
 type DebriefDefaultsProps = {
   value: MembersMeta;
-
   setValue: Dispatch<SetStateAction<MembersMeta>>;
 };
 
@@ -30,7 +29,8 @@ const Toggles = ({ value, setValue }: DebriefDefaultsProps) => {
     recruiting_coordinator,
     sourcer,
   } = Object.entries(value).reduce(
-    (acc, [key, value]) => {
+    (acc, [tempKey, value]) => {
+      const key = tempKey as keyof MembersMeta;
       acc[key] = (
         <>
           <div className='flex items-center gap-3'>

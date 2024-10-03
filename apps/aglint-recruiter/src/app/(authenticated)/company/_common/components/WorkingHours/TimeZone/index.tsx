@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import type { SchedulingSettingType } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
 import {
@@ -18,9 +19,7 @@ interface TimeZoneProps {
   timeZone: string;
   selectedTimeZone: TimezoneObj | null;
   setSelectedTimeZone: (value: TimezoneObj) => void;
-  handleUpdate: (data: {
-    timeZone: { tzCode: string } | null;
-  }) => Promise<void>;
+  handleUpdate: (data: Partial<SchedulingSettingType>) => Promise<void>;
 }
 
 const TimeZone: FC<TimeZoneProps> = ({
@@ -32,6 +31,7 @@ const TimeZone: FC<TimeZoneProps> = ({
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleUpdateAndClose = async () => {
+    // @ts-ignore
     await handleUpdate({ timeZone: selectedTimeZone });
     setIsPopoverOpen(false);
   };

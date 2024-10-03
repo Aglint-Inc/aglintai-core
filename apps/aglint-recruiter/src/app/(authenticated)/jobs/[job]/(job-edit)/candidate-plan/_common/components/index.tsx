@@ -1,10 +1,9 @@
-import { useParams } from 'next/navigation';
+import { useCurrentJob } from '@/job/hooks';
 
 import ReorderableInterviewPlan from './ReorderableInterviewPlan';
 
 export const CandidatePlan = () => {
-  const { job } = useParams();
-  const job_id = job as string;
+  const { job_id } = useCurrentJob();
   return (
     <div className='w-full'>
       <div className='flex flex-row justify-between'>

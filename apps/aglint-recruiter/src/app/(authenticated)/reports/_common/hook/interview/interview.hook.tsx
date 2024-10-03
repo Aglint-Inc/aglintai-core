@@ -43,14 +43,15 @@ export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
     Object.entries(groupedData).reduce(
       (acc, curr) => {
         Object.entries(curr[1]).forEach(([key, value]) => {
-          acc[key] = (acc[key] || 0) + value;
+          const tempKey = key as unknown as keyof typeof acc;
+          acc[tempKey] = (acc[tempKey] || 0) + value;
         });
         return acc;
       },
 
       {} as {
         // eslint-disable-next-line no-unused-vars
-        [key in (typeof data)[number]['status']]?: number;
+        [key in NonNullable<typeof data>[number]['status']]?: number;
       },
     ) || {},
   ).map(([name, value]) => ({
@@ -138,14 +139,17 @@ function groupByDate<T extends { [key: string]: number }>(
       const createdAtDate = new Date(curr.created_at || '');
       dateKey = getGroupKey(dateKey, createdAtDate);
       acc[dateKey] = (acc[dateKey] || { ...baseData }) as (typeof acc)[string];
-      acc[dateKey][curr.status] = acc[dateKey][curr.status] + 1;
+
+      if (curr.status) {
+        acc[dateKey][curr.status] = (acc[dateKey][curr.status] || 0) + 1;
+      }
       return acc;
     },
     {} as Record<
       string,
       {
         // eslint-disable-next-line no-unused-vars
-        [key in (typeof data)[number]['status']]?: number;
+        [key in NonNullable<(typeof data)[number]['status']>]?: number;
       }
     >,
   );

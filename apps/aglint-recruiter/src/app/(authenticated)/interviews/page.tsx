@@ -27,7 +27,7 @@ function InterviewsPage() {
     return (
       <TwoColumnPageLayout
         sidebarPosition='right'
-        sidebarWidth={600}
+        sidebarWidth={460}
         sidebar={
           <>
             <MyInterviews />

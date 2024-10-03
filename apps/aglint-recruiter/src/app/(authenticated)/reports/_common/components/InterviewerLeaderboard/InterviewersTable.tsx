@@ -98,7 +98,8 @@ function InterviewersRow({ interviewer }: InterviewersTableProps) {
   const { data: members } = useMemberList();
   const tempMem =
     (members || []).find((member) => member.user_id === interviewer.user_id) ||
-    ({} as (typeof members)[number]);
+    ({} as NonNullable<typeof members>[number]);
+
   const name = `${tempMem.first_name || ''} ${tempMem.last_name || ''}`.trim();
   return (
     <TableRow key={tempMem.email}>

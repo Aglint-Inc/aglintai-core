@@ -41,7 +41,7 @@ export function AshbyModalComp() {
   >([]);
   const [initialFetch, setInitialFetch] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
-  const apiRef = useRef(null);
+  const apiRef = useRef<HTMLInputElement | null>(null);
   const { data: allIntegrations } = useIntegrations();
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export function AshbyModalComp() {
   }, [jobs.status, allIntegrations?.ashby_key]);
 
   const fetchJobs = async () => {
-    const allJobs = await fetchAllJobs(allIntegrations?.ashby_key);
+    const allJobs = await fetchAllJobs(allIntegrations?.ashby_key ?? null!);
 
     const { data } = await supabase
       .from('public_jobs')
@@ -118,7 +118,7 @@ export function AshbyModalComp() {
   };
 
   const submitApiKey = async () => {
-    if (!apiRef.current.value) {
+    if (!apiRef.current!.value) {
       setError(true);
       return;
     }
@@ -126,7 +126,7 @@ export function AshbyModalComp() {
       setLoading(true);
       const response = await axios.post('/api/ashby/getPostings', {
         page: 1,
-        apiKey: apiRef.current.value,
+        apiKey: apiRef.current!.value,
         isInitial: true,
       });
 
@@ -136,7 +136,7 @@ export function AshbyModalComp() {
         });
         const responseRec = await axios.post('/api/ashby/saveApiKey', {
           recruiterId: recruiter.id,
-          apiKey: apiRef.current.value,
+          apiKey: apiRef.current!.value,
         });
 
         if (responseRec.status === 200 && responseRec.data[0]?.ashby_key) {

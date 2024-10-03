@@ -27,7 +27,7 @@ const ActionsContainer = ({
   const target_api_details = ACTION_TRIGGER_MAP[trigger].find(
     (t) => t.value.target_api === wAction.target_api,
   );
-  const copy_details = target_api_details.name;
+  const copy_details = target_api_details!.name;
 
   return (
     <div className='rounded-md bg-secondary p-4'>
@@ -81,7 +81,7 @@ const ActionsContainer = ({
                 payload: {
                   ...wAction.payload,
                   email: {
-                    ...wAction.payload.email,
+                    ...wAction.payload.email!,
                     body: bodyStr,
                   },
                 },
@@ -93,7 +93,7 @@ const ActionsContainer = ({
                 payload: {
                   ...wAction.payload,
                   email: {
-                    ...wAction.payload.email,
+                    ...wAction.payload.email!,
                     subject: subjectStr,
                   },
                 },
@@ -126,7 +126,7 @@ const ActionsContainer = ({
                   payload: {
                     ...wAction.payload,
                     email: {
-                      ...wAction.payload.email,
+                      ...wAction.payload.email!,
                       body: bodyStr,
                     },
                   },
@@ -138,13 +138,13 @@ const ActionsContainer = ({
                   payload: {
                     ...wAction.payload,
                     email: {
-                      ...wAction.payload.email,
+                      ...wAction.payload.email!,
                       subject: subjectStr,
                     },
                   },
                 });
               },
-              targetAPI: agentInstructionEmailTargetApi[wAction.target_api],
+              targetAPI: agentInstructionEmailTargetApi[wAction.target_api]!,
             },
           }}
         />

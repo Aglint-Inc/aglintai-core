@@ -17,6 +17,10 @@ import {
 import type { Applications } from '@/job/types';
 import { capitalize } from '@/utils/text/textUtils';
 
+type Params = NonNullable<
+  Parameters<typeof FilterHeader>[0]['filters']
+>[number];
+
 export const Filters = () => {
   const { isShowFeature } = useFlags();
   const {
@@ -66,6 +70,7 @@ export const Filters = () => {
     () =>
       (interviewPlans ?? []).reduce((acc, { name, interview_session }) => {
         if ((interview_session ?? []).length)
+          //@ts-ignore
           acc[name] = (interview_session ?? []).map(({ name: label, id }) => ({
             id,
             label,
@@ -75,27 +80,33 @@ export const Filters = () => {
     [interviewPlans, capitalize],
   );
 
-  const resumeMatchFilter: Parameters<
-    typeof FilterHeader
-  >[0]['filters'][number] = isScoringEnabled && {
-    name: 'Resume match',
-    value: application_match,
-    type: 'filter',
-    icon: <></>,
-    setValue: (newValue: typeof application_match) =>
-      actions.setApplication_match(newValue),
-    options: application_matchOptions,
-  };
+  const resumeMatchFilter: Params = (
+    isScoringEnabled
+      ? {
+          name: 'Resume match',
+          value: application_match,
+          type: 'filter',
+          icon: <></>,
+          setValue: (newValue: string[]) =>
+            actions.setApplication_match(newValue as typeof application_match),
+          options: application_matchOptions,
+        }
+      : null
+  )!;
 
-  const badgesFilter: Parameters<typeof FilterHeader>[0]['filters'][number] =
-    isScoringEnabled && {
-      name: 'Badges',
-      value: badges,
-      type: 'filter',
-      icon: <></>,
-      setValue: (newValue: typeof badges) => actions.setBadges(newValue),
-      options: badgesOptions,
-    };
+  const badgesFilter: Params = (
+    isScoringEnabled
+      ? {
+          name: 'Badges',
+          value: badges,
+          type: 'filter',
+          icon: <></>,
+          setValue: (newValue: string[]) =>
+            actions.setBadges(newValue as typeof badges),
+          options: badgesOptions,
+        }
+      : null
+  )!;
 
   // const bookmarkedButton: Parameters<
   //   typeof FilterHeader
@@ -106,7 +117,7 @@ export const Filters = () => {
   //   name: 'Bookmarked',
   //   onClick: () => actions.setBookmarked(!bookmarked),
   // };
-  const Locations: Parameters<typeof FilterHeader>[0]['filters'][number] = {
+  const Locations: Params = {
     type: 'nested-filter',
     name: 'Locations',
     options: filterLocations?.data ?? {},
@@ -123,7 +134,7 @@ export const Filters = () => {
     },
   };
 
-  const interviewPlan: Parameters<typeof FilterHeader>[0]['filters'][number] = {
+  const interviewPlan: Params = {
     type: 'nested-filter',
     name: 'Interview Plan',
     options: interviewPlanOptions ?? {},
@@ -174,7 +185,7 @@ export const Filters = () => {
       sort={safeSort}
       isResetAll={true}
       search={{
-        value: search,
+        value: search!,
         setValue: (newValue: typeof search) => actions.setSearch(newValue),
         placeholder: 'Search candidate',
       }}

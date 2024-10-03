@@ -1,5 +1,5 @@
 import { DialogDescription } from '@components/ui/dialog';
-import { useState } from 'react';
+import { type Dispatch, type SetStateAction, useState } from 'react';
 
 import { usePortalSettings } from '@/company/hooks/usePortalSettings';
 import { UIButton } from '@/components/Common/UIButton';
@@ -7,7 +7,13 @@ import UIDialog from '@/components/Common/UIDialog';
 
 import ImagesUpload from './ImagesUpload';
 
-export const SliderImageUploadDialog = ({ isDialogOpen, setIsDialogOpen }) => {
+export const SliderImageUploadDialog = ({
+  isDialogOpen,
+  setIsDialogOpen,
+}: {
+  isDialogOpen: boolean;
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
+}) => {
   const { updateImages, loading } = usePortalSettings();
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   return (

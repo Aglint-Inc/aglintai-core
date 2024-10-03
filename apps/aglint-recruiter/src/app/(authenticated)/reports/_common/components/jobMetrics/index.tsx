@@ -1,3 +1,4 @@
+'use client';
 import AverageExperience from './AverageExperience';
 import AverageTenure from './AverageTenure';
 import CandidatesByExperienceChart from './CandidatesByExperienceChart';

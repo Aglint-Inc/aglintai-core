@@ -1,9 +1,5 @@
-/* eslint-disable no-unused-vars */
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
-import { template } from 'lodash';
 import { create } from 'zustand';
-
-import { type ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
 import { type useGetJobWorkflow } from '../hooks';
 import {
@@ -34,7 +30,7 @@ export const useJobAutomationStore = create<JobAutomationState>()(() => ({
   ...initialState,
 }));
 
-export const updateJobAutomationState = (isStateUpdating) => {
+export const updateJobAutomationState = (isStateUpdating: boolean) => {
   useJobAutomationStore.setState({
     isStateUpdating,
   });
@@ -72,7 +68,7 @@ export const addWaction = (
   const target_api = jobWorkflowAction.target_api;
   let email_target_api: DatabaseEnums['email_slack_types'] = target_api;
   if (email_target_api in agentInstructionEmailTargetApi) {
-    email_target_api = agentInstructionEmailTargetApi[email_target_api];
+    email_target_api = agentInstructionEmailTargetApi[email_target_api]!;
   }
 
   useJobAutomationStore.setState((state) => {
@@ -89,10 +85,10 @@ export const deleteWAcion = (id: string, workflowId: string) => {
     );
     if (
       state.jobWorkflowActions.filter(
-        (action) => action.workflow_id === parentWorkflow.id,
+        (action) => action.workflow_id === parentWorkflow!.id,
       ).length === 1
     ) {
-      parentWorkflow.is_active = false;
+      parentWorkflow!.is_active = false;
     }
     return {
       jobWorkflowActions: state.jobWorkflowActions.filter(
@@ -102,11 +98,11 @@ export const deleteWAcion = (id: string, workflowId: string) => {
         workflow.id === workflowId ? parentWorkflow : workflow,
       ),
       isWorkflowsChanged: true,
-    };
+    } as typeof state;
   });
 };
 export const initiateJobAutomationState = (
-  data: ReturnType<typeof useGetJobWorkflow>['data'],
+  data: NonNullable<ReturnType<typeof useGetJobWorkflow>['data']>,
 ) => {
   useJobAutomationStore.setState({
     company_templates:
@@ -114,7 +110,10 @@ export const initiateJobAutomationState = (
     jobWorkflowTriggers: data.job_workflows.map((workflow) => {
       return {
         ...workflow,
-        category: triggerToCategoryMap[workflow.trigger],
+        category:
+          triggerToCategoryMap[
+            workflow.trigger as keyof typeof triggerToCategoryMap
+          ],
       };
     }) as JobAutomationState['jobWorkflowTriggers'],
     jobWorkflowActions:

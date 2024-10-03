@@ -10,6 +10,7 @@ import {
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import { cn } from '@lib/utils';
+import { type RequestProps } from '@requests/types';
 import {
   Calendar,
   ChevronDown,
@@ -20,7 +21,7 @@ import {
   UserCircle,
 } from 'lucide-react';
 import Link from 'next/link';
-import React from 'react';
+import React, { type Dispatch, type SetStateAction } from 'react';
 
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
@@ -30,6 +31,12 @@ function DefaultViewRequestCard({
   isExpanded,
   setIsExpanded,
   currentUserId,
+}: {
+  props: RequestProps;
+  isCompactList: boolean;
+  isExpanded: boolean;
+  setIsExpanded: Dispatch<SetStateAction<boolean>>;
+  currentUserId: string;
 }) {
   const { mode = 'expanded' } = props;
   return (
@@ -160,8 +167,8 @@ function DefaultViewRequestCard({
                               className='hover:underline'
                             >
                               {getFullName(
-                                props.assigner.first_name,
-                                props.assigner.last_name,
+                                props?.assigner?.first_name ?? '',
+                                props?.assigner?.last_name ?? '',
                               )}
                               {props.assigner_id === currentUserId
                                 ? ' (You)'
@@ -188,10 +195,10 @@ function DefaultViewRequestCard({
                       {props.request_relation.map((ele, index) => (
                         <span key={index}>
                           <Link
-                            href={`/application/${props.application_id}/sessions/${ele.interview_session.id}`}
+                            href={`/application/${props.application_id}/sessions/${ele.interview_session?.id}`}
                             className='hover:underline'
                           >
-                            {ele.interview_session.name}
+                            {ele.interview_session?.name}
                           </Link>
                           {index < props.request_relation.length - 1 &&
                             (index === props.request_relation.length - 2
@@ -214,20 +221,20 @@ function DefaultViewRequestCard({
                 value={
                   <>
                     <Link
-                      href={`/candidate/${props.applications.candidates.id}`}
+                      href={`/candidate/${props?.applications?.candidates?.id}`}
                       className='hover:underline'
                     >
                       {getFullName(
-                        props.applications.candidates.first_name,
-                        props.applications.candidates.last_name,
+                        props?.applications?.candidates?.first_name ?? '',
+                        props?.applications?.candidates?.last_name ?? '',
                       )}
                     </Link>
                     {' for '}
                     <Link
-                      href={`/job/${props.applications.public_jobs.id}`}
+                      href={`/job/${props?.applications?.public_jobs?.id}`}
                       className='hover:underline'
                     >
-                      {props.applications.public_jobs.job_title}
+                      {props?.applications?.public_jobs?.job_title}
                     </Link>
                   </>
                 }

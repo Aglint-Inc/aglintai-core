@@ -28,7 +28,7 @@ const JobsSideNavV2 = () => {
   const [confirmText, setConfirmText] = useState('');
   const { isShowFeature } = useFlags();
   const handlePush = (route: string) => {
-    router.push(ROUTES[route]({ job: job?.id }));
+    router.push(ROUTES[route as '/jobs/[job]']({ job: (job?.id ?? null)! }));
   };
 
   const currentTab = router.pathName.split('/').filter((job) => job)[2];

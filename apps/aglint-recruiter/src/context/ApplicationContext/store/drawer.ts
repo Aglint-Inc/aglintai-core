@@ -18,7 +18,7 @@ export type DrawerSlice = {
 };
 
 const initialDrawer: Drawer = {
-  application_id: null,
+  application_id: null!,
   open: false,
 };
 
@@ -34,7 +34,7 @@ export const createDrawerSlice: CreateSlice<DrawerSlice> = (set) => ({
     set(({ drawer }) => ({ drawer: { ...drawer, open: false } }));
     setTimeout(
       () =>
-        set(({ drawer }) => ({ drawer: { ...drawer, application_id: null } })),
+        set(({ drawer }) => ({ drawer: { ...drawer, application_id: null! } })),
       200,
     );
   },

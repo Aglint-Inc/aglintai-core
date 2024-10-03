@@ -5,7 +5,7 @@ import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import dayjs from 'dayjs';
 import { ChevronDown } from 'lucide-react';
-import React, { type Dispatch, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';
@@ -43,9 +43,11 @@ function DayCardWrapper({
   isDayCheckboxNeeded?: boolean;
   isSlotCheckboxNeeded?: boolean;
   index: number;
-  setSelectedCombIds?: Dispatch<React.SetStateAction<string[]>>;
+  // eslint-disable-next-line no-unused-vars
+  setSelectedCombIds?: (x: string[]) => void;
   isAutoCollapse?: boolean;
-  setCalendarDate?: Dispatch<React.SetStateAction<string>>;
+  // eslint-disable-next-line no-unused-vars
+  setCalendarDate?: (x: string) => void;
 }) {
   const dates = item?.date_range || [];
   const header = dates
