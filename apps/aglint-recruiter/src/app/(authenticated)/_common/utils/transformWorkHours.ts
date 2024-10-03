@@ -34,7 +34,7 @@ export const transformWorkHours = (
           .format('HH:mm')
       : '24:00';
     return {
-      daysOfWeek: [dayMapping[day]],
+      daysOfWeek: [dayMapping[day as keyof typeof dayMapping]],
       startTime: convertedStartTime,
       endTime: convertedEndTime,
     };

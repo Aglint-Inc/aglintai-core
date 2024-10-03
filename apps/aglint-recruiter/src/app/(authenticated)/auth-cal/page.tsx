@@ -3,7 +3,7 @@
 import { useToast } from '@components/hooks/use-toast';
 import axios from 'axios';
 import { Loader2 } from 'lucide-react';
-import { useEffect } from 'react';
+import { type ReactNode, useEffect } from 'react';
 
 import { useTenant } from '@/company/hooks';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -74,7 +74,7 @@ const Google = () => {
   );
 };
 
-AuthHoc.publicProvider = (page) => {
+AuthHoc.publicProvider = (page: ReactNode) => {
   return <>{page}</>;
 };
 
