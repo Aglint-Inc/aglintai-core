@@ -29,7 +29,7 @@ const fetchProgress = async ({
   job_id: string | null;
   application_id: string | null;
 }) => {
-  let result = [];
+  let result: ProgressSteps = [];
   if (job_id) {
     result = await fetchProgressByJobId(job_id);
   }
@@ -39,7 +39,7 @@ const fetchProgress = async ({
   return result as ProgressSteps;
 };
 
-const fetchProgressByJobId = async (job_id) => {
+const fetchProgressByJobId = async (job_id: string) => {
   const { data, error } = await supabase
     .from('interview_progress')
     .select(

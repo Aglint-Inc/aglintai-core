@@ -10,6 +10,8 @@ import {
   Zap,
 } from 'lucide-react';
 
+import { SafeObject } from '@/utils/safeObject';
+
 import { useApplicationMeta } from '../../../hooks/useApplicationMeta';
 
 export const Badges = () => {
@@ -84,7 +86,7 @@ const getAllBadges = (badgesData: CustomApplicationBadges) => {
   };
 
   // Filter and collect all badges
-  return Object.entries(badgesData)
+  return SafeObject.entries(badgesData)
     .filter(([key, value]) => value >= BADGE_CONSTANTS[key])
     .map(([key]) => badgeIcons[key]);
 };

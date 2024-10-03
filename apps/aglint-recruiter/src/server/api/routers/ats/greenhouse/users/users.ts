@@ -18,7 +18,7 @@ const mutation = async ({ ctx, input }: ATSProcedure<typeof schema>) => {
     decryptKey: ctx.decryptKey,
     recruiter_id: input.recruiter_id,
     supabaseAdmin: adminDb,
-    last_sync: ctx.greenhouse_metadata?.last_sync?.users ?? null,
+    last_sync: ctx.greenhouse_metadata?.last_sync?.users ?? null!,
   });
 };
 

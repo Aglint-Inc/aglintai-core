@@ -177,12 +177,12 @@ const AddStageComponent = ({
   const nameField = useRef<null | HTMLInputElement>(null);
 
   const handleAddStage = async () => {
-    if (nameField.current.value.length) {
+    if (nameField.current!.value.length) {
       const interviewPlan = await handleCreatePlan(
-        nameField.current.value,
-        interviewPlans.data.length + 1,
+        nameField.current!.value,
+        interviewPlans.data!.length + 1,
       );
-      handleCreate('session', interviewPlan.id, 1);
+      handleCreate('session', interviewPlan!.id, 1);
       setForm(false);
     }
   };
@@ -285,18 +285,22 @@ const InterviewPlan = ({
     isStageDeleting,
     // handleUpdateSession,
   } = useJobInterviewPlan();
-  const index = interviewPlans.data.findIndex((plan) => plan.id === plan_id);
-  const prevData = interviewPlans?.data?.[index - 1] ?? null;
-  const data = interviewPlans?.data?.[index] ?? null;
-  const nextData = interviewPlans?.data?.[index + 1] ?? null;
+  const index = (interviewPlans.data ?? []).findIndex(
+    (plan) => plan.id === plan_id,
+  );
+  const prevData = (interviewPlans?.data?.[index - 1] ?? null)!;
+  const data = (interviewPlans?.data?.[index] ?? null)!;
+  const nextData = (interviewPlans?.data?.[index + 1] ?? null)!;
   const [expanded] = React.useState(true);
 
   const [editPlan, setEditPlan] = useState(false);
   const handleEditPlan = () => {
     setEditPlan((pre) => !pre);
   };
-  const planRef = useRef<HTMLInputElement>();
-  const [popup, setPopup] = useState<InterviewDeletePopupType['popup']>(null);
+  const planRef = useRef<HTMLInputElement | null>(null);
+  const [popup, setPopup] = useState<InterviewDeletePopupType['popup'] | null>(
+    null,
+  );
   const [popupModal, setPopupModal] = useState(false);
   const handlePopupClose = useCallback(() => {
     setPopupModal(false);
@@ -311,7 +315,7 @@ const InterviewPlan = ({
     [],
   );
   const handleDelete = useCallback(
-    async (args: DeleteInterviewSession, sessionName: '') => {
+    async (args: DeleteInterviewSession, sessionName: string) => {
       const isLoading = getLoadingState(args.session_id);
       if (!isLoading) {
         setPopupModal(true);
@@ -326,8 +330,8 @@ const InterviewPlan = ({
     },
     [],
   );
-  const sessionsCount = data.interview_session.length;
-  const sessions = data.interview_session.map((session, order) => (
+  const sessionsCount = (data?.interview_session ?? []).length;
+  const sessions = (data?.interview_session ?? []).map((session, order) => (
     <InterviewSession
       handleDeletionSession={handleDelete}
       key={session.id}
@@ -383,7 +387,7 @@ const InterviewPlan = ({
               />
               <UIButton
                 variant='default'
-                onClick={() => handleUpdatePlan(planRef.current.value)}
+                onClick={() => handleUpdatePlan(planRef.current!.value)}
               >
                 Update
               </UIButton>
@@ -475,7 +479,7 @@ const InterviewPlan = ({
         handleClose={handlePopupClose}
         handleDelete={() =>
           handleDeleteSession({
-            session_id: popup.id,
+            session_id: popup!.id,
             interview_plan_id: data.id,
           })
         }
@@ -487,23 +491,12 @@ const InterviewPlan = ({
 type InterviewSessionProps = {
   session: InterviewSessionType;
   plan_id: string;
-  handleCreate: (
-    // eslint-disable-next-line no-unused-vars
-    key: keyof DrawerType['create'],
-  ) => void;
-  handleEdit: (
-    // eslint-disable-next-line no-unused-vars
-    key: keyof DrawerType['edit'],
-    // eslint-disable-next-line no-unused-vars
-    id: string,
-  ) => void;
-  // eslint-disable-next-line no-unused-vars
-  handleDeletionSelect: (args: InterviewDeletePopupType['popup']) => void;
+  handleCreate: (_key: keyof DrawerType['create']) => void;
+  handleEdit: (_key: keyof DrawerType['edit'], _id: string) => void;
+  handleDeletionSelect: (_args: InterviewDeletePopupType['popup']) => void;
   handleDeletionSession: (
-    // eslint-disable-next-line no-unused-vars
-    args: DeleteInterviewSession,
-    // eslint-disable-next-line no-unused-vars
-    sessionName: string,
+    _args: DeleteInterviewSession,
+    _sessionName: string,
   ) => void;
   lastSession: boolean;
   index: number;
@@ -524,7 +517,7 @@ const InterviewSession = ({
   lastSession,
   index,
 }: InterviewSessionProps) => {
-  const ref = useRef(null);
+  const ref = useRef<any>(null);
 
   const queryClient = useQueryClient();
 
@@ -543,14 +536,14 @@ const InterviewSession = ({
           acc.members.push({
             ...curr.recruiter_user,
             paused: !!curr?.interview_module_relation?.pause_json,
-          });
+          } as CompanyMember);
         }
       } else {
-        if (curr.interview_module_relation.recruiter_user) {
+        if (curr.interview_module_relation?.recruiter_user) {
           acc[curr.interviewer_type].push({
             ...curr.interview_module_relation.recruiter_user,
             paused: !!curr?.interview_module_relation?.pause_json,
-          });
+          } as CompanyMember);
         }
       }
 
@@ -573,11 +566,11 @@ const InterviewSession = ({
   // );
   const isLoading = getLoadingState(session.id);
 
-  const { queryKey } = jobQueries.interview_plans({ id: job?.id });
-  const currPlan = data.find((plan) => plan.id === plan_id);
+  const { queryKey } = jobQueries.interview_plans({ id: (job?.id ?? null)! });
+  const currPlan = (data ?? []).find((plan) => plan.id === plan_id)!;
 
-  const handleMoveCard = (dragIndex, hoverIndex) => {
-    const sessions = structuredClone(currPlan?.interview_session);
+  const handleMoveCard = (dragIndex: number, hoverIndex: number) => {
+    const sessions = structuredClone(currPlan?.interview_session)!;
     const temp = structuredClone(sessions[dragIndex]);
     sessions[dragIndex] = structuredClone(sessions[hoverIndex]);
     sessions[dragIndex]['session_order'] = dragIndex + 1;
@@ -586,7 +579,7 @@ const InterviewSession = ({
     currPlan.interview_session = sessions;
     queryClient.setQueryData<InterviewPlansType>(
       queryKey,
-      data.map((item) => (item.id === plan_id ? currPlan : item)),
+      (data ?? []).map((item) => (item.id === plan_id ? currPlan : item)),
     );
   };
 
@@ -609,7 +602,7 @@ const InterviewSession = ({
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-      const clientOffset = monitor.getClientOffset();
+      const clientOffset = monitor.getClientOffset()!;
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
@@ -674,7 +667,7 @@ const InterviewSession = ({
             }}
             onClickLink={() =>
               window.open(
-                `interview-pools/${session.interview_module.id}?tab=qualified`,
+                `interview-pools/${session.interview_module!.id}?tab=qualified`,
                 '_blank',
               )
             }

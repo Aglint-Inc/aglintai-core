@@ -49,9 +49,9 @@ const Experience = () => {
 
 export { Experience };
 
-const getCompanyLogos = (data) => {
+const getCompanyLogos = (data: any) => {
   if (!data?.resume_json?.positions) return [];
-  const positions = data.resume_json.positions.slice(0, 3); // Get top 3 positions
+  const positions: any[] = data.resume_json.positions.slice(0, 3); // Get top 3 positions
   return positions.map((position, i) => (
     <ImageWithFallback
       key={i}
@@ -227,7 +227,10 @@ const timeFormat = (
 };
 
 // New function to calculate duration
-const calculateDuration = (start, end) => {
+const calculateDuration = (
+  start: Record<string, any>,
+  end: Record<string, any>,
+) => {
   if (!start) return '';
 
   const startDate = new Date(start.year || 0, (start.month || 1) - 1);
@@ -256,7 +259,15 @@ const calculateDuration = (start, end) => {
   return duration || 'Less than a month';
 };
 
-const ImageWithFallback = ({ src, alt, fallbackSrc }) => {
+const ImageWithFallback = ({
+  src,
+  alt,
+  fallbackSrc,
+}: {
+  src: string;
+  alt: string;
+  fallbackSrc: string;
+}) => {
   const [imgSrc, setImgSrc] = useState(src);
 
   return (

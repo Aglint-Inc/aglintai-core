@@ -50,7 +50,11 @@ export const Summary = () => {
                       className='border-b pb-4 last:border-b-0'
                     >
                       <h4 className='mb-2 font-semibold'>
-                        {triggerToQuestion[wTrigger.trigger]}
+                        {
+                          triggerToQuestion[
+                            wTrigger.trigger as keyof typeof triggerToQuestion
+                          ]
+                        }
                       </h4>
                       <ul className='space-y-2'>
                         {jobWorkflowActions
@@ -64,7 +68,7 @@ export const Summary = () => {
                             return (
                               <li key={action.id}>
                                 <div className='rounded bg-gray-100 p-2 text-sm'>
-                                  <p>{target_api_details.name}</p>
+                                  <p>{target_api_details!.name}</p>
                                 </div>
                               </li>
                             );

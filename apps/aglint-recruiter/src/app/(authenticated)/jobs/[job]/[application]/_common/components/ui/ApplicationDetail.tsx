@@ -1,10 +1,14 @@
 'use client';
-import React from 'react';
+import React, { type ReactNode } from 'react';
 
 export function ApplicationDetail({
   slotApplicantInfoBox,
   slotTab,
   slotTabBody,
+}: {
+  slotApplicantInfoBox: ReactNode;
+  slotTab: ReactNode;
+  slotTabBody: ReactNode;
 }) {
   return (
     <div className='h-[calc(100vh-48px)] overflow-auto'>

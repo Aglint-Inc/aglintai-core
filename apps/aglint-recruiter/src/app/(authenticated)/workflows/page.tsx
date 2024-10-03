@@ -36,7 +36,7 @@ const Page = () => {
           )
         }
       >
-        {data?.length > 0 ? (
+        {(data ?? []).length > 0 ? (
           <div className='space-y-4 px-4'>
             <Filters />
             <Content />

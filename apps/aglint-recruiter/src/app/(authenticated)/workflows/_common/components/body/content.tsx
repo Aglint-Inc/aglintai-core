@@ -69,7 +69,7 @@ const Cards = (props: {
         <OptimisticWrapper key={id} loading={loading}>
           <Card key={id} className='cursor-pointer'>
             <Link
-              href={ROUTES['/workflows/[workflow]']({ workflow: id })}
+              href={ROUTES['/workflows/[workflow]']({ workflow: id! })}
               legacyBehavior
               passHref
             >
@@ -95,7 +95,7 @@ const Cards = (props: {
                               e.preventDefault();
                               push(
                                 ROUTES['/workflows/[workflow]']({
-                                  workflow: id,
+                                  workflow: id!,
                                 }),
                               );
                             }}

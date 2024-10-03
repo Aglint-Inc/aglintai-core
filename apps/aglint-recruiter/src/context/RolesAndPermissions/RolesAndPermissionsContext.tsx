@@ -11,7 +11,7 @@ type RolesAndPermissionsContextType = {
   checkPermissions: (x: DatabaseTable['permissions']['name'][]) => boolean;
   devlinkProps: (
     x: DatabaseTable['permissions']['name'][],
-  ) => { onClick: null; style: { display: 'none' } } | object;
+  ) => { onClick: () => {}; style: { display: 'none' } } | object;
   ifAllowed: <T extends ((...args: unknown[]) => unknown) | ReactNode>(
     func: T,
     permission: DatabaseTable['permissions']['name'][],
@@ -20,8 +20,8 @@ type RolesAndPermissionsContextType = {
 };
 
 const initialValue: RolesAndPermissionsContextType = {
-  checkPermissions: (x) => false,
-  devlinkProps: () => ({ onClick: null, style: { display: 'none' } }),
+  checkPermissions: () => false,
+  devlinkProps: () => ({ onClick: () => {}, style: { display: 'none' } }),
   ifAllowed: <T extends ((...args: unknown[]) => unknown) | ReactNode>(
     func: T,
     _: DatabaseTable['permissions']['name'][],

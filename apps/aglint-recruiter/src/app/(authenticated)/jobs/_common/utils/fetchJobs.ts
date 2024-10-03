@@ -1,6 +1,6 @@
 import { supabase } from '@/utils/supabase/client';
 
-export const fetchJobs = (recruiter_id) => {
+export const fetchJobs = (recruiter_id: string) => {
   return supabase
     .from('public_jobs')
     .select()

@@ -50,7 +50,12 @@ export const AutomationAccordion = ({
       <AccordionContent>
         <div className='space-y-4'>
           {currentTriggers
-            .filter((w) => triggerToCategoryMap[w.trigger] === category)
+            .filter(
+              (w) =>
+                triggerToCategoryMap[
+                  w.trigger as keyof typeof triggerToCategoryMap
+                ] === category,
+            )
             .map((wTrigger) => {
               return (
                 <div key={wTrigger.id} className='py-2'>
@@ -59,7 +64,11 @@ export const AutomationAccordion = ({
                       htmlFor={wTrigger.id}
                       className='text-sm font-medium'
                     >
-                      {triggerToQuestion[wTrigger.trigger]}
+                      {
+                        triggerToQuestion[
+                          wTrigger.trigger as keyof typeof triggerToCategoryMap
+                        ]
+                      }
                     </Label>
                     <Switch
                       id={wTrigger.id}

@@ -28,11 +28,13 @@ const handler = async (
   // eslint-disable-next-line no-unused-vars
   const { job_id, regenerate = false } =
     req.body as JobProfileScoreApi['request'];
-  const { data: job } = await supabaseAdmin
-    .from('public_jobs')
-    .select('description, draft, job_title')
-    .eq('id', job_id)
-    .single();
+  const job = (
+    await supabaseAdmin
+      .from('public_jobs')
+      .select('description, draft, job_title')
+      .eq('id', job_id)
+      .single()
+  ).data!;
   if ((job?.draft?.description ?? '').length < 100) {
     await supabaseAdmin
       .from('public_jobs')
@@ -57,7 +59,7 @@ const handler = async (
 
 Job description: ${(job.draft as any).description}`,
     );
-    const json = await Promise.race([jsonPromise, timeoutPromise]);
+    const json: any = await Promise.race([jsonPromise, timeoutPromise]);
     const j: DatabaseTable['public_jobs']['jd_json'] = {
       title: job.job_title,
       level: json.jobLevel,
@@ -75,7 +77,7 @@ Job description: ${(job.draft as any).description}`,
       scoring_criteria_loading: false,
       parameter_weights: weights,
     };
-    if (regenerate) delete payload.jd_json;
+    if (regenerate) delete (payload as Partial<typeof payload>).jd_json;
     await supabaseAdmin.from('public_jobs').update(payload).eq('id', job_id);
     res.status(200).send();
     return;
@@ -181,7 +183,7 @@ ${responseSchema(key)}
     temperature: 0.4,
     response_format: { type: 'json_object' },
   });
-  return JSON.parse(result.choices[0].message.content);
+  return JSON.parse(result.choices[0].message.content!);
 };
 
 const GET_LEVEL_PROMPT = async (description: string) => {
@@ -206,7 +208,7 @@ ${responseLevelSchema}
     temperature: 0.4,
     response_format: { type: 'json_object' },
   });
-  return JSON.parse(result.choices[0].message.content);
+  return JSON.parse(result.choices[0].message.content!);
 };
 
 const GET_PROMPTS = (description: string) => {
