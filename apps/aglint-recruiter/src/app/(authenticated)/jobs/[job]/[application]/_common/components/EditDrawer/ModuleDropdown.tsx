@@ -28,7 +28,7 @@ function ModuleDropdown() {
       <UISelectDropDown
         label='Interview Pool'
         fullWidth
-        value={editSession.interview_session.module_id}
+        value={editSession?.interview_session.module_id}
         menuOptions={filterArchivedModules.map((module) => ({
           value: module.id,
           name: module.name,
