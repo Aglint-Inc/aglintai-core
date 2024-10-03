@@ -279,9 +279,11 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
 
 export default AddAndEditLocationDialog;
 
+// why this function exists how wrote it?
 const handleValidate = () => {
   return Object.entries(location).reduce(
-    (acc, [key, curr]) => {
+    (acc, [tempKey, curr]) => {
+      const key = tempKey as keyof typeof location;
       let value = curr.value as any;
       let error = false;
       switch (curr.validation) {
@@ -303,6 +305,7 @@ const handleValidate = () => {
       return {
         newLocation: {
           ...acc.newLocation,
+          // @ts-ignore
           [key]: { ...acc.newLocation[key], value, error },
         },
         error: error && !acc.error ? true : acc.error,

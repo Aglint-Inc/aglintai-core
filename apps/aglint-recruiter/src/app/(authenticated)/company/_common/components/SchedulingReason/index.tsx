@@ -39,7 +39,7 @@ const SchedulingReasons = () => {
   const reason = {
     ...initialReasons,
     ...(recruiter.scheduling_reason || {}),
-  };
+  } as DatabaseTable['recruiter']['scheduling_reason'];
 
   const { mutate } = api.tenant.updateTenant.useMutation({
     onError: () => {
@@ -53,10 +53,14 @@ const SchedulingReasons = () => {
   const handleUpdateReasons = async <T extends typeof tab>(
     updatedReason: Partial<DatabaseTable['recruiter']['scheduling_reason'][T]>,
   ) => {
+    const tabKey = tab as T;
     const temp = {
       ...reason,
     };
-    temp[tab] = { ...(temp[tab] || {}), ...updatedReason };
+    temp[tabKey] = {
+      ...(temp[tabKey] || {}),
+      ...updatedReason,
+    } as (typeof temp)[T];
     mutate({
       scheduling_reason: temp,
     });
@@ -64,6 +68,7 @@ const SchedulingReasons = () => {
 
   const handleAddReason = (sectionKey: string, newReason: string) => {
     const temp = { ...reason };
+    // @ts-ignore
     temp[tab][sectionKey] = [...(temp[tab][sectionKey] || []), newReason];
     handleUpdateReasons(temp[tab]);
   };
@@ -74,12 +79,14 @@ const SchedulingReasons = () => {
     newReason: string,
   ) => {
     const temp = { ...reason };
+    // @ts-ignore
     temp[tab][sectionKey][index] = newReason;
     handleUpdateReasons(temp[tab]);
   };
 
   const handleDeleteReason = (sectionKey: string, index: number) => {
     const temp = { ...reason };
+    // @ts-ignore
     temp[tab][sectionKey] = temp[tab][sectionKey].filter((_, i) => i !== index);
     handleUpdateReasons(temp[tab]);
   };
@@ -98,6 +105,7 @@ const SchedulingReasons = () => {
             ? 'decline the Session'
             : 'request for session ' + capitalizeFirstLetter(item)
         }.`,
+        // @ts-ignore
         reasons: reason[tabKey][item] || [],
         onAdd: (newReason: string) => handleAddReason(typedItem, newReason),
         onEdit: (index: number, newReason: string) =>

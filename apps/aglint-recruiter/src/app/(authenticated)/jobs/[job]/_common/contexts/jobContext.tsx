@@ -1,6 +1,5 @@
 import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import { isEqual } from 'lodash';
-import { useParams } from 'next/navigation';
 import {
   createContext,
   memo,
@@ -20,8 +19,10 @@ import {
 } from '@/job/utils';
 import { useJobs } from '@/jobs/hooks';
 import type { Job } from '@/jobs/types';
-import { jobQueries, useInvalidateJobQueries, useJobSync } from '@/queries/job';
 import {
+  jobQueries,
+  useInvalidateJobQueries,
+  useJobSync,
   useUploadApplication,
   useUploadCsv,
   useUploadResume,
@@ -32,12 +33,7 @@ import toast from '@/utils/toast';
 import { useCurrentJob } from '../hooks/useCurrentJob';
 
 const useJobContext = () => {
-  const params = useParams();
   const queryClient = useQueryClient();
-  if (!params.job)
-    throw Error(
-      'Invalid pathname, context must be wrapped to a page with [job]',
-    );
 
   const { recruiter_id, recruiter } = useTenant();
   const { isScoringEnabled } = useRolesAndPermissions();
@@ -64,7 +60,7 @@ const useJobContext = () => {
         ? ((jobs.data ?? []).find((job) => job.id === job_id) ?? null)
         : undefined,
     [jobs.data, job_id, jobs.status, jobLoad],
-  );
+  )!;
 
   const scoringCriteriaLoading =
     isScoringEnabled && job?.scoring_criteria_loading;
@@ -92,37 +88,39 @@ const useJobContext = () => {
 
   const jdValidity = !validateJd(job?.draft?.jd_json);
 
-  const status = job &&
-    jobLoad && {
-      loading: scoringCriteriaLoading,
-      description_error:
-        !scoringCriteriaLoading &&
-        validateDescription(job?.draft?.description ?? ''),
-      description_changed:
-        !job.scoring_criteria_loading &&
-        !isEqual(
-          {
-            department_id: job.draft.department_id,
-            description: job.draft.description,
-            job_title: job.draft.job_title,
-            job_type: job.draft.job_type,
-            workplace_type: job.draft.workplace_type,
-            location_id: job.draft.location_id,
-          } as Omit<Job['draft'], 'jd_json'>,
-          {
-            department_id: job.department_id,
-            description: job.description,
-            job_title: job.job_title,
-            job_type: job.job_type,
-            workplace_type: job.workplace_type,
-            location_id: job.location_id,
-          } as Omit<Job['draft'], 'jd_json'>,
-        ),
-      jd_json_error: !job.scoring_criteria_loading && !jdValidity,
-      scoring_criteria_changed:
-        !job.scoring_criteria_loading &&
-        !isEqual(job.draft.jd_json, job.jd_json),
-    };
+  const status =
+    job && jobLoad
+      ? {
+          loading: scoringCriteriaLoading,
+          description_error:
+            !scoringCriteriaLoading &&
+            validateDescription(job?.draft?.description ?? ''),
+          description_changed:
+            !job.scoring_criteria_loading &&
+            !isEqual(
+              {
+                department_id: job.draft.department_id,
+                description: job.draft.description,
+                job_title: job.draft.job_title,
+                job_type: job.draft.job_type,
+                workplace_type: job.draft.workplace_type,
+                location_id: job.draft.location_id,
+              } as Omit<Job['draft'], 'jd_json'>,
+              {
+                department_id: job.department_id,
+                description: job.description,
+                job_title: job.job_title,
+                job_type: job.job_type,
+                workplace_type: job.workplace_type,
+                location_id: job.location_id,
+              } as Omit<Job['draft'], 'jd_json'>,
+            ),
+          jd_json_error: !job.scoring_criteria_loading && !jdValidity,
+          scoring_criteria_changed:
+            !job.scoring_criteria_loading &&
+            !isEqual(job.draft.jd_json, job.jd_json),
+        }
+      : null;
 
   const interviewPlans = useQuery(jobQueries.interview_plans({ id: job_id }));
 
@@ -177,21 +175,16 @@ const useJobContext = () => {
 
   const canPublish =
     job?.status === 'draft' ||
-    status?.description_changed ||
-    status?.scoring_criteria_changed;
+    !!status?.description_changed ||
+    !!status?.scoring_criteria_changed;
 
   const handlePublish = async () => {
     if (publishStatus.publishable) {
       const {
-        // eslint-disable-next-line no-unused-vars
         processing_count: _processing_count,
-        // eslint-disable-next-line no-unused-vars
         section_count: _section_count,
-        // eslint-disable-next-line no-unused-vars
         application_match: _application_match,
-        // eslint-disable-next-line no-unused-vars
         department: _department,
-        // eslint-disable-next-line no-unused-vars
         location: _location,
         ...safeJob
       } = job;
@@ -199,7 +192,7 @@ const useJobContext = () => {
         ...safeJob,
         ...safeJob.draft,
         status: 'published',
-      });
+      } as Job['draft']);
       return true;
     } else {
       if (publishStatus.loading)
@@ -222,7 +215,7 @@ const useJobContext = () => {
     await handleJobAsyncUpdate({
       scoring_criteria_loading: true,
     });
-    await handleGenerateJd(job.id, true);
+    await handleGenerateJd(job.id!, true);
   };
 
   const { mutateAsync: handleUploadApplication } = useUploadApplication({
@@ -293,7 +286,9 @@ const useJobContext = () => {
   };
 };
 
-export const JobContext = createContext<ReturnType<typeof useJobContext>>(null);
+export const JobContext = createContext<
+  ReturnType<typeof useJobContext> | undefined
+>(undefined);
 
 export const JobProvider = memo((props: PropsWithChildren) => {
   const value = useJobContext();

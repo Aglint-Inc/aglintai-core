@@ -20,13 +20,13 @@ import { supabase } from '@/utils/supabase/client';
 function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
   const { recruiter } = useTenant();
   const { toast } = useToast();
-  const descriptionRef = useRef<HTMLInputElement>();
-  const nameRef = useRef<HTMLInputElement>();
+  const descriptionRef = useRef<HTMLInputElement | null>(null);
+  const nameRef = useRef<HTMLInputElement | null>(null);
   const [showThanks, setShowThanks] = useState(false);
   async function requestTool() {
     const recruiter_id = recruiter.id;
-    const tool_name = nameRef.current.value;
-    const description = descriptionRef.current.value;
+    const tool_name = nameRef.current!.value;
+    const description = descriptionRef.current!.value;
     if (tool_name) {
       supabase
         .from('request_integration_tool')

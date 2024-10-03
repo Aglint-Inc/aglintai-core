@@ -82,7 +82,9 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
           <TableRow
             key={job.id}
             className='cursor-pointer hover:bg-gray-50'
-            onClick={() => router.push(ROUTES['/jobs/[job]']({ job: job.id }))}
+            onClick={() =>
+              router.push(ROUTES['/jobs/[job]']({ job: job?.id ?? null! }))
+            }
           >
             <TableCell className='font-medium'>
               <div className='flex flex-col'>
@@ -140,7 +142,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                       : 'bg-gray-100 text-gray-800'
                   }`}
                 >
-                  {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
+                  {job.status!.charAt(0).toUpperCase() + job.status!.slice(1)}
                 </Badge>
                 {job.status === 'published' &&
                   (!job.jd_json || !job.description) && (
@@ -187,7 +189,7 @@ const getAtsBadge = (postedBy: string) => {
     [POSTED_BY.ASHBY]: '/images/ats/ashby-job-badge.svg',
   };
 
-  const src = badgeMap[postedBy];
+  const src = badgeMap[postedBy as keyof typeof badgeMap];
   return src ? (
     <Image
       src={src}

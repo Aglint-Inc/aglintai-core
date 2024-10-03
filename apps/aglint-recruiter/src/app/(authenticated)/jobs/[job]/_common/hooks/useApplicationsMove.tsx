@@ -33,7 +33,7 @@ export const useApplicationsMove = () => {
         ...args,
         job_id,
         applications: checklist,
-      }),
+      } as Required<typeof args>),
     [checklist],
   );
   const mutateAsync = useCallback(
@@ -45,7 +45,7 @@ export const useApplicationsMove = () => {
           ...args,
           job_id,
           applications: checklist,
-        });
+        } as Required<typeof args>);
       } catch {
         //
       }

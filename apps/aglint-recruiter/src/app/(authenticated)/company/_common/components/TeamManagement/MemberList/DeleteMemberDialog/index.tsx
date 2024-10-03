@@ -37,8 +37,9 @@ function DeleteMemberDialog({
   });
   function handelFormUpdate(val: Partial<(typeof form)['values']>) {
     const temp = structuredClone(form);
-    for (const item in val) {
-      if (val[item].length) {
+    for (const tempItem in val) {
+      const item = tempItem as keyof typeof val;
+      if (val[item]?.length) {
         temp.values[item] = val[item];
         temp.error[item] = false;
       } else {

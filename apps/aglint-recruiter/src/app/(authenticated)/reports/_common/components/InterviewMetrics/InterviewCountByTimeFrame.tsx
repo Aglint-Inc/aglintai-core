@@ -115,7 +115,10 @@ const TimeFrameToggle = ({ value, onValueChange }: TimeFrameToggleProps) => {
   return (
     <div className='flex items-center justify-between gap-3'>
       <h2 className='text-md font-semibold'>Interview Count</h2>
-      <Tabs value={value} onValueChange={onValueChange}>
+      <Tabs
+        value={value}
+        onValueChange={(val) => onValueChange(val as typeof value)}
+      >
         <TabsList>
           <TabsTrigger value='today'>Today</TabsTrigger>
           <TabsTrigger value='day'>Day</TabsTrigger>

@@ -17,3 +17,5 @@ export const useTenantMembers = () => {
     isLoading: query.isLoading,
   };
 };
+
+export type TenantMembersType = ReturnType<typeof useTenantMembers>;

@@ -54,7 +54,7 @@ export const ImportCsv: React.FC = () => {
         .map((line) => {
           const values = line.split(',');
           return headers.reduce((obj, header, index) => {
-            obj[header.trim()] = values[index]?.trim();
+            obj[header.trim() as keyof typeof obj] = values[index]?.trim();
             return obj;
           }, {} as Candidate);
         })
@@ -113,7 +113,7 @@ export const ImportCsv: React.FC = () => {
                     handleFileUpload(
                       (
                         event.target as React.ChangeEvent<HTMLInputElement>['target']
-                      ).files[0],
+                      ).files![0],
                     )
                   }
                 />
@@ -128,7 +128,9 @@ export const ImportCsv: React.FC = () => {
             <div className='flex-grow overflow-auto'>
               <FileUploader
                 handleChange={(
-                  file: React.ChangeEvent<HTMLInputElement>['target']['files'][number],
+                  file: NonNullable<
+                    React.ChangeEvent<HTMLInputElement>['target']['files']
+                  >[number],
                 ) => {
                   handleFileUpload(file);
                 }}

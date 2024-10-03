@@ -17,7 +17,7 @@ export function InterviewMode({
   isInterviewerDropVisible = true,
   isTrainingVisible = true,
   isTraineesDropVisible = true,
-}) {
+}: any) {
   return (
     <div className={cn('rounded-lg')}>
       <div className={cn('mb-4')}>

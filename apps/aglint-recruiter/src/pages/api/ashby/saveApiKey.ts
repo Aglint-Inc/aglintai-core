@@ -2,6 +2,7 @@
 import { type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
+import type { NextRequest } from 'next/server';
 
 import { encrypt } from '../encryptData';
 
@@ -10,9 +11,10 @@ const supabase = createClient<DB>(
   process.env.SUPABASE_SERVICE_ROLE_KEY,
 );
 
-export default async function handler(req, res) {
-  const apiKey = req.body.apiKey;
-  const recruiterId = req.body.recruiterId;
+export default async function handler(req: NextRequest, res: any) {
+  const body = req.body as any;
+  const apiKey = body.apiKey;
+  const recruiterId = body.recruiterId;
 
   if (!apiKey) {
     res.status(400).send('apiKey or recruiterId is missing');

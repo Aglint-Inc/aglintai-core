@@ -1,7 +1,7 @@
 'use client';
 import axios from 'axios';
 import { Loader2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 
 import { SeoPro } from '@/components/Common/SeoPro';
 import JobPostPublic from '@/components/JobPost';
@@ -42,7 +42,7 @@ function JobPost({
     })();
   }, []);
 
-  function isValidUUID(uuid) {
+  function isValidUUID(uuid: string) {
     const uuidRegex =
       /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
     return uuidRegex.test(uuid);
@@ -110,7 +110,7 @@ function JobPost({
           <Loader2 className='animate-spin' />
         </div>
       ) : valid ? (
-        <JobPostPublic post={post} recruiter={recruiter} jobs={jobs} />
+        <JobPostPublic post={post!} recruiter={recruiter!} jobs={jobs} />
       ) : (
         <div className='flex h-screen flex-col items-center justify-center'>
           <p className='mt-4 text-xl font-semibold text-gray-700'>
@@ -124,6 +124,6 @@ function JobPost({
 
 export default JobPost;
 
-JobPost.publicProvider = (page) => {
+JobPost.publicProvider = (page: ReactNode) => {
   return <>{page}</>;
 };

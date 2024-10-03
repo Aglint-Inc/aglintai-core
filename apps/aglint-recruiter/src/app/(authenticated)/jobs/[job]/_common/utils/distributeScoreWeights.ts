@@ -1,5 +1,6 @@
 import type { ScoreWheelParams } from '@/components/Common/ScoreWheel';
 import type { Job } from '@/jobs/types';
+import { SafeObject } from '@/utils/safeObject';
 
 export const distributeScoreWeights = (jd_json: Job['draft']['jd_json']) => {
   const disabled = {
@@ -12,7 +13,7 @@ export const distributeScoreWeights = (jd_json: Job['draft']['jd_json']) => {
     if (value) return { ...acc, [key]: 0 };
     return acc;
   }, {} as ScoreWheelParams);
-  const { obj } = Object.entries(disabled)
+  const { obj } = SafeObject.entries(disabled)
     .filter(([, value]) => !value)
     .reduce(
       (acc, [key], i) => {

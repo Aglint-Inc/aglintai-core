@@ -49,8 +49,8 @@ export default function ReorderableInterviewPlan({
   applicationId: string | null;
 }) {
   const { isLoading, data, refetch } = useInterviewPlanProgress({
-    job_id: jobId,
-    application_id: applicationId,
+    job_id: jobId!,
+    application_id: applicationId!,
   });
 
   const [steps, setSteps] = useState<ProgressSteps>([]);
@@ -63,18 +63,18 @@ export default function ReorderableInterviewPlan({
     application_id: applicationId,
     name: '',
     order: null,
-    id: null,
+    id: null!,
     description: '',
     is_completed: null,
   });
   const timelineRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (data?.length > 0) {
-      const sorted = data.sort((a, b) => a.order - b.order);
+    if ((data ?? []).length > 0) {
+      const sorted = (data ?? []).sort((a, b) => a.order! - b.order!);
       setSteps(sorted);
     } else setSteps([]);
-    if (data?.length === 0) setIsAddOpen(true);
+    if ((data ?? [])?.length === 0) setIsAddOpen(true);
   }, [data]);
 
   if (isLoading) {
@@ -99,7 +99,7 @@ export default function ReorderableInterviewPlan({
 
   const handleSave = async (id: number) => {
     try {
-      const updatedStep = steps.find((step) => step.id === id);
+      const updatedStep = steps.find((step) => step.id === id)!;
       const { error } = await supabase
         .from('interview_progress')
         .update({
@@ -116,7 +116,7 @@ export default function ReorderableInterviewPlan({
       await refetch();
       toast({ title: 'update successfully' });
       setEditingId(null);
-    } catch (e) {
+    } catch (e: any) {
       toast({ title: e.message, variant: 'destructive' });
     }
   };
@@ -135,8 +135,10 @@ export default function ReorderableInterviewPlan({
 
   const handleAddStep = async () => {
     if (newStep.name && newStep.description) {
-      const order_id = steps?.length
-        ? steps.sort((a, b) => a.order - b.order)[steps?.length - 1].order + 1
+      const order_id = (steps ?? []).length
+        ? (steps ?? []).sort((a, b) => a.order! - b.order!)[
+            (steps ?? []).length - 1
+          ].order! + 1
         : 1;
       const { error } = await supabase.from('interview_progress').insert({
         name: newStep.name,
@@ -155,7 +157,7 @@ export default function ReorderableInterviewPlan({
       toast({ title: 'Added successfully' });
 
       setNewStep({
-        id: null,
+        id: null!,
         name: '',
         description: '',
         icon: '',
@@ -192,7 +194,7 @@ export default function ReorderableInterviewPlan({
 
       await refetch();
       toast({ title: 'Deleted successfully' });
-    } catch (e) {
+    } catch (e: any) {
       toast({ title: e.message, variant: 'destructive' });
     }
   };
@@ -214,7 +216,7 @@ export default function ReorderableInterviewPlan({
       await refetch();
       toast({ title: 'update successfully' });
       setEditingId(null);
-    } catch (e) {
+    } catch (e: any) {
       toast({ title: e.message, variant: 'destructive' });
     }
   };
@@ -225,8 +227,8 @@ export default function ReorderableInterviewPlan({
 
     let Icon;
 
-    if (Object.prototype.hasOwnProperty.call(iconOptions, step.icon)) {
-      Icon = iconOptions[step.icon];
+    if (Object.prototype.hasOwnProperty.call(iconOptions, step.icon!)) {
+      Icon = iconOptions[step.icon as keyof typeof iconOptions];
     } else if (isNewStep) {
       if (isAddOpen) {
         Icon = steps.length > 0 ? Minus : Plus;
@@ -280,7 +282,7 @@ export default function ReorderableInterviewPlan({
               {(isEditing && !isNewStep) || (isAddOpen && isNewStep) ? (
                 <>
                   <UITextField
-                    value={isNewStep ? newStep.name : step.name}
+                    value={(isNewStep ? newStep.name : step.name)!}
                     onChange={(e) =>
                       isNewStep
                         ? setNewStep({ ...newStep, name: e.target.value })
@@ -289,7 +291,9 @@ export default function ReorderableInterviewPlan({
                     placeholder='Stage Title'
                   />
                   <UITextField
-                    value={isNewStep ? newStep.description : step.description}
+                    value={
+                      (isNewStep ? newStep.description : step.description)!
+                    }
                     onChange={(e) =>
                       isNewStep
                         ? setNewStep({
@@ -302,7 +306,7 @@ export default function ReorderableInterviewPlan({
                     className='text-gray-600'
                   />
                   <Select
-                    value={isNewStep ? newStep.icon : step.icon}
+                    value={(isNewStep ? newStep.icon : step.icon)!}
                     onValueChange={(value) =>
                       isNewStep
                         ? setNewStep({
@@ -338,7 +342,7 @@ export default function ReorderableInterviewPlan({
                         onClick={() => {
                           if (isNewStep)
                             setNewStep({
-                              id: null,
+                              id: null!,
                               name: '',
                               description: '',
                               icon: '',
@@ -443,7 +447,7 @@ export default function ReorderableInterviewPlan({
     return result;
   };
 
-  const onDragEnd = async (result) => {
+  const onDragEnd = async (result: Record<string, any>) => {
     setIsDragging(false);
     if (!result.destination) {
       return;

@@ -7,14 +7,7 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@components/ui/table';
+import { TableCell, TableRow } from '@components/ui/table';
 import { capitalize } from 'lodash';
 import { Calendar } from 'lucide-react';
 
@@ -37,54 +30,45 @@ export const ScheduleAvailabilityUI = ({
 }: Props) => {
   return (
     <div className='flex flex-col space-y-8'>
-      <Section>
-        <SectionHeader>
-          <SectionHeaderText>
-            <SectionTitle>Time Zone</SectionTitle>
-          </SectionHeaderText>
-        </SectionHeader>
-        {timeZone || ' - '}
-      </Section>
+      <div className='grid grid-cols-2 gap-8'>
+        <Section>
+          <SectionHeader>
+            <SectionHeaderText>
+              <SectionTitle>Working Hours</SectionTitle>
+              <SectionDescription>
+                Set your company&apos;s working hours to define the availability
+                for interviews.
+              </SectionDescription>
+            </SectionHeaderText>
+          </SectionHeader>
+          {workingHours.map((day, i) => (
+            <WorkHourList key={i} day={day} />
+          ))}
+        </Section>
+        <div className='flex flex-col gap-8'>
+          <Section>
+            <SectionHeader>
+              <SectionHeaderText>
+                <SectionTitle>Time Zone</SectionTitle>
+              </SectionHeaderText>
+            </SectionHeader>
+            {timeZone || ' - '}
+          </Section>
 
-      <Section>
-        <SectionHeader>
-          <SectionHeaderText>
-            <SectionTitle>Interview Load</SectionTitle>
-          </SectionHeaderText>
-        </SectionHeader>
-        <div className='flex gap-3'>
-          {interviewLoads.map((load) => {
-            return <LoadCard key={load.title} load={load} />;
-          })}
+          <Section>
+            <SectionHeader>
+              <SectionHeaderText>
+                <SectionTitle>Interview Load</SectionTitle>
+              </SectionHeaderText>
+            </SectionHeader>
+            <div className='flex gap-3'>
+              {interviewLoads.map((load) => {
+                return <LoadCard key={load.title} load={load} />;
+              })}
+            </div>
+          </Section>
         </div>
-      </Section>
-
-      <Section>
-        <SectionHeader>
-          <SectionHeaderText>
-            <SectionTitle>Working Hours</SectionTitle>
-            <SectionDescription>
-              Set your company&apos;s working hours to define the availability
-              for interviews.
-            </SectionDescription>
-          </SectionHeaderText>
-        </SectionHeader>
-        <div className='overflow-hidden rounded-md border'>
-          <Table>
-            <TableHeader>
-              <TableRow className='bg-gray-100'>
-                <TableHead>Day</TableHead>
-                <TableHead>Hours</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {workingHours.map((day, i) => (
-                <WorkHourList key={i} day={day} />
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </Section>
+      </div>
 
       <Section>
         <SectionHeader>
@@ -130,7 +114,7 @@ const WorkHourList = ({
       .format('hh:mm A');
 
   return (
-    <TableRow>
+    <TableRow className='border-none hover:bg-transparent'>
       <TableCell className='font-medium'>{capitalize(day.day)}</TableCell>
       <TableCell>{time}</TableCell>
     </TableRow>

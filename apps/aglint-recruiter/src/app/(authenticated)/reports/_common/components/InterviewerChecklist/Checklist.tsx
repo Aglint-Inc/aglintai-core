@@ -1,3 +1,4 @@
+'use client';
 import { ScrollArea } from '@components/ui/scroll-area';
 import {
   Table,
@@ -55,9 +56,9 @@ export default function Checklist() {
               <TableBody>
                 {data.map((item, index) => (
                   <TableRow key={index}>
-                    <TableCell>{item.interview_coordinator}</TableCell>
+                    <TableCell>{item.interviewing_coordinator}</TableCell>
                     <TableCell>{item.candidate_name}</TableCell>
-                    <TableCell>{item.recruiting_coordinator}</TableCell>
+                    <TableCell>{item.recruiting_coord}</TableCell>
                     <TableCell>{item.type}</TableCell>
                     <TableCell>
                       {item.self_scheduling_req ? <CheckIcon /> : <XIcon />}
@@ -66,7 +67,7 @@ export default function Checklist() {
                       {item.availability_req ? <CheckIcon /> : <XIcon />}
                     </TableCell>
                     <TableCell>
-                      {item.availability_recived ? <CheckIcon /> : <XIcon />}
+                      {item.availability_received ? <CheckIcon /> : <XIcon />}
                     </TableCell>
 
                     <TableCell>

@@ -27,15 +27,15 @@ export const useKeyPress = (key: KeyboardEvent['key']) => {
     };
   }, [handleKeyUp]);
   useEffect(() => {
-    document.addEventListener('keyleft', handleKeyLeft, false);
+    document.addEventListener('keyleft' as any, handleKeyLeft, false);
     return () => {
-      document.removeEventListener('keyleft', handleKeyLeft, false);
+      document.removeEventListener('keyleft' as any, handleKeyLeft, false);
     };
   }, [handleKeyLeft]);
   useEffect(() => {
-    document.addEventListener('keyright', handleKeyRight, false);
+    document.addEventListener('keyright' as any, handleKeyRight, false);
     return () => {
-      document.removeEventListener('keyright', handleKeyRight, false);
+      document.removeEventListener('keyright' as any, handleKeyRight, false);
     };
   }, [handleKeyRight]);
 

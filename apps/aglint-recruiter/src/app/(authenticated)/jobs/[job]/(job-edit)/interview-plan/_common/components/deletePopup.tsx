@@ -7,7 +7,7 @@ import { useJobInterviewPlan } from '../hooks';
 
 export type InterviewDeletePopupType = {
   open: boolean;
-  popup: { id: string; name: string; break: boolean };
+  popup: { id: string; name: string; break: boolean } | null;
   handleClose: () => void;
   handleDelete: () => void;
 };
@@ -20,10 +20,10 @@ const InterviewDeletePopup = ({
 }: InterviewDeletePopupType) => {
   const { handleUpdateSession } = useJobInterviewPlan();
   const onDelete = useCallback(async () => {
-    if (popup.break) {
+    if (popup?.break) {
       handleClose();
       handleUpdateSession({
-        session_id: popup.id,
+        session_id: (popup?.id ?? null)!,
         session: { break_duration: 0 },
       });
     } else {

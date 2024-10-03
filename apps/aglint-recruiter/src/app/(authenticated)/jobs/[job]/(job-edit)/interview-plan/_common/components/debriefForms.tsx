@@ -20,6 +20,7 @@ import { type CompanyMember } from '@/queries/company-members';
 import { type CreateDebriefSession } from '@/queries/interview-plans';
 import { type InterviewSessionType } from '@/queries/interview-plans/types';
 import { type Job } from '@/queries/jobs/types';
+import { SafeObject } from '@/utils/safeObject';
 import { capitalize } from '@/utils/text/textUtils';
 import { validateString } from '@/utils/validateString';
 
@@ -52,19 +53,21 @@ export const getDebriefFields = (
   props: DebriefFormProps,
   defaults?: Partial<DebriefFormProps>,
 ): DebriefFormFields => {
-  const safeFields = Object.entries(defaults ?? {}).reduce(
+  const safeFields = SafeObject.entries(defaults ?? {}).reduce(
     (acc, [key, value]) => {
-      if (value) acc[key] = structuredClone(value);
+      //@ts-ignore
+      if (value) acc[key] = structuredClone(value!);
       return acc;
     },
     structuredClone(props),
   );
   return Object.entries(safeFields).reduce((acc, [key, value]) => {
+    //@ts-ignore
     acc[key] = {
       value,
       error: false,
       helper: `${getLabel(key as keyof DebriefFormProps)} cannot be empty`,
-    } as DebriefFormFields['name'];
+    };
     return acc;
   }, {} as DebriefFormFields);
 };
@@ -206,7 +209,7 @@ const DebriefForms = ({
           <UITextArea
             name='location'
             rows={5}
-            value={location.value}
+            value={location.value!}
             error={location.error}
             helperText={location.helper}
             onChange={({ target: { value } }) =>
@@ -252,7 +255,7 @@ const Attendees = ({
 }) => {
   const { job } = useJobInterviewPlan();
   const members = getAttendeesList(job);
-  const attendees = Object.entries(members).map(([k, v]) => {
+  const attendees = SafeObject.entries(members).map(([k, v]) => {
     return (
       <Member
         key={k}
@@ -292,7 +295,7 @@ const Attendees = ({
 export const getAttendeesList = (job: Job) => {
   const { hiring_manager, recruiter, recruiting_coordinator, sourcer } = job;
   const roles = { hiring_manager, recruiter, recruiting_coordinator, sourcer };
-  return Object.entries(roles).reduce(
+  return SafeObject.entries(roles).reduce(
     (acc, [key, value]) => {
       if (value) acc[key] = value;
       return acc;
@@ -467,6 +470,7 @@ export default DebriefForms;
 export const validateDebriefSessionFields = (fields: DebriefFormFields) => {
   const safeFields = Object.entries(fields).reduce(
     (acc, [key, value]) => {
+      //@ts-ignore
       acc.newFields[key] = structuredClone(value);
       const safeKey = key as keyof DebriefFormFields;
       switch (safeKey) {
@@ -556,6 +560,7 @@ export const getDebriefSessionPayload = (
     members_meta,
   } = Object.entries(fields).reduce(
     (acc, [key, value]) => {
+      //@ts-ignore
       acc[key] = value.value;
       return acc;
     },
@@ -573,7 +578,7 @@ export const getDebriefSessionPayload = (
     name,
     members_meta,
     schedule_type,
-    location,
+    location: location!,
     break_duration: 0,
     members: safeMembers,
     session_order,

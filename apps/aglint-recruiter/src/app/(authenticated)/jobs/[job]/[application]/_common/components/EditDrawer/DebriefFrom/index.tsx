@@ -71,11 +71,11 @@ function DebriedForm() {
           <UITextField
             name={'name'}
             placeholder={'Session name'}
-            value={editSession.interview_session.name}
+            value={editSession!.interview_session.name}
             onChange={(e) =>
               setEditSession({
                 interview_session: {
-                  ...editSession.interview_session,
+                  ...editSession!.interview_session,
                   name: e.target.value,
                 },
               })
@@ -87,11 +87,11 @@ function DebriedForm() {
         </div>
         <div>
           <ScheduleTypeField
-            value={editSession.interview_session.schedule_type}
+            value={editSession!.interview_session.schedule_type}
             handleTypeChange={(value) => {
               setEditSession({
                 interview_session: {
-                  ...editSession.interview_session,
+                  ...editSession!.interview_session,
                   schedule_type: value,
                 },
               });

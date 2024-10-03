@@ -28,7 +28,7 @@ function ModuleDropdown() {
       <UISelectDropDown
         label='Interview Pool'
         fullWidth
-        value={editSession?.interview_session.module_id}
+        value={editSession?.interview_session.module_id ?? null!}
         menuOptions={filterArchivedModules.map((module) => ({
           value: module.id,
           name: module.name,
@@ -36,7 +36,7 @@ function ModuleDropdown() {
         onValueChange={(value) => {
           setEditSession({
             interview_session: {
-              ...editSession.interview_session,
+              ...editSession!.interview_session,
               module_id: value,
             },
           });

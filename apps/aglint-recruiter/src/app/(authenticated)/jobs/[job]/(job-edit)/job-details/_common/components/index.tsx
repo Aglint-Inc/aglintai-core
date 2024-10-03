@@ -26,7 +26,7 @@ import {
   type JobMetaFormProps,
   useJobForms,
 } from '@/jobs/create/components/form';
-import type { Form, JobDetailsForm } from '@/jobs/types';
+import type { Form, Job, JobDetailsForm } from '@/jobs/types';
 import { validateString } from '@/utils/validateString';
 
 export const JobDetailsDashboard = () => {
@@ -69,7 +69,6 @@ export const JobDetailsDashboard = () => {
 
 const JobEdit = () => {
   const { job } = useJob();
-  //TODO: HACK FOR BACKWARDS COMPATABILITY, DELETE THIS LATER
   const {
     job_title,
     department_id,
@@ -77,15 +76,7 @@ const JobEdit = () => {
     job_type,
     location_id,
     workplace_type,
-  } = {
-    job_title: job.job_title,
-    department_id: job.department_id,
-    description: job.description,
-    job_type: job.job_type,
-    location_id: job.location_id,
-    workplace_type: job.workplace_type,
-    ...(job.draft ?? {}),
-  };
+  } = job.draft;
   const [fields, setFields] = useState<JobDetailsForm>({
     job_title: {
       value: job_title,
@@ -96,10 +87,10 @@ const JobEdit = () => {
       },
     },
     department_id: {
-      value: department_id,
+      value: department_id!,
       required: false,
       error: {
-        value: validateString(department_id),
+        value: validateString(department_id!),
         helper: `Department name can't be empty`,
       },
     },
@@ -107,15 +98,15 @@ const JobEdit = () => {
       value: job_type,
       required: true,
       error: {
-        value: validateString(job_type),
+        value: validateString(job_type!),
         helper: `Job type can't be empty`,
       },
     },
     location_id: {
-      value: location_id,
+      value: location_id!,
       required: false,
       error: {
-        value: validateString(location_id),
+        value: validateString(location_id!),
         helper: `Job location can't be empty`,
       },
     },
@@ -123,7 +114,7 @@ const JobEdit = () => {
       value: workplace_type,
       required: true,
       error: {
-        value: validateString(workplace_type),
+        value: validateString(workplace_type!),
         helper: `Workplace type can't be empty`,
       },
     },
@@ -131,7 +122,7 @@ const JobEdit = () => {
       value: description,
       required: true,
       error: {
-        value: validateDescription(description),
+        value: validateDescription(description!),
         helper: 'Job description must have more than 100 characters',
       },
     },
@@ -176,6 +167,7 @@ const JobEdit = () => {
 
 const validateForms = (fields: JobDetailsForm) => {
   return Object.entries(fields).reduce((acc, [key, value]) => {
+    //@ts-ignore
     acc[key] = {
       value: value.value,
       required: value.required,
@@ -212,13 +204,16 @@ const JobEditForm = ({
   const { job, handleJobAsyncUpdate } = useJob();
 
   const newJob = Object.entries(fields).reduce((acc, [key, { value }]) => {
+    //@ts-ignore
     acc[key] = value;
     return acc;
   }, {} as Payload);
 
   const handleSave = async () => {
     setSaving(true);
-    await handleJobAsyncUpdate({ draft: { ...job.draft, ...newJob } });
+    await handleJobAsyncUpdate({
+      draft: { ...job.draft, ...newJob } as Job['draft'],
+    });
     setSaving(false);
     await onSave(); // Call the onSave function
   };
@@ -226,7 +221,7 @@ const JobEditForm = ({
   const handleChange = (name: keyof Form, value: string | number) => {
     const newFields = validateForms({
       ...fields,
-      [name]: { ...fields[name], value },
+      [name]: { ...fields[name as keyof typeof fields], value },
     });
     setFields(newFields);
   };
@@ -267,14 +262,14 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
     <div>
       <div className='mb-6 grid grid-cols-2 gap-4'>{forms}</div>
       <div
-        className={`rounded-md ${fields.description.error.value ? 'outline-red-500' : ''}`}
+        className={`rounded-md ${fields.description!.error.value ? 'outline-red-500' : ''}`}
       >
         {description}
       </div>
-      {fields.description.error.value && (
+      {fields.description!.error.value && (
         <div className='mt-2 flex items-center text-red-600'>
           <AlertTriangle className='mr-2 h-4 w-4' />
-          <span>{fields.description.error.helper}</span>
+          <span>{fields.description!.error.helper}</span>
         </div>
       )}
     </div>

@@ -7,11 +7,18 @@ import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 
-export const AboutCompanyDialog = ({ isDialogOpen, setIsDialogOpen }) => {
+export const AboutCompanyDialog = ({
+  isDialogOpen,
+  setIsDialogOpen,
+}: {
+  isDialogOpen: boolean;
+  // eslint-disable-next-line no-unused-vars
+  setIsDialogOpen: (x: boolean) => void;
+}) => {
   const { updateAbout, loading } = usePortalSettings();
   const { about } = useFlags();
   const [text, setText] = useState(about || '');
-  const handleTextChange = (value) => {
+  const handleTextChange = (value: string) => {
     setText(value);
   };
   return (
@@ -26,7 +33,7 @@ export const AboutCompanyDialog = ({ isDialogOpen, setIsDialogOpen }) => {
             className='w-full'
             onClick={() => {
               setText(about || '');
-              setIsDialogOpen(null); // Updated to close the dialog
+              setIsDialogOpen(false); // Updated to close the dialog
             }}
           >
             Cancel

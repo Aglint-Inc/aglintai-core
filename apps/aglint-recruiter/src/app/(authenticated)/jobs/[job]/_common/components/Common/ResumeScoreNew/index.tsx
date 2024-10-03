@@ -25,7 +25,7 @@ export const ResumeScore = ({
       case 'unparsable':
         return <WarningIcon />;
       case 'processed':
-        return <ScoreTag score={resume_score} />;
+        return <ScoreTag score={resume_score!} />;
       case 'unscorable':
         return <span className='text-muted-foreground'>---</span>;
       default:
@@ -47,9 +47,17 @@ export const ResumeScore = ({
         <TooltipTrigger asChild>
           <div className='inline-flex items-center'>{renderContent()}</div>
         </TooltipTrigger>
-        {tooltipContent[resume_processing_state] && (
+        {tooltipContent[
+          resume_processing_state as keyof typeof tooltipContent
+        ] && (
           <TooltipContent side='right' className='max-w-xs'>
-            <p>{tooltipContent[resume_processing_state]}</p>
+            <p>
+              {
+                tooltipContent[
+                  resume_processing_state as keyof typeof tooltipContent
+                ]
+              }
+            </p>
           </TooltipContent>
         )}
       </Tooltip>
