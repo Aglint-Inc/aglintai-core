@@ -3,10 +3,10 @@ import { Dialog, DialogContent } from '@components/ui/dialog';
 import { Skeleton } from '@components/ui/skeleton';
 import React, { useEffect, useMemo } from 'react';
 
-import { fetchEmailTemplates } from '@/company/components/Templates/utils';
-import { useTenant } from '@/company/hooks';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { useRequest } from '@/context/RequestContext';
+import { api } from '@/trpc/client';
+import { type emailTemplateCopy } from '@/types/companyEmailTypes';
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
 import CandidateCancelled from './CandidateCancelled';
@@ -17,23 +17,26 @@ import { SelectedActionsDetailsProvider } from './ScheduleProgress/dialogCtx';
 import WorkflowActionDialog from './ScheduleProgress/WorkflowActionDialog';
 import type { RequestProgressMapType, TriggerActionMapType } from './types';
 
+type EmailTemplate = DatabaseTable['company_email_template'] & {
+  type: keyof typeof emailTemplateCopy;
+};
+
 function RequestProgress() {
   const { request_progress, request_workflow, requestDetails } = useRequest();
+  const { data: fetchedTemps, status } = useCompanyTemplates();
   const [triggerDetails, setTriggerDetails] = React.useState<{
     trigger: DatabaseTable['workflow']['trigger'];
     interval: number;
   }>({ interval: 0, trigger: 'onRequestSchedule' });
   const [showEditDialog, setShowEditDialog] = React.useState(false);
-  const { recruiter } = useTenant();
   const [companyEmailTemplates, setCompanyEmailTemplates] = React.useState<
-    DatabaseTable['company_email_template'][]
+    EmailTemplate[]
   >([]);
   useEffect(() => {
-    (async () => {
-      const companyEmailTemplates = await fetchEmailTemplates(recruiter.id);
-      setCompanyEmailTemplates(companyEmailTemplates);
-    })();
-  }, []);
+    if (status === 'success') {
+      setCompanyEmailTemplates(fetchedTemps as EmailTemplate[]);
+    }
+  }, [status, fetchedTemps]);
 
   const reqTriggerActionsMap = useMemo(() => {
     const mp: TriggerActionMapType = {};
@@ -79,7 +82,7 @@ function RequestProgress() {
         setTriggerDetails,
       }}
     >
-      <div className='row-gap-1 mt-8'>
+      <div className='row-gap-1 mt-4'>
         <ShowCode>
           <ShowCode.When isTrue={request_progress.status === 'pending'}>
             <RequestProgressSkeleton />
@@ -197,4 +200,8 @@ const getInitialActionDetails = ({
     };
     return wAction;
   }
+};
+
+const useCompanyTemplates = () => {
+  return api.tenant.templates.read.useQuery();
 };

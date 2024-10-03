@@ -397,3 +397,8 @@ export const onRequestCancelSlackInterviewersOrganizerSchema = z.object({
   request_id: z.string(),
   event_run_id: z.number().nullish(),
 });
+
+export const onReceivingAvailReqSlackSuggestSlotsSchema = z.object({
+  plans: z.array(z.any()),
+  cand_avail_req_id: z.string(),
+});

@@ -1,5 +1,6 @@
+import { getBreakLabel } from '@aglint/shared-utils';
+
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
-import { getBreakLabel } from '@/utils/getBreakLabel';
 import { sessionDurations } from '@/utils/scheduling/const';
 
 import {

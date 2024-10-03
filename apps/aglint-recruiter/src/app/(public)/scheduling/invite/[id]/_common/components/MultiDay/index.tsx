@@ -1,3 +1,4 @@
+import { getBreakLabel } from '@aglint/shared-utils';
 import { Coffee, Plus, Repeat } from 'lucide-react';
 import React, {
   type Dispatch,
@@ -10,7 +11,6 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { getBreakLabel } from '@/utils/getBreakLabel';
 import toast from '@/utils/toast';
 
 import { SessionIcon } from '../../../../../../../../components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';

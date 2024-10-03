@@ -4,13 +4,13 @@ import {
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
 import {
-  type holidayType,
   type SchedulingSettingType,
   type SessionInterviewerApiRespType,
   type SessionInterviewerType,
   type SessionsCombType,
   type SessionSlotType,
 } from '@aglint/shared-types/src';
+import { CApiError } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { type Dayjs } from 'dayjs';
 import { nanoid } from 'nanoid';
@@ -97,7 +97,7 @@ export const getNextWorkingDay = (
   while (flag) {
     // is curr day holiday
     if (
-      comp_schedule_setting.totalDaysOff.find((holiday: holidayType) =>
+      comp_schedule_setting.totalDaysOff.find((holiday) =>
         nxt_day.isSame(dayjsLocal(holiday.date, 'DD MMM YYYY'), 'date'),
       )
     ) {
@@ -107,6 +107,9 @@ export const getNextWorkingDay = (
     const work_day = comp_schedule_setting.workingHours.find(
       (day) => nxt_day.format('dddd').toLowerCase() === day.day,
     );
+    if (!work_day) {
+      throw new CApiError('SERVER_ERROR', 'Invalid working hours');
+    }
     // is day week off
     if (!work_day.isWorkDay) {
       nxt_day = nxt_day.add(1, 'day');

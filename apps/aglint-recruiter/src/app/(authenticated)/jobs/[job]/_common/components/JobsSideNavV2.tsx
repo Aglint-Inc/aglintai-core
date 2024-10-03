@@ -87,7 +87,7 @@ const JobsSideNavV2 = () => {
 
   return (
     <>
-      <nav className='space-y-2 py-4'>
+      <nav className='space-y-2'>
         <UITabs
           vertical
           tabs={navItems.map((tab) => ({

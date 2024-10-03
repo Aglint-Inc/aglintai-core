@@ -82,7 +82,7 @@ function VerticalNav() {
       icon: 'Globe',
       show: isShowFeature('CANDIDATE_PORTAL'),
     },
-  ] as (UITabType['vertical'] & { show: boolean })[];
+  ] as (UITabType & { show: boolean })[];
 
   const filteredTabs = settingsItems
     .filter((tab) => tab.show)

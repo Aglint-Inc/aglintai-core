@@ -2,6 +2,7 @@
   "extends": "@aglint/typescript-config/base.json",
   "compilerOptions": {
     "strict": true,
+    "strictNullChecks": true,
     "lib": ["ES2020"],
     "target": "ESNext",
     "module": "ESNext",

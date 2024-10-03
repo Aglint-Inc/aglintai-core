@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { getFullName } from '@aglint/shared-utils';
+import { getBreakLabel, getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Switch } from '@components/ui/switch';
 import React, {

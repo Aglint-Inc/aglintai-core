@@ -612,19 +612,19 @@ function FeedbackCardDetails({
   handelFeedbackRequest?: any;
 }) {
   return (
-    <Card className='mb-4 w-full'>
-      <CardHeader className='flex flex-row items-center space-x-4 p-4'>
-        <Avatar className='h-12 w-12'>
+    <Card className='mb-4 w-full shadow-none border-none bg-slate-50'>
+      <CardHeader className='flex flex-row items-center gap-3 p-4'>
+        <Avatar className='h-12 w-12 rounded-md'>
           <AvatarImage
             src={int.profile_image}
             alt={getFullName(int.first_name, int.last_name)}
           />
-          <AvatarFallback>
+          <AvatarFallback className='w-12 h-12 rounded-md bg-slate-200'>
             {getFullName(int.first_name, int.last_name).charAt(0)}
           </AvatarFallback>
         </Avatar>
-        <div className='flex-grow'>
-          <h3 className='text-lg font-semibold'>
+        <div className='flex flex-col'>
+          <h3 className='text-md font-medium'>
             {getFullName(int.first_name, int.last_name)}
           </h3>
           <p className='text-sm text-muted-foreground'>{int.position}</p>
@@ -731,7 +731,7 @@ function FeedbackCardDetails({
           </div>
         )}
       </CardHeader>
-      <CardContent className='p-4'>
+      <CardContent className='p-4 pt-0'>
         <div className='space-y-2.5'>
           {int.feedback?.recommendation ? (
             <>

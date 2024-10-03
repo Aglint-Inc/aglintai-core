@@ -70,7 +70,9 @@ export function UIBadge({
   iconSize = 16,
   icon,
 }: UIBadgeProps) {
-  const IconComponent = Icons[iconName ?? ''] as React.ElementType;
+  const IconComponent = (
+    iconName ? Icons[iconName] : <></>
+  ) as React.ElementType;
 
   return (
     <Badge
