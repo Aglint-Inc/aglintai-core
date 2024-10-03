@@ -79,7 +79,7 @@ function SchedulerEmailTemps() {
       const temps = fetchedTemps;
       if (!temps || !router.isReady) return;
 
-      const curr_tab_temps = SortCurrentTabTemps(temps);
+      const curr_tab_temps = SortCurrentTabTemps(temps as EmailTemplate[]);
 
       const current_filtered_temp = curr_tab_temps.filter((t) =>
         filterEmailByTemplateTab(template_tab, t.type),

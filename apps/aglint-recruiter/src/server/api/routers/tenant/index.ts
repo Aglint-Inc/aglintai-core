@@ -7,6 +7,7 @@ import { members } from './members';
 import { officeLocations } from './officeLocations';
 import { read } from './read';
 import { roles } from './roles';
+import { templates } from './templates';
 import { updateTenant } from './updateTenant';
 import { updateTenantPreference } from './updateTenantPreference';
 
@@ -21,4 +22,5 @@ export const tenant = createTRPCRouter({
   flags,
   invite,
   'resend-invite': resend_invite,
+  templates,
 });
