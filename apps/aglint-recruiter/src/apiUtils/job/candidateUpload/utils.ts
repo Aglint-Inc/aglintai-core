@@ -44,7 +44,7 @@ const verifyCandidate = async (
   prev_error?: PostgrestError,
   signal?: CandidateDuplicationCheckAction['request']['signal'],
 ): Promise<{ duplicate: boolean; candidate: Candidate }> => {
-  if (tries++ === MAX_TRIES) throw new Error(prev_error.message);
+  if (tries++ === MAX_TRIES) throw new Error(prev_error!.message);
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 15000);
   const { data, error } = await supabase
@@ -52,7 +52,7 @@ const verifyCandidate = async (
     .select()
     .eq('recruiter_id', recruiter_id)
     .eq('email', email)
-    .abortSignal(signal)
+    .abortSignal(signal!)
     .abortSignal(timerSignal.signal);
   clearTimeout(timeout);
   if (error) {
@@ -72,7 +72,7 @@ const verifyCandidate = async (
     await verifyCandidateInJob(supabase, data[0].id, jobId);
     return { duplicate: true, candidate: data[0] };
   }
-  return { duplicate: false, candidate: null };
+  return { duplicate: false, candidate: null! };
   // console.log('NEW CANDIDATE VERIFIED');
 };
 
@@ -83,7 +83,7 @@ const createCandidate = async (
   prev_error?: PostgrestError,
   signal?: CandidateCreateAction['request']['signal'],
 ): Promise<Candidate> => {
-  if (tries++ === MAX_TRIES) throw new Error(prev_error.message);
+  if (tries++ === MAX_TRIES) throw new Error(prev_error!.message);
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 15000);
   const avatar = await emailHash(candidate.email);
@@ -92,7 +92,7 @@ const createCandidate = async (
     .from('candidates')
     .insert({ ...candidate, avatar })
     .select()
-    .abortSignal(signal)
+    .abortSignal(signal!)
     .abortSignal(timerSignal.signal);
   clearTimeout(timeout);
   if (error) {
@@ -111,14 +111,14 @@ export const bulkCreateCandidate = async (
   prev_error?: PostgrestError,
   signal?: CandidateBulkCreateAction['request']['signal'],
 ): Promise<CandidateBulkCreateAction['response']> => {
-  if (tries++ === MAX_TRIES) throw new Error(prev_error.message);
+  if (tries++ === MAX_TRIES) throw new Error(prev_error!.message);
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 15000);
   const { data, error } = await supabase
     .from('candidates')
     .upsert(candidate, { onConflict: 'email, recruiter_id' })
     .select()
-    .abortSignal(signal)
+    .abortSignal(signal!)
     .abortSignal(timerSignal.signal);
   clearTimeout(timeout);
   if (error) {
@@ -143,7 +143,7 @@ export const bulkCreateFiles = async (
   prev_error?: PostgrestError,
   signal?: CandidateFilesBulkCreateAction['request']['signal'],
 ): Promise<CandidateFilesBulkCreateAction['response']> => {
-  if (tries++ === MAX_TRIES) throw new Error(prev_error.message);
+  if (tries++ === MAX_TRIES) throw new Error(prev_error!.message);
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 15000);
   const { data, error } = await supabase
@@ -152,7 +152,7 @@ export const bulkCreateFiles = async (
     .select(
       'id, created_at, candidate_id, file_url, resume_text, resume_json, type',
     )
-    .abortSignal(signal)
+    .abortSignal(signal!)
     .abortSignal(timerSignal.signal);
   clearTimeout(timeout);
   if (error) {
@@ -177,14 +177,14 @@ export const bulkCreateApplications = async (
   prev_error?: PostgrestError,
   signal?: ApplicationsBulkCreateAction['request']['signal'],
 ): Promise<ApplicationsBulkCreateAction['response']> => {
-  if (tries++ === MAX_TRIES) throw new Error(prev_error.message);
+  if (tries++ === MAX_TRIES) throw new Error(prev_error!.message);
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 15000);
   const { data, error } = await supabase
     .from('applications')
     .insert(applications)
     .select()
-    .abortSignal(signal)
+    .abortSignal(signal!)
     .abortSignal(timerSignal.signal);
   clearTimeout(timeout);
   if (error) {
@@ -209,14 +209,14 @@ export const deleteCandidate = async (
   prev_error?: PostgrestError,
   signal?: CandidateDeleteAction['request']['signal'],
 ): Promise<void> => {
-  if (tries++ === MAX_TRIES) throw new Error(prev_error.message);
+  if (tries++ === MAX_TRIES) throw new Error(prev_error!.message);
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 15000);
   const { error } = await supabase
     .from('candidates')
     .delete()
     .eq('id', id)
-    .abortSignal(signal)
+    .abortSignal(signal!)
     .abortSignal(timerSignal.signal);
   clearTimeout(timeout);
   if (error) {
@@ -237,14 +237,14 @@ export const createFile = async (
   prev_error?: PostgrestError,
   signal?: CandidateCreateAction['request']['signal'],
 ): Promise<CandidateFiles> => {
-  if (tries++ === MAX_TRIES) throw new Error(prev_error.message);
+  if (tries++ === MAX_TRIES) throw new Error(prev_error!.message);
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 15000);
   const { data, error } = await supabase
     .from('candidate_files')
     .insert({ candidate_id, type: 'resume', file_url, id: candidate_file_id })
     .select()
-    .abortSignal(signal)
+    .abortSignal(signal!)
     .abortSignal(timerSignal.signal);
   clearTimeout(timeout);
   if (error) {
@@ -275,7 +275,7 @@ export const reCreateFile = async (
   prev_error?: PostgrestError,
   signal?: CandidateCreateAction['request']['signal'],
 ): Promise<CandidateFiles> => {
-  if (tries++ === MAX_TRIES) throw new Error(prev_error.message);
+  if (tries++ === MAX_TRIES) throw new Error(prev_error!.message);
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 25000);
   await supabase
@@ -287,7 +287,7 @@ export const reCreateFile = async (
     .from('candidate_files')
     .insert({ candidate_id, type: 'resume', file_url, id: candidate_file_id })
     .select()
-    .abortSignal(signal)
+    .abortSignal(signal!)
     .abortSignal(timerSignal.signal);
   clearTimeout(timeout);
   if (error) {
@@ -315,14 +315,14 @@ export const deleteFile = async (
   prev_error?: PostgrestError,
   signal?: CandidateDeleteAction['request']['signal'],
 ): Promise<void> => {
-  if (tries++ === MAX_TRIES) throw new Error(prev_error.message);
+  if (tries++ === MAX_TRIES) throw new Error(prev_error!.message);
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 15000);
   const { error } = await supabase
     .from('candidate_files')
     .delete()
     .eq('id', candidate_file_id)
-    .abortSignal(signal)
+    .abortSignal(signal!)
     .abortSignal(timerSignal.signal);
   clearTimeout(timeout);
   if (error) {
@@ -350,14 +350,14 @@ export const createApplication = async (
   prev_error?: PostgrestError,
   signal?: CandidateCreateAction['request']['signal'],
 ): Promise<Applications> => {
-  if (tries++ === MAX_TRIES) throw new Error(prev_error.message);
+  if (tries++ === MAX_TRIES) throw new Error(prev_error!.message);
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 15000);
   const { data, error } = await supabase
     .from('applications')
     .insert({ candidate_id, job_id, candidate_file_id, source, recruiter_id })
     .select()
-    .abortSignal(signal)
+    .abortSignal(signal!)
     .abortSignal(timerSignal.signal);
   clearTimeout(timeout);
   if (error) {
@@ -387,7 +387,7 @@ export const reProcessApplication = async (
   prev_error?: PostgrestError,
   signal?: CandidateCreateAction['request']['signal'],
 ): Promise<Applications> => {
-  if (tries++ === MAX_TRIES) throw new Error(prev_error.message);
+  if (tries++ === MAX_TRIES) throw new Error(prev_error!.message);
   const timerSignal = new AbortController();
   const timeout = setTimeout(() => timerSignal.abort(), 15000);
   const { data, error } = await supabase
@@ -395,11 +395,11 @@ export const reProcessApplication = async (
     .update({
       candidate_file_id,
       processing_status: 'not started',
-      score_json: null,
+      score_json: null!,
     })
     .eq('id', application_id)
     .select()
-    .abortSignal(signal)
+    .abortSignal(signal!)
     .abortSignal(timerSignal.signal);
   clearTimeout(timeout);
   if (error) {
@@ -501,7 +501,7 @@ export const verifyAndCreateCandidate = async (
   return { duplicate: false, candidate: new_candidate_data };
 };
 
-const sha256 = async (message) => {
+const sha256 = async (message: string) => {
   const msgBuffer = new TextEncoder().encode(message);
   const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
   const hashArray = Array.from(new Uint8Array(hashBuffer));
@@ -519,13 +519,13 @@ const verifyCandidateInJob = async (
   const { data, error } = await supabase
     .from('applications')
     .select()
-    .eq('candidate_id', candidateId)
+    .eq('candidate_id', candidateId!)
     .eq('job_id', jobId);
   if (error) throw new Error(error.message);
   if (data.length !== 0) throw new Error('Candidate already exists');
 };
 
-const emailHash = async (email) => {
+const emailHash = async (email: string) => {
   return `https://gravatar.com/avatar/${await sha256(email)}`;
 };
 
@@ -543,15 +543,12 @@ const readFile = (
 
 export const getFiles = async (req: NextApiRequest) => {
   const { files } = await readFile(req);
-  return files[UploadApiFormData.FILES].map(
-    (f) =>
-      ({
-        contentType: f.mimetype,
-        fileName: f.originalFilename,
-        // eslint-disable-next-line security/detect-non-literal-fs-filename
-        readStream: fs.createReadStream(f.filepath),
-      }) as unknown as File,
-  ) as {
+  return (files[UploadApiFormData.FILES] ?? []).map((f) => ({
+    contentType: f.mimetype,
+    fileName: f.originalFilename,
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    readStream: fs.createReadStream(f.filepath),
+  })) as {
     contentType: keyof typeof supportedTypes;
     fileName: string;
     readStream: fs.ReadStream;
