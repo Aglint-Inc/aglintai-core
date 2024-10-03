@@ -62,8 +62,6 @@ export const PATHS = [
   '/api/scheduling/application/schedulewithagent',
   '/api/scheduling/application/schedulewithagentwithouttaskid',
   '/api/scheduling/application/sendselfschedule',
-  '/api/scheduling/auth/outlook-req-tokens',
-  '/api/scheduling/auth/outlook',
   '/api/scheduling/calendar_check_recruiter',
   '/api/scheduling/debrief/auto-debrief.md',
   '/api/scheduling/debrief/schedule_individual',
@@ -211,6 +209,7 @@ export const PATHS = [
   '/api/emails/slack/interviewEnd_slack_shadowTraineeForMeetingAttendence',
   '/api/emails/slack/interviewStart_slack_interviewers',
   '/api/emails/slack/onQualified_slack_trainee',
+  '/api/emails/slack/onReceivingAvailReq_slack_suggestSlots',
   '/api/emails/slack/onRequestCancel_slack_interviewersOrganizer',
   '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification'
 ] as const

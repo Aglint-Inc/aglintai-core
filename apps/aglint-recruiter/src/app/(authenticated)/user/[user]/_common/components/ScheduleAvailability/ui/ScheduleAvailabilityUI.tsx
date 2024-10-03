@@ -163,7 +163,7 @@ const KeywordViewSection = ({
   keywords: string[];
 }) => {
   return (
-    <>
+    <div className='mb-12 flex flex-col'>
       <UITypography
         variant='p'
         type='small'
@@ -182,10 +182,7 @@ const KeywordViewSection = ({
         {keywords?.length > 0 ? (
           keywords.map((keyword, i) => {
             return (
-              <div
-                key={i}
-                className='w-fit rounded-sm bg-gray-100 px-4 py-1 text-gray-900'
-              >
+              <div key={i} className='w-fit rounded-sm bg-gray-100 px-4 py-1'>
                 <UITypography type='small' variant='p'>
                   {keyword}
                 </UITypography>
@@ -204,6 +201,6 @@ const KeywordViewSection = ({
           />
         )}
       </div>
-    </>
+    </div>
   );
 };

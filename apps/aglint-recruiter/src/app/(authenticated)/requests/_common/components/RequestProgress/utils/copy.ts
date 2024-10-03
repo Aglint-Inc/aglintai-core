@@ -118,4 +118,10 @@ export const workflowCopy: WorkflowCopyType = {
     error:
       'An error occurred while scheduling the interview slot from candidate availability.',
   },
+  SLOT_SUGGESTION: {
+    past: 'The slot suggestion has been sent in Slack.',
+    present: 'Sending the slot suggestion in Slack.',
+    future: 'The slot suggestion will be sent in Slack.',
+    error: 'An error occurred while sending the slot suggestion in Slack.',
+  },
 };

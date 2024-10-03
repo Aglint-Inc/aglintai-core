@@ -271,13 +271,15 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
   onReceivingAvailReq: [
     {
       value: {
-        target_api: 'onReceivingAvailReq_agent_confirmSlot',
-        action_type: 'end_point',
+        target_api: 'onReceivingAvailReq_agent_suggestSlots',
+        action_type: 'agent_instruction',
         payload: {
-          end_point: null,
+          agent: {
+            instruction: 'TODO:dileep',
+          },
         },
       },
-      name: 'Pick Suitable slot/s and Schedule Interviews',
+      name: 'Pick Suitable slot/s and suggest to the Meeting Organizer in slack',
     },
     {
       value: {

@@ -7,7 +7,7 @@ import React, { type Dispatch, type SetStateAction } from 'react';
 interface Prop {
   isLoading: boolean;
   anchorEl: HTMLButtonElement;
-  setAnchorEl: Dispatch<SetStateAction<HTMLButtonElement>>;
+  setAnchorEl: Dispatch<SetStateAction<HTMLButtonElement | null>>;
   setHtml: Dispatch<SetStateAction<string | null>>;
   isHtml: string | null;
 }
@@ -32,7 +32,7 @@ export default function EmailPreviewPopover({
           <DialogTitle>Email Preview</DialogTitle>
         </DialogHeader>
         <div className='h-[80vh]'>
-          {isLoading ? (
+          {!isHtml || isLoading ? (
             <div className='flex h-full items-center justify-center'>
               <Loader2 className='h-8 w-8 animate-spin' />
             </div>

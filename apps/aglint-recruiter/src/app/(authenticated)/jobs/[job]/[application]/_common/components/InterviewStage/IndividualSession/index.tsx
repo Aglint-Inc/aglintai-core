@@ -1,6 +1,7 @@
 'use strict';
 
 import { type DatabaseTable } from '@aglint/shared-types';
+import { getBreakLabel } from '@aglint/shared-utils';
 import { Checkbox } from '@components/ui/checkbox';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -11,7 +12,6 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerAcceptDeclineIcon';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
-import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
 import { type StageWithSessions } from '../../../hooks/useInterviewStages';

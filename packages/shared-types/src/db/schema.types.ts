@@ -748,7 +748,7 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "public_candidate_request_availability_request_id_fkey"
+            foreignKeyName: "candidate_request_availability_request_id_fkey"
             columns: ["request_id"]
             isOneToOne: false
             referencedRelation: "request"
@@ -1103,6 +1103,13 @@ export type Database = {
             referencedColumns: ["application_id"]
           },
           {
+            foreignKeyName: "interview_filter_json_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "request"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "public_interview_filter_json_created_by_fkey"
             columns: ["created_by"]
             isOneToOne: false
@@ -1122,13 +1129,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "recruiter_user"
             referencedColumns: ["user_id"]
-          },
-          {
-            foreignKeyName: "public_interview_filter_json_request_id_fkey"
-            columns: ["request_id"]
-            isOneToOne: false
-            referencedRelation: "request"
-            referencedColumns: ["id"]
           },
         ]
       }
@@ -2444,7 +2444,7 @@ export type Database = {
           is_headquarter: boolean
           line1: string
           line2: string | null
-          name: string | null
+          name: string
           recruiter_id: string
           region: string
           remote_id: string | null
@@ -2458,7 +2458,7 @@ export type Database = {
           is_headquarter: boolean
           line1: string
           line2?: string | null
-          name?: string | null
+          name: string
           recruiter_id: string
           region: string
           remote_id?: string | null
@@ -2472,7 +2472,7 @@ export type Database = {
           is_headquarter?: boolean
           line1?: string
           line2?: string | null
-          name?: string | null
+          name?: string
           recruiter_id?: string
           region?: string
           remote_id?: string | null
@@ -2932,6 +2932,7 @@ export type Database = {
           company_images: string[] | null
           greetings: string | null
           integrations: boolean
+          onboard_complete: boolean
           recruiter_id: string
           reports: boolean
           request: boolean
@@ -2951,6 +2952,7 @@ export type Database = {
           company_images?: string[] | null
           greetings?: string | null
           integrations?: boolean
+          onboard_complete?: boolean
           recruiter_id: string
           reports?: boolean
           request?: boolean
@@ -2970,6 +2972,7 @@ export type Database = {
           company_images?: string[] | null
           greetings?: string | null
           integrations?: boolean
+          onboard_complete?: boolean
           recruiter_id?: string
           reports?: boolean
           request?: boolean
@@ -6588,7 +6591,7 @@ export type Database = {
         | "onRequestSchedule_emailAgent_getCandidateAvailability"
         | "onRequestSchedule_emailLink_getCandidateAvailability"
         | "onReceivingAvailReq_agent_sendSelfScheduleRequest"
-        | "onReceivingAvailReq_agent_confirmSlot"
+        | "onReceivingAvailReq_agent_suggestSlots"
         | "onRequestSchedule_emailLink_sendSelfSchedulingLink"
         | "onRequestSchedule_phoneAgent_selfSchedule"
         | "onRequestSchedule_emailAgent_selfSchedule"
