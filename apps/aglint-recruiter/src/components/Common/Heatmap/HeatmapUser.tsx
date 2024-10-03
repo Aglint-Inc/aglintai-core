@@ -29,7 +29,7 @@ export default function Heatmap({
   const [arrayDates, setArrayDates] = useState([]);
   const [dayCount, setDayCount] = useState<{ start: number; end: number }>({
     start: -7,
-    end: 25,
+    end: 22,
   });
   const [maxCount, setMaxCountInterviews] = useState(
     loadSetting.dailyLimit.value,
