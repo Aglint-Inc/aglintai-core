@@ -41,7 +41,7 @@ export const authorize = (path: string, permissions: Permissions = []) => {
   if (!apiPermission)
     throw new TRPCError({
       code: 'BAD_REQUEST',
-      message: 'Path does not exist',
+      message: `Path does not exist`,
     });
   return (
     apiPermission.includes('public') ||

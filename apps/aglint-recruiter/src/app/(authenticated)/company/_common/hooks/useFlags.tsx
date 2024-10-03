@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { api, TRPC_CLIENT_CONTEXT } from '@/trpc/client';
+import { api } from '@/trpc/client';
 
 type Features =
   | 'SCORING'
@@ -17,7 +17,7 @@ type Features =
 
 export const useFlags = () => {
   const preferences = api.tenant.flags.useSuspenseQuery(undefined, {
-    trpc: TRPC_CLIENT_CONTEXT,
+    staleTime: Infinity,
   })[0];
 
   const isShowFeature = useCallback(
