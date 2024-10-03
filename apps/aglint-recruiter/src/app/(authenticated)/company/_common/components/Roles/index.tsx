@@ -99,37 +99,39 @@ const RoleTable = ({
   }
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow className='bg-gray-100'>
-          <TableHead>Role</TableHead>
-          <TableHead>Description</TableHead>
-          <TableHead>Users</TableHead>
-          <TableHead>Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {Object.entries(roles || {})
-          .sort((a, b) => rolesOrder[a[1].name] - rolesOrder[b[1].name])
-          .map(([key, details], i) => {
-            const role = details;
-            const count = role.assignedTo.length;
-            return (
-              <RoleList
-                key={i}
-                count={count}
-                details={details}
-                members={members}
-                onClickAdd={(e) => {
-                  e.stopPropagation();
-                  setRole(key, true);
-                }}
-                onClickRow={() => setRole(key)}
-                role={role}
-              />
-            );
-          })}
-      </TableBody>
-    </Table>
+    <div className='rounded-lg border'>
+      <Table>
+        <TableHeader>
+          <TableRow className='bg-gray-100'>
+            <TableHead>Role</TableHead>
+            <TableHead>Description</TableHead>
+            <TableHead>Users</TableHead>
+            <TableHead>Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {Object.entries(roles || {})
+            .sort((a, b) => rolesOrder[a[1].name] - rolesOrder[b[1].name])
+            .map(([key, details], i) => {
+              const role = details;
+              const count = role.assignedTo.length;
+              return (
+                <RoleList
+                  key={i}
+                  count={count}
+                  details={details}
+                  members={members}
+                  onClickAdd={(e) => {
+                    e.stopPropagation();
+                    setRole(key, true);
+                  }}
+                  onClickRow={() => setRole(key)}
+                  role={role}
+                />
+              );
+            })}
+        </TableBody>
+      </Table>
+    </div>
   );
 };
