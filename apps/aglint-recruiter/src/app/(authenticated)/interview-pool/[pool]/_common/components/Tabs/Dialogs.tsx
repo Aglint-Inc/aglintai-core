@@ -12,7 +12,6 @@ const Dialogs = () => {
 
   const selUser = useModulesStore((state) => state.selUser);
 
-  if (!data) return null;
   return (
     <>
       {selUser && <DeleteMemberDialog />}

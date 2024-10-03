@@ -23,6 +23,7 @@ import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
+import AddMemberDialog from '@/interview-pool/details/dialogs/AddMemberDialog';
 import ROUTES from '@/utils/routing/routes';
 
 import { useModuleAndUsers } from '../../../hooks/useModuleAndUsers';
