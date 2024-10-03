@@ -91,7 +91,7 @@ const Component = <T extends string>(
 };
 
 const Combobox = React.memo(
-  React.forwardRef<HTMLButtonElement>(Component),
+  React.forwardRef<HTMLButtonElement>(Component as any),
 ) as typeof Component;
 
 export { Combobox };
