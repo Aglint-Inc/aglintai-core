@@ -71,7 +71,7 @@ export function SetupCard({
                   router.push(navLink);
                 }}
               >
-                Complete
+                Mark as Complete
               </UIButton>
             )}
           </div>

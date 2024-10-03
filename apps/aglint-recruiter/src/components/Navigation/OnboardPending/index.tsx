@@ -1,7 +1,14 @@
 'use client';
 
+import {
+  Section,
+  SectionActions,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import { Button } from '@components/ui/button';
-import { CardTitle } from '@components/ui/card';
 import { Dialog, DialogContent } from '@components/ui/dialog';
 import { Progress } from '@components/ui/progress';
 import { ScrollArea } from '@components/ui/scroll-area';
@@ -16,6 +23,7 @@ import {
   setIsOnboardOpen,
   useOnboard,
 } from '@/authenticated/store/OnboardStore';
+import { UIButton } from '@/components/Common/UIButton';
 import UITabs from '@/components/Common/UITabs';
 
 import { SetupCard } from './SetupCard';
@@ -63,7 +71,7 @@ export const OnboardPending = () => {
         )}
 
         <Dialog open={isOpen} onOpenChange={() => toggleOpen()}>
-          <DialogContent className='mb-0 min-w-[900px] max-w-[900px]'>
+          <DialogContent className='mb-0 min-w-[900px] max-w-[900px] p-0'>
             <MainContent
               companySetupSteps={companySetupSteps}
               selectedStep={selectedStep}
@@ -137,18 +145,26 @@ const MainContent = ({
       ),
     })) || [];
   return (
-    <>
-      <div className='flex items-center justify-between'>
-        <CardTitle className='text-xl font-semibold'>
-          Onboarding Progress
-        </CardTitle>
-      </div>
-      <Progress value={companySetupProgress} className='h-2' />
-      <p className='text-sm text-muted-foreground'>
-        {companySetupSteps.filter((step) => step.isCompleted).length} of{' '}
-        {companySetupSteps.length} steps completed
-      </p>
-      <div className='grid gap-6 md:grid-cols-12'>
+    <Section>
+      <SectionHeader className='p-4 pb-0'>
+        <SectionHeaderText>
+          <SectionTitle>Onboarding Progress</SectionTitle>
+          <SectionDescription>
+            Complete the steps to setup your company.
+          </SectionDescription>
+        </SectionHeaderText>
+        <SectionActions className='mr-8 flex w-[400px] flex-row items-end'>
+          <div className='flex flex-1 flex-col space-y-2'>
+            <div className='text-sm text-muted-foreground'>
+              {companySetupSteps.filter((step) => step.isCompleted).length} of{' '}
+              {companySetupSteps.length} steps completed
+            </div>
+            <Progress value={companySetupProgress} className='h-2' />
+          </div>
+          <UIButton variant='outline'>Mark all Complete</UIButton>
+        </SectionActions>
+      </SectionHeader>
+      <div className='grid gap-6 p-4 md:grid-cols-12'>
         <div className='space-y-2 md:col-span-4'>
           <UITabs
             tabs={tabs}
@@ -180,7 +196,7 @@ const MainContent = ({
         companySetupSteps={companySetupSteps}
         selectedIndex={selectedIndex}
       />
-    </>
+    </Section>
   );
 };
 
@@ -191,7 +207,7 @@ const Footer = ({
   selectedIndex,
 }) => {
   return (
-    <div className='flex justify-between border-t p-4'>
+    <div className='flex justify-between rounded-b-md border-t bg-muted p-4'>
       <Button
         variant='outline'
         size='sm'
