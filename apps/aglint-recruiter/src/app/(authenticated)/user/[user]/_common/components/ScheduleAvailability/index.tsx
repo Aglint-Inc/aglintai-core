@@ -1,9 +1,15 @@
 import { type SchedulingSettingType } from '@aglint/shared-types';
-import { SquarePen } from 'lucide-react';
+import {
+  Section,
+  SectionActions,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
-import UISectionCard from '@/components/Common/UISectionCard';
 
 import { useInterviewer } from '../../hooks/useInterviewer';
 import { EditAvailabiityDialog } from './Dialog/EditAvailabiityDialog';
@@ -92,32 +98,32 @@ export default function ScheduleAvailability() {
 
   return (
     <>
-      {/* edit availability dialog */}
-      <EditAvailabiityDialog
-        setIsEditOpen={setIsEditOpen}
-        isEditOpen={isEditOpen}
-      />
-      <UISectionCard
-        type='compact'
-        title='Availability'
-        action={
-          <UIButton
-            size='sm'
-            variant='secondary'
-            onClick={() => setIsEditOpen(true)}
-            leftIcon={<SquarePen />}
-          >
-            Edit
-          </UIButton>
-        }
-      >
+      <Section>
+        <SectionHeader>
+          <SectionHeaderText>
+            <SectionTitle>Availability</SectionTitle>
+            <SectionDescription>
+              Set your availability to let candidates know when you are
+              available to interview.
+            </SectionDescription>
+          </SectionHeaderText>
+          <SectionActions>
+            <UIButton variant='outline' onClick={() => setIsEditOpen(true)}>
+              Edit
+            </UIButton>
+          </SectionActions>
+        </SectionHeader>
         <ScheduleAvailabilityUI
           interviewLoads={interviewLoads}
           timeZone={scheduling_settings?.timeZone?.label || ' - '}
           workingHours={workingHours}
           scheduleKeywords={scheduleKeywords}
         />
-      </UISectionCard>
+      </Section>
+      <EditAvailabiityDialog
+        setIsEditOpen={setIsEditOpen}
+        isEditOpen={isEditOpen}
+      />
     </>
   );
 }

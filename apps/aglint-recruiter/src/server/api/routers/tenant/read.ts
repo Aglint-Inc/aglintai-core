@@ -26,13 +26,13 @@ const query = async ({ ctx }: PrivateProcedure) => {
 
   const recruiter_user = {
     ...data.recruiter_user,
-    role: data.roles.name,
+    role: data.roles!.name,
     role_id: data.role_id,
     department: data.recruiter.departments.find(
       (dep) => dep.id == data.recruiter_user.department_id,
     ),
     office_location: data.recruiter?.office_locations?.find(
-      (loc) => loc.id == data.recruiter_user.office_location_id,
+      (loc) => loc.id == data.recruiter_user!.office_location_id,
     ),
     manager_id: data.manager_id,
     manager_details: data.manager_details
@@ -56,11 +56,11 @@ const query = async ({ ctx }: PrivateProcedure) => {
   if (recruiter_user.status === 'invited') {
     db.from('recruiter_user').update({ status: 'active' });
   }
-
+  recruiter_user.user_id
   return {
     recruiter_user,
-    recruiter_id: data.recruiter_id,
-    recruiter: data.recruiter,
+    recruiter_id: data.recruiter_id!,
+    recruiter: data.recruiter!,
     userPermissions,
   };
 };

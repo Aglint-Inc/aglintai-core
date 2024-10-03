@@ -56,4 +56,6 @@ export const API_PERMISSIONS: ApiPermissions = {
     getCandidateAvailabilityData: ['public'],
     getScheduledMeetings: ['public'],
   },
+  utility: [],
+  email: [],
 };

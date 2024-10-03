@@ -24,11 +24,11 @@ export const useAllDepartments = () => {
 };
 
 const fetchDepartments = async (rec_id: string) => {
-  const { data } = await supabase
-    .from('departments')
-    .select('*')
-    .eq('recruiter_id', rec_id)
-    .throwOnError();
-
-  return data;
+  return (
+    await supabase
+      .from('departments')
+      .select('*')
+      .eq('recruiter_id', rec_id)
+      .throwOnError()
+  ).data!;
 };

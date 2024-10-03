@@ -142,7 +142,7 @@ const Schools = () => {
   return (
     <>
       <Table>
-        <TableHeader>
+        <TableHeader className='bg-gray-100'>
           <TableRow>
             <TableHead className='w-1/4'>Institution</TableHead>
             <TableHead className='w-1/2'>Degree</TableHead>

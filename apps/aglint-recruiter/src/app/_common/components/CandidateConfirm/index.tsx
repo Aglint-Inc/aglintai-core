@@ -1,6 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { type CandidateResponseSelfSchedule } from '@aglint/shared-types/src/db/tables/application_logs.types';
-import { getFullName } from '@aglint/shared-utils';
+import { getBreakLabel, getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Building2 } from 'lucide-react';
 import Image from 'next/image';
@@ -12,7 +12,6 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import { type API_get_scheduling_reason } from '@/pages/api/get_scheduling_reason';
-import { getBreakLabel } from '@/utils/getBreakLabel';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';

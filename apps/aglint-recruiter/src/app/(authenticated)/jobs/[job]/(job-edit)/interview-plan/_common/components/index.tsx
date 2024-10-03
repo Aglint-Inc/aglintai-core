@@ -1,4 +1,5 @@
 import { getFullName } from '@aglint/shared-utils';
+import { getBreakLabel } from '@aglint/shared-utils';
 import {
   Page,
   PageDescription,
@@ -45,7 +46,6 @@ import {
   type InterviewSessionType,
 } from '@/queries/interview-plans/types';
 import { jobQueries } from '@/queries/job';
-import { getBreakLabel } from '@/utils/getBreakLabel';
 import { breakDurations } from '@/utils/scheduling/const';
 import { capitalizeAll, capitalizeFirstLetter } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';

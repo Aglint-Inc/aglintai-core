@@ -6,10 +6,10 @@ export const createCandidateRequestSchema = z.object({
   type: z.enum(['reschedule', 'declined']),
   dates: z
     .object({
-      start: z.string().nullable(),
-      end: z.string().nullable(),
+      start: z.string(),
+      end: z.string(),
     })
-    .nullable(),
+    .optional(),
   reason: z.string(),
   other_details: z.any(),
 });

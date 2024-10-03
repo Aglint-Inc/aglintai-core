@@ -32,7 +32,7 @@ function RoleDetails({
   roleDetails: {
     [key: string]: {
       description: string;
-      permissions: (typeof role)['permissions'];
+      permissions: NonNullable<typeof role>['permissions'];
     };
   };
   AllRoles: {
@@ -51,9 +51,6 @@ function RoleDetails({
 
   const [editUser, setEditUser] = useState(false);
   const { members } = useTenantMembers();
-  const activePermissionCount = role.permissions.filter(
-    (item) => item.isActive && allPermissions.includes(item.name),
-  ).length;
   const editDisabled = !checkPermissions(['manage_roles']);
   useEffect(() => {
     if (queryParams?.add) {
@@ -61,6 +58,10 @@ function RoleDetails({
     }
   }, [queryParams?.add]);
   const { ifAllowed } = useRolesAndPermissionsContext();
+  if (!role) return;
+  const activePermissionCount = role.permissions.filter(
+    (item) => item.isActive && item.name && allPermissions.includes(item.name),
+  ).length;
   const roleUsers = members.filter((mem) =>
     role.assignedTo.includes(mem.user_id),
   );
@@ -91,7 +92,7 @@ function RoleDetails({
       </div>
 
       {role.name === 'admin' && (
-        <Alert className='mb-6'>
+        <Alert variant='info'>
           <Info size={16} />
           <AlertDescription>
             You cannot edit the primary admin role permissions.
@@ -133,8 +134,8 @@ function RoleDetails({
                           disabled={editDisabled || !role.isEditable}
                           onCheckedChange={(checked) => {
                             const data = {
-                              add: null,
-                              delete: null,
+                              add: null as number | null,
+                              delete: null as string | null,
                               role_id: role.id,
                             };
 

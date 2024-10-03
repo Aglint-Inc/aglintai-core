@@ -8,7 +8,7 @@ import {
 } from 'date-fns';
 
 import { useTenant } from '@/company/hooks';
-import { api, TRPC_CLIENT_CONTEXT } from '@/trpc/client';
+import { api } from '@/trpc/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { useAnalyticsContext } from '../../context/AnalyticsContext/AnalyticsContextProvider';
@@ -26,7 +26,6 @@ export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
     },
     {
       enabled: !!recruiter.id,
-      trpc: TRPC_CLIENT_CONTEXT,
     },
   );
 
@@ -84,7 +83,6 @@ export function useDeclineCount() {
       },
       {
         enabled: !!recruiter.id,
-        trpc: TRPC_CLIENT_CONTEXT,
       },
     );
   const groupedData = data
