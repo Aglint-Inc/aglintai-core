@@ -10,7 +10,6 @@ import {
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
-import axios from 'axios';
 import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -19,6 +18,7 @@ import { useTenantOfficeLocations } from '@/company/hooks';
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
 import { manageOfficeLocation } from '@/context/AuthContext/utils';
+import { api } from '@/trpc/client';
 import timeZone from '@/utils/timeZone';
 
 type TimeZoneType = (typeof timeZone)[number];
@@ -111,23 +111,25 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
   const isCheckboxVisiable = hasHeadquarter && isHeadQ ? true : !hasHeadquarter;
 
   const getCountryAndRegion = async (city: string) => {
-    const result = await geoCodeLocation(city);
-
-    if (result?.timeZoneId?.length) {
+    const result = await api
+      .useUtils()
+      .utility.geoCodeLocation.fetch({ address: city });
+    if (!result) throw new Error('Failed to process location data');
+    if (result.timeZoneId) {
       const tz = timeZone.find((t) => t.tzCode === result.timeZoneId);
+      if (!tz) throw new Error('Failed to find timezone data');
       setSelectedTimeZone(tz);
     }
-    if (result?.add?.region) {
+    if (result.add.region && regionRef.current) {
       regionRef.current.value = result?.add?.region || regionRef.current.value;
     }
-    if (result?.add?.country) {
+    if (result.add.country && countryRef.current) {
       countryRef.current.value =
         result?.add?.country || countryRef.current.value;
     }
-
-    if (result?.add?.zipcode) {
-      zipRef.current.value = result?.add?.zipcode || zipRef.current.value;
-    }
+    // if (result.add.zipcode) {
+    //   zipRef.current.value = result?.add?.zipcode || zipRef.current.value;
+    // }
   };
 
   const debouncedUpsertRequestNotes = useCallback(
@@ -170,7 +172,7 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
                 id='address2'
                 ref={address2Ref}
                 placeholder='Suite 456 (Optional)'
-                defaultValue={initialValue?.line2}
+                defaultValue={initialValue?.line2 || ''}
               />
             </div>
             <div className='grid grid-cols-[0.4fr_1.6fr] items-center justify-start gap-4'>
@@ -232,7 +234,7 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
                 //   setAddress((pre) => ({ ...pre, zip_code: e.target.value }))
                 // }
                 placeholder='Please enter the zip code or postal code'
-                defaultValue={initialValue?.zipcode}
+                defaultValue={initialValue?.zipcode || undefined}
               />
             </div>
             <div className='grid grid-cols-[0.4fr_1.6fr] items-center justify-start gap-4'>
@@ -240,7 +242,7 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
                 Time Zone
               </Label>
               <TimezonePicker
-                value={selectedTimeZone?.tzCode}
+                value={selectedTimeZone?.tzCode || null}
                 onChange={(value) => setSelectedTimeZone(value)}
               />
             </div>
@@ -307,53 +309,4 @@ const handleValidate = () => {
     },
     { newLocation: location, error: false },
   );
-};
-
-const geoCodeLocation = async (address: string) => {
-  if (address.length > 3) {
-    const apiKey = 'AIzaSyDO-310g2JDNPmN3miVdhXl2gJtsBRYUrI';
-    let locationData = null;
-    try {
-      locationData = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`,
-      );
-    } catch (error) {
-      toast({ title: 'Please give proper location' });
-    }
-    const result = (locationData as any)?.data?.results[0];
-
-    let add: { region: string; country: string };
-    if (result?.address_components[4]) {
-      add = {
-        region: result?.address_components[3]?.long_name ?? '',
-        country: result?.address_components[4]?.long_name ?? '',
-      };
-    } else if (result?.address_components[3]) {
-      add = {
-        region: result?.address_components[2]?.long_name ?? '',
-        country: result?.address_components[3]?.long_name ?? '',
-      };
-    } else {
-      add = {
-        region: result?.address_components[1]?.long_name ?? '',
-        country: result?.address_components[2]?.long_name ?? '',
-      };
-    }
-
-    const geo = {
-      lat: result?.geometry.location.lat ?? '',
-      lang: result?.geometry.location.lng ?? '',
-    };
-    let timezone = null;
-    try {
-      timezone = await axios.get(
-        `https://maps.googleapis.com/maps/api/timezone/json?location=${geo.lat},${geo.lang}&timestamp=1331161200&key=${apiKey}`,
-      );
-    } catch (error) {
-      toast({ title: 'Failed to fetch timezone' });
-    }
-
-    const timeZoneId = timezone && timezone?.data.timeZoneId;
-    return { add, timeZoneId };
-  }
 };

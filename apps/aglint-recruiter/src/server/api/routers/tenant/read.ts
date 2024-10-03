@@ -56,6 +56,7 @@ const query = async ({ ctx }: PrivateProcedure) => {
   if (recruiter_user.status === 'invited') {
     db.from('recruiter_user').update({ status: 'active' });
   }
+  recruiter_user.user_id
   return {
     recruiter_user,
     recruiter_id: data.recruiter_id!,

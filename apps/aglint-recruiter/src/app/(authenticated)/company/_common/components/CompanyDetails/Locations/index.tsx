@@ -69,7 +69,7 @@ export const Location = () => {
                   id={loc.id}
                   location={location}
                   address={loc.line1}
-                  timeZone={selectedTimeZone?.label}
+                  timeZone={selectedTimeZone?.label || ''}
                   isHeadquarter={loc.is_headquarter}
                   onEdit={() => {
                     setAddEditDialog({ open: true, edit: loc.id });

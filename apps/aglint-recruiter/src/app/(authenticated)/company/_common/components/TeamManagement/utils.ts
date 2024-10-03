@@ -21,15 +21,15 @@ export const setMemberInDb = async (
   return null;
 };
 
-export const inviteUserApi = async (
-  form: InviteUserAPIType['request']['users'][number],
-  recruiter_id: string,
-) => {
-  return axios.call<InviteUserAPIType>('POST', '/api/invite_user', {
-    users: [form],
-    recruiter_id,
-  });
-};
+// export const inviteUserApi = async (
+//   form: InviteUserAPIType['request']['users'][number],
+//   recruiter_id: string,
+// ) => {
+//   return axios.call<InviteUserAPIType>('POST', '/api/invite_user', {
+//     users: [form],
+//     recruiter_id,
+//   });
+// };
 
 export const reinviteUser = (email: string, id: string) => {
   return axios

@@ -60,7 +60,7 @@ export const AboutCompanyDialog = ({ isDialogOpen, setIsDialogOpen }) => {
           editor_type='email'
           isSize
           handleChange={handleTextChange}
-          initialValue={about}
+          initialValue={about || undefined}
         />
       </div>
     </UIDialog>

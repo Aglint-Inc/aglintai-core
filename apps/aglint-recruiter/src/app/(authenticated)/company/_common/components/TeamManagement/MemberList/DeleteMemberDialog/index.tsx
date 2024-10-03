@@ -25,11 +25,11 @@ function DeleteMemberDialog({
 }) {
   // const { status } = useCompanyMembers();
   const [form, setForm] = useState<{
-    values: { interviewTypes: string };
+    values: { interviewTypes: string | undefined };
     error: { interviewTypes: boolean };
   }>({
     values: {
-      interviewTypes: null,
+      interviewTypes: undefined,
     },
     error: {
       interviewTypes: false,
@@ -126,7 +126,6 @@ function DeleteMemberDialog({
             <div className='space-y-1'>
               <p>Reassign current Interview Types to:</p>
               <JobCoordinator
-                // @ts-expect-error
                 name={isInterviewTypesRequire}
                 value={{
                   required: true,
@@ -156,7 +155,7 @@ function DeleteMemberDialog({
           ? () => {
               if (validateForm()) {
                 action({
-                  interviewTypes: form.values.interviewTypes,
+                  interviewTypes: form.values.interviewTypes!,
                 });
               }
             }

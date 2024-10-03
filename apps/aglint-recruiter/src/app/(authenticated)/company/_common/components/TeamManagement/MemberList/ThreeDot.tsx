@@ -20,10 +20,11 @@ import DeleteMemberDialog from './DeleteMemberDialog';
 
 export const UserListThreeDot = ({ member }) => {
   const { toast } = useToast();
-  const [dialogReason, setDialogReason] = useState(null);
+  const [dialogReason, setDialogReason] = useState<
+    'delete' | 'suspend' | 'cancel_invite' | null
+  >(null);
   const router = useRouterPro();
   const { recruiter_user } = useTenant();
-
   const canSuspend = member.role !== 'admin';
 
   const handleAction = (action) => {
@@ -133,13 +134,15 @@ export const UserListThreeDot = ({ member }) => {
             )}
         </DropdownMenuContent>
       </DropdownMenu>
-      <DeleteMemberDialog
-        name={`${member.first_name} ${member.last_name}`.trim()}
-        action={dialogReason === 'suspend' ? handleSuspend : handleRemove}
-        role={member.role}
-        reason={dialogReason}
-        close={() => setDialogReason(null)}
-      />
+      {!!dialogReason && (
+        <DeleteMemberDialog
+          name={`${member.first_name} ${member.last_name}`.trim()}
+          action={dialogReason === 'suspend' ? handleSuspend : handleRemove}
+          role={member.role}
+          reason={dialogReason}
+          close={() => setDialogReason(null)}
+        />
+      )}
     </>
   );
 };
