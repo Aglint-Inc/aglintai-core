@@ -2,6 +2,7 @@ import { createTRPCRouter } from '../../trpc';
 import { departmentsUsage } from './departmentsUsage';
 import { flags } from './flags';
 import { invite } from './invite';
+import { resend_invite } from './invite/resend';
 import { members } from './members';
 import { officeLocations } from './officeLocations';
 import { read } from './read';
@@ -19,4 +20,5 @@ export const tenant = createTRPCRouter({
   members,
   flags,
   invite,
+  'resend-invite': resend_invite,
 });

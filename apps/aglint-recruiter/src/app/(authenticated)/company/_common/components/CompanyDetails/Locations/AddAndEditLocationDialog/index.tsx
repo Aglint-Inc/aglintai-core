@@ -109,11 +109,12 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
   }, [recruiter, office_locations, edit]);
 
   const isCheckboxVisiable = hasHeadquarter && isHeadQ ? true : !hasHeadquarter;
+  const apiUtil = api.useUtils();
 
   const getCountryAndRegion = async (city: string) => {
-    const result = await api
-      .useUtils()
-      .utility.geoCodeLocation.fetch({ address: city });
+    const result = await apiUtil.utility.geoCodeLocation.fetch({
+      address: city,
+    });
     if (!result) throw new Error('Failed to process location data');
     if (result.timeZoneId) {
       const tz = timeZone.find((t) => t.tzCode === result.timeZoneId);

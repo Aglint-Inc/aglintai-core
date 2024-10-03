@@ -84,7 +84,7 @@ const AddMember = ({
     manager_id: null,
   };
   const { data: integrations } = useIntegrations();
-  const [form, setForm] = useState<InviteUserFormType>(initform);
+  const [form, setForm] = useState<InviteUserFormType>(initForm);
 
   const [formError, setFormError] = useState<InviteUserFormErrorType>({
     first_name: false,

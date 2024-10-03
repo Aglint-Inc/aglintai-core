@@ -47,14 +47,16 @@ function DeleteMemberDialog({
     }
     setForm(temp);
   }
-  const isInterviewTypesRequire = [
-    'recruiter',
-    'recruiting_coordinator',
-    'sourcer',
-    'hiring_manager',
-  ].find((item) =>
+  const isInterviewTypesRequire = (
+    [
+      'recruiter',
+      'recruiting_coordinator',
+      'sourcer',
+      'hiring_manager',
+    ] as const
+  ).find((item) =>
     item.replace('_', '').includes(role?.replace(' ', '') || ''),
-  );
+  )!;
   function validateForm() {
     const temp = structuredClone(form);
     let flag = true;
@@ -133,7 +135,7 @@ function DeleteMemberDialog({
                     helper: '',
                     value: form.error.interviewTypes,
                   },
-                  value: form.values.interviewTypes,
+                  value: form.values.interviewTypes!,
                 }}
                 label={false}
                 onChange={(_, val) => handelFormUpdate({ interviewTypes: val })}

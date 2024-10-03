@@ -14,12 +14,14 @@ import { useTenant } from '@/company/hooks';
 import { updateMember } from '@/context/AuthContext/utils';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type API_reset_password } from '@/pages/api/reset_password/type';
+import { api } from '@/trpc/client';
 
-import { reinviteUser } from '../utils';
 import DeleteMemberDialog from './DeleteMemberDialog';
 
 export const UserListThreeDot = ({ member }) => {
   const { toast } = useToast();
+  const { mutateAsync: reinviteUser } =
+    api.tenant['resend-invite'].useMutation();
   const [dialogReason, setDialogReason] = useState<
     'delete' | 'suspend' | 'cancel_invite' | null
   >(null);
@@ -32,17 +34,22 @@ export const UserListThreeDot = ({ member }) => {
       case 'edit':
         router.push(`/user/${member.user_id}?edit_enable=true`);
         break;
-      case 'resend':
-        reinviteUser(member.email, recruiter_user.user_id).then(
-          ({ error, emailSend }) => {
-            if (!error && emailSend) {
-              toast({ description: 'Invite sent successfully.' });
-            } else {
-              toast({ variant: 'destructive', description: error });
-            }
-          },
-        );
+      case 'resend': {
+        reinviteUser({ email: member.email })
+          .then(() => {
+            toast({
+              variant: 'default',
+              title: 'Invite sent successfully.',
+            });
+          })
+          .catch(() => {
+            toast({
+              variant: 'destructive',
+              title: 'Failed to resend invite',
+            });
+          });
         break;
+      }
       case 'activate':
         updateMember({
           data: { user_id: member.user_id, status: 'active' },

@@ -110,14 +110,12 @@ export const SortCurrentTabTemps = (
   const curr_tab_temps = templates
     .filter((temp) => emailTemplateCopy[temp.type]?.heading)
     .sort((a, b) => {
-      if (
-        emailTemplateCopy[a.type].heading > emailTemplateCopy[b.type].heading
-      ) {
+      const tempA = emailTemplateCopy[a.type]!;
+      const tempB = emailTemplateCopy[b.type]!;
+      if (tempA.heading > tempB.heading) {
         return 1;
       }
-      if (
-        emailTemplateCopy[b.type].heading > emailTemplateCopy[a.type].heading
-      ) {
+      if (tempB.heading > tempA.heading) {
         return -1;
       }
       return 0;

@@ -14,8 +14,12 @@ import WorkTime from './WorkTime';
 export default function WorkingHour() {
   const { recruiter } = useTenant();
   const initialData = recruiter.scheduling_settings;
-  const [workingHours, setWorkingHours] = useState([]);
-  const [selectedTimeZone, setSelectedTimeZone] = useState<TimezoneObj>(null);
+  const [workingHours, setWorkingHours] = useState<
+    SchedulingSettingType['workingHours']
+  >([]);
+  const [selectedTimeZone, setSelectedTimeZone] = useState<TimezoneObj | null>(
+    null,
+  );
   const [selectedHourBreak, setSelectedHourBreak] = useState<{
     start_time: string;
     end_time: string;
@@ -85,11 +89,13 @@ export default function WorkingHour() {
           setWorkingHours={setWorkingHours}
           handleUpdate={handleUpdate}
         />
-        <BreakTimeCard
-          breaktime={selectedHourBreak}
-          setSelectedHourBreak={setSelectedHourBreak}
-          handleUpdate={handleUpdate}
-        />
+        {!!selectedHourBreak && (
+          <BreakTimeCard
+            breakTime={selectedHourBreak}
+            setSelectedHourBreak={setSelectedHourBreak}
+            handleUpdate={handleUpdate}
+          />
+        )}
       </div>
     </div>
   );

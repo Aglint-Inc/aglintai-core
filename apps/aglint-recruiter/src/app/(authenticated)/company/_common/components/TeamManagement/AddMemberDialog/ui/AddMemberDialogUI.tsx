@@ -21,9 +21,9 @@ import type { useTenantOfficeLocations } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { type useAllDepartments } from '@/queries/departments';
+import { api } from '@/trpc/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import { reinviteUser } from '../../utils';
 import { type InviteUserFormErrorType, type InviteUserFormType } from '..';
 
 type Props = {
@@ -59,6 +59,8 @@ export const AddMemberDialogUI = ({
   recruiterUser,
 }: Props) => {
   const { toast } = useToast();
+  const { mutateAsync: reinviteUser } =
+    api.tenant['resend-invite'].useMutation();
   if (!roleOptions) {
     toast({
       variant: 'destructive',
@@ -275,23 +277,21 @@ export const AddMemberDialogUI = ({
                 onClick={() => {
                   setResendDisable(member.user_id);
                   if (recruiterUser.user_id)
-                    reinviteUser(member.email, recruiterUser.user_id).then(
-                      ({ error, emailSend }) => {
+                    reinviteUser({ email: member.email })
+                      .then(() => {
                         setResendDisable(null);
-                        if (!error && emailSend) {
-                          toast({
-                            variant: 'default',
-                            title: 'Invite sent successfully.',
-                          });
-                        } else {
-                          toast({
-                            variant: 'destructive',
-                            title: 'Failed to resend invite',
-                            description: error,
-                          });
-                        }
-                      },
-                    );
+                        toast({
+                          variant: 'default',
+                          title: 'Invite sent successfully.',
+                        });
+                      })
+                      .catch(() => {
+                        setResendDisable(null);
+                        toast({
+                          variant: 'destructive',
+                          title: 'Failed to resend invite',
+                        });
+                      });
                 }}
                 disabled={isResendDisable === member.user_id}
               >
