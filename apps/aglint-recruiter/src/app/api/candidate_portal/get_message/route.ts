@@ -5,7 +5,7 @@ import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export type apiResponsePortalMessage = Awaited<ReturnType<typeof getMessages>>;
 
-export async function POST(req) {
+export async function POST(req: Request) {
   try {
     const { application_id } = await req.json();
 
@@ -13,14 +13,16 @@ export async function POST(req) {
 
     return NextResponse.json(messages, { status: 200 });
   } catch (e) {
-    return NextResponse.json(
-      { message: 'error ' + e.message },
-      { status: 400 },
-    );
+    if (e instanceof Error) {
+      return NextResponse.json(
+        { message: 'error ' + e.message },
+        { status: 400 },
+      );
+    } else return NextResponse.json({ message: 'error ' }, { status: 400 });
   }
 }
 
-const getMessages = async (application_id) => {
+const getMessages = async (application_id: string) => {
   const supabaseAdmin = getSupabaseServer();
 
   const { data } = await supabaseAdmin
@@ -39,8 +41,8 @@ const getMessages = async (application_id) => {
 
   const messagesWithCompany = messages.map((message) => ({
     ...message,
-    company_name: data.candidates.recruiter.name,
-    company_logo: data.candidates.recruiter.logo,
+    company_name: data?.candidates?.recruiter?.name || '',
+    company_logo: data?.candidates?.recruiter?.logo || '',
   }));
   return messagesWithCompany;
 };

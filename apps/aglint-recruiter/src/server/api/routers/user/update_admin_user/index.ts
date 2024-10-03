@@ -1,73 +1,58 @@
 import { recruiterRelationUpdateSchema } from '@aglint/shared-types';
 import {} from '@aglint/shared-types/src/db/tables/recruiter.types';
 import { customRecruiterUserUpdateSchema } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
-import { type z } from 'zod';
+import { z } from 'zod';
 
-import { type PrivateProcedure, publicProcedure } from '@/server/api/trpc';
+import {
+  privateProcedure,
+  type PrivateProcedure,
+  publicProcedure,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
+import { customSchedulingSettingsSchema } from '@aglint/shared-types/src/db/common.zod';
 
-const RecruiterUserSchema = customRecruiterUserUpdateSchema.pick({
-  first_name: true,
-  last_name: true,
-  linked_in: true,
-  office_location_id: true,
-  employment: true,
-  position: true,
-  department_id: true,
-  phone: true,
-  user_id: true,
-  profile_image: true,
-  scheduling_settings: true,
+const Schema = z.object({
+  first_name: z.string(),
+  last_name: z.string(),
+  linked_in: z.string(),
+  office_location_id: z.number(),
+  employment: z.string(),
+  position: z.string(),
+  department_id: z.number(),
+  phone: z.string(),
+  user_id: z.string(),
+  profile_image: z.string(),
+  scheduling_settings: customSchedulingSettingsSchema,
+  role_id: z.string(),
+  manager_id: z.string(),
+  recruiter_id: z.string(),
 });
-
-const RecruiterRelationSchema = recruiterRelationUpdateSchema.pick({
-  role_id: true,
-  manager_id: true,
-  recruiter_id: true,
-});
-
-const Schema = RecruiterUserSchema.merge(RecruiterRelationSchema);
 
 export type UserAdminUpdateType = z.infer<typeof Schema>;
 
 const mutation = async ({ input }: PrivateProcedure<typeof Schema>) => {
   const db = createPrivateClient();
 
-  const {
-    user_id,
-    role_id,
-    manager_id,
-    department_id,
-    employment,
-    first_name,
-    last_name,
-    linked_in,
-    office_location_id,
-    phone,
-    position,
-    recruiter_id,
-    scheduling_settings,
-    profile_image,
-  } = input;
-
   await db
     .rpc('update_user', {
-      employment,
-      first_name,
-      recruiter_id,
-      scheduling_settings,
-      user_id,
-      last_name,
-      department_id,
-      linked_in,
-      manager_id,
-      office_location_id,
-      phone,
-      position,
-      profile_image,
-      role_id,
+      employment: input?.employment,
+      first_name: input?.first_name,
+      recruiter_id: input?.recruiter_id,
+      scheduling_settings: input.scheduling_settings,
+      user_id: input?.user_id,
+      last_name: input?.last_name,
+      department_id: input?.department_id,
+      linked_in: input?.linked_in,
+      manager_id: input?.manager_id,
+      office_location_id: input?.office_location_id,
+      phone: input?.phone,
+      position: input?.position,
+      profile_image: input?.profile_image,
+      role_id: input?.role_id,
     })
     .throwOnError();
 };
 
-export const updateAdminUser = publicProcedure.input(Schema).mutation(mutation);
+export const updateAdminUser = privateProcedure
+  .input(Schema)
+  .mutation(mutation);

@@ -2,32 +2,25 @@ import { recruiterRelationUpdateSchema } from '@aglint/shared-types';
 import { type CustomSchedulingSettings } from '@aglint/shared-types/src/db/tables/common.types';
 import {} from '@aglint/shared-types/src/db/tables/recruiter.types';
 import { customRecruiterUserUpdateSchema } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
-import { type z } from 'zod';
+import { z } from 'zod';
 
-import { type PrivateProcedure, publicProcedure } from '@/server/api/trpc';
+import {
+  privateProcedure,
+  type PrivateProcedure,
+  publicProcedure,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
+import { customSchedulingSettingsSchema } from '@aglint/shared-types/src/db/common.zod';
 
-const RecruiterUserSchema = customRecruiterUserUpdateSchema.pick({
-  first_name: true,
-  last_name: true,
-  linked_in: true,
-  office_location_id: true,
-  employment: true,
-  position: true,
-  department_id: true,
-  phone: true,
-  user_id: true,
-  profile_image: true,
-  scheduling_settings: true,
+const Schema = z.object({
+  first_name: z.string(),
+  last_name: z.string(),
+  phone: z.string(),
+  scheduling_settings: customSchedulingSettingsSchema,
+  profile_image: z.string(),
+  linked_in: z.string(),
+  user_id: z.string(),
 });
-
-const RecruiterRelationSchema = recruiterRelationUpdateSchema.pick({
-  role_id: true,
-  manager_id: true,
-  recruiter_id: true,
-});
-
-const Schema = RecruiterUserSchema.merge(RecruiterRelationSchema);
 
 export type UserUpdateType = z.infer<typeof Schema>;
 
@@ -59,4 +52,4 @@ const mutation = async ({ input }: PrivateProcedure<typeof Schema>) => {
     .throwOnError();
 };
 
-export const updateUser = publicProcedure.input(Schema).mutation(mutation);
+export const updateUser = privateProcedure.input(Schema).mutation(mutation);

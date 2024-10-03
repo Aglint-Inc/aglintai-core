@@ -99,33 +99,31 @@ const EditAdminDialog = ({
     .filter((mem) => mem.id !== recruiter_user.user_id);
 
   useEffect(() => {
-
-    if(interviewerDetail){
-    const initForm: EditAdminFormType = {
-      first_name: interviewerDetail.first_name,
-      last_name: interviewerDetail.last_name ?? '',
-      phone: interviewerDetail?.phone,
-      linked_in: interviewerDetail?.linked_in,
-      office_location_id: interviewerDetail?.office_location_id,
-      employment: interviewerDetail?.employment,
-      profile_image: interviewerDetail?.profile_image,
-      department_id: interviewerDetail?.department_id,
-      position: interviewerDetail?.position,
-      role_id: interviewerDetail?.role_id,
-      manager_id: interviewerDetail?.manager_id,
-      role: interviewerDetail?.role,
-    };
-    if (_.isEqual(initForm, form)) {
-      setIsProfileChanged(false);
-    } else {
-      setIsProfileChanged(true);
+    if (interviewerDetail) {
+      const initForm: EditAdminFormType = {
+        first_name: interviewerDetail.first_name,
+        last_name: interviewerDetail.last_name ?? '',
+        phone: interviewerDetail?.phone,
+        linked_in: interviewerDetail?.linked_in,
+        office_location_id: interviewerDetail?.office_location_id,
+        employment: interviewerDetail?.employment,
+        profile_image: interviewerDetail?.profile_image,
+        department_id: interviewerDetail?.department_id,
+        position: interviewerDetail?.position,
+        role_id: interviewerDetail?.role_id,
+        manager_id: interviewerDetail?.manager_id,
+        role: interviewerDetail?.role,
+      };
+      if (_.isEqual(initForm, form)) {
+        setIsProfileChanged(false);
+      } else {
+        setIsProfileChanged(true);
+      }
     }
-  }
   }, [form]);
 
   useEffect(() => {
     if (member && interviewerDetail) {
-      
       setForm(initForm);
     }
   }, []);
