@@ -23,7 +23,7 @@ const CompanyInfoComp = () => {
             </PageDescription>
           </PageHeaderText>
         </PageHeader>
-        <div className='flex flex-col gap-4'>
+        <div className='flex flex-col space-y-12'>
           <BasicInfo />
           <Location />
           <Departments />

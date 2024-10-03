@@ -31,8 +31,8 @@ function LocationCard({
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <Card
-      className='relative h-full border-none p-4 shadow-none'
+    <div
+      className='relative h-full'
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -52,16 +52,18 @@ function LocationCard({
         </div>
       )}
       <div className='flex items-center justify-between'>
-        <h4 className='text-base font-semibold'>{location}</h4>
+        <h4 className='font-semibold'>{location}</h4>
       </div>
       <div className='mt-2'>
         <div className='flex items-center'>
           <MapPin className='mr-2 h-4 w-4 text-muted-foreground' />
-          <p>{address || '-'}</p>
+          <span className='text-sm text-muted-foreground'>
+            {address || '-'}
+          </span>
         </div>
         <div className='mt-1 flex items-center'>
           <Clock className='mr-2 h-4 w-4 text-muted-foreground' />
-          <p>{timeZone}</p>
+          <span className='text-sm text-muted-foreground'>{timeZone}</span>
         </div>
       </div>
       {isHeadquarter && (
@@ -69,7 +71,7 @@ function LocationCard({
           <Badge variant='outline'>Headquarters</Badge>
         </div>
       )}
-    </Card>
+    </div>
   );
 }
 
