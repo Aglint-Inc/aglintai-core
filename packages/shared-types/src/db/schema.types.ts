@@ -2932,6 +2932,7 @@ export type Database = {
           company_images: string[] | null
           greetings: string | null
           integrations: boolean
+          onboard_complete: boolean
           recruiter_id: string
           reports: boolean
           request: boolean
@@ -2951,6 +2952,7 @@ export type Database = {
           company_images?: string[] | null
           greetings?: string | null
           integrations?: boolean
+          onboard_complete?: boolean
           recruiter_id: string
           reports?: boolean
           request?: boolean
@@ -2970,6 +2972,7 @@ export type Database = {
           company_images?: string[] | null
           greetings?: string | null
           integrations?: boolean
+          onboard_complete?: boolean
           recruiter_id?: string
           reports?: boolean
           request?: boolean
