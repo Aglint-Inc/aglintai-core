@@ -22,7 +22,7 @@ export const fetchUtil: FetchUtilType<
   const org_tz = organizer.scheduling_settings.timeZone.tzCode;
   const start_time = data.start_time;
   const meeting_id = data.id;
-  const meetingStatusUpdateLink = `${process.env.NEXT_PUBLIC_APP_URL}/interviews/view?meeting_id=${meeting_id}&tab=candidate_details`;
+  const meetingStatusUpdateLink = `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/interviews/view?meeting_id=${meeting_id}&tab=candidate_details`;
 
   const comp_email_placeholder: EmailTemplateAPi<'interviewEnd_email_organizerForMeetingStatus'>['comp_email_placeholders'] =
     {

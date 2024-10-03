@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-import { getFullName } from '@aglint/shared-utils';
+import { getBreakLabel, getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Switch } from '@components/ui/switch';
 import React, {
@@ -20,7 +20,6 @@ import { type CompanyMember } from '@/queries/company-members';
 import { type CreateDebriefSession } from '@/queries/interview-plans';
 import { type InterviewSessionType } from '@/queries/interview-plans/types';
 import { type Job } from '@/queries/jobs/types';
-import { getBreakLabel } from '@/utils/getBreakLabel';
 import { capitalize } from '@/utils/text/textUtils';
 import { validateString } from '@/utils/validateString';
 

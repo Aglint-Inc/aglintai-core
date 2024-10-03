@@ -1,25 +1,17 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import type * as Icons from 'lucide-react';
-import { icons } from 'lucide-react';
+import * as Icons from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
 export type UITabType = {
-  vertical: {
-    id: string;
-    name: string;
-    content?: JSX.Element;
-
-    icon?: IconName;
-    iconComp?: JSX.Element;
-  };
-  horizontal: {
-    id: string;
-    name: string;
-    content?: JSX.Element;
-  };
+  id: string;
+  name: string;
+  content?: JSX.Element;
+  icon?: IconName;
+  iconComp?: JSX.Element;
 };
+
 type IconName = keyof typeof Icons;
 
 export default function UITabs({
@@ -29,7 +21,7 @@ export default function UITabs({
   defaultValue,
 }: {
   vertical?: boolean;
-  tabs: UITabType['horizontal'][] | UITabType['vertical'][];
+  tabs: UITabType[];
   // eslint-disable-next-line no-unused-vars
   onClick: (value: string) => void;
   defaultValue: string;
@@ -145,7 +137,9 @@ export default function UITabs({
             )}
           </AnimatePresence>
           {tabs.map((tab) => {
-            const Icon = icons[tab?.icon];
+            const Icon = (
+              tab?.icon ? Icons[tab?.icon] : <></>
+            ) as React.ElementType;
             return (
               <button
                 key={tab.id}

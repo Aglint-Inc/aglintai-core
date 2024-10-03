@@ -1,4 +1,5 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
+import { getBreakLabel } from '@aglint/shared-utils';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { AlertCircle, Globe, SquareArrowOutUpRight, User } from 'lucide-react';
@@ -7,7 +8,6 @@ import Link from 'next/link';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { getBreakLabel } from '@/utils/getBreakLabel';
 
 import IconSessionType from '../../../../../../../components/Common/Icons/IconSessionType';
 import { formatTimeWithTimeZone } from '../../../../../../../components/Scheduling/utils';

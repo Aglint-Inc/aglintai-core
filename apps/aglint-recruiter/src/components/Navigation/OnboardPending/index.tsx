@@ -18,6 +18,7 @@ import {
   setIsOnboardOpen,
   useOnboard,
 } from '@/authenticated/store/OnboardStore';
+import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import UITabs from '@/components/Common/UITabs';
 
@@ -43,16 +44,21 @@ export const OnboardPending = () => {
       {isOnboardCompleteRemote ? (
         <> </>
       ) : (
-        companySetupSteps?.length &&
-        isCompanySetupPending &&
-        !isOpen && (
-          <UIButton
-            onClick={toggleOpen}
-            className='fixed bottom-6 right-6 z-50 rounded-full shadow-lg'
-          >
-            Open Onboarding {pendingStepsCount}
-          </UIButton>
-        )
+        <>
+          {companySetupSteps?.length && isCompanySetupPending && !isOpen && (
+            <UIButton
+              className='fixed bottom-8 left-20 z-50 rounded-full shadow-lg'
+              onClick={toggleOpen}
+            >
+              Onboarding
+              <UIBadge
+                color='warning'
+                textBadge={pendingStepsCount + ' Steps Pending'}
+                className='-mr-2 ml-2 flex inline-flex rounded-full'
+              />
+            </UIButton>
+          )}
+        </>
       )}
       <Dialog open={isOpen} onOpenChange={() => toggleOpen()}>
         <DialogContent className='mb-0 min-w-[900px] max-w-[900px] p-0'>
@@ -128,7 +134,7 @@ const MainContent = () => {
         </div>
         <div className='space-y-2 md:col-span-8'>
           {selectedStep && (
-            <ScrollArea className='min-h-[500px] w-[100%]'>
+            <ScrollArea className='min-h-[420px] w-[100%]'>
               <Content selectedStep={selectedStep} />
             </ScrollArea>
           )}

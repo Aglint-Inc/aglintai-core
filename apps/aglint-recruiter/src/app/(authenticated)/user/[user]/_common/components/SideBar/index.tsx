@@ -1,7 +1,7 @@
 import { debounce } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 
-import UITabs from '@/components/Common/UITabs';
+import UITabs, { type UITabType } from '@/components/Common/UITabs';
 
 import { type sectionKeys } from '../../hooks/useScrollnavigation';
 
@@ -13,7 +13,7 @@ export const SideBar = ({
   scrollToSection: (sectionKey: sectionKeys) => void;
   activeSection: string;
 }) => {
-  const tabs = [
+  const tabs: UITabType[] = [
     { icon: 'CircleUserRound', name: 'Overview', id: 'overview' },
     { icon: 'CircleCheck', name: 'Qualifications', id: 'qualifications' },
     {

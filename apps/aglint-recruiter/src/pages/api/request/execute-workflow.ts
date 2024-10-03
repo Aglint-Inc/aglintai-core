@@ -1,26 +1,23 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
-import { type NextApiRequest, type NextApiResponse } from 'next';
+import { z } from 'zod';
 
+import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { getWActions } from '@/services/event-triggers/utils/w_actions';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    const supabaseAdmin = getSupabaseServer();
+const schema = z.object({
+  request_id: z.string(),
+});
+const executeWorkflow = async (parsed_body: z.output<typeof schema>) => {
+  const supabaseAdmin = getSupabaseServer();
 
-    const { request_id } = req.body;
-    const [request] = supabaseWrap(
-      await supabaseAdmin.from('request').select().eq('id', request_id),
-    );
-    await triggerActions(request);
-    return res.status(200).json({ message: 'OK' });
-  } catch (e) {
-    return res.status(500).json({ error: e.message });
-  }
+  const { request_id } = parsed_body;
+  const [request] = supabaseWrap(
+    await supabaseAdmin.from('request').select().eq('id', request_id),
+  );
+  await triggerActions(request);
 };
-
-export default handler;
 
 const triggerActions = async (request_data: DatabaseTable['request']) => {
   try {
@@ -29,7 +26,7 @@ const triggerActions = async (request_data: DatabaseTable['request']) => {
     const [applications] = supabaseWrap(
       await supabaseAdmin
         .from('applications')
-        .select('*,public_jobs(*)')
+        .select('*,public_jobs!inner(*)')
         .eq('id', request_data.application_id),
     );
     const req_relns = supabaseWrap(
@@ -78,7 +75,9 @@ const triggerActions = async (request_data: DatabaseTable['request']) => {
         );
       });
     await Promise.allSettled(promises);
-  } catch (err) {
+  } catch (err: any) {
     console.error(`Failed update request status event`, err.message);
   }
 };
+
+export default createPageApiPostRoute(schema, executeWorkflow);

@@ -19,8 +19,7 @@ type TipTapAIEditorParams = {
   placeholder?: string;
   initialValue?: string | undefined;
   enablAI?: boolean;
-  // eslint-disable-next-line no-unused-vars
-  handleChange?: (s: string) => void;
+  handleChange?: (_s: string) => void;
   showWarnOnEdit?: () => void;
   toolbar?: boolean;
   defaultJson?: any;
@@ -80,8 +79,14 @@ const TipTapAIEditor = ({
           ? getRegularEditorConfigs({ placeholder })
           : getRegularEditorNoHeadingsConfigs({ placeholder })
         : isSize
-          ? getEmailTemplateExtns({ placeholder, template_type })
-          : getEmailTemplateExtnsNoHeading({ placeholder, template_type }),
+          ? getEmailTemplateExtns({
+              placeholder,
+              template_type,
+            })
+          : getEmailTemplateExtnsNoHeading({
+              placeholder,
+              template_type,
+            }),
     editable: !disabled,
     content: initialValue || '',
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -99,6 +104,7 @@ const TipTapAIEditor = ({
       setSelectedText(text);
     },
     onUpdate({ editor }) {
+      if (!editor || !handleChange) return;
       if (editor.isEmpty) {
         handleChange('');
       } else {

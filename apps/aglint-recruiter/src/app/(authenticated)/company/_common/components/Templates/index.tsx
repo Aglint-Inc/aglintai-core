@@ -1,6 +1,5 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
 import {
   Section,
@@ -34,25 +33,26 @@ import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/Email
 import { UIButton } from '@/components/Common/UIButton';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { useRouterPro } from '@/hooks/useRouterPro';
+import { api } from '@/trpc/client';
 import { emailTemplateCopy } from '@/types/companyEmailTypes';
-import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import {
-  fetchEmailTemplates,
   filterEmailByTemplateTab,
   SortCurrentTabTemps,
   tempFilterOptions,
+  type TEMPLATE_TABS,
   template_tabs,
 } from './utils';
-
+type EmailTemplate = DatabaseTable['company_email_template'] & {
+  type: keyof typeof emailTemplateCopy;
+};
 function SchedulerEmailTemps() {
   const { recruiter_id } = useTenant();
-  const [templates, setTemplates] = useState<
-    DatabaseTable['company_email_template'][]
-  >([]);
+  const { data: fetchedTemps, status } = useCompanyTemplates();
+  const [templates, setTemplates] = useState<EmailTemplate[]>([]);
   const [tiptapLoader, setTipTapLoder] = useState(false);
-
+  const { mutateAsync } = api.tenant.templates.update.useMutation();
   const [isEditorLoad, setIsEditorLoad] = useState(true);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
@@ -61,50 +61,42 @@ function SchedulerEmailTemps() {
   const router = useRouterPro();
   const { toast } = useToast();
 
-  const [isHtml, setHtml] = useState(null);
+  const [isHtml, setHtml] = useState<string | null>(null);
   const [popOverLoading, setPopOverLoading] = useState(false);
 
   const [isFocus, setIsFocus] = useState(false);
 
-  const temp_tab = router.queryParams.tab as any;
+  const temp_tab = router.queryParams.tab as keyof typeof tempFilterOptions;
   const temp_email = router.queryParams
     .email as DatabaseEnums['email_slack_types'];
 
   useEffect(() => {
-    (async () => {
-      try {
-        let template_tab = template_tabs[0].key;
-        if (!template_tabs.find((t) => t.key === temp_tab)) {
-          template_tab = template_tabs[0].key;
-        }
-        const temps = await fetchEmailTemplates(recruiter_id);
-        if (!temps || !router.isReady) return;
-
-        const curr_tab_temps = SortCurrentTabTemps(temps);
-
-        const current_filtered_temp = curr_tab_temps.filter((t) =>
-          filterEmailByTemplateTab(template_tab, t.type),
-        );
-
-        if (!current_filtered_temp.find((e) => e.type === temp_email)) {
-          setEmailRoute(current_filtered_temp[0].type);
-        }
-
-        setTemplates([...curr_tab_temps]);
-
-        setTipTapLoder(true);
-        setTimeout(() => {
-          setTipTapLoder(false);
-          setIsEditorLoad(false);
-        }, 500);
-      } catch (err) {
-        toast({
-          variant: 'destructive',
-          title: 'Something went wrong',
-        });
+    if (status === 'success') {
+      let template_tab = template_tabs[0].key;
+      if (!template_tabs.find((t) => t.key === temp_tab)) {
+        template_tab = template_tabs[0].key;
       }
-    })();
-  }, [recruiter_id]);
+      const temps = fetchedTemps;
+      if (!temps || !router.isReady) return;
+
+      const curr_tab_temps = SortCurrentTabTemps(temps as EmailTemplate[]);
+
+      const current_filtered_temp = curr_tab_temps.filter((t) =>
+        filterEmailByTemplateTab(template_tab, t.type),
+      );
+
+      if (!current_filtered_temp.find((e) => e.type === temp_email)) {
+        setEmailRoute(current_filtered_temp[0].type);
+      }
+
+      setTemplates([...curr_tab_temps]);
+
+      setTimeout(() => {
+        setTipTapLoder(false);
+        setIsEditorLoad(false);
+      }, 500);
+    }
+  }, [fetchedTemps, status]);
   useEffect(() => {
     if (!template_tabs.find((t) => t.key === temp_tab)) {
       setTabRoute(template_tabs[0].key);
@@ -115,12 +107,12 @@ function SchedulerEmailTemps() {
     updated_template: DatabaseTable['company_email_template'],
   ) {
     try {
-      supabaseWrap(
-        await supabase
-          .from('company_email_template')
-          .update({ ...updated_template })
-          .eq('id', updated_template.id),
-      );
+      await mutateAsync({
+        template_id: updated_template.id,
+        updated_template: {
+          ...updated_template,
+        },
+      });
     } catch (err) {
       toast({
         variant: 'destructive',
@@ -191,16 +183,15 @@ function SchedulerEmailTemps() {
     else if (down && !isFocus) handleDown();
   }, [up, down]);
 
-  function setEmailRoute(temp) {
+  function setEmailRoute(temp: DatabaseEnums['email_slack_types']) {
     const currentUrl = new URL(window.location.href); // Get the current URL
     currentUrl.searchParams.set('email', temp); // Set or update the `email` query param
 
     router.push(currentUrl.toString());
   }
-  function setTabRoute(tab) {
+  function setTabRoute(tab: TEMPLATE_TABS) {
     const currentUrl = new URL(window.location.href); // Get the current URL
     currentUrl.searchParams.set('template_tab', tab); // Set or update the `email` query param
-
     router.push(currentUrl.toString());
   }
 
@@ -208,10 +199,11 @@ function SchedulerEmailTemps() {
     return templates
       .filter((emailPath) => {
         const flag = filterEmailByTemplateTab(temp_tab as any, emailPath.type);
-        if (searchQry.length > 0) {
+        const email_copy = emailTemplateCopy[emailPath.type];
+        if (flag && email_copy && email_copy.heading && searchQry.length > 0) {
           return (
             flag &&
-            emailTemplateCopy[emailPath.type].heading
+            email_copy.heading
               .toLocaleLowerCase()
               .includes(searchQry.toLocaleLowerCase())
           );
@@ -219,16 +211,12 @@ function SchedulerEmailTemps() {
         return flag;
       })
       .sort((a, b) => {
-        if (
-          emailTemplateCopy[a.type].heading > emailTemplateCopy[b.type].heading
-        ) {
-          return 1;
-        }
-        if (
-          emailTemplateCopy[b.type].heading > emailTemplateCopy[a.type].heading
-        ) {
-          return -1;
-        }
+        const emailCopy1 = emailTemplateCopy[a.type];
+        const emailCopy2 = emailTemplateCopy[b.type];
+        if (!emailCopy1 || !emailCopy2) return 0;
+        if (!emailCopy1.heading || !emailCopy2.heading) return 0;
+        if (emailCopy1.heading > emailCopy2.heading) return 1;
+        if (emailCopy2.heading > emailCopy1.heading) return -1;
         return 0;
       });
   };
@@ -245,8 +233,9 @@ function SchedulerEmailTemps() {
 
   const filteredEnum = Object.keys(tempFilterOptions[temp_tab])
     .filter((key) => filter.includes(key))
-    .reduce((arr, key) => {
-      return arr.concat(tempFilterOptions[temp_tab][key]);
+    .reduce((arr: any, key: any) => {
+      //@ts-ignore TODO: fix this
+      return [...arr, ...tempFilterOptions[temp_tab][key]];
     }, []);
 
   return (
@@ -319,14 +308,17 @@ function SchedulerEmailTemps() {
                 <ScrollArea className='h-[calc(100vh-200px)]'>
                   {templates
                     .filter((emailPath) => {
+                      const type =
+                        emailPath.type as keyof typeof emailTemplateCopy;
                       const flag = filterEmailByTemplateTab(
                         temp_tab as any,
-                        emailPath.type,
+                        type,
                       );
-                      if (searchQry.length > 0) {
+                      if (flag && searchQry.length > 0) {
+                        const emailCopy = emailTemplateCopy[type];
                         return (
-                          flag &&
-                          emailTemplateCopy[emailPath.type].heading
+                          emailCopy &&
+                          emailCopy.heading
                             .toLowerCase()
                             .includes(searchQry.toLowerCase())
                         );
@@ -338,54 +330,70 @@ function SchedulerEmailTemps() {
                         ? filteredEnum.includes(email.type)
                         : true,
                     )
-                    .sort((a, b) =>
-                      emailTemplateCopy[a.type].heading.localeCompare(
-                        emailTemplateCopy[b.type].heading,
-                      ),
-                    )
-                    .map((emailPath) => (
-                      <Link
-                        key={emailPath.id}
-                        href={{
-                          pathname: router.pathName,
-                          query: {
-                            ...router.queryParams,
-                            email: emailPath.type,
-                          },
-                        }}
-                        passHref
-                      >
-                        <Button
-                          variant={
-                            emailPath.type === temp_email
-                              ? 'default'
-                              : 'outline'
-                          }
-                          className={`my-1 h-16 w-[330px] justify-start text-left ${emailPath.type === temp_email ? 'border bg-white text-neutral-900 hover:bg-white' : 'bg-gray-50 text-neutral-900 hover:bg-white'}`}
-                          onClick={() => {
-                            if (temp_email !== emailPath.type) {
-                              setTipTapLoder(true);
-                              setTimeout(() => {
-                                setTipTapLoder(false);
-                              }, 500);
-                            }
+                    .sort((a, b) => {
+                      const emailCopy1 = emailTemplateCopy[a.type];
+                      const emailCopy2 = emailTemplateCopy[b.type];
+                      if (!emailCopy1 || !emailCopy2) return 0;
+                      if (!emailCopy1.heading || !emailCopy2.heading) return 0;
+                      if (emailCopy1.heading > emailCopy2.heading) return 1;
+                      if (emailCopy2.heading > emailCopy1.heading) return -1;
+                      return 0;
+                    })
+                    .map((emailPath) => {
+                      const emailCopy = emailTemplateCopy[emailPath.type];
+                      if (
+                        !emailCopy ||
+                        !emailCopy.description ||
+                        !emailCopy.heading
+                      )
+                        return null;
+
+                      return (
+                        <Link
+                          key={emailPath.id}
+                          href={{
+                            pathname: router.pathName,
+                            query: {
+                              ...router.queryParams,
+                              email: emailPath.type,
+                            },
                           }}
+                          passHref
                         >
-                          <div className='w-full'>
-                            <div
-                              className={`line-clamp-2 font-semibold ${emailPath.type === temp_email ? 'text-neutral-900' : 'text-neutral-900'}`}
-                            >
-                              {emailTemplateCopy[emailPath.type]?.heading}
+                          <Button
+                            variant={
+                              emailPath.type === temp_email
+                                ? 'default'
+                                : 'outline'
+                            }
+                            className={`my-1 h-16 w-[330px] justify-start text-left ${emailPath.type === temp_email ? 'border bg-white text-neutral-900 hover:bg-white' : 'bg-gray-50 text-neutral-900 hover:bg-white'}`}
+                            onClick={() => {
+                              if (temp_email !== emailPath.type) {
+                                setTipTapLoder(true);
+                                setTimeout(() => {
+                                  setTipTapLoder(false);
+                                }, 500);
+                              }
+                            }}
+                          >
+                            <div className='w-full'>
+                              <div
+                                className={`line-clamp-2 font-semibold ${emailPath.type === temp_email ? 'text-neutral-900' : 'text-neutral-900'}`}
+                              >
+                                {emailCopy && emailCopy.heading}
+                              </div>
+                              <div
+                                className={`line-clamp-2 text-sm ${emailPath.type === temp_email ? 'text-neutral-500' : 'text-neutral-500'}`}
+                              >
+                                {emailCopy &&
+                                  emailCopy.description &&
+                                  emailCopy.description}
+                              </div>
                             </div>
-                            <div
-                              className={`line-clamp-2 text-sm ${emailPath.type === temp_email ? 'text-neutral-500' : 'text-neutral-500'}`}
-                            >
-                              {emailTemplateCopy[emailPath.type].description}
-                            </div>
-                          </div>
-                        </Button>
-                      </Link>
-                    ))}
+                          </Button>
+                        </Link>
+                      );
+                    })}
                 </ScrollArea>
               </div>
             </Section>
@@ -401,10 +409,14 @@ function SchedulerEmailTemps() {
                 <SectionHeader>
                   <SectionHeaderText>
                     <SectionTitle>
-                      {emailTemplateCopy[temp_email].heading}
+                      {emailTemplateCopy[temp_email] &&
+                        emailTemplateCopy[temp_email].heading &&
+                        emailTemplateCopy[temp_email].heading}
                     </SectionTitle>
                     <SectionDescription>
-                      {emailTemplateCopy[temp_email].description}
+                      {emailTemplateCopy[temp_email] &&
+                        emailTemplateCopy[temp_email].heading &&
+                        emailTemplateCopy[temp_email].description}
                     </SectionDescription>
                   </SectionHeaderText>
                   <SectionActions>
@@ -420,7 +432,7 @@ function SchedulerEmailTemps() {
                   </SectionActions>
                 </SectionHeader>
 
-                {tiptapLoader ? (
+                {tiptapLoader || !selectedTemplate ? (
                   <div className='flex h-[calc(100vh-300px)] items-center justify-center'>
                     <div className='space-y-2'>
                       <Skeleton className='h-4 w-[250px]' />
@@ -432,19 +444,19 @@ function SchedulerEmailTemps() {
                   <EmailTemplateEditForm
                     onBlur={() => setIsFocus(false)}
                     onFocus={() => setIsFocus(true)}
-                    senderNameChange={(e) => {
+                    senderNameChange={(value: string) => {
                       handleUpdateEmailTemp({
                         ...selectedTemplate,
-                        from_name: e.target.value,
+                        from_name: value,
                       });
                     }}
-                    emailBodyChange={(str) => {
+                    emailBodyChange={(str: string) => {
                       handleUpdateEmailTemp({
                         ...selectedTemplate,
                         body: str,
                       });
                     }}
-                    emailSubjectChange={(str) => {
+                    emailSubjectChange={(str: string) => {
                       handleUpdateEmailTemp({
                         ...selectedTemplate,
                         subject: str,
@@ -466,15 +478,21 @@ function SchedulerEmailTemps() {
           </div>
         )
       )}
-      <EmailPreviewPopover
-        anchorEl={anchorEl}
-        setAnchorEl={setAnchorEl}
-        setHtml={setHtml}
-        isHtml={isHtml}
-        isLoading={popOverLoading}
-      />
+      {anchorEl && (
+        <EmailPreviewPopover
+          anchorEl={anchorEl}
+          setAnchorEl={setAnchorEl}
+          setHtml={(html) => setHtml(html)}
+          isHtml={isHtml}
+          isLoading={popOverLoading}
+        />
+      )}
     </div>
   );
 }
 
 export default SchedulerEmailTemps;
+
+const useCompanyTemplates = () => {
+  return api.tenant.templates.read.useQuery();
+};

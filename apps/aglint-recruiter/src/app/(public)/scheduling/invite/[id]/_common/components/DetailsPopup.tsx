@@ -1,9 +1,9 @@
+import { getBreakLabel } from '@aglint/shared-utils';
 import { Coffee } from 'lucide-react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import UIDialog from '@/components/Common/UIDialog';
 import { SessionIcon } from '@/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
-import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
 import { useInviteMeta } from '../hooks/useInviteMeta';
