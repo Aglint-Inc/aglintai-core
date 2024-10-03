@@ -57,8 +57,8 @@ function ToogleList() {
       heading: 'No Conflicts',
       title: 'Show no conflicts',
       number: totalNumberNoConflicts,
-      color: 'success',
-      disableColor: 'neutral',
+      color: 'green-500',
+      disableColor: 'muted-foreground',
       enabled: localFilters.isNoConflicts,
       availabilityType: 'no_conflicts',
     },
@@ -66,8 +66,8 @@ function ToogleList() {
       heading: 'Soft Conflicts',
       title: 'Show soft conflict slots',
       number: totalNumberSoftConflicts,
-      color: 'warning',
-      disableColor: 'neutral',
+      color: 'blue-500',
+      disableColor: 'muted-foreground',
       enabled: localFilters.isSoftConflicts,
       availabilityType: 'soft_conflicts',
     },
@@ -75,8 +75,8 @@ function ToogleList() {
       heading: 'Hard Conflicts',
       title: 'Show hard conflicts',
       number: totalNumberHardConflicts,
-      color: 'error',
-      disableColor: 'neutral',
+      color: 'red-500',
+      disableColor: 'muted-foreground',
       enabled: localFilters.isHardConflicts,
       availabilityType: 'hard_conflicts',
     },
@@ -85,8 +85,8 @@ function ToogleList() {
       heading: 'Outside Work Hours',
       title: 'Show out of work hours',
       number: totalNumberOutsideWorkHours,
-      color: 'info',
-      disableColor: 'neutral',
+      color: 'purple-500',
+      disableColor: 'muted-foreground',
       enabled: localFilters.isOutSideWorkHours,
       availabilityType: 'outside_work_hours',
     },
@@ -111,7 +111,7 @@ function ToogleList() {
                 slotCountText={
                   <div className='flex items-center space-x-2'>
                     <p
-                      className={`text-lg font-semibold ${enabled ? `text-${color}` : `text-${disableColor}`}`}
+                      className={`font-semibold ${enabled ? `text-${color}` : `text-${disableColor}`}`}
                     >
                       {number}
                     </p>
@@ -146,7 +146,7 @@ function ToogleList() {
                         });
                       }}
                     />
-                    <p>{title}</p>
+                    <p className='text-sm text-muted-foreground'>{title}</p>
                   </div>
                 }
               />
