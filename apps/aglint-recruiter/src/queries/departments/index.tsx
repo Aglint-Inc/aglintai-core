@@ -20,7 +20,7 @@ export const useAllDepartments = () => {
   //     queryKey: ['departments'],
   //   });
   // };
-  return { ...query };
+  return { ...query, data: query.data || [] };
 };
 
 const fetchDepartments = async (rec_id: string) => {

@@ -21,8 +21,9 @@ export const Filters = () => {
   const { isShowFeature } = useFlags();
   const {
     interviewPlans: { data: interviewPlans },
-    job: { application_match: matches },
+    job,
   } = useJob();
+  const matches = job?.application_match;
 
   const filterLocations = useJobFilterLocations();
   const filterBadges = useJobFilterBadges();

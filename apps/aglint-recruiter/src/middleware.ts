@@ -41,6 +41,7 @@ export async function middleware(req: NextRequest) {
   const supabase = createPrivateClient();
   const { data, error } = await supabase.auth.getSession();
   if (error) NextResponse.redirect(new URL('/', req.nextUrl));
+
   if (isPublicRoute) {
     if (data.session && path === '/login')
       return NextResponse.redirect(new URL('/jobs', req.nextUrl));

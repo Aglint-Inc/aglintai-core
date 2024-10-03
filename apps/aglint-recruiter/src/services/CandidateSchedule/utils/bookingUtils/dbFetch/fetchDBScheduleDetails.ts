@@ -24,6 +24,7 @@ export const fetchDBScheduleDetails = async (
       .single()
       .throwOnError()
   ).data;
+
   if (!filter_json_data) {
     throw new CApiError('CLIENT', 'Filter does not exist');
   }

@@ -1,4 +1,9 @@
-import { PageHeader } from '@components/layouts/page-header';
+import {
+  PageActions,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import OptimisticWrapper from '@components/loadingWapper';
 import { Button } from '@components/ui/button';
 import {
@@ -77,7 +82,14 @@ export const Body = () => {
 
 export const Header = () => {
   const { manageJob } = useJobs();
-  return <PageHeader title='Jobs'>{manageJob && <AddJob />}</PageHeader>;
+  return (
+    <PageHeader>
+      <PageHeaderText>
+        <PageTitle>Jobs</PageTitle>
+      </PageHeaderText>
+      <PageActions>{manageJob && <AddJob />}</PageActions>
+    </PageHeader>
+  );
 };
 
 export function AddJob() {
@@ -139,6 +151,7 @@ export const Filter = () => {
   const {
     jobs: { data },
   } = useJobs();
+
   const {
     filterOptions,
     filterValues,
@@ -149,6 +162,7 @@ export const Filter = () => {
     searchText,
     setSearchText,
   } = useJobFilterAndSort(data ?? []);
+
   return (
     <FilterJobDashboard
       filterOptions={filterOptions}

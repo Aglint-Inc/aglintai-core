@@ -1,5 +1,12 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { useToast } from '@components/hooks/use-toast';
+import {
+  Page,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useState } from 'react';
 
@@ -100,7 +107,17 @@ const SchedulingReasons = () => {
   };
 
   return (
-    <div className='max-w-[70%]'>
+    <Page>
+      <PageHeader>
+        <PageHeaderText>
+          <PageTitle>Scheduling Reasons</PageTitle>
+          <PageDescription>
+            {' '}
+            Configure default reasons for candidates and interviewers to cancel
+            or reschedule their interviews.
+          </PageDescription>
+        </PageHeaderText>
+      </PageHeader>
       <Tabs value={tab} onValueChange={(value) => setTab(value as typeof tab)}>
         <TabsList className=''>
           {(
@@ -120,7 +137,7 @@ const SchedulingReasons = () => {
         ).map((tabKey) => (
           <TabsContent key={tabKey} value={tabKey} className='mt-0'>
             <ScheduleReasonCard
-              isMainHeadingVisible={true}
+              isMainHeadingVisible={false}
               textMainHeading={
                 <span className='font-semibold'>
                   {tabKey === 'candidate'
@@ -138,7 +155,7 @@ const SchedulingReasons = () => {
           </TabsContent>
         ))}
       </Tabs>
-    </div>
+    </Page>
   );
 };
 

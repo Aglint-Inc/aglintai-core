@@ -2,6 +2,7 @@
 import { type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
 import { decrypt } from '../decryptApiKey';
@@ -15,7 +16,10 @@ type Payload = {
   application_id: string;
 };
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   try {
     if (req.method !== 'POST') {
       return res.status(405).end();
@@ -26,12 +30,14 @@ export default async function handler(req, res) {
     if (payload.application_id) {
       // Supabase credentials
 
-      const { data: application } = await supabase
-        .from('applications')
-        .select(
-          '*,public_jobs(recruiter!public_jobs_recruiter_id_fkey(integrations(*)))',
-        )
-        .eq('id', payload.application_id);
+      const application = (
+        await supabase
+          .from('applications')
+          .select(
+            '*,public_jobs!inner(recruiter!public_jobs_recruiter_id_fkey!inner(integrations!inner(*)))',
+          )
+          .eq('id', payload.application_id)
+      ).data!;
 
       const ats_app_id = application[0].remote_id;
 
@@ -46,6 +52,11 @@ export default async function handler(req, res) {
           })
           .eq('id', payload.application_id);
         return res.status(400).json('No ats application id found');
+      }
+
+      if (!application[0].public_jobs.recruiter.integrations.lever_key) {
+        console.log('API Key is missing');
+        return res.status(400).json('API Key is missing');
       }
 
       const apiKey = decrypt(
@@ -120,7 +131,7 @@ export default async function handler(req, res) {
                 const { error: errorResume } = await supabase
                   .from('candidate_files')
                   .insert({
-                    candidate_id: application[0].candidate_id,
+                    candidate_id: application[0].candidate_id!,
                     file_url: fileLink,
                     id: fileId,
                     type: 'resume',
@@ -171,7 +182,7 @@ export default async function handler(req, res) {
       res.status(400).json('opportunity_id or application_id is missing');
     }
   } catch (error) {
-    console.log(error.message);
+    console.log((error as Error).message);
     res.status(400).send(error);
   }
 }

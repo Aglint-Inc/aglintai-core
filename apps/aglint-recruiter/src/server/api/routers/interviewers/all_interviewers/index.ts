@@ -19,7 +19,7 @@ const query = async ({
       .throwOnError()
   ).data;
 
-  const stuData = data.map((d) => ({
+  const stuData = (data || []).map((d) => ({
     user_id: d.user_id,
     name: getFullName(d.first_name, d.last_name),
     role: d.recruiter_relation?.[0]?.roles?.name,

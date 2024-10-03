@@ -1,3 +1,10 @@
+import {
+  Page,
+  PageActions,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
@@ -98,11 +105,16 @@ const Dashboard = () => {
   const score_matches = getMatches(job.application_match, Number(total) || 0);
 
   return (
-    <div className='w-full'>
-      <div className='flex items-center justify-between px-4 pt-2'>
-        <SharedBreadCrumbs />
-        <SharedActions />
-      </div>
+    <Page>
+      <PageHeader>
+        <PageHeaderText>
+          <PageTitle>Job Metrics</PageTitle>
+          <SharedBreadCrumbs />
+        </PageHeaderText>
+        <PageActions>
+          <SharedActions />
+        </PageActions>
+      </PageHeader>
       <div className='mb-6 flex flex-col gap-6 px-4'>
         <div>
           <div className='flex flex-col gap-4 py-4'>
@@ -125,7 +137,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Page>
   );
 };
 

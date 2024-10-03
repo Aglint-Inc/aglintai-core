@@ -44,8 +44,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       metadata: {
         type: 'booking_confirmation',
         sessions: meeting_data,
-        filter_id,
-        availability_request_id,
+        filter_id: filter_id ?? undefined,
+        availability_request_id: availability_request_id ?? undefined,
         action: 'waiting',
       },
     });
@@ -88,7 +88,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).send('ok');
   } catch (error) {
     console.error(error);
-    return res.status(500).send(error.message);
+    return res.status(500).send((error as Error).message);
   }
 };
 

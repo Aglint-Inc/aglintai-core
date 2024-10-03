@@ -19,7 +19,7 @@ export const useDeleteRelationHandler = () => {
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: e.message,
+        description: (e as Error).message,
       });
     }
   };

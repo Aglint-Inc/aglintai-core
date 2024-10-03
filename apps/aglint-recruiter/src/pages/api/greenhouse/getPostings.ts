@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { decrypt } from '../decryptApiKey';
 
-export default function handler(req, res) {
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const apiKey = req.body.apiKey;
     const page = req.body.page;

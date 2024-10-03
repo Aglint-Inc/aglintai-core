@@ -1,5 +1,5 @@
 'use client';
-import { TwoColumnLayout } from '@components/layouts/two-column-layout';
+import { TwoColumnPageLayout } from '@components/layouts/two-column-page-layout';
 import { type PropsWithChildren } from 'react';
 
 import { Activity } from './_common/components/Activity';
@@ -9,7 +9,7 @@ import Requests from './_common/components/Requests';
 
 const Layout = ({ children }: PropsWithChildren) => {
   return (
-    <TwoColumnLayout
+    <TwoColumnPageLayout
       header={
         <>
           <BreadCrumb />
@@ -23,10 +23,10 @@ const Layout = ({ children }: PropsWithChildren) => {
           <Activity />
         </>
       }
-      sidebarWidth={300}
+      sidebarWidth={420}
     >
       {children}
-    </TwoColumnLayout>
+    </TwoColumnPageLayout>
   );
 };
 

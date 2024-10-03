@@ -38,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               console.error(
                 'Error for application:',
                 application.application_id,
-                error.message,
+                (error as Error).message,
               );
               // You might want to handle errors here
             }
@@ -53,7 +53,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).send(error.message);
+    return res.status(500).send((error as Error).message);
   }
 };
 

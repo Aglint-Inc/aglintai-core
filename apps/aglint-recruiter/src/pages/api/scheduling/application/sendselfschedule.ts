@@ -56,7 +56,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   } catch (error) {
     const resErr: ApiResponseSelfSchedule = {
       data: null,
-      error: error?.message || ' Something went wrong',
+      error: (error as Error)?.message || ' Something went wrong',
     };
     return res.status(500).send(resErr);
   }
