@@ -55,7 +55,7 @@ export default function EmailTemplateEditForm({
             recruiter.
           </p>
           <Select
-            defaultValue={selectedTemplate?.from_name}
+            defaultValue={selectedTemplate?.from_name ?? undefined}
             disabled={disabled}
             onValueChange={senderNameChange}
           >
@@ -99,7 +99,7 @@ export default function EmailTemplateEditForm({
               editor_type='email'
               template_type={selectedTemplate.type}
               handleChange={emailSubjectChange}
-              initialValue={selectedTemplate?.subject}
+              initialValue={selectedTemplate?.subject ?? undefined}
             />
           </div>
         </div>
@@ -121,7 +121,7 @@ export default function EmailTemplateEditForm({
             editor_type='email'
             template_type={selectedTemplate.type}
             handleChange={emailBodyChange}
-            initialValue={selectedTemplate.body}
+            initialValue={selectedTemplate?.body ?? undefined}
           />
         </div>
       </div>

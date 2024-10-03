@@ -65,7 +65,9 @@ const BreadCrumbs = () => {
         <BreadcrumbItem>
           <BreadcrumbLink
             href='#'
-            onClick={() => push(ROUTES['/jobs/[job]']({ job: job?.id }))}
+            onClick={() =>
+              push(ROUTES['/jobs/[job]']({ job: (job?.id ?? null)! }))
+            }
           >
             {capitalizeSentence(job?.job_title ?? 'Job')}
           </BreadcrumbLink>

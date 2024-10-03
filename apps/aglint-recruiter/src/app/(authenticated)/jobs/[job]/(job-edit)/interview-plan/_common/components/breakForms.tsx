@@ -24,6 +24,7 @@ type BreakFormFields = {
 
 export const getBreakFields = (props: BreakFormProps): BreakFormFields => {
   return Object.entries(props).reduce((acc, [key, value]) => {
+    //@ts-expect-error
     acc[key] = {
       value,
       error: false,
@@ -107,6 +108,7 @@ export default BreakForms;
 export const validateBreakSessionFields = (fields: BreakFormFields) => {
   const safeFields = Object.entries(fields).reduce(
     (acc, [key, value]) => {
+      //@ts-expect-error
       acc.newFields[key] = structuredClone(value);
       const safeKey = key as keyof BreakFormFields;
       switch (safeKey) {
@@ -168,6 +170,7 @@ export const getBreakSessionPayload = (
 ): UpdateInterviewSession => {
   const { break_duration } = Object.entries(fields).reduce(
     (acc, [key, value]) => {
+      //@ts-expect-error
       acc[key] = value.value;
       return acc;
     },

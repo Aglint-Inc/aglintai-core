@@ -68,6 +68,7 @@ export const getSessionFields = (
   props: SessionFormProps,
 ): SessionFormFields => {
   return Object.entries(props).reduce((acc, [key, value]) => {
+    //@ts-expect-error
     acc[key] = {
       value,
       error: false,
@@ -109,7 +110,7 @@ export const initialSessionFields: SessionFormProps = {
   session_type: 'panel',
   interview_module: null,
   interviewers: [],
-  interviewer_cnt: null,
+  interviewer_cnt: null!,
   training: false,
   trainees: [],
   location: null,
@@ -195,34 +196,37 @@ const SessionForms = ({
   }, []);
 
   const handleModuleChange: HandleModuleChange = useCallback((value) => {
-    setFields((prev) => ({
-      ...prev,
-      interview_module: {
-        ...prev.interview_module,
-        error: false,
-        value,
-      },
-      interviewers: {
-        ...prev.interviewers,
-        error: false,
-        value: [],
-      },
-      interviewer_cnt: {
-        ...prev.interviewer_cnt,
-        error: false,
-        value: null,
-      },
-      training: {
-        ...prev.training,
-        error: false,
-        value: false,
-      },
-      trainees: {
-        ...prev.trainees,
-        error: false,
-        value: [],
-      },
-    }));
+    setFields(
+      (prev) =>
+        ({
+          ...prev,
+          interview_module: {
+            ...prev.interview_module,
+            error: false,
+            value,
+          },
+          interviewers: {
+            ...prev.interviewers,
+            error: false,
+            value: [],
+          },
+          interviewer_cnt: {
+            ...prev.interviewer_cnt,
+            error: false,
+            value: null,
+          },
+          training: {
+            ...prev.training,
+            error: false,
+            value: false,
+          },
+          trainees: {
+            ...prev.trainees,
+            error: false,
+            value: [],
+          },
+        }) as unknown as typeof prev,
+    );
   }, []);
 
   const nameField = useMemo(
@@ -257,7 +261,7 @@ const SessionForms = ({
           <UITextArea
             name={'location'}
             rows={5}
-            value={location.value}
+            value={location.value!}
             error={location.error}
             helperText={location.helper}
             onChange={({ target: { value } }) =>
@@ -337,11 +341,10 @@ const Interview = ({
     training: trainingModuleMemberRecommendations,
   } = moduleMemberRecommendations.reduce(
     (acc, curr) => {
-      acc[curr.training_status].push(curr);
+      acc[curr.training_status].push(curr as SessionUser);
       return acc;
     },
     { qualified: [], training: [] } as {
-      // eslint-disable-next-line no-unused-vars
       [_key in SessionUser['training_status']]: SessionUser[];
     },
   );
@@ -362,19 +365,22 @@ const Interview = ({
     }));
   }, []);
   const handleModeChange: HandleModeChange = useCallback((value) => {
-    setFields((prev) => ({
-      ...prev,
-      session_type: {
-        ...prev.schedule_type,
-        error: false,
-        value,
-      },
-      interviewer_cnt: {
-        ...prev.interviewer_cnt,
-        error: false,
-        value: prev.interviewer_cnt.value === null ? null : 1,
-      },
-    }));
+    setFields(
+      (prev) =>
+        ({
+          ...prev,
+          session_type: {
+            ...prev.schedule_type,
+            error: false,
+            value,
+          },
+          interviewer_cnt: {
+            ...prev.interviewer_cnt,
+            error: false,
+            value: prev.interviewer_cnt.value === null ? null : 1,
+          },
+        }) as typeof prev,
+    );
   }, []);
   const handleTrainingChange: HandleTrainingChange = useCallback((value) => {
     setFields((prev) => ({
@@ -420,7 +426,8 @@ const Interview = ({
     (e) => {
       const entry = e.target.value as any;
       const safeEntry = +entry;
-      if (entry === null || entry === '') handleChange('interviewer_cnt', null);
+      if (entry === null || entry === '')
+        handleChange('interviewer_cnt', null!);
       else if (safeEntry < 1) handleChange('interviewer_cnt', 1);
       else if (safeEntry > interviewers.value.length)
         handleChange('interviewer_cnt', interviewers.value.length);
@@ -680,12 +687,12 @@ const InterviewModulesField = ({
   const {
     interviewModules: { data },
   } = useJobInterviewPlan();
-  const options = data.map((m) => ({
+  const options = (data ?? []).map((m) => ({
     name: m.name,
     value: m.id,
     start_icon_url: m.members.map(
       ({ first_name, last_name, profile_image }) => ({
-        name: getFullName(first_name, last_name),
+        name: getFullName(first_name!, last_name!),
         url: profile_image,
       }),
     ),
@@ -695,7 +702,7 @@ const InterviewModulesField = ({
     <UISelectDropDown
       placeholder='Select interview type'
       onValueChange={(value) => {
-        const interview_module = data.find((m) => m.id === value);
+        const interview_module = (data ?? []).find((m) => m.id === value);
         if (interview_module) handleModuleChange(interview_module);
       }}
       value={value?.id}
@@ -757,6 +764,7 @@ export const IndividualIcon = ({ size = 24 }: { size?: number }) => (
 export const validateSessionFields = (fields: SessionFormFields) => {
   const safeFields = Object.entries(fields).reduce(
     (acc, [key, value]) => {
+      //@ts-expect-error
       acc.newFields[key] = structuredClone(value);
       const safeKey = key as keyof SessionFormFields;
       switch (safeKey) {
@@ -854,6 +862,7 @@ export const getSessionPayload = (
     trainees,
   } = Object.entries(fields).reduce(
     (acc, [key, value]) => {
+      //@ts-expect-error
       acc[key] = value.value;
       return acc;
     },
@@ -877,9 +886,9 @@ export const getSessionPayload = (
     interviewer_cnt,
     name,
     schedule_type,
-    location,
+    location: location!,
     break_duration: 0,
-    module_id: interview_module.id,
+    module_id: interview_module!.id,
     interview_module_relation_entries: [...safeInterviewers, ...safeTrainees],
     session_order,
     interview_plan_id,

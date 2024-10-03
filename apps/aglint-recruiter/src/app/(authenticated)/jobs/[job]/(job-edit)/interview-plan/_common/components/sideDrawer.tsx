@@ -89,7 +89,7 @@ const InterviewDrawers = ({
 
   return (
     <UIDrawer title={drawerTitle} size='sm' open={open} onClose={handleClose}>
-      {data.length ? (
+      {(data ?? []).length ? (
         <InterviewSideDrawer
           drawers={drawers}
           handleClose={() => handleClose()}
@@ -193,7 +193,11 @@ const CreateSession = ({
       const { error, newFields } = validateSessionFields(fields);
       if (error) setFields(newFields);
       else {
-        const payload = getSessionPayload(fields, order + 1, interview_plan_id);
+        const payload = getSessionPayload(
+          fields,
+          order + 1,
+          interview_plan_id!,
+        );
         await handleCreateSession(payload);
         +handleClose();
       }
@@ -253,25 +257,25 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
     interview_session_relation,
     interviewer_cnt,
     interview_plan_id,
-  } = data
+  } = (data ?? [])
     .flatMap((item) => item.interview_session)
-    .find((session) => id === session.id);
+    .find((session) => id === session.id)!;
   const { interviewers, trainees } = interview_session_relation.reduce(
     (acc, curr) => {
       if (curr.interviewer_type === 'qualified')
         acc.interviewers.push({
-          ...curr.interview_module_relation.recruiter_user,
-          module_relation_id: curr.interview_module_relation.id,
-          training_status: curr.interview_module_relation.training_status,
+          ...curr.interview_module_relation!.recruiter_user,
+          module_relation_id: curr.interview_module_relation!.id,
+          training_status: curr.interview_module_relation!.training_status,
           paused: !!curr?.interview_module_relation?.pause_json,
-        });
+        } as SessionUser);
       else
         acc.trainees.push({
-          ...curr.interview_module_relation.recruiter_user,
-          module_relation_id: curr.interview_module_relation.id,
-          training_status: curr.interview_module_relation.training_status,
+          ...curr.interview_module_relation!.recruiter_user,
+          module_relation_id: curr.interview_module_relation!.id,
+          training_status: curr.interview_module_relation!.training_status,
           paused: !!curr?.interview_module_relation?.pause_json,
-        });
+        } as SessionUser);
       return acc;
     },
     {
@@ -293,7 +297,7 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
     trainees,
   };
   const { toast } = useToast();
-  const isLoading = getLoadingState(id);
+  const isLoading = getLoadingState(id!);
   const [fields, setFields] = useState(getSessionFields(initialFields));
   const handleEdit = () => {
     if (!isLoading) {
@@ -303,9 +307,9 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
         const { ...rest } = getSessionPayload(
           fields,
           order + 1,
-          interview_plan_id,
+          interview_plan_id!,
         );
-        handleEditSession({ ...rest, session_id: id });
+        handleEditSession({ ...rest, session_id: id! });
         handleClose();
       }
     } else {
@@ -371,7 +375,7 @@ const CreateDebrief = ({
         const payload = getDebriefSessionPayload(
           fields,
           order + 1,
-          interview_plan_id,
+          interview_plan_id!,
         );
         await handleCreateDebriefSession(payload);
         handleClose();
@@ -429,12 +433,13 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
     interview_session_relation,
     members_meta,
     interview_plan_id,
-  } = data
+  } = (data ?? [])
     .flatMap((item) => item.interview_session)
-    .find((session) => id === session.id);
+    .find((session) => id === session.id)!;
   const { members } = interview_session_relation.reduce(
     (acc, curr) => {
-      if (curr.recruiter_user) acc.members.push(curr.recruiter_user);
+      if (curr.recruiter_user)
+        acc.members.push(curr.recruiter_user as CompanyMember);
       return acc;
     },
     { members: [] as CompanyMember[] },
@@ -450,7 +455,7 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
     members_meta,
   };
   const { toast } = useToast();
-  const isLoading = getLoadingState(id);
+  const isLoading = getLoadingState(id!);
   const [fields, setFields] = useState(getDebriefFields(initialFields));
   const handleEdit = () => {
     if (!isLoading) {
@@ -460,8 +465,8 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
         const {
           // eslint-disable-next-line no-unused-vars
           ...rest
-        } = getDebriefSessionPayload(fields, order + 1, interview_plan_id);
-        handleEditDebriefSession({ ...rest, session_id: id });
+        } = getDebriefSessionPayload(fields, order + 1, interview_plan_id!);
+        handleEditDebriefSession({ ...rest, session_id: id! });
         handleClose();
       }
     } else {
@@ -508,22 +513,22 @@ const BreakSession = ({ handleClose, id }: DrawerProps) => {
     interviewPlans: { data },
     getLoadingState,
   } = useJobInterviewPlan();
-  const { break_duration } = data
+  const { break_duration } = (data ?? [])
     .flatMap((item) => item.interview_session)
-    .find((session) => id === session.id);
+    .find((session) => id === session.id)!;
   const initialFields = {
     break_duration:
       break_duration === 0 ? initialBreakFields.break_duration : break_duration,
   };
   const { toast } = useToast();
-  const isLoading = getLoadingState(id);
+  const isLoading = getLoadingState(id!);
   const [fields, setFields] = useState(getBreakFields(initialFields));
   const handleUpdate = async () => {
     if (!isLoading) {
       const { error, newFields } = validateBreakSessionFields(fields);
       if (error) setFields(newFields);
       else {
-        const payload = getBreakSessionPayload(fields, id);
+        const payload = getBreakSessionPayload(fields, id!);
         handleUpdateSession(payload);
         handleClose();
       }

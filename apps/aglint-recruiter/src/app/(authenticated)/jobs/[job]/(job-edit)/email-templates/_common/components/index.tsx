@@ -14,7 +14,12 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { debounce } from 'lodash';
 import { Loader2 } from 'lucide-react';
-import { useCallback, useState } from 'react';
+import {
+  type Dispatch,
+  type SetStateAction,
+  useCallback,
+  useState,
+} from 'react';
 
 import { useTenant } from '@/company/hooks';
 import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
@@ -48,7 +53,11 @@ export const JobEmailTemplatesDashboard = () => {
   );
 };
 
-const JobEmailTemplates = ({ setSaving }) => {
+const JobEmailTemplates = ({
+  setSaving,
+}: {
+  setSaving: Dispatch<SetStateAction<'saving' | 'saved'>>;
+}) => {
   const { job } = useJob();
   const { recruiter_id } = useTenant();
   const {
@@ -80,17 +89,17 @@ const JobEmailTemplates = ({ setSaving }) => {
     }
   };
 
-  const senderNameChange = (e) => {
+  const senderNameChange = (e: any) => {
     handleUpdateTemp({ ...editTemp, from_name: e.target.value });
   };
-  const emailSubjectChange = (html) => {
+  const emailSubjectChange = (html: any) => {
     const text = html;
     handleUpdateTemp({ ...editTemp, subject: text });
   };
-  const emailBodyChange = (s) => {
+  const emailBodyChange = (s: any) => {
     handleUpdateTemp({ ...editTemp, body: s });
   };
-  const EmailPreviewContent = ({ isHtml, loading }) => {
+  const EmailPreviewContent = ({ isHtml, loading }: any) => {
     if (loading) {
       return <Loader2 className='h-8 w-8 animate-spin' />;
     }
@@ -125,9 +134,19 @@ const JobEmailTemplates = ({ setSaving }) => {
       ) : (
         <Card>
           <CardHeader>
-            <CardTitle>{emailTemplateCopy[editTemp.type].heading}</CardTitle>
+            <CardTitle>
+              {
+                emailTemplateCopy[
+                  editTemp.type as keyof typeof emailTemplateCopy
+                ]!.heading
+              }
+            </CardTitle>
             <p className='text-sm text-muted-foreground'>
-              {emailTemplateCopy[editTemp.type].description}
+              {
+                emailTemplateCopy[
+                  editTemp.type as keyof typeof emailTemplateCopy
+                ]!.description
+              }
             </p>
           </CardHeader>
           <CardContent>
@@ -175,9 +194,17 @@ const Sections = ({
             onClick={() => handleChangeSelectedTemplate(tempKey)}
           >
             <CardHeader>
-              <CardTitle>{emailTemplateCopy[tempKey].heading}</CardTitle>
+              <CardTitle>
+                {
+                  emailTemplateCopy[tempKey as keyof typeof emailTemplateCopy]!
+                    .heading
+                }
+              </CardTitle>
               <CardDescription>
-                {emailTemplateCopy[tempKey].description}
+                {
+                  emailTemplateCopy[tempKey as keyof typeof emailTemplateCopy]!
+                    .description
+                }
               </CardDescription>
             </CardHeader>
           </Card>
@@ -187,7 +214,11 @@ const Sections = ({
   );
 };
 
-export function useCurrJobTemps({ setSaving }) {
+export function useCurrJobTemps({
+  setSaving,
+}: {
+  setSaving: Dispatch<SetStateAction<'saving' | 'saved'>>;
+}) {
   const router = useRouterPro();
   const [selectedTemp, setSelectedTemp] = useState<
     DatabaseEnums['email_slack_types']
@@ -252,9 +283,13 @@ export function useCurrJobTemps({ setSaving }) {
     },
   });
   const [editTemp, setEditTemp] = useState<DatabaseTable['job_email_template']>(
-    isFetched && {
-      ...templates[templates_order[0]],
-    },
+    isFetched
+      ? {
+          ...(templates![
+            templates_order[0]
+          ] as DatabaseTable['job_email_template']),
+        }
+      : (null as unknown as DatabaseTable['job_email_template']),
   );
   const handleUpdateTemp = (
     updated_val: DatabaseTable['job_email_template'],
@@ -267,7 +302,9 @@ export function useCurrJobTemps({ setSaving }) {
     type: DatabaseEnums['email_slack_types'],
   ) => {
     setSelectedTemp(type);
-    setEditTemp(() => ({ ...templates[type] }));
+    setEditTemp(() => ({
+      ...(templates![type] as DatabaseTable['job_email_template']),
+    }));
     setIsloadTiptap(true);
     setTimeout(() => {
       setIsloadTiptap(false);
@@ -275,7 +312,7 @@ export function useCurrJobTemps({ setSaving }) {
   };
 
   const debouncedUpdateEmail = useCallback(debounce(updateEmailToDB, 300), []);
-  async function updateEmailToDB(updated_val) {
+  async function updateEmailToDB(updated_val: any) {
     try {
       setSaving('saving');
       await mutateAsync(updated_val);

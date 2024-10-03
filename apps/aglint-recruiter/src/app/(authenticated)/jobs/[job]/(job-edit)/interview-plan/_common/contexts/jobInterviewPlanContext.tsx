@@ -143,8 +143,9 @@ const useJobInterviewPlanContext = () => {
   return value;
 };
 
-export const JobInterviewPlanContext =
-  createContext<ReturnType<typeof useJobInterviewPlanContext>>(undefined);
+export const JobInterviewPlanContext = createContext<
+  ReturnType<typeof useJobInterviewPlanContext> | undefined
+>(undefined);
 
 export const JobInterviewPlanProvider = ({ children }: PropsWithChildren) => {
   const value = useJobInterviewPlanContext();

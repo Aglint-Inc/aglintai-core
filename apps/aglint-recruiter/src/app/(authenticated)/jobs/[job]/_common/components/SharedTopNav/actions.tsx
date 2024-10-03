@@ -172,7 +172,7 @@ const useSettingsActions = () => {
 
   const handleDeleteJob = useCallback(() => {
     push(`${ROUTES['/jobs']()}?status=${job?.status ?? 'all'}`);
-    handleJobDelete(job.id);
+    handleJobDelete(job?.id ?? null!);
   }, [job?.id]);
 
   const handleCloseModal = useCallback(() => {
@@ -219,10 +219,15 @@ const useSettingsActions = () => {
   };
 };
 
-const SettingsContext =
-  createContext<ReturnType<typeof useSettingsActions>>(undefined);
+const SettingsContext = createContext<
+  ReturnType<typeof useSettingsActions> | undefined
+>(undefined);
 
-const useSettings = () => useContext(SettingsContext);
+const useSettings = () => {
+  const value = useContext(SettingsContext);
+  if (!value) throw new Error('SettingsContext not found as a provider');
+  return value;
+};
 
 export const Settings = memo(() => {
   const value = useSettingsActions();
