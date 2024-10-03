@@ -10,7 +10,7 @@ export const INITIAL_FORM = Object.freeze({
     error: false,
     helperText: "Description can't be empty",
     required: false,
-    validation: (value) =>
+    validation: (value: any) =>
       value && typeof value === 'string' && value.trim().length !== 0,
     value: '',
   },
@@ -18,7 +18,7 @@ export const INITIAL_FORM = Object.freeze({
     error: false,
     helperText: "Title can't be empty",
     required: true,
-    validation: (value) =>
+    validation: (value: any) =>
       value && typeof value === 'string' && value.trim().length !== 0,
     value: '',
   },

@@ -35,7 +35,8 @@ const Filters = memo(() => {
         icon: <FilterIcon filter={key as FilterIconProps['filter']} />,
         setValue: (newValue) =>
           setFilters({ [key]: structuredClone(newValue) }),
-        options: options[key] ?? [],
+        options: (options?.[key as keyof typeof options] ??
+          []) as unknown as string[],
       })),
     [filters],
   );
@@ -113,27 +114,33 @@ export const getFilteredWorkflows = (
       if (!acc) return acc;
       switch (key as keyof typeof filters) {
         case 'search':
-          return title.toLowerCase().includes((value as string).toLowerCase());
+          return title!.toLowerCase().includes((value as string).toLowerCase());
         case 'job':
           return (
             value.length === 0 ||
-            !!jobs.reduce((acc, curr) => {
-              if ((value as string[]).includes(curr.id)) acc.push(curr);
-              return acc;
-            }, []).length
+            !!jobs.reduce(
+              (acc, curr) => {
+                if ((value as string[]).includes(curr.id!)) acc.push(curr);
+                return acc;
+              },
+              [] as typeof jobs,
+            ).length
           );
         case 'tags':
           return (
             value.length === 0 ||
-            !!tags.reduce((acc, curr) => {
-              if (
-                (value as (typeof filters)['tags']).find((tag) =>
-                  curr.includes(tag),
+            !!tags.reduce(
+              (acc, curr) => {
+                if (
+                  (value as (typeof filters)['tags']).find((tag) =>
+                    curr.includes(tag),
+                  )
                 )
-              )
-                acc.push(curr);
-              return acc;
-            }, []).length
+                  acc.push(curr);
+                return acc;
+              },
+              [] as typeof tags,
+            ).length
           );
       }
     }, true);

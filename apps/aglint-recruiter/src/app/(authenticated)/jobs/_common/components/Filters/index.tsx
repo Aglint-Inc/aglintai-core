@@ -362,10 +362,10 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
   const pinSortedJobs = sortedJobs
     .reduce(
       (acc, curr) => {
-        acc[curr.is_pinned ? 0 : 1].push(curr as unknown as typeof jobs);
+        acc[curr.is_pinned ? 0 : 1].push(curr);
         return acc;
       },
-      [[], []] as (typeof jobs)[][],
+      [[], []] as (typeof jobs)[],
     )
     .flatMap((jobs) => jobs);
   const filterOptions = getFilterOptions(jobs);

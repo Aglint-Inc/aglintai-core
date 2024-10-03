@@ -38,9 +38,9 @@ const Create = () => {
       return;
     }
     handleCreateWorkflow({
-      title: form.title.value,
+      title: form.title.value!,
       description: form.description.value,
-      auto_connect: form.auto_connect.value,
+      auto_connect: form.auto_connect.value!,
       phase: 'after',
       trigger: 'sendAvailReqReminder',
     });
@@ -78,7 +78,7 @@ const Create = () => {
             <div className='space-y-4'>
               <Input
                 placeholder='Workflow Title'
-                value={form.title.value}
+                value={form.title.value!}
                 onChange={(e) =>
                   setForm({
                     title: {
@@ -86,14 +86,14 @@ const Create = () => {
                       error: false,
                       helperText: '',
                       required: true,
-                      validation: (value) => value.trim().length > 0,
+                      validation: (value) => value!.trim().length > 0,
                     },
                   })
                 }
               />
               <Textarea
                 placeholder='Workflow Description'
-                value={form.description.value}
+                value={form.description.value!}
                 onChange={(e) =>
                   setForm({
                     description: {
@@ -101,14 +101,14 @@ const Create = () => {
                       error: false,
                       helperText: '',
                       required: true,
-                      validation: (value) => value.trim().length > 0,
+                      validation: (value) => value!.trim().length > 0,
                     },
                   })
                 }
               />
               <div className='flex items-center space-x-2'>
                 <Switch
-                  checked={form.auto_connect.value}
+                  checked={form.auto_connect.value!}
                   onCheckedChange={(checked) =>
                     setForm({
                       auto_connect: {
@@ -116,7 +116,7 @@ const Create = () => {
                         error: false,
                         helperText: '',
                         required: true,
-                        validation: (value) => value,
+                        validation: (value) => value!,
                       },
                     })
                   }

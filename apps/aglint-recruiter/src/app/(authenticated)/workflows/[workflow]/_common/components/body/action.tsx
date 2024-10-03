@@ -86,7 +86,9 @@ const ActionRecommendations = memo(() => {
 ActionRecommendations.displayName = 'ActionRecommendations';
 
 type ActionProps = {
-  action: ReturnType<typeof useWorkflow>['actions']['data'][number];
+  action: NonNullable<
+    ReturnType<typeof useWorkflow>['actions']['data']
+  >[number];
 };
 
 const Action = (props: ActionProps) => {
@@ -134,7 +136,7 @@ const ActionForm = ({ action }: ActionProps) => {
   const { manageWorkflow } = useWorkflow();
   const { globalOptions, getCurrentOption, selectAction } = useActions();
   const currentOption = useMemo(() => {
-    const { name, value } = getCurrentOption(action.target_api);
+    const { name, value } = getCurrentOption(action.target_api)!;
     return { name, value: value.target_api, ...value };
   }, [action.target_api]);
   const options = useMemo(
@@ -159,7 +161,7 @@ const ActionForm = ({ action }: ActionProps) => {
         onValueChange={(value) => {
           const { action_type, target_api, payload } = options.find(
             ({ target_api }) => value === target_api,
-          );
+          )!;
           selectAction({
             ...action,
             action_type,
@@ -213,8 +215,8 @@ const EmailSubject: React.FC<FormsType> = memo(
             toolbar={false}
             disabled={disabled}
             editor_type='email'
-            initialValue={value?.[name]}
-            handleChange={null}
+            initialValue={value?.[name as keyof typeof value] ?? null!}
+            handleChange={null!}
             placeholder=''
           />
         </div>
@@ -234,8 +236,8 @@ const EmailBody: React.FC<FormsType> = memo(
             toolbar={false}
             disabled={disabled}
             editor_type='email'
-            initialValue={value?.[name]}
-            handleChange={null}
+            initialValue={value?.[name as keyof typeof value] ?? null!}
+            handleChange={null!}
             placeholder=''
           />
         </div>

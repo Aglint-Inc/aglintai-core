@@ -24,7 +24,7 @@ import { shallow } from 'zustand/shallow';
  *
  */
 export function createContextStoreSelector<T>(
-  context: Context<StoreApi<T>>,
+  context: Context<StoreApi<T> | undefined>,
   warning = 'The context provider for this hook was not found',
 ) {
   return function <U = T>(
