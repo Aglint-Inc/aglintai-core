@@ -11,28 +11,31 @@ import { createPostRoute } from '../../../../utils/apiUtils/createPostRoute';
 import { getSlackWeb } from '../../../../slack/slackWeb';
 import { getSupabaseServer } from '../../../../supabase/supabaseAdmin';
 import { getUserIdByEmail } from '../../../../utils/slack/utils';
+import { getSlotsCache } from '../../../../../redis-kv/redisKv';
+import type { SlackMetaSlotSuggestionType } from '../../../../types/slack.types';
+import { googleCalenderLogo } from '../../../../utils/slack/assests';
 
 const func = async ({
   plans,
-  request_id,
+  cand_avail_req_id,
 }: z.infer<typeof TargetApiSchema.onReceivingAvailReq_slack_suggestSlots>) => {
   const slackWeb = getSlackWeb();
   const supabaseAdmin = getSupabaseServer();
-
-  const request_details = (
+  const cand_request_details = (
     await supabaseAdmin
-      .from('request')
+      .from('candidate_request_availability')
       .select(
-        '*, recruiter_user!request_assignee_id_fkey!inner(*) , applications!inner(*,candidates(*))',
+        '*, request!inner(*, recruiter_user!request_assignee_id_fkey!inner(*) , applications!inner(*,candidates(*)))',
       )
-      .eq('id', request_id)
+      .eq('id', cand_avail_req_id)
       .single()
       .throwOnError()
   ).data;
 
+  const request_details = cand_request_details.request;
   const organizer = request_details.recruiter_user;
   const cand_slots: PlanCombinationRespType[] = plans;
-  const request_link = `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/requests/${request_id}`;
+  const request_link = `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/requests/${request_details.id}`;
 
   const slack_slot_suggestion = cand_slots.slice(0, 5).map((plan) => {
     let plan_text = '';
@@ -83,15 +86,28 @@ const func = async ({
     };
   });
 
+  const meta_data: SlackMetaSlotSuggestionType = {
+    request_id: request_details.id,
+    candidate_tz:
+      cand_request_details.user_timezone ??
+      organizer.scheduling_settings.timeZone.tzCode,
+    availability_req_id: cand_request_details.id,
+  };
+
   const slack_user_id = await getUserIdByEmail(organizer.email);
 
+  // for retriving when interviewer selects one of them
+  const slots_cache = getSlotsCache();
+  await slots_cache.set(
+    `${request_details.id}_${cand_avail_req_id}`,
+    cand_slots.slice(0, 5),
+  );
   await slackWeb.chat.postMessage({
     channel: slack_user_id,
     metadata: {
       event_type: 'onReceivingAvailReq_slack_suggestSlots',
       event_payload: {
-        full_interview_plans_str: plans.toString(),
-        request_id,
+        ...meta_data,
       },
     },
     blocks: [
@@ -103,8 +119,7 @@ const func = async ({
         },
         accessory: {
           type: 'image',
-          image_url:
-            'https://api.slack.com/img/blocks/bkb_template_images/notifications.png',
+          image_url: googleCalenderLogo,
           alt_text: 'calendar thumbnail',
         },
       },
@@ -130,12 +145,12 @@ const func = async ({
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: '*<fakelink.ToMoreTimes.com|Show more times>*',
+          text: `*<${request_link}|View more slots>*`,
         },
       },
     ],
   });
-  //
+
   return { message: 'Suggested slots sent to the organizer' };
 };
 

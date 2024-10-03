@@ -400,5 +400,5 @@ export const onRequestCancelSlackInterviewersOrganizerSchema = z.object({
 
 export const onReceivingAvailReqSlackSuggestSlotsSchema = z.object({
   plans: z.array(z.any()),
-  request_id: z.string(),
+  cand_avail_req_id: z.string(),
 });

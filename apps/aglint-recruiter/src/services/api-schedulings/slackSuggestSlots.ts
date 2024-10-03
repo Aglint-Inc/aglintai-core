@@ -12,7 +12,6 @@ import { type ScheduleApiDetails } from '../CandidateSchedule/types';
 export const slackSuggestSlots = async ({
   avail_plans,
   cand_avail_rec,
-  request_id,
 }: {
   avail_plans: PlanCombinationRespType[];
   cand_avail_rec: DatabaseTable['candidate_request_availability'];
@@ -52,7 +51,7 @@ export const slackSuggestSlots = async ({
     typeof TargetApiSchema.onReceivingAvailReq_slack_suggestSlots
   > = {
     plans: no_conflict_plans,
-    request_id,
+    cand_avail_req_id: cand_avail_rec.id,
   };
 
   await axios.post(
