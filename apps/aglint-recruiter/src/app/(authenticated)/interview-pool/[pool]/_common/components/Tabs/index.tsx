@@ -2,10 +2,9 @@ import UITabs from '@/components/Common/UITabs';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 
-import { usePoolCandidates } from '../../hooks/useCandidateModule';
-import { usePoolFeedbacks } from '../../hooks/usePoolFeedback';
-import { usePoolSchedules } from '../../hooks/useSchedulesPool';
+import { usePrefetchTabs } from '../../hooks/usePrefetchTabs';
 import Candidates from './Candidates';
+import Dialogs from './Dialogs';
 import Feedback from './Feedback';
 import InstructionsComp from './Instructions';
 import Interviewers from './Interviewers';
@@ -44,16 +43,11 @@ function InterviewDetailsTabs() {
     {
       name: 'Feedback',
       id: 'feedback',
-      tabComp: <Feedback />,
+      content: <Feedback />,
     },
   ];
 
-  usePoolSchedules({
-    filters: ['confirmed', 'completed', 'cancelled'],
-  });
-  usePoolCandidates();
-  usePoolFeedbacks();
-
+  void usePrefetchTabs();
   const type_id = router.params.pool;
   return (
     <>
@@ -70,6 +64,7 @@ function InterviewDetailsTabs() {
           );
         }}
       />
+      <Dialogs />
     </>
   );
 }

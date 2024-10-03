@@ -37,9 +37,7 @@ const B = () => {
 };
 
 const useFooBarContext = () => {
-  const foo = api.example.fooBar.foo.useQuery({
-    fooId: 'abc',
-  });
+  const foo = api.example.fooBar.foo.useQuery();
   const { mutate } = api.example.fooBar.bar.useMutation();
   const handleBar = () => {
     mutate({ barId: 'def' });
