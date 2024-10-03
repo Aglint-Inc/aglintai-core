@@ -16,23 +16,23 @@ import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { useAllDepartments } from '@/queries/departments';
+import { api } from '@/trpc/client';
 import timeZone from '@/utils/timeZone';
 
-import { inviteUserApi } from '../utils';
 import { AddMemberDialogUI } from './ui/AddMemberDialogUI';
 
 export type InviteUserFormType = {
-  first_name: string;
-  last_name: string;
-  email: string;
-  linked_in: string;
-  employment: employmentTypeEnum;
-  position: string;
-  location_id: number;
-  department_id: number;
-  role: string;
-  role_id: string;
-  manager_id: string;
+  first_name: string | null;
+  last_name: string | null;
+  email: string | null;
+  linked_in: string | null;
+  employment: employmentTypeEnum | null;
+  position: string | null;
+  location_id: number | null;
+  department_id: number | null;
+  role: string | null;
+  role_id: string | null;
+  manager_id: string | null;
 };
 export type InviteUserFormErrorType = {
   first_name: boolean;
@@ -65,11 +65,12 @@ const AddMember = ({
   };
 }) => {
   const { toast } = useToast();
+  const { mutateAsync: inviteUserApi } = api.tenant.invite.useMutation();
   const { recruiter, recruiter_user } = useTenant();
   const { data: locations } = useTenantOfficeLocations();
   const { data: departments } = useAllDepartments();
   const { refetchMembers } = useTenantMembers();
-  const initform = {
+  const initForm: InviteUserFormType = {
     first_name: null,
     last_name: null,
     email: null,
@@ -83,7 +84,7 @@ const AddMember = ({
     manager_id: null,
   };
   const { data: integrations } = useIntegrations();
-  const [form, setForm] = useState<InviteUserFormType>(initform);
+  const [form, setForm] = useState<InviteUserFormType>(initForm);
 
   const [formError, setFormError] = useState<InviteUserFormErrorType>({
     first_name: false,
@@ -97,7 +98,7 @@ const AddMember = ({
     manager: false,
   });
   const [isDisable, setIsDisable] = useState(false);
-  const [isResendDisable, setResendDisable] = useState<string>(null);
+  const [isResendDisable, setResendDisable] = useState<string | null>(null);
   const { data: roleOptions } = useTenantRoles();
 
   const checkValidation = () => {
@@ -166,24 +167,29 @@ const AddMember = ({
 
   const inviteUser = async () => {
     try {
-      const resData = await inviteUserApi(
+      const resData = await inviteUserApi([
         {
-          ...form,
-          department_id: form.department_id,
-          office_location_id: form.location_id,
+          email: form.email!,
+          first_name: form.first_name!,
+          last_name: form.last_name || undefined,
+          position: form.position!,
+          role_id: form.role_id!,
+          manager_id: form.manager_id!,
+          employment: form.employment!,
+          department_id: form.department_id!,
+          office_location_id: form.location_id!,
           scheduling_settings: {
             ...recruiter.scheduling_settings,
             timeZone: timeZone.find(
               (item) =>
                 item.tzCode ===
-                locations.find((loc) => loc.id === form.location_id).timezone,
+                locations.find((loc) => loc.id === form.location_id)?.timezone,
             ),
           } as SchedulingSettingType,
         },
-        recruiter.id,
-      );
+      ]);
 
-      const { created } = resData;
+      const { created } = resData!;
       if (created) {
         refetchMembers();
         toast({
@@ -231,7 +237,7 @@ const AddMember = ({
       open={open}
       onClose={() => {
         onClose();
-        setForm(initform);
+        setForm(initForm);
       }}
       title={menu === 'addMember' ? 'Add Member' : 'Pending Invites'}
       size='lg'
@@ -266,7 +272,7 @@ const AddMember = ({
         departments={departments}
         roleOptions={roleOptions}
         memberList={memberList}
-        pendingList={pendingList}
+        pendingList={pendingList || []}
         isResendDisable={isResendDisable}
         setResendDisable={setResendDisable}
         recruiterUser={recruiter_user}

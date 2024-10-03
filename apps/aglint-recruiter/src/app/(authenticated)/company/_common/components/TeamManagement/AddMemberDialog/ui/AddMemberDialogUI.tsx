@@ -3,7 +3,7 @@ import {
   type RecruiterUserType,
 } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
-import { toast } from '@components/hooks/use-toast';
+import { useToast } from '@components/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
@@ -21,9 +21,9 @@ import type { useTenantOfficeLocations } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { type useAllDepartments } from '@/queries/departments';
+import { api } from '@/trpc/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import { reinviteUser } from '../../utils';
 import { type InviteUserFormErrorType, type InviteUserFormType } from '..';
 
 type Props = {
@@ -39,8 +39,8 @@ type Props = {
     name: string;
   }[];
   pendingList: RecruiterUserType[];
-  isResendDisable: string;
-  setResendDisable: Dispatch<SetStateAction<string>>;
+  isResendDisable: string | null;
+  setResendDisable: Dispatch<SetStateAction<string | null>>;
   recruiterUser: ReturnType<typeof useTenant>['recruiter_user'];
 };
 
@@ -58,6 +58,16 @@ export const AddMemberDialogUI = ({
   setResendDisable,
   recruiterUser,
 }: Props) => {
+  const { toast } = useToast();
+  const { mutateAsync: reinviteUser } =
+    api.tenant['resend-invite'].useMutation();
+  if (!roleOptions) {
+    toast({
+      variant: 'destructive',
+      title: 'failed to load role Options',
+    });
+    roleOptions = [];
+  }
   return (
     <div className='mt-4 space-y-4'>
       {menu === 'addMember' ? (
@@ -176,13 +186,15 @@ export const AddMemberDialogUI = ({
             <div className='grid grid-cols-2 gap-4'>
               <Select
                 value={form.role_id?.toString()}
-                onValueChange={(value) =>
+                onValueChange={(value) => {
+                  const role =
+                    roleOptions.find((op) => op.id === value)?.name || null;
                   setForm({
                     ...form,
                     role_id: value,
-                    role: roleOptions.find((op) => op.id === value)?.name,
-                  })
-                }
+                    role,
+                  });
+                }}
               >
                 <SelectTrigger
                   className={formError.role ? 'border-red-500' : ''}
@@ -245,7 +257,7 @@ export const AddMemberDialogUI = ({
               <div className='flex items-center space-x-4'>
                 <Avatar>
                   <AvatarImage
-                    src={member.profile_image}
+                    src={member.profile_image || undefined}
                     alt={getFullName(member.first_name, member.last_name)}
                   />
                   <AvatarFallback>
@@ -264,23 +276,22 @@ export const AddMemberDialogUI = ({
                 size='sm'
                 onClick={() => {
                   setResendDisable(member.user_id);
-                  reinviteUser(member.email, recruiterUser.user_id).then(
-                    ({ error, emailSend }) => {
-                      setResendDisable(null);
-                      if (!error && emailSend) {
+                  if (recruiterUser.user_id)
+                    reinviteUser({ email: member.email })
+                      .then(() => {
+                        setResendDisable(null);
                         toast({
                           variant: 'default',
                           title: 'Invite sent successfully.',
                         });
-                      } else {
+                      })
+                      .catch(() => {
+                        setResendDisable(null);
                         toast({
                           variant: 'destructive',
                           title: 'Failed to resend invite',
-                          description: error,
                         });
-                      }
-                    },
-                  );
+                      });
                 }}
                 disabled={isResendDisable === member.user_id}
               >

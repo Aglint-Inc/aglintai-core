@@ -7,10 +7,10 @@ import { checkFiltersApplied } from '@requests/utils/checkFiltersApplied';
 import { LayoutList, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { useCompanySetup } from '@/authenticated/hooks/useCompanySetup';
 import { useTenant } from '@/company/hooks';
 import { useFlags } from '@/company/hooks/useFlags';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
+import { useOnboarding } from '@/components/Navigation/OnboardPending/context/onboarding';
 import { useRequests } from '@/context/RequestsContext';
 import { SafeObject } from '@/utils/safeObject';
 
@@ -24,7 +24,7 @@ const MainBody = () => {
     filters,
   } = useRequests();
   const { isRequestSetupPending, isLoading: isLoadingCompanySetup } =
-    useCompanySetup();
+    useOnboarding();
   const { recruiter_user } = useTenant();
   const { isShowFeature } = useFlags();
   const [openChat, setOpenChat] = useState(false);

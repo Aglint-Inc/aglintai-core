@@ -55,11 +55,13 @@ export const manageOfficeLocation = async (
       break;
     }
     case 'update': {
-      await query
-        .update(payload.data)
-        .eq('id', payload.data.id)
-        .single()
-        .throwOnError();
+      if (payload.data.id) {
+        await query
+          .update(payload.data)
+          .eq('id', payload.data.id)
+          .single()
+          .throwOnError();
+      }
       break;
     }
     case 'delete': {

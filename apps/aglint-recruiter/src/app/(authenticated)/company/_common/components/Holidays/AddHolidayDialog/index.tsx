@@ -26,11 +26,11 @@ type Props = {
 };
 export const AddHolidayDialog = ({ addDayOffOpen, setDaysOffOpen }: Props) => {
   const { recruiter } = useTenant();
-  const [selectedDate, setSelectedDate] = useState(
+  const [selectedDate, setSelectedDate] = useState<string | null>(
     dayjsLocal().format('DD MMM YYYY'),
   );
   const [name, setName] = useState('');
-  const [selectedLocations, setSelectedLocations] = useState([]);
+  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
   const [specificLocationOn, setSpecificLocationOn] =
     useState<SpecificLocationType>('all_locations');
 

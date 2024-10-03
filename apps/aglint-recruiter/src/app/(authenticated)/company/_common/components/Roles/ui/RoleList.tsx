@@ -8,9 +8,9 @@ import type { useRoleData } from '@/company/hooks/useRoleAndPermissionsHook';
 import { UIButton } from '@/components/Common/UIButton';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-type getRoleAndPermissionsWithUserCountType = ReturnType<
-  typeof useRoleData
->['role'];
+type getRoleAndPermissionsWithUserCountType = NonNullable<
+  ReturnType<typeof useRoleData>['role']
+>;
 
 type Props = {
   role: getRoleAndPermissionsWithUserCountType;
@@ -53,7 +53,7 @@ export const RoleList = ({
                 return (
                   <Avatar key={user_id} className='h-6 w-6'>
                     <AvatarImage
-                      src={user.profile_image}
+                      src={user.profile_image || undefined}
                       alt={user.first_name}
                     />
                     <AvatarFallback>{user.first_name[0]}</AvatarFallback>

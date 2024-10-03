@@ -12,7 +12,7 @@ function ImageUploadManual({
   imageFile,
   setChanges,
 }: {
-  image: string;
+  image: string | null;
   size: number;
   imageFile: MutableRefObject<File | null>;
   setChanges?: () => void;

@@ -44,7 +44,7 @@ export function SliderImages() {
               height={150}
               className='relative z-10 h-full w-full object-cover'
             />
-            {loading.isImageRemoving.includes(image) && (
+            {(loading.isImageRemoving || []).includes(image) && (
               <div className='absolute left-0 top-0 z-[21] flex h-[150px] w-[150px] items-center justify-center bg-white'>
                 Removing ...
               </div>
