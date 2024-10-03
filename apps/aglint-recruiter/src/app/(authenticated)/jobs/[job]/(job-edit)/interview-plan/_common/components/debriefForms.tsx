@@ -56,14 +56,14 @@ export const getDebriefFields = (
 ): DebriefFormFields => {
   const safeFields = SafeObject.entries(defaults ?? {}).reduce(
     (acc, [key, value]) => {
-      //@ts-expect-error
+      //@ts-ignore
       if (value) acc[key] = structuredClone(value!);
       return acc;
     },
     structuredClone(props),
   );
   return Object.entries(safeFields).reduce((acc, [key, value]) => {
-    //@ts-expect-error
+    //@ts-ignore
     acc[key] = {
       value,
       error: false,
@@ -471,7 +471,7 @@ export default DebriefForms;
 export const validateDebriefSessionFields = (fields: DebriefFormFields) => {
   const safeFields = Object.entries(fields).reduce(
     (acc, [key, value]) => {
-      //@ts-expect-error
+      //@ts-ignore
       acc.newFields[key] = structuredClone(value);
       const safeKey = key as keyof DebriefFormFields;
       switch (safeKey) {
@@ -561,7 +561,7 @@ export const getDebriefSessionPayload = (
     members_meta,
   } = Object.entries(fields).reduce(
     (acc, [key, value]) => {
-      //@ts-expect-error
+      //@ts-ignore
       acc[key] = value.value;
       return acc;
     },

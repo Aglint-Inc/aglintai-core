@@ -68,7 +68,7 @@ export const getSessionFields = (
   props: SessionFormProps,
 ): SessionFormFields => {
   return Object.entries(props).reduce((acc, [key, value]) => {
-    //@ts-expect-error
+    //@ts-ignore
     acc[key] = {
       value,
       error: false,
@@ -703,7 +703,10 @@ const InterviewModulesField = ({
       placeholder='Select interview type'
       onValueChange={(value) => {
         const interview_module = (data ?? []).find((m) => m.id === value);
-        if (interview_module) handleModuleChange(interview_module);
+        if (interview_module)
+          handleModuleChange(
+            interview_module as SessionFormProps['interview_module'],
+          );
       }}
       value={value?.id}
       menuOptions={options.map((ele) => ({
@@ -764,7 +767,7 @@ export const IndividualIcon = ({ size = 24 }: { size?: number }) => (
 export const validateSessionFields = (fields: SessionFormFields) => {
   const safeFields = Object.entries(fields).reduce(
     (acc, [key, value]) => {
-      //@ts-expect-error
+      //@ts-ignore
       acc.newFields[key] = structuredClone(value);
       const safeKey = key as keyof SessionFormFields;
       switch (safeKey) {
@@ -862,7 +865,7 @@ export const getSessionPayload = (
     trainees,
   } = Object.entries(fields).reduce(
     (acc, [key, value]) => {
-      //@ts-expect-error
+      //@ts-ignore
       acc[key] = value.value;
       return acc;
     },
