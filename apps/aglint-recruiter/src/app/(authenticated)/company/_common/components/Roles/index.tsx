@@ -1,4 +1,11 @@
 import {
+  Page,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
+import {
   Table,
   TableBody,
   TableHead,
@@ -50,20 +57,25 @@ function RolesAndPermissionsComponent() {
           updateRoles={handelUpdateRole}
         />
       ) : (
-        <div className='max-w-[80%]'>
-          <h1 className='text-lg font-semibold'>Roles & Permissions</h1>
-          <p className='mb-6 max-w-4xl text-sm text-muted-foreground'>
-            Customize permissions for each role and control access by enabling
-            or disabling the toggle next to each permission.
-          </p>
-          <div className='mt-6 overflow-x-auto rounded-lg border bg-white'>
+        <Page>
+          <PageHeader>
+            <PageHeaderText>
+              <PageTitle>Roles & Permissions</PageTitle>
+              <PageDescription>
+                {' '}
+                Customize permissions for each role and control access by
+                enabling or disabling the toggle next to each permission.
+              </PageDescription>
+            </PageHeaderText>
+          </PageHeader>
+          <div className='flex flex-col gap-4'>
             <RoleTable
               roles={data?.rolesAndPermissions || {}}
               loading={loading}
               setRole={setSelectRole}
             />
           </div>
-        </div>
+        </Page>
       )}
     </>
   );
@@ -87,37 +99,39 @@ const RoleTable = ({
   }
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow className='bg-gray-100'>
-          <TableHead>Role</TableHead>
-          <TableHead>Description</TableHead>
-          <TableHead>Users</TableHead>
-          <TableHead>Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {Object.entries(roles || {})
-          .sort((a, b) => rolesOrder[a[1].name] - rolesOrder[b[1].name])
-          .map(([key, details], i) => {
-            const role = details;
-            const count = role.assignedTo.length;
-            return (
-              <RoleList
-                key={i}
-                count={count}
-                details={details}
-                members={members}
-                onClickAdd={(e) => {
-                  e.stopPropagation();
-                  setRole(key, true);
-                }}
-                onClickRow={() => setRole(key)}
-                role={role}
-              />
-            );
-          })}
-      </TableBody>
-    </Table>
+    <div className='rounded-lg border'>
+      <Table>
+        <TableHeader>
+          <TableRow className='bg-gray-100'>
+            <TableHead>Role</TableHead>
+            <TableHead>Description</TableHead>
+            <TableHead>Users</TableHead>
+            <TableHead>Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {Object.entries(roles || {})
+            .sort((a, b) => rolesOrder[a[1].name] - rolesOrder[b[1].name])
+            .map(([key, details], i) => {
+              const role = details;
+              const count = role.assignedTo.length;
+              return (
+                <RoleList
+                  key={i}
+                  count={count}
+                  details={details}
+                  members={members}
+                  onClickAdd={(e) => {
+                    e.stopPropagation();
+                    setRole(key, true);
+                  }}
+                  onClickRow={() => setRole(key)}
+                  role={role}
+                />
+              );
+            })}
+        </TableBody>
+      </Table>
+    </div>
   );
 };

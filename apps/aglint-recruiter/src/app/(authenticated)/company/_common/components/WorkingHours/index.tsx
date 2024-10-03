@@ -1,5 +1,12 @@
 import type { SchedulingSettingType } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
+import {
+  Page,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import cloneDeep from 'lodash/cloneDeep';
 import { useEffect, useState } from 'react';
 
@@ -70,14 +77,17 @@ export default function WorkingHour() {
   };
 
   return (
-    <div className='mb-8 flex max-w-[60%] flex-col gap-4'>
-      <div className='flex flex-col'>
-        <h2 className='mb-1 text-xl font-semibold'>Working Hours</h2>
-        <p className='text-sm text-muted-foreground'>
-          List company holidays to exclude them from scheduling.
-        </p>
-      </div>
-      <div className='flex flex-col gap-5'>
+    <Page>
+      <PageHeader>
+        <PageHeaderText>
+          <PageTitle>Working Hours</PageTitle>
+          <PageDescription>
+            {' '}
+            Update the settings here changes will be saved automatically.
+          </PageDescription>
+        </PageHeaderText>
+      </PageHeader>
+      <div className='flex flex-col gap-4'>
         <TimeZone
           timeZone={initialData?.timeZone?.label}
           selectedTimeZone={selectedTimeZone}
@@ -97,6 +107,6 @@ export default function WorkingHour() {
           />
         )}
       </div>
-    </div>
+    </Page>
   );
 }

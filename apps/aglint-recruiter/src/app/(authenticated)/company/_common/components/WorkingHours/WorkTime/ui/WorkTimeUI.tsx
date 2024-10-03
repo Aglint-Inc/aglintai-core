@@ -11,7 +11,7 @@ import { TimeList } from './TimeList';
 export const WorkTimeUI = ({ workingHours }) => {
   return (
     <div className='group relative rounded-lg py-4'>
-      <div className=''>
+      <div className='rounded-lg border border-border'>
         <Table>
           <TableHeader className='bg-gray-100'>
             <TableRow>

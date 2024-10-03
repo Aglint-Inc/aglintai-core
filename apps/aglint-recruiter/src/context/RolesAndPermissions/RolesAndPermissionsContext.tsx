@@ -9,7 +9,7 @@ import { useTenant } from '@/company/hooks';
 /* eslint-disable no-unused-vars */
 type RolesAndPermissionsContextType = {
   checkPermissions: (x: DatabaseTable['permissions']['name'][]) => boolean;
-  devlinkProps?: (
+  devlinkProps: (
     x: DatabaseTable['permissions']['name'][],
   ) => { onClick: null; style: { display: 'none' } } | object;
   ifAllowed: <T extends ((...args: unknown[]) => unknown) | ReactNode>(
@@ -21,6 +21,7 @@ type RolesAndPermissionsContextType = {
 
 const initialValue: RolesAndPermissionsContextType = {
   checkPermissions: (x) => false,
+  devlinkProps: () => ({ onClick: null, style: { display: 'none' } }),
   ifAllowed: <T extends ((...args: unknown[]) => unknown) | ReactNode>(
     func: T,
     _: DatabaseTable['permissions']['name'][],
@@ -77,7 +78,10 @@ export const RolesAndPermissionsProvider = ({
     const allow =
       Boolean(permissions.length) &&
       permissions.reduce(
-        (prev, curr) => prev && Boolean(userPermissions['permissions'][curr]),
+        (prev, curr) =>
+          prev &&
+          (Boolean(userPermissions['permissions'].includes(curr)) ||
+            curr === 'authorized'),
         true,
       );
     if (allow) {

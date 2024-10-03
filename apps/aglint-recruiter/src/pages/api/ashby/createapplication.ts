@@ -6,6 +6,7 @@ import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
+import { type AshbyApplication } from '@/jobs/components/AddJobWithIntegrations/Ashby/types';
 import { splitFullName } from '@/jobs/components/AddJobWithIntegrations/utils';
 
 import { decrypt } from '../decryptApiKey';
@@ -18,7 +19,7 @@ const supabase = createClient<DB>(supabaseUrl, supabaseAnonKey);
 const bucketName = 'resume-job-post';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const json = req.body.ats_json;
+  const json = req.body.ats_json as AshbyApplication;
   const recruiter_id = req.body.recruiter_id;
   const job_id = req.body.job_id;
   const apiKey = req.body.apikey;
@@ -80,7 +81,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             last_name: splitFullName(candidate.results.name).lastName,
             email: application.candidate.primaryEmailAddress.value,
             linkedin: candidate.results.socialLinks.filter(
-              (link) => link.type === 'LinkedIn',
+              (link: any) => link.type === 'LinkedIn',
             )[0]?.url,
             phone: candidate.results.phoneNumbers[0]?.value,
           };
@@ -156,8 +157,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).json('no json');
     }
   } catch (error) {
-    console.log(error.message);
-    return res.status(400).send(error.message);
+    console.log((error as Error).message);
+    return res.status(400).send((error as Error).message);
   } finally {
     //
   }
@@ -218,7 +219,10 @@ const createJobApplication = async (
     .select();
 };
 
-const createCandidate = async (cand, recruiter_id: string): Promise<any> => {
+const createCandidate = async (
+  cand: any,
+  recruiter_id: string,
+): Promise<any> => {
   const { data, error } = await supabase
     .from('candidates')
     .insert({

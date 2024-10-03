@@ -37,8 +37,8 @@ const InterviewLimitInput: React.FC<InterviewLimitInputProps> = ({
       <Tabs
         defaultValue={type}
         value={type}
-        onValueChange={(value: 'Hours' | 'Interviews') => {
-          onTypeChange(value, mode);
+        onValueChange={(value: string) => {
+          onTypeChange(value as 'Hours' | 'Interviews', mode);
         }}
       >
         <TabsList>

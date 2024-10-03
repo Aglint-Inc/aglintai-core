@@ -1,4 +1,16 @@
 /* eslint-disable security/detect-object-injection */
+import {
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
+import {
+  Section,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import {
   Breadcrumb,
@@ -8,7 +20,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { Button } from '@components/ui/button';
 import { Dialog, DialogContent } from '@components/ui/dialog';
 import { AlertTriangle } from 'lucide-react';
 import {
@@ -21,6 +32,7 @@ import {
 import { useCompanySetup } from '@/authenticated/hooks/useCompanySetup';
 import { useTenant } from '@/company/hooks';
 import { Loader } from '@/components/Common/Loader';
+import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJobs } from '@/jobs/hooks';
 import type { Form } from '@/jobs/types';
@@ -30,11 +42,9 @@ import { type JobMetaFormProps, useJobForms } from './form';
 
 export const JobCreateHeader = () => {
   return (
-    <div className='flex items-center'>
-      {/* <Button variant='outline' onClick={() => push(ROUTES['/jobs']())}>
-        Back
-      </Button> */}
-      <div className='m-0 flex w-full flex-col'>
+    <PageHeader>
+      <PageHeaderText>
+        <PageTitle>Create Job</PageTitle>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -46,9 +56,8 @@ export const JobCreateHeader = () => {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <h1 className='m-0 text-2xl font-bold'>Create Job</h1>
-      </div>
-    </div>
+      </PageHeaderText>
+    </PageHeader>
   );
 };
 
@@ -132,21 +141,17 @@ export const JobCreate = () => {
     .join(', ');
 
   return (
-    <div className='container mx-auto max-w-6xl p-4'>
-      <div className='flex w-full flex-row'>
-        <div className='w-3/4'>
-          {isJobSetupPending && (
-            <Alert variant='warning' className='my-4'>
-              <AlertTitle>Company setup is pending </AlertTitle>
-              <AlertDescription>
-                First complete the onboarding progress then only you can create
-                a job. {pendingCompanySettingforJob}
-              </AlertDescription>
-            </Alert>
-          )}
-          <JobCreateForm fields={fields} setFields={setFields} />
-        </div>
-      </div>
+    <div className='container mx-auto flex w-full max-w-4xl flex-col space-y-4'>
+      {isJobSetupPending && (
+        <Alert variant='warning'>
+          <AlertTitle>Company setup is pending </AlertTitle>
+          <AlertDescription>
+            First complete the onboarding progress then only you can create a
+            job. {pendingCompanySettingforJob}
+          </AlertDescription>
+        </Alert>
+      )}
+      <JobCreateForm fields={fields} setFields={setFields} />
     </div>
   );
 };
@@ -292,11 +297,15 @@ const JobForms = ({
 
   return (
     <div className='space-y-6'>
-      <div>
-        <h2 className='text-md font-semibold'>Job Details</h2>
-        <div className='mb-2 text-sm text-muted-foreground'>
-          Add job details to help candidates understand the role and apply.
-        </div>
+      <Section>
+        <SectionHeader>
+          <SectionHeaderText>
+            <SectionTitle>Job Details</SectionTitle>
+            <SectionDescription>
+              Add job details to help candidates understand the role and apply.
+            </SectionDescription>
+          </SectionHeaderText>
+        </SectionHeader>
         {forms}
         <div className='mt-4'>{description}</div>
         {fields.description.error.value && (
@@ -305,19 +314,23 @@ const JobForms = ({
             <span>{fields.description.error.helper}</span>
           </div>
         )}
-      </div>
-      <div>
-        <h2 className='text-md font-semibold'>Hiring Team</h2>
-        <div className='mb-2 text-sm text-muted-foreground'>
-          Add the hiring team so they can manage the job.
-        </div>
+      </Section>
+      <Section>
+        <SectionHeader>
+          <SectionHeaderText>
+            <SectionTitle>Hiring Team</SectionTitle>
+            <SectionDescription>
+              Add the hiring team so they can manage the job.
+            </SectionDescription>
+          </SectionHeaderText>
+        </SectionHeader>
         {roleForms}
-      </div>
+      </Section>
       <div className='flex justify-end space-x-4'>
-        <Button variant='outline' onClick={handleCancel}>
+        <UIButton variant='outline' onClick={handleCancel}>
           Cancel
-        </Button>
-        <Button onClick={handleCreate}>Create Job</Button>
+        </UIButton>
+        <UIButton onClick={handleCreate}>Create Job</UIButton>
       </div>
     </div>
   );

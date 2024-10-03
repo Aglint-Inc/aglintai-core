@@ -14,7 +14,6 @@ import superjson from 'superjson';
 import { type TypeOf, ZodError, type ZodSchema } from 'zod';
 
 import { createPrivateClient, createPublicClient } from '../db';
-import { ERRORS } from '../enums';
 import { authorize } from '../utils';
 import { getDecryptKey } from './routers/ats/greenhouse/util';
 
@@ -177,6 +176,9 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
   });
 });
 
+/**
+ *  @see https://stackoverflow.com/questions/3297048/403-forbidden-vs-401-unauthorized-http-responses
+ */
 const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
   const db = createPrivateClient();
 
@@ -186,7 +188,11 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
     user = (await db.auth.getSession())?.data?.session?.user ?? null;
   else user = (await db.auth.getUser()).data.user;
 
-  if (!user) throw new TRPCError(ERRORS.UNAUTHORIZED);
+  if (!user)
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'User unauthenticated',
+    });
 
   const user_id = user.id;
 
@@ -200,7 +206,10 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
     .throwOnError();
 
   if (!data || !data?.roles?.role_permissions)
-    throw new TRPCError(ERRORS.UNAUTHORIZED);
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'User unauthenticated',
+    });
 
   const {
     recruiter_id,
@@ -214,7 +223,8 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
     [] as (typeof role_permissions)[number]['permissions']['name'][],
   );
 
-  if (!authorize(path, permissions)) throw new TRPCError(ERRORS.FORBIDDEN);
+  if (!authorize(path, permissions))
+    throw new TRPCError({ code: 'FORBIDDEN', message: 'User unauthorized' });
 
   return await next({
     ctx: {

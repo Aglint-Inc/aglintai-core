@@ -1,14 +1,14 @@
 'use client';
 
-import { FullWidthLayout } from '@components/layouts/full-width-layout';
+import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
 
 import { JobCreate, JobCreateHeader } from '@/jobs/create/components';
 
 const Page = () => {
   return (
-    <FullWidthLayout header={<JobCreateHeader />}>
+    <OneColumnPageLayout header={<JobCreateHeader />}>
       <JobCreate />
-    </FullWidthLayout>
+    </OneColumnPageLayout>
   );
 };
 

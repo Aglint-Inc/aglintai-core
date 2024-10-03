@@ -29,7 +29,7 @@ function ScheduleDetailInstructions() {
         toast.warning('Please provide instructions.');
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error((error as Error).message);
     }
   }
   return (

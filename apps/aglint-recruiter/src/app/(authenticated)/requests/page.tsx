@@ -1,6 +1,6 @@
 'use client';
 
-import { TwoColumnLayout } from '@components/layouts/two-column-layout';
+import { TwoColumnPageLayout } from '@components/layouts/two-column-page-layout';
 import AgentChats from '@requests/components/AgentChats';
 import { AgentIEditorProvider } from '@requests/components/AgentChats/AgentEditorContext';
 import MainBody from '@requests/components/MainBody';
@@ -22,7 +22,7 @@ function RequestsPage() {
     }
   }, [isShowFeature]);
   return (
-    <TwoColumnLayout
+    <TwoColumnPageLayout
       sidebar={
         <AgentIEditorProvider>
           <div
@@ -38,7 +38,7 @@ function RequestsPage() {
       sidebarWidth={0}
     >
       <MainBody />
-    </TwoColumnLayout>
+    </TwoColumnPageLayout>
   );
 }
 

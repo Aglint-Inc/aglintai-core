@@ -37,9 +37,7 @@ const B = () => {
 };
 
 const useFooBarContext = () => {
-  const foo = api.example.fooBar.foo.useQuery({
-    fooId: 'abc',
-  });
+  const foo = api.example.fooBar.foo.useQuery();
   const { mutate } = api.example.fooBar.bar.useMutation();
   const handleBar = () => {
     mutate({ barId: 'def' });
@@ -47,8 +45,9 @@ const useFooBarContext = () => {
   return { foo, handleBar };
 };
 
-const FooBarContext =
-  createContext<ReturnType<typeof useFooBarContext>>(undefined);
+const FooBarContext = createContext<
+  ReturnType<typeof useFooBarContext> | undefined
+>(undefined);
 
 const _FooBarProvider = ({ children }: { children: ReactNode }) => {
   const value = useFooBarContext();

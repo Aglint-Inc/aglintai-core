@@ -1,4 +1,4 @@
-import { type Dispatch, type SetStateAction } from 'react';
+import { useInterviewerHeaderContext } from '@interviewers/hooks/useInterviewerHeaderContext';
 
 import { useAllInterviewModules } from '@/authenticated/hooks';
 import { useTenantOfficeLocations } from '@/company/hooks';
@@ -7,21 +7,22 @@ import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { useAllDepartments } from '@/queries/departments';
 
-export const Header = ({
-  isFilterApplied,
-  searchText,
-  selectedDepartments,
-  selectedLocations,
-  selectedInterviewTypes,
-  setSearchText,
-  setDepartments,
-  setLocations,
-  setInterviewTypes,
-}: HeaderProps) => {
+export const Header = () => {
   const { data: departments } = useAllDepartments();
   const { data: locations } = useTenantOfficeLocations();
   const { data: InterivewTypes } = useAllInterviewModules();
 
+  const {
+    isFilterApplied,
+    searchText,
+    selectedDepartments,
+    selectedLocations,
+    selectedInterviewTypes,
+    setSearchText,
+    setDepartments,
+    setLocations,
+    setInterviewTypes,
+  } = useInterviewerHeaderContext();
   // options for filter ------------------------
   const locationList = locations?.length
     ? locations.map((loc) => ({
@@ -52,13 +53,13 @@ export const Header = ({
 
   return (
     <>
-      <div className='mb-6 flex items-center justify-between'>
+      <div className='flex items-center justify-between'>
         <UITextField
           placeholder='Search interviewers...'
           fieldSize='medium'
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
-          className='w-[250px]'
+          className='mr-4 w-[250px]'
         />
         <div className='flex items-center gap-2'>
           {isFilterApplied ? (
@@ -106,16 +107,4 @@ export const Header = ({
       </div>
     </>
   );
-};
-
-type HeaderProps = {
-  isFilterApplied: boolean;
-  searchText: string;
-  selectedDepartments: string[];
-  selectedLocations: string[];
-  selectedInterviewTypes: string[];
-  setSearchText: Dispatch<SetStateAction<string>>;
-  setDepartments: Dispatch<SetStateAction<string[]>>;
-  setLocations: Dispatch<SetStateAction<string[]>>;
-  setInterviewTypes: Dispatch<SetStateAction<string[]>>;
 };

@@ -1,15 +1,14 @@
-import CandidateInviteNew from 'src/app/(public)/scheduling/invite/[id]/_common/components';
+'use client';
 
-import Seo from '@/components/Common/Seo';
-import CandidateInviteProvider from '@/context/CandidateInviteContext';
+import { SeoPro } from '@/components/Common/SeoPro';
+
+import CandidateInviteNew from './_common/components';
 
 const CandidateInvitePage = () => {
   return (
     <>
-      <CandidateInviteProvider>
-        <Seo title={'Candidate Booking | Aglint AI'} />
-        <CandidateInviteNew />
-      </CandidateInviteProvider>
+      <SeoPro title={'Candidate Booking | Aglint AI'} />
+      <CandidateInviteNew />
     </>
   );
 };

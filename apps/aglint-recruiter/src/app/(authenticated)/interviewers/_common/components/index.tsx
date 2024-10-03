@@ -1,4 +1,11 @@
-import { Card, CardContent } from '@components/ui/card';
+import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
+import {
+  PageActions,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import {
   Table,
   TableBody,
@@ -6,8 +13,8 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
+import { useInterviewerHeaderContext } from '@interviewers/hooks/useInterviewerHeaderContext';
 import { Users } from 'lucide-react';
-import { useState } from 'react';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
@@ -18,11 +25,13 @@ import { InterviewerList } from './InterviewerList';
 
 function Interviewers() {
   const { data: interviewers, isLoading } = useAllInterviewers();
-
-  const [searchText, setSearchText] = useState('');
-  const [selectedDepartments, setDepartments] = useState<string[]>([]);
-  const [selectedLocations, setLocations] = useState<string[]>([]);
-  const [selectedInterviewTypes, setInterviewTypes] = useState<string[]>([]);
+  const {
+    isFilterApplied,
+    searchText,
+    selectedDepartments,
+    selectedLocations,
+    selectedInterviewTypes,
+  } = useInterviewerHeaderContext();
 
   if (isLoading)
     return (
@@ -30,12 +39,6 @@ function Interviewers() {
         <Loader />
       </div>
     );
-
-  const isFilterApplied =
-    !!selectedDepartments?.length ||
-    !!selectedInterviewTypes?.length ||
-    !!selectedLocations?.length ||
-    !!searchText?.length;
 
   const filteredInterviewers = isFilterApplied
     ? interviewers.filter((interviewer) => {
@@ -70,58 +73,55 @@ function Interviewers() {
     : interviewers;
 
   return (
-    <div className='p-4'>
-      <div className=''>
-        <Header
-          isFilterApplied={isFilterApplied}
-          searchText={searchText}
-          selectedDepartments={selectedDepartments}
-          selectedLocations={selectedLocations}
-          selectedInterviewTypes={selectedInterviewTypes}
-          setSearchText={setSearchText}
-          setDepartments={setDepartments}
-          setLocations={setLocations}
-          setInterviewTypes={setInterviewTypes}
-        />
-
-        <Card>
-          <CardContent className='p-0'>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Interviewer</TableHead>
-                  <TableHead>Department & Location</TableHead>
-                  <TableHead>Module</TableHead>
-                  <TableHead>Interview Hours</TableHead>
-                  <TableHead>Interviews</TableHead>
-                  <TableHead>Training</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredInterviewers?.length ? (
-                  filteredInterviewers.map((interviewer, i) => (
-                    <InterviewerList key={i} interviewer={interviewer} />
-                  ))
-                ) : (
-                  <></>
-                )}
-              </TableBody>
-            </Table>
-            {filteredInterviewers?.length === 0 ? (
-              <div className='flex w-full items-center justify-center'>
-                <GlobalEmpty
-                  icon={<Users strokeWidth={1} className='h-10 w-10' />}
-                  header={'No Interviewers found'}
-                  description='Create a new interview pool to get started.'
-                />
-              </div>
-            ) : (
-              <></>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+    <OneColumnPageLayout
+      header={
+        <PageHeader>
+          <PageHeaderText>
+            <PageTitle>Interviewers</PageTitle>
+            <PageDescription>
+              Interviewers are the users who conduct interviews for the
+              interview-pool.
+            </PageDescription>
+          </PageHeaderText>
+          <PageActions>
+            <Header />
+          </PageActions>
+        </PageHeader>
+      }
+    >
+      <Table>
+        <TableHeader className='bg-muted'>
+          <TableRow>
+            <TableHead>Interviewer</TableHead>
+            <TableHead>Department & Location</TableHead>
+            <TableHead>Module</TableHead>
+            <TableHead>Interview Hours</TableHead>
+            <TableHead>Interviews</TableHead>
+            <TableHead>Training</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {filteredInterviewers?.length ? (
+            filteredInterviewers.map((interviewer, i) => (
+              <InterviewerList key={i} interviewer={interviewer} />
+            ))
+          ) : (
+            <></>
+          )}
+        </TableBody>
+      </Table>
+      {filteredInterviewers?.length === 0 ? (
+        <div className='flex w-full items-center justify-center'>
+          <GlobalEmpty
+            icon={<Users strokeWidth={1} className='h-10 w-10' />}
+            header={'No Interviewers found'}
+            description='Create a new interview pool to get started.'
+          />
+        </div>
+      ) : (
+        <></>
+      )}
+    </OneColumnPageLayout>
   );
 }
 

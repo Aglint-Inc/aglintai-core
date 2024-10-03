@@ -49,14 +49,15 @@ const EditBasicInfoDialog = ({
   const [nameError, setNameError] = useState(false);
   const { checkPermissions } = useRolesAndPermissions();
   const isFormDisabled = !checkPermissions(['manage_company']);
-  const imageFile = useRef(null);
+  const imageFile = useRef<File>(null);
   const [isImageChanged, setIsImageChanged] = useState(false);
   const [recruiterLocal, setRecruiterLocal] =
     useState<typeof recruiter>(recruiter);
+
   const { toast } = useToast();
 
   useEffect(() => {
-    setLogo(recruiter?.logo || null);
+    setLogo(recruiter.logo);
   }, [recruiter]);
 
   const handleChange = async (recruit: typeof recruiter) => {
@@ -96,23 +97,20 @@ const EditBasicInfoDialog = ({
     try {
       // setIsLoading(true);
       let logo = recruiter.logo;
-      if (isImageChanged) {
-        if (imageFile?.current) {
-          const { data } = await supabase.storage
-            .from('company-logo')
-            .upload(`public/${recruiter.id}`, imageFile.current, {
-              cacheControl: '3600',
-              upsert: true,
-            });
-          // @ts-ignore
-          if (data?.path && imageFile?.current?.size) {
-            logo = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/company-logo/${data?.path}?t=${new Date().toISOString()}`;
-            setError(false);
-          } else {
-            logo = null;
-          }
-          setIsImageChanged(false);
+      if (isImageChanged && imageFile.current) {
+        const { data } = await supabase.storage
+          .from('company-logo')
+          .upload(`public/${recruiter.id}`, imageFile.current, {
+            cacheControl: '3600',
+            upsert: true,
+          });
+        if (data?.path && imageFile?.current?.size) {
+          logo = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/company-logo/${data?.path}?t=${new Date().toISOString()}`;
+          setError(false);
+        } else {
+          logo = null;
         }
+        setIsImageChanged(false);
       }
       await mutateAsync({
         name: recruiterLocal.name ? recruiterLocal.name : recruiter?.name,
@@ -122,7 +120,7 @@ const EditBasicInfoDialog = ({
         logo,
       });
       setEditDialog(false);
-    } catch (e) {
+    } catch (e: any) {
       toast({
         title: e.message,
         variant: 'destructive',
@@ -130,7 +128,10 @@ const EditBasicInfoDialog = ({
     }
   };
 
-  function compareObjects(obj1, obj2) {
+  function compareObjects(
+    obj1: Record<string, any>,
+    obj2: Record<string, any>,
+  ) {
     const propertiesToCompare: (keyof typeof recruiter)[] = [
       'name',
       'industry',
@@ -186,7 +187,7 @@ const EditBasicInfoDialog = ({
         <div className='flex items-center space-x-4'>
           <div className='max-w-[64px]'>
             <ImageUploadManual
-              image={logo}
+              image={logo!}
               size={70}
               imageFile={imageFile}
               setChanges={() => {
@@ -236,8 +237,7 @@ const EditBasicInfoDialog = ({
             <Input
               id='industry'
               placeholder='Ex. Healthcare'
-              // @ts-ignore
-              value={recruiterLocal?.industry}
+              value={recruiterLocal?.industry ?? undefined}
               onChange={(e) => {
                 handleChange({
                   ...recruiterLocal,
@@ -254,8 +254,7 @@ const EditBasicInfoDialog = ({
                 name: size,
                 value: size,
               }))}
-              // @ts-ignore
-              value={recruiterLocal?.employee_size}
+              value={recruiterLocal?.employee_size ?? undefined}
               onValueChange={(value) => {
                 handleChange({
                   ...recruiterLocal,
@@ -269,8 +268,7 @@ const EditBasicInfoDialog = ({
             <Input
               id='company-website'
               placeholder='https://companydomain.com'
-              // @ts-ignore
-              value={recruiterLocal?.company_website}
+              value={recruiterLocal?.company_website ?? undefined}
               onChange={(e) => {
                 handleChange({
                   ...recruiterLocal,

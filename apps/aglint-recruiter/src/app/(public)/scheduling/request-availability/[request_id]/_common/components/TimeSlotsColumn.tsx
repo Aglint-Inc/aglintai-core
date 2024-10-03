@@ -2,8 +2,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import dayjs from 'dayjs';
 import { X } from 'lucide-react';
-
-import { UITimeRangeCard } from '@/components/Common/UITimeRangeCard';
+import { UITimeRangeCard } from 'src/app/_common/components/UITimeRangeCard';
 
 import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityContext';
 

@@ -1,3 +1,5 @@
+import 'server-only';
+
 import type { ApiPermissions } from './utils';
 
 export const API_PERMISSIONS: ApiPermissions = {
@@ -5,7 +7,11 @@ export const API_PERMISSIONS: ApiPermissions = {
   tenant: [],
   workflows: [],
   jobs: ['job_module'],
-  scheduling: ['scheduling_module'],
+  scheduling: {
+    candidate_invite: [],
+    details: ['scheduling_module'],
+    v1: [],
+  },
   integrations: ['integrations_module'],
   interviewers: ['job_module'],
   interview_pool: {
@@ -22,7 +28,13 @@ export const API_PERMISSIONS: ApiPermissions = {
     archive_get_sessions: ['update_interview_types'],
   },
   analytics: ['job_module'],
-  example: [],
+  example: {
+    fooBar: {
+      bar: [],
+      foo: ['public'],
+    },
+    helloWorld: [],
+  },
   candidatePortal: [],
   requests: [],
   application: ['job_module'],

@@ -1,19 +1,16 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Button } from '@components/ui/button';
-import { Card } from '@components/ui/card';
-import { Clock, SquareArrowOutUpRight, User, Users } from 'lucide-react';
+import { AlertCircle, Globe, SquareArrowOutUpRight, User } from 'lucide-react';
 import Link from 'next/link';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { getBreakLabel } from '@/utils/getBreakLabel';
 
 import IconSessionType from '../../../../../../../components/Common/Icons/IconSessionType';
-import {
-  formatTimeWithTimeZone,
-  getShortTimeZone,
-} from '../../../../../../../components/Scheduling/utils';
+import { formatTimeWithTimeZone } from '../../../../../../../components/Scheduling/utils';
 import { getScheduleType } from '../../../../../../../utils/scheduling/colors_and_enums';
 import { MeetingStatusBadge } from '../../../../../../_common/components/MeetingStatusBadge';
 import { useScheduleDetails } from '../../hooks/useScheduleDetails';
@@ -65,17 +62,20 @@ function Overview() {
             );
           })
         ) : (
-          <Card className='flex items-center justify-center bg-neutral-100 p-4 text-neutral-700'>
-            <Users className='mr-2 h-8 w-8' />
-            <p>Interviewers will be decided once interview is confirmed</p>
-          </Card>
+          <Alert variant='info'>
+            <AlertCircle strokeWidth={1.5} className='text-muted-foreground' />
+            <AlertTitle>No Interviewers Assigned</AlertTitle>
+            <AlertDescription>
+              Interviewers will be decided once the interview is confirmed.
+            </AlertDescription>
+          </Alert>
         )
       }
       slotHiringTeamList={<AllRolesMeetings />}
       slotOrganizerList={
         schedule.organizer && (
-          <div className='mb-2 flex items-center space-x-3'>
-            <Avatar className='h-8 w-8'>
+          <div className='mb-2 flex items-center gap-2'>
+            <Avatar className='h-12 w-12 rounded-md'>
               <AvatarImage
                 src={schedule.organizer.profile_image ?? 'avatar.png'}
                 alt={getFullName(
@@ -83,7 +83,7 @@ function Overview() {
                   schedule?.organizer.last_name ?? '',
                 )}
               />
-              <AvatarFallback>
+              <AvatarFallback className='h-12 w-12 rounded-md'>
                 {getFullName(
                   schedule?.organizer?.first_name ?? '',
                   schedule?.organizer?.last_name ?? '',
@@ -93,14 +93,14 @@ function Overview() {
             <div className='flex flex-col'>
               <Link
                 href={`/user/${schedule.organizer.user_id}`}
-                className='text-sm font-medium hover:underline'
+                className='text-md hover:underline'
               >
                 {getFullName(
                   schedule?.organizer?.first_name ?? '',
                   schedule?.organizer?.last_name ?? '',
                 )}
               </Link>
-              <p className='text-xs text-muted-foreground'>
+              <p className='text-sm text-muted-foreground'>
                 {schedule.organizer.position}
               </p>
             </div>
@@ -136,7 +136,7 @@ function Overview() {
         <MeetingStatusBadge status={schedule.interview_meeting.status} />
       }
       slotInterviewTypeButton={
-        <Button
+        <UIButton
           variant='outline'
           size='sm'
           onClick={() => {
@@ -151,39 +151,32 @@ function Overview() {
         >
           {schedule?.interview_module?.name}
           <SquareArrowOutUpRight className='ml-2 h-4 w-4' />
-        </Button>
+        </UIButton>
       }
       slotCandidateList={
         <div className='flex w-full items-center justify-between'>
-          <div className='flex items-center space-x-4'>
-            <div className='flex-shrink-0'>
-              <div className='flex h-12 w-12 items-center justify-center rounded-full bg-gray-200 text-lg font-medium text-muted-foreground'>
-                <User className='h-6 w-6' />
-              </div>
+          <div className='flex items-center gap-3'>
+            <div className='flex h-12 w-12 items-center justify-center rounded-md bg-gray-200 text-lg font-medium text-muted-foreground'>
+              <User className='h-6 w-6' />
             </div>
-            <div className='flex flex-col'>
-              <p className='text-base font-semibold'>
+            <div className='flex flex-col gap-0.5'>
+              <p className='text-md'>
                 {getFullName(
                   schedule?.candidates?.first_name ?? '',
                   schedule?.candidates?.last_name ?? '',
                 )}
               </p>
+              <div className='flex items-center gap-1 text-sm text-gray-500'>
+                <Globe className='h-3 w-3' />
+                <span>
+                  {formatTimeWithTimeZone({
+                    start_time: schedule.interview_meeting.start_time ?? '',
+                    end_time: schedule.interview_meeting.end_time ?? '',
+                    timeZone: schedule?.candidates?.timezone ?? '',
+                  })}
+                </span>
+              </div>
             </div>
-          </div>
-          <div className='flex flex-col items-end'>
-            <div className='flex items-center text-sm text-gray-600'>
-              <Clock className='mr-1 h-4 w-4' />
-              <span>
-                {formatTimeWithTimeZone({
-                  start_time: schedule.interview_meeting.start_time ?? '',
-                  end_time: schedule.interview_meeting.end_time ?? '',
-                  timeZone: schedule?.candidates?.timezone ?? '',
-                })}
-              </span>
-            </div>
-            <p className='text-xs text-muted-foreground'>
-              {getShortTimeZone(schedule?.candidates?.timezone ?? '')}
-            </p>
           </div>
         </div>
       }
@@ -191,9 +184,8 @@ function Overview() {
       slotJoinMeeting={
         schedule?.interview_meeting?.status === 'confirmed' &&
         schedule?.interview_meeting?.meeting_link && (
-          <Button
-            variant='outline'
-            size='sm'
+          <div
+            className='cursor-pointer hover:underline'
             onClick={() => {
               window.open(
                 schedule?.interview_meeting?.meeting_link ?? '',
@@ -201,9 +193,8 @@ function Overview() {
               );
             }}
           >
-            Join Meeting
-            <SquareArrowOutUpRight className='ml-2 h-4 w-4' />
-          </Button>
+            <div>{schedule.interview_meeting.meeting_link || '--'}</div>
+          </div>
         )
       }
       textDuration={getBreakLabel(schedule.interview_session.session_duration)}

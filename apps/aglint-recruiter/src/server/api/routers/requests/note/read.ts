@@ -8,13 +8,13 @@ const schema = z.object({ request_id: z.string().uuid() });
 const query = async ({ input }: PrivateProcedure<typeof schema>) => {
   const db = createPrivateClient();
 
-  return (
-    await db
-      .from('request_note')
-      .select('*')
-      .eq('request_id', input.request_id)
-      .throwOnError()
-  ).data;
+  const { data } = await db
+    .from('request_note')
+    .select('*')
+    .eq('request_id', input.request_id)
+    .single()
+    .throwOnError();
+  return data;
 };
 
 export const read = privateProcedure.input(schema).query(query);

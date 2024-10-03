@@ -1,4 +1,11 @@
 import { type SchedulingSettingType } from '@aglint/shared-types';
+import {
+  Page,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import { cloneDeep, debounce } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 import { LoadMax } from 'src/app/(authenticated)/user/[user]/_common/components/ScheduleAvailability/Dialog/EditAvailabiityDialog';
@@ -245,67 +252,72 @@ function SchedulingSettings() {
     },
   ];
   return (
-    <div className='flex max-w-[80%] flex-col'>
-      <div className='mb-6'>
-        <h2 className='mb-1 text-xl font-semibold'>Scheduling Information</h2>
-        <p className='text-sm text-muted-foreground'>
-          Update the settings here changes will be saved automatically.
-        </p>
-      </div>
-      <div className='flex flex-col gap-5'>
-        {dailyLimit.type && weeklyLimit.type && (
-          <UISectionCard
-            title=' Interview Load'
-            description='Setup maximum interviews per day and week.'
-          >
-            <div className='space-y-2'>
-              <InterviewLimitInput
-                value={dailyLimit.value}
-                max={dailyLimit.max}
-                type={dailyLimit.type}
-                onValueChange={handleDailyValue}
-                onTypeChange={handleType}
-                mode='day'
-              />
-              <InterviewLimitInput
-                value={weeklyLimit.value}
-                max={weeklyLimit.max}
-                type={weeklyLimit.type}
-                onValueChange={handleWeeklyValue}
-                onTypeChange={handleType}
-                mode='week'
-              />
-            </div>
-          </UISectionCard>
-        )}
-        <UISectionCard
-          title='Debrief Defaults'
-          description='Setup a default company wide setting for scheduling debrief sessions.'
-        >
-          <DebriefDefaults
-            value={debriefDefaults}
-            setValue={setDebriefDefaults}
-          />
-        </UISectionCard>
-
-        {keywords.map((keyword) => {
-          return (
-            <>
-              <UISectionCard
-                key={keyword.title}
-                title={keyword.title}
-                description={keyword.description}
-              >
-                <KeywordSection
-                  keywords={keyword.value}
-                  setKeywords={keyword.handleChange}
+    <Page>
+      <PageHeader>
+        <PageHeaderText>
+          <PageTitle>Scheduling</PageTitle>
+          <PageDescription>
+            {' '}
+            Update the settings here changes will be saved automatically.
+          </PageDescription>
+        </PageHeaderText>
+      </PageHeader>
+      <div className='flex flex-col gap-4'>
+        <div className='flex flex-col gap-5'>
+          {dailyLimit.type && weeklyLimit.type && (
+            <UISectionCard
+              title=' Interview Load'
+              description='Setup maximum interviews per day and week.'
+            >
+              <div className='space-y-2'>
+                <InterviewLimitInput
+                  value={dailyLimit.value}
+                  max={dailyLimit.max}
+                  type={dailyLimit.type}
+                  onValueChange={handleDailyValue}
+                  onTypeChange={handleType}
+                  mode='day'
                 />
-              </UISectionCard>
-            </>
-          );
-        })}
-      </div>{' '}
-    </div>
+                <InterviewLimitInput
+                  value={weeklyLimit.value}
+                  max={weeklyLimit.max}
+                  type={weeklyLimit.type}
+                  onValueChange={handleWeeklyValue}
+                  onTypeChange={handleType}
+                  mode='week'
+                />
+              </div>
+            </UISectionCard>
+          )}
+          <UISectionCard
+            title='Debrief Defaults'
+            description='Setup a default company wide setting for scheduling debrief sessions.'
+          >
+            <DebriefDefaults
+              value={debriefDefaults}
+              setValue={setDebriefDefaults}
+            />
+          </UISectionCard>
+
+          {keywords.map((keyword) => {
+            return (
+              <>
+                <UISectionCard
+                  key={keyword.title}
+                  title={keyword.title}
+                  description={keyword.description}
+                >
+                  <KeywordSection
+                    keywords={keyword.value}
+                    setKeywords={keyword.handleChange}
+                  />
+                </UISectionCard>
+              </>
+            );
+          })}
+        </div>{' '}
+      </div>
+    </Page>
   );
 }
 

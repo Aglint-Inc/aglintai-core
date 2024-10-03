@@ -1,3 +1,9 @@
+import {
+  PageActions,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 
@@ -61,28 +67,28 @@ export const ApplicationsDashboard = () => {
 };
 
 export const JobDetailsHeader = () => (
-  <div className='mb-2 flex items-center justify-between'>
-    <div>
-      <h1 className='mb-2 text-2xl font-bold'>Job Details </h1>
+  <PageHeader>
+    <PageHeaderText>
+      <PageTitle>Job Details</PageTitle>
       <SharedBreadCrumbs />
-    </div>
-    <SharedActions />
-  </div>
+    </PageHeaderText>
+    <PageActions>
+      <SharedActions />
+    </PageActions>
+  </PageHeader>
 );
 
 export const ApplicationsComponent = () => {
   const checklist = useApplicationsStore((state) => state.checklist);
   return (
     <DNDProvider>
-      <div className='mb-6 flex flex-col gap-6 p-4'>
-        <div className='mb-2'>
-          <Tabs />
-        </div>
+      <div className='mb-2 flex flex-row gap-4 px-4'>
+        <Tabs />
         {checklist.length === 0 ? <Filters /> : <Actions />}
-        <ScrollArea>
-          <Table />
-        </ScrollArea>
       </div>
+      <ScrollArea>
+        <Table />
+      </ScrollArea>
     </DNDProvider>
   );
 };

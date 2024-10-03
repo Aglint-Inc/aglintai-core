@@ -100,38 +100,27 @@ const JobsSideNavV2 = () => {
             handlePush(`/jobs/[job]/${value}`);
           }}
         />
-        {/* {navItems.map(
-          (item, index) =>
-            item.show && (
-              <UIButton
-                key={index}
-                variant={currentTab === item.route ? 'secondary' : 'ghost'}
-                className='w-full justify-start'
-                onClick={() => handlePush(`/jobs/[job]/${item.route}`)}
-              >
-                {item.icon}
-                <span className='ml-2'>{item.label}</span>
-              </UIButton>
-            ),
-        )} */}
       </nav>
 
       {manageJob && (
-        <div className='rounded-md border bg-white p-4'>
-          <h4 className='mb-1 text-sm font-semibold'>
-            {job?.status !== 'published' ? 'Delete' : 'Close'} Job
-          </h4>
-          <p className='mb-2 text-sm text-muted-foreground'>
-            {job?.status !== 'published'
-              ? 'Permanently remove this job and all related data.'
-              : 'Stop all activities and remove the job from the company page.'}
-          </p>
-          <Button
-            variant='destructive'
-            onClick={() => setIsCloseJobDialogOpen(true)}
-          >
-            <span>{job?.status !== 'published' ? 'Delete' : 'Close'} Job</span>
-          </Button>
+        <div className='absolute bottom-0 left-0 items-start gap-2 border-t border-red-100 bg-red-50 p-4'>
+          <h4 className='mb-1 text-sm font-semibold'>Danger Zone</h4>
+          <div className='flex flex-row items-end gap-4'>
+            <p className='mb-2 text-sm text-muted-foreground'>
+              {job?.status !== 'published'
+                ? 'Permanently remove this job and all related data.'
+                : 'Stop all activities and remove the job from the company page.'}
+            </p>
+            <Button
+              variant='destructive'
+              size='sm'
+              onClick={() => setIsCloseJobDialogOpen(true)}
+            >
+              <span>
+                {job?.status !== 'published' ? 'Delete' : 'Close'} Job
+              </span>
+            </Button>
+          </div>
         </div>
       )}
 

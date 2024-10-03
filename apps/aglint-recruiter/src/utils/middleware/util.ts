@@ -64,7 +64,7 @@ function getToken(base: string, func: any) {
     expires_at: number;
     refresh_token: string;
     user: { id: string };
-  } = null;
+  } | null = null;
   let tempData: string[] = [func(base)];
   while (tryNext) {
     const temp = func(`${base}.${count}`);

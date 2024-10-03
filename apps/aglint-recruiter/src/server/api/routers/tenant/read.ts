@@ -1,7 +1,6 @@
 import { TRPCError } from '@trpc/server';
 
 import { createPrivateClient } from '@/server/db';
-import { ERRORS } from '@/server/enums';
 
 import { type PrivateProcedure, privateProcedure } from '../../trpc';
 
@@ -22,7 +21,8 @@ const query = async ({ ctx }: PrivateProcedure) => {
       .throwOnError()
   ).data;
 
-  if (!data) throw new TRPCError(ERRORS.FORBIDDEN);
+  if (!data)
+    throw new TRPCError({ code: 'FORBIDDEN', message: 'User unauthorized' });
 
   const recruiter_user = {
     ...data.recruiter_user,

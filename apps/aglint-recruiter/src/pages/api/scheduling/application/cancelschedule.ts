@@ -79,7 +79,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           type: 'declined',
           session_id,
           other_details: {
-            dateRange: null,
+            dateRange: undefined,
             note: notes,
           },
           cancel_user_id: cancel_user_id,

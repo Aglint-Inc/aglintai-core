@@ -1,5 +1,6 @@
 'use client';
 
+import { TwoColumnPageLayout } from '@components/layouts/two-column-page-layout';
 import { Button } from '@components/ui/button';
 import {
   DropdownMenu,
@@ -19,26 +20,28 @@ import { useWorkflow } from '@/workflow/hooks';
 import { WorkflowsStoreProvider } from '@/workflows/contexts';
 import { useWorkflowsActions } from '@/workflows/hooks';
 
+import { ConnectedJobs } from './_common/components/body';
+
 const Layout = ({ children }: PropsWithChildren) => {
   return (
     <WorkflowsStoreProvider>
       <WorkflowProvider>
-        <div className='container-lg mx-auto w-full px-16'>
-          <div className='flex flex-row justify-between'>
-            <div className='mb-4 flex flex-col'>
-              <h2 className='text-lg font-semibold'>Automation Details</h2>
-              <p className='mb-4 text-sm text-gray-600'>
-                All AI automation workflows can be found here.
-              </p>
+        <TwoColumnPageLayout
+          sidebarPosition='right'
+          sidebarWidth={480}
+          sidebar={<ConnectedJobs />}
+          header={
+            <div className='flex flex-row items-center justify-between'>
               <BreadCrumbs />
+              <div className='flex flex-row gap-2'>
+                <Edit />
+                <DeletePopup />
+              </div>
             </div>
-            <div className='space-y-8'>
-              <Edit />
-              <DeletePopup />
-            </div>
-          </div>
-          {children}
-        </div>
+          }
+        >
+          <div className='px-4'>{children}</div>
+        </TwoColumnPageLayout>
       </WorkflowProvider>
     </WorkflowsStoreProvider>
   );
@@ -61,23 +64,19 @@ const Edit = () => {
     <WithPermission permission={['manage_workflow']}>
       {workflow ? (
         <>
-          <div className='flex flex-row items-center gap-2'>
-            <Button variant='outline' onClick={() => setPopup({ open: true })}>
-              Edit
-            </Button>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant='outline'>
-                  <MoreHorizontal className='h-4 w-4' />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align='end'>
-                <DropdownMenuItem onClick={handleDelete}>
-                  Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+          <Button variant='outline' onClick={() => setPopup({ open: true })}>
+            Edit
+          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant='outline'>
+                <MoreHorizontal className='h-4 w-4' />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align='end'>
+              <DropdownMenuItem onClick={handleDelete}>Delete</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </>
       ) : (
         <></>

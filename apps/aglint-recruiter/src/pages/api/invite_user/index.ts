@@ -1,15 +1,11 @@
-import {
-  DatabaseTableInsert,
-  type RecruiterUserType,
-  type SupabaseType,
-} from '@aglint/shared-types';
+import { type RecruiterUserType } from '@aglint/shared-types';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { type InviteUserAPIType } from '@/company/components/TeamManagement/utils';
 import { apiRequestHandlerFactory } from '@/utils/apiUtils/responseFactory';
 import {
   getSupabaseServer,
-  SupabaseClientType,
+  type SupabaseClientType,
 } from '@/utils/supabase/supabaseAdmin';
 import { companyType } from '@/utils/userRoles';
 
@@ -24,10 +20,9 @@ export default async function handler(
   const requestHandler = apiRequestHandlerFactory<InviteUserAPIType>(req, res);
   requestHandler(
     'POST',
+    // @ts-ignore
     async ({ body, requesterDetails: { user_id } }) => {
-      const { users, recruiter_id } = body;
-      body?.users[0].scheduling_settings;
-
+      const { users, recruiter_id } = body!;
       try {
         for (const user of users) {
           const recUser = await registerMember(
@@ -137,7 +132,7 @@ export async function registerMember(
     role_id: relation.role_id!,
     role: relation.roles!.name,
     manager_id: relation.manager_id!,
-    created_by: relation.created_by,
+    created_by: relation.created_by!,
     recruiter_relation_id: relation.id,
   };
   return recUserType;

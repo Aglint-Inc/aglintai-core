@@ -1,5 +1,6 @@
 import { api } from '@/trpc/client';
 
 export const useAllInterviewModules = () => {
-  return api.interview_pool.interview_pool.useQuery();
+  const query = api.interview_pool.interview_pool.useQuery();
+  return { ...query, data: query.data! };
 };
