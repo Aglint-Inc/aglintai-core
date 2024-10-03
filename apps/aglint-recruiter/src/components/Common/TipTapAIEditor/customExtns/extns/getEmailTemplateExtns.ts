@@ -15,63 +15,98 @@ export const getEmailTemplateExtns = ({
   placeholder,
   template_type,
 }: {
-  placeholder: string;
-  template_type: DatabaseEnums['email_slack_types'];
+  placeholder?: string;
+  template_type?: DatabaseEnums['email_slack_types'];
 }) => {
-  return [
-    StarterKit,
-    EventHandler,
-    Placeholder.configure({
-      placeholder: placeholder || '',
-    }),
-    Link.configure({
-      openOnClick: false,
-      validate: (href) => /^https?:\/\//.test(href),
-    }),
-    TextAlign.configure({
-      alignments: ['left', 'right', 'center'],
-      types: ['heading', 'paragraph'],
-    }),
-    Underline,
-    TextStyle.configure({}),
-    TempVariable.configure({
-      HTMLAttributes: {
-        class: 'temp-variable',
-      },
-      suggestion: getTempVariables(template_type),
-    }),
-  ];
+  if (!template_type || !placeholder) {
+    return [
+      StarterKit,
+      EventHandler,
+      Link.configure({
+        openOnClick: false,
+        validate: (href) => /^https?:\/\//.test(href),
+      }),
+      TextAlign.configure({
+        alignments: ['left', 'right', 'center'],
+        types: ['heading', 'paragraph'],
+      }),
+      Underline,
+      TextStyle.configure({}),
+    ];
+  } else {
+    return [
+      StarterKit,
+      EventHandler,
+      Placeholder.configure({
+        placeholder: placeholder,
+      }),
+      Link.configure({
+        openOnClick: false,
+        validate: (href) => /^https?:\/\//.test(href),
+      }),
+      TextAlign.configure({
+        alignments: ['left', 'right', 'center'],
+        types: ['heading', 'paragraph'],
+      }),
+      Underline,
+      TextStyle.configure({}),
+      TempVariable.configure({
+        HTMLAttributes: {
+          class: 'temp-variable',
+        },
+        suggestion: getTempVariables(template_type),
+      }),
+    ];
+  }
 };
 
 export const getEmailTemplateExtnsNoHeading = ({
   placeholder,
   template_type,
 }: {
-  placeholder: string;
-  template_type: DatabaseEnums['email_slack_types'];
+  placeholder?: string;
+  template_type?: DatabaseEnums['email_slack_types'];
 }) => {
-  return [
-    StarterKit,
-    EventHandler,
-    Placeholder.configure({
-      placeholder: placeholder || '',
-    }),
-    Link.configure({
-      openOnClick: false,
-      validate: (href) => /^https?:\/\//.test(href),
-    }),
-    TextAlign.configure({
-      alignments: ['left', 'right', 'center'],
-      types: ['heading', 'paragraph'],
-    }),
-    Underline,
-    Heading.configure({ levels: [] }),
-    TextStyle.configure({}),
-    TempVariable.configure({
-      HTMLAttributes: {
-        class: 'temp-variable',
-      },
-      suggestion: getTempVariables(template_type),
-    }),
-  ];
+  if (!template_type || !placeholder) {
+    return [
+      StarterKit,
+      EventHandler,
+      Link.configure({
+        openOnClick: false,
+        validate: (href) => /^https?:\/\//.test(href),
+      }),
+      TextAlign.configure({
+        alignments: ['left', 'right', 'center'],
+        types: ['heading', 'paragraph'],
+      }),
+      Underline,
+      Heading.configure({ levels: [] }),
+      TextStyle.configure({}),
+    ];
+  } else {
+    return [
+      StarterKit,
+      EventHandler,
+      Placeholder.configure({
+        placeholder: placeholder || '',
+      }),
+      Link.configure({
+        openOnClick: false,
+        validate: (href) => /^https?:\/\//.test(href),
+      }),
+      TextAlign.configure({
+        alignments: ['left', 'right', 'center'],
+        types: ['heading', 'paragraph'],
+      }),
+      Underline,
+      Heading.configure({ levels: [] }),
+      TextStyle.configure({}),
+      TempVariable.configure({
+        HTMLAttributes: {
+          class: 'temp-variable',
+        },
+        suggestion: getTempVariables(template_type),
+      }),
+    ];
+  }
 };

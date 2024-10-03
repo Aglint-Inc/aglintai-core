@@ -129,9 +129,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     } else {
       return res.status(400).send('Invalid meeting_id or session_id');
     }
-  } catch (error: any) {
-    // console.log('error', error);
-    res.status(400).send(error.message);
+  } catch (error) {
+    if (error instanceof Error) {
+      return res.status(400).send(error.message);
+    }
   }
 };
 

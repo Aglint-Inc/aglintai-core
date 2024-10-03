@@ -67,11 +67,10 @@ export function UIDateRangePicker({
           align={'start'}
         >
           <Calendar
-            // initialFocus
             mode='range'
             defaultMonth={value?.from}
             selected={value}
-            onSelect={(dates: DateRange) => {
+            onSelect={(dates) => {
               onAccept({
                 from: dates?.from,
                 to: dates?.to ?? dates?.from,

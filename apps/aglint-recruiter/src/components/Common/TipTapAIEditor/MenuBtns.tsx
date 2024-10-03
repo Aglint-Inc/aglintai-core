@@ -14,7 +14,6 @@ import {
   AlignRight,
   Bold,
   ChevronDown,
-  ChevronUp,
   Italic,
   List,
   ListOrdered,
@@ -84,11 +83,7 @@ const TipTapMenus = ({
           <PopoverTrigger asChild>
             <Button variant='ghost' size='sm' className='h-8 border-none'>
               {typography}
-              {open ? (
-                <ChevronUp className='ml-2 h-4 w-4' />
-              ) : (
-                <ChevronDown className='ml-2 h-4 w-4' />
-              )}
+              <ChevronDown className='ml-2 h-4 w-4' />
             </Button>
           </PopoverTrigger>
           <PopoverContent className='w-40'>
