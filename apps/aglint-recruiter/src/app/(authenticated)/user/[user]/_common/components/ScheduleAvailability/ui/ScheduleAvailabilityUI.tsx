@@ -7,14 +7,7 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@components/ui/table';
+import { TableCell, TableRow } from '@components/ui/table';
 import { capitalize } from 'lodash';
 import { Calendar } from 'lucide-react';
 
