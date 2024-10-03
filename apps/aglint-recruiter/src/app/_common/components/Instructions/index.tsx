@@ -77,6 +77,7 @@ function Instructions({
             setTextValue(html);
           }}
           initialValue={editedInstruction ?? undefined}
+          minHeight='calc(100vh - 430px)'
         />
       ) : instruction ? (
         <div
