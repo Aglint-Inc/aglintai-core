@@ -56,7 +56,7 @@ export const slackSuggestSlots = async ({
   };
 
   await axios.post(
-    `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/onReceivingAvailReq_slack_suggestSlots`,
+    `${process.env.NEXT_PUBLIC_MAIL_HOST}/api/slack/onReceivingAvailReq_slack_suggestSlots`,
     payload,
   );
 };

@@ -13,7 +13,7 @@ const handleInteraction = async (formData: any) => {
   const interaction_data = JSON.parse(object.payload);
   const action = interaction_data.actions[0];
   const metadata = interaction_data.message.metadata;
-
+  console.log('meta', metadata);
   switch (metadata.event_type) {
     case 'candidate_confirm_slot':
       if (action.value === 'available')

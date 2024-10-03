@@ -90,7 +90,7 @@ const func = async ({
     metadata: {
       event_type: 'onReceivingAvailReq_slack_suggestSlots',
       event_payload: {
-        full_interview_plans: plans,
+        full_interview_plans_str: plans.toString(),
         request_id,
       },
     },

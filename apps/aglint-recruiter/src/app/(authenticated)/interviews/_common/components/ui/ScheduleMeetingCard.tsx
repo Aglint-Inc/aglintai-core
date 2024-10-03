@@ -1,4 +1,5 @@
 import { getFullName } from '@aglint/shared-utils';
+import { getBreakLabel } from '@aglint/shared-utils';
 import { type getAllInterviews } from '@interviews/hooks/useAllInterviews';
 import { convertTimeZoneToAbbreviation } from '@interviews/utils';
 import dayjs from 'dayjs';
@@ -9,7 +10,6 @@ import { MembersList } from 'src/app/_common/components/MembersList';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { getBreakLabel } from '@/utils/getBreakLabel';
 
 import {
   getScheduleBgcolor,

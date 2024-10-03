@@ -76,9 +76,7 @@ const candAvailRecieved = async (req_body: BodyParams) => {
     },
     return_empty_slots_err: true,
   });
-  if (!cand_schedule.db_details) {
-    throw new CApiError('SERVER_ERROR', 'No db details found');
-  }
+
   await cand_schedule.fetchDetails({
     params: {
       session_ids,
@@ -88,7 +86,9 @@ const candAvailRecieved = async (req_body: BodyParams) => {
       req_user_tz: request_assignee_tz,
     },
   });
-
+  if (!cand_schedule.db_details) {
+    throw new CApiError('SERVER_ERROR', 'No db details found');
+  }
   const cand_picked_slots = await executeWorkflowAction(
     findCandSelectedSlots,
     {
