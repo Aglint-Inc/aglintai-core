@@ -8,6 +8,8 @@ import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
+import { setIsOnboardOpen } from '../store/OnboardStore';
+
 type SetupType = {
   id: string;
   title: string;
@@ -55,6 +57,8 @@ const requestIds: SetupStepType['id'][] = [
 export function useCompanySetup() {
   //states ---
   const [steps, setSteps] = useState<SetupStepType[]>([]);
+  const [selectedStep, setSelectedStep] = useState<SetupStepType>(null);
+  const [selectedIndex, setSelectedIndex] = useState<number>(null);
   //Hooks ---
   const { recruiter } = useTenant();
   const { data: integrations, isLoading: integrationLoading } =
@@ -68,6 +72,23 @@ export function useCompanySetup() {
     useFetchcompanySetup();
 
   const { isShowFeature } = useFlags();
+
+  useEffect(() => {
+    const firstIncompleteStep = steps.find((step) => !step.isCompleted);
+    const firstIncompleteStepIndex = steps.findIndex(
+      (step) => !step.isCompleted,
+    );
+    setSelectedStep(
+      firstIncompleteStep ? firstIncompleteStep : steps[selectedIndex],
+    );
+
+    if (firstIncompleteStepIndex) {
+      setSelectedIndex(firstIncompleteStepIndex?firstIncompleteStepIndex:selectedIndex);
+    }
+    if (isCompanySetupPending) {
+      setIsOnboardOpen(true);
+    }
+  }, [steps]);
 
   //loading ---
   const isLoading =
@@ -103,8 +124,6 @@ export function useCompanySetup() {
   const isJobsPresent = !!compandDetails?.public_jobs.length;
 
   //steps ------
-
-  const companySetupSteps = steps;
 
   const requestSetupSteps = steps.filter((step) =>
     requestIds.includes(step.id),
@@ -147,6 +166,24 @@ export function useCompanySetup() {
     (jobSetupSteps?.filter((step) => step.isCompleted).length /
       jobSetupSteps.length) *
     100;
+
+  //complelet functions ------------------------
+  function currentStepMarkAsComplete(id: string) {
+    setSteps((pre) =>
+      pre.map((step) => {
+        if (step.id === id) return { ...step, isCompleted: true };
+        else return step;
+      }),
+    );
+  }
+
+  function MarkAallAsComplete() {
+    setSteps((pre) => {
+      return pre.map((step) => {
+        return { ...step, isCompleted: true };
+      });
+    });
+  }
 
   useEffect(() => {
     if (recruiter && integrations && allMembers && compandDetails) {
@@ -270,12 +307,18 @@ export function useCompanySetup() {
     companySetupProgress,
     requestSetupProgress,
     jobSetupProgress,
-    companySetupSteps,
+    companySetupSteps: steps,
     requestSetupSteps,
     jobSetupSteps,
     isCompanySetupPending,
     isRequestSetupPending,
     isJobSetupPending,
+    currentStepMarkAsComplete,
+    MarkAallAsComplete,
+    selectedIndex,
+    setSelectedIndex,
+    selectedStep,
+    setSelectedStep,
   };
 }
 
