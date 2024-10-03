@@ -2,7 +2,7 @@ import { getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import React from 'react';
 
-import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+// import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 function MemberCard({
   selectedMember,
