@@ -1,7 +1,6 @@
 import { type RecruiterUserType } from '@aglint/shared-types';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { type InviteUserAPIType } from '@/company/components/TeamManagement/utils';
 import { apiRequestHandlerFactory } from '@/utils/apiUtils/responseFactory';
 import {
   getSupabaseServer,
@@ -10,6 +9,7 @@ import {
 import { companyType } from '@/utils/userRoles';
 
 import { checkCalenderStatus } from '../scheduling/v1/check_calendar_status';
+import type { InviteUserAPIType } from './type';
 
 const redirectTo = `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`;
 export default async function handler(

@@ -4,10 +4,10 @@ import axios from 'axios';
 
 import type { GoogleLocationAPI, GoogleTimeZoneAPI } from './types';
 
-const tep_apiKey = process.env.GOOGLE_API_KEY;
+const tep_apiKey = process.env.GOOGLE_MAP_API_KEY;
 
 if (!tep_apiKey) {
-  throw new Error('No Google API Key Found!');
+  throw new Error('No GOOGLE_MAP_API_KEY Key Found!');
 }
 
 const apiKey = tep_apiKey;
