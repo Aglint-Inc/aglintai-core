@@ -11,12 +11,12 @@ function DeleteLocationDialog({
 }: {
   dialog: {
     open: boolean;
-    id: number;
+    id: number | null;
   };
   setDialog: Dispatch<
     SetStateAction<{
       open: boolean;
-      id: number;
+      id: number | null;
     }>
   >;
 }) {
@@ -48,7 +48,7 @@ function DeleteLocationDialog({
             variant='destructive'
             size='sm'
             onClick={() => {
-              handleDeleteLocation(dialog.id);
+              !!dialog.id && handleDeleteLocation(dialog.id);
               setDialog({ open: false, id: null });
             }}
           >

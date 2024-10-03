@@ -15,7 +15,7 @@ export const RoleUserWidget = ({
 }) => {
   return (
     <>
-      {role.assignedTo.length ? (
+      {role?.assignedTo.length ? (
         members.map((member) => (
           <UserCard member={member} key={member.user_id} />
         ))

@@ -7,7 +7,7 @@ import { UIButton } from '@/components/Common/UIButton';
 type Props = {
   name: string;
   date: string;
-  locations: string[];
+  locations?: string[];
   onDelete: () => void;
   isLoading: boolean;
 };
@@ -15,7 +15,7 @@ type Props = {
 export const HolidayRow = (props: Props) => {
   return (
     <TableRow
-      className={props.isLoading && cn('pointer-events-none', 'opacity-50')}
+      className={props.isLoading ? cn('pointer-events-none', 'opacity-50') : ''}
     >
       <TableCell>{props.name}</TableCell>
       <TableCell>{props.date}</TableCell>

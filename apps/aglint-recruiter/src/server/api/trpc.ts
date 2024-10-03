@@ -136,7 +136,7 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
       .eq('recruiter_id', recruiter_id)
       .single()
       .throwOnError()
-  ).data;
+  ).data!;
   if (!integrations)
     throw new TRPCError({
       code: 'UNPROCESSABLE_CONTENT',

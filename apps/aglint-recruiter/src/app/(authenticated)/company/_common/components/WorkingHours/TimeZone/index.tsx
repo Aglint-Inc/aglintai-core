@@ -62,7 +62,7 @@ const TimeZone: FC<TimeZoneProps> = ({
             <div className='flex w-[300px] flex-col gap-4'>
               <Label>Time Zone</Label>
               <TimezonePicker
-                value={selectedTimeZone?.tzCode}
+                value={selectedTimeZone?.tzCode || null}
                 onChange={(value) => setSelectedTimeZone(value)}
                 width={'300'}
               />

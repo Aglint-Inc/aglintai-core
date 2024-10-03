@@ -20,7 +20,7 @@ type RolesAndPermissionsContextType = {
 };
 
 const initialValue: RolesAndPermissionsContextType = {
-  checkPermissions: () => false,
+  checkPermissions: (x) => false,
   devlinkProps: () => ({ onClick: null, style: { display: 'none' } }),
   ifAllowed: <T extends ((...args: unknown[]) => unknown) | ReactNode>(
     func: T,
