@@ -2,21 +2,20 @@ import {
   type DatabaseTable,
   type SchedulingSettingType,
 } from '@aglint/shared-types';
+import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
+import { Page, PageHeader } from '@components/layouts/page-header';
 import {
-  Page,
-  PageActions,
-  PageDescription,
-  PageHeader,
-  PageHeaderText,
-  PageTitle,
-} from '@components/layouts/page-header';
-import { TwoColumnPageLayout } from '@components/layouts/two-column-page-layout';
+  Section,
+  SectionActions,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useInterviewsByUserId } from '@interviews/hooks/useInterviewsByUserId';
 import { useParams } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
-import { useFlags } from '@/company/hooks/useFlags';
 import CalendarComp from '@/components/Common/Calendar/Calendar';
 import Heatmap from '@/components/Common/Heatmap/HeatmapUser';
 import { Loader } from '@/components/Common/Loader';
@@ -26,23 +25,16 @@ import {
   type InterviewerDetailType,
   useInterviewer,
 } from '../hooks/useInterviewer';
-import { useScrollNavigation } from '../hooks/useScrollnavigation';
-import { BreadCrumb } from './BreadCrumb';
 import { Feedback } from './FeedbackCard';
 import { Header } from './Header';
 import { KeyMatrics } from './KeyMatrix';
 import { Qualifications } from './Qualification';
 import { RecentInterviews } from './RecentInterviewCard';
 import ScheduleAvailability from './ScheduleAvailability';
-import { SideBar } from './SideBar';
 import { UpcomingInterview } from './UpcomingInterviews';
 
 type TabType = 'overview' | 'calendar';
 export default function InterviewerDetailsPage() {
-  const { isShowFeature } = useFlags();
-  const { activeSection, scrollToSection, sectionRefs } = useScrollNavigation();
-  const userCardRef = useRef<HTMLDivElement>(null);
-
   const { data: interviewerDetails, isLoading, error } = useInterviewer();
 
   //------------------------ calendar data
@@ -84,75 +76,44 @@ export default function InterviewerDetailsPage() {
 
   return (
     <div>
-      <TwoColumnPageLayout
-        sidebar={
-          <div className='flex flex-col gap-4'>
-            <BreadCrumb name={interviewerDetails?.first_name || ''} />
-            <Header userCardRef={userCardRef} />
-            {isShowFeature('SCHEDULING') && (
-              <SideBar
-                activeSection={activeSection}
-                scrollToSection={scrollToSection}
-              />
-            )}
-          </div>
-        }
-        sidebarPosition='left'
-        sidebarWidth='480'
-      >
+      <OneColumnPageLayout>
         <Page>
-          <PageHeader className='px-4'>
-            <PageHeaderText>
-              <PageTitle>
-                {interviewerDetails.first_name} {interviewerDetails.last_name}{' '}
-                {tab === 'overview' ? 'Overview' : 'Calendar'}
-              </PageTitle>
-              <PageDescription>
-                {interviewerDetails.first_name} {interviewerDetails.last_name}{' '}
-                {tab === 'overview' ? 'Overview' : 'Calendar'} of Interviewer
-                with all the details.
-              </PageDescription>
-            </PageHeaderText>
-            <PageActions>
-              <Tabs
-                defaultValue='overview'
-                className='w-full'
-                onValueChange={(value) => setTab(value as TabType)}
-              >
-                <TabsList className='grid w-full grid-cols-2'>
-                  <TabsTrigger value='overview'>Overview</TabsTrigger>
-                  <TabsTrigger value='calendar'>Calendar</TabsTrigger>
-                </TabsList>
-              </Tabs>
-            </PageActions>
+          <PageHeader className='-mt-4 border-b border-gray-200 bg-gray-50 p-4'>
+            <Header />
           </PageHeader>
+          <Section className='px-4'>
+            <SectionHeader>
+              <SectionHeaderText>
+                <SectionTitle>Interviewer Overview</SectionTitle>
+              </SectionHeaderText>
+              <SectionActions>
+                <Tabs
+                  defaultValue='overview'
+                  className='w-full'
+                  onValueChange={(value) => setTab(value as TabType)}
+                >
+                  <TabsList className='grid w-full grid-cols-2'>
+                    <TabsTrigger value='overview'>Overview</TabsTrigger>
+                    <TabsTrigger value='calendar'>Calendar</TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </SectionActions>
+            </SectionHeader>
+          </Section>
+
           {tab === 'overview' ? (
             <div className='flex flex-col space-y-8 px-4'>
-              <div className='grid grid-cols-2 gap-[1px] bg-muted'>
-                <div className='grid grid-cols-[1fr] bg-white pr-8'>
-                  <section ref={sectionRefs.scheduleAvailabilityRef}>
-                    <ScheduleAvailability />
-                  </section>
+              <div className='grid grid-cols-12 gap-[1px] bg-muted'>
+                <div className='col-span-8 grid space-y-12 bg-white pr-8'>
+                  <KeyMatrics />
+                  <Heatmap loadSetting={interviewLoad} />
+                  <Qualifications interview_types={interviewType} />
+                  <ScheduleAvailability />
                 </div>
-                <div className='grid grid-cols-[1fr] bg-white pl-8'>
-                  <section ref={sectionRefs.meetingOverview}>
-                    <Heatmap loadSetting={interviewLoad} />
-                  </section>
-                  <section ref={sectionRefs.overview}>
-                    <KeyMatrics />
-                  </section>
-                  <section ref={sectionRefs.upcomingInterviews}>
-                    <UpcomingInterview />
-                  </section>
-                  <section ref={sectionRefs.recentInterviews}>
-                    <RecentInterviews />
-                  </section>
-                  <section ref={sectionRefs.qualifications}>
-                    <Qualifications interview_types={interviewType} />
-                  </section>
-                  <section ref={sectionRefs.interviewFeedback}>
-                    <Feedback />
-                  </section>
+                <div className='col-span-4 space-y-12 bg-white pl-8'>
+                  <UpcomingInterview />
+                  <RecentInterviews />
+                  <Feedback />
                 </div>
               </div>
             </div>
@@ -167,7 +128,7 @@ export default function InterviewerDetailsPage() {
             </div>
           )}
         </Page>
-      </TwoColumnPageLayout>
+      </OneColumnPageLayout>
     </div>
   );
 }

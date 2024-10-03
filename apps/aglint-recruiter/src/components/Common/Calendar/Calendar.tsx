@@ -2,6 +2,13 @@ import './fullcalendar-theme.css';
 
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import {
+  Section,
+  SectionActions,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import FullCalendar from '@fullcalendar/react';
@@ -19,7 +26,6 @@ import {
 import { Loader } from '@/components/Common/Loader';
 
 import { type SchedulesSupabase } from '../../../app/_common/utils/schedules-query';
-import UISectionCard from '../UISectionCard';
 import UITypography from '../UITypography';
 import CalendarHeader from './CalendarHeader';
 import { type event, type Modes, type Types } from './calendarTypes';
@@ -92,27 +98,30 @@ function CalendarComp({
   };
 
   return (
-    <div className='space-y-2 p-2'>
+    <div className='space-y-2'>
       {isLoading ? (
         <div className='flex w-[900px] items-center justify-center'>
           <Loader />
         </div>
       ) : (
-        <UISectionCard
-          type='compact'
-          title='Schedule Calendar'
-          isHoverEffect={false}
-          action={<CalendarFilter filter={filter} setFilter={setFilter} />}
-        >
-          <CalendarHeader
-            calendarApi={calendarApi}
-            currentDate={currentDate}
-            handleMode={handleMode}
-            handleType={handleType}
-            mode={viewMode}
-            type={viewType}
-          />
-          <div className='mt-4'>
+        <Section>
+          <SectionHeader>
+            <SectionHeaderText>
+              <SectionTitle>Interviews Calendar</SectionTitle>
+            </SectionHeaderText>
+            <SectionActions>
+              <CalendarFilter filter={filter} setFilter={setFilter} />
+            </SectionActions>
+          </SectionHeader>
+          <div className='flex flex-col space-y-2'>
+            <CalendarHeader
+              calendarApi={calendarApi}
+              currentDate={currentDate}
+              handleMode={handleMode}
+              handleType={handleType}
+              mode={viewMode}
+              type={viewType}
+            />
             <FullCalendar
               key={events?.length}
               ref={calendarRef}
@@ -143,7 +152,7 @@ function CalendarComp({
               }}
             />
           </div>
-        </UISectionCard>
+        </Section>
       )}
     </div>
   );

@@ -33,8 +33,8 @@ export const List = ({
 };
 const Card = ({ title, value }: { title: string; value: string | number }) => {
   return (
-    <div className='flex flex-row gap-2 items-center'>
-      <p className='text-sm text-muted-foreground w-3/5'>{title}</p>
+    <div className='flex flex-row items-center gap-2'>
+      <p className='w-3/5 text-sm text-muted-foreground'>{title}</p>
       <p className='text-sm text-muted-foreground'>:</p>
       <p className='text-sm font-medium'>{value} min</p>
     </div>
