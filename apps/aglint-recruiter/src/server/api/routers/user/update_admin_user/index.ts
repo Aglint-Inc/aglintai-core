@@ -1,31 +1,25 @@
-import { recruiterRelationUpdateSchema } from '@aglint/shared-types';
-import {} from '@aglint/shared-types/src/db/tables/recruiter.types';
-import { customRecruiterUserUpdateSchema } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
 import { z } from 'zod';
 
-import {
-  privateProcedure,
-  type PrivateProcedure,
-  publicProcedure,
-} from '@/server/api/trpc';
+import { privateProcedure, type PrivateProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
-import { customSchedulingSettingsSchema } from '@aglint/shared-types/src/db/common.zod';
+import { customSchedulingSettingsUserSchema } from '@aglint/shared-types/src/db/common.zod';
 
 const Schema = z.object({
   first_name: z.string(),
   last_name: z.string(),
-  linked_in: z.string(),
-  office_location_id: z.number(),
+  linked_in: z.string().nullable(),
+  office_location_id: z.number().nullable(),
   employment: z.string(),
   position: z.string(),
-  department_id: z.number(),
+  department_id: z.number().nullable(),
   phone: z.string(),
   user_id: z.string(),
-  profile_image: z.string(),
-  scheduling_settings: customSchedulingSettingsSchema,
-  role_id: z.string(),
-  manager_id: z.string(),
+  profile_image: z.string().nullable(),
+  scheduling_settings: customSchedulingSettingsUserSchema,
+  role_id: z.string().nullable(),
+  manager_id: z.string().nullable(),
   recruiter_id: z.string(),
+  role: z.string().optional(),
 });
 
 export type UserAdminUpdateType = z.infer<typeof Schema>;
@@ -35,20 +29,20 @@ const mutation = async ({ input }: PrivateProcedure<typeof Schema>) => {
 
   await db
     .rpc('update_user', {
-      employment: input?.employment,
-      first_name: input?.first_name,
-      recruiter_id: input?.recruiter_id,
+      employment: input.employment,
+      first_name: input.first_name,
+      recruiter_id: input.recruiter_id,
       scheduling_settings: input.scheduling_settings,
-      user_id: input?.user_id,
-      last_name: input?.last_name,
-      department_id: input?.department_id,
-      linked_in: input?.linked_in,
-      manager_id: input?.manager_id,
-      office_location_id: input?.office_location_id,
-      phone: input?.phone,
-      position: input?.position,
-      profile_image: input?.profile_image,
-      role_id: input?.role_id,
+      user_id: input.user_id,
+      last_name: input.last_name,
+      phone: input.phone,
+      position: input.position,
+      department_id: input.department_id as number,
+      linked_in: input.linked_in as string,
+      manager_id: input.manager_id as string,
+      office_location_id: input.office_location_id as number,
+      profile_image: input.profile_image as string,
+      role_id: input.role_id as string,
     })
     .throwOnError();
 };

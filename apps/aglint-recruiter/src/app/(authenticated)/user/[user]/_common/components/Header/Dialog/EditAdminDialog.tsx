@@ -18,7 +18,10 @@ import { type UserAdminUpdateType } from '@/server/api/routers/user/update_admin
 import { supabase } from '@/utils/supabase/client';
 
 import { useAdminUpdate } from '../../../hooks/useAdminUpdate';
-import { useInterviewer } from '../../../hooks/useInterviewer';
+import {
+  InterviewerDetailType,
+  useInterviewer,
+} from '../../../hooks/useInterviewer';
 import { Form } from './EditAdminDialogUI';
 
 export type EditAdminFormErrorType = {
@@ -33,21 +36,7 @@ export type EditAdminFormErrorType = {
   manager: boolean;
 };
 
-export type EditAdminFormType = Pick<
-  NonNullable<ReturnType<typeof useInterviewer>['data']>,
-  | 'first_name'
-  | 'last_name'
-  | 'phone'
-  | 'linked_in'
-  | 'office_location_id'
-  | 'employment'
-  | 'profile_image'
-  | 'department_id'
-  | 'position'
-  | 'role_id'
-  | 'role'
-  | 'manager_id'
->;
+type Formtype = Omit<UserAdminUpdateType, 'recruiter_id' | 'user_id'>;
 
 const EditAdminDialog = ({
   open,
@@ -75,20 +64,36 @@ const EditAdminDialog = ({
   ) as ReturnType<typeof useTenantMembers>['allMembers'][number];
 
   const { data: interviewerDetail } = useInterviewer();
+  const {
+    first_name,
+    last_name,
+    phone,
+    linked_in,
+    office_location_id,
+    employment,
+    profile_image,
+    department_id,
+    position,
+    role_id,
+    manager_id,
+    scheduling_settings,
+    role,
+  } = interviewerDetail;
 
-  const [form, setForm] = useState<EditAdminFormType>({
-    first_name: '',
-    last_name: '',
-    phone: '',
-    linked_in: '',
-    office_location_id: undefined,
-    employment: 'fulltime',
-    profile_image: null,
-    department_id: undefined,
-    position: '',
-    role_id: undefined,
-    manager_id: null,
-    role: '',
+  const [form, setForm] = useState<Formtype>({
+    first_name,
+    last_name,
+    phone,
+    linked_in,
+    scheduling_settings,
+    office_location_id,
+    employment,
+    profile_image,
+    department_id,
+    position,
+    role_id,
+    manager_id,
+    role,
   });
 
   const memberList = activeMembers
@@ -100,10 +105,11 @@ const EditAdminDialog = ({
 
   useEffect(() => {
     if (interviewerDetail) {
-      const initForm: EditAdminFormType = {
+      const initForm: Formtype = {
         first_name: interviewerDetail.first_name,
         last_name: interviewerDetail.last_name ?? '',
         phone: interviewerDetail?.phone,
+        scheduling_settings,
         linked_in: interviewerDetail?.linked_in,
         office_location_id: interviewerDetail?.office_location_id,
         employment: interviewerDetail?.employment,
@@ -146,10 +152,11 @@ const EditAdminDialog = ({
 
   if (!member || !interviewerDetail) return <>Error </>;
 
-  const initForm: EditAdminFormType = {
+  const initForm: Formtype = {
     first_name: interviewerDetail.first_name,
     last_name: interviewerDetail.last_name ?? '',
     phone: interviewerDetail?.phone,
+    scheduling_settings,
     linked_in: interviewerDetail?.linked_in,
     office_location_id: interviewerDetail?.office_location_id,
     employment: interviewerDetail?.employment,
