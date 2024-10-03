@@ -3,7 +3,18 @@ import { TableCell, TableRow } from '@components/ui/table';
 
 import { capitalize } from '@/utils/text/textUtils';
 
-export const TimeList = ({ day }) => {
+interface TimeRange {
+  startTime: string;
+  endTime: string;
+}
+
+export interface WorkingHour {
+  day: string;
+  isWorkDay: boolean;
+  timeRange: TimeRange;
+}
+
+export const TimeList = ({ day }: { day: WorkingHour }) => {
   return (
     <TableRow className='hover:bg-transparent'>
       <TableCell className='font-medium'>{capitalize(day.day)}</TableCell>

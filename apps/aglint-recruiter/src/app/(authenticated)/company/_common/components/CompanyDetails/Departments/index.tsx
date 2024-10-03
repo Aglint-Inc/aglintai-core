@@ -20,7 +20,7 @@ export default function Departments() {
     useAllDepartments();
 
   const { toast } = useToast();
-  const handleRemoveKeyword = async (id) => {
+  const handleRemoveKeyword = (id: string | number | null) => {
     setDeleteDialog({
       ...deleteDialog,
       open: true,
@@ -36,7 +36,11 @@ export default function Departments() {
     id: null,
   });
 
-  const handleAddDepartment = async ({ name: department }) => {
+  const handleAddDepartment = async ({
+    name: department,
+  }: {
+    name: string;
+  }) => {
     if (department.trim() !== '') {
       await manageDepartments({
         type: 'insert',
@@ -52,7 +56,7 @@ export default function Departments() {
       await refetchDepartments();
     }
   };
-  const initialDepartments = [];
+  const initialDepartments: string[] = [];
 
   // if (localStorage?.getItem('departments')) {
   //   if (Array.isArray(JSON.parse(localStorage?.getItem('departments')))) {

@@ -1,26 +1,52 @@
 import { Label } from '@components/ui/label';
 import React, { useState } from 'react';
 
+import type { TenantType } from '@/company/hooks/useTenant';
+
 import AddSocialLinkButton from './AddSocialLinkButton';
 import CustomSocialField from './CustomSocialField';
 import SocialField from './SocialField';
 import { customOrder } from './utils';
+type recruiterType = TenantType['recruiter'];
+type SocialCompPropsType = {
+  disabled: boolean;
+  // eslint-disable-next-line no-unused-vars
+  handleChange: (x: recruiterType) => void;
+  recruiterLocal: recruiterType;
+};
 
-const SocialComp = ({ disabled = false, handleChange, recruiterLocal }) => {
-  const [error, setError] = useState({});
+const SocialComp = ({
+  disabled = false,
+  handleChange,
+  recruiterLocal,
+}: SocialCompPropsType) => {
+  const [error, setError] = useState<{
+    [key: string]: {
+      error: boolean;
+      msg: string;
+    };
+  }>({});
 
-  const socials = Object.keys(recruiterLocal.socials)
+  const socials = (
+    Object.keys(
+      recruiterLocal.socials,
+    ) as unknown as (keyof typeof recruiterLocal.socials)[]
+  )
     .filter((key) => key !== 'custom')
     .sort(
-      (a, b) => (customOrder[a] || Infinity) - (customOrder[b] || Infinity),
+      (a, b) =>
+        (customOrder[a as keyof typeof customOrder] || Infinity) -
+        (customOrder[b as keyof typeof customOrder] || Infinity),
     );
 
   const customSocials = Object.keys(recruiterLocal.socials.custom).sort(
-    (a, b) => (customOrder[a] || Infinity) - (customOrder[b] || Infinity),
+    (a, b) =>
+      (customOrder[a as keyof typeof customOrder] || Infinity) -
+      (customOrder[b as keyof typeof customOrder] || Infinity),
   );
 
   const handleChangeSocial = async (
-    updatedRecruiter,
+    updatedRecruiter: SocialCompPropsType['recruiterLocal'],
     // socialName,
     // isCustom = false,
   ) => {
@@ -45,7 +71,11 @@ const SocialComp = ({ disabled = false, handleChange, recruiterLocal }) => {
           <SocialField
             key={socialName}
             socialName={socialName}
-            value={recruiterLocal?.socials[socialName]}
+            value={
+              recruiterLocal.socials[
+                socialName as keyof typeof recruiterLocal.socials
+              ] as unknown as string
+            }
             disabled={disabled}
             error={error[socialName]}
             onChange={(value) => {

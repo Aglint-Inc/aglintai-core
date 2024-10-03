@@ -1,4 +1,5 @@
 import { DialogDescription } from '@components/ui/dialog';
+import type { Dispatch, SetStateAction } from 'react';
 
 import { useFlags } from '@/company/hooks/useFlags';
 import { usePortalSettings } from '@/company/hooks/usePortalSettings';
@@ -11,11 +12,18 @@ export const GreetingEditDialog = ({
   isDialogOpen,
   setText,
   text,
+}: {
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
+  isDialogOpen: boolean;
+  setText: Dispatch<SetStateAction<string>>;
+  text: string;
 }) => {
   const { updateGreetings, loading } = usePortalSettings();
   const { greetings } = useFlags();
 
-  const handleTextChange = (event) => {
+  const handleTextChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     setText(event.target.value);
   };
 
