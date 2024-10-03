@@ -17,7 +17,7 @@ export function CoverImage() {
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const newFile = Array.from(event.target.files)[0];
-      if (newFile.size < 5 * 1000000) {
+      if (newFile.size < 5 * 1000000 && banner_image) {
         updateCover(newFile, banner_image);
       }
     }
@@ -33,7 +33,7 @@ export function CoverImage() {
 
   const handleDrop = (event: DragEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    if (event.dataTransfer.files) {
+    if (event.dataTransfer.files && banner_image) {
       const newFile = Array.from(event.dataTransfer.files)[0];
       if (newFile.size < 5 * 1000000) updateCover(newFile, banner_image);
     }

@@ -26,15 +26,15 @@ export const Qualifications = ({
               ))
             ) : (
               <div className='col-span-3'>
-              <GlobalEmpty
-                icon={
-                  <LibraryBig
-                    strokeWidth={2}
-                    className='h-6 w-6 text-muted-foreground'
-                  />
-                }
-                header='No qualifications found'
-              />
+                <GlobalEmpty
+                  icon={
+                    <LibraryBig
+                      strokeWidth={2}
+                      className='h-6 w-6 text-muted-foreground'
+                    />
+                  }
+                  description='No qualifications found'
+                />
               </div>
             )}
           </div>

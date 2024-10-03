@@ -139,7 +139,7 @@ const Experiences = () => {
   return (
     <>
       <Table>
-        <TableHeader>
+        <TableHeader className='bg-gray-100'>
           <TableRow>
             <TableHead className='w-1/4'>Company</TableHead>
             <TableHead className='w-1/2'>Title</TableHead>

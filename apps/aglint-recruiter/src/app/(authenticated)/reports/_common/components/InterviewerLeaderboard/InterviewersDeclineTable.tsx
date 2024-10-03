@@ -50,7 +50,7 @@ export default function InterviewersDeclineTable() {
       }
     >
       <Table>
-        <TableHeader>
+        <TableHeader className='bg-gray-100'>
           <TableRow>
             <TableHead className='w-[200px]'>Name</TableHead>
             <TableHead>Declines</TableHead>

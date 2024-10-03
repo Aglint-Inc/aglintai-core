@@ -1,11 +1,11 @@
 import {
-  Page,
   PageActions,
   PageDescription,
   PageHeader,
   PageHeaderText,
   PageTitle,
 } from '@components/layouts/page-header';
+import { TwoColumnPageLayout } from '@components/layouts/two-column-page-layout';
 import {
   Popover,
   PopoverContent,
@@ -72,74 +72,79 @@ export default function InterviewTypeDetail({
           <Loader />
         </div>
       ) : (
-        <div className='px-4'>
-          <Page>
-            <PageHeader>
-              <PageHeaderText>
-                <PageTitle>{editModule?.name}</PageTitle>
-                <PageDescription>
-                  <div className='mt-2 flex items-center space-x-2'>
-                    <UIBadge
-                      textBadge={
-                        editModule?.is_archived ? 'Archived' : 'Active'
-                      }
-                      color={editModule?.is_archived ? 'error' : 'success'}
-                    />
-                    <span className='text-muted-foreground'>•</span>
-                    <span className='text-muted-foreground'>
-                      {editModule?.department?.name}
-                    </span>
-                  </div>
-                </PageDescription>
-              </PageHeaderText>
-              <PageActions>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <UIButton
-                      variant='ghost'
-                      size='md'
-                      icon={<MoreVertical className='h-4 w-4' />}
-                    />
-                  </PopoverTrigger>
-                  <PopoverContent
-                    align='end'
-                    side='left'
-                    sideOffset={8}
-                    alignOffset={-40}
-                    className='w-[150px] cursor-pointer rounded-md border border-gray-200 bg-white p-2'
-                  >
-                    <div
-                      className='flex items-center space-x-2 rounded-md border-none p-2 text-sm hover:bg-gray-100'
-                      onClick={() => {
-                        editModule?.is_archived
-                          ? unArcheive()
-                          : setIsArchiveDialogOpen(true);
-                      }}
-                    >
-                      {editModule?.is_archived ? (
-                        <>
-                          <Archive className='h-4 w-4' />
-                          <span>Unarchive</span>
-                        </>
-                      ) : (
-                        <>
-                          <ArchiveRestore className='h-4 w-4' />
-                          <span>Archive</span>
-                        </>
-                      )}
+        <>
+          <TwoColumnPageLayout
+            header={
+              <PageHeader>
+                <PageHeaderText>
+                  <PageTitle>{editModule?.name}</PageTitle>
+                  <PageDescription>
+                    <div className='mt-2 flex items-center space-x-2'>
+                      <UIBadge
+                        textBadge={
+                          editModule?.is_archived ? 'Archived' : 'Active'
+                        }
+                        color={editModule?.is_archived ? 'error' : 'success'}
+                      />
+                      <span className='text-muted-foreground'>•</span>
+                      <span className='text-muted-foreground'>
+                        {editModule?.department?.name}
+                      </span>
                     </div>
-                  </PopoverContent>
-                </Popover>
-              </PageActions>
-            </PageHeader>
-            <div className='mt-4 flex flex-col items-center space-y-8'>
-              <StatsCards module_id={module_id} />
+                  </PageDescription>
+                </PageHeaderText>
+                <PageActions>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <UIButton
+                        variant='ghost'
+                        size='md'
+                        icon={<MoreVertical className='h-4 w-4' />}
+                      />
+                    </PopoverTrigger>
+                    <PopoverContent
+                      align='end'
+                      side='left'
+                      sideOffset={8}
+                      alignOffset={-40}
+                      className='w-[150px] cursor-pointer rounded-md border border-gray-200 bg-white p-2'
+                    >
+                      <div
+                        className='flex items-center space-x-2 rounded-md border-none p-2 text-sm hover:bg-gray-100'
+                        onClick={() => {
+                          editModule?.is_archived
+                            ? unArcheive()
+                            : setIsArchiveDialogOpen(true);
+                        }}
+                      >
+                        {editModule?.is_archived ? (
+                          <>
+                            <Archive className='h-4 w-4' />
+                            <span>Unarchive</span>
+                          </>
+                        ) : (
+                          <>
+                            <ArchiveRestore className='h-4 w-4' />
+                            <span>Archive</span>
+                          </>
+                        )}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </PageActions>
+              </PageHeader>
+            }
+            sidebarPosition='right'
+            sidebarWidth={420}
+            sidebar={<StatsCards module_id={module_id} />}
+          >
+            <div className='px-4'>
               <InterviewDetailsTabs />
             </div>
-          </Page>
+          </TwoColumnPageLayout>
           <DeleteModuleDialog editModule={editModule} />
           <ArchiveModuleDialog />
-        </div>
+        </>
       )}
     </div>
   );
