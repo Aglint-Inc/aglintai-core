@@ -30,7 +30,7 @@ export const Feedback = () => {
                   className='h-6 w-6 text-muted-foreground'
                 />
               }
-              header='No feedback available'
+              description='No feedback available'
             />
           )}
         </div>
