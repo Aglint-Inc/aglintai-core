@@ -8,7 +8,7 @@ class CommandList extends Component<SuggestionProps> {
     selectedIndex: 0,
   };
 
-  componentDidUpdate(oldProps) {
+  componentDidUpdate(oldProps: any) {
     if (this.props.items !== oldProps.items) {
       this.setState({
         selectedIndex: 0,
@@ -16,7 +16,7 @@ class CommandList extends Component<SuggestionProps> {
     }
   }
 
-  onKeyDown({ event }) {
+  onKeyDown({ event }: any) {
     if (event.key === 'ArrowUp') {
       this.upHandler();
       return true;
@@ -53,7 +53,7 @@ class CommandList extends Component<SuggestionProps> {
     this.selectItem(this.state.selectedIndex);
   }
 
-  selectItem(index) {
+  selectItem(index: number) {
     const item = this.props.items[Number(index)];
 
     if (item) {
