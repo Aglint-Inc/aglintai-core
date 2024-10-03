@@ -77,7 +77,7 @@ function StepSlotOptions() {
   }, []);
 
   return (
-    <div className='border-l border-gray-200'>
+    <div className=''>
       <div className='flex flex-row items-center justify-between gap-2 border-b border-gray-200 px-4 py-2.5'>
         <UITypography type='small'>
           Showing available options between{' '}

@@ -1,5 +1,7 @@
 import type { TargetApiPayloadType } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
+import { Card, CardContent, CardHeader } from '@components/ui/card';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { RefreshCcw } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
@@ -106,39 +108,44 @@ function EmailPreviewSelfSchedule() {
         </div>
       ) : (
         <>
-          <div className='flex w-full flex-row items-center justify-between gap-4'>
-            <UIBadge
-              textBadge='This is a preview only.'
-              iconName='Info'
-              color={'warning'}
-            />
-            <div className='flex flex-row items-start space-x-2'>
-              <UIButton
-                variant='secondary'
-                size='sm'
-                onClick={() => {
-                  window.open(
-                    `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=sendSelfScheduleRequest_email_applicant&template_tab=email`,
-                  );
-                }}
-              >
-                Edit Email Template
-              </UIButton>
-              <UIButton variant='secondary' size='sm' onClick={getEmail}>
-                <RefreshCcw size={14} />
-              </UIButton>
-            </div>
-          </div>
-
-          <div className='py-4'>
-            <iframe
-              width={'510px'}
-              height={'750px'}
-              color='white'
-              srcDoc={emailData?.html}
-              title='Preview Email'
-            />
-          </div>
+          <Card className='w-full'>
+            <CardHeader className='flex flex-row items-center justify-between space-y-0 p-2 pb-2'>
+              <div className='flex w-full flex-row items-center justify-between gap-4'>
+                <UIBadge
+                  textBadge='This is a preview only.'
+                  iconName='Info'
+                  color={'warning'}
+                />
+                <div className='flex flex-row items-start space-x-2'>
+                  <UIButton
+                    variant='secondary'
+                    size='sm'
+                    onClick={() => {
+                      window.open(
+                        `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=sendSelfScheduleRequest_email_applicant&template_tab=email`,
+                      );
+                    }}
+                  >
+                    Edit Email Template
+                  </UIButton>
+                  <UIButton variant='secondary' size='sm' onClick={getEmail}>
+                    <RefreshCcw size={14} />
+                  </UIButton>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className='bg-neutral-50 p-0'>
+              <ScrollArea className='h-[calc(100vh-320px)] w-full'>
+                <iframe
+                  width={'100%'}
+                  height={'672px'}
+                  color='white'
+                  srcDoc={emailData?.html}
+                  title='Preview Email'
+                />
+              </ScrollArea>
+            </CardContent>
+          </Card>
         </>
       )}
     </div>
