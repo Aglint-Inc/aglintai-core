@@ -1,6 +1,13 @@
 'use client';
 import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
 import {
+  Section,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
+import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
@@ -24,7 +31,18 @@ const Layout = ({ children }: PropsWithChildren) => {
         sidebar={
           <div className='flex h-full flex-col'>
             <BreadCrumbs />
-            <JobsSideNavV2 />
+            <Section>
+              <SectionHeader>
+                <SectionHeaderText>
+                  <SectionTitle>Job Settings</SectionTitle>
+                  <SectionDescription>
+                    Manage your job details, interview process automation and
+                    preferences.
+                  </SectionDescription>
+                </SectionHeaderText>
+              </SectionHeader>
+              <JobsSideNavV2 />
+            </Section>
           </div>
         }
         sidebarPosition='left'
@@ -54,27 +72,29 @@ const BreadCrumbs = () => {
   }
 
   return (
-    <Breadcrumb>
-      <BreadcrumbList>
-        <BreadcrumbItem>
-          <BreadcrumbLink href='#' onClick={() => push(ROUTES['/jobs']())}>
-            Jobs
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbLink
-            href='#'
-            onClick={() => push(ROUTES['/jobs/[job]']({ job: job?.id }))}
-          >
-            {capitalizeSentence(job?.job_title ?? 'Job')}
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <BreadcrumbPage>{currentPage}</BreadcrumbPage>
-        </BreadcrumbItem>
-      </BreadcrumbList>
-    </Breadcrumb>
+    <div className='mb-4'>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href='#' onClick={() => push(ROUTES['/jobs']())}>
+              Jobs
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink
+              href='#'
+              onClick={() => push(ROUTES['/jobs/[job]']({ job: job?.id }))}
+            >
+              {capitalizeSentence(job?.job_title ?? 'Job')}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>{currentPage}</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+    </div>
   );
 };
