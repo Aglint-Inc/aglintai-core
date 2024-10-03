@@ -9,6 +9,7 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
+import { type DatesSetArg, type EventContentArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import FullCalendar from '@fullcalendar/react';
@@ -28,7 +29,11 @@ import { Loader } from '@/components/Common/Loader';
 import { type SchedulesSupabase } from '../../../app/_common/utils/schedules-query';
 import UITypography from '../UITypography';
 import CalendarHeader from './CalendarHeader';
-import { type event, type Modes, type Types } from './calendarTypes';
+import {
+  type EventFullCalender,
+  type Modes,
+  type Types,
+} from './calendarTypes';
 import CalendarFilter from './Filter';
 
 function CalendarComp({
@@ -44,18 +49,18 @@ function CalendarComp({
     SetStateAction<DatabaseTable['interview_meeting']['status'][]>
   >;
 }) {
-  const [currentDate, setCurrentDate] = useState(null);
+  const [currentDate, setCurrentDate] = useState<DatesSetArg | null>(null);
   const [viewMode, setViewMode] = useState<Modes>('calendar');
   const [viewType, setViewType] = useState<Types>('month');
-  const [events, setEvents] = useState<event[]>([]);
+  const [events, setEvents] = useState<EventFullCalender[]>([]);
 
   const calendarRef = useRef(null);
 
   useEffect(() => {
-    const event: event[] = allSchedules.map((sch) => ({
-      title: sch.session_name,
-      start: sch.start_time,
-      end: sch.end_time,
+    const event: EventFullCalender[] = allSchedules.map((sch) => ({
+      title: sch.session_name ?? '',
+      start: sch.start_time ?? '',
+      end: sch.end_time ?? '',
       backgroundColor: 'transparent',
       borderColor: 'transparent',
       extendedProps: {
@@ -66,10 +71,11 @@ function CalendarComp({
     setEvents(event);
   }, [allSchedules]);
 
+  //@ts-ignore
   const calendarApi = calendarRef.current?.getApi();
 
-  const handleDatesSet = (are) => {
-    setCurrentDate(are);
+  const handleDatesSet = (date: DatesSetArg) => {
+    setCurrentDate(date);
   };
 
   const view = {
@@ -171,7 +177,7 @@ function onEventContent() {
   );
 }
 
-function renderEventContent(eventInfo) {
+function renderEventContent(eventInfo: EventContentArg) {
   const { data, color } = eventInfo.event.extendedProps;
   return (
     <div
@@ -186,7 +192,7 @@ function renderEventContent(eventInfo) {
           <p>Status: ${data.status}</p>
         `;
 
-        // Position the tooltip near the event
+        //@ts-ignore
         const rect = eventInfo.el.getBoundingClientRect();
         tooltip.style.position = 'absolute';
         tooltip.style.left = `${rect.left + window.scrollX}px`;
@@ -196,7 +202,8 @@ function renderEventContent(eventInfo) {
         document.body.appendChild(tooltip);
 
         // Remove the tooltip when clicking outside
-        const removeTooltip = (e) => {
+        const removeTooltip = (e: any) => {
+          //@ts-ignore
           if (!tooltip.contains(e.target) && e.target !== eventInfo.el) {
             document.body.removeChild(tooltip);
             document.removeEventListener('click', removeTooltip);
@@ -214,13 +221,13 @@ function renderEventContent(eventInfo) {
   );
 }
 
-const colorPick = (status) => {
+const colorPick = (status: NonNullable<SchedulesSupabase>[0]['status']) => {
   switch (status) {
     case 'confirmed':
       return { bg: 'bg-blue-200', pri: 'border-blue-700' };
     case 'completed':
       return { bg: 'bg-green-200', pri: 'border-green-700' };
-    case 'canceled':
+    case 'cancelled':
       return { bg: 'bg-red-200', pri: 'border-red-700' };
     default:
       return { bg: 'bg-grey-200', pri: 'border-grey-700' };

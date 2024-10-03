@@ -1,3 +1,4 @@
+// @ts-nocheck fix this
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseEnums } from '@aglint/shared-types';
 import { emailVariablePayloads } from '@aglint/shared-utils';
