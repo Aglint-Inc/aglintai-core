@@ -8,7 +8,7 @@ import {
   PageHeaderText,
   PageTitle,
 } from '@components/layouts/page-header';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
