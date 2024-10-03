@@ -1,7 +1,7 @@
 import { Skeleton } from '@components/ui/skeleton';
 
 import { UIAlert } from '@/components/Common/UIAlert';
-import { useInterviewModules } from '@/queries/interview-modules';
+import { api } from '@/trpc/client';
 
 import { useApplicationDetails } from '../../hooks/useApplicationDetails';
 import { useInterviewStages } from '../../hooks/useInterviewStages';
@@ -12,11 +12,11 @@ import DialogSchedule from '../ScheduleDialog';
 import { InterviewStage } from '../ui/InterviewStage';
 
 function InterviewTabContent() {
-  const { data: stages, isLoading, refetch, error } = useInterviewStages();
+  const { data: stages, isLoading, error, refetch } = useInterviewStages();
   const { data: details, isLoading: isLoadingDetails } =
     useApplicationDetails();
 
-  useInterviewModules(); //needed to fetch interview modules which is used in edit interview plan
+  void api.interview_pool.get_all.usePrefetchQuery(); //needed to fetch interview modules which is used in edit interview plan
 
   if (isLoading || isLoadingDetails)
     return (

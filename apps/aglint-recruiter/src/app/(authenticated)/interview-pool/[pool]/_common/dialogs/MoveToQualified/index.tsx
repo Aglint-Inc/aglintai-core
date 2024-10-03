@@ -1,11 +1,11 @@
 import { getFullName } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
 import { useState } from 'react';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
 import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useMemberList } from '@/hooks/useMemberList';
 import { supabase } from '@/utils/supabase/client';
 
 import {

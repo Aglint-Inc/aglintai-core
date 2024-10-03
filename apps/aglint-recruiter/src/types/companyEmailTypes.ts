@@ -154,11 +154,11 @@ export const emailTemplateCopy: CompanyEmailType = {
     description:
       'After interview end this mail is send to organizer for ask to update the meeting status',
   },
-  phoneScreen_email_candidate: null,
-  phoneScreenRemind_email_applicant: null,
-  candidateBook_email_interviewerForFeedback: null,
-  candidateBook_slack_interviewerForFeedback: null,
-  candidateBook_slack_interviewerForConfirmation: null,
+  phoneScreen_email_candidate: undefined,
+  phoneScreenRemind_email_applicant: undefined,
+  candidateBook_email_interviewerForFeedback: undefined,
+  candidateBook_slack_interviewerForFeedback: undefined,
+  candidateBook_slack_interviewerForConfirmation: undefined,
   interviewEnd_email_interviewerForFeedback: {
     heading: 'Inteview Feedback from interviewer',
     description:
@@ -169,8 +169,8 @@ export const emailTemplateCopy: CompanyEmailType = {
     description:
       'After interview ends slack message will go to interviewer for asking feedback',
   },
-  onQualified_email_approved: null,
-  onQualified_slack_approved: null,
+  onQualified_email_approved: undefined,
+  onQualified_slack_approved: undefined,
   onQualified_slack_trainee: {
     heading: 'Notify of Trainee Qualify',
     description: '',

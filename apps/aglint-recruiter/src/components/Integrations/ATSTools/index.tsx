@@ -223,7 +223,8 @@ function ATSTools({
           .then(({ data }) => {
             if (data) {
               setTimeout(() => {
-                inputRef.current.value = (data as string) || '';
+                inputRef?.current?.value &&
+                  (inputRef.current.value = (data as string) || '');
                 setInputValue(data);
               }, 10);
             }
@@ -246,7 +247,8 @@ function ATSTools({
         .then(({ data }) => {
           if (data) {
             setTimeout(() => {
-              inputRef.current.value = (data as string) || '';
+              inputRef?.current?.value &&
+                (inputRef.current.value = (data as string) || '');
               setInputValue(data);
             }, 10);
           }
@@ -263,7 +265,8 @@ function ATSTools({
         .then(({ data }) => {
           if (data) {
             setTimeout(() => {
-              inputRef.current.value = (data as string) || '';
+              inputRef?.current?.value &&
+                (inputRef.current.value = (data as string) || '');
               setInputValue(data);
             }, 10);
           }

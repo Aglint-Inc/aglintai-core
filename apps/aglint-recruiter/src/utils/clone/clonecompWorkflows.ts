@@ -8,7 +8,7 @@ export const cloneCompWorkflowsForJob = async ({
   supabase,
 }: {
   job_id: string;
-  company_id;
+  company_id: string;
   supabase: SupabaseClientType;
 }) => {
   const job_trigs = await supabase
@@ -22,18 +22,20 @@ export const cloneCompWorkflowsForJob = async ({
     .delete()
     .in(
       'id',
-      job_trigs.data.map((j) => j.workflow_id),
+      (job_trigs?.data || []).map((j) => j.workflow_id),
     )
     .throwOnError();
 
   const workflows = (
-    await supabase
-      .from('workflow')
-      .select('*,workflow_action(*)')
-      .eq('recruiter_id', company_id)
-      .eq('workflow_type', 'company')
-      .throwOnError()
-  ).data.filter((w) => w.workflow_action && w.is_active);
+    (
+      await supabase
+        .from('workflow')
+        .select('*,workflow_action(*)')
+        .eq('recruiter_id', company_id)
+        .eq('workflow_type', 'company')
+        .throwOnError()
+    )?.data || []
+  ).filter((w) => w.workflow_action && w.is_active);
 
   const promises = workflows.map(async (w) => {
     const jobTrigger = await supabase
@@ -55,7 +57,7 @@ export const cloneCompWorkflowsForJob = async ({
       return {
         ...a,
         id: v4(),
-        workflow_id: jobTrigger.data.id,
+        workflow_id: jobTrigger?.data?.id,
       };
     });
     delete w.workflow_action;

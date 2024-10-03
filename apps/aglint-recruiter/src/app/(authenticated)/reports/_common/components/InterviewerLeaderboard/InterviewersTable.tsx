@@ -9,7 +9,7 @@ import {
 } from '@components/ui/table';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { ArrowDownIcon } from 'lucide-react';
-import { useMemberList } from 'src/app/_common/hooks/members';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 import { useInterviewer_upcoming } from 'src/app/(authenticated)/reports/_common/hook/interview/interviewerMatrix.hook';
 
 import UISectionCard from '@/components/Common/UISectionCard';

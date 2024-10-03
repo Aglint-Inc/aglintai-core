@@ -82,7 +82,7 @@ export class GoogleCalender {
     };
     this.user_auth = await getSuperAdminAuth(
       this.auth_details.company_cred,
-      company.recruiter.integrations.domain_admin_email,
+      company.recruiter.integrations.domain_admin_email!,
     );
   }
   public async getAllCalenderEvents(start_date: string, end_date: string) {

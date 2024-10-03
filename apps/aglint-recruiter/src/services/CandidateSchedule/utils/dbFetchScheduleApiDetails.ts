@@ -352,7 +352,7 @@ const geAllIntsFromModules = async (session_ids: string[]) => {
       int_tz: m.recruiter_user.scheduling_settings.timeZone.tzCode,
       scheduling_settings: m.recruiter_user.scheduling_settings,
       interviewer_module_relation_id: m.id,
-      pause_json: m.pause_json,
+      pause_json: m.pause_json!,
       schedule_auth: m.recruiter_user.schedule_auth,
     };
     return int_details;
