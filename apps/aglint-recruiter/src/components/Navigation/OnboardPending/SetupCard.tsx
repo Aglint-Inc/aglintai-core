@@ -1,10 +1,11 @@
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@components/ui/card';
+  Section,
+  SectionActions,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import { CheckCircle2, Circle } from 'lucide-react';
 
 import { UIBadge } from '@/components/Common/UIBadge';
@@ -33,17 +34,13 @@ export function SetupCard({
   const router = useRouterPro();
 
   return (
-    <Card className='h-full w-full border-none bg-gray-50 shadow-none'>
-      <CardHeader className=''>
-        <div className='flex items-start justify-between'>
-          <div className='flex flex-col'>
-            <CardTitle className='flex items-center justify-between text-lg text-foreground'>
-              <span>{title}</span>
-            </CardTitle>
-            <CardDescription className='text-muted-foreground'>
-              {description}
-            </CardDescription>
-          </div>
+    <Section className='min-h-[500px] rounded-lg border-none bg-muted p-4'>
+      <SectionHeader>
+        <SectionHeaderText>
+          <SectionTitle>{title}</SectionTitle>
+          <SectionDescription>{description}</SectionDescription>
+        </SectionHeaderText>
+        <SectionActions>
           <div className='flex flex-col items-end gap-2'>
             {isCompleted ? (
               <>
@@ -62,64 +59,61 @@ export function SetupCard({
                 />
               </>
             )}
-            {!isCompleted && (
-              <UIButton
-                size='sm'
-                variant='outline'
-                className='w-full'
-                onClick={() => {
-                  router.push(navLink);
-                }}
-              >
-                Complete
-              </UIButton>
-            )}
           </div>
+        </SectionActions>
+      </SectionHeader>
+      <div className='flex items-center justify-between pt-4'>
+        <h3 className='mb-2 font-semibold text-foreground'>
+          {isCompleted
+            ? 'The step has been completed.'
+            : 'Information needed to complete the step.'}
+        </h3>
+      </div>
+      <ul className='space-y-2 text-foreground'>
+        {bulletPoints.map((point) => (
+          <li key={point} className='flex items-start space-x-2'>
+            <Circle className='mt-2 h-2 w-2 flex-shrink-0 text-muted-foreground' />
+            <span className='text-sm text-muted-foreground'>{point}</span>
+          </li>
+        ))}
+      </ul>
+      {scoringPoints && scoringPoints.length > 0 && (
+        <div className='mt-8'>
+          <h4 className='mb-2 font-semibold text-foreground'>Scoring:</h4>
+          <ul className='space-y-2 text-foreground'>
+            {scoringPoints.map((point) => (
+              <li key={point} className='flex items-start space-x-2'>
+                <Circle className='mt-2 h-2 w-2 flex-shrink-0 text-muted-foreground' />
+                <span className='text-sm text-muted-foreground'>{point}</span>
+              </li>
+            ))}
+          </ul>
         </div>
-      </CardHeader>
-      <CardContent className='pt-4'>
-        <div className='flex items-center justify-between'>
-          <h3 className='mb-2 font-semibold text-foreground'>
-            {isCompleted
-              ? 'The step has been completed.'
-              : 'Information you need to complete the step.'}
-          </h3>
+      )}
+      {schedulingPoints && schedulingPoints.length > 0 && (
+        <div className='mt-8'>
+          <h4 className='mb-2 font-semibold text-foreground'>Scheduling:</h4>
+          <ul className='space-y-2 text-foreground'>
+            {schedulingPoints.map((point) => (
+              <li key={point} className='flex items-start space-x-2'>
+                <Circle className='mt-2 h-2 w-2 flex-shrink-0 text-muted-foreground' />
+                <span className='text-sm text-muted-foreground'>{point}</span>
+              </li>
+            ))}
+          </ul>
         </div>
-        <ul className='space-y-2 text-foreground'>
-          {bulletPoints.map((point) => (
-            <li key={point} className='flex items-start space-x-2'>
-              <Circle className='mt-2 h-2 w-2 flex-shrink-0 text-muted-foreground' />
-              <span>{point}</span>
-            </li>
-          ))}
-        </ul>
-        {scoringPoints && scoringPoints.length > 0 && (
-          <div className='mt-8'>
-            <h4 className='mb-2 font-semibold text-foreground'>Scoring:</h4>
-            <ul className='space-y-2 text-foreground'>
-              {scoringPoints.map((point) => (
-                <li key={point} className='flex items-start space-x-2'>
-                  <Circle className='mt-2 h-2 w-2 flex-shrink-0 text-muted-foreground' />
-                  <span>{point}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+      )}
+      <div className='absolute bottom-4 right-4 flex justify-end'>
+        {!isCompleted && (
+          <UIButton
+            onClick={() => {
+              router.push(navLink);
+            }}
+          >
+            Complete Now
+          </UIButton>
         )}
-        {schedulingPoints && schedulingPoints.length > 0 && (
-          <div className='mt-8'>
-            <h4 className='mb-2 font-semibold text-foreground'>Scheduling:</h4>
-            <ul className='space-y-2 text-foreground'>
-              {schedulingPoints.map((point) => (
-                <li key={point} className='flex items-start space-x-2'>
-                  <Circle className='mt-2 h-2 w-2 flex-shrink-0 text-muted-foreground' />
-                  <span>{point}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </CardContent>
-    </Card>
+      </div>
+    </Section>
   );
 }
