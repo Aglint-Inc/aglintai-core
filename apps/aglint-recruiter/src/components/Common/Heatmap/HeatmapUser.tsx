@@ -7,6 +7,7 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
@@ -89,7 +90,7 @@ export default function Heatmap({
   return (
     <>
       {isLoading ? (
-        <Skeleton className='h-[150] w-[1000px]' />
+        <Skeleton className='h-[150] w-[400px]' />
       ) : (
         <Section>
           <SectionHeader>
@@ -98,7 +99,7 @@ export default function Heatmap({
             </SectionHeaderText>
             <SectionActions>
               <div className='mt-1 flex items-center justify-between gap-2'>
-                <div className='flex gap-4'>
+                <div className='flex hidden gap-4'>
                   <div className='flex gap-1'>
                     <p className='text-sm'>Daily :</p>
                     <p className='text-sm'>{loadSetting?.dailyLimit.value}</p>
@@ -144,13 +145,13 @@ export default function Heatmap({
               </div>
             </SectionActions>
           </SectionHeader>
-          <div className='ml-[-10px]' style={{ marginLeft: '-10px' }}>
+          <ScrollArea className='w-full'>
             <HeatMapGrid
               data={mapDatas}
               xLabels={xLabel}
               yLabels={yLabel}
               square
-              cellHeight='24px'
+              cellHeight='16px'
               xLabelsPos='bottom'
               onClick={(x, y) => {
                 if (heatMapData[x][y].meeting_id)
@@ -166,11 +167,10 @@ export default function Heatmap({
                   backgroundColor: isToday
                     ? 'hsl(var(--chart-5))'
                     : 'transparent',
-                  borderRadius: '20px',
                   height: '2px ',
                   padding: 0,
                   marginTop: '2px',
-                  width: '24px',
+                  width: '16px',
                 };
               }}
               yLabelsStyle={(index) => ({
@@ -192,13 +192,11 @@ export default function Heatmap({
 
                   fontSize: '4px',
                   borderRadius: '3px',
-                  width: '24px',
-                  height: '24px',
                   color: 'white',
                 };
               }}
             />
-          </div>
+          </ScrollArea>
         </Section>
         // <UISectionCard
         //   type='compact'

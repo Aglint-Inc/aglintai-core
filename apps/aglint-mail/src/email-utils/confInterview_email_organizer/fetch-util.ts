@@ -57,7 +57,7 @@ export const fetchUtil: FetchUtilType<'confInterview_email_organizer'> = async (
       };
 
     const candidateLink = req_body.application_id
-      ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}`
+      ? `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/scheduling/application/${req_body.application_id}`
       : '';
     const react_email_placeholders: EmailTemplateAPi<'confInterview_email_organizer'>['react_email_placeholders'] =
       {

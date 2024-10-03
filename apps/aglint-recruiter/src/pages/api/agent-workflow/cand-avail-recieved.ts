@@ -7,8 +7,8 @@ import {
 import { apiTargetToEvents } from '@requests/components/RequestProgress/utils/progressMaps';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
-import { confirmSlotFromCandidateAvailability } from '@/services/api-schedulings/confirmSlotFromCandidateAvailability';
 import { findCandSelectedSlots } from '@/services/api-schedulings/findCandSelectedSlots';
+import { slackSuggestSlots } from '@/services/api-schedulings/slackSuggestSlots';
 import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
@@ -76,9 +76,7 @@ const candAvailRecieved = async (req_body: BodyParams) => {
     },
     return_empty_slots_err: true,
   });
-  if (!cand_schedule.db_details) {
-    throw new CApiError('SERVER_ERROR', 'No db details found');
-  }
+
   await cand_schedule.fetchDetails({
     params: {
       session_ids,
@@ -88,7 +86,9 @@ const candAvailRecieved = async (req_body: BodyParams) => {
       req_user_tz: request_assignee_tz,
     },
   });
-
+  if (!cand_schedule.db_details) {
+    throw new CApiError('SERVER_ERROR', 'No db details found');
+  }
   const cand_picked_slots = await executeWorkflowAction(
     findCandSelectedSlots,
     {
@@ -100,9 +100,9 @@ const candAvailRecieved = async (req_body: BodyParams) => {
     reqProgressLogger,
   );
 
-  if (target_api === 'onReceivingAvailReq_agent_confirmSlot') {
+  if (target_api === 'onReceivingAvailReq_agent_suggestSlots') {
     await executeWorkflowAction(
-      confirmSlotFromCandidateAvailability,
+      slackSuggestSlots,
       {
         avail_plans: cand_picked_slots ?? [],
         cand_avail_rec: avail_record,

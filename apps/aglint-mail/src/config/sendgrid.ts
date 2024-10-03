@@ -5,10 +5,9 @@ import { CApiError } from '@aglint/shared-utils';
 import { MailSenderError } from '../utils/apiUtils/customErrors';
 import { getOutboundEmail } from './get-outbound-email';
 
-const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
-sgMail.setApiKey(SENDGRID_API_KEY);
-
 export default async function sendMail(data: APISendgridPayload) {
+  const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+  sgMail.setApiKey(SENDGRID_API_KEY);
   const {
     email,
     fromEmail,
