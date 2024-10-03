@@ -14,7 +14,7 @@ import {
   useJobsSync,
   useJobUpdate,
 } from '@/queries/jobs';
-import { JobUpdate } from '@/queries/jobs/types';
+import type { JobUpdate } from '@/queries/jobs/types';
 
 const useJobContext = () => {
   const { recruiter, recruiter_id } = useTenant();
