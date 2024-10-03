@@ -153,7 +153,7 @@ const MainContent = ({
             Complete the steps to setup your company.
           </SectionDescription>
         </SectionHeaderText>
-        <SectionActions className='mr-8 flex w-[400px] flex-row items-end'>
+        <SectionActions className='mr-8 flex w-[300px] flex-row items-end'>
           <div className='flex flex-1 flex-col space-y-2'>
             <div className='text-sm text-muted-foreground'>
               {companySetupSteps.filter((step) => step.isCompleted).length} of{' '}
@@ -161,7 +161,6 @@ const MainContent = ({
             </div>
             <Progress value={companySetupProgress} className='h-2' />
           </div>
-          <UIButton variant='outline'>Mark all Complete</UIButton>
         </SectionActions>
       </SectionHeader>
       <div className='grid gap-6 p-4 md:grid-cols-12'>
@@ -184,7 +183,7 @@ const MainContent = ({
         </div>
         <div className='space-y-2 md:col-span-8'>
           {selectedStep && (
-            <ScrollArea className='h-[500px] w-[100%] rounded-md border bg-gray-50'>
+            <ScrollArea className='min-h-[500px] w-[100%]'>
               <Content selectedStep={selectedStep} />
             </ScrollArea>
           )}
@@ -216,13 +215,22 @@ const Footer = ({
       >
         <ArrowLeft className='mr-2 h-4 w-4' /> Previous
       </Button>
-      <Button
-        size='sm'
-        onClick={goToNextStep}
-        disabled={selectedIndex === companySetupSteps.length - 1}
-      >
-        Next <ArrowRight className='ml-2 h-4 w-4' />
-      </Button>
+      <div className='flex flex-row gap-2'>
+        <UIButton size='sm' variant='outline'>
+          Mark all complete
+        </UIButton>
+        <UIButton size='sm' variant='outline'>
+          Mark complete
+        </UIButton>
+        <UIButton
+          size='sm'
+          variant='outline'
+          onClick={goToNextStep}
+          disabled={selectedIndex === companySetupSteps.length - 1}
+        >
+          Next <ArrowRight className='ml-2 h-4 w-4' />
+        </UIButton>
+      </div>
     </div>
   );
 };
