@@ -1,11 +1,19 @@
 /* eslint-disable security/detect-object-injection */
 import { type APIConfirmRecruiterSelectedOption } from '@aglint/shared-types';
 import { CApiError } from '@aglint/shared-utils';
+import { z } from 'zod';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 import { bookRecruiterSelectedOption } from '@/services/CandidateSchedule/utils/bookingUtils/bookRecruiterSelectedOption';
 import { fetchCandAvailForBooking } from '@/services/CandidateSchedule/utils/bookingUtils/dbFetch/fetchCandidateAvailability';
+
+const schema = z.object({
+  selectedOption: z.any(),
+  availability_req_id: z.string(),
+  user_tz: z.string(),
+  request_id: z.string(),
+});
 
 const confirmRecruiterSelectedOptions = async (
   req_body: APIConfirmRecruiterSelectedOption,
@@ -41,4 +49,4 @@ const confirmRecruiterSelectedOptions = async (
   );
 };
 
-export default createPageApiPostRoute(null, confirmRecruiterSelectedOptions);
+export default createPageApiPostRoute(schema, confirmRecruiterSelectedOptions);

@@ -11,7 +11,7 @@ export const dummy: EmailType = {
   companyLogo: companyLogoDummy,
   subject: '',
   selfScheduleLink:
-    'process.env.NEXT_PUBLIC_APP_URL/scheduling/invite/filterJson.id?filter_id=req_body.filter_json_id&task_id=task_id',
+    'process.env.NEXT_PUBLIC_CLIENT_APP_URL/scheduling/invite/filterJson.id?filter_id=req_body.filter_json_id&task_id=task_id',
 };
 
 export const getSubject = (companyName: any) => `${companyName}`;

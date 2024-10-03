@@ -34,6 +34,7 @@ import {
   onTrainingCompleteSlackApproverForTraineeMeetingQualificationSchema,
   interviewStartSlackInterviewersSchema,
   onRequestCancelSlackInterviewersOrganizerSchema,
+  onReceivingAvailReqSlackSuggestSlotsSchema,
 } from '../aglint-mail/api_schema';
 
 type Payloads = {
@@ -165,6 +166,9 @@ type Payloads = {
   >;
   onRequestCancel_slack_interviewersOrganizer: z.infer<
     typeof onRequestCancelSlackInterviewersOrganizerSchema
+  >;
+  onReceivingAvailReq_slack_suggestSlots: z.infer<
+    typeof onReceivingAvailReqSlackSuggestSlotsSchema
   >;
 };
 

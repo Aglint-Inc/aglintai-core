@@ -25,7 +25,7 @@ export const dummy: EmailType = {
     meetingIcon: scheduleTypeIcon('google_meet'),
   },
   subject: '',
-  candidateDetails: `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/e8218fdc-524c-4f05-8786-23399370777b`,
+  candidateDetails: `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/scheduling/application/e8218fdc-524c-4f05-8786-23399370777b`,
 };
 
 // export get subject

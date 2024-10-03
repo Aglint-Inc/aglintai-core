@@ -39,8 +39,8 @@ export const fetchUtil: FetchUtilType<
   let scheduleLink = '';
   if (filterJson.application_id && req_body.filter_id) {
     scheduleLink = task_id
-      ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.application_id}?filter_id=${req_body.filter_id}&task_id=${task_id}`
-      : `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.application_id}?filter_id=${req_body.filter_id}`;
+      ? `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/scheduling/invite/${filterJson.application_id}?filter_id=${req_body.filter_id}&task_id=${task_id}`
+      : `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/scheduling/invite/${filterJson.application_id}?filter_id=${req_body.filter_id}`;
   }
   const comp_email_placeholder: EmailTemplateAPi<'selfScheduleReminder_email_applicant'>['comp_email_placeholders'] =
     {

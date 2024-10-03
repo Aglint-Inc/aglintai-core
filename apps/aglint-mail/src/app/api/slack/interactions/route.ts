@@ -3,6 +3,7 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import { getSlackWeb } from '../../../../slack/slackWeb';
 import { getSupabaseServer } from '../../../../supabase/supabaseAdmin';
 import { createPostRoute } from '../../../../utils/apiUtils/createPostRoute';
+import { handleConfirmSlot } from '../../../../utils/slack/interactions/handleConfirmSlot';
 
 const handleInteraction = async (formData: any) => {
   const object: any = {};
@@ -13,7 +14,6 @@ const handleInteraction = async (formData: any) => {
   const interaction_data = JSON.parse(object.payload);
   const action = interaction_data.actions[0];
   const metadata = interaction_data.message.metadata;
-
   switch (metadata.event_type) {
     case 'candidate_confirm_slot':
       if (action.value === 'available')
@@ -59,6 +59,10 @@ const handleInteraction = async (formData: any) => {
       else if (action.value === 'meeting_not_completed')
         await meeting_status_organizer_decline(interaction_data);
       break;
+    case 'onReceivingAvailReq_slack_suggestSlots': {
+      await handleConfirmSlot({ interaction_data, action_value: action.value });
+      break;
+    }
   }
   return 'ok';
 };
