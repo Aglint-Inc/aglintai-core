@@ -52,13 +52,13 @@ export const Header = ({
 
   return (
     <>
-      <div className='mb-6 flex items-center justify-between'>
+      <div className='flex items-center justify-between'>
         <UITextField
           placeholder='Search interviewers...'
           fieldSize='medium'
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
-          className='w-[250px]'
+          className='mr-4 w-[250px]'
         />
         <div className='flex items-center gap-2'>
           {isFilterApplied ? (
