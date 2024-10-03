@@ -117,7 +117,7 @@ export function CoverImage() {
 }
 
 // ------------------------------------------------------------------------
-const ImageWithLoading = ({ src }) => {
+const ImageWithLoading = ({ src }: { src: string }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 

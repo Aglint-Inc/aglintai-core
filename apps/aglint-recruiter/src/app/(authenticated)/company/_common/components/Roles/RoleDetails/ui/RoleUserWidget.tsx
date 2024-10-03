@@ -3,15 +3,15 @@ import { Badge } from '@components/ui/badge';
 import Link from 'next/link';
 import React from 'react';
 
-import type { useTenantMembers } from '@/company/hooks';
 import type { useRoleData } from '@/company/hooks/useRoleAndPermissionsHook';
+import type { TenantMembersType } from '@/company/hooks/useTenantMembers';
 
 export const RoleUserWidget = ({
   role,
   members,
 }: {
   role: ReturnType<typeof useRoleData>['role'];
-  members: ReturnType<typeof useTenantMembers>['members'];
+  members: TenantMembersType['members'];
 }) => {
   return (
     <>
@@ -28,7 +28,11 @@ export const RoleUserWidget = ({
   );
 };
 
-const UserCard = ({ member }) => {
+const UserCard = ({
+  member,
+}: {
+  member: TenantMembersType['members'][number];
+}) => {
   if (!member) return null;
   return (
     <div className='flex flex-col space-x-4 p-2'>
@@ -40,8 +44,10 @@ const UserCard = ({ member }) => {
           <p className='text-sm text-muted-foreground'>{member.position}</p>
         </div>
         <div>
-          <Badge variant={member.is_suspended ? 'destructive' : 'default'}>
-            {member.is_suspended ? 'Suspended' : 'Active'}
+          <Badge
+            variant={member.status === 'suspended' ? 'destructive' : 'default'}
+          >
+            {member.status === 'suspended' ? 'Suspended' : 'Active'}
           </Badge>
         </div>
       </div>

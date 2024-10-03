@@ -13,20 +13,11 @@ import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
 import UISectionCard from '@/components/Common/UISectionCard';
 
+import type { WorkingHour } from './ui/TimeList';
 import { WorkTimeUI } from './ui/WorkTimeUI';
 import { WorkTimeEditDialog } from './WorkTimeEditDialog';
 
 // Define types for the component props
-interface TimeRange {
-  startTime: string;
-  endTime: string;
-}
-
-interface WorkingHour {
-  day: string;
-  isWorkDay: boolean;
-  timeRange: TimeRange;
-}
 
 interface WorkTimeProps {
   workingHours: WorkingHour[];

@@ -13,9 +13,9 @@ import { type AnalyticsContextInterface, type AnalyticsFilters } from './Type';
 
 const InitialAnalyticsContext: AnalyticsContextInterface = {
   filtersOptions: {
-    job: [] as undefined,
-    department: [] as undefined,
-    location: [] as undefined,
+    job: [],
+    department: [],
+    location: [],
     dateRange: [
       { id: 'today', label: 'Today' },
       { id: 'yesterday', label: 'Yesterday' },
@@ -91,7 +91,7 @@ async function getOptions(recruiter_id: string) {
       .select('id, label:job_title, department_id, location_id')
       .eq('recruiter_id', recruiter_id)
       .throwOnError()
-  ).data;
+  ).data!;
   const dep_id_filter = [
     ...new Set(job_details.map((item) => item.department_id).filter(Boolean)),
   ];
@@ -100,21 +100,21 @@ async function getOptions(recruiter_id: string) {
   ];
   const job_ids = (
     await supabase.from('interview_meeting').select('job_id').throwOnError()
-  ).data.map((item) => item.job_id);
+  ).data!.map((item) => item.job_id);
   const department = (
     await supabase
       .from('departments')
       .select('id, label:name')
       .in('id', dep_id_filter)
       .throwOnError()
-  ).data.map((item) => ({ label: item.label, id: item.id }));
+  ).data!.map((item) => ({ label: item.label, id: item.id }));
   const location = (
     await supabase
       .from('office_locations')
       .select('id, label:name')
       .in('id', loc_id_filter)
       .throwOnError()
-  ).data.map((item) => ({ label: item.label, id: item.id }));
+  ).data!.map((item) => ({ label: item.label!, id: item.id }));
   return {
     department,
     location,

@@ -6,9 +6,13 @@ import {
   TableRow,
 } from '@components/ui/table';
 
-import { TimeList } from './TimeList';
+import { TimeList, type WorkingHour } from './TimeList';
 
-export const WorkTimeUI = ({ workingHours }) => {
+export const WorkTimeUI = ({
+  workingHours,
+}: {
+  workingHours: WorkingHour[];
+}) => {
   return (
     <div className='group relative rounded-lg py-4'>
       <div className='rounded-lg border border-border'>

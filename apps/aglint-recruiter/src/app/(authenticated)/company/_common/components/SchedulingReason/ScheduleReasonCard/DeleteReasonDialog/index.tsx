@@ -1,4 +1,5 @@
 import { DialogDescription } from '@components/ui/dialog';
+import type { Dispatch, SetStateAction } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
@@ -7,6 +8,10 @@ export const DeleteReasonDialog = ({
   isDeleteDialogOpen,
   setIsDeleteDialogOpen,
   confirmDelete,
+}: {
+  isDeleteDialogOpen: boolean;
+  setIsDeleteDialogOpen: Dispatch<SetStateAction<boolean>>;
+  confirmDelete: () => void;
 }) => {
   return (
     <UIDialog
