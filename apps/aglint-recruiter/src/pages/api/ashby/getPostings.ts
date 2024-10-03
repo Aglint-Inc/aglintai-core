@@ -1,8 +1,10 @@
+//@ts-nocheck
 import axios from 'axios';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { decrypt } from '../decryptApiKey';
 
-export default function handler(req, res) {
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const apiKey = req.body.apiKey;
     const apiKeyWithColon = req.body.apiKey + ':';
@@ -12,8 +14,8 @@ export default function handler(req, res) {
       res.status(400).send('api key is incorrect');
     }
 
-    let decryptedApiKey;
-    let base64decryptedApiKey;
+    let decryptedApiKey = '';
+    let base64decryptedApiKey = '';
 
     if (!req.body.isInitial) {
       decryptedApiKey = decrypt(apiKey, process.env.ENCRYPTION_KEY);
@@ -42,20 +44,21 @@ export default function handler(req, res) {
         //location
 
         const descriptions = await fetchDescriptions(
-          results.map((result) => result.id),
+          results.map((result: any) => result.id),
           !req.body.isInitial ? base64decryptedApiKey : base64String,
         );
 
-        const alteredResults = results.map((result) => {
+        const alteredResults = results.map((result: any) => {
           const description = descriptions.find(
-            (description) => description.id === result.id,
+            (description) => description?.id === result.id,
           );
           const addr = (result.location = locations.find(
-            (location) => location.id === result.locationIds.primaryLocationId,
+            (location: any) =>
+              location.id === result.locationIds.primaryLocationId,
           )).address.postalAddress;
           return {
             ...result,
-            description: description.descriptionHtml,
+            description: description?.descriptionHtml,
             location: [
               addr.addressLocality,
               addr.addressRegion,
@@ -74,7 +77,7 @@ export default function handler(req, res) {
   }
 }
 
-const fetchLocations = async (key) => {
+const fetchLocations = async (key: string) => {
   const options = {
     method: 'POST',
     url: 'https://api.ashbyhq.com/location.list',
@@ -92,8 +95,8 @@ const fetchLocations = async (key) => {
   return locations;
 };
 
-const fetchDescriptions = async (jobIds, key) => {
-  const descriptions = [];
+const fetchDescriptions = async (jobIds: string[], key: string) => {
+  const descriptions: string[] = [];
   await Promise.all(
     jobIds.map(async (id) => {
       const options = {

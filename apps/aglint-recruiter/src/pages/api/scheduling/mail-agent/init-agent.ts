@@ -41,7 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
     const thread_id = uuidV4();
     const agent_email =
-      process.env.LOCAL_AGENT_EMAIL ?? comp_integration.schedule_agent_email;
+      process.env.LOCAL_AGENT_EMAIL ?? comp_integration.schedule_agent_email!;
     //FORMAT `<${conversation_id}.${Date.now()}@parse.aglinthq.com>`;
     const message_id = EmailWebHook.getMessageId(thread_id, agent_email);
     const mailPayload: TargetApiPayloadType<'agent_email_candidate'> = {
@@ -75,7 +75,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         filter_json_id: filter_json_id,
         thread_id: thread_id,
         agent_processing: false,
-        email_from_name: email_details.fromName,
+        email_from_name: email_details.fromName ?? '',
         email_subject: email_details.subject,
       }),
     );
@@ -100,20 +100,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       'email_agent',
       'email_failed',
     );
-    return res.status(500).send(error.message);
+    return res.status(500).send((error as Error).message);
   }
 };
 
 export default handler;
 
-const fetchCandDetails = async ({ filter_json_id }) => {
+const fetchCandDetails = async ({
+  filter_json_id,
+}: {
+  filter_json_id: string;
+}) => {
   const supabaseAdmin = getSupabaseServer();
 
   const [rec] = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        '*, applications(public_jobs(id,recruiter_id), candidates(first_name,last_name))',
+        '*, applications!inner(public_jobs!inner(id,recruiter_id), candidates!inner(first_name,last_name))',
       )
       .eq('id', filter_json_id),
   );

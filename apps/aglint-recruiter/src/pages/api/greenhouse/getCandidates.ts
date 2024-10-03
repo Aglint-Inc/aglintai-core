@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { decrypt } from '../decryptApiKey';
 
-export default function handler(req, res) {
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const apiKey = req.body.apiKey;
 
   const job_id = req.body.job_id;

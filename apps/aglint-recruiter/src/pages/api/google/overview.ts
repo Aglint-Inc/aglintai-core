@@ -46,14 +46,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     console.log(result, req.body.application.file_id);
     return res.status(200).send(result);
   } catch (error) {
-    console.log(error.message);
-    res.status(500).send(error.message);
+    console.log((error as Error).message);
+    res.status(500).send((error as Error).message);
   }
 };
 
 export default handler;
 
-const openAiHandler = async (resume) => {
+const openAiHandler = async (resume: any) => {
   const response = openai.chat.completions.create({
     model: 'gpt-3.5-turbo-1106',
     messages: [
