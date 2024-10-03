@@ -32,7 +32,7 @@ export const IntegrationsHeader = () => {
       <PageActions>
         <UIButton
           size='md'
-          variant='default'
+          variant='outline'
           leftIcon={<Send />}
           onClick={() => setIsRequestNewOpen(true)}
         >
@@ -48,7 +48,13 @@ export const IntegrationsHeader = () => {
 };
 
 // New ATS Section Component
-const ATSSecion = ({ data, invalidate }) => (
+const ATSSecion = ({
+  data,
+  invalidate,
+}: {
+  data: ReturnType<typeof useIntegrations>['data'];
+  invalidate: ReturnType<typeof useIntegrations>['invalidate'];
+}) => (
   <section>
     <h2 className='text-md font-semibold'>ATS</h2>
     <p className='mb-4 text-sm text-muted-foreground'>
@@ -62,7 +68,11 @@ const ATSSecion = ({ data, invalidate }) => (
 );
 
 // New Scheduling Section Component
-const SchedulingSection = ({ data }) => (
+const SchedulingSection = ({
+  data,
+}: {
+  data: ReturnType<typeof useIntegrations>['data'];
+}) => (
   <section>
     <h2 className='text-md font-semibold'>Scheduling Tools</h2>
     <p className='mb-4 text-sm text-muted-foreground'>

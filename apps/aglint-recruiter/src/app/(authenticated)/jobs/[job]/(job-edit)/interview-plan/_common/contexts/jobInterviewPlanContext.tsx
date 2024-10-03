@@ -1,10 +1,10 @@
 import { useMutationState } from '@tanstack/react-query';
 import { createContext, type PropsWithChildren } from 'react';
+import { useInterviewPools } from 'src/app/_common/hooks/useInterviewPools';
 
 import { useTenant } from '@/company/hooks';
 import { useJob } from '@/job/hooks';
 import { useCompanyMembers } from '@/queries/company-members';
-import { useInterviewModules } from '@/queries/interview-modules';
 import {
   type CreateDebriefSession,
   type CreateInterviewSession,
@@ -27,7 +27,7 @@ const useJobInterviewPlanContext = () => {
   const { recruiter_id } = useTenant();
   const { job, interviewPlans, jobLoad, manageJob } = useJob();
   const companyMembers = useCompanyMembers();
-  const interviewModules = useInterviewModules();
+  const interviewModules = useInterviewPools();
   const { mutateAsync: createPlan } = useCreateInterviewPlan();
   const { mutateAsync: updatePlan, isPending: isPlanUpdating } =
     useUpdateInterviewPlan();

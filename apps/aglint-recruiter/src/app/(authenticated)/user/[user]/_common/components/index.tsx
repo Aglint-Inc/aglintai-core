@@ -2,7 +2,16 @@ import {
   type DatabaseTable,
   type SchedulingSettingType,
 } from '@aglint/shared-types';
+import {
+  Page,
+  PageActions,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import { TwoColumnPageLayout } from '@components/layouts/two-column-page-layout';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useInterviewsByUserId } from '@interviews/hooks/useInterviewsByUserId';
 import { useParams } from 'next/navigation';
 import { useRef, useState } from 'react';
@@ -89,41 +98,65 @@ export default function InterviewerDetailsPage() {
         sidebarPosition='left'
         sidebarWidth='480'
       >
-        <main className='relative z-0 flex flex-col gap-10 px-4'>
-          <section ref={sectionRefs.overview}>
-            <KeyMatrics />
-          </section>
-
-          <section ref={sectionRefs.qualifications}>
-            <Qualifications interview_types={interviewType} />
-          </section>
-
-          <section ref={sectionRefs.upcomingInterviews}>
-            <UpcomingInterview />
-          </section>
-
-          <section ref={sectionRefs.recentInterviews}>
-            <RecentInterviews />
-          </section>
-          <section ref={sectionRefs.interviewFeedback}>
-            <Feedback />
-          </section>
-
-          <section ref={sectionRefs.meetingOverview}>
-            <Heatmap loadSetting={interviewLoad} />
-          </section>
-          <section ref={sectionRefs.scheduleAvailabilityRef}>
-            <ScheduleAvailability />
-          </section>
-          <section ref={sectionRefs.calendar}>
-            <CalendarComp
-              allSchedules={allSchedules ?? []}
-              isLoading={iscalendarLoading}
-              filter={filter}
-              setFilter={setFilter}
-            />
-          </section>
-        </main>
+        <Page>
+          <PageHeader className='px-4'>
+            <PageHeaderText>
+              <PageTitle>
+                {interviewerDetails.first_name} {interviewerDetails.last_name}{' '}
+                Overview
+              </PageTitle>
+              <PageDescription>
+                {interviewerDetails.first_name} {interviewerDetails.last_name}{' '}
+                Overview of Interviewer with all the details.
+              </PageDescription>
+            </PageHeaderText>
+            <PageActions>
+              <Tabs defaultValue='overview' className='w-full'>
+                <TabsList className='grid w-full grid-cols-2'>
+                  <TabsTrigger value='overview'>Overview</TabsTrigger>
+                  <TabsTrigger value='calendar'>Calendar</TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </PageActions>
+          </PageHeader>
+          <div className='flex flex-col space-y-8 px-4'>
+            <div className='grid grid-cols-2 gap-[1px] bg-muted'>
+              <div className='grid grid-cols-[1fr] bg-white pr-8'>
+                <section ref={sectionRefs.scheduleAvailabilityRef}>
+                  <ScheduleAvailability />
+                </section>
+              </div>
+              <div className='grid grid-cols-[1fr] bg-white pl-8'>
+                <section ref={sectionRefs.meetingOverview}>
+                  <Heatmap loadSetting={interviewLoad} />
+                </section>
+                <section ref={sectionRefs.overview}>
+                  <KeyMatrics />
+                </section>
+                <section ref={sectionRefs.upcomingInterviews}>
+                  <UpcomingInterview />
+                </section>
+                <section ref={sectionRefs.recentInterviews}>
+                  <RecentInterviews />
+                </section>
+                <section ref={sectionRefs.qualifications}>
+                  <Qualifications interview_types={interviewType} />
+                </section>
+                <section ref={sectionRefs.interviewFeedback}>
+                  <Feedback />
+                </section>
+              </div>
+            </div>
+            <section ref={sectionRefs.calendar}>
+              <CalendarComp
+                allSchedules={allSchedules ?? []}
+                isLoading={iscalendarLoading}
+                filter={filter}
+                setFilter={setFilter}
+              />
+            </section>
+          </div>
+        </Page>
       </TwoColumnPageLayout>
 
       {/* <div className=''>

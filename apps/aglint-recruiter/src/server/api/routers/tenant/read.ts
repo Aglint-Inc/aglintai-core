@@ -11,7 +11,7 @@ const query = async ({ ctx }: PrivateProcedure) => {
       .from('recruiter_relation')
       .select(
         `*, 
-        recruiter!inner(*, office_locations(*), recruiter_preferences(*), departments(id,name)), 
+        recruiter!inner(*, office_locations(*), recruiter_preferences!inner(*), departments(id,name)), 
         recruiter_user!public_recruiter_relation_user_id_fkey!inner(*), 
         manager_details:recruiter_user!recruiter_relation_manager_id_fkey(first_name,last_name,position), 
         roles!inner(name,role_permissions!inner(permissions!inner(name)))`,

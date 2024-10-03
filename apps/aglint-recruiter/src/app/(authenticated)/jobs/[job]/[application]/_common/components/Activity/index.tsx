@@ -1,3 +1,5 @@
+'use client';
+
 import { type DatabaseTable } from '@aglint/shared-types';
 import { Section, SectionTitle } from '@components/layouts/sections-header';
 import { Button } from '@components/ui/button';

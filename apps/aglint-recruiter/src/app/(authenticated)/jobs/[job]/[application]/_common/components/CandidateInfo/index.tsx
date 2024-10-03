@@ -1,3 +1,5 @@
+'use client';
+
 import { useApplicationDetails } from '../../hooks/useApplicationDetails';
 import { useApplicationMeta } from '../../hooks/useApplicationMeta';
 import { ApplicantInfoBox } from '../ui/ApplicationInfo';
