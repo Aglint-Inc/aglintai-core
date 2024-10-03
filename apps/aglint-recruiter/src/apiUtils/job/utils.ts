@@ -27,7 +27,7 @@ export const handleJobApi = async <T extends keyof ApiRouteTypes>(
     payload[UploadApiFormData.FILES as keyof typeof payload]
   ) {
     const params = Object.entries(
-      //@ts-expect-error
+      //@ts-ignore
       payload[UploadApiFormData.PARAMS as keyof typeof payload],
     )
       .reduce((acc, [key, value]) => {
