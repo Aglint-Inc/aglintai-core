@@ -1,7 +1,7 @@
 'use client';
 import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
-import { InterviewerHeaderProvider } from '@interviewers/components';
 import { Header } from '@interviewers/components/Header';
+import { InterviewerHeaderProvider } from '@interviewers/hooks/useInterviewerHeaderContext';
 import { type PropsWithChildren } from 'react';
 
 const Layout = ({ children }: PropsWithChildren) => {
