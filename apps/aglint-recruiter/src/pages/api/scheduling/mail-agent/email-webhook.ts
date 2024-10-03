@@ -2,6 +2,7 @@
 // pages/api/sendgridWebhook.js
 
 import axios from 'axios';
+//@ts-ignore
 import formidable from 'formidable';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
