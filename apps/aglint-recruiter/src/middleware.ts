@@ -81,17 +81,17 @@ const middlewareV1 = async (request: NextRequest) => {
   }
 
   const { isAllowed, id, rec_id, role } = await server_check_permissions({
-    getVal: (name) => request.cookies.get(name)?.value,
+    getVal: (name) => request.cookies.get(name)?.value ?? null!,
     // eslint-disable-next-line security/detect-object-injection
-    permissions: PERMISSIONS[requestUrl],
+    permissions: PERMISSIONS[requestUrl as keyof typeof PERMISSIONS],
   });
 
   if (requestUrl.startsWith('/api/')) {
     if (isAllowed) {
       // user this headers to get id and role for requester
-      request.headers.append('x-requester-id', id);
-      request.headers.append('x-requester-rec_id', rec_id);
-      request.headers.append('x-requester-role', role);
+      request.headers.append('x-requester-id', id!);
+      request.headers.append('x-requester-rec_id', rec_id!);
+      request.headers.append('x-requester-role', role!);
     } else {
       return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
     }

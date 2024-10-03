@@ -33,7 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res
       .status(200)
       .send(`Successfully updated ${fetchedApplications.length} applications`);
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
     return res.status(500).send(error.message);
   }
@@ -45,13 +45,13 @@ export const fetchAllCandidates = async (
   apiKey: string,
   syncToken?: string,
 ): Promise<AshbyApplication[]> => {
-  let allCandidates = [];
+  let allCandidates: AshbyApplication[] = [];
   let hasMore = true;
   let page;
 
   while (hasMore) {
     try {
-      const response = await axios.post(
+      const response: any = await axios.post(
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/ashby/getCandidates`,
         {
           page: page,

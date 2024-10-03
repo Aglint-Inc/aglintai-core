@@ -30,7 +30,7 @@ export function InterviewPlanWrap({
   onClickDown,
   isTopArrowVisible = true,
   isBottomArrowVisible = true,
-}) {
+}: any) {
   const [isOpen, setIsOpen] = useState(false);
   const [hover, setHover] = useState(false);
 

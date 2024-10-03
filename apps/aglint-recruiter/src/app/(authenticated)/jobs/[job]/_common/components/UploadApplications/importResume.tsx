@@ -10,7 +10,7 @@ const MAX_FILE_SIZE = 4;
 const FILE_TYPES = ['PDF', 'DOCX', 'TXT'];
 
 export const ImportResume = () => {
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const { handleUploadResume } = useJob();
   const { setImportPopup } = useApplicationsActions();
 
@@ -30,7 +30,7 @@ export const ImportResume = () => {
     setSelectedFiles((prev) => [...prev, ...newFiles]);
   };
 
-  const handleDeleteFile = (index) => {
+  const handleDeleteFile = (index: number) => {
     setSelectedFiles((files) => files.filter((_, i) => i !== index));
   };
 
@@ -43,7 +43,7 @@ export const ImportResume = () => {
     }
   };
 
-  const formatFileSize = (bytes) => {
+  const formatFileSize = (bytes: number) => {
     const units = ['B', 'KB', 'MB'];
     let size = bytes;
     let unitIndex = 0;

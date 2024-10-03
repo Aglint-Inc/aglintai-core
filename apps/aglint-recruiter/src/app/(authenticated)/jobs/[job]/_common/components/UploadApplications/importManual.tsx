@@ -3,11 +3,12 @@ import { Card } from '@components/ui/card';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import { CheckCircle2, FileIcon, UploadCloud } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { type ChangeEvent, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import { PhoneInput } from '@/components/PhoneInput';
 import { useApplicationsActions, useJob } from '@/job/hooks';
+import { SafeObject } from '@/utils/safeObject';
 
 const fileTypes = ['PDF', 'DOCX', 'TXT'];
 
@@ -44,7 +45,7 @@ export const ImportManual = () => {
     const newApplicant = { ...applicant };
     let isValid = true;
 
-    Object.entries(newApplicant).forEach(([key, field]) => {
+    SafeObject.entries(newApplicant).forEach(([key, field]) => {
       if (field.required && !field.value) {
         newApplicant[key].error = true;
         isValid = false;
@@ -98,8 +99,17 @@ export const ImportManual = () => {
   );
 };
 
-const FormBody = ({ applicant, setApplicant }) => {
-  const handleChange = (value, key) => {
+const FormBody = ({
+  applicant,
+  setApplicant,
+}: {
+  applicant: FormEntries;
+  setApplicant: React.Dispatch<React.SetStateAction<FormEntries>>;
+}) => {
+  const handleChange = (
+    value: FormEntries['email']['value'],
+    key: keyof FormEntries,
+  ) => {
     setApplicant((prev) => ({
       ...prev,
       [key]: { ...prev[key], value, error: false },
@@ -113,14 +123,18 @@ const FormBody = ({ applicant, setApplicant }) => {
           label='First Name'
           id='first_name'
           value={applicant.first_name.value}
-          onChange={(e) => handleChange(e.target.value, 'first_name')}
+          onChange={(e: ChangeEvent<{ value: string }>) =>
+            handleChange(e.target.value, 'first_name')
+          }
           error={applicant.first_name.error}
         />
         <FormField
           label='Last Name'
           id='last_name'
           value={applicant.last_name.value}
-          onChange={(e) => handleChange(e.target.value, 'last_name')}
+          onChange={(e: ChangeEvent<{ value: string }>) =>
+            handleChange(e.target.value, 'last_name')
+          }
           error={applicant.last_name.error}
         />
       </div>
@@ -130,13 +144,15 @@ const FormBody = ({ applicant, setApplicant }) => {
           id='email'
           type='email'
           value={applicant.email.value}
-          onChange={(e) => handleChange(e.target.value, 'email')}
+          onChange={(e: ChangeEvent<{ value: string }>) =>
+            handleChange(e.target.value, 'email')
+          }
           error={applicant.email.error}
         />
         <div className='space-y-2'>
           <Label htmlFor='phone'>Phone Number</Label>
           <PhoneInput
-            value={applicant.phone.value}
+            value={applicant.phone.value as string}
             onChange={(value) => handleChange(value, 'phone')}
           />
         </div>
@@ -145,19 +161,35 @@ const FormBody = ({ applicant, setApplicant }) => {
         label='LinkedIn URL'
         id='linkedin'
         value={applicant.linkedin.value}
-        onChange={(e) => handleChange(e.target.value, 'linkedin')}
+        onChange={(e: ChangeEvent<{ value: string }>) =>
+          handleChange(e.target.value, 'linkedin')
+        }
         error={applicant.linkedin.error}
       />
       <ResumeUploadComp
         value={applicant.resume.value}
         error={applicant.resume.error}
-        handleChange={(file) => handleChange(file, 'resume')}
+        handleChange={(file: File) => handleChange(file, 'resume')}
       />
     </div>
   );
 };
 
-const FormField = ({ label, id, value, onChange, error, type = 'text' }) => (
+const FormField = ({
+  label,
+  id,
+  value,
+  onChange,
+  error,
+  type = 'text',
+}: {
+  label: string;
+  id: string;
+  value: any;
+  onChange: any;
+  error: any;
+  type?: string;
+}) => (
   <div className='space-y-2'>
     <Label htmlFor={id}>{label}</Label>
     <Input
@@ -173,7 +205,7 @@ const FormField = ({ label, id, value, onChange, error, type = 'text' }) => (
   </div>
 );
 
-const ResumeUploadComp = ({ value, handleChange, error }) => (
+const ResumeUploadComp = ({ value, handleChange, error }: any) => (
   <div className='space-y-2'>
     <Label htmlFor='resume' className='mb-3 flex items-center gap-1'>
       Upload Resume <span className='text-red-500'>*</span>

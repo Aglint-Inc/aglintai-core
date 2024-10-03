@@ -1,3 +1,7 @@
+import {
+  type DatabaseTable,
+  type InterviewSessionTypeDB,
+} from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
 import { CheckCircle, MapPin, Timer, Users } from 'lucide-react';
@@ -19,8 +23,10 @@ function DaySessionCard({
   showDayCount?: boolean;
   cardIndex: number;
   totalSessionMinutes: number;
-  sessions: any;
-  dates: any;
+  sessions: InterviewSessionTypeDB[];
+  dates: NonNullable<
+    DatabaseTable['candidate_request_availability']['slots']
+  >[number]['dates'];
 }) {
   const { setOpenDaySlotPopup, daySlots, isSubmitted } =
     useRequestAvailabilityContext();
@@ -33,8 +39,9 @@ function DaySessionCard({
       <MultiDayCard
         textDayCount={showDayCount ? `Day ${cardIndex + 1}` : ''}
         isSelected={
-          daySlots.length &&
-          daySlots.map((ele) => ele.round).includes(cardIndex + 1)
+          daySlots.length
+            ? daySlots.map((ele) => ele.round).includes(cardIndex + 1)
+            : false
         }
         textTotalDuration={convertMinutesToHoursAndMinutes(totalSessionMinutes)}
         slotSessionInfo={sessions.map((session, i) => {
@@ -71,9 +78,9 @@ function DaySessionCard({
           <ShowCode>
             <ShowCode.When
               isTrue={
-                !isSubmitted &&
-                daySlots.length &&
-                daySlots.map((ele) => ele.round).includes(cardIndex + 1)
+                !isSubmitted && daySlots.length
+                  ? daySlots.map((ele) => ele.round).includes(cardIndex + 1)
+                  : false
               }
             >
               <UIButton

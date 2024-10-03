@@ -16,7 +16,7 @@ import SchedulingPopUps from '../SchedulingToolPopUps';
 import { type SchedulingReasonTypes, type schedulingToolsType } from '../types';
 import { updateIntegrations } from '../utils';
 
-function Scheduling({ allIntegrations }) {
+function Scheduling({ allIntegrations }: { allIntegrations: any }) {
   const { recruiter } = useTenant();
   const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
@@ -30,13 +30,13 @@ function Scheduling({ allIntegrations }) {
     setIsOpen(false);
     setFileData(null);
   }
-  const accountIdRef = useRef<HTMLInputElement>(null);
-  const clientIdRef = useRef<HTMLInputElement>(null);
-  const clientSecretRef = useRef<HTMLInputElement>(null);
-  const domainRef = useRef<HTMLInputElement>(null);
+  const accountIdRef = useRef<HTMLInputElement | null>(null);
+  const clientIdRef = useRef<HTMLInputElement | null>(null);
+  const clientSecretRef = useRef<HTMLInputElement | null>(null);
+  const domainRef = useRef<HTMLInputElement | null>(null);
 
   async function action() {
-    const google_workspace_domain = domainRef.current?.value;
+    const google_workspace_domain = domainRef.current?.value ?? null!;
     if (
       reason === 'connect_google_workSpace' ||
       reason === 'update_google_workspace'
@@ -57,9 +57,9 @@ function Scheduling({ allIntegrations }) {
       }
     }
     if (reason === 'connect_zoom') {
-      const client_id = clientIdRef.current.value;
-      const client_secret = clientSecretRef.current.value;
-      const account_id = accountIdRef.current.value;
+      const client_id = clientIdRef.current!.value;
+      const client_secret = clientSecretRef.current!.value;
+      const account_id = accountIdRef.current!.value;
 
       if (!client_id && !client_secret && !account_id) {
         toast({
@@ -71,9 +71,9 @@ function Scheduling({ allIntegrations }) {
       updateZoomAuth({ client_id, client_secret, account_id });
     }
     if (reason === 'update_zoom') {
-      const client_id = clientIdRef.current.value;
-      const client_secret = clientSecretRef.current.value;
-      const account_id = accountIdRef.current.value;
+      const client_id = clientIdRef.current!.value;
+      const client_secret = clientSecretRef.current!.value;
+      const account_id = accountIdRef.current!.value;
 
       if (!client_id || !client_secret || !account_id) {
         toast({
@@ -115,10 +115,10 @@ function Scheduling({ allIntegrations }) {
                 client_secret: string;
                 account_id: string;
               };
-              if (clientIdRef.current) {
-                clientIdRef.current.value = keys.client_id;
-                accountIdRef.current.value = keys.account_id;
-                clientSecretRef.current.value = keys.client_secret;
+              if (clientIdRef.current!) {
+                clientIdRef.current!.value = keys.client_id;
+                accountIdRef.current!.value = keys.account_id;
+                clientSecretRef.current!.value = keys.client_secret;
               }
             }, 100);
           }
@@ -225,7 +225,15 @@ function Scheduling({ allIntegrations }) {
     },
   });
 
-  const updateZoomAuth = async ({ client_id, client_secret, account_id }) => {
+  const updateZoomAuth = async ({
+    client_id,
+    client_secret,
+    account_id,
+  }: {
+    client_id: string;
+    client_secret: string;
+    account_id: string;
+  }) => {
     const zoom_auth = {
       client_id,
       client_secret,
@@ -248,7 +256,7 @@ function Scheduling({ allIntegrations }) {
           textLink={item.url}
           isConnected={item.isConnected}
           primaryText={item.primaryText}
-          secondaryText={item.secondaryText}
+          secondaryText={item.secondaryText!}
           primaryAction={item.primaryAction}
           secondaryAction={item.secondaryAction}
           learnHowLink={item.learnHowLink}
@@ -279,10 +287,10 @@ function Scheduling({ allIntegrations }) {
                   />
                 </div>
                 <ShowCode>
-                  <ShowCode.When isTrue={fileData}>
+                  <ShowCode.When isTrue={fileData!}>
                     <div>
                       <p className='text-base font-normal'>Service Key</p>
-                      <Input disabled value={fileData} />
+                      <Input disabled value={fileData!} />
                     </div>
                   </ShowCode.When>
                   <ShowCode.Else>
@@ -352,7 +360,7 @@ function Scheduling({ allIntegrations }) {
             </ShowCode.When>
           </ShowCode>
         }
-        reason={reason}
+        reason={reason!}
       />
     </>
   );

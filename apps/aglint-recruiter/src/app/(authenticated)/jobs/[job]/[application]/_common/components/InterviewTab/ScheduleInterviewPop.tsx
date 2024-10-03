@@ -13,7 +13,7 @@ export function ScheduleInterviewPop({
   isRequestTypeVisible = true,
   isCandidateVisible = true,
   slotNotes,
-}) {
+}: any) {
   return (
     <div className={cn('flex flex-col gap-4')}>
       {isCandidateVisible ? (

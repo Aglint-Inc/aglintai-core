@@ -44,7 +44,7 @@ export const getHiringTeamValidity = (job: Job): HiringTeamValidity => {
       }
       return acc;
     },
-    { validity: true, invalidFields: [] } as HiringTeamValidity,
+    { validity: true, invalidFields: [] } as unknown as HiringTeamValidity,
   );
   result['message'] = getTeamMessage(result.invalidFields);
   return result;

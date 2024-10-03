@@ -2,8 +2,8 @@ import { type DatabaseTableUpdate } from '@aglint/shared-types';
 import { dateSlotsTypeSchema } from '@aglint/shared-types/src/db/tables/candidate_request_availability.type';
 import { z, type ZodSchema } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
+import { type PublicProcedure, publicProcedure } from '@/server/api/trpc';
+import { createPublicClient } from '@/server/db';
 
 // eslint-disable-next-line no-unused-vars
 type Input = ZodSchema<
@@ -17,6 +17,7 @@ type Input = ZodSchema<
     | 'total_slots'
     | 'date_range'
     | 'visited'
+    | 'user_timezone'
   >
 >;
 
@@ -29,10 +30,11 @@ export const updateSchema = z.object({
   total_slots: z.number().optional(),
   date_range: z.array(z.string()).optional(),
   visited: z.boolean().optional(),
+  user_timezone: z.string().optional(),
 }); // satisfies Input;
-const query = async ({ input }: PrivateProcedure<typeof updateSchema>) => {
+const query = async ({ input }: PublicProcedure<typeof updateSchema>) => {
   const { id, ...rest } = input;
-  const db = createPrivateClient();
+  const db = createPublicClient();
   return (
     await db
       .from('candidate_request_availability')
@@ -41,9 +43,10 @@ const query = async ({ input }: PrivateProcedure<typeof updateSchema>) => {
         ...rest,
       })
       .eq('id', id)
+      .select()
+      .single()
+      .throwOnError()
   ).data;
 };
 
-export const update = privateProcedure
-  .input(updateSchema)
-  .mutation(query);
+export const update = publicProcedure.input(updateSchema).mutation(query);

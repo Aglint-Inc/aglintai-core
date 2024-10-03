@@ -1,3 +1,5 @@
+import type { SocialsType } from '@aglint/shared-types';
+
 /* eslint-disable security/detect-unsafe-regex */
 export const socialPlaceholder = {
   linkedin: 'company',
@@ -7,11 +9,13 @@ export const socialPlaceholder = {
   instagram: '@company',
 };
 
-export const customOrder = {
+export const customOrder: Record<keyof SocialsType | string, number> = {
   linkedin: 1,
   instagram: 2,
   twitter: 3,
   facebook: 4,
+  youtube: 5,
+  custom: 6,
   // Add other social media platforms in the desired order here
 };
 

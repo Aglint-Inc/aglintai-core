@@ -20,16 +20,16 @@ function MultiDaySessions() {
   return (
     <>
       <UIDialog
-        open={openDaySlotPopup !== null}
+        open={openDaySlotPopup > 0}
         onClose={() => {
-          setOpenDaySlotPopup(null);
+          setOpenDaySlotPopup(0);
         }}
         title='Available Slots'
         size='xl'
         slotButtons={<></>}
       >
-        <div className="h-[600px] overflow-auto">
-        <SlotsPicker singleDay={false} />
+        <div className='h-[600px] overflow-auto'>
+          <SlotsPicker singleDay={false} />
         </div>
       </UIDialog>
       <div className='flex w-full flex-col items-center gap-4'>

@@ -2,8 +2,8 @@ import axios from 'axios';
 
 import { type LeverJob } from './types/job';
 
-export const fetchAllJobs = async (apiKey) => {
-  let allJobs = [];
+export const fetchAllJobs = async (apiKey: string) => {
+  let allJobs: LeverJob[] = [];
   let hasMore = true;
   let next = 0;
 
@@ -26,10 +26,10 @@ export const fetchAllJobs = async (apiKey) => {
       hasMore = false; // Exit the loop in case of an error
     }
   }
-  return allJobs as LeverJob[];
+  return allJobs;
 };
 
-export function getLeverStatusColor(state) {
+export function getLeverStatusColor(state: string) {
   return state == 'published'
     ? '#228F67'
     : state == 'closed'

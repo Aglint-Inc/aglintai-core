@@ -431,9 +431,9 @@ type RequestsFilterKeys =
   | 'assigneeList';
 type RequestFilterValues = {
   is_new: DatabaseTable['request']['is_new'];
-  status: DatabaseTable['request']['status'][];
+  status: string[];
   title: DatabaseTable['request']['title'];
-  type: DatabaseTable['request']['type'][];
+  type: string[];
   created_at: DatabaseTable['request']['created_at'];
   end_at: DatabaseTable['request']['created_at'];
   // assignee_id: DatabaseTable['request']['assignee_id'][];

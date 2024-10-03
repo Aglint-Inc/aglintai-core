@@ -16,7 +16,7 @@ export const Forms = ({
     <>
       <UITextField
         label='Title'
-        value={title.value}
+        value={title.value!}
         helperText={title.helperText}
         error={title.error}
         onFocus={() =>
@@ -33,7 +33,7 @@ export const Forms = ({
       <UITextArea
         label='Description'
         rows={5}
-        value={description.value}
+        value={description.value!}
         helperText={description.helperText}
         error={description.error}
         onFocus={() =>
@@ -54,7 +54,7 @@ export const Forms = ({
       <div className='flex items-center space-x-2'>
         <Checkbox
           id='auto-connect'
-          checked={auto_connect.value}
+          checked={auto_connect.value!}
           onCheckedChange={(checked) =>
             setForm({
               auto_connect: {

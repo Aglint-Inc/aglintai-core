@@ -68,13 +68,13 @@ export const JobCreate = () => {
   const initialTitle = recruiter?.name ? `${initialCompany}'s first job` : '';
   const [fields, setFields] = useState<Form>({
     job_title: {
-      value: null,
+      value: null!,
       required: true,
       placeholder: initialTitle,
       error: { value: false, helper: `Job title can't be empty` },
     },
     department_id: {
-      value: null,
+      value: null!,
       required: false,
       error: { value: false, helper: `Department name can't be empty` },
     },
@@ -158,6 +158,7 @@ export const JobCreate = () => {
 
 const validateForms = (fields: Form) => {
   return Object.entries(fields).reduce((acc, [key, value]) => {
+    //@ts-ignore
     acc[key] = {
       value: value.value,
       required: value.required,
@@ -199,16 +200,17 @@ const JobCreateForm = ({
     if (enableCreation(newFields)) {
       setModal(true);
       const newJob = Object.entries(fields).reduce((acc, [key, { value }]) => {
+        //@ts-ignore
         acc[key] = value;
         return acc;
       }, {} as Payload);
 
-      const { id } = await handleJobCreate({
+      const { id } = (await handleJobCreate({
         ...newJob,
-      });
+      }))!;
 
       setModal(false);
-      push(ROUTES['/jobs/[job]']({ job: id }));
+      push(ROUTES['/jobs/[job]']({ job: id! }));
     } else {
       setFields(newFields);
     }
@@ -222,7 +224,7 @@ const JobCreateForm = ({
           ...prev[name],
           value: value,
           error: {
-            ...prev[name].error,
+            ...prev[name]!.error,
             value: false,
           },
         },
@@ -308,10 +310,10 @@ const JobForms = ({
         </SectionHeader>
         {forms}
         <div className='mt-4'>{description}</div>
-        {fields.description.error.value && (
+        {fields.description!.error.value && (
           <div className='mt-2 flex items-center text-red-500'>
             <AlertTriangle className='mr-2' />
-            <span>{fields.description.error.helper}</span>
+            <span>{fields.description!.error.helper}</span>
           </div>
         )}
       </Section>

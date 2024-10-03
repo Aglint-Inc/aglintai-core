@@ -17,7 +17,7 @@ import MenuBtns from './MenuBtns';
 
 type TipTapAIEditorParams = {
   placeholder?: string;
-  initialValue?: string | undefined;
+  initialValue?: string;
   enablAI?: boolean;
   handleChange?: (_s: string) => void;
   showWarnOnEdit?: () => void;

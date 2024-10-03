@@ -127,7 +127,9 @@ const CandidateInvitePlanPage = () => {
     return (
       <ConfirmedInvitePage
         rounds={rounds}
+        //@ts-ignore // remove after nullable fix
         candidate={meta.candidate}
+        //@ts-ignore // remove after nullable fix
         filter_json={meta.filter_json}
         meetings={meta.meetings}
         recruiter={meta.recruiter}

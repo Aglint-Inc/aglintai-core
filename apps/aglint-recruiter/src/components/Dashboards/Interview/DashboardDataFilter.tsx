@@ -73,7 +73,7 @@ export default function Component() {
     });
   };
 
-  const applyFilter = (filters) => {
+  const applyFilter = (filters: any) => {
     handleSetFilter(filters);
   };
   const clear_all =
@@ -192,7 +192,7 @@ export default function Component() {
                 {dateOption === 'custom' && (
                   <Calendar
                     mode='range'
-                    selected={filters.dateRange}
+                    selected={filters.dateRange!}
                     // onSelect={setDateRange}
                     // initialFocus
                   />
@@ -254,7 +254,8 @@ const dateOptions = [
 
 const MapDateOption = (value: string) => {
   const today = new Date();
-  let from: Date, to: Date;
+  let from: Date = new Date();
+  let to: Date = new Date();
   switch (value) {
     case 'today':
       from = to = today;

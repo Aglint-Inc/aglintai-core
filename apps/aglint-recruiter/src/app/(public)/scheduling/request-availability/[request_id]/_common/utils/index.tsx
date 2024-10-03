@@ -7,7 +7,7 @@ export function getLastDayOfMonth(date: string) {
   return dayjs(date).endOf('month').date();
 }
 
-export function convertTimeZoneToAbbreviation(sourceTimeZone) {
+export function convertTimeZoneToAbbreviation(sourceTimeZone: string) {
   const date = new Date();
   const formatter = new Intl.DateTimeFormat('en-US', {
     timeZone: sourceTimeZone,
@@ -15,13 +15,12 @@ export function convertTimeZoneToAbbreviation(sourceTimeZone) {
   });
   const timeZoneAbbreviation = formatter
     .formatToParts(date)
-    .find((part) => part.type === 'timeZoneName').value;
-
+    .find((part) => part.type === 'timeZoneName')?.value;
   const abbreviationMapping = {
     'GMT+5:30': 'IST',
     'GMT+9:30': 'ACST',
   };
-
+  //@ts-ignore
   return abbreviationMapping[timeZoneAbbreviation] || timeZoneAbbreviation;
 }
 
@@ -75,7 +74,7 @@ export const getShortTimeZone = (timeZone: string) => {
   return timezone;
 };
 
-export function convertMinutesToHoursAndMinutes(minutes) {
+export function convertMinutesToHoursAndMinutes(minutes: number) {
   if (minutes === 0) {
     return '0 hours';
   }

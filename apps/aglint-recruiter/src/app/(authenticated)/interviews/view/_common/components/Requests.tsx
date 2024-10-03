@@ -49,19 +49,20 @@ function Component() {
               }
             />
           )}
-          <ul>
+          <ul className='flex flex-col gap-3'>
             {requests?.map((request, index) => (
               <React.Fragment key={request.id}>
-                <li className='p-3 text-lg hover:bg-gray-50'>
+                <li className='p-3 text-lg bg-gray-50 hover:no-underline hover:bg-gray-100 duration-300 rounded-md'>
                   <Link
                     href={ROUTES['/requests/[request]']({
                       request: request.id,
                     })}
+                    className=' hover:no-underline'
                   >
-                    <p className='text-base font-medium'>{request.title}</p>
-                    <div className='flex cursor-pointer items-center justify-between'>
-                      <div className='flex items-center space-x-2'>
-                        <Avatar className='h-6 w-6'>
+                    <div className='text-sm font-medium'>dewxwed{request.title}</div>
+                    <div className='flex cursor-pointer items-center mt-2 gap-4'>
+                      <div className='flex items-center gap-2'>
+                        <Avatar className='h-6 w-6 rounded-sm'>
                           <AvatarImage
                             src={
                               request?.assignee_details?.profile_image ??
@@ -72,14 +73,14 @@ function Component() {
                               request?.assignee_details?.last_name ?? '',
                             )}
                           />
-                          <AvatarFallback className='text-xs'>
+                          <AvatarFallback className='text-sm h-6 w-6 rounded-md text-gray-500 bg-gray-200'>
                             {getFullName(
                               request?.assignee_details?.first_name ?? '',
                               request?.assignee_details?.last_name ?? '',
                             ).charAt(0)}
                           </AvatarFallback>
                         </Avatar>
-                        <span className='text-xs text-gray-600'>
+                        <span className='text-sm text-gray-600'>
                           {getFullName(
                             request?.assignee_details?.first_name ?? '',
                             request?.assignee_details?.last_name ?? '',
@@ -87,7 +88,7 @@ function Component() {
                         </span>
                       </div>
                       <UIBadge
-                        size={'sm'}
+                        size={'default'}
                         textBadge={capitalizeFirstLetter(request.status)}
                         color={
                           request.status === 'to_do'
@@ -105,7 +106,7 @@ function Component() {
                   </Link>
                 </li>
                 {index < requests.length - 1 && (
-                  <li>
+                  <li className='hidden'>
                     <Separator className='my-2' />
                   </li>
                 )}

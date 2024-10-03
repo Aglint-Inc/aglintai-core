@@ -104,7 +104,7 @@ function UploadDB({
     }
   }, [router.queryParams.college_name]);
 
-  const uploadFile = (file) => {
+  const uploadFile = (file: File) => {
     setFile(file);
   };
 

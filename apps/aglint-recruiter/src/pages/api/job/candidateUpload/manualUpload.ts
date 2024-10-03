@@ -78,7 +78,7 @@ const handler = async (
               )
                 .then((): ManualUploadApi['response'] => ({
                   confirmation: true,
-                  error: null as string,
+                  error: null!,
                 }))
                 .catch((e: PostgrestError): ManualUploadApi['response'] => {
                   Promise.allSettled([

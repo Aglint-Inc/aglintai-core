@@ -62,6 +62,7 @@ export const usePortalSettings = () => {
       await mutateAsync({ company_images: new_company_images });
       setSelectedImages([]);
     } catch (err) {
+      // @ts-ignore //check here
       toast({ title: 'Images upload failed', description: err?.message });
     } finally {
       setLoading((pre) => ({ ...pre, isImageUploading: false }));
@@ -77,7 +78,7 @@ export const usePortalSettings = () => {
       const path = extractPath(imageUrl);
       if (path.length === 0) throw new Error('wrong image');
 
-      await supabase.storage.from('company-images').remove(path);
+      await supabase.storage.from('company-images').remove([path]);
 
       // const { data, error } = await supabase.storage
       //   .from('company-images')
@@ -93,6 +94,7 @@ export const usePortalSettings = () => {
         ),
       });
     } catch (error) {
+      // @ts-ignore //check here
       toast({ title: 'Images delete failed', description: error?.message });
     } finally {
       setLoading((pre) => ({
@@ -166,6 +168,7 @@ export const usePortalSettings = () => {
         banner_image: img || banner_image,
       });
     } catch (error) {
+      // @ts-ignore //check here
       toast({ title: 'update cover failed', description: error?.message });
     } finally {
       setLoading((pre) => ({ ...pre, isCoverUploading: false }));
@@ -180,7 +183,7 @@ export const usePortalSettings = () => {
 
       const { data, error } = await supabase.storage
         .from('company-images')
-        .remove(path);
+        .remove([path]);
 
       if (error) {
         throw new Error(error.message);
@@ -196,6 +199,7 @@ export const usePortalSettings = () => {
     } catch (error) {
       toast({
         title: 'Remove cover image failed',
+        // @ts-ignore //check here
         description: error.message,
         variant: 'destructive',
       });
@@ -217,7 +221,7 @@ export const usePortalSettings = () => {
   };
 };
 
-function extractPath(url) {
+function extractPath(url: string) {
   const pathMatch = url.match(/\/company-images\/(.*?)(?:\?|$)/);
   if (pathMatch) {
     // Remove spaces from the extracted path
@@ -226,6 +230,6 @@ function extractPath(url) {
   return '';
 }
 
-function removeSpaces(str) {
+function removeSpaces(str: string) {
   return str.replace(/\s+/g, '');
 }

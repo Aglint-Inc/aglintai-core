@@ -55,7 +55,7 @@ const handler = async (
           return bulkCreateApplications(supabaseAdmin, safeApplications)
             .then((): CsvUploadApi['response'] => ({
               confirmation: true,
-              error: null,
+              error: null!,
             }))
             .catch((e: PostgrestError): CsvUploadApi['response'] => ({
               confirmation: false,
