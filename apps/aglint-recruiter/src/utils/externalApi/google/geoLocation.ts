@@ -110,8 +110,8 @@ export const geoCodeLocation = async (address: string) => {
     }
 
     const geo = {
-      lat: result.geometry.location.lat ?? '',
-      lang: result.geometry.location.lng ?? '',
+      lat: result.geometry.location.lat ?? -1,
+      lang: result.geometry.location.lng ?? -1,
     };
     const timezone = await getTimeZoneOfGeo(
       { lat: geo.lat, lang: geo.lang },

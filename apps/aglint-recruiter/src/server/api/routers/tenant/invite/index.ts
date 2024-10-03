@@ -85,6 +85,7 @@ export async function registerMember(
   const recUser = (
     await supabaseAdmin
       .from('recruiter_user')
+      //@ts-ignore
       .insert({
         user_id: userId,
         first_name: user.first_name,
