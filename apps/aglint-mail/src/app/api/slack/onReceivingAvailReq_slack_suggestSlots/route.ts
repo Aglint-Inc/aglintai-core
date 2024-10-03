@@ -1,5 +1,12 @@
 import type { z } from 'zod';
+import type { PlanCombinationRespType } from '@aglint/shared-types';
 import { TargetApiSchema } from '@aglint/shared-types';
+import {
+  DAYJS_FORMATS,
+  dayjsLocal,
+  getBreakLabel,
+  getFullName,
+} from '@aglint/shared-utils';
 import { createPostRoute } from '../../../../utils/apiUtils/createPostRoute';
 import { getSlackWeb } from '../../../../slack/slackWeb';
 import { getSupabaseServer } from '../../../../supabase/supabaseAdmin';
@@ -12,22 +19,78 @@ const func = async ({
   const slackWeb = getSlackWeb();
   const supabaseAdmin = getSupabaseServer();
 
-  const organizer = (
+  const request_details = (
     await supabaseAdmin
       .from('request')
-      .select('*, recruiter_user!request_assignee_id_fkey!inner(*)')
+      .select(
+        '*, recruiter_user!request_assignee_id_fkey!inner(*) , applications!inner(*,candidates(*))',
+      )
       .eq('id', request_id)
       .single()
       .throwOnError()
   ).data;
 
-  const slack_user_id = await getUserIdByEmail(organizer.recruiter_user.email);
+  const organizer = request_details.recruiter_user;
+  const cand_slots: PlanCombinationRespType[] = plans;
+  const request_link = `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/requests/${request_id}`;
+
+  const slack_slot_suggestion = cand_slots.slice(0, 5).map((plan) => {
+    let plan_text = '';
+    plan.sessions.forEach((session) => {
+      const start_time = dayjsLocal(session.start_time)
+        .tz(organizer.scheduling_settings.timeZone.tzCode)
+        .format(DAYJS_FORMATS.STAR_TIME_FORMAT);
+      const end_time = dayjsLocal(session.end_time)
+        .tz(organizer.scheduling_settings.timeZone.tzCode)
+        .format(DAYJS_FORMATS.END_TIME_FORMAT);
+      const session_time = `${start_time} - ${end_time}`;
+      const qualified_ints = session.qualifiedIntervs.map((int) =>
+        getFullName(int.first_name, int.last_name),
+      );
+      const trainee_ints = session.trainingIntervs.map((int) =>
+        getFullName(int.first_name, int.last_name),
+      );
+      plan_text += `*${session.session_name} - ${session_time} *\n\n *Interviewer${qualified_ints.length > 1 ? 's' : ''}* : ${qualified_ints.join('.')}`;
+      if (trainee_ints.length > 0) {
+        plan_text += `\n\n *Trainee interviewer${trainee_ints.length > 1 ? 's' : ''}* : ${trainee_ints.join('.')}`;
+      }
+      if (session.break_duration !== 0) {
+        plan_text += `\n\n *Break* : ${getBreakLabel(session.break_duration)} minutes`;
+      }
+      plan_text += '\n\n';
+    });
+    const plan_section = {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: plan_text,
+      },
+      accessory: {
+        type: 'button',
+        text: {
+          type: 'plain_text',
+          emoji: true,
+          text: 'Choose',
+        },
+        value: plan.plan_comb_id,
+      },
+    };
+    return {
+      plan_section,
+      divider: {
+        type: 'divider',
+      },
+    };
+  });
+
+  const slack_user_id = await getUserIdByEmail(organizer.email);
+
   await slackWeb.chat.postMessage({
     channel: slack_user_id,
     metadata: {
       event_type: 'onReceivingAvailReq_slack_suggestSlots',
       event_payload: {
-        interview_plans: plans,
+        full_interview_plans: plans,
         request_id,
       },
     },
@@ -35,19 +98,8 @@ const func = async ({
       {
         type: 'section',
         text: {
-          type: 'plain_text',
-          emoji: true,
-          text: 'Available Slots Suggestion',
-        },
-      },
-      {
-        type: 'divider',
-      },
-      {
-        type: 'section',
-        text: {
           type: 'mrkdwn',
-          text: '*<fakeLink.toUserProfiles.com|Chandra / HR Screening>*\n Tuesday, January 21 4:00-4:30pm\n Google Meet',
+          text: `*<${request_link}|${request_details.title}>*\n\n *Schedule Priority* : ${request_details.priority}`,
         },
         accessory: {
           type: 'image',
@@ -57,78 +109,23 @@ const func = async ({
         },
       },
       {
-        type: 'context',
-        elements: [
-          {
-            type: 'image',
-            image_url:
-              'https://api.slack.com/img/blocks/bkb_template_images/notificationsWarningIcon.png',
-            alt_text: 'notifications warning icon',
-          },
-          {
-            type: 'mrkdwn',
-            text: '*Conflicts with Team Huddle: 4:15-4:30pm*',
-          },
-        ],
-      },
-      {
         type: 'divider',
       },
       {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: '*Propose a new time:*',
+          text: `*Hii! availability recieved from the candidate ${getFullName(request_details.applications.candidates.first_name, request_details.applications.candidates.last_name)}*\n\n`,
         },
       },
       {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: '*Today - 4:30-5pm*\nEveryone is available: @iris, @zelda',
-        },
-        accessory: {
-          type: 'button',
-          text: {
-            type: 'plain_text',
-            emoji: true,
-            text: 'Choose',
-          },
-          value: 'click_me_123',
+          text: '*Please Select one of the slots to Schedule an interview .*',
         },
       },
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: '*Tomorrow - 4-4:30pm*\nEveryone is available: @iris, @zelda',
-        },
-        accessory: {
-          type: 'button',
-          text: {
-            type: 'plain_text',
-            emoji: true,
-            text: 'Choose',
-          },
-          value: 'click_me_123',
-        },
-      },
-      {
-        type: 'section',
-        text: {
-          type: 'mrkdwn',
-          text: "*Tomorrow - 6-6:30pm*\nSome people aren't available: @iris, ~@zelda~",
-        },
-        accessory: {
-          type: 'button',
-          text: {
-            type: 'plain_text',
-            emoji: true,
-            text: 'Choose',
-          },
-          value: 'click_me_123',
-        },
-      },
+      ...slack_slot_suggestion.flatMap((p) => [p.plan_section, p.divider]),
       {
         type: 'section',
         text: {
@@ -138,6 +135,8 @@ const func = async ({
       },
     ],
   });
+  //
+  return { message: 'Suggested slots sent to the organizer' };
 };
 
 export const POST = createPostRoute(
