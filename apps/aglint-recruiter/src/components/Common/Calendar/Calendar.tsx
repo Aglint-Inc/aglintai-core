@@ -2,13 +2,6 @@ import './fullcalendar-theme.css';
 
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
-import {
-  Section,
-  SectionActions,
-  SectionHeader,
-  SectionHeaderText,
-  SectionTitle,
-} from '@components/layouts/sections-header';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
 import FullCalendar from '@fullcalendar/react';
@@ -104,15 +97,7 @@ function CalendarComp({
           <Loader />
         </div>
       ) : (
-        <Section>
-          <SectionHeader>
-            <SectionHeaderText>
-              <SectionTitle>Interviews Calendar</SectionTitle>
-            </SectionHeaderText>
-            <SectionActions>
-              <CalendarFilter filter={filter} setFilter={setFilter} />
-            </SectionActions>
-          </SectionHeader>
+        <>
           <div className='flex flex-col space-y-2'>
             <CalendarHeader
               calendarApi={calendarApi}
@@ -152,7 +137,8 @@ function CalendarComp({
               }}
             />
           </div>
-        </Section>
+          <CalendarFilter filter={filter} setFilter={setFilter} />
+        </>
       )}
     </div>
   );

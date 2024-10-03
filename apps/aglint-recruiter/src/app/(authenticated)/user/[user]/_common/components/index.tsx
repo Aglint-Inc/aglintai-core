@@ -2,7 +2,6 @@ import {
   type DatabaseTable,
   type SchedulingSettingType,
 } from '@aglint/shared-types';
-import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
 import { Page, PageHeader } from '@components/layouts/page-header';
 import {
   Section,
@@ -11,6 +10,8 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
+import { TwoColumnPageLayout } from '@components/layouts/two-column-page-layout';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useInterviewsByUserId } from '@interviews/hooks/useInterviewsByUserId';
 import { useParams } from 'next/navigation';
@@ -75,50 +76,58 @@ export default function InterviewerDetailsPage() {
     interviewerDetails?.interview_type as InterviewerDetailType['interview_type'];
 
   return (
-    <div>
-      <OneColumnPageLayout>
-        <Page>
-          <PageHeader className='-mt-4 border-b border-gray-200 bg-gray-50 p-4'>
-            <Header />
-          </PageHeader>
-          <Section className='px-4'>
-            <SectionHeader>
-              <SectionHeaderText>
-                <SectionTitle>Interviewer Overview</SectionTitle>
-              </SectionHeaderText>
-              <SectionActions>
-                <Tabs
-                  defaultValue='overview'
-                  className='w-full'
-                  onValueChange={(value) => setTab(value as TabType)}
-                >
-                  <TabsList className='grid w-full grid-cols-2'>
-                    <TabsTrigger value='overview'>Overview</TabsTrigger>
-                    <TabsTrigger value='calendar'>Calendar</TabsTrigger>
-                  </TabsList>
-                </Tabs>
-              </SectionActions>
-            </SectionHeader>
-          </Section>
-
+    <TwoColumnPageLayout
+      sidebar={
+        <div className='col-span-4 space-y-12 bg-white'>
+          <UpcomingInterview />
+          <RecentInterviews />
+          <Feedback />
+        </div>
+      }
+      sidebarPosition='right'
+      sidebarWidth='400'
+    >
+      <Page>
+        <PageHeader className='-mt-4 border-b border-gray-200 bg-gray-50 p-4'>
+          <Header />
+        </PageHeader>
+        <Section className='px-4'>
+          <SectionHeader>
+            <SectionHeaderText>
+              <SectionTitle>Interviewer Overview</SectionTitle>
+            </SectionHeaderText>
+            <SectionActions>
+              <Tabs
+                defaultValue='overview'
+                className='w-full'
+                onValueChange={(value) => setTab(value as TabType)}
+              >
+                <TabsList className='grid w-full grid-cols-2'>
+                  <TabsTrigger value='overview'>Overview</TabsTrigger>
+                  <TabsTrigger value='calendar'>Calendar</TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </SectionActions>
+          </SectionHeader>
+        </Section>
+        <ScrollArea className='h-[calc(100vh-246px)]'>
           {tab === 'overview' ? (
             <div className='flex flex-col space-y-8 px-4'>
-              <div className='grid grid-cols-12 gap-[1px] bg-muted'>
-                <div className='col-span-8 grid space-y-12 bg-white pr-8'>
-                  <KeyMatrics />
-                  <Heatmap loadSetting={interviewLoad} />
-                  <Qualifications interview_types={interviewType} />
-                  <ScheduleAvailability />
+              <div className='col-span-8 grid space-y-12'>
+                <div className='grid grid-cols-2 gap-4'>
+                  <div>
+                    <KeyMatrics />
+                  </div>
+                  <div>
+                    <Heatmap loadSetting={interviewLoad} />
+                  </div>
                 </div>
-                <div className='col-span-4 space-y-12 bg-white pl-8'>
-                  <UpcomingInterview />
-                  <RecentInterviews />
-                  <Feedback />
-                </div>
+                <Qualifications interview_types={interviewType} />
+                <ScheduleAvailability />
               </div>
             </div>
           ) : (
-            <div className='p-4'>
+            <div className='px-4'>
               <CalendarComp
                 allSchedules={allSchedules ?? []}
                 isLoading={iscalendarLoading}
@@ -127,8 +136,8 @@ export default function InterviewerDetailsPage() {
               />
             </div>
           )}
-        </Page>
-      </OneColumnPageLayout>
-    </div>
+        </ScrollArea>
+      </Page>
+    </TwoColumnPageLayout>
   );
 }

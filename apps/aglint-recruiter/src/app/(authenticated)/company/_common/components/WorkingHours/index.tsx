@@ -87,7 +87,7 @@ export default function WorkingHour() {
           </PageDescription>
         </PageHeaderText>
       </PageHeader>
-      <div className='flex flex-col gap-4'>
+      <div className='flex flex-col space-y-12'>
         <TimeZone
           timeZone={initialData?.timeZone?.label}
           selectedTimeZone={selectedTimeZone}
