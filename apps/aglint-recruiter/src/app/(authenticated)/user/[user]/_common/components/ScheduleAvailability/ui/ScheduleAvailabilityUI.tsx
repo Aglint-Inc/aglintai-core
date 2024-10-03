@@ -71,7 +71,7 @@ export const ScheduleAvailabilityUI = ({
         </SectionHeader>
         <div className='overflow-hidden rounded-md border'>
           <Table>
-            <TableHeader>
+            <TableHeader className='bg-gray-100'>
               <TableRow className='bg-gray-100'>
                 <TableHead>Day</TableHead>
                 <TableHead>Hours</TableHead>
