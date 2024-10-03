@@ -10,7 +10,7 @@ import {
 } from '@components/ui/table';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { ClockIcon, DownloadIcon } from 'lucide-react';
-import { useMemberList } from 'src/app/_common/hooks/members';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
 import UISectionCard from '@/components/Common/UISectionCard';
 

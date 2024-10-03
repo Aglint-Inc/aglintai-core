@@ -40,6 +40,7 @@ import {
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
 import MemberCard from '@/components/Common/MemberCard';
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -49,7 +50,6 @@ import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UpdateMembers from '@/components/Common/UpdateMembers';
 import { RequestProvider } from '@/context/RequestContext';
 import { useRequests } from '@/context/RequestsContext';
-import { useMemberList } from '@/hooks/useMemberList';
 import SideDrawerEdit from '@/jobs/job/application/components/EditDrawer';
 import CollapseContent from '@/jobs/job/application/components/InterviewStage/IndividualSession/Collapse';
 import { useEditSession } from '@/jobs/job/application/components/InterviewTab/hooks/useEditSession';

@@ -26,6 +26,7 @@ export const API_PERMISSIONS: ApiPermissions = {
     training_progress: ['view_interview_types'],
     update: ['update_interview_types'],
     archive_get_sessions: ['update_interview_types'],
+    get_all: [],
   },
   analytics: ['job_module'],
   example: {

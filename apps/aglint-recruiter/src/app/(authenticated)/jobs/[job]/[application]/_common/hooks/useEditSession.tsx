@@ -46,87 +46,90 @@ export const useEditSession = ({ refetch }: { refetch: () => void }) => {
     }
   }, [editSession?.interview_session?.id]);
 
-  const isDebrief = editSession?.interview_session.session_type === 'debrief';
-
   const handleSave = async () => {
     try {
       if (validate()) return;
-      if (!isDebrief) {
-        if (selectedInterviewers.length === 0) {
-          return;
-        }
-      } else {
-        if (debriefMembers.length === 0) {
-          return;
-        }
-      }
       if (!editSession) return;
+
       setSaving(editSession.interview_session.id);
-      if (editSession.interview_session.session_type !== 'debrief') {
-        const interview_module_relation_entries: {
-          interviewer_type: DatabaseTable['interview_session_relation']['interviewer_type'];
-          id: string;
-          training_type: DatabaseTable['interview_session_relation']['training_type'];
-        }[] = [];
-        selectedInterviewers.forEach((interviewer) => {
-          interview_module_relation_entries.push({
-            interviewer_type: 'qualified',
-            id: interviewer.module_relation_id,
-            training_type: 'qualified',
-          });
-        });
 
-        trainingInterviewers.forEach((interviewer) => {
-          interview_module_relation_entries.push({
-            interviewer_type: 'training',
-            id: interviewer.module_relation_id,
-            training_type: null,
-          });
-        });
+      const { interview_session } = editSession;
+      const isNotDebrief = interview_session.session_type !== 'debrief';
 
-        if (
-          !editSession ||
-          !editSession?.interview_session?.name ||
-          !editSession?.interview_session.interview_plan_id ||
-          !editSession?.interview_session.module_id
-        )
-          return;
+      if (isNotDebrief) {
+        const interview_module_relation_entries = [
+          ...selectedInterviewers.map((interviewer) => ({
+            interviewer_type:
+              'qualified' as DatabaseTable['interview_session_relation']['interviewer_type'],
+            id: interviewer.module_relation_id,
+            training_type:
+              'qualified' as DatabaseTable['interview_session_relation']['training_type'],
+          })),
+          ...trainingInterviewers.map((interviewer) => ({
+            interviewer_type:
+              'training' as DatabaseTable['interview_session_relation']['interviewer_type'],
+            id: interviewer.module_relation_id,
+            training_type:
+              null as DatabaseTable['interview_session_relation']['training_type'],
+          })),
+        ];
+
+        const {
+          name,
+          interview_plan_id,
+          module_id,
+          break_duration,
+          interviewer_cnt = 1,
+          location,
+          schedule_type,
+          session_duration,
+          session_order,
+        } = interview_session;
+
+        if (!name || !interview_plan_id || !module_id) return;
 
         const editInterviewSessionParams: EditInterviewSession = {
-          break_duration: Number(editSession?.interview_session.break_duration),
-          interviewer_cnt: editSession?.interview_session.interviewer_cnt || 1,
-          location: editSession?.interview_session.location as string,
-          module_id: editSession?.interview_session.module_id,
-          name: editSession?.interview_session.name,
-          schedule_type: editSession?.interview_session.schedule_type,
-          session_duration: editSession?.interview_session.session_duration,
-          session_id: editSession?.interview_session.id,
-          session_type: editSession?.interview_session.session_type,
-          interview_module_relation_entries: interview_module_relation_entries,
-          interview_plan_id: editSession?.interview_session.interview_plan_id,
-          session_order: editSession?.interview_session.session_order,
+          break_duration: Number(break_duration),
+          interviewer_cnt,
+          location: location as string,
+          module_id,
+          name,
+          schedule_type,
+          session_duration,
+          session_id: interview_session.id,
+          session_type: interview_session.session_type,
+          interview_module_relation_entries,
+          interview_plan_id,
+          session_order,
         };
 
         await editInterviewSession(editInterviewSessionParams);
       } else {
-        if (!editSession || !editSession?.interview_session?.name) return;
+        const {
+          name,
+          break_duration,
+          location,
+          schedule_type,
+          session_duration,
+          members_meta,
+        } = interview_session;
+
+        if (!name) return;
 
         const updateDebriefParams: UpdateDebriefSession = {
-          break_duration: Number(editSession?.interview_session.break_duration),
-          location: editSession?.interview_session.location as string,
-          name: editSession?.interview_session.name,
-          schedule_type: editSession?.interview_session.schedule_type,
-          session_duration: editSession?.interview_session.session_duration,
-          session_id: editSession?.interview_session.id,
-          members: debriefMembers.map((member) => ({
-            id: member.user_id,
-          })),
-          members_meta: editSession?.interview_session
-            .members_meta as UpdateDebriefSession['members_meta'],
+          break_duration: Number(break_duration),
+          location: location as string,
+          name,
+          schedule_type,
+          session_duration,
+          session_id: interview_session.id,
+          members: debriefMembers.map((member) => ({ id: member.user_id })),
+          members_meta: members_meta as UpdateDebriefSession['members_meta'],
         };
+
         await updateDebriefSession(updateDebriefParams);
       }
-      await refetch();
+      refetch();
       handleClose();
     } catch (e) {
       toast.error('Error saving session. Please contact support.');
@@ -136,40 +139,20 @@ export const useEditSession = ({ refetch }: { refetch: () => void }) => {
   };
 
   const validate = () => {
-    let isError = false;
+    errorValidation[0].error = !editSession?.interview_session.name;
 
-    if (!editSession?.interview_session.name) {
-      errorValidation[0].error = true;
-      isError = true;
+    if (editSession?.interview_session.session_type === 'debrief') {
+      errorValidation[1].error = debriefMembers.length === 0;
     } else {
-      errorValidation[0].error = false;
+      errorValidation[1].error = selectedInterviewers.length === 0;
     }
 
-    if (
-      editSession?.interview_session.session_type === 'debrief' &&
-      debriefMembers.length === 0
-    ) {
-      errorValidation[1].error = true;
-      isError = true;
-    } else if (
-      editSession?.interview_session.session_type !== 'debrief' &&
-      selectedInterviewers.length === 0
-    ) {
-      errorValidation[1].error = true;
-      isError = true;
-    } else {
-      errorValidation[1].error = false;
-    }
-
-    if (trainingToggle && trainingInterviewers.length === 0) {
-      errorValidation[2].error = true;
-      isError = true;
-    } else {
-      errorValidation[2].error = false;
-    }
+    errorValidation[2].error =
+      trainingToggle && trainingInterviewers.length === 0;
 
     setErrorValidation([...errorValidation]);
-    return isError;
+
+    return errorValidation.some((validation) => validation.error);
   };
 
   const handleClose = () => {

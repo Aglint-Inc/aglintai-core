@@ -1,11 +1,9 @@
 import ReorderableInterviewPlan from '@components/reorderable-interview-plan';
 
-import { Loader } from '@/components/Common/Loader';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { Resume } from '@/jobs/job/application/components/Resume';
 import { Details } from '@/jobs/job/application/components/Scoring';
 
-import { useApplicationMeta } from '../hooks/useApplicationMeta';
 import InterviewTabContent from './InterviewTab';
 import TabsComp, { type TabsType } from './TabPills';
 
@@ -13,11 +11,6 @@ function ApplicationDetailComp() {
   const router = useRouterPro();
   const tab = router.queryParams.tab as TabsType;
   const application_id = router.params.application;
-  const { isLoading } = useApplicationMeta();
-
-  if (isLoading) {
-    return <Loader />;
-  }
 
   const renderTabContent = () => {
     switch (tab) {
