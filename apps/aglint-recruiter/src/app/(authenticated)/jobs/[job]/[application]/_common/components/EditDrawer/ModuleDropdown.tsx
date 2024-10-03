@@ -1,5 +1,6 @@
+import { useInterviewPools } from 'src/app/_common/hooks/useInterviewPools';
+
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
-import { useInterviewModules } from '@/queries/interview-modules';
 
 import {
   setEditSession,
@@ -10,7 +11,7 @@ import {
 } from '../../stores/editSessionDrawer';
 
 function ModuleDropdown() {
-  const interviewModules = useInterviewModules();
+  const interviewModules = useInterviewPools();
 
   const { editSession } = useEditSessionDrawerStore((state) => ({
     editSession: state.editSession,

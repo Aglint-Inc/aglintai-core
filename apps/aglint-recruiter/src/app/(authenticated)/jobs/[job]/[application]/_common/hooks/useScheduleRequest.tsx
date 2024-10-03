@@ -2,12 +2,11 @@ import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { useUpdateRequestNote } from '@requests/hooks/useRequestNotes';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
 import { useTenant } from '@/company/hooks';
-import { useMemberList } from '@/hooks/useMemberList';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type APICreateScheduleRequest } from '@/pages/api/request/schedule-request';
-import { api } from '@/trpc/client';
 import ROUTES from '@/utils/routing/routes';
 import toast from '@/utils/toast';
 
@@ -21,7 +20,6 @@ import { useApplicationRequests } from './useApplicationRequests';
 import { useInterviewStages } from './useInterviewStages';
 
 export const useScheduleRequest = () => {
-  const utils = api.useUtils();
   const router = useRouterPro();
   const {
     isScheduleOpen,
@@ -129,18 +127,12 @@ export const useScheduleRequest = () => {
             }),
           );
         }
-        utils.application.applicationRequest.invalidate({
-          application_id,
-        });
       } else if (res.status === 201 || res.status === 200) {
         router.push(
           ROUTES['/requests/[request]']({
             request: res.data,
           }),
         );
-        utils.application.applicationRequest.invalidate({
-          application_id,
-        });
       } else {
         toast.error('Failed to create request');
       }

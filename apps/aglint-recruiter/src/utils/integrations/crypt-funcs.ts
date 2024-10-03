@@ -3,6 +3,7 @@ import * as crypto from 'crypto';
 export function decrypt_string(encryptedData: string) {
   const iv = Buffer.from(encryptedData.slice(0, 32), 'hex');
   const encryptedText = encryptedData.slice(32);
+  //@ts-ignore
   const decipher = crypto.createDecipheriv(
     'aes-256-cbc',
     Buffer.from(process.env.ENCRYPTION_KEY, 'hex'),
