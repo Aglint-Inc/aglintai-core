@@ -2,7 +2,7 @@ import { getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import React from 'react';
 
-import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+// import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 function MemberCard({
   selectedMember,
@@ -20,9 +20,9 @@ function MemberCard({
       {selectedMember?.profile_image &&
       selectedMember?.first_name &&
       selectedMember?.last_name ? (
-        <Avatar>
+        <Avatar className='w-6 h-6 rounded-sm'>
           <AvatarImage src={selectedMember?.profile_image} />
-          <AvatarFallback>
+          <AvatarFallback className='w-6 h-6 rounded-sm'>
             {selectedMember?.first_name.slice(0, 1)}
             {selectedMember?.last_name.slice(0, 1)}
           </AvatarFallback>
@@ -33,20 +33,20 @@ function MemberCard({
 
       <div>
         {selectedMember?.first_name && selectedMember?.last_name ? (
-          <p className='font-medium'>
+          <p className=''>
             {getFullName(selectedMember?.first_name, selectedMember?.last_name)}
           </p>
         ) : (
           ''
         )}
 
-        {selectedMember?.role ? (
+        {/* {selectedMember?.role ? (
           <p className='text-xs text-muted-foreground'>
             {capitalizeFirstLetter(selectedMember?.role)}
           </p>
         ) : (
           ''
-        )}
+        )} */}
       </div>
     </div>
   );
