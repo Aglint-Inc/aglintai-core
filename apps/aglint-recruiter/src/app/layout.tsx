@@ -3,10 +3,9 @@ import 'regenerator-runtime/runtime';
 import RootLayout from '@components/layouts/root-layout';
 import { ThemeProvider } from '@components/theme-provider';
 import { Toaster } from '@components/ui/toaster';
-import React, { type PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 
 import { TRPCReactProvider } from '@/trpc/client';
-import { HydrateClient } from '@/trpc/server';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -27,9 +26,7 @@ const Layout = ({ children }: PropsWithChildren) => {
         enableSystem={false}
         disableTransitionOnChange
       >
-        <TRPCReactProvider>
-          <HydrateClient>{children}</HydrateClient>
-        </TRPCReactProvider>
+        <TRPCReactProvider>{children}</TRPCReactProvider>
         <Toaster />
       </ThemeProvider>
     </RootLayout>

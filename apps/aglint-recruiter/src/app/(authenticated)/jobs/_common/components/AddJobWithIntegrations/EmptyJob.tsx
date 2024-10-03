@@ -7,9 +7,9 @@ import {
 import { Briefcase, TriangleAlert } from 'lucide-react';
 
 import { useIntegrations } from '@/authenticated/hooks';
-import { useCompanySetup } from '@/authenticated/hooks/useCompanySetup';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
+import { useOnboarding } from '@/components/Navigation/OnboardPending/context/onboarding';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { STATE_LEVER_DIALOG } from '@/jobs/constants';
 import { useIntegrationActions, useIntegrationStore } from '@/jobs/hooks';
@@ -31,7 +31,7 @@ export const EmptyJob = () => {
   const router = useRouterPro();
   const { setIntegrations } = useIntegrationActions();
   const integration = useIntegrationStore((state) => state.integrations);
-  const { isJobSetupPending } = useCompanySetup();
+  const { isJobSetupPending } = useOnboarding();
   return (
     <div className='mt-[200px]'>
       <GlobalEmpty

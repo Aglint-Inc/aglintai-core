@@ -29,10 +29,10 @@ import {
   useState,
 } from 'react';
 
-import { useCompanySetup } from '@/authenticated/hooks/useCompanySetup';
 import { useTenant } from '@/company/hooks';
 import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
+import { useOnboarding } from '@/components/Navigation/OnboardPending/context/onboarding';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJobs } from '@/jobs/hooks';
 import type { Form } from '@/jobs/types';
@@ -63,7 +63,7 @@ export const JobCreateHeader = () => {
 
 export const JobCreate = () => {
   const { recruiter } = useTenant();
-  const { isJobSetupPending, jobSetupSteps } = useCompanySetup();
+  const { isJobSetupPending, jobSetupSteps } = useOnboarding();
   const initialCompany = recruiter?.name ?? '';
   const initialTitle = recruiter?.name ? `${initialCompany}'s first job` : '';
   const [fields, setFields] = useState<Form>({

@@ -1,3 +1,4 @@
+'use client';
 import ReorderableInterviewPlan from '@components/reorderable-interview-plan';
 
 import { useRouterPro } from '@/hooks/useRouterPro';

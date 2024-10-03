@@ -1,5 +1,5 @@
 import { useTenant } from '@/company/hooks';
-import { api, TRPC_CLIENT_CONTEXT } from '@/trpc/client';
+import { api } from '@/trpc/client';
 
 import { useCreateRequest } from './useCreateRequest';
 
@@ -10,7 +10,6 @@ export const useCreateRequestAssignees = () => {
     { recruiter_id, search },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
-      trpc: TRPC_CLIENT_CONTEXT,
     },
   );
   return result;

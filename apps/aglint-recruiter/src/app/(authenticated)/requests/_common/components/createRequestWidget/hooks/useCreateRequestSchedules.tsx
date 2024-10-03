@@ -1,4 +1,4 @@
-import { api, TRPC_CLIENT_CONTEXT } from '@/trpc/client';
+import { api } from '@/trpc/client';
 
 import { useCreateRequest } from './useCreateRequest';
 
@@ -11,7 +11,6 @@ export const useCreateRequestSchedules = () => {
     { application_id, search },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
-      trpc: TRPC_CLIENT_CONTEXT,
     },
   );
   return result;
