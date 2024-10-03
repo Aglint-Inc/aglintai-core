@@ -26,7 +26,13 @@ export const API_PERMISSIONS: ApiPermissions = {
     archive_get_sessions: ['update_interview_types'],
   },
   analytics: ['job_module'],
-  example: [],
+  example: {
+    fooBar: {
+      bar: [],
+      foo: ['public'],
+    },
+    helloWorld: [],
+  },
   candidatePortal: [],
   requests: [],
   application: ['job_module'],
