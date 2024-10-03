@@ -13,6 +13,7 @@ export const useEditSession = () => {
     currentSession: EditSessionDrawer['editSession'],
   ) => {
     setEditSession(currentSession);
+    if (!currentSession) return;
     if (currentSession.interview_session.session_type !== 'debrief') {
       setSelectedInterviewers(
         currentSession?.users

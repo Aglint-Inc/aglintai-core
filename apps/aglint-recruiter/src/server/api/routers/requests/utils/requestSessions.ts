@@ -53,7 +53,7 @@ export const fetchSessionDetails = async ({
   const { data } = await supabaseCaller
     .from('request')
     .select(
-      `*,request_relation(*,interview_session(*,interview_meeting(*),${interviewCancelReasons},interview_module(*),interview_session_relation(*,interview_module_relation(*,${userDetails}),debrief_user:${userDetails})))`,
+      `*,request_relation(*,interview_session(*,interview_meeting!inner(*),${interviewCancelReasons},interview_module!inner(*),interview_session_relation(*,interview_module_relation(*,${userDetails}),debrief_user:${userDetails})))`,
     )
     .eq('id', request_id)
     .single();
@@ -63,63 +63,44 @@ export const fetchSessionDetails = async ({
   const reducedPlan = data.request_relation
     .flatMap((rel) => rel.interview_session)
     .filter((ses) => ses !== null)
+    .sort((a, b) => a.session_order - b.session_order)
     .map((ses) => {
-      const interview_session: DatabaseTable['interview_session'] = {
-        break_duration: ses.break_duration,
-        created_at: ses.created_at,
-        id: ses.id,
-        interview_plan_id: ses.interview_plan_id,
-        interviewer_cnt: ses.interviewer_cnt,
-        location: ses.location,
-        meeting_id: ses.meeting_id,
-        members_meta: ses.members_meta,
-        module_id: ses.module_id,
-        name: ses.name,
-        parent_session_id: ses.parent_session_id,
-        recruiter_id: ses.recruiter_id,
-        schedule_type: ses.schedule_type,
-        session_duration: ses.session_duration,
-        session_order: ses.session_order,
-        session_type: ses.session_type,
-      };
+      const {
+        interview_session_relation,
+        interview_meeting,
+        interview_session_cancel,
+        interview_module,
+        ...interview_session
+      } = ses;
       return {
         interview_session,
-        interview_meeting: ses.interview_meeting!,
-        cancel_reasons: ses.interview_session_cancel
+        interview_meeting,
+        interview_module,
+        cancel_reasons: interview_session_cancel
           .filter((cancel) => !cancel.is_resolved && !cancel.is_ignored)
           .map((cancel) => {
-            const interview_session_cancel: DatabaseTable['interview_session_cancel'] =
-              {
-                id: cancel.id,
-                reason: cancel.reason,
-                is_resolved: cancel.is_resolved,
-                is_ignored: cancel.is_ignored,
-                created_at: cancel.created_at,
-                cancel_user_id: cancel.cancel_user_id,
-                other_details: cancel.other_details,
-                session_id: cancel.session_id,
-                session_relation_id: cancel.session_relation_id,
-                type: cancel.type,
-                request_id: cancel.request_id,
-                application_id: cancel.application_id,
-              };
+            const {
+              interview_session_relation,
+              admin,
+              ...interview_session_cancel
+            } = cancel;
+            const user =
+              interview_session.session_type === 'debrief'
+                ? admin
+                : interview_session_relation?.interview_module_relation
+                    ?.recruiter_user;
             return {
-              interview_session_cancel: interview_session_cancel!,
-              recruiter_user: cancel.interview_session_relation
-                ? cancel?.interview_session_relation?.interview_module_relation
-                    ?.recruiter_user
-                : cancel.admin!,
+              interview_session_cancel: interview_session_cancel,
+              recruiter_user: user!,
             };
           }),
-        interview_module: ses.interview_module!,
-        users:
-          ses.interview_session_relation.map((sesitem) => ({
-            interview_session_relation: sesitem!,
-            interview_module_relation: sesitem.interview_module_relation,
-            user_details: sesitem.interview_module_relation_id
-              ? sesitem?.interview_module_relation?.recruiter_user
-              : sesitem.debrief_user!,
-          })) || [],
+        users: interview_session_relation.map((sesitem) => ({
+          interview_session_relation: sesitem,
+          interview_module_relation: sesitem.interview_module_relation,
+          user_details: sesitem.interview_module_relation_id
+            ? sesitem?.interview_module_relation?.recruiter_user
+            : sesitem.debrief_user,
+        })),
       };
     });
 
