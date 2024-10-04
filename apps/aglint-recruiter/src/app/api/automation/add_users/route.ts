@@ -35,44 +35,43 @@ export async function POST(req: Request) {
       forms: user[];
     } = await req.json();
 
-    const recruiter_user = supabaseWrap(
-      await supabaseAdmin
-        .from('recruiter_relation')
-        .select(
-          'recruiter_user!public_recruiter_relation_user_id_fkey!inner(user_id),roles!inner(name)',
-        )
-        .eq('recruiter_id', recruiter_id)
-        .eq('recruiter_user.status', 'active'),
-    );
-
-    const recruiter = supabaseWrap(
-      await supabaseAdmin
-        .from('recruiter')
-        .select('*')
-        .eq('id', recruiter_id)
-        .single(),
-    );
-
-    const locations = supabaseWrap(
-      await supabaseAdmin
-        .from('office_locations')
-        .select('*')
-        .eq('recruiter_id', recruiter_id),
-    );
-
-    const departments = supabaseWrap(
-      await supabaseAdmin
-        .from('departments')
-        .select('*')
-        .eq('recruiter_id', recruiter_id),
-    );
-
-    const roles = supabaseWrap(
-      await supabaseAdmin
-        .from('roles')
-        .select('*')
-        .eq('recruiter_id', recruiter_id),
-    );
+    const [recruiter_user, recruiter, locations, departments, roles] =
+      await Promise.all([
+        (
+          await supabaseAdmin
+            .from('recruiter_relation')
+            .select(
+              'recruiter_user!public_recruiter_relation_user_id_fkey!inner(user_id),roles!inner(name)',
+            )
+            .eq('recruiter_id', recruiter_id)
+            .eq('recruiter_user.status', 'active')
+        ).data!,
+        (
+          await supabaseAdmin
+            .from('recruiter')
+            .select('scheduling_settings')
+            .eq('id', recruiter_id)
+            .single()
+        ).data!,
+        (
+          await supabaseAdmin
+            .from('office_locations')
+            .select('*')
+            .eq('recruiter_id', recruiter_id)
+        ).data!,
+        (
+          await supabaseAdmin
+            .from('departments')
+            .select('*')
+            .eq('recruiter_id', recruiter_id)
+        ).data!,
+        (
+          await supabaseAdmin
+            .from('roles')
+            .select('*')
+            .eq('recruiter_id', recruiter_id)
+        ).data!,
+      ]);
 
     const manager_ids = recruiter_user
       .filter((user) => user?.recruiter_user?.user_id)
@@ -106,7 +105,6 @@ export async function POST(req: Request) {
         position: form.title,
         department_id: departmentId,
         role_id: role.id,
-        role: role.name,
         is_calendar_connected: true,
         manager_id:
           role.name === 'admin'
@@ -126,7 +124,6 @@ export async function POST(req: Request) {
     );
 
     const results = await Promise.allSettled(requests);
-
     const addedUserEmails: string[] = [];
 
     results.forEach((result) => {
@@ -142,7 +139,12 @@ export async function POST(req: Request) {
       { status: 200 },
     );
   } catch (e: any) {
-    return NextResponse.json({ message: e.message }, { status: 400 });
+    return NextResponse.json(
+      {
+        message: `please check the department, location and roles are present\n${e.message}`,
+      },
+      { status: 400 },
+    );
   }
 }
 
@@ -205,7 +207,6 @@ export async function registerMember(
       .insert({
         recruiter_id,
         user_id: userId,
-        role: 'interviewer',
         role_id: user.role_id,
         manager_id: user.manager_id,
         is_active: true,
@@ -214,9 +215,6 @@ export async function registerMember(
       .select('id, role_id, manager_id, created_by, roles!inner(name)')
       .single(),
   );
-  if (!relation.manager_id) {
-    throw new Error('Manager not found');
-  }
   if (!relation.created_by) {
     throw new Error('Created by not found');
   }
@@ -224,7 +222,7 @@ export async function registerMember(
     ...recUser,
     role_id: relation.role_id,
     role: relation.roles.name,
-    manager_id: relation.manager_id,
+    manager_id: relation?.manager_id ?? null,
     created_by: relation.created_by,
     recruiter_relation_id: relation.id,
   };

@@ -120,6 +120,13 @@ export const PATHS = [
   '/requests',
   '/requests/[request]',
   '/user/[user]',
+
+  '/workflows/[workflow]',
+  '/candidate/[application]/home',
+  '/candidate/[application]/interviews',
+  '/candidate/[application]/messages',
+  '/candidate/[application]/profile',
+  '/candidate/[application]/login',
   '/workflows',
   '/workflows/[workflow]',
   '/candidate/[application_id]/home',
@@ -203,5 +210,5 @@ export const PATHS = [
   '/api/emails/slack/onQualified_slack_trainee',
   '/api/emails/slack/onReceivingAvailReq_slack_suggestSlots',
   '/api/emails/slack/onRequestCancel_slack_interviewersOrganizer',
-  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification'
-] as const
+  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification',
+] as const;
