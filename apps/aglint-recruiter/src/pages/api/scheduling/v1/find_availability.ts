@@ -17,7 +17,7 @@ const findAvailability = async (
 ) => {
   parsedData.options.return_empty_slots_err = true;
   const cand_schedule = new CandidatesScheduling(parsedData.options);
-
+  console.log('fmwejkn');
   await cand_schedule.fetchDetails({
     params: {
       company_id: parsedData.recruiter_id.trimmer(),

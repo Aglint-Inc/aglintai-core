@@ -27,11 +27,13 @@
     "node": "^18.18.0 || >=20.0.0"
   },
   "lint-staged": {
-    "*.{js,ts,tsx}": [
-      "npm run format"
+    "/apps/**/*.{js,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
     ],
-    "*.json": [
-      "npm run format"
+    "/packages/**/*.{js,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
     ]
   }
 }
