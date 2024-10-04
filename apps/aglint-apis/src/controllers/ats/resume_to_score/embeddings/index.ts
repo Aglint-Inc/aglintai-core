@@ -1,5 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('@tensorflow/tfjs');
-const use = require('@tensorflow-models/universal-sentence-encoder');
+import use from '@tensorflow-models/universal-sentence-encoder';
 
 async function createEmbeddings(sentencesA: string, sentencesB: string) {
   const model = await use.load();
