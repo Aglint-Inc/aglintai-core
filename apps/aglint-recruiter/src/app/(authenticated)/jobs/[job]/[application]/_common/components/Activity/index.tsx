@@ -1,7 +1,13 @@
 'use client';
 
 import { type DatabaseTable } from '@aglint/shared-types';
-import { Section, SectionTitle } from '@components/layouts/sections-header';
+import {
+  Section,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import { Button } from '@components/ui/button';
 import dayjs from 'dayjs';
 import { ChevronDown, ChevronUp, Circle, Clock } from 'lucide-react';
@@ -33,7 +39,14 @@ export const Activity = () => {
 
   return (
     <Section>
-      <SectionTitle>Activity</SectionTitle>
+      <SectionHeader>
+        <SectionHeaderText>
+          <SectionTitle>Activity</SectionTitle>
+          <SectionDescription>
+            Activity related to this application.
+          </SectionDescription>
+        </SectionHeaderText>
+      </SectionHeader>
       <div className='w-full space-y-4'>
         {displayedActivities.map((activity, i) => (
           <div key={activity.id} className='relative w-full last:pb-0'>
@@ -54,11 +67,11 @@ export const Activity = () => {
               </div>
               <div className='flex w-full min-w-0 flex-1 justify-between gap-1'>
                 <div className='w-full'>
-                  <p className='text-md font-normal text-gray-900'>
+                  <p className='text-sm font-normal text-gray-900'>
                     {activity.title || '---'}
                   </p>
                   {activity.description && (
-                    <p className='mt-0.5 text-sm'>{activity.description}</p>
+                    <p className='mt-0.5 text-xs'>{activity.description}</p>
                   )}
                   {activity.metadata && (
                     <SlotContent
@@ -77,7 +90,7 @@ export const Activity = () => {
                       }}
                     />
                   )}
-                  <div className='pt-1 text-left text-sm text-muted-foreground'>
+                  <div className='pt-1 text-left text-xs text-muted-foreground'>
                     <time dateTime={activity.created_at}>
                       {dayjs(activity.created_at).fromNow()}
                     </time>

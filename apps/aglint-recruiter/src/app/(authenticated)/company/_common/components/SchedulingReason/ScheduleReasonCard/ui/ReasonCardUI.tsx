@@ -40,11 +40,11 @@ export const ReasonCardUI = ({
 
   return (
     <>
-      <ul className='max-w-2xl space-y-2 '>
+      <ul className='max-w-2xl space-y-2'>
         {reasons.map((reason, reasonIndex) => (
           <li
             key={reasonIndex}
-            className='group flex items-center justify-between p-2 rounded-md bg-gray-100 '
+            className='group flex items-center justify-between py-2'
           >
             {editingIndex === reasonIndex ? (
               <Input

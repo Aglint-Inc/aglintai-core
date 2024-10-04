@@ -1,12 +1,13 @@
 'use client';
 import ReorderableInterviewPlan from '@components/reorderable-interview-plan';
+import { ScrollArea } from '@components/ui/scroll-area';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { Resume } from '@/jobs/job/application/components/Resume';
 import { Details } from '@/jobs/job/application/components/Scoring';
 
 import InterviewTabContent from './InterviewTab';
-import TabsComp, { type TabsType } from './TabPills';
+import { type TabsType } from './TabPills';
 
 function ApplicationDetailComp() {
   const router = useRouterPro();
@@ -34,9 +35,10 @@ function ApplicationDetailComp() {
   };
 
   return (
-    <div className='space-y-4 px-4'>
-      <TabsComp />
-      {renderTabContent()}
+    <div className='space-y-4 p-4'>
+      <ScrollArea className='h-[calc(100vh-300px)]'>
+        {renderTabContent()}
+      </ScrollArea>
     </div>
   );
 }

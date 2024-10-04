@@ -6,6 +6,7 @@ import { ApplicantInfoBox } from '../ui/ApplicationInfo';
 
 function CandidateInfo() {
   const { data: resume, isLoading: isLoadingMeta } = useApplicationDetails();
+  const { data: detail } = useApplicationMeta();
   const { data: applicationDetail, isLoading: isLoadingDetail } =
     useApplicationMeta();
 
@@ -14,6 +15,7 @@ function CandidateInfo() {
       {isLoadingMeta || isLoadingDetail ? null : (
         <>
           <ApplicantInfoBox
+            candidateName={detail?.name || ''}
             isDepartmentVisible={false}
             textEmail={applicationDetail?.email || ''}
             isRoleVisible={Boolean(applicationDetail?.current_job_title)}

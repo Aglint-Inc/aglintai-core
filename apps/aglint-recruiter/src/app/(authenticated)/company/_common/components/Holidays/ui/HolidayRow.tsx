@@ -1,7 +1,6 @@
 import { Badge } from '@components/ui/badge';
 import { TableCell, TableRow } from '@components/ui/table';
 import { cn } from '@lib/utils';
-import { Trash } from 'lucide-react';
 
 import { UIButton } from '@/common/UIButton';
 
@@ -26,7 +25,11 @@ export const HolidayRow = (props: Props) => {
             <>---</>
           ) : (
             props.locations.map((location, index) => (
-              <Badge key={index} variant='secondary' className='mr-1 text-sm font-normal rounded-sm bg-gray-100'>
+              <Badge
+                key={index}
+                variant='secondary'
+                className='mr-1 rounded-sm bg-gray-100 text-sm font-normal'
+              >
                 {location}
               </Badge>
             ))
@@ -36,10 +39,10 @@ export const HolidayRow = (props: Props) => {
         )}
       </TableCell>
       <TableCell>
-        <UIButton variant='ghost' size='sm' onClick={props.onDelete} className='p-0 w-6 h-6 text-gray-600 hover:bg-red-500 hover:text-white duration-200'>
-         <Trash className='w-3 h-3'/>
+        <UIButton variant='outline' size='sm' onClick={props.onDelete}>
+          Delete
         </UIButton>
       </TableCell>
     </TableRow>
-  );  
+  );
 };

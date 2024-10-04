@@ -5,12 +5,20 @@ import {
   PageHeaderText,
   PageTitle,
 } from '@components/layouts/page-header';
+import {
+  Section,
+  SectionActions,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useState } from 'react';
 
-import UISectionCard from '@/components/Common/UISectionCard';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { SharedActions } from '@/job/components/SharedTopNav/actions';
@@ -107,7 +115,7 @@ const Dashboard = () => {
 
   return (
     <Page>
-      <PageHeader>
+      <PageHeader className='px-4'>
         <PageHeaderText>
           <PageTitle>Job Metrics</PageTitle>
           <SharedBreadCrumbs />
@@ -119,7 +127,7 @@ const Dashboard = () => {
       <div className='mb-6 flex flex-col gap-6 px-4'>
         <div>
           <div className='flex flex-col gap-4 py-4'>
-            <div className='space-y-4 rounded-lg border bg-white p-4'>
+            <div className='space-y-4 rounded-lg bg-muted p-4'>
               <JobStats
                 isScoringEnabled={isScoringEnabled}
                 score_matches={score_matches}
@@ -232,31 +240,34 @@ const Doughnut = () => {
   const tabs: DoughnutType[] = ['city', 'state', 'country'];
 
   return (
-    <UISectionCard
-      title=' Location Distribution'
-      isHoverEffect={false}
-      action={
-        <Tabs
-          value={currentTab}
-          onValueChange={(value) => {
-            const curTab = value as DoughnutType;
-            setCurrentTab(curTab);
-          }}
-        >
-          <TabsList>
-            {tabs.map((tab) => (
-              <TabsTrigger key={tab} value={tab}>
-                {capitalizeAll(tab)}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
-      }
-    >
-      <div className='h-[300px]'>
+    <Section className='rounded-lg bg-muted p-4'>
+      <SectionHeader>
+        <SectionHeaderText>
+          <SectionTitle>Location Distribution</SectionTitle>
+          <SectionDescription>Applicants by location.</SectionDescription>
+        </SectionHeaderText>
+        <SectionActions>
+          <Tabs
+            value={currentTab}
+            onValueChange={(value) => {
+              const curTab = value as DoughnutType;
+              setCurrentTab(curTab);
+            }}
+          >
+            <TabsList>
+              {tabs.map((tab) => (
+                <TabsTrigger key={tab} value={tab}>
+                  {capitalizeAll(tab)}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
+        </SectionActions>
+      </SectionHeader>
+      <ScrollArea className='h-[300px]'>
         <DashboardDoughnutChart option={currentTab} />
-      </div>
-    </UISectionCard>
+      </ScrollArea>
+    </Section>
   );
 };
 
@@ -266,31 +277,36 @@ const LineGraph = () => {
   const tabs: LineGraphType[] = ['experience', 'tenure'];
 
   return (
-    <UISectionCard
-      title='Experience and Tenure'
-      isHoverEffect={false}
-      action={
-        <Tabs
-          value={currentTab}
-          onValueChange={(value) => {
-            const curTab = value as LineGraphType;
-            setCurrentTab(curTab);
-          }}
-        >
-          <TabsList>
-            {tabs.map((tab) => (
-              <TabsTrigger key={tab} value={tab}>
-                {capitalizeAll(tab)}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
-      }
-    >
-      <div className='h-[300px]'>
+    <Section className='rounded-lg bg-muted p-4'>
+      <SectionHeader>
+        <SectionHeaderText>
+          <SectionTitle>Experience and Tenure</SectionTitle>
+          <SectionDescription>
+            Applicants by experience and tenure.
+          </SectionDescription>
+        </SectionHeaderText>
+        <SectionActions>
+          <Tabs
+            value={currentTab}
+            onValueChange={(value) => {
+              const curTab = value as LineGraphType;
+              setCurrentTab(curTab);
+            }}
+          >
+            <TabsList>
+              {tabs.map((tab) => (
+                <TabsTrigger key={tab} value={tab}>
+                  {capitalizeAll(tab)}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
+        </SectionActions>
+      </SectionHeader>
+      <ScrollArea className='h-[300px]'>
         <DashboardLineChart option={currentTab} />
-      </div>
-    </UISectionCard>
+      </ScrollArea>
+    </Section>
   );
 };
 
@@ -300,34 +316,37 @@ const Bars = () => {
   const [currentTab, setCurrentTab] = useState<BarsType>('top_skills');
   const tabs: BarsType[] = ['top_skills', 'skills_mentioned_in_JD'];
   return (
-    <UISectionCard
-      title='Skills'
-      isHoverEffect={false}
-      action={
-        <Tabs
-          value={currentTab}
-          onValueChange={(value) => {
-            const curTab = value as BarsType;
-            setCurrentTab(curTab);
-          }}
-        >
-          <TabsList>
-            {tabs.map((tab) => (
-              <TabsTrigger key={tab} value={tab}>
-                {capitalizeAll(tab)}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
-      }
-    >
-      <div className='h-[300px]'>
+    <Section className='rounded-lg bg-muted p-4'>
+      <SectionHeader>
+        <SectionHeaderText>
+          <SectionTitle>Skills</SectionTitle>
+          <SectionDescription>Applicants by skills.</SectionDescription>
+        </SectionHeaderText>
+        <SectionActions>
+          <Tabs
+            value={currentTab}
+            onValueChange={(value) => {
+              const curTab = value as BarsType;
+              setCurrentTab(curTab);
+            }}
+          >
+            <TabsList>
+              {tabs.map((tab) => (
+                <TabsTrigger key={tab} value={tab}>
+                  {capitalizeAll(tab)}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
+        </SectionActions>
+      </SectionHeader>
+      <ScrollArea className='h-[300px]'>
         <DashboardBarChart
           option={
             currentTab === 'top_skills' ? 'top_skills' : 'required_skills'
           }
         />
-      </div>
-    </UISectionCard>
+      </ScrollArea>
+    </Section>
   );
 };
