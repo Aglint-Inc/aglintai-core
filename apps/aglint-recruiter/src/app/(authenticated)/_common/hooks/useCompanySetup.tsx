@@ -58,8 +58,8 @@ const requestIds: SetupStepType['id'][] = [
 export function useCompanySetup() {
   //states ---
   const [steps, setSteps] = useState<SetupStepType[]>([]);
-  const [selectedStep, setSelectedStep] = useState<SetupStepType>(null);
-  const [selectedIndex, setSelectedIndex] = useState<number>(null);
+  const [selectedStep, setSelectedStep] = useState<SetupStepType>();
+  const [selectedIndex, setSelectedIndex] = useState<number>();
   const [isOnboardCompleteRemote, setIsOnboardCompleteRemote] = useState(true);
 
   const { mutateAsync } = api.tenant.updateTenantPreference.useMutation();
@@ -92,7 +92,11 @@ export function useCompanySetup() {
       (step) => !step.isCompleted,
     );
     setSelectedStep(
-      firstIncompleteStep ? firstIncompleteStep : steps[selectedIndex],
+      firstIncompleteStep
+        ? firstIncompleteStep
+        : selectedIndex
+          ? steps[selectedIndex]
+          : undefined,
     );
 
     if (firstIncompleteStepIndex) {
