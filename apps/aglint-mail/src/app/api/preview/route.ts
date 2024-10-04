@@ -5,8 +5,8 @@ import { z } from 'zod';
 import { type allTempvariables } from '@aglint/shared-utils';
 import { ClientError } from '../../../utils/apiUtils/customErrors';
 import { getEmails } from '../../../utils/apiUtils/get-emails';
-import { fetchUtil } from './fetch-utils';
 import { getSupabaseServer } from '../../../supabase/supabaseAdmin';
+import { fetchUtil } from './fetch-utils';
 
 interface ReqPayload {
   mail_type: string;

@@ -16,7 +16,7 @@ const Home = () => {
             alt="React Email Icon"
             className="mb-8"
             height={144}
-            src={'/static/logo.png'}
+            src="/static/logo.png"
             style={{
               borderRadius: 34,
               boxShadow: '0px 10px 200px 20px #2B7CA080',

@@ -1,7 +1,7 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { numberToOrdinal } from '../../utils/email/common/functions';
-import { FetchUtilResp, FetchUtilType } from '../../types/emailfetchUtil';
+import type { FetchUtilResp, FetchUtilType } from '../../types/emailfetchUtil';
 
 export const fetchUtil: FetchUtilType<
   'interviewEnd_email_rShadowTraineeForMeetingAttendence'
