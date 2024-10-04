@@ -22,7 +22,7 @@ export const apiTargetToEvents: ApiTargetToEvents = {
   onRequestCancel_slack_interviewersOrganizer:
     'MEETING_CANCEL_INFORM_INTERVIEWER_ORGANIZER',
   onReceivingAvailReq_agent_suggestSlots: 'SLOT_SUGGESTION',
-};
+} as const;
 
 type GroupeTriggerEvent =
   | 'beforeAvailabilityReceive'
@@ -40,4 +40,4 @@ export const groupedTriggerEventMap: Partial<
     'SELF_SCHEDULE_LINK',
     'SCHEDULE_INTERVIEW_SLOT',
   ],
-};
+} as const;

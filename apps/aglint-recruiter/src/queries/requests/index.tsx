@@ -129,7 +129,7 @@ export const requestQueries = {
             .eq('request_id', request_id)
             .order('updated_at', { ascending: true })
             .throwOnError()
-        ).data,
+        ).data ?? [],
     }),
   request_workflow: ({
     request_id,
@@ -147,7 +147,7 @@ export const requestQueries = {
         const d = supabaseWrap(
           await supabase
             .from('workflow')
-            .select('*, workflow_action(*)')
+            .select('*, workflow_action!inner(*)')
             .eq('request_id', request_id),
         );
         return d ?? [];

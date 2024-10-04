@@ -38,13 +38,14 @@ import {
 
 const WorkflowActionDialog = () => {
   const { recruiter } = useTenant();
-  const { request_workflow, requestDetails: currentRequest } = useRequest();
   const {
     reqTriggerActionsMap,
     companyEmailTemplatesMp,
     triggerDetails,
     setShowEditDialog,
     setTriggerDetails,
+    request_workflow,
+    requestDetails: currentRequest,
   } = useRequestProgressProvider();
 
   const {
@@ -60,7 +61,8 @@ const WorkflowActionDialog = () => {
   const handleChangeSelectedAction = (
     target_api: DatabaseEnums['email_slack_types'],
   ) => {
-    const editTrigger = triggerDetails.trigger;
+    const editTrigger =
+      triggerDetails.trigger as keyof typeof reqTriggerActionsMap;
     setTiptapLoadStatus({ email: true, agent: true });
     if (
       get(reqTriggerActionsMap, editTrigger, []).length > 0 &&

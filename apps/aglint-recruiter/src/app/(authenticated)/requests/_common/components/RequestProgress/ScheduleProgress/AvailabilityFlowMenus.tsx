@@ -35,13 +35,14 @@ const AvailabilityFlowMenus = ({
     }
 
     for (const prog of request_progress.data) {
-      if (prog.event_type === 'CAND_AVAIL_REC') {
+      let key = prog.event_type;
+      if (key === 'CAND_AVAIL_REC') {
         break;
       }
-      if (!currEventMap[prog.event_type]) {
-        currEventMap[prog.event_type] = [];
+      if (!currEventMap[key]) {
+        currEventMap[key] = [];
       }
-      currEventMap[prog.event_type].push(prog);
+      currEventMap[key].push(prog);
       progres.push({
         ...prog,
       });
@@ -49,7 +50,9 @@ const AvailabilityFlowMenus = ({
     return { progres, currEventMap };
   }, [request_progress.data]);
 
-  let eventWActions: DatabaseTable['workflow_action'][] = [];
+  let eventWActions: (DatabaseTable['workflow_action'] & {
+    target_api: keyof typeof apiTargetToEvents;
+  })[] = [];
   if (reqTriggerActionsMap['onRequestSchedule']) {
     eventWActions = [...reqTriggerActionsMap['onRequestSchedule']];
   }

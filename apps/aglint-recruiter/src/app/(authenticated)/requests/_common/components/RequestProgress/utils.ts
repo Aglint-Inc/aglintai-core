@@ -1,4 +1,8 @@
-import { type DatabaseTableInsert } from '@aglint/shared-types';
+import {
+  DatabaseEnums,
+  DatabaseTable,
+  type DatabaseTableInsert,
+} from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
 import { supabase } from '@/utils/supabase/client';
@@ -17,8 +21,17 @@ export const createRequestWorkflowAction = async ({
   interval: number;
   workflow_id?: string;
 }) => {
-  const trigger = wActions[0].target_api.split('_')[0] as any;
-  const phase = TRIGGER_PAYLOAD.find((t) => t.trigger === trigger).phase[0];
+  let trigger: DatabaseTable['workflow']['trigger'] | null = null;
+  if (wActions.length > 0) {
+    trigger = (
+      wActions[0].target_api as DatabaseEnums['email_slack_types']
+    ).split('_')[0] as DatabaseTable['workflow']['trigger'];
+  }
+  if (!trigger) return;
+  let details = TRIGGER_PAYLOAD.find((t) => t.trigger === trigger);
+  if (!details) return;
+  const phase = details.phase[0];
+
   if (workflow_id) {
     supabaseWrap(
       await supabase
@@ -43,7 +56,7 @@ export const createRequestWorkflowAction = async ({
         .insert({
           request_id: request_id,
           trigger: trigger,
-          phase: phase,
+          phase: phase as NonNullable<typeof phase>,
           recruiter_id: recruiter_id,
           interval: interval,
           workflow_type: 'job',

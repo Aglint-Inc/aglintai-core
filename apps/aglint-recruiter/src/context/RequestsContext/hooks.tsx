@@ -209,7 +209,10 @@ export const useRequestsActions = () => {
   ]);
 
   return {
-    requests,
+    requests: {
+      ...requests,
+      data: requests.data ?? [],
+    },
     handleCreateRequests,
     handleAsyncCreateRequests,
     handleUpdateRequest,
