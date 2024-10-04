@@ -18,6 +18,7 @@ import { type Meeting } from './type';
 import {
   filling2dArray,
   getDatesArray,
+  type GroupedEvents,
   transposeArray,
   useUserSchedules,
 } from './utils';
@@ -27,7 +28,7 @@ export default function Heatmap({
 }: {
   loadSetting: SchedulingSettingType['interviewLoad'];
 }) {
-  const [arrayDates, setArrayDates] = useState([]);
+  const [arrayDates, setArrayDates] = useState<string[]>([]);
   const [dayCount, setDayCount] = useState<{ start: number; end: number }>({
     start: -7,
     end: 22,
@@ -35,7 +36,8 @@ export default function Heatmap({
   const [maxCount, setMaxCountInterviews] = useState(
     loadSetting.dailyLimit.value,
   );
-  const user_id = useParams().user as string;
+  const params = useParams();
+  const user_id = params?.user ? (params.user as string) : '';
   const router = useRouter();
 
   const { data, isLoading } = useUserSchedules(user_id);
@@ -198,62 +200,20 @@ export default function Heatmap({
             />
           </ScrollArea>
         </Section>
-        // <UISectionCard
-        //   type='compact'
-        //   title='Meetings overview'
-        //   isHoverEffect={false}
-        //   // action={
-        //   //   <div className='mb-4 flex max-w-[1000px] items-center gap-2'>
-        //   //     <div className='flex space-x-1'>
-        //   //       <p className='font-medium'>Daily :</p>
-        //   //       <p>{loadSetting?.dailyLimit.value}</p>
-        //   //       <p>{todayTypeText}</p>
-        //   //       <p className='font-medium'> Weekly : </p>
-        //   //       <p>{loadSetting?.weeklyLimit.value}</p>
-        //   //       <p>{weeklyTypeText}</p>
-        //   //     </div>
-        //   //     <div className='w-[10px]'>|</div>
-        //   //     <p className='min-w-[280px]'>
-        //   //       Activity on{' '}
-        //   //       <span className='font-medium'>
-        //   //         {startDateUI} - {endDateUI}
-        //   //       </span>
-        //   //     </p>
-        //   //     <UIButton
-        //   //       size='sm'
-        //   //       variant='secondary'
-        //   //       onClick={() =>
-        //   //         setDayCount((pre) => ({
-        //   //           start: pre.start === 21 ? -7 : pre.start - 28,
-        //   //           end: pre.end - 28,
-        //   //         }))
-        //   //       }
-        //   //       icon={<ChevronLeft className='h-4 w-4' />}
-        //   //     />
-        //   //     <UIButton
-        //   //       size='sm'
-        //   //       variant='secondary'
-        //   //       onClick={() =>
-        //   //         setDayCount((pre) => ({
-        //   //           start: pre.start === -7 ? 21 : pre.start + 28,
-        //   //           end: pre.end + 28,
-        //   //         }))
-        //   //       }
-        //   //       icon={<ChevronRight className='h-4 w-4' />}
-        //   //     />
-        //   //   </div>
-        //   // }
-        // >
-        //   <div className=''>
-
-        //   </div>
-        // </UISectionCard>
       )}
     </>
   );
 }
 
-const arrayStructure = ({ datesArray, gridData, maxCount }): Meeting[][] => {
+const arrayStructure = ({
+  datesArray,
+  gridData,
+  maxCount,
+}: {
+  datesArray: string[];
+  gridData: GroupedEvents;
+  maxCount: number;
+}): Meeting[][] => {
   if (gridData) {
     Object.keys(gridData).forEach((date) => {
       if (datesArray.includes(date)) {

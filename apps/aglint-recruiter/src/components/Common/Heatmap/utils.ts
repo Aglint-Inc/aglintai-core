@@ -4,17 +4,40 @@ import _ from 'lodash';
 
 import { supabase } from '@/utils/supabase/client';
 
-import { type Meeting, type Meetings } from './type';
+import { type Meeting } from './type';
+
+export type GroupedEvents = {
+  [date: string]: {
+    status:
+      | 'waiting'
+      | 'confirmed'
+      | 'completed'
+      | 'cancelled'
+      | 'reschedule'
+      | 'not_scheduled';
+    startTime: string | null;
+    endTime: string | null;
+    meeting_id: string;
+  }[];
+};
 
 export function useUserSchedules(user_id: string) {
-  return useQuery({
+  const query = useQuery({
     queryKey: ['user_id', user_id],
     queryFn: () => fetchFunction({ user_id }),
     enabled: Boolean(user_id),
   });
+  return {
+    ...query,
+    data: query.data!,
+  };
 }
 
-export const getDatesArray = (startDate, endDate, format) => {
+export const getDatesArray = (
+  startDate: string,
+  endDate: string,
+  format: string,
+) => {
   const dates = [];
   let currentDate = dayjsLocal(startDate);
 
@@ -26,15 +49,17 @@ export const getDatesArray = (startDate, endDate, format) => {
   return dates;
 };
 
-const fetchFunction = async ({ user_id }) => {
+const fetchFunction = async ({ user_id }: { user_id: string }) => {
   try {
-    const { data } = await supabase
-      .from('meeting_details')
-      .select(
-        'status,start_time,end_time,id,applications(candidates(first_name,last_name)), public_jobs(id,job_title), meeting_interviewers!public_interview_session_meeting_id_fkey(*)',
-      )
-      .contains('confirmed_user_ids', [user_id])
-      .eq('meeting_interviewers.is_confirmed', true);
+    const data = (
+      await supabase
+        .from('meeting_details')
+        .select(
+          'status,start_time,end_time,id,applications(candidates(first_name,last_name)), public_jobs(id,job_title), meeting_interviewers!public_interview_session_meeting_id_fkey(*)',
+        )
+        .contains('confirmed_user_ids', [user_id])
+        .eq('meeting_interviewers.is_confirmed', true)
+    ).data!;
 
     const filteredData = data
       .filter(
@@ -71,42 +96,44 @@ function groupByStartDate({
       | 'cancelled'
       | 'reschedule'
       | 'not_scheduled';
-    startTime: string;
-    endTime: string;
+    startTime: string | null;
+    endTime: string | null;
     meeting_id: string;
   }[];
-}): Meetings {
-  const res = events.reduce((acc, event) => {
+}): GroupedEvents {
+  const res = events.reduce((acc: GroupedEvents, event) => {
     const startDate = dayjsLocal(event.startTime).format('YYYY-MM-DD');
 
-    // eslint-disable-next-line security/detect-object-injection
     if (!acc[startDate]) {
-      // eslint-disable-next-line security/detect-object-injection
       acc[startDate] = [];
     }
 
-    // eslint-disable-next-line security/detect-object-injection
     acc[startDate].push(event);
 
     return acc;
-  }, {});
+  }, {} as GroupedEvents);
 
   return res;
 }
-
-function findMaxGroupCount(groupedData: Meetings) {
+function findMaxGroupCount(groupedData: GroupedEvents) {
   const groupSizes = Object.values(groupedData).map((group) => group?.length);
   const maxCount = Math.max(...groupSizes);
   return maxCount;
 }
 
 export function transposeArray(array: Meeting[][]): Meeting[][] {
-  return array?.length ? _.zip(...array).reverse() : [];
+  return array?.length
+    ? _.zip(...array)
+        .map((row) => row.map((item) => item || ({} as Meeting)))
+        .reverse()
+    : [];
 }
 
-export const filling2dArray = (data, maxCount) => {
+export const filling2dArray = (data: Meeting[][], maxCount: number) => {
   return data?.map((subArray) => {
     const fillCount = maxCount - subArray.length;
-    return subArray.concat(Array.from({ length: fillCount }, () => ({})));
+    return subArray.concat(
+      Array.from({ length: fillCount }, () => ({}) as Meeting),
+    );
   });
 };

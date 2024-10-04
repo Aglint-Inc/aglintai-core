@@ -1,4 +1,4 @@
-import { customSchedulingSettingsSchema } from '@aglint/shared-types/src/db/common.zod';
+import { customSchedulingSettingsUserSchema } from '@aglint/shared-types/src/db/common.zod';
 import { type CustomSchedulingSettings } from '@aglint/shared-types/src/db/tables/common.types';
 import {} from '@aglint/shared-types/src/db/tables/recruiter.types';
 import { z } from 'zod';
@@ -10,8 +10,8 @@ const Schema = z.object({
   first_name: z.string(),
   last_name: z.string(),
   phone: z.string(),
-  scheduling_settings: customSchedulingSettingsSchema,
-  profile_image: z.string(),
+  scheduling_settings: customSchedulingSettingsUserSchema,
+  profile_image: z.string().nullable(),
   linked_in: z.string(),
   user_id: z.string(),
 });
@@ -35,10 +35,10 @@ const mutation = async ({ input }: PrivateProcedure<typeof Schema>) => {
   await db
     .from('recruiter_user')
     .update({
-      first_name: first_name,
-      last_name: last_name,
-      phone: phone,
-      linked_in: linked_in,
+      first_name,
+      last_name,
+      phone,
+      linked_in,
       profile_image,
       scheduling_settings: newSchedulingSettings,
     })

@@ -15,7 +15,7 @@ export type profileDetailsPayload = Pick<
   | 'avatar'
 >;
 
-export async function POST(req) {
+export async function POST(req: Request) {
   try {
     const {
       application_id,
@@ -33,31 +33,45 @@ export async function POST(req) {
       },
       { status: 200 },
     );
-  } catch (e) {
-    return NextResponse.json(e.message, { status: 400 });
+  } catch (e: unknown) {
+    if (e instanceof Error) {
+      return NextResponse.json({ message: e.message }, { status: 400 });
+    } else {
+      return NextResponse.json(
+        { message: 'An unknown error occurred' },
+        { status: 400 },
+      );
+    }
   }
 }
 
-const updateCandidateDetails = async (
-  application_id: string,
-  details: profileDetailsPayload,
-) => {
-  const supabaseAdmin = getSupabaseServer();
+/*************  ✨ Codeium Command ⭐  *************/
+/**
+ * Updates candidate details in the DB.
+ * @param {string} application_id - Unique identifier for the job application
+ * @param {profileDetailsPayload} details - The details to update
+ * @throws {Error} - If the candidate is not found
+ */
+/******  704bb2b9-5107-49c0-a6fb-4d32cbdb1f17  *******/ const updateCandidateDetails =
+  async (application_id: string, details: profileDetailsPayload) => {
+    const supabaseAdmin = getSupabaseServer();
 
-  const candidate_id = supabaseWrap(
-    await supabaseAdmin
-      .from('applications')
-      .select('candidate_id')
-      .eq('id', application_id)
-      .single()
-      .throwOnError(),
-  ).candidate_id;
+    const candidate_id = supabaseWrap(
+      await supabaseAdmin
+        .from('applications')
+        .select('candidate_id')
+        .eq('id', application_id)
+        .single()
+        .throwOnError(),
+    ).candidate_id;
 
-  const { error } = await supabaseAdmin
-    .from('candidates')
-    .update({ ...details })
-    .eq('id', candidate_id)
-    .throwOnError();
+    if (candidate_id) {
+      const { error } = await supabaseAdmin
+        .from('candidates')
+        .update({ ...details })
+        .eq('id', candidate_id)
+        .throwOnError();
 
-  if (error) throw new Error(error.message);
-};
+      if (error) throw new Error(error.message);
+    }
+  };
