@@ -15,8 +15,8 @@ export function useJobLocations() {
     api.analytics.job.location_count.useQuery(
       {
         recruiter_id: recruiter.id,
-        locations: filters.location && [filters.location],
-        departments: filters.department && [filters.department],
+        locations: filters.location ? [filters.location] : undefined,
+        departments: filters.department ? [filters.department] : undefined,
         data_range: filters.dateRange,
       },
       {
@@ -72,8 +72,8 @@ export function useCandidateExp() {
     api.analytics.candidate.candidates_exp.useQuery(
       {
         recruiter_id: recruiter.id,
-        locations: filters.location && [filters.location],
-        departments: filters.department && [filters.department],
+        locations: filters.location ? [filters.location] : undefined,
+        departments: filters.department ? [filters.department] : undefined,
         data_range: filters.dateRange,
       },
       {
@@ -132,22 +132,22 @@ export function useCandidateSkills() {
   const { data: skills } = useQuery({
     queryKey: ['job', filters.job, 'skills'],
     queryFn: async () =>
-      (
+      ((
         await supabase
           .from('public_jobs')
           .select('jd_json->skills')
-          .eq('id', filters.job)
+          .eq('id', filters.job!)
           .single()
           .throwOnError()
-      ).data.skills as string[],
+      )?.data?.skills || []) as string[],
     enabled: !!filters.job,
   });
   const { data, isFetching, isError } =
     api.analytics.candidate.candidates_skills.useQuery(
       {
         recruiter_id: recruiter.id,
-        locations: filters.location && [filters.location],
-        departments: filters.department && [filters.department],
+        locations: filters.location ? [filters.location] : undefined,
+        departments: filters.department ? [filters.department] : undefined,
         data_range: filters.dateRange,
       },
       {
