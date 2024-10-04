@@ -38,14 +38,13 @@ import {
 
 const WorkflowActionDialog = () => {
   const { recruiter } = useTenant();
+  const { request_workflow, requestDetails: currentRequest } = useRequest();
   const {
     reqTriggerActionsMap,
     companyEmailTemplatesMp,
     triggerDetails,
     setShowEditDialog,
     setTriggerDetails,
-    request_workflow,
-    requestDetails: currentRequest,
   } = useRequestProgressProvider();
 
   const {
@@ -61,11 +60,11 @@ const WorkflowActionDialog = () => {
   const handleChangeSelectedAction = (
     target_api: DatabaseEnums['email_slack_types'],
   ) => {
-    const editTrigger =
-      triggerDetails.trigger as keyof typeof reqTriggerActionsMap;
+    const editTrigger = triggerDetails.trigger;
     setTiptapLoadStatus({ email: true, agent: true });
     if (
       get(reqTriggerActionsMap, editTrigger, []).length > 0 &&
+      reqTriggerActionsMap[editTrigger] &&
       reqTriggerActionsMap[editTrigger][0].target_api === target_api
     ) {
       const existing_workflow_action = reqTriggerActionsMap[editTrigger][0];
@@ -74,7 +73,7 @@ const WorkflowActionDialog = () => {
         subject:
           (existing_workflow_action.payload as any)?.email?.subject || '',
       });
-      existing_workflow_action.payload = undefined;
+      existing_workflow_action.payload = {};
       setSelectedActionsDetails({
         ...existing_workflow_action,
       });
@@ -90,14 +89,14 @@ const WorkflowActionDialog = () => {
       });
       const defaultActDetails = ACTION_TRIGGER_MAP[editTrigger].find(
         (t) => t.value.target_api === target_api,
-      );
+      )!;
       setSelectedActionsDetails({
-        id: undefined,
+        id: '',
         action_type: defaultActDetails.value.action_type,
         created_at: new Date().toISOString(),
         order: 0,
         target_api: target_api as any,
-        workflow_id: undefined,
+        workflow_id: '',
       });
     }
 
@@ -116,6 +115,8 @@ const WorkflowActionDialog = () => {
         wAction.target_api ===
           'onRequestSchedule_emailLink_sendSelfSchedulingLink' &&
         wAction.action_type == 'email' &&
+        wAction.payload &&
+        wAction.payload.email &&
         (wAction.payload.email.subject.length == 0 ||
           wAction.payload.email.body.length == 0)
       ) {
