@@ -31,6 +31,10 @@
       "inputs": ["$TURBO_DEFAULT$"],
       "outputLogs": "new-only"
     },
+    "format": {
+      "dependsOn": [],
+      "inputs": ["$TURBO_DEFAULT$"]
+    },
     "test": {
       "inputs": ["$TURBO_DEFAULT$", ".env.test.local", ".env.test", ".env"]
     }

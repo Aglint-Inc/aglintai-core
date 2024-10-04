@@ -6,15 +6,14 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build",
     "dev": "turbo run dev",
+    "build": "turbo run build",
     "lint": "turbo run lint",
     "type-check": "turbo run type-check",
+    "format": "turbo run format",
     "test": "turbo run test",
     "supabase:dev": "turbo run supabase:dev",
     "supabase:local": "turbo run supabase:local",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "autofix": "eslint . --fix",
     "pull": "git pull origin development --no-rebase",
     "prepare": "husky install"
   },
@@ -26,8 +25,5 @@
   "packageManager": "npm@10.5.2",
   "engines": {
     "node": "^18.18.0 || >=20.0.0"
-  },
-  "lint-staged": {
-    "*.{ts,tsx,md}": "prettier --write"
   }
 }

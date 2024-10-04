@@ -1,0 +1,5 @@
+{
+  "/apps/**/*.{js,ts,tsx}": ["npm run format", "npm run lint"],
+  "/packages/**/*.{js,ts,tsx}": ["npm run format", "npm run lint"],
+  "*.json": ["npm run format"]
+}

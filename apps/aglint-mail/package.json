@@ -7,8 +7,9 @@
     "start": "next start  --port 3100",
     "dev": "npm run dev:build && next dev --port 3100",
     "clean": "rm -rf dist",
-    "lint": "next lint && tsc",
-    "lint:fix": "eslint . --ext .ts,.js,.tsx,.jsx --fix"
+    "lint": "next lint",
+    "lint:fix": "eslint . --ext .ts,.js,.tsx,.jsx --fix",
+    "format": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\""
   },
   "engines": {
     "node": ">=18.0.0"
