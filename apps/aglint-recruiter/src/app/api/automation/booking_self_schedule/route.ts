@@ -11,12 +11,12 @@ import {
 
 export const dynamic = 'force-dynamic';
 
-export async function POST(req) {
+export async function POST(req: Request) {
   try {
     const { request_id } = await req.json();
     const filter_json_id = await getFilterJson(request_id);
     const allSlots = await getSelfSchudleSlots(filter_json_id);
-    const sturcturedSlots = allSlots.map((slot) => slot.slots).flat(1);
+    const sturcturedSlots = allSlots.map((slot: any) => slot.slots).flat(1);
     const randomSelectedSlot =
       sturcturedSlots[
         Math.floor(Math.random() * (sturcturedSlots.length - 1 - 0) + 0)
@@ -31,7 +31,7 @@ export async function POST(req) {
       },
       { status: 200 },
     );
-  } catch (e) {
+  } catch (e: any) {
     return NextResponse.json(
       { message: 'error ' + e.message },
       { status: 400 },
