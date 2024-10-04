@@ -16,7 +16,7 @@ export default function ProfileView() {
             <Avatar className='h-40 w-40 rounded-md'>
               <AvatarImage src={data.avatar || ''} />
               <AvatarFallback className='rounded-md text-6xl font-semibold'>
-                {data.first_name.charAt(0) + data.last_name.charAt(0)}
+                {data.first_name.charAt(0) + data?.last_name?.charAt(0)}
               </AvatarFallback>
             </Avatar>
           </div>

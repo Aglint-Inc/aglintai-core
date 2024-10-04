@@ -32,8 +32,8 @@ export default function HistoricInterviews() {
       action={
         <Tabs
           value={timeFrame}
-          onValueChange={(value: typeof timeFrame) =>
-            value && setTimeFrame(value)
+          onValueChange={(value) =>
+            value && setTimeFrame(value as typeof timeFrame)
           }
         >
           <TabsList>

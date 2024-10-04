@@ -58,7 +58,7 @@ export function Filters({
       });
 
   function handelSetVisible(index: number) {
-    const tempSF = [...showFilters];
+    const tempSF = [...(showFilters || [])];
     tempSF.push(tempFilters[Number(index)].name);
     setShowFilters(tempSF);
   }

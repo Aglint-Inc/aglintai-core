@@ -165,11 +165,13 @@ export const candidatePortal = createTRPCRouter({
           .eq('id', application_id)
           .single()
           .throwOnError()
-      ).data;
+      ).data!;
+
+      const { candidates } = data;
 
       return {
         resume_url: data?.candidate_files?.file_url || '',
-        ...data?.candidates,
+        ...candidates,
       };
     }),
   update_profile: publicProcedure

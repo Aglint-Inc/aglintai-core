@@ -48,7 +48,9 @@ async function seedRolesAndPermissions(rec_id: string) {
   }[] = [];
 
   tempRoles.forEach((role) => {
-    defaultRolePermissionRelation[role.name].forEach((permission) => {
+    defaultRolePermissionRelation[
+      role.name as keyof typeof defaultRolePermissionRelation
+    ].forEach((permission) => {
       const permission_id = tempPermissions[String(permission)];
       if (permission_id) {
         tempRolePermissions.push({
