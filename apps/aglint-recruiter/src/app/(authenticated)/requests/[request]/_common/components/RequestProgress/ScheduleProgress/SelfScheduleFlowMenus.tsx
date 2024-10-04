@@ -35,13 +35,14 @@ const SelfScheduleFlowMenus = ({
     }
 
     for (const prog of request_progress.data) {
-      if (prog.event_type === 'CAND_CONFIRM_SLOT') {
+      let key = prog.event_type;
+      if (key === 'CAND_CONFIRM_SLOT') {
         break;
       }
-      if (!reqProgresMap[prog.event_type]) {
-        reqProgresMap[prog.event_type] = [];
+      if (!reqProgresMap[key]) {
+        reqProgresMap[key] = [];
       }
-      reqProgresMap[prog.event_type].push(prog);
+      reqProgresMap[key].push(prog);
       progres.push({
         ...prog,
       });

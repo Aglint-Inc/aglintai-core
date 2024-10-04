@@ -20,7 +20,7 @@ import EventNode from './EventNode';
 
 const CandidateAvailReceive = () => {
   const { request_progress } = useRequest();
-  let lastEvent: DatabaseTable['request_progress']['event_type'];
+  let lastEvent: DatabaseTable['request_progress']['event_type'] | null = null;
   const { availRecivedProgEvents, isScheduled } = useMemo(() => {
     let isScheduled = false;
     const availRecivedProgEvents: DatabaseTable['request_progress'][][] = [];
@@ -28,8 +28,10 @@ const CandidateAvailReceive = () => {
       return { availRecivedProgEvents, isScheduled };
     }
     const filteredProg = request_progress.data
-      .filter((prg) =>
-        groupedTriggerEventMap['availReceived'].includes(prg.event_type),
+      .filter(
+        (prg) =>
+          groupedTriggerEventMap['availReceived'] &&
+          groupedTriggerEventMap['availReceived'].includes(prg.event_type),
       )
       .sort(
         (a, b) =>
@@ -79,7 +81,9 @@ const CandidateAvailReceive = () => {
         );
       })}
       <ShowCode.When
-        isTrue={lastEvent === 'CANDIDATE_AVAILABILITY_RE_REQUESTED'}
+        isTrue={Boolean(
+          lastEvent && lastEvent === 'CANDIDATE_AVAILABILITY_RE_REQUESTED',
+        )}
       >
         <WActionMenu />
       </ShowCode.When>
@@ -100,10 +104,11 @@ const RequestEvents = ({
     const mp: RequestProgressMapType = {};
 
     currProgress.forEach((row) => {
-      if (!mp[row.event_type]) {
-        mp[row.event_type] = [];
+      const key = row.event_type;
+      if (!mp[key]) {
+        mp[key] = [];
       }
-      mp[row.event_type].push({ ...row });
+      mp[key].push({ ...row });
     });
     return {
       reqProgresMp: mp,

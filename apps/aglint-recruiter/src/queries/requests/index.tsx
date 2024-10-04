@@ -127,7 +127,7 @@ export const requestQueries = {
             .eq('request_id', request_id)
             .order('updated_at', { ascending: true })
             .throwOnError()
-        ).data,
+        ).data ?? [],
     }),
   request_workflow: ({
     request_id,
@@ -603,7 +603,7 @@ export const getRequestProgress = async ({ request_id }: GetRequestProgress) =>
       .eq('request_id', request_id)
       .order('created_at', { ascending: true })
       .throwOnError()
-  ).data;
+  ).data ?? [];
 
 type CreateRequests = DatabaseFunctions['create_session_request']['Args'];
 const createRequests = async (requestPayload: CreateRequests) =>

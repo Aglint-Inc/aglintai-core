@@ -25,7 +25,7 @@ const CandidateCancelRequest = () => {
         request_id: requestDetails.id,
         recruiter_id: recruiter_id,
         interval: 0,
-        workflow_id: null,
+        workflow_id: '', // TODO: verify this
       });
       await request_workflow.refetch();
       await handleAsyncUpdateRequest({

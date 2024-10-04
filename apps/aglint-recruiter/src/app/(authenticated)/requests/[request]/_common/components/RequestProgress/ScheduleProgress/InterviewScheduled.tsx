@@ -51,7 +51,7 @@ const InterviewScheduled = () => {
             target_api: target_api as any,
             order: 0,
             action_type: 'slack',
-            workflow_id: null,
+            workflow_id: '',
           },
         ],
         recruiter_id: recruiter.id,
@@ -100,7 +100,10 @@ const InterviewScheduled = () => {
     }
   };
   let isWorkflowSet = false;
-  if (triggerActionMp['candidateBook']?.length > 0) {
+  if (
+    triggerActionMp['candidateBook'] &&
+    triggerActionMp['candidateBook'].length > 0
+  ) {
     isWorkflowSet = true;
   }
   return (

@@ -209,7 +209,10 @@ const useRequestsContext = () => {
   ]);
 
   return {
-    requests,
+    requests: {
+      ...requests,
+      data: requests.data ?? [],
+    },
     handleCreateRequests,
     handleAsyncCreateRequests,
     handleUpdateRequest,

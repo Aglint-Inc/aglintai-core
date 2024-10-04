@@ -72,16 +72,18 @@ export const SelectedActionsDetailsProvider: React.FC<
       (defaultSelectedActionsDetails.payload as any)?.email?.subject ?? '',
   });
 
-  const emailTemplateTargetAPI = useMemo(() => {
-    if (
-      selectedActionsDetails.action_type === 'agent_instruction' &&
-      agentTargetApiEmailEndPoint[selectedActionsDetails.target_api]
-    ) {
-      return agentTargetApiEmailEndPoint[selectedActionsDetails.target_api];
-    }
+  const emailTemplateTargetAPI: DatabaseEnums['email_slack_types'] =
+    useMemo(() => {
+      const tempTargetAPI = selectedActionsDetails.target_api;
+      if (
+        selectedActionsDetails.action_type === 'agent_instruction' &&
+        tempTargetAPI
+      ) {
+        return tempTargetAPI;
+      }
 
-    return selectedActionsDetails.target_api;
-  }, [selectedActionsDetails.target_api]);
+      return selectedActionsDetails.target_api;
+    }, [selectedActionsDetails.target_api]);
   return (
     <SelectedActionsDetailsContext.Provider
       value={{

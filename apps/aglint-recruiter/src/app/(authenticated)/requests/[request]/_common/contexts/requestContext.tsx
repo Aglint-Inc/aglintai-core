@@ -87,8 +87,14 @@ const useRequestContext = ({ request_id }: RequestParams) => {
   );
 
   return {
-    request_progress,
-    request_workflow,
+    request_progress: {
+      ...request_progress,
+      data: request_progress.data ?? [],
+    },
+    request_workflow: {
+      ...request_workflow,
+      data: request_workflow.data ?? [],
+    },
     handleDeleteRequest,
     handleAsyncDeleteRequest,
     handleUpdateRequest,
@@ -96,7 +102,7 @@ const useRequestContext = ({ request_id }: RequestParams) => {
     isMutating,
     collapse,
     setCollapse,
-    requestDetails,
+    requestDetails: requestDetails!,
   };
 };
 
