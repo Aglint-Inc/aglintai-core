@@ -10,10 +10,12 @@
         ".env.local",
         ".env.production",
         ".env"
-      ]
+      ],
+      "outputLogs": "new-only"
     },
     "lint": {
-      "dependsOn": ["^lint"]
+      "dependsOn": ["^lint"],
+      "outputLogs": "new-only"
     },
     "dev": {
       "inputs": [
@@ -26,7 +28,8 @@
     },
     "type-check": {
       "dependsOn": [],
-      "inputs": ["$TURBO_DEFAULT$"]
+      "inputs": ["$TURBO_DEFAULT$"],
+      "outputLogs": "new-only"
     },
     "test": {
       "inputs": ["$TURBO_DEFAULT$", ".env.test.local", ".env.test", ".env"]

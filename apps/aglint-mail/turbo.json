@@ -29,7 +29,8 @@
     },
     "type-check": {
       "dependsOn": [],
-      "inputs": ["$TURBO_DEFAULT$"]
+      "inputs": ["$TURBO_DEFAULT$"],
+      "outputLogs": "new-only"
     }
   }
 }
