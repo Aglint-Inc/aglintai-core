@@ -4,6 +4,7 @@ import type {
   DatabaseTable,
   DatabaseTableUpdate,
 } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { toast as specialToast } from '@components/hooks/use-toast';
 import { type RealtimePostgresInsertPayload } from '@supabase/supabase-js';
@@ -26,7 +27,6 @@ import {
   type RequestProgress,
   type RequestResponse,
 } from './types';
-import { supabaseWrap } from '@aglint/shared-utils';
 
 export const requestQueries = {
   requests_key: () => 'requests' as const,
@@ -436,7 +436,6 @@ type RequestFilterValues = {
   type: string[];
   created_at: DatabaseTable['request']['created_at'];
   end_at: DatabaseTable['request']['created_at'];
-  // assignee_id: DatabaseTable['request']['assignee_id'][];
   jobs: string[];
   applications?: string[];
   assignerList?: string[];
@@ -493,9 +492,6 @@ export const getUnfilteredRequests = async ({
     );
   }
 
-  // if (assignee_id?.length)
-  //   query.or(`assignee_id.in.(${assignee_id.join(',')})`);
-
   if (status?.length) query.or(`status.in.(${status.join(',')})`);
 
   if (filterType?.length) query.or(`type.in.(${filterType.join(',')})`);
@@ -551,7 +547,6 @@ export const getRequests = (response: Request[]) => {
           cancel_schedule_request: [],
           decline_request: [],
           completed_request: [],
-          // eslint-disable-next-line no-unused-vars
         } as { [_id in Sections]: typeof response },
       ),
     ) as [Sections, typeof response][]
@@ -570,7 +565,6 @@ export const getRequests = (response: Request[]) => {
       }
       return acc;
     },
-    // eslint-disable-next-line no-unused-vars
     {} as { [_id in Sections]: typeof response },
   );
 };
@@ -587,7 +581,6 @@ const requestSort = (request: Request[]) => {
         return acc;
       },
       { to_do: [], in_progress: [], rest: [] } as {
-        // eslint-disable-next-line no-unused-vars
         [_id in SortRequest]: typeof request;
       },
     ),

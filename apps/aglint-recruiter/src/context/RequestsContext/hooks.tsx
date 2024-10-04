@@ -29,7 +29,6 @@ const defaultFilter = {
   assignerList: [],
 };
 
-// eslint-disable-next-line no-unused-vars
 const defaultSections: { [_id in keyof RequestResponse]?: boolean } = {
   urgent_request: false,
   schedule_request: false,
