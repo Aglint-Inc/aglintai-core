@@ -47,7 +47,7 @@ const ScheduleOptions = () => {
   const addedWorkflow = request_workflow.data.find(
     (w) => w.trigger === 'onRequestSchedule',
   );
-  let scheduleWorkflowAction: DatabaseTable['workflow_action'] = null;
+  let scheduleWorkflowAction: DatabaseTable['workflow_action'] | null = null;
   if (addedWorkflow && addedWorkflow.workflow_action.length > 0) {
     scheduleWorkflowAction = addedWorkflow.workflow_action[0];
   }
@@ -125,13 +125,13 @@ const ScheduleOptions = () => {
         </>
       </ShowCode.When>
       <ShowCode.When
-        isTrue={
+        isTrue={Boolean(
           (!scheduleWorkflowAction && !lastEvent) ||
-          (lastEvent &&
-            (lastEvent.event_type === 'SELF_SCHEDULE_LINK' ||
-              lastEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK') &&
-            lastEvent.status === 'failed')
-        }
+            (lastEvent &&
+              (lastEvent.event_type === 'SELF_SCHEDULE_LINK' ||
+                lastEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK') &&
+              lastEvent.status === 'failed'),
+        )}
       >
         <>
           <UIButton
@@ -174,19 +174,19 @@ const ScheduleOptions = () => {
         </>
       </ShowCode.When>
       <ShowCode.When
-        isTrue={
+        isTrue={Boolean(
           lastEvent &&
-          lastEvent.event_type === 'CAND_AVAIL_REC' &&
-          (!isActionSetAfterAvailabilityRecieved ||
-            lastEvent.status === 'failed')
-        }
+            lastEvent.event_type === 'CAND_AVAIL_REC' &&
+            (!isActionSetAfterAvailabilityRecieved ||
+              lastEvent.status === 'failed'),
+        )}
       >
         <div className='flex space-x-2'>
           <UIButton
             variant='default'
             size='sm'
             onClick={async () => {
-              handleConfirmSlot(lastEvent.request_id);
+              lastEvent && handleConfirmSlot(lastEvent.request_id);
             }}
             isLoading={isFetching}
           >
@@ -196,7 +196,9 @@ const ScheduleOptions = () => {
             variant='outline'
             size='sm'
             onClick={() => {
-              handleReReq(lastEvent.request_id);
+              if (lastEvent) {
+                handleReReq(lastEvent.request_id);
+              }
             }}
           >
             Re Request Availability
