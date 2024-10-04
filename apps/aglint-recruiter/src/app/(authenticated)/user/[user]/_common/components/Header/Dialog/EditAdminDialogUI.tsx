@@ -25,16 +25,13 @@ import UITypography from '@/components/Common/UITypography';
 import { type useAllDepartments } from '@/queries/departments';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import {
-  type EditAdminFormErrorType,
-  type EditAdminFormType,
-} from './EditAdminDialog';
+import { type EditAdminFormErrorType, type Formtype } from './EditAdminDialog';
 
 type Props = {
-  form: EditAdminFormType;
+  form: Formtype;
   imageFile: MutableRefObject<File | null>;
   setIsImageChanged: Dispatch<SetStateAction<boolean>>;
-  setForm: Dispatch<SetStateAction<EditAdminFormType>>;
+  setForm: Dispatch<SetStateAction<Formtype>>;
   formError: EditAdminFormErrorType;
   officeLocations: ReturnType<typeof useTenantOfficeLocations>['data'];
   member: ReturnType<typeof useTenantMembers>['allMembers'][number];
@@ -217,7 +214,7 @@ export const Form = ({
             <div className='space-y-2'>
               <Label htmlFor='role'>Role</Label>
               <Select
-                value={form.role_id}
+                value={form.role_id || ''}
                 onValueChange={(value) => {
                   const selectedRole = roleOptions?.find(
                     (role) => role.id === value,
