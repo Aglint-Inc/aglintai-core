@@ -72,7 +72,7 @@ const Next = () => {
   const step = useCreateRequest((state) => state.step);
   const selections = useCreateRequest((state) => state.selections);
   const { nextPage } = useCreateRequestActions();
-  const currentSelection = selections[STEPS[step]];
+  const currentSelection = selections[STEPS[step] as keyof typeof selections];
   const isEnabled = Array.isArray(currentSelection)
     ? currentSelection.length !== 0
     : Boolean(currentSelection);

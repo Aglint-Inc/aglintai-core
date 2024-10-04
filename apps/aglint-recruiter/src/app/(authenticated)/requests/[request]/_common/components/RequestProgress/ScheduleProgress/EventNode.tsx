@@ -3,10 +3,9 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
+import { useRequest } from '@request/hooks';
 import { Edit, Loader, Trash } from 'lucide-react';
 import React from 'react';
-
-import { useRequest } from '@/context/RequestContext';
 
 import { useRequestProgressProvider } from '../progressCtx';
 import ScheduleProgressTracker from '../ScheduleProgressTracker';

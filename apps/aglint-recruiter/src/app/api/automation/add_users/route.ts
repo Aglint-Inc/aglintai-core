@@ -4,12 +4,11 @@ import {
   type SchedulingSettingType,
   type SupabaseType,
 } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { NextResponse } from 'next/server';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
-import timeZone from '@/utils/timeZone';
 import { companyType } from '@/utils/userRoles';
-import { supabaseWrap } from '@aglint/shared-utils';
 
 export const dynamic = 'force-dynamic';
 

@@ -5,6 +5,7 @@ import {
 import { getFullName } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { useRequest } from '@request/hooks';
 import { useMeetingList } from '@requests/hooks';
 import axios from 'axios';
 import { ArrowDownUp } from 'lucide-react';
@@ -12,7 +13,6 @@ import React from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useRequest } from '@/context/RequestContext';
 import { api } from '@/trpc/client';
 
 import ConflictWithHover from '../SelfSchedulingDrawer/_common/components/ui/ConflictWithHover';

@@ -5,13 +5,13 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { PopoverClose } from '@radix-ui/react-popover';
+import { useRequests } from '@requests/hooks';
 import { Pencil } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, { useState } from 'react';
 
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
-import { useRequests } from '@/context/RequestsContext';
 import { type Request } from '@/queries/requests/types';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 

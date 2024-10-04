@@ -5,7 +5,7 @@ import {
   executeWorkflowAction,
   type ProgressLoggerType,
 } from '@aglint/shared-utils';
-import { apiTargetToEvents } from '@requests/components/RequestProgress/utils/progressMaps';
+import { apiTargetToEvents } from '@request/components/RequestProgress/utils/progressMaps';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 // import { apiTargetToEvents } from '@/components/Requests/_common/components/RequestProgress/utils/progressMaps';
