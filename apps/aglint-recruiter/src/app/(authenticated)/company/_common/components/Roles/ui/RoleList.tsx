@@ -3,9 +3,9 @@ import { Badge } from '@components/ui/badge';
 import { TableCell, TableRow } from '@components/ui/table';
 import { CirclePlus } from 'lucide-react';
 
+import { UIButton } from '@/common/UIButton';
 import type { useTenantMembers } from '@/company/hooks';
 import type { useRoleData } from '@/company/hooks/useRoleAndPermissionsHook';
-import { UIButton } from '@/common/UIButton';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 type getRoleAndPermissionsWithUserCountType = NonNullable<

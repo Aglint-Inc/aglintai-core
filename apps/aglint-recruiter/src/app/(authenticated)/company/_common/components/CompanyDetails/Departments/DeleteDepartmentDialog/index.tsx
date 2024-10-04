@@ -8,8 +8,8 @@ import {
   DialogTitle,
 } from '@components/ui/dialog';
 
-import { useDepartmentsUsage } from '@/company/hooks';
 import { Loader } from '@/common/Loader';
+import { useDepartmentsUsage } from '@/company/hooks';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 function DeleteDepartmentsDialog({

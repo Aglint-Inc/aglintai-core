@@ -1,11 +1,11 @@
 import { DialogDescription } from '@components/ui/dialog';
 import { useState } from 'react';
 
-import { useFlags } from '@/company/hooks/useFlags';
-import { usePortalSettings } from '@/company/hooks/usePortalSettings';
 import TipTapAIEditor from '@/common/TipTapAIEditor';
 import { UIButton } from '@/common/UIButton';
 import UIDialog from '@/common/UIDialog';
+import { useFlags } from '@/company/hooks/useFlags';
+import { usePortalSettings } from '@/company/hooks/usePortalSettings';
 
 export const AboutCompanyDialog = ({
   isDialogOpen,

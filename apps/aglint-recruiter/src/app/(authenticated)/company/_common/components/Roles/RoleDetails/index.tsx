@@ -6,12 +6,12 @@ import { Switch } from '@components/ui/switch';
 import { CirclePlus, Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import UISectionCard from '@/common/UISectionCard';
 import { useTenantMembers } from '@/company/hooks';
 import type {
   useRoleData,
   useRoleDataSetter,
 } from '@/company/hooks/useRoleAndPermissionsHook';
-import UISectionCard from '@/common/UISectionCard';
 import { allPermissions } from '@/constant/role_and_permissions';
 import { useRolesAndPermissions as useRolesAndPermissionsContext } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSearchQuery } from '@/hooks/useSearchQuery';

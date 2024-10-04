@@ -5,8 +5,8 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { AlertCircle, ChevronDown } from 'lucide-react';
 import { type Dispatch, type SetStateAction } from 'react';
 
-import type { useTenantMembers } from '@/company/hooks';
 import UITextField from '@/common/UITextField';
+import type { useTenantMembers } from '@/company/hooks';
 
 type props = {
   selectedMember: ReturnType<typeof useTenantMembers>['members'][number];

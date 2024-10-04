@@ -15,13 +15,13 @@ import {
 } from '@components/ui/select';
 import { type Dispatch, type SetStateAction } from 'react';
 
+import { UIButton } from '@/common/UIButton';
+import UITextField from '@/common/UITextField';
 import type {
   useTenant,
   useTenantOfficeLocations,
   useTenantRoles,
 } from '@/company/hooks';
-import { UIButton } from '@/common/UIButton';
-import UITextField from '@/common/UITextField';
 import { type useAllDepartments } from '@/queries/departments';
 import { api } from '@/trpc/client';
 import { numberToText } from '@/utils/number/numberToText';

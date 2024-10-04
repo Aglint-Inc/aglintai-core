@@ -13,10 +13,10 @@ import { Label } from '@components/ui/label';
 import debounce from 'lodash/debounce';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
-import { useTenant } from '@/company/hooks';
-import { useTenantOfficeLocations } from '@/company/hooks';
 import TimezonePicker from '@/common/TimezonePicker';
 import { UIButton } from '@/common/UIButton';
+import { useTenant } from '@/company/hooks';
+import { useTenantOfficeLocations } from '@/company/hooks';
 import { manageOfficeLocation } from '@/context/AuthContext/utils';
 import { api } from '@/trpc/client';
 import timeZone from '@/utils/timeZone';

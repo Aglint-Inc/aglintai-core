@@ -1,11 +1,11 @@
 import { DialogDescription } from '@components/ui/dialog';
 import type { Dispatch, SetStateAction } from 'react';
 
-import { useFlags } from '@/company/hooks/useFlags';
-import { usePortalSettings } from '@/company/hooks/usePortalSettings';
 import { UIButton } from '@/common/UIButton';
 import UIDialog from '@/common/UIDialog';
 import { UITextArea } from '@/common/UITextArea';
+import { useFlags } from '@/company/hooks/useFlags';
+import { usePortalSettings } from '@/company/hooks/usePortalSettings';
 
 export const GreetingEditDialog = ({
   setIsDialogOpen,

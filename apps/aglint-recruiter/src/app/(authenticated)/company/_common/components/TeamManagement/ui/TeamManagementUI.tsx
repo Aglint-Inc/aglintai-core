@@ -17,8 +17,8 @@ import {
 import { RefreshCw, Send, Users } from 'lucide-react';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 
-import type { useTeamMembers } from '@/company/hooks/useTeamMembers';
 import { UIButton } from '@/common/UIButton';
+import type { useTeamMembers } from '@/company/hooks/useTeamMembers';
 
 import Member from '../MemberList';
 

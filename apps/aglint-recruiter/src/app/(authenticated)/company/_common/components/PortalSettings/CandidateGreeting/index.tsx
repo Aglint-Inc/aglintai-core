@@ -2,10 +2,10 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { CircleUser, Plus, SquarePen } from 'lucide-react';
 import { useState } from 'react';
 
-import { useFlags } from '@/company/hooks/useFlags';
 import GlobalEmpty from '@/common/GlobalEmpty';
 import { UIButton } from '@/common/UIButton';
 import UISectionCard from '@/common/UISectionCard';
+import { useFlags } from '@/company/hooks/useFlags';
 
 import { GreetingEditDialog } from './GreetingEditDialog';
 

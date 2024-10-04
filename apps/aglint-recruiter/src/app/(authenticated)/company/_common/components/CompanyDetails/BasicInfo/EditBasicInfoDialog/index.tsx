@@ -13,12 +13,12 @@ import {
   useState,
 } from 'react';
 
-import { useTenant } from '@/company/hooks';
 import ImageUploadManual from '@/common/ImageUpload/ImageUploadManual';
 import { UIButton } from '@/common/UIButton';
 import UIDialog from '@/common/UIDialog';
 // import ImageUpload from '@/common/ImageUpload';
 import UISelectDropDown from '@/common/UISelectDropDown';
+import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
