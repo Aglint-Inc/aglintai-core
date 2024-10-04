@@ -4,6 +4,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
+import { PopoverClose } from '@radix-ui/react-popover';
 import { useRequests } from '@requests/hooks';
 import { Pencil } from 'lucide-react';
 import { useParams } from 'next/navigation';
