@@ -70,8 +70,8 @@ export async function extractDataFromText(text: string) {
 
 export type selectedItemsType = {
   schedule_type: { id: ScheduleType; name: string }[];
-  job_title: { id: ScheduleType; name: string }[];
-  applicant_name: { id: ScheduleType; name: string }[];
-  interview_name: { id: ScheduleType; name: string }[];
-  request_name: { id: ScheduleType; name: string }[];
+  job_title: { id: string; name: string }[];
+  applicant_name: { id: string; name: string }[];
+  interview_name: { id: string; name: string }[];
+  request_name: { id: string; name: string }[];
 };

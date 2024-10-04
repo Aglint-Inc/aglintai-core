@@ -75,7 +75,6 @@ export const API_PATHS = [
   '/api/scheduling/request_availability/candidateAvailability/getMeetings',
   '/api/scheduling/request_availability/candidateAvailability/getScheduleMeetings',
   '/api/scheduling/request_availability/getCandidateRequestData',
-  '/api/scheduling/request_availability/updateRequestAvailability',
   '/api/scheduling/v1/assign-interviewer-training-type',
   '/api/scheduling/v1/booking/candidate-self-schedule',
   '/api/scheduling/v1/booking/confirm-recruiter-selected-option',

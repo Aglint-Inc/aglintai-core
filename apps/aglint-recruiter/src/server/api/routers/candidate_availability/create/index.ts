@@ -22,16 +22,16 @@ type Input = ZodSchema<
 const schema = z.object({
   application_id: z.string().uuid(),
   recruiter_id: z.string().uuid(),
-  availability: availabilityTypeSchema.nullable(),
+  availability: availabilityTypeSchema,
   date_range: z.array(z.string()),
   is_task_created: z.boolean().nullable(),
   number_of_days: z.number().nullable(),
   number_of_slots: z.number().nullable(),
   total_slots: z.number().nullable(),
-  request_id: z.string().uuid().nullable(),
-}); // verify satisfies Input from Zod
+  request_id: z.string().uuid(),
+}) satisfies Input;
 
-const query = async ({ input }: PrivateProcedure<Input>) => {
+const query = async ({ input }: PrivateProcedure<typeof schema>) => {
   const db = createPrivateClient();
   return (
     await db

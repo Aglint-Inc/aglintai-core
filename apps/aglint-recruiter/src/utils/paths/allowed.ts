@@ -95,7 +95,6 @@ export const allowedPaths = new Set<t>([
   '/api/scheduling/request_availability/getCandidateRequestData',
   '/api/scheduling/request_availability/insertTaskProgress',
   '/api/scheduling/request_availability/getTaskIdDetailsByRequestId',
-  '/api/scheduling/request_availability/updateRequestAvailability',
   '/api/scheduling/request_availability/insertScheduleActivities',
   '/api/scheduling/request_availability/candidateAvailability/getMeetings',
   '/api/scheduling/request_availability/candidateAvailability/getScheduleMeetings',
