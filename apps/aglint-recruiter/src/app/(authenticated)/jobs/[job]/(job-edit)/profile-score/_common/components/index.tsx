@@ -48,6 +48,7 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 // import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
 import { distributeScoreWeights } from '@/job/utils';
+import { SafeObject } from '@/utils/safeObject';
 
 type Sections = 'experience' | 'education' | 'skills';
 
@@ -145,24 +146,31 @@ const ProfileScoreControls = () => {
   const allDisabled =
     disabled.education && disabled.skills && disabled.experience;
   const [weights, setWeight] = useState<ScoreWheelParams>(parameter_weights);
-  const safeWeights = Object.entries(weights).reduce((acc, [key, value]) => {
-    acc[key] = +value;
-    return acc;
-  }, {} as ScoreWheelParams);
-  const sum = Object.values(safeWeights).reduce((acc, curr) => {
+  const safeWeights = SafeObject.entries(weights).reduce(
+    (acc, [key, value]) => {
+      acc[key] = +value;
+      return acc;
+    },
+    {} as ScoreWheelParams,
+  );
+  const sum = SafeObject.values(safeWeights).reduce((acc, curr) => {
     acc += curr;
     return acc;
   }, 0);
-  const hasChanged = Object.entries(safeWeights).reduce((acc, [key, value]) => {
-    if (!acc && value !== parameter_weights[key]) return true;
-    return acc;
-  }, false);
+  const hasChanged = SafeObject.entries(safeWeights).reduce(
+    (acc, [key, value]) => {
+      if (!acc && value !== parameter_weights[key]) return true;
+      return acc;
+    },
+    false,
+  );
   const handleChange: ChangeEventHandler<
     HTMLInputElement | HTMLTextAreaElement
   > = (e) => {
     const entry = e.target.value as any;
     const safeEntry = +entry;
-    const newSum = sum - weights[e.target.name] + safeEntry;
+    const newSum =
+      sum - weights[e.target.name as keyof typeof weights] + safeEntry;
     if (entry === null || entry === '')
       setWeight((prev) => ({ ...prev, [e.target.name]: null }));
     else if (safeEntry < 0)
@@ -482,8 +490,8 @@ const Tag: FC<{
 const Banners = () => {
   const { push } = useRouterPro();
   const { job, handleRegenerateJd, status } = useJob();
-  if (status.loading) return <></>;
-  if (status.description_error)
+  if (status!.loading) return <></>;
+  if (status!.description_error)
     return (
       <Alert variant='error'>
         <AlertDescription>
@@ -500,7 +508,7 @@ const Banners = () => {
         </AlertDescription>
       </Alert>
     );
-  if (status.jd_json_error)
+  if (status!.jd_json_error)
     return (
       <Alert variant='warning'>
         <AlertDescription>
@@ -517,7 +525,7 @@ const Banners = () => {
         </AlertDescription>
       </Alert>
     );
-  if (status.description_changed && !status.scoring_criteria_changed)
+  if (status!.description_changed && !status!.scoring_criteria_changed)
     return (
       <Alert variant='warning'>
         <AlertDescription>

@@ -1,6 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 
-export function extractLinkedInURL(arr) {
+export function extractLinkedInURL(arr: any[]) {
   for (const item of arr) {
     // Check if the item starts with "http://linkedin.com" or "https://linkedin.com"
     if (

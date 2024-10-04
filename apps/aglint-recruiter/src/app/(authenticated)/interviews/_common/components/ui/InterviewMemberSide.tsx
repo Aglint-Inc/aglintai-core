@@ -1,3 +1,11 @@
+import {
+  Section,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
+
 import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';
 
@@ -17,25 +25,30 @@ export function InterviewMemberSide({
 }) {
   return (
     <>
-      <div className='flex flex-col gap-2'>
-        <div className='flex items-center justify-between'>
-          <h2 className='text-lg font-bold'>My Interviews</h2>
-          <Tabs
-            isUpcomingActive={isUpcomingActive}
-            onClickUpcoming={onClickUpcoming}
-            onClickCompleted={onClickCompleted}
-            onClickCancelled={onClickCancelled}
-            isCompletedActive={isCompletedActive}
-            isCancelActive={isCancelActive}
-            slotInterview={slotInterview}
-            textUpcomingCount={textUpcomingCount}
-            textCancelledCount={textCancelledCount}
-            textPastCount={textPastCount}
-            isMenuTabVisible={isMenuTabVisible}
-          />
-        </div>
+      <Section>
+        <SectionHeader>
+          <SectionHeaderText>
+            <SectionTitle>My Interviews</SectionTitle>
+            <SectionDescription>
+              View your upcoming, past, and canceled interviews.
+            </SectionDescription>
+          </SectionHeaderText>
+        </SectionHeader>
+        <Tabs
+          isUpcomingActive={isUpcomingActive}
+          onClickUpcoming={onClickUpcoming}
+          onClickCompleted={onClickCompleted}
+          onClickCancelled={onClickCancelled}
+          isCompletedActive={isCompletedActive}
+          isCancelActive={isCancelActive}
+          slotInterview={slotInterview}
+          textUpcomingCount={textUpcomingCount}
+          textCancelledCount={textCancelledCount}
+          textPastCount={textPastCount}
+          isMenuTabVisible={isMenuTabVisible}
+        />
         {slotInterviewCard}
-      </div>
+      </Section>
     </>
   );
 }

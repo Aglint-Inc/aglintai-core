@@ -29,7 +29,7 @@ interface BreakTime {
 
 interface BreakTimeCardProps {
   breakTime: BreakTime;
-  setSelectedHourBreak: Dispatch<SetStateAction<BreakTime>>;
+  setSelectedHourBreak: Dispatch<SetStateAction<BreakTime | null>>;
   handleUpdate: (data: { break_hour: BreakTime }) => Promise<void>;
 }
 
@@ -38,7 +38,7 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
   setSelectedHourBreak,
   handleUpdate,
 }) => {
-  const handleUpdateAndClose = async (newBreakTime) => {
+  const handleUpdateAndClose = async (newBreakTime: BreakTime) => {
     await handleUpdate({ break_hour: newBreakTime });
     setSelectedHourBreak(newBreakTime);
   };

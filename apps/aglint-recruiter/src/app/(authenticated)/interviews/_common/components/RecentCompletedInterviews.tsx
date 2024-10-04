@@ -1,3 +1,11 @@
+import {
+  Section,
+  SectionActions,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import Link from 'next/link';
 import React from 'react';
 
@@ -20,19 +28,26 @@ function RecentCompletedInterviews() {
     <>
       {/* {!isFetched && <Loader />} */}
       {isFetched && (schedules ?? [])?.length > 1 && (
-        <div className='flex flex-col gap-2'>
-          <div className='flex items-center justify-between'>
-            <h1 className='text-lg font-bold'>Recently Completed</h1>
-            <Link href={'/interviews/all'}>
-              <UIButton size='sm' variant='ghost'>
-                View All
-              </UIButton>
-            </Link>
-          </div>
+        <Section>
+          <SectionHeader>
+            <SectionHeaderText>
+              <SectionTitle>Recently Completed</SectionTitle>
+              <SectionDescription>
+                View your recently completed interviews.
+              </SectionDescription>
+            </SectionHeaderText>
+            <SectionActions>
+              <Link href={'/interviews/all'}>
+                <UIButton size='sm' variant='ghost'>
+                  View All
+                </UIButton>
+              </Link>
+            </SectionActions>
+          </SectionHeader>
           <ScheduleMeetingList
             filterSchedules={(schedules ?? []).slice(0, 5)}
           />
-        </div>
+        </Section>
       )}
     </>
   );

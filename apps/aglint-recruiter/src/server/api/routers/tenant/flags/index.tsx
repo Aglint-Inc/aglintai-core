@@ -10,7 +10,7 @@ const query = async ({ ctx }: PrivateProcedure) => {
       .eq('recruiter_id', ctx.recruiter_id)
       .single()
       .throwOnError()
-  ).data;
+  ).data!;
 };
 
 export const flags = privateProcedure.query(query);

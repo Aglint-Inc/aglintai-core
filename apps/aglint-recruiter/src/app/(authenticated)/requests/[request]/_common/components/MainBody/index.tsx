@@ -27,9 +27,7 @@ import {
 } from '@requests/constant';
 import { useMeetingList } from '@requests/hooks';
 import {
-  Bot,
   BriefcaseBusiness,
-  Calendar,
   ChevronDown,
   Coffee,
   Edit2,
@@ -127,7 +125,7 @@ export default function ViewRequestDetails() {
         <SelfSchedulingDrawer />
 
         <TwoColumnPageLayout
-          sidebarWidth={'35rem'}
+          sidebarWidth={'400px'}
           header={
             <div className='flex flex-col gap-6'>
               {/* <Breadcrumb>
@@ -152,10 +150,10 @@ export default function ViewRequestDetails() {
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb> */}
-              <div className='flex flex-row items-start justify-between pb-2'>
+              <div className='flex flex-row items-start justify-between p-4 border-b border-gray-200'>
                 <div>
                   <h1 className='mb-2 text-2xl text-gray-900'>
-                    {capitalizeFirstLetter(selectedRequest?.title ?? '')}
+                    {capitalizeFirstLetter(selectedRequest?.title ?? '')} 
                   </h1>
                   <div className='flex items-center space-x-4 text-sm text-muted-foreground'>
                     <div className='flex items-center space-x-1'>
@@ -205,7 +203,7 @@ export default function ViewRequestDetails() {
                     )}
                   </div>
                 </div>
-                <div className='flex flex-col items-end gap-4 space-x-2'>
+                <div className='flex flex-col items-end gap-2'>
                   <div className='flex flex-row items-center gap-2'>
                     {selectedRequest.status === 'completed' ? (
                       <>
@@ -237,12 +235,12 @@ export default function ViewRequestDetails() {
                       })}
                       className='flex flex-row items-center gap-2'
                     >
-                      <Avatar className='h-6 w-6'>
+                      <Avatar className='h-6 w-6 rounded-sm'>
                         <AvatarImage
                           src={selectedMember?.profile_image}
                           alt='Avatar'
                         />
-                        <AvatarFallback>
+                        <AvatarFallback className='h-6 w-6 rounded-sm'>
                           <span className='text-md'>
                             {selectedMember?.first_name.slice(0, 1)}
                           </span>
@@ -264,13 +262,12 @@ export default function ViewRequestDetails() {
             <div className='flex w-full flex-col space-y-4'>
               <ShowCode.When isTrue={selectedRequest.status !== 'completed'}>
                 <Alert>
-                  <Bot className='h-4 w-4' />
                   <AlertTitle>Next Step</AlertTitle>
                   <AlertDescription>
                     Here is your next step on the request.
                   </AlertDescription>
 
-                  <div className='mt-4 flex flex-row justify-end gap-2'>
+                  <div className='flex flex-row justify-end gap-2'>
                     <ShowCode.When
                       isTrue={
                         selectedRequest.type === 'schedule_request' ||
@@ -297,7 +294,7 @@ export default function ViewRequestDetails() {
 
               <Section>
                 <SectionHeaderText>
-                  <SectionTitle>Request Progress</SectionTitle>
+                  <SectionTitle className='font-medium'>Request Progress</SectionTitle>
                 </SectionHeaderText>
                 {selectedRequest ? (
                   <RequestProvider
@@ -352,7 +349,9 @@ export default function ViewRequestDetails() {
                               ? 'completed'
                               : 'destructive'
                       }
+                      className='rounded-sm'
                     >
+
                       {capitalizeFirstLetter(selectedRequest?.status)}
                     </Badge>
                   </div>
@@ -384,7 +383,7 @@ export default function ViewRequestDetails() {
                     </div>
                     <Badge
                       variant='outline'
-                      className='bg-gray-100 text-gray-800'
+                      className='bg-gray-100 text-gray-800 rounded-sm'
                     >
                       {capitalizeFirstLetter(selectedRequest?.priority)}
                     </Badge>
@@ -506,16 +505,32 @@ export default function ViewRequestDetails() {
                           ? 'destructive'
                           : 'secondary'
                       }
-                      className='gap-1'
+                      className='gap-1 rounded-sm'
                     >
-                      <Calendar className='h-4 w-4 text-muted-foreground' />
                       <p>{capitalizeFirstLetter(selectedRequest?.type)}</p>
                     </Badge>
                   </div>
                 </div>
+                <div className='flex flex-col gap-2'>
+                <span className='text-sm font-medium text-muted-foreground'>
+                      Candidate
+                    </span>
+                <span className='duration-300 hover:text-black hover:underline'>
+                          {getFullName(
+                            candidateDetails?.first_name ?? '',
+                            candidateDetails?.last_name ?? '',
+                          )}
+                        </span>
+                        </div>
               </div>
             </div>
-
+            <div className='flex flex-col gap-8 mt-2'>
+            <SessionCards
+              refetchMeetings={refetchMeetings}
+              sessions={
+                sessions as Awaited<ReturnType<typeof fetchSessionDetails>>
+              }
+            />
             <Section>
               <SectionHeaderText>
                 <SectionTitle>Request Notes</SectionTitle>
@@ -523,15 +538,11 @@ export default function ViewRequestDetails() {
               <RequestNotes />
             </Section>
 
-            <SessionCards
-              refetchMeetings={refetchMeetings}
-              sessions={
-                sessions as Awaited<ReturnType<typeof fetchSessionDetails>>
-              }
-            />
+           
             <RecentRequests
               applicationId={selectedRequest?.application_id ?? ''}
             />
+            </div>
           </div>
         </TwoColumnPageLayout>
       </div>

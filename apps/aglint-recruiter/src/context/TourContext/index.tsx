@@ -3,7 +3,7 @@ import { createContext, type PropsWithChildren, useContext } from 'react';
 import { useTourContext } from './hooks';
 
 type TourContextType = ReturnType<typeof useTourContext>;
-const TourContext = createContext<TourContextType>(undefined);
+const TourContext = createContext<TourContextType | undefined>(undefined);
 
 const TourProvider = (props: PropsWithChildren) => {
   const value = useTourContext();

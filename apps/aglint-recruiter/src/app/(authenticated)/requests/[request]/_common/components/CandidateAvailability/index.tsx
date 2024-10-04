@@ -9,7 +9,6 @@ import {
   ScheduleUtils,
 } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
-import { Card, CardContent } from '@components/ui/card';
 import { Label } from '@components/ui/label';
 import { SelectItem } from '@components/ui/select';
 import { DAYS_LIST, SLOTS_LIST } from '@requests/constant';
@@ -396,37 +395,39 @@ export function RequestCandidate({
   slotEmailTemplateHolder,
 }: RequestCandidateProps) {
   return (
-    <div className='flex h-full flex-col space-y-6 p-4'>
-      <Card>
-        <CardContent className='grid grid-cols-2 gap-4 pt-6'>
-          <div className='space-y-1'>
-            <Label htmlFor='start-date'>Start Date</Label>
-            <div id='start-date'>{slotStartDateInput}</div>
-          </div>
-          <div className='space-y-1'>
-            <Label htmlFor='end-date'>End Date</Label>
-            <div id='end-date'>{slotEndDateInput}</div>
-          </div>
-          <div className='space-y-1'>
-            <Label htmlFor='min-days'>
-              Minimum number of days should be selected
-            </Label>
-            <div id='min-days'>{slotMinNumberDays}</div>
-          </div>
-          <div className='space-y-1'>
-            <Label htmlFor='min-slots'>
-              Minimum number of slots selected per each day
-            </Label>
-            <div id='min-slots'>{slotMinNumberSlot}</div>
-          </div>
-        </CardContent>
-      </Card>
-      <div className='space-y-2'>
-        <p>
+    <div className='flex h-full flex-col space-y-4 p-4'>
+      <div className='flex w-full flex-row space-x-4'>
+        <div className='flex-1 space-y-1'>
+          <Label htmlFor='start-date' className='text-sm text-muted-foreground'>
+            Start Date
+          </Label>
+          <div id='start-date'>{slotStartDateInput}</div>
+        </div>
+        <div className='flex-1 space-y-1'>
+          <Label htmlFor='end-date' className='text-sm text-muted-foreground'>
+            End Date
+          </Label>
+          <div id='end-date'>{slotEndDateInput}</div>
+        </div>
+        <div className='flex-1 space-y-1'>
+          <Label htmlFor='min-days' className='text-sm text-muted-foreground'>
+            Minimum days
+          </Label>
+          <div id='min-days'>{slotMinNumberDays}</div>
+        </div>
+        <div className='flex-1 space-y-1'>
+          <Label htmlFor='min-slots' className='text-sm text-muted-foreground'>
+            Number of slots
+          </Label>
+          <div id='min-slots'>{slotMinNumberSlot}</div>
+        </div>
+      </div>
+      <div>
+        <span className='mb-2 flex text-sm text-muted-foreground'>
           {`To proceed with requesting the candidate's availability, please click
           on the button below. Upon doing so, an email containing the following
           message will be sent to the candidate:`}
-        </p>
+        </span>
         <div>{slotEmailTemplateHolder ?? slotEmailTemplateHolder}</div>
       </div>
     </div>

@@ -62,13 +62,18 @@ function GreenhouseSettings() {
                   <div key={key} className='flex items-center space-x-2'>
                     <Checkbox
                       id={key}
-                      checked={data?.options[key]}
+                      checked={
+                        data?.options[key as keyof (typeof data)['options']]
+                      }
                       onCheckedChange={() => {
                         setOptions({
                           ...data,
                           options: {
                             ...data.options,
-                            [key]: !data.options[key],
+                            [key]:
+                              !data.options[
+                                key as keyof (typeof data)['options']
+                              ],
                           },
                         });
                       }}

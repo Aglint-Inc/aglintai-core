@@ -10,6 +10,7 @@ import { createContext, memo, type PropsWithChildren, useState } from 'react';
 import { createStore } from 'zustand';
 
 import type { nestedObjectToArray } from '@/components/Common/FilterHeader/filters/utils';
+import { SafeObject } from '@/utils/safeObject';
 import {
   type CreateContextStore,
   getContextComputes,
@@ -39,12 +40,12 @@ type States = Pick<
 > & {
   locations: Locations;
   stages: Stages;
-  actionPopup: ActionPopup;
+  actionPopup: ActionPopup | null;
   checklist: Checklist;
   importPopup: boolean;
 };
 
-const initial: States = Object.freeze({
+const initial: States = {
   badges: [],
   bookmarked: false,
   locations: [],
@@ -57,7 +58,7 @@ const initial: States = Object.freeze({
   actionPopup: null,
   checklist: [],
   importPopup: false,
-});
+} as const;
 
 const getInitial = getContextIntials(initial);
 
@@ -65,7 +66,7 @@ const getComputed = getContextComputes<States>()((get, compute) => ({
   emailVisibilities: compute(
     () => [get().status],
     (status) =>
-      Object.entries(EMAIL_VISIBILITIES ?? {}).reduce(
+      SafeObject.entries(EMAIL_VISIBILITIES).reduce(
         (acc, [key, value]) => {
           acc[key] = value.includes(status);
           return acc;
@@ -76,7 +77,7 @@ const getComputed = getContextComputes<States>()((get, compute) => ({
   cascadeVisibilites: compute(
     () => [get().status],
     (status) =>
-      Object.entries(CASCADE_VISIBILITIES ?? {}).reduce(
+      SafeObject.entries(CASCADE_VISIBILITIES).reduce(
         (acc, [key, value]) => {
           acc[key] = value.includes(status);
           return acc;
@@ -188,8 +189,9 @@ const useApplicationsStoreContext = () => {
   return store;
 };
 
-export const ApplicationsStoreContext =
-  createContext<ReturnType<typeof useApplicationsStoreContext>>(undefined);
+export const ApplicationsStoreContext = createContext<
+  ReturnType<typeof useApplicationsStoreContext> | undefined
+>(undefined);
 
 export const ApplicationsStoreProvider = memo(
   ({ children }: PropsWithChildren) => {

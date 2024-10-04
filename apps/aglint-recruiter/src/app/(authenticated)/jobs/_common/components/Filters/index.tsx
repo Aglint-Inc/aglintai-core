@@ -24,7 +24,7 @@ const ORDER = {
   closed: 2,
 } satisfies {
   // eslint-disable-next-line no-unused-vars
-  [_id in Job['status']]: 0 | 1 | 2;
+  [_id in NonNullable<Job['status']>]: 0 | 1 | 2;
 };
 
 function FilterJobDashboard({
@@ -101,7 +101,7 @@ function FilterJobDashboard({
                   name: 'hiring manager',
                   // iconname: 'person',
                   options: filterOptions.hiringManager,
-                  setValue: (val) => {
+                  setValue: (val: string[]) => {
                     setFilterValues({
                       ...filterValues,
                       hiringManager: val,
@@ -114,7 +114,7 @@ function FilterJobDashboard({
                   name: 'recruiter',
                   // iconname: 'person',
                   options: filterOptions.recruiter,
-                  setValue: (val) => {
+                  setValue: (val: string[]) => {
                     setFilterValues({
                       ...filterValues,
                       recruiter: val,
@@ -128,7 +128,7 @@ function FilterJobDashboard({
         sort={{
           selected: sortValue,
           setOrder: (order) => {
-            const safeOrder = {};
+            const safeOrder = {} as { [_id: string]: any };
             if (order.order) safeOrder['order'] = order.order;
             if (order.type) safeOrder['option'] = order.type;
             setSort((prev) => ({ ...prev, ...safeOrder }));
@@ -187,7 +187,7 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
         jobs
           .map((job) => job.hiring_manager)
           .filter((item) => Boolean(item))
-          .sort((a, b) => a.localeCompare(b)),
+          .sort((a, b) => a!.localeCompare(b!)),
       ),
     ];
     const recId = [
@@ -195,7 +195,7 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
         jobs
           .map((job) => job.recruiter)
           .filter((item) => Boolean(item))
-          .sort((a, b) => a.localeCompare(b)),
+          .sort((a, b) => a!.localeCompare(b!)),
       ),
     ];
     return {
@@ -288,9 +288,9 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
           .includes((searchText ?? '').toLowerCase()),
       );
     if (filterValues.status.length)
-      temp = temp.filter((job) => filterValues.status.includes(job.status));
+      temp = temp.filter((job) => filterValues.status.includes(job.status!));
     if (filterValues.type.length)
-      temp = temp.filter((job) => filterValues.type.includes(job.job_type));
+      temp = temp.filter((job) => filterValues.type.includes(job.job_type!));
     if (filterValues.hiringManager.length)
       temp = temp.filter((job) =>
         filterValues.hiringManager.includes(job.hiring_manager || ''),
@@ -334,7 +334,7 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
       const statusSortedJobs = filteredJobs
         .reduce(
           (acc, curr) => {
-            acc[ORDER[curr.status]].push(curr);
+            acc[ORDER[curr.status!]].push(curr);
             return acc;
           },
           [[], [], []] as Job[][],
@@ -346,13 +346,13 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
     return filteredJobs.sort((a, b) => {
       if (sort.option === 'name') {
         return (
-          a.job_title.localeCompare(b.job_title) *
+          a.job_title!.localeCompare(b.job_title!) *
           (sort.order === 'ascending' ? 1 : -1)
         );
       } else {
         return (
-          (new Date(b.created_at).getTime() -
-            new Date(a.created_at).getTime()) *
+          (new Date(b.created_at!).getTime() -
+            new Date(a.created_at!).getTime()) *
           (sort.order === 'descending' ? 1 : -1)
         );
       }
@@ -365,7 +365,7 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
         acc[curr.is_pinned ? 0 : 1].push(curr);
         return acc;
       },
-      [[], []] satisfies (typeof jobs)[][],
+      [[], []] as (typeof jobs)[],
     )
     .flatMap((jobs) => jobs);
   const filterOptions = getFilterOptions(jobs);

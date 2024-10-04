@@ -86,11 +86,11 @@ const initial = Object.freeze<States>({
   open: false,
   step: STEPS.findIndex((step) => step === 'requestType'),
   selections: {
-    requestType: null,
-    jobs: null,
-    candidate: null,
+    requestType: null!,
+    jobs: null!,
+    candidate: null!,
     schedules: [],
-    assignees: null,
+    assignees: null!,
   },
   payloads: {
     requestType: { search: '' },
@@ -156,8 +156,8 @@ const useCreateRequestContext = () => {
             const newPayload = resetPayload('requestType', state);
             return {
               ...newPayload,
-              selections: { ...newPayload.selections, requestType },
-              step: newPayload.step + 1,
+              selections: { ...newPayload.selections!, requestType },
+              step: newPayload.step! + 1,
             };
           }),
         setJobSearch: (search) =>
@@ -172,8 +172,8 @@ const useCreateRequestContext = () => {
             const newPayload = resetPayload('jobs', state);
             return {
               ...newPayload,
-              selections: { ...newPayload.selections, jobs },
-              step: newPayload.step + 1,
+              selections: { ...newPayload.selections!, jobs },
+              step: newPayload.step! + 1,
             };
           }),
         setCandidateSearch: (search) =>
@@ -188,8 +188,8 @@ const useCreateRequestContext = () => {
             const newPayload = resetPayload('candidate', state);
             return {
               ...newPayload,
-              selections: { ...newPayload.selections, candidate },
-              step: newPayload.step + 1,
+              selections: { ...newPayload.selections!, candidate },
+              step: newPayload.step! + 1,
             };
           }),
         setScheduleSearch: (search) =>
@@ -207,7 +207,7 @@ const useCreateRequestContext = () => {
             return {
               ...newPayload,
               selections: {
-                ...newPayload.selections,
+                ...newPayload.selections!,
                 schedules: [...state.selections.schedules, schedule],
               },
             };
@@ -225,10 +225,10 @@ const useCreateRequestContext = () => {
             return {
               ...newPayload,
               selections: {
-                ...newPayload.selections,
+                ...newPayload.selections!,
                 assignees,
               },
-              step: newPayload.step + 1,
+              step: newPayload.step! + 1,
             };
           }),
         setDates: (dates) => set(() => ({ dates })),
@@ -242,8 +242,9 @@ const useCreateRequestContext = () => {
   return store;
 };
 
-export const CreateRequestContext =
-  createContext<ReturnType<typeof useCreateRequestContext>>(undefined);
+export const CreateRequestContext = createContext<
+  ReturnType<typeof useCreateRequestContext> | undefined
+>(undefined);
 
 export const CreateRequestProvider = memo((props: PropsWithChildren) => {
   const value = useCreateRequestContext();

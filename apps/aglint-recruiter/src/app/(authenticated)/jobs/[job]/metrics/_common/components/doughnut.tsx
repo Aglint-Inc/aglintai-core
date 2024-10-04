@@ -32,7 +32,11 @@ export const DoughnutChart: React.FC<{
       acc.colors.push(color);
       return acc;
     },
-    { names: [], counts: [], colors: [] },
+    { names: [], counts: [], colors: [] } as {
+      names: string[];
+      counts: number[];
+      colors: string[];
+    },
   );
   const dataBar = {
     labels: names,

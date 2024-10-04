@@ -15,7 +15,18 @@ import {
 
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-export const BreadCrumb = ({ AllRoles, name }) => {
+export const BreadCrumb = ({
+  AllRoles,
+  name,
+}: {
+  AllRoles: {
+    role: string;
+    id: string;
+    count: { users: number; permissions: number };
+    switchRole: () => void;
+  }[];
+  name: string;
+}) => {
   return (
     <Breadcrumb>
       <BreadcrumbList>
