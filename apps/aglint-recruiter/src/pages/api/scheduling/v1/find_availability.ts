@@ -5,8 +5,6 @@ import { type z } from 'zod';
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 
-const t = 's';
-console.log(g);
 export type ApiResponseFindAvailability = {
   slots: DateRangePlansType[];
   availabilities: CandidatesScheduling['calendar_events'];
@@ -17,10 +15,9 @@ const findAvailability = async (
 ) => {
   parsedData.options.return_empty_slots_err = true;
   const cand_schedule = new CandidatesScheduling(parsedData.options);
-  console.log('fmwejkn');
   await cand_schedule.fetchDetails({
     params: {
-      company_id: parsedData.recruiter_id.trimmer(),
+      company_id: parsedData.recruiter_id,
       req_user_tz: parsedData.candidate_tz,
       session_ids: parsedData.session_ids,
       start_date_str: parsedData.start_date_str,
