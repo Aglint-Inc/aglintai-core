@@ -1,4 +1,5 @@
 import { BriefcaseBusiness, ChevronDown, MapPin } from 'lucide-react';
+import { type MouseEvent } from 'react';
 
 import UITypography from '@/components/Common/UITypography';
 
@@ -21,7 +22,9 @@ type MeetingSlotProps = {
   bgColorProps?: React.CSSProperties;
   textJob?: string | React.ReactNode;
   slotMembersList?: React.ReactNode;
-  onClickDropdownIocn?: any;
+  onClickDropdownIcon?: (
+    _e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
+  ) => void;
   isMembersListVisible?: boolean;
   isDropdownIconVisible?: boolean;
   slotAvatarWithName?: React.ReactNode;
@@ -47,7 +50,7 @@ export function MyScheduleSubCard({
   // bgColorProps,
   textJob,
   slotMembersList,
-  onClickDropdownIocn,
+  onClickDropdownIcon,
   isMembersListVisible,
   isDropdownIconVisible,
   slotAvatarWithName,
@@ -142,7 +145,7 @@ export function MyScheduleSubCard({
           {isDropdownIconVisible && (
             <div
               className='flex h-6 w-6 cursor-pointer items-center justify-center rounded hover:bg-neutral-300'
-              onClick={onClickDropdownIocn}
+              onClick={(e) => onClickDropdownIcon && onClickDropdownIcon(e)}
             >
               <ChevronDown size={14} />
             </div>

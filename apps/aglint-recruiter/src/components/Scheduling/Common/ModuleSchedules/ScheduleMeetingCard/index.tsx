@@ -25,7 +25,7 @@ function ScheduleMeetingCard({
 }) {
   const [collapseOpen, setCollapseOpen] = useState(false);
   const router = useRouter();
-  const interviewers = meetingDetails.meeting_interviewers as any; // TODO: fix
+  const interviewers = meetingDetails.meeting_interviewers;
 
   return (
     <>
@@ -38,7 +38,7 @@ function ScheduleMeetingCard({
         }}
       >
         <MyScheduleSubCard
-          onClickDropdownIocn={(e) => {
+          onClickDropdownIcon={(e) => {
             setCollapseOpen((pre) => !pre);
             e.stopPropagation();
           }}
@@ -56,7 +56,7 @@ function ScheduleMeetingCard({
                     )}
                     isDesignationVisible={true}
                     textDesignation={'Candidate'}
-                    textTime={null}
+                    textTime={''}
                   />
                   {interviewers.map((user) => {
                     return (
@@ -69,11 +69,13 @@ function ScheduleMeetingCard({
                             status: meetingDetails.status,
                           }}
                           accepted_status={user.accepted_status}
-                          cancelReason={user.cancel_reasons?.find(
-                            (can) =>
-                              can.session_relation_id ===
-                              user.session_relation_id,
-                          )}
+                          cancelReason={
+                            user.cancel_reasons?.find(
+                              (can) =>
+                                can.session_relation_id ===
+                                user.session_relation_id,
+                            ) ?? null
+                          }
                           userDetails={{
                             first_name: user.first_name,
                             last_name: user.last_name,
