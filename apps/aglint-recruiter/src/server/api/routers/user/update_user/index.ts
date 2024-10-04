@@ -1,5 +1,4 @@
 import { customSchedulingSettingsUserSchema } from '@aglint/shared-types/src/db/common.zod';
-import {} from '@aglint/shared-types/src/db/tables/recruiter.types';
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
@@ -9,8 +8,8 @@ const Schema = z.object({
   first_name: z.string().optional(),
   last_name: z.string().optional(),
   phone: z.string().optional(),
-  scheduling_settings: customSchedulingSettingsUserSchema.optional(),
-  profile_image: z.string().optional().nullable(),
+  scheduling_settings: customSchedulingSettingsUserSchema,
+  profile_image: z.string().nullable().optional(),
   linked_in: z.string().optional(),
   user_id: z.string(),
 });
@@ -33,10 +32,10 @@ const mutation = async ({ input }: PrivateProcedure<typeof Schema>) => {
   await db
     .from('recruiter_user')
     .update({
-      first_name: first_name,
-      last_name: last_name,
-      phone: phone,
-      linked_in: linked_in,
+      first_name,
+      last_name,
+      phone,
+      linked_in,
       profile_image,
       scheduling_settings,
     })

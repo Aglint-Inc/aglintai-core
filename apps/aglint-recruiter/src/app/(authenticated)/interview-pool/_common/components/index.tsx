@@ -7,58 +7,14 @@ import {
   TableRow,
 } from '@components/ui/table';
 import { LibraryBig } from 'lucide-react';
-import {
-  createContext,
-  type PropsWithChildren,
-  useContext,
-  useState,
-} from 'react';
 
 import { useAllInterviewModules } from '@/authenticated/hooks';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 import { useAllDepartments } from '@/queries/departments';
 
+import { useHeaderProp } from '../context/headerContext';
 import { InterviewPoolList } from './InterviewPoolList';
-const useHeaderPropContext = () => {
-  const [searchText, setSearchText] = useState('');
-  const [selectedDepartments, setDepartments] = useState<string[]>([]);
-  const isFilterApplied = !!selectedDepartments?.length || !!searchText?.length;
-  const [activeTab, setActiveTab] = useState<'active' | 'archived'>('active');
-  const handleTabChange = (value: string) => {
-    if (value === 'active' || value === 'archived') {
-      setActiveTab(value);
-    }
-  };
-  return {
-    searchText,
-    setSearchText,
-    selectedDepartments,
-    setDepartments,
-    isFilterApplied,
-    activeTab,
-    setActiveTab,
-    handleTabChange,
-  };
-};
-
-const InterviewPoolHeader = createContext<
-  ReturnType<typeof useHeaderPropContext> | undefined
->(undefined);
-
-export const HeaderPropProvider = ({ children }: PropsWithChildren) => {
-  const { ...value } = useHeaderPropContext();
-  return (
-    <InterviewPoolHeader.Provider value={{ ...value }}>
-      {children}
-    </InterviewPoolHeader.Provider>
-  );
-};
-
-export const useHeaderProp = () => {
-  const context = useContext(InterviewPoolHeader);
-  return context!;
-};
 
 export default function InterviewTypesPage() {
   const { searchText, selectedDepartments, isFilterApplied, activeTab } =
