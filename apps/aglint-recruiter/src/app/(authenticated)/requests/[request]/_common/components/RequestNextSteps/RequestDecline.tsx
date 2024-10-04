@@ -46,7 +46,7 @@ const RequestDecline = () => {
     try {
       if (isPending) return;
       if (!declinedUserDetails) return;
-      let intSesnCancel = declinedUserDetails.interview_session_cancel;
+      const intSesnCancel = declinedUserDetails.interview_session_cancel;
       if (
         !intSesnCancel ||
         !intSesnCancel.session_relation_id ||
@@ -68,7 +68,7 @@ const RequestDecline = () => {
   const changeInterviewer = async () => {
     try {
       if (!declinedUserDetails) return;
-      let intSesnCancel = declinedUserDetails.interview_session_cancel;
+      const intSesnCancel = declinedUserDetails.interview_session_cancel;
       if (
         !intSesnCancel ||
         !intSesnCancel.session_relation_id ||

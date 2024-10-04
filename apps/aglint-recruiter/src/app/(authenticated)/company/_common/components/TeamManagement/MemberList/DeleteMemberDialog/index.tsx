@@ -150,11 +150,9 @@ function DeleteMemberDialog({
     );
 
   const onClick = () => {
-    console.log('reason', reason, reason === 'suspend');
     switch (reason) {
       case 'delete':
       case 'cancel_invite':
-        console.log('action', action);
         // @ts-ignore
         action();
         break;
