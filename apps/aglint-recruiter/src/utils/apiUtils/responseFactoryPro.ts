@@ -5,8 +5,6 @@ import {
   type NextApiRequest,
 } from '@/interface/NextRoute.interface';
 
-import { AglintLogger } from '../logger/logger';
-
 /**
  * A factory function that generates a response handler for an API request.
  *
@@ -22,11 +20,6 @@ import { AglintLogger } from '../logger/logger';
 export function routeHandlerFactory<T extends ApiInterface>(
   method: 'POST' | 'GET',
   req: NextApiRequest,
-  log?: {
-    name: string;
-    level?: 'info' | 'error' | 'debug' | 'debug-only';
-    logDetailsLevel?: 'anonymous' | 'basic' | 'full';
-  },
 ) {
   /**
    * Sends a response with the given data and error, or an error message if the status is 500.
@@ -41,11 +34,9 @@ export function routeHandlerFactory<T extends ApiInterface>(
     {
       data,
       error,
-      logger,
     }: {
       data?: T['response'];
       error?: string;
-      logger?: AglintLogger;
       // {
       //   data: Parameters<typeof logApi>[0];
       //   level: Parameters<typeof logApi>[1];
@@ -55,11 +46,6 @@ export function routeHandlerFactory<T extends ApiInterface>(
   ) {
     status = status || (error ? 500 : 200);
     // if (res.headersSent) return;
-    logger &&
-      (status === 200
-        ? logger.info({ status: 'success', meta: { response: data } })
-        : logger.error({ status: 'error', meta: { error }, message: error }));
-
     return NextResponse.json(status === 200 ? data : { error }, { status });
   }
   const requesterDetails = {
@@ -87,26 +73,9 @@ export function routeHandlerFactory<T extends ApiInterface>(
         requesterDetails: typeof requesterDetails;
       },
       // eslint-disable-next-line no-unused-vars
-      logger?: AglintLogger,
     ) => Promise<T['response'] | { error: string; status?: number }>,
     required?: (keyof T['request'])[],
   ) {
-    let logger: AglintLogger;
-
-    if (log?.name && (log?.level || AglintLogger.checkGlobalLogLevel())) {
-      logger = new AglintLogger(
-        {
-          name: String(log.name),
-          recruiter_id: requesterDetails?.recruiter_id,
-          user_id: requesterDetails?.user_id,
-          type: 'api',
-        },
-        {
-          level: log.level,
-          detailsLevel: log.logDetailsLevel,
-        },
-      );
-    }
     try {
       const reqDetails: {
         body?: T['request'];
@@ -119,7 +88,7 @@ export function routeHandlerFactory<T extends ApiInterface>(
       }
       if (required?.length) {
         for (const item of required) {
-          if (!reqDetails.body?.[String(item)]) {
+          if (!reqDetails.body?.[item as keyof T['request']]) {
             return getResponse(
               {
                 error: `Invalid request. Required ${method == 'GET' ? 'prams' : 'props'} missing`,
@@ -130,30 +99,21 @@ export function routeHandlerFactory<T extends ApiInterface>(
         }
       }
 
-      if (logger) {
-        await logger.info({
-          meta: { payload: reqDetails.body },
-          status: 'start',
-        });
-      }
-
-      const response = await apiImplementation(reqDetails, logger);
+      const response = await apiImplementation(reqDetails);
       if (response && typeof response === 'object' && 'error' in response) {
         return getResponse(
           {
             error: response.error,
-            logger,
           },
           response.status,
         );
       }
       return getResponse({
         data: response,
-        logger,
       });
-    } catch (e) {
+    } catch (e: any) {
       console.error(e);
-      return getResponse({ error: e.message, logger }, 500);
+      return getResponse({ error: e.message }, 500);
     }
   }
   return apiMethodHandler;
