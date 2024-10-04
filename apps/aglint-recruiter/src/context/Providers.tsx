@@ -1,4 +1,4 @@
-import { TooltipProvider } from '@radix-ui/react-tooltip';
+import { TooltipProvider } from '@components/ui/tooltip';
 import { type PropsWithChildren } from 'react';
 
 import { JobsProvider } from '@/jobs/contexts';
