@@ -21,22 +21,9 @@ const fetchDetails = async (
   const resStages = await fetchSessionDetails(ctx);
 
   const reducedStages = resStages.map((stage) => {
-    const sessions = stage.sessions.map((session) => {
-      return {
-        ...session,
-        users: session.users.map((user) => {
-          return {
-            ...user,
-            user_details: {
-              ...user.user_details,
-            },
-          };
-        }),
-      };
-    });
     return {
       interview_plan: stage.interview_plan,
-      sessions,
+      sessions: stage.sessions,
     };
   });
 

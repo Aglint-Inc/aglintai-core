@@ -4,7 +4,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { AlertCircle } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
-import { ConfirmedInvitePage } from 'src/app/_common/components/CandidateConfirm';
+import { ConfirmedInvitePage } from 'src/app/_common/components/CandidateConfirm/_common/components';
 
 import { Loader } from '@/components/Common/Loader';
 import timeZones from '@/utils/timeZone';
@@ -70,7 +70,7 @@ function CandidateAvailability() {
 
   const initialTimezone = useMemo(() => {
     const tz = dayjs.tz.guess();
-    return timeZones.find(({ tzCode }) => tzCode === tz);
+    return timeZones.find(({ tzCode }) => tzCode === tz) || timeZones[0];
   }, []);
 
   useEffect(() => {
@@ -92,11 +92,9 @@ function CandidateAvailability() {
       <ConfirmedInvitePage
         avail_request_id={candidateRequestAvailability.id}
         candidate={candidateRequestAvailability.applications.candidates}
-        filter_json={null}
         meetings={meetingsAndRounds.meetings}
         rounds={meetingsAndRounds.rounds}
         recruiter={{
-          id: candidateRequestAvailability.recruiter_id,
           name: candidateRequestAvailability.applications.candidates.recruiter
             .name,
           logo: candidateRequestAvailability.applications.candidates.recruiter

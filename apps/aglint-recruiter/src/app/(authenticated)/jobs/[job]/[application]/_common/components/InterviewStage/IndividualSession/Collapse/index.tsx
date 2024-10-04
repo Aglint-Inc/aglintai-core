@@ -7,9 +7,9 @@ import { UIAlert } from '@/components/Common/UIAlert';
 import UITypography from '@/components/Common/UITypography';
 import InterviewerUserDetail from '@/components/Scheduling/Common/InterviewerUserDetail';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
+import { type fetchSessionDetails } from '@/server/api/routers/requests/utils/requestSessions';
 import { numberToText } from '@/utils/number/numberToText';
 
-import { type StageWithSessions } from '../../../../hooks/useInterviewStages';
 import CancelBanners from './AdminCancelBanners';
 
 function CollapseContent({
@@ -17,7 +17,7 @@ function CollapseContent({
   collapsed,
   candidate,
 }: {
-  currentSession: NonNullable<StageWithSessions>[0]['sessions'][0];
+  currentSession: Awaited<ReturnType<typeof fetchSessionDetails>>[0];
   collapsed: boolean;
   candidate?: {
     name: string;

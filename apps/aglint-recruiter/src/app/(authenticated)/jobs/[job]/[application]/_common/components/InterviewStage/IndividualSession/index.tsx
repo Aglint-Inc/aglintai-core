@@ -1,6 +1,5 @@
 'use strict';
 
-import { type DatabaseTable } from '@aglint/shared-types';
 import { getBreakLabel } from '@aglint/shared-utils';
 import { Checkbox } from '@components/ui/checkbox';
 import dayjs from 'dayjs';

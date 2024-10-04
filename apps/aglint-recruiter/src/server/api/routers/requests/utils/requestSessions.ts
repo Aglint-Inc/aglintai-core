@@ -1,4 +1,4 @@
-import { type DatabaseTable, type SupabaseType } from '@aglint/shared-types';
+import { type SupabaseType } from '@aglint/shared-types';
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
@@ -94,13 +94,20 @@ export const fetchSessionDetails = async ({
               recruiter_user: user!,
             };
           }),
-        users: interview_session_relation.map((sesitem) => ({
-          interview_session_relation: sesitem,
-          interview_module_relation: sesitem.interview_module_relation,
-          user_details: sesitem.interview_module_relation_id
-            ? sesitem?.interview_module_relation?.recruiter_user
-            : sesitem.debrief_user,
-        })),
+        users: interview_session_relation.map((sesitem) => {
+          const {
+            interview_module_relation,
+            debrief_user,
+            ...interview_session_relation
+          } = sesitem;
+          return {
+            interview_session_relation,
+            interview_module_relation,
+            user_details: (sesitem.interview_module_relation_id
+              ? interview_module_relation?.recruiter_user
+              : debrief_user)!,
+          };
+        }),
       };
     });
 
