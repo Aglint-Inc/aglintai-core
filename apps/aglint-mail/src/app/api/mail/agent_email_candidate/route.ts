@@ -19,7 +19,7 @@ export async function POST(req: Request) {
 
     const sendgrid_payload: APISendgridPayload = {
       fromEmail: parsed_body.agent_email,
-      fromName: filled_comp_template.from_name,
+      fromName: filled_comp_template.from_name ?? '',
       email: recipient_email,
       html: filled_comp_template.body,
       subject: filled_comp_template.subject,
