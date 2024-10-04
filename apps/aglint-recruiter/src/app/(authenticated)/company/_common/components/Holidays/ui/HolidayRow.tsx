@@ -2,7 +2,7 @@ import { Badge } from '@components/ui/badge';
 import { TableCell, TableRow } from '@components/ui/table';
 import { cn } from '@lib/utils';
 
-import { UIButton } from '@/components/Common/UIButton';
+import { UIButton } from '@/common/UIButton';
 
 type Props = {
   name: string;
@@ -35,7 +35,7 @@ export const HolidayRow = (props: Props) => {
         )}
       </TableCell>
       <TableCell>
-        <UIButton variant='ghost' size='sm' onClick={props.onDelete}>
+        <UIButton variant='outline' size='sm' onClick={props.onDelete}>
           Delete
         </UIButton>
       </TableCell>

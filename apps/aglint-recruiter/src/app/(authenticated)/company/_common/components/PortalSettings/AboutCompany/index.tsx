@@ -3,10 +3,10 @@ import { Parser } from 'html-to-react';
 import { Building2, Plus, SquarePen } from 'lucide-react';
 import { useState } from 'react';
 
+import GlobalEmpty from '@/common/GlobalEmpty';
+import { UIButton } from '@/common/UIButton';
+import UISectionCard from '@/common/UISectionCard';
 import { useFlags } from '@/company/hooks/useFlags';
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
-import { UIButton } from '@/components/Common/UIButton';
-import UISectionCard from '@/components/Common/UISectionCard';
 
 import { AboutCompanyDialog } from './AboutCompanyDialog';
 

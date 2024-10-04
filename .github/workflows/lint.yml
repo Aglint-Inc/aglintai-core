@@ -66,6 +66,7 @@ jobs:
         run: |
           echo "Attempting to deploy..."
           # Link the project to Vercel
+          rm -rf .vercel
           vercel link --yes --project $VERCEL_PROJECT_ID --token=$VERCEL_TOKEN --scope=$VERCEL_ORG_ID
           # Pull environment variables
           vercel env pull --token=$VERCEL_TOKEN --scope=$VERCEL_ORG_ID --environment=preview --git-branch=development

@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { Bar, BarChart, Legend, XAxis, YAxis } from 'recharts';
 import { useInterviewCount } from 'src/app/(authenticated)/reports/_common/hook/interview/interview.hook';
 
-import UISectionCard from '@/components/Common/UISectionCard';
+import UISectionCard from '@/common/UISectionCard';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 export default function HistoricInterviews() {
   const [timeFrame, setTimeFrame] = useState<'day' | 'week' | 'month'>('day');

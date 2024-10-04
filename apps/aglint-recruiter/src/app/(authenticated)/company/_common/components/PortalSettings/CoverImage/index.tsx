@@ -3,10 +3,10 @@ import { ImagePlus } from 'lucide-react';
 import Image from 'next/image';
 import { type ChangeEvent, type DragEvent, useRef, useState } from 'react';
 
+import { Loader } from '@/common/Loader';
+import UISectionCard from '@/common/UISectionCard';
 import { useFlags } from '@/company/hooks/useFlags';
 import { usePortalSettings } from '@/company/hooks/usePortalSettings';
-import { Loader } from '@/components/Common/Loader';
-import UISectionCard from '@/components/Common/UISectionCard';
 
 export function CoverImage() {
   const { banner_image } = useFlags();

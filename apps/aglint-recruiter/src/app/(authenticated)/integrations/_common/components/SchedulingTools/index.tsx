@@ -8,8 +8,8 @@ import { useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import PasswordField from 'src/app/_common/components/passwordField';
 
+import { ShowCode } from '@/common/ShowCode';
 import { useTenant } from '@/company/hooks';
-import { ShowCode } from '@/components/Common/ShowCode';
 
 import { IntegrationCard } from '../components/IntegrationCard';
 import SchedulingPopUps from '../SchedulingToolPopUps';

@@ -1,8 +1,8 @@
 import { DialogDescription } from '@components/ui/dialog';
 import type { Dispatch, SetStateAction } from 'react';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
+import { UIButton } from '@/common/UIButton';
+import UIDialog from '@/common/UIDialog';
 
 export const DeleteReasonDialog = ({
   isDeleteDialogOpen,

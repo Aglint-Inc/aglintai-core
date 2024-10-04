@@ -5,10 +5,10 @@ import { Button } from '@components/ui/button';
 import { BookOpen, Plus } from 'lucide-react';
 import * as React from 'react';
 
+import AddChip from '@/common/AddChip';
+import GlobalEmpty from '@/common/GlobalEmpty';
+import UISectionCard from '@/common/UISectionCard';
 import { useTenant } from '@/company/hooks';
-import AddChip from '@/components/Common/AddChip';
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
-import UISectionCard from '@/components/Common/UISectionCard';
 import { manageDepartments } from '@/context/AuthContext/utils';
 import { useAllDepartments } from '@/queries/departments';
 

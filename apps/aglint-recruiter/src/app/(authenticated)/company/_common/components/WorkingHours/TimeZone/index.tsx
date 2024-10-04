@@ -7,12 +7,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { PopoverClose } from '@radix-ui/react-popover';
 import { Clock, Edit } from 'lucide-react';
 import { type FC, useEffect, useRef, useState } from 'react';
 
-import TimezonePicker from '@/components/Common/TimezonePicker';
-import UISectionCard from '@/components/Common/UISectionCard';
+import TimezonePicker from '@/common/TimezonePicker';
+import UISectionCard from '@/common/UISectionCard';
 import { type TimezoneObj } from '@/utils/timeZone';
 
 interface TimeZoneProps {
@@ -66,11 +65,9 @@ const TimeZone: FC<TimeZoneProps> = ({
                 onChange={(value) => setSelectedTimeZone(value)}
                 width={'300'}
               />
-              <PopoverClose asChild>
-                <Button className='w-full' onClick={handleUpdateAndClose}>
-                  Update
-                </Button>
-              </PopoverClose>
+              <Button className='w-full' onClick={handleUpdateAndClose}>
+                Update
+              </Button>
             </div>
           </PopoverContent>
         </Popover>
