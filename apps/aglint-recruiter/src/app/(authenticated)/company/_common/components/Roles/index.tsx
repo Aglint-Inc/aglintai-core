@@ -104,7 +104,7 @@ const RoleTable = ({
         <TableHeader>
           <TableRow className='bg-gray-100'>
             <TableHead>Role</TableHead>
-            <TableHead>Description</TableHead>
+            <TableHead className='w-[42%]'>Description</TableHead>
             <TableHead>Users</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
