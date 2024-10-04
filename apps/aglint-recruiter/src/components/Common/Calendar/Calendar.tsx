@@ -20,7 +20,7 @@ import {
 import { Loader } from '@/components/Common/Loader';
 
 import { type SchedulesSupabase } from '../../../app/_common/utils/schedules-query';
-import UITypography from '../UITypography';
+import GlobalEmpty from '../GlobalEmpty';
 import CalendarHeader from './CalendarHeader';
 import {
   type EventFullCalender,
@@ -104,15 +104,17 @@ function CalendarComp({
         </div>
       ) : (
         <>
-          <div className='flex flex-col space-y-2'>
-            <CalendarHeader
-              calendarApi={calendarApi}
-              currentDate={currentDate}
-              handleMode={handleMode}
-              handleType={handleType}
-              mode={viewMode}
-              type={viewType}
-            />
+          <div className='flex flex-col'>
+            <div className='rounded-t-lg border border-b-0 border-border px-2 py-2'>
+              <CalendarHeader
+                calendarApi={calendarApi}
+                currentDate={currentDate}
+                handleMode={handleMode}
+                handleType={handleType}
+                mode={viewMode}
+                type={viewType}
+              />
+            </div>
             <FullCalendar
               key={events?.length}
               ref={calendarRef}
@@ -154,12 +156,13 @@ export default CalendarComp;
 
 function onEventContent() {
   return (
-    <div className='flex flex-col items-center gap-3'>
-      <Calendar size={30} className='text-gray-400' />
-      <UITypography type='small' variant='p' className='text-muted-foreground'>
-        No events
-      </UITypography>
-    </div>
+    <GlobalEmpty
+      icon={
+        <Calendar strokeWidth={2} className='h-10 w-10 text-muted-foreground' />
+      }
+      header='No interviews found.'
+      description='No interviews found.'
+    />
   );
 }
 

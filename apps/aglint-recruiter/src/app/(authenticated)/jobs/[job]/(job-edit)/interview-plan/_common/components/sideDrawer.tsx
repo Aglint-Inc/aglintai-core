@@ -1,11 +1,11 @@
 /* eslint-disable security/detect-object-injection */
 import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
-import { DialogDescription, DialogTitle } from '@components/ui/dialog';
-import { FileQuestion } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 import { useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDrawer from '@/components/Common/UIDrawer';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -95,23 +95,16 @@ const InterviewDrawers = ({
           handleClose={() => handleClose()}
         />
       ) : (
-        <div className='flex flex-col items-center justify-center p-8 text-center'>
-          <div className='mb-2'>
-            <FileQuestion size={80} />
-          </div>
-          <DialogTitle className='mb-2 text-lg font-semibold'>
-            No Interview Plan
-          </DialogTitle>
-          <DialogDescription className='mb-4 text-sm text-gray-600'>
-            Create an interview plan to get started
-          </DialogDescription>
-          <Button
-            onClick={() => push('/scheduling?tab=interviewtypes')}
-            className='hover:bg-primary-dark bg-primary text-white'
-          >
-            Create Interview Plan
-          </Button>
-        </div>
+        <GlobalEmpty
+          icon={<AlertTriangle className='h-10 w-10' />}
+          header='No Interview Plan'
+          description='Create an interview plan to get started'
+          primaryAction={
+            <Button onClick={() => push('/scheduling?tab=interviewtypes')}>
+              Create Interview Plan
+            </Button>
+          }
+        />
       )}
     </UIDrawer>
   );

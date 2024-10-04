@@ -24,8 +24,7 @@ import SingleDaySessions from './SingleDaySessions';
 import SlotsSubmitted from './SlotsSubmitted';
 
 function CandidateAvailability() {
-  const { multiDaySessions, loading, isSubmitted } =
-    useRequestAvailabilityContext();
+  const { multiDaySessions, isSubmitted } = useRequestAvailabilityContext();
   const [meetingsAndRounds, setMeetingsAndRound] = useState<{
     rounds: any[];
     meetings: any[];
@@ -33,7 +32,8 @@ function CandidateAvailability() {
   } | null>(null);
 
   const { data: meetings } = useCandidateAvailabilityMeetings();
-  const { data: candidateRequestAvailability } = useCandidateAvailabilityData();
+  const { data: candidateRequestAvailability, isFetched } =
+    useCandidateAvailabilityData();
   const { data: scheduledMeetings } =
     useCandidateAvailabilityScheduleDMeetings();
 
@@ -101,7 +101,7 @@ function CandidateAvailability() {
       />
     );
   }
-  if (loading) {
+  if (!isFetched) {
     return (
       <div className='flex h-[100vh] w-full items-center justify-center'>
         <Loader />
