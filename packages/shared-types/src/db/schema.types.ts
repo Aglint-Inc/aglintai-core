@@ -6474,18 +6474,18 @@ export type Database = {
         Args: {
           first_name: string
           last_name: string
-          linked_in: string
-          office_location_id: number
           employment: string
           position: string
-          department_id: number
           phone: string
-          profile_image: string
           scheduling_settings: Json
           user_id: string
-          manager_id: string
-          role_id: string
           recruiter_id: string
+          department_id?: number
+          manager_id?: string
+          role_id?: string
+          office_location_id?: number
+          linked_in?: string
+          profile_image?: string
         }
         Returns: undefined
       }

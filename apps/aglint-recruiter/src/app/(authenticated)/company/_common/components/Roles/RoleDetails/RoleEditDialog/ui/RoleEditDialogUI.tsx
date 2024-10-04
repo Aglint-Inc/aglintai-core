@@ -18,7 +18,7 @@ type props = {
       ReturnType<typeof useTenantMembers>['members'][number] | null
     >
   >;
-  role;
+  role: string;
 };
 export const RoleEditDialogUI = ({
   selectedMember,

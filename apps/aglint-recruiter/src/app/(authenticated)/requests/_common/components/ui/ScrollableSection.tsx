@@ -1,6 +1,7 @@
 import { Button } from '@components/ui/button';
 import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
+import { type REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
 import Link from 'next/link';
 
 import { RequestProvider } from '@/context/RequestContext';
@@ -12,7 +13,7 @@ function ScrollableSection({
   section,
   isFetched,
 }: {
-  section: any;
+  section: (typeof REQUEST_SESSIONS_DEFAULT_DATA)[number];
   isFetched: boolean;
 }) {
   return (

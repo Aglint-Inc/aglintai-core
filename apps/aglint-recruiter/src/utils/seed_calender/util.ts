@@ -6,6 +6,7 @@ import {
   type NewCalenderEvent,
   type SchedulingSettingType,
 } from '@aglint/shared-types';
+import { type CustomSchedulingSettingsUser } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
 import { dayjsLocal } from '@aglint/shared-utils';
 
 import { type GoogleCalender } from '@/services/GoogleCalender/google-calender';
@@ -248,7 +249,7 @@ export const seedCalendersUtil = (
   const fillEventsForTheDay = async (
     curr_day: string,
     google_cal: GoogleCalender,
-    int_schd_sett: SchedulingSettingType,
+    int_schd_sett: CustomSchedulingSettingsUser,
     monthly_interviewer_config: MeetingLimitsConfig,
   ) => {
     const day_interviewer_config: MeetingLimitsConfig = {

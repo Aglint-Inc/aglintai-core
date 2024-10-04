@@ -11,8 +11,8 @@ const ResumePreviewer = ({
   onClose,
   url,
   name,
-  bookmark = null,
-  navigation = null,
+  bookmark,
+  navigation,
   download = false,
 }: {
   open: boolean;

@@ -26,6 +26,7 @@ import {
   type RequestProgress,
   type RequestResponse,
 } from './types';
+import { supabaseWrap } from '@aglint/shared-utils';
 
 export const requestQueries = {
   requests_key: () => 'requests' as const,
@@ -72,7 +73,7 @@ export const requestQueries = {
       mutationKey: requestQueries.requests_mutationKey(method),
       status: 'pending',
     } as MutationFilters,
-    select: (mutation) => mutation.state.variables as U,
+    select: (mutation: any) => mutation.state.variables as U,
   }),
   requests_invalidate: () => ({
     predicate: ((query) =>
@@ -99,15 +100,15 @@ export const requestQueries = {
       requestQueries.request_progress_key(),
       { request_id },
     ] as const,
-  all_request_progress_predicate: () => (query) =>
+  all_request_progress_predicate: () => (query: any) =>
     query.queryKey.includes(requestQueries.request_progress_key()) &&
     query.state.data !== undefined,
   request_progress_predicate:
     ({ request_id }: GetRequestProgress) =>
-    (query) =>
+    (query: any) =>
       query.queryKey.includes(requestQueries.request_progress_key()) &&
       query.state.data !== undefined &&
-      !!query.queryKey.find((key) => key?.request_id === request_id),
+      !!query.queryKey.find((key: any) => key?.request_id === request_id),
   request_progress: ({
     request_id,
     enabled = true,
@@ -143,13 +144,12 @@ export const requestQueries = {
       gcTime: request_id ? GC_TIME : 0,
       queryKey: requestQueries.requests_workflow_queryKey({ request_id }),
       queryFn: async () => {
-        const d = (
+        const d = supabaseWrap(
           await supabase
             .from('workflow')
             .select('*, workflow_action(*)')
-            .eq('request_id', request_id)
-            .throwOnError()
-        ).data;
+            .eq('request_id', request_id),
+        );
         return d ?? [];
       },
     }),
@@ -431,9 +431,9 @@ type RequestsFilterKeys =
   | 'assigneeList';
 type RequestFilterValues = {
   is_new: DatabaseTable['request']['is_new'];
-  status: DatabaseTable['request']['status'][];
+  status: string[];
   title: DatabaseTable['request']['title'];
-  type: DatabaseTable['request']['type'][];
+  type: string[];
   created_at: DatabaseTable['request']['created_at'];
   end_at: DatabaseTable['request']['created_at'];
   // assignee_id: DatabaseTable['request']['assignee_id'][];

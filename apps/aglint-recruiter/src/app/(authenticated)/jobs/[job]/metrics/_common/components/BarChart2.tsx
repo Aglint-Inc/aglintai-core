@@ -13,6 +13,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { Loader } from '@/components/Common/Loader';
 import { useMetricsSkillPool } from '@/job/hooks';
 import { getOrderedGraphValues } from '@/job/metrics/utils';
+import { SafeObject } from '@/utils/safeObject';
 import { capitalize } from '@/utils/text/textUtils';
 
 import type { MetricsOptions } from '../types';
@@ -40,7 +41,12 @@ const BarChart: React.FC<{
       acc.colors.push(color);
       return acc;
     },
-    { labels: [], tooltips: [], counts: [], colors: [] },
+    { labels: [], tooltips: [], counts: [], colors: [] } as {
+      labels: string[];
+      tooltips: string[];
+      counts: number[];
+      colors: string[];
+    },
   );
   const dataBar = {
     labels: labels,
@@ -124,9 +130,9 @@ const Content: FC<{
   option: keyof MetricsOptions<'skillPool'>;
 }> = ({ option }) => {
   const [skillPool] = useMetricsSkillPool();
-  const skills = skillPool?.[option] ?? null;
+  const skills = (skillPool?.[option] ?? null)!;
   const total = skills
-    ? Object.values(skills).reduce((acc, curr) => {
+    ? SafeObject.values(skills).reduce((acc, curr) => {
         acc += curr;
         return acc;
       }, 0)

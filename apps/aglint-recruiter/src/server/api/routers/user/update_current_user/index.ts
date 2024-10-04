@@ -1,6 +1,6 @@
 import { customRecruiterUserUpdateSchema } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
 
-import { type PrivateProcedure, publicProcedure } from '@/server/api/trpc';
+import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 const mutation = async ({
@@ -18,6 +18,6 @@ const mutation = async ({
   return true;
 };
 
-export const updateCurrentUser = publicProcedure
+export const updateCurrentUser = privateProcedure
   .input(customRecruiterUserUpdateSchema)
   .mutation(mutation);

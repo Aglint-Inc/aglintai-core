@@ -49,9 +49,9 @@ const Education = () => {
 
 export { Education };
 
-const getSchoolLogos = (data) => {
+const getSchoolLogos = (data: any) => {
   if (!data?.resume_json?.schools) return [];
-  const schools = data.resume_json.schools.slice(0, 3); // Get top 3 schools
+  const schools: any[] = data.resume_json.schools.slice(0, 3); // Get top 3 schools
   return schools.map((school, i) => (
     <ImageWithFallback
       key={i}
@@ -229,7 +229,10 @@ const timeFormat = (
 };
 
 // New function to calculate duration
-const calculateDuration = (start, end) => {
+const calculateDuration = (
+  start: Record<string, any>,
+  end: Record<string, any>,
+) => {
   if (!start) return '';
 
   const startDate = new Date(start.year || 0, (start.month || 1) - 1);
@@ -258,7 +261,15 @@ const calculateDuration = (start, end) => {
   return duration || 'Less than a month';
 };
 
-const ImageWithFallback = ({ src, alt, fallbackSrc }) => {
+const ImageWithFallback = ({
+  src,
+  alt,
+  fallbackSrc,
+}: {
+  src: string;
+  alt: string;
+  fallbackSrc: string;
+}) => {
   const [imgSrc, setImgSrc] = useState(src);
 
   return (

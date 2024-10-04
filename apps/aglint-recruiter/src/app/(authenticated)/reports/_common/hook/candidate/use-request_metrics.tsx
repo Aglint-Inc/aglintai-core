@@ -9,8 +9,8 @@ export function useRequestMetics() {
     {
       recruiter_id: recruiter.id,
       job_id: filters.job,
-      locations: filters.location && [filters.location],
-      departments: filters.department && [filters.department],
+      locations: filters.location ? [filters.location] : null,
+      departments: filters.department ? [filters.department] : null,
       data_range: filters.dateRange,
     },
     {
@@ -18,7 +18,7 @@ export function useRequestMetics() {
     },
   );
   return {
-    data: data || [dummy_RequestMetics],
+    data: data || [],
     isFetching,
     isError,
   };
@@ -27,7 +27,7 @@ export const dummy_RequestMetics = {
   type: 'type',
   request_id: 'request_id',
   recruiting_coord: 'recruiting_coordinator',
-  interview_coordinator: 'interview_coordinator',
+  interviewing_coordinator: 'interview_coordinator',
   candidate_name: 'candidate_name',
   availability_req: true,
   self_scheduling_req: true,

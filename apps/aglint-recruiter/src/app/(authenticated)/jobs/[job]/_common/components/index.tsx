@@ -7,11 +7,7 @@ import {
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 
-import {
-  useApplicationsPrefetch,
-  useApplicationsStore,
-  useJob,
-} from '@/job/hooks';
+import { useApplicationsStore, useJob } from '@/job/hooks';
 
 import { Actions } from './Actions';
 import DNDProvider from './DNDProvider';
@@ -23,7 +19,6 @@ import { Table } from './Table';
 import Tabs from './Tabs';
 
 export const ApplicationsDashboard = () => {
-  void useApplicationsPrefetch();
   const { job, jobLoad } = useJob();
   return jobLoad ? (
     job ? (

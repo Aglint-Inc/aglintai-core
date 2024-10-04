@@ -7,5 +7,7 @@ export type InterviewerDetailType = NonNullable<
 export const useInterviewer = () => {
   const router = useRouterPro();
   const user_id = router.params.user as string;
-  return api.interviewers.get_user_details.useQuery({ user_id });
+  const query = api.interviewers.get_user_details.useQuery({ user_id });
+
+  return { ...query, data: query.data! };
 };

@@ -13,13 +13,13 @@ import {
 export const fetchAllCandidates = async (
   apiKey: string,
 ): Promise<AshbyApplication[]> => {
-  let allCandidates = [];
+  let allCandidates: AshbyApplication[] = [];
   let hasMore = true;
   let page;
 
   while (hasMore) {
     try {
-      const response = await axios.post('/api/ashby/getCandidates', {
+      const response: any = await axios.post('/api/ashby/getCandidates', {
         page: page,
         apiKey: apiKey,
       });
@@ -45,7 +45,7 @@ export const fetchAllCandidates = async (
 
 export const fetchAllJobs = async (apiKey: string): Promise<JobAshby[]> => {
   //pagination need to done
-  let allJobs = [];
+  let allJobs: JobAshby[] = [];
 
   try {
     const response = await axios.post('/api/ashby/getPostings', {

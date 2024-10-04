@@ -100,7 +100,7 @@ const EditBasicInfoDialog = ({
       if (isImageChanged && imageFile.current) {
         const { data } = await supabase.storage
           .from('company-logo')
-          .upload(`public/${recruiter.id}`, imageFile.current, {
+          .upload(`public/${recruiter.id}`, imageFile.current!, {
             cacheControl: '3600',
             upsert: true,
           });

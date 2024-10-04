@@ -99,7 +99,7 @@ export const useInvalidateJobQueries = () => {
   const queryClient = useQueryClient();
   const utils = api.useUtils();
   const predicateFn = useCallback(
-    (id): QueryFilters['predicate'] =>
+    (id: string): QueryFilters['predicate'] =>
       (query) =>
         query.queryKey.includes(jobKey) &&
         Boolean(query.queryKey.find((key) => (key as any)?.id === id)) &&
@@ -110,11 +110,11 @@ export const useInvalidateJobQueries = () => {
     await Promise.allSettled([
       queryClient.invalidateQueries({
         type: 'active',
-        predicate: predicateFn(id),
+        predicate: predicateFn(id!),
       }),
       queryClient.removeQueries({
         type: 'inactive',
-        predicate: predicateFn(id),
+        predicate: predicateFn(id!),
       }),
       utils.jobs.job.applications.read.invalidate({ job_id: id! }),
     ]);

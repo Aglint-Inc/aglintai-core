@@ -15,6 +15,7 @@ import {
 } from '../data.types';
 import { SchedulingSettingType } from './scheduleSetting';
 import { CalConflictType, ConflictReason } from './apiResp.types';
+import { CustomSchedulingSettingsUser } from '../db/tables/recruiter_user.types';
 
 export type PauseJson = {
   start_date: string;
@@ -28,7 +29,7 @@ export type SessionInterviewerType = {
   email: string;
   profile_image: string | null;
   schedule_auth: ScheduleAuthType | null;
-  scheduling_settings: SchedulingSettingType;
+  scheduling_settings: CustomSchedulingSettingsUser;
   user_id: string;
   position: string;
   training_type: InterviewerSessionRelation['training_type'];
@@ -108,7 +109,7 @@ export type InterDetailsType = {
   freeTimes: InterDayFreeTime;
   work_hours: InterDayWorkHr;
   isCalenderConnected: boolean;
-  int_schedule_setting: SchedulingSettingType;
+  int_schedule_setting: CustomSchedulingSettingsUser;
   day_off: InterDayHolidayOff;
   holiday: InterDayHolidayOff;
 };

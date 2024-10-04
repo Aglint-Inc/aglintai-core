@@ -96,7 +96,7 @@ const moveToInterview = async ({
   );
   const requests: DatabaseFunctions['move_to_interview']['Args']['requests'] =
     data.map(({ id: application_id, name }) => ({
-      application_id,
+      application_id: application_id!,
       title: `Schedule ${sessions} for ${name}`,
       status: 'to_do',
       assigner_id: ctx.user_id,

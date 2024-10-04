@@ -1,4 +1,4 @@
-import type { DatabaseTableInsert } from '@aglint/shared-types';
+import type { DatabaseTable } from '@aglint/shared-types';
 import { Textarea } from '@components/ui/textarea';
 import dayjs from 'dayjs';
 import { Edit2 } from 'lucide-react';
@@ -24,7 +24,7 @@ function CreateRequest({
   setSelectedSession,
   selectedSession,
 }: {
-  setRequest: Dispatch<SetStateAction<DatabaseTableInsert['request']>>;
+  setRequest: Dispatch<SetStateAction<DatabaseTable['request'] | null>>;
   priority: 'urgent' | 'standard';
   setPriority: Dispatch<SetStateAction<'urgent' | 'standard'>>;
   note: string;
@@ -37,15 +37,17 @@ function CreateRequest({
     job: { hiring_manager, recruiting_coordinator, sourcer, recruiter },
   } = useJob();
   const { recruiter_user } = useTenant();
-  const selectedMember =
-    membersStatus === 'success' &&
-    members.find(
-      (member) =>
-        member.user_id === recruiting_coordinator ||
-        hiring_manager ||
-        sourcer ||
-        recruiter,
-    );
+  const selectedMember = (
+    membersStatus === 'success'
+      ? members.find(
+          (member) =>
+            member.user_id === recruiting_coordinator ||
+            hiring_manager ||
+            sourcer ||
+            recruiter,
+        )
+      : null
+  )!;
   const [selectedInterviewer, setSelectedInterviewer] =
     useState<MemberType>(selectedMember);
 
@@ -87,7 +89,7 @@ function CreateRequest({
           assigner_id: recruiter_user.user_id,
           type: 'schedule_request',
           status: 'to_do',
-        };
+        } as typeof pre;
       });
     }
   }, [status]);
@@ -95,7 +97,7 @@ function CreateRequest({
   useEffect(() => {
     if (priority) {
       setRequest((pre) => {
-        const preData = { ...pre };
+        const preData = { ...pre! };
         return {
           ...preData,
           priority: priority,
@@ -143,7 +145,7 @@ function CreateRequest({
                   handleChange={(member) => {
                     setSelectedInterviewer(member);
                     setRequest((pre) => {
-                      const preData = { ...pre };
+                      const preData = { ...pre! };
                       return {
                         ...preData,
                         assignee_id: member.user_id,
@@ -153,7 +155,7 @@ function CreateRequest({
                   updateButton={
                     <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                   }
-                  members={members}
+                  members={members!}
                 />
               </div>
             )

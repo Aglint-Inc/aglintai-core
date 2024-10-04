@@ -86,7 +86,7 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
     query.eq('bookmarked', true);
   }
 
-  if (input.search.length) {
+  if (input.search!.length) {
     query.ilike('name', `%${input.search}%`);
   }
 

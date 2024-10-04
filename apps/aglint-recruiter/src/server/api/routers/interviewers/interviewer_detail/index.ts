@@ -122,13 +122,13 @@ const query = async ({
     department: user.departments?.name ?? '',
     scheduling_settings: user.scheduling_settings,
     linked_in: user.linked_in,
-    office_location_id: user?.office_locations?.id,
+    office_location_id: user?.office_locations?.id || null,
     employment: user?.employment,
     profile_image: user.profile_image,
-    department_id: user.departments?.id,
-    role_id: user?.recruiter_relation?.[0]?.roles?.id,
-    manager_id: user?.recruiter_relation?.[0]?.manager_id,
-    role: user?.recruiter_relation?.[0]?.roles?.name,
+    department_id: user.departments?.id || null,
+    role_id: user?.recruiter_relation?.[0]?.roles?.id || null,
+    manager_id: user?.recruiter_relation?.[0]?.manager_id || null,
+    role: user?.recruiter_relation?.[0]?.roles?.name ?? '',
 
     location: [
       user?.office_locations?.city,

@@ -18,7 +18,7 @@ function SelectSessionType() {
     <>
       <Tabs
         value={
-          editSession.interview_session.session_type === 'individual'
+          editSession!.interview_session.session_type === 'individual'
             ? 'individual'
             : 'panel'
         }
@@ -29,7 +29,7 @@ function SelectSessionType() {
             onClick={() => {
               setEditSession({
                 interview_session: {
-                  ...editSession.interview_session,
+                  ...editSession!.interview_session,
                   session_type: 'individual',
                 },
               });
@@ -44,7 +44,7 @@ function SelectSessionType() {
             onClick={() => {
               setEditSession({
                 interview_session: {
-                  ...editSession.interview_session,
+                  ...editSession!.interview_session,
                   session_type: 'panel',
                 },
               });

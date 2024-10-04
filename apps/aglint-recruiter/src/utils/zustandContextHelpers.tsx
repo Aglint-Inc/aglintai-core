@@ -24,7 +24,7 @@ import { shallow } from 'zustand/shallow';
  *
  */
 export function createContextStoreSelector<T>(
-  context: Context<StoreApi<T>>,
+  context: Context<StoreApi<T> | undefined>,
   warning = 'The context provider for this hook was not found',
 ) {
   return function <U = T>(
@@ -92,11 +92,17 @@ export type CreateContextStore<
 type CreateContextStoreActions<T extends Record<string, any>> =
   keyof T extends infer U
     ? U extends string
-      ? { [_id in `set${Capitalize<U>}`]: (_x: Partial<T[U]>) => void } & {
+      ? { [_id in `set${Capitalize<U>}`]: (_x: Partiality<T[U]>) => void } & {
           [_id in `reset${Capitalize<U>}`]: () => void;
         }
       : never
     : never;
+
+type Partiality<T> = T extends any[]
+  ? T
+  : T extends Record<string, any>
+    ? Partial<T>
+    : T;
 
 type UnionToIntersection<U> = (
   U extends any ? (_arg: U) => void : never

@@ -40,11 +40,11 @@ export default function LeverModalComp() {
   const [loading, setLoading] = useState(false);
   const [leverPostings, setLeverPostings] = useState<LeverJob[]>([]);
   const [selectedLeverPostings, setSelectedLeverPostings] =
-    useState<LeverJob>(null);
+    useState<LeverJob | null>(null);
   const [leverFilter, setLeverFilter] = useState('published');
   const [initialFetch, setInitialFetch] = useState(true);
   const [error, setError] = useState<boolean>(false);
-  const apiRef = useRef(null);
+  const apiRef = useRef<HTMLInputElement | null>(null);
   const { data: integrations } = useIntegrations();
   const [showApiKey, setShowApiKey] = useState(false);
 
@@ -55,7 +55,7 @@ export default function LeverModalComp() {
   }, [jobs.status, integrations?.lever_key]);
 
   const fetchJobs = async () => {
-    const allJobs = await fetchAllJobs(integrations.lever_key);
+    const allJobs = await fetchAllJobs(integrations.lever_key!);
     setLeverPostings(
       allJobs.filter((post) => {
         if (
@@ -84,7 +84,7 @@ export default function LeverModalComp() {
         '/api/lever/createjob',
         {
           recruiter_id: recruiter.id,
-          leverPost: selectedLeverPostings,
+          leverPost: selectedLeverPostings!,
         },
       );
 
@@ -97,7 +97,7 @@ export default function LeverModalComp() {
         lever: { open: false, step: STATE_LEVER_DIALOG.IMPORTING },
       });
       router.push(ROUTES['/jobs/[job]']({ job: response.public_job_id }));
-    } catch (error) {
+    } catch (error: any) {
       toast.error(error.message);
       resetIntegrations();
     }
@@ -128,7 +128,7 @@ export default function LeverModalComp() {
   }
 
   const submitApiKey = async () => {
-    if (!apiRef.current.value) {
+    if (!apiRef.current!.value) {
       setError(true);
       return;
     }
@@ -136,7 +136,7 @@ export default function LeverModalComp() {
       setLoading(true);
       const response = await axios.post('/api/lever/getPostings', {
         offset: 0,
-        apiKey: apiRef.current.value,
+        apiKey: apiRef.current!.value,
         isInitial: true,
       });
       if (response.status === 200 && response.data.data) {
@@ -145,7 +145,7 @@ export default function LeverModalComp() {
         });
         const responseRec = await axios.post('/api/lever/saveApiKey', {
           recruiterId: recruiter.id,
-          apiKey: apiRef.current.value,
+          apiKey: apiRef.current!.value,
         });
 
         if (responseRec.status === 200 && responseRec.data[0]?.lever_key) {

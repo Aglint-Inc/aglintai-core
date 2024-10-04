@@ -4,7 +4,7 @@ import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export const dynamic = 'force-dynamic';
 
-export async function POST(req) {
+export async function POST(req: Request) {
   const supabaseAdmin = getSupabaseServer();
   const {
     recruiter_id,
@@ -36,7 +36,7 @@ export async function POST(req) {
       { users: users.filter((user) => !user.schedule_auth) },
       { status: 200 },
     );
-  } catch (e) {
+  } catch (e: any) {
     return NextResponse.json({ message: e.message }, { status: 400 });
   }
 }

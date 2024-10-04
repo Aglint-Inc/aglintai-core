@@ -84,8 +84,9 @@ const useWorkflowsContext = () => {
   };
 };
 
-export const WorkflowsContext =
-  createContext<ReturnType<typeof useWorkflowsContext>>(undefined);
+export const WorkflowsContext = createContext<
+  ReturnType<typeof useWorkflowsContext> | undefined
+>(undefined);
 
 export const WorkflowsProvider = memo((props: PropsWithChildren) => {
   const value = useWorkflowsContext();

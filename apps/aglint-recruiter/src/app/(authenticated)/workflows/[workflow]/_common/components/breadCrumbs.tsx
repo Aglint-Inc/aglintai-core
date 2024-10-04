@@ -27,7 +27,7 @@ export const BreadCrumbs = () => {
         <BreadcrumbSeparator />
         <BreadcrumbItem>
           <BreadcrumbPage>
-            {workflow ? capitalizeSentence(workflow.title) : '---'}
+            {workflow ? capitalizeSentence(workflow.title!) : '---'}
           </BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>

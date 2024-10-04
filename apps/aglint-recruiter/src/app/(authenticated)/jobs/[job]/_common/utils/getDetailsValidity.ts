@@ -27,15 +27,8 @@ export const getDetailsValidity = (job: Job): DetailsValidity => {
       message,
     };
   }
-  //TODO: HACK FOR BACKWARD COMPATABILITY, DELETE LATER
   const draft = {
-    job_title: job.job_title,
-    department: job.department_id,
-    description: job.description,
-    job_type: job.job_type,
-    location_id: job.location_id,
-    workplace_type: job.workplace_type,
-    ...(job.draft ?? {}),
+    ...job.draft,
   };
   const result = Object.entries(draft).reduce(
     (acc, [key, value]) => {
@@ -63,7 +56,7 @@ export const getDetailsValidity = (job: Job): DetailsValidity => {
       }
       return acc;
     },
-    { validity: true, invalidFields: [] } as DetailsValidity,
+    { validity: true, invalidFields: [] } as unknown as DetailsValidity,
   );
   result['message'] = getMessage(result.invalidFields);
   return result;

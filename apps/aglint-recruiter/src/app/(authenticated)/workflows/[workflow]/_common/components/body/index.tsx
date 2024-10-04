@@ -84,7 +84,7 @@ export const ConnectedJobs = () => {
           key={job.id}
           {...(job as Workflow['jobs'][number])}
           devlinkProps={devlink}
-          workflow_id={workflow?.id}
+          workflow_id={workflow?.id ?? null!}
         />
       ))}
     </Section>
@@ -105,8 +105,8 @@ const WorkflowJob = ({
   workflow_id: string;
 }) => {
   const { push } = useRouterPro();
-  const { mutateAsync } = useJobWorkflowDisconnect({ id });
-  const mutationState = useJobWorkflowMutations({ id });
+  const { mutateAsync } = useJobWorkflowDisconnect({ id: id! });
+  const mutationState = useJobWorkflowMutations({ id: id! });
   const loading = !!(mutationState?.remove ?? []).find(
     ({ job_id, workflow_id: wf_id }) => job_id === id && wf_id == workflow_id,
   );
@@ -117,7 +117,7 @@ const WorkflowJob = ({
       <OptimisticWrapper loading={loading}>
         <WorkflowConnectedCard
           key={id}
-          role={capitalizeAll(job_title)}
+          role={capitalizeAll(job_title!)}
           textLocation={formatOfficeLocation(location)}
           textRoleCategory={department || '---'}
           slotBadges={
@@ -134,7 +134,7 @@ const WorkflowJob = ({
               />
             )
           }
-          onClickJob={() => push(ROUTES['/jobs/[job]/workflows']({ job: id }))}
+          onClickJob={() => push(ROUTES['/jobs/[job]/workflows']({ job: id! }))}
           onClickLinkOff={() => setOpen(true)}
           // onClickLinkOff={{
           //   onClick: async () => await mutateAsync({ job_id: id, workflow_id }),
@@ -159,7 +159,7 @@ const WorkflowJob = ({
             <Button
               size='sm'
               onClick={async () =>
-                await mutateAsync({ job_id: id, workflow_id })
+                await mutateAsync({ job_id: id!, workflow_id })
               }
             >
               Unlink

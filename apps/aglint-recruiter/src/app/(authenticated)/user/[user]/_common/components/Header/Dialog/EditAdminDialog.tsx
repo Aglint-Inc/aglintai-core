@@ -33,21 +33,7 @@ export type EditAdminFormErrorType = {
   manager: boolean;
 };
 
-export type EditAdminFormType = Pick<
-  NonNullable<ReturnType<typeof useInterviewer>['data']>,
-  | 'first_name'
-  | 'last_name'
-  | 'phone'
-  | 'linked_in'
-  | 'office_location_id'
-  | 'employment'
-  | 'profile_image'
-  | 'department_id'
-  | 'position'
-  | 'role_id'
-  | 'role'
-  | 'manager_id'
->;
+export type Formtype = Omit<UserAdminUpdateType, 'recruiter_id' | 'user_id'>;
 
 const EditAdminDialog = ({
   open,
@@ -76,19 +62,36 @@ const EditAdminDialog = ({
 
   const { data: interviewerDetail } = useInterviewer();
 
-  const [form, setForm] = useState<EditAdminFormType>({
-    first_name: '',
-    last_name: '',
-    phone: '',
-    linked_in: '',
-    office_location_id: undefined,
-    employment: 'fulltime',
-    profile_image: null,
-    department_id: undefined,
-    position: '',
-    role_id: undefined,
-    manager_id: null,
-    role: '',
+  const {
+    first_name,
+    last_name,
+    phone,
+    linked_in,
+    office_location_id,
+    employment,
+    profile_image,
+    department_id,
+    position,
+    role_id,
+    manager_id,
+    scheduling_settings,
+    role,
+  } = interviewerDetail;
+
+  const [form, setForm] = useState<Formtype>({
+    first_name,
+    last_name,
+    phone,
+    linked_in,
+    scheduling_settings,
+    office_location_id,
+    employment,
+    profile_image,
+    department_id,
+    position,
+    role_id,
+    manager_id,
+    role,
   });
 
   const memberList = activeMembers
@@ -99,33 +102,32 @@ const EditAdminDialog = ({
     .filter((mem) => mem.id !== recruiter_user.user_id);
 
   useEffect(() => {
-
-    if(interviewerDetail){
-    const initForm: EditAdminFormType = {
-      first_name: interviewerDetail.first_name,
-      last_name: interviewerDetail.last_name ?? '',
-      phone: interviewerDetail?.phone,
-      linked_in: interviewerDetail?.linked_in,
-      office_location_id: interviewerDetail?.office_location_id,
-      employment: interviewerDetail?.employment,
-      profile_image: interviewerDetail?.profile_image,
-      department_id: interviewerDetail?.department_id,
-      position: interviewerDetail?.position,
-      role_id: interviewerDetail?.role_id,
-      manager_id: interviewerDetail?.manager_id,
-      role: interviewerDetail?.role,
-    };
-    if (_.isEqual(initForm, form)) {
-      setIsProfileChanged(false);
-    } else {
-      setIsProfileChanged(true);
+    if (interviewerDetail) {
+      const initForm: Formtype = {
+        first_name: interviewerDetail.first_name,
+        last_name: interviewerDetail.last_name ?? '',
+        phone: interviewerDetail?.phone,
+        scheduling_settings,
+        linked_in: interviewerDetail?.linked_in,
+        office_location_id: interviewerDetail?.office_location_id,
+        employment: interviewerDetail?.employment,
+        profile_image: interviewerDetail?.profile_image,
+        department_id: interviewerDetail?.department_id,
+        position: interviewerDetail?.position,
+        role_id: interviewerDetail?.role_id,
+        manager_id: interviewerDetail?.manager_id,
+        role: interviewerDetail?.role,
+      };
+      if (_.isEqual(initForm, form)) {
+        setIsProfileChanged(false);
+      } else {
+        setIsProfileChanged(true);
+      }
     }
-  }
   }, [form]);
 
   useEffect(() => {
     if (member && interviewerDetail) {
-      
       setForm(initForm);
     }
   }, []);
@@ -148,10 +150,11 @@ const EditAdminDialog = ({
 
   if (!member || !interviewerDetail) return <>Error </>;
 
-  const initForm: EditAdminFormType = {
+  const initForm: Formtype = {
     first_name: interviewerDetail.first_name,
     last_name: interviewerDetail.last_name ?? '',
     phone: interviewerDetail?.phone,
+    scheduling_settings,
     linked_in: interviewerDetail?.linked_in,
     office_location_id: interviewerDetail?.office_location_id,
     employment: interviewerDetail?.employment,

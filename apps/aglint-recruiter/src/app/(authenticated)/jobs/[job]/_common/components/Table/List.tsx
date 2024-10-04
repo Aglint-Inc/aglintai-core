@@ -19,11 +19,11 @@ const List = ({
     applications,
   } = useApplications();
 
-  const parentRef = useRef();
+  const parentRef = useRef<HTMLDivElement | null>(null);
 
   const rowVirtualizer = useVirtualizer({
     count: hasNextPage ? applications.length + 1 : applications.length,
-    getScrollElement: () => parentRef.current,
+    getScrollElement: () => parentRef.current!,
     estimateSize: () => 68,
     overscan: 5,
   });

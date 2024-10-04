@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { ZodTypeToSchema } from "../zodHelpers.types";
+import { CustomSchedulingSettingsUser } from "./tables/recruiter_user.types";
 
 export const customMembersMetaSchema = z.object({
   recruiter: z.boolean(),
@@ -98,3 +100,8 @@ export const customRecruiterUserCalendarSync = z
     channelId: z.string(),
   })
   .nullable();
+
+export const customSchedulingSettingsUserSchema =
+  customSchedulingSettingsSchema.omit({
+    debrief_defaults: true,
+  }) satisfies ZodTypeToSchema<CustomSchedulingSettingsUser>;

@@ -24,8 +24,6 @@ export const Header = () => {
   const user_id = param.user as string;
   const { data: interviewerDetails } = useInterviewer();
 
-  if (!interviewerDetails) return <>Fetching error</>;
-
   const {
     avatar,
     first_name,
@@ -54,7 +52,7 @@ export const Header = () => {
   return (
     <>
       <PageHeaderText>
-        <div className='flex flex-row space-x-16'>
+        <div className='flex flex-row space-x-12'>
           <div className='flex flex-row items-center gap-2'>
             <Avatar className='h-10 w-10 rounded-md'>
               <AvatarImage src={avatar} alt={first_name} />

@@ -11,6 +11,7 @@ import { Edit, Lock, Mail, MoreHorizontal, Power, Trash } from 'lucide-react';
 import { useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
+import type { useTeamMembers } from '@/company/hooks/useTeamMembers';
 import { updateMember } from '@/context/AuthContext/utils';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type API_reset_password } from '@/pages/api/reset_password/type';
@@ -18,7 +19,11 @@ import { api } from '@/trpc/client';
 
 import DeleteMemberDialog from './DeleteMemberDialog';
 
-export const UserListThreeDot = ({ member }) => {
+export const UserListThreeDot = ({
+  member,
+}: {
+  member: ReturnType<typeof useTeamMembers>['data'][number];
+}) => {
   const { toast } = useToast();
   const { mutateAsync: reinviteUser } =
     api.tenant['resend-invite'].useMutation();
@@ -29,7 +34,16 @@ export const UserListThreeDot = ({ member }) => {
   const { recruiter_user } = useTenant();
   const canSuspend = member.role !== 'admin';
 
-  const handleAction = (action) => {
+  const handleAction = (
+    action:
+      | 'edit'
+      | 'resend'
+      | 'activate'
+      | 'suspend'
+      | 'cancel_invite'
+      | 'delete'
+      | 'reset_password',
+  ) => {
     switch (action) {
       case 'edit':
         router.push(`/user/${member.user_id}?edit_enable=true`);
