@@ -1,12 +1,10 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { type DatabaseTable } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
+import { useRequests } from '@requests/hooks';
 import { Check } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
-
-import { useRequests } from '@/context/RequestsContext';
-
 const SelfScheduleLinkSent = (args: DatabaseTable['request_progress']) => {
   const params = useParams();
   const requestId = params?.request as string;

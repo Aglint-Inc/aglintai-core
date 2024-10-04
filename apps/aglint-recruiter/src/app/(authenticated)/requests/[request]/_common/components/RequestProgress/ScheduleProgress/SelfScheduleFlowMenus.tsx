@@ -1,11 +1,11 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
+import { useRequest } from '@request/hooks';
 import { Bell, Lightbulb } from 'lucide-react';
 import React, { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
-import { useRequest } from '@/context/RequestContext';
 
 import { useRequestProgressProvider } from '../progressCtx';
 import { type RequestProgressMapType } from '../types';

@@ -1,10 +1,10 @@
 import type { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import { Dialog, DialogContent } from '@components/ui/dialog';
 import { Skeleton } from '@components/ui/skeleton';
+import { useRequest } from '@request/hooks';
 import React, { useEffect, useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
-import { useRequest } from '@/context/RequestContext';
 import { api } from '@/trpc/client';
 import { type emailTemplateCopy } from '@/types/companyEmailTypes';
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';

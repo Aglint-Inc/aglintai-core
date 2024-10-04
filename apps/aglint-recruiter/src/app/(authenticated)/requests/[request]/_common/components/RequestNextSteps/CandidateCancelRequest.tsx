@@ -1,11 +1,11 @@
 import { type DatabaseTableInsert } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
 import { createRequestWorkflowAction } from '@request/components/RequestProgress/utils';
+import { useRequest } from '@request/hooks';
 import React from 'react';
 
 import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
-import { useRequest } from '@/context/RequestContext';
 import { useRequestsActions } from '@/context/RequestsContext/hooks';
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 

@@ -3,6 +3,7 @@ import { Button } from '@components/ui/button';
 import { Skeleton } from '@components/ui/skeleton';
 import { REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
 import { useRequestCount } from '@requests/hooks';
+import { useRequests } from '@requests/hooks';
 import { checkFiltersApplied } from '@requests/utils/checkFiltersApplied';
 import { LayoutList, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useEffect, useState } from 'react';
@@ -11,7 +12,6 @@ import { useTenant } from '@/company/hooks';
 import { useFlags } from '@/company/hooks/useFlags';
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useOnboarding } from '@/components/Navigation/OnboardPending/context/onboarding';
-import { useRequests } from '@/context/RequestsContext';
 import { SafeObject } from '@/utils/safeObject';
 
 import { CreateRequestWidget } from './createRequestWidget';
