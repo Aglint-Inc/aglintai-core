@@ -1,16 +1,11 @@
 /* eslint-disable no-console */
-import { type DB } from '@aglint/shared-types';
-import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
 
-import { decrypt } from '../decryptApiKey';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-const supabase = createClient<DB>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY,
-);
+import { decrypt } from '../decryptApiKey';
 
 type Payload = {
   application_id: string;
@@ -29,7 +24,7 @@ export default async function handler(
 
     if (payload.application_id) {
       // Supabase credentials
-
+      const supabase = getSupabaseServer();
       const application = (
         await supabase
           .from('applications')
@@ -165,7 +160,7 @@ export default async function handler(
                 .update({ processing_status: 'failed', retry: 2 })
                 .eq('id', payload.application_id);
               console.log('no resume url from lever');
-              return res.status(400).json('Resume URL is missing');
+              return res.status(200).json('Resume URL is missing');
             }
           })
           .catch((error) => {

@@ -4,7 +4,7 @@ import {
   type DatabaseTableInsert,
 } from '@aglint/shared-types';
 import axios from 'axios';
-import { type NextApiRequest, type NextApiResponse } from 'next';
+import { z } from 'zod';
 
 import { type LeverApplication } from '@/jobs/components/AddJobWithIntegrations/LeverModal/types/applications';
 import { type LeverJob } from '@/jobs/components/AddJobWithIntegrations/LeverModal/types/job';
@@ -13,95 +13,67 @@ import {
   POSTED_BY,
   splitFullName,
 } from '@/jobs/components/AddJobWithIntegrations/utils';
-import { apiRequestHandlerFactory } from '@/utils/apiUtils/responseFactory';
+import { decrypt } from '@/pages/api/decryptApiKey';
+import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { processEmailsInBatches } from '@/utils/processEmailsInBatches';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-import { decrypt } from '../decryptApiKey';
+const schema = z.object({
+  leverPost: z.any(),
+});
 
-export type ApiLeverCreateJob = {
-  request: {
-    recruiter_id: string;
-    leverPost: LeverJob;
-  };
-  response: {
-    success: boolean;
-    public_job_id: string;
-  };
-};
-
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const supabaseAdmin = getSupabaseServer();
-
+export const mutation = async ({
+  input: { leverPost },
+  ctx: { recruiter_id },
+}: PrivateProcedure<typeof schema>) => {
   const public_job_id = crypto.randomUUID();
-  try {
-    const requestHandler = apiRequestHandlerFactory<ApiLeverCreateJob>(
-      req,
-      res,
-    );
+  const leverPostTyped = leverPost as LeverJob;
+  const ats_job_id = leverPost.id;
+  const supabaseAdmin = getSupabaseServer();
+  const dbJob = await createJobObject({
+    post: leverPostTyped,
+    recruiter_id: recruiter_id,
+    public_job_id,
+  });
+  const integration = (
+    await supabaseAdmin
+      .from('integrations')
+      .select()
+      .eq('recruiter_id', recruiter_id)
+      .single()
+      .throwOnError()
+  ).data!;
 
-    requestHandler(
-      'POST',
-      async ({ body }) => {
-        const { recruiter_id, leverPost } = body as {
-          recruiter_id: string;
-          leverPost: LeverJob;
-        };
-        const ats_job_id = leverPost.id;
-        const dbJob = await createJobObject({
-          post: leverPost,
-          recruiter_id: recruiter_id,
-          public_job_id,
-        });
-        const integration = (
-          await supabaseAdmin
-            .from('integrations')
-            .select()
-            .single()
-            .throwOnError()
-        ).data!;
+  console.log('integration :', integration);
+  console.log('dbJob :', dbJob);
 
-        console.log('integration :', integration);
-        console.log('dbJob :', dbJob);
-
-        const newJobs = (
-          await supabaseAdmin
-            .from('public_jobs')
-            .insert(dbJob)
-            .select()
-            .throwOnError()
-        ).data!;
-
-        console.log('newJobs :', newJobs);
-
-        if (!integration?.lever_key) {
-          throw new Error('No Lever Key found');
-        }
-
-        await createJobApplications({
-          apiKey: decrypt(integration?.lever_key, process.env.ENCRYPTION_KEY),
-          ats_job_id: ats_job_id,
-          public_job_id: newJobs[0].id,
-          recruiter_id: recruiter_id,
-        });
-        return {
-          success: true,
-          public_job_id: newJobs[0].id,
-        };
-      },
-      ['recruiter_id', 'leverPost'],
-    );
-  } catch (error) {
+  const newJobs = (
     await supabaseAdmin
       .from('public_jobs')
-      .delete()
-      .match({ id: public_job_id });
-    // console.log('error', error);
-    return res.status(400).send((error as Error).message);
+      .insert(dbJob)
+      .select()
+      .throwOnError()
+  ).data!;
+
+  console.log('newJobs :', newJobs);
+
+  if (!integration?.lever_key) {
+    throw new Error('No Lever Key found');
   }
+
+  await createJobApplications({
+    apiKey: decrypt(integration?.lever_key, process.env.ENCRYPTION_KEY),
+    ats_job_id: ats_job_id,
+    public_job_id: newJobs[0].id,
+    recruiter_id: recruiter_id,
+  });
+  return {
+    success: true,
+    public_job_id: newJobs[0].id,
+  };
 };
 
-export default handler;
+export const createLeverJob = privateProcedure.input(schema).mutation(mutation);
 
 const fetchAllCandidates = async (ats_job_id: string, apiKey: string) => {
   let allCandidates: LeverApplication[] = [];
@@ -176,6 +148,7 @@ const createJobApplications = async ({
 
   const fetchedCandidates = await fetchAllCandidates(ats_job_id, apiKey);
 
+  // eslint-disable-next-line no-console
   console.log('fetchedCandidates', fetchedCandidates.length);
 
   // for creating lever job reference
