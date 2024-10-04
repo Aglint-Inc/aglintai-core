@@ -1,8 +1,9 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { Checkbox as ShadcnCheckbox } from '@components/ui/checkbox';
+import { Checkbox } from '@components/ui/checkbox';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -80,14 +81,15 @@ function CreateModuleDialog() {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create Interview Type</DialogTitle>
-        </DialogHeader>
-        <div className='space-y-4'>
-          <p className='mb-2 text-sm text-gray-600'>
+          <DialogDescription>
             Create a new interview type by specifying the name, department, and
             objective, and indicate if training is required.
-          </p>
+          </DialogDescription>
+        </DialogHeader>
+        <div className='space-y-4'>
           <div className='w-full space-y-4'>
             <UITextField
+              label='Name'
               id='name'
               placeholder='Ex: Initial Screening'
               value={name}
@@ -139,8 +141,9 @@ function CreateModuleDialog() {
             />
 
             {/* Checkbox */}
-            <div className='flex items-center space-x-2'>
-              <ShadcnCheckbox
+            <div className='flex items-start space-x-2'>
+              <Checkbox
+                className='mt-1'
                 id='training'
                 checked={isTraining}
                 onCheckedChange={(checked) => {
@@ -149,12 +152,12 @@ function CreateModuleDialog() {
               />
               <Label htmlFor='training' className='text-sm font-normal'>
                 Requires Training
+                <p className='text-sm text-muted-foreground'>
+                  Select if the interviewer requires training before conducting
+                  this interview
+                </p>
               </Label>
             </div>
-            <p className='ml-6 text-sm text-muted-foreground'>
-              Select if the interviewer requires training before conducting this
-              interview
-            </p>
           </div>
         </div>
         <DialogFooter>

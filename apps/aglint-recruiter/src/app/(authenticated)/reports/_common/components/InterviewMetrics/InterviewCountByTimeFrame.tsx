@@ -4,7 +4,7 @@ import {
   ChartTooltipContent,
 } from '@components/ui/chart';
 import { TabsList, TabsTrigger } from '@components/ui/tabs';
-import { Tabs } from '@radix-ui/react-tabs';
+import { Tabs } from '@components/ui/tabs';
 import { useState } from 'react';
 import { Cell, Pie, PieChart } from 'recharts';
 import { useInterviewCount } from 'src/app/(authenticated)/reports/_common/hook/interview/interview.hook';

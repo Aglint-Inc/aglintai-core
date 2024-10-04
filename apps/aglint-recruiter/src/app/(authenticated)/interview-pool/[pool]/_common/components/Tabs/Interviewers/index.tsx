@@ -2,6 +2,11 @@ import { type PauseJson } from '@aglint/shared-types';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Card, CardContent } from '@components/ui/card';
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
+import {
   Table,
   TableBody,
   TableCell,
@@ -9,11 +14,6 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@radix-ui/react-popover';
 import { MoreVertical, Pause, Play, Trash2, User } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
