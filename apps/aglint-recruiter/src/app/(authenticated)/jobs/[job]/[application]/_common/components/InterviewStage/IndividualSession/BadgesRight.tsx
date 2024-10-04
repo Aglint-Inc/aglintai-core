@@ -77,7 +77,7 @@ function BadgesRight({
                   </TooltipTrigger>
                   <TooltipContent
                     side='left'
-                    className='border border-neutral-300 bg-neutral-700 p-2 text-xs font-normal text-neutral-50'
+                    className='border border-neutral-300 bg-neutral-700 p-2 text-xs font-normal text-muted-foreground'
                   >
                     {`${pausedUser.length} Interviewer${pausedUser.length > 1 ? 's' : ''} paused`}
                   </TooltipContent>
@@ -99,7 +99,7 @@ function BadgesRight({
                   </TooltipTrigger>
                   <TooltipContent
                     side='left'
-                    className='border border-neutral-300 bg-neutral-700 p-2 text-xs font-normal text-neutral-50'
+                    className='border border-neutral-300 bg-neutral-700 p-2 text-xs font-normal text-muted-foreground'
                   >
                     No interviewers assigned
                   </TooltipContent>

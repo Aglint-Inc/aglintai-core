@@ -87,13 +87,13 @@ export function GlobalScheduleCard({
               )}
               {isDateVisible && (
                 <div className='flex items-center gap-1'>
-                  <Calendar className='h-4 w-4 text-neutral-600' />
+                  <Calendar className='h-4 w-4 text-muted-foreground' />
                   <UITypography type='small'>{textDate}</UITypography>
                 </div>
               )}
               {isTimeVisible && (
                 <div className='flex items-center gap-1'>
-                  <Clock className='h-4 w-4 text-neutral-600' />
+                  <Clock className='h-4 w-4 text-muted-foreground' />
                   <UITypography type='small'>{textTime}</UITypography>
                 </div>
               )}
@@ -106,7 +106,7 @@ export function GlobalScheduleCard({
               </div>
               <div className='flex gap-4'>
                 <div className='flex items-center gap-1'>
-                  <Hourglass className='h-4 w-4 text-neutral-600' />
+                  <Hourglass className='h-4 w-4 text-muted-foreground' />
                   <UITypography type='small'>{textDuration}</UITypography>
                 </div>
                 <div className='flex items-center gap-1'>
@@ -144,7 +144,7 @@ export function GlobalScheduleCard({
                         size='sm'
                         variant='secondary'
                         icon={
-                          <ChevronDown className='h-4 w-4 text-neutral-500' />
+                          <ChevronDown className='h-4 w-4 text-muted-foreground' />
                         }
                       ></UIButton>
                     </div>

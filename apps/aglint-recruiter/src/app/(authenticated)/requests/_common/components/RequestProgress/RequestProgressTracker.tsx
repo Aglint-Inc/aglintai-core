@@ -35,7 +35,7 @@ export function RequestProgressTracker({
         )}
       </div>
       <div className='mb-8 flex flex-col gap-4'>
-        <div className='inline-flex max-w-max whitespace-nowrap rounded border border-neutral-200 px-1.5 py-0.5 text-sm text-neutral-700'>
+        <div className='inline-flex max-w-max whitespace-nowrap rounded border border-neutral-200 px-1.5 py-0.5 text-sm text-muted-foreground'>
           {textRequestProgress}
         </div>
         <div className='flex flex-col gap-2'>{slotProgress}</div>

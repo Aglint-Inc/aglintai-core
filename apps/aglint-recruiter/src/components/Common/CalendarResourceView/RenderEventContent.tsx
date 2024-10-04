@@ -53,7 +53,7 @@ function RenderEventContent(eventInfo: EventContentArg) {
           <TooltipContent>
             {title && (
               <div className='space-y-1 p-1'>
-                <p className='text-neutral-12 text-base font-semibold'>
+                <p className='text-base font-semibold text-muted-foreground'>
                   {title}
                 </p>
                 <div className='flex flex-row space-x-1'>

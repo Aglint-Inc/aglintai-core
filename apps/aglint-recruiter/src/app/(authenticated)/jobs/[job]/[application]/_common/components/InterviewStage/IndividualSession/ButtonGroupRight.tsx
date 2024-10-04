@@ -45,7 +45,7 @@ function ButtonGroupRight({
           <UIButton
             variant='secondary'
             size='sm'
-            iconClassName='text-neutral-600'
+            iconClassName='text-muted-foreground'
             icon={<Edit />}
             onClick={async () => {
               onClickEdit(currentSession);

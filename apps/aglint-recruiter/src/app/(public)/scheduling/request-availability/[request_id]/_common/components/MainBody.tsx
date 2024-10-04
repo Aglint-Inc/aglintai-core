@@ -170,7 +170,7 @@ function Header({
         ) : null}
       </div>
       <div
-        className={`mb-8 flex items-center gap-2 ${isSubmitted ? 'text-green-500' : 'text-neutral-500'}'} `}
+        className={`mb-8 flex items-center gap-2 ${isSubmitted ? 'text-green-500' : 'text-muted-foreground'}'} `}
       >
         {isSubmitted ? (
           <></>

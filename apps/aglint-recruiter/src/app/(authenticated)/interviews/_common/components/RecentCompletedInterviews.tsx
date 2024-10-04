@@ -6,8 +6,11 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
+import { ScrollArea } from '@components/ui/scroll-area';
+import { ChevronDown } from 'lucide-react';
+import { ChevronUp } from 'lucide-react';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 
@@ -24,6 +27,7 @@ function RecentCompletedInterviews() {
     session_types: [],
     searchText: '',
   });
+  const [isExpanded, setIsExpanded] = useState(true);
   return (
     <>
       {/* {!isFetched && <Loader />} */}
@@ -42,11 +46,20 @@ function RecentCompletedInterviews() {
                   View All
                 </UIButton>
               </Link>
+              {isExpanded ? (
+                <ChevronUp size={20} onClick={() => setIsExpanded(false)} />
+              ) : (
+                <ChevronDown size={20} onClick={() => setIsExpanded(true)} />
+              )}
             </SectionActions>
           </SectionHeader>
-          <ScheduleMeetingList
-            filterSchedules={(schedules ?? []).slice(0, 5)}
-          />
+          {isExpanded && (
+            <ScrollArea className='h-[340px] gap-4'>
+              <ScheduleMeetingList
+                filterSchedules={(schedules ?? []).slice(0, 5)}
+              />
+            </ScrollArea>
+          )}
         </Section>
       )}
     </>

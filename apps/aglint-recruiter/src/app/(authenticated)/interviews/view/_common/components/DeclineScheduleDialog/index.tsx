@@ -149,9 +149,7 @@ function DeclineScheduleDialog() {
                       checked={rea === reason}
                       id={`radio-${rea}`}
                     />
-                    <span className='cursor-pointer text-sm text-neutral-800'>
-                      {rea}
-                    </span>
+                    <span className='cursor-pointer text-sm'>{rea}</span>
                   </div>
                 );
               })}

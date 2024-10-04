@@ -32,19 +32,25 @@ export function HistoryPillShadcn({
               position === 'end' && 'rounded-r-md',
             )}
           >
-            {isShadow && <ShadowIcon className="w-5 h-5"/>}
-            {isReverseShadow && <ReverseShadowIcon className="w-3 h-3 text-muted-foreground"/>}
+            {isShadow && <ShadowIcon className='h-5 w-5' />}
+            {isReverseShadow && (
+              <ReverseShadowIcon className='h-3 w-3 text-muted-foreground' />
+            )}
           </div>
         ) : (
           <div
             className={cn(
-              'flex h-[26px] w-[60px] items-center justify-center bg-neutral-200 text-neutral-900',
+              'flex h-[26px] w-[60px] items-center justify-center bg-neutral-200 text-foreground',
               position === 'start' && 'rounded-l-md',
               position === 'end' && 'rounded-r-md',
             )}
           >
-            {isShadow && <ShadowIcon className="w-3 h-3 text-muted-foreground"/>}
-            {isReverseShadow && <ReverseShadowIcon className="w-3 h-3 text-muted-foreground"/>}
+            {isShadow && (
+              <ShadowIcon className='h-3 w-3 text-muted-foreground' />
+            )}
+            {isReverseShadow && (
+              <ReverseShadowIcon className='h-3 w-3 text-muted-foreground' />
+            )}
           </div>
         )}
       </div>

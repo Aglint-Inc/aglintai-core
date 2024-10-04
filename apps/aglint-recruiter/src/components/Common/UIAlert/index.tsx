@@ -66,7 +66,10 @@ export function UIAlert({
           {notes && (
             <div className='mt-4 pl-2'>
               <div className={'flex flex-row items-center gap-2'}>
-                <Icons.NotebookPen size={16} className='text-neutral-500' />
+                <Icons.NotebookPen
+                  size={16}
+                  className='text-muted-foreground'
+                />
                 <p>Additional Note</p>
               </div>
               <AlertDescription>{notes}</AlertDescription>
@@ -94,7 +97,7 @@ export function UIAlert({
             </div>
           </div>
           {description && (
-            <AlertDescription className='text-xs'>
+            <AlertDescription className='text-sm'>
               {description}
             </AlertDescription>
           )}

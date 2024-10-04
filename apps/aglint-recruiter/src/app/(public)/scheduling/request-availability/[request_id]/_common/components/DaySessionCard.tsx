@@ -152,8 +152,8 @@ export function MultiDayCard({
         <div className='flex items-start justify-between'>
           <div>
             <h1 className='mb-2 text-black'>{textDayCount}</h1>
-            <div className='flex items-center space-x-2 text-sm text-neutral-600'>
-              <Timer className='h-5 w-5 text-neutral-500' />
+            <div className='flex items-center space-x-2 text-sm text-muted-foreground'>
+              <Timer className='h-5 w-5 text-muted-foreground' />
               <span>Total Duration: {textTotalDuration}</span>
             </div>
           </div>
@@ -168,7 +168,7 @@ export function MultiDayCard({
             <div className='flex items-center justify-between'>
               <div className='flex items-center space-x-2'>
                 <CheckCircle className='h-4 w-4 text-green-800' />
-                <span className='text-sm text-neutral-600'>
+                <span className='text-sm text-muted-foreground'>
                   {textSelectedSlots}
                 </span>
               </div>
@@ -214,17 +214,21 @@ export function SessionInfo({
   return (
     <div className='flex flex-col space-y-2 sm:flex-row sm:space-x-4 sm:space-y-0'>
       <div className='flex items-center space-x-2'>
-        <Users className='h-5 w-5 text-neutral-500' />
-        <span className='text-sm text-neutral-700'>{textSessionName}</span>
+        <Users className='h-5 w-5 text-muted-foreground' />
+        <span className='text-sm text-muted-foreground'>{textSessionName}</span>
       </div>
       <div className='flex items-center space-x-2'>
-        <Timer className='h-5 w-5 text-neutral-500' />
-        <span className='text-sm text-neutral-700'>{textSessionDuration}</span>
+        <Timer className='h-5 w-5 text-muted-foreground' />
+        <span className='text-sm text-muted-foreground'>
+          {textSessionDuration}
+        </span>
       </div>
       {textMeetingType ? (
         <div className='flex items-center space-x-2'>
-          <IconComponent className='h-5 w-5 text-neutral-500' />
-          <span className='text-sm text-neutral-700'>{textMeetingType}</span>
+          <IconComponent className='h-5 w-5 text-muted-foreground' />
+          <span className='text-sm text-muted-foreground'>
+            {textMeetingType}
+          </span>
         </div>
       ) : null}
     </div>
