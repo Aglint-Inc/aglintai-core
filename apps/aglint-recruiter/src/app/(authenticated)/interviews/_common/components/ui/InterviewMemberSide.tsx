@@ -1,10 +1,14 @@
 import {
   Section,
+  SectionActions,
   SectionDescription,
   SectionHeader,
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
+import { ScrollArea } from '@components/ui/scroll-area';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';
@@ -23,31 +27,42 @@ export function InterviewMemberSide({
   textPastCount,
   isMenuTabVisible = true,
 }) {
+  const [isExpanded, setIsExpanded] = useState(true);
   return (
     <>
       <Section>
-        <SectionHeader>
+        <SectionHeader onClick={() => setIsExpanded(!isExpanded)}>
           <SectionHeaderText>
             <SectionTitle>My Interviews</SectionTitle>
             <SectionDescription>
               View your upcoming, past, and canceled interviews.
             </SectionDescription>
           </SectionHeaderText>
+          <SectionActions>
+            {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+          </SectionActions>
         </SectionHeader>
-        <Tabs
-          isUpcomingActive={isUpcomingActive}
-          onClickUpcoming={onClickUpcoming}
-          onClickCompleted={onClickCompleted}
-          onClickCancelled={onClickCancelled}
-          isCompletedActive={isCompletedActive}
-          isCancelActive={isCancelActive}
-          slotInterview={slotInterview}
-          textUpcomingCount={textUpcomingCount}
-          textCancelledCount={textCancelledCount}
-          textPastCount={textPastCount}
-          isMenuTabVisible={isMenuTabVisible}
-        />
-        {slotInterviewCard}
+        {isExpanded && (
+          <>
+            <Tabs
+              isUpcomingActive={isUpcomingActive}
+              onClickUpcoming={onClickUpcoming}
+              onClickCompleted={onClickCompleted}
+              onClickCancelled={onClickCancelled}
+              isCompletedActive={isCompletedActive}
+              isCancelActive={isCancelActive}
+              slotInterview={slotInterview}
+              textUpcomingCount={textUpcomingCount}
+              textCancelledCount={textCancelledCount}
+              textPastCount={textPastCount}
+              isMenuTabVisible={isMenuTabVisible}
+            />
+
+            <ScrollArea className='h-[340px] gap-4'>
+              <div className='space-y-4'>{slotInterviewCard}</div>
+            </ScrollArea>
+          </>
+        )}
       </Section>
     </>
   );
