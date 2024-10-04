@@ -64,7 +64,7 @@ const WorkTime: FC<WorkTimeProps> = ({
             <UIButton
               variant='outline'
               size='sm'
-              onClick={() => setIsOpen(true)}
+              onClick={() => setIsOpen(true)} 
             >
               <Edit className='mr-2 h-3 w-3' /> Edit
               <span className='sr-only'>Edit Working Hours</span>
