@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 import { type DateRangePlansType } from '@aglint/shared-types';
-import { type schema_find_availability_payload } from '@aglint/shared-utils';
 import { type z } from 'zod';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
+import { schema_find_availability_payload } from '@aglint/shared-utils/src/scheduling/apiSchemas';
 
 export type ApiResponseFindAvailability = {
   slots: DateRangePlansType[];
