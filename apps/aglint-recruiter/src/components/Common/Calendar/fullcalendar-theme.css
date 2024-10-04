@@ -40,6 +40,15 @@
 .fc-theme-standard th {
   border-color: hsl(var(--primary) / 0.12);
 }
+.fc {
+  border-radius: 12px;
+}
+.fc-theme-standard th {
+  font-size: 12px;
+}
+.fc-timegrid-slot.fc-timegrid-slot-label {
+  font-size: 12px;
+}
 
 .fc .fc-daygrid-day.fc-day-today {
   background-color: hsl(var(--primary) / 0.1);

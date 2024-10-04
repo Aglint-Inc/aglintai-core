@@ -3,7 +3,7 @@ import {
   SectionHeader,
   SectionTitle,
 } from '@components/layouts/sections-header';
-import { ScrollArea } from '@components/ui/scroll-area';
+import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
 import { LibraryBig } from 'lucide-react';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
@@ -21,9 +21,9 @@ export const Qualifications = ({
       <SectionHeader>
         <SectionTitle>Interview Pools</SectionTitle>
       </SectionHeader>
-      <ScrollArea className='h-[200px] w-full'>
-        {interview_types?.length ? (
-          <div className='grid grid-cols-3 gap-4'>
+      {interview_types?.length ? (
+        <ScrollArea className='h-[180px] w-[calc(100vw-530px)] whitespace-nowrap'>
+          <div className='flex w-max space-x-4'>
             {interview_types?.map((interview_type) => (
               <List
                 interviewType={interview_type}
@@ -31,20 +31,21 @@ export const Qualifications = ({
               />
             ))}
           </div>
-        ) : (
-          <div className='col-span-3'>
-            <GlobalEmpty
-              icon={
-                <LibraryBig
-                  strokeWidth={2}
-                  className='h-6 w-6 text-muted-foreground'
-                />
-              }
-              description='No qualifications found'
-            />
-          </div>
-        )}
-      </ScrollArea>
+          <ScrollBar orientation='horizontal' />
+        </ScrollArea>
+      ) : (
+        <div className='col-span-3'>
+          <GlobalEmpty
+            icon={
+              <LibraryBig
+                strokeWidth={2}
+                className='h-6 w-6 text-muted-foreground'
+              />
+            }
+            description='No qualifications found'
+          />
+        </div>
+      )}
     </Section>
   );
 };
