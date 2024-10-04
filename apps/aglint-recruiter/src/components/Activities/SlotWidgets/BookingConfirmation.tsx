@@ -45,11 +45,13 @@ function BookingConfirmation({
                     <span>{getScheduleType(session.schedule_type)}</span>
                   </div>
                   <p className='mt-1 text-sm'>
-                    {formatTimeWithTimeZone({
-                      start_time: session.interview_meeting.start_time,
-                      end_time: session.interview_meeting.end_time,
-                      timeZone: dayjsLocal.tz.guess(),
-                    })}
+                    {session.interview_meeting.start_time
+                      ? formatTimeWithTimeZone({
+                          start_time: session.interview_meeting.start_time,
+                          end_time: session.interview_meeting.end_time,
+                          timeZone: dayjsLocal.tz.guess(),
+                        })
+                      : ''}
                   </p>
                 </div>
               </div>

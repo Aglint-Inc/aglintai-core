@@ -42,8 +42,9 @@ const useHeaderPropContext = () => {
   };
 };
 
-const InterviewPoolHeader =
-  createContext<ReturnType<typeof useHeaderPropContext>>(null);
+const InterviewPoolHeader = createContext<
+  ReturnType<typeof useHeaderPropContext> | undefined
+>(undefined);
 
 export const HeaderPropProvider = ({ children }: PropsWithChildren) => {
   const { ...value } = useHeaderPropContext();
@@ -56,7 +57,7 @@ export const HeaderPropProvider = ({ children }: PropsWithChildren) => {
 
 export const useHeaderProp = () => {
   const context = useContext(InterviewPoolHeader);
-  return context;
+  return context!;
 };
 
 export default function InterviewTypesPage() {

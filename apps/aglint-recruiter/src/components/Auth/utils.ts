@@ -2,7 +2,7 @@ import { errorMessages } from 'src/app/_common/utils/errorMessages';
 
 import { type FieldError } from './types';
 
-export const handlePassword = (value): FieldError => {
+export const handlePassword = (value: string): FieldError => {
   if (value.length < 8) {
     return {
       error: true,
@@ -36,7 +36,7 @@ export const handlePassword = (value): FieldError => {
   }
 };
 
-export const handleEmail = (email): FieldError => {
+export const handleEmail = (email: string): FieldError => {
   // eslint-disable-next-line security/detect-unsafe-regex
   const personalEmailPattern =
     /^(gmail\.com|yahoo\.com|outlook\.com|hotmail\.com)$/;
