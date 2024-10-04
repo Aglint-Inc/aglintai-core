@@ -16,10 +16,10 @@ export const HolidayTable = (
       <Table className='flex flex-col'>
         <TableHeader className='bg-gray-100 w-full '>
           <TableRow className='grid grid-cols-[250px_200px_1fr_100px] items-center'>
-            <TableHead className='h-8 flex items-center'>Day Off</TableHead>
-            <TableHead className='h-8 flex items-center'>Date</TableHead>
-            <TableHead className='h-8 flex items-center'>Locations</TableHead>
-            <TableHead className='h-8 flex items-center'>Actions</TableHead>
+            <TableHead className='flex items-center'>Day Off</TableHead>
+            <TableHead className=' flex items-center'>Date</TableHead>
+            <TableHead className=' flex items-center'>Locations</TableHead>
+            <TableHead className=' flex items-center'>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>{children}</TableBody>
