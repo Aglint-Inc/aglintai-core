@@ -8,9 +8,9 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
-    "format": "turbo run format --",
-    "lint": "turbo run lint --",
-    "type-check": "turbo run type-check",
+    "format": "turbo run format --verbosity",
+    "lint": "turbo run lint --verbosity 1 --ui tui",
+    "type-check": "turbo run type-check --verbosity 1 --ui tui",
     "test": "turbo run test",
     "supabase:dev": "turbo run supabase:dev",
     "supabase:local": "turbo run supabase:local",
