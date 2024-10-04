@@ -16,14 +16,13 @@ import { useInterviewer } from '../../hooks/useInterviewer';
 import { List } from './ui/List';
 
 export const Feedback = () => {
+  const [isExpanded, setIsExpanded] = useState(true);
   const { data } = useInterviewer();
+  const { feedbacks } = data;
 
   if (!data) {
     return <>Data fetching error</>;
   }
-
-  const { feedbacks } = data;
-  const [isExpanded, setIsExpanded] = useState(true); // Moved to the top level
   return (
     <>
       <Section>
