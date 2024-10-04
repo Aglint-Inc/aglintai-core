@@ -1,5 +1,4 @@
-import { dayjsLocal, getFullName } from '@aglint/shared-utils';
-import { getBreakLabel } from '@aglint/shared-utils';
+import { dayjsLocal, getBreakLabel, getFullName } from '@aglint/shared-utils';
 import {
   Section,
   SectionHeaderText,
@@ -47,7 +46,6 @@ import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 // import { UIDivider } from '@/components/Common/UIDivider';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UpdateMembers from '@/components/Common/UpdateMembers';
-import { RequestProvider } from '@/context/RequestContext';
 import { useRequests } from '@/context/RequestsContext';
 import SideDrawerEdit from '@/jobs/job/application/components/EditDrawer';
 import CollapseContent from '@/jobs/job/application/components/InterviewStage/IndividualSession/Collapse';
@@ -150,10 +148,10 @@ export default function ViewRequestDetails() {
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb> */}
-              <div className='flex flex-row items-start justify-between p-4 border-b border-gray-200'>
+              <div className='flex flex-row items-start justify-between border-b border-gray-200 p-4'>
                 <div>
                   <h1 className='mb-2 text-2xl text-gray-900'>
-                    {capitalizeFirstLetter(selectedRequest?.title ?? '')} 
+                    {capitalizeFirstLetter(selectedRequest?.title ?? '')}
                   </h1>
                   <div className='flex items-center space-x-4 text-sm text-muted-foreground'>
                     <div className='flex items-center space-x-1'>
@@ -294,16 +292,11 @@ export default function ViewRequestDetails() {
 
               <Section>
                 <SectionHeaderText>
-                  <SectionTitle className='font-medium'>Request Progress</SectionTitle>
+                  <SectionTitle className='font-medium'>
+                    Request Progress
+                  </SectionTitle>
                 </SectionHeaderText>
-                {selectedRequest ? (
-                  <RequestProvider
-                    request_id={selectedRequest?.id}
-                    enabled={true}
-                  >
-                    <RequestProgress />
-                  </RequestProvider>
-                ) : null}
+                {selectedRequest ? <RequestProgress /> : null}
               </Section>
             </div>
           }
@@ -351,7 +344,6 @@ export default function ViewRequestDetails() {
                       }
                       className='rounded-sm'
                     >
-
                       {capitalizeFirstLetter(selectedRequest?.status)}
                     </Badge>
                   </div>
@@ -383,7 +375,7 @@ export default function ViewRequestDetails() {
                     </div>
                     <Badge
                       variant='outline'
-                      className='bg-gray-100 text-gray-800 rounded-sm'
+                      className='rounded-sm bg-gray-100 text-gray-800'
                     >
                       {capitalizeFirstLetter(selectedRequest?.priority)}
                     </Badge>
@@ -512,36 +504,35 @@ export default function ViewRequestDetails() {
                   </div>
                 </div>
                 <div className='flex flex-col gap-2'>
-                <span className='text-sm font-medium text-muted-foreground'>
-                      Candidate
-                    </span>
-                <span className='duration-300 hover:text-black hover:underline'>
-                          {getFullName(
-                            candidateDetails?.first_name ?? '',
-                            candidateDetails?.last_name ?? '',
-                          )}
-                        </span>
-                        </div>
+                  <span className='text-sm font-medium text-muted-foreground'>
+                    Candidate
+                  </span>
+                  <span className='duration-300 hover:text-black hover:underline'>
+                    {getFullName(
+                      candidateDetails?.first_name ?? '',
+                      candidateDetails?.last_name ?? '',
+                    )}
+                  </span>
+                </div>
               </div>
             </div>
-            <div className='flex flex-col gap-8 mt-2'>
-            <SessionCards
-              refetchMeetings={refetchMeetings}
-              sessions={
-                sessions as Awaited<ReturnType<typeof fetchSessionDetails>>
-              }
-            />
-            <Section>
-              <SectionHeaderText>
-                <SectionTitle>Request Notes</SectionTitle>
-              </SectionHeaderText>
-              <RequestNotes />
-            </Section>
+            <div className='mt-2 flex flex-col gap-8'>
+              <SessionCards
+                refetchMeetings={refetchMeetings}
+                sessions={
+                  sessions as Awaited<ReturnType<typeof fetchSessionDetails>>
+                }
+              />
+              <Section>
+                <SectionHeaderText>
+                  <SectionTitle>Request Notes</SectionTitle>
+                </SectionHeaderText>
+                <RequestNotes />
+              </Section>
 
-           
-            <RecentRequests
-              applicationId={selectedRequest?.application_id ?? ''}
-            />
+              <RecentRequests
+                applicationId={selectedRequest?.application_id ?? ''}
+              />
             </div>
           </div>
         </TwoColumnPageLayout>
