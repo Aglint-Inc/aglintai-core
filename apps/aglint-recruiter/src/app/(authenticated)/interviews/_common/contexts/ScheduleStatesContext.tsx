@@ -45,7 +45,7 @@ const defaultProvider: ContextValue = {
 };
 const ScheduleStatesContext = createContext<ContextValue>(defaultProvider);
 const useScheduleStatesContext = () => useContext(ScheduleStatesContext);
-function ScheduleStatesProvider({ children }) {
+function ScheduleStatesProvider({ children }: { children: React.ReactNode }) {
   const [filteredSchedules, setFilteredSchedule] =
     useState<SchedulesSupabase | null>(null);
   const [loadingSchedules, setLoadingSchedules] = useState(true);
@@ -72,7 +72,7 @@ function ScheduleStatesProvider({ children }) {
   }, [scheduleFilterIds]);
   const updateFilterState = (
     key: keyof typeof initialFilterState,
-    value: string[],
+    value: string[] | string,
   ) => {
     setFilterState((prevState) => {
       const states = {
@@ -87,7 +87,7 @@ function ScheduleStatesProvider({ children }) {
   };
   const updateUpComingFilterState = (
     key: keyof typeof upComingInitialFilterState,
-    value: string[],
+    value: string[] | string,
   ) => {
     setUpcomingFilterState((prevState) => {
       const states = {
