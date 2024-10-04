@@ -32,19 +32,19 @@ function LocationCard({
 
   return (
     <div
-      className='relative h-full'
+      className='relative h-full p-4 rounded-md bg-gray-100'
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {!isFormDisabled && isHovered && (
         <div className='absolute right-2 top-2 flex space-x-1'>
-          <Button variant='ghost' size='sm' onClick={() => onEdit(id)}>
+          <Button variant='secondary' size='sm' onClick={() => onEdit(id)}  className='bg-white shadow-sm hover:bg-gray-200 w-8 h-8 p-0'>
             <PencilIcon className='h-3 w-3' />
           </Button>
           <Button
-            variant='ghost'
+            variant='secondary'
             size='sm'
-            className='hover:bg-red-200'
+            className='bg-white shadow-sm hover:bg-red-500 hover:text-white w-8 h-8 p-0'
             onClick={() => onDelete(id)}
           >
             <Trash2 className='h-3 w-3' />
@@ -52,7 +52,7 @@ function LocationCard({
         </div>
       )}
       <div className='flex items-center justify-between'>
-        <h4 className='font-semibold'>{location}</h4>
+        <h4 className='text-md font-medium'>{location}</h4>
       </div>
       <div className='mt-2'>
         <div className='flex items-center'>
@@ -67,7 +67,7 @@ function LocationCard({
         </div>
       </div>
       {isHeadquarter && (
-        <div className='absolute bottom-3 right-3'>
+        <div className='absolute bottom-3 right-3'> 
           <Badge variant='outline'>Headquarters</Badge>
         </div>
       )}

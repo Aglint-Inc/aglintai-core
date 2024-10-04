@@ -109,7 +109,7 @@ export default function Departments() {
             handleAddDepartment={handleAddDepartment}
             placeholder='Enter new value...'
             btn={
-              <Button variant='outline' size='sm' className='rounded-full'>
+              <Button variant='outline' size='sm' className='rounded-md'>
                 <Plus className='mr-2 h-4 w-4' />
                 Add Department
               </Button>

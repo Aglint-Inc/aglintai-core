@@ -31,10 +31,10 @@ const Member = ({
   return (
     <TableRow>
       <TableCell>
-        <div className='flex items-center space-x-3'>
-          <Avatar className='h-8 w-8'>
+        <div className='flex items-center gap-2'>
+          <Avatar className='h-10 w-10 rounded-sm'>
             <AvatarImage src={member.profile_image || ''} alt={fullName} />
-            <AvatarFallback>{fullName.charAt(0)}</AvatarFallback>
+            <AvatarFallback className='h-10 w-10 rounded-sm bg-gray-200'>{fullName.charAt(0)}</AvatarFallback>
           </Avatar>
           <div>
             <Link
