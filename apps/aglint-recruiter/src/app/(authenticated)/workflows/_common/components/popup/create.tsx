@@ -3,17 +3,18 @@ import { Button } from '@components/ui/button';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogTitle,
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
-import { Switch } from '@components/ui/switch';
 import { Textarea } from '@components/ui/textarea';
 import { Plus } from 'lucide-react';
 import { useCallback, useEffect } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
+import { UISwitch } from '@/components/Common/UISwitch';
 import {
   useWorkflows,
   useWorkflowsActions,
@@ -68,13 +69,13 @@ const Create = () => {
       <Dialog open={open} onOpenChange={handleClose}>
         <DialogContent>
           <AlertDialogHeader>
-            <DialogTitle>Create Workflow</DialogTitle>
+            <DialogTitle>Create Automation</DialogTitle>
+            <DialogDescription>
+              Enter the name for automation. Next, you will be able to add steps
+              to the automation.
+            </DialogDescription>
           </AlertDialogHeader>
           <div className='space-y-4'>
-            <Label className='mb-2'>
-              Enter the name for workflow. Next, you will be able to add steps
-              to the workflow.
-            </Label>
             <div className='space-y-4'>
               <Input
                 placeholder='Workflow Title'
@@ -107,7 +108,8 @@ const Create = () => {
                 }
               />
               <div className='flex items-center space-x-2'>
-                <Switch
+                <UISwitch
+                  size='sm'
                   checked={form.auto_connect.value!}
                   onCheckedChange={(checked) =>
                     setForm({
@@ -125,11 +127,11 @@ const Create = () => {
               </div>
             </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className='flex justify-end'>
             <Button variant='outline' onClick={handleClose}>
               Cancel
             </Button>
-            <Button onClick={handleSubmit}>Create Workflow</Button>
+            <Button onClick={handleSubmit}>Create Automation</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

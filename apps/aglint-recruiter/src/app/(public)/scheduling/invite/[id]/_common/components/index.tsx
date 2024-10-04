@@ -151,7 +151,7 @@ const CandidateInvitePlanPage = () => {
           <CardTitle className='text-2xl font-medium'>
             Select a date and time that works best for you.
           </CardTitle>
-          <p className='text-neutral-11 text-center'>
+          <p className='text-center text-muted-foreground'>
             Available slots are organized by day. Each slot includes the total
             time required for your interview, including breaks.
           </p>
@@ -213,7 +213,7 @@ const Logo = ({ companyName, logo }: { companyName: string; logo: string }) => {
           }}
         />
         <div className='fallback absolute inset-0 hidden items-center justify-center'>
-          <Building2 className='h-10 w-10 text-neutral-400' />
+          <Building2 className='h-10 w-10 text-muted-foreground' />
         </div>
       </div>
     </div>

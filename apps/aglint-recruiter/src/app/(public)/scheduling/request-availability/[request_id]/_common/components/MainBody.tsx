@@ -1,6 +1,5 @@
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import axios from 'axios';
 import dayjs from 'dayjs';
 import { AlertCircle } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
@@ -14,6 +13,7 @@ import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityCo
 import {
   useCandidateAvailabilityData,
   useCandidateAvailabilityMeetings,
+  useCandidateAvailabilityScheduleDMeetings,
 } from '../hooks/useRequestAvailability';
 import {
   type CandidateAvailabilityType,
@@ -34,11 +34,10 @@ function CandidateAvailability() {
 
   const { data: meetings } = useCandidateAvailabilityMeetings();
   const { data: candidateRequestAvailability } = useCandidateAvailabilityData();
+  const { data: scheduledMeetings } =
+    useCandidateAvailabilityScheduleDMeetings();
 
-  const getMeetings = async (
-    application_id: string,
-    meetings: CandidateMeetingsType,
-  ) => {
+  const getMeetings = async (meetings: CandidateMeetingsType) => {
     if (meetings) {
       const { rounds } = meetings.reduce(
         (acc, curr) => {
@@ -58,16 +57,11 @@ function CandidateAvailability() {
         },
         { rounds: [] as any },
       );
-      const { data: sch } = await axios.post(
-        `/api/scheduling/request_availability/candidateAvailability/getScheduleMeetings`,
-        {
-          application_id,
-        },
-      );
+
       setMeetingsAndRound({
         rounds: rounds,
         meetings: meetings,
-        schedule: sch,
+        schedule: scheduledMeetings,
       });
     }
   };
@@ -84,7 +78,7 @@ function CandidateAvailability() {
       candidateRequestAvailability.booking_confirmed &&
       meetings?.length
     ) {
-      getMeetings(candidateRequestAvailability.application_id, meetings);
+      getMeetings(meetings);
     }
   }, [meetings]);
   if (
@@ -170,7 +164,7 @@ function Header({
         ) : null}
       </div>
       <div
-        className={`mb-8 flex items-center gap-2 ${isSubmitted ? 'text-green-500' : 'text-neutral-500'}'} `}
+        className={`mb-8 flex items-center gap-2 ${isSubmitted ? 'text-green-500' : 'text-muted-foreground'}'} `}
       >
         {isSubmitted ? (
           <></>

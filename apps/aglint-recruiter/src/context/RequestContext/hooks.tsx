@@ -38,7 +38,7 @@ export const useRequestActions = ({ request_id }: RequestParams) => {
   );
 
   const requestDetails = useMemo(() => {
-    return Object.values(requests)
+    return Object.values(requests ?? {})
       .flat()
       ?.find((request) => request.id === request_id);
   }, [requests, request_id]);

@@ -13,7 +13,7 @@ function StageIcon({
   return (
     <>
       {isNotScheduled ? (
-        <CircleCheck size={size} className='text-neutral-700' />
+        <CircleCheck size={size} className='text-muted-foreground' />
       ) : isCompleted ? (
         <CheckCircle size={size} className='text-green-700' />
       ) : (

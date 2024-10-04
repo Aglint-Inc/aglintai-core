@@ -166,13 +166,10 @@ function RequestAvailabilityProvider({
       return;
     }
     if (!requestAvailability.visited) {
-      const { data: requestData } = await axios.post(
-        `/api/scheduling/request_availability/updateRequestAvailability`,
-        {
-          id: String(request_id),
-          data: { visited: true },
-        },
-      );
+      updateRequestAvailability({
+        id: String(request_id),
+        visited: true,
+      });
     }
     // check multi-day
     const meetingsRound = ScheduleUtils.getSessionRounds(

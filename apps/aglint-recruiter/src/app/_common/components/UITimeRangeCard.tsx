@@ -34,7 +34,7 @@ export function UITimeRangeCard({
           onClick={onClickTime}
           className='z-2 absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full border border-neutral-300 bg-white'
         >
-          <X className='h-3 w-3 text-neutral-600' />
+          <X className='h-3 w-3 text-muted-foreground' />
         </span>
       )}
     </div>

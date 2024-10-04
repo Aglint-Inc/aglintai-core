@@ -27,7 +27,7 @@ export function MemberListCardOption({
     <div className='z-2 block w-fit rounded-sm bg-white p-2'>
       {isMoveToQualifierVisible && (
         <div
-          className='ease flex cursor-pointer items-center gap-2 rounded p-2 transition-all duration-200 hover:bg-neutral-300 hover:text-neutral-900'
+          className='ease flex cursor-pointer items-center gap-2 rounded p-2 transition-all duration-200 hover:bg-neutral-300 hover:text-foreground'
           onClick={onClickMoveToQualifier}
         >
           <ArrowUpFromLine size={16} />
@@ -38,7 +38,7 @@ export function MemberListCardOption({
       )}
       {isPauseVisible && (
         <div
-          className='ease flex cursor-pointer items-center gap-2 rounded p-2 transition-all duration-200 hover:bg-neutral-300 hover:text-neutral-900'
+          className='ease flex cursor-pointer items-center gap-2 rounded p-2 transition-all duration-200 hover:bg-neutral-300 hover:text-foreground'
           onClick={onClickPauseInterview}
         >
           <Pause size={16} />
@@ -49,7 +49,7 @@ export function MemberListCardOption({
       )}
       {isResumeVisible && (
         <div
-          className='ease flex cursor-pointer items-center gap-2 rounded p-2 transition-all duration-200 hover:bg-neutral-300 hover:text-neutral-900'
+          className='ease flex cursor-pointer items-center gap-2 rounded p-2 transition-all duration-200 hover:bg-neutral-300 hover:text-foreground'
           onClick={onClickResumeInterview}
         >
           <Play size={16} />
@@ -60,7 +60,7 @@ export function MemberListCardOption({
       )}
       {isRemoveVisible && (
         <div
-          className='ease flex cursor-pointer items-center gap-2 rounded p-2 transition-all duration-200 hover:bg-neutral-300 hover:text-neutral-900'
+          className='ease flex cursor-pointer items-center gap-2 rounded p-2 transition-all duration-200 hover:bg-neutral-300 hover:text-foreground'
           onClick={onClickRemoveModule}
         >
           <Trash2 size={16} className='text-red-600' />

@@ -98,20 +98,22 @@ function RequestNotes() {
                     setTimeout(() => inputRef.current?.focus(), 300);
                   }}
                 >
-                  <p className='text-sm text-neutral-500'>Add note</p>
+                  <p className='text-sm text-muted-foreground'>Add note</p>
                 </div>
               </ShowCode.Else>
             </ShowCode>
           </ShowCode.When>
         </ShowCode>
         <div className='mt-2 flex flex-row items-center gap-1'>
-          <p className='text-xs text-neutral-500'>
+          <p className='text-xs text-muted-foreground'>
             {!requestNotes?.note
               ? 'Notes will remain here until you clear it.'
               : 'Last edited on ' +
                 dayjsLocal(requestNotes?.updated_at).format('hh:mm A, MMM DD')}
           </p>
-          {isPending && <p className='text-xs text-neutral-500'>Saving...</p>}
+          {isPending && (
+            <p className='text-xs text-muted-foreground'>Saving...</p>
+          )}
         </div>
       </Card>
     </div>

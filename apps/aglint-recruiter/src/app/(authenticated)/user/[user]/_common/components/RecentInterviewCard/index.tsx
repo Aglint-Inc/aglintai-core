@@ -1,9 +1,17 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
-import { Calendar } from 'lucide-react';
+import {
+  Section,
+  SectionActions,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
+import { ScrollArea } from '@components/ui/scroll-area';
+import { Calendar, ChevronDown, ChevronUp } from 'lucide-react';
+import { useState } from 'react';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
-import UISectionCard from '@/components/Common/UISectionCard';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
 import {
@@ -19,28 +27,45 @@ export const RecentInterviews = () => {
   const interviews = all_meetings?.length
     ? all_meetings.filter((meeting) => meeting.status === 'completed')
     : [];
-
+  const [isExpanded, setIsExpanded] = useState(true);
   return (
     <>
-      <UISectionCard title='Recent Interviews' type='compact'>
-        {interviews?.length ? (
-          <div className='space-y-4'>
-            {interviews.map((interview) => (
-              <List key={interview.id} interview={interview} />
-            ))}
-          </div>
-        ) : (
-          <GlobalEmpty
-            icon={
-              <Calendar
-                strokeWidth={2}
-                className='h-6 w-6 text-muted-foreground'
+      <Section>
+        <SectionHeader>
+          <SectionHeaderText>
+            <SectionTitle>Recent Interviews</SectionTitle>
+          </SectionHeaderText>
+          <SectionActions>
+            <UIButton size='sm' variant='ghost'>
+              View All
+            </UIButton>
+            {isExpanded ? (
+              <ChevronUp size={20} onClick={() => setIsExpanded(false)} />
+            ) : (
+              <ChevronDown size={20} onClick={() => setIsExpanded(true)} />
+            )}
+          </SectionActions>
+        </SectionHeader>
+        {isExpanded && (
+          <ScrollArea className='flex h-[300px]'>
+            {interviews?.length > 0 ? (
+              interviews.map((interview) => (
+                <List key={interview.id} interview={interview} />
+              ))
+            ) : (
+              <GlobalEmpty
+                icon={
+                  <Calendar
+                    strokeWidth={2}
+                    className='h-6 w-6 text-muted-foreground'
+                  />
+                }
+                description='No upcoming interviews found'
               />
-            }
-            description='No recent interviews'
-          />
+            )}
+          </ScrollArea>
         )}
-      </UISectionCard>
+      </Section>
     </>
   );
 };
@@ -51,33 +76,8 @@ const List = ({
   interview: NonNullable<InterviewerDetailType['all_meetings']>[number];
 }) => {
   const router = useRouterPro();
-  // const candidate = interview?.candidate;
-
-  // const name = getFullName(
-  //   candidate?.first_name ?? '',
-  //   candidate?.last_name ?? '',
-  // );
-  // const date = `${dayjsLocal(interview.start_time).format('YYYY-MM-DD')} at ${dayjsLocal(interview.start_time).format('hh:mm A')}`;
   return (
     <>
-      {/* <div className='flex items-center justify-between rounded-lg bg-gray-50 p-4'>
-        <div>
-          <h3 className='font-medium'>{name}</h3>
-          <p className='text-sm text-muted-foreground'>{interview.job}</p>
-          <p className='text-sm text-muted-foreground'>{date}</p>
-        </div>
-        <UIButton
-          onClick={() => {
-            router.push(
-              `/interviews/view?meeting_id=${interview.id}&tab=candidate_details`,
-            );
-          }}
-          variant='outline'
-          size='sm'
-        >
-          View Details
-        </UIButton>
-      </div>     */}
       {/* Alternate card */}
       <div className='flex items-center gap-4 rounded-lg'>
         <div className='flex h-[94px] w-[90px] flex-col items-center justify-center rounded-sm bg-gray-50'>

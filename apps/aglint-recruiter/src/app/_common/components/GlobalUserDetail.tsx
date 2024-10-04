@@ -34,7 +34,7 @@ export function GlobalUserDetail({
   return (
     <div className={cn('flex items-center space-x-2', className)}>
       {isCandidateAvatarVisible && (
-        <User className='h-8 w-8 text-neutral-500' />
+        <User className='h-8 w-8 text-muted-foreground' />
       )}
       {isSlotImageVisible && <div className='h-8 w-8'>{slotImage}</div>}
       <div className='flex w-full items-center justify-between space-x-2'>
@@ -42,11 +42,14 @@ export function GlobalUserDetail({
           <div>
             <UITypography type='small'>{textName}</UITypography>
             {isRoleVisible && (
-              <div className='text-neutral-500'>
+              <div className='text-muted-foreground'>
                 {slotRole ?? (
                   <div className='flex items-center space-x-1'>
                     <BriefcaseBusiness className='h-4 w-4' />
-                    <UITypography type='small' className='text-neutral-500'>
+                    <UITypography
+                      type='small'
+                      className='text-muted-foreground'
+                    >
                       {textRole}
                     </UITypography>
                   </div>
@@ -59,8 +62,8 @@ export function GlobalUserDetail({
           </div>
         </div>
         <div className='flex items-center space-x-2'>
-          <Globe className='h-3 w-3 text-neutral-500' />
-          <UITypography type='extraSmall' className='text-neutral-500'>
+          <Globe className='h-3 w-3 text-muted-foreground' />
+          <UITypography type='extraSmall' className='text-muted-foreground'>
             {textTimeZone}
           </UITypography>
         </div>

@@ -105,7 +105,9 @@ const BreakCard = ({ break_duration }: { break_duration: number }) => {
       textSessionDuration={duration}
       textMeetingType={''}
       slotMeetingTypeIcon={<></>}
-      slotInterviewtypeIcon={<Coffee size={16} className='text-neutral-100' />}
+      slotInterviewtypeIcon={
+        <Coffee size={16} className='text-muted-foreground' />
+      }
       iconName={null}
     />
   );

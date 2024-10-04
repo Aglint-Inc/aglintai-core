@@ -215,7 +215,7 @@ function UploadDB({
   }, [profile]);
 
   return (
-    <div className='rounded-lg bg-neutral-100 p-4 sm:p-8'>
+    <div className='rounded-lgbg-muted p-4 sm:p-8'>
       <div className='mb-6 flex items-center justify-between'>
         <h2 className='text-2xl font-bold'>Apply for this job.</h2>
         <p className='text-sm'>

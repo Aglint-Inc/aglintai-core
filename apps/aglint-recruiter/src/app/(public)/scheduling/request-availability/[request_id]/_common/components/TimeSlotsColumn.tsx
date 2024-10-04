@@ -33,7 +33,7 @@ function TimeSlotsColumn({
             onClick={onClose}
             className='absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full border border-neutral-300 bg-white'
           >
-            <X className='h-5 w-5 text-neutral-600' />
+            <X className='h-5 w-5 text-muted-foreground' />
           </span>
         )}
         <div className='flex w-full flex-row flex-wrap gap-2 p-3 pt-0'>
