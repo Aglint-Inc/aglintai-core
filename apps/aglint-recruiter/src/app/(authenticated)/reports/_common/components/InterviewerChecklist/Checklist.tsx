@@ -11,7 +11,7 @@ import {
 import { Check, X } from 'lucide-react';
 import { useRequestMetics } from 'src/app/(authenticated)/reports/_common/hook/candidate/use-request_metrics';
 
-import UISectionCard from '@/components/Common/UISectionCard';
+import UISectionCard from '@/common/UISectionCard';
 
 const CheckIcon = () => <Check className='h-4 w-4 text-green-500' />;
 const XIcon = () => <X className='h-4 w-4 text-red-500' />;

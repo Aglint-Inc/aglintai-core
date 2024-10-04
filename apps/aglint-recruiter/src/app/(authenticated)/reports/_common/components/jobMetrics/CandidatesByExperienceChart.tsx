@@ -10,7 +10,7 @@ import {
   YAxis,
 } from 'recharts';
 
-import UISectionCard from '@/components/Common/UISectionCard';
+import UISectionCard from '@/common/UISectionCard';
 
 import { useCandidateExp } from '../../hook/job/jobMatrix';
 

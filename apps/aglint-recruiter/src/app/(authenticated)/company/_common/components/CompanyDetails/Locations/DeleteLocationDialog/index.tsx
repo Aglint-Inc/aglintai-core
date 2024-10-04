@@ -1,8 +1,8 @@
 import type { Dispatch, SetStateAction } from 'react';
 
+import { UIButton } from '@/common/UIButton';
+import UIDialog from '@/common/UIDialog';
 import { useTenantOfficeLocations } from '@/company/hooks';
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
 import { manageOfficeLocation } from '@/context/AuthContext/utils';
 
 function DeleteLocationDialog({

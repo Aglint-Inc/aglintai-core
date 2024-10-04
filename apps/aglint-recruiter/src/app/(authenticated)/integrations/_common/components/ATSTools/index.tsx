@@ -6,10 +6,10 @@ import Image from 'next/image';
 import { useRef, useState } from 'react';
 
 import type { useIntegrations } from '@/authenticated/hooks';
+import PasswordFiled from '@/common/passwordField';
 import { useTenant } from '@/company/hooks';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
-import PasswordFiled from '../../../app/_common/components/passwordField';
 import ATSPopUps from '../ATSPopUps';
 import { IntegrationCard } from '../components/IntegrationCard';
 import { type ATSType, type PopUpReasonTypes } from '../types';

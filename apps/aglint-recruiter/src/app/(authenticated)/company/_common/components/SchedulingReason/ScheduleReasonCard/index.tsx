@@ -13,9 +13,9 @@ import {
 import { Archive, Plus } from 'lucide-react';
 import React, { useState } from 'react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
-import { UIButton } from '@/components/Common/UIButton';
-import UISectionCard from '@/components/Common/UISectionCard';
+import GlobalEmpty from '@/common/GlobalEmpty';
+import { UIButton } from '@/common/UIButton';
+import UISectionCard from '@/common/UISectionCard';
 
 import { ReasonCardUI } from './ui/ReasonCardUI';
 
@@ -45,7 +45,7 @@ export function ScheduleReasonCard({
   sections,
 }: ScheduleReasonProps) {
   return (
-    <div className='w-full py-6'>
+    <div className='w-full py-6 '>
       {isMainHeadingVisible && (
         <div className='mb-6'>
           <h2 className='text-lg font-bold'>{textMainHeading}</h2>

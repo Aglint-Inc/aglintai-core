@@ -1,9 +1,15 @@
+import {
+  Section,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import { type FC, Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import UISectionCard from '@/components/Common/UISectionCard';
 import { useMetricsExperienceAndTenure } from '@/job/hooks';
 
 export const TenureAndExpSummary: FC = () => {
@@ -60,12 +66,18 @@ const Content = () => {
 const Tenure: FC<{ average_tenure: number }> = ({ average_tenure }) => {
   const years = (average_tenure / 12).toFixed(1);
   return (
-    <UISectionCard title='Average Tenure'>
+    <Section className='rounded-lg bg-muted p-4'>
+      <SectionHeader>
+        <SectionHeaderText>
+          <SectionTitle>Average Tenure</SectionTitle>
+          <SectionDescription>Applicants by location.</SectionDescription>
+        </SectionHeaderText>
+      </SectionHeader>
       <div className='text-2xl font-bold'>Years {years}</div>
       <p className='text-xs text-muted-foreground'>
         Average time before switching companies.
       </p>
-    </UISectionCard>
+    </Section>
   );
 };
 
@@ -74,12 +86,18 @@ const Experience: FC<{ average_experience: number }> = ({
 }) => {
   const years = (average_experience / 12).toFixed(1);
   return (
-    <UISectionCard title='Average Experience'>
+    <Section className='rounded-lg bg-muted p-4'>
+      <SectionHeader>
+        <SectionHeaderText>
+          <SectionTitle>Average Experience</SectionTitle>
+          <SectionDescription>Applicants by location.</SectionDescription>
+        </SectionHeaderText>
+      </SectionHeader>
       <div className='text-2xl font-bold'>Years {years}</div>
       <p className='text-xs text-muted-foreground'>
         Average of total full time experience of the candidates.
       </p>
-    </UISectionCard>
+    </Section>
   );
 };
 

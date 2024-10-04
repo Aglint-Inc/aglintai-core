@@ -2,9 +2,9 @@ import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Building, CircleDot, Locate, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import FilterHeader from '@/common/FilterHeader';
+import { type FiltersTypes } from '@/common/FilterHeader/filters';
 import { useTeamMembers } from '@/company/hooks/useTeamMembers';
-import FilterHeader from '@/components/Common/FilterHeader';
-import { type FiltersTypes } from '@/components/Common/FilterHeader/filters';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 
 import AddMember from './AddMemberDialog';

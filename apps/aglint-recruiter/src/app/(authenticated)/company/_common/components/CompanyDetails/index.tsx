@@ -1,9 +1,9 @@
 import {
   Page,
-  PageDescription,
-  PageHeader,
-  PageHeaderText,
-  PageTitle,
+  // PageDescription,
+  // PageHeader,
+  // PageHeaderText,
+  // PageTitle,
 } from '@components/layouts/page-header';
 
 import { BasicInfo } from './BasicInfo';
@@ -14,7 +14,7 @@ const CompanyInfoComp = () => {
   return (
     <>
       <Page>
-        <PageHeader>
+        {/* <PageHeader>
           <PageHeaderText>
             <PageTitle>Company Information</PageTitle>
             <PageDescription>
@@ -22,7 +22,7 @@ const CompanyInfoComp = () => {
               Update the settings here changes will be saved automatically.
             </PageDescription>
           </PageHeaderText>
-        </PageHeader>
+        </PageHeader> */}
         <div className='flex flex-col space-y-12'>
           <BasicInfo />
           <Location />

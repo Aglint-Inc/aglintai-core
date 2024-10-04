@@ -13,12 +13,12 @@ export const WorkTimeUI = ({
 }: {
   workingHours: WorkingHour[];
 }) => {
-  return (
-    <div className='group relative rounded-lg py-4'>
-      <div className='rounded-lg border border-border'>
+  return (  
+    <div className='group relative rounded-lg'>
+      <div className='rounded-lg border border-border max-w-[400px] overflow-hidden'>
         <Table>
           <TableHeader className='bg-gray-100'>
-            <TableRow>
+            <TableRow className=''>
               <TableHead>Day</TableHead>
               <TableHead>Hours</TableHead>
             </TableRow>

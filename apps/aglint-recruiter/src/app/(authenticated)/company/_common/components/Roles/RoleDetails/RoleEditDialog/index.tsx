@@ -2,10 +2,10 @@ import { Button } from '@components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
+import UIDialog from '@/common/UIDialog';
 import { useTenantMembers } from '@/company/hooks';
 import { useMemberUpdate } from '@/company/hooks/useMemberUpdate';
 import { useRoleData } from '@/company/hooks/useRoleAndPermissionsHook';
-import UIDialog from '@/components/Common/UIDialog';
 
 import { RoleEditDialogUI } from './ui/RoleEditDialogUI';
 
