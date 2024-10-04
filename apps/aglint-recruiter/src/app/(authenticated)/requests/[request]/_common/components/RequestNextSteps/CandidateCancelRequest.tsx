@@ -2,17 +2,17 @@ import { type DatabaseTableInsert } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
 import { createRequestWorkflowAction } from '@request/components/RequestProgress/utils';
 import { useRequest } from '@request/hooks';
+import { useRequests } from '@requests/hooks';
 import React from 'react';
 
 import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
-import { useRequestsActions } from '@/context/RequestsContext/hooks';
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
 const CandidateCancelRequest = () => {
   const { recruiter_id } = useTenant();
   const { requestDetails, request_workflow } = useRequest();
-  const { handleAsyncUpdateRequest } = useRequestsActions();
+  const { handleAsyncUpdateRequest } = useRequests();
 
   const handleAddWorkflows = async () => {
     try {
