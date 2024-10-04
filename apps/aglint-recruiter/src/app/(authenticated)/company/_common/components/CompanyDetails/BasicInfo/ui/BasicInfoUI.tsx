@@ -2,7 +2,7 @@ import { Building2, Globe, Users2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import type { TenantType } from '@/company/hooks/useTenant';
+import type { TenantType } from '@/company/hooks/useTenant';  
 
 export const BasicInfoUI = ({
   recruiter,
@@ -18,8 +18,8 @@ export const BasicInfoUI = ({
               <Image
                 src={recruiter.logo}
                 alt={recruiter.name}
-                width={72}
-                height={72}
+                width={80}
+                height={80}
                 className='rounded-md'
               />
             )}
@@ -58,7 +58,7 @@ export const BasicInfoUI = ({
                     key={key}
                     href={val as string}
                     target='_blank'
-                    className='inline-flex items-center rounded-full bg-gray-100 px-3 py-1 transition-colors hover:bg-gray-200'
+                    className='inline-flex items-center rounded-md bg-gray-100 px-3 py-1 transition-colors hover:bg-gray-200 hover:no-underline'
                     onClick={(e) => e.stopPropagation()}
                   >
                     <Image

@@ -1,10 +1,10 @@
 import { type SchedulingSettingType } from '@aglint/shared-types';
 import {
   Page,
-  PageDescription,
+  // PageDescription,
   PageHeader,
-  PageHeaderText,
-  PageTitle,
+  // PageHeaderText,
+  // PageTitle,
 } from '@components/layouts/page-header';
 import {
   Section,
@@ -261,15 +261,15 @@ function SchedulingSettings() {
   return (
     <Page>
       <PageHeader>
-        <PageHeaderText>
+        {/* <PageHeaderText>
           <PageTitle>Scheduling</PageTitle>
           <PageDescription>
             {' '}
             Update the settings here changes will be saved automatically.
           </PageDescription>
-        </PageHeaderText>
+        </PageHeaderText> */}
       </PageHeader>
-      <div className='flex flex-col gap-4'>
+      <div className='flex flex-col gap-4 max-w-xl'>
         <div className='flex flex-col gap-5'>
           {dailyLimit.type && weeklyLimit.type && (
             <UISectionCard
@@ -302,7 +302,7 @@ function SchedulingSettings() {
               <Section key={keyword.title}>
                 <SectionHeader>
                   <SectionHeaderText>
-                    <SectionTitle className='text-base font-semibold'>
+                    <SectionTitle>
                       {keyword.title}
                     </SectionTitle>
                     <SectionDescription>
