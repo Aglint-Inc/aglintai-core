@@ -1,6 +1,6 @@
 'use client';
 
-import { TooltipProvider } from '@radix-ui/react-tooltip';
+import { TooltipProvider } from '@components/ui/tooltip';
 import { type PropsWithChildren } from 'react';
 
 import { OnboardingProvider } from '@/components/Navigation/OnboardPending/context/onboarding';
