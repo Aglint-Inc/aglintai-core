@@ -15,7 +15,7 @@ import {twilioClient} from './services/twilio/index';
 import {appLogger} from './services/logger/index';
 import {redisClient} from './services/cache/redis-cache';
 import agentSupervisorRouter from './routes/supervisor';
-import resume_scoring_Routes from './routes/scoring/resume_to_score';
+import atsRoutes from './routes/ats';
 
 const PORT = envConfig.PORT;
 
@@ -44,7 +44,7 @@ app.use('/api/screening-agent', screenignAgentRouter);
 app.use('/api/email-agent', emailAgentRouter);
 app.use('/api/twilio', twilioRouter);
 app.use('/api/retell', retellRoutes);
-app.use('/api/resume_scoring_v3', resume_scoring_Routes);
+app.use('/api/ats', atsRoutes);
 app.get('/redis', async (req, res) => {
   console.time('verify-redis');
   await redisClient.set('foo', 'bar');

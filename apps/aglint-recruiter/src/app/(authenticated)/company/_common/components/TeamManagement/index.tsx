@@ -15,11 +15,6 @@ type ItemType = string;
 const TeamManagement = () => {
   const { checkPermissions } = useRolesAndPermissions();
   const { data: members, isPending, remote_sync } = useTeamMembers();
-  // console.log(members);
-  // useEffect(() => {
-  //   console.log('render');
-  // },[])
-
   const timeStamp = remote_sync?.lastSync;
   const last_sync = timeStamp ? dayjsLocal(timeStamp).fromNow() : 'Never';
 
