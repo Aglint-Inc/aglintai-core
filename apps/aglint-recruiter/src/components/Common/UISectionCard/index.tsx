@@ -52,9 +52,18 @@ export default function UISectionCard({
       <SectionHeader className={`${type === 'compact' ? 'p-0' : ''}`}>
         <SectionHeaderText>
           <SectionTitle
-            className={`${type === 'compact' ? 'text-md font-medium' : 'text-lg font-semibold'}`}
+            className={`flex items-center mb-1 ${type === 'compact' ? 'text-md font-medium' : 'text-lg font-medium'}`}
           >
             {title} {titleAddon && <span>{titleAddon}</span>}
+            <SectionActions>
+          {action && (
+            <div
+              className={`ml-4 flex-shrink-0 ${isHover || !isHoverEffect ? 'opacity-100' : 'opacity-0'} transition`}
+            >
+              {action}
+            </div>
+          )}
+        </SectionActions>
           </SectionTitle>
           <SectionDescription>
             <p className='max-w-4xl text-sm text-muted-foreground'>
@@ -65,15 +74,7 @@ export default function UISectionCard({
             )}
           </SectionDescription>
         </SectionHeaderText>
-        <SectionActions>
-          {action && (
-            <div
-              className={`ml-4 flex-shrink-0 ${isHover || !isHoverEffect ? 'opacity-100' : 'opacity-0'} transition`}
-            >
-              {action}
-            </div>
-          )}
-        </SectionActions>
+        
       </SectionHeader>
 
       <div className={`${type === 'compact' ? 'mt-2 p-0' : ''}`}>

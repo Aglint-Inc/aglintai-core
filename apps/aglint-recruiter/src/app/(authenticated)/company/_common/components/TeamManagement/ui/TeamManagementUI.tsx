@@ -47,10 +47,9 @@ export const TeamManagementUI = ({
         <PageHeaderText>
           <PageTitle>Manage User</PageTitle>
           <PageDescription>
-            Invite your hiring team members and manage their roles and profile
-            details in one place. Assign roles such as interviewer, hiring
-            manager, or recruiter to ensure an organized team structure and
-            compliance with user permissions in the organization.
+            Invite your hiring team, assign roles like interviewer or recruiter,
+            and manage profiles in one place for a streamlined team structure
+            and user permissions.
           </PageDescription>
         </PageHeaderText>
         <PageActions>

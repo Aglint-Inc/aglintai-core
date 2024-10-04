@@ -35,7 +35,7 @@ const PageTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h1
     ref={ref}
-    className={cn('text-2xl font-semibold tracking-tight', className)}
+    className={cn('text-xl font-medium tracking-tight', className)}
     {...props}
   >
     {props.children || 'Default Heading'}
