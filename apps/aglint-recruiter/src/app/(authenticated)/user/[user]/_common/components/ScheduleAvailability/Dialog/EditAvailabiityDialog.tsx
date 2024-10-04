@@ -2,6 +2,7 @@ import {
   type InterviewLoadType,
   type SchedulingSettingType,
 } from '@aglint/shared-types';
+import { type CustomSchedulingSettingsUser } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
 import { toast } from '@components/hooks/use-toast';
 import { ScrollArea } from '@components/ui/scroll-area';
 import cloneDeep from 'lodash/cloneDeep';
@@ -174,7 +175,7 @@ export const EditAvailabiityDialog = ({
           outOfOffice: outOfOffice,
           recruitingBlocks: recruitingBlocks,
         },
-      } as SchedulingSettingType;
+      } as CustomSchedulingSettingsUser;
 
       await mutateAsync({ scheduling_settings: schedulingSettingObj, user_id });
       toast({ title: 'Availability update Successfully' });
