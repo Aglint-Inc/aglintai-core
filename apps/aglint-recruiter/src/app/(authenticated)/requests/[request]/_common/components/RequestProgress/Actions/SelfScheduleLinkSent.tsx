@@ -11,11 +11,11 @@ const SelfScheduleLinkSent = (args: DatabaseTable['request_progress']) => {
   const {
     requests: { data: requestList },
   } = useRequests();
-  const selectedRequest = Object.values(requestList)
+  const selectedRequest = Object.values(requestList ?? [])
     .flat()
     .find((request) => request?.id === requestId);
   const [isCopied, setIsCopied] = useState(false);
-  let application_id = selectedRequest ? selectedRequest.application_id : '';
+  const application_id = selectedRequest ? selectedRequest.application_id : '';
   return (
     <>
       <div className='flex items-center space-x-2'>

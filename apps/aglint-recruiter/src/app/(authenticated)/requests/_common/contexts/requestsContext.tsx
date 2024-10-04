@@ -211,7 +211,7 @@ const useRequestsContext = () => {
   return {
     requests: {
       ...requests,
-      data: requests.data ?? [],
+      data: (requests.data ?? []) as typeof requests.data,
     },
     handleCreateRequests,
     handleAsyncCreateRequests,
