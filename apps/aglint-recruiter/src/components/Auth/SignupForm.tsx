@@ -103,7 +103,7 @@ export default function SignUpForm() {
         }
         const bodyParams: ApiBodyParamsSignup = {
           email: data.email,
-          user_id: authData.user.id,
+          user_id: authData.user?.id ?? '',
           first_name: data.first_name,
           last_name: data.last_name,
         };
