@@ -1,7 +1,5 @@
 import { Input } from '@components/ui/input';
 import { Plus } from 'lucide-react';
-import { Input } from '@components/ui/input';
-import { Plus } from 'lucide-react';
 import { type Dispatch, type SetStateAction } from 'react';
 
 import { UIButton } from '@/common/UIButton';

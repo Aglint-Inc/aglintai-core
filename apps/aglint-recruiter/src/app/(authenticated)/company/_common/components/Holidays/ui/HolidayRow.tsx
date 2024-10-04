@@ -1,7 +1,6 @@
 import { Badge } from '@components/ui/badge';
 import { TableCell, TableRow } from '@components/ui/table';
 import { cn } from '@lib/utils';
-import { Trash } from 'lucide-react';
 
 import { UIButton } from '@/common/UIButton';
 
