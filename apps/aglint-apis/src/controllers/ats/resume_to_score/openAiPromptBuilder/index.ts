@@ -1,5 +1,4 @@
-import OpenAI from 'openai';
-import {openai} from '../config';
+import type OpenAI from 'openai';
 import {
   Badges,
   JobJson,
@@ -18,6 +17,7 @@ const RETRY_LIMIT = 3;
 // type PromptType = 'rating' | 'reasoning';
 
 export const openAiRatingPromptBuilder = async (
+  openai: OpenAI,
   jobJson: JobJson,
   resumeJson: ResumeJson
 ): Promise<OpenAiPromptBuilderResponse | null> => {
@@ -26,11 +26,13 @@ export const openAiRatingPromptBuilder = async (
     'schools',
     'skills',
   ]);
-  const result = prompts.length !== 0 ? await promptLoop(prompts) : null;
+  const result =
+    prompts.length !== 0 ? await promptLoop(openai, prompts) : null;
   return result;
 };
 
 export const openAiReasoningPromptBuilder = async (
+  openai: OpenAI,
   jobJson: JobJson,
   resumeJson: ResumeJson,
   resultObj: ScoringParam | null,
@@ -43,11 +45,13 @@ export const openAiReasoningPromptBuilder = async (
     resultObj as ScoringParam,
     ['positions', 'schools', 'skills']
   );
-  const result = prompts.length !== 0 ? await promptLoop(prompts) : null;
+  const result =
+    prompts.length !== 0 ? await promptLoop(openai, prompts) : null;
   return result;
 };
 
 const promptLoop = async (
+  openai: OpenAI,
   prompts: OpenAIPrompt[],
   retry = 1
 ): Promise<OpenAiPromptBuilderResponse> => {
@@ -120,7 +124,7 @@ const promptLoop = async (
   const retriedResult =
     fulfilled.length === prompts.length
       ? []
-      : await promptLoop(retries, retry + 1);
+      : await promptLoop(openai, retries, retry + 1);
   return [...fulfilled, ...retriedResult];
 };
 

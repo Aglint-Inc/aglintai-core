@@ -13,6 +13,7 @@ import {
 } from './openAiPromptBuilder';
 import {getLists} from './getLists';
 import {calculateAndSave} from './util';
+import {getOpenAi} from 'src/services/LLM/openAi';
 // import axios from 'axios';
 export const resume_to_score = async (req: Request, res: Response) => {
   try {
@@ -34,7 +35,12 @@ export const resume_to_score = async (req: Request, res: Response) => {
     }
 
     const tempResult = (async () => {
-      const results = await openAiRatingPromptBuilder(jd_json, resume_json);
+      const openai = getOpenAi();
+      const results = await openAiRatingPromptBuilder(
+        openai,
+        jd_json,
+        resume_json
+      );
 
       // handel Error
       const errorRes = results?.find(obj => Boolean(obj.error));
@@ -71,6 +77,7 @@ export const resume_to_score = async (req: Request, res: Response) => {
       const reasoningResponse = test
         ? null
         : await openAiReasoningPromptBuilder(
+            openai,
             jd_json,
             resume_json,
             resultObj,
