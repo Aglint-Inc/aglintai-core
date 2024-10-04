@@ -4,7 +4,7 @@ import {
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils';
 import { Label } from '@components/ui/label';
-import { ScrollArea } from '@radix-ui/react-scroll-area';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { type Dispatch, type SetStateAction } from 'react';
 
 import InterviewLimitInput from '@/authenticated/components/InterviewLoad';
