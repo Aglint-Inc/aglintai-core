@@ -24,7 +24,9 @@ export const dayJS = (timestamp: string, tz: TimezoneObj['tzCode']) => {
 
 const getLocalIANATimezone = () => {
   const tz = dayjsLocal.tz.guess();
-  return timeZones.find(({ tzCode }) => tzCode === tz).tzCode;
+  return (
+    timeZones.find((t) => t?.tzCode === tz)?.tzCode ?? 'America/Los_Angeles'
+  );
 };
 
 export const getCalenderEventUrl = ({

@@ -5,11 +5,10 @@ import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import { Eye, EyeOff } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
-import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 
 interface ResetFormInputs {
@@ -50,7 +49,7 @@ export default function ResetPasswordComponent() {
         title: 'Success',
         description: 'Password reset successfully.',
       });
-      router.push(ROUTES['/reset-password']());
+      router.push('/auth/redirect');
     } else {
       toast({
         variant: 'destructive',

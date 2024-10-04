@@ -7,11 +7,11 @@ export function convertTimeZoneToAbbreviation(sourceTimeZone: string) {
     timeZone: sourceTimeZone,
     timeZoneName: 'short',
   });
-  const timeZoneAbbreviation = formatter
-    ?.formatToParts(date)
-    ?.find((part) => part.type === 'timeZoneName')?.value;
+  const timeZoneAbbreviation =
+    formatter?.formatToParts(date)?.find((part) => part.type === 'timeZoneName')
+      ?.value ?? '';
 
-  const abbreviationMapping = {
+  const abbreviationMapping: { [key: string]: string } = {
     'GMT+5:30': 'IST',
     'GMT+9:30': 'ACST',
   };
