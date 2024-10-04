@@ -139,7 +139,7 @@ const ScheduleOptions = () => {
               if (scheduleWorkflowAction) {
                 await deleteRequestWorkflowAction(scheduleWorkflowAction.id);
                 await deleteRequestProgress(requestDetails.id);
-                await await request_workflow.refetch();
+                await request_workflow.refetch();
               }
               setCandidateAvailabilityDrawerOpen(true);
             }}

@@ -1,10 +1,8 @@
-/* eslint-disable security/detect-object-injection */
 import type {
   DatabaseFunctions,
   DatabaseTable,
   DatabaseTableUpdate,
 } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { toast as specialToast } from '@components/hooks/use-toast';
 import { type RealtimePostgresInsertPayload } from '@supabase/supabase-js';
@@ -144,12 +142,14 @@ export const requestQueries = {
       gcTime: request_id ? GC_TIME : 0,
       queryKey: requestQueries.requests_workflow_queryKey({ request_id }),
       queryFn: async () => {
-        const d = supabaseWrap(
+        const d = (
           await supabase
             .from('workflow')
             .select('*, workflow_action(*)')
-            .eq('request_id', request_id),
-        );
+            .eq('request_id', request_id)
+            .throwOnError()
+        ).data;
+
         return d ?? [];
       },
     }),
