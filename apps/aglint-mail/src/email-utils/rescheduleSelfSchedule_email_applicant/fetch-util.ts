@@ -10,7 +10,7 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../../utils/email/common/functions';
-import { FetchUtilType } from '../../types/emailfetchUtil';
+import type { FetchUtilType } from '../../types/emailfetchUtil';
 
 export const fetchUtil: FetchUtilType<
   'rescheduleSelfSchedule_email_applicant'
@@ -73,7 +73,7 @@ export const fetchUtil: FetchUtilType<
     {
       candidateFirstName: first_name,
       jobRole: job_title,
-      companyName: companyName,
+      companyName,
       organizerName: getFullName(
         meeting_organizer.first_name,
         meeting_organizer.last_name,

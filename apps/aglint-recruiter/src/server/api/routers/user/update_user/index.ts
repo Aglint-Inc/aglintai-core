@@ -1,5 +1,4 @@
-import { customSchedulingSettingsSchema } from '@aglint/shared-types/src/db/common.zod';
-import { type CustomSchedulingSettings } from '@aglint/shared-types/src/db/tables/common.types';
+import { customSchedulingSettingsUserSchema } from '@aglint/shared-types/src/db/common.zod';
 import {} from '@aglint/shared-types/src/db/tables/recruiter.types';
 import { z } from 'zod';
 
@@ -7,12 +6,12 @@ import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 const Schema = z.object({
-  first_name: z.string(),
-  last_name: z.string(),
-  phone: z.string(),
-  scheduling_settings: customSchedulingSettingsSchema,
-  profile_image: z.string(),
-  linked_in: z.string(),
+  first_name: z.string().optional(),
+  last_name: z.string().optional(),
+  phone: z.string().optional(),
+  scheduling_settings: customSchedulingSettingsUserSchema.optional(),
+  profile_image: z.string().optional().nullable(),
+  linked_in: z.string().optional(),
   user_id: z.string(),
 });
 
@@ -31,7 +30,6 @@ const mutation = async ({ input }: PrivateProcedure<typeof Schema>) => {
     user_id,
   } = input;
 
-  const newSchedulingSettings = scheduling_settings as CustomSchedulingSettings;
   await db
     .from('recruiter_user')
     .update({
@@ -40,7 +38,7 @@ const mutation = async ({ input }: PrivateProcedure<typeof Schema>) => {
       phone: phone,
       linked_in: linked_in,
       profile_image,
-      scheduling_settings: newSchedulingSettings,
+      scheduling_settings,
     })
     .eq('user_id', user_id)
     .throwOnError();

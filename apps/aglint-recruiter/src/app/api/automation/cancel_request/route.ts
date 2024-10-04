@@ -1,10 +1,10 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import { NextResponse } from 'next/server';
 
 import {
   getSupabaseServer,
-  SupabaseClientType,
+  type SupabaseClientType,
 } from '@/utils/supabase/supabaseAdmin';
-import { supabaseWrap } from '@aglint/shared-utils';
 
 type setting = {
   application_id: string;

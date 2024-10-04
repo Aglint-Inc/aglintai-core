@@ -35,7 +35,7 @@ const SectionTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h2
     ref={ref}
-    className={cn('text-md font-semibold tracking-tight', className)}
+    className={cn('text-md font-medium tracking-tight', className)}
     {...props}
   >
     {props.children || 'Default Heading'}

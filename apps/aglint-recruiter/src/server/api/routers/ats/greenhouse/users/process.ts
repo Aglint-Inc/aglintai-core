@@ -1,8 +1,8 @@
 import { type SupabaseType } from '@aglint/shared-types';
 
-import { registerMember } from '@/pages/api/invite_user';
 import type { SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
+import { registerMember } from '../../../tenant/invite';
 import { getDepartment } from '../departments/process';
 import { getOfficeLocations } from '../office_locations/process';
 import { setLastSync } from '../util';

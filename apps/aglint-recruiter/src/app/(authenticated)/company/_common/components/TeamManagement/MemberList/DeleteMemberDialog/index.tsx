@@ -149,20 +149,39 @@ function DeleteMemberDialog({
       <></>
     );
 
-  const onClick = () =>
-    reason === 'delete'
-      ? action
-      : reason === 'cancel_invite'
-        ? action
-        : reason === 'suspend'
-          ? () => {
-              if (validateForm()) {
-                action({
-                  interviewTypes: form.values.interviewTypes!,
-                });
-              }
-            }
-          : null;
+  const onClick = () => {
+    switch (reason) {
+      case 'delete':
+      case 'cancel_invite':
+        // @ts-ignore
+        action();
+        break;
+      case 'suspend':
+        if (validateForm()) {
+          action({
+            interviewTypes: form.values.interviewTypes!,
+          });
+        }
+        break;
+    }
+    // reason === 'delete'
+    //   ? action
+    //   : reason === 'cancel_invite'
+    //     ? action
+    //     : reason === 'suspend'
+    //       ? () => {
+    //           console.log(
+    //             'form.values.interviewTypes',
+    //             form.values.interviewTypes,
+    //           );
+    //           if (validateForm()) {
+    //             action({
+    //               interviewTypes: form.values.interviewTypes!,
+    //             });
+    //           }
+    //         }
+    //       : null;
+  };
   return (
     <UIDialog
       open={Boolean(reason)}

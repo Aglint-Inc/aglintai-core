@@ -74,6 +74,7 @@ export function NestedPopoverFilter({
                 <>
                   <FilterOptions
                     optionList={optionList}
+                    // @ts-ignore can't give a type to this
                     selectedItems={selectedItems?.[String(section)] || []}
                     filterSearch={searchEnabled}
                     searchPlaceholder={section}

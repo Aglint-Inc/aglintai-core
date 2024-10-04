@@ -32,8 +32,8 @@ function Chip({
       {!disable && (
         <button
           onClick={() => {
-            if (id) handleRemoveKeyword({ id, name });
-            else onRemove();
+            if (id && handleRemoveKeyword) handleRemoveKeyword({ id, name });
+            else onRemove && onRemove();
           }}
           className='ml-2 text-muted-foreground hover:text-gray-700 focus:outline-none'
           aria-label={`Remove ${name}`}

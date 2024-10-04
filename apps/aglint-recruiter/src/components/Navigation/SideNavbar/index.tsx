@@ -95,7 +95,7 @@ const LinkIcon = ({
     <Tooltip>
       <TooltipTrigger>
         <div className={`${baseClasses} ${activeClasses} ${hoverClasses}`}>
-          {iconMap[module]}
+          {iconMap[module as keyof typeof iconMap]}
         </div>
       </TooltipTrigger>
       <TooltipContent align='center' side='right'>

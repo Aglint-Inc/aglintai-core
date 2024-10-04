@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import {
@@ -8,6 +8,7 @@ import {
   sendMagicLink,
 } from '@/candidate/authenticated/uilts';
 import { Loader } from '@/components/Common/Loader';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { supabase } from '@/utils/supabase/client';
 
 import { Send } from './Send';
@@ -17,9 +18,10 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isSending, setIsSending] = useState(false);
   const router = useRouter();
-  const { application: application_id }: { application: string } = useParams();
+  const { params } = useRouterPro();
+  const { application_id } = params;
 
-  const [email, setEmail] = useState(null);
+  const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'send' | 'sent'>('send');
 
   useEffect(() => {
@@ -50,7 +52,7 @@ const LoginPage = () => {
   const sendLink = async () => {
     setIsSending(true);
     const { error } = await sendMagicLink({
-      application_id,
+      application_id: params.application_id,
       email,
     });
     if (!error) {

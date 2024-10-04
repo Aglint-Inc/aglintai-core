@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { type DateRangePlansType } from '@aglint/shared-types';
-import { type schema_find_availability_payload } from '@aglint/shared-utils';
+import { type schema_find_availability_payload } from '@aglint/shared-utils/src/scheduling/apiSchemas';
 import { type z } from 'zod';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';

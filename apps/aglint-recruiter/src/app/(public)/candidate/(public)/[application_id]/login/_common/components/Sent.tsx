@@ -8,7 +8,13 @@ import {
 } from '@components/ui/card';
 import { CheckCircle } from 'lucide-react';
 
-export const Sent = ({ email, setStatus }) => {
+export const Sent = ({
+  email,
+  setStatus,
+}: {
+  email: string;
+  setStatus: React.Dispatch<React.SetStateAction<'send' | 'sent'>>;
+}) => {
   return (
     <Card className='mx-auto w-full max-w-md text-center'>
       <CardHeader>

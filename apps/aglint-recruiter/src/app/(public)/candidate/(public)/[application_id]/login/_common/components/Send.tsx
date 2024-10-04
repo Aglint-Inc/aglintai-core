@@ -10,7 +10,15 @@ import { UIButton } from '@/components/Common/UIButton';
 
 import { hideEmail } from '../utils';
 
-export const Send = ({ email, isSending, handleSendLink }) => {
+export const Send = ({
+  email,
+  isSending,
+  handleSendLink,
+}: {
+  email: string;
+  isSending: boolean;
+  handleSendLink: () => void;
+}) => {
   return (
     <Card className='mx-auto w-full max-w-md'>
       <CardHeader>

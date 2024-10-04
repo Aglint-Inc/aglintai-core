@@ -3,8 +3,6 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
-import { useRequests } from '@/context/RequestsContext';
-import { SafeObject } from '@/utils/safeObject';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
@@ -30,7 +28,6 @@ function AgentInputBox() {
   );
   // eslint-disable-next-line no-unused-vars
 
-  const { requests } = useRequests();
 
   const { data: jobsAndApplications } = useAllJobsAndApplications({
     recruiter_id,
@@ -129,22 +126,7 @@ function AgentInputBox() {
           setText={setText}
           handleTextChange={handleTextChange}
           handleSubmit={handleSubmit}
-          requestList={
-            requests.status === 'success'
-              ? (SafeObject.values(requests?.data) ?? [])
-                  .flatMap((ele) => ele)
-                  .filter((ele) =>
-                    selectedItems?.schedule_type[0]?.id === 're_schedule' ||
-                    selectedItems?.schedule_type[0]?.id === 'cancel'
-                      ? ele.status === 'completed'
-                      : ele,
-                  )
-                  .map((ele) => ({
-                    id: ele.id,
-                    display: ele.title,
-                  }))
-              : []
-          }
+          requestList={[]}
           scheduleTypes={scheduleTypes}
           jobList={
             jobsAndApplications

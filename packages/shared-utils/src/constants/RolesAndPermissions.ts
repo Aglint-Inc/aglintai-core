@@ -912,7 +912,9 @@ export const defaultPermissions = [
 // GROUP BY r.name)
 // select '{' || STRING_AGG(role.roll_per, ', ') || '}' from role;
 
-export const defaultRolePermissionRelation = {
+export const defaultRolePermissionRelation: {
+  [role: string]: string[];
+} = {
   recruiter: [
     "view_company",
     "manage_company",

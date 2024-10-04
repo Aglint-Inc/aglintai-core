@@ -122,7 +122,7 @@ export const candidatePortal = createTRPCRouter({
         };
       });
 
-      return enrichedMessages;
+      return enrichedMessages!;
     }),
   // get navbar ----------------------------------------------------------------
   get_navbar: publicProcedure
@@ -134,20 +134,20 @@ export const candidatePortal = createTRPCRouter({
         await adminDb
           .from('applications')
           .select(
-            'candidates(avatar,first_name,last_name,recruiter(name,logo))',
+            'candidates!inner(avatar,first_name,last_name,recruiter!inner(name,logo))',
           )
           .eq('id', application_id)
           .single()
           .throwOnError()
-      ).data;
-      const { candidates } = company || {};
+      ).data!;
+      const { candidates } = company;
       return {
         candidate: {
-          first_name: candidates?.first_name,
-          last_name: candidates?.last_name,
-          avatar: candidates?.avatar,
+          first_name: candidates.first_name,
+          last_name: candidates.last_name,
+          avatar: candidates.avatar,
         },
-        company: candidates?.recruiter,
+        company: candidates.recruiter,
       };
     }),
   //get profile ------------------------------------------------------------------
@@ -160,16 +160,18 @@ export const candidatePortal = createTRPCRouter({
         await adminDb
           .from('applications')
           .select(
-            'candidate_files(file_url),candidates(id,first_name,last_name,linkedin,phone,avatar,timezone,email)',
+            'candidate_files(file_url),candidates!inner(id,first_name,last_name,linkedin,phone,avatar,timezone,email)',
           )
           .eq('id', application_id)
           .single()
           .throwOnError()
-      ).data;
+      ).data!;
+
+      const { candidates } = data;
 
       return {
         resume_url: data?.candidate_files?.file_url || '',
-        ...data?.candidates,
+        ...candidates,
       };
     }),
   update_profile: publicProcedure
