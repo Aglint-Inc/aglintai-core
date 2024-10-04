@@ -1,6 +1,7 @@
 import {
   createContext,
   type Dispatch,
+  type ReactNode,
   type RefObject,
   type SetStateAction,
   useContext,
@@ -18,9 +19,11 @@ type AgentIEditorContextType = {
   setPlanText: Dispatch<SetStateAction<string>>;
 };
 
-const AgentEditorContext = createContext<AgentIEditorContextType>(undefined);
+const AgentEditorContext = createContext<AgentIEditorContextType | undefined>(
+  undefined,
+);
 
-export const AgentIEditorProvider = ({ children }) => {
+export const AgentIEditorProvider = ({ children }: { children: ReactNode }) => {
   const [text, setText] = useState('');
   const [isResponding, setIsResponding] = useState(false);
   const [planText, setPlanText] = useState('');

@@ -52,9 +52,9 @@ function ImageUploadManual({
           />
           <AvatarFallback>
             {router.pathName.includes(ROUTES['/profile']()) ? (
-              <UserCircle className='h-6 w-6 text-neutral-600' />
+              <UserCircle className='h-6 w-6 text-muted-foreground' />
             ) : (
-              <Building2 className='h-6 w-6 text-neutral-600' />
+              <Building2 className='h-6 w-6 text-muted-foreground' />
             )}
           </AvatarFallback>
         </Avatar>

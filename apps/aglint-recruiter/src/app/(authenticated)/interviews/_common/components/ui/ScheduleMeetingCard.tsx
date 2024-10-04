@@ -1,5 +1,4 @@
-import { getFullName } from '@aglint/shared-utils';
-import { getBreakLabel } from '@aglint/shared-utils';
+import { getBreakLabel, getFullName } from '@aglint/shared-utils';
 import { type getAllInterviews } from '@interviews/hooks/useAllInterviews';
 import { convertTimeZoneToAbbreviation } from '@interviews/utils';
 import dayjs from 'dayjs';
@@ -39,7 +38,7 @@ function ScheduleMeetingCard({
         }}
       >
         <MyScheduleSubCard
-          onClickDropdownIocn={(e) => {
+          onClickDropdownIcon={(e: any) => {
             setCollapseOpen((pre) => !pre);
             e.stopPropagation();
           }}

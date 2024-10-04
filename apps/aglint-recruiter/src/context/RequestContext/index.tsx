@@ -4,7 +4,9 @@ import { useRequestActions } from './hooks';
 
 type RequestContextType = typeof useRequestActions;
 
-const RequestContext = createContext<ReturnType<RequestContextType>>(undefined);
+const RequestContext = createContext<
+  ReturnType<RequestContextType> | undefined
+>(undefined);
 
 export const RequestProvider = (
   props: PropsWithChildren<Parameters<RequestContextType>['0']>,

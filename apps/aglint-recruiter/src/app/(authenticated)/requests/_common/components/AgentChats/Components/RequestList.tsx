@@ -20,10 +20,14 @@ export type RequestListProps = {
 
 const RequestList = ({ requests }: { requests: RequestListProps[] }) => {
   const groupedRequests = requests?.reduce((acc, request) => {
-    if (!acc[request.type]) {
-      acc[request.type] = [];
+    if (!acc[request.type as keyof typeof acc]) {
+      (acc as Record<string, RequestListProps[]>)[
+        request.type as keyof typeof acc
+      ] = [];
     }
-    acc[request.type].push(request);
+    (acc as Record<string, RequestListProps[]>)[
+      request.type as keyof typeof acc
+    ].push(request);
     return acc;
   }, {}) as Record<string, RequestListProps[]>;
 
@@ -38,41 +42,39 @@ const RequestList = ({ requests }: { requests: RequestListProps[] }) => {
   return (
     <div className='space-y-1'>
       {requests.length === 0 ? (
-        <div className='space-y-1 text-neutral-500'>
+        <div className='space-y-1 text-muted-foreground'>
           <p className='text-sm text-muted-foreground'>No requests found.</p>
         </div>
       ) : (
         <>
-          <div className='text-neutral-500'>
+          <div className='text-muted-foreground'>
             <p className='text-base font-normal text-muted-foreground'>
               Here are the list of requests :
             </p>
           </div>
-          {Object.keys(groupedRequests)?.map(
-            (type: RequestListProps['type']) => {
-              const allRequests = groupedRequests[String(type)];
-              return (
-                <div key={type} className='space-y-1 pb-2'>
-                  <p className='text-lg font-medium'>{transformString(type)}</p>
-                  {(viewMore ? allRequests.slice(0, 5) : allRequests)?.map(
-                    (request, ind) => (
-                      <CardIndividual request={request} key={ind} />
-                    ),
-                  )}
-                  {allRequests?.length > 5 && (
-                    <div className='flex flex-row'>
-                      <Button
-                        variant='outline'
-                        onClick={() => setViewMore((prev) => !prev)}
-                      >
-                        {viewMore ? 'View more' : 'View less'}
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              );
-            },
-          )}
+          {Object.keys(groupedRequests)?.map((type: string) => {
+            const allRequests = groupedRequests[String(type)];
+            return (
+              <div key={type} className='space-y-1 pb-2'>
+                <p className='text-lg font-medium'>{transformString(type)}</p>
+                {(viewMore ? allRequests.slice(0, 5) : allRequests)?.map(
+                  (request, ind) => (
+                    <CardIndividual request={request} key={ind} />
+                  ),
+                )}
+                {allRequests?.length > 5 && (
+                  <div className='flex flex-row'>
+                    <Button
+                      variant='outline'
+                      onClick={() => setViewMore((prev) => !prev)}
+                    >
+                      {viewMore ? 'View more' : 'View less'}
+                    </Button>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </>
       )}
     </div>
@@ -81,15 +83,18 @@ const RequestList = ({ requests }: { requests: RequestListProps[] }) => {
 
 export default RequestList;
 
-function transformString(input) {
+function transformString(input: string) {
   return input
     ?.split('_')
-    ?.map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    ?.map(
+      (word: string) =>
+        word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+    )
     .join(' ');
 }
 
 const CardIndividual = ({ request }: { request: RequestListProps }) => {
-  const [hovered, setHovered] = useState(null);
+  const [hovered, setHovered] = useState<string | null>(null);
   return (
     <>
       <Link
@@ -99,7 +104,7 @@ const CardIndividual = ({ request }: { request: RequestListProps }) => {
         onMouseLeave={() => setHovered(null)}
         className='block text-inherit no-underline'
       >
-        <div className='relative flex items-center space-x-1 text-neutral-800'>
+        <div className='relative flex items-center space-x-1'>
           <div className='flex-1'>
             <Tooltip>
               <TooltipTrigger asChild>

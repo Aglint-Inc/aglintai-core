@@ -61,29 +61,29 @@ export function NewScheduleDetail({
   textInterviewer = 'Interviewers',
 }: MeetingDetails) {
   return (
-    <div className='flex w-full flex-col gap-6 rounded-lg border-none bg-white '>
+    <div className='flex w-full flex-col gap-6 rounded-lg border-none bg-white'>
       <div className='flex items-start justify-between'>
         <div className='flex items-start gap-4'>
           {isDateCardVisible && (
-            <div className='flex h-20 w-20 flex-col items-center justify-center rounded-md bg-neutral-100'>
+            <div className='rounded-mdbg-muted flex h-20 w-20 flex-col items-center justify-center'>
               <UITypography
                 variant='p'
                 type='small'
-                className='text-xs text-neutral-600'
+                className='text-xs text-muted-foreground'
               >
                 {textMonth}
               </UITypography>
               <UITypography
                 variant='p'
                 type='large'
-                className='text-2xl font-medium text-neutral-800'
+                className='text-2xl font-medium'
               >
                 {textDate}
               </UITypography>
               <UITypography
                 variant='p'
                 type='extraSmall'
-                className='text-xs text-neutral-600'
+                className='text-xs text-muted-foreground'
               >
                 {textDay}
               </UITypography>
@@ -101,18 +101,22 @@ export function NewScheduleDetail({
               </UITypography>
               <div>{slotStatusBadge}</div>
             </div>
-            <div className='flex items-center gap-3 text-sm text-neutral-600'>
+            <div className='flex items-center gap-3 text-sm text-muted-foreground'>
               {isTimingVisible && (
                 <div className='flex items-center gap-1'>
                   <div className='hidden'>{slotMeetingIcon}</div>
-                  <Clock className='w-4 h-4'/>
+                  <Clock className='h-4 w-4' />
                   <UITypography variant='p' type='small'>
                     {textTime}
                   </UITypography>
                 </div>
               )}
-              <UITypography variant='p' type='small' className='flex flex-row gap-1 items-center'>
-                <Hourglass className='w-4 h-4'/>
+              <UITypography
+                variant='p'
+                type='small'
+                className='flex flex-row items-center gap-1'
+              >
+                <Hourglass className='h-4 w-4' />
                 {textDuration}
               </UITypography>
             </div>
@@ -120,7 +124,7 @@ export function NewScheduleDetail({
               <UITypography
                 variant='p'
                 type='small'
-                className='text-neutral-600'
+                className='text-muted-foreground'
               >
                 {textMeetingPlatform}:
               </UITypography>
@@ -129,7 +133,7 @@ export function NewScheduleDetail({
                   <UITypography
                     variant='p'
                     type='small'
-                    className='text-primary hidden'
+                    className='hidden text-primary'
                   >
                     {textMeetingLink}
                   </UITypography>

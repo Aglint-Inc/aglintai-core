@@ -10,11 +10,11 @@ export type ScheduleListProps = {
 };
 
 const ScheduleList = ({ schedules }: { schedules: ScheduleListProps[] }) => {
-  const [hovered, setHovered] = useState(null);
+  const [hovered, setHovered] = useState<string | null>(null);
 
   return (
     <div className='space-y-1'>
-      <div className='text-neutral-500'>
+      <div className='text-muted-foreground'>
         <p className='text-base font-normal text-muted-foreground'>Schedules</p>
       </div>
       {schedules.map((schedule) => (
@@ -29,7 +29,7 @@ const ScheduleList = ({ schedules }: { schedules: ScheduleListProps[] }) => {
         >
           <div className='relative flex flex-row items-start space-x-3'>
             <div className='w-36'>
-              <div className='text-neutral-500'>
+              <div className='text-muted-foreground'>
                 <p className='text-base font-medium text-muted-foreground'>
                   {schedule.time}
                 </p>
@@ -37,7 +37,7 @@ const ScheduleList = ({ schedules }: { schedules: ScheduleListProps[] }) => {
               </div>
             </div>
             <div className='flex-1'>
-              <div className='text-neutral-500'>
+              <div className='text-muted-foreground'>
                 <p
                   className='text-base font-normal text-muted-foreground'
                   style={{
@@ -55,7 +55,7 @@ const ScheduleList = ({ schedules }: { schedules: ScheduleListProps[] }) => {
 
             {hovered === schedule.link && (
               <div className='absolute bottom-0 right-0 top-0 flex items-center'>
-                <button className='flex items-center rounded border border-neutral-300 px-3 py-1 text-neutral-700'>
+                <button className='flex items-center rounded border border-neutral-300 px-3 py-1 text-muted-foreground'>
                   View Details
                   <SquareArrowOutUpRight />
                 </button>

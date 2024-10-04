@@ -5,10 +5,10 @@ import { type ChatType } from '../hooks/fetch';
 
 function UserRequests({ chat }: { chat: ChatType }) {
   const meta = chat.metadata;
-  const requests = (meta?.findLast(
-    (m) => m.function_name === 'fetch_user_requests',
-  )?.payload || []) as any;
-  const uiRequests: RequestListProps[] = requests?.map((request) => {
+  const requests =
+    meta?.findLast((m) => m.function_name === 'fetch_user_requests')?.payload ||
+    [];
+  const uiRequests: RequestListProps[] = requests.map((request) => {
     return {
       type: request.type,
       title: request.title,

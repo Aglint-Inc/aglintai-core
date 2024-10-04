@@ -1,5 +1,6 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { type CalendarApi } from '@fullcalendar/core';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { UIButton } from '../UIButton';
@@ -11,6 +12,16 @@ function CalendarHeader({
   currentDate,
   handleType,
   type,
+}: {
+  handleMode: (_mode: 'calendar' | 'list') => void;
+  mode: 'calendar' | 'list';
+  calendarApi: CalendarApi;
+  currentDate: {
+    startStr: string;
+    endStr: string;
+  };
+  handleType: (_type: 'day' | 'week' | 'month') => void;
+  type: 'day' | 'week' | 'month';
 }) {
   const dateFormat = {
     timeGridWeek: 'DD',
@@ -26,13 +37,18 @@ function CalendarHeader({
     checkDate.isAfter(currentDate?.startStr) &&
     checkDate.isBefore(currentDate?.endStr);
 
-  const currentViewType = calendarApi?.view?.type;
+  const currentViewType = calendarApi?.view?.type as
+    | 'listWeek'
+    | 'timeGridWeek';
 
   return (
     <div className='flex flex-col'>
       <div className='grid grid-cols-3 items-center gap-2'>
         <div>
-          <Tabs defaultValue={mode} onValueChange={handleMode}>
+          <Tabs
+            defaultValue={mode}
+            onValueChange={(value) => handleMode(value as 'calendar' | 'list')}
+          >
             <TabsList>
               <TabsTrigger value='calendar'>Calendar</TabsTrigger>
               <TabsTrigger value='list'>List</TabsTrigger>
@@ -53,7 +69,6 @@ function CalendarHeader({
               currentViewType === 'timeGridWeek'
                 ? `${dayjsLocal(currentDate?.startStr).format('MMM DD ')} - ${dayjsLocal(currentDate?.endStr).format('DD YYYY')}`
                 : dayjsLocal(currentDate?.startStr).format(
-                    // eslint-disable-next-line security/detect-object-injection
                     dateFormat[currentViewType],
                   )}
             </p>
@@ -72,7 +87,13 @@ function CalendarHeader({
                 <UIButton onClick={() => calendarApi?.today()}>Today</UIButton>
               )}
 
-            <Tabs defaultValue={type} value={type} onValueChange={handleType}>
+            <Tabs
+              defaultValue={type}
+              value={type}
+              onValueChange={(value) =>
+                handleType(value as 'day' | 'week' | 'month')
+              }
+            >
               <TabsList>
                 <TabsTrigger value='day'>Day</TabsTrigger>
                 <TabsTrigger value='week'>Week</TabsTrigger>

@@ -35,7 +35,7 @@ export function StageListCard({
         className={cn(
           'relative z-10 flex w-full flex-col justify-center gap-1.5 rounded-lg px-4',
           {
-            'bg-neutral-100 text-neutral-800': color === 'neutral',
+            'bg-neutral-100': color === 'neutral',
             'bg-sky-100 text-sky-800': color === 'info',
             'bg-green-100 text-green-800': color === 'success',
             'bg-yellow-100 text-yellow-800': color === 'warning',
@@ -57,7 +57,7 @@ export function StageListCard({
         <div className='absolute bottom-0 right-[-20px] top-0 w-10 overflow-hidden'>
           <div
             className={cn('h-full w-[34px]', {
-              'text-neutral-100': color === 'neutral',
+              'text-muted-foreground': color === 'neutral',
               'text-sky-100': color === 'info',
               'text-green-100': color === 'success',
               'text-yellow-100': color === 'warning',

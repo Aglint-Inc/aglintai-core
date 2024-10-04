@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 
-import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
+import {
+  getSupabaseServer,
+  SupabaseClientType,
+} from '@/utils/supabase/supabaseAdmin';
+import { supabaseWrap } from '@aglint/shared-utils';
 
 type setting = {
   application_id: string;
@@ -9,7 +13,7 @@ type setting = {
 
 export const dynamic = 'force-dynamic';
 
-export async function POST(req) {
+export async function POST(req: Request) {
   const supabaseAdmin = getSupabaseServer();
   const setting: setting = await req.json();
   try {
@@ -19,18 +23,18 @@ export async function POST(req) {
       { message: 'cancel requested successfully' },
       { status: 200 },
     );
-  } catch (e) {
+  } catch (e: any) {
     return NextResponse.json({ message: e.message }, { status: 400 });
   }
 }
 
-const cancelReschdule = async (setting, supabase) => {
-  const request_rel = (
+const cancelReschdule = async (setting: any, supabase: SupabaseClientType) => {
+  const request_rel = supabaseWrap(
     await supabase
       .from('request_relation')
       .select('session_id')
-      .eq('request_id', setting.request_id)
-  ).data;
+      .eq('request_id', setting.request_id),
+  );
 
   const payload = {
     application_id: setting.application_id,

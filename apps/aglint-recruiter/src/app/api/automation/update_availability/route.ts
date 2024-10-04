@@ -7,7 +7,7 @@ import {
   updateCandidateAvailabilitySlots,
 } from '@/utils/automation/utils/submit_availability_functions';
 
-export async function POST(req) {
+export async function POST(req: Request) {
   const { request_id } = await req.json();
   try {
     const availabilityData: Awaited<
@@ -35,7 +35,7 @@ export async function POST(req) {
       { message: 'availability updated', request_id },
       { status: 200 },
     );
-  } catch (e) {
+  } catch (e: any) {
     return NextResponse.json({ message: e.message }, { status: 400 });
   }
 }

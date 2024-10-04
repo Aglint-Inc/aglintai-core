@@ -104,7 +104,10 @@ const initialState: SelfSchedulingFlow = {
   resSendToCandidate: null, //used only in self scheduling flow last step copy link which contains ids
   noSlotReasons: [],
   errorNoSlotFilter: false,
-  availabilities: null,
+  availabilities: {
+    events: [],
+    resources: [],
+  },
   localFilters: {
     ...initialFilters,
     dateRange: {

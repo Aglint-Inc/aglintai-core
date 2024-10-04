@@ -637,7 +637,7 @@ const InterviewSession = ({
             textModuleName={
               <div className='flex flex-row items-center gap-3'>
                 <>{session.name}</>
-                <div className='text-sm font-normal text-neutral-500'>
+                <div className='text-sm font-normal text-muted-foreground'>
                   {getSessionType(session.session_type)}
                 </div>
               </div>

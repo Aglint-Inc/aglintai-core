@@ -11,11 +11,11 @@ function IconSessionType({
   return (
     <>
       {type === 'debrief' ? (
-        <FileText size={size} className='text-neutral-600' />
+        <FileText size={size} className='text-muted-foreground' />
       ) : type === 'individual' ? (
-        <PersonStanding size={size} className='text-neutral-600' />
+        <PersonStanding size={size} className='text-muted-foreground' />
       ) : (
-        <Group size={size} className='text-neutral-600' />
+        <Group size={size} className='text-muted-foreground' />
       )}
     </>
   );

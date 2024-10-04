@@ -15,11 +15,11 @@ const query = async ({ input }: PublicProcedure<typeof schema>) => {
   const { data: sch, error: errSch } = await db
     .from('applications')
     .select(
-      '*,public_jobs(id,job_title,location,recruiter_id),candidates(*),candidate_files(id,file_url,candidate_id,resume_json,type),recruiter(id,logo,name)',
+      '*,public_jobs(id,job_title,recruiter_id),candidates(*),candidate_files(id,file_url,candidate_id,resume_json,type),recruiter(id,logo,name)',
     )
-    .eq('application_id', application_id)
+    .eq('id', application_id)
     .single();
-  if (errSch) {
+  if (!errSch) {
     return sch;
   }
 };

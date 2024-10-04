@@ -52,8 +52,8 @@ export const InterviewPoolHeader = () => {
         <PageHeaderText>
           <PageTitle>Interview Pool</PageTitle>
           <PageDescription>
-            Interview Pool is a collection of interview modules that you can use
-            to manage your interview process.
+            Manage company wide interview modules to streamline your recruitment
+            process.
           </PageDescription>
         </PageHeaderText>
         <PageActions>

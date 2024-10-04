@@ -11,9 +11,9 @@ import { type ChatType } from '../hooks/fetch';
 
 function FetchScheduledInterviews({ chat }: { chat: ChatType }) {
   const meta = chat.metadata;
-  const selPayload = meta?.findLast(
-    (ele) => ele.function_name === 'fetch_scheduled_interviews',
-  ).payload;
+  const selPayload =
+    meta?.findLast((ele) => ele.function_name === 'fetch_scheduled_interviews')
+      ?.payload || [];
 
   const uiSchedules: ScheduleListProps[] = selPayload?.map((session) => {
     return {
@@ -23,10 +23,12 @@ function FetchScheduledInterviews({ chat }: { chat: ChatType }) {
       link:
         ROUTES['/interviews/view']() +
         `?meeting_id=${session.id}&tab=candidate_details`,
-      time: formatTimeWithTimeZone({
-        start_time: session.start_time,
-        end_time: session.end_time,
-      }),
+      time: session.start_time
+        ? formatTimeWithTimeZone({
+            start_time: session.start_time,
+            end_time: session.end_time,
+          })
+        : '',
     };
   });
 

@@ -92,9 +92,18 @@ export default function SignUpForm() {
           });
         }
       } else {
+        if (!authData?.user?.id) {
+          toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Something went wrong. Please try again.',
+          });
+          setIsLoading(false);
+          return;
+        }
         const bodyParams: ApiBodyParamsSignup = {
           email: data.email,
-          user_id: authData.user.id,
+          user_id: authData.user?.id ?? '',
           first_name: data.first_name,
           last_name: data.last_name,
         };
@@ -120,11 +129,13 @@ export default function SignUpForm() {
         }
       }
     } catch (err) {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: err.message,
-      });
+      if (err instanceof Error) {
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: err.message,
+        });
+      }
     }
     setIsLoading(false);
   };

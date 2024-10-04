@@ -133,10 +133,11 @@ export const useUserChat = () => {
         content: planText,
         type: 'user',
       };
-      const oldMessages: Message[] = [].map((ele) => ({
-        content: ele.content,
-        type: ele.type === 'user' ? 'user' : 'assistant',
-      }));
+      const oldMessages: Message[] = [];
+      // const oldMessages: Message[] = [].map((ele) => ({
+      //   content: ele.content,
+      //   type: ele.type === 'user' ? 'user' : 'assistant',
+      // }));
       const userMessage = await submitUserChat(planText); // save to db
       const bodyParams: ApiBodyAgentSupervisor = {
         recruiter_id: recruiter.id,
@@ -151,7 +152,7 @@ export const useUserChat = () => {
         bodyParams,
       );
       const aiMessage = data as ChatType;
-      insertAIChat(aiMessage, userMessage);
+      if (userMessage) insertAIChat(aiMessage, userMessage);
     } catch (err) {
       toast.error('Failed to process request. Please contact support.');
     }
@@ -186,23 +187,25 @@ export const fetchUserChat = async (user_id: string, cursor: number) => {
 // eslint-disable-next-line no-unused-vars
 const insertUserChat = async (
   payload: {
-    function: FunctionNames;
+    function: FunctionNames | null;
     text: string;
     type: 'user' | 'agent';
     metadata?: any;
   },
   user_id: string,
 ) => {
-  const { data } = await supabase
-    .from('user_chat')
-    .insert({
-      type: payload.type,
-      content: payload.text,
-      function: payload.function,
-      user_id: user_id,
-      metadata: payload.metadata,
-    })
-    .select()
-    .throwOnError();
-  return data[0];
+  const res = (
+    await supabase
+      .from('user_chat')
+      .insert({
+        type: payload.type,
+        content: payload.text,
+        function: payload.function,
+        user_id: user_id,
+        metadata: payload.metadata,
+      })
+      .select()
+      .throwOnError()
+  ).data!;
+  return res[0];
 };

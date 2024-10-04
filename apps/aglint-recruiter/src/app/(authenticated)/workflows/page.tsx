@@ -28,7 +28,8 @@ const Page = () => {
               <PageHeaderText>
                 <PageTitle>Automations</PageTitle>
                 <PageDescription>
-                  You can create automations to streamline your workflow.
+                  Manage company wide automations to streamline your recruitment
+                  process.
                 </PageDescription>
               </PageHeaderText>
               <Actions />
