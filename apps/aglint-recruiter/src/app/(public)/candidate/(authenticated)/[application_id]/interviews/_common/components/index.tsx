@@ -64,7 +64,9 @@ export default function InterviewsPage() {
 function InterviewCard({
   interview,
 }: {
-  interview: ReturnType<typeof useCandidatePortalInterviews>['data'][number];
+  interview: NonNullable<
+    NonNullable<ReturnType<typeof useCandidatePortalInterviews>>['data']
+  >[number];
 }) {
   return (
     <Card className='mb-4 border border-border bg-background/80 shadow-sm backdrop-blur-sm'>
@@ -93,10 +95,10 @@ function InterviewCard({
             </div>
           </div>
         </div>
-        {interview.interviewers.map((participant, index) => (
+        {(interview?.interviewers || []).map((participant, index) => (
           <div key={index} className='mb-2 flex items-center'>
             <Avatar className='mr-3 h-8 w-8'>
-              <AvatarImage src={participant.profile_image} />
+              <AvatarImage src={participant.profile_image ?? undefined} />
               <AvatarFallback>
                 {getFullName(participant.first_name, participant.last_name)}
               </AvatarFallback>
@@ -122,7 +124,8 @@ function InterviewCard({
             size='sm'
             className='p-0 text-xs'
             onClick={() => {
-              window.open(interview.meeting_link, '_blank');
+              interview?.meeting_link &&
+                window.open(interview.meeting_link, '_blank');
             }}
           >
             Open Coding link
@@ -132,7 +135,8 @@ function InterviewCard({
             size='sm'
             className='p-0 text-xs'
             onClick={() => {
-              window.open(interview.meeting_link, '_blank');
+              interview?.meeting_link &&
+                window.open(interview.meeting_link, '_blank');
             }}
           >
             Join meeting

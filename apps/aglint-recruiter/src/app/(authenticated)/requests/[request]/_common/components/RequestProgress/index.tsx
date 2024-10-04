@@ -206,7 +206,7 @@ const getInitialActionDetails = ({
 };
 
 const useCompanyTemplates = () => {
-  let query = api.tenant.templates.read.useQuery();
+  const query = api.tenant.templates.read.useQuery();
   return {
     ...query,
     data: query.data ?? [],

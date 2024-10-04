@@ -57,10 +57,12 @@ export const BreadcrumProvider = ({ children }: { children: ReactNode }) => {
     <BreadcrumContext.Provider
       value={{
         breadcrum: getBreadcrum(
-          breadcrum?.map((item) => ({
-            ...item,
-            onClick: item.route ? () => router.push(item.route) : null,
-          })) || [],
+          (breadcrum || []).map((item) => ({
+            name: item.name,
+            onClick: () => {
+              item.route && router.push(item.route);
+            },
+          })),
         ),
         setBreadcrum,
       }}
@@ -80,9 +82,7 @@ export const useBreadcrumContext = () => {
 
 import { useRouter } from 'next/navigation';
 
-const getBreadcrum = (
-  paths: { name: string; onClick?: () => void }[],
-) => {
+const getBreadcrum = (paths: { name: string; onClick?: () => void }[]) => {
   if (!paths?.length) {
     return [];
   }

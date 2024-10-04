@@ -14,7 +14,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { HeatMapGrid } from 'react-grid-heatmap';
 
-import { type Meeting } from './type';
+import { type Meeting, type Meetings } from './type';
 import {
   filling2dArray,
   getDatesArray,
@@ -27,7 +27,7 @@ export default function Heatmap({
 }: {
   loadSetting: SchedulingSettingType['interviewLoad'];
 }) {
-  const [arrayDates, setArrayDates] = useState([]);
+  const [arrayDates, setArrayDates] = useState<string[]>([]);
   const [dayCount, setDayCount] = useState<{ start: number; end: number }>({
     start: -7,
     end: 22,
@@ -35,14 +35,14 @@ export default function Heatmap({
   const [maxCount, setMaxCountInterviews] = useState(
     loadSetting.dailyLimit.value,
   );
-  const user_id = useParams().user as string;
+  const user_id = useParams()?.user as string;
   const router = useRouter();
 
   const { data, isLoading } = useUserSchedules(user_id);
 
   useEffect(() => {
     setMaxCountInterviews(
-      Math.max(loadSetting?.dailyLimit.value, data?.maxInterviewsCount),
+      Math.max(loadSetting?.dailyLimit.value, data?.maxInterviewsCount ?? 0),
     );
   }, [data]);
 
@@ -154,7 +154,7 @@ export default function Heatmap({
               cellHeight='16px'
               xLabelsPos='bottom'
               onClick={(x, y) => {
-                if (heatMapData[x][y].meeting_id)
+                if (heatMapData[x][y]?.meeting_id)
                   router.push(
                     `/interviews/view?meeting_id=${heatMapData[x][y].meeting_id}&tab=candidate_details`,
                   );
@@ -253,7 +253,15 @@ export default function Heatmap({
   );
 }
 
-const arrayStructure = ({ datesArray, gridData, maxCount }): Meeting[][] => {
+const arrayStructure = ({
+  datesArray,
+  gridData,
+  maxCount,
+}: {
+  datesArray: (string | Meeting[])[];
+  gridData: Meetings | undefined;
+  maxCount: number;
+}) => {
   if (gridData) {
     Object.keys(gridData).forEach((date) => {
       if (datesArray.includes(date)) {

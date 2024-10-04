@@ -10,7 +10,7 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../../utils/email/common/functions';
-import { FetchUtilType } from '../../types/emailfetchUtil';
+import type { FetchUtilType } from '../../types/emailfetchUtil';
 
 export const fetchUtil: FetchUtilType<
   'interviewStart_email_applicant'
@@ -71,7 +71,7 @@ export const fetchUtil: FetchUtilType<
       endDate: dayjsLocal(meeting_details.end_time)
         .tz(rec_tz)
         .format(DAYJS_FORMATS.DATE_FORMAT),
-      companyName: companyName,
+      companyName,
       organizerFirstName: meeting_organizer.first_name,
       organizerLastName: meeting_organizer.last_name,
       OrganizerTimeZone: recruiter_tz,

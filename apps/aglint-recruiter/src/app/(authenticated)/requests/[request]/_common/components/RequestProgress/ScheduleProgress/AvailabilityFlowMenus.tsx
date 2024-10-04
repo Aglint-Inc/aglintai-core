@@ -35,7 +35,7 @@ const AvailabilityFlowMenus = ({
     }
 
     for (const prog of request_progress.data) {
-      let key = prog.event_type;
+      const key = prog.event_type;
       if (key === 'CAND_AVAIL_REC') {
         break;
       }

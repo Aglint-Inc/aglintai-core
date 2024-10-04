@@ -75,10 +75,13 @@ export default function Component() {
   useEffect(() => {
     setData(initialData);
   }, []);
-  const statusCounts = data.reduce((acc, curr) => {
-    acc[curr.status] = (acc[curr.status] || 0) + 1;
-    return acc;
-  }, {});
+  const statusCounts = data.reduce(
+    (acc, curr) => {
+      acc[curr.status] = (acc[curr.status] || 0) + 1;
+      return acc;
+    },
+    {} as { [key: string]: number },
+  );
 
   const statusData = Object.entries(statusCounts).map(([status, count]) => ({
     status,

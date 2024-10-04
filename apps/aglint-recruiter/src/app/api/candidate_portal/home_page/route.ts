@@ -202,11 +202,13 @@ const getScheudleSessionDetails = async (session_ids: string[]) => {
 
   const { data: scheduleSession } = await supabaseAdmin
     .from('interview_session')
-    .select('name,session_duration,interview_meeting(start_time,end_time)')
+    .select(
+      'name,session_duration,interview_meeting!inner(start_time,end_time)',
+    )
     .in('id', session_ids)
     .throwOnError();
 
-  const scheduleSessions = scheduleSession?.map((scheSess) => ({
+  const scheduleSessions = (scheduleSession || [])?.map((scheSess) => ({
     name: scheSess.name,
     duration: scheSess.session_duration,
     start_time: scheSess?.interview_meeting?.start_time,

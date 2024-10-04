@@ -1,4 +1,4 @@
-import { SupabaseType } from '@aglint/shared-types';
+import type { SupabaseType } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
 export default async function rejection(

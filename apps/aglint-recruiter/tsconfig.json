@@ -92,8 +92,8 @@
         "name": "next"
       }
     ],
-    "strict": false,
-    "strictNullChecks": false
+    "strict": true,
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",
@@ -101,8 +101,6 @@
     "**/*.tsx",
     "**/*.jsx",
     "**/*.js",
-    "src/components/Feedback/Session/index.jsx",
-    "src/pages/api/getJobsPublic.js",
     ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules", ".next"]

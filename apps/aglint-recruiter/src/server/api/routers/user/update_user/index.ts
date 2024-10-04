@@ -1,6 +1,6 @@
-import { customSchedulingSettingsSchema } from '@aglint/shared-types/src/db/common.zod';
-import { type CustomSchedulingSettings } from '@aglint/shared-types/src/db/tables/common.types';
+import { customSchedulingSettingsUserSchema } from '@aglint/shared-types/src/db/common.zod';
 import {} from '@aglint/shared-types/src/db/tables/recruiter.types';
+import { type CustomSchedulingSettingsUser } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
@@ -10,7 +10,7 @@ const Schema = z.object({
   first_name: z.string(),
   last_name: z.string(),
   phone: z.string(),
-  scheduling_settings: customSchedulingSettingsSchema,
+  scheduling_settings: customSchedulingSettingsUserSchema,
   profile_image: z.string(),
   linked_in: z.string(),
   user_id: z.string(),
@@ -31,7 +31,6 @@ const mutation = async ({ input }: PrivateProcedure<typeof Schema>) => {
     user_id,
   } = input;
 
-  const newSchedulingSettings = scheduling_settings as CustomSchedulingSettings;
   await db
     .from('recruiter_user')
     .update({
@@ -40,7 +39,7 @@ const mutation = async ({ input }: PrivateProcedure<typeof Schema>) => {
       phone: phone,
       linked_in: linked_in,
       profile_image,
-      scheduling_settings: newSchedulingSettings,
+      scheduling_settings,
     })
     .eq('user_id', user_id)
     .throwOnError();

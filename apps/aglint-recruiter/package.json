@@ -9,6 +9,7 @@
     "dev:build": "npm run build --workspace=@aglint/shared-utils",
     "tslint": "npx tsc --noEmit ",
     "lint": "next lint && npm run tslint",
+    "lint:fix": "eslint . --ext .ts,.js,.tsx,.jsx --fix",
     "lint:no-circular": "eslint . --rule \"import/no-cycle: off\" && npm run tslint",
     "autofix": "eslint . --fix",
     "format": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\"",
@@ -149,7 +150,6 @@
     "zustand": "^4.5.5"
   },
   "devDependencies": {
-    "@aglint/eslint-plugin-linter": "*",
     "@aglint/shared-types": "*",
     "@shadcn/ui": "^0.0.4",
     "@types/formidable": "^3.4.5",

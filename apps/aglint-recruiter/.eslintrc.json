@@ -10,7 +10,6 @@
     "eslint-plugin-import",
     //"eslint-plugin-react-compiler", //causing issues in the build
     "jsx-a11y",
-    "@aglint/linter",
     "unused-imports"
   ],
   "env": {
@@ -68,12 +67,7 @@
       }
     ]
   },
-  "overrides": [
-    {
-      "files": ["**/*.tsx"],
-      "plugins": ["@aglint/linter"]
-    }
-  ],
+  "overrides": [],
   "settings": {
     "next": {
       "rootDir": "apps/aglint-recruiter"

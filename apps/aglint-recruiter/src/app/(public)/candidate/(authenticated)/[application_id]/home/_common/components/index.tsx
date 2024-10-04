@@ -109,7 +109,7 @@ export default function Home() {
   );
 }
 
-function hasEmptyValue(obj) {
+function hasEmptyValue(obj: Record<string, any>) {
   for (const key in obj) {
     if (obj[key] === null || obj[key] === '' || obj[key] === undefined) {
       return true;

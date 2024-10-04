@@ -1,6 +1,14 @@
 import { Droppable } from 'react-beautiful-dnd';
 
-export const Drop = ({ id, type, ...props }) => {
+export const Drop = ({
+  id,
+  type,
+  ...props
+}: {
+  id: string;
+  type: string;
+  children: React.ReactNode;
+}) => {
   return (
     <Droppable droppableId={id} type={type}>
       {(provided) => {

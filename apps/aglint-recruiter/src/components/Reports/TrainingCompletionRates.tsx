@@ -66,12 +66,12 @@ export default function Component() {
   const [sortColumn, setSortColumn] = useState('');
   const [sortDirection, setSortDirection] = useState('asc');
   const [statusFilter, setStatusFilter] = useState('All');
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
+  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
   const [searchTerm, setSearchTerm] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState('All');
 
-  const handleSort = (column) => {
+  const handleSort = (column: string) => {
     if (column === sortColumn) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
@@ -81,9 +81,11 @@ export default function Component() {
 
     const sortedData = [...reportData].sort((a, b) => {
       // eslint-disable-next-line security/detect-object-injection
-      if (a[column] < b[column]) return sortDirection === 'asc' ? -1 : 1;
+      if (a[column as keyof typeof a] < b[column as keyof typeof b])
+        return sortDirection === 'asc' ? -1 : 1;
       // eslint-disable-next-line security/detect-object-injection
-      if (a[column] > b[column]) return sortDirection === 'asc' ? 1 : -1;
+      if (a[column as keyof typeof a] > b[column as keyof typeof b])
+        return sortDirection === 'asc' ? 1 : -1;
       return 0;
     });
 

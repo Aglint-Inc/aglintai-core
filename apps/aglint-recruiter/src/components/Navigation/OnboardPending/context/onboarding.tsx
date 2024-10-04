@@ -2,10 +2,15 @@ import { createContext, useContext } from 'react';
 
 import { useCompanySetup } from '@/authenticated/hooks/useCompanySetup';
 
-const OnboardingContext =
-  createContext<ReturnType<typeof useCompanySetup>>(undefined);
+const OnboardingContext = createContext<
+  ReturnType<typeof useCompanySetup> | undefined
+>(undefined);
 
-export const OnboardingProvider = ({ children }) => {
+export const OnboardingProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const { ...value } = useCompanySetup();
   return (
     <OnboardingContext.Provider value={{ ...value }}>

@@ -37,8 +37,8 @@ const EventNode = ({
 }) => {
   const { request_workflow } = useRequest();
   const { setShowEditDialog, setTriggerDetails } = useRequestProgressProvider();
-  if (!eventType) return <></>;
   const [, setOnHover] = React.useState(false);
+  if (!eventType) return <></>;
   const eventProg = reqProgresMap[eventType];
   let tense: ProgressTenseType = 'future';
   if (eventProg) {

@@ -14,7 +14,11 @@ export function useUserSchedules(user_id: string) {
   });
 }
 
-export const getDatesArray = (startDate, endDate, format) => {
+export const getDatesArray = (
+  startDate: string,
+  endDate: string,
+  format: string,
+) => {
   const dates = [];
   let currentDate = dayjsLocal(startDate);
 
@@ -26,7 +30,7 @@ export const getDatesArray = (startDate, endDate, format) => {
   return dates;
 };
 
-const fetchFunction = async ({ user_id }) => {
+const fetchFunction = async ({ user_id }: { user_id: string }) => {
   try {
     const { data } = await supabase
       .from('meeting_details')
@@ -36,7 +40,7 @@ const fetchFunction = async ({ user_id }) => {
       .contains('confirmed_user_ids', [user_id])
       .eq('meeting_interviewers.is_confirmed', true);
 
-    const filteredData = data
+    const filteredData = (data || [])
       .filter(
         (curr) =>
           curr.status === 'completed' ||
@@ -45,11 +49,10 @@ const fetchFunction = async ({ user_id }) => {
       )
       .map((curr) => ({
         status: curr.status,
-        startTime: curr.start_time,
-        endTime: curr.end_time,
+        startTime: curr.start_time!,
+        endTime: curr.end_time!,
         meeting_id: curr.id,
       }));
-
     const groupedData = groupByStartDate({ events: filteredData });
 
     const maxInterviewsCount = findMaxGroupCount(groupedData);
@@ -75,7 +78,7 @@ function groupByStartDate({
     endTime: string;
     meeting_id: string;
   }[];
-}): Meetings {
+}) {
   const res = events.reduce((acc, event) => {
     const startDate = dayjsLocal(event.startTime).format('YYYY-MM-DD');
 
@@ -89,7 +92,7 @@ function groupByStartDate({
     acc[startDate].push(event);
 
     return acc;
-  }, {});
+  }, {} as Meetings);
 
   return res;
 }
@@ -100,13 +103,14 @@ function findMaxGroupCount(groupedData: Meetings) {
   return maxCount;
 }
 
-export function transposeArray(array: Meeting[][]): Meeting[][] {
+export function transposeArray(array: Meeting[][]) {
   return array?.length ? _.zip(...array).reverse() : [];
 }
 
-export const filling2dArray = (data, maxCount) => {
+export const filling2dArray = (data: Meeting[][], maxCount: number) => {
   return data?.map((subArray) => {
     const fillCount = maxCount - subArray.length;
+    //@ts-ignore
     return subArray.concat(Array.from({ length: fillCount }, () => ({})));
   });
 };

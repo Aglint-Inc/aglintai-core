@@ -13,7 +13,7 @@ export const getCandidateEmailByApplicationId = async (
     },
   );
 
-  return data;
+  return data!;
 };
 
 export const sendMagicLink = async ({
