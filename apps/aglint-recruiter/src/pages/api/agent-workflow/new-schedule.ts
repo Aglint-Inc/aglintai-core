@@ -12,7 +12,7 @@ import {
   type ProgressLoggerType,
   supabaseWrap,
 } from '@aglint/shared-utils';
-import { apiTargetToEvents } from '@requests/components/RequestProgress/utils/progressMaps';
+import { apiTargetToEvents } from '@request/components/RequestProgress/utils/progressMaps';
 import { v4 as uuidv4 } from 'uuid';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';

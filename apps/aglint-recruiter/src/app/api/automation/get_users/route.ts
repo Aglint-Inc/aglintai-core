@@ -1,7 +1,7 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import { NextResponse } from 'next/server';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
-import { supabaseWrap } from '@aglint/shared-utils';
 
 export const dynamic = 'force-dynamic';
 

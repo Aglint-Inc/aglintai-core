@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
+import { useRequests } from '@requests/hooks';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
-import { useRequests } from '@/context/RequestsContext';
 import { SafeObject } from '@/utils/safeObject';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';

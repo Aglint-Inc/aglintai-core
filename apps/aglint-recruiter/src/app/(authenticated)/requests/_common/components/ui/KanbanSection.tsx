@@ -1,6 +1,5 @@
 import { Badge } from '@components/ui/badge';
 
-import { RequestProvider } from '@/context/RequestContext';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { RequestCard } from '../RequestCard';
@@ -23,12 +22,11 @@ function KanbanSection({
       {requests.length > 0 ? (
         <div className='flex flex-col gap-4'>
           {requests.map((props, i) => (
-            <RequestProvider key={props.id ?? i} request_id={props.id}>
-              <RequestCard
-                {...{ ...props, isExpanded: false }}
-                mode='column-view'
-              />
-            </RequestProvider>
+            <RequestCard
+              key={props.id ?? i}
+              {...{ ...props, isExpanded: false }}
+              mode='column-view'
+            />
           ))}
         </div>
       ) : (

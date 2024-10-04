@@ -15,7 +15,6 @@ import { AlertCircle, Loader2 } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { Loader } from '@/components/Common/Loader';
-import { RequestProvider } from '@/context/RequestContext';
 import type { Request } from '@/queries/requests/types';
 
 function CompletedRequests() {
@@ -102,9 +101,11 @@ function CompletedRequests() {
                   <div className='flex flex-col overflow-hidden rounded-lg border'>
                     {requests.map((request, i) => (
                       <React.Fragment key={request.id ?? i}>
-                        <RequestProvider request_id={request.id}>
-                          <RequestCard mode='compact-list' {...request} />
-                        </RequestProvider>
+                        <RequestCard
+                          key={request.id ?? i}
+                          mode='compact-list'
+                          {...request}
+                        />
                         {i !== requests.length - 1 && requests.length > 1 && (
                           <hr
                             className='my-0 border-t border-gray-200'
