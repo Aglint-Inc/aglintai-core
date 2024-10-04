@@ -170,7 +170,7 @@ export const useJobFilterAndSort = (jobs: Job[]) => {
     order: 'descending',
   });
   const [filterValues, setFilterValues] = useState({
-    status: ['published'] as string[],
+    status: [] as string[],
     location: [] as string[],
     type: [] as string[],
     hiringManager: [] as string[],
