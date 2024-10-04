@@ -1,4 +1,4 @@
-export function hideEmail(email) {
+export function hideEmail(email: string) {
   const [localPart, domain] = email.split('@');
 
   if (localPart.length < 6) {

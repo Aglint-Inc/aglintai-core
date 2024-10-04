@@ -160,7 +160,7 @@ export const candidatePortal = createTRPCRouter({
         await adminDb
           .from('applications')
           .select(
-            'candidate_files(file_url),candidates(id,first_name,last_name,linkedin,phone,avatar,timezone,email)',
+            'candidate_files(file_url),candidates!inner(id,first_name,last_name,linkedin,phone,avatar,timezone,email)',
           )
           .eq('id', application_id)
           .single()

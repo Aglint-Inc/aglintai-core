@@ -1,14 +1,15 @@
+import { type DatabaseTable } from '@aglint/shared-types';
 import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
-
-type Status = 'confirmed' | 'completed' | 'cancelled';
 
 function CalendarFilter({
   setFilter,
   filter,
 }: {
-  setFilter: React.Dispatch<React.SetStateAction<Status[]>>;
-  filter: Status[];
+  setFilter: React.Dispatch<
+    React.SetStateAction<DatabaseTable['interview_meeting']['status'][]>
+  >;
+  filter: DatabaseTable['interview_meeting']['status'][];
 }) {
   return (
     <div className='!mt-4 flex flex-row gap-2'>
