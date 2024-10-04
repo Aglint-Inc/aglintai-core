@@ -10,7 +10,7 @@ export type ScheduleListProps = {
 };
 
 const ScheduleList = ({ schedules }: { schedules: ScheduleListProps[] }) => {
-  const [hovered, setHovered] = useState(null);
+  const [hovered, setHovered] = useState<string | null>(null);
 
   return (
     <div className='space-y-1'>
