@@ -2,11 +2,11 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
 import {
   getCandidateEmailByApplicationId,
   sendMagicLink,
 } from 'src/app/(public)/candidate/(authenticated)/[application]/_common/uilts';
+
 import { Loader } from '@/components/Common/Loader';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { supabase } from '@/utils/supabase/client';

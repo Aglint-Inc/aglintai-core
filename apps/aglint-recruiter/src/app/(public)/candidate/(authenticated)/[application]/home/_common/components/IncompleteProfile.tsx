@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { TriangleAlert } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
-
 import { useCandidatePortal } from 'src/app/(public)/candidate/(authenticated)/[application]/_common/hooks';
 
 function IncompleteProfile() {

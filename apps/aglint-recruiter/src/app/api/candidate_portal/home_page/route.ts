@@ -56,7 +56,7 @@ export type schedule = {
 
 type sessions = Awaited<ReturnType<typeof getScheudleSessionDetails>>;
 
-export async function POST(req) {
+export async function POST(req: Request) {
   try {
     const supabaseAdmin = getSupabaseServer();
 

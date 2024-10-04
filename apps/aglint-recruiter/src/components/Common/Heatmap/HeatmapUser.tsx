@@ -210,7 +210,7 @@ const arrayStructure = ({
   gridData,
   maxCount,
 }: {
-  datesArray: string[];
+  datesArray: any[];
   gridData: GroupedEvents;
   maxCount: number;
 }): Meeting[][] => {

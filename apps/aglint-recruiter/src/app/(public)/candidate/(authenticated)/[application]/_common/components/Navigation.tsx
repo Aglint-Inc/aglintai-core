@@ -5,12 +5,12 @@ import { Button } from '@components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { useCandidatePortalMessages } from 'src/app/(public)/candidate/(authenticated)/[application]/messages/_common/hooks';
-
 import {
   useCandidatePortal,
   useCandidatePortalNavbar,
 } from 'src/app/(public)/candidate/(authenticated)/[application]/_common/hooks';
+import { useCandidatePortalMessages } from 'src/app/(public)/candidate/(authenticated)/[application]/messages/_common/hooks';
+
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { supabase } from '@/utils/supabase/client';
 

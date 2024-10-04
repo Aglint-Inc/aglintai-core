@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-
 import type { useCandidatePortalNavbar } from 'src/app/(public)/candidate/(authenticated)/[application]/_common/hooks';
 
 export default function NavProfile({

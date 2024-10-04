@@ -45,32 +45,32 @@ export async function POST(req: Request) {
             )
             .eq('recruiter_id', recruiter_id)
             .eq('recruiter_user.status', 'active')
-        ).data,
+        ).data!,
         (
           await supabaseAdmin
             .from('recruiter')
             .select('scheduling_settings')
             .eq('id', recruiter_id)
             .single()
-        ).data,
+        ).data!,
         (
           await supabaseAdmin
             .from('office_locations')
             .select('*')
             .eq('recruiter_id', recruiter_id)
-        ).data,
+        ).data!,
         (
           await supabaseAdmin
             .from('departments')
             .select('*')
             .eq('recruiter_id', recruiter_id)
-        ).data,
+        ).data!,
         (
           await supabaseAdmin
             .from('roles')
             .select('*')
             .eq('recruiter_id', recruiter_id)
-        ).data,
+        ).data!,
       ]);
 
     const manager_ids = recruiter_user

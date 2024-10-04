@@ -2,7 +2,6 @@ import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import Link from 'next/link';
 import React from 'react';
-
 import { useCandidatePortal } from 'src/app/(public)/candidate/(authenticated)/[application]/_common/hooks';
 
 function AllSet() {

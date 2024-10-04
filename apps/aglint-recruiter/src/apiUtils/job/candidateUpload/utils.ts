@@ -10,7 +10,6 @@ import {
   type PostgrestError,
   type SupabaseClient,
 } from '@supabase/supabase-js';
-import formidable from 'formidable';
 import * as fs from 'fs';
 import { type NextApiRequest } from 'next';
 import { v4 as uuidv4 } from 'uuid';
