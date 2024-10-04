@@ -1,12 +1,10 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { type DatabaseTable } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
+import { useRequests } from '@requests/hooks';
 import { Check } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
-
-import { useRequests } from '@/context/RequestsContext';
-
 const SelfScheduleLinkSent = (args: DatabaseTable['request_progress']) => {
   const params = useParams();
   const requestId = params?.request as string;
@@ -17,6 +15,7 @@ const SelfScheduleLinkSent = (args: DatabaseTable['request_progress']) => {
     .flat()
     .find((request) => request?.id === requestId);
   const [isCopied, setIsCopied] = useState(false);
+  let application_id = selectedRequest ? selectedRequest.application_id : '';
   return (
     <>
       <div className='flex items-center space-x-2'>
@@ -30,7 +29,7 @@ const SelfScheduleLinkSent = (args: DatabaseTable['request_progress']) => {
           onClick={() => {
             setIsCopied(true);
             navigator.clipboard.writeText(
-              `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${selectedRequest.application_id}?filter_id=${args.meta.filter_json_id}`,
+              `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${application_id}?filter_id=${args.meta.filter_json_id}`,
             );
             setTimeout(() => {
               setIsCopied(false);

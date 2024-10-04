@@ -37,11 +37,13 @@ export default async function handler(
       error: null,
     });
   } catch (error) {
-    console.error(error);
-    return res.status(200).json({
-      mailSent: false,
-      error: error.message,
-    });
+    if (error instanceof Error) {
+      console.error(error.message);
+      return res.status(200).json({
+        mailSent: false,
+        error: error.message,
+      });
+    }
   }
 }
 

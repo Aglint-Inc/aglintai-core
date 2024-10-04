@@ -3,10 +3,9 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
+import { useRequest } from '@request/hooks';
 import { Edit, Loader, Trash } from 'lucide-react';
 import React from 'react';
-
-import { useRequest } from '@/context/RequestContext';
 
 import { useRequestProgressProvider } from '../progressCtx';
 import ScheduleProgressTracker from '../ScheduleProgressTracker';
@@ -30,7 +29,7 @@ const EventNode = ({
   currWAction,
   showEditBtns = true,
 }: {
-  eventType: DatabaseTable['request_progress']['event_type'];
+  eventType: DatabaseTable['request_progress']['event_type'] | undefined;
   reqProgresMap: RequestProgressMapType;
   currEventTrigger: DatabaseTable['workflow']['trigger'];
   currWAction?: DatabaseTable['workflow_action'];
@@ -38,20 +37,24 @@ const EventNode = ({
 }) => {
   const { request_workflow } = useRequest();
   const { setShowEditDialog, setTriggerDetails } = useRequestProgressProvider();
+  if (!eventType) return <></>;
   const [, setOnHover] = React.useState(false);
   const eventProg = reqProgresMap[eventType];
   let tense: ProgressTenseType = 'future';
   if (eventProg) {
-    const headingEvent: DatabaseTable['request_progress'] = eventProg.find(
+    const headingEvent = eventProg.find(
       (prg) => prg.is_progress_step === false,
     );
-    tense = progressStatusToTense(headingEvent?.status);
+    if (headingEvent) {
+      tense = progressStatusToTense(headingEvent.status);
+    }
   }
 
   const eventSubProgress = (eventProg ?? []).filter(
     (prg) => prg.is_progress_step === true,
   );
   const handleDeleteScheduleAction = async () => {
+    if (!currWAction) return null;
     try {
       await deleteRequestWorkflowAction(currWAction.id);
       await request_workflow.refetch();
@@ -127,7 +130,8 @@ const EventNode = ({
                       !prg.log &&
                       progressActionMap[`${prg.event_type}_${prg.status}`]
                     ) {
-                      const key = `${prg.event_type}_${prg.status}`;
+                      const key =
+                        `${prg.event_type}_${prg.status}` as keyof typeof progressActionMap;
                       const Comp = progressActionMap[key];
                       return <Comp key={prg.id} {...prg} />;
                     }

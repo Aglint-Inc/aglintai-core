@@ -1,12 +1,8 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable security/detect-object-injection */
-
+import { useRequests } from '@requests/hooks';
 import { useEffect, useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
 import FilterHeader from '@/components/Common/FilterHeader';
-import { useRequests } from '@/context/RequestsContext';
-import { type GetRequestParams } from '@/queries/requests';
 import { supabase } from '@/utils/supabase/client';
 
 function RequestListFilter() {

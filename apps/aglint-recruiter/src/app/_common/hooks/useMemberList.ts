@@ -7,14 +7,15 @@ import {
   type CompanyMembersAPI,
 } from '@/pages/api/scheduling/fetchUserDetails';
 
-export const useMemberList = () => {
+export const useMemberList = (includeSupended = true, isCalendar = false) => {
   const { recruiter_id } = useTenant();
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: ['get_members_list', recruiter_id],
     refetchInterval: 30000,
     refetchOnMount: true,
-    queryFn: () => getMembersList({ recruiter_id }),
+    queryFn: () =>
+      getMembersList({ recruiter_id, includeSupended, isCalendar }),
     gcTime: 20000,
     enabled: !!recruiter_id,
   });
@@ -23,14 +24,23 @@ export const useMemberList = () => {
     queryClient.invalidateQueries({
       queryKey: ['get_members_list', recruiter_id],
     });
-  return { ...query, refetch };
+  return { ...query, data: query?.data ?? [], refetch };
 };
 
 type MemberType = CompanyMembersAPI[number];
-const getMembersList = async ({ recruiter_id }: { recruiter_id: string }) => {
+const getMembersList = async ({
+  recruiter_id,
+  includeSupended,
+  isCalendar,
+}: {
+  recruiter_id: string;
+  includeSupended: boolean;
+  isCalendar: boolean;
+}) => {
   const bodyParams: BodyParamsFetchUserDetails = {
-    recruiter_id: recruiter_id,
-    includeSupended: true,
+    recruiter_id,
+    includeSupended,
+    isCalendar,
   };
   const resMem = (await axios.post(
     '/api/scheduling/fetchUserDetails',

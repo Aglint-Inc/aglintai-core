@@ -1,11 +1,11 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
+import { useRequest } from '@request/hooks';
 import { Bell, Lightbulb } from 'lucide-react';
 import React, { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
-import { useRequest } from '@/context/RequestContext';
 
 import { useRequestProgressProvider } from '../progressCtx';
 import { type RequestProgressMapType } from '../types';
@@ -35,13 +35,14 @@ const SelfScheduleFlowMenus = ({
     }
 
     for (const prog of request_progress.data) {
-      if (prog.event_type === 'CAND_CONFIRM_SLOT') {
+      let key = prog.event_type;
+      if (key === 'CAND_CONFIRM_SLOT') {
         break;
       }
-      if (!reqProgresMap[prog.event_type]) {
-        reqProgresMap[prog.event_type] = [];
+      if (!reqProgresMap[key]) {
+        reqProgresMap[key] = [];
       }
-      reqProgresMap[prog.event_type].push(prog);
+      reqProgresMap[key].push(prog);
       progres.push({
         ...prog,
       });

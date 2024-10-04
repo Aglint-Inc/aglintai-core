@@ -1,10 +1,10 @@
 import type { DatabaseEnums, DatabaseTable } from '@aglint/shared-types';
 import { Dialog, DialogContent } from '@components/ui/dialog';
 import { Skeleton } from '@components/ui/skeleton';
+import { useRequest } from '@request/hooks';
 import React, { useEffect, useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
-import { useRequest } from '@/context/RequestContext';
 import { api } from '@/trpc/client';
 import { type emailTemplateCopy } from '@/types/companyEmailTypes';
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
@@ -32,6 +32,7 @@ function RequestProgress() {
   const [companyEmailTemplates, setCompanyEmailTemplates] = React.useState<
     EmailTemplate[]
   >([]);
+
   useEffect(() => {
     if (status === 'success') {
       setCompanyEmailTemplates(fetchedTemps as EmailTemplate[]);
@@ -49,10 +50,11 @@ function RequestProgress() {
   const reqProgressMap: RequestProgressMapType = useMemo(() => {
     const mp: RequestProgressMapType = {};
     request_progress.data.forEach((row) => {
-      if (!mp[row.event_type]) {
-        mp[row.event_type] = [];
+      const key = row.event_type;
+      if (!mp[key]) {
+        mp[key] = [];
       }
-      mp[row.event_type].push({ ...row });
+      mp[key].push({ ...row });
     });
     return mp;
   }, [request_progress.data]);
@@ -171,16 +173,17 @@ const getInitialActionDetails = ({
   ) {
     return reqTriggerActionsMap[editTrigger][0];
   } else {
-    let template: DatabaseTable['company_email_template'];
+    let template: DatabaseTable['company_email_template'] | null = null;
+    let scheduleFlow: DatabaseEnums['email_slack_types'] | null = null;
     if (editTrigger === 'onRequestSchedule') {
-      template =
-        companyEmailTemplatesMp['sendSelfScheduleRequest_email_applicant'];
+      scheduleFlow = 'sendSelfScheduleRequest_email_applicant';
     } else if (editTrigger === 'sendAvailReqReminder') {
-      template =
-        companyEmailTemplatesMp['sendAvailReqReminder_email_applicant'];
+      scheduleFlow = 'sendAvailReqReminder_email_applicant';
     } else if (editTrigger === 'selfScheduleReminder') {
-      template =
-        companyEmailTemplatesMp['selfScheduleReminder_email_applicant'];
+      scheduleFlow = 'selfScheduleReminder_email_applicant';
+    }
+    if (scheduleFlow && companyEmailTemplatesMp[scheduleFlow]) {
+      template = companyEmailTemplatesMp[scheduleFlow]!;
     }
 
     const wAction: DatabaseTable['workflow_action'] = {
@@ -192,8 +195,8 @@ const getInitialActionDetails = ({
       workflow_id: '',
       payload: {
         email: {
-          body: template?.body ?? '',
-          subject: template?.subject ?? '',
+          body: template ? template.body : '',
+          subject: template ? template.subject : '',
         },
         agent: (ACTION_TRIGGER_MAP[editTrigger][0].value.payload as any)?.agent,
       },
@@ -203,5 +206,9 @@ const getInitialActionDetails = ({
 };
 
 const useCompanyTemplates = () => {
-  return api.tenant.templates.read.useQuery();
+  let query = api.tenant.templates.read.useQuery();
+  return {
+    ...query,
+    data: query.data ?? [],
+  };
 };

@@ -1,4 +1,3 @@
-/* eslint-disable security/detect-object-injection */
 import type {
   DatabaseFunctions,
   DatabaseTable,
@@ -129,7 +128,7 @@ export const requestQueries = {
             .eq('request_id', request_id)
             .order('updated_at', { ascending: true })
             .throwOnError()
-        ).data,
+        ).data ?? [],
     }),
   request_workflow: ({
     request_id,
@@ -144,12 +143,14 @@ export const requestQueries = {
       gcTime: request_id ? GC_TIME : 0,
       queryKey: requestQueries.requests_workflow_queryKey({ request_id }),
       queryFn: async () => {
-        const d = supabaseWrap(
+        const d = (
           await supabase
             .from('workflow')
             .select('*, workflow_action(*)')
-            .eq('request_id', request_id),
-        );
+            .eq('request_id', request_id)
+            .throwOnError()
+        ).data;
+
         return d ?? [];
       },
     }),
@@ -436,7 +437,6 @@ type RequestFilterValues = {
   type: string[];
   created_at: DatabaseTable['request']['created_at'];
   end_at: DatabaseTable['request']['created_at'];
-  // assignee_id: DatabaseTable['request']['assignee_id'][];
   jobs: string[];
   applications?: string[];
   assignerList?: string[];
@@ -493,9 +493,6 @@ export const getUnfilteredRequests = async ({
     );
   }
 
-  // if (assignee_id?.length)
-  //   query.or(`assignee_id.in.(${assignee_id.join(',')})`);
-
   if (status?.length) query.or(`status.in.(${status.join(',')})`);
 
   if (filterType?.length) query.or(`type.in.(${filterType.join(',')})`);
@@ -551,7 +548,6 @@ export const getRequests = (response: Request[]) => {
           cancel_schedule_request: [],
           decline_request: [],
           completed_request: [],
-          // eslint-disable-next-line no-unused-vars
         } as { [_id in Sections]: typeof response },
       ),
     ) as [Sections, typeof response][]
@@ -570,7 +566,6 @@ export const getRequests = (response: Request[]) => {
       }
       return acc;
     },
-    // eslint-disable-next-line no-unused-vars
     {} as { [_id in Sections]: typeof response },
   );
 };
@@ -587,7 +582,6 @@ const requestSort = (request: Request[]) => {
         return acc;
       },
       { to_do: [], in_progress: [], rest: [] } as {
-        // eslint-disable-next-line no-unused-vars
         [_id in SortRequest]: typeof request;
       },
     ),
@@ -610,7 +604,7 @@ export const getRequestProgress = async ({ request_id }: GetRequestProgress) =>
       .eq('request_id', request_id)
       .order('created_at', { ascending: true })
       .throwOnError()
-  ).data;
+  ).data ?? [];
 
 type CreateRequests = DatabaseFunctions['create_session_request']['Args'];
 const createRequests = async (requestPayload: CreateRequests) =>

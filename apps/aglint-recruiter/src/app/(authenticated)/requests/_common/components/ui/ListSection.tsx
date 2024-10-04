@@ -12,7 +12,6 @@ import { type REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
 
-import { RequestProvider } from '@/context/RequestContext';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { RequestCard } from '../RequestCard';
@@ -92,21 +91,20 @@ function ListSection({
           {requests.length > 0 ? (
             <div className='flex flex-col gap-4'>
               {slicedRequests.map((props, i) => (
-                <RequestProvider key={props.id ?? i} request_id={props.id}>
-                  <RequestCard {...{ ...props, isExpanded: false }} />
-                </RequestProvider>
+                <RequestCard
+                  key={props.id ?? i}
+                  {...{ ...props, isExpanded: false }}
+                />
               ))}
               {requests.length > 5 && (
                 <Collapsible>
                   <CollapsibleContent>
                     <div className='flex flex-col gap-4'>
                       {requests.slice(5).map((props, i) => (
-                        <RequestProvider
+                        <RequestCard
                           key={props.id ?? i}
-                          request_id={props.id}
-                        >
-                          <RequestCard {...{ ...props, isExpanded: false }} />
-                        </RequestProvider>
+                          {...{ ...props, isExpanded: false }}
+                        />
                       ))}
                     </div>
                   </CollapsibleContent>

@@ -2,8 +2,9 @@ import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 
 import type { Request as RequestType } from '@/queries/requests/types';
 
-export type TriggerActionsType =
-  RequestType['applications']['public_jobs']['workflow_job_relation'][0]['workflow'][];
+export type TriggerActionsType = NonNullable<
+  NonNullable<RequestType['applications']>['public_jobs']
+>['workflow_job_relation'][0]['workflow'][];
 
 export type RequestProgressMapType = Partial<
   Record<

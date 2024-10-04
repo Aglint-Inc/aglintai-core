@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { createContext, type PropsWithChildren } from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
@@ -29,7 +30,6 @@ const defaultFilter = {
   assignerList: [],
 };
 
-// eslint-disable-next-line no-unused-vars
 const defaultSections: { [_id in keyof RequestResponse]?: boolean } = {
   urgent_request: false,
   schedule_request: false,
@@ -39,7 +39,7 @@ const defaultSections: { [_id in keyof RequestResponse]?: boolean } = {
   completed_request: false,
 };
 
-export const useRequestsActions = () => {
+const useRequestsContext = () => {
   const { recruiter_user } = useTenant();
 
   const assigner_id = recruiter_user?.user_id;
@@ -209,7 +209,10 @@ export const useRequestsActions = () => {
   ]);
 
   return {
-    requests,
+    requests: {
+      ...requests,
+      data: requests.data ?? [],
+    },
     handleCreateRequests,
     handleAsyncCreateRequests,
     handleUpdateRequest,
@@ -226,4 +229,17 @@ export const useRequestsActions = () => {
     sections,
     setSections,
   };
+};
+
+export const RequestsContext = createContext<
+  ReturnType<typeof useRequestsContext> | undefined
+>(undefined);
+
+export const RequestsProvider = (props: PropsWithChildren) => {
+  const value = useRequestsContext();
+  return (
+    <RequestsContext.Provider value={value}>
+      {props.children}
+    </RequestsContext.Provider>
+  );
 };

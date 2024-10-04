@@ -4,7 +4,6 @@ import { Skeleton } from '@components/ui/skeleton';
 import { type REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
 import Link from 'next/link';
 
-import { RequestProvider } from '@/context/RequestContext';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { RequestCard } from '../RequestCard';
@@ -48,9 +47,10 @@ function ScrollableSection({
                           key={props.id ?? i}
                           className={`flex-shrink-0 ${i === section.requests.length - 1 ? 'mr-8' : ''}`}
                         >
-                          <RequestProvider request_id={props.id}>
-                            <RequestCard {...{ ...props, isExpanded: false }} />
-                          </RequestProvider>
+                          <RequestCard
+                            key={props.id ?? i}
+                            {...{ ...props, isExpanded: false }}
+                          />
                         </div>
                       </div>
                     ))

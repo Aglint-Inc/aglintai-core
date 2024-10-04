@@ -1,5 +1,4 @@
-import { dayjsLocal, getFullName } from '@aglint/shared-utils';
-import { getBreakLabel } from '@aglint/shared-utils';
+import { dayjsLocal, getBreakLabel, getFullName } from '@aglint/shared-utils';
 import {
   Section,
   SectionHeaderText,
@@ -19,13 +18,13 @@ import {
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
-import RequestProgress from '@requests/components/RequestProgress';
 import {
   REQUEST_STATUS_LIST,
   REQUEST_TYPE_LIST,
   REQUEST_URGENT_LIST,
 } from '@requests/constant';
 import { useMeetingList } from '@requests/hooks';
+import { useRequests } from '@requests/hooks';
 import {
   ArrowUpRight,
   BriefcaseBusiness,
@@ -46,8 +45,6 @@ import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 // import { UIDivider } from '@/components/Common/UIDivider';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UpdateMembers from '@/components/Common/UpdateMembers';
-import { RequestProvider } from '@/context/RequestContext';
-import { useRequests } from '@/context/RequestsContext';
 import SideDrawerEdit from '@/jobs/job/application/components/EditDrawer';
 import CollapseContent from '@/jobs/job/application/components/InterviewStage/IndividualSession/Collapse';
 import { useEditSession } from '@/jobs/job/application/components/InterviewTab/hooks/useEditSession';
@@ -66,6 +63,7 @@ import CandidateCancelRequest from '../RequestNextSteps/CandidateCancelRequest';
 import RequestDecline from '../RequestNextSteps/RequestDecline';
 import ScheduleOptions from '../RequestNextSteps/ScheduleOptions';
 import RequestNotes from '../RequestNotes';
+import RequestProgress from '../RequestProgress';
 import SelfSchedulingDrawer from '../SelfSchedulingDrawer';
 import UpdateDetails from '../UpdateDetails';
 
@@ -149,7 +147,7 @@ export default function ViewRequestDetails() {
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb> */}
-              <div className='flex flex-row items-start relative border-b border-gray-200 p-4'>
+              <div className='relative flex flex-row items-start border-b border-gray-200 p-4'>
                 <div>
                   <h1 className='mb-2 text-2xl text-gray-900'>
                     {capitalizeFirstLetter(selectedRequest?.title ?? '')}
@@ -202,7 +200,7 @@ export default function ViewRequestDetails() {
                     )}
                   </div>
                 </div>
-                <div className='flex flex-col items-end gap-2 absolute right-4 bottom-4'>
+                <div className='absolute bottom-4 right-4 flex flex-col items-end gap-2'>
                   <div className='flex flex-row items-center gap-2'>
                     {selectedRequest.status === 'completed' ? (
                       <div className='flex items-center gap-1'>
@@ -268,21 +266,14 @@ export default function ViewRequestDetails() {
                     Request Progress
                   </SectionTitle>
                 </SectionHeaderText>
-                {selectedRequest ? (
-                  <RequestProvider
-                    request_id={selectedRequest?.id}
-                    enabled={true}
-                  >
-                    <RequestProgress />
-                  </RequestProvider>
-                ) : null}
+                {selectedRequest ? <RequestProgress /> : null}
               </Section>
             </div>
           }
           sidebarPosition='right'
         >
           <div className='flex w-full flex-col space-y-4 px-4'>
-            <div className='grid grid-cols-3 grid-rows-2 gap-4 p-4 bg-gray-50 rounded-md'>
+            <div className='grid grid-cols-3 grid-rows-2 gap-4 rounded-md bg-gray-50 p-4'>
               <div className='group relative space-y-2'>
                 <div className='flex items-center justify-between'>
                   <span className='text-sm font-medium text-muted-foreground'>
@@ -427,34 +418,32 @@ export default function ViewRequestDetails() {
                     />
                   </div>
                 </div>
-                <div className='flex flex-row items-center gap-2 '>
-                <Avatar className='h-6 w-6 rounded-sm'>
-                        <AvatarImage
-                          src={selectedMember?.profile_image}
-                          alt='Avatar'
-                        />
-                        <AvatarFallback className='h-6 w-6 rounded-sm bg-gray-200 '>
-                          <span className='text-sm'>
-                            {selectedMember?.first_name.slice(0, 1)}
-                          </span>
-                        </AvatarFallback>
-                      </Avatar>
-                      <Link
-                      href={ROUTES['/user/[user]']({
-                        user_id: selectedMember?.user_id ?? '',
-                      })}
-                      className=''
-                    >
-                    
-                      <p className=''>
-                        {getFullName(
-                          selectedMember?.first_name ?? '',
-                          selectedMember?.last_name ?? '',
-                        )}
-                      </p>
-                    </Link>
+                <div className='flex flex-row items-center gap-2'>
+                  <Avatar className='h-6 w-6 rounded-sm'>
+                    <AvatarImage
+                      src={selectedMember?.profile_image}
+                      alt='Avatar'
+                    />
+                    <AvatarFallback className='h-6 w-6 rounded-sm bg-gray-200'>
+                      <span className='text-sm'>
+                        {selectedMember?.first_name.slice(0, 1)}
+                      </span>
+                    </AvatarFallback>
+                  </Avatar>
+                  <Link
+                    href={ROUTES['/user/[user]']({
+                      user_id: selectedMember?.user_id ?? '',
+                    })}
+                    className=''
+                  >
+                    <p className=''>
+                      {getFullName(
+                        selectedMember?.first_name ?? '',
+                        selectedMember?.last_name ?? '',
+                      )}
+                    </p>
+                  </Link>
                 </div>
-             
               </div>
               <div className='group relative space-y-2'>
                 <div className='flex items-center justify-between'>
@@ -488,7 +477,7 @@ export default function ViewRequestDetails() {
                         ? 'destructive'
                         : 'outline'
                     }
-                    className='gap-1 rounded-sm text-medium bg-gray-100'
+                    className='text-medium gap-1 rounded-sm bg-gray-100'
                   >
                     <p>{capitalizeFirstLetter(selectedRequest?.type)}</p>
                   </Badge>
@@ -498,10 +487,10 @@ export default function ViewRequestDetails() {
                 <div className='text-sm font-medium text-muted-foreground'>
                   Candidate
                 </div>
-                <div className='duration-300 flex gap-2 '>
-                  <div className='w-6 h-6 bg-gray-200 flex items-center justify-center rounded-sm'>
-                <User className='w-4 h-4' />
-                </div>
+                <div className='flex gap-2 duration-300'>
+                  <div className='flex h-6 w-6 items-center justify-center rounded-sm bg-gray-200'>
+                    <User className='h-4 w-4' />
+                  </div>
                   {getFullName(
                     candidateDetails?.first_name ?? '',
                     candidateDetails?.last_name ?? '',
@@ -550,11 +539,14 @@ function SessionCards({
         <SectionHeaderText>
           <SectionTitle>Sessions</SectionTitle>
         </SectionHeaderText>
-        <div className='flex flex-col gap-1 mt-2'>
+        <div className='mt-2 flex flex-col gap-1'>
           {sessions &&
             sessions.map((session, index) => (
               <>
-                <Card key={index} className='rounded-md shadow-none border-none bg-gray-50 group'>
+                <Card
+                  key={index}
+                  className='group rounded-md border-none bg-gray-50 shadow-none'
+                >
                   <CardHeader
                     className='cursor-pointer px-4 py-2'
                     onClick={() => {
@@ -567,7 +559,7 @@ function SessionCards({
                           session?.interview_session?.name ?? '',
                         )}
                       </CardTitle>
-                      <div className='flex items-center space-x-2 '>
+                      <div className='flex items-center space-x-2'>
                         <Button
                           onClick={(e) => {
                             e.stopPropagation();
@@ -575,7 +567,7 @@ function SessionCards({
                           }}
                           variant='outline'
                           size='sm'
-                          className=' hidden  group-hover:flex'
+                          className='hidden group-hover:flex'
                         >
                           <Edit2 className='mr-2 h-4 w-4' />
                           Edit
@@ -590,22 +582,27 @@ function SessionCards({
                           }}
                           variant='outline'
                           size='sm'
-                          className=' hidden  group-hover:flex'
+                          className='hidden group-hover:flex'
                         >
-                         <ArrowUpRight className='mr-2 h-4 w-4' />
+                          <ArrowUpRight className='mr-2 h-4 w-4' />
                           View Details
                         </Button>
-                        <Badge variant='outline' className='h-[28px] rounded-md bg-gray-100 text-gray-600 font-normal'>
+                        <Badge
+                          variant='outline'
+                          className='h-[28px] rounded-md bg-gray-100 font-normal text-gray-600'
+                        >
                           {capitalizeFirstLetter(
                             session?.interview_meeting?.status ?? '',
                           )}
-                        </Badge>  
-                        <div className='h-[26px] w-[26px] flex items-center justify-center bg-gray-100 rounded-md border border-gray-200'>
-                        <ChevronDown
-                          className={`h-4 w-4 transition-transform ${
-                            expandedCard === index ? 'rotate-180 transform' : ''
-                          }`}
-                        />
+                        </Badge>
+                        <div className='flex h-[26px] w-[26px] items-center justify-center rounded-md border border-gray-200 bg-gray-100'>
+                          <ChevronDown
+                            className={`h-4 w-4 transition-transform ${
+                              expandedCard === index
+                                ? 'rotate-180 transform'
+                                : ''
+                            }`}
+                          />
                         </div>
                       </div>
                     </div>

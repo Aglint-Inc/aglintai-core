@@ -46,5 +46,5 @@ const Component = <T extends string>(
 };
 
 export const RequestSearch = memo(
-  forwardRef<HTMLInputElement>(Component),
+  forwardRef<HTMLInputElement>(Component as any),
 ) as typeof Component;

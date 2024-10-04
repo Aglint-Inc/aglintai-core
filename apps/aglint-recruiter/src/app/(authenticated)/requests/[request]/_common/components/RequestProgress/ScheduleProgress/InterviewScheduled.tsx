@@ -4,13 +4,13 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
+import { useRequest } from '@request/hooks';
 import axios from 'axios';
 import { Lightbulb, Plus } from 'lucide-react';
 import React from 'react';
 
 import { useTenant } from '@/company/hooks';
 import { ShowCode } from '@/components/Common/ShowCode';
-import { useRequest } from '@/context/RequestContext';
 import { supabase } from '@/utils/supabase/client';
 
 import { useRequestProgressProvider } from '../progressCtx';
@@ -51,7 +51,7 @@ const InterviewScheduled = () => {
             target_api: target_api as any,
             order: 0,
             action_type: 'slack',
-            workflow_id: null,
+            workflow_id: '',
           },
         ],
         recruiter_id: recruiter.id,
@@ -100,7 +100,10 @@ const InterviewScheduled = () => {
     }
   };
   let isWorkflowSet = false;
-  if (triggerActionMp['candidateBook']?.length > 0) {
+  if (
+    triggerActionMp['candidateBook'] &&
+    triggerActionMp['candidateBook'].length > 0
+  ) {
     isWorkflowSet = true;
   }
   return (

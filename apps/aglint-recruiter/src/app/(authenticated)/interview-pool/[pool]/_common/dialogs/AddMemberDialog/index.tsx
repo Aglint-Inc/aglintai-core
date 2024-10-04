@@ -1,9 +1,9 @@
 import { useToast } from '@components/hooks/use-toast';
 import { useEffect } from 'react';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { api } from '@/trpc/client';
 
 import MembersAutoComplete from '../../../../../../_common/components/MembersTextField';
@@ -17,7 +17,7 @@ import {
 
 function AddMemberDialog() {
   const { toast } = useToast();
-  const { members } = useSchedulingContext();
+  const { data: members } = useMemberList(false, true);
   const isAddMemberDialogOpen = useModulesStore(
     (state) => state.isAddMemberDialogOpen,
   );

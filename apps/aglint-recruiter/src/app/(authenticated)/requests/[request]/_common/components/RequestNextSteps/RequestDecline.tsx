@@ -5,6 +5,7 @@ import {
 import { getFullName } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { useRequest } from '@request/hooks';
 import { useMeetingList } from '@requests/hooks';
 import axios from 'axios';
 import { ArrowDownUp } from 'lucide-react';
@@ -12,7 +13,6 @@ import React from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useRequest } from '@/context/RequestContext';
 import { api } from '@/trpc/client';
 
 import ConflictWithHover from '../SelfSchedulingDrawer/_common/components/ui/ConflictWithHover';
@@ -45,10 +45,17 @@ const RequestDecline = () => {
   const handleGetAvailableInterviewers = async () => {
     try {
       if (isPending) return;
+      if (!declinedUserDetails) return;
+      let intSesnCancel = declinedUserDetails.interview_session_cancel;
+      if (
+        !intSesnCancel ||
+        !intSesnCancel.session_relation_id ||
+        !intSesnCancel.session_id
+      )
+        return;
       await mutateAsync({
-        declined_int_sesn_reln_id:
-          declinedUserDetails.interview_session_cancel.session_relation_id,
-        session_id: declinedUserDetails.interview_session_cancel.session_id,
+        declined_int_sesn_reln_id: intSesnCancel.session_relation_id,
+        session_id: intSesnCancel.session_id,
       });
       setIsDialogOpen(true);
     } catch (e) {
@@ -60,12 +67,20 @@ const RequestDecline = () => {
   };
   const changeInterviewer = async () => {
     try {
+      if (!declinedUserDetails) return;
+      let intSesnCancel = declinedUserDetails.interview_session_cancel;
+      if (
+        !intSesnCancel ||
+        !intSesnCancel.session_relation_id ||
+        !intSesnCancel.session_id ||
+        !selectedMember
+      )
+        return;
       setIsInterviewerChanging(true);
       const payload: APIUpdateMeetingInterviewers = {
-        curr_declined_int_sesn_reln_id:
-          declinedUserDetails.interview_session_cancel.session_relation_id,
+        curr_declined_int_sesn_reln_id: intSesnCancel.session_relation_id,
         new_int_user_id: selectedMember,
-        session_id: declinedUserDetails.interview_session_cancel.session_id,
+        session_id: intSesnCancel.session_id,
       };
       await axios.post(
         '/api/scheduling/v1/update-meeting-interviewers',
@@ -108,7 +123,9 @@ const RequestDecline = () => {
                 slotInterviewerImage={
                   <Avatar className='h-8 w-8'>
                     <AvatarImage
-                      src={declinedUserDetails.recruiter_user.profile_image}
+                      src={
+                        declinedUserDetails.recruiter_user.profile_image ?? '#'
+                      }
                       alt={declinedUserDetails.recruiter_user.first_name}
                     />
                     <AvatarFallback>
@@ -121,7 +138,7 @@ const RequestDecline = () => {
                   declinedUserDetails.recruiter_user.first_name,
                   declinedUserDetails.recruiter_user.last_name,
                 )}
-                textRole={declinedUserDetails.recruiter_user.position}
+                textRole={declinedUserDetails.recruiter_user.position ?? ''}
               />
             </div>
           )}
@@ -154,7 +171,7 @@ const RequestDecline = () => {
                       slotInterviewerImage={
                         <Avatar className='h-8 w-8'>
                           <AvatarImage
-                            src={item.replacement_int.profile_image}
+                            src={item.replacement_int.profile_image ?? '#'}
                             alt={item.replacement_int.first_name}
                           />
                           <AvatarFallback>

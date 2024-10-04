@@ -33,13 +33,13 @@ export async function handleRedirect({
   const role = relations[0]?.roles?.name;
 
   if (role === 'interviewer') {
-    return `${origin}${ROUTES['/scheduling']()}?tab=myschedules`;
+    return `${origin}/interviews?tab=interviews`;
   } else if (role === 'recruiter') {
-    return `${origin}${ROUTES['/jobs']()}`;
+    return `${origin}/jobs`;
   } else if (role === 'recruiting_coordinator') {
-    return `${origin}${ROUTES['/requests']()}`;
+    return `${origin}/requests`;
   } else {
-    return `${origin}${ROUTES['/jobs']()}`;
+    return `${origin}/jobs`;
   }
 }
 

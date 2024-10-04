@@ -1,14 +1,14 @@
+import { useRequests } from '@requests/hooks/useRequests';
 import { useQuery } from '@tanstack/react-query';
+import { createContext, type PropsWithChildren } from 'react';
 import { useCallback, useMemo, useState } from 'react';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { requestQueries } from '@/queries/requests';
 
-import { useRequests } from '../RequestsContext';
-
 type RequestParams = Parameters<(typeof requestQueries)['request_progress']>[0];
 
-export const useRequestActions = ({ request_id }: RequestParams) => {
+const useRequestContext = ({ request_id }: RequestParams) => {
   const { pathName } = useRouterPro();
   const isRequestPage = useMemo(() => {
     return !!request_id && pathName === '/requests/[request]';
@@ -38,7 +38,7 @@ export const useRequestActions = ({ request_id }: RequestParams) => {
   );
 
   const requestDetails = useMemo(() => {
-    return Object.values(requests ?? {})
+    return Object.values(requests!)
       .flat()
       ?.find((request) => request.id === request_id);
   }, [requests, request_id]);
@@ -87,8 +87,14 @@ export const useRequestActions = ({ request_id }: RequestParams) => {
   );
 
   return {
-    request_progress,
-    request_workflow,
+    request_progress: {
+      ...request_progress,
+      data: request_progress.data ?? [],
+    },
+    request_workflow: {
+      ...request_workflow,
+      data: request_workflow.data ?? [],
+    },
     handleDeleteRequest,
     handleAsyncDeleteRequest,
     handleUpdateRequest,
@@ -96,6 +102,23 @@ export const useRequestActions = ({ request_id }: RequestParams) => {
     isMutating,
     collapse,
     setCollapse,
-    requestDetails,
+    requestDetails: requestDetails!,
   };
+};
+
+type RequestContextType = typeof useRequestContext;
+
+export const RequestContext = createContext<
+  ReturnType<RequestContextType> | undefined
+>(undefined);
+
+export const RequestProvider = (
+  props: PropsWithChildren<Parameters<RequestContextType>['0']>,
+) => {
+  const value = useRequestContext(props);
+  return (
+    <RequestContext.Provider value={value}>
+      {props.children}
+    </RequestContext.Provider>
+  );
 };
