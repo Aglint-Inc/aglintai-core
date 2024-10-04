@@ -10,7 +10,6 @@ import {
 import OptimisticWrapper from '@components/loadingWapper';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
 import {
   Tooltip,
   TooltipContent,
@@ -122,7 +121,7 @@ const InterviewPlanPage = () => {
             </PageDescription>
           </PageHeaderText>
         </PageHeader>
-        <div className='mb-10 max-w-2xl space-y-4'>
+        <div className='mb-10 max-w-3xl space-y-4'>
           {data?.length ? (
             data.map((plan) => (
               <InterviewPlan
@@ -223,7 +222,7 @@ const AddStageComponent = ({
         </div>
       )}
       {!form && (
-        <div className='flex w-full flex-row'>
+        <div className='flex w-full flex-row pr-20'>
           <UIButton
             variant='outline'
             onClick={() => setForm(!form)}
@@ -397,9 +396,9 @@ const InterviewPlan = ({
             </div>
           }
           slotRightIconButton={
-            <div className='ml-4 flex flex-row items-center gap-1'>
+            <div className='flex flex-col items-center gap-2'>
               <UIButton
-                variant='ghost'
+                variant='outline'
                 size='sm'
                 icon={<Edit className='h-4 w-4' />}
                 onClick={(e) => {
@@ -408,12 +407,13 @@ const InterviewPlan = ({
                 }}
               />
               <UIButton
-                variant='ghost'
+                variant='outline'
                 size='sm'
                 className='text-red-700'
                 onClick={() => setDeleteOpen(true)}
-                icon={<Trash size={10} color='brown' />}
+                icon={<Trash className='h-4 w-4' color='brown' />}
               />
+
               <UIDialog
                 open={deleteOpen}
                 onClose={() => setDeleteOpen(false)}
@@ -445,30 +445,26 @@ const InterviewPlan = ({
             </div>
           }
           slotInterviewPlanDetail={
-            <Collapsible open={expanded}>
-              <CollapsibleContent>
-                <div className='pt-2'>
-                  {sessionsCount ? (
-                    <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
-                  ) : (
-                    <div className='flex h-64 flex-col items-center justify-center rounded-lg border-2 border-dashed border-border'>
-                      <ChartNoAxesGantt className='mb-4 h-4 w-4 text-gray-400' />
-                      <p className='mb-4 text-muted-foreground'>
-                        No interview plan found
-                      </p>
-                      <UIButton
-                        size='sm'
-                        variant='outline'
-                        onClick={() => handleCreate('session', plan_id, 1)}
-                        leftIcon={<Plus />}
-                      >
-                        Add Interview
-                      </UIButton>
-                    </div>
-                  )}
+            <div className='pt-2'>
+              {sessionsCount ? (
+                <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
+              ) : (
+                <div className='flex h-48 flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-white'>
+                  <ChartNoAxesGantt className='mb-4 h-4 w-4 text-gray-400' />
+                  <p className='mb-4 text-muted-foreground'>
+                    No interview plan found
+                  </p>
+                  <UIButton
+                    size='sm'
+                    variant='outline'
+                    onClick={() => handleCreate('session', plan_id, 1)}
+                    leftIcon={<Plus />}
+                  >
+                    Add Interview
+                  </UIButton>
                 </div>
-              </CollapsibleContent>
-            </Collapsible>
+              )}
+            </div>
           }
         />
       </OptimisticWrapper>

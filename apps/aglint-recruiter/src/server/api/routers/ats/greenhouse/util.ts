@@ -7,11 +7,11 @@ import { type SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 import { JobStageData } from './dummy.data';
 import type { GreenhouseCandidateAPI, GreenhouseJobStagesAPI } from './types';
 
-const decryptKey = process.env.ENCRYPTION_KEY;
-if (!decryptKey) {
-  throw new Error('ENCRYPTION_KEY is not defined');
-}
 export function getDecryptKey(key: string) {
+  const decryptKey = process.env.ENCRYPTION_KEY;
+  if (!decryptKey) {
+    throw new Error('ENCRYPTION_KEY is not defined');
+  }
   return decrypt(key, decryptKey);
 }
 
