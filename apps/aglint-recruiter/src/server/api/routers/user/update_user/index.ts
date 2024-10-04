@@ -31,7 +31,6 @@ const mutation = async ({ input }: PrivateProcedure<typeof Schema>) => {
     user_id,
   } = input;
 
-  const newSchedulingSettings = scheduling_settings as CustomSchedulingSettings;
   await db
     .from('recruiter_user')
     .update({
@@ -40,7 +39,7 @@ const mutation = async ({ input }: PrivateProcedure<typeof Schema>) => {
       phone,
       linked_in,
       profile_image,
-      scheduling_settings: newSchedulingSettings,
+      scheduling_settings,
     })
     .eq('user_id', user_id)
     .throwOnError();

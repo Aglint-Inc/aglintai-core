@@ -2,7 +2,15 @@ import { GripVertical } from 'lucide-react';
 import { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 
-export const Drag = ({ id, index, ...props }) => {
+export const Drag = ({
+  id,
+  index,
+  ...props
+}: {
+  id: string;
+  index: number;
+  children: React.ReactNode;
+}) => {
   const [onHovered, setOnHovered] = useState(false);
   return (
     <Draggable draggableId={id} index={index}>

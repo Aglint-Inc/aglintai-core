@@ -14,6 +14,7 @@ import { Progress } from '@components/ui/progress';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { AlertCircle, ArrowLeft, ArrowRight, Check } from 'lucide-react';
 
+import { type SetupStepType } from '@/authenticated/hooks/useCompanySetup';
 import {
   setIsOnboardOpen,
   useOnboard,
@@ -54,7 +55,7 @@ export const OnboardPending = () => {
               <UIBadge
                 color='warning'
                 textBadge={pendingStepsCount + ' Steps Pending'}
-                className='-mr-2 ml-2 flex inline-flex rounded-full'
+                className='-mr-2 ml-2 inline-flex rounded-full'
               />
             </UIButton>
           )}
@@ -118,7 +119,7 @@ const MainContent = () => {
         <div className='space-y-2 md:col-span-4'>
           <UITabs
             tabs={tabs}
-            defaultValue={selectedStep?.id}
+            defaultValue={selectedStep?.id ?? ''}
             vertical
             onClick={(value) => {
               const step = companySetupSteps.find(
@@ -200,7 +201,7 @@ const Footer = () => {
             size='sm'
             variant='outline'
             onClick={() => {
-              currentStepMarkAsComplete(selectedStep.id);
+              if (selectedStep?.id) currentStepMarkAsComplete(selectedStep.id);
             }}
           >
             Mark complete
@@ -225,15 +226,18 @@ const Footer = () => {
     </div>
   );
 };
-const Content = ({ selectedStep }) => {
+const Content = ({ selectedStep }: { selectedStep: SetupStepType }) => {
   return (
     <>
       <SetupCard
-        isCompleted={selectedStep.isCompleted || ''}
+        isCompleted={!!selectedStep.isCompleted}
         title={selectedStep.title || ''}
         description={selectedStep.description || ''}
+        //@ts-ignore
         bulletPoints={selectedStep.bulletPoints || []}
+        //@ts-ignore
         scoringPoints={selectedStep.scoringPoints || []}
+        //@ts-ignore
         schedulingPoints={selectedStep.schedulingPoints || []}
         navLink={selectedStep.navLink || ''}
       />

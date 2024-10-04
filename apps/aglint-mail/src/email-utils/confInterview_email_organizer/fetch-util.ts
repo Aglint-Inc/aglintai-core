@@ -7,7 +7,7 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../../utils/email/common/functions';
-import { FetchUtilResp, FetchUtilType } from '../../types/emailfetchUtil';
+import type { FetchUtilResp, FetchUtilType } from '../../types/emailfetchUtil';
 
 export const fetchUtil: FetchUtilType<'confInterview_email_organizer'> = async (
   supabaseAdmin,
@@ -52,7 +52,7 @@ export const fetchUtil: FetchUtilType<'confInterview_email_organizer'> = async (
         organizerLastName: organizer.last_name,
         organizerName: getFullName(organizer.first_name, organizer.last_name),
         OrganizerTimeZone: org_tz,
-        companyName: companyName,
+        companyName,
         jobRole: public_jobs.job_title,
       };
 

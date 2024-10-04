@@ -38,6 +38,11 @@ export const getDatesArray = (
   endDate: string,
   format: string,
 ) => {
+export const getDatesArray = (
+  startDate: string,
+  endDate: string,
+  format: string,
+) => {
   const dates = [];
   let currentDate = dayjsLocal(startDate);
 
@@ -50,6 +55,7 @@ export const getDatesArray = (
 };
 
 const fetchFunction = async ({ user_id }: { user_id: string }) => {
+const fetchFunction = async ({ user_id }: { user_id: string }) => {
   try {
     const data = (
       await supabase
@@ -61,7 +67,7 @@ const fetchFunction = async ({ user_id }: { user_id: string }) => {
         .eq('meeting_interviewers.is_confirmed', true)
     ).data!;
 
-    const filteredData = data
+    const filteredData = (data || [])
       .filter(
         (curr) =>
           curr.status === 'completed' ||
@@ -70,11 +76,10 @@ const fetchFunction = async ({ user_id }: { user_id: string }) => {
       )
       .map((curr) => ({
         status: curr.status,
-        startTime: curr.start_time,
-        endTime: curr.end_time,
+        startTime: curr.start_time!,
+        endTime: curr.end_time!,
         meeting_id: curr.id,
       }));
-
     const groupedData = groupByStartDate({ events: filteredData });
 
     const maxInterviewsCount = findMaxGroupCount(groupedData);
@@ -129,6 +134,7 @@ export function transposeArray(array: Meeting[][]): Meeting[][] {
     : [];
 }
 
+export const filling2dArray = (data: Meeting[][], maxCount: number) => {
 export const filling2dArray = (data: Meeting[][], maxCount: number) => {
   return data?.map((subArray) => {
     const fillCount = maxCount - subArray.length;

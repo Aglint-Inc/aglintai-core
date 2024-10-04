@@ -3,7 +3,7 @@ import { type DatabaseTable } from '@aglint/shared-types';
 const app_modules: {
   name: string;
   description: string;
-  dependency: string;
+  dependency: string | null;
   permissions: DatabaseTable['permissions']['name'][];
 }[] = [
   {

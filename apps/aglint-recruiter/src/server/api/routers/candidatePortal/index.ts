@@ -122,7 +122,7 @@ export const candidatePortal = createTRPCRouter({
         };
       });
 
-      return enrichedMessages;
+      return enrichedMessages!;
     }),
   // get navbar ----------------------------------------------------------------
   get_navbar: publicProcedure
@@ -134,20 +134,20 @@ export const candidatePortal = createTRPCRouter({
         await adminDb
           .from('applications')
           .select(
-            'candidates(avatar,first_name,last_name,recruiter(name,logo))',
+            'candidates!inner(avatar,first_name,last_name,recruiter!inner(name,logo))',
           )
           .eq('id', application_id)
           .single()
           .throwOnError()
-      ).data;
-      const { candidates } = company || {};
+      ).data!;
+      const { candidates } = company;
       return {
         candidate: {
-          first_name: candidates?.first_name,
-          last_name: candidates?.last_name,
-          avatar: candidates?.avatar,
+          first_name: candidates.first_name,
+          last_name: candidates.last_name,
+          avatar: candidates.avatar,
         },
-        company: candidates?.recruiter,
+        company: candidates.recruiter,
       };
     }),
   //get profile ------------------------------------------------------------------

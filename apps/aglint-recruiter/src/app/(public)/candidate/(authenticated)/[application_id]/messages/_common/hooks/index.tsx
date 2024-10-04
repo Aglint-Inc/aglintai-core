@@ -3,7 +3,8 @@ import { api } from '@/trpc/client';
 
 export const useCandidatePortalMessages = () => {
   const { application_id } = useCandidatePortal();
-  return api.candidatePortal.get_messages.useQuery({
+  const query = api.candidatePortal.get_messages.useQuery({
     application_id,
   });
+  return { ...query, data: query.data || [] };
 };

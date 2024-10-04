@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import {
@@ -19,6 +19,7 @@ const LoginPage = () => {
   const [isSending, setIsSending] = useState(false);
   const router = useRouter();
   const { params } = useRouterPro();
+  const { application_id } = params;
 
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'send' | 'sent'>('send');

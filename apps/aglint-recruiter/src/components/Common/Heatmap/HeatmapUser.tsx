@@ -14,7 +14,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { HeatMapGrid } from 'react-grid-heatmap';
 
-import { type Meeting } from './type';
+import { type Meeting, type Meetings } from './type';
 import {
   filling2dArray,
   getDatesArray,
@@ -28,6 +28,7 @@ export default function Heatmap({
 }: {
   loadSetting: SchedulingSettingType['interviewLoad'];
 }) {
+  const [arrayDates, setArrayDates] = useState<string[]>([]);
   const [arrayDates, setArrayDates] = useState<string[]>([]);
   const [dayCount, setDayCount] = useState<{ start: number; end: number }>({
     start: -7,
@@ -44,7 +45,7 @@ export default function Heatmap({
 
   useEffect(() => {
     setMaxCountInterviews(
-      Math.max(loadSetting?.dailyLimit.value, data?.maxInterviewsCount),
+      Math.max(loadSetting?.dailyLimit.value, data?.maxInterviewsCount ?? 0),
     );
   }, [data]);
 
@@ -156,7 +157,7 @@ export default function Heatmap({
               cellHeight='16px'
               xLabelsPos='bottom'
               onClick={(x, y) => {
-                if (heatMapData[x][y].meeting_id)
+                if (heatMapData[x][y]?.meeting_id)
                   router.push(
                     `/interviews/view?meeting_id=${heatMapData[x][y].meeting_id}&tab=candidate_details`,
                   );

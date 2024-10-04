@@ -9,6 +9,7 @@ export const EventHandler = Extension.create({
         key: new PluginKey('tiptapPaste'),
         props: {
           handlePaste(view, event) {
+            if (!event.clipboardData) return;
             const pastedHTML = event.clipboardData.getData('text/html');
 
             if (pastedHTML.includes('•')) {
@@ -33,11 +34,14 @@ export const EventHandler = Extension.create({
   },
 });
 
-function convertTextToProseMirrorJSON(text) {
+function convertTextToProseMirrorJSON(text: string) {
   const lines = text.split('\n');
   let isInBulletList = false;
-  const json = { type: 'doc', content: [] };
-  let currentListItem = null;
+  const json: {
+    type: string;
+    content: any[];
+  } = { type: 'doc', content: [] };
+  let currentListItem: any = null;
 
   lines.forEach((line) => {
     const trimmedLine = line.trim();
@@ -45,7 +49,10 @@ function convertTextToProseMirrorJSON(text) {
     if (trimmedLine.startsWith('•') || trimmedLine.startsWith('●')) {
       if (!isInBulletList) {
         isInBulletList = true;
-        json.content.push({ type: 'bulletList', content: [] });
+        json.content.push({
+          type: 'bulletList',
+          content: [],
+        });
       }
 
       currentListItem = { type: 'listItem', content: [] };

@@ -12,7 +12,7 @@ import {
 } from '@components/ui/select';
 import axios from 'axios';
 import { useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { type SubmitHandler, useForm } from 'react-hook-form';
 
 import {
   useCandidatePortal,
@@ -23,6 +23,17 @@ import timeZone from '@/utils/timeZone';
 
 import { useCandidatePortalProfile } from '../hooks';
 import ImageUploadManual from './ImageUpload';
+
+type LoginFormInputs = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  linkedin: string;
+  timezone: string;
+  avatar: string;
+  id: string;
+};
 
 export default function CandidateForm({
   closeDialog,
@@ -36,14 +47,14 @@ export default function CandidateForm({
   // const [form, setForm] = useState(data);
   const [loading, setLoading] = useState(false);
   const [isImageChanged, setIsImageChanged] = useState(false);
-  const imageFile = useRef(null);
+  const imageFile = useRef<File | null>(null);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm({
+  } = useForm<LoginFormInputs>({
     defaultValues: {
       first_name: data?.first_name || '',
       last_name: data?.last_name || '',
@@ -51,15 +62,17 @@ export default function CandidateForm({
       phone: data?.phone || '',
       linkedin: data?.linkedin || '',
       timezone: data?.timezone || '',
+      avatar: data?.avatar || '',
+      id: data?.id || '',
     },
   });
 
-  const handleUpdateProfile = async (form) => {
+  const handleUpdateProfile: SubmitHandler<LoginFormInputs> = async (form) => {
     try {
       setLoading(true);
 
-      let profile_image = form.avatar;
-      if (isImageChanged) {
+      let profile_image: string | null = form.avatar;
+      if (isImageChanged && imageFile.current) {
         const { data } = await supabase.storage
           .from('candidate-files')
           .upload(`profile/${form.id}`, imageFile.current, {
@@ -100,7 +113,7 @@ export default function CandidateForm({
       await profileRefetch();
       closeDialog();
     } catch (e) {
-      console.error(e.message);
+      if (e instanceof Error) console.error(e.message);
       //
     } finally {
       setLoading(false);
@@ -119,7 +132,7 @@ export default function CandidateForm({
             <div className='flex flex-col gap-2 px-4'>
               <div className='flex flex-col space-y-4 rounded-lg'>
                 <ImageUploadManual
-                  image={data?.avatar}
+                  image={data?.avatar ?? ''}
                   imageFile={imageFile}
                   size={20}
                   setChanges={() => setIsImageChanged(true)}
@@ -218,7 +231,7 @@ export default function CandidateForm({
                   onValueChange={(value) => {
                     setValue('timezone', value);
                   }}
-                  defaultValue={data?.timezone}
+                  defaultValue={data?.timezone ?? undefined}
                 >
                   <SelectTrigger className='w-full'>
                     <SelectValue placeholder='Time zone' />

@@ -7,18 +7,20 @@ import { type schedule } from '@/api/candidate_portal/home_page/route';
 import { formatSessions } from '@/utils/formatSessions';
 
 function SelfScheduling({ scheduleData }: { scheduleData: schedule }) {
-  const latestschedule = scheduleData.sort((a, b) =>
-    dayjsLocal(a.sessions[0].start_time).isAfter(
-      dayjsLocal(b.sessions[0].start_time),
-    )
-      ? 1
-      : -1,
-  )[0];
+  const latestSchedule = scheduleData
+    .filter((item) => item.sessions?.[0]?.start_time)
+    .sort((a, b) =>
+      dayjsLocal(a.sessions![0].start_time).isAfter(
+        dayjsLocal(b.sessions![0].start_time),
+      )
+        ? 1
+        : -1,
+    )[0];
   return (
     <div>
       <Card className='border border-border bg-background/80 shadow-sm backdrop-blur-sm'>
-        {latestschedule ? (
-          <SelfSchedulingComp schedule={latestschedule} />
+        {latestSchedule ? (
+          <SelfSchedulingComp schedule={latestSchedule} />
         ) : (
           <SelfSchedulingEmpty />
         )}
@@ -39,7 +41,7 @@ const SelfSchedulingEmpty = () => {
     </CardContent>
   );
 };
-const SelfSchedulingComp = ({ schedule }) => {
+const SelfSchedulingComp = ({ schedule }: { schedule: schedule[number] }) => {
   return (
     <>
       <CardHeader>

@@ -1,6 +1,6 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
-import { FetchUtilType } from '../../types/emailfetchUtil';
+import type { FetchUtilType } from '../../types/emailfetchUtil';
 
 export const fetchUtil: FetchUtilType<
   'applicantReject_email_applicant'
@@ -29,7 +29,7 @@ export const fetchUtil: FetchUtilType<
       candidateFirstName: first_name,
       candidateLastName: last_name,
       candidateName: getFullName(first_name, last_name),
-      companyName: companyName,
+      companyName,
       jobRole: job_title,
     };
 

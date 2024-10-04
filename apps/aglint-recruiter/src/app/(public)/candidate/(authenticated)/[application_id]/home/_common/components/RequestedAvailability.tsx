@@ -16,19 +16,21 @@ function RequestedAvailability({
   availabilityData: availability;
   job: apiHomepageResponse['job'];
 }) {
-  const latestavailability = availabilityData.sort((a, b) =>
-    dayjsLocal(a.sessions[0].start_time).isAfter(
-      dayjsLocal(b.sessions[0].start_time),
-    )
-      ? 1
-      : -1,
-  )[0];
+  const latestAvailability = availabilityData
+    .filter((item) => item.sessions?.[0]?.start_time) // Ensure sessions and start_time exist
+    .sort((a, b) =>
+      dayjsLocal(a.sessions![0].start_time).isAfter(
+        dayjsLocal(b.sessions![0].start_time),
+      )
+        ? 1
+        : -1,
+    )[0];
 
   return (
     <div>
       <Card className='border border-border bg-background/80 shadow-sm backdrop-blur-sm'>
-        {latestavailability ? (
-          <AvailabilityCard latestavailability={latestavailability} job={job} />
+        {latestAvailability ? (
+          <AvailabilityCard latestavailability={latestAvailability} job={job} />
         ) : (
           <AvailabilityEmpty />
         )}

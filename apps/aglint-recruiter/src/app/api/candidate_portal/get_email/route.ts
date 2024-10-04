@@ -24,12 +24,14 @@ export async function POST(req: Request) {
 const getEmail = async (application_id: string[]) => {
   const supabaseAdmin = getSupabaseServer();
 
-  const { data } = await supabaseAdmin
-    .from('applications')
-    .select('id,candidates(email)')
-    .eq('id', application_id)
-    .single()
-    .throwOnError();
+  const data = (
+    await supabaseAdmin
+      .from('applications')
+      .select('id,candidates!inner(email)')
+      .eq('id', application_id)
+      .single()
+      .throwOnError()
+  ).data!;
 
   if (data) return { email: data.candidates?.email, application_id: data.id };
 };

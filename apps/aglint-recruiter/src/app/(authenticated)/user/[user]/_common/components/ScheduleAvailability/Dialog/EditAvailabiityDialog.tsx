@@ -37,9 +37,6 @@ export const EditAvailabiityDialog = ({
   const router = useRouterPro();
   const user_id = router?.params?.user as string;
   const member = allMembers.find((mem) => mem.user_id === user_id);
-
-  const schedulingSettings = member?.scheduling_settings;
-
   const [isSaving, setIsSaving] = useState(false);
 
   const { mutateAsync } = api.user.update_user.useMutation();
@@ -152,41 +149,6 @@ export const EditAvailabiityDialog = ({
     }
   }
 
-  const updateHandle = async () => {
-    try {
-      setIsSaving(true);
-      const schedulingSettingObj = {
-        ...schedulingSettings,
-        interviewLoad: {
-          dailyLimit: {
-            type: dailyLmit.type,
-            value: dailyLmit.value,
-          },
-          weeklyLimit: {
-            type: weeklyLmit.type,
-            value: weeklyLmit.value,
-          },
-        },
-        timeZone: timeZone,
-        workingHours: workingHours,
-        schedulingKeyWords: {
-          free: freeKeyWords,
-          SoftConflicts: softConflictsKeyWords,
-          outOfOffice: outOfOffice,
-          recruitingBlocks: recruitingBlocks,
-        },
-      } as CustomSchedulingSettingsUser;
-
-      await mutateAsync({ scheduling_settings: schedulingSettingObj, user_id });
-      toast({ title: 'Availability update Successfully' });
-      setIsEditOpen(false);
-    } catch (e) {
-      toast({ title: 'Availability update failed', variant: 'destructive' });
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
   useEffect(() => {
     initialLoad();
   }, []);
@@ -221,6 +183,51 @@ export const EditAvailabiityDialog = ({
       changeHandler: setRecruitingBlocks,
     },
   ];
+
+  if (!member) return null;
+
+  const schedulingSettings = member?.scheduling_settings;
+
+  const updateHandle = async () => {
+    if (!timeZone || !workingHours)
+      return toast({ title: 'Please fill required fields' });
+
+    try {
+      setIsSaving(true);
+      const schedulingSettingObj: CustomSchedulingSettingsUser = {
+        ...schedulingSettings,
+        interviewLoad: {
+          dailyLimit: {
+            type: dailyLmit.type,
+            value: dailyLmit.value,
+          },
+          weeklyLimit: {
+            type: weeklyLmit.type,
+            value: weeklyLmit.value,
+          },
+        },
+        timeZone: timeZone,
+        workingHours: workingHours,
+        schedulingKeyWords: {
+          free: freeKeyWords,
+          SoftConflicts: softConflictsKeyWords,
+          outOfOffice: outOfOffice,
+          recruitingBlocks: recruitingBlocks,
+        },
+      };
+
+      await mutateAsync({
+        scheduling_settings: schedulingSettingObj,
+        user_id,
+      });
+      toast({ title: 'Availability update Successfully' });
+      setIsEditOpen(false);
+    } catch (e) {
+      toast({ title: 'Availability update failed', variant: 'destructive' });
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
     <>
