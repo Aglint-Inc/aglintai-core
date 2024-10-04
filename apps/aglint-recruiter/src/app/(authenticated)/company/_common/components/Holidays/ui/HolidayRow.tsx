@@ -2,7 +2,7 @@ import { Badge } from '@components/ui/badge';
 import { TableCell, TableRow } from '@components/ui/table';
 import { cn } from '@lib/utils';
 
-import { UIButton } from '@/components/Common/UIButton';
+import { UIButton } from '@/common/UIButton';
 
 type Props = {
   name: string;

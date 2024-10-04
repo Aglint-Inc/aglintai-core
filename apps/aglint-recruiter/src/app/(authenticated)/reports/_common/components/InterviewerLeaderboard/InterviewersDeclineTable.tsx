@@ -12,7 +12,7 @@ import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { ClockIcon, DownloadIcon } from 'lucide-react';
 import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
-import UISectionCard from '@/components/Common/UISectionCard';
+import UISectionCard from '@/common/UISectionCard';
 
 import { useInterviewerDeclines } from '../../hook/interview/interviewerMatrix.hook';
 

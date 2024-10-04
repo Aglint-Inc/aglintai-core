@@ -18,8 +18,8 @@ import { useCallback, useEffect, useState } from 'react';
 import { LoadMax } from 'src/app/(authenticated)/user/[user]/_common/components/ScheduleAvailability/Dialog/EditAvailabiityDialog';
 
 import InterviewLimitInput from '@/authenticated/components/InterviewLoad';
+import UISectionCard from '@/common/UISectionCard';
 import { useTenant } from '@/company/hooks';
-import UISectionCard from '@/components/Common/UISectionCard';
 import { api } from '@/trpc/client';
 
 import KeywordSection from '../../../../_common/components/KeywordSection';
