@@ -9,9 +9,9 @@ import {
   useState,
 } from 'react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
-import { UIButton } from '@/components/Common/UIButton';
-import UISectionCard from '@/components/Common/UISectionCard';
+import GlobalEmpty from '@/common/GlobalEmpty';
+import { UIButton } from '@/common/UIButton';
+import UISectionCard from '@/common/UISectionCard';
 
 import type { WorkingHour } from './ui/TimeList';
 import { WorkTimeUI } from './ui/WorkTimeUI';

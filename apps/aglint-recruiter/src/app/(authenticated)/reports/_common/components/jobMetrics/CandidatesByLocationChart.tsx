@@ -6,7 +6,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { Cell, Legend, Pie, PieChart } from 'recharts';
 
-import UISectionCard from '@/components/Common/UISectionCard';
+import UISectionCard from '@/common/UISectionCard';
 
 import { useJobLocations } from '../../hook/job/jobMatrix';
 

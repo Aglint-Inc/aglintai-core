@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { Cell, Pie, PieChart } from 'recharts';
 import { useInterviewCount } from 'src/app/(authenticated)/reports/_common/hook/interview/interview.hook';
 
-import UISectionCard from '@/components/Common/UISectionCard';
+import UISectionCard from '@/common/UISectionCard';
 
 export default function InterviewCountByTimeFrame() {
   const [timeFrame, setTimeFrame] = useState<

@@ -2,7 +2,7 @@ import { Input } from '@components/ui/input';
 import { Plus } from 'lucide-react';
 import { type Dispatch, type SetStateAction } from 'react';
 
-import { UIButton } from '@/components/Common/UIButton';
+import { UIButton } from '@/common/UIButton';
 type Props = {
   editingIndex: number | null;
   reasons: string[];

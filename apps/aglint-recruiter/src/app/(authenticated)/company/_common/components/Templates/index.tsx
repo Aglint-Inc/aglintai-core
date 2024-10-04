@@ -27,10 +27,10 @@ import { debounce } from 'lodash';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
 
+import EmailPreviewPopover from '@/common/EmailTemplateEditor/EmailPreviewPopover';
+import EmailTemplateEditForm from '@/common/EmailTemplateEditor/EmailTemplateEditForm';
+import { UIButton } from '@/common/UIButton';
 import { useTenant } from '@/company/hooks';
-import EmailPreviewPopover from '@/components/Common/EmailTemplateEditor/EmailPreviewPopover';
-import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
-import { UIButton } from '@/components/Common/UIButton';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { api } from '@/trpc/client';

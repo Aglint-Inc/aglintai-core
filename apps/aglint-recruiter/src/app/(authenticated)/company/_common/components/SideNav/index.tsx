@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import UITabs, { type UITabType } from '@/common/UITabs';
 import { useFlags } from '@/company/hooks/useFlags';
-import UITabs, { type UITabType } from '@/components/Common/UITabs';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { api } from '@/trpc/client';

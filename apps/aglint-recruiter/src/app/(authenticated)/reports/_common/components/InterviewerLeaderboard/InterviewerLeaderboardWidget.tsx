@@ -18,7 +18,7 @@ import { useState } from 'react';
 import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 import { useInterviewerLeaderboard } from 'src/app/(authenticated)/reports/_common/hook/interview/interviewerMatrix.hook';
 
-import UISectionCard from '@/components/Common/UISectionCard';
+import UISectionCard from '@/common/UISectionCard';
 
 export default function InterviewerLeaderboardWidget() {
   const { data, isFetching } = useInterviewerLeaderboard();
