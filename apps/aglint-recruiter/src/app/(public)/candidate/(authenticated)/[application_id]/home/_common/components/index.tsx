@@ -18,7 +18,7 @@ import UpcomingInterview from './UpcomingInterview';
 
 export default function Home() {
   const param = useParams();
-  const application_id = param.application as string;
+  const application_id = param?.application as string;
   const { isPending, data, error } = usePortalHomePage({ application_id });
   const { data: profileData, isPending: porfilePending } =
     useCandidatePortalProfile();

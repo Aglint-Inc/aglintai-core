@@ -216,7 +216,10 @@ export const EditAvailabiityDialog = ({
         },
       };
 
-      await mutateAsync({ scheduling_settings: schedulingSettingObj, user_id });
+      await mutateAsync({
+        scheduling_settings: schedulingSettingObj,
+        user_id,
+      });
       toast({ title: 'Availability update Successfully' });
       setIsEditOpen(false);
     } catch (e) {

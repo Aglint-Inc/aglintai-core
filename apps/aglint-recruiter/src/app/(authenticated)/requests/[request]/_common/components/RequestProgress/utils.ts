@@ -1,6 +1,6 @@
 import {
-  DatabaseEnums,
-  DatabaseTable,
+  type DatabaseEnums,
+  type DatabaseTable,
   type DatabaseTableInsert,
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
@@ -28,7 +28,7 @@ export const createRequestWorkflowAction = async ({
     ).split('_')[0] as DatabaseTable['workflow']['trigger'];
   }
   if (!trigger) return;
-  let details = TRIGGER_PAYLOAD.find((t) => t.trigger === trigger);
+  const details = TRIGGER_PAYLOAD.find((t) => t.trigger === trigger);
   if (!details) return;
   const phase = details.phase[0];
 

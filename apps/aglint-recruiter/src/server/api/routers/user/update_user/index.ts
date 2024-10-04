@@ -1,18 +1,17 @@
 import { customSchedulingSettingsUserSchema } from '@aglint/shared-types/src/db/common.zod';
 import {} from '@aglint/shared-types/src/db/tables/recruiter.types';
-import { type CustomSchedulingSettingsUser } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 const Schema = z.object({
-  first_name: z.string(),
-  last_name: z.string(),
-  phone: z.string(),
-  scheduling_settings: customSchedulingSettingsUserSchema,
-  profile_image: z.string(),
-  linked_in: z.string(),
+  first_name: z.string().optional(),
+  last_name: z.string().optional(),
+  phone: z.string().optional(),
+  scheduling_settings: customSchedulingSettingsUserSchema.optional(),
+  profile_image: z.string().optional().nullable(),
+  linked_in: z.string().optional(),
   user_id: z.string(),
 });
 
