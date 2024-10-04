@@ -15,11 +15,15 @@ const query = async ({
   const { data: res } = await db
     .from('interview_meeting')
     .select(
-      `*,organizer:recruiter_user(*),interview_session(*,${interviewCancelReasons},interview_module(*),interview_session_relation(*,interview_module_relation(*,${userDetails}),debrief_user:${userDetails})),applications(*,public_jobs(id,job_title,description,departments(name),office_locations(country,city),hir_man:recruiter_user!public_jobs_hiring_manager_fkey(*),rec:recruiter_user!public_jobs_recruiter_fkey(*),rec_cor:recruiter_user!public_jobs_recruiting_coordinator_fkey(*)),candidates(*))`,
+      `*,organizer:recruiter_user(*),interview_session!inner(*,${interviewCancelReasons},interview_module!inner(*),interview_session_relation(*,interview_module_relation(*,${userDetails}),debrief_user:${userDetails})),applications!inner(*,public_jobs!inner(id,job_title,description,departments(name),office_locations(country,city),hir_man:recruiter_user!public_jobs_hiring_manager_fkey(*),rec:recruiter_user!public_jobs_recruiter_fkey(*),rec_cor:recruiter_user!public_jobs_recruiting_coordinator_fkey(*)),candidates!inner(*))`,
     )
     .eq('id', meeting_id)
     .single()
     .throwOnError();
+
+  if (!res) {
+    throw new Error('Schedule not found.');
+  }
 
   return {
     schedule_data: {
@@ -53,9 +57,9 @@ const query = async ({
         (sesitem) => ({
           interview_session_relation: sesitem,
           interview_module_relation: sesitem.interview_module_relation,
-          user_details: sesitem.interview_module_relation_id
-            ? sesitem.interview_module_relation.recruiter_user
-            : sesitem.debrief_user,
+          user_details: (sesitem.interview_module_relation_id
+            ? sesitem?.interview_module_relation?.recruiter_user
+            : sesitem.debrief_user)!,
         }),
       ),
     },

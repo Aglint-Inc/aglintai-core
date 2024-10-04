@@ -1,7 +1,15 @@
 import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
 
-function CalendarFilter({ setFilter, filter }) {
+type Status = 'confirmed' | 'completed' | 'cancelled';
+
+function CalendarFilter({
+  setFilter,
+  filter,
+}: {
+  setFilter: React.Dispatch<React.SetStateAction<Status[]>>;
+  filter: Status[];
+}) {
   return (
     <div className='!mt-4 flex flex-row gap-2'>
       <div className='flex flex-row items-center gap-1'>

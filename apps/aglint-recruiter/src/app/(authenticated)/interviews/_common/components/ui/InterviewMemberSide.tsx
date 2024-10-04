@@ -26,6 +26,19 @@ export function InterviewMemberSide({
   textCancelledCount,
   textPastCount,
   isMenuTabVisible = true,
+}: {
+  isUpcomingActive?: boolean;
+  isCompletedActive?: boolean;
+  slotInterviewCard: React.ReactNode;
+  onClickUpcoming?: any;
+  onClickCompleted?: any;
+  onClickCancelled?: any;
+  isCancelActive?: boolean;
+  slotInterview: React.ReactNode;
+  textUpcomingCount?: number;
+  textCancelledCount?: number;
+  textPastCount?: number;
+  isMenuTabVisible?: boolean;
 }) {
   const [isExpanded, setIsExpanded] = useState(true);
   return (
@@ -80,6 +93,18 @@ const Tabs = ({
   textCancelledCount,
   textPastCount,
   isMenuTabVisible = true,
+}: {
+  isUpcomingActive?: boolean;
+  isCompletedActive?: boolean;
+  onClickUpcoming?: any;
+  onClickCompleted?: any;
+  onClickCancelled?: any;
+  isCancelActive?: boolean;
+  slotInterview: React.ReactNode;
+  textUpcomingCount?: number;
+  textCancelledCount?: number;
+  textPastCount?: number;
+  isMenuTabVisible?: boolean;
 }) => {
   return (
     <>

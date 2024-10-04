@@ -1,6 +1,12 @@
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 
-export function SchedulerConflictCard({ slotCountText, slotToggleWithText }) {
+export function SchedulerConflictCard({
+  slotCountText,
+  slotToggleWithText,
+}: {
+  slotCountText: React.ReactNode;
+  slotToggleWithText: React.ReactNode;
+}) {
   return (
     <Card className='relative flex flex-col overflow-hidden rounded-lg border-[1px] p-2'>
       <CardHeader className='relative z-10 flex p-0'>

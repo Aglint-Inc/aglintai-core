@@ -5,12 +5,12 @@ import { Label } from '@components/ui/label';
 import _ from 'lodash';
 import { AlertCircle, AlertTriangle } from 'lucide-react';
 import MembersAutoComplete from 'src/app/_common/components/MembersTextField';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDrawer from '@/components/Common/UIDrawer';
 import NumberInput from '@/components/Common/UINumberInput';
-import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 
 import { type useEnableDisableTraining } from '../../../hooks/useEnableDisableTraining';
 import { useModuleAndUsers } from '../../../hooks/useModuleAndUsers';
@@ -36,7 +36,7 @@ function TrainingSettingDrawer(
     localModule: state.localModule,
   }));
 
-  const { members } = useSchedulingContext();
+  const { data: members } = useMemberList(false);
 
   const qualifiedUserIds =
     editModule?.relations
