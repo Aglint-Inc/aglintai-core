@@ -737,7 +737,7 @@ const InterviewModePills = ({
             }}
           >
             <div className='flex flex-row justify-center gap-1'>
-              <IndividualIcon /> Individual
+              <IndividualIcon size={16} /> Individual
             </div>
           </TabsTrigger>
           <TabsTrigger
@@ -747,7 +747,7 @@ const InterviewModePills = ({
             }}
           >
             <div className='flex flex-row justify-center gap-1'>
-              <PanelIcon /> Panel
+              <PanelIcon size={16} /> Panel
             </div>
           </TabsTrigger>
         </TabsList>
