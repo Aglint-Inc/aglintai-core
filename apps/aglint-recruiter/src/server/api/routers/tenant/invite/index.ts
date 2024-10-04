@@ -12,7 +12,7 @@ import type { SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
 const redirectTo = `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`;
 
-const body = z
+const schema = z
   .object({
     first_name: z.string(),
     last_name: z.string().optional(),
@@ -31,7 +31,7 @@ const body = z
 const query = async ({
   ctx: { recruiter_id, user_id },
   input: users,
-}: PrivateProcedure<typeof body>) => {
+}: PrivateProcedure<typeof schema>) => {
   const supabase = createPublicClient();
   try {
     for (const user of users) {
@@ -62,11 +62,13 @@ const query = async ({
   }
 };
 
-export const invite = privateProcedure.input(body).mutation(query);
+export const invite = privateProcedure.input(schema).mutation(query);
 
 export async function registerMember(
   supabaseAdmin: SupabaseClientType,
-  user: z.infer<typeof body>[number],
+  user: Omit<z.infer<typeof schema>[number], 'manager_id'> & {
+    manager_id?: string;
+  },
   recruiter_id: string,
   create_id: string,
 ) {

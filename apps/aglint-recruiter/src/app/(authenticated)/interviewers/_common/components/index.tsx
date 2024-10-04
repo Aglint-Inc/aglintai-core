@@ -45,7 +45,9 @@ function Interviewers() {
         const userInterviewTypeIds = [
           ...interviewer.qualified_types,
           ...interviewer.training_types,
-        ]?.map((interviewType) => interviewType.id);
+        ]
+          ?.map((interviewType) => interviewType?.id)
+          .filter((item) => item !== undefined);
 
         const isSearch =
           searchText.length !== 0
@@ -61,11 +63,13 @@ function Interviewers() {
           : true;
 
         const isDepartment = selectedDepartments?.length
-          ? selectedDepartments.includes(interviewer.department?.id.toString())
+          ? interviewer?.department?.id &&
+            selectedDepartments.includes(interviewer.department.id.toString())
           : true;
 
         const isLocation = selectedLocations.length
-          ? selectedLocations.includes(interviewer.location?.id.toString())
+          ? interviewer?.location?.id &&
+            selectedLocations.includes(interviewer.location.id.toString())
           : true;
 
         return isSearch && isDepartment && isLocation && isInterviewType;

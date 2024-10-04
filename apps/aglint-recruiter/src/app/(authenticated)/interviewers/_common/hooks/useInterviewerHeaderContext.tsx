@@ -1,7 +1,8 @@
 import { createContext, useContext, useState } from 'react';
 
-const InterviewerHeader =
-  createContext<ReturnType<typeof useInterviewHeader>>(undefined);
+const InterviewerHeader = createContext<
+  ReturnType<typeof useInterviewHeader> | undefined
+>(undefined);
 
 const useInterviewHeader = () => {
   const [searchText, setSearchText] = useState('');
@@ -26,7 +27,11 @@ const useInterviewHeader = () => {
     setInterviewTypes,
   };
 };
-export const InterviewerHeaderProvider = ({ children }) => {
+export const InterviewerHeaderProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const values = useInterviewHeader();
   return (
     <InterviewerHeader.Provider value={{ ...values }}>

@@ -3,9 +3,9 @@ import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
 import { useTenantMembers } from '@/company/hooks';
+import { useMemberUpdate } from '@/company/hooks/useMemberUpdate';
 import { useRoleData } from '@/company/hooks/useRoleAndPermissionsHook';
 import UIDialog from '@/components/Common/UIDialog';
-import { updateMember } from '@/context/AuthContext/utils';
 
 import { RoleEditDialogUI } from './ui/RoleEditDialogUI';
 
@@ -19,6 +19,7 @@ function RoleEditDialog({
   close: () => void;
 }) {
   const { members } = useTenantMembers();
+  const { updateMember } = useMemberUpdate();
   const { refetch } = useRoleData();
   const [search, setSearch] = useState('');
   const [selectedMember, setSelectedMember] = useState<
@@ -55,10 +56,8 @@ function RoleEditDialog({
               setIsLoading(true);
               if (selectedMember) {
                 await updateMember({
-                  data: {
-                    user_id: selectedMember.user_id,
-                    role_id: role.id,
-                  },
+                  user_id: selectedMember.user_id,
+                  role_id: role.id,
                 });
                 refetch();
                 setIsLoading(false);

@@ -1,6 +1,7 @@
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { type CalendarApi } from '@fullcalendar/core';
+import { type DatesSetArg } from '@fullcalendar/core';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { UIButton } from '../UIButton';
@@ -16,10 +17,7 @@ function CalendarHeader({
   handleMode: (_mode: 'calendar' | 'list') => void;
   mode: 'calendar' | 'list';
   calendarApi: CalendarApi;
-  currentDate: {
-    startStr: string;
-    endStr: string;
-  };
+  currentDate: DatesSetArg | null;
   handleType: (_type: 'day' | 'week' | 'month') => void;
   type: 'day' | 'week' | 'month';
 }) {

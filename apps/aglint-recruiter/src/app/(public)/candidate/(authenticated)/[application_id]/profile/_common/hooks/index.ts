@@ -7,7 +7,7 @@ export const useCandidatePortalProfile = () => {
     application_id,
   });
   const invalidate = api.useUtils().candidatePortal.get_profile.invalidate;
-  return { ...response, invalidate };
+  return { ...response, data: response.data!, invalidate };
 };
 
 export const useCandidatePortalProfileUpdate = () => {

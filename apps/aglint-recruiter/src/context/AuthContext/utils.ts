@@ -4,8 +4,6 @@ import {
   type DatabaseTableUpdate,
 } from '@aglint/shared-types';
 
-import axios from '@/client/axios';
-import { type API_setMembersWithRole } from '@/pages/api/setMembersWithRole/type';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 
@@ -24,22 +22,6 @@ export const updateJoinedStatus = async (user_id: string) => {
     .update({ status: 'active' })
     .eq('user_id', user_id)
     .throwOnError();
-};
-
-export const updateMember = ({
-  data,
-}: {
-  data: Omit<DatabaseTableUpdate['recruiter_user'], 'user_id'> & {
-    user_id: string;
-    role_id?: string;
-    manager_id?: string;
-  };
-}) => {
-  return axios
-    .call<API_setMembersWithRole>('POST', '/api/setMembersWithRole', {
-      data,
-    })
-    .then((res) => res.data);
 };
 
 export const manageOfficeLocation = async (

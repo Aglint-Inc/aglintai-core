@@ -10,6 +10,7 @@ import { roles } from './roles';
 import { templates } from './templates';
 import { updateTenant } from './updateTenant';
 import { updateTenantPreference } from './updateTenantPreference';
+import { updateWithRole } from './updateWithRole';
 
 export const tenant = createTRPCRouter({
   read,
@@ -23,4 +24,5 @@ export const tenant = createTRPCRouter({
   invite,
   'resend-invite': resend_invite,
   templates,
+  updateWithRole,
 });
