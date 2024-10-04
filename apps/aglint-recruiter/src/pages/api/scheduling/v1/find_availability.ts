@@ -6,6 +6,7 @@ import { type z } from 'zod';
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 
+const t = '';
 export type ApiResponseFindAvailability = {
   slots: DateRangePlansType[];
   availabilities: CandidatesScheduling['calendar_events'];
