@@ -4,6 +4,7 @@ import type {
   DatabaseTable,
   DatabaseTableUpdate,
 } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { toast as specialToast } from '@components/hooks/use-toast';
 import { type RealtimePostgresInsertPayload } from '@supabase/supabase-js';
@@ -26,7 +27,6 @@ import {
   type RequestProgress,
   type RequestResponse,
 } from './types';
-import { supabaseWrap } from '@aglint/shared-utils';
 
 export const requestQueries = {
   requests_key: () => 'requests' as const,
