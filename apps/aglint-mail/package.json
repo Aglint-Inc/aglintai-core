@@ -3,11 +3,12 @@
   "description": "A live preview of your emails right in your browser.",
   "scripts": {
     "dev:build": "npm run build --workspace=@aglint/shared-utils",
-    "build": "next build",
-    "start": "next start  --port 3100",
     "dev": "npm run dev:build && next dev --port 3100",
-    "clean": "rm -rf dist",
+    "build": "next build",
     "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "start": "next start  --port 3100",
+    "clean": "rm -rf dist",
     "lint:fix": "eslint . --ext .ts,.js,.tsx,.jsx --fix",
     "format": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\""
   },
