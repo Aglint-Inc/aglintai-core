@@ -37,7 +37,7 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
               {`${dayjsLocal(rescheduleDetails.other_details?.dateRange?.start).format('DD MMMM, YYYY')} - ${dayjsLocal(rescheduleDetails.other_details?.dateRange?.end).format('DD MMMM, YYYY')}`}
             </span>
           </div>
-          {rescheduleDetails.other_details.note && (
+          {rescheduleDetails?.other_details?.note && (
             <p className='text-sm'>{rescheduleDetails.other_details.note}</p>
           )}
           <p className='text-sm font-medium'>

@@ -94,7 +94,7 @@ export default function SignUpForm() {
       } else {
         const bodyParams: ApiBodyParamsSignup = {
           email: data.email,
-          user_id: authData.user.id,
+          user_id: authData.user?.id ?? '',
           first_name: data.first_name,
           last_name: data.last_name,
         };
@@ -119,11 +119,11 @@ export default function SignUpForm() {
           });
         }
       }
-    } catch (err) {
+    } catch (err: any) {
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: err.message,
+        description: err?.message,
       });
     }
     setIsLoading(false);

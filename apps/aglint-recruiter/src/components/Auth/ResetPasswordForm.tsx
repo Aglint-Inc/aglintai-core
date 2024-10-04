@@ -50,7 +50,7 @@ export default function ResetPasswordComponent() {
         title: 'Success',
         description: 'Password reset successfully.',
       });
-      router.push(ROUTES['/auth/redirect']());
+      router.push(ROUTES['/reset-password']());
     } else {
       toast({
         variant: 'destructive',

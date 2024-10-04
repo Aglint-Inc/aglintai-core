@@ -46,7 +46,7 @@ function BookingConfirmation({
                   </div>
                   <p className='mt-1 text-sm'>
                     {formatTimeWithTimeZone({
-                      start_time: session.interview_meeting.start_time,
+                      start_time: session.interview_meeting.start_time ?? '',
                       end_time: session.interview_meeting.end_time,
                       timeZone: dayjsLocal.tz.guess(),
                     })}
