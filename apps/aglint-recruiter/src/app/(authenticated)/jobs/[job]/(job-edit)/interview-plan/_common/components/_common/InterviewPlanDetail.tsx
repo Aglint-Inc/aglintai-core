@@ -1,16 +1,9 @@
 import { cn } from '@lib/utils';
-import {
-  ExternalLink,
-  Hourglass,
-  Pencil,
-  Trash,
-  UserRound,
-  Users,
-} from 'lucide-react';
+import { Hourglass, Pencil, Trash, UserRound, Users } from 'lucide-react';
 import React, { useState } from 'react';
 
+import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
-import UITypography from '@/components/Common/UITypography';
 
 export interface InterviewPlanDetailProps {
   className?: string;
@@ -99,17 +92,20 @@ export function InterviewPlanDetail({
         </div>
         <div>
           <div
-            className='flex w-fit cursor-pointer items-center gap-2 rounded-sm bg-orange-50 p-[3px] px-2 hover:bg-orange-100'
+            className='flex w-fit cursor-pointer items-center gap-2 rounded-sm p-[3px] px-2'
             onClick={onClickLink}
           >
-            <UITypography className='text-red-900' variant='p' type='small'>
-              {textLink}
-            </UITypography>
-            <ExternalLink size={12} className='text-red-900' />
+            <div onClick={onClickLink}>
+              <UIBadge
+                color='info'
+                textBadge={textLink?.toString()}
+                iconName='ExternalLink'
+              />
+            </div>
           </div>
         </div>
         <div>
-          <div className='text-sm mt-2 text-gray-600'>{textSelected}</div>
+          <div className='mt-2 text-sm'>{textSelected}</div>
           <div>{slotInterviewers}</div>
         </div>
         <div className='absolute right-4 top-4 hidden gap-2 group-hover:flex'>

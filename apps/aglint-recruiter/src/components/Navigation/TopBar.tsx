@@ -3,18 +3,18 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@components/ui/tooltip';
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@components/ui/dropdown-menu';
 import { useQueryClient } from '@tanstack/react-query';
-import { LogOut } from 'lucide-react';
+import { ChevronDownIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { useLogout } from '@/authenticated/hooks/useLogout';
 import { useTenant } from '@/company/hooks';
-import { capitalizeAll } from '@/utils/text/textUtils';
 
 const DefaultProfileImage = () => (
   <Image
@@ -57,43 +57,38 @@ const TopBar = () => {
         </Link>
       </Button>
       <div className='mr-2 flex flex-row items-center'>
-        <div className='mr-4 flex flex-row items-center gap-2'>
+        <div className='sr-only mr-4 flex-row items-center gap-2 md:flex'>
           <p>👋 </p>
-          <p className='text-sm text-muted-foreground'>Hey {userName},</p>
+          <p className='text-sm text-muted-foreground'>Hey {userName}</p>
           <p className='text-sm text-muted-foreground'>
             Welcome to {recruiterName}!
           </p>
         </div>
-        <Tooltip>
-          <TooltipTrigger>
-            <Button variant='link' asChild>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button variant='ghost'>
+              <Avatar className='h-[24px] w-[24px] cursor-pointer rounded-full'>
+                <AvatarImage src={profileImage || ''} alt={userName} />
+                <AvatarFallback className='rounded-[4px]'>
+                  <DefaultProfileImage />
+                </AvatarFallback>
+              </Avatar>
+              <ChevronDownIcon className='ml-2 h-4 w-4' />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent side='bottom' align='end' alignOffset={20}>
+            <DropdownMenuItem>
               <Link href={`/user/${userId}?profile=true`}>
-                <Avatar className='h-[24px] w-[24px] cursor-pointer rounded-[4px]'>
-                  <AvatarImage src={profileImage || ''} alt={userName} />
-                  <AvatarFallback className='rounded-[4px]'>
-                    <DefaultProfileImage />
-                  </AvatarFallback>
-                </Avatar>
-                <span className='sr-only'>
-                  {capitalizeAll(userName) || 'Your profile'}
-                </span>
+                <span>Your Profile</span>
               </Link>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent align='start' side='right'>
-            <p>{capitalizeAll(userName) || 'Your profile'}</p>
-          </TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger>
-            <Button variant='link' onClick={() => logout(queryClient)}>
-              <LogOut className='h-5 w-5' strokeWidth={1.5} />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent align='center' side='right'>
-            <p>Logout</p>
-          </TooltipContent>
-        </Tooltip>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <div onClick={() => logout(queryClient)}>
+                <span>Logout</span>
+              </div>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );
