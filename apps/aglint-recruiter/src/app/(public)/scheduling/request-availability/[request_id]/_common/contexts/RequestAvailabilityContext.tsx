@@ -30,9 +30,6 @@ interface ContextValue {
     x: NonNullable<DatabaseTable['candidate_request_availability']['slots']>,
   ) => void;
 
-  loading: boolean;
-  setLoading: (x: boolean) => void;
-
   daySlots: NonNullable<
     DatabaseTable['candidate_request_availability']['slots']
   >;
@@ -88,8 +85,6 @@ interface ContextValue {
 const defaultProvider: ContextValue = {
   dateSlots: [],
   setDateSlots: () => {},
-  loading: true,
-  setLoading: () => {},
   daySlots: [],
   setDaySlots: () => {},
   selectedDateSlots: [],
@@ -141,7 +136,6 @@ function RequestAvailabilityProvider({
     dayjs(),
     dayjs().add(10, 'day'),
   ]);
-  const [loading, setLoading] = useState(true);
   const [multiDaySessions, setMultiDaySessions] = useState<
     InterviewSessionTypeDB[][]
   >([]);
@@ -155,14 +149,12 @@ function RequestAvailabilityProvider({
     requestAvailability: CandidateAvailabilityType | null;
   }) {
     if (!requestAvailability) {
-      setLoading(false);
       return;
     }
     if (requestAvailability?.slots) {
       setDateSlots(requestAvailability.slots || []);
       setDaySlots(requestAvailability.slots || []);
       setIsSubmitted(true);
-      setLoading(false);
       return;
     }
     if (!requestAvailability.visited) {
@@ -220,7 +212,6 @@ function RequestAvailabilityProvider({
     } catch (error) {
       toast.error('Something went wrong!');
     }
-    setLoading(false);
   }
 
   useEffect(() => {
@@ -404,7 +395,7 @@ function RequestAvailabilityProvider({
   const [submitting, setSubmitting] = useState(false);
   async function submitAvailability() {
     if (selectedSlots) {
-      setLoading(true);
+      setSubmitting(true);
       if (multiDaySessions.length > 1) {
         const requestData = await updateRequestAvailability({
           slots: daySlots,
@@ -426,7 +417,7 @@ function RequestAvailabilityProvider({
       }
 
       setIsSubmitted(true);
-      setLoading(false);
+      setSubmitting(false);
     }
   }
 
@@ -435,8 +426,7 @@ function RequestAvailabilityProvider({
       value={{
         dateSlots,
         setDateSlots,
-        loading,
-        setLoading,
+
         daySlots,
         setDaySlots,
         selectedDateSlots,
