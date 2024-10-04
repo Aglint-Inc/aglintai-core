@@ -36,7 +36,7 @@ export const IntegrationsHeader = () => {
           leftIcon={<Send />}
           onClick={() => setIsRequestNewOpen(true)}
         >
-          Request New
+          Request new Integration
         </UIButton>
         <RequestNew
           isOpen={isRequestNewOpen}
@@ -61,7 +61,7 @@ const ATSSecion = ({
       Easily manage job postings and candidate information by connecting your
       preferred ATS.
     </p>
-    <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
+    <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4'>
       <ATSTools data={data} invalidate={invalidate} />
     </div>
   </section>
@@ -79,7 +79,7 @@ const SchedulingSection = ({
       Connect your calendar and video conferencing tools to simplify interview
       scheduling.
     </p>
-    <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
+    <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4'>
       <Scheduling allIntegrations={data} />
     </div>
   </section>
@@ -93,7 +93,7 @@ const MessagingSection = () => (
       Connect popular communication tools to enhance your team&apos;s
       coordination.
     </p>
-    <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3'>
+    <div className='grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4'>
       <MessagingTools />
     </div>
   </section>

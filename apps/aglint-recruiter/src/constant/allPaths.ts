@@ -35,7 +35,6 @@ export const PATHS = [
   '/api/jobpost/read',
   '/api/jobpost/write',
   '/api/lever/candidateSync',
-  '/api/lever/createjob',
   '/api/lever/getCandidates',
   '/api/lever/getPostings',
   '/api/lever/saveApiKey',
