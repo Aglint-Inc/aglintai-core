@@ -149,7 +149,6 @@
     "zustand": "^4.5.5"
   },
   "devDependencies": {
-    "@aglint/eslint-plugin-linter": "*",
     "@aglint/shared-types": "*",
     "@shadcn/ui": "^0.0.4",
     "@types/formidable": "^3.4.5",
