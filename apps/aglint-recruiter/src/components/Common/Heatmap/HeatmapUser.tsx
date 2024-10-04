@@ -14,7 +14,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { HeatMapGrid } from 'react-grid-heatmap';
 
-import { type Meeting, type Meetings } from './type';
+import { type Meeting } from './type';
 import {
   filling2dArray,
   getDatesArray,
@@ -28,7 +28,6 @@ export default function Heatmap({
 }: {
   loadSetting: SchedulingSettingType['interviewLoad'];
 }) {
-  const [arrayDates, setArrayDates] = useState<string[]>([]);
   const [arrayDates, setArrayDates] = useState<string[]>([]);
   const [dayCount, setDayCount] = useState<{ start: number; end: number }>({
     start: -7,

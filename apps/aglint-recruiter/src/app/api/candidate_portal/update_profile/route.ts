@@ -54,13 +54,11 @@ const updateCandidateDetails = async (
       .throwOnError(),
   ).candidate_id!;
 
-  if (candidate_id) {
-    const { error } = await supabaseAdmin
-      .from('candidates')
-      .update({ ...details })
-      .eq('id', candidate_id)
-      .throwOnError();
+  const { error } = await supabaseAdmin
+    .from('candidates')
+    .update({ ...details })
+    .eq('id', candidate_id)
+    .throwOnError();
 
-    if (error) throw new Error(error.message);
-  }
+  if (error) throw new Error(error.message);
 };

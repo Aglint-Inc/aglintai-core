@@ -38,11 +38,6 @@ export const getDatesArray = (
   endDate: string,
   format: string,
 ) => {
-export const getDatesArray = (
-  startDate: string,
-  endDate: string,
-  format: string,
-) => {
   const dates = [];
   let currentDate = dayjsLocal(startDate);
 
@@ -54,7 +49,6 @@ export const getDatesArray = (
   return dates;
 };
 
-const fetchFunction = async ({ user_id }: { user_id: string }) => {
 const fetchFunction = async ({ user_id }: { user_id: string }) => {
   try {
     const data = (
@@ -134,7 +128,6 @@ export function transposeArray(array: Meeting[][]): Meeting[][] {
     : [];
 }
 
-export const filling2dArray = (data: Meeting[][], maxCount: number) => {
 export const filling2dArray = (data: Meeting[][], maxCount: number) => {
   return data?.map((subArray) => {
     const fillCount = maxCount - subArray.length;
