@@ -24,8 +24,6 @@ export const Header = () => {
   const user_id = param.user as string;
   const { data: interviewerDetails } = useInterviewer();
 
-  if (!interviewerDetails) return <>Fetching error</>;
-
   const {
     avatar,
     first_name,

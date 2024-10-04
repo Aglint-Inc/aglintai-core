@@ -6,17 +6,19 @@ export type candidatePortalProfileType = Awaited<
   ReturnType<typeof getCandidateDetails>
 >;
 
-export async function POST(req) {
+export async function POST(req: Request) {
   try {
     const { application_id } = await req.json();
 
     const candidate = await getCandidateDetails(application_id);
     return NextResponse.json(candidate, { status: 200 });
   } catch (e) {
-    return NextResponse.json(
-      { message: 'error ' + e.message },
-      { status: 400 },
-    );
+    if (e instanceof Error) {
+      return NextResponse.json(
+        { message: 'error ' + e.message },
+        { status: 400 },
+      );
+    } else return NextResponse.json({ message: 'error ' }, { status: 400 });
   }
 }
 
@@ -33,8 +35,8 @@ const getCandidateDetails = async (application_id: string[]) => {
     .throwOnError();
 
   const cand = {
-    resume_url: data.candidate_files.file_url,
-    ...data.candidates,
+    resume_url: data?.candidate_files?.file_url || '',
+    ...data?.candidates,
   };
 
   return cand;
