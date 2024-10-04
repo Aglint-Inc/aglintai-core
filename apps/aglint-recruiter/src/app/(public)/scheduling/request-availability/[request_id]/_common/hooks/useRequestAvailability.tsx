@@ -17,16 +17,7 @@ export const useCandidateAvailabilityMeetings = () => {
     sessions_ids: sessions_ids,
   });
 };
-export const useCandidateAvailabilityScheduleDMeetings = () => {
-  return api.candidate_availability.getScheduledMeetings.useQuery(
-    {
-      application_id: '',
-    },
-    {
-      enabled: false,
-    },
-  );
-};
+
 export const useCandidateAvailabilityData = () => {
   const params = useParams();
   const candidate_request_availability_id = params?.request_id as string;
@@ -60,4 +51,18 @@ export const useUpdateCandidateAvailability = () => {
     });
   };
   return { ...updateMutation, updateRequestAvailability };
+};
+export const useCandidateAvailabilityScheduleDMeetings = () => {
+  const { data: candidateRequestAvailability } = useCandidateAvailabilityData();
+  const application_id = candidateRequestAvailability
+    ? candidateRequestAvailability.application_id
+    : '';
+  return api.candidate_availability.getScheduledMeetings.useQuery(
+    {
+      application_id: application_id,
+    },
+    {
+      enabled: !!application_id,
+    },
+  );
 };
