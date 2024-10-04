@@ -3,19 +3,20 @@ import { z } from 'zod';
 import { createPostRoute } from '@/apiUtils/createPostRoute';
 import { cloneCompWorkflowsForJob } from '@/utils/clone/clonecompWorkflows';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
+import { supabaseWrap } from '@aglint/shared-utils';
 
 const schema = z.object({
   company_id: z.string(),
 });
 const resetJobWorkflows = async ({ company_id }: z.infer<typeof schema>) => {
   const supabase = getSupabaseServer();
-  const allJobIds = (
+  const allJobIds = supabaseWrap(
     await supabase
       .from('public_jobs')
       .select('id')
       .eq('recruiter_id', company_id)
-      .throwOnError()
-  ).data;
+      .throwOnError(),
+  );
   const allJobs = allJobIds.map(async (job) => {
     supabase.from('workflow_job_relation').delete().eq('job_id', job.id);
     await cloneCompWorkflowsForJob({

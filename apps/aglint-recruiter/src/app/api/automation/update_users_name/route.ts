@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-export async function POST(req) {
+export async function POST(req: Request) {
   const supabaseAdmin = getSupabaseServer();
   const users: { first_name: string; last_name: string; email: string }[] =
     await req.json();
@@ -24,7 +24,7 @@ export async function POST(req) {
     });
 
     return NextResponse.json({ message: 'success' }, { status: 200 });
-  } catch (e) {
+  } catch (e: any) {
     return NextResponse.json({ message: e.message }, { status: 400 });
   }
 }
