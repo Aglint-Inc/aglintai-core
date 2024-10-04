@@ -6,7 +6,7 @@ import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 
 const t = '';
-console.log(t);
+console.log(g);
 export type ApiResponseFindAvailability = {
   slots: DateRangePlansType[];
   availabilities: CandidatesScheduling['calendar_events'];
