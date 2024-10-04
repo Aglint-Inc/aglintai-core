@@ -56,20 +56,58 @@ export type schedule = {
 
 type sessions = Awaited<ReturnType<typeof getScheudleSessionDetails>>;
 
-export async function POST(req: Request) {
+export async function POST(req) {
   try {
     const supabaseAdmin = getSupabaseServer();
 
     const { application_id } = await req.json();
 
-    const { data: application } = await supabaseAdmin
-      .from('applications')
-      .select(
-        'candidates(first_name,last_name,phone,email,linkedin,timezone,avatar,recruiter(id,name,logo,phone_number,socials,company_overview)),public_jobs(job_title,description)',
-      )
-      .eq('id', application_id)
-      .single()
-      .throwOnError();
+    const applicationPromise = (
+      await supabaseAdmin
+        .from('applications')
+        .select(
+          'candidates(first_name,last_name,phone,email,linkedin,timezone,avatar,recruiter(id,name,logo,phone_number,socials,company_overview)),public_jobs(job_title,description)',
+        )
+        .eq('id', application_id)
+        .single()
+        .throwOnError()
+    ).data;
+
+    const availabilityPromise = (
+      await supabaseAdmin
+        .from('candidate_request_availability')
+        .select('id,slots,created_at')
+        .eq('application_id', application_id)
+        .is('slots', null)
+        .throwOnError()
+    ).data;
+
+    const filterJsonPromise = (
+      await supabaseAdmin
+        .from('interview_filter_json')
+        .select('id,confirmed_on,session_ids,created_at')
+        .eq('application_id', application_id)
+        .is('confirmed_on', null)
+        .throwOnError()
+    ).data;
+
+    const interviewPlanPromise = (
+      await supabaseAdmin
+        .from('interview_progress')
+        .select('name,description,order,update_at,is_completed')
+        .eq('application_id', application_id)
+        .order('order', { ascending: true })
+    ).data;
+
+    const [application, availability, filter_json, interviewPlan] =
+      await Promise.all([
+        applicationPromise,
+        availabilityPromise,
+        filterJsonPromise,
+        interviewPlanPromise,
+      ]);
+
+    /// promise all
 
     const { data: recruiter } = await supabaseAdmin
       .from('recruiter_preferences')
@@ -107,12 +145,7 @@ export async function POST(req: Request) {
       greetings: recruiter?.greetings || '',
     };
     //availability  ----------------------------------------------------------------
-    const { data: availability } = await supabaseAdmin
-      .from('candidate_request_availability')
-      .select('id,slots,created_at')
-      .eq('application_id', application_id)
-      .is('slots', null)
-      .throwOnError();
+
     const avail = availability?.filter((ava) => !ava.slots);
 
     let availabilityData = [] as unknown;
@@ -132,13 +165,6 @@ export async function POST(req: Request) {
       ) as availability;
     }
     //self scheudle  ----------------------------------------------------------------
-
-    const { data: filter_json } = await supabaseAdmin
-      .from('interview_filter_json')
-      .select('id,confirmed_on,session_ids,created_at')
-      .eq('application_id', application_id)
-      .is('confirmed_on', null)
-      .throwOnError();
 
     const filteredSchudles = filter_json?.filter((fil) => !fil.confirmed_on);
 
@@ -162,11 +188,6 @@ export async function POST(req: Request) {
     const upcomingData = await getMeetings(application_id);
 
     // interview plan -----------------------------------------------------------------
-    const { data: interviewPlan } = await supabaseAdmin
-      .from('interview_progress')
-      .select('name,description,order,update_at,is_completed')
-      .eq('application_id', application_id)
-      .order('order', { ascending: true });
 
     // .throwOnError();
 

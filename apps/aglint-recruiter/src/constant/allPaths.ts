@@ -126,7 +126,7 @@ export const PATHS = [
   '/candidate/[application]/interviews',
   '/candidate/[application]/messages',
   '/candidate/[application]/profile',
-  '/candidate/[application_id]/login',
+  '/candidate/[application]/login',
   '/company-postings/[id]',
   '/dashboards/interviewer',
   '/dashboards',
