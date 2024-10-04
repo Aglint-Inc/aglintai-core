@@ -99,7 +99,7 @@ const RoleTable = ({
   }
 
   return (
-    <div className='rounded-lg border'>
+    <div className='rounded-lg border overflow-hidden mt-2'>
       <Table>
         <TableHeader>
           <TableRow className='bg-gray-100'>
