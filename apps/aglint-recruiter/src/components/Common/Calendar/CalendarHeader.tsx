@@ -43,18 +43,7 @@ function CalendarHeader({
 
   return (
     <div className='flex flex-col'>
-      <div className='grid grid-cols-3 items-center gap-2'>
-        <div>
-          <Tabs
-            defaultValue={mode}
-            onValueChange={(value) => handleMode(value as 'calendar' | 'list')}
-          >
-            <TabsList>
-              <TabsTrigger value='calendar'>Calendar</TabsTrigger>
-              <TabsTrigger value='list'>List</TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
+      <div className='flex flex-row items-center justify-between gap-2'>
         <div className='flex justify-center'>
           <div className='flex min-w-[200px] flex-row items-center justify-between space-x-2'>
             <UIButton
@@ -80,26 +69,44 @@ function CalendarHeader({
             />
           </div>
         </div>
-        <div className='flex justify-end'>
-          <div className='flex min-w-[250px] flex-row items-center justify-end space-x-1'>
-            {!dayjsLocal(currentDate?.startStr).isToday() &&
-              !isThisWeekrMonth && (
-                <UIButton onClick={() => calendarApi?.today()}>Today</UIButton>
-              )}
-
+        <div className='flex justify-center gap-2'>
+          <div>
             <Tabs
-              defaultValue={type}
-              value={type}
+              defaultValue={mode}
               onValueChange={(value) =>
-                handleType(value as 'day' | 'week' | 'month')
+                handleMode(value as 'calendar' | 'list')
               }
             >
               <TabsList>
-                <TabsTrigger value='day'>Day</TabsTrigger>
-                <TabsTrigger value='week'>Week</TabsTrigger>
-                <TabsTrigger value='month'>Month</TabsTrigger>
+                <TabsTrigger value='calendar'>Calendar</TabsTrigger>
+                <TabsTrigger value='list'>List</TabsTrigger>
               </TabsList>
             </Tabs>
+          </div>
+
+          <div className='flex justify-end'>
+            <div className='flex flex-row items-center justify-end space-x-1'>
+              {!dayjsLocal(currentDate?.startStr).isToday() &&
+                !isThisWeekrMonth && (
+                  <UIButton onClick={() => calendarApi?.today()}>
+                    Today
+                  </UIButton>
+                )}
+
+              <Tabs
+                defaultValue={type}
+                value={type}
+                onValueChange={(value) =>
+                  handleType(value as 'day' | 'week' | 'month')
+                }
+              >
+                <TabsList>
+                  <TabsTrigger value='day'>Day</TabsTrigger>
+                  <TabsTrigger value='week'>Week</TabsTrigger>
+                  <TabsTrigger value='month'>Month</TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
           </div>
         </div>
       </div>
