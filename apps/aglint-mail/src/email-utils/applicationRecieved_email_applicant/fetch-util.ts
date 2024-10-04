@@ -4,7 +4,7 @@ import type {
   TargetApiPayloadType,
 } from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
-import { FetchUtilType } from '../../types/emailfetchUtil';
+import type { FetchUtilType } from '../../types/emailfetchUtil';
 
 export const fetchUtil: FetchUtilType<
   'applicationRecieved_email_applicant'
@@ -36,7 +36,7 @@ export const fetchUtil: FetchUtilType<
       candidateFirstName: first_name,
       candidateLastName: last_name,
       jobRole: job_title,
-      companyName: companyName,
+      companyName,
       candidateName: getFullName(first_name, last_name),
     };
 

@@ -8,7 +8,7 @@
     "dev": "npm run dev:build && next dev --port 3100",
     "clean": "rm -rf dist",
     "lint": "eslint . --cache && tsc",
-    "fix": "eslint --fix"
+    "lint:fix": "eslint . --ext .ts,.js,.tsx,.jsx --fix"
   },
   "engines": {
     "node": ">=18.0.0"
