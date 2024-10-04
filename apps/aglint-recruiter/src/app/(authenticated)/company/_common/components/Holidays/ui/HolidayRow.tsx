@@ -35,7 +35,7 @@ export const HolidayRow = (props: Props) => {
         )}
       </TableCell>
       <TableCell>
-        <UIButton variant='ghost' size='sm' onClick={props.onDelete}>
+        <UIButton variant='outline' size='sm' onClick={props.onDelete}>
           Delete
         </UIButton>
       </TableCell>
