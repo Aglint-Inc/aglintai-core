@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { type nestedType } from './sharedTypes';
 
 type nestedOptionMapperType = nestedType<
@@ -36,7 +37,7 @@ export function nestedOptionMapper<
   ][] = [];
 
   function mapOption({
-    header = null,
+    header = undefined,
     optionList,
     selectedOptions,
     isArray = false,

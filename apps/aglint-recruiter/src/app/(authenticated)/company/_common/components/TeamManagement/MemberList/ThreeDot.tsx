@@ -11,8 +11,8 @@ import { Edit, Lock, Mail, MoreHorizontal, Power, Trash } from 'lucide-react';
 import { useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
+import { useMemberUpdate } from '@/company/hooks/useMemberUpdate';
 import type { useTeamMembers } from '@/company/hooks/useTeamMembers';
-import { updateMember } from '@/context/AuthContext/utils';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type API_reset_password } from '@/pages/api/reset_password/type';
 import { api } from '@/trpc/client';
@@ -25,6 +25,7 @@ export const UserListThreeDot = ({
   member: ReturnType<typeof useTeamMembers>['data'][number];
 }) => {
   const { toast } = useToast();
+  const { updateMember } = useMemberUpdate();
   const { mutateAsync: reinviteUser } =
     api.tenant['resend-invite'].useMutation();
   const [dialogReason, setDialogReason] = useState<
@@ -65,9 +66,7 @@ export const UserListThreeDot = ({
         break;
       }
       case 'activate':
-        updateMember({
-          data: { user_id: member.user_id, status: 'active' },
-        }).then(() => {
+        updateMember({ user_id: member.user_id, status: 'active' }).then(() => {
           toast({
             description: `${member.first_name}'s account is activated successfully.`,
           });
@@ -92,9 +91,7 @@ export const UserListThreeDot = ({
   };
 
   const handleSuspend = () => {
-    updateMember({
-      data: { user_id: member.user_id, status: 'suspended' },
-    }).then(() => {
+    updateMember({ user_id: member.user_id, status: 'suspended' }).then(() => {
       toast({
         description: `${member.first_name}'s account is suspended successfully.`,
       });
@@ -103,12 +100,35 @@ export const UserListThreeDot = ({
   };
 
   const handleRemove = () => {
-    // Implement your remove logic here
-    // For example:
-    // deleteMember(member.user_id).then(() => {
-    //   toast({ description: `${member.first_name} has been removed from the team.` })
-    //   setDialogReason(null)
-    // })
+    removeMember();
+  };
+
+  const removeMember = async () => {
+    if (recruiter_user.user_id === member.user_id) {
+      toast({
+        variant: 'destructive',
+        title: "Can't remove Your own account.",
+      });
+    }
+    if (member.status !== 'invited' && member.role === 'admin') {
+      toast({
+        variant: 'destructive',
+        title: "Can't remove Admin account.",
+      });
+    } else {
+      try {
+        // await axios.post('/api/supabase/deleteuser', {
+        //   user_id: member.user_id,
+        // });
+      } catch (error) {
+        toast({
+          variant: 'destructive',
+          title:
+            "This member is tied to an active schedule, so removal is unavailable until it's finished.",
+        });
+        return null;
+      }
+    }
   };
 
   return (
