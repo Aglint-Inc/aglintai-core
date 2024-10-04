@@ -55,8 +55,8 @@ const List = ({
   return (
     <div>
       {header}
-      <div ref={parentRef} className='h-[calc(100vh-350px)]'>
-        <ScrollArea className='w-full'>
+      <div ref={parentRef}>
+        <ScrollArea className='h-[calc(100vh-260px)] w-full'>
           <div
             className='relative w-full'
             style={{
