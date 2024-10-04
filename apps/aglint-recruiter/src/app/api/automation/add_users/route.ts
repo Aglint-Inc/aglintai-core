@@ -35,44 +35,43 @@ export async function POST(req: Request) {
       forms: user[];
     } = await req.json();
 
-    const recruiter_user = supabaseWrap(
-      await supabaseAdmin
-        .from('recruiter_relation')
-        .select(
-          'recruiter_user!public_recruiter_relation_user_id_fkey!inner(user_id),roles!inner(name)',
-        )
-        .eq('recruiter_id', recruiter_id)
-        .eq('recruiter_user.status', 'active'),
-    );
-
-    const recruiter = supabaseWrap(
-      await supabaseAdmin
-        .from('recruiter')
-        .select('*')
-        .eq('id', recruiter_id)
-        .single(),
-    );
-
-    const locations = supabaseWrap(
-      await supabaseAdmin
-        .from('office_locations')
-        .select('*')
-        .eq('recruiter_id', recruiter_id),
-    );
-
-    const departments = supabaseWrap(
-      await supabaseAdmin
-        .from('departments')
-        .select('*')
-        .eq('recruiter_id', recruiter_id),
-    );
-
-    const roles = supabaseWrap(
-      await supabaseAdmin
-        .from('roles')
-        .select('*')
-        .eq('recruiter_id', recruiter_id),
-    );
+    const [recruiter_user, recruiter, locations, departments, roles] =
+      await Promise.all([
+        supabaseWrap(
+          await supabaseAdmin
+            .from('recruiter_relation')
+            .select(
+              'recruiter_user!public_recruiter_relation_user_id_fkey!inner(user_id),roles!inner(name)',
+            )
+            .eq('recruiter_id', recruiter_id)
+            .eq('recruiter_user.status', 'active'),
+        ),
+        (
+          await supabaseAdmin
+            .from('recruiter')
+            .select('*')
+            .eq('id', recruiter_id)
+            .single()
+        ).data,
+        supabaseWrap(
+          await supabaseAdmin
+            .from('office_locations')
+            .select('*')
+            .eq('recruiter_id', recruiter_id),
+        ),
+        supabaseWrap(
+          await supabaseAdmin
+            .from('departments')
+            .select('*')
+            .eq('recruiter_id', recruiter_id),
+        ),
+        supabaseWrap(
+          await supabaseAdmin
+            .from('roles')
+            .select('*')
+            .eq('recruiter_id', recruiter_id),
+        ),
+      ]);
 
     const manager_ids = recruiter_user
       .filter((user) => user?.recruiter_user?.user_id)
