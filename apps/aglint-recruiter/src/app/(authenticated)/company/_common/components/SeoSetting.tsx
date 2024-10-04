@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { SeoPro } from '@/components/Common/SeoPro';
+import { SeoPro } from '@/common/SeoPro';
 
 export default function SeoProSetting({
   tab,

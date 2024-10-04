@@ -2,8 +2,8 @@
 /* eslint-disable no-unused-vars */
 import { useState } from 'react';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
+import { UIButton } from '@/common/UIButton';
+import UIDialog from '@/common/UIDialog';
 import { JobCoordinator } from '@/jobs/create/components/form';
 
 function DeleteMemberDialog({

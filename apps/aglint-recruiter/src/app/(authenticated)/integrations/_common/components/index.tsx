@@ -10,8 +10,8 @@ import { Send } from 'lucide-react';
 import { useState } from 'react';
 
 import { useIntegrations } from '@/authenticated/hooks';
+import { UIButton } from '@/common/UIButton';
 
-import { UIButton } from '../Common/UIButton';
 import ATSTools from './ATSTools';
 import MessagingTools from './MessagingTools';
 import RequestNew from './RequestNewPopUp';

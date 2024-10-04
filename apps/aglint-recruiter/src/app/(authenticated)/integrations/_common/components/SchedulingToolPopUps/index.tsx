@@ -9,7 +9,7 @@ import {
 } from '@components/ui/dialog';
 import { type ReactNode } from 'react';
 
-import { Loader } from '@/components/Common/Loader';
+import { Loader } from '@/common/Loader';
 
 import { type SchedulingReasonTypes } from '../types';
 

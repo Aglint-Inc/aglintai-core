@@ -3,9 +3,9 @@ import { Badge } from '@components/ui/badge';
 import { TableCell, TableRow } from '@components/ui/table';
 import { CirclePlus } from 'lucide-react';
 
+import { UIButton } from '@/common/UIButton';
 import type { useTenantMembers } from '@/company/hooks';
 import type { useRoleData } from '@/company/hooks/useRoleAndPermissionsHook';
-import { UIButton } from '@/components/Common/UIButton';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 type getRoleAndPermissionsWithUserCountType = NonNullable<
@@ -38,9 +38,9 @@ export const RoleList = ({
       <TableCell className='font-medium'>
         {capitalizeFirstLetter(role.name)}
       </TableCell>
-      <TableCell>{role.description}</TableCell>
+      <TableCell className='w-[42%]'>{role.description}</TableCell>
       <TableCell>
-        <div className='flex items-center space-x-2'>
+        <div className='flex items-center gap-1'>
           {count ? (
             <>
               {role.assignedTo.slice(0, 3).map((user_id) => {
@@ -51,17 +51,17 @@ export const RoleList = ({
                 );
                 if (!user) return null;
                 return (
-                  <Avatar key={user_id} className='h-6 w-6'>
+                  <Avatar key={user_id} className='h-8 w-8 rounded-sm m-0'>
                     <AvatarImage
                       src={user.profile_image || undefined}
                       alt={user.first_name}
                     />
-                    <AvatarFallback>{user.first_name[0]}</AvatarFallback>
+                    <AvatarFallback className='h-8 w-8 rounded-sm m-0 bg-gray-200'>{user.first_name[0]}</AvatarFallback>
                   </Avatar>
                 );
               })}
               {count > 3 && (
-                <Badge variant='secondary'>+{count - 3} more</Badge>
+                <Badge variant='secondary' className='rounded-sm'>+{count - 3} more</Badge>
               )}
             </>
           ) : (

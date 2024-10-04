@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { type DateRangePlansType } from '@aglint/shared-types';
 import { type schema_find_availability_payload } from '@aglint/shared-utils/src/scheduling/apiSchemas';
 import { type z } from 'zod';
@@ -16,7 +15,6 @@ const findAvailability = async (
 ) => {
   parsedData.options.return_empty_slots_err = true;
   const cand_schedule = new CandidatesScheduling(parsedData.options);
-
   await cand_schedule.fetchDetails({
     params: {
       company_id: parsedData.recruiter_id,

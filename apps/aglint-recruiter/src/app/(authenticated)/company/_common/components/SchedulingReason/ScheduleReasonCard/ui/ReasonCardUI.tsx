@@ -1,8 +1,8 @@
-import { Check, Pencil, Plus, Trash2, X } from 'lucide-react';
+import { Input } from '@components/ui/input';
+import { Plus } from 'lucide-react';
 import { type Dispatch, type SetStateAction } from 'react';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UITextField from '@/components/Common/UITextField';
+import { UIButton } from '@/common/UIButton';
 type Props = {
   editingIndex: number | null;
   reasons: string[];
@@ -40,66 +40,59 @@ export const ReasonCardUI = ({
 
   return (
     <>
-      <ul className='space-y-2'>
+      <ul className='max-w-2xl space-y-2'>
         {reasons.map((reason, reasonIndex) => (
           <li
             key={reasonIndex}
-            className={`flex items-center justify-between rounded-md px-3 py-2 ${
-              editingIndex === reasonIndex
-                ? 'bg-gray-100'
-                : 'border border-gray-200'
-            } group`}
+            className='group flex items-center justify-between py-2'
           >
             {editingIndex === reasonIndex ? (
-              <UITextField
+              <Input
                 value={editingReason}
                 onChange={(e) => setEditingReason(e.target.value)}
-                className='h-8.5 mr-2 flex-grow'
+                className='mr-2 w-full flex-1'
                 // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={true}
               />
             ) : (
-              <span>{reason}</span>
+              <span className='text-sm font-normal'>{reason}</span>
             )}
             <div className='opacity-0 transition-opacity group-hover:opacity-100'>
               {editingIndex === reasonIndex ? (
                 <>
-                  <div className='flex flex-row items-center'>
+                  <div className='flex flex-row items-center space-x-2'>
                     <UIButton
-                      variant='ghost'
-                      size='sm'
-                      onClick={handleUpdate}
-                      className='mr-1 hover:bg-green-50'
-                    >
-                      <Check className='h-3.5 w-3.5' />
-                    </UIButton>
-                    <UIButton
-                      variant='ghost'
-                      size='sm'
+                      variant='outline'
                       onClick={() => setEditingIndex(null)}
                       className='hover:bg-red-50'
                     >
-                      <X className='h-3.5 w-3.5' />
+                      Cancel
+                    </UIButton>
+                    <UIButton
+                      onClick={handleUpdate}
+                      className='mr-1 hover:bg-green-50'
+                    >
+                      Save
                     </UIButton>
                   </div>
                 </>
               ) : (
                 <div>
                   <UIButton
-                    variant='ghost'
+                    variant='outline'
                     size='sm'
                     onClick={() => handleEdit(reasonIndex)}
                     className='mr-1'
                   >
-                    <Pencil className='h-3 w-3 font-semibold' />
+                    Edit
                   </UIButton>
                   <UIButton
-                    variant='ghost'
+                    variant='outline'
                     size='sm'
                     onClick={() => handleDelete(reasonIndex)}
                     className='text-red-500 hover:text-red-600'
                   >
-                    <Trash2 className='h-3 w-3' />
+                    Delete
                   </UIButton>
                 </div>
               )}
@@ -108,28 +101,28 @@ export const ReasonCardUI = ({
         ))}
         {isAddingNew && (
           <li className='flex items-center justify-between rounded-md bg-gray-100 px-3 py-2'>
-            <UITextField
+            <Input
               value={newReason}
               onChange={(e) => setNewReason(e.target.value)}
               placeholder='Enter new reason'
               className='h-8.5 mr-2 flex-grow'
             />
-            <div className='flex flex-row items-center'>
+            <div className='flex flex-row items-center space-x-2'>
               <UIButton
-                variant='ghost'
+                variant='outline'
                 size='sm'
                 onClick={handleAdd}
                 className='mr-1 hover:bg-green-50'
               >
-                <Check className='h-3.5 w-3.5' />
+                Save
               </UIButton>
               <UIButton
-                variant='ghost'
+                variant='outline'
                 size='sm'
                 onClick={() => setIsAddingNew(false)}
                 className='hover:bg-red-50'
               >
-                <X className='h-3.5 w-3.5' />
+                Cancel
               </UIButton>
             </div>
           </li>

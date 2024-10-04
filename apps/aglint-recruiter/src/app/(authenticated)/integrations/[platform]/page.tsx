@@ -1,6 +1,6 @@
 import React from 'react';
 
-import PlatformIntegrationSettingsComponent from '@/components/Integrations/PlatformIntegrationSettings';
+import PlatformIntegrationSettingsComponent from '../_common/components/PlatformIntegrationSettings';
 
 function PlatformIntegrationSettings() {
   return <PlatformIntegrationSettingsComponent />;

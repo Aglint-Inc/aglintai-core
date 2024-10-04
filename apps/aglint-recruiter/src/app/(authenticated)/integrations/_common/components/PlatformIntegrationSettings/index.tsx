@@ -9,11 +9,11 @@ import {
 } from '@components/ui/breadcrumb';
 import Link from 'next/link';
 
+import Seo from '@/common/Seo';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import Seo from '../../Common/Seo';
 import GreenhouseSettings from './Greenhouse';
 
 function PlatformIntegrationSettingsComponent() {
