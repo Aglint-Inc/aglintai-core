@@ -11,5 +11,7 @@ export type CustomInterviewTypesView = ViewType<
       profile_image: string;
       position: string;
     }[];
+    id: string;
+    name: string;
   }
 >;
