@@ -12,9 +12,9 @@ import {
 import { Label } from '@components/ui/label';
 import { type ReactNode } from 'react';
 
-import { Loader } from '@/components/Common/Loader';
+import { Loader } from '@/common/Loader';
+import { ShowCode } from '@/common/ShowCode';
 
-import { ShowCode } from '../../Common/ShowCode';
 import { type PopUpReasonTypes } from '../types';
 
 function ATSPopUps({

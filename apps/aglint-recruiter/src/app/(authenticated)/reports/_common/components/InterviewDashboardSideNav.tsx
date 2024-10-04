@@ -1,5 +1,5 @@
 'use client';
-import UITabs, { type UITabType } from '@/components/Common/UITabs';
+import UITabs, { type UITabType } from '@/common/UITabs';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
 export default function Component() {

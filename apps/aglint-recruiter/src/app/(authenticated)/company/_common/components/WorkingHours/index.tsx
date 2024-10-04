@@ -2,10 +2,10 @@ import type { SchedulingSettingType } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
 import {
   Page,
-  PageDescription,
-  PageHeader,
-  PageHeaderText,
-  PageTitle,
+  // PageDescription,
+  // PageHeader,
+  // PageHeaderText,
+  // PageTitle,
 } from '@components/layouts/page-header';
 import cloneDeep from 'lodash/cloneDeep';
 import { useEffect, useState } from 'react';
@@ -78,7 +78,7 @@ export default function WorkingHour() {
 
   return (
     <Page>
-      <PageHeader>
+      {/* <PageHeader>
         <PageHeaderText>
           <PageTitle>Working Hours</PageTitle>
           <PageDescription>
@@ -86,8 +86,8 @@ export default function WorkingHour() {
             Update the settings here changes will be saved automatically.
           </PageDescription>
         </PageHeaderText>
-      </PageHeader>
-      <div className='flex flex-col space-y-12'>
+      </PageHeader> */}
+      <div className='flex flex-col gap-8'>
         <TimeZone
           timeZone={initialData?.timeZone?.label}
           selectedTimeZone={selectedTimeZone}

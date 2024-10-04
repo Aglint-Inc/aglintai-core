@@ -2,8 +2,8 @@
 import { type SchedulingSettingType } from '@aglint/shared-types';
 import React, { type Dispatch, type SetStateAction } from 'react';
 
-import { UISwitch } from '@/components/Common/UISwitch';
-import UITypography from '@/components/Common/UITypography';
+import { UISwitch } from '@/common/UISwitch';
+import UITypography from '@/common/UITypography';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 type MembersMeta = SchedulingSettingType['debrief_defaults'];
