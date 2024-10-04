@@ -23,8 +23,8 @@ const Dates = () => {
   const { setDates } = useCreateRequestActions();
   const onChange = (newDateRange: DateRangeType | undefined) => {
     setDates({
-      start_date: newDateRange?.from?.toISOString() || null,
-      end_date: newDateRange?.to?.toISOString() || null,
+      start_date: newDateRange?.from?.toISOString() ?? null!,
+      end_date: newDateRange?.to?.toISOString() ?? null!,
     });
   };
   return (

@@ -38,7 +38,7 @@ const useRequestContext = ({ request_id }: RequestParams) => {
   );
 
   const requestDetails = useMemo(() => {
-    return Object.values(requests)
+    return Object.values(requests!)
       .flat()
       ?.find((request) => request.id === request_id);
   }, [requests, request_id]);
@@ -102,8 +102,9 @@ const useRequestContext = ({ request_id }: RequestParams) => {
 
 type RequestContextType = typeof useRequestContext;
 
-export const RequestContext =
-  createContext<ReturnType<RequestContextType>>(undefined);
+export const RequestContext = createContext<
+  ReturnType<RequestContextType> | undefined
+>(undefined);
 
 export const RequestProvider = (
   props: PropsWithChildren<Parameters<RequestContextType>['0']>,
