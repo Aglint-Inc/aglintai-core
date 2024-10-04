@@ -2,6 +2,7 @@ import type { TargetApiPayloadType } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { ScrollArea } from '@components/ui/scroll-area';
+import { useRequests } from '@requests/hooks';
 import { RefreshCcw } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
@@ -11,7 +12,6 @@ import { Loader } from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import UITypography from '@/components/Common/UITypography';
-import { useRequests } from '@/context/RequestsContext';
 import { mailSender } from '@/utils/mailSender';
 
 import { setEmailData, useSelfSchedulingFlowStore } from '../../store/store';

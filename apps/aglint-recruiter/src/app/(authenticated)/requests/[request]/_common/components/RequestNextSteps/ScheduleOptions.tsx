@@ -1,14 +1,14 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
-import { deleteRequestWorkflowAction } from '@requests/components/RequestProgress/utils';
+import { deleteRequestWorkflowAction } from '@request/components/RequestProgress/utils';
+import { useRequest } from '@request/hooks';
 import { useRequestAvailabilityDetails } from '@requests/hooks';
+import { useRequests } from '@requests/hooks';
 import React, { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
-import { useRequest } from '@/context/RequestContext';
-import { useRequests } from '@/context/RequestsContext';
 import { supabase } from '@/utils/supabase/client';
 
 import {
@@ -139,7 +139,7 @@ const ScheduleOptions = () => {
               if (scheduleWorkflowAction) {
                 await deleteRequestWorkflowAction(scheduleWorkflowAction.id);
                 await deleteRequestProgress(requestDetails.id);
-                await await request_workflow.refetch();
+                await request_workflow.refetch();
               }
               setCandidateAvailabilityDrawerOpen(true);
             }}

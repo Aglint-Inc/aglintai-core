@@ -4,7 +4,7 @@ import {
   createRequestProgressLogger,
   executeWorkflowAction,
 } from '@aglint/shared-utils';
-import { apiTargetToEvents } from '@requests/components/RequestProgress/utils/progressMaps';
+import { apiTargetToEvents } from '@request/components/RequestProgress/utils/progressMaps';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { findCandSelectedSlots } from '@/services/api-schedulings/findCandSelectedSlots';

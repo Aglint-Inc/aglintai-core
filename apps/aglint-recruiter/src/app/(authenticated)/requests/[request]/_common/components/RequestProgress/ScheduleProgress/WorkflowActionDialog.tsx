@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from '@components/ui/card';
 import { ScrollArea } from '@components/ui/scroll-area';
+import { useRequest } from '@request/hooks';
 import get from 'lodash/get';
 import { Terminal } from 'lucide-react';
 import React, { useState } from 'react';
@@ -20,7 +21,6 @@ import React, { useState } from 'react';
 import { useTenant } from '@/company/hooks';
 import { UIDivider } from '@/components/Common/UIDivider';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
-import { useRequest } from '@/context/RequestContext';
 import {
   availReminder,
   selfScheduleReminder,
