@@ -1,5 +1,4 @@
 import { useToast } from '@components/hooks/use-toast';
-import { useEffect } from 'react';
 import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -11,7 +10,6 @@ import { useModuleAndUsers } from '../../hooks/useModuleAndUsers';
 import {
   setIsAddMemberDialogOpen,
   setSelectedUsers,
-  setTrainingStatus,
   useModulesStore,
 } from '../../stores/store';
 
@@ -23,12 +21,11 @@ function AddMemberDialog() {
   );
   const selectedUsers = useModulesStore((state) => state.selectedUsers);
   const trainingStatus = useModulesStore((state) => state.trainingStatus);
-  const initalOpen = useModulesStore((state) => state.initalOpen);
   const { data: editModule } = useModuleAndUsers();
 
   const { mutateAsync, isPending } = api.interview_pool.add_users.useMutation();
 
-  const relations = editModule?.relations.filter((rel) => !rel.is_archived);
+  const relations = editModule.relations.filter((rel) => !rel.is_archived);
 
   const allMembers = members.filter(
     (user) =>
@@ -36,7 +33,7 @@ function AddMemberDialog() {
   );
 
   const onClickAddMember = async () => {
-    if (!editModule || selectedUsers.length === 0) return;
+    if (selectedUsers.length === 0) return;
     try {
       await mutateAsync({
         selectedUsers: selectedUsers,
@@ -58,14 +55,6 @@ function AddMemberDialog() {
       });
     }
   };
-
-  //add member button directly open dialog to add member
-  useEffect(() => {
-    if (initalOpen) {
-      setIsAddMemberDialogOpen(Boolean(initalOpen));
-      setTrainingStatus(initalOpen);
-    }
-  }, []);
 
   return (
     <UIDialog
@@ -110,11 +99,7 @@ function AddMemberDialog() {
           renderUsers={allMembers}
           selectedUsers={selectedUsers}
           setSelectedUsers={(users) => {
-            const updateUsers = users.map((user) => ({
-              ...user,
-              role: null,
-            })); // role is not used in the code
-            setSelectedUsers(updateUsers);
+            setSelectedUsers(users);
           }}
         />
       </div>

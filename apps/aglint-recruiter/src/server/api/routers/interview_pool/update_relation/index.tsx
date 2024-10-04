@@ -15,11 +15,11 @@ const mutation = async ({
   const db = createPrivateClient();
 
   await db
-    .from('interview_module')
+    .from('interview_module_relation')
     .update({ ...input })
     .eq('id', recruiter_id);
 };
 
-export const updateInterviewPool = privateProcedure
+export const updateInterviewPoolRelation = privateProcedure
   .input(schema)
   .mutation(mutation);
