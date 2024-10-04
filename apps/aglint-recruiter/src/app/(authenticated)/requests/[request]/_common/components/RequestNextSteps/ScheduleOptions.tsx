@@ -1,7 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
-import { deleteRequestWorkflowAction } from '@requests/components/RequestProgress/utils';
+import { deleteRequestWorkflowAction } from '@request/components/RequestProgress/utils';
 import { useRequestAvailabilityDetails } from '@requests/hooks';
 import React, { useMemo } from 'react';
 

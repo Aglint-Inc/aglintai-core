@@ -18,7 +18,6 @@ import {
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
-import RequestProgress from '@requests/components/RequestProgress';
 import {
   REQUEST_STATUS_LIST,
   REQUEST_TYPE_LIST,
@@ -65,6 +64,7 @@ import CandidateCancelRequest from '../RequestNextSteps/CandidateCancelRequest';
 import RequestDecline from '../RequestNextSteps/RequestDecline';
 import ScheduleOptions from '../RequestNextSteps/ScheduleOptions';
 import RequestNotes from '../RequestNotes';
+import RequestProgress from '../RequestProgress';
 import SelfSchedulingDrawer from '../SelfSchedulingDrawer';
 import UpdateDetails from '../UpdateDetails';
 

@@ -1,6 +1,6 @@
 import { type DatabaseTableInsert } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
-import { createRequestWorkflowAction } from '@requests/components/RequestProgress/utils';
+import { createRequestWorkflowAction } from '@request/components/RequestProgress/utils';
 import React from 'react';
 
 import { useTenant } from '@/company/hooks';
