@@ -1,12 +1,15 @@
-import { Alert, AlertTitle } from '@components/ui/alert';
+import { Alert, AlertDescription } from '@components/ui/alert';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog';
-import { AlertCircle, Loader2 } from 'lucide-react';
+import { ScrollArea } from '@components/ui/scroll-area';
+import { AlertCircle } from 'lucide-react';
 import React, { type Dispatch, type SetStateAction } from 'react';
+
+import { Loader } from '../Loader';
 
 interface Prop {
   isLoading: boolean;
@@ -37,22 +40,23 @@ export default function EmailPreviewPopover({
         </DialogHeader>
         <div className='h-[80vh]'>
           {!isHtml || isLoading ? (
-            <div className='flex h-full items-center justify-center'>
-              <Loader2 className='h-8 w-8 animate-spin' />
-            </div>
+            <Loader />
           ) : (
             <>
               <Alert className='mb-4'>
                 <AlertCircle className='h-4 w-4' />
-                <AlertTitle>
+                <AlertDescription>
                   This email contains sample data for preview purposes only.
-                </AlertTitle>
+                </AlertDescription>
               </Alert>
-              <iframe
-                className='h-[calc(100%-4rem)] w-full'
-                srcDoc={isHtml}
-                title='Preview Email'
-              />
+              <ScrollArea className='h-[calc(100vh-300px)] w-full rounded-lg'>
+                <iframe
+                  className='w-full'
+                  height='800px'
+                  srcDoc={isHtml}
+                  title='Preview Email'
+                />
+              </ScrollArea>
             </>
           )}
         </div>
