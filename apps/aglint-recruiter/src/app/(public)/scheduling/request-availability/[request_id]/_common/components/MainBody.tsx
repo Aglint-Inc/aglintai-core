@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import dayjs from 'dayjs';
 import { AlertCircle } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
-import { ConfirmedInvitePage } from 'src/app/_common/components/CandidateConfirm';
+import { ConfirmedInvitePage } from 'src/app/_common/components/CandidateConfirm/_common/components';
 import { type CandidateInviteType } from 'src/app/(public)/scheduling/invite/[id]/_common/store';
 
 import { Loader } from '@/components/Common/Loader';
