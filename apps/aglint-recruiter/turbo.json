@@ -24,6 +24,10 @@
         ".env"
       ]
     },
+    "type-check": {
+      "dependsOn": [],
+      "inputs": ["$TURBO_DEFAULT$"]
+    },
     "test": {
       "inputs": ["$TURBO_DEFAULT$", ".env.test.local", ".env.test", ".env"]
     }
