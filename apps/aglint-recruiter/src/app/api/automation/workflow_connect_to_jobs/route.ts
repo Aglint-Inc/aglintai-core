@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-export async function POST(req) {
+export async function POST(req: Request) {
   try {
     const { recruiter_id } = (await req.json()) as {
       recruiter_id: string;
@@ -18,7 +18,7 @@ export async function POST(req) {
       throw new Error('workflows or jobs is not available ');
 
     const filteredWorkflowsIds = workflows
-      .filter((workflow) => startsWithDigitAndDot(workflow.title))
+      .filter((workflow) => startsWithDigitAndDot(workflow.title ?? ''))
       .map((workflow) => workflow.id);
 
     const jobIds = jobs.map((job) => job.id);
@@ -26,6 +26,7 @@ export async function POST(req) {
     const dataToInsert: insertValue[] = [];
 
     filteredWorkflowsIds.forEach((workflow_id) => {
+      if (!workflow_id) return;
       jobIds.forEach((job_id) => {
         dataToInsert.push({ job_id, workflow_id });
       });
@@ -37,7 +38,7 @@ export async function POST(req) {
       { message: 'success', data: dataToInsert },
       { status: 200 },
     );
-  } catch (err) {
+  } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 400 });
   }
 }
@@ -52,15 +53,16 @@ const getAllJobs = async (recruiter_id: string) => {
   );
 };
 
-const getWorkflow = async (recruiter_id) => {
+const getWorkflow = async (recruiter_id: string) => {
   const supabaseAdmin = getSupabaseServer();
-  const { data, error } = await supabaseAdmin
-    .from('workflow_view')
-    .select('id,title')
-    .order('created_at')
-    .eq('recruiter_id', recruiter_id);
-  if (error) throw new Error(error.message);
-  return data;
+  const workflow_view = supabaseWrap(
+    await supabaseAdmin
+      .from('workflow_view')
+      .select('id,title')
+      .order('created_at')
+      .eq('recruiter_id', recruiter_id),
+  );
+  return workflow_view;
 };
 
 type insertValue = { workflow_id: string; job_id: string };
@@ -74,6 +76,6 @@ const joinWorkflow = async (data: insertValue[]) => {
   if (error) throw new Error(error.message);
 };
 
-function startsWithDigitAndDot(str) {
+function startsWithDigitAndDot(str: string) {
   return /^\d\./.test(str);
 }

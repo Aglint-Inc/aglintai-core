@@ -5,7 +5,7 @@ import {
   sendSelfScheduleReminder,
 } from '@/utils/automation/utils/reminder_selfSchedule_functions';
 
-export async function POST(req) {
+export async function POST(req: Request) {
   const { request_id, target_api } = await req.json();
   const filter_id = await getFilterId(request_id);
   await sendSelfScheduleReminder(filter_id, target_api);
@@ -14,7 +14,7 @@ export async function POST(req) {
       { message: 'self schedule reminder sent successfully' },
       { status: 200 },
     );
-  } catch (e) {
+  } catch (e: any) {
     return NextResponse.json({ message: e.message }, { status: 400 });
   }
 }

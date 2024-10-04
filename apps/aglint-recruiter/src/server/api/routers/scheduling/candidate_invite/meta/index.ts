@@ -47,7 +47,7 @@ const getScheduleDetails = async (
   const { data: sch, error: errSch } = await db
     .from('applications')
     .select(
-      '*, public_jobs!inner(id,job_title,recruiter_id),candidates!inner(*,recruiter!inner(id,logo,name)),candidate_files(id,file_url,candidate_id,resume_json,type),interview_filter_json!inner(*)',
+      '*, public_jobs!inner(id,job_title,recruiter_id),candidates!inner(*,recruiter!inner(logo,name)),candidate_files(id,file_url,candidate_id,resume_json,type),interview_filter_json!inner(*)',
     )
     .eq('id', application_id)
     .eq('interview_filter_json.id', filter_id)
@@ -80,10 +80,13 @@ const getInterviewSessionsMeetings = async (session_ids: string[]) => {
 
   const maxDurationInDays = Math.floor((maxBreakDuration + 1440) / 1440);
 
-  const resMeetings = intSes.map((session) => ({
-    interview_session: session,
-    interview_meeting: session.interview_meeting,
-  }));
+  const resMeetings = intSes.map((session) => {
+    const { interview_meeting, ...interview_session } = session;
+    return {
+      interview_session,
+      interview_meeting,
+    };
+  });
 
   return { resMeetings, maxDurationInDays };
 };

@@ -10,7 +10,7 @@ import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
 
 import { Loader } from '../../../../../../../components/Common/Loader';
-import { ConfirmedInvitePage } from '../../../../../../_common/components/CandidateConfirm';
+import { ConfirmedInvitePage } from '../../../../../../_common/components/CandidateConfirm/_common/components';
 import { useInviteMeta } from '../hooks/useInviteMeta';
 import {
   setDetailPopup,

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-export async function POST(req) {
+export async function POST(req: Request) {
   const supabaseAdmin = getSupabaseServer();
 
   const { user_ids }: { user_ids: string[] } = await req.json();
@@ -15,7 +15,7 @@ export async function POST(req) {
     if (error) throw new Error(error.message);
 
     return NextResponse.json({ message: 'success' }, { status: 200 });
-  } catch (e) {
+  } catch (e: any) {
     return NextResponse.json({ message: e.message }, { status: 400 });
   }
 }
