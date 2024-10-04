@@ -14,8 +14,7 @@ export const fetchMeetingsInfo = async (meeting_ids: string[]) => {
       .select(
         'id,recruiter_user!inner(email,schedule_auth,user_id,scheduling_settings)',
       )
-      .in('id', meeting_ids)
-      .throwOnError(),
+      .in('id', meeting_ids),
   );
   if (!meetings) {
     throw new CApiError('SERVER_ERROR', 'Meetings not found');

@@ -1,6 +1,5 @@
 import { customSchedulingSettingsUserSchema } from '@aglint/shared-types/src/db/common.zod';
 import {} from '@aglint/shared-types/src/db/tables/recruiter.types';
-import { type CustomSchedulingSettingsUser } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
