@@ -24,9 +24,5 @@
       "dependsOn": [],
       "outputLogs": "errors-only"
     }
-  },
-  "remoteCache": {
-    "enabled": true,
-    "signature": true
   }
 }
