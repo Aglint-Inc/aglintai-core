@@ -30,9 +30,9 @@ export function CandidateScheduleCard({
           </div>
         )}
         <div className='flex items-center justify-start space-x-4'>
-          <span className='text-neutral-600'>Total Duration</span>
+          <span className='text-muted-foreground'>Total Duration</span>
           <div className='flex items-center space-x-2'>
-            <Clock className='h-4 w-4 text-neutral-500' />
+            <Clock className='h-4 w-4 text-muted-foreground' />
             <span>{textDuration}</span>
           </div>
         </div>

@@ -1,9 +1,17 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
-import { Calendar } from 'lucide-react';
+import {
+  Section,
+  SectionActions,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
+import { ScrollArea } from '@components/ui/scroll-area';
+import { Calendar, ChevronDown, ChevronUp } from 'lucide-react';
+import { useState } from 'react';
 
 import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
-import UISectionCard from '@/components/Common/UISectionCard';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
 import {
@@ -19,28 +27,45 @@ export const UpcomingInterview = () => {
   const interviews = all_meetings?.length
     ? all_meetings.filter((meeting) => meeting.status === 'confirmed')
     : [];
-
+  const [isExpanded, setIsExpanded] = useState(true);
   return (
     <>
-      <UISectionCard title='Upcoming Interviews' type='compact'>
-        {interviews?.length > 0 ? (
-          <div className='space-y-4'>
-            {interviews.map((interview) => (
-              <List key={interview.id} interview={interview} />
-            ))}
-          </div>
-        ) : (
-          <GlobalEmpty
-            icon={
-              <Calendar
-                strokeWidth={2}
-                className='h-6 w-6 text-muted-foreground'
+      <Section>
+        <SectionHeader>
+          <SectionHeaderText>
+            <SectionTitle>Upcoming Interviews</SectionTitle>
+          </SectionHeaderText>
+          <SectionActions>
+            <UIButton size='sm' variant='ghost'>
+              View All
+            </UIButton>
+            {isExpanded ? (
+              <ChevronUp size={20} onClick={() => setIsExpanded(false)} />
+            ) : (
+              <ChevronDown size={20} onClick={() => setIsExpanded(true)} />
+            )}
+          </SectionActions>
+        </SectionHeader>
+        {isExpanded && (
+          <ScrollArea className='h-[300px] gap-4'>
+            {interviews?.length > 0 ? (
+              interviews.map((interview) => (
+                <List key={interview.id} interview={interview} />
+              ))
+            ) : (
+              <GlobalEmpty
+                icon={
+                  <Calendar
+                    strokeWidth={2}
+                    className='h-6 w-6 text-muted-foreground'
+                  />
+                }
+                description='No upcoming interviews found'
               />
-            }
-            description='No upcoming interviews found'
-          />
+            )}
+          </ScrollArea>
         )}
-      </UISectionCard>
+      </Section>
     </>
   );
 };

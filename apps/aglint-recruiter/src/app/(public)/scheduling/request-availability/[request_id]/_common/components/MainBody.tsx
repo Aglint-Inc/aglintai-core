@@ -95,12 +95,10 @@ function CandidateAvailability() {
     return (
       <ConfirmedInvitePage
         avail_request_id={candidateRequestAvailability.id}
-        //@ts-ignore // remove after nullable fix
         candidate={candidateRequestAvailability.applications.candidates}
         meetings={meetingsAndRounds.meetings}
         rounds={meetingsAndRounds.rounds}
         recruiter={{
-          id: candidateRequestAvailability?.recruiter_id,
           name: candidateRequestAvailability?.recruiter.name,
           logo: candidateRequestAvailability?.recruiter.logo,
         }}
@@ -172,7 +170,7 @@ function Header({
         ) : null}
       </div>
       <div
-        className={`mb-8 flex items-center gap-2 ${isSubmitted ? 'text-green-500' : 'text-neutral-500'}'} `}
+        className={`mb-8 flex items-center gap-2 ${isSubmitted ? 'text-green-500' : 'text-muted-foreground'}'} `}
       >
         {isSubmitted ? (
           <></>

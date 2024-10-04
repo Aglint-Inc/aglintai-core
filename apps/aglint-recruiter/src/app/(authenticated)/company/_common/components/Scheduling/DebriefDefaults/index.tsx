@@ -1,8 +1,8 @@
 /* eslint-disable security/detect-object-injection */
 import { type SchedulingSettingType } from '@aglint/shared-types';
-import { Switch } from '@components/ui/switch';
 import React, { type Dispatch, type SetStateAction } from 'react';
 
+import { UISwitch } from '@/components/Common/UISwitch';
 import UITypography from '@/components/Common/UITypography';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
@@ -34,7 +34,8 @@ const Toggles = ({ value, setValue }: DebriefDefaultsProps) => {
       acc[key] = (
         <>
           <div className='flex items-center gap-3'>
-            <Switch
+            <UISwitch
+              size='sm'
               checked={value}
               onCheckedChange={() =>
                 setValue((prev) => ({
@@ -43,7 +44,9 @@ const Toggles = ({ value, setValue }: DebriefDefaultsProps) => {
                 }))
               }
             />
-            <UITypography>{capitalizeAll(key)}</UITypography>
+            <UITypography className='text-sm'>
+              {capitalizeAll(key)}
+            </UITypography>
           </div>
         </>
       );

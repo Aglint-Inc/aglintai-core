@@ -47,7 +47,7 @@ const Filters = memo(() => {
         search={{
           value: search,
           setValue: (newValue) => setFilters({ search: newValue }),
-          placeholder: 'Search for a workflow',
+          placeholder: 'Search for an automation',
         }}
       />
     ),

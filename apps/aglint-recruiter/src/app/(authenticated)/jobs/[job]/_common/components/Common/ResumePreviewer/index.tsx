@@ -91,7 +91,7 @@ const ResumePreviewer = ({
             <div className='absolute inset-0 z-10'>
               <ResumeEmbed url={url} />
             </div>
-            <div className='absolute inset-0 z-0 flex items-center justify-center bg-neutral-100'>
+            <div className='justify-centerbg-muted absolute inset-0 z-0 flex items-center'>
               <Loader />
             </div>
           </div>

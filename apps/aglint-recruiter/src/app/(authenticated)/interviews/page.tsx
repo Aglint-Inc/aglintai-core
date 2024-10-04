@@ -30,8 +30,10 @@ function InterviewsPage() {
         sidebarWidth={460}
         sidebar={
           <>
-            <MyInterviews />
-            <RecentCompletedInterviews />
+            <div className='flex flex-col space-y-4'>
+              <MyInterviews />
+              <RecentCompletedInterviews />
+            </div>
           </>
         }
         filter={<UpComingInterviewFilters />}

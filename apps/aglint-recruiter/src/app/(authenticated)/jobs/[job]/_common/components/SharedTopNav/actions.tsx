@@ -83,7 +83,7 @@ const Sync = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <div className='flex flex-shrink-0 items-center'>
-            <Clock className='mr-1 h-4 w-4 text-neutral-500' />
+            <Clock className='mr-1 h-4 w-4 text-muted-foreground' />
           </div>
         </TooltipTrigger>
         <TooltipContent>

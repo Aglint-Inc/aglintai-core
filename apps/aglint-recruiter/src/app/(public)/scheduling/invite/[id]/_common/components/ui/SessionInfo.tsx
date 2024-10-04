@@ -23,26 +23,26 @@ export function SessionInfo({
       <div className='flex items-center gap-1'>
         <div className='flex h-5 w-5 items-center justify-center'>
           {slotInterviewtypeIcon || (
-            <Users className='h-5 w-5 text-neutral-500' />
+            <Users className='h-5 w-5 text-muted-foreground' />
           )}
         </div>
         <span className='text-sm'>{textSessionName}</span>
       </div>
       <div className='flex items-center gap-1'>
-        <Timer className='h-4 w-4 text-neutral-500' />
+        <Timer className='h-4 w-4 text-muted-foreground' />
         <span className='text-sm'>{textSessionDuration}</span>
       </div>
       <div className='flex items-center gap-1'>
         {slotMeetingTypeIcon || (
           <>
             {iconName === 'videocam' && (
-              <Video className='h-4 w-4 text-neutral-500' />
+              <Video className='h-4 w-4 text-muted-foreground' />
             )}
             {iconName === 'call' && (
-              <Phone className='h-4 w-4 text-neutral-500' />
+              <Phone className='h-4 w-4 text-muted-foreground' />
             )}
             {iconName === 'person' && (
-              <User className='h-4 w-4 text-neutral-500' />
+              <User className='h-4 w-4 text-muted-foreground' />
             )}
           </>
         )}

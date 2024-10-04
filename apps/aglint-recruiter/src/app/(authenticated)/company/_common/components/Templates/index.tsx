@@ -366,7 +366,7 @@ function SchedulerEmailTemps() {
                                 ? 'default'
                                 : 'outline'
                             }
-                            className={`my-1 h-16 w-[330px] justify-start text-left ${emailPath.type === temp_email ? 'border bg-white text-neutral-900 hover:bg-white' : 'bg-gray-50 text-neutral-900 hover:bg-white'}`}
+                            className={`my-1 h-16 w-[330px] justify-start text-left ${emailPath.type === temp_email ? 'border bg-white text-foreground hover:bg-white' : 'bg-gray-50 text-foreground hover:bg-white'}`}
                             onClick={() => {
                               if (temp_email !== emailPath.type) {
                                 setTipTapLoder(true);
@@ -378,12 +378,12 @@ function SchedulerEmailTemps() {
                           >
                             <div className='w-full'>
                               <div
-                                className={`line-clamp-2 font-semibold ${emailPath.type === temp_email ? 'text-neutral-900' : 'text-neutral-900'}`}
+                                className={`line-clamp-2 font-semibold ${emailPath.type === temp_email ? 'text-foreground' : 'text-foreground'}`}
                               >
                                 {emailCopy && emailCopy.heading}
                               </div>
                               <div
-                                className={`line-clamp-2 text-sm ${emailPath.type === temp_email ? 'text-neutral-500' : 'text-neutral-500'}`}
+                                className={`line-clamp-2 text-sm ${emailPath.type === temp_email ? 'text-muted-foreground' : 'text-muted-foreground'}`}
                               >
                                 {emailCopy &&
                                   emailCopy.description &&
