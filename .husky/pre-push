@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-npm run lint && type-check
+npm run lint && npm run  type-check
