@@ -118,6 +118,7 @@ const EditBasicInfoDialog = ({
         company_website: recruiterLocal.company_website,
         socials: recruiterLocal.socials,
         logo,
+        employee_size: recruiterLocal.employee_size,
       });
       setEditDialog(false);
     } catch (e: any) {

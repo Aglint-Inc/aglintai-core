@@ -8,7 +8,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { PopoverClose } from '@radix-ui/react-popover';
 import { Coffee, Edit } from 'lucide-react';
 import {
   type Dispatch,
@@ -165,23 +164,21 @@ const EditBreakTime = ({
           }
         />
       </div>
-      <PopoverClose>
-        <Button
-          className='w-full'
-          onClick={async () => {
-            if (isStartTimeLessThanEndTime(localBreakTime)) {
-              await handleUpdateAndClose(localBreakTime);
-            } else {
-              toast({
-                variant: 'destructive',
-                title: 'End time must greater than start time',
-              });
-            }
-          }}
-        >
-          Update
-        </Button>
-      </PopoverClose>
+      <Button
+        className='w-full'
+        onClick={async () => {
+          if (isStartTimeLessThanEndTime(localBreakTime)) {
+            await handleUpdateAndClose(localBreakTime);
+          } else {
+            toast({
+              variant: 'destructive',
+              title: 'End time must greater than start time',
+            });
+          }
+        }}
+      >
+        Update
+      </Button>
     </div>
   );
 };
