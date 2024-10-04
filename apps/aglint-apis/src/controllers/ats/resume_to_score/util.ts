@@ -1,4 +1,4 @@
-import {supabase} from './config';
+import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import {PromptResponse, PromptSkillResponse} from './types';
 
 export const arrayToPrompt = (header: string, content: string[]) => {
@@ -114,7 +114,7 @@ export const getResponse = async ({
 
 export const saveToDB = async (data: any, id: string) => {
   if (id.trim() === '') return false;
-  const {error} = await supabase
+  const {error} = await supabaseAdmin
     .from('applications')
     .update({processing_status: 'success', ...data})
     .eq('id', id);
@@ -123,7 +123,7 @@ export const saveToDB = async (data: any, id: string) => {
 
 // export const updateResumeJsonDB = async (json_resume: any, id: string) => {
 //   if (id.trim() === '') return false;
-//   const {error} = await supabase
+//   const {error} = await supabaseAdmin
 //     .from('applications')
 //     .update({json_resume})
 //     .eq('application_id', id);
@@ -157,13 +157,13 @@ export const calculateAndSave = async (
       jobStability: number;
       careerGrowth: number;
     };
-    relevance: {};
-    reasoning: {} | null;
+    relevance: object;
+    reasoning: object | null;
   },
   app_id: string
 ) => {
   if (!in_score_json) return false;
-  const {error} = await supabase.rpc('calculate_resume_score', {
+  const {error} = await supabaseAdmin.rpc('calculate_resume_score', {
     in_score_json,
     app_id,
   });
@@ -177,7 +177,7 @@ export const logToken = async (
   },
   task: 'scoring' | 'reasoning'
 ) => {
-  const {error} = await supabase.from('rp_token_usage').insert({
+  const {error} = await supabaseAdmin.from('rp_token_usage').insert({
     application_id,
     task,
     token_used_json: token,
@@ -193,7 +193,7 @@ export const logs = async (data: any) => {
     },
     data.application_id
   );
-  const {error} = await supabase.from('rp_logs').insert({...data});
+  const {error} = await supabaseAdmin.from('rp_logs').insert({...data});
   if (error) {
     // console.error(error);
   }
