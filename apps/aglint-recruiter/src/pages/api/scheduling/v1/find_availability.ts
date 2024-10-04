@@ -20,7 +20,7 @@ const findAvailability = async (
 
   await cand_schedule.fetchDetails({
     params: {
-      company_id: parsedData.recruiter_id,
+      company_id: parsedData.recruiter_id.trimmer(),
       req_user_tz: parsedData.candidate_tz,
       session_ids: parsedData.session_ids,
       start_date_str: parsedData.start_date_str,
