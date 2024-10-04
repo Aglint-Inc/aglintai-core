@@ -1,4 +1,3 @@
-import { keepPreviousData } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
 import { getCityStateCountry } from '@/job/utils/getCityStateCountry';
@@ -48,7 +47,6 @@ export const useApplications = () => {
 
   const query = api.jobs.job.applications.read.useInfiniteQuery(payload, {
     ...opts,
-    placeholderData: keepPreviousData,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
 

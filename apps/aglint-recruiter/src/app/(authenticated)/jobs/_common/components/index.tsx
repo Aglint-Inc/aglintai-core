@@ -30,17 +30,17 @@ import {
 import ROUTES from '@/utils/routing/routes';
 
 import { STATE_LEVER_DIALOG } from '../constants';
+import type { Job } from '../types';
 import { EmptyJob } from './AddJobWithIntegrations/EmptyJob';
 import LeverModalComp from './AddJobWithIntegrations/LeverModal';
-import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
+import FilterJobDashboard, { type useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';
 
-export const Body = () => {
+export const Body = ({ jobs }: { jobs: Job[] }) => {
   const {
     jobs: { data },
     initialLoad,
   } = useJobs();
-  const { jobs } = useJobFilterAndSort(data ?? []);
   const { ifAllowed } = useRolesAndPermissions();
 
   return (
@@ -147,22 +147,16 @@ export function AddJob() {
   );
 }
 
-export const Filter = () => {
-  const {
-    jobs: { data },
-  } = useJobs();
-
-  const {
-    filterOptions,
-    filterValues,
-    setFilterValues,
-    setSort,
-    sortOptions,
-    sortValue,
-    searchText,
-    setSearchText,
-  } = useJobFilterAndSort(data ?? []);
-
+export const Filter = ({
+  filterOptions,
+  filterValues,
+  setFilterValues,
+  setSort,
+  sortOptions,
+  sortValue,
+  searchText,
+  setSearchText,
+}: ReturnType<typeof useJobFilterAndSort>) => {
   return (
     <FilterJobDashboard
       filterOptions={filterOptions}
