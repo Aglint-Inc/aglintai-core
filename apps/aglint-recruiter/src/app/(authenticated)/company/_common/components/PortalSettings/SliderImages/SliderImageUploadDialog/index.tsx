@@ -2,8 +2,8 @@ import { DialogDescription } from '@components/ui/dialog';
 import { type Dispatch, type SetStateAction, useState } from 'react';
 
 import { usePortalSettings } from '@/company/hooks/usePortalSettings';
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
+import { UIButton } from '@/common/UIButton';
+import UIDialog from '@/common/UIDialog';
 
 import ImagesUpload from './ImagesUpload';
 

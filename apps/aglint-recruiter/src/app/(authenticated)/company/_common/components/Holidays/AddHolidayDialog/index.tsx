@@ -12,10 +12,10 @@ import { CalendarIcon } from 'lucide-react';
 import { type Dispatch, type SetStateAction, useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
-import UISelectDropDown from '@/components/Common/UISelectDropDown';
-import UITextField from '@/components/Common/UITextField';
+import { UIButton } from '@/common/UIButton';
+import UIDialog from '@/common/UIDialog';
+import UISelectDropDown from '@/common/UISelectDropDown';
+import UITextField from '@/common/UITextField';
 import { api } from '@/trpc/client';
 
 type SpecificLocationType = 'all_locations' | 'specific_locations';

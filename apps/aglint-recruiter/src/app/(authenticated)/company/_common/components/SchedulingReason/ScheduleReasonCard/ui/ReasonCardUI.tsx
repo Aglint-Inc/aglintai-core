@@ -1,8 +1,8 @@
 import { Check, Pencil, Plus, Trash2, X } from 'lucide-react';
 import { type Dispatch, type SetStateAction } from 'react';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UITextField from '@/components/Common/UITextField';
+import { UIButton } from '@/common/UIButton';
+import UITextField from '@/common/UITextField';
 type Props = {
   editingIndex: number | null;
   reasons: string[];

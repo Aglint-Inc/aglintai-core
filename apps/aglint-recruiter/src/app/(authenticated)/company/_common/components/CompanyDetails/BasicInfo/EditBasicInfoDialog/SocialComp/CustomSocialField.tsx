@@ -2,7 +2,7 @@ import { Input } from '@components/ui/input';
 import { Trash2 } from 'lucide-react';
 import React, { useState } from 'react';
 
-import { UIButton } from '@/components/Common/UIButton';
+import { UIButton } from '@/common/UIButton';
 
 interface CustomSocialFieldProps {
   socialName: string;

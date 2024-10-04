@@ -9,7 +9,7 @@ import {
 } from '@components/ui/dialog';
 
 import { useDepartmentsUsage } from '@/company/hooks';
-import { Loader } from '@/components/Common/Loader';
+import { Loader } from '@/common/Loader';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 function DeleteDepartmentsDialog({

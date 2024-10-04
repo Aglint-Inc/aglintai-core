@@ -1,7 +1,7 @@
 'use client';
 import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
 
-import { Integrations, IntegrationsHeader } from '@/components/Integrations';
+import { Integrations, IntegrationsHeader } from './_common/components';
 
 function IntegrationsPage() {
   return (

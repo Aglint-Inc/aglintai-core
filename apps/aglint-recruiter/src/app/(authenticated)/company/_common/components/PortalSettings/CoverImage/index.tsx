@@ -5,8 +5,8 @@ import { type ChangeEvent, type DragEvent, useRef, useState } from 'react';
 
 import { useFlags } from '@/company/hooks/useFlags';
 import { usePortalSettings } from '@/company/hooks/usePortalSettings';
-import { Loader } from '@/components/Common/Loader';
-import UISectionCard from '@/components/Common/UISectionCard';
+import { Loader } from '@/common/Loader';
+import UISectionCard from '@/common/UISectionCard';
 
 export function CoverImage() {
   const { banner_image } = useFlags();

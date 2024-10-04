@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useTenantMembers } from '@/company/hooks';
 import { useMemberUpdate } from '@/company/hooks/useMemberUpdate';
 import { useRoleData } from '@/company/hooks/useRoleAndPermissionsHook';
-import UIDialog from '@/components/Common/UIDialog';
+import UIDialog from '@/common/UIDialog';
 
 import { RoleEditDialogUI } from './ui/RoleEditDialogUI';
 

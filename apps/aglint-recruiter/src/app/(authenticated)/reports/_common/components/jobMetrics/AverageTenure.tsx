@@ -1,6 +1,6 @@
 import { Skeleton } from '@components/ui/skeleton';
 
-import UISectionCard from '@/components/Common/UISectionCard';
+import UISectionCard from '@/common/UISectionCard';
 
 import { useCandidateExp } from '../../hook/job/jobMatrix';
 

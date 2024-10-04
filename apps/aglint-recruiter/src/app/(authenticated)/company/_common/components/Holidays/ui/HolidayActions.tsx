@@ -1,7 +1,7 @@
 import { Plus } from 'lucide-react';
 import React from 'react';
 
-import { UIButton } from '@/components/Common/UIButton';
+import { UIButton } from '@/common/UIButton';
 
 type Props = Parameters<typeof UIButton>[0];
 

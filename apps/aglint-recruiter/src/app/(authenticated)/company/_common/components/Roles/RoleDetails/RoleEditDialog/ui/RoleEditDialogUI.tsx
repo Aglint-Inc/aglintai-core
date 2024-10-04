@@ -6,7 +6,7 @@ import { AlertCircle, ChevronDown } from 'lucide-react';
 import { type Dispatch, type SetStateAction } from 'react';
 
 import type { useTenantMembers } from '@/company/hooks';
-import UITextField from '@/components/Common/UITextField';
+import UITextField from '@/common/UITextField';
 
 type props = {
   selectedMember: ReturnType<typeof useTenantMembers>['members'][number];

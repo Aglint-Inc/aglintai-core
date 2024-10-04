@@ -12,7 +12,7 @@ import { ArrowDownIcon } from 'lucide-react';
 import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 import { useInterviewer_upcoming } from 'src/app/(authenticated)/reports/_common/hook/interview/interviewerMatrix.hook';
 
-import UISectionCard from '@/components/Common/UISectionCard';
+import UISectionCard from '@/common/UISectionCard';
 
 export default function InterviewersTable() {
   const { data, isFetching } = useInterviewer_upcoming();

@@ -2,7 +2,7 @@ import type { SchedulingSettingType } from '@aglint/shared-types';
 import { Checkbox } from '@components/ui/checkbox';
 import type { Dispatch } from 'react';
 
-import TimePicker from '@/components/Common/TimePicker';
+import TimePicker from '@/common/TimePicker';
 import { capitalize } from '@/utils/text/textUtils';
 
 function DayWithTime({

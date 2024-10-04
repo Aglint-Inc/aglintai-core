@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import { useFlags } from '@/company/hooks/useFlags';
 import { usePortalSettings } from '@/company/hooks/usePortalSettings';
-import UISectionCard from '@/components/Common/UISectionCard';
+import UISectionCard from '@/common/UISectionCard';
 
 import { SliderImageUploadDialog } from './SliderImageUploadDialog';
 

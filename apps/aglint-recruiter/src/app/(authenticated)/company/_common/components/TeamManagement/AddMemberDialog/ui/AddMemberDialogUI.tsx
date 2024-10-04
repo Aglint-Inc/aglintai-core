@@ -20,8 +20,8 @@ import type {
   useTenantOfficeLocations,
   useTenantRoles,
 } from '@/company/hooks';
-import { UIButton } from '@/components/Common/UIButton';
-import UITextField from '@/components/Common/UITextField';
+import { UIButton } from '@/common/UIButton';
+import UITextField from '@/common/UITextField';
 import { type useAllDepartments } from '@/queries/departments';
 import { api } from '@/trpc/client';
 import { numberToText } from '@/utils/number/numberToText';

@@ -11,7 +11,7 @@ import type {
   useRoleData,
   useRoleDataSetter,
 } from '@/company/hooks/useRoleAndPermissionsHook';
-import UISectionCard from '@/components/Common/UISectionCard';
+import UISectionCard from '@/common/UISectionCard';
 import { allPermissions } from '@/constant/role_and_permissions';
 import { useRolesAndPermissions as useRolesAndPermissionsContext } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSearchQuery } from '@/hooks/useSearchQuery';

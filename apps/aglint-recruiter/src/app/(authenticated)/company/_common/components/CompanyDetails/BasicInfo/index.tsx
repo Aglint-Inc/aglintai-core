@@ -2,8 +2,8 @@ import { SquarePen } from 'lucide-react';
 import { useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
-import { UIButton } from '@/components/Common/UIButton';
-import UISectionCard from '@/components/Common/UISectionCard';
+import { UIButton } from '@/common/UIButton';
+import UISectionCard from '@/common/UISectionCard';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 
 import EditBasicInfoDialog from './EditBasicInfoDialog';

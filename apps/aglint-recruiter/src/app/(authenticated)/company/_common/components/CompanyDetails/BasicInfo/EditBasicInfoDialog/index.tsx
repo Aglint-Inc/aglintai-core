@@ -14,11 +14,11 @@ import {
 } from 'react';
 
 import { useTenant } from '@/company/hooks';
-import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
-// import ImageUpload from '@/components/Common/ImageUpload';
-import UISelectDropDown from '@/components/Common/UISelectDropDown';
+import ImageUploadManual from '@/common/ImageUpload/ImageUploadManual';
+import { UIButton } from '@/common/UIButton';
+import UIDialog from '@/common/UIDialog';
+// import ImageUpload from '@/common/ImageUpload';
+import UISelectDropDown from '@/common/UISelectDropDown';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';

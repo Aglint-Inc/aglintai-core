@@ -19,8 +19,8 @@ import {
   useState,
 } from 'react';
 
-import TimePicker from '@/components/Common/TimePicker';
-import UISectionCard from '@/components/Common/UISectionCard';
+import TimePicker from '@/common/TimePicker';
+import UISectionCard from '@/common/UISectionCard';
 
 interface BreakTime {
   start_time: string;

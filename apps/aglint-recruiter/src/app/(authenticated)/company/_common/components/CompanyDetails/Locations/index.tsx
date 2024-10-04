@@ -2,9 +2,9 @@ import { MapPin, Plus } from 'lucide-react';
 import { useState } from 'react';
 
 import { useTenantOfficeLocations } from '@/company/hooks';
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
-import { UIButton } from '@/components/Common/UIButton';
-import UISectionCard from '@/components/Common/UISectionCard';
+import GlobalEmpty from '@/common/GlobalEmpty';
+import { UIButton } from '@/common/UIButton';
+import UISectionCard from '@/common/UISectionCard';
 import timeZone from '@/utils/timeZone';
 
 import AddAndEditLocationDialog from './AddAndEditLocationDialog';
