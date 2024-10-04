@@ -19,6 +19,10 @@
     },
     "build:shared-utils": {
       "outputLogs": "new-only"
+    },
+    "format": {
+      "dependsOn": [],
+      "outputLogs": "errors-only"
     }
   }
 }

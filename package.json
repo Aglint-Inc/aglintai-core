@@ -8,9 +8,9 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
-    "lint": "turbo run lint",
+    "format": "turbo run format --",
+    "lint": "turbo run lint --",
     "type-check": "turbo run type-check",
-    "format": "turbo run format",
     "test": "turbo run test",
     "supabase:dev": "turbo run supabase:dev",
     "supabase:local": "turbo run supabase:local",
@@ -25,5 +25,13 @@
   "packageManager": "npm@10.5.2",
   "engines": {
     "node": "^18.18.0 || >=20.0.0"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": [
+      "npm run format"
+    ],
+    "*.json": [
+      "npm run format"
+    ]
   }
 }

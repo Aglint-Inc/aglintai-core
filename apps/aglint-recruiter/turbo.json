@@ -32,7 +32,6 @@
       "outputLogs": "new-only"
     },
     "format": {
-      "dependsOn": [],
       "inputs": ["$TURBO_DEFAULT$"]
     },
     "test": {
