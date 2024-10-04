@@ -22,7 +22,7 @@ function MessageIndividual({ chat }: { chat: ChatType }) {
   const replaceLinks =
     chat?.metadata
       ?.flatMap((ele) => ele?.links?.map((link) => link))
-      .filter(Boolean) || [];
+      .filter((ele) => ele !== undefined) || [];
 
   return (
     <div className='w-full' id={chat.id}>
@@ -30,7 +30,7 @@ function MessageIndividual({ chat }: { chat: ChatType }) {
         {chat.type === 'user' ? (
           <Avatar className='h-8 w-8'>
             <AvatarImage
-              src={recruiter_user.profile_image}
+              src={recruiter_user.profile_image ?? ''}
               alt={recruiter_user.first_name}
             />
             <AvatarFallback>
@@ -60,10 +60,13 @@ function MessageIndividual({ chat }: { chat: ChatType }) {
               {dayjsLocal(chat.created_at).fromNow()}
             </p>
           </div>
-          {definedUi.includes(chat.function) ? (
+          {chat?.function && definedUi.includes(chat.function) ? (
             <Widgets chat={chat} />
           ) : (
-            <CustomTypographyLink text={chat.content} links={replaceLinks} />
+            <CustomTypographyLink
+              text={chat?.content ?? ''}
+              links={replaceLinks}
+            />
           )}
         </div>
       </div>
