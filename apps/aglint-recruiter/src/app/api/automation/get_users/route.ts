@@ -7,11 +7,9 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
   const supabaseAdmin = getSupabaseServer();
-  console.log('*******************');
   const request = await req?.json();
   try {
     if (request?.recruiter_id) {
-      console.log('--------------- reruiter_id :', request?.recruiter_id);
       const relns = supabaseWrap(
         await supabaseAdmin
           .from('recruiter_relation')
@@ -26,7 +24,6 @@ export async function POST(req: Request) {
         { status: 200 },
       );
     } else {
-      console.log('------------- not reruiter_id :');
       const relns = supabaseWrap(
         await supabaseAdmin
           .from('recruiter_user')

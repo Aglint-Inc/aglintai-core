@@ -112,7 +112,11 @@ function AddUser({
       ]);
       await fetchUsers();
     } catch (e: any) {
-      setMessage(["failed to add a users", e.message]);
+      if (e.response && e.response.data && e.response.data.message) {
+        setMessage(["Failed to add users:", e.response.data.message]);
+      } else {
+        setMessage(["Failed to add users", e.message]);
+      }
     } finally {
       setIsLoading(false);
     }
