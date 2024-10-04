@@ -40,7 +40,7 @@ export const Header = () => {
   const InterviewTypeOptions = InterivewTypes?.length
     ? InterivewTypes.map((type) => ({
         label: type.name,
-        id: type.id.toString(),
+        id: type?.id?.toString(),
       }))
     : [];
 

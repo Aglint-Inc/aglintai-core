@@ -46,7 +46,7 @@ function Feedback() {
                     key={key}
                     className='p-4 text-left text-sm font-medium text-gray-700'
                   >
-                    {headers[key]}
+                    {headers[key as keyof typeof headers]}
                   </th>
                 ))}
               </tr>

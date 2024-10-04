@@ -10,7 +10,7 @@ const CustomTypographyLink = ({
     with: string;
   }[];
 }) => {
-  const replaceWithLinks = (text) => {
+  const replaceWithLinks = (text: string) => {
     let result = text;
     links?.forEach(({ replace, with: link }) => {
       // eslint-disable-next-line security/detect-non-literal-regexp
