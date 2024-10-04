@@ -9,7 +9,7 @@ function ImageUploadManual({
   image,
   size,
   imageFile,
-  setChanges = null,
+  setChanges = () => {},
 }: {
   image: string;
   size: number;

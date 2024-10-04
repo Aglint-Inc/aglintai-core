@@ -3,10 +3,10 @@
   "scripts": {
     "build": "tsup",
     "lint": "tsup&& tsc",
-    "dev": "tsup --watch"
+    "dev": "rimraf dist && tsup --watch"
   },
   "version": "0.0.1",
-  "main": "./dist/index.js",
+  "main": "./src/index.ts",
   "types": "./src/index.ts",
   "files": [
     "./dist"
@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@aglint/typescript-config": "*",
-    "@types/html-to-text": "^9.0.4"
+    "@types/html-to-text": "^9.0.4",
+    "rimraf": "^6.0.1"
   }
 }

@@ -35,7 +35,7 @@ const SelfScheduleFlowMenus = ({
     }
 
     for (const prog of request_progress.data) {
-      let key = prog.event_type;
+      const key = prog.event_type;
       if (key === 'CAND_CONFIRM_SLOT') {
         break;
       }

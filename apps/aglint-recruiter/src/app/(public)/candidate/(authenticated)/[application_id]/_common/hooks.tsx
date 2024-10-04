@@ -13,8 +13,11 @@ export const useCandidatePortal = () => {
 
 export const useCandidatePortalNavbar = () => {
   const { application_id } = useCandidatePortal();
-
-  return api.candidatePortal.get_navbar.useQuery({
+  const query = api.candidatePortal.get_navbar.useQuery({
     application_id,
   });
+  return {
+    ...query,
+    data: query.data!,
+  };
 };

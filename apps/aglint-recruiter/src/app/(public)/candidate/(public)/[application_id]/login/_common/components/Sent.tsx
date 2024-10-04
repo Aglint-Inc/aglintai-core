@@ -13,7 +13,7 @@ export const Sent = ({
   setStatus,
 }: {
   email: string;
-  setStatus: Dispatch<SetStateAction<'send' | 'sent'>>;
+  setStatus: React.Dispatch<React.SetStateAction<'send' | 'sent'>>;
 }) => {
   return (
     <Card className='mx-auto w-full max-w-md text-center'>

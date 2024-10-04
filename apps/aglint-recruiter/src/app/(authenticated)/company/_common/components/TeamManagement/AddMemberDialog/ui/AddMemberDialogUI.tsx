@@ -13,15 +13,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select';
-import converter from 'number-to-words';
 import { type Dispatch, type SetStateAction } from 'react';
 
-import type { useTenant, useTenantRoles } from '@/company/hooks';
-import type { useTenantOfficeLocations } from '@/company/hooks';
+import type {
+  useTenant,
+  useTenantOfficeLocations,
+  useTenantRoles,
+} from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { type useAllDepartments } from '@/queries/departments';
 import { api } from '@/trpc/client';
+import { numberToText } from '@/utils/number/numberToText';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { type InviteUserFormErrorType, type InviteUserFormType } from '..';
@@ -246,7 +249,7 @@ export const AddMemberDialogUI = ({
       ) : menu === 'pendingMember' ? (
         <div className='space-y-4'>
           <p className='text-sm text-muted-foreground'>
-            You currently have {converter.toWords(pendingList?.length)} pending
+            You currently have {numberToText(pendingList?.length)} pending
             invites awaiting your response.
           </p>
           {pendingList.map((member) => (

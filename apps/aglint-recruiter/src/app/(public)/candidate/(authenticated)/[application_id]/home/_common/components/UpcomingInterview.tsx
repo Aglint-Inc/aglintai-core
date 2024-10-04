@@ -82,7 +82,8 @@ const UpcomingCard = ({
           className='mt-4 w-full'
           variant='outline'
           onClick={() => {
-            window.open(latestUpcoming.meeting_link, '_blank');
+            latestUpcoming.meeting_link &&
+              window.open(latestUpcoming.meeting_link, '_blank');
           }}
         >
           Join meeting
