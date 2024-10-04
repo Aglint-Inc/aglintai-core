@@ -87,9 +87,7 @@ const PERMISSIONS: Permissions = {
   '/api/scheduling/request_availability/getCandidateRequestData': [
     'scheduling_module',
   ],
-  '/api/scheduling/request_availability/updateRequestAvailability': [
-    'scheduling_module',
-  ], //
+
   '/api/scheduling/request_availability/candidateAvailability/getMeetings': [
     'scheduling_module',
   ],

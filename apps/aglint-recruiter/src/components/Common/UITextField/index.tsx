@@ -40,7 +40,7 @@ const UITextField = forwardRef<HTMLInputElement, Props>(
     ref,
   ) => {
     const labelClasses = cn(
-      'text-neutral-900',
+      'text-foreground',
       labelBold === 'default' ? 'font-semibold' : 'font-normal',
       {
         'text-sm': labelSize === 'small',
@@ -50,7 +50,7 @@ const UITextField = forwardRef<HTMLInputElement, Props>(
         'text-2xl': labelSize === 'xxLarge',
         'text-3xl': labelSize === 'xxxLarge',
       },
-      disabled && 'text-neutral-500',
+      disabled && 'text-muted-foreground',
       defaultLabelColor,
     );
 
@@ -87,7 +87,7 @@ const UITextField = forwardRef<HTMLInputElement, Props>(
           </div>
         )}
         {secondaryText && (
-          <p className='text-sm text-neutral-600'>{secondaryText}</p>
+          <p className='text-sm text-muted-foreground'>{secondaryText}</p>
         )}
         <div>
           <Input

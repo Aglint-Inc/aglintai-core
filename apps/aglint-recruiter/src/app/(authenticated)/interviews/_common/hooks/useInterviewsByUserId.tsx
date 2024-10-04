@@ -61,7 +61,7 @@ export const getInterviewsBYUserId = async ({
   }
   // TODO: fix
   const user = (interviews[0]?.meeting_interviewers as any)?.find(
-    (interviewer) => interviewer.user_id === member_id,
+    (interviewer: { user_id: string }) => interviewer.user_id === member_id,
   );
 
   return {

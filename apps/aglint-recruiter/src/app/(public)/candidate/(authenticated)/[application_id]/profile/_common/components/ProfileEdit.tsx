@@ -15,14 +15,14 @@ export function ProfileEdit() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const closeDialog = () => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams?.toString());
     params.delete('dialog'); // Remove the query param
     router.push(`${pathname}?${params.toString()}`);
     setIsDialogOpen(false);
   };
 
   const openDialog = () => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams?.toString());
     params.set('dialog', 'edit'); // Add the query param
     router.push(`${pathname}?${params.toString()}`);
     setIsDialogOpen(true);
@@ -30,7 +30,7 @@ export function ProfileEdit() {
 
   // Keep the dialog open based on the query param
   useEffect(() => {
-    if (searchParams.get('dialog') === 'edit') {
+    if (searchParams?.get('dialog') === 'edit') {
       setIsDialogOpen(true);
     } else {
       setIsDialogOpen(false);
@@ -40,7 +40,7 @@ export function ProfileEdit() {
   return (
     <Dialog
       open={isDialogOpen}
-      onOpenChange={isDialogOpen ? closeDialog : null}
+      onOpenChange={isDialogOpen ? closeDialog : () => {}}
     >
       <DialogTrigger asChild>
         <Button variant='outline' onClick={() => openDialog()}>

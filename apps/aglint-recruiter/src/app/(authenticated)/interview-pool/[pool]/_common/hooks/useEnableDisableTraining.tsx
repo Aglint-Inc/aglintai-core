@@ -1,8 +1,8 @@
 import { toast } from '@components/hooks/use-toast';
 import React, { useEffect, useState } from 'react';
 import { type MemberTypeAutoComplete } from 'src/app/_common/components/MembersTextField';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
-import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 
@@ -17,7 +17,7 @@ export const useEnableDisableTraining = () => {
   const { localModule } = useModulesStore();
   const { data: editModule } = useModuleAndUsers();
   const utils = api.useUtils();
-  const { members } = useSchedulingContext();
+  const { data: members, isFetched } = useMemberList(false);
   const [isBannerLoading, setBannerLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [errorApproval, setErrorApproval] = useState(false);
@@ -95,7 +95,7 @@ export const useEnableDisableTraining = () => {
   };
 
   useEffect(() => {
-    if (editModule?.id) {
+    if (editModule?.id && isFetched) {
       setLocalModule(editModule);
       setSelectedUsers(
         members.filter((member) =>
@@ -103,7 +103,7 @@ export const useEnableDisableTraining = () => {
         ),
       );
     }
-  }, [editModule?.id, members]);
+  }, [editModule?.id, isFetched]);
 
   const enableDiabaleTraining = async ({
     type,

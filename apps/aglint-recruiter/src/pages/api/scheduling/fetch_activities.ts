@@ -75,10 +75,10 @@ export const fetchAllActivities = async ({
       .eq('task_session_relation.session_id', session_id)
       .not('task_session_relation', 'is', null);
 
-    if (data.length === 0) {
+    if (data?.length === 0) {
       return [];
     } else {
-      const taskIds = [...new Set(data.map((item) => item.id))];
+      const taskIds = [...new Set((data || []).map((item) => item.id))];
       query.in('new_tasks.id', taskIds).not('new_tasks', 'is', null);
     }
   }

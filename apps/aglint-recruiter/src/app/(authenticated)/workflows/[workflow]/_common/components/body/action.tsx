@@ -330,7 +330,11 @@ AgentInstructionBody.displayName = 'AgentInstructionBody';
 
 const WorkflowConnector = () => {
   return (
-    <div className={'flex w-full items-center justify-center text-neutral-600'}>
+    <div
+      className={
+        'flex w-full items-center justify-center text-muted-foreground'
+      }
+    >
       <Image
         src='/images/workflow/connector.svg'
         alt='Workflow Connector'

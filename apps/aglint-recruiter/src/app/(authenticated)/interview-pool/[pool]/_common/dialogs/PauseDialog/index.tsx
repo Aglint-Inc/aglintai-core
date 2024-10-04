@@ -139,10 +139,8 @@ function PauseDialog() {
             }
           />
         )}
-        <div className='space-y-1'>
-          <UITypography type='small' color='#2F3941'>
-            Pause For
-          </UITypography>
+        <div className='space-y-2'>
+          <UITypography type='small'>Pause For</UITypography>
           {optionsPause.map((option) => (
             <div
               key={option.type}
@@ -153,7 +151,7 @@ function PauseDialog() {
               }}
             >
               <Checkbox checked={selectedType === option.type} />
-              <UITypography type='small' className='text-neutral-800'>
+              <UITypography type='small' className=''>
                 {option.label}
               </UITypography>
               {option.description && (

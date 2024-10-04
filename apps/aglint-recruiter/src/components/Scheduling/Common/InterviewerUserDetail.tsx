@@ -51,27 +51,18 @@ function InterviewerUserDetail({
     <div className='flex items-center'>
       <div className='flex items-center space-x-4'>
         <div className='flex-shrink-0'>
-          {userDetails.profile_image ? (
-            <Avatar className=' h-12 w-12 rounded-md'>
+        <Avatar className=' h-12 w-12 rounded-md'>
               <AvatarImage
                 src={userDetails.profile_image}
                 alt={getFullName(userDetails.first_name, userDetails.last_name)}
               />
-              <AvatarFallback className='h-12 w-12 rounded-md '>
+              <AvatarFallback className='h-12 w-12 rounded-md bg-gray-200 '>
                 {getFullName(
                   userDetails.first_name,
                   userDetails.last_name,
                 ).charAt(0)}
               </AvatarFallback>
             </Avatar>
-          ) : (
-            <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200 text-sm font-medium text-muted-foreground'>
-              {getFullName(
-                userDetails.first_name,
-                userDetails.last_name,
-              ).charAt(0)}
-            </div>
-          )}
         </div>
         <div className='flex flex-col gap-1'>
           <div className='flex flex-row gap-2'>

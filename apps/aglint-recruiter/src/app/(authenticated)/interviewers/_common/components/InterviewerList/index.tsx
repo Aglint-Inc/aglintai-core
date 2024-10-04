@@ -32,8 +32,12 @@ export const InterviewerList = ({
     .join(', ');
 
   const isQualifed = interviewer.qualified_types?.length !== 0;
-  const qualified_first = interviewer.qualified_types?.slice(0, 2);
-  const qualified_second = interviewer.qualified_types?.slice(2);
+  const qualified_first = interviewer.qualified_types
+    ?.slice(0, 2)
+    .filter((qua) => qua !== null);
+  const qualified_second = interviewer.qualified_types
+    ?.slice(2)
+    .filter((qua) => qua !== null);
 
   const router = useRouterPro();
   return (
@@ -44,7 +48,10 @@ export const InterviewerList = ({
       <TableCell>
         <div className='flex items-center space-x-3'>
           <Avatar>
-            <AvatarImage src={interviewer.avatar} alt={interviewer.name} />
+            <AvatarImage
+              src={interviewer.avatar ?? ''}
+              alt={interviewer.name}
+            />
             <AvatarFallback>
               {interviewer.name
                 .split(' ')

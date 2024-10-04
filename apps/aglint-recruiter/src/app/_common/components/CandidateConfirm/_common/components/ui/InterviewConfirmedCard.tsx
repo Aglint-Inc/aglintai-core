@@ -17,6 +17,18 @@ export function InterviewConfirmedCard({
   onClickAddCalendar = () => {},
   isJoinMeetingButtonVisible = true,
   isAddtoCalenderVisible = true,
+}: {
+  as?: string;
+  textDate: string;
+  textTime: string;
+  textPanel: string;
+  slotMeetingIcon: React.ReactNode;
+  textPlatformName: string;
+  textDuration: string;
+  onClickJoinGoogleMeet?: () => void;
+  onClickAddCalendar?: () => void;
+  isJoinMeetingButtonVisible?: boolean;
+  isAddtoCalenderVisible?: boolean;
 }) {
   return (
     <div className='0 my-2 flex w-[700px] justify-between rounded border border-neutral-300 bg-white p-4 transition-colors duration-200'>

@@ -1,20 +1,20 @@
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
 import _ from 'lodash';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, AlertTriangle } from 'lucide-react';
 import MembersAutoComplete from 'src/app/_common/components/MembersTextField';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
 import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDrawer from '@/components/Common/UIDrawer';
 import NumberInput from '@/components/Common/UINumberInput';
-import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 
 import { type useEnableDisableTraining } from '../../../hooks/useEnableDisableTraining';
 import { useModuleAndUsers } from '../../../hooks/useModuleAndUsers';
 import { setLocalModule, useModulesStore } from '../../../stores/store';
-
 function TrainingSettingDrawer(
   props: ReturnType<typeof useEnableDisableTraining>,
 ) {
@@ -36,7 +36,7 @@ function TrainingSettingDrawer(
     localModule: state.localModule,
   }));
 
-  const { members } = useSchedulingContext();
+  const { data: members } = useMemberList(false);
 
   const qualifiedUserIds =
     editModule?.relations
@@ -217,6 +217,7 @@ function TrainingSettingDrawer(
         {editModule?.settings?.require_training && (
           <div className='mx-4 mt-6'>
             <UIAlert
+              iconName='Ban'
               type='small'
               color={'error'}
               title='Disable Training'
@@ -246,10 +247,13 @@ function TrainingSettingDrawer(
             />
 
             {isDisableError && (
-              <div className='text-error mt-1 flex items-center'>
-                <AlertCircle size={12} className='text-error-9 mr-1' />
-                Cannot disable training while members are still in training.
-              </div>
+              <Alert variant='error' className='mt-1'>
+                <AlertTriangle className='h-4 w-4' />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>
+                  Cannot disable training while members are still in training.
+                </AlertDescription>
+              </Alert>
             )}
           </div>
         )}

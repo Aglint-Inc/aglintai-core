@@ -15,7 +15,7 @@ const TrainingSettingItem = React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        'flex items-center gap-2 rounded-md bg-neutral-100 p-2',
+        'rounded-mdbg-muted flex items-center gap-2 p-2',
         className,
       )}
       {...props}

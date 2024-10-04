@@ -14,8 +14,9 @@ function CreateSchedulePopUp({
   setSelectedItems,
   setText,
 }: {
-  selectedItems: selectedItemsType;
-  setSelectedItems: React.Dispatch<React.SetStateAction<selectedItemsType>>;
+  selectedItems: selectedItemsType | null;
+  // eslint-disable-next-line no-unused-vars
+  setSelectedItems: (x: selectedItemsType | null) => void;
   setText: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const { handleAsyncCreateRequests } = useRequests();
@@ -45,7 +46,7 @@ function CreateSchedulePopUp({
     : '{{interviews}}';
   async function createNewRequest() {
     const selectedSession = selectedItems?.interview_name;
-    if (selectedSession.length && selectedItems.applicant_name.length) {
+    if (selectedSession?.length && selectedItems?.applicant_name.length) {
       setLoading(true);
       await handleAsyncCreateRequests({
         payload: {
@@ -60,8 +61,8 @@ function CreateSchedulePopUp({
             schedule_end_date: selectedDateRange.end_date,
             note: null,
           },
-          application: selectedItems.applicant_name[0].id,
-          sessions: selectedItems.interview_name.map((ele) => ele.id),
+          application: selectedItems?.applicant_name[0].id,
+          sessions: selectedItems?.interview_name.map((ele) => ele.id),
         },
       });
       setLoading(false);
@@ -95,7 +96,7 @@ function CreateSchedulePopUp({
                 } else {
                   setSelectedDateRange({
                     start_date: e[0],
-                    end_date: null,
+                    end_date: '',
                   });
                 }
               }}

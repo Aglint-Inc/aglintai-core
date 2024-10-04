@@ -13,7 +13,7 @@ const ScrollingText = () => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lastInteractionTime, setLastInteractionTime] = useState(Date.now());
-  const intervalRef = useRef(null);
+  const intervalRef = useRef<any>(null);
 
   useEffect(() => {
     const handleInteractionTimeout = () => {
@@ -32,10 +32,10 @@ const ScrollingText = () => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % textArray.length);
       }, 10000); // Change text every 10 seconds
     } else {
-      clearInterval(intervalRef.current);
+      clearInterval(intervalRef?.current ?? 0);
     }
 
-    return () => clearInterval(intervalRef.current);
+    return () => clearInterval(intervalRef?.current ?? 0);
   }, [isPlaying, textArray.length]);
 
   const handleClick = () => {

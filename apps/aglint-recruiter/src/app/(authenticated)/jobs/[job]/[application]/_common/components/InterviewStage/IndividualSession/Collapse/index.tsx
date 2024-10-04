@@ -1,15 +1,15 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
-import { BriefcaseBusiness } from 'lucide-react';
+import { BriefcaseBusiness, User } from 'lucide-react';
 
-import { UIAlert } from '@/components/Common/UIAlert';
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import UITypography from '@/components/Common/UITypography';
 import InterviewerUserDetail from '@/components/Scheduling/Common/InterviewerUserDetail';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
+import { type fetchSessionDetails } from '@/server/api/routers/requests/utils/requestSessions';
 import { numberToText } from '@/utils/number/numberToText';
 
-import { type StageWithSessions } from '../../../../hooks/useInterviewStages';
 import CancelBanners from './AdminCancelBanners';
 
 function CollapseContent({
@@ -17,7 +17,7 @@ function CollapseContent({
   collapsed,
   candidate,
 }: {
-  currentSession: NonNullable<StageWithSessions>[0]['sessions'][0];
+  currentSession: Awaited<ReturnType<typeof fetchSessionDetails>>[0];
   collapsed: boolean;
   candidate?: {
     name: string;
@@ -45,7 +45,7 @@ function CollapseContent({
     <Collapsible open={collapsed}>
       <CollapsibleContent>
         {!!currentSession && (
-          <div className='space-y-4 p-4'>
+          <div className='space-y-4 p-4 pt-0'>
             <>
               {candidate &&
                 candidate.timezone &&
@@ -96,7 +96,7 @@ function CollapseContent({
 
               <div className='space-y-2'>
                 {count !== 0 && (
-                  <UITypography type='extraSmall'>
+                  <UITypography className='text-xs text-muted-foreground'>
                     {interview_meeting?.status === 'confirmed' ||
                     interview_meeting?.status === 'completed'
                       ? 'Interviewer(s)'
@@ -111,12 +111,10 @@ function CollapseContent({
                 )}
 
                 {count === 0 ? (
-                  <UIAlert
-                    type='inline'
-                    color={'error'}
-                    iconName={'CircleAlert'}
-                    title={'No interviewers assigned.'}
-                  />
+                  <>
+                  <GlobalEmpty icon={<User/>} header='No interviewers assigned.' description='Assign interviewers to this session to schedule'/>
+                  </>
+                  
                 ) : (
                   users.map((user) => {
                     const item = user.user_details;

@@ -30,10 +30,10 @@ export type Resource = {
   extendedProps: {
     data: {
       id: string;
-      profile_pic: string;
+      profile_pic: string | null;
       email: string;
       name: string;
-      position: string;
+      position: string | null;
     };
     color: string;
   };

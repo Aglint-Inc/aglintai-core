@@ -18,8 +18,8 @@ const SelfScheduleLinkSent = (args: DatabaseTable['request_progress']) => {
   return (
     <>
       <div className='flex items-center space-x-2'>
-        <Check className='h-5 w-5 text-neutral-500' />
-        <span className='text-sm text-neutral-500'>
+        <Check className='h-5 w-5 text-muted-foreground' />
+        <span className='text-sm text-muted-foreground'>
           Candidate self schedule link
         </span>
         <Button
