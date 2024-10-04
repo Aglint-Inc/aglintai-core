@@ -95,12 +95,10 @@ function CandidateAvailability() {
     return (
       <ConfirmedInvitePage
         avail_request_id={candidateRequestAvailability.id}
-        //@ts-ignore // remove after nullable fix
         candidate={candidateRequestAvailability.applications.candidates}
         meetings={meetingsAndRounds.meetings}
         rounds={meetingsAndRounds.rounds}
         recruiter={{
-          id: candidateRequestAvailability?.recruiter_id,
           name: candidateRequestAvailability?.recruiter.name,
           logo: candidateRequestAvailability?.recruiter.logo,
         }}

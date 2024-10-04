@@ -1,6 +1,5 @@
 'use strict';
 
-import { type DatabaseTable } from '@aglint/shared-types';
 import { getBreakLabel } from '@aglint/shared-utils';
 import { Checkbox } from '@components/ui/checkbox';
 import dayjs from 'dayjs';
@@ -110,26 +109,21 @@ function ScheduleIndividualCard({
       isRoleVisible={false}
       slotGlobalBadge={
         isStatusVisible && (
-          <MeetingStatusBadge
-            status={
-              interview_session?.interview_meeting
-                ?.status as DatabaseTable['interview_meeting']['status']
-            }
-          />
+          <MeetingStatusBadge status={interview_meeting.status} />
         )
       }
       isDateVisible={
         !hideDateAndTime &&
-        (interview_meeting?.status === 'confirmed' ||
-          interview_meeting?.status === 'completed')
+        (interview_meeting.status === 'confirmed' ||
+          interview_meeting.status === 'completed')
       }
       isTimeVisible={
         !hideDateAndTime &&
-        (interview_meeting?.status === 'confirmed' ||
-          interview_meeting?.status === 'completed')
+        (interview_meeting.status === 'confirmed' ||
+          interview_meeting.status === 'completed')
       }
       textDate={
-        interview_meeting?.end_time
+        interview_meeting.end_time
           ? dayjs(interview_meeting.end_time).format('ddd, MMM DD, YYYY')
           : '--'
       }
