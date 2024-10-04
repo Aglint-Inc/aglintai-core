@@ -1,6 +1,6 @@
 import { type PropsWithChildren } from 'react';
 
-import { Footer } from '@/candidate/authenticated/components/Footer';
+import { Footer } from 'src/app/(public)/candidate/(authenticated)/[application]/_common/components/Footer';
 
 const Layout = ({ children }: PropsWithChildren) => {
   return (

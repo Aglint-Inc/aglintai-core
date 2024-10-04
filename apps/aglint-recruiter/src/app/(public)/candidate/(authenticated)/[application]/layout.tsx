@@ -1,8 +1,8 @@
 'use client';
 import { type PropsWithChildren } from 'react';
 
-import { Footer } from '@/candidate/authenticated/components/Footer';
-import Navigation from '@/candidate/authenticated/components/Navigation';
+import { Footer } from 'src/app/(public)/candidate/(authenticated)/[application]/_common/components/Footer';
+import Navigation from 'src/app/(public)/candidate/(authenticated)/[application]/_common/components/Navigation';
 
 import { CandidatePortalProvider } from './_common/context';
 

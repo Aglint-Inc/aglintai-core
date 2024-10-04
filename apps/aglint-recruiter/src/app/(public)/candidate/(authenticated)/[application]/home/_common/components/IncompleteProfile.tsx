@@ -1,33 +1,34 @@
+'use client';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
+import { TriangleAlert } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
-import { useCandidatePortal } from '@/candidate/authenticated/hooks';
+import { useCandidatePortal } from 'src/app/(public)/candidate/(authenticated)/[application]/_common/hooks';
 
-function AllSet() {
+function IncompleteProfile() {
   const { application_id } = useCandidatePortal();
   return (
     <div>
       <Card className='border border-border bg-background/80 shadow-sm backdrop-blur-sm'>
         <CardHeader className='p-0 pb-4 pl-4 pt-4'>
           <div className='flex items-center gap-2'>
-            <h2 className='text-lg font-semibold'>You are all set 🎉 </h2>
+            <TriangleAlert className='text-yellow-600' strokeWidth={1.5} />
+            <h2 className='font-semibold'>Your profile is incomplete</h2>
           </div>
 
           <div className='flex items-center gap-2'>
             <div className='text-sm'>
-              You&apos;re all set for the recruitment process! You&apos;ll
-              receive all the details right here in the portal. Please make sure
-              your profile is up-to-date and keep an eye out for updates.
+              Your profile is missing fields linkedin url and phone number. To
+              ensure a smooth recruitment process, please update these fields at
+              your earliest convenience.
             </div>
           </div>
         </CardHeader>
         <CardContent className='p-0 pb-4 pl-4 pr-4'>
-          <Link href={`/candidate/${application_id}/profile`}>
-            <Button variant='outline' className='w-full'>
-              View my profile
-            </Button>
+          <Link href={`/candidate/${application_id}/profile?dialog=edit`}>
+            <Button className='w-full'>Update profile</Button>
           </Link>
         </CardContent>
       </Card>
@@ -35,4 +36,4 @@ function AllSet() {
   );
 }
 
-export default AllSet;
+export default IncompleteProfile;

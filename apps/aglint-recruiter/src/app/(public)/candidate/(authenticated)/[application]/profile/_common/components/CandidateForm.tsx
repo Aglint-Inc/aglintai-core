@@ -17,7 +17,7 @@ import { type SubmitHandler, useForm } from 'react-hook-form';
 import {
   useCandidatePortal,
   useCandidatePortalNavbar,
-} from '@/candidate/authenticated/hooks';
+} from 'src/app/(public)/candidate/(authenticated)/[application]/_common/hooks';
 import { supabase } from '@/utils/supabase/client';
 import timeZone from '@/utils/timeZone';
 

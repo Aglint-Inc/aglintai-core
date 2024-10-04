@@ -1,4 +1,4 @@
-import { useCandidatePortal } from '@/candidate/authenticated/hooks';
+import { useCandidatePortal } from 'src/app/(public)/candidate/(authenticated)/[application]/_common/hooks';
 import { api } from '@/trpc/client';
 
 export const useCandidatePortalProfile = () => {
