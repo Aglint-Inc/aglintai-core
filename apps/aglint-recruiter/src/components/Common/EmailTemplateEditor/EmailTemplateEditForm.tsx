@@ -64,7 +64,7 @@ export default function EmailTemplateEditForm({
             </SelectTrigger>
             <SelectContent>
               {options.length === 0 ? (
-                <div className='cursor-default px-2 py-1 italic text-neutral-500'>
+                <div className='cursor-default px-2 py-1 italic text-muted-foreground'>
                   No options available
                 </div>
               ) : (

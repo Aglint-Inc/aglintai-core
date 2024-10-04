@@ -202,7 +202,7 @@ export function RequestReschedule({
     <div className='space-y-4'>
       {isRangeVisible && (
         <div className='space-y-2'>
-          <p className='text-sm text-neutral-600'>
+          <p className='text-sm text-muted-foreground'>
             Please select new dates for your interview and provide a reason for
             the reschedule.
           </p>
@@ -232,14 +232,14 @@ export function RequestReschedule({
       )}
 
       <div className='space-y-2'>
-        <p className='text-sm text-neutral-600'>
+        <p className='text-sm text-muted-foreground'>
           Please provide a reason to cancel.
         </p>
         {slotRadioText}
       </div>
 
       <div className='space-y-2'>
-        <p className='text-sm text-neutral-600'>Additional Notes</p>
+        <p className='text-sm text-muted-foreground'>Additional Notes</p>
         {slotInputAdditionalNotes}
       </div>
     </div>

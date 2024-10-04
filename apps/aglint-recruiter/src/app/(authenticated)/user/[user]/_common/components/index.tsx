@@ -78,14 +78,14 @@ export default function InterviewerDetailsPage() {
   return (
     <TwoColumnPageLayout
       sidebar={
-        <div className='col-span-4 space-y-12 bg-white'>
+        <div className='col-span-4 bg-white'>
           <UpcomingInterview />
           <RecentInterviews />
           <Feedback />
         </div>
       }
       sidebarPosition='right'
-      sidebarWidth='400'
+      sidebarWidth='420'
     >
       <Page>
         <PageHeader className='-mt-4 border-b border-gray-200 bg-gray-50 p-4'>

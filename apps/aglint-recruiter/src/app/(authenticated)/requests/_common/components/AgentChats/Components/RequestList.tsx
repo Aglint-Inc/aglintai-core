@@ -38,12 +38,12 @@ const RequestList = ({ requests }: { requests: RequestListProps[] }) => {
   return (
     <div className='space-y-1'>
       {requests.length === 0 ? (
-        <div className='space-y-1 text-neutral-500'>
+        <div className='space-y-1 text-muted-foreground'>
           <p className='text-sm text-muted-foreground'>No requests found.</p>
         </div>
       ) : (
         <>
-          <div className='text-neutral-500'>
+          <div className='text-muted-foreground'>
             <p className='text-base font-normal text-muted-foreground'>
               Here are the list of requests :
             </p>
@@ -99,7 +99,7 @@ const CardIndividual = ({ request }: { request: RequestListProps }) => {
         onMouseLeave={() => setHovered(null)}
         className='block text-inherit no-underline'
       >
-        <div className='relative flex items-center space-x-1 text-neutral-800'>
+        <div className='relative flex items-center space-x-1'>
           <div className='flex-1'>
             <Tooltip>
               <TooltipTrigger asChild>

@@ -489,7 +489,7 @@ const InterviewerFeedback = ({
                             )}
                           </span>
                         </div>
-                        <div className='flex items-center space-x-2 text-sm text-neutral-500'>
+                        <div className='flex items-center space-x-2 text-sm text-muted-foreground'>
                           <Clock size={16} />
                           <span>{`${dayjsLocal(
                             session[0].session.time.start,
@@ -612,14 +612,14 @@ function FeedbackCardDetails({
   handelFeedbackRequest?: any;
 }) {
   return (
-    <Card className='mb-4 w-full shadow-none border-none bg-slate-50'>
+    <Card className='mb-4 w-full border-none bg-slate-50 shadow-none'>
       <CardHeader className='flex flex-row items-center gap-3 p-4'>
         <Avatar className='h-12 w-12 rounded-md'>
           <AvatarImage
             src={int.profile_image}
             alt={getFullName(int.first_name, int.last_name)}
           />
-          <AvatarFallback className='w-12 h-12 rounded-md bg-slate-200'>
+          <AvatarFallback className='h-12 w-12 rounded-md bg-slate-200'>
             {getFullName(int.first_name, int.last_name).charAt(0)}
           </AvatarFallback>
         </Avatar>

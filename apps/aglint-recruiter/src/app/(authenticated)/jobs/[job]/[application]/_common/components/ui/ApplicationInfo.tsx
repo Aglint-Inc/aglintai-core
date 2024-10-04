@@ -24,7 +24,7 @@ export function ApplicantInfoBox({
       {/* Work Information */}
       {isDepartmentVisible && (
         <div className='flex items-center'>
-          <BriefcaseBusiness className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
+          <BriefcaseBusiness className='mr-2 h-4 w-4 flex-shrink-0 text-muted-foreground' />
           <div>
             <dt className='sr-only'>Department</dt>
             <dd className='truncate'>{textDepartment}</dd>
@@ -33,7 +33,7 @@ export function ApplicantInfoBox({
       )}
       {isRoleVisible && (
         <div className='flex items-center'>
-          <SquareUser className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
+          <SquareUser className='mr-2 h-4 w-4 flex-shrink-0 text-muted-foreground' />
           <div>
             <dt className='sr-only'>Current Role</dt>
             <dd className='truncate'>{textRole}</dd>
@@ -45,7 +45,7 @@ export function ApplicantInfoBox({
           className='flex cursor-pointer items-center'
           onClick={onClickLinkedIn}
         >
-          <LinkedinIcon className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
+          <LinkedinIcon className='mr-2 h-4 w-4 flex-shrink-0 text-muted-foreground' />
           <div>
             <dt className='sr-only'>LinkedIn</dt>
             <dd className='truncate'>View Profile</dd>
@@ -55,7 +55,7 @@ export function ApplicantInfoBox({
 
       {/* Location Information */}
       <div className='flex items-center'>
-        <MapPin className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
+        <MapPin className='mr-2 h-4 w-4 flex-shrink-0 text-muted-foreground' />
         <div>
           <dt className='sr-only'>Location</dt>
           <dd className='truncate'>{textLocation}</dd>
@@ -64,14 +64,14 @@ export function ApplicantInfoBox({
 
       {/* Contact Information */}
       <div className='flex items-center'>
-        <Mail className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
+        <Mail className='mr-2 h-4 w-4 flex-shrink-0 text-muted-foreground' />
         <div>
           <dt className='sr-only'>Email</dt>
           <dd className='truncate'>{textEmail}</dd>
         </div>
       </div>
       <div className='flex items-center'>
-        <Smartphone className='mr-2 h-4 w-4 flex-shrink-0 text-neutral-600' />
+        <Smartphone className='mr-2 h-4 w-4 flex-shrink-0 text-muted-foreground' />
         <div>
           <dt className='sr-only'>Phone</dt>
           <dd className='truncate'>{textPhone}</dd>

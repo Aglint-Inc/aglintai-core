@@ -21,7 +21,7 @@ function RenderResourceContent(resourceInfo) {
           </Avatar>
           <div className='flex flex-col'>
             <p className='text-xs'>{data.name}</p>
-            <p className='text-xs text-neutral-400'>{data.position}</p>
+            <p className='text-xs text-muted-foreground'>{data.position}</p>
           </div>
         </div>
       </TooltipTrigger>

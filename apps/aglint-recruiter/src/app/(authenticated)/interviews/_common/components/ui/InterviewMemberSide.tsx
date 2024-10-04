@@ -94,7 +94,7 @@ const Tabs = ({
                 {...onClickUpcoming}
               >
                 <div>Upcoming</div>
-                <div className='flex h-5 min-w-5 items-center justify-center rounded bg-neutral-300 px-1 text-neutral-700'>
+                <div className='flex h-5 min-w-5 items-center justify-center rounded bg-neutral-300 px-1 text-muted-foreground'>
                   <UITypography variant='p' type='small'>
                     {textUpcomingCount}
                   </UITypography>
@@ -108,7 +108,7 @@ const Tabs = ({
                 {...onClickCancelled}
               >
                 <div>Canceled</div>
-                <div className='flex h-5 min-w-5 items-center justify-center rounded bg-neutral-300 px-1 text-neutral-700'>
+                <div className='flex h-5 min-w-5 items-center justify-center rounded bg-neutral-300 px-1 text-muted-foreground'>
                   <UITypography variant='p' type='small'>
                     {textCancelledCount}
                   </UITypography>
@@ -122,7 +122,7 @@ const Tabs = ({
                 {...onClickCompleted}
               >
                 <div>Past</div>
-                <div className='flex h-5 min-w-5 items-center justify-center rounded bg-neutral-300 px-1 text-neutral-700'>
+                <div className='flex h-5 min-w-5 items-center justify-center rounded bg-neutral-300 px-1 text-muted-foreground'>
                   <UITypography variant='p' type='small'>
                     {textPastCount}
                   </UITypography>

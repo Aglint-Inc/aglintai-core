@@ -35,7 +35,7 @@ export function DayCard({
       <div className='w-full'>
         <div
           className={cn(
-            'relative flex cursor-pointer justify-between rounded-md bg-neutral-100 px-3 py-2',
+            'rounded-mdbg-muted relative flex cursor-pointer justify-between px-3 py-2',
             isDisabled && 'cursor-not-allowed',
           )}
           onClick={onClickDateOption}
@@ -64,15 +64,15 @@ export function DayCard({
             <div className='bg-accent-200 absolute inset-0 z-[1] rounded-md' />
           )}
           {isDisabled && (
-            <div className='absolute inset-0 z-[3] flex cursor-not-allowed justify-between rounded-md bg-neutral-100 p-2'>
-              <div className='relative z-[2] flex items-center gap-2 text-neutral-900'>
+            <div className='rounded-mdbg-muted absolute inset-0 z-[3] flex cursor-not-allowed justify-between p-2'>
+              <div className='relative z-[2] flex items-center gap-2 text-foreground'>
                 <Calendar size={16} />
                 <div className='flex items-center gap-1'>
                   <UITypography>{textdate}</UITypography>
                 </div>
               </div>
               <div className='relative z-[2] flex items-center gap-5'>
-                <div className='text-sm italic text-neutral-700'>
+                <div className='text-sm italic text-muted-foreground'>
                   {`Can't choose from this date`}
                 </div>
               </div>

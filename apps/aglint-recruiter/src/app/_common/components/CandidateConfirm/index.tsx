@@ -400,7 +400,7 @@ const Logo = ({ companyName, logo }: { companyName: string; logo: string }) => {
           }}
         />
         <div className='fallback absolute inset-0 hidden items-center justify-center'>
-          <Building2 className='h-10 w-10 text-neutral-400' />
+          <Building2 className='h-10 w-10 text-muted-foreground' />
         </div>
       </div>
     </div>

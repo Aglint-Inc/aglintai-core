@@ -34,7 +34,7 @@ export function MemberRow({
             {textName}
           </UITypography>
           <div className='text-neutral flex items-center text-sm'>
-            <BriefcaseBusiness className='h-3 w-3 text-neutral-500' />
+            <BriefcaseBusiness className='h-3 w-3 text-muted-foreground' />
             <UITypography type='extraSmall' className='ml-1'>
               {textRole}
             </UITypography>

@@ -69,7 +69,7 @@ function HiringTeam({ chat }: { chat: ChatType }) {
 
       {job?.id && (
         <Link href={`/jobs/${job?.id}/hiring-team`} className='flex flex-row'>
-          <button className='rounded bg-neutral-200 px-4 py-2 text-neutral-700'>
+          <button className='rounded bg-neutral-200 px-4 py-2 text-muted-foreground'>
             View Hiring Team
           </button>
         </Link>
