@@ -45,7 +45,7 @@ export const navList: {
   {
     text: 'Interviews',
     SubComponents: null,
-    route: ROUTES['/interviews']() + '?tab=interviews',
+    route: ROUTES['/interviews'](),
     comingSoon: false,
     isVisible: true,
     permission: ['scheduling_module'],
