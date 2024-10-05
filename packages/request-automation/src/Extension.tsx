@@ -6,6 +6,7 @@ import { tabs } from "./type/UITypes";
 import Seed from "./components/seed/Seed";
 import Reset from "./components/Reset/Reset";
 import Mode from "./components/mode/Mode";
+import { useAppContext } from "./context/AppContext";
 
 export const Extension = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,6 +19,8 @@ export const Extension = () => {
       setIsOpen((pre) => !pre);
     }
   };
+
+  const { session } = useAppContext();
 
   // Add event listener on component mount and remove on unmount
   useEffect(() => {
@@ -36,10 +39,14 @@ export const Extension = () => {
     >
       <div className="bottom-drawer-content">
         <Header activeDiv={activeDiv} setActiveDiv={setActiveDiv} />
-        {activeDiv === "automation" && <Demo />}
-        {activeDiv === "seed" && <Seed />}
-        {activeDiv === "reset" && <Reset />}
-        {activeDiv === "mode" && <Mode />}
+        {session && (
+          <>
+            {activeDiv === "automation" && <Demo />}
+            {activeDiv === "seed" && <Seed />}
+            {activeDiv === "reset" && <Reset />}
+            {activeDiv === "mode" && <Mode />}
+          </>
+        )}
       </div>
       <div className="drawer-handle" onClick={() => setIsOpen((pre) => !pre)}>
         {isOpen ? "↧" : "↥"}

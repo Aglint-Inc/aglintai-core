@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { CustomRecruiterUpdateSchema } from '@aglint/shared-types/src/db/tables/recruiter.types';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
@@ -12,7 +11,6 @@ const mutation = async ({
 
   await db
     .from('recruiter')
-    //@ts-ignore  remove ignore when strict mode is enabled in tsconfig
     .update({ ...input })
     .eq('id', recruiter_id);
 };

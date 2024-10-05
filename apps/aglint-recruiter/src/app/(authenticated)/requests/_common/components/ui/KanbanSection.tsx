@@ -1,6 +1,8 @@
 import { Badge } from '@components/ui/badge';
 import { Archive } from 'lucide-react';
+import { Archive } from 'lucide-react';
 
+import GlobalEmpty from '@/common/GlobalEmpty';
 import GlobalEmpty from '@/common/GlobalEmpty';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 

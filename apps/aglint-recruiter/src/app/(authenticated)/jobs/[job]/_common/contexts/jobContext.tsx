@@ -186,6 +186,7 @@ const useJobContext = () => {
         application_match: _application_match,
         department: _department,
         location: _location,
+        syncable: _syncable,
         ...safeJob
       } = job;
       await handleJobAsyncUpdate({

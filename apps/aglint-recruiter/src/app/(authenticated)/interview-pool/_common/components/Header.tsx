@@ -15,7 +15,7 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { useAllDepartments } from '@/queries/departments';
 
 import { setIsCreateDialogOpen } from '../../[pool]/_common/stores/store';
-import { useHeaderProp } from '.';
+import { useHeaderProp } from '../context/headerContext';
 import CreateModuleDialog from './CreateModuleDialog';
 
 export const InterviewPoolHeader = () => {

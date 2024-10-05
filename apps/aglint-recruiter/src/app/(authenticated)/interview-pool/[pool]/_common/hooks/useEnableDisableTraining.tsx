@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { type MemberTypeAutoComplete } from 'src/app/_common/components/MembersTextField';
 import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
-import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 
 import {
@@ -16,7 +15,6 @@ import { useModuleAndUsers } from './useModuleAndUsers';
 export const useEnableDisableTraining = () => {
   const { localModule } = useModulesStore();
   const { data: editModule } = useModuleAndUsers();
-  const utils = api.useUtils();
   const { data: members, isFetched } = useMemberList(false);
   const [isBannerLoading, setBannerLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -41,7 +39,7 @@ export const useEnableDisableTraining = () => {
   );
 
   const updateModule = async () => {
-    if (!localModule || !editModule) return;
+    if (!localModule) return;
     if (localModule.settings.reqruire_approval) {
       if (selectedUsers.length === 0) {
         setErrorApproval(true);
@@ -77,9 +75,6 @@ export const useEnableDisableTraining = () => {
         editModule.id,
       );
 
-      utils.interview_pool.module_and_users.invalidate({
-        module_id: editModule.id,
-      });
       setIsModuleSettingsDialogOpen(false);
     } catch (e) {
       toast({
@@ -110,7 +105,7 @@ export const useEnableDisableTraining = () => {
   }: {
     type: 'enable' | 'disable';
   }) => {
-    if (!localModule || !editModule) return;
+    if (!localModule) return;
     try {
       setBannerLoading(true);
       await supabase
@@ -132,10 +127,6 @@ export const useEnableDisableTraining = () => {
         selectedUsers.map((sel) => sel.user_id),
         editModule.id,
       );
-
-      utils.interview_pool.module_and_users.invalidate({
-        module_id: editModule.id,
-      });
       setIsModuleSettingsDialogOpen(false);
     } catch (e) {
       toast({

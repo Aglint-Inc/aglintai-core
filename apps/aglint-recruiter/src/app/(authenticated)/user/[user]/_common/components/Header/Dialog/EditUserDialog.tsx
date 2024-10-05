@@ -1,4 +1,4 @@
-import { type CustomSchedulingSettings } from '@aglint/shared-types/src/db/tables/common.types';
+import { type CustomSchedulingSettingsUser } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
 import { toast } from '@components/hooks/use-toast';
 import { type Dispatch, type SetStateAction, useRef, useState } from 'react';
 import {
@@ -164,7 +164,7 @@ export const EditUserDialog = ({
       const scheduling_settings = {
         ...recruiter_user?.scheduling_settings,
         timeZone: selectedTimeZone,
-      } as CustomSchedulingSettings;
+      } as CustomSchedulingSettingsUser;
 
       const { user_id } = recruiter_user;
       const data = {
@@ -178,7 +178,6 @@ export const EditUserDialog = ({
       };
 
       await mutateAsync({ ...data });
-      // const profile_img = profile_image;
 
       setProfileChange(false);
       setIsOpen(false);
