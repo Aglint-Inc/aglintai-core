@@ -67,7 +67,7 @@ const ProgressIcon = ({
       );
     case 'cancelled':
       return (
-        <div className='text-red-500'>
+        <div className='text-destructive'>
           <CancelledIcon />
         </div>
       );

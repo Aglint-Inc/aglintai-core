@@ -14,7 +14,7 @@ import { useRequestMetics } from 'src/app/(authenticated)/reports/_common/hook/c
 import UISectionCard from '@/common/UISectionCard';
 
 const CheckIcon = () => <Check className='h-4 w-4 text-green-500' />;
-const XIcon = () => <X className='h-4 w-4 text-red-500' />;
+const XIcon = () => <X className='h-4 w-4 text-destructive' />;
 
 export default function Checklist() {
   const { data, isFetching, isError } = useRequestMetics();

@@ -219,7 +219,7 @@ function UploadDB({
       <div className='mb-6 flex items-center justify-between'>
         <h2 className='text-2xl font-bold'>Apply for this job.</h2>
         <p className='text-sm'>
-          <span className='text-red-500'>*</span> Required
+          <span className='text-destructive'>*</span> Required
         </p>
       </div>
       <div className='grid grid-cols-1 gap-6 sm:grid-cols-2'>
@@ -298,7 +298,9 @@ function UploadDB({
               </Button>
             )}
             {error.file.error && (
-              <p className='ml-1 mt-1 text-sm text-red-500'>{error.file.msg}</p>
+              <p className='ml-1 mt-1 text-sm text-destructive'>
+                {error.file.msg}
+              </p>
             )}
           </div>
         </div>
@@ -309,11 +311,11 @@ function UploadDB({
               onCheckedChange={() => setChecked(!checked)}
             />
             <div className='flex flex-wrap items-center space-x-1'>
-              <p className={`text-sm ${!checked ? 'text-red-500' : ''}`}>
+              <p className={`text-sm ${!checked ? 'text-destructive' : ''}`}>
                 By applying, you are agreeing to the
               </p>
               <button
-                className={`text-sm underline ${!checked ? 'text-red-500' : ''}`}
+                className={`text-sm underline ${!checked ? 'text-destructive' : ''}`}
                 onClick={() =>
                   window.open('https://www.aglinthq.com/terms', '_blank')
                 }

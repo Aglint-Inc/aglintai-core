@@ -35,7 +35,7 @@ const ReportCard: React.FC<ReportCardProps> = ({
 
     if (error) {
       return (
-        <div className='flex h-[100px] items-center justify-center text-red-500'>
+        <div className='flex h-[100px] items-center justify-center text-destructive'>
           <AlertTriangle className='mr-2 h-5 w-5' />
           <span>{error}</span>
         </div>

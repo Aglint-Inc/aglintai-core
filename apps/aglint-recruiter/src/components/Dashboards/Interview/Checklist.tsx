@@ -214,7 +214,7 @@ const checklistData = [
 ];
 
 const CheckIcon = () => <Check className='h-4 w-4 text-green-500' />;
-const XIcon = () => <X className='h-4 w-4 text-red-500' />;
+const XIcon = () => <X className='h-4 w-4 text-destructive' />;
 
 export default function ReadOnlyCoordinatorChecklist() {
   const [visibleColumns, setVisibleColumns] = useState(

@@ -149,7 +149,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger>
-                          <AlertCircle className='h-4 w-4 text-red-500' />
+                          <AlertCircle className='h-4 w-4 text-destructive' />
                         </TooltipTrigger>
                         <TooltipContent>
                           <p>Missing Job Description</p>

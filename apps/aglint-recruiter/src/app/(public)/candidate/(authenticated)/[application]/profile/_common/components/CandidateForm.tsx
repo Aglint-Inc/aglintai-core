@@ -148,7 +148,9 @@ export default function CandidateForm({
                   placeholder='Enter your first name'
                 />
                 {errors.first_name && (
-                  <p className='text-red-500'>{errors.first_name.message}</p>
+                  <p className='text-destructive'>
+                    {errors.first_name.message}
+                  </p>
                 )}
               </div>
 
@@ -162,7 +164,7 @@ export default function CandidateForm({
                   placeholder='Enter your last name'
                 />
                 {errors.last_name && (
-                  <p className='text-red-500'>{errors.last_name.message}</p>
+                  <p className='text-destructive'>{errors.last_name.message}</p>
                 )}
               </div>
 
@@ -181,7 +183,7 @@ export default function CandidateForm({
                   placeholder='Enter your email address'
                 />
                 {errors.email && (
-                  <p className='text-red-500'>{errors.email.message}</p>
+                  <p className='text-destructive'>{errors.email.message}</p>
                 )}
               </div>
 
@@ -200,7 +202,7 @@ export default function CandidateForm({
                   placeholder='Enter your phone number'
                 />
                 {errors.phone && (
-                  <p className='text-red-500'>{errors.phone.message}</p>
+                  <p className='text-destructive'>{errors.phone.message}</p>
                 )}
               </div>
 
@@ -221,7 +223,7 @@ export default function CandidateForm({
                   placeholder='Enter your LinkedIn profile URL'
                 />
                 {errors.linkedin && (
-                  <p className='text-red-500'>{errors.linkedin.message}</p>
+                  <p className='text-destructive'>{errors.linkedin.message}</p>
                 )}
               </div>
 
@@ -245,7 +247,7 @@ export default function CandidateForm({
                   </SelectContent>
                 </Select>
                 {errors.timezone && (
-                  <p className='text-red-500'>{errors.timezone.message}</p>
+                  <p className='text-destructive'>{errors.timezone.message}</p>
                 )}
               </div>
             </div>
