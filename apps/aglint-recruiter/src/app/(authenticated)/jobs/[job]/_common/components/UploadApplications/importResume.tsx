@@ -141,7 +141,11 @@ export const ImportResume = () => {
         {selectedFiles.length === 0 ? renderFileUploader() : renderFileList()}
       </div>
       <div className=''>
-        <Button onClick={handleFileUpload} className='w-full'>
+        <Button
+          onClick={handleFileUpload}
+          disabled={selectedFiles.length === 0}
+          className='w-full'
+        >
           Upload
         </Button>
       </div>
