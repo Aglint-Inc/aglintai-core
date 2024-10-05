@@ -44,18 +44,24 @@ export const ScheduleAvailabilityUI = ({
       <div className='grid grid-cols-2 gap-8'>
         <Section>
           <SectionHeader>
-            <SectionHeaderText>
-              <SectionTitle>Working Hours</SectionTitle>
-              <SectionDescription>
-                Set your company&apos;s working hours to define the availability
-                for interviews.
-              </SectionDescription>
+            <SectionHeaderText className='flex w-full flex-row justify-between'>
+              <div>
+                <SectionTitle>Working Hours</SectionTitle>
+                <SectionDescription>
+                  Set your company&apos;s working hours to define the
+                  availability for interviews.
+                </SectionDescription>
+              </div>
+              <div className='w-fit'>
+                {!isEdit && (
+                  <UIButton size='sm' onClick={() => setIsEdit(true)}>
+                    Edit
+                  </UIButton>
+                )}
+              </div>
             </SectionHeaderText>
           </SectionHeader>
           <>
-            <UIButton size='sm' onClick={() => setIsEdit(true)}>
-              Edit
-            </UIButton>
             {isEdit ? (
               <WorkingHourEdit
                 schedulingSettings={schedulingSettings}
@@ -140,6 +146,11 @@ const WorkingHourEdit = ({
       const schedulingSettingObj: CustomSchedulingSettingsUser = {
         ...schedulingSettings,
         workingHours: localWorkingHour,
+        break_hour: {
+          start_time: 'string',
+          end_time: 'string',
+        },
+        isAutomaticTimeZone: true,
       };
 
       await mutateAsync({
@@ -197,9 +208,22 @@ const WorkingHourEdit = ({
           />
         );
       })}
-      <UIButton isLoading={isSaving} disabled={isSaving} onClick={updateHandle}>
-        Save
-      </UIButton>
+      <div className='flex gap-4'>
+        <UIButton
+          variant={'secondary'}
+          disabled={isSaving}
+          onClick={() => setEdit(false)}
+        >
+          Cancel
+        </UIButton>
+        <UIButton
+          isLoading={isSaving}
+          disabled={isSaving}
+          onClick={updateHandle}
+        >
+          Save
+        </UIButton>
+      </div>
     </div>
   );
 };

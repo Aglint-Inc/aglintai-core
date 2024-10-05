@@ -108,11 +108,9 @@ export default function ScheduleAvailability() {
             </SectionDescription>
           </SectionHeaderText>
           <SectionActions>
-            {isEditOpen && (
-              <UIButton variant='outline' onClick={() => setIsEditOpen(true)}>
-                Edit
-              </UIButton>
-            )}
+            <UIButton variant='outline' onClick={() => setIsEditOpen(true)}>
+              Edit
+            </UIButton>
           </SectionActions>
         </SectionHeader>
         <ScheduleAvailabilityUI

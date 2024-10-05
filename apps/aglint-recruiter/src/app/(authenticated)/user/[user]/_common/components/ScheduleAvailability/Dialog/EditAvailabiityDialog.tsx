@@ -134,22 +134,22 @@ export const EditAvailabiityDialog = ({
       });
 
       setTimeZone(timeZoneCopy);
-      setFreeKeywords(schedulingSettingData?.schedulingKeyWords?.free);
+      setFreeKeywords(schedulingSettingData.schedulingKeyWords?.free);
       setSoftConflictsKeyWords(
-        schedulingSettingData?.schedulingKeyWords?.SoftConflicts || [],
+        schedulingSettingData.schedulingKeyWords?.SoftConflicts || [],
       );
       setOutOfOffice(
-        schedulingSettingData?.schedulingKeyWords?.outOfOffice || [],
+        schedulingSettingData.schedulingKeyWords?.outOfOffice || [],
       );
       setRecruitingBlocks(
-        schedulingSettingData?.schedulingKeyWords?.recruitingBlocks || [],
+        schedulingSettingData.schedulingKeyWords?.recruitingBlocks || [],
       );
     }
   }
 
   useEffect(() => {
     initialLoad();
-  }, []);
+  }, [allMembers]);
 
   const keywords = [
     {
@@ -189,7 +189,7 @@ export const EditAvailabiityDialog = ({
 
     try {
       setIsSaving(true);
-      const schedulingSettingObj: CustomSchedulingSettingsUser = {
+      const schedulingSettingObj = {
         ...schedulingSettings,
         isAutomaticTimeZone: true,
         interviewLoad: {
@@ -209,7 +209,9 @@ export const EditAvailabiityDialog = ({
           outOfOffice: outOfOffice,
           recruitingBlocks: recruitingBlocks,
         },
-      };
+      } as CustomSchedulingSettingsUser;
+
+      // CustomSchedulingSettingsUser
 
       await mutateAsync({
         scheduling_settings: schedulingSettingObj,
