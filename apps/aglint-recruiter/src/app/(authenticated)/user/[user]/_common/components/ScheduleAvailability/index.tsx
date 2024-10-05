@@ -108,23 +108,24 @@ export default function ScheduleAvailability() {
             </SectionDescription>
           </SectionHeaderText>
           <SectionActions>
-            <UIButton variant='outline' onClick={() => setIsEditOpen(true)}>
-              Edit
-            </UIButton>
+            {!isEditOpen && (
+              <UIButton variant='outline' onClick={() => setIsEditOpen(true)}>
+                Edit
+              </UIButton>
+            )}
           </SectionActions>
         </SectionHeader>
-        <ScheduleAvailabilityUI
-          interviewLoads={interviewLoads}
-          timeZone={scheduling_settings?.timeZone?.label || ' - '}
-          workingHours={workingHours}
-          scheduleKeywords={scheduleKeywords}
-          schedulingSettings={scheduling_settings}
-        />
+        {!isEditOpen && (
+          <ScheduleAvailabilityUI
+            interviewLoads={interviewLoads}
+            timeZone={scheduling_settings?.timeZone?.label || ' - '}
+            workingHours={workingHours}
+            scheduleKeywords={scheduleKeywords}
+            schedulingSettings={scheduling_settings}
+          />
+        )}
+        {isEditOpen && <EditAvailabiityDialog setIsEditOpen={setIsEditOpen} />}
       </Section>
-      <EditAvailabiityDialog
-        setIsEditOpen={setIsEditOpen}
-        isEditOpen={isEditOpen}
-      />
     </>
   );
 }

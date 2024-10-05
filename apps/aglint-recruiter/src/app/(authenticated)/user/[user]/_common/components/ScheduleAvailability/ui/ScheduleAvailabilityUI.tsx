@@ -2,7 +2,6 @@ import { type SchedulingSettingType } from '@aglint/shared-types';
 import { type CustomSchedulingSettingsUser } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
 import { dayjsLocal } from '@aglint/shared-utils';
 import { EmptyState } from '@components/empty-state';
-import { toast } from '@components/hooks/use-toast';
 import {
   Section,
   SectionDescription,
@@ -10,17 +9,11 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
-import { Label } from '@components/ui/label';
 import { TableCell, TableRow } from '@components/ui/table';
 import { capitalize } from 'lodash';
 import { Calendar } from 'lucide-react';
-import { type Dispatch, type SetStateAction, useState } from 'react';
 
-import { UIButton } from '@/common/UIButton';
-import DayWithTime from '@/company/components/WorkingHours/WorkTime/WorkTimeEditDialog/ui/DayWithTime';
 import UITypography from '@/components/Common/UITypography';
-import { useRouterPro } from '@/hooks/useRouterPro';
-import { api } from '@/trpc/client';
 
 import { type InterviewLoadItemType, type ScheduleKeywordType } from '..';
 
@@ -36,9 +29,7 @@ export const ScheduleAvailabilityUI = ({
   interviewLoads,
   workingHours,
   scheduleKeywords,
-  schedulingSettings,
 }: Props) => {
-  const [isEdit, setIsEdit] = useState(false);
   return (
     <div className='flex flex-col space-y-8'>
       <div className='grid grid-cols-2 gap-8'>
@@ -52,24 +43,12 @@ export const ScheduleAvailabilityUI = ({
                   availability for interviews.
                 </SectionDescription>
               </div>
-              <div className='w-fit'>
-                {!isEdit && (
-                  <UIButton size='sm' onClick={() => setIsEdit(true)}>
-                    Edit
-                  </UIButton>
-                )}
-              </div>
             </SectionHeaderText>
           </SectionHeader>
           <>
-            {isEdit ? (
-              <WorkingHourEdit
-                schedulingSettings={schedulingSettings}
-                setEdit={setIsEdit}
-              />
-            ) : (
-              workingHours.map((day, i) => <WorkHourList key={i} day={day} />)
-            )}
+            {workingHours.map((day, i) => (
+              <WorkHourList key={i} day={day} />
+            ))}
           </>
         </Section>
         <div className='flex flex-col gap-8'>
@@ -120,110 +99,6 @@ export const ScheduleAvailabilityUI = ({
           );
         })}
       </Section>
-    </div>
-  );
-};
-
-const WorkingHourEdit = ({
-  schedulingSettings,
-  setEdit,
-}: {
-  schedulingSettings: CustomSchedulingSettingsUser;
-  setEdit: Dispatch<SetStateAction<boolean>>;
-}) => {
-  const [isSaving, setIsSaving] = useState(false);
-  const [localWorkingHour, setLocalWorkingHour] = useState<
-    CustomSchedulingSettingsUser['workingHours']
-  >(schedulingSettings['workingHours']);
-
-  const router = useRouterPro();
-  const user_id = router?.params?.user as string;
-  const { mutateAsync } = api.user.update_user.useMutation();
-
-  const updateHandle = async () => {
-    try {
-      setIsSaving(true);
-      const schedulingSettingObj: CustomSchedulingSettingsUser = {
-        ...schedulingSettings,
-        workingHours: localWorkingHour,
-        break_hour: {
-          start_time: 'string',
-          end_time: 'string',
-        },
-        isAutomaticTimeZone: true,
-      };
-
-      await mutateAsync({
-        scheduling_settings: schedulingSettingObj,
-        user_id,
-      });
-      toast({ title: 'Availability update Successfully' });
-      setEdit(false);
-    } catch (e) {
-      toast({ title: 'Availability update failed', variant: 'destructive' });
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  return (
-    <div className='mb-4 flex flex-col gap-4'>
-      <Label>Edit Working Hours</Label>
-      {localWorkingHour.map((day, i) => {
-        const startTime = dayjsLocal()
-          .set('hour', parseInt(day.timeRange.startTime?.split(':')[0] || '0'))
-          .set(
-            'minute',
-            parseInt(day.timeRange.startTime?.split(':')[1] || '0'),
-          )
-          .toISOString();
-
-        const endTime = dayjsLocal()
-          .set('hour', parseInt(day.timeRange.endTime?.split(':')[0] || '0'))
-          .set('minute', parseInt(day.timeRange.endTime?.split(':')[1] || '0'))
-          .toISOString();
-
-        return (
-          <DayWithTime
-            key={i}
-            day={day}
-            i={i}
-            startTime={startTime}
-            endTime={endTime}
-            selectStartTime={(value, i) => {
-              setLocalWorkingHour((pre) => {
-                const data = [...pre];
-                data[i].timeRange.startTime = dayjsLocal(value).format('HH:mm');
-                return data;
-              });
-            }}
-            selectEndTime={(value, i) => {
-              setLocalWorkingHour((pre) => {
-                const data = [...pre];
-                data[i].timeRange.endTime = dayjsLocal(value).format('HH:mm');
-                return data;
-              });
-            }}
-            setWorkingHours={setLocalWorkingHour}
-          />
-        );
-      })}
-      <div className='flex gap-4'>
-        <UIButton
-          variant={'secondary'}
-          disabled={isSaving}
-          onClick={() => setEdit(false)}
-        >
-          Cancel
-        </UIButton>
-        <UIButton
-          isLoading={isSaving}
-          disabled={isSaving}
-          onClick={updateHandle}
-        >
-          Save
-        </UIButton>
-      </div>
     </div>
   );
 };
