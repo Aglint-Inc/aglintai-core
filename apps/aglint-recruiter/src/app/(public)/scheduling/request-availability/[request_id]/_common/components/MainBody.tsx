@@ -116,7 +116,7 @@ function CandidateAvailability() {
           <h1 className='mb-4 text-6xl font-bold text-gray-800'>404</h1>
           <p className='mb-8 text-xl text-gray-600'>Page not found</p>
           <div className='flex justify-center'>
-            <AlertCircle className='h-16 w-16 text-red-500' />
+            <AlertCircle className='h-16 w-16 text-destructive' />
           </div>
         </div>
       </div>

@@ -190,7 +190,9 @@ export function AshbyModalComp() {
                 type='password'
               />
               {error && (
-                <p className='text-sm text-red-500'>Please enter an API key</p>
+                <p className='text-sm text-destructive'>
+                  Please enter an API key
+                </p>
               )}
               <Button
                 variant='default'
@@ -201,7 +203,7 @@ export function AshbyModalComp() {
                 {loading ? 'Submitting...' : 'Submit'}
               </Button>
               {integration.ashby.step === STATE_ASHBY_DIALOG.ERROR && (
-                <p className='text-sm text-red-500'>
+                <p className='text-sm text-destructive'>
                   Invalid API key. Please try again.
                 </p>
               )}

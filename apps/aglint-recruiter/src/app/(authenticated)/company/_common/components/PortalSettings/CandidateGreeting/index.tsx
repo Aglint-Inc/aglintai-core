@@ -1,8 +1,8 @@
+import { EmptyState } from '@components/empty-state';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { CircleUser, Plus, SquarePen } from 'lucide-react';
 import { useState } from 'react';
 
-import GlobalEmpty from '@/common/GlobalEmpty';
 import { UIButton } from '@/common/UIButton';
 import UISectionCard from '@/common/UISectionCard';
 import { useFlags } from '@/company/hooks/useFlags';
@@ -29,16 +29,11 @@ export default function CandidateGreeting() {
             the greeting message to the candidate.'
         emptyStateMessage={
           !greetings && (
-            <GlobalEmpty
-              icon={
-                <CircleUser
-                  strokeWidth={2}
-                  className='h-6 w-6 text-muted-foreground'
-                />
-              }
+            <EmptyState
+              icon={CircleUser}
               header={`No Candidate Greeting found`}
               description={`Add the Greeting  for candidate portal`}
-              primaryAction={
+              primarySlot={
                 <UIButton
                   onClick={() => setIsDialogOpen(true)}
                   leftIcon={<Plus />}
@@ -63,7 +58,7 @@ export default function CandidateGreeting() {
         }
       >
         {greetings?.length && (
-          <ScrollArea className='max-h-40 w-full rounded-md border bg-gray-100'>
+          <ScrollArea className='max-h-40 w-full rounded-md border bg-muted'>
             <div className='w-full space-y-4 p-4'>{greetings}</div>
           </ScrollArea>
         )}

@@ -1,3 +1,4 @@
+import { EmptyState } from '@components/empty-state';
 import {
   Tooltip,
   TooltipContent,
@@ -7,7 +8,6 @@ import {
 import { Briefcase, TriangleAlert } from 'lucide-react';
 
 import { useIntegrations } from '@/authenticated/hooks';
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
 import { useOnboarding } from '@/components/Navigation/OnboardPending/context/onboarding';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -34,16 +34,11 @@ export const EmptyJob = () => {
   const { isJobSetupPending } = useOnboarding();
   return (
     <div className='mt-[200px]'>
-      <GlobalEmpty
-        icon={
-          <Briefcase
-            strokeWidth={2}
-            className='h-6 w-6 text-muted-foreground'
-          />
-        }
+      <EmptyState
+        icon={Briefcase}
         header='No jobs yet'
         description='Get started by importing jobs from ATS or create a new job posting to find great candidates!'
-        primaryAction={
+        primarySlot={
           <UIButton
             isLoading={isLoading}
             onClick={() => {
@@ -65,7 +60,7 @@ export const EmptyJob = () => {
                 : 'Connect to ATS'}
           </UIButton>
         }
-        secondaryAction={
+        secondarySlot={
           <UIButton
             variant='outline'
             onClick={() => router.push(ROUTES['/jobs/create']())}

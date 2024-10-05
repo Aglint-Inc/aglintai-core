@@ -139,7 +139,7 @@ const JobsSideNavV2 = () => {
                 : 'Closing this job will permanently stop all activities, including tasks and scheduled interviews. It will also remove the job from the company page and prevent any new applications or candidate imports.'}
             </DialogDescription>
           </DialogHeader>
-          <p>
+          <p className='text-sm text-muted-foreground'>
             Confirm by typing the job title{' '}
             <span className='font-semibold text-destructive'>
               {job?.job_title}

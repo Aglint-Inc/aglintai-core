@@ -1,7 +1,7 @@
 import { dayjsLocal } from '@aglint/shared-utils';
+import { EmptyState } from '@components/empty-state';
 import { ChartNoAxesColumn } from 'lucide-react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import UISectionCard from '@/components/Common/UISectionCard';
 
 import { useInterviewer } from '../../hooks/useInterviewer';
@@ -23,15 +23,7 @@ export const KeyMatrics = () => {
     <>
       <UISectionCard title='Key Metrics' type='compact'>
         {isEmpty ? (
-          <GlobalEmpty
-            icon={
-              <ChartNoAxesColumn
-                strokeWidth={2}
-                className='h-6 w-6 text-muted-foreground'
-              />
-            }
-            description='No Metrics'
-          />
+          <EmptyState icon={ChartNoAxesColumn} description='No Metrics' />
         ) : (
           <div className='flex flex-row gap-3'>
             <Card color='green' title='Interview Hours' value={completedHour} />

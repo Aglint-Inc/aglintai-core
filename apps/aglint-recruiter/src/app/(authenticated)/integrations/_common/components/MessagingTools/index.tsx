@@ -41,7 +41,7 @@ function MessagingTools() {
             slotLogo={item.logo}
             textName={capitalize(item.name)}
             textLink={item.url}
-            isConnected={true}
+            // isConnected={true}
             primaryText='Contact Support'
             primaryAction={() => {
               // @ts-ignore

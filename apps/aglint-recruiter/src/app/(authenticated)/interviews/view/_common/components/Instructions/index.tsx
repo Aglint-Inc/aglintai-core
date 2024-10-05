@@ -33,14 +33,14 @@ function ScheduleDetailInstructions() {
     }
   }
   return (
-    <div className='max-w-4xl  min-h-[calc(100vh-310px)]'>
+    <div className='min-h-[calc(100vh-310px)] max-w-4xl'>
       <Instructions
         instruction={schedule?.interview_meeting.instructions as string}
         setTextValue={setTextValue}
         showEditButton={
           recruiter_user?.role === 'admin' ||
           recruiter_user?.role === 'recruiter'
-        } 
+        }
         updateInstruction={updateInstruction}
       />
     </div>

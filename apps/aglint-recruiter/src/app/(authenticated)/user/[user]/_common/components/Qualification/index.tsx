@@ -1,3 +1,4 @@
+import { EmptyState } from '@components/empty-state';
 import {
   Section,
   SectionHeader,
@@ -5,8 +6,6 @@ import {
 } from '@components/layouts/sections-header';
 import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
 import { LibraryBig } from 'lucide-react';
-
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 
 import { type InterviewerDetailType } from '../../hooks/useInterviewer';
 import { List } from './ui/List';
@@ -35,15 +34,7 @@ export const Qualifications = ({
         </ScrollArea>
       ) : (
         <div className='col-span-3'>
-          <GlobalEmpty
-            icon={
-              <LibraryBig
-                strokeWidth={2}
-                className='h-6 w-6 text-muted-foreground'
-              />
-            }
-            description='No qualifications found'
-          />
+          <EmptyState icon={LibraryBig} description='No qualifications found' />
         </div>
       )}
     </Section>

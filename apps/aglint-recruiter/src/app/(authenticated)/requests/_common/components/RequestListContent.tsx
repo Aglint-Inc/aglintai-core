@@ -37,7 +37,7 @@ function RequestListContent({
 
       <div className='container-lg mx-auto w-full px-4'>
         <div
-          className={`${view === 'kanban' ? 'grid grid-cols-4' : 'space-y-4'}`}
+          className={`${view === 'kanban' ? 'grid grid-cols-4 rounded-lg border' : 'space-y-4'}`}
         >
           {otherSections.map(({ requests, sectionName }) => (
             <div

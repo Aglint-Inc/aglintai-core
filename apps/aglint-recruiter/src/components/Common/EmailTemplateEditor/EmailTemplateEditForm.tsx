@@ -100,7 +100,6 @@ export default function EmailTemplateEditForm({
               template_type={selectedTemplate.type}
               handleChange={emailSubjectChange}
               initialValue={selectedTemplate?.subject ?? undefined}
-             
             />
           </div>
         </div>

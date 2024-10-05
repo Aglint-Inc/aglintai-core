@@ -311,7 +311,7 @@ const JobForms = ({
         {forms}
         <div className='mt-4'>{description}</div>
         {fields.description!.error.value && (
-          <div className='mt-2 flex items-center text-red-500'>
+          <div className='mt-2 flex items-center text-destructive'>
             <AlertTriangle className='mr-2' />
             <span>{fields.description!.error.helper}</span>
           </div>

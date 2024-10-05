@@ -66,7 +66,7 @@ export const ResumeScore = ({
 };
 
 const ErrorIcon = () => (
-  <div className='flex items-center space-x-1 text-red-500'>
+  <div className='flex items-center space-x-1 text-destructive'>
     <AlertCircle size={16} />
     <span>Resume not found</span>
   </div>

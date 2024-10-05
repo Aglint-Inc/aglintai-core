@@ -1,9 +1,9 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { EmptyState } from '@components/empty-state';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
 import { BriefcaseBusiness, User } from 'lucide-react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import UITypography from '@/components/Common/UITypography';
 import InterviewerUserDetail from '@/components/Scheduling/Common/InterviewerUserDetail';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
@@ -112,9 +112,12 @@ function CollapseContent({
 
                 {count === 0 ? (
                   <>
-                  <GlobalEmpty icon={<User/>} header='No interviewers assigned.' description='Assign interviewers to this session to schedule'/>
+                    <EmptyState
+                      icon={User}
+                      header='No interviewers assigned.'
+                      description='Assign interviewers to this session to schedule'
+                    />
                   </>
-                  
                 ) : (
                   users.map((user) => {
                     const item = user.user_details;

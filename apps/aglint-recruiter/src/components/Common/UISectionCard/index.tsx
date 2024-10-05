@@ -1,3 +1,4 @@
+import { EmptyState } from '@components/empty-state';
 import {
   Section,
   SectionActions,
@@ -6,9 +7,9 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
+import { type LucideIcon } from 'lucide-react';
 import React, { useState } from 'react';
 
-import GlobalEmpty from '../GlobalEmpty';
 import { Loader } from '../Loader';
 
 interface InfoCardProps {
@@ -19,7 +20,7 @@ interface InfoCardProps {
   action?: React.ReactNode;
   children: React.ReactNode;
   isLoading?: boolean;
-  emptyStateIcon?: React.ReactNode;
+  emptyStateIcon?: React.ReactNode | LucideIcon;
   emptyStateHeading?: string;
   isHoverEffect?: boolean;
   emptyStateMessage?: string | React.ReactNode;
@@ -52,18 +53,18 @@ export default function UISectionCard({
       <SectionHeader className={`${type === 'compact' ? 'p-0' : ''}`}>
         <SectionHeaderText>
           <SectionTitle
-            className={`flex items-center mb-1 ${type === 'compact' ? 'text-md font-medium' : 'text-lg font-medium'}`}
+            className={`mb-1 flex items-center ${type === 'compact' ? 'text-md font-medium' : 'text-lg font-medium'}`}
           >
             {title} {titleAddon && <span>{titleAddon}</span>}
             <SectionActions>
-          {action && (
-            <div
-              className={`ml-4 flex-shrink-0 ${isHover || !isHoverEffect ? 'opacity-100' : 'opacity-0'} transition`}
-            >
-              {action}
-            </div>
-          )}
-        </SectionActions>
+              {action && (
+                <div
+                  className={`ml-4 flex-shrink-0 ${isHover || !isHoverEffect ? 'opacity-100' : 'opacity-0'} transition`}
+                >
+                  {action}
+                </div>
+              )}
+            </SectionActions>
           </SectionTitle>
           <SectionDescription>
             <p className='max-w-4xl text-sm text-muted-foreground'>
@@ -74,15 +75,14 @@ export default function UISectionCard({
             )}
           </SectionDescription>
         </SectionHeaderText>
-        
       </SectionHeader>
 
       <div className={`${type === 'compact' ? 'mt-2 p-0' : ''}`}>
         {isLoading ? (
           <Loader />
         ) : emptyStateHeading || emptyStateMessage ? (
-          <GlobalEmpty
-            icon={emptyStateIcon}
+          <EmptyState
+            icon={emptyStateIcon as LucideIcon}
             header={emptyStateHeading}
             description={emptyStateMessage}
           />

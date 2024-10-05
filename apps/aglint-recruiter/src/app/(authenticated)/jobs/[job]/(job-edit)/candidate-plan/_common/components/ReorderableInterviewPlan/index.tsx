@@ -433,14 +433,15 @@ export default function ReorderableInterviewPlan({
                   <div className='flex space-x-2'>
                     {step.application_id && (
                       <UIButton
+                        size='sm'
                         variant='secondary'
                         onClick={() =>
                           completeHandle(step.id, !step.is_completed)
                         }
                       >
                         {step.is_completed
-                          ? 'Mark as Uncomplete'
-                          : 'Mark as Complete'}
+                          ? 'Mark not complete'
+                          : 'Mark as complete'}
                       </UIButton>
                     )}
                   </div>

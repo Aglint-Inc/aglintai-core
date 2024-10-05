@@ -113,7 +113,7 @@ export const AddHolidayDialog = ({ addDayOffOpen, setDaysOffOpen }: Props) => {
       <div className='space-y-4'>
         <div className='space-y-2'>
           <Label htmlFor='event'>
-            Day off <span className='text-red-500'>*</span>
+            Day off <span className='text-destructive'>*</span>
           </Label>
           <UITextField
             id='event'
@@ -126,7 +126,7 @@ export const AddHolidayDialog = ({ addDayOffOpen, setDaysOffOpen }: Props) => {
         </div>
         <div className='space-y-2'>
           <Label htmlFor='date'>
-            Date <span className='text-red-500'>*</span>
+            Date <span className='text-destructive'>*</span>
           </Label>
           <Popover>
             <PopoverTrigger asChild>

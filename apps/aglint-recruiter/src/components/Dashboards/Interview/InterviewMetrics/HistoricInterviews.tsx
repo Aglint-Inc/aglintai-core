@@ -16,7 +16,7 @@ const chartConfig = {
 
 export default function HistoricInterviews() {
   const [timeFrame, setTimeFrame] = useState<'day' | 'week' | 'month'>('day');
-  const { groupedData, isFetching, isError} = useInterviewCount(timeFrame);
+  const { groupedData, isFetching, isError } = useInterviewCount(timeFrame);
   return (
     <ReportCard
       title={'Historic'}

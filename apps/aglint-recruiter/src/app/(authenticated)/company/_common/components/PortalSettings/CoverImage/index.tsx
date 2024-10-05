@@ -49,7 +49,7 @@ export function CoverImage() {
         <div className='flex flex-col'>
           {/* if there is no image show this button */}
           {banner_image ? (
-            <div className='flex h-48 w-96 flex-col items-center justify-center gap-4 overflow-hidden rounded-md bg-gray-100'>
+            <div className='flex h-48 w-96 flex-col items-center justify-center gap-4 overflow-hidden rounded-md bg-muted'>
               <ImageWithLoading src={banner_image} />
             </div>
           ) : (

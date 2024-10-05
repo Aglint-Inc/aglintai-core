@@ -32,19 +32,24 @@ function LocationCard({
 
   return (
     <div
-      className='relative h-full p-4 rounded-md bg-gray-100'
+      className='relative h-full rounded-md bg-gray-100 p-4'
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {!isFormDisabled && isHovered && (
         <div className='absolute right-2 top-2 flex space-x-1'>
-          <Button variant='secondary' size='sm' onClick={() => onEdit(id)}  className='bg-white shadow-sm hover:bg-gray-200 w-8 h-8 p-0'>
+          <Button
+            variant='secondary'
+            size='sm'
+            onClick={() => onEdit(id)}
+            className='h-8 w-8 bg-white p-0 shadow-sm hover:bg-gray-200'
+          >
             <PencilIcon className='h-3 w-3' />
           </Button>
           <Button
             variant='secondary'
             size='sm'
-            className='bg-white shadow-sm hover:bg-red-500 hover:text-white w-8 h-8 p-0'
+            className='h-8 w-8 bg-white p-0 shadow-sm hover:bg-red-500 hover:text-white'
             onClick={() => onDelete(id)}
           >
             <Trash2 className='h-3 w-3' />
@@ -67,7 +72,7 @@ function LocationCard({
         </div>
       </div>
       {isHeadquarter && (
-        <div className='absolute bottom-3 right-3'> 
+        <div className='absolute bottom-3 right-3'>
           <Badge variant='outline'>Headquarters</Badge>
         </div>
       )}

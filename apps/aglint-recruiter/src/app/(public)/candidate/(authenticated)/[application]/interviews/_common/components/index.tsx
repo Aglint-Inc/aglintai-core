@@ -1,11 +1,11 @@
 'use client';
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
+import { EmptyState } from '@components/empty-state';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
 import { Calendar, Linkedin } from 'lucide-react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { useCandidatePortalInterviews } from '../hooks';
@@ -34,10 +34,7 @@ export default function InterviewsPage() {
             ))
           ) : (
             <div className='h-60'>
-              <GlobalEmpty
-                icon={<Calendar strokeWidth={1} className='h-10 w-10' />}
-                header='No upcoming interviews'
-              />
+              <EmptyState icon={Calendar} header='No upcoming interviews' />
             </div>
           )}
         </div>
@@ -49,10 +46,7 @@ export default function InterviewsPage() {
             ))
           ) : (
             <div className='h-60'>
-              <GlobalEmpty
-                icon={<Calendar strokeWidth={1} className='h-10 w-10' />}
-                header='No Past interviews'
-              />
+              <EmptyState icon={Calendar} header='No Past interviews' />
             </div>
           )}
         </div>

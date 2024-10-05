@@ -1,3 +1,4 @@
+import { EmptyState } from '@components/empty-state';
 import {
   Section,
   SectionHeader,
@@ -16,7 +17,6 @@ import { BriefcaseBusiness } from 'lucide-react';
 import { useState } from 'react';
 
 import { NotFound } from '@/components/Common/404';
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
@@ -67,10 +67,10 @@ export const ConnectedJobs = () => {
         <SectionHeader>
           <SectionTitle>Connected Jobs</SectionTitle>
         </SectionHeader>
-        <GlobalEmpty
+        <EmptyState
           header='No jobs connected'
           description='You can connect jobs to this workflow to automate your workflow.'
-          icon={<BriefcaseBusiness strokeWidth={2} className='h-6 w-6' />}
+          icon={BriefcaseBusiness}
         />
       </Section>
     );

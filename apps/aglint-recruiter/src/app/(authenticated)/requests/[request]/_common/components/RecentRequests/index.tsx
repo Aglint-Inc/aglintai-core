@@ -1,3 +1,4 @@
+import { EmptyState } from '@components/empty-state';
 import {
   Section,
   SectionHeaderText,
@@ -8,7 +9,6 @@ import { LayoutList } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import RequestCard from 'src/app/_common/components/Requests/RequestCard';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 
 function RecentRequests({ applicationId }: { applicationId: string }) {
@@ -44,7 +44,7 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
             //     Recent requests not found
             //   </span>
             // </div>
-            <GlobalEmpty header='Recent requests not found' icon={<LayoutList className='h-8 w-8 text-gray-400' />}/>
+            <EmptyState header='Recent requests not found' icon={LayoutList} />
           ) : (
             recentRequests.map((request, index) => {
               return <RequestCard key={index} request={request} />;

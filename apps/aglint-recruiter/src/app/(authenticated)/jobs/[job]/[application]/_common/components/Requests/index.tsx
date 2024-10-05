@@ -1,5 +1,6 @@
 'use client';
 
+import { EmptyState } from '@components/empty-state';
 import {
   Section,
   SectionDescription,
@@ -9,8 +10,6 @@ import {
 } from '@components/layouts/sections-header';
 import { Calendar } from 'lucide-react';
 import RequestCard from 'src/app/_common/components/Requests/RequestCard';
-
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 
 import { useApplicationRequests } from '../../hooks/useApplicationRequests';
 
@@ -30,8 +29,8 @@ function Requests() {
         {!isLoading &&
           requests?.map((req) => <RequestCard key={req.id} request={req} />)}
         {!requests?.length && (
-          <GlobalEmpty
-            icon={<Calendar className='h-8 w-8 text-muted-foreground' />}
+          <EmptyState
+            icon={Calendar}
             description='No requests found for this application.'
           />
         )}

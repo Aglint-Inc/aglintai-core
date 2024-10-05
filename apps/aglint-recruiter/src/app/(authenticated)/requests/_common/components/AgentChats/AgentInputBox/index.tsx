@@ -28,7 +28,6 @@ function AgentInputBox() {
   );
   // eslint-disable-next-line no-unused-vars
 
-
   const { data: jobsAndApplications } = useAllJobsAndApplications({
     recruiter_id,
     schedule_type: selectedItems?.schedule_type[0]?.id ?? 'schedule',

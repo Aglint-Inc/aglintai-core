@@ -1,3 +1,4 @@
+import { EmptyState } from '@components/empty-state';
 import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
 import {
   PageActions,
@@ -16,7 +17,6 @@ import {
 import { useInterviewerHeaderContext } from '@interviewers/hooks/useInterviewerHeaderContext';
 import { Users } from 'lucide-react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 
 import { useAllInterviewers } from '../hooks/useAllInterviewers';
@@ -116,8 +116,8 @@ function Interviewers() {
       </Table>
       {filteredInterviewers?.length === 0 ? (
         <div className='flex w-full items-center justify-center'>
-          <GlobalEmpty
-            icon={<Users strokeWidth={1} className='h-10 w-10' />}
+          <EmptyState
+            icon={Users}
             header={'No Interviewers found'}
             description='Create a new interview pool to get started.'
           />

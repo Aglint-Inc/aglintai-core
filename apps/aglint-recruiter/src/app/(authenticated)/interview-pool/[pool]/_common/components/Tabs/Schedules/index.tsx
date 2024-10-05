@@ -1,10 +1,10 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { EmptyState } from '@components/empty-state';
 import { Card } from '@components/ui/card';
 import { Calendar } from 'lucide-react';
 import { useState } from 'react';
 
 import CalendarComp from '@/components/Common/Calendar/Calendar';
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 
 import { usePoolSchedules } from '../../../hooks/useSchedulesPool';
@@ -26,13 +26,8 @@ function Schedules() {
         </div>
       ) : (allSchedules || []).length === 0 ? (
         <div className='w-full'>
-          <GlobalEmpty
-            icon={
-              <Calendar
-                strokeWidth={1.5}
-                className='mb-2 h-10 w-10 text-muted-foreground'
-              />
-            }
+          <EmptyState
+            icon={Calendar}
             header={'There are no schedules available at the moment.'}
             description='Create a new interview pool to get started.'
           />

@@ -1,4 +1,5 @@
 import { getFullName } from '@aglint/shared-utils';
+import { EmptyState } from '@components/empty-state';
 import {
   Section,
   SectionHeader,
@@ -11,7 +12,6 @@ import { LayoutList } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { WithPermission } from '@/components/withPermission';
@@ -38,29 +38,26 @@ function Component() {
       ) : (
         <div className='space-y-2'>
           {(requests ?? []).length === 0 && (
-            <GlobalEmpty
+            <EmptyState
               header={'No requests found'}
               description='Requests are created when a interview process starts for candidates.'
-              icon={
-                <LayoutList
-                  strokeWidth={2}
-                  className='h-6 w-6 text-muted-foreground'
-                />
-              }
+              icon={LayoutList}
             />
           )}
           <ul className='flex flex-col gap-3'>
             {requests?.map((request, index) => (
               <React.Fragment key={request.id}>
-                <li className='p-3 text-lg bg-gray-50 hover:no-underline hover:bg-gray-100 duration-300 rounded-md'>
+                <li className='rounded-md bg-gray-50 p-3 text-lg duration-300 hover:bg-gray-100 hover:no-underline'>
                   <Link
                     href={ROUTES['/requests/[request]']({
                       request: request.id,
                     })}
-                    className=' hover:no-underline'
+                    className='hover:no-underline'
                   >
-                    <div className='text-sm font-medium'>dewxwed{request.title}</div>
-                    <div className='flex cursor-pointer items-center mt-2 gap-4'>
+                    <div className='text-sm font-medium'>
+                      dewxwed{request.title}
+                    </div>
+                    <div className='mt-2 flex cursor-pointer items-center gap-4'>
                       <div className='flex items-center gap-2'>
                         <Avatar className='h-6 w-6 rounded-sm'>
                           <AvatarImage
@@ -73,7 +70,7 @@ function Component() {
                               request?.assignee_details?.last_name ?? '',
                             )}
                           />
-                          <AvatarFallback className='text-sm h-6 w-6 rounded-md text-gray-500 bg-gray-200'>
+                          <AvatarFallback className='h-6 w-6 rounded-md bg-gray-200 text-sm text-gray-500'>
                             {getFullName(
                               request?.assignee_details?.first_name ?? '',
                               request?.assignee_details?.last_name ?? '',

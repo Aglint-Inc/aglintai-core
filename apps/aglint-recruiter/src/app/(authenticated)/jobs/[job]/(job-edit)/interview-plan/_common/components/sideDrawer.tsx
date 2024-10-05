@@ -1,11 +1,11 @@
 /* eslint-disable security/detect-object-injection */
+import { EmptyState } from '@components/empty-state';
 import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { AlertTriangle } from 'lucide-react';
 import { useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDrawer from '@/components/Common/UIDrawer';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -95,11 +95,11 @@ const InterviewDrawers = ({
           handleClose={() => handleClose()}
         />
       ) : (
-        <GlobalEmpty
-          icon={<AlertTriangle className='h-10 w-10' />}
+        <EmptyState
+          icon={AlertTriangle}
           header='No Interview Plan'
           description='Create an interview plan to get started'
-          primaryAction={
+          primarySlot={
             <Button onClick={() => push('/scheduling?tab=interviewtypes')}>
               Create Interview Plan
             </Button>
