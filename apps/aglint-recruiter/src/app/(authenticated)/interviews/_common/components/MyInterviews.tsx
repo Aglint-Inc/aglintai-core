@@ -104,12 +104,7 @@ function MyInterviews() {
               })}
             {scheduleFetched && allSchedules.length === 0 && (
               <EmptyState
-                icon={
-                  <Calendar
-                    strokeWidth={2}
-                    className='h-6 w-6 text-muted-foreground'
-                  />
-                }
+                icon={Calendar}
                 header='No interviews found'
                 description='There are no upcoming interviews for you.'
               />

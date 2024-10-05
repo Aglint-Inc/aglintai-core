@@ -41,12 +41,7 @@ function Component() {
             <EmptyState
               header={'No requests found'}
               description='Requests are created when a interview process starts for candidates.'
-              icon={
-                <LayoutList
-                  strokeWidth={2}
-                  className='h-6 w-6 text-muted-foreground'
-                />
-              }
+              icon={LayoutList}
             />
           )}
           <ul className='flex flex-col gap-3'>

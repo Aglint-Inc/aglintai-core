@@ -82,12 +82,7 @@ function Training() {
                     <tr>
                       <td colSpan={5} className='p-4'>
                         <EmptyState
-                          icon={
-                            <User
-                              strokeWidth={1.5}
-                              className='mb-2 h-10 w-10 text-muted-foreground'
-                            />
-                          }
+                          icon={User}
                           header={'No trainee found'}
                           description='Create a new interview pool to get started.'
                         />

@@ -35,15 +35,10 @@ export const EmptyJob = () => {
   return (
     <div className='mt-[200px]'>
       <EmptyState
-        icon={
-          <Briefcase
-            strokeWidth={2}
-            className='h-6 w-6 text-muted-foreground'
-          />
-        }
+        icon={Briefcase}
         header='No jobs yet'
         description='Get started by importing jobs from ATS or create a new job posting to find great candidates!'
-        primaryAction={
+        primarySlot={
           <UIButton
             isLoading={isLoading}
             onClick={() => {
@@ -65,7 +60,7 @@ export const EmptyJob = () => {
                 : 'Connect to ATS'}
           </UIButton>
         }
-        secondaryAction={
+        secondarySlot={
           <UIButton
             variant='outline'
             onClick={() => router.push(ROUTES['/jobs/create']())}

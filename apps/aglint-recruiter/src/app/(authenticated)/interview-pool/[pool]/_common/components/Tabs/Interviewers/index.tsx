@@ -104,12 +104,7 @@ function Interviewers() {
                 <TableRow>
                   <TableCell colSpan={5} className='text-center'>
                     <EmptyState
-                      icon={
-                        <User
-                          strokeWidth={1.5}
-                          className='mb-2 h-10 w-10 text-muted-foreground'
-                        />
-                      }
+                      icon={User}
                       header={'No interviewers found'}
                       description='Create a new interview pool to get started.'
                     />

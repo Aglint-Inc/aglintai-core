@@ -49,12 +49,7 @@ export const Feedback = () => {
               ))
             ) : (
               <EmptyState
-                icon={
-                  <MessageSquareOff
-                    strokeWidth={2}
-                    className='h-6 w-6 text-muted-foreground'
-                  />
-                }
+                icon={MessageSquareOff}
                 description='No feedback available'
               />
             )}

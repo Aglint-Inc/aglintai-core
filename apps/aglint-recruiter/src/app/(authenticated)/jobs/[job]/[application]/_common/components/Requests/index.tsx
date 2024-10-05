@@ -30,7 +30,7 @@ function Requests() {
           requests?.map((req) => <RequestCard key={req.id} request={req} />)}
         {!requests?.length && (
           <EmptyState
-            icon={<Calendar className='h-8 w-8 text-muted-foreground' />}
+            icon={Calendar}
             description='No requests found for this application.'
           />
         )}

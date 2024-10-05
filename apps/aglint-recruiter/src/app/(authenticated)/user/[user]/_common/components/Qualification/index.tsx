@@ -34,15 +34,7 @@ export const Qualifications = ({
         </ScrollArea>
       ) : (
         <div className='col-span-3'>
-          <EmptyState
-            icon={
-              <LibraryBig
-                strokeWidth={2}
-                className='h-6 w-6 text-muted-foreground'
-              />
-            }
-            description='No qualifications found'
-          />
+          <EmptyState icon={LibraryBig} description='No qualifications found' />
         </div>
       )}
     </Section>

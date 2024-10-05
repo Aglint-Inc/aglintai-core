@@ -308,13 +308,13 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
                 {selectedItems?.applicant_name[0]?.name ? (
                   <>
                     <EmptyState
-                      icon={<Clock strokeWidth={1} className='h-10 w-10' />}
+                      icon={Clock}
                       header={`There are no session found for ${selectedItems?.applicant_name[0]?.name}`}
                     />
                   </>
                 ) : (
                   <EmptyState
-                    icon={<Info strokeWidth={1} className='h-10 w-10' />}
+                    icon={Info}
                     header={`Please select an application first`}
                   />
                 )}
@@ -326,10 +326,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
                   (triggerType === '/' && requestList.length === 0)
                 }
               >
-                <EmptyState
-                  icon={<Info strokeWidth={1} className='h-10 w-10' />}
-                  header={`Results not found`}
-                />
+                <EmptyState icon={Info} header={`Results not found`} />
               </ShowCode.When>
             </ShowCode>
             {children}

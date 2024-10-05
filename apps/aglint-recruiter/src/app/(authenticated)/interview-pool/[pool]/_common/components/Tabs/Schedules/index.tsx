@@ -27,12 +27,7 @@ function Schedules() {
       ) : (allSchedules || []).length === 0 ? (
         <div className='w-full'>
           <EmptyState
-            icon={
-              <Calendar
-                strokeWidth={1.5}
-                className='mb-2 h-10 w-10 text-muted-foreground'
-              />
-            }
+            icon={Calendar}
             header={'There are no schedules available at the moment.'}
             description='Create a new interview pool to get started.'
           />

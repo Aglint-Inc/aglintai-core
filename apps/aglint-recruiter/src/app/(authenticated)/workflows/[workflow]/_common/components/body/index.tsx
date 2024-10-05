@@ -70,7 +70,7 @@ export const ConnectedJobs = () => {
         <EmptyState
           header='No jobs connected'
           description='You can connect jobs to this workflow to automate your workflow.'
-          icon={<BriefcaseBusiness strokeWidth={2} className='h-6 w-6' />}
+          icon={BriefcaseBusiness}
         />
       </Section>
     );

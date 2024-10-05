@@ -47,9 +47,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
   if (jobs?.length === 0) {
     return (
       <EmptyState
-        icon={
-          <Search strokeWidth={2} className='h-6 w-6 text-muted-foreground' />
-        }
+        icon={Search}
         description='No matching jobs found for this search query.'
       />
     );

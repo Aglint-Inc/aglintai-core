@@ -72,12 +72,7 @@ function Candidates() {
                           <EmptyState
                             header={'No candidates found'}
                             description='This section lists all candidates across all jobs taken this interview.'
-                            icon={
-                              <User
-                                strokeWidth={1.5}
-                                className='mb-2 h-10 w-10 text-muted-foreground'
-                              />
-                            }
+                            icon={User}
                           />
                         </div>
                       </td>

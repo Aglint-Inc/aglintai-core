@@ -113,7 +113,7 @@ function CollapseContent({
                 {count === 0 ? (
                   <>
                     <EmptyState
-                      icon={<User />}
+                      icon={User}
                       header='No interviewers assigned.'
                       description='Assign interviewers to this session to schedule'
                     />
