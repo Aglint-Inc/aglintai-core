@@ -1,3 +1,4 @@
+import { EmptyState } from '@components/empty-state';
 import {
   Tooltip,
   TooltipContent,
@@ -7,7 +8,6 @@ import {
 import { Briefcase, TriangleAlert } from 'lucide-react';
 
 import { useIntegrations } from '@/authenticated/hooks';
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
 import { useOnboarding } from '@/components/Navigation/OnboardPending/context/onboarding';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -34,7 +34,7 @@ export const EmptyJob = () => {
   const { isJobSetupPending } = useOnboarding();
   return (
     <div className='mt-[200px]'>
-      <GlobalEmpty
+      <EmptyState
         icon={
           <Briefcase
             strokeWidth={2}

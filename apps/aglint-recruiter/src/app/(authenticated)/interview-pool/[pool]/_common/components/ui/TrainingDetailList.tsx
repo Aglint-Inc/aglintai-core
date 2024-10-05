@@ -19,7 +19,7 @@ export function TrainingDetailList({
   slotPanelBlock,
 }: TrainingDetailListProps) {
   return (
-    <div className='flex items-center justify-between w-full'>
+    <div className='flex w-full items-center justify-between'>
       <div className='flex w-full items-center gap-2.5'>
         <div>
           {isShadow && <ShadowIcon className='h-5 w-5' />}

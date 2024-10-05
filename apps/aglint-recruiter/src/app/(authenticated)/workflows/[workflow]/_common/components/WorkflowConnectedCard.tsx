@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader } from '@components/ui/card';
-import { ExternalLink, Link2Off} from 'lucide-react';
+import { ExternalLink, Link2Off } from 'lucide-react';
 import Link from 'next/link';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -26,7 +26,7 @@ export function WorkflowConnectedCard({
   onClickJob,
 }: WorkflowConnectedCardProps) {
   return (
-    <Card className='group cursor-pointer bg-gray-50 border-none shadow-none flex flex-row items-center gap-4'>
+    <Card className='group flex cursor-pointer flex-row items-center gap-4 border-none bg-gray-50 shadow-none'>
       <CardHeader className='flex flex-row items-center gap-2 p-0'>
         <p className='font-regular text-sm'>{role}</p>
         {slotBadges}
@@ -43,7 +43,11 @@ export function WorkflowConnectedCard({
           </div>
         </div> */}
         <div className='hidden items-center gap-2 group-hover:flex'>
-          <Link href={jobLink.href} target='_blank' className='bg-white shadow-sm rounded-sm'>
+          <Link
+            href={jobLink.href}
+            target='_blank'
+            className='rounded-sm bg-white shadow-sm'
+          >
             <UIButton
               variant='ghost'
               onClick={onClickJob}
@@ -52,13 +56,13 @@ export function WorkflowConnectedCard({
             />
           </Link>
           {isLinkOffVisible && (
-            <div  className='bg-white shadow-sm rounded-sm'>
-            <UIButton
-              variant='ghost'
-              size='sm'
-              onClick={onClickLinkOff}
-              icon={<Link2Off />}
-            />
+            <div className='rounded-sm bg-white shadow-sm'>
+              <UIButton
+                variant='ghost'
+                size='sm'
+                onClick={onClickLinkOff}
+                icon={<Link2Off />}
+              />
             </div>
           )}
         </div>

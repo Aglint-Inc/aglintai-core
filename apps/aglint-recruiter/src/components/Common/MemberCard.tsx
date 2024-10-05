@@ -20,9 +20,9 @@ function MemberCard({
       {selectedMember?.profile_image &&
       selectedMember?.first_name &&
       selectedMember?.last_name ? (
-        <Avatar className='w-6 h-6 rounded-sm'>
+        <Avatar className='h-6 w-6 rounded-sm'>
           <AvatarImage src={selectedMember?.profile_image} />
-          <AvatarFallback className='w-6 h-6 rounded-sm'>
+          <AvatarFallback className='h-6 w-6 rounded-sm'>
             {selectedMember?.first_name.slice(0, 1)}
             {selectedMember?.last_name.slice(0, 1)}
           </AvatarFallback>

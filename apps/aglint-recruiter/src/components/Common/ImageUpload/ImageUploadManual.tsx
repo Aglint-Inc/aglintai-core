@@ -64,7 +64,7 @@ function ImageUploadManual({
             <Loader2 className='h-6 w-6 animate-spin text-white' />
           </div>
         )}
-        <div className='z-1 absolute inset-0 flex items-center justify-center cursor-pointer'>
+        <div className='z-1 absolute inset-0 flex cursor-pointer items-center justify-center'>
           {!initImage ? (
             <FileUploader
               focus={false}
@@ -72,7 +72,9 @@ function ImageUploadManual({
               name='file'
               types={['PNG', 'JPEG', 'JPG']}
             >
-              <div className={`focus:outline-none duration-300 ${isStackHovered ? 'bg-gray-200 ' : 'bg-gray-100 '} w-[70px] h-[70px] rounded-md cursor-pointer flex items-center justify-center overflow-hidden`}>
+              <div
+                className={`duration-300 focus:outline-none ${isStackHovered ? 'bg-gray-200' : 'bg-gray-100'} flex h-[70px] w-[70px] cursor-pointer items-center justify-center overflow-hidden rounded-md`}
+              >
                 <Upload
                   className={`h-6 w-6 ${isStackHovered ? 'text-gray-700' : 'text-gray-500'} focus:border-none focus:outline-none`}
                 />
@@ -83,7 +85,7 @@ function ImageUploadManual({
               className={`flex h-full w-full items-center justify-center rounded-lg transition-all duration-300 ${isStackHovered ? 'bg-neutral-200 bg-opacity-80' : ''}`}
             >
               {initImage && isStackHovered && (
-                <div className='flex rounded-lg '>
+                <div className='flex rounded-lg'>
                   <Trash2
                     onClick={(e) => {
                       e.stopPropagation();

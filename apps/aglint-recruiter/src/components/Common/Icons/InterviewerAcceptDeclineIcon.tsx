@@ -33,9 +33,9 @@ function InterviewerAcceptDeclineIcon({
         </Tooltip>
       )}
 
-      {type == 'waiting' && <CircleCheck className='w-4 h-4 text-gray-300'/>}
-      {type == 'accepted' && <CircleCheck className='w-4 h-4 text-green-600'/>}
-      {type == 'declined' && <XCircle className='w-4 h-4 text-green-600'/>}
+      {type == 'waiting' && <CircleCheck className='h-4 w-4 text-gray-300' />}
+      {type == 'accepted' && <CircleCheck className='h-4 w-4 text-green-600' />}
+      {type == 'declined' && <XCircle className='h-4 w-4 text-green-600' />}
     </>
   );
 }

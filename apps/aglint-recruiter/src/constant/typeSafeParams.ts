@@ -27,15 +27,15 @@ export const TYPE_SAFE_PARAMS = {
     '/jobs/[job]/workflows': [
       'job'
     ],
+    '/jobs/[job]/[application]': [
+      'job',
+      'application'
+    ],
     '/jobs/[job]/metrics': [
       'job'
     ],
     '/jobs/[job]': [
       'job'
-    ],
-    '/jobs/[job]/[application]': [
-      'job',
-      'application'
     ],
     '/requests/[request]': [
       'request'
@@ -60,21 +60,6 @@ export const TYPE_SAFE_PARAMS = {
     ],
     '/candidate/[application]/login': [
       'application'
-    ],
-    '/candidate/[application_id]/home': [
-      'application_id'
-    ],
-    '/candidate/[application_id]/interviews': [
-      'application_id'
-    ],
-    '/candidate/[application_id]/messages': [
-      'application_id'
-    ],
-    '/candidate/[application_id]/profile': [
-      'application_id'
-    ],
-    '/candidate/[application_id]/login': [
-      'application_id'
     ],
     '/company-postings/[id]': [
       'id'

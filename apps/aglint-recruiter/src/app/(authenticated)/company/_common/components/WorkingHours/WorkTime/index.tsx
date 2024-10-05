@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { EmptyState } from '@components/empty-state';
 import { Edit, NotebookPen, Plus } from 'lucide-react';
 import {
   type Dispatch,
@@ -9,7 +10,6 @@ import {
   useState,
 } from 'react';
 
-import GlobalEmpty from '@/common/GlobalEmpty';
 import { UIButton } from '@/common/UIButton';
 import UISectionCard from '@/common/UISectionCard';
 
@@ -64,7 +64,7 @@ const WorkTime: FC<WorkTimeProps> = ({
             <UIButton
               variant='outline'
               size='sm'
-              onClick={() => setIsOpen(true)} 
+              onClick={() => setIsOpen(true)}
             >
               <Edit className='mr-2 h-3 w-3' /> Edit
               <span className='sr-only'>Edit Working Hours</span>
@@ -75,16 +75,11 @@ const WorkTime: FC<WorkTimeProps> = ({
         {currentWorkingDays?.length > 0 ? (
           <WorkTimeUI workingHours={workingHours} />
         ) : (
-          <GlobalEmpty
-            icon={
-              <NotebookPen
-                strokeWidth={2}
-                className='h-6 w-6 text-muted-foreground'
-              />
-            }
+          <EmptyState
+            icon={NotebookPen}
             header='No Working day yet'
             description='Add the company Working day'
-            primaryAction={
+            primarySlot={
               <UIButton
                 className='mb-2 w-full'
                 leftIcon={<Plus />}

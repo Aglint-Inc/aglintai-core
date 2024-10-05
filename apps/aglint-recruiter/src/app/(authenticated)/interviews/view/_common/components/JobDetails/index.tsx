@@ -18,13 +18,13 @@ function JobDetails() {
     extensions: [StarterKit],
   });
   return (
-    <div className=' min-h-[calc(100vh-310px)]'>
-    <Section>
-      <SectionHeader>
-        <SectionTitle>Job Details</SectionTitle>
-      </SectionHeader>
-      <EditorContent editor={editor} />
-    </Section>
+    <div className='min-h-[calc(100vh-310px)]'>
+      <Section>
+        <SectionHeader>
+          <SectionTitle>Job Details</SectionTitle>
+        </SectionHeader>
+        <EditorContent editor={editor} />
+      </Section>
     </div>
   );
 }

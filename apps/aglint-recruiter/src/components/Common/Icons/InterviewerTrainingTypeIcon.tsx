@@ -11,7 +11,7 @@ function InterviewerTrainingTypeIcon({
 }) {
   return (
     <>
-      {type == 'reverse_shadow' && <ReverseShadowIcon/>}
+      {type == 'reverse_shadow' && <ReverseShadowIcon />}
       {type == 'shadow' && <ShadowIcon />}
     </>
   );

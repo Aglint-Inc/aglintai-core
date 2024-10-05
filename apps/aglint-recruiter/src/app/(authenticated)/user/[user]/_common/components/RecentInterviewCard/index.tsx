@@ -1,4 +1,5 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
+import { EmptyState } from '@components/empty-state';
 import {
   Section,
   SectionActions,
@@ -10,7 +11,6 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { Calendar, ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
@@ -53,7 +53,7 @@ export const RecentInterviews = () => {
                 <List key={interview.id} interview={interview} />
               ))
             ) : (
-              <GlobalEmpty
+              <EmptyState
                 icon={
                   <Calendar
                     strokeWidth={2}

@@ -1,3 +1,4 @@
+import { EmptyState } from '@components/empty-state';
 import {
   Section,
   SectionActions,
@@ -9,7 +10,6 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { ChevronDown, ChevronUp, MessageSquareOff } from 'lucide-react';
 import { useState } from 'react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
 
 import { useInterviewer } from '../../hooks/useInterviewer';
@@ -48,7 +48,7 @@ export const Feedback = () => {
                 <List key={feedback.session_name} feedback={feedback} />
               ))
             ) : (
-              <GlobalEmpty
+              <EmptyState
                 icon={
                   <MessageSquareOff
                     strokeWidth={2}

@@ -1,5 +1,6 @@
 'use client';
 
+import { EmptyState } from '@components/empty-state';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,12 +14,10 @@ import {
 import { Archive, Plus } from 'lucide-react';
 import React, { useState } from 'react';
 
-import GlobalEmpty from '@/common/GlobalEmpty';
 import { UIButton } from '@/common/UIButton';
 import UISectionCard from '@/common/UISectionCard';
 
 import { ReasonCardUI } from './ui/ReasonCardUI';
-
 interface ReasonSectionProps {
   title: string;
   description: string;
@@ -45,7 +44,7 @@ export function ScheduleReasonCard({
   sections,
 }: ScheduleReasonProps) {
   return (
-    <div className='w-full py-6 '>
+    <div className='w-full py-6'>
       {isMainHeadingVisible && (
         <div className='mb-6'>
           <h2 className='text-lg font-bold'>{textMainHeading}</h2>
@@ -154,15 +153,10 @@ function ReasonSection({
             newReason={newReason}
           />
         ) : (
-          <GlobalEmpty
-            icon={
-              <Archive
-                strokeWidth={2}
-                className='h-4 w-4 text-muted-foreground'
-              />
-            }
+          <EmptyState
+            icon={Archive}
             description={`No ${title} added yet.`}
-            primaryAction={
+            primarySlot={
               <UIButton
                 onClick={() => setIsAddingNew(true)}
                 leftIcon={<Plus />}

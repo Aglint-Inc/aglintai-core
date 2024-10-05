@@ -1,7 +1,7 @@
+import { EmptyState } from '@components/empty-state';
 import { MapPin, Plus } from 'lucide-react';
 import { useState } from 'react';
 
-import GlobalEmpty from '@/common/GlobalEmpty';
 import { UIButton } from '@/common/UIButton';
 import UISectionCard from '@/common/UISectionCard';
 import { useTenantOfficeLocations } from '@/company/hooks';
@@ -81,15 +81,10 @@ export const Location = () => {
               );
             })
           ) : (
-            <GlobalEmpty
-              icon={
-                <MapPin
-                  strokeWidth={2}
-                  className='h-4 w-4 text-muted-foreground'
-                />
-              }
+            <EmptyState
+              icon={MapPin}
               description='No company locations found. Add the company locations'
-              primaryAction={
+              primarySlot={
                 <UIButton
                   onClick={() => {
                     setAddEditDialog({ open: true, edit: -1 });
