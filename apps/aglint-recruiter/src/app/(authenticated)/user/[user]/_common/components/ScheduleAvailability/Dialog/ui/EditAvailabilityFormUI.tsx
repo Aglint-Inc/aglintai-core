@@ -4,7 +4,6 @@ import {
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils';
 import { Label } from '@components/ui/label';
-import { ScrollArea } from '@components/ui/scroll-area';
 import { type Dispatch, type SetStateAction } from 'react';
 
 import InterviewLimitInput from '@/authenticated/components/InterviewLoad';
@@ -50,84 +49,92 @@ export const EditAvailabilityForm = ({
   keywords,
 }: FormProp) => {
   return (
-    <ScrollArea className='h-[500px] w-full'>
-      <div className='mb-4 flex w-fit flex-col gap-4'>
-        <Label htmlFor='zipcode' className='text-left'>
-          Time Zone
-        </Label>
-        <TimezonePicker
-          width='280'
-          value={timeZone?.tzCode || null}
-          onChange={(value) => setTimeZone(value)}
-        />
-      </div>
-      <div className='mb-4 flex flex-col gap-4'>
-        <Label>Interview Load</Label>
-        <InterviewLimitInput
-          value={dailyLimit.value}
-          max={dailyLimit.max}
-          type={dailyLimit.type}
-          onValueChange={handleDailyValue}
-          onTypeChange={handleType}
-          mode='day'
-        />
-        <InterviewLimitInput
-          value={weeklyLmit.value}
-          max={weeklyLmit.max}
-          type={weeklyLmit.type}
-          onValueChange={handleWeeklyValue}
-          onTypeChange={handleType}
-          mode='week'
-        />
-      </div>
-      <div className='mb-4 flex flex-col gap-4'>
-        <Label>Edit Working Hours</Label>
-        {workingHours.map((day, i) => {
-          const startTime = dayjsLocal()
-            .set(
-              'hour',
-              parseInt(day.timeRange.startTime?.split(':')[0] || '0'),
-            )
-            .set(
-              'minute',
-              parseInt(day.timeRange.startTime?.split(':')[1] || '0'),
-            )
-            .toISOString();
+    <div>
+      <div className='flex gap-8'>
+        <div className='mb-4 flex flex-col gap-4'>
+          <Label>Edit Working Hours</Label>
+          {workingHours.map((day, i) => {
+            const startTime = dayjsLocal()
+              .set(
+                'hour',
+                parseInt(day.timeRange.startTime?.split(':')[0] || '0'),
+              )
+              .set(
+                'minute',
+                parseInt(day.timeRange.startTime?.split(':')[1] || '0'),
+              )
+              .toISOString();
 
-          const endTime = dayjsLocal()
-            .set('hour', parseInt(day.timeRange.endTime?.split(':')[0] || '0'))
-            .set(
-              'minute',
-              parseInt(day.timeRange.endTime?.split(':')[1] || '0'),
-            )
-            .toISOString();
+            const endTime = dayjsLocal()
+              .set(
+                'hour',
+                parseInt(day.timeRange.endTime?.split(':')[0] || '0'),
+              )
+              .set(
+                'minute',
+                parseInt(day.timeRange.endTime?.split(':')[1] || '0'),
+              )
+              .toISOString();
 
-          return (
-            <DayWithTime
-              key={i}
-              day={day}
-              i={i}
-              startTime={startTime}
-              endTime={endTime}
-              selectStartTime={(value, i) => {
-                setWorkingHours((pre) => {
-                  const data = [...pre];
-                  data[i].timeRange.startTime =
-                    dayjsLocal(value).format('HH:mm');
-                  return data;
-                });
-              }}
-              selectEndTime={(value, i) => {
-                setWorkingHours((pre) => {
-                  const data = [...pre];
-                  data[i].timeRange.endTime = dayjsLocal(value).format('HH:mm');
-                  return data;
-                });
-              }}
-              setWorkingHours={setWorkingHours}
+            return (
+              <DayWithTime
+                key={i}
+                day={day}
+                i={i}
+                startTime={startTime}
+                endTime={endTime}
+                selectStartTime={(value, i) => {
+                  setWorkingHours((pre) => {
+                    const data = [...pre];
+                    data[i].timeRange.startTime =
+                      dayjsLocal(value).format('HH:mm');
+                    return data;
+                  });
+                }}
+                selectEndTime={(value, i) => {
+                  setWorkingHours((pre) => {
+                    const data = [...pre];
+                    data[i].timeRange.endTime =
+                      dayjsLocal(value).format('HH:mm');
+                    return data;
+                  });
+                }}
+                setWorkingHours={setWorkingHours}
+              />
+            );
+          })}
+        </div>
+        <div>
+          <div className='mb-4 flex w-fit flex-col gap-4'>
+            <Label htmlFor='zipcode' className='text-left'>
+              Time Zone
+            </Label>
+            <TimezonePicker
+              width='280'
+              value={timeZone?.tzCode || null}
+              onChange={(value) => setTimeZone(value)}
             />
-          );
-        })}
+          </div>
+          <div className='mb-4 flex flex-col gap-4'>
+            <Label>Interview Load</Label>
+            <InterviewLimitInput
+              value={dailyLimit.value}
+              max={dailyLimit.max}
+              type={dailyLimit.type}
+              onValueChange={handleDailyValue}
+              onTypeChange={handleType}
+              mode='day'
+            />
+            <InterviewLimitInput
+              value={weeklyLmit.value}
+              max={weeklyLmit.max}
+              type={weeklyLmit.type}
+              onValueChange={handleWeeklyValue}
+              onTypeChange={handleType}
+              mode='week'
+            />
+          </div>
+        </div>
       </div>
       <div>
         {keywords.map((keyword) => {
@@ -151,6 +158,6 @@ export const EditAvailabilityForm = ({
           );
         })}
       </div>
-    </ScrollArea>
+    </div>
   );
 };

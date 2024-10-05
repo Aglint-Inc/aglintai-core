@@ -1610,7 +1610,7 @@ export type Database = {
           id: number
           is_completed: boolean | null
           job_id: string | null
-          name: string | null
+          name: string
           order: number | null
           update_at: string | null
         }
@@ -1622,7 +1622,7 @@ export type Database = {
           id?: number
           is_completed?: boolean | null
           job_id?: string | null
-          name?: string | null
+          name: string
           order?: number | null
           update_at?: string | null
         }
@@ -1634,7 +1634,7 @@ export type Database = {
           id?: number
           is_completed?: boolean | null
           job_id?: string | null
-          name?: string | null
+          name?: string
           order?: number | null
           update_at?: string | null
         }

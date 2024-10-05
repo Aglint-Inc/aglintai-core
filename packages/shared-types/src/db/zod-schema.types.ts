@@ -1656,7 +1656,7 @@ export const interviewProgressRowSchema = z.object({
   id: z.number(),
   is_completed: z.boolean().nullable(),
   job_id: z.string().nullable(),
-  name: z.string().nullable(),
+  name: z.string(),
   order: z.number().nullable(),
   update_at: z.string().nullable(),
 });
@@ -1669,7 +1669,7 @@ export const interviewProgressInsertSchema = z.object({
   id: z.number().optional(),
   is_completed: z.boolean().optional().nullable(),
   job_id: z.string().optional().nullable(),
-  name: z.string().optional().nullable(),
+  name: z.string(),
   order: z.number().optional().nullable(),
   update_at: z.string().optional().nullable(),
 });
@@ -1682,7 +1682,7 @@ export const interviewProgressUpdateSchema = z.object({
   id: z.number().optional(),
   is_completed: z.boolean().optional().nullable(),
   job_id: z.string().optional().nullable(),
-  name: z.string().optional().nullable(),
+  name: z.string().optional(),
   order: z.number().optional().nullable(),
   update_at: z.string().optional().nullable(),
 });

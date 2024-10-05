@@ -20,24 +20,30 @@ import {
 } from '@components/ui/select';
 import { Skeleton } from '@components/ui/skeleton';
 import {
+  ChevronDown,
+  ChevronUp,
   CircleCheck,
   Edit,
   FileText,
   Minus,
   Phone,
   Plus,
+  SquarePen,
+  Trash2,
   Trophy,
   UserCircle,
   Users,
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { supabase } from '@/utils/supabase/client';
 
-import { type ProgressSteps, useInterviewPlanProgress } from '../../hooks';
+import {
+  type ProgressSteps,
+  useInterviewPlanProgress,
+} from '../hooks/useInterviewPlanProgress';
 
 const iconOptions = { UserCircle, Phone, Users, FileText, Trophy };
 
@@ -55,8 +61,8 @@ export default function ReorderableInterviewPlan({
 
   const [steps, setSteps] = useState<ProgressSteps>([]);
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
+  const [isOrderChanging, setIsOrderChanging] = useState<boolean>(false);
   const [editingId, setEditingId] = useState<number | null>(null);
-  const [isDragging, setIsDragging] = useState<boolean>(false);
   const [newStep, setNewStep] = useState<ProgressSteps[number]>({
     icon: '',
     job_id: jobId,
@@ -71,8 +77,7 @@ export default function ReorderableInterviewPlan({
 
   useEffect(() => {
     if ((data ?? []).length > 0) {
-      const sorted = (data ?? []).sort((a, b) => a.order! - b.order!);
-      setSteps(sorted);
+      setSteps(data);
     } else setSteps([]);
     if ((data ?? [])?.length === 0) setIsAddOpen(true);
   }, [data]);
@@ -221,6 +226,67 @@ export default function ReorderableInterviewPlan({
     }
   };
 
+  const handleUp = async (selectIndex: number) => {
+    // update order in db
+    setIsOrderChanging(true);
+    const selectedStep = steps[selectIndex];
+    const upperStep = steps[selectIndex - 1];
+
+    const updates = [
+      { id: upperStep.id, order: selectedStep?.order },
+      { id: selectedStep.id, order: upperStep?.order },
+    ];
+
+    const promises = updates.map((item) =>
+      supabase
+        .from('interview_progress')
+        .update({ order: item.order })
+        .eq('id', item.id),
+    );
+    await Promise.all(promises);
+
+    setSteps((pre) =>
+      pre.map((step) =>
+        step.id === selectedStep.id
+          ? { ...step, order: upperStep?.order }
+          : step.id === upperStep.id
+            ? { ...step, order: selectedStep?.order }
+            : step,
+      ),
+    );
+    setIsOrderChanging(false);
+  };
+
+  const handleDown = async (selectIndex: number) => {
+    setIsOrderChanging(true);
+    // update order in db
+    const selectedStep = steps[selectIndex];
+    const lowerStep = steps[selectIndex + 1];
+
+    const updates = [
+      { id: lowerStep.id, order: selectedStep?.order },
+      { id: selectedStep.id, order: lowerStep?.order },
+    ];
+
+    const promises = updates.map((item) =>
+      supabase
+        .from('interview_progress')
+        .update({ order: item.order })
+        .eq('id', item.id),
+    );
+    await Promise.all(promises);
+    setSteps((pre) =>
+      pre.map((step) =>
+        step.id === selectedStep.id
+          ? { ...step, order: lowerStep?.order }
+          : step.id === lowerStep.id
+            ? { ...step, order: selectedStep?.order }
+            : step,
+      ),
+    );
+    setIsOrderChanging(false);
+  };
+
   const renderStep = (step: ProgressSteps[number], index: number) => {
     const isEditing = editingId === step.id;
     const isNewStep = step.id === null;
@@ -256,7 +322,7 @@ export default function ReorderableInterviewPlan({
             }}
           >
             <div
-              className={`${step.is_completed ? 'bg-lime-100' : 'bg-muted'} flex h-10 w-10 items-center justify-center rounded-md p-2`}
+              className={`${step.is_completed ? 'bg-lime-100' : 'bg-muted'} flex h-10 w-10 items-center justify-center rounded-md p-0`}
             >
               {step.is_completed ? (
                 <CircleCheck
@@ -269,7 +335,7 @@ export default function ReorderableInterviewPlan({
               )}
             </div>
           </div>
-          {index < steps.length && !isDragging && (
+          {index < steps.length && (
             <div
               className='mx-auto h-full bg-gray-300'
               style={{ width: '1px' }}
@@ -278,9 +344,10 @@ export default function ReorderableInterviewPlan({
         </div>
         {
           <>
-            <div className='flex-grow space-y-2 pb-4'>
+            <div className='relative mb-8 flex flex-grow space-y-2 rounded-sm border px-2'>
               {(isEditing && !isNewStep) || (isAddOpen && isNewStep) ? (
-                <>
+                //edit step
+                <div className='flex flex-1 flex-col gap-2 py-2'>
                   <UITextField
                     value={(isNewStep ? newStep.name : step.name)!}
                     onChange={(e) =>
@@ -362,42 +429,13 @@ export default function ReorderableInterviewPlan({
                       </UIButton>
                     )}
                   </div>
-                </>
+                </div>
               ) : !isNewStep ? (
-                <div className='mb-4 flex flex-col gap-2'>
-                  <h3 className='text-md font-semibold'>{step.name}</h3>
+                //details
+                <div className='flex flex-1 flex-col gap-2 p-2'>
+                  <h3 className='text-lg font-semibold'>{step.name}</h3>
                   <p className='text-sm'>{step.description}</p>
                   <div className='flex space-x-2'>
-                    <UIButton
-                      variant='secondary'
-                      onClick={() => handleEdit(step.id)}
-                    >
-                      Edit
-                    </UIButton>
-                    <AlertDialog>
-                      <AlertDialogTrigger>
-                        <UIButton variant='outline'>Delete</UIButton>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>
-                            Are you sure to delete this Stage ?
-                          </AlertDialogTitle>
-                          <AlertDialogDescription>
-                            This will permanently delete this stage. This action
-                            cannot be undone.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => handleDeleteStep(step.id)}
-                          >
-                            Continue
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
                     {step.application_id && (
                       <UIButton
                         size='sm'
@@ -415,9 +453,8 @@ export default function ReorderableInterviewPlan({
                 </div>
               ) : (
                 <>
-                  {/*eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
                   <div
-                    className='text-md mt-2 cursor-pointer font-semibold'
+                    className='text-md cursor-pointer p-2 font-semibold'
                     onClick={() => {
                       setIsAddOpen((pre) => !pre);
                     }}
@@ -426,6 +463,76 @@ export default function ReorderableInterviewPlan({
                   </div>
                 </>
               )}
+
+              {!isNewStep && !isEditing && (
+                <div className='mt-0 flex gap-1'>
+                  <UIButton
+                    variant='secondary'
+                    disabled={isOrderChanging}
+                    onClick={() => handleEdit(step.id)}
+                    size='sm'
+                    icon={<SquarePen />}
+                  />
+
+                  <AlertDialog>
+                    <AlertDialogTrigger
+                      className='h-fit'
+                      disabled={isOrderChanging}
+                    >
+                      <UIButton
+                        variant='destructive'
+                        disabled={isOrderChanging}
+                        className='text-muted-foreground'
+                        icon={<Trash2 />}
+                        size={'sm'}
+                      />
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you sure to delete this Stage ?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This will permanently delete this stage. This action
+                          cannot be undone.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleDeleteStep(step.id)}
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </div>
+              )}
+              {!isNewStep && (
+                <div className='absolute right-0 top-[-10px] flex translate-x-[120%] flex-col gap-2'>
+                  {index !== 0 && (
+                    <UIButton
+                      className='m-0'
+                      size={'sm'}
+                      icon={<ChevronUp />}
+                      disabled={isOrderChanging}
+                      variant={'secondary'}
+                      onClick={() => handleUp(index)}
+                    />
+                  )}
+                  {steps.length - 1 !== index && (
+                    <UIButton
+                      className='m-0'
+                      disabled={isOrderChanging}
+                      size={'sm'}
+                      icon={<ChevronDown />}
+                      onClick={() => handleDown(index)}
+                      variant={'secondary'}
+                    />
+                  )}
+                </div>
+              )}
             </div>
           </>
         }
@@ -433,97 +540,15 @@ export default function ReorderableInterviewPlan({
     );
   };
 
-  const reorder = ({
-    list,
-    startIndex,
-    endIndex,
-  }: {
-    list: ProgressSteps;
-    startIndex: number;
-    endIndex: number;
-  }) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-    return result;
-  };
-
-  const onDragEnd = async (result: Record<string, any>) => {
-    setIsDragging(false);
-    if (!result.destination) {
-      return;
-    }
-
-    const newItems = reorder({
-      list: steps,
-      startIndex: result.source.index,
-      endIndex: result.destination.index,
-    });
-
-    setSteps(newItems);
-
-    // update order in db
-    const updates = newItems.map((step, i) => ({ id: step.id, order: i + 1 }));
-
-    const promises = updates.map((item) =>
-      supabase
-        .from('interview_progress')
-        .update({ order: item.order })
-        .eq('id', item.id),
-    );
-    await Promise.all(promises);
-  };
-
-  const onDragStart = () => {
-    setIsDragging(true);
-  };
-
   return (
     <div className='max-w-2xl'>
-      <div className='relative' ref={timelineRef}>
-        <DragDropContext onDragEnd={onDragEnd} onDragStart={onDragStart}>
-          <Droppable droppableId='droppable'>
-            {(provided, snapshot) => (
-              <div
-                {...provided.droppableProps}
-                style={{
-                  backgroundColor: snapshot.isDraggingOver ? '#ebebeb' : '',
-                  marginBlock: snapshot.isDraggingOver ? 5 : 0,
-                }}
-                ref={provided.innerRef}
-              >
-                {steps.map((step, index) => (
-                  <Draggable
-                    key={step.id}
-                    draggableId={String(step.id)}
-                    index={index}
-                  >
-                    {(provided, snapshot) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        style={{
-                          backgroundColor: isDragging ? 'white' : '',
-                          paddingTop: snapshot.isDragging ? 5 : '',
-                          borderRadius: 8,
-                          boxShadow: snapshot.isDragging
-                            ? 'rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px'
-                            : '',
-                          paddingLeft: snapshot.isDragging ? 5 : '',
-                          ...provided.draggableProps.style,
-                        }}
-                      >
-                        {renderStep(step, index)}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+      <div
+        className={`relative ${isOrderChanging ? 'opacity-25' : ''} `}
+        ref={timelineRef}
+      >
+        {steps
+          .sort((a, b) => a.order! - b.order!)
+          .map((step, index) => renderStep(step, index))}
         {renderStep(newStep, steps.length)}
       </div>
     </div>

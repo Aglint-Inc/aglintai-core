@@ -2,43 +2,18 @@
 
 import { cn } from '@lib/utils';
 import { Check, Loader2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
-
 interface AutoSaveProps {
-  onSave: () => Promise<void>;
-  saveInterval?: number;
+  show: boolean;
+  saving: boolean;
   className?: string;
 }
 
-export default function AutoSave({
-  onSave,
-  saveInterval = 3000,
-  className,
-}: AutoSaveProps) {
-  const [saving, setSaving] = useState(false);
-  const [lastSaved, setLastSaved] = useState<Date | null>(null);
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      setSaving(true);
-      setShow(true);
-      await onSave();
-      setSaving(false);
-      setLastSaved(new Date());
-
-      // Hide the message after 3 seconds
-      setTimeout(() => setShow(false), 3000);
-    }, saveInterval);
-
-    return () => clearInterval(interval);
-  }, [onSave, saveInterval]);
-
+export default function AutoSave({ saving, show, className }: AutoSaveProps) {
   return (
     <div
       className={cn(
         'fixed bottom-4 right-4 rounded-lg bg-background/80 p-3 shadow-lg backdrop-blur-sm',
-        'transition-all duration-300 ease-in-out',
+        'z-50 transition-all duration-300 ease-in-out',
         show ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0',
         className,
       )}
@@ -56,11 +31,6 @@ export default function AutoSave({
           </>
         )}
       </div>
-      {lastSaved && (
-        <div className='mt-1 text-xs text-muted-foreground'>
-          Last saved: {lastSaved.toLocaleTimeString()}
-        </div>
-      )}
     </div>
   );
 }

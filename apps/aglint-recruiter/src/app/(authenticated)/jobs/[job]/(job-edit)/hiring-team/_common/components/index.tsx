@@ -87,7 +87,7 @@ const JobEdit = () => {
     },
   });
   const [saving, setSaving] = useState(false);
-  const [_, setShow] = useState(false);
+  const [show, setShow] = useState(false);
 
   const handleSave = async () => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -96,7 +96,7 @@ const JobEdit = () => {
 
   useEffect(() => {
     if (saving) setShow(true);
-    const timeout = setTimeout(() => setShow(false), 2000);
+    const timeout = setTimeout(() => (!saving ? setShow(false) : null), 1000);
     return () => clearTimeout(timeout);
   }, [saving]);
 
@@ -111,7 +111,7 @@ const JobEdit = () => {
           </PageDescription>
         </PageHeaderText>
         <PageActions>
-          <AutoSave onSave={handleSave} saveInterval={5000} />
+          <AutoSave show={show} saving={saving} />
         </PageActions>
       </PageHeader>
       <JobEditForm

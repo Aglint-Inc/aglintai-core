@@ -1,6 +1,5 @@
+import ReorderableInterviewPlan from '@/authenticated/components/ReorderableInterviewPlan';
 import { useCurrentJob } from '@/job/hooks';
-
-import ReorderableInterviewPlan from './ReorderableInterviewPlan';
 
 export const CandidatePlan = () => {
   const { job_id } = useCurrentJob();
@@ -15,7 +14,7 @@ export const CandidatePlan = () => {
         </div>
       </div>
       <div className='my-8 mb-10 max-w-2xl space-y-4'>
-        <ReorderableInterviewPlan jobId={job_id} applicationId={null} />;
+        <ReorderableInterviewPlan jobId={job_id} applicationId={null} />
       </div>
     </div>
   );

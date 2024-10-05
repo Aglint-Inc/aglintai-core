@@ -4,13 +4,11 @@ import {
 } from '@aglint/shared-types';
 import { type CustomSchedulingSettingsUser } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
 import { toast } from '@components/hooks/use-toast';
-import { ScrollArea } from '@components/ui/scroll-area';
 import cloneDeep from 'lodash/cloneDeep';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import { useTenantMembers } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { api } from '@/trpc/client';
 import { type timeZone as timeZones } from '@/utils/timeZone';
@@ -28,10 +26,8 @@ type TimeZoneType = (typeof timeZones)[number];
 
 export const EditAvailabiityDialog = ({
   setIsEditOpen,
-  isEditOpen,
 }: {
   setIsEditOpen: Dispatch<SetStateAction<boolean>>;
-  isEditOpen: boolean;
 }) => {
   const { allMembers } = useTenantMembers();
   const router = useRouterPro();
@@ -109,6 +105,7 @@ export const EditAvailabiityDialog = ({
     handleWeeklyValue(weeklyLmit.value);
   };
 
+  const schedulingSettings = member?.scheduling_settings;
   function initialLoad() {
     if (schedulingSettings) {
       const schedulingSettingData = cloneDeep(
@@ -154,8 +151,8 @@ export const EditAvailabiityDialog = ({
   }
 
   useEffect(() => {
-    initialLoad();
-  }, []);
+    if (allMembers) initialLoad();
+  }, [allMembers]);
 
   const keywords = [
     {
@@ -190,15 +187,13 @@ export const EditAvailabiityDialog = ({
 
   if (!member) return null;
 
-  const schedulingSettings = member?.scheduling_settings;
-
   const updateHandle = async () => {
     if (!timeZone || !workingHours)
       return toast({ title: 'Please fill required fields' });
 
     try {
       setIsSaving(true);
-      const schedulingSettingObj: CustomSchedulingSettingsUser = {
+      const schedulingSettingObj = {
         ...schedulingSettings,
         interviewLoad: {
           dailyLimit: {
@@ -218,7 +213,7 @@ export const EditAvailabiityDialog = ({
           outOfOffice: outOfOffice,
           recruitingBlocks: recruitingBlocks,
         },
-      };
+      } as CustomSchedulingSettingsUser;
 
       await mutateAsync({
         scheduling_settings: schedulingSettingObj,
@@ -235,46 +230,35 @@ export const EditAvailabiityDialog = ({
 
   return (
     <>
-      <UIDialog
-        open={isEditOpen}
-        title='Update Availability'
-        size='xl'
-        onClose={() => setIsEditOpen(false)}
-        slotButtons={
-          <>
-            <UIButton
-              variant='secondary'
-              onClick={() => {
-                if (!isSaving) setIsEditOpen(false);
-              }}
-            >
-              Cancel
-            </UIButton>
-            <UIButton
-              isLoading={isSaving}
-              disabled={isSaving}
-              onClick={updateHandle}
-            >
-              Update
-            </UIButton>
-          </>
-        }
-      >
-        <ScrollArea>
-          <EditAvailabilityForm
-            dailyLimit={dailyLmit}
-            handleDailyValue={handleDailyValue}
-            handleType={handleType}
-            handleWeeklyValue={handleWeeklyValue}
-            keywords={keywords}
-            setTimeZone={setTimeZone}
-            setWorkingHours={setWorkingHours}
-            timeZone={timeZone || null}
-            weeklyLmit={weeklyLmit}
-            workingHours={workingHours}
-          />
-        </ScrollArea>
-      </UIDialog>
+      <EditAvailabilityForm
+        dailyLimit={dailyLmit}
+        handleDailyValue={handleDailyValue}
+        handleType={handleType}
+        handleWeeklyValue={handleWeeklyValue}
+        keywords={keywords}
+        setTimeZone={setTimeZone}
+        setWorkingHours={setWorkingHours}
+        timeZone={timeZone || null}
+        weeklyLmit={weeklyLmit}
+        workingHours={workingHours}
+      />
+      <div className='ml-auto flex gap-4'>
+        <UIButton
+          variant='secondary'
+          onClick={() => {
+            if (!isSaving) setIsEditOpen(false);
+          }}
+        >
+          Cancel
+        </UIButton>
+        <UIButton
+          isLoading={isSaving}
+          disabled={isSaving}
+          onClick={updateHandle}
+        >
+          Update
+        </UIButton>
+      </div>
     </>
   );
 };
