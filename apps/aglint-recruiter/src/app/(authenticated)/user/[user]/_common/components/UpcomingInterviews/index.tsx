@@ -54,12 +54,7 @@ export const UpcomingInterview = () => {
               ))
             ) : (
               <EmptyState
-                icon={
-                  <Calendar
-                    strokeWidth={2}
-                    className='h-6 w-6 text-muted-foreground'
-                  />
-                }
+                icon={Calendar}
                 description='No upcoming interviews found'
               />
             )}

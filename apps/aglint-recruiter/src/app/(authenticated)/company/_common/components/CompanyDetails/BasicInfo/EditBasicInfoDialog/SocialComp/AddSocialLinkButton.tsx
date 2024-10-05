@@ -99,7 +99,7 @@ const AddSocialLinkButton = ({
                 onChange={(e) => handleChange(e, 'name')}
               />
               {social.name.error && (
-                <p className='text-sm text-red-500'>
+                <p className='text-sm text-destructive'>
                   Please enter a valid social media name
                 </p>
               )}
@@ -114,12 +114,12 @@ const AddSocialLinkButton = ({
                 onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
               />
               {social.url.error && (
-                <p className='text-sm text-red-500'>
+                <p className='text-sm text-destructive'>
                   Please enter a valid social media URL
                 </p>
               )}
               {isExist && (
-                <p className='text-sm text-red-500'>
+                <p className='text-sm text-destructive'>
                   This social already exist. please check
                 </p>
               )}

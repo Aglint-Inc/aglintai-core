@@ -90,7 +90,7 @@ export const ReasonCardUI = ({
                     variant='outline'
                     size='sm'
                     onClick={() => handleDelete(reasonIndex)}
-                    className='text-red-500 hover:text-red-600'
+                    className='text-destructive hover:text-red-600'
                   >
                     Delete
                   </UIButton>

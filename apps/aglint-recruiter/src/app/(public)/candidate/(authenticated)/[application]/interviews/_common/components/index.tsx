@@ -34,10 +34,7 @@ export default function InterviewsPage() {
             ))
           ) : (
             <div className='h-60'>
-              <EmptyState
-                icon={<Calendar strokeWidth={1} className='h-10 w-10' />}
-                header='No upcoming interviews'
-              />
+              <EmptyState icon={Calendar} header='No upcoming interviews' />
             </div>
           )}
         </div>
@@ -49,10 +46,7 @@ export default function InterviewsPage() {
             ))
           ) : (
             <div className='h-60'>
-              <EmptyState
-                icon={<Calendar strokeWidth={1} className='h-10 w-10' />}
-                header='No Past interviews'
-              />
+              <EmptyState icon={Calendar} header='No Past interviews' />
             </div>
           )}
         </div>

@@ -27,10 +27,7 @@ export const Activity = () => {
   if (!data || data.length === 0)
     return (
       <div className='flex w-full items-center justify-center'>
-        <EmptyState
-          icon={<Clock strokeWidth={1} className='h-10 w-10' />}
-          header={'No activities found'}
-        />
+        <EmptyState icon={Clock} header={'No activities found'} />
       </div>
     );
 

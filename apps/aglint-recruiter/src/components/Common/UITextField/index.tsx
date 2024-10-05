@@ -82,7 +82,7 @@ const UITextField = forwardRef<HTMLInputElement, Props>(
             <Label htmlFor={id} className={labelClasses}>
               {label}
             </Label>
-            {required && <span className='ml-1 text-red-500'>*</span>}{' '}
+            {required && <span className='ml-1 text-destructive'>*</span>}{' '}
             {/* Corrected color class */}
           </div>
         )}
@@ -100,7 +100,7 @@ const UITextField = forwardRef<HTMLInputElement, Props>(
           />
           {error && helperText && (
             <div className='mt-1 flex flex-row items-center'>
-              <AlertCircle className='mr-1 h-4 w-4 text-red-500' />
+              <AlertCircle className='mr-1 h-4 w-4 text-destructive' />
               <p className='text-sm text-red-700'>{helperText}</p>
             </div>
           )}

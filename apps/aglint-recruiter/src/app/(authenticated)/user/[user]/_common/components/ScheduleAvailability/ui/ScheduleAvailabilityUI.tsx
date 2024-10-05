@@ -174,15 +174,7 @@ const KeywordViewSection = ({
             );
           })
         ) : (
-          <EmptyState
-            icon={
-              <Calendar
-                strokeWidth={2}
-                className='h-6 w-6 text-muted-foreground'
-              />
-            }
-            header={'No ' + title}
-          />
+          <EmptyState icon={Calendar} header={'No ' + title} />
         )}
       </div>
     </div>

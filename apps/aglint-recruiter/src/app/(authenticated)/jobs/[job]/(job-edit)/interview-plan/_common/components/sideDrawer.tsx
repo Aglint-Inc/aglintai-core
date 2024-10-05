@@ -96,10 +96,10 @@ const InterviewDrawers = ({
         />
       ) : (
         <EmptyState
-          icon={<AlertTriangle className='h-10 w-10' />}
+          icon={AlertTriangle}
           header='No Interview Plan'
           description='Create an interview plan to get started'
-          primaryAction={
+          primarySlot={
             <Button onClick={() => push('/scheduling?tab=interviewtypes')}>
               Create Interview Plan
             </Button>

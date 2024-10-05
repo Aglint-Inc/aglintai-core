@@ -26,12 +26,12 @@ const Error = () => (
   <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
     <Card>
       <CardContent className='pt-6'>
-        <p className='text-center text-red-500'>Error loading data</p>
+        <p className='text-center text-destructive'>Error loading data</p>
       </CardContent>
     </Card>
     <Card>
       <CardContent className='pt-6'>
-        <p className='text-center text-red-500'>Error loading data</p>
+        <p className='text-center text-destructive'>Error loading data</p>
       </CardContent>
     </Card>
   </div>

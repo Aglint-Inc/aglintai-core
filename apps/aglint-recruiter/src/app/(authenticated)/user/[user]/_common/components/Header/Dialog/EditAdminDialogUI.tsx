@@ -69,7 +69,7 @@ export const Form = ({
 
         <div>
           <p className='text-sm font-medium'>
-            <span className='text-red-500'>Change profile photo</span>{' '}
+            <span className='text-destructive'>Change profile photo</span>{' '}
             (optional)
           </p>
           <p className='text-sm text-muted-foreground'>

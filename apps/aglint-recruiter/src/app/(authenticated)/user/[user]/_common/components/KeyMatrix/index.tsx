@@ -23,15 +23,7 @@ export const KeyMatrics = () => {
     <>
       <UISectionCard title='Key Metrics' type='compact'>
         {isEmpty ? (
-          <EmptyState
-            icon={
-              <ChartNoAxesColumn
-                strokeWidth={2}
-                className='h-6 w-6 text-muted-foreground'
-              />
-            }
-            description='No Metrics'
-          />
+          <EmptyState icon={ChartNoAxesColumn} description='No Metrics' />
         ) : (
           <div className='flex flex-row gap-3'>
             <Card color='green' title='Interview Hours' value={completedHour} />

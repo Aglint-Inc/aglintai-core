@@ -44,7 +44,7 @@ function ScheduleProgressTracker({
                 <Check className='absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform text-white' />
               )}
               {status === 'error' && (
-                <CircleX className='absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform text-red-500' />
+                <CircleX className='absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform text-destructive' />
               )}
             </div>
           </>

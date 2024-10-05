@@ -167,7 +167,7 @@ export default function Component() {
                   <Line
                     type='monotone'
                     dataKey='averageTime'
-                    stroke='text-red-500'
+                    stroke='text-destructive'
                   />
                 </LineChart>
               </ResponsiveContainer>

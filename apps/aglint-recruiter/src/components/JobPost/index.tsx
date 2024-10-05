@@ -256,7 +256,9 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                   <Button onClick={notifyMe}>Notify Me</Button>
                 </div>
                 {error && (
-                  <p className='mt-1 text-sm text-red-500'>Email is required</p>
+                  <p className='mt-1 text-sm text-destructive'>
+                    Email is required
+                  </p>
                 )}
               </div>
 

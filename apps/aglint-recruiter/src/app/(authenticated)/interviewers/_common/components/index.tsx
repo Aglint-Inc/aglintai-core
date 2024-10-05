@@ -117,7 +117,7 @@ function Interviewers() {
       {filteredInterviewers?.length === 0 ? (
         <div className='flex w-full items-center justify-center'>
           <EmptyState
-            icon={<Users strokeWidth={1} className='h-10 w-10' />}
+            icon={Users}
             header={'No Interviewers found'}
             description='Create a new interview pool to get started.'
           />

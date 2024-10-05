@@ -87,11 +87,7 @@ function Instructions({
           }}
         />
       ) : (
-        <EmptyState
-          icon={<FileText className='h-10 w-10' />}
-          header='No instructions'
-          description='Instructions for the interviewers have not been added yet.'
-        />
+        <EmptyState icon={FileText} header='No instructions' />
       )}
     </Section>
   );

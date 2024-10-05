@@ -19,12 +19,7 @@ export function IntegrationNotFound({
     <div className='container-lg mx-auto w-full px-4'>
       <div className='mx-auto flex w-full max-w-md flex-col items-center border-none px-6 pb-8 pt-6 text-center shadow-none'>
         <EmptyState
-          icon={
-            <Calendar
-              className='h-6 w-6 text-muted-foreground'
-              strokeWidth={2}
-            />
-          }
+          icon={Calendar}
           header='No interviews found'
           description='There are no upcoming interviews.'
         />

@@ -47,9 +47,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
   if (jobs?.length === 0) {
     return (
       <EmptyState
-        icon={
-          <Search strokeWidth={2} className='h-6 w-6 text-muted-foreground' />
-        }
+        icon={Search}
         description='No matching jobs found for this search query.'
       />
     );
@@ -149,7 +147,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger>
-                          <AlertCircle className='h-4 w-4 text-red-500' />
+                          <AlertCircle className='h-4 w-4 text-destructive' />
                         </TooltipTrigger>
                         <TooltipContent>
                           <p>Missing Job Description</p>

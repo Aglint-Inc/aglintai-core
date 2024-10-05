@@ -18,12 +18,7 @@ function AllInterviews() {
         {!isFetched && <Loader />}
         {isFetched && schedules?.length === 0 && (
           <EmptyState
-            icon={
-              <Calendar
-                className='h-6 w-6 text-muted-foreground'
-                strokeWidth={2}
-              />
-            }
+            icon={Calendar}
             header='No interviews found'
             description='There are no interviews matching your filters.'
           />

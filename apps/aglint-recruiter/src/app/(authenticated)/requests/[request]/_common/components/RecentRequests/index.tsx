@@ -44,10 +44,7 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
             //     Recent requests not found
             //   </span>
             // </div>
-            <EmptyState
-              header='Recent requests not found'
-              icon={<LayoutList className='h-8 w-8 text-gray-400' />}
-            />
+            <EmptyState header='Recent requests not found' icon={LayoutList} />
           ) : (
             recentRequests.map((request, index) => {
               return <RequestCard key={index} request={request} />;
