@@ -22,6 +22,9 @@
   "files.autoSaveDelay": 1000,
   "search.followSymlinks": false,
   "typescript.disableAutomaticTypeAcquisition": true,
+  "typescript.preferences.autoImportSpecifierExcludeRegexes": [
+    "/**/node_modules/@radix-ui/*"
+  ],
   "search.exclude": {
     "**/node_modules": true,
     "**/dist": true,

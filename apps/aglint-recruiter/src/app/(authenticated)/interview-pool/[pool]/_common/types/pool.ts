@@ -22,7 +22,7 @@ export type SchedulingSlice = {
   trainingStatus: StatusTraining;
   isMovedToQualifiedDialogOpen: boolean;
   initalOpen: StatusTraining | null;
-  localModule: ReturnType<typeof useModuleAndUsers>['data'];
+  localModule: ReturnType<typeof useModuleAndUsers>['data'] | null;
 };
 
 export interface TimeSlotsData {

@@ -87,7 +87,6 @@ export async function registerMember(
   const recUser = (
     await supabaseAdmin
       .from('recruiter_user')
-      //@ts-ignore
       .insert({
         user_id: userId,
         first_name: user.first_name,
@@ -113,7 +112,6 @@ export async function registerMember(
     .insert({
       recruiter_id,
       user_id: userId,
-      role: 'interviewer',
       role_id: user.role_id,
       manager_id: user.manager_id,
       is_active: true,

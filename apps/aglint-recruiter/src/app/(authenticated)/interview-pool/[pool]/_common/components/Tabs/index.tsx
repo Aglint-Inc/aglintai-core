@@ -2,7 +2,6 @@ import UITabs from '@/components/Common/UITabs';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 
-import { usePrefetchTabs } from '../../hooks/usePrefetchTabs';
 import Candidates from './Candidates';
 import Dialogs from './Dialogs';
 import Feedback from './Feedback';
@@ -47,7 +46,6 @@ function InterviewDetailsTabs() {
     },
   ];
 
-  void usePrefetchTabs();
   const type_id = router.params.pool;
   return (
     <>
