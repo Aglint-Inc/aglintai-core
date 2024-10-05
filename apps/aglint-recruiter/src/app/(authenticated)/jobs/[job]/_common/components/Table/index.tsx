@@ -14,9 +14,9 @@ export const Table = memo(() => {
   const status = useApplicationsStore((state) => state.status);
   const { query } = useApplications();
 
-  if ((section_count[status] ?? 0) === 0) return <EmptyList />;
-  if (query.status === 'error') return <>Error</>;
   if (query.status === 'pending') return <Skeleton />;
+  if (query.status === 'error') return <>Error</>;
+  if ((section_count?.[status] ?? 0) === 0) return <EmptyList />;
 
   return <List key={status} loader={<Skeleton />} header={<TableHeader />} />;
 });

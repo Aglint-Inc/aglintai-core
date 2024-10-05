@@ -100,6 +100,7 @@ export default function EmailTemplateEditForm({
               template_type={selectedTemplate.type}
               handleChange={emailSubjectChange}
               initialValue={selectedTemplate?.subject ?? undefined}
+             
             />
           </div>
         </div>
@@ -115,13 +116,12 @@ export default function EmailTemplateEditForm({
             placeholder={''}
             onfocus={onFocus}
             onblur={onBlur}
-            minHeight='360px'
-            height='330px'
             padding={'10px'}
             editor_type='email'
             template_type={selectedTemplate.type}
             handleChange={emailBodyChange}
             initialValue={selectedTemplate?.body ?? undefined}
+            height='calc(100vh - 450px)'
           />
         </div>
       </div>

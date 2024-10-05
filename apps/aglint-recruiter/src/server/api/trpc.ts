@@ -84,10 +84,10 @@ export const createTRPCRouter = t.router;
 const timingMiddleware = t.middleware(async ({ next, path }) => {
   const start = Date.now();
 
-  // if (t._config.isDev) {
-  //   const waitMs = Math.floor(Math.random() * 400) + 100;
-  //   await new Promise((resolve) => setTimeout(resolve, waitMs));
-  // }
+  if (t._config.isDev) {
+    const waitMs = Math.floor(Math.random() * 400) + 1000;
+    await new Promise((resolve) => setTimeout(resolve, waitMs));
+  }
 
   const result = await next();
 
@@ -246,9 +246,7 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
 export const publicProcedure = t.procedure.use(timingMiddleware);
 export type PublicProcedure<T = unknown> = Procedure<typeof publicProcedure, T>;
 
-export const atsProcedure = t.procedure
-  .use(timingMiddleware)
-  .use(atsMiddleware);
+export const atsProcedure = publicProcedure.use(atsMiddleware);
 export type ATSProcedure<T = unknown> = Procedure<typeof atsProcedure, T>;
 
 /**
@@ -259,9 +257,7 @@ export type ATSProcedure<T = unknown> = Procedure<typeof atsProcedure, T>;
  * are always accessible through the middleware chain, and you can safely assume the presence of an authenticated user.
  */
 
-export const privateProcedure = t.procedure
-  .use(timingMiddleware)
-  .use(authMiddleware);
+export const privateProcedure = publicProcedure.use(authMiddleware);
 export type PrivateProcedure<T = unknown> = Procedure<
   typeof privateProcedure,
   T

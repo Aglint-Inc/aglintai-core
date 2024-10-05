@@ -27,10 +27,10 @@ import { debounce } from 'lodash';
 import Link from 'next/link';
 import React, { useCallback, useEffect, useState } from 'react';
 
+import EmailPreviewPopover from '@/common/EmailTemplateEditor/EmailPreviewPopover';
+import EmailTemplateEditForm from '@/common/EmailTemplateEditor/EmailTemplateEditForm';
+import { UIButton } from '@/common/UIButton';
 import { useTenant } from '@/company/hooks';
-import EmailPreviewPopover from '@/components/Common/EmailTemplateEditor/EmailPreviewPopover';
-import EmailTemplateEditForm from '@/components/Common/EmailTemplateEditor/EmailTemplateEditForm';
-import { UIButton } from '@/components/Common/UIButton';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { api } from '@/trpc/client';
@@ -258,7 +258,7 @@ function SchedulerEmailTemps() {
                   </SectionDescription>
                 </SectionHeaderText>
               </SectionHeader>
-              <div className='flex space-x-2'>
+              <div className='flex gap-2'>
                 <Input
                   className='h-9 w-64'
                   placeholder='Search templates'
@@ -304,8 +304,8 @@ function SchedulerEmailTemps() {
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
-              <div className='w-[350px]'>
-                <ScrollArea className='h-[calc(100vh-200px)]'>
+              <div className='w-[350px] py-2'>
+                <ScrollArea className='h-[calc(100vh-180px)]'>
                   {templates
                     .filter((emailPath) => {
                       const type =
@@ -378,7 +378,7 @@ function SchedulerEmailTemps() {
                           >
                             <div className='w-full'>
                               <div
-                                className={`line-clamp-2 font-semibold ${emailPath.type === temp_email ? 'text-foreground' : 'text-foreground'}`}
+                                className={`line-clamp-2 font-medium ${emailPath.type === temp_email ? 'text-foreground' : 'text-foreground'}`}
                               >
                                 {emailCopy && emailCopy.heading}
                               </div>

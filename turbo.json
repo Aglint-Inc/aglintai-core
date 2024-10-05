@@ -4,19 +4,29 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputLogs": "new-only"
     },
     "lint": {
       "dependsOn": ["^lint"],
       "outputs": [],
-      "cache": true
+      "cache": true,
+      "outputLogs": "new-only"
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "outputLogs": "new-only"
     },
     "build:shared-utils": {
-      "outputs": ["packages/shared-utils/dist/**"]
+      "outputLogs": "new-only"
+    },
+    "format": {
+      "dependsOn": [],
+      "outputLogs": "errors-only"
     }
+  },
+  "remoteCache": {
+    "enabled": true,
+    "signature": true
   }
 }

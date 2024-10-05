@@ -4,7 +4,6 @@ import { unstable_noStore } from 'next/cache';
 import { api, HydrateClient } from '@/trpc/server';
 
 import { Activity } from './_common/components/Activity';
-import BreadCrumb from './_common/components/BreadCrumb';
 import CandidateInfo from './_common/components/CandidateInfo';
 import Requests from './_common/components/Requests';
 
@@ -36,7 +35,6 @@ const Layout = ({
       <TwoColumnPageLayout
         header={
           <>
-            <BreadCrumb />
             <CandidateInfo />
           </>
         }

@@ -41,7 +41,6 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
 
   async function getSupabaseSession() {
     const supabase = window.supabase;
-    if (!supabase) return;
     const { data, error } = await supabase.auth.getSession();
 
     if (error) {

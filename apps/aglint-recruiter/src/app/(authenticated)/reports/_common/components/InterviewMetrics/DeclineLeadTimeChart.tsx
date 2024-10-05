@@ -12,7 +12,7 @@ import {
 } from 'recharts';
 import { useDeclineCount } from 'src/app/(authenticated)/reports/_common/hook/interview/interview.hook';
 
-import UISectionCard from '@/components/Common/UISectionCard';
+import UISectionCard from '@/common/UISectionCard';
 
 const chartConfig = {
   // desktop: {

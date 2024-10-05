@@ -80,33 +80,3 @@ export const Top = ({
     </>
   );
 };
-
-{
-  /* future use */
-}
-{
-  /*<SideNavItem
-      icon={BarChart}
-      label='Performance'
-      active={activeSection === 'performance'}
-      onClick={() => scrollToSection('performance')}
-    /> 
-    <SideNavItem
-      icon={Clock}
-      label='Availability'
-      active={activeSection === 'availability'}
-      onClick={() => scrollToSection('availability')}
-    />
-    <SideNavItem
-      icon={AlertTriangle}
-      label='Pending Actions'
-      active={activeSection === 'pendingActions'}
-      onClick={() => scrollToSection('pendingActions')}
-    />
-    <SideNavItem
-      icon={FileText}
-      label='Recent Activity'
-      active={activeSection === 'recentActivity'}
-      onClick={() => scrollToSection('recentActivity')}
-    />*/
-}

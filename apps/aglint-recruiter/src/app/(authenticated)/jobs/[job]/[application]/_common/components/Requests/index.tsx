@@ -1,8 +1,16 @@
 'use client';
 
-import { Section, SectionTitle } from '@components/layouts/sections-header';
+import {
+  Section,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import { Calendar } from 'lucide-react';
 import RequestCard from 'src/app/_common/components/Requests/RequestCard';
+
+import GlobalEmpty from '@/components/Common/GlobalEmpty';
 
 import { useApplicationRequests } from '../../hooks/useApplicationRequests';
 
@@ -10,15 +18,22 @@ function Requests() {
   const { data: requests, isLoading } = useApplicationRequests();
   return (
     <Section>
-      <SectionTitle>Requests</SectionTitle>
+      <SectionHeader>
+        <SectionHeaderText>
+          <SectionTitle>Requests</SectionTitle>
+          <SectionDescription>
+            Interview scheduling requests made by the hiring team.
+          </SectionDescription>
+        </SectionHeaderText>
+      </SectionHeader>
       <div className='flex flex-col gap-4'>
         {!isLoading &&
           requests?.map((req) => <RequestCard key={req.id} request={req} />)}
         {!requests?.length && (
-          <div className='flex flex-col items-center justify-center'>
-            <Calendar className='mb-2 h-8 w-8 text-gray-400' />
-            <p className='text-sm text-muted-foreground'>No requests found</p>
-          </div>
+          <GlobalEmpty
+            icon={<Calendar className='h-8 w-8 text-muted-foreground' />}
+            description='No requests found for this application.'
+          />
         )}
       </div>
     </Section>

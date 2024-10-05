@@ -22,8 +22,7 @@ import {
   useIntegrationStore,
   useJobs,
 } from '@/jobs/hooks';
-import { type ApiLeverCreateJob } from '@/pages/api/lever/createjob';
-import ROUTES from '@/utils/routing/routes';
+import { api } from '@/trpc/client';
 import toast from '@/utils/toast';
 
 import NoAtsResult from '../NoAtsResult';
@@ -35,8 +34,8 @@ export default function LeverModalComp() {
   const { recruiter } = useTenant();
   const { setIntegrations, resetIntegrations } = useIntegrationActions();
   const integration = useIntegrationStore((state) => state.integrations);
-  const router = useRouterPro();
-  const { jobs, handleJobsRefresh, handleGenerateJd } = useJobs();
+  const { superPush } = useRouterPro();
+  const { jobs, handleGenerateJd } = useJobs();
   const [loading, setLoading] = useState(false);
   const [leverPostings, setLeverPostings] = useState<LeverJob[]>([]);
   const [selectedLeverPostings, setSelectedLeverPostings] =
@@ -73,30 +72,26 @@ export default function LeverModalComp() {
     setInitialFetch(false);
   };
 
+  const { mutateAsync } = api.ats.lever.create_job.useMutation();
+
   const importLever = async () => {
     try {
       setIntegrations({
         lever: { open: true, step: STATE_LEVER_DIALOG.IMPORTING },
       });
-
-      const response = await axios.call<ApiLeverCreateJob>(
-        'POST',
-        '/api/lever/createjob',
-        {
-          recruiter_id: recruiter.id,
-          leverPost: selectedLeverPostings!,
-        },
-      );
-
-      if (!response.success) {
-        throw new Error('Failed to import job');
-      }
+      const response = await mutateAsync({
+        leverPost: selectedLeverPostings,
+      });
       await handleGenerateJd(response.public_job_id);
-      await handleJobsRefresh();
+      // await handleJobsRefresh();
       setIntegrations({
         lever: { open: false, step: STATE_LEVER_DIALOG.IMPORTING },
       });
-      router.push(ROUTES['/jobs/[job]']({ job: response.public_job_id }));
+      superPush('/jobs/[job]', {
+        params: {
+          job: response.public_job_id,
+        },
+      });
     } catch (error: any) {
       toast.error(error.message);
       resetIntegrations();
