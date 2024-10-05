@@ -22,7 +22,7 @@ function KanbanSection({
         </Badge>
       </div>
       {requests.length > 0 ? (
-        <div className='flex h-full flex-col gap-4 border border-gray-300 p-2'>
+        <div className='flex h-full flex-col gap-4 p-2'>
           {requests.map((props, i) => (
             <RequestCard
               key={props.id ?? i}
