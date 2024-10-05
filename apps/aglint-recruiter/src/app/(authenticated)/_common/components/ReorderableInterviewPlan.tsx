@@ -40,7 +40,10 @@ import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { supabase } from '@/utils/supabase/client';
 
-import { type ProgressSteps, useInterviewPlanProgress } from '../../hooks';
+import {
+  type ProgressSteps,
+  useInterviewPlanProgress,
+} from '../hooks/useInterviewPlanProgress';
 
 const iconOptions = { UserCircle, Phone, Users, FileText, Trophy };
 
@@ -230,8 +233,8 @@ export default function ReorderableInterviewPlan({
     const upperStep = steps[selectIndex - 1];
 
     const updates = [
-      { id: upperStep.id, order: upperStep?.order || 0 + 1 },
-      { id: selectedStep.id, order: selectedStep?.order || 0 - 1 },
+      { id: upperStep.id, order: selectedStep?.order },
+      { id: selectedStep.id, order: upperStep?.order },
     ];
 
     const promises = updates.map((item) =>
@@ -241,17 +244,19 @@ export default function ReorderableInterviewPlan({
         .eq('id', item.id),
     );
     await Promise.all(promises);
+
     setSteps((pre) =>
       pre.map((step) =>
         step.id === selectedStep.id
-          ? { ...step, order: step?.order || 0 - 1 }
+          ? { ...step, order: upperStep?.order }
           : step.id === upperStep.id
-            ? { ...step, order: step?.order || 0 + 1 }
+            ? { ...step, order: selectedStep?.order }
             : step,
       ),
     );
     setIsOrderChanging(false);
   };
+
   const handleDown = async (selectIndex: number) => {
     setIsOrderChanging(true);
     // update order in db
@@ -259,8 +264,8 @@ export default function ReorderableInterviewPlan({
     const lowerStep = steps[selectIndex + 1];
 
     const updates = [
-      { id: lowerStep.id, order: lowerStep?.order || 0 - 1 },
-      { id: selectedStep.id, order: selectedStep?.order || 0 + 1 },
+      { id: lowerStep.id, order: selectedStep?.order },
+      { id: selectedStep.id, order: lowerStep?.order },
     ];
 
     const promises = updates.map((item) =>
@@ -273,9 +278,9 @@ export default function ReorderableInterviewPlan({
     setSteps((pre) =>
       pre.map((step) =>
         step.id === selectedStep.id
-          ? { ...step, order: step?.order || 0 + 1 }
+          ? { ...step, order: lowerStep?.order }
           : step.id === lowerStep.id
-            ? { ...step, order: step?.order || 0 - 1 }
+            ? { ...step, order: selectedStep?.order }
             : step,
       ),
     );

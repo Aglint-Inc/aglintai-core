@@ -1,7 +1,7 @@
 'use client';
-import ReorderableInterviewPlan from '@components/reorderable-interview-plan';
 import { ScrollArea } from '@components/ui/scroll-area';
 
+import ReorderableInterviewPlan from '@/authenticated/components/ReorderableInterviewPlan';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { Resume } from '@/jobs/job/application/components/Resume';
 import { Details } from '@/jobs/job/application/components/Scoring';
