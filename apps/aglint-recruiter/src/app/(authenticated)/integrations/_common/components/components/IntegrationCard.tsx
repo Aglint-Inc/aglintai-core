@@ -37,20 +37,20 @@ export function IntegrationCard({
 }: IntegrationCardProps) {
   return (
     <Component className='w-full'>
-      <CardContent className='pt-6'>
+      <CardContent className='p-3'>
         <div className='flex items-center space-x-4'>
           {slotLogo || (
-            <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-100'>
-              <span className='text-xl font-bold text-muted-foreground'>
+            <div className='flex h-8 w-8 items-center justify-center rounded-full bg-gray-100'>
+              <span className='text-lg font-bold text-muted-foreground'>
                 {(textName as string).charAt(0)}
               </span>
             </div>
           )}
           <div>
-            <h3 className='text-md font-semibold'>{textName}</h3>
+            <h3 className='font-semibold'>{textName}</h3>
             <Link
               href='#'
-              className='text-sm text-muted-foreground hover:underline'
+              className='text-sm text-muted-foreground hover:underline' // Reduced link text size
               onClick={(e) => {
                 e.preventDefault();
                 onClick && onClick();
@@ -77,13 +77,14 @@ export function IntegrationCard({
           )}
         </div>
       </CardContent>
-      <CardFooter className='flex justify-between'>
+      <CardFooter className='flex justify-between p-3'>
+        {' '}
         {secondaryText === 'Learn How' ? (
           <Link
             href={learnHowLink || ''}
             target='_blank'
             rel='noopener noreferrer'
-            className='flex items-center'
+            className='flex items-center text-sm text-muted-foreground' // Reduced text size
           >
             Learn How
             <ExternalLink className='ml-1 h-4 w-4' />
@@ -91,6 +92,7 @@ export function IntegrationCard({
         ) : (
           Boolean(secondaryText) && (
             <Button variant='outline' onClick={secondaryAction}>
+              {' '}
               {secondaryText}
             </Button>
           )

@@ -297,8 +297,8 @@ function ATSTools({
         <Image
           src={'/images/integration/greenhouse-logo.svg'}
           alt={'Greenhouse'}
-          width={40}
-          height={40}
+          width={48}
+          height={48}
         />
       ),
       primaryText: data?.greenhouse_key ? 'Settings' : 'Connect',
@@ -323,8 +323,8 @@ function ATSTools({
         <Image
           src={'/images/integration/lever-logo.svg'}
           alt={'Lever'}
-          width={40}
-          height={40}
+          width={48}
+          height={48}
         />
       ),
       primaryText: data?.lever_key ? 'Settings' : 'Connect',
@@ -349,8 +349,8 @@ function ATSTools({
         <Image
           src={'/images/integration/ashby-logo.svg'}
           alt={'Lever'}
-          width={40}
-          height={40}
+          width={48}
+          height={48}
         />
       ),
       primaryText: data?.ashby_key ? 'Settings' : 'Connect',

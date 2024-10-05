@@ -143,8 +143,8 @@ function Scheduling({ allIntegrations }: { allIntegrations: any }) {
         <Image
           src={'/images/integration/google-logo.svg'}
           alt={'Google'}
-          width={40}
-          height={40}
+          width={48}
+          height={48}
         />
       ),
       primaryText: allIntegrations?.service_json ? 'Re-Upload' : 'Connect',
@@ -169,8 +169,8 @@ function Scheduling({ allIntegrations }: { allIntegrations: any }) {
         <Image
           src={'/images/integration/zoom-logo.svg'}
           alt={'Zoom'}
-          width={40}
-          height={40}
+          width={48}
+          height={48}
         />
       ),
       isConnected: allIntegrations?.zoom_auth,
