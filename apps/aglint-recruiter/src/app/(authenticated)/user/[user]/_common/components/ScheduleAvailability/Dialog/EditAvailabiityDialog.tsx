@@ -37,13 +37,12 @@ export const EditAvailabiityDialog = ({
   const router = useRouterPro();
   const user_id = router?.params?.user as string;
   const member = allMembers.find((mem) => mem.user_id === user_id);
+
   const [isSaving, setIsSaving] = useState(false);
 
   const { mutateAsync } = api.user.update_user.useMutation();
   //local state -----------
-  const [workingHours, setWorkingHours] = useState<
-    SchedulingSettingType['workingHours']
-  >([]);
+
   const [timeZone, setTimeZone] = useState<TimeZoneType | null>(null);
   const [freeKeyWords, setFreeKeywords] = useState<string[]>([]);
   const [softConflictsKeyWords, setSoftConflictsKeyWords] = useState<string[]>(
@@ -104,6 +103,7 @@ export const EditAvailabiityDialog = ({
     handleDailyValue(dailyLmit.value);
     handleWeeklyValue(weeklyLmit.value);
   };
+  const schedulingSettings = member?.scheduling_settings;
 
   function initialLoad() {
     if (schedulingSettings) {
@@ -111,7 +111,6 @@ export const EditAvailabiityDialog = ({
         schedulingSettings,
       ) as SchedulingSettingType;
 
-      const workingHoursCopy = cloneDeep(schedulingSettingData.workingHours);
       const timeZoneCopy = cloneDeep(
         schedulingSettingData.timeZone,
       ) as TimeZoneType;
@@ -135,7 +134,6 @@ export const EditAvailabiityDialog = ({
       });
 
       setTimeZone(timeZoneCopy);
-      setWorkingHours(workingHoursCopy);
       setFreeKeywords(schedulingSettingData?.schedulingKeyWords?.free);
       setSoftConflictsKeyWords(
         schedulingSettingData?.schedulingKeyWords?.SoftConflicts || [],
@@ -186,16 +184,14 @@ export const EditAvailabiityDialog = ({
 
   if (!member) return null;
 
-  const schedulingSettings = member?.scheduling_settings;
-
   const updateHandle = async () => {
-    if (!timeZone || !workingHours)
-      return toast({ title: 'Please fill required fields' });
+    if (!timeZone) return toast({ title: 'Please fill required fields' });
 
     try {
       setIsSaving(true);
       const schedulingSettingObj: CustomSchedulingSettingsUser = {
         ...schedulingSettings,
+        isAutomaticTimeZone: true,
         interviewLoad: {
           dailyLimit: {
             type: dailyLmit.type,
@@ -207,7 +203,6 @@ export const EditAvailabiityDialog = ({
           },
         },
         timeZone: timeZone,
-        workingHours: workingHours,
         schedulingKeyWords: {
           free: freeKeyWords,
           SoftConflicts: softConflictsKeyWords,
@@ -264,10 +259,8 @@ export const EditAvailabiityDialog = ({
             handleWeeklyValue={handleWeeklyValue}
             keywords={keywords}
             setTimeZone={setTimeZone}
-            setWorkingHours={setWorkingHours}
             timeZone={timeZone || null}
             weeklyLmit={weeklyLmit}
-            workingHours={workingHours}
           />
         </ScrollArea>
       </UIDialog>

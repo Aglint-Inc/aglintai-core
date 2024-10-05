@@ -108,9 +108,11 @@ export default function ScheduleAvailability() {
             </SectionDescription>
           </SectionHeaderText>
           <SectionActions>
-            <UIButton variant='outline' onClick={() => setIsEditOpen(true)}>
-              Edit
-            </UIButton>
+            {isEditOpen && (
+              <UIButton variant='outline' onClick={() => setIsEditOpen(true)}>
+                Edit
+              </UIButton>
+            )}
           </SectionActions>
         </SectionHeader>
         <ScheduleAvailabilityUI
@@ -118,6 +120,7 @@ export default function ScheduleAvailability() {
           timeZone={scheduling_settings?.timeZone?.label || ' - '}
           workingHours={workingHours}
           scheduleKeywords={scheduleKeywords}
+          schedulingSettings={scheduling_settings}
         />
       </Section>
       <EditAvailabiityDialog

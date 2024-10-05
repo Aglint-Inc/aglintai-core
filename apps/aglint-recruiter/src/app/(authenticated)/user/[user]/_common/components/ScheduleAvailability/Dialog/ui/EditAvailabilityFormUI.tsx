@@ -1,15 +1,10 @@
-import {
-  type InterviewLoadType,
-  type SchedulingSettingType,
-} from '@aglint/shared-types';
-import { dayjsLocal } from '@aglint/shared-utils';
+import { type InterviewLoadType } from '@aglint/shared-types';
 import { Label } from '@components/ui/label';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { type Dispatch, type SetStateAction } from 'react';
 
 import InterviewLimitInput from '@/authenticated/components/InterviewLoad';
 import KeywordSection from '@/authenticated/components/KeywordSection';
-import DayWithTime from '@/company/components/WorkingHours/WorkTime/WorkTimeEditDialog/ui/DayWithTime';
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import UITypography from '@/components/Common/UITypography';
 import type timeZone from '@/utils/timeZone';
@@ -25,10 +20,7 @@ type FormProp = {
   handleWeeklyValue: (value: number) => void;
   // eslint-disable-next-line no-unused-vars
   handleType: (type: 'Hours' | 'Interviews') => void;
-  workingHours: SchedulingSettingType['workingHours'];
-  setWorkingHours: Dispatch<
-    SetStateAction<SchedulingSettingType['workingHours']>
-  >;
+
   keywords: {
     title: string;
     description: string;
@@ -45,8 +37,6 @@ export const EditAvailabilityForm = ({
   handleDailyValue,
   handleWeeklyValue,
   handleType,
-  workingHours,
-  setWorkingHours,
   keywords,
 }: FormProp) => {
   return (
@@ -80,55 +70,7 @@ export const EditAvailabilityForm = ({
           mode='week'
         />
       </div>
-      <div className='mb-4 flex flex-col gap-4'>
-        <Label>Edit Working Hours</Label>
-        {workingHours.map((day, i) => {
-          const startTime = dayjsLocal()
-            .set(
-              'hour',
-              parseInt(day.timeRange.startTime?.split(':')[0] || '0'),
-            )
-            .set(
-              'minute',
-              parseInt(day.timeRange.startTime?.split(':')[1] || '0'),
-            )
-            .toISOString();
 
-          const endTime = dayjsLocal()
-            .set('hour', parseInt(day.timeRange.endTime?.split(':')[0] || '0'))
-            .set(
-              'minute',
-              parseInt(day.timeRange.endTime?.split(':')[1] || '0'),
-            )
-            .toISOString();
-
-          return (
-            <DayWithTime
-              key={i}
-              day={day}
-              i={i}
-              startTime={startTime}
-              endTime={endTime}
-              selectStartTime={(value, i) => {
-                setWorkingHours((pre) => {
-                  const data = [...pre];
-                  data[i].timeRange.startTime =
-                    dayjsLocal(value).format('HH:mm');
-                  return data;
-                });
-              }}
-              selectEndTime={(value, i) => {
-                setWorkingHours((pre) => {
-                  const data = [...pre];
-                  data[i].timeRange.endTime = dayjsLocal(value).format('HH:mm');
-                  return data;
-                });
-              }}
-              setWorkingHours={setWorkingHours}
-            />
-          );
-        })}
-      </div>
       <div>
         {keywords.map((keyword) => {
           return (
