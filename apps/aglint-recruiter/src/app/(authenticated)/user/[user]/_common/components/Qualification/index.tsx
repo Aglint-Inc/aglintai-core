@@ -34,7 +34,11 @@ export const Qualifications = ({
         </ScrollArea>
       ) : (
         <div className='col-span-3'>
-          <EmptyState icon={LibraryBig} description='No qualifications found' />
+          <EmptyState
+            variant='inline'
+            icon={LibraryBig}
+            description='Not in an interview pool'
+          />
         </div>
       )}
     </Section>

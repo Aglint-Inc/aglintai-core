@@ -11,7 +11,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@components/ui/alert-dialog';
-import { Archive, Plus } from 'lucide-react';
+import { List, Plus } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { UIButton } from '@/common/UIButton';
@@ -154,7 +154,8 @@ function ReasonSection({
           />
         ) : (
           <EmptyState
-            icon={Archive}
+            variant='inline'
+            icon={List}
             description={`No ${title} added yet.`}
             primarySlot={
               <UIButton

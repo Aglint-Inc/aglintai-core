@@ -82,6 +82,7 @@ export const Location = () => {
             })
           ) : (
             <EmptyState
+              variant='inline'
               icon={MapPin}
               description='No company locations found. Add the company locations'
               primarySlot={

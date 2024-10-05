@@ -157,8 +157,8 @@ export default CalendarComp;
 function onEventContent() {
   return (
     <EmptyState
+      variant='inline'
       icon={Calendar}
-      header='No interviews found.'
       description='No interviews found.'
     />
   );

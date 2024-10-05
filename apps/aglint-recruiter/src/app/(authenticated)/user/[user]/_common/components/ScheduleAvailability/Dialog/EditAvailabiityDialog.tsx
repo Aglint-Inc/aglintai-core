@@ -40,17 +40,21 @@ export const EditAvailabiityDialog = ({
   const [isSaving, setIsSaving] = useState(false);
 
   const { mutateAsync } = api.user.update_user.useMutation();
-  //local state -----------
+  // State variables for scheduling settings
   const [workingHours, setWorkingHours] = useState<
     SchedulingSettingType['workingHours']
   >([]);
   const [timeZone, setTimeZone] = useState<TimeZoneType | null>(null);
+
+  // State variables for keywords
   const [freeKeyWords, setFreeKeywords] = useState<string[]>([]);
   const [softConflictsKeyWords, setSoftConflictsKeyWords] = useState<string[]>(
     [],
   );
   const [outOfOffice, setOutOfOffice] = useState<string[]>([]);
   const [recruitingBlocks, setRecruitingBlocks] = useState<string[]>([]);
+
+  // State variables for interview limits
   const [dailyLmit, setDailyLimit] = useState<InterviewLoadType['daily']>({
     type: 'Hours',
     value: 20,

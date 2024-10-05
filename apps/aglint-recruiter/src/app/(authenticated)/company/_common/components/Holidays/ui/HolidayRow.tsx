@@ -15,7 +15,7 @@ type Props = {
 export const HolidayRow = (props: Props) => {
   return (
     <TableRow
-      className={`grid grid-cols-[250px_200px_1fr_100px] ${props.isLoading ? cn('pointer-events-none', 'opacity-50') : ''}`}
+      className={`grid grid-cols-[250px_200px_1fr_100px] ${props.isLoading ? cn('pointer-events-none', 'opacity-50') : ''} group`}
     >
       <TableCell>{props.name}</TableCell>
       <TableCell>{props.date}</TableCell>
@@ -39,7 +39,12 @@ export const HolidayRow = (props: Props) => {
         )}
       </TableCell>
       <TableCell>
-        <UIButton variant='outline' size='sm' onClick={props.onDelete}>
+        <UIButton
+          variant='outline'
+          size='sm'
+          className='text-destructive opacity-0 group-hover:opacity-100 transition-opacity'
+          onClick={props.onDelete}
+        >
           Delete
         </UIButton>
       </TableCell>

@@ -6,7 +6,7 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
-import { Check, Edit, FileText, X } from 'lucide-react';
+import { Check, FileText, X } from 'lucide-react';
 import { marked } from 'marked';
 import { useState } from 'react';
 
@@ -46,11 +46,10 @@ function Instructions({
         <SectionActions>
           {showEditButton && !isEditing && (
             <UIButton
-              variant='ghost'
+              variant='outline'
               size='sm'
               onClick={() => setIsEditing(true)}
             >
-              <Edit className='mr-1 h-4 w-4' />
               Edit
             </UIButton>
           )}
@@ -87,7 +86,16 @@ function Instructions({
           }}
         />
       ) : (
-        <EmptyState icon={FileText} header='No instructions' />
+        <EmptyState
+          icon={FileText}
+          header='No instructions'
+          description='Add instructions to guide interviewers on how to conduct interviews.'
+          primarySlot={
+            <UIButton variant='default' onClick={() => setIsEditing(true)}>
+              Add Instructions
+            </UIButton>
+          }
+        />
       )}
     </Section>
   );

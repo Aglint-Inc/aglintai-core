@@ -1,9 +1,17 @@
 import { useToast } from '@components/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog';
 import { AlertCircle } from 'lucide-react';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
 import { api } from '@/trpc/client';
 
 import { useModuleAndUsers } from '../../hooks/useModuleAndUsers';
@@ -36,33 +44,18 @@ function ArchiveModuleDialog() {
 
   return (
     <>
-      <UIDialog
+      <AlertDialog
         open={isArchiveDialogOpen}
-        title={`Archive ${moduleName}`}
-        onClose={onClose}
-        slotButtons={
-          <>
-            <UIButton onClick={onClose} size='md' variant='secondary'>
-              Cancel
-            </UIButton>
-            <UIButton
-              size='md'
-              isLoading={isPending}
-              disabled={isLoading || errors.length > 0}
-              onClick={() => {
-                mutate({ id: editModule.id, is_archived: true });
-              }}
-            >
-              Archive
-            </UIButton>
-          </>
-        }
+        onOpenChange={setIsArchiveDialogOpen}
       >
-        <div className='flex flex-col space-y-4'>
-          <p className='text-muted-foreground'>
-            By clicking archive the interview type will not be available to
-            select in interview plans while scheduling.
-          </p>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{`Archive ${moduleName}`}</AlertDialogTitle>
+            <AlertDialogDescription>
+              By clicking archive the interview type will not be available to
+              select in interview plans while scheduling.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
           {errors.length > 0 && (
             <Alert variant='error'>
               <AlertCircle className='h-4 w-4' />
@@ -78,8 +71,20 @@ function ArchiveModuleDialog() {
               </AlertDescription>
             </Alert>
           )}
-        </div>
-      </UIDialog>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className='bg-destructive text-destructive-foreground'
+              onClick={() => {
+                mutate({ id: editModule.id, is_archived: true });
+              }}
+              disabled={isLoading || errors.length > 0}
+            >
+              {isPending ? 'Archiving...' : 'Archive'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }
