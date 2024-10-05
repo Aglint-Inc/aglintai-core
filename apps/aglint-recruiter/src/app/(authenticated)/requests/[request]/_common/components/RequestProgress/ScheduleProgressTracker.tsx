@@ -54,7 +54,9 @@ function ScheduleProgressTracker({
         <div className='flex items-center justify-between'>
           <div className='flex items-start space-x-2'>
             <div>{slotLeftIcon}</div>
-            <p className='flex-1'>{textProgress}</p>
+            <p className='flex-1 text-sm text-muted-foreground'>
+              {textProgress}
+            </p>
           </div>
         </div>
         <div className='mb-2 mt-2'>{slotRightIcon}</div>
