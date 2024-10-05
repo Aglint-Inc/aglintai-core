@@ -1,8 +1,8 @@
+import { EmptyState } from '@components/empty-state';
 import { Card, CardContent } from '@components/ui/card';
 import { ArrowRight, User } from 'lucide-react';
 import { useState } from 'react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
@@ -69,7 +69,7 @@ function Candidates() {
                     <tr>
                       <td colSpan={6} className='p-4'>
                         <div>
-                          <GlobalEmpty
+                          <EmptyState
                             header={'No candidates found'}
                             description='This section lists all candidates across all jobs taken this interview.'
                             icon={

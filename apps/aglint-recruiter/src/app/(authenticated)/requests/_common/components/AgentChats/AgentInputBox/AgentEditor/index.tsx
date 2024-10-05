@@ -2,12 +2,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import './EditorStyle.css'; // We will define some styles here
 
+import { EmptyState } from '@components/empty-state';
 import { Clock, Info } from 'lucide-react';
 import React, { type Dispatch, type SetStateAction, useState } from 'react';
 //@ts-ignore
 import { Mention, MentionsInput } from 'react-mentions'; // install the mentions library
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { ShowCode } from '@/components/Common/ShowCode';
 
 import ScrollingText from '../../Components/ScrollingText';
@@ -307,13 +307,13 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
               >
                 {selectedItems?.applicant_name[0]?.name ? (
                   <>
-                    <GlobalEmpty
+                    <EmptyState
                       icon={<Clock strokeWidth={1} className='h-10 w-10' />}
                       header={`There are no session found for ${selectedItems?.applicant_name[0]?.name}`}
                     />
                   </>
                 ) : (
-                  <GlobalEmpty
+                  <EmptyState
                     icon={<Info strokeWidth={1} className='h-10 w-10' />}
                     header={`Please select an application first`}
                   />
@@ -326,7 +326,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
                   (triggerType === '/' && requestList.length === 0)
                 }
               >
-                <GlobalEmpty
+                <EmptyState
                   icon={<Info strokeWidth={1} className='h-10 w-10' />}
                   header={`Results not found`}
                 />

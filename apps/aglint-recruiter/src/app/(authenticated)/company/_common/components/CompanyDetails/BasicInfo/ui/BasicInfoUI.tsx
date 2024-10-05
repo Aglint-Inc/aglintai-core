@@ -2,7 +2,7 @@ import { Building2, Globe, Users2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import type { TenantType } from '@/company/hooks/useTenant';  
+import type { TenantType } from '@/company/hooks/useTenant';
 
 export const BasicInfoUI = ({
   recruiter,

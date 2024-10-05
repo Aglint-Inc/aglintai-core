@@ -2,6 +2,7 @@ import './fullcalendar-theme.css';
 
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { EmptyState } from '@components/empty-state';
 import { type DatesSetArg, type EventContentArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
@@ -20,7 +21,6 @@ import {
 import { Loader } from '@/components/Common/Loader';
 
 import { type SchedulesSupabase } from '../../../app/_common/utils/schedules-query';
-import GlobalEmpty from '../GlobalEmpty';
 import CalendarHeader from './CalendarHeader';
 import {
   type EventFullCalender,
@@ -156,10 +156,8 @@ export default CalendarComp;
 
 function onEventContent() {
   return (
-    <GlobalEmpty
-      icon={
-        <Calendar strokeWidth={2} className='h-10 w-10 text-muted-foreground' />
-      }
+    <EmptyState
+      icon={Calendar}
       header='No interviews found.'
       description='No interviews found.'
     />

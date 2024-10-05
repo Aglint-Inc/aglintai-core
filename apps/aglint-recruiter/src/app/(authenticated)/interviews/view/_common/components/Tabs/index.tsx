@@ -37,7 +37,7 @@ function ScheduleDetailsTabs() {
   return (
     <UITabs
       tabs={tabs}
-      defaultValue={tabs.find(t => t.id === tab)?.id || 'details'}
+      defaultValue={tabs.find((t) => t.id === tab)?.id || 'details'}
       onClick={(value: string) => {
         router.replace(
           `${ROUTES['/interviews/view']()}?meeting_id=${meeting_id}&tab=${value}`,

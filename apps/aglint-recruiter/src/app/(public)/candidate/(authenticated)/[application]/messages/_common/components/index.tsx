@@ -1,7 +1,6 @@
 'use client';
+import { EmptyState } from '@components/empty-state';
 import { Mail } from 'lucide-react';
-
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 
 import { useCandidatePortalMessages } from '../hooks';
 import MessageCard from './MessageCard';
@@ -20,7 +19,7 @@ export default function MessagesPage() {
   if (status === 'error') return <>Error</>;
   if (data === undefined || data?.length === 0)
     return (
-      <GlobalEmpty
+      <EmptyState
         icon={<Mail strokeWidth={1} className='h-10 w-10' />}
         header='No Past interviews'
       />

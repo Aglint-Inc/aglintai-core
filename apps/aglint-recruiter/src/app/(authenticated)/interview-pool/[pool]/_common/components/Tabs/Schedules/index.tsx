@@ -1,10 +1,10 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { EmptyState } from '@components/empty-state';
 import { Card } from '@components/ui/card';
 import { Calendar } from 'lucide-react';
 import { useState } from 'react';
 
 import CalendarComp from '@/components/Common/Calendar/Calendar';
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 
 import { usePoolSchedules } from '../../../hooks/useSchedulesPool';
@@ -26,7 +26,7 @@ function Schedules() {
         </div>
       ) : (allSchedules || []).length === 0 ? (
         <div className='w-full'>
-          <GlobalEmpty
+          <EmptyState
             icon={
               <Calendar
                 strokeWidth={1.5}

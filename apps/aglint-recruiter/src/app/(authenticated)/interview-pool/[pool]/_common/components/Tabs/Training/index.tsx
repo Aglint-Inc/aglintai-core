@@ -1,8 +1,8 @@
+import { EmptyState } from '@components/empty-state';
 import { Card, CardContent } from '@components/ui/card';
 import { User } from 'lucide-react';
 import { useState } from 'react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import MoveToQualifiedDialog from '@/interview-pool/details/dialogs/MoveToQualified';
@@ -81,7 +81,7 @@ function Training() {
                   {trainingUsers.length === 0 && (
                     <tr>
                       <td colSpan={5} className='p-4'>
-                        <GlobalEmpty
+                        <EmptyState
                           icon={
                             <User
                               strokeWidth={1.5}

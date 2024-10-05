@@ -1,9 +1,7 @@
 import { type StateCreator } from 'zustand';
 
 import { type DrawerSlice } from './drawer';
-import {
-  type ResumePreviewSlice,
-} from './resumePreview';
+import { type ResumePreviewSlice } from './resumePreview';
 import { type TabSlice } from './tabs';
 
 type SlicesType = DrawerSlice & TabSlice & ResumePreviewSlice;

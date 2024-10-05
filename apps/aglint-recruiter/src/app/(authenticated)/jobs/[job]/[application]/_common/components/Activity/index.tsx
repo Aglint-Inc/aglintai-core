@@ -1,6 +1,7 @@
 'use client';
 
 import { type DatabaseTable } from '@aglint/shared-types';
+import { EmptyState } from '@components/empty-state';
 import {
   Section,
   SectionDescription,
@@ -14,7 +15,6 @@ import { ChevronDown, ChevronUp, Circle, Clock } from 'lucide-react';
 import { useState } from 'react';
 
 import SlotContent from '@/components/Activities/SlotWidgets';
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
 import { useApplicationActivity } from '../../hooks/useApplicationActivity';
@@ -27,7 +27,7 @@ export const Activity = () => {
   if (!data || data.length === 0)
     return (
       <div className='flex w-full items-center justify-center'>
-        <GlobalEmpty
+        <EmptyState
           icon={<Clock strokeWidth={1} className='h-10 w-10' />}
           header={'No activities found'}
         />

@@ -1,12 +1,12 @@
 'use client';
 
+import { EmptyState } from '@components/empty-state';
 import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { BookOpen, Plus } from 'lucide-react';
 import * as React from 'react';
 
 import AddChip from '@/common/AddChip';
-import GlobalEmpty from '@/common/GlobalEmpty';
 import UISectionCard from '@/common/UISectionCard';
 import { useTenant } from '@/company/hooks';
 import { manageDepartments } from '@/context/AuthContext/utils';
@@ -119,16 +119,11 @@ export default function Departments() {
             }}
           />
         ) : (
-          <GlobalEmpty
-            icon={
-              <BookOpen
-                strokeWidth={2}
-                className='h-6 w-6 text-muted-foreground'
-              />
-            }
+          <EmptyState
+            icon={BookOpen}
             header='No Departments yet'
             description='Add the company departments'
-            primaryAction={
+            primarySlot={
               <AddChip
                 options={departments.map((item) => ({
                   name: item.name,

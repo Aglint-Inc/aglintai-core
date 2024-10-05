@@ -73,7 +73,6 @@ function AllInterviewFilters() {
           },
           placeholder: 'Search schedules.',
         }}
-        
         filters={[
           {
             type: 'filter',

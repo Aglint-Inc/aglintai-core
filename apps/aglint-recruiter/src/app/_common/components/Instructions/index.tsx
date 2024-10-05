@@ -1,3 +1,4 @@
+import { EmptyState } from '@components/empty-state';
 import {
   Section,
   SectionActions,
@@ -9,7 +10,6 @@ import { Check, Edit, FileText, X } from 'lucide-react';
 import { marked } from 'marked';
 import { useState } from 'react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import { UIButton } from '@/components/Common/UIButton';
 
@@ -87,7 +87,7 @@ function Instructions({
           }}
         />
       ) : (
-        <GlobalEmpty
+        <EmptyState
           icon={<FileText className='h-10 w-10' />}
           header='No instructions'
           description='Instructions for the interviewers have not been added yet.'

@@ -1,3 +1,4 @@
+import { EmptyState } from '@components/empty-state';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import {
@@ -25,7 +26,6 @@ import {
 import Image from 'next/image';
 import React from 'react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJobs } from '@/jobs/hooks';
 import { calculateTimeDifference } from '@/jobs/utils/calculateTimeDifference';
@@ -46,7 +46,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
 
   if (jobs?.length === 0) {
     return (
-      <GlobalEmpty
+      <EmptyState
         icon={
           <Search strokeWidth={2} className='h-6 w-6 text-muted-foreground' />
         }

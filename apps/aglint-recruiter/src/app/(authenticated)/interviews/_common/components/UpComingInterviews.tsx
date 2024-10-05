@@ -1,6 +1,6 @@
+import { EmptyState } from '@components/empty-state';
 import { Search } from 'lucide-react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 
 import { useScheduleStatesContext } from '../contexts/ScheduleStatesContext';
@@ -16,7 +16,7 @@ function UpComingInterviews() {
     <div className='px-4'>
       {!isFetched && <Loader />}
       {isFetched && (schedules ?? [])?.length === 0 && (
-        <GlobalEmpty
+        <EmptyState
           icon={
             <Search className='h-6 w-6 text-muted-foreground' strokeWidth={2} />
           }

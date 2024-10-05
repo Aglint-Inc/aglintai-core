@@ -1,11 +1,11 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { EmptyState } from '@components/empty-state';
 import { Calendar } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { transformDataSchedules } from 'src/app/_common/utils/schedules-query';
 
 import { useTenant } from '@/company/hooks';
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 
 import {
@@ -103,7 +103,7 @@ function MyInterviews() {
                 );
               })}
             {scheduleFetched && allSchedules.length === 0 && (
-              <GlobalEmpty
+              <EmptyState
                 icon={
                   <Calendar
                     strokeWidth={2}

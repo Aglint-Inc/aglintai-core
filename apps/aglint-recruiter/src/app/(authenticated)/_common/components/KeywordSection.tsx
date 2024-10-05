@@ -1,9 +1,9 @@
+import { EmptyState } from '@components/empty-state';
 import { Button } from '@components/ui/button';
 import { CalendarDays, Plus } from 'lucide-react';
 import React from 'react';
 
 import AddChip from '@/components/Common/AddChip';
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import toast from '@/utils/toast';
 
 interface KeywordSectionProps {
@@ -50,10 +50,10 @@ const KeywordSection: React.FC<KeywordSectionProps> = ({
       }}
     />
   ) : (
-    <GlobalEmpty
-      icon={<CalendarDays />}
+    <EmptyState
+      icon={CalendarDays}
       description='No keywords added yet. Add now.'
-      primaryAction={
+      primarySlot={
         <AddChip
           options={keywords.map((item) => ({ name: item, id: item }))}
           suggestionsList={[]}

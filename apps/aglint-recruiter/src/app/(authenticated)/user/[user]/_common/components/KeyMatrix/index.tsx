@@ -1,7 +1,7 @@
 import { dayjsLocal } from '@aglint/shared-utils';
+import { EmptyState } from '@components/empty-state';
 import { ChartNoAxesColumn } from 'lucide-react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import UISectionCard from '@/components/Common/UISectionCard';
 
 import { useInterviewer } from '../../hooks/useInterviewer';
@@ -23,7 +23,7 @@ export const KeyMatrics = () => {
     <>
       <UISectionCard title='Key Metrics' type='compact'>
         {isEmpty ? (
-          <GlobalEmpty
+          <EmptyState
             icon={
               <ChartNoAxesColumn
                 strokeWidth={2}
