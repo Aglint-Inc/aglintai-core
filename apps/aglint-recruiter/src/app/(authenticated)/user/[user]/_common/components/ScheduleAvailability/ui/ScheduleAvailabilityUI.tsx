@@ -1,4 +1,5 @@
 import { type SchedulingSettingType } from '@aglint/shared-types';
+import { type CustomSchedulingSettingsUser } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
 import { dayjsLocal } from '@aglint/shared-utils';
 import { EmptyState } from '@components/empty-state';
 import {
@@ -20,6 +21,7 @@ type Props = {
   interviewLoads: InterviewLoadItemType[];
   timeZone: string;
   workingHours: SchedulingSettingType['workingHours'];
+  schedulingSettings: CustomSchedulingSettingsUser;
   scheduleKeywords: ScheduleKeywordType[];
 };
 export const ScheduleAvailabilityUI = ({
@@ -33,17 +35,21 @@ export const ScheduleAvailabilityUI = ({
       <div className='grid grid-cols-2 gap-8'>
         <Section>
           <SectionHeader>
-            <SectionHeaderText>
-              <SectionTitle>Working Hours</SectionTitle>
-              <SectionDescription>
-                Set your company&apos;s working hours to define the availability
-                for interviews.
-              </SectionDescription>
+            <SectionHeaderText className='flex w-full flex-row justify-between'>
+              <div>
+                <SectionTitle>Working Hours</SectionTitle>
+                <SectionDescription>
+                  Set your company&apos;s working hours to define the
+                  availability for interviews.
+                </SectionDescription>
+              </div>
             </SectionHeaderText>
           </SectionHeader>
-          {workingHours.map((day, i) => (
-            <WorkHourList key={i} day={day} />
-          ))}
+          <>
+            {workingHours.map((day, i) => (
+              <WorkHourList key={i} day={day} />
+            ))}
+          </>
         </Section>
         <div className='flex flex-col gap-8'>
           <Section>

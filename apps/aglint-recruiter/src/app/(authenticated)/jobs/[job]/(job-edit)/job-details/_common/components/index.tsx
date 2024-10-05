@@ -129,16 +129,11 @@ const JobEdit = () => {
   });
 
   const [saving, setSaving] = useState(false);
-  const [_, setShow] = useState(false);
-
-  const handleSave = async () => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setSaving(false);
-  };
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     if (saving) setShow(true);
-    const timeout = setTimeout(() => setShow(false), 2000);
+    const timeout = setTimeout(() => (!saving ? setShow(false) : null), 1000);
     return () => clearTimeout(timeout);
   }, [saving]);
 
@@ -152,14 +147,14 @@ const JobEdit = () => {
           </PageDescription>
         </PageHeaderText>
         <PageActions>
-          <AutoSave onSave={handleSave} saveInterval={5000} />
+          <AutoSave show={show} saving={saving} />
+          {/* <AutoSave onSave={handleSave} saveInterval={5000} /> */}
         </PageActions>
       </PageHeader>
       <JobEditForm
         fields={fields}
         setFields={setFields}
         setSaving={setSaving}
-        onSave={handleSave} // Pass handleSave to JobEditForm
       />
     </Page>
   );
@@ -193,12 +188,10 @@ const JobEditForm = ({
   fields,
   setFields,
   setSaving,
-  onSave, // Add onSave prop
 }: {
   fields: JobDetailsForm;
   setFields: Dispatch<SetStateAction<JobDetailsForm>>;
   setSaving: Dispatch<SetStateAction<boolean>>;
-  onSave: () => Promise<void>; // Update type
 }) => {
   const initialRef = useRef(false);
   const { job, handleJobAsyncUpdate } = useJob();
@@ -215,7 +208,6 @@ const JobEditForm = ({
       draft: { ...job.draft, ...newJob } as Job['draft'],
     });
     setSaving(false);
-    await onSave(); // Call the onSave function
   };
 
   const handleChange = (name: keyof Form, value: string | number) => {

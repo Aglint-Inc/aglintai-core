@@ -19,7 +19,7 @@ export const useInterviewPlanProgress = ({
     retry: false,
   });
 
-  return result;
+  return { ...result, data: result.data! };
 };
 
 const fetchProgress = async ({
