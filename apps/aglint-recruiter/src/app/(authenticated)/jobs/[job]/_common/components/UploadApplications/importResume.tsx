@@ -1,4 +1,5 @@
 import { Button } from '@components/ui/button';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { File, FileText, Plus, Upload, X } from 'lucide-react';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
@@ -82,12 +83,12 @@ export const ImportResume = () => {
   );
 
   const renderFileList = () => (
-    <div className='space-y-4'>
-      <div className='max-h-[300px] space-y-2 overflow-auto'>
+    <div className='flex h-full flex-col content-between'>
+      <ScrollArea className='h-[450px]'>
         {selectedFiles.map((file, index) => (
           <div
             key={index}
-            className='flex items-center justify-between rounded-md bg-gray-50 p-2'
+            className='mb-2 flex items-center justify-between rounded-md bg-gray-50 p-2'
           >
             {file.type.includes('pdf') ? (
               <FileText className='h-5 w-5 text-blue-500' />
@@ -107,9 +108,9 @@ export const ImportResume = () => {
               <X className='h-4 w-4' />
             </Button>
           </div>
-        ))}
-      </div>
-      <div className='flex items-center justify-between'>
+        ))}{' '}
+      </ScrollArea>
+      <div className='mt-[10px] flex items-center justify-between'>
         <FileUploader
           handleChange={handleInputChange}
           multiple={true}
@@ -122,7 +123,7 @@ export const ImportResume = () => {
             )
           }
         >
-          <Button variant='outline' size='sm'>
+          <Button variant='outline' size='md'>
             <Plus className='mr-2 h-4 w-4' />
             Add More Resume
           </Button>
@@ -135,8 +136,8 @@ export const ImportResume = () => {
   );
 
   return (
-    <div className='flex h-[500px] flex-col'>
-      <div className='mb-4 flex-grow overflow-auto'>
+    <div className='flex h-[550px] flex-col'>
+      <div className='mb-4 h-full flex-grow overflow-auto'>
         {selectedFiles.length === 0 ? renderFileUploader() : renderFileList()}
       </div>
       <div className=''>
