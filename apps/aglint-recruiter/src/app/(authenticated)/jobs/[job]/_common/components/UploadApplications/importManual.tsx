@@ -200,7 +200,7 @@ const FormField = ({
       className={error ? 'border-red-500' : ''}
     />
     {error && (
-      <p className='text-sm text-red-500'>Please provide a valid {label}</p>
+      <p className='text-sm text-destructive'>Please provide a valid {label}</p>
     )}
   </div>
 );
@@ -208,7 +208,7 @@ const FormField = ({
 const ResumeUploadComp = ({ value, handleChange, error }: any) => (
   <div className='space-y-2'>
     <Label htmlFor='resume' className='mb-3 flex items-center gap-1'>
-      Upload Resume <span className='text-red-500'>*</span>
+      Upload Resume <span className='text-destructive'>*</span>
     </Label>
     <FileUploader handleChange={handleChange} types={fileTypes}>
       <div
@@ -216,7 +216,7 @@ const ResumeUploadComp = ({ value, handleChange, error }: any) => (
       >
         {value ? <FileIcon size={20} /> : <UploadCloud size={24} />}
         <span
-          className={`text-sm ${error ? 'text-red-500' : 'text-gray-600'} ${value ? 'font-medium' : ''}`}
+          className={`text-sm ${error ? 'text-destructive' : 'text-gray-600'} ${value ? 'font-medium' : ''}`}
         >
           {value ? value.name : 'Upload candidate resume [PDF/DOCX]'}
         </span>
@@ -224,7 +224,9 @@ const ResumeUploadComp = ({ value, handleChange, error }: any) => (
       </div>
     </FileUploader>
     {error && (
-      <p className='text-sm text-red-500'>Please upload the candidate resume</p>
+      <p className='text-sm text-destructive'>
+        Please upload the candidate resume
+      </p>
     )}
   </div>
 );

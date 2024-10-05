@@ -1,9 +1,9 @@
+import { EmptyState } from '@components/empty-state';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Parser } from 'html-to-react';
 import { Building2, Plus, SquarePen } from 'lucide-react';
 import { useState } from 'react';
 
-import GlobalEmpty from '@/common/GlobalEmpty';
 import { UIButton } from '@/common/UIButton';
 import UISectionCard from '@/common/UISectionCard';
 import { useFlags } from '@/company/hooks/useFlags';
@@ -27,16 +27,11 @@ export default function AboutCompany() {
               the about section.'
         emptyStateMessage={
           !about && (
-            <GlobalEmpty
-              icon={
-                <Building2
-                  strokeWidth={2}
-                  className='h-6 w-6 text-muted-foreground'
-                />
-              }
+            <EmptyState
+              icon={Building2}
               header={`No about company found`}
               description={`Add the about company for candidate portal`}
-              primaryAction={
+              primarySlot={
                 <UIButton
                   onClick={() => setIsDialogOpen(true)}
                   leftIcon={<Plus />}
@@ -61,7 +56,7 @@ export default function AboutCompany() {
         }
       >
         {about && (
-          <ScrollArea className='w-full rounded-md border bg-gray-100'>
+          <ScrollArea className='w-full rounded-md border bg-muted'>
             <div className='max-h-72 w-full space-y-4 p-4'>
               {htmlParser.parse(about)}
             </div>

@@ -1,6 +1,4 @@
-import {
-  type DatabaseTableUpdate,
-} from '@aglint/shared-types';
+import { type DatabaseTableUpdate } from '@aglint/shared-types';
 
 // import { useToast } from '@components/hooks/use-toast';
 import { supabase } from '@/utils/supabase/client';

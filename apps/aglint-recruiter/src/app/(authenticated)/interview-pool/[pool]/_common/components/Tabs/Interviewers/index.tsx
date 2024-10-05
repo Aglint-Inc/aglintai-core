@@ -1,4 +1,5 @@
 import { type PauseJson } from '@aglint/shared-types';
+import { EmptyState } from '@components/empty-state';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Card, CardContent } from '@components/ui/card';
 import {
@@ -19,7 +20,6 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 import { getPauseMemberText } from '@/authenticated/utils';
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
@@ -103,13 +103,8 @@ function Interviewers() {
               {filtererdUsers.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={5} className='text-center'>
-                    <GlobalEmpty
-                      icon={
-                        <User
-                          strokeWidth={1.5}
-                          className='mb-2 h-10 w-10 text-muted-foreground'
-                        />
-                      }
+                    <EmptyState
+                      icon={User}
                       header={'No interviewers found'}
                       description='Create a new interview pool to get started.'
                     />

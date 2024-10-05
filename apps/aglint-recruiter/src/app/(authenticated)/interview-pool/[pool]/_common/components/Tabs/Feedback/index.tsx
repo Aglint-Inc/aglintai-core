@@ -1,9 +1,9 @@
 import { dayjsLocal } from '@aglint/shared-utils';
+import { EmptyState } from '@components/empty-state';
 import { Card, CardContent } from '@components/ui/card';
 import { MessageSquare, Star } from 'lucide-react';
 import { useState } from 'react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 import UITextField from '@/components/Common/UITextField';
 
@@ -65,13 +65,8 @@ function Feedback() {
                   {filteredData.length === 0 && (
                     <tr>
                       <td colSpan={5} className='p-4'>
-                        <GlobalEmpty
-                          icon={
-                            <MessageSquare
-                              strokeWidth={1.5}
-                              className='mb-2 h-10 w-10 text-muted-foreground'
-                            />
-                          }
+                        <EmptyState
+                          icon={MessageSquare}
                           header={'No feedback found'}
                           description='Create a new interview pool to get started.'
                         />

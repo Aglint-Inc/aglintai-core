@@ -69,7 +69,7 @@ const ProfileForm = ({
             }}
           />
           {value.error && (
-            <p className='text-sm text-red-500'>{`Please enter a valid ${capitalize(id)}`}</p>
+            <p className='text-sm text-destructive'>{`Please enter a valid ${capitalize(id)}`}</p>
           )}
         </div>
       );
@@ -89,7 +89,7 @@ const ProfileForm = ({
             className={value.error ? 'border-red-500' : ''}
           />
           {value.error && (
-            <p className='text-sm text-red-500'>
+            <p className='text-sm text-destructive'>
               {value.helperText ?? `Please enter a valid ${capitalize(id)}`}
             </p>
           )}
@@ -110,7 +110,7 @@ const ProfileForm = ({
             className={value.error ? 'border-red-500' : ''}
           />
           {value.error && (
-            <p className='text-sm text-red-500'>
+            <p className='text-sm text-destructive'>
               {value.helperText ?? `Please enter a valid ${capitalize(id)}`}
             </p>
           )}

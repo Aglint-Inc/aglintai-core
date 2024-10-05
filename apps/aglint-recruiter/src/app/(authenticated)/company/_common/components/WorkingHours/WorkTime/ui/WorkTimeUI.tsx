@@ -13,9 +13,9 @@ export const WorkTimeUI = ({
 }: {
   workingHours: WorkingHour[];
 }) => {
-  return (  
+  return (
     <div className='group relative rounded-lg'>
-      <div className='rounded-lg border border-border max-w-[400px] overflow-hidden'>
+      <div className='max-w-[400px] overflow-hidden rounded-lg border border-border'>
         <Table>
           <TableHeader className='bg-gray-100'>
             <TableRow className=''>

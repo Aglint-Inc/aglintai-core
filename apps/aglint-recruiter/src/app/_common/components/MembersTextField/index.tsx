@@ -158,7 +158,7 @@ function MembersAutoComplete({
       </Popover>
       {error && helperText && (
         <div className='mt-1 flex flex-row items-center'>
-          <AlertCircle className='mr-1 h-4 w-4 text-red-500' />
+          <AlertCircle className='mr-1 h-4 w-4 text-destructive' />
           <p className='text-sm text-red-700'>{helperText}</p>
         </div>
       )}

@@ -203,12 +203,14 @@ export default function LeverModalComp() {
               </Button>
             </div>
             {integration.lever.step === STATE_LEVER_DIALOG.ERROR && (
-              <p className='text-sm text-red-500'>
+              <p className='text-sm text-destructive'>
                 Invalid API key. Please try again.
               </p>
             )}
             {error && (
-              <p className='text-sm text-red-500'>Please enter an API key</p>
+              <p className='text-sm text-destructive'>
+                Please enter an API key
+              </p>
             )}
             <p className='text-sm text-gray-600'>
               Your connection details are encrypted and secure with our

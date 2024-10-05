@@ -277,9 +277,12 @@ const Close = () => {
           </DialogDescription>
         </DialogHeader>
         <div className='py-4'>
-          <p className='mb-2'>
+          <p className='text-sm text-muted-foreground'>
             Confirm by typing the job title{' '}
-            <span className='text-red-500'>{job_title.trim()}</span> below.
+            <span className='font-semibold text-destructive'>
+              {job_title.trim()}
+            </span>{' '}
+            below.
           </p>
           <Input
             placeholder={job_title.trim()}

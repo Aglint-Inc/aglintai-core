@@ -379,7 +379,7 @@ function ATSTools({
                 slotLogo={item.logo}
                 textName={capitalize(item.name)}
                 textLink={item.url}
-                // isConnected={item.isConnected}
+                isConnected={item.isConnected}
                 primaryText={item.primaryText}
                 secondaryText={item.secondaryText || undefined}
                 primaryAction={item.primaryAction}

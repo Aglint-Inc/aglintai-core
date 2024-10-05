@@ -4,14 +4,15 @@ import axios from 'axios';
 
 import type { GoogleLocationAPI, GoogleTimeZoneAPI } from './types';
 
-const tep_apiKey = process.env.GOOGLE_MAP_API_KEY;
+const getMapKey = () => {
+  if (!process.env.GOOGLE_MAP_API_KEY) {
+    throw new Error('No GOOGLE_MAP_API_KEY Key Found!');
+  }
 
-if (!tep_apiKey) {
-  throw new Error('No GOOGLE_MAP_API_KEY Key Found!');
-}
-
-const apiKey = tep_apiKey;
+  return process.env.GOOGLE_MAP_API_KEY;
+};
 async function searchLocation(address: string) {
+  const apiKey = getMapKey();
   const res = await axios.get<GoogleLocationAPI>(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`,
   );
@@ -27,6 +28,7 @@ export async function searchExactLocation(
     timeZone?: boolean;
   },
 ) {
+  const apiKey = getMapKey();
   const temp_res = await searchLocation(address);
   if (!temp_res.length) {
     throw new Error('no Match found!');
@@ -87,6 +89,7 @@ const getTimeZoneOfGeo = async (
 };
 
 export const geoCodeLocation = async (address: string) => {
+  const apiKey = getMapKey();
   if (address.length > 3) {
     const locationData = await searchLocation(address);
     const result = locationData[0];

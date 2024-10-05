@@ -1,3 +1,4 @@
+import { EmptyState } from '@components/empty-state';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import {
@@ -25,7 +26,6 @@ import {
 import Image from 'next/image';
 import React from 'react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJobs } from '@/jobs/hooks';
 import { calculateTimeDifference } from '@/jobs/utils/calculateTimeDifference';
@@ -46,10 +46,8 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
 
   if (jobs?.length === 0) {
     return (
-      <GlobalEmpty
-        icon={
-          <Search strokeWidth={2} className='h-6 w-6 text-muted-foreground' />
-        }
+      <EmptyState
+        icon={Search}
         description='No matching jobs found for this search query.'
       />
     );
@@ -149,7 +147,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger>
-                          <AlertCircle className='h-4 w-4 text-red-500' />
+                          <AlertCircle className='h-4 w-4 text-destructive' />
                         </TooltipTrigger>
                         <TooltipContent>
                           <p>Missing Job Description</p>

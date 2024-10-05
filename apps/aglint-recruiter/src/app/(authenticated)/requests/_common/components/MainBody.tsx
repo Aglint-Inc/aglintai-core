@@ -1,4 +1,5 @@
 'use client';
+import { EmptyState } from '@components/empty-state';
 import { Button } from '@components/ui/button';
 import { Skeleton } from '@components/ui/skeleton';
 import { REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
@@ -10,7 +11,6 @@ import { useEffect, useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
 import { useFlags } from '@/company/hooks/useFlags';
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { useOnboarding } from '@/components/Navigation/OnboardPending/context/onboarding';
 import { SafeObject } from '@/utils/safeObject';
 
@@ -84,16 +84,11 @@ const MainBody = () => {
   if (showEmptyPage)
     return (
       <div className='mt-40'>
-        <GlobalEmpty
+        <EmptyState
           header={'No requests found'}
           description='Requests are created when a interview process starts for candidates.'
-          icon={
-            <LayoutList
-              strokeWidth={2}
-              className='h-6 w-6 text-muted-foreground'
-            />
-          }
-          primaryAction={!isRequestSetupPending && <CreateRequestWidget />}
+          icon={LayoutList}
+          primarySlot={!isRequestSetupPending && <CreateRequestWidget />}
         />
       </div>
     );
@@ -141,15 +136,10 @@ const MainBody = () => {
           />
         ) : (
           <div className='mt-40 w-full'>
-            <GlobalEmpty
+            <EmptyState
               header={'No requests found'}
               description='Requests are created when a interview process starts for candidates.'
-              icon={
-                <LayoutList
-                  strokeWidth={2}
-                  className='h-6 w-6 text-muted-foreground'
-                />
-              }
+              icon={LayoutList}
             />
           </div>
         )}

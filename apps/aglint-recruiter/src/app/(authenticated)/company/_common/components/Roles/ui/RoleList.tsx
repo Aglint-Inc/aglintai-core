@@ -51,17 +51,21 @@ export const RoleList = ({
                 );
                 if (!user) return null;
                 return (
-                  <Avatar key={user_id} className='h-8 w-8 rounded-sm m-0'>
+                  <Avatar key={user_id} className='m-0 h-8 w-8 rounded-sm'>
                     <AvatarImage
                       src={user.profile_image || undefined}
                       alt={user.first_name}
                     />
-                    <AvatarFallback className='h-8 w-8 rounded-sm m-0 bg-gray-200'>{user.first_name[0]}</AvatarFallback>
+                    <AvatarFallback className='m-0 h-8 w-8 rounded-sm bg-gray-200'>
+                      {user.first_name[0]}
+                    </AvatarFallback>
                   </Avatar>
                 );
               })}
               {count > 3 && (
-                <Badge variant='secondary' className='rounded-sm'>+{count - 3} more</Badge>
+                <Badge variant='secondary' className='rounded-sm'>
+                  +{count - 3} more
+                </Badge>
               )}
             </>
           ) : (

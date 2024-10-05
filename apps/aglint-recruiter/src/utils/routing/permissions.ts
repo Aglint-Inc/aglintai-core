@@ -64,7 +64,6 @@ const PERMISSIONS: Permissions = {
    */
   '/api/scheduling/get_interview_plans': ['scheduling_module'],
   '/api/greenhouse/getPostings': ['manage_job'],
-  '/api/lever/createjob': ['manage_job'],
   '/api/greenhouse/saveApiKey': ['manage_company'],
   '/api/lever/getPostings': ['manage_job', 'authorized'],
   '/api/lever/saveApiKey': ['manage_job'],

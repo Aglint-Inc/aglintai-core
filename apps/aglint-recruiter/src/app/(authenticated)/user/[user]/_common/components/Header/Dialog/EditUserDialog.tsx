@@ -242,14 +242,14 @@ export const EditUserDialog = ({
 
           <div>
             <p className='text-sm font-medium'>
-              <span className='text-red-500'>Change profile photo</span>{' '}
+              <span className='text-destructive'>Change profile photo</span>{' '}
               (optional)
             </p>
             <p className='text-sm text-muted-foreground'>
               Upload a square profile image (PNG or JPEG). Maximum size: 5 MB.
             </p>
             {isError && (
-              <p className='text-sm text-red-500'>
+              <p className='text-sm text-destructive'>
                 The file you uploaded exceeds the maximum allowed size. Please
                 ensure that the file size is less than 5 MB
               </p>

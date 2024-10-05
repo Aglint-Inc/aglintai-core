@@ -119,7 +119,9 @@ export default function ResetPasswordComponent() {
               </Button>
             </div>
             {errors.password && (
-              <p className='text-sm text-red-500'>{errors.password.message}</p>
+              <p className='text-sm text-destructive'>
+                {errors.password.message}
+              </p>
             )}
           </div>
           <div className='space-y-2'>
@@ -135,7 +137,7 @@ export default function ResetPasswordComponent() {
               })}
             />
             {errors.confirmPassword && (
-              <p className='text-sm text-red-500'>
+              <p className='text-sm text-destructive'>
                 {errors.confirmPassword.message}
               </p>
             )}

@@ -160,7 +160,7 @@ export default function SignUpForm() {
               })}
             />
             {errors.first_name && (
-              <p className='text-sm text-red-500'>
+              <p className='text-sm text-destructive'>
                 {errors.first_name.message}
               </p>
             )}
@@ -181,7 +181,7 @@ export default function SignUpForm() {
               })}
             />
             {errors.email && (
-              <p className='text-sm text-red-500'>{errors.email.message}</p>
+              <p className='text-sm text-destructive'>{errors.email.message}</p>
             )}
           </div>
           <div className='space-y-2'>
@@ -207,7 +207,9 @@ export default function SignUpForm() {
               </Button>
             </div>
             {errors.password && (
-              <p className='text-sm text-red-500'>{errors.password.message}</p>
+              <p className='text-sm text-destructive'>
+                {errors.password.message}
+              </p>
             )}
           </div>
           <div className='flex items-center space-x-2'>

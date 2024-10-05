@@ -34,7 +34,9 @@ const Member = ({
         <div className='flex items-center gap-2'>
           <Avatar className='h-10 w-10 rounded-sm'>
             <AvatarImage src={member.profile_image || ''} alt={fullName} />
-            <AvatarFallback className='h-10 w-10 rounded-sm bg-gray-200'>{fullName.charAt(0)}</AvatarFallback>
+            <AvatarFallback className='h-10 w-10 rounded-sm bg-gray-200'>
+              {fullName.charAt(0)}
+            </AvatarFallback>
           </Avatar>
           <div>
             <Link
@@ -63,12 +65,8 @@ const Member = ({
         </div>
       </TableCell>
       <TableCell>
-        <Badge 
-          className={`rounded-sm
-            ${member.status === 'active' ? 'bg-green-100 text-green-800 hover:bg-green-100 hover:text-green-800' : ''} 
-            ${member.status === 'invited' ? 'bg-blue-100 text-blue-800 hover:bg-blue-100 hover:text-blue-800' : ''} 
-            ${member.status === 'suspended' ? 'bg-red-100 text-red-800 hover:bg-red-100 hover:text-red-800' : ''}
-          `}
+        <Badge
+          className={`rounded-sm ${member.status === 'active' ? 'bg-green-100 text-green-800 hover:bg-green-100 hover:text-green-800' : ''} ${member.status === 'invited' ? 'bg-blue-100 text-blue-800 hover:bg-blue-100 hover:text-blue-800' : ''} ${member.status === 'suspended' ? 'bg-red-100 text-red-800 hover:bg-red-100 hover:text-red-800' : ''} `}
         >
           {capitalize(member.status)}
         </Badge>

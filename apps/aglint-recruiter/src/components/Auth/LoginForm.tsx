@@ -112,7 +112,7 @@ export default function LoginForm() {
               })}
             />
             {errors.email && (
-              <p className='text-sm text-red-500'>{errors.email.message}</p>
+              <p className='text-sm text-destructive'>{errors.email.message}</p>
             )}
           </div>
           <div className='space-y-2'>
@@ -137,10 +137,12 @@ export default function LoginForm() {
               </Button>
             </div>
             {errors.password && (
-              <p className='text-sm text-red-500'>{errors.password.message}</p>
+              <p className='text-sm text-destructive'>
+                {errors.password.message}
+              </p>
             )}
           </div>
-          {authError && <p className='text-sm text-red-500'>{authError}</p>}
+          {authError && <p className='text-sm text-destructive'>{authError}</p>}
           <Button className='w-full' type='submit' disabled={isLoading}>
             {isLoading && <Loader className='mr-2 h-4 w-4 animate-spin' />}
             Login

@@ -1,5 +1,6 @@
 import { type SchedulingSettingType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils';
+import { EmptyState } from '@components/empty-state';
 import {
   Section,
   SectionDescription,
@@ -11,7 +12,6 @@ import { TableCell, TableRow } from '@components/ui/table';
 import { capitalize } from 'lodash';
 import { Calendar } from 'lucide-react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import UITypography from '@/components/Common/UITypography';
 
 import { type InterviewLoadItemType, type ScheduleKeywordType } from '..';
@@ -174,15 +174,7 @@ const KeywordViewSection = ({
             );
           })
         ) : (
-          <GlobalEmpty
-            icon={
-              <Calendar
-                strokeWidth={2}
-                className='h-6 w-6 text-muted-foreground'
-              />
-            }
-            header={'No ' + title}
-          />
+          <EmptyState icon={Calendar} header={'No ' + title} />
         )}
       </div>
     </div>
