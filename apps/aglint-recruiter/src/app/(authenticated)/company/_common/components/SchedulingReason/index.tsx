@@ -146,31 +146,24 @@ const SchedulingReasons = () => {
         </PageActions>
       </PageHeader>
 
-      {(
-        Object.keys(
-          reason,
-        ) as (keyof DatabaseTable['recruiter']['scheduling_reason'])[]
-      ).map((tabKey) => (
-        // Removed TabsContent wrapper
-        <div key={tabKey} className='mt-0'>
-          <ScheduleReasonCard
-            isMainHeadingVisible={false}
-            textMainHeading={
-              <span className='font-semibold'>
-                {tabKey === 'candidate'
-                  ? 'Set Rescheduling & Cancellation Reasons'
-                  : 'Set Decline Rescheduling & Cancellation Reasons'}
-              </span>
-            }
-            textMainHelperText={
-              tabKey === 'candidate'
-                ? 'Configure default reasons for candidates to cancel or reschedule their interviews. These reasons will be available as options for candidates when they request to modify their scheduled interviews.'
-                : 'Set predefined reasons for interviewers to decline or request rescheduling, and for canceling interviews. These reasons will be available as options for interviewers when they need to modify their scheduled interviews.'
-            }
-            sections={getSections(tabKey)}
-          />
-        </div>
-      ))}
+      <div className='mt-0'>
+        <ScheduleReasonCard
+          isMainHeadingVisible={false}
+          textMainHeading={
+            <span className='font-semibold'>
+              {tab === 'candidate'
+                ? 'Set Rescheduling & Cancellation Reasons'
+                : 'Set Decline Rescheduling & Cancellation Reasons'}
+            </span>
+          }
+          textMainHelperText={
+            tab === 'candidate'
+              ? 'Configure default reasons for candidates to cancel or reschedule their interviews. These reasons will be available as options for candidates when they request to modify their scheduled interviews.'
+              : 'Set predefined reasons for interviewers to decline or request rescheduling, and for canceling interviews. These reasons will be available as options for interviewers when they need to modify their scheduled interviews.'
+          }
+          sections={getSections(tab)}
+        />
+      </div>
     </Page>
   );
 };
