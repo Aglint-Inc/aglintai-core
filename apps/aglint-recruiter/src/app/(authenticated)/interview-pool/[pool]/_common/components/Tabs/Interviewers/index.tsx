@@ -15,7 +15,7 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
-import { MoreVertical, Pause, Play, Trash2, User } from 'lucide-react';
+import { MoreVertical, Pause, Play, Plus, Trash2, User } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -104,9 +104,22 @@ function Interviewers() {
                 <TableRow>
                   <TableCell colSpan={5} className='text-center'>
                     <EmptyState
+                      variant='inline'
                       icon={User}
-                      header={'No interviewers found'}
-                      description='Create a new interview pool to get started.'
+                      description='No interviewers found'
+                      primarySlot={
+                        <UIButton
+                          variant='outline'
+                          onClick={() => {
+                            setIsAddMemberDialogOpen(true);
+                            setTrainingStatus('qualified');
+                          }}
+                          size='sm'
+                        >
+                          <Plus className='mr-2 h-4 w-4' />
+                          Add Interviewer now
+                        </UIButton>
+                      }
                     />
                   </TableCell>
                 </TableRow>

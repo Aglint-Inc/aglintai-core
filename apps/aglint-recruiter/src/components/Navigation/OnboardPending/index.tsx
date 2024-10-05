@@ -192,7 +192,12 @@ const Footer = () => {
       </Button>
       <div className='flex flex-row gap-2'>
         {isCompanySetupPending && (
-          <UIButton size='sm' variant='outline' onClick={MarkAallAsComplete}>
+          <UIButton
+            size='sm'
+            variant='outline'
+            onClick={MarkAallAsComplete}
+            className='hidden'
+          >
             Mark all complete
           </UIButton>
         )}

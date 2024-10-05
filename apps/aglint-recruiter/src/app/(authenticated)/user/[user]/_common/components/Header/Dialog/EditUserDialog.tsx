@@ -229,7 +229,7 @@ export const EditUserDialog = ({
     >
       <div className='space-y-4'>
         <div className='flex items-center space-x-4'>
-          <div className='max-w-[64px]'>
+          <div className='w-16'>
             <ImageUploadManual
               image={recruUser.profile_image ?? ''}
               size={64}

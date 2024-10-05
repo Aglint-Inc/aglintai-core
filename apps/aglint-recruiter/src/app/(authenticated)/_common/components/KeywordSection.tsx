@@ -1,6 +1,6 @@
 import { EmptyState } from '@components/empty-state';
 import { Button } from '@components/ui/button';
-import { CalendarDays, Plus } from 'lucide-react';
+import { Plus, Text } from 'lucide-react';
 import React from 'react';
 
 import AddChip from '@/components/Common/AddChip';
@@ -51,7 +51,8 @@ const KeywordSection: React.FC<KeywordSectionProps> = ({
     />
   ) : (
     <EmptyState
-      icon={CalendarDays}
+      variant='inline'
+      icon={Text}
       description='No keywords added yet. Add now.'
       primarySlot={
         <AddChip

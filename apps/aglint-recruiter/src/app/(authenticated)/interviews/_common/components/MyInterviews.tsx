@@ -104,8 +104,8 @@ function MyInterviews() {
               })}
             {scheduleFetched && allSchedules.length === 0 && (
               <EmptyState
+                variant='inline'
                 icon={Calendar}
-                header='No interviews found'
                 description='There are no upcoming interviews for you.'
               />
             )}

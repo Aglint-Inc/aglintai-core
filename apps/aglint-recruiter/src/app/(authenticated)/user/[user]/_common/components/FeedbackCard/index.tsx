@@ -49,8 +49,9 @@ export const Feedback = () => {
               ))
             ) : (
               <EmptyState
+                variant='inline'
                 icon={MessageSquareOff}
-                description='No feedback available'
+                description='No feedback given yet'
               />
             )}
           </ScrollArea>

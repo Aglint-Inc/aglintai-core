@@ -19,7 +19,7 @@ export const HolidayTable = (
             <TableHead className='flex items-center'>Day Off</TableHead>
             <TableHead className='flex items-center'>Date</TableHead>
             <TableHead className='flex items-center'>Locations</TableHead>
-            <TableHead className='flex items-center'>Actions</TableHead>
+            <TableHead className='sr-only flex items-center'>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>{children}</TableBody>

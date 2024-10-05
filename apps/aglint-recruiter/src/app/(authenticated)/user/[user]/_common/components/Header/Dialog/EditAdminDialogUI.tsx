@@ -56,7 +56,7 @@ export const Form = ({
   return (
     <div className='mt-4 space-y-4'>
       <div className='flex items-center space-x-4'>
-        <div className='max-w-[64px]'>
+        <div className='w-16'>
           <ImageUploadManual
             image={form.profile_image ?? ''}
             size={64}

@@ -54,6 +54,7 @@ export const RecentInterviews = () => {
               ))
             ) : (
               <EmptyState
+                variant='inline'
                 icon={Calendar}
                 description='No upcoming interviews found'
               />
