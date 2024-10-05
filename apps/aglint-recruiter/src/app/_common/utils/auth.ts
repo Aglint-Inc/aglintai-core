@@ -33,7 +33,7 @@ export async function handleRedirect({
   const role = relations[0]?.roles?.name;
 
   if (role === 'interviewer') {
-    return `${origin}/interviews?tab=interviews`;
+    return `${origin}/interviews`;
   } else if (role === 'recruiter') {
     return `${origin}/jobs`;
   } else if (role === 'recruiting_coordinator') {

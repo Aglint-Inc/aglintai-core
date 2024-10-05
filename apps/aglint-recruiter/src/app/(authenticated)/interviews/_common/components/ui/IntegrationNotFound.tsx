@@ -2,7 +2,7 @@ import { EmptyState } from '@components/empty-state';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { AlertTriangle, Calendar } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
