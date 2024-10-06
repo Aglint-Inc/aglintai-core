@@ -43,7 +43,7 @@ function InterviewTabContent() {
           type='info'
           title='Move candidate to interview stage'
           action={
-            <UIButton variant='default' size='sm'>
+            <UIButton variant='outline' size='sm'>
               Move
             </UIButton>
           }

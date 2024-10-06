@@ -29,20 +29,20 @@ export function InterviewMode({
         <Typography type='small' variant='p' fontBold='normal'>
           Interviewers
         </Typography>
-        <div className={cn('flex flex-col')}>
+        <div className={cn('flex flex-col items-start')}>
           {slotInterviewersAvatarSelectionPill}
         </div>
         {isInterviewerDropVisible && (
-          <div className={cn('mt-2')}>
+          <div className={cn('mt-2 flex flex-col items-start')}>
             {slotInterviewersDropdown ?? (
               <div className={cn('rounded border p-2')}>
                 <div>{'Search Interviewers'}</div>
               </div>
-            )}
+            )}  
           </div>
         )}
         {isPanel && (
-          <div className='mt-2 flex flex-row items-center space-x-2'>
+          <div className='mt-2 flex flex-row items-center space-x-2 text-sm'>
             <div>{'Include'}</div>
             <div>
               {slotMemberCountDropdown ?? (
