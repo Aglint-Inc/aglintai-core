@@ -4,13 +4,13 @@ import {
   removeCallerInfoCache,
   removeCandInfoCache,
 } from '../../services/cache/cache-db';
-import {RawData, WebSocket} from 'ws';
 import {Request} from 'express';
 import {CustomLlmRequest, CustomLlmResponse} from '../../types/retell.types';
 import {getCandidateLogger} from '../../utils/scheduling_utils/getCandidateLogger';
 import {ScheduleAgent} from '../../agents/schedule_agent/schedule_agent';
 import {transcript_update} from '../../utils/transcript_update';
 import {appLogger} from '../../services/logger';
+import WebSocket from 'ws';
 
 export const llmRetellWs = async (ws: WebSocket, req: Request) => {
   const call_id = req.params.call_id;
@@ -36,7 +36,7 @@ export const llmRetellWs = async (ws: WebSocket, req: Request) => {
     logger
   );
   schedule_agent.BeginMessage(ws, cand.begin_message);
-  ws.on('error', async err => {
+  ws.on('error', async () => {
     logger('Unexpected Error while having conversation.', {});
     schedule_agent.stopAgentDrafting();
     await removeCandInfoCache(cand.req_payload.to_phone_no);
@@ -51,7 +51,7 @@ export const llmRetellWs = async (ws: WebSocket, req: Request) => {
       );
     }, 5000);
   });
-  ws.on('close', async err => {
+  ws.on('close', async () => {
     schedule_agent.stopAgentDrafting();
     await removeCandInfoCache(cand.req_payload.to_phone_no);
     await removeCallerInfoCache(call_id);
@@ -67,7 +67,7 @@ export const llmRetellWs = async (ws: WebSocket, req: Request) => {
     }, 5000);
   });
 
-  ws.on('message', async (data: RawData, isBinary: boolean) => {
+  ws.on('message', async (data: any, isBinary: boolean) => {
     if (isBinary) {
       ws.close(1002, 'Cannot find corresponding Retell LLM.');
     }
