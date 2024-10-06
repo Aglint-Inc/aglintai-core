@@ -35,10 +35,7 @@ export const fetchIssueScheduledInterviewsTool = ({
 
       const resp = sch.map(s => {
         return {
-          candidate_name: getFullName(
-            s.interview_schedule.applications.candidates.first_name,
-            s.interview_schedule.applications.candidates.last_name
-          ),
+          candidate_name: getFullName('', ''),
           session_name: s.interview_session.name,
           start_time: dayjsLocal(
             s.interview_session.interview_meeting.start_time
@@ -51,7 +48,7 @@ export const fetchIssueScheduledInterviewsTool = ({
       });
 
       return JSON.stringify({
-        message: `Here are scheduled interview which has issue`,
+        message: 'Here are scheduled interview which has issue',
         schedules: resp,
       });
     },

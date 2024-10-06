@@ -37,10 +37,7 @@ export const fetchDeclinedCandidateInterviewsTool = ({
 
       const resp = sch.map(s => {
         return {
-          candidate_name: getFullName(
-            s.interview_schedule.applications.candidates.first_name,
-            s.interview_schedule.applications.candidates.last_name
-          ),
+          candidate_name: getFullName('', ''), //TODO:
           session_name: s.interview_session.name,
           start_time: dayjsLocal(
             s.interview_session.interview_meeting.start_time

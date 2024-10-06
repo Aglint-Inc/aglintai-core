@@ -1,14 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-require('@tensorflow/tfjs');
 import use from '@tensorflow-models/universal-sentence-encoder';
 
 async function createEmbeddings(sentencesA: string, sentencesB: string) {
   const model = await use.load();
   //   const embeddings = await model.embed(sentencesA);
   return [
-    await model
-      .embed(sentencesA, sentencesB)
-      .then((x: any) => x.arraySync()[0]),
+    await model.embed(sentencesA).then((x: any) => x.arraySync()[0]),
     await model.embed(sentencesB).then((x: any) => x.arraySync()[0]),
   ];
 }

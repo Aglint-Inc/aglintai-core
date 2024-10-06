@@ -1,5 +1,5 @@
 import {CallBack} from '@aglint/shared-types';
-import {fetchJobHiringTeam, getFullName} from '@aglint/shared-utils';
+import {fetchJobHiringTeam} from '@aglint/shared-utils';
 import {DynamicStructuredTool} from 'langchain/tools';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import z from 'zod';
@@ -41,8 +41,8 @@ export const fetchHiringTeamTool = ({
         called_at: new Date().toISOString(),
         links: [
           {
-            replace: hrteam.job_title,
-            with: `/jobs/${hrteam.id}/hiring-team`,
+            replace: '', //hrteam.job_title,
+            with: '', // `/jobs/${hrteam.id}/hiring-team`,
           },
         ],
       });
@@ -50,30 +50,27 @@ export const fetchHiringTeamTool = ({
       const team = [
         {
           role: 'Recruiter',
-          name: getFullName(hrteam.rec?.first_name, hrteam.rec?.last_name),
+          name: '', //getFullName(hrteam.rec?.first_name, hrteam.rec?.last_name),
         },
         {
           role: 'Hiring Manager',
-          name: getFullName(
-            hrteam.hir_man?.first_name,
-            hrteam.hir_man?.last_name
-          ),
+          name: '',
         },
-        ...(hrteam.recruiting_coordinator
-          ? [
-              {
-                role: 'Recruiting Coordinator',
-                name: getFullName(
-                  hrteam.recruiting_coordinator?.first_name,
-                  hrteam.recruiting_coordinator?.last_name
-                ),
-              },
-            ]
-          : []),
+        // ...(hrteam.recruiting_coordinator
+        //   ? [
+        //       {
+        //         role: 'Recruiting Coordinator',
+        //         name: getFullName(
+        //           hrteam.recruiting_coordinator?.first_name,
+        //           hrteam.recruiting_coordinator?.last_name
+        //         ),
+        //       },
+        //     ]
+        //   : []),
       ];
 
       return JSON.stringify({
-        job_title: hrteam.job_title,
+        job_title: '', //hrteam.job_title,
         hiring_team: team,
       });
     },
