@@ -14,7 +14,7 @@
   ],
   "env": {
     "es6": true,
-    "jest": true
+    "vitest-globals/env": true
   },
   "extends": [
     "eslint:recommended",
@@ -23,7 +23,8 @@
     "prettier",
     "plugin:jsx-a11y/recommended",
     "plugin:security/recommended-legacy",
-    "next/typescript" //reccomendded by next.js
+    "next/typescript", //reccomendded by next.js
+    "plugin:vitest-glbal/reccomendded"
   ],
   "ignorePatterns": [
     "node_modules",
