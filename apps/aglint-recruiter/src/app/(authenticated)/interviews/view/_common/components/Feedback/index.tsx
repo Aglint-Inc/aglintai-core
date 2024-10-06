@@ -16,7 +16,6 @@ import {
   Circle,
   Clock,
   Edit,
-  Loader2,
   Mail,
   MessageSquare,
   Plus,
@@ -27,6 +26,7 @@ import {
 import { useMemo, useState } from 'react';
 
 import axios from '@/client/axios';
+import { Loader } from '@/common/Loader';
 import { useTenant } from '@/company/hooks';
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
@@ -219,7 +219,7 @@ const FeedbackWindow = () => {
       <ShowCode>
         <ShowCode.When isTrue={isLoading}>
           <div className='flex items-center justify-center'>
-            <Loader2 className='h-8 w-8 animate-spin text-primary' />
+            <Loader />
           </div>
         </ShowCode.When>
         <ShowCode.When

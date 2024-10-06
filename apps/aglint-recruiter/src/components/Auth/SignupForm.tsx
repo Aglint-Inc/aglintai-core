@@ -12,11 +12,12 @@ import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import { Skeleton } from '@components/ui/skeleton';
 import axios from 'axios';
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { Loader } from '@/common/Loader';
 import { type ApiBodyParamsSignup } from '@/pages/api/signup';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
@@ -232,7 +233,7 @@ export default function SignUpForm() {
             type='submit'
             disabled={isLoading || !termsAccepted}
           >
-            {isLoading && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+            {isLoading && <Loader />}
             Sign Up
           </Button>
         </form>

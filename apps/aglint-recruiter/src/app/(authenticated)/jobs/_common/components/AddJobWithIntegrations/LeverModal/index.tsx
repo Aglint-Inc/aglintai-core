@@ -11,7 +11,7 @@ import { Input } from '@components/ui/input';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-import { ExternalLink, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { ExternalLink, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
@@ -319,7 +319,7 @@ export default function LeverModalComp() {
             </div>
           ) : integration.lever.step === STATE_LEVER_DIALOG.IMPORTING ? (
             <div className='flex h-[508px] flex-col items-center justify-center space-y-4'>
-              <Loader2 className='h-8 w-8 animate-spin text-muted-foreground' />
+              <Loader />
               <p className='text-gray-600'>Importing from Lever</p>
             </div>
           ) : null}

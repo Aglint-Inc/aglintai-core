@@ -1,7 +1,7 @@
 import { Button } from '@components/ui/button';
-import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
+import { Loader } from '@/common/Loader';
 import UIDialog from '@/common/UIDialog';
 import { useTenantMembers } from '@/company/hooks';
 import { useMemberUpdate } from '@/company/hooks/useMemberUpdate';
@@ -66,9 +66,7 @@ function RoleEditDialog({
             }}
             disabled={!selectedMember || isLoading}
           >
-            {isLoading ? (
-              <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-            ) : null}
+            {isLoading ? <Loader /> : null}
             Update
           </Button>
         </>

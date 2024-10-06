@@ -2,12 +2,12 @@ import { useToast } from '@components/hooks/use-toast';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import axios from 'axios';
-import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import PasswordField from 'src/app/_common/components/passwordField';
 
+import { Loader } from '@/common/Loader';
 import { ShowCode } from '@/common/ShowCode';
 import { useTenant } from '@/company/hooks';
 
@@ -297,7 +297,7 @@ function Scheduling({ allIntegrations }: { allIntegrations: any }) {
                     <ShowCode>
                       <ShowCode.When isTrue={uploading}>
                         <div className='flex h-36 items-center justify-center'>
-                          <Loader2 className='h-8 w-8 animate-spin' />
+                          <Loader />
                         </div>
                       </ShowCode.When>
                       <ShowCode.Else>

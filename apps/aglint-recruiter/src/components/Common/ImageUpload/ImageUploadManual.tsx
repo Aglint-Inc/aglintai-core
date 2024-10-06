@@ -1,10 +1,12 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Building2, Loader2, Trash2, Upload, UserCircle } from 'lucide-react';
+import { Building2, Trash2, Upload, UserCircle } from 'lucide-react';
 import { type MutableRefObject, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
+
+import { Loader } from '../Loader';
 
 function ImageUploadManual({
   image,
@@ -59,11 +61,7 @@ function ImageUploadManual({
           </AvatarFallback>
         </Avatar>
 
-        {loading && (
-          <div className='absolute inset-0 z-10 flex items-center justify-center rounded-lg bg-black bg-opacity-50'>
-            <Loader2 className='h-6 w-6 animate-spin text-white' />
-          </div>
-        )}
+        {loading && <Loader />}
         <div className='z-1 absolute inset-0 flex cursor-pointer items-center justify-center'>
           {!initImage ? (
             <FileUploader
