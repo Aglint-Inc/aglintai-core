@@ -1,6 +1,5 @@
+import Typography from '@components/typography';
 import { cn } from '@lib/utils';
-
-import UITypography from '@/components/Common/UITypography';
 
 export function InterviewMode({
   slotInterviewModePill,
@@ -21,20 +20,15 @@ export function InterviewMode({
   return (
     <div className={cn('rounded-lg')}>
       <div className={cn('mb-4')}>
-        <UITypography
-          type='small'
-          variant='p'
-          fontBold='normal'
-          className='pb-1'
-        >
+        <Typography type='small' variant='p' fontBold='normal' className='pb-1'>
           Interview Mode
-        </UITypography>
+        </Typography>
         <div className={cn('flex flex-col')}>{slotInterviewModePill}</div>
       </div>
       <div className={cn('mb-4')}>
-        <UITypography type='small' variant='p' fontBold='normal'>
+        <Typography type='small' variant='p' fontBold='normal'>
           Interviewers
-        </UITypography>
+        </Typography>
         <div className={cn('flex flex-col')}>
           {slotInterviewersAvatarSelectionPill}
         </div>
@@ -70,9 +64,9 @@ export function InterviewMode({
         <div className={cn('mb-4')}>
           <div className={cn('flex items-center space-x-2')}>
             <div>{slotToggle}</div>
-            <UITypography fontBold='default' type='small'>
+            <Typography fontBold='default' type='small'>
               {textToggleLabel}
-            </UITypography>
+            </Typography>
           </div>
           {isTraining && (
             <div className={cn('mt-2')}>

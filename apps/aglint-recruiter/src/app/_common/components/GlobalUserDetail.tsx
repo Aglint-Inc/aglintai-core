@@ -1,10 +1,9 @@
 'use client';
 
+import Typography from '@components/typography';
 import { cn } from '@lib/utils';
 import { BriefcaseBusiness, Globe, User } from 'lucide-react';
 import React from 'react';
-
-import UITypography from '@/components/Common/UITypography';
 
 interface GlobalUserDetailProps {
   className?: string;
@@ -40,18 +39,15 @@ export function GlobalUserDetail({
       <div className='flex w-full items-center justify-between space-x-2'>
         <div className='flex items-center space-x-1'>
           <div>
-            <UITypography type='small'>{textName}</UITypography>
+            <Typography type='small'>{textName}</Typography>
             {isRoleVisible && (
               <div className='text-muted-foreground'>
                 {slotRole ?? (
                   <div className='flex items-center space-x-1'>
                     <BriefcaseBusiness className='h-4 w-4' />
-                    <UITypography
-                      type='small'
-                      className='text-muted-foreground'
-                    >
+                    <Typography type='small' className='text-muted-foreground'>
                       {textRole}
-                    </UITypography>
+                    </Typography>
                   </div>
                 )}
               </div>
@@ -63,9 +59,9 @@ export function GlobalUserDetail({
         </div>
         <div className='flex items-center space-x-2'>
           <Globe className='h-3 w-3 text-muted-foreground' />
-          <UITypography type='extraSmall' className='text-muted-foreground'>
+          <Typography type='extraSmall' className='text-muted-foreground'>
             {textTimeZone}
-          </UITypography>
+          </Typography>
         </div>
       </div>
     </div>

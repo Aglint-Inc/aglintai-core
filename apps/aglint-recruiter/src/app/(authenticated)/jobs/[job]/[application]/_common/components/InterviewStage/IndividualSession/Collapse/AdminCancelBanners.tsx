@@ -1,9 +1,9 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
+import Typography from '@components/typography';
 import { UIAlert } from '@components/ui-alert';
 import { CalendarClock } from 'lucide-react';
 
-import UITypography from '@/common/UITypography';
 import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 
@@ -42,17 +42,17 @@ function CancelBanners({
               </>
             }
           >
-            <UITypography>
+            <Typography>
               {`Reason: ${cancel.interview_session_cancel.reason}`}
-            </UITypography>
-            <UITypography>
+            </Typography>
+            <Typography>
               {
                 (
                   cancel.interview_session_cancel
                     .other_details as DatabaseTable['interview_session_cancel']['other_details']
                 )?.note
               }
-            </UITypography>
+            </Typography>
           </UIAlert>
         );
       })}

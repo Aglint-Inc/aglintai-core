@@ -1,9 +1,9 @@
+import Typography from '@components/typography';
 import { UIAlert } from '@components/ui-alert';
 import MembersAutoComplete from 'src/app/_common/components/MembersTextField';
 import { useInterviewPools } from 'src/app/_common/hooks/useInterviewPools';
 import { InterviewMode } from 'src/app/(authenticated)/jobs/[job]/(job-edit)/interview-plan/_common/components/_common/InterviewMode';
 
-import UITypography from '@/common/UITypography';
 import { UIButton } from '@/components/Common/UIButton';
 import { UISwitch } from '@/components/Common/UISwitch';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -131,9 +131,9 @@ function InterviewModeComp() {
               </UIButton>
             }
           >
-            <UITypography>
+            <Typography>
               Please add members to the selected interview type.
-            </UITypography>
+            </Typography>
           </UIAlert>
         ) : (
           <>

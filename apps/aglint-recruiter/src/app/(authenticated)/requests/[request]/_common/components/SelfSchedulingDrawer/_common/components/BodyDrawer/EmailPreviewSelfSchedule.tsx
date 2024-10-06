@@ -1,5 +1,6 @@
 import type { TargetApiPayloadType } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
+import Typography from '@components/typography';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { useRequests } from '@requests/hooks';
@@ -11,7 +12,6 @@ import { useTenant } from '@/company/hooks';
 import { Loader } from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
-import UITypography from '@/components/Common/UITypography';
 import { mailSender } from '@/utils/mailSender';
 
 import { setEmailData, useSelfSchedulingFlowStore } from '../../store/store';
@@ -75,10 +75,10 @@ function EmailPreviewSelfSchedule() {
 
   return (
     <div className='flex h-[calc(100vh-98px)] flex-col gap-2 overflow-auto p-4'>
-      <UITypography type='small'>
+      <Typography type='small'>
         You have selected {selectedCombIds.length} slots across {numberOfDays}
         days.
-      </UITypography>
+      </Typography>
       {selectedSlots.map((item, index) => {
         return (
           <DayCardWrapper
@@ -97,10 +97,10 @@ function EmailPreviewSelfSchedule() {
         );
       })}
       <div className='flex flex-col space-y-1'>
-        <UITypography type='small'>
+        <Typography type='small'>
           This email will be sent to the candidate. To edit the content, go to
           the template section, make edits, then click refresh.
-        </UITypography>
+        </Typography>
       </div>
       {fetching ? (
         <div className='h-[80vh] w-[538px]'>

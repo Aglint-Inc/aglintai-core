@@ -1,3 +1,4 @@
+import Typography from '@components/typography';
 import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
 import { Input } from '@components/ui/input';
@@ -14,7 +15,6 @@ import { useTenant } from '@/company/hooks';
 import { Loader } from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
 import UIDialog from '@/components/Common/UIDialog';
-import UITypography from '@/components/Common/UITypography';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { STATE_LEVER_DIALOG } from '@/jobs/constants';
 import {
@@ -240,10 +240,10 @@ export default function LeverModalComp() {
                   (job) => leverFilter === 'all' || job.state === leverFilter,
                 ).length > 0 ? (
                   <>
-                    <UITypography type='small' variant='p'>
+                    <Typography type='small' variant='p'>
                       Select a job to import. You can import only one job at a
                       time.
-                    </UITypography>
+                    </Typography>
                     <ScrollArea className='h-[400px]'>
                       {leverPostings
                         .filter(

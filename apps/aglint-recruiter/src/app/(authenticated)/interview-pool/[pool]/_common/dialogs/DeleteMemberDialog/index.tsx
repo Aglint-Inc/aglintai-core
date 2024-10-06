@@ -1,9 +1,9 @@
+import Typography from '@components/typography';
 import { Skeleton } from '@components/ui/skeleton';
 import { UIAlert } from '@components/ui-alert';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import UITypography from '@/components/Common/UITypography';
 import { api } from '@/trpc/client';
 import toast from '@/utils/toast';
 
@@ -85,10 +85,10 @@ function DeleteMemberDialog() {
       }
     >
       <div className='flex flex-col gap-2'>
-        <UITypography type='small' color='neutral'>
+        <Typography type='small' color='neutral'>
           By clicking remove, the member will be permanently removed from this
           interview type.
-        </UITypography>
+        </Typography>
 
         {isLoading ? (
           <div className='flex flex-col gap-2'>
@@ -100,13 +100,10 @@ function DeleteMemberDialog() {
             {isOngoingSchedules ? (
               <UIAlert type='error' title='User cannot be removed'>
                 <div className='mt-2 flex flex-col space-y-2'>
-                  <UITypography
-                    variant='small'
-                    className='text-muted-foreground'
-                  >
+                  <Typography variant='small' className='text-muted-foreground'>
                     There are ongoing schedules for this user. Once the
                     schedules are completed, you can remove the user.
-                  </UITypography>
+                  </Typography>
                 </div>
               </UIAlert>
             ) : (
@@ -114,12 +111,12 @@ function DeleteMemberDialog() {
                 {isError ? (
                   <UIAlert type='error' title='Error'>
                     <div className='mt-2 flex flex-col space-y-2'>
-                      <UITypography
+                      <Typography
                         variant='small'
                         className='text-muted-foreground'
                       >
                         Failed to fetch data. Please contact support.
-                      </UITypography>
+                      </Typography>
                     </div>
                   </UIAlert>
                 ) : (
@@ -131,22 +128,22 @@ function DeleteMemberDialog() {
                         title="Here is a list of job's interview plan that will be impacted:"
                       >
                         <div className='mt-2 flex flex-col space-y-2'>
-                          <UITypography
+                          <Typography
                             variant='small'
                             className='text-muted-foreground'
                           >
                             {connectedJobs
                               .map((job) => job.job_title)
                               .join(', ')}
-                          </UITypography>
-                          <UITypography
+                          </Typography>
+                          <Typography
                             variant='small'
                             className='text-muted-foreground'
                           >
                             If the user exists in previously scheduled
                             interviews, the user will be removed from those
                             schedules.
-                          </UITypography>
+                          </Typography>
                         </div>
                       </UIAlert>
                     ) : (

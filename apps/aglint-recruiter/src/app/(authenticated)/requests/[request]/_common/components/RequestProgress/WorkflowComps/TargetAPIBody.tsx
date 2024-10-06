@@ -1,9 +1,9 @@
 import type { DatabaseTable } from '@aglint/shared-types';
+import Typography from '@components/typography';
 import { UIAlert } from '@components/ui-alert';
 
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
-import UITypography from '@/components/Common/UITypography';
 
 import { useSelectedActionsDetails } from '../ScheduleProgress/dialogCtx';
 
@@ -46,9 +46,9 @@ const EmailSubject = () => {
   } = useSelectedActionsDetails();
   return (
     <div className='mb-4'>
-      <UITypography className='mb-1 text-sm font-semibold'>
+      <Typography className='mb-1 text-sm font-semibold'>
         Email Subject
-      </UITypography>
+      </Typography>
       <div>
         <div>
           {!tiptapLoadStatus.email && (
@@ -84,9 +84,7 @@ const EmailBody = () => {
 
   return (
     <div>
-      <UITypography className='mb-1 text-sm font-semibold'>
-        Email Body
-      </UITypography>
+      <Typography className='mb-1 text-sm font-semibold'>Email Body</Typography>
       <div>
         {!tiptapLoadStatus.email && (
           <TipTapAIEditor
@@ -145,9 +143,9 @@ const AgentInstructionBody = () => {
     useSelectedActionsDetails();
   return (
     <div>
-      <UITypography className='mb-1 text-sm font-semibold'>
+      <Typography className='mb-1 text-sm font-semibold'>
         Aglint AI Instruction
-      </UITypography>
+      </Typography>
       <div>
         {tiptapLoadStatus.agent === false && (
           <TipTapAIEditor
