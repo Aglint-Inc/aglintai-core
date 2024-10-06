@@ -1,4 +1,13 @@
 'use client';
+import { EmptyState } from '@components/empty-state';
+import {
+  Section,
+  SectionActions,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import { ScrollArea } from '@components/ui/scroll-area';
 import {
   Table,
@@ -8,33 +17,37 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
-import { Check, X } from 'lucide-react';
+import { ChartNoAxesColumn, Check, X } from 'lucide-react';
 import { useRequestMetics } from 'src/app/(authenticated)/reports/_common/hook/candidate/use-request_metrics';
-
-import UISectionCard from '@/common/UISectionCard';
 
 const CheckIcon = () => <Check className='h-4 w-4 text-green-500' />;
 const XIcon = () => <X className='h-4 w-4 text-destructive' />;
 
+import { UIAlert } from '@components/ui-alert';
+
+import { Loader } from '@/common/Loader';
 export default function Checklist() {
   const { data, isFetching, isError } = useRequestMetics();
   return (
-    <UISectionCard
-      title={'Coordinator Checklist'}
-      emptyStateMessage={
-        !data?.length ? (
-          <div className='flex h-[100px] items-center justify-center text-muted-foreground'>
-            No data available
-          </div>
-        ) : isError ? (
-          'Error fetching data'
-        ) : (
-          ''
-        )
-      }
-      isLoading={isFetching}
-    >
-      <div className='overflow-x-auto'>
+    <Section>
+      <SectionHeader>
+        <SectionHeaderText>
+          <SectionTitle>Coordinator Checklist</SectionTitle>
+          <SectionDescription></SectionDescription>
+        </SectionHeaderText>
+        <SectionActions></SectionActions>
+      </SectionHeader>
+      {isFetching ? (
+        <Loader />
+      ) : !data?.length ? (
+        <EmptyState
+          icon={ChartNoAxesColumn}
+          header='No data available'
+          description='No data available for the selected time frame.'
+        />
+      ) : isError ? (
+        <UIAlert type='error'>Error fetching data</UIAlert>
+      ) : (
         <div className='w-max min-w-full'>
           <Table>
             <ScrollArea className='h-[calc(100vh-17rem)]'>
@@ -81,7 +94,7 @@ export default function Checklist() {
             </ScrollArea>
           </Table>
         </div>
-      </div>
-    </UISectionCard>
+      )}
+    </Section>
   );
 }

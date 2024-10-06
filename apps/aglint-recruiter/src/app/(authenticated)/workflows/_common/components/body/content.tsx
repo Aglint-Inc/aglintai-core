@@ -4,10 +4,12 @@ import { Skeleton } from '@components/ui/skeleton';
 import { UIBadge } from '@components/ui-badge';
 import {
   Bell,
+  Building,
   CalendarCheck,
   CalendarClock,
   CalendarX,
   CheckCircle,
+  GraduationCap,
   type LucideIcon,
   Mail,
   Slack,
@@ -148,7 +150,46 @@ const UPDATED_TAG_OPTIONS: Record<CustomWorkflowTags, TagOption> = {
     icon: CalendarCheck as LucideIcon,
     variant: 'success',
   },
-  // ... add other missing properties as needed
+  onQualified: {
+    name: 'On Qualified',
+    icon: GraduationCap as LucideIcon,
+    variant: 'success',
+  },
+  onTrainingComplete: {
+    name: 'On Training Complete',
+    icon: GraduationCap as LucideIcon,
+    variant: 'success',
+  },
+  onReceivingAvailReq: {
+    name: 'On Receiving Availability Request',
+    icon: CalendarCheck as LucideIcon,
+    variant: 'info',
+  },
+  onRequestSchedule: {
+    name: 'On Request Schedule',
+    icon: CalendarCheck as LucideIcon,
+    variant: 'info',
+  },
+  onRequestCancel: {
+    name: 'On Request Cancel',
+    icon: CalendarX as LucideIcon,
+    variant: 'destructive',
+  },
+  onRequestReschedule: {
+    name: 'On Request Reschedule',
+    icon: CalendarCheck as LucideIcon,
+    variant: 'info',
+  },
+  onRequestInterviewerDecline: {
+    name: 'On Request Interviewer Decline',
+    icon: CalendarX as LucideIcon,
+    variant: 'destructive',
+  },
+  company: {
+    name: 'Company',
+    icon: Building as LucideIcon,
+    variant: 'info',
+  },
 };
 
 export const WorkflowTags = ({ tags }: Pick<Workflow, 'tags'>) => {
