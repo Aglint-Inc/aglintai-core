@@ -84,9 +84,10 @@ export const Location = () => {
             <EmptyState
               variant='inline'
               icon={MapPin}
-              description='No company locations found. Add the company locations'
+              description='No company locations found.'
               primarySlot={
                 <UIButton
+                  variant='outline'
                   onClick={() => {
                     setAddEditDialog({ open: true, edit: -1 });
                   }}

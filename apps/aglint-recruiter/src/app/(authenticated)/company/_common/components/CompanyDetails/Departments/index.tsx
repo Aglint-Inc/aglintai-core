@@ -136,9 +136,9 @@ export default function Departments() {
                 handleAddDepartment={handleAddDepartment}
                 placeholder='Enter new value...'
                 btn={
-                  <Button>
+                  <Button variant='outline'>
                     <Plus className='mr-2 h-4 w-4' />
-                    Add keyword
+                    Add Departments
                   </Button>
                 }
                 handleRemoveKeyword={({ id }) => {

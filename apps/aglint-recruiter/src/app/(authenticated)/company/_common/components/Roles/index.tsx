@@ -106,7 +106,7 @@ const RoleTable = ({
             <TableHead>Role</TableHead>
             <TableHead className='w-[42%]'>Description</TableHead>
             <TableHead>Users</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead className='sr-only'>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
