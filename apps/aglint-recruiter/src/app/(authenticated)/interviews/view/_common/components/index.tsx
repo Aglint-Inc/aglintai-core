@@ -5,12 +5,12 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { BriefcaseBusiness, Home, MapPin, User } from 'lucide-react';
+import { UIAlert } from '@components/ui-alert';
+import { BriefcaseBusiness, Calendar, Home, MapPin, User } from 'lucide-react';
 import { useEffect } from 'react';
 
 import { useTenant } from '@/company/hooks';
 import { Loader } from '@/components/Common/Loader';
-import { UIAlert } from '@/components/Common/UIAlert';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { useScheduleDetails } from '../hooks/useScheduleDetails';
@@ -121,7 +121,7 @@ function SchedulingViewComp() {
           </div>
         ) : (
           <div className='p-2'>
-            <UIAlert title={'Meeting Not Found'} iconName={'Calendar'} />
+            <UIAlert type='info' title={'Meeting Not Found'} icon={Calendar} />
           </div>
         )}
       </div>

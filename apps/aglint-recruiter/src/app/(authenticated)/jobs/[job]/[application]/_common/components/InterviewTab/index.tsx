@@ -1,6 +1,7 @@
 import { Skeleton } from '@components/ui/skeleton';
+import { UIAlert } from '@components/ui-alert';
 
-import { UIAlert } from '@/components/Common/UIAlert';
+import { UIButton } from '@/common/UIButton';
 
 import { useApplicationDetails } from '../../hooks/useApplicationDetails';
 import { useInterviewStages } from '../../hooks/useInterviewStages';
@@ -32,13 +33,21 @@ function InterviewTabContent() {
     );
 
   if (error) {
-    return <UIAlert title={'Error Fetching Stages'} />;
+    return <UIAlert type='error' title='Error Fetching Stages' />;
   }
 
   if (details?.status === 'new') {
     return (
       <div className='p-4'>
-        <UIAlert title={'Move candidate to interview stage'} />
+        <UIAlert
+          type='info'
+          title='Move candidate to interview stage'
+          action={
+            <UIButton variant='default' size='sm'>
+              Move
+            </UIButton>
+          }
+        />
       </div>
     );
   }
@@ -46,7 +55,15 @@ function InterviewTabContent() {
   if (stages?.length === 0)
     return (
       <div className='p-4'>
-        <UIAlert title={'No Stages Found'} />
+        <UIAlert
+          type='info'
+          title='No Stages Found'
+          action={
+            <UIButton variant='default' size='sm'>
+              Create Stage
+            </UIButton>
+          }
+        />
       </div>
     );
 

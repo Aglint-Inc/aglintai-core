@@ -8,16 +8,15 @@ import {
   PageTitle,
 } from '@components/layouts/page-header';
 import OptimisticWrapper from '@components/loadingWapper';
-import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
+import { UIAlert } from '@components/ui-alert';
 import { useQueryClient } from '@tanstack/react-query';
 import {
-  AlertCircle,
   ChartNoAxesGantt,
   Edit,
   PauseCircle,
@@ -32,7 +31,6 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { Loader } from '@/components/Common/Loader';
-import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
@@ -132,18 +130,13 @@ const InterviewPlanPage = () => {
               />
             ))
           ) : (
-            <Alert>
-              <AlertCircle className='h-4 w-4' />
-              <AlertTitle>Create Interview Stages</AlertTitle>
-              <AlertDescription>
-                Create your interview stages for the job to ensure a structured
-                evaluation process. Add different interview types such as
-                &quot;Initial Screening&quot; or &quot;Technical
-                Interview.&quot; Use this template each time you schedule
-                interviews for candidates to maintain consistency and
-                efficiency.
-              </AlertDescription>
-            </Alert>
+            <UIAlert variant='tip' title='Create Interview Stages'>
+              Create your interview stages for the job to ensure a structured
+              evaluation process. Add different interview types such as
+              &quot;Initial Screening&quot; or &quot;Technical Interview.&quot;
+              Use this template each time you schedule interviews for candidates
+              to maintain consistency and efficiency.
+            </UIAlert>
           )}
 
           <AddStageComponent handleCreate={handleCreate} />
@@ -812,12 +805,8 @@ const InterviewSessionMembers = ({ members }: InterviewSessionMembersProps) => {
   if (members.length === 0)
     return (
       <UIAlert
-        color={'error'}
-        iconName={'CircleAlert'}
-        title={
-          'No interviewers assigned. Click on edit to assign interviewers.'
-        }
-        type='inline'
+        type='error'
+        title='No interviewers assigned. Click on edit to assign interviewers.'
       />
     );
   return members.map((member) => (

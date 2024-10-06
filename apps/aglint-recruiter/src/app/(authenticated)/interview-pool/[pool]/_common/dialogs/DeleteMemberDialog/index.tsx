@@ -1,6 +1,6 @@
 import { Skeleton } from '@components/ui/skeleton';
+import { UIAlert } from '@components/ui-alert';
 
-import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UITypography from '@/components/Common/UITypography';
@@ -98,55 +98,63 @@ function DeleteMemberDialog() {
         ) : (
           <>
             {isOngoingSchedules ? (
-              <UIAlert
-                type='small'
-                color={'error'}
-                iconName={'CircleAlert'}
-                title={'User cannot be removed'}
-                description={`There are ongoing schedules for this user. Once the schedules are completed, you can remove the user.`}
-              />
+              <UIAlert type='error' title='User cannot be removed'>
+                <div className='mt-2 flex flex-col space-y-2'>
+                  <UITypography
+                    variant='small'
+                    className='text-muted-foreground'
+                  >
+                    There are ongoing schedules for this user. Once the
+                    schedules are completed, you can remove the user.
+                  </UITypography>
+                </div>
+              </UIAlert>
             ) : (
               <>
                 {isError ? (
-                  <UIAlert
-                    type='small'
-                    color='error'
-                    iconName='CircleAlert'
-                    title='Error'
-                    description='Failed to fetch data. Please contact support.'
-                  />
+                  <UIAlert type='error' title='Error'>
+                    <div className='mt-2 flex flex-col space-y-2'>
+                      <UITypography
+                        variant='small'
+                        className='text-muted-foreground'
+                      >
+                        Failed to fetch data. Please contact support.
+                      </UITypography>
+                    </div>
+                  </UIAlert>
                 ) : (
                   <>
                     {' '}
                     {connectedJobs.length > 0 ? (
                       <UIAlert
-                        color={'warning'}
-                        type='small'
-                        iconName={'TriangleAlert'}
-                        title={`Here is a list of job's interview plan that will be impacted:`}
-                        actions={
-                          <div className='flex flex-col space-y-2'>
-                            <UITypography type='small' color='neutral'>
-                              {connectedJobs
-                                .flatMap((job) => job.job_title)
-                                .join(', ')}
-                            </UITypography>
-                            <UITypography type='small' color='neutral'>
-                              If the user exists in previously scheduled
-                              interviews, the user will be removed from those
-                              schedules.
-                            </UITypography>
-                          </div>
-                        }
-                      />
+                        type='warning'
+                        title="Here is a list of job's interview plan that will be impacted:"
+                      >
+                        <div className='mt-2 flex flex-col space-y-2'>
+                          <UITypography
+                            variant='small'
+                            className='text-muted-foreground'
+                          >
+                            {connectedJobs
+                              .map((job) => job.job_title)
+                              .join(', ')}
+                          </UITypography>
+                          <UITypography
+                            variant='small'
+                            className='text-muted-foreground'
+                          >
+                            If the user exists in previously scheduled
+                            interviews, the user will be removed from those
+                            schedules.
+                          </UITypography>
+                        </div>
+                      </UIAlert>
                     ) : (
-                      <UIAlert
-                        type={'small'}
-                        color={'warning'}
-                        iconName={'TriangleAlert'}
-                        title={`Note :`}
-                        description='User is not connected to any interview plan. If user exist in previous scheduled interviews, the user will be removed from those schedules.'
-                      />
+                      <UIAlert type='warning' title='Note :'>
+                        User is not connected to any interview plan. If user
+                        exists in previous scheduled interviews, the user will
+                        be removed from those schedules.
+                      </UIAlert>
                     )}
                   </>
                 )}

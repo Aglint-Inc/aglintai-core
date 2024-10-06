@@ -1,8 +1,8 @@
 import type { DatabaseTable } from '@aglint/shared-types';
+import { UIAlert } from '@components/ui-alert';
 
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
-import { UIAlert } from '@/components/Common/UIAlert';
 import UITypography from '@/components/Common/UITypography';
 
 import { useSelectedActionsDetails } from '../ScheduleProgress/dialogCtx';
@@ -111,7 +111,7 @@ EmailBody.displayName = 'EmailBody';
 const SlackTemplate = () => {
   return (
     <UIAlert
-      type='inline'
+      type='info'
       title={'A slack notification will be sent for this action.'}
     />
   );
@@ -119,7 +119,7 @@ const SlackTemplate = () => {
 
 const EndPointTemplate = () => {
   return (
-    <UIAlert type='inline' title={'Aglint system will handle this action'} />
+    <UIAlert type='info' title={'Aglint system will handle this action'} />
   );
 };
 

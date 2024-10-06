@@ -1,8 +1,8 @@
 import { type DatabaseEnums } from '@aglint/shared-types';
+import { UIAlert } from '@components/ui-alert';
 
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
-import { UIAlert } from '@/components/Common/UIAlert';
 import UITypography from '@/components/Common/UITypography';
 
 export type WActionProps =
@@ -100,16 +100,14 @@ const EmailTemplate = ({
 const SlackTemplate = () => {
   return (
     <UIAlert
-      type='inline'
-      title={'A slack notification will be sent for this action.'}
+      type='info'
+      title='A slack notification will be sent for this action.'
     />
   );
 };
 
 const EndPointTemplate = () => {
-  return (
-    <UIAlert type='inline' title={'Aglint system will handle this action'} />
-  );
+  return <UIAlert type='info' title='Aglint system will handle this action' />;
 };
 
 type AgentInstructionTemplateProps = {

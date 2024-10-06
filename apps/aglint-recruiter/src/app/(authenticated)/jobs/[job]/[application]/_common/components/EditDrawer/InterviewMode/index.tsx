@@ -1,8 +1,9 @@
+import { UIAlert } from '@components/ui-alert';
 import MembersAutoComplete from 'src/app/_common/components/MembersTextField';
 import { useInterviewPools } from 'src/app/_common/hooks/useInterviewPools';
 import { InterviewMode } from 'src/app/(authenticated)/jobs/[job]/(job-edit)/interview-plan/_common/components/_common/InterviewMode';
 
-import { UIAlert } from '@/components/Common/UIAlert';
+import UITypography from '@/common/UITypography';
 import { UIButton } from '@/components/Common/UIButton';
 import { UISwitch } from '@/components/Common/UISwitch';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -112,12 +113,9 @@ function InterviewModeComp() {
       slotInterviewersDropdown={
         moduleCurrent?.members.length === 0 ? (
           <UIAlert
-            type='small'
-            iconName={'CircleAlert'}
-            title={'Interview type has no interviewers.'}
-            description={'Please add members to the selected interview type.'}
-            color={'error'}
-            actions={
+            type='error'
+            title='Interview type has no interviewers.'
+            action={
               <UIButton
                 variant='destructive'
                 size='sm'
@@ -132,7 +130,11 @@ function InterviewModeComp() {
                 Go to interview type
               </UIButton>
             }
-          />
+          >
+            <UITypography>
+              Please add members to the selected interview type.
+            </UITypography>
+          </UIAlert>
         ) : (
           <>
             <MembersAutoComplete

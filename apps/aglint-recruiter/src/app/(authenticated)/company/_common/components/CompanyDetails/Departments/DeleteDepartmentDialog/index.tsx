@@ -57,7 +57,7 @@ function DeleteDepartmentsDialog({
             role='alert'
           >
             <p className='font-bold'>Warning</p>
-            <p>
+            <p className='text-sm'>
               Cannot delete this department. Disconnect the following
               {!isUserEmpty ? (userUsageCount > 1 ? 'users ' : 'user ') : ''}
               {!isUserEmpty && !isJobEmpty ? 'and ' : ''}
