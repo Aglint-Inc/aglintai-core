@@ -8,7 +8,18 @@ import {
   PageTitle,
 } from '@components/layouts/page-header';
 import OptimisticWrapper from '@components/loadingWapper';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Button } from '@components/ui/button';
 import {
   Tooltip,
   TooltipContent,
@@ -32,7 +43,6 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITextField from '@/components/Common/UITextField';
 import { JobNotFound } from '@/job/components/JobNotFound';
@@ -407,34 +417,35 @@ const InterviewPlan = ({
                 icon={<Trash className='h-4 w-4' color='brown' />}
               />
 
-              <UIDialog
-                open={deleteOpen}
-                onClose={() => setDeleteOpen(false)}
-                title='Delete Confirmation  '
-                slotButtons={
-                  <>
-                    <UIButton
-                      variant='secondary'
-                      size='sm'
-                      onClick={() => setDeleteOpen(false)}
-                    >
-                      Cancel
-                    </UIButton>
-                    <UIButton
-                      size='sm'
-                      isLoading={isStageDeleting}
-                      onClick={async () => {
-                        await deletePlan({ id: plan_id });
-                        setDeleteOpen(false);
-                      }}
-                    >
-                      Delete
-                    </UIButton>
-                  </>
-                }
-              >
-                Are you sure to delete this interview plan ?
-              </UIDialog>
+              <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Delete Confirmation</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Are you sure to delete this interview plan?
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel asChild>
+                      <Button variant='secondary' size='sm'>
+                        Cancel
+                      </Button>
+                    </AlertDialogCancel>
+                    <AlertDialogAction asChild>
+                      <Button
+                        size='sm'
+                        disabled={isStageDeleting}
+                        onClick={async () => {
+                          await deletePlan({ id: plan_id });
+                        }}
+                      >
+                        {isStageDeleting ? <Loader /> : null}
+                        Delete
+                      </Button>
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           }
           slotInterviewPlanDetail={
