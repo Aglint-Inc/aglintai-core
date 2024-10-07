@@ -7,6 +7,7 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
+import { Button } from '@components/ui/button';
 import { type ChartConfig, ChartContainer } from '@components/ui/chart';
 import { UIAlert } from '@components/ui-alert';
 import { ArrowDownIcon, ChartNoAxesColumn, DownloadIcon } from 'lucide-react';
@@ -39,17 +40,14 @@ export default function DeclineLeadTimeChart() {
       <SectionHeader>
         <SectionHeaderText>
           <SectionTitle>Decline lead time</SectionTitle>
-          <SectionDescription></SectionDescription>
+          <SectionDescription>
+            Time between decline received & interview starts
+          </SectionDescription>
         </SectionHeaderText>
         <SectionActions>
-          <div className='flex flex-row items-center justify-between gap-2 space-y-0 pb-2'>
-            <div>
-              <p className='text-sm text-muted-foreground'>
-                Time between decline received & interview starts
-              </p>
-            </div>
+          <Button variant='outline'>
             <DownloadIcon className='h-5 w-5 text-gray-400' />
-          </div>
+          </Button>
         </SectionActions>
       </SectionHeader>
       {isFetching ? (
