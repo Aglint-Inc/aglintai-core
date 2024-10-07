@@ -13,12 +13,12 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import { ScrollArea } from '@components/ui/scroll-area';
-import { Skeleton } from '@components/ui/skeleton';
 import { MoreHorizontal, PlusCircle, RefreshCw } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
 import { useIntegrations } from '@/authenticated/hooks';
+import { Loader } from '@/common/Loader';
 import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -47,24 +47,7 @@ export const Body = ({ jobs }: { jobs: Job[] }) => {
     <div className='h-full w-full'>
       <LeverModalComp />
       {!initialLoad ? (
-        <div className='min-h-screen'>
-          <div className='container-lg mx-auto w-full space-y-4 px-12'>
-            <div className='flex items-center justify-between'>
-              <div className='space-y-2'>
-                <Skeleton className='h-8 w-[200px]' />
-                <Skeleton className='h-4 w-[300px]' />
-              </div>
-              <Skeleton className='h-10 w-[100px]' />
-            </div>
-            <div className='space-y-2'>
-              <Skeleton className='h-10 w-full' />
-              <Skeleton className='h-10 w-full' />
-              <Skeleton className='h-10 w-full' />
-              <Skeleton className='h-10 w-full' />
-              <Skeleton className='h-10 w-full' />
-            </div>
-          </div>
-        </div>
+        <Loader />
       ) : (
         <>
           {data?.length === 0 ? (

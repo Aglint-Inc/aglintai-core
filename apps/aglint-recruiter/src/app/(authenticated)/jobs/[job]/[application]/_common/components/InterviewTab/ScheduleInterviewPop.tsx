@@ -1,7 +1,6 @@
+import Typography from '@components/typography';
 import { cn } from '@lib/utils';
 import { User } from 'lucide-react';
-
-import UITypography from '@/components/Common/UITypography';
 
 export function ScheduleInterviewPop({
   textName = '',
@@ -18,49 +17,49 @@ export function ScheduleInterviewPop({
     <div className={cn('flex flex-col gap-4')}>
       {isCandidateVisible ? (
         <div className='flex flex-col gap-1'>
-          <UITypography variant='p' type='small'>
+          <Typography variant='p' type='small'>
             Selected Candidate
-          </UITypography>
+          </Typography>
           <div className='flex items-center gap-2'>
             <div className='flex items-center justify-center'>
               <User size={24} />
             </div>
-            <UITypography variant='p' type='small'>
+            <Typography variant='p' type='small'>
               {textName}
-            </UITypography>
+            </Typography>
           </div>
         </div>
       ) : null}
       <div className='flex flex-col gap-1'>
-        <UITypography variant='p' type='small'>
+        <Typography variant='p' type='small'>
           {textSelectedSchedule}
-        </UITypography>
+        </Typography>
         <div className='flex flex-wrap items-center gap-2'>{slotStagePill}</div>
       </div>
       {isRequestTypeVisible ? (
         <div className='flex flex-col gap-2'>
-          <UITypography variant='p' type='small'>
+          <Typography variant='p' type='small'>
             Request Type
-          </UITypography>
+          </Typography>
           <div>{slotRequestOption}</div>
-          <UITypography variant='p' type='small'>
+          <Typography variant='p' type='small'>
             Request will be marked as urgent to give more priority
-          </UITypography>
+          </Typography>
         </div>
       ) : null}
       {isRequestTypeVisible ? (
         <div className='flex flex-col gap-2'>
-          <UITypography variant='p' type='small'>
+          <Typography variant='p' type='small'>
             Assigned to
-          </UITypography>
+          </Typography>
           <div>{slotAssignedInput}</div>
         </div>
       ) : null}
       {isRequestTypeVisible ? (
         <div className='flex flex-col gap-2'>
-          <UITypography variant='p' type='small'>
+          <Typography variant='p' type='small'>
             Pick Date Range
-          </UITypography>
+          </Typography>
           <div>{slotPickDateInput}</div>
         </div>
       ) : null}

@@ -26,7 +26,7 @@ type Props = {
   className?: string;
 };
 
-const UITypography = ({
+const Typography = ({
   children,
   variant = 'p',
   fontBold,
@@ -52,4 +52,4 @@ const UITypography = ({
   );
 };
 
-export default UITypography;
+export default Typography;

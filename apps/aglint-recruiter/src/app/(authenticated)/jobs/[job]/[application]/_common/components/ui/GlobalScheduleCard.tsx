@@ -1,3 +1,4 @@
+import Typography from '@components/typography';
 import { cn } from '@lib/utils';
 import {
   BriefcaseBusiness,
@@ -10,7 +11,6 @@ import {
 import React from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
-import UITypography from '@/components/Common/UITypography';
 
 interface GlobalScheduleCardProps {
   className?: string;
@@ -88,13 +88,13 @@ export function GlobalScheduleCard({
               {isDateVisible && (
                 <div className='flex items-center gap-1'>
                   <Calendar className='h-4 w-4 text-muted-foreground' />
-                  <UITypography type='small'>{textDate}</UITypography>
+                  <Typography type='small'>{textDate}</Typography>
                 </div>
               )}
               {isTimeVisible && (
                 <div className='flex items-center gap-1'>
                   <Clock className='h-4 w-4 text-muted-foreground' />
-                  <UITypography type='small'>{textTime}</UITypography>
+                  <Typography type='small'>{textTime}</Typography>
                 </div>
               )}
               {isRequestStatusVisible && <div>{slotRequestStatus}</div>}
@@ -102,16 +102,16 @@ export function GlobalScheduleCard({
             <div className='flex flex-col gap-2'>
               <div className='flex items-center gap-1'>
                 {iconPanel}
-                <UITypography type='medium'>{textPanelName}</UITypography>
+                <Typography type='medium'>{textPanelName}</Typography>
               </div>
               <div className='flex gap-4'>
                 <div className='flex items-center gap-1'>
                   <Hourglass className='h-4 w-4 text-muted-foreground' />
-                  <UITypography type='small'>{textDuration}</UITypography>
+                  <Typography type='small'>{textDuration}</Typography>
                 </div>
                 <div className='flex items-center gap-1'>
                   {iconMeetingPlatform}
-                  <UITypography type='small'>{textPlatformName}</UITypography>
+                  <Typography type='small'>{textPlatformName}</Typography>
                 </div>
               </div>
               {isCandidateVisible && (
@@ -119,15 +119,13 @@ export function GlobalScheduleCard({
                   {isRoleVisible && (
                     <div className='flex items-center gap-1'>
                       <BriefcaseBusiness className='h-4 w-4' />
-                      <UITypography type='small'>{textRole}</UITypography>
+                      <Typography type='small'>{textRole}</Typography>
                     </div>
                   )}
                   {isCandidateVisible && (
                     <div className='flex items-center gap-1'>
                       <User className='h-4 w-4' />
-                      <UITypography type='small'>
-                        {textCandidateName}
-                      </UITypography>
+                      <Typography type='small'>{textCandidateName}</Typography>
                     </div>
                   )}
                 </div>

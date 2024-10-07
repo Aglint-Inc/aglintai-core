@@ -2,6 +2,13 @@
 
 import { EmptyState } from '@components/empty-state';
 import {
+  Section,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -15,7 +22,6 @@ import { List, Plus } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { UIButton } from '@/common/UIButton';
-import UISectionCard from '@/common/UISectionCard';
 
 import { ReasonCardUI } from './ui/ReasonCardUI';
 interface ReasonSectionProps {
@@ -37,22 +43,9 @@ interface ScheduleReasonProps {
   sections: ReasonSectionProps[];
 }
 
-export function ScheduleReasonCard({
-  textMainHeading = 'Interview Scheduling Options',
-  textMainHelperText = 'Configure default reasons for candidates to cancel or reschedule their interviews. These reasons will be available as options for candidates when they request to modify their scheduled interviews.',
-  isMainHeadingVisible = true,
-  sections,
-}: ScheduleReasonProps) {
+export function ScheduleReasonCard({ sections }: ScheduleReasonProps) {
   return (
     <div className='w-full py-6'>
-      {isMainHeadingVisible && (
-        <div className='mb-6'>
-          <h2 className='text-lg font-bold'>{textMainHeading}</h2>
-          <p className='max-w-4xl text-sm text-muted-foreground'>
-            {textMainHelperText}
-          </p>
-        </div>
-      )}
       <div className='space-y-6'>
         {sections.map((section, index) => (
           <ReasonSection key={index} {...section} />
@@ -135,7 +128,13 @@ function ReasonSection({
         </AlertDialogContent>
       </AlertDialog>
 
-      <UISectionCard title={title} description={description}>
+      <Section>
+        <SectionHeader>
+          <SectionHeaderText>
+            <SectionTitle>{title}</SectionTitle>
+            <SectionDescription>{description}</SectionDescription>
+          </SectionHeaderText>
+        </SectionHeader>
         {reasons?.length > 0 || isAddingNew ? (
           <ReasonCardUI
             editingIndex={editingIndex}
@@ -159,6 +158,7 @@ function ReasonSection({
             description={`No ${title} added yet.`}
             primarySlot={
               <UIButton
+                variant='outline'
                 onClick={() => setIsAddingNew(true)}
                 leftIcon={<Plus />}
                 size='sm'
@@ -168,7 +168,7 @@ function ReasonSection({
             }
           />
         )}
-      </UISectionCard>
+      </Section>
     </>
   );
 }

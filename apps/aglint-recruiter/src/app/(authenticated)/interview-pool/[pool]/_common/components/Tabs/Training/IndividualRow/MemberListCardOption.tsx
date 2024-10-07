@@ -1,8 +1,7 @@
 'use client';
 
+import Typography from '@components/typography';
 import { ArrowUpFromLine, Pause, Play, Trash2 } from 'lucide-react';
-
-import UITypography from '@/components/Common/UITypography';
 
 export function MemberListCardOption({
   onClickMoveToQualifier,
@@ -31,9 +30,9 @@ export function MemberListCardOption({
           onClick={onClickMoveToQualifier}
         >
           <ArrowUpFromLine size={16} />
-          <UITypography variant='p' type='small'>
+          <Typography variant='p' type='small'>
             Move to qualified
-          </UITypography>
+          </Typography>
         </div>
       )}
       {isPauseVisible && (
@@ -42,9 +41,9 @@ export function MemberListCardOption({
           onClick={onClickPauseInterview}
         >
           <Pause size={16} />
-          <UITypography variant='p' type='small'>
+          <Typography variant='p' type='small'>
             Pause
-          </UITypography>
+          </Typography>
         </div>
       )}
       {isResumeVisible && (
@@ -53,9 +52,9 @@ export function MemberListCardOption({
           onClick={onClickResumeInterview}
         >
           <Play size={16} />
-          <UITypography variant='p' type='small'>
+          <Typography variant='p' type='small'>
             Resume
-          </UITypography>
+          </Typography>
         </div>
       )}
       {isRemoveVisible && (
@@ -64,9 +63,9 @@ export function MemberListCardOption({
           onClick={onClickRemoveModule}
         >
           <Trash2 size={16} className='text-red-600' />
-          <UITypography variant='p' type='small'>
+          <Typography variant='p' type='small'>
             Remove
-          </UITypography>
+          </Typography>
         </div>
       )}
     </div>

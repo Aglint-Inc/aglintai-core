@@ -108,7 +108,7 @@ const UISelectDropDown = ({
       <Select {...props} disabled={disabled} required={required}>
         <SelectTrigger className={inputClasses}>
           {startIcon && <span className='mr-2'>{startIcon}</span>}
-          <SelectValue placeholder={placeholder} id={id} />
+          <SelectValue placeholder={placeholder} id={id} className='text-sm' />
         </SelectTrigger>
         <SelectContent className='z-[2000]'>
           <SelectGroup>

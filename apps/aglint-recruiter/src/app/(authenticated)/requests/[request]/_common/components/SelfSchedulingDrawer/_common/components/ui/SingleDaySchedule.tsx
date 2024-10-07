@@ -1,8 +1,7 @@
 'use client';
+import Typography from '@components/typography';
 import { Calendar, Clock } from 'lucide-react';
 import React from 'react';
-
-import UITypography from '@/components/Common/UITypography';
 
 export function SingleDaySchedule({
   as: Component = 'div',
@@ -33,19 +32,19 @@ export function SingleDaySchedule({
           {isMultiDay && (
             <div className='flex flex-row flex-nowrap items-center gap-2'>
               <Calendar className='h-4 w-4 text-gray-600' />
-              <UITypography type='small' className='font-semibold'>
+              <Typography type='small' className='font-semibold'>
                 {textDayCount}
-              </UITypography>
-              <UITypography type='extraSmall' className='text-gray-600'>
+              </Typography>
+              <Typography type='extraSmall' className='text-gray-600'>
                 {textDate}
-              </UITypography>
+              </Typography>
             </div>
           )}
           <div className='flex flex-row flex-nowrap items-center gap-2'>
             <Clock className='h-4 w-4 text-gray-600' />
-            <UITypography type='extraSmall' className='font-semibold'>
+            <Typography type='extraSmall' className='font-semibold'>
               {textTotalTimeRange}
-            </UITypography>
+            </Typography>
           </div>
         </div>
         <div className='flex items-center justify-start gap-2'>

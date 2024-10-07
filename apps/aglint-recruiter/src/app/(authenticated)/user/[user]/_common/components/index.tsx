@@ -11,6 +11,7 @@ import {
   SectionTitle,
 } from '@components/layouts/sections-header';
 import { TwoColumnPageLayout } from '@components/layouts/two-column-page-layout';
+import Typography from '@components/typography';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useInterviewsByUserId } from '@interviews/hooks/useInterviewsByUserId';
@@ -20,7 +21,6 @@ import { useState } from 'react';
 import CalendarComp from '@/components/Common/Calendar/Calendar';
 import Heatmap from '@/components/Common/Heatmap/HeatmapUser';
 import { Loader } from '@/components/Common/Loader';
-import UITypography from '@/components/Common/UITypography';
 
 import {
   type InterviewerDetailType,
@@ -62,7 +62,7 @@ export default function InterviewerDetailsPage() {
   if (!interviewerDetails || error)
     return (
       <div className='flex min-h-screen w-full items-center justify-center'>
-        <UITypography>Fetching Error</UITypography>
+        <Typography>Fetching Error</Typography>
       </div>
     );
 

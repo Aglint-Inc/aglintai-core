@@ -11,7 +11,7 @@ import { useCompletedRequestsStore } from '@requestHistory/contexts/completedReq
 import { RequestCard } from '@requests/components/RequestCard';
 import RequestHistoryFilter from '@requests/components/RequestHistoryFilter';
 import { useCompletedRequests } from '@requests/hooks';
-import { AlertCircle, Loader2 } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
 import { Loader } from '@/components/Common/Loader';
@@ -123,7 +123,7 @@ function CompletedRequests() {
             <>
               <div ref={loaderRef} className='py-4 text-center'>
                 {isLoadingMore ? (
-                  <Loader2 className='mx-auto h-6 w-6 animate-spin' />
+                  <Loader />
                 ) : (
                   <Button onClick={loadMore} disabled={isLoadingMore}>
                     Load More

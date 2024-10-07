@@ -5,7 +5,7 @@ import InterviewersTable from './InterviewersTable';
 
 export default function InterviewerLeaderboard() {
   return (
-    <div className='flex flex-col gap-4 pb-4'>
+    <div className='flex flex-col space-y-16'>
       <InterviewerLeaderboardWidget />
       <InterviewersDeclineTable />
       <InterviewersTable />

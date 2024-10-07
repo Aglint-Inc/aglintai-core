@@ -1,11 +1,11 @@
 import type { DatabaseTable } from '@aglint/shared-types';
 import { AlertDialog, AlertDialogContent } from '@components/ui/alert-dialog';
 import { Button } from '@components/ui/button';
+import { UIAlert } from '@components/ui-alert';
 import { X } from 'lucide-react';
 import { type ReactNode, useState } from 'react';
 
 import { useFlags } from '@/company/hooks/useFlags';
-import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import {
   useApplicationsActions,
@@ -110,12 +110,12 @@ const MoveCandidateNew = () => {
       title={title}
       slotBody={
         <div className='space-y-4'>
-          <UIAlert
-            color={'error'}
-            iconName={'CircleAlert'}
-            title={`You are about to ${description}`}
-            description={<li>All the schedules will be deleted</li>}
-          />
+          <UIAlert type='info' title={`You are about to:`}>
+            <ul className='list-disc pl-4'>
+              {description}
+              <li>All the schedules will be deleted</li>
+            </ul>
+          </UIAlert>
         </div>
       }
       slotButtons={buttons}
@@ -208,19 +208,15 @@ const MoveCandidateDisqualified = () => {
         title={title}
         slotBody={
           <div className='flex flex-col gap-4'>
-            <UIAlert
-              color={'error'}
-              iconName={'CircleAlert'}
-              title={`You are about to ${description}`}
-              description={
-                <div className='pt-1'>
-                  <li>All the schedules will be canceled</li>
-                  <li>All the related requests will be closed</li>
-                  <li>You can still view the candidate details</li>
-                  <li>Move to new state to start the process again</li>
-                </div>
-              }
-            />
+            <UIAlert type='error' title={`You are about to:`}>
+              <ul className='pt-1'>
+                ${description}
+                <li>All the schedules will be canceled</li>
+                <li>All the related requests will be closed</li>
+                <li>You can still view the candidate details</li>
+                <li>Move to new state to start the process again</li>
+              </ul>
+            </UIAlert>
           </div>
         }
         slotButtons={buttons}

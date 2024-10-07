@@ -31,7 +31,7 @@ const Education = () => {
         <AccordionTrigger>
           <div className='flex w-full items-center justify-between'>
             <div className='flex items-center space-x-2'>
-              <GraduationCap size={16} />
+              <GraduationCap size={16} className='text-muted-foreground' />
               <span className='font-medium'>Education</span>
             </div>
             {schoolLogos.length > 0 && (

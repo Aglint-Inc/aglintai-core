@@ -28,7 +28,6 @@ import {
   Calendar,
   Clock,
   FileText,
-  Loader2,
   MoreHorizontal,
   RefreshCw,
   UserPlus,
@@ -38,6 +37,7 @@ import {
 import Link from 'next/link';
 import { createContext, memo, useCallback, useContext, useState } from 'react';
 
+import { Loader } from '@/common/Loader';
 import PublishButton from '@/components/Common/PublishButton';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
@@ -106,7 +106,7 @@ const Score = () => {
   if (!applicationScoringPollEnabled) return null;
   return (
     <div className='flex items-center space-x-2 rounded-md bg-blue-100 px-3 py-2 text-blue-800'>
-      <Loader2 className='h-4 w-4 animate-spin' />
+      <Loader />
       <span className='text-sm font-medium'>
         Application scoring in progress:{' '}
         {job?.processing_count.processed +

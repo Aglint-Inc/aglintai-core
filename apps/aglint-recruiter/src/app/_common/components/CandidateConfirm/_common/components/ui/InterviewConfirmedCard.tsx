@@ -1,7 +1,7 @@
+import Typography from '@components/typography';
 import { Clock, SquareUser } from 'lucide-react';
 
 import { UIButton } from '@/components/Common/UIButton';
-import UITypography from '@/components/Common/UITypography';
 
 export function InterviewConfirmedCard({
   as: _Component = '', // Default to div
@@ -34,31 +34,31 @@ export function InterviewConfirmedCard({
     <div className='0 my-2 flex w-[700px] justify-between rounded border border-neutral-300 bg-white p-4 transition-colors duration-200'>
       <div className='flex flex-col justify-between'>
         <div className='flex items-center space-x-4'>
-          <UITypography className='font-semibold' variant='p' type='small'>
+          <Typography className='font-semibold' variant='p' type='small'>
             {textDate}
-          </UITypography>
-          <UITypography variant='p' type='small'>
+          </Typography>
+          <Typography variant='p' type='small'>
             {textTime}
-          </UITypography>
+          </Typography>
         </div>
         <div className='flex items-center space-x-1'>
           <SquareUser size={18} strokeWidth={1} />
-          <UITypography variant='p' type='small'>
+          <Typography variant='p' type='small'>
             {textPanel}
-          </UITypography>
+          </Typography>
         </div>
         <div className='flex gap-3'>
           <div className='flex items-center gap-1'>
             {slotMeetingIcon}
-            <UITypography variant='p' type='small'>
+            <Typography variant='p' type='small'>
               {textPlatformName}
-            </UITypography>
+            </Typography>
           </div>
           <div className='flex items-center gap-1'>
             <Clock size={16} strokeWidth={1} />
-            <UITypography variant='p' type='small'>
+            <Typography variant='p' type='small'>
               {textDuration}
-            </UITypography>
+            </Typography>
           </div>
         </div>
       </div>
