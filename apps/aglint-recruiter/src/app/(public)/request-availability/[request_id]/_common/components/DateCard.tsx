@@ -41,3 +41,9 @@ export function DateCard({
     </Button>
   );
 }
+
+export function DateCardsSkelton() {
+  return (
+    <div className='flex h-20 w-20 animate-pulse rounded-lg bg-gray-200'></div>
+  );
+}

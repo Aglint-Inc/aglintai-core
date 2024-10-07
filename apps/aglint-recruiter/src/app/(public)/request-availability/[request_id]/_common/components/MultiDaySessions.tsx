@@ -59,9 +59,12 @@ function MultiDaySessions() {
               className='w-full'
               onClick={submitAvailability}
               variant='outline'
-              disabled={multiDaySessions.length !== daySlots.length}
+              disabled={
+                multiDaySessions.length !== daySlots.length || submitting
+              }
+              isLoading={submitting}
             >
-              {submitting ? 'Submitting...' : 'Submit Availability'}
+              Submit Availability
             </UIButton>
           )}
         </div>

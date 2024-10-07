@@ -49,7 +49,7 @@ function InterviewerUserDetail({
 }) {
   return (
     <div className='flex items-center'>
-      <div className='flex items-center space-x-4'>
+      <div className='flex items-center gap-2'>
         <div className='flex-shrink-0'>
           <Avatar className='h-12 w-12 rounded-md'>
             <AvatarImage

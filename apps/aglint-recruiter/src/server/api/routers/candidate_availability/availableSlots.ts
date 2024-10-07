@@ -1,4 +1,3 @@
-import { dayjsLocal } from '@aglint/shared-utils';
 import { z } from 'zod';
 
 import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
@@ -8,11 +7,11 @@ import { type PrivateProcedure, privateProcedure } from '../../trpc';
 
 const schema = z.object({
   availability_id: z.string().uuid(),
+  user_tz: z.string(),
 });
 
 const query = async ({ input }: PrivateProcedure<typeof schema>) => {
-  const { availability_id } = input;
-  const user_tz = dayjsLocal.tz.guess();
+  const { availability_id, user_tz } = input;
   const {
     api_options,
     session_ids,

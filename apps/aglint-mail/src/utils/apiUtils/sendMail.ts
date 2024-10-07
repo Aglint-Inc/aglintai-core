@@ -13,6 +13,7 @@ import { ClientError } from './customErrors';
 import { getEmails } from './get-emails';
 import { renderEmailTemplate } from './renderEmailTemplate';
 import { fetchCompEmailTemp, fetchJobEmailTemp } from './fetchCompEmailTemp';
+import sendMessageToCandidatePortal from './sendMessageToCandidatePortal';
 
 export const sendMailFun = async <
   T extends DatabaseEnums['email_slack_types'],
@@ -27,6 +28,7 @@ export const sendMailFun = async <
   job_id,
   overridedMailSubBody,
   supabaseAdmin,
+  portalMessage,
 }: {
   react_email_placeholders: EmailTemplateAPi<T>['react_email_placeholders'];
   recipient_email: string;
@@ -89,6 +91,14 @@ export const sendMailFun = async <
     fromName: filled_comp_template.from_name,
     attachments,
   });
+
+  if (portalMessage) {
+    await sendMessageToCandidatePortal({
+      portalMessage,
+      body: filled_comp_template.body,
+      subject: filled_comp_template.subject,
+    });
+  }
 
   return mailResp;
 };

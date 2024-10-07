@@ -23,6 +23,7 @@ import { workflowCopy } from '../utils/copy';
 import { progressStatusToTense } from '../utils/getProgressColor';
 import { apiTargetToEvents } from '../utils/progressMaps';
 import EventNode from './EventNode';
+import SuggestionCard from './SuggestionCard';
 
 type TenseType = 'past' | 'present' | 'future' | 'error';
 
@@ -124,24 +125,25 @@ const InterviewScheduled = () => {
             );
           })}
           <ShowCode.When isTrue={!isWorkflowSet}>
-            <UIAlert variant='tip' title='Add Automations'>
-              {workflowCopy['SEND_INTERVIEWER_ATTENDANCE_RSVP'][tense]}
-              <div className='mt-4 flex justify-end'>
-                <div className='flex justify-start'>
-                  <Button
-                    variant='outline'
-                    onClick={() =>
-                      handleAddAction(
-                        'candidateBook_slack_interviewerForConfirmation',
-                      )
-                    }
-                  >
-                    <Plus className='h-4 w-4' />
-                    Add RSVP
-                  </Button>
-                </div>
-              </div>
-            </UIAlert>
+            <>
+            <SuggestionCard
+            heading='Suggestion'
+            description={workflowCopy['SEND_INTERVIEWER_ATTENDANCE_RSVP'][tense]}
+            buttonSlot={
+              <Button
+              variant='outline'
+              onClick={() =>
+                handleAddAction(
+                  'candidateBook_slack_interviewerForConfirmation',
+                )
+              }
+            >
+              Add RSVP
+            </Button>
+            }
+            />
+            </>
+
           </ShowCode.When>
         </>
       }

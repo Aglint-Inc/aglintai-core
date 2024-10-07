@@ -43,7 +43,7 @@ const query = async ({ input }: PublicProcedure<typeof schema>) => {
         ...messageWithCompany,
         isNew: !candidate_request_availability?.visited,
         isSubmitted: Boolean(candidate_request_availability?.slots),
-        link: `/scheduling/request-availability/${message.availability_id}`,
+        link: `/request-availability/${message.availability_id}`,
       };
     if (message.filter_id)
       return {

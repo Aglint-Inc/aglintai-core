@@ -23,6 +23,7 @@ function Calendar() {
   const { data: availableSlots, isFetched } = useRequestAvailabilityDetails(
     {
       availability_id: candidateAvailabilityId,
+      user_tz: dayjsLocal.tz.guess(),
     },
     {
       enabled: !!candidateAvailabilityId,

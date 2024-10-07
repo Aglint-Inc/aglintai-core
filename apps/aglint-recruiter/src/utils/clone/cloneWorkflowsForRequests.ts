@@ -6,7 +6,7 @@ import { supabaseWrap } from '@aglint/shared-utils';
 
 import { getSupabaseServer } from '../supabase/supabaseAdmin';
 
-export const cloneWorkflows = async ({
+export const cloneWorkflowsForRequests = async ({
   request_id,
 }: {
   request_id: string;
@@ -25,8 +25,9 @@ export const cloneWorkflows = async ({
   const job_workflows = supabaseWrap(
     await supabaseAdmin
       .from('workflow_job_relation')
-      .select('*, workflow!inner(*, workflow_action(*))')
-      .eq('job_id', job_id),
+      .select('*, workflow!inner(*, workflow_action!inner(*))')
+      .eq('job_id', job_id)
+      .eq('workflow.workflow_type', 'job'),
     false,
   );
 
@@ -44,9 +45,9 @@ export const cloneWorkflows = async ({
           trigger: j_w.workflow.trigger,
           auto_connect: j_w.workflow.auto_connect,
           interval: j_w.workflow.interval,
-          is_active: j_w.workflow.is_active,
+          is_active: true,
           title: j_w.workflow.title,
-          workflow_type: j_w.workflow.workflow_type,
+          workflow_type: 'request',
           request_id: request_id,
         })
         .select()

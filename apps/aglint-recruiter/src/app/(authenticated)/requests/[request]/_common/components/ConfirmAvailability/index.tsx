@@ -50,6 +50,7 @@ function ConfirmAvailability() {
   } = useRequestAvailabilityDetails(
     {
       availability_id: candidateAvailabilityId,
+      user_tz: dayjsLocal.tz.guess(),
     },
     {
       enabled: !!candidateAvailabilityId,

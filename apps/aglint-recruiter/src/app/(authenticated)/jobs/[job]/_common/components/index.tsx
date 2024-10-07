@@ -4,7 +4,6 @@ import {
   PageHeaderText,
   PageTitle,
 } from '@components/layouts/page-header';
-import { ScrollArea } from '@components/ui/scroll-area';
 
 import { Loader } from '@/common/Loader';
 import { useApplicationsStore, useJob } from '@/job/hooks';
@@ -44,22 +43,18 @@ export const JobDetailsHeader = () => (
 );
 
 export const ApplicationsComponent = () => {
-  const checklist = useApplicationsStore((state) => state.checklist);
   return (
     <DNDProvider>
-      <div className='mb-2 flex flex-row gap-4 px-4'>
-        {checklist.length === 0 ? (
-          <>
-            <Tabs />
-            <Filters />
-          </>
-        ) : (
-          <Actions />
-        )}
+      <div className='mb-2 flex flex-col gap-2 px-4'>
+        <Tabs />
+        <Actionables />
       </div>
-      <ScrollArea>
-        <Table />
-      </ScrollArea>
+      <Table />
     </DNDProvider>
   );
+};
+
+const Actionables = () => {
+  const checklist = useApplicationsStore((state) => state.checklist);
+  return <>{checklist.length === 0 ? <Filters /> : <Actions />}</>;
 };

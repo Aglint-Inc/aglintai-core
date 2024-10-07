@@ -4,7 +4,7 @@ import React from 'react';
 
 import Footer from '@/common/Footer';
 
-import SchedulingPageHeader from '../../_common/_components/Header';
+import SchedulingPageHeader from '../../_common/_components/SchedulingPageHeader';
 import CandidateAvailability from './_common/components/MainBody';
 import { useRequestAvailabilityContext } from './_common/contexts/RequestAvailabilityContext';
 import { useCandidateAvailabilityData } from './_common/hooks/useRequestAvailability';

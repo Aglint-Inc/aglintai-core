@@ -44,22 +44,24 @@ export const Body = ({ jobs }: { jobs: Job[] }) => {
   const { ifAllowed } = useRolesAndPermissions();
 
   return (
-    <div className='h-full w-full'>
+    <>
       <LeverModalComp />
-      {!initialLoad ? (
-        <Loader />
-      ) : (
-        <>
-          {data?.length === 0 ? (
-            ifAllowed(<EmptyJob />, ['manage_job'])
-          ) : (
-            <ScrollArea className='h-[70vh]'>
-              <JobsList jobs={jobs} />
-            </ScrollArea>
-          )}
-        </>
-      )}
-    </div>
+      <div className='h-[70vh] w-full'>
+        {!initialLoad ? (
+          <Loader />
+        ) : (
+          <>
+            {data?.length === 0 ? (
+              ifAllowed(<EmptyJob />, ['manage_job'])
+            ) : (
+              <ScrollArea>
+                <JobsList jobs={jobs} />
+              </ScrollArea>
+            )}
+          </>
+        )}
+      </div>
+    </>
   );
 };
 

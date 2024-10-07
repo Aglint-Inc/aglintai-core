@@ -35,12 +35,9 @@ export const fetchUtil: FetchUtilType<
     },
   } = filterJson;
 
-  const task_id = req_body.task_id;
   let scheduleLink = '';
   if (filterJson.application_id && req_body.filter_id) {
-    scheduleLink = task_id
-      ? `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/scheduling/invite/${filterJson.application_id}?filter_id=${req_body.filter_id}&task_id=${task_id}`
-      : `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/scheduling/invite/${filterJson.application_id}?filter_id=${req_body.filter_id}`;
+    scheduleLink = `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/self-scheduling/${req_body.filter_id}`;
   }
   const comp_email_placeholder: EmailTemplateAPi<'selfScheduleReminder_email_applicant'>['comp_email_placeholders'] =
     {
@@ -71,6 +68,11 @@ export const fetchUtil: FetchUtilType<
       comp_email_placeholder,
       react_email_placeholders,
       recipient_email: cand_email,
+    },
+    candidate_portal_payload: {
+      application_id: filterJson.application_id,
+      filter_id: req_body.filter_id,
+      type: 'selfScheduleReminder_email_applicant',
     },
   };
 };

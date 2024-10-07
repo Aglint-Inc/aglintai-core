@@ -27,15 +27,15 @@ export const TYPE_SAFE_PARAMS = {
     '/jobs/[job]/workflows': [
       'job'
     ],
-    '/jobs/[job]/[application]': [
-      'job',
-      'application'
-    ],
     '/jobs/[job]/metrics': [
       'job'
     ],
     '/jobs/[job]': [
       'job'
+    ],
+    '/jobs/[job]/[application]': [
+      'job',
+      'application'
     ],
     '/requests/[request]': [
       'request'
@@ -67,11 +67,11 @@ export const TYPE_SAFE_PARAMS = {
     '/job-post/[id]': [
       'id'
     ],
-    '/scheduling/invite/[id]': [
-      'id'
-    ],
-    '/scheduling/request-availability/[request_id]': [
+    '/request-availability/[request_id]': [
       'request_id'
+    ],
+    '/self-scheduling/[filter]': [
+      'filter'
     ]
   },
   'api': {}

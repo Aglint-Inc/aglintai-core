@@ -26,6 +26,7 @@ import {
   TooltipTrigger,
 } from '@components/ui/tooltip';
 import { UIAlert } from '@components/ui-alert';
+import { UIBadge } from '@components/ui-badge';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   ChartNoAxesGantt,
@@ -333,17 +334,17 @@ const InterviewPlan = ({
     [],
   );
   const sessionsCount = (data?.interview_session ?? []).length;
-  const sessions = (data?.interview_session ?? []).map((session, order) => (
+  const sessions = (data?.interview_session ?? []).map((session) => (
     <InterviewSession
       handleDeletionSession={handleDelete}
       key={session.id}
       session={session}
       plan_id={plan_id}
-      handleCreate={(key) => handleCreate(key, plan_id, order + 1)}
-      handleEdit={(key, id) => handleEdit(key, id, order + 1)}
+      handleCreate={(key) => handleCreate(key, plan_id, session.session_order)}
+      handleEdit={(key, id) => handleEdit(key, id, session.session_order)}
       handleDeletionSelect={handleDeletionSelect}
-      index={order}
-      lastSession={order === sessionsCount - 1}
+      index={session.session_order}
+      lastSession={session.session_order === sessionsCount - 1}
     />
   ));
 
@@ -557,13 +558,15 @@ const InterviewSession = ({
       members: CompanyMember[];
     },
   );
-  // const roles = Object.entries(session?.members_meta ?? {}).reduce(
-  //   (acc, [key, value]) => {
-  //     if (value) acc.push(key as (typeof acc)[number]);
-  //     return acc;
-  //   },
-  //   [] as (keyof typeof session.members_meta)[],
-  // );
+
+  const roles = Object.entries(session?.members_meta ?? {}).reduce(
+    (acc, [key, value]) => {
+      if (value) acc.push(key as (typeof acc)[number]);
+      return acc;
+    },
+    [] as (keyof typeof session.members_meta)[],
+  );
+
   const isLoading = getLoadingState(session.id);
 
   const { queryKey } = jobQueries.interview_plans({ id: (job?.id ?? null)! });
@@ -645,17 +648,36 @@ const InterviewSession = ({
             onClickEditSession={() => {
               handleEdit(sessionEditType, session.id);
             }}
+            isRolesvisible={
+              session.session_type === 'debrief' && !!roles.length
+            }
+            slotRoles={<Roles roles={roles} />}
             isDebriefIconVisible={session.session_type === 'debrief'}
             isOnetoOneIconVisible={session.session_type === 'individual'}
             isPanelIconVisible={session.session_type === 'panel'}
             textDuration={`${session.session_duration} minutes`}
             slotPlatformIcon={<IconScheduleType type={session.schedule_type} />}
             textPlatformName={capitalizeAll(session.schedule_type)}
+            isLinkVisilble={session.session_type !== 'debrief'}
             textLink={session?.interview_module?.name ?? '---'}
+            isTextSelectedVisible={
+              session.session_type !== 'debrief' && members.qualified.length > 1
+            }
             textSelected={`Interviewers (${session.interviewer_cnt} out of ${members.qualified.length} members will be selected)`}
+            isTraineesVisible={members.training.length !== 0}
+            slotTrainees={members.training.map((member) => (
+              <InterviewSessionMember key={member.user_id} member={member} />
+            ))}
+            isInterviewersVisible={session.session_type !== 'debrief'}
             slotInterviewers={
               <InterviewSessionMembers members={members.qualified} />
             }
+            isMembersVisible={
+              session.session_type === 'debrief' && members.members.length !== 0
+            }
+            slotMembers={members.members.map((member) => (
+              <InterviewSessionMember key={member.user_id} member={member} />
+            ))}
             onClickDeleteSession={() => {
               handleDeletionSession(
                 {
@@ -773,19 +795,19 @@ const InterviewSession = ({
   );
 };
 
-// const Roles = ({ roles }: { roles: string[] }) => {
-//   return (
-//     <>
-//       {roles.map((role) => (
-//         <RolesPill
-//           key={role}
-//           onClickRemoveRoles={{ style: { display: 'none' } }}
-//           textRoles={capitalizeFirstLetter(role)}
-//         />
-//       ))}
-//     </>
-//   );
-// };
+const Roles = ({ roles }: { roles: string[] }) => {
+  return (
+    <div className='flex flex-row flex-wrap gap-1'>
+      {roles.map((role) => (
+        <UIBadge
+          key={role}
+          textBadge={capitalizeFirstLetter(role)}
+          color='info'
+        />
+      ))}
+    </div>
+  );
+};
 
 const getSessionType = (session_type: InterviewSessionType['session_type']) => {
   switch (session_type) {

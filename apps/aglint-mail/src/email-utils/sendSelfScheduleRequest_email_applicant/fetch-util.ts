@@ -60,7 +60,7 @@ export const fetchUtil: FetchUtilType<
 
   let scheduleLink = '';
   if (filterJson.applications.id && req_body.filter_json_id) {
-    scheduleLink = `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/scheduling/invite/${filterJson.applications.id}?filter_id=${req_body.filter_json_id}`;
+    scheduleLink = `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/self-scheduling/${req_body.filter_json_id}`;
   }
   const comp_email_placeholder: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['comp_email_placeholders'] =
     {
@@ -88,6 +88,11 @@ export const fetchUtil: FetchUtilType<
       comp_email_placeholder,
       react_email_placeholders,
       recipient_email: cand_email,
+    },
+    candidate_portal_payload: {
+      application_id: filterJson.applications.id,
+      filter_id: req_body.filter_json_id,
+      type: 'sendSelfScheduleRequest_email_applicant',
     },
   };
 };

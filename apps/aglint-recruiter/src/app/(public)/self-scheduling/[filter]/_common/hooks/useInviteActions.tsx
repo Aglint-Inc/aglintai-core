@@ -3,17 +3,17 @@
 import { type CandidateDirectBookingType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
-import { useInviteMeta } from 'src/app/(public)/scheduling/invite/[id]/_common/hooks/useInviteMeta';
 import {
   setSelectedSlots,
   useCandidateInviteStore,
-} from 'src/app/(public)/scheduling/invite/[id]/_common/store';
+} from 'src/app/(public)/self-scheduling/[filter]/_common/store';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type ApiBodyOpenSelfScheduling } from '@/pages/api/scheduling/application/openselfscheduling';
 import toast from '@/utils/toast';
 
 import { useConfirmSlots } from './useConfirmSlots';
+import { useInviteMeta } from './useInviteMeta';
 
 const useInviteActions = () => {
   const router = useRouterPro<{ filter_id: string; task_id?: string }>();

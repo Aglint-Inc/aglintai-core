@@ -143,7 +143,6 @@ const WorkflowActionDialog = () => {
         workflow_id: selectedActionsDetails.workflow_id,
       });
       await request_workflow.refetch();
-
       // trigger reminders
       if (
         triggerDetails.trigger === 'sendAvailReqReminder' &&

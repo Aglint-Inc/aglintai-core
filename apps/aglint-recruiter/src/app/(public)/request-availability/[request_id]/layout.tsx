@@ -1,3 +1,4 @@
+import { unstable_noStore } from 'next/cache';
 import { type PropsWithChildren } from 'react';
 
 import { api, HydrateClient } from '@/trpc/server';
@@ -12,6 +13,7 @@ async function AvailabilityLayout({
     request_id: string;
   };
 }>) {
+  unstable_noStore();
   void api.candidate_availability.getCandidateAvailabilityData.prefetch({
     candidate_request_availability_id: params.request_id,
   });

@@ -63,7 +63,7 @@ export const fetchUtil: FetchUtilType<
   const recruiter_tz = meeting_organizer.scheduling_settings.timeZone.tzCode;
 
   const candidate_link = req_body.avail_req_id
-    ? `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/scheduling/request-availability/${req_body.avail_req_id}`
+    ? `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/request-availability/${req_body.avail_req_id}`
     : '';
 
   const comp_email_placeholder: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['comp_email_placeholders'] =
@@ -95,6 +95,11 @@ export const fetchUtil: FetchUtilType<
       comp_email_placeholder,
       react_email_placeholders,
       recipient_email: cand_email,
+    },
+    candidate_portal_payload: {
+      application_id,
+      availability_id: req_body.avail_req_id,
+      type: 'sendAvailabilityRequest_email_applicant',
     },
   };
 };
