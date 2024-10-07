@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import { Building2, MapPin } from 'lucide-react';
+import { Building, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import React from 'react';
 
@@ -28,7 +28,7 @@ const CompanyJobPost: React.FC<CompanyJobPostType> = ({ recruiter, jobs }) => {
             <Avatar className='h-20 w-20'>
               <AvatarImage src={recruiter.logo!} alt={recruiter.name} />
               <AvatarFallback>
-                <Building2 className='h-12 w-12' />
+                <Building className='h-12 w-12' />
               </AvatarFallback>
             </Avatar>
             <div>

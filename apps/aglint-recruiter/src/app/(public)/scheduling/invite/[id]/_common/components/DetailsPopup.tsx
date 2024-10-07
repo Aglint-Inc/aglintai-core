@@ -10,8 +10,8 @@ import {
 } from '@components/ui/alert-dialog';
 import { Coffee } from 'lucide-react';
 
+import { SessionIcon } from '@/common/ScheduleProgressPillComp';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import { SessionIcon } from '@/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
 import { useInviteMeta } from '../hooks/useInviteMeta';
@@ -96,7 +96,7 @@ const SessionCard = ({ session: { interview_session } }: SessionCardProps) => {
       textSessionDuration={duration}
       textMeetingType={scheduleType}
       slotMeetingTypeIcon={
-        <IconScheduleType type={interview_session.schedule_type} />
+        <IconScheduleType size={16} type={interview_session.schedule_type} />
       }
       slotInterviewtypeIcon={
         <SessionIcon session_type={interview_session.session_type} />

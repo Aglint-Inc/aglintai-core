@@ -8,7 +8,6 @@ import {
 } from '@components/layouts/page-header';
 import AllInterviews from '@interviews/components/AllInterviews';
 import AllInterviewFilters from '@interviews/components/Filters/AllInterviewFilters';
-import { ScheduleStatesProvider } from '@interviews/contexts/ScheduleStatesContext';
 import React from 'react';
 
 function AllInterviewsPage() {
@@ -27,9 +26,7 @@ function AllInterviewsPage() {
       }
       filter={<AllInterviewFilters />}
     >
-      <ScheduleStatesProvider>
-        <AllInterviews />
-      </ScheduleStatesProvider>
+      <AllInterviews />
     </OneColumnPageLayout>
   );
 }

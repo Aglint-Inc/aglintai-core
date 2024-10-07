@@ -1,4 +1,4 @@
-import { Building2, Globe, Users2 } from 'lucide-react';
+import { Building, Globe, Users2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -40,7 +40,7 @@ export const BasicInfoUI = ({
                 )}
               </div>
               <div className='flex items-center space-x-2'>
-                <Building2 className='h-4 w-4 text-muted-foreground' />
+                <Building className='h-4 w-4 text-muted-foreground' />
                 <span className='text-sm text-muted-foreground'>
                   {recruiter.industry}
                 </span>

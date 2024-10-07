@@ -35,7 +35,7 @@ export const cloneWorkflows = async ({
   );
 
   const new_relations_promises = filtered_workflows.map(async (j_w) => {
-    const [req_workflow] = supabaseWrap(
+    const req_workflow = supabaseWrap(
       await supabaseAdmin
         .from('workflow')
         .insert({
@@ -49,7 +49,8 @@ export const cloneWorkflows = async ({
           workflow_type: j_w.workflow.workflow_type,
           request_id: request_id,
         })
-        .select(),
+        .select()
+        .single(),
     );
 
     const req_w_actions: DatabaseTableInsert['workflow_action'][] =

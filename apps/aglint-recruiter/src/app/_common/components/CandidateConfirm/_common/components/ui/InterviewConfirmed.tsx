@@ -16,8 +16,8 @@ const InterviewConfirmed = ({
   isBannerVisible?: boolean;
 }) => {
   return (
-    <div className='bg-sand-3 relative flex h-screen w-full flex-col items-center justify-start overflow-auto'>
-      <div className='mt-[80px] flex min-w-[760px] max-w-2xl flex-col items-center justify-center rounded-lg border border-neutral-300 bg-white p-6'>
+    <div className='relative flex w-full flex-col items-center justify-start overflow-auto'>
+      <div className='mt-[80px] flex min-w-[760px] max-w-2xl flex-col items-center justify-center'>
         <div className='flex flex-col items-center text-center'>
           {slotCompanyLogo && <div className='mb-4'>{slotCompanyLogo}</div>}
           <Typography className='text-[18px] font-semibold'>
