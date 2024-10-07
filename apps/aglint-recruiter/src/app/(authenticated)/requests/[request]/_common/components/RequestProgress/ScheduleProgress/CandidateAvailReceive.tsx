@@ -17,7 +17,6 @@ import {
 } from '../utils/progressMaps';
 import EventNode from './EventNode';
 import SuggestionCard from './SuggestionCard';
-
 const CandidateAvailReceive = () => {
   const { request_progress } = useRequest();
   let lastEvent: DatabaseTable['request_progress']['event_type'] | null = null;
