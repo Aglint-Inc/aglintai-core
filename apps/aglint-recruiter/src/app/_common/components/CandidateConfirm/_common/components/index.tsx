@@ -5,12 +5,12 @@ import {
   getShortTimeZone,
 } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import { UIAlert } from '@components/ui-alert';
 import { Building2 } from 'lucide-react';
 import Image from 'next/image';
 
 import Footer from '@/components/Common/Footer';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 import { type TimezoneObj } from '@/utils/timeZone';
@@ -73,9 +73,12 @@ export const ConfirmedInvitePage = (
           <div className='mx-auto w-full max-w-[600px]'>
             {cancelData && (
               <UIAlert
-                iconName='Info'
-                color={'info'}
-                description={
+                type='info'
+                title={
+                  'Your interview has been scheduled, and we look forward to talking with you. Your calendar invite should be in your email.'
+                }
+              >
+                {
                   <>
                     <span className='text-sm'>
                       {'Request to '}
@@ -102,7 +105,7 @@ export const ConfirmedInvitePage = (
                     )}
                   </>
                 }
-              />
+              </UIAlert>
             )}
           </div>
           <InterviewConfirmed

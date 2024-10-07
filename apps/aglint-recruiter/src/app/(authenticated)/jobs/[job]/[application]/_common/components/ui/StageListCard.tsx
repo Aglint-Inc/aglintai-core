@@ -1,10 +1,9 @@
 'use client';
 
+import Typography from '@components/typography';
 import { cn } from '@lib/utils';
 import Image from 'next/image';
 import React from 'react';
-
-import UITypography from '@/components/Common/UITypography';
 
 interface PipelineTabProps {
   color?: 'neutral' | 'info' | 'success' | 'warning' | 'danger';
@@ -43,14 +42,14 @@ export function StageListCard({
           },
         )}
       >
-        <UITypography className='text-sm font-semibold capitalize'>
+        <Typography className='text-sm font-semibold capitalize'>
           {textStageName}
-        </UITypography>
+        </Typography>
         <div className='flex flex-row items-center gap-2'>
           {slotIcon}
-          <UITypography variant='small' className='text-sm capitalize'>
+          <Typography variant='small' className='text-sm capitalize'>
             {textProgress}
-          </UITypography>
+          </Typography>
         </div>
       </div>
       {isActive && (

@@ -1,8 +1,16 @@
 import { getBreakLabel } from '@aglint/shared-utils';
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog';
 import { Coffee } from 'lucide-react';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import UIDialog from '@/components/Common/UIDialog';
 import { SessionIcon } from '@/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
@@ -27,20 +35,28 @@ export const DetailsPopup = () => {
   // const schedule_name = '';
 
   return (
-    <UIDialog
+    <AlertDialog
       open={detailPopup}
-      onClose={() => setDetailPopup(false)}
-      title='Schedule Details'
-      slotButtons={<></>}
+      onOpenChange={(open) => setDetailPopup(open)}
     >
-      <CandidateScheduleCard
-        isSelected={false}
-        slotButton={null}
-        textDuration={getDurationText(duration)}
-        slotSessionInfo={<Sessions sessions={meetings} showBreak={true} />}
-        isTitle={false}
-      />
-    </UIDialog>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Schedule Details</AlertDialogTitle>
+        </AlertDialogHeader>
+        <AlertDialogDescription>
+          <CandidateScheduleCard
+            isSelected={false}
+            slotButton={null}
+            textDuration={getDurationText(duration)}
+            slotSessionInfo={<Sessions sessions={meetings} showBreak={true} />}
+            isTitle={false}
+          />
+        </AlertDialogDescription>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Close</AlertDialogCancel>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
 

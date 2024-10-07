@@ -1,7 +1,6 @@
 'use client';
 import { EmptyState } from '@components/empty-state';
 import { Button } from '@components/ui/button';
-import { Skeleton } from '@components/ui/skeleton';
 import { REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
 import { useRequestCount } from '@requests/hooks';
 import { useRequests } from '@requests/hooks';
@@ -9,6 +8,7 @@ import { checkFiltersApplied } from '@requests/utils/checkFiltersApplied';
 import { LayoutList, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import { Loader } from '@/common/Loader';
 import { useTenant } from '@/company/hooks';
 import { useFlags } from '@/company/hooks/useFlags';
 import { useOnboarding } from '@/components/Navigation/OnboardPending/context/onboarding';
@@ -72,14 +72,7 @@ const MainBody = () => {
     }
   }, [isShowFeature]);
 
-  if (isLoading || !isFetched || isLoadingCompanySetup)
-    return (
-      <>
-        <Skeleton className='mb-2 h-6 w-40' />
-        <Skeleton className='mb-4 h-[200px] w-full' />
-        <Skeleton className='mb-4 h-[200px] w-full' />
-      </>
-    );
+  if (isLoading || !isFetched || isLoadingCompanySetup) return <Loader />;
 
   if (showEmptyPage)
     return (

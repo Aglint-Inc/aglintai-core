@@ -1,4 +1,5 @@
 import { type employmentTypeEnum } from '@aglint/shared-types';
+import Typography from '@components/typography';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import {
@@ -21,7 +22,6 @@ import {
   type useTenantRoles,
 } from '@/company/hooks';
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
-import UITypography from '@/components/Common/UITypography';
 import { type useAllDepartments } from '@/queries/departments';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
@@ -171,9 +171,9 @@ export const Form = ({
                   </SelectItem>
                 ))
               ) : (
-                <UITypography className='px-4 py-1 text-sm'>
+                <Typography className='px-4 py-1 text-sm'>
                   No Location
-                </UITypography>
+                </Typography>
               )}
             </SelectContent>
           </Select>
@@ -200,9 +200,9 @@ export const Form = ({
                   </SelectItem>
                 ))
               ) : (
-                <UITypography className='px-4 py-1 text-sm'>
+                <Typography className='px-4 py-1 text-sm'>
                   No Departments
-                </UITypography>
+                </Typography>
               )}
             </SelectContent>
           </Select>
@@ -238,9 +238,9 @@ export const Form = ({
                       </SelectItem>
                     ))
                   ) : (
-                    <UITypography className='px-4 py-1 text-sm'>
+                    <Typography className='px-4 py-1 text-sm'>
                       No Roles
-                    </UITypography>
+                    </Typography>
                   )}
                 </SelectContent>
               </Select>

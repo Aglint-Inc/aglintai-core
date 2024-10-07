@@ -1,10 +1,10 @@
 import { getBreakLabel } from '@aglint/shared-utils';
+import Typography from '@components/typography';
 import { Card } from '@components/ui/card';
 import { Coffee } from 'lucide-react';
 import React from 'react';
 
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
-import UITypography from '@/components/Common/UITypography';
 import { breakDurations } from '@/utils/scheduling/const';
 
 import { type StageWithSessions } from '../../hooks/useInterviewStages';
@@ -21,9 +21,9 @@ function BreakCard({
       <div className='bg- flex flex-row items-center gap-8 rounded-md p-2'>
         <div className='flex flex-row items-center gap-2'>
           <Coffee size={16} />
-          <UITypography type='small' fontBold='normal'>
+          <Typography type='small' fontBold='normal'>
             Break
-          </UITypography>
+          </Typography>
         </div>
         <UISelectDropDown
           className='w-[150px]'

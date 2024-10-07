@@ -13,7 +13,6 @@ import { Dialog, DialogContent, DialogTrigger } from '@components/ui/dialog';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { debounce } from 'lodash';
-import { Loader2 } from 'lucide-react';
 import {
   type Dispatch,
   type SetStateAction,
@@ -101,7 +100,7 @@ const JobEmailTemplates = ({
   };
   const EmailPreviewContent = ({ isHtml, loading }: any) => {
     if (loading) {
-      return <Loader2 className='h-8 w-8 animate-spin' />;
+      return <Loader />;
     }
 
     return <div dangerouslySetInnerHTML={{ __html: isHtml }} />;
@@ -129,7 +128,7 @@ const JobEmailTemplates = ({
 
       {isloadTiptap ? (
         <div className='flex justify-center'>
-          <Loader2 className='h-8 w-8 animate-spin' />
+          <Loader />
         </div>
       ) : (
         <Card>

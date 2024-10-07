@@ -1,8 +1,7 @@
 'use client';
+import Typography from '@components/typography';
 import { CalendarPlus } from 'lucide-react';
 import React from 'react';
-
-import UITypography from '@/components/Common/UITypography';
 
 type NewMyScheduleCardProps = {
   slotMyScheduleSubCard: React.ReactNode;
@@ -25,15 +24,15 @@ export function NewMyScheduleCard({
         <div className='relative hidden h-full'>
           <div className='h-full w-[100px] rounded bg-neutral-200'>
             <div className='w-30 sticky top-0 flex flex-col items-center justify-start gap-1 p-3'>
-              <UITypography variant='p' type='small'>
+              <Typography variant='p' type='small'>
                 {textMonth}
-              </UITypography>
-              <UITypography variant='p' type='xxxLarge'>
+              </Typography>
+              <Typography variant='p' type='xxxLarge'>
                 {textDate}
-              </UITypography>
-              <UITypography variant='p' type='small'>
+              </Typography>
+              <Typography variant='p' type='small'>
                 {textDay}
-              </UITypography>
+              </Typography>
             </div>
           </div>
           {isNotScheduledIconVisible && (

@@ -9,11 +9,10 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
+import Typography from '@components/typography';
 import { TableCell, TableRow } from '@components/ui/table';
 import { capitalize } from 'lodash';
 import { Calendar } from 'lucide-react';
-
-import UITypography from '@/components/Common/UITypography';
 
 import { type InterviewLoadItemType, type ScheduleKeywordType } from '..';
 
@@ -130,14 +129,12 @@ const WorkHourList = ({
 const LoadCard = ({ load }: { load: InterviewLoadItemType }) => {
   return (
     <div className='h-fit min-w-[150px] rounded-sm bg-gray-50'>
-      <UITypography className='px-4 pt-2 text-sm'>{load.title}</UITypography>
+      <Typography className='px-4 pt-2 text-sm'>{load.title}</Typography>
       <div className='flex flex-col gap-1 px-4 py-2'>
-        <UITypography className='text-xl font-medium'>
-          {load.count}
-        </UITypography>
-        <UITypography className='text-sm text-muted-foreground'>
+        <Typography className='text-xl font-medium'>{load.count}</Typography>
+        <Typography className='text-sm text-muted-foreground'>
           {load.type}
-        </UITypography>
+        </Typography>
       </div>
     </div>
   );
@@ -154,28 +151,24 @@ const KeywordViewSection = ({
 }) => {
   return (
     <div className='mb-12 flex flex-col'>
-      <UITypography
-        variant='p'
-        type='small'
-        className='mb-1 text-sm font-medium'
-      >
+      <Typography variant='p' type='small' className='mb-1 text-sm font-medium'>
         {title}
-      </UITypography>
-      <UITypography
+      </Typography>
+      <Typography
         variant='p'
         type='small'
         className='mb-2 text-muted-foreground'
       >
         {description}
-      </UITypography>
+      </Typography>
       <div className='flex flex-wrap gap-2'>
         {keywords?.length > 0 ? (
           keywords.map((keyword, i) => {
             return (
               <div key={i} className='w-fit rounded-sm bg-gray-100 px-4 py-1'>
-                <UITypography type='small' variant='p'>
+                <Typography type='small' variant='p'>
                   {keyword}
-                </UITypography>
+                </Typography>
               </div>
             );
           })

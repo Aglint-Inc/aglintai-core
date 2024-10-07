@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Input } from '@components/ui/input';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { Building2, CheckCircle, Loader2, MapPin, Users } from 'lucide-react';
+import { Building2, CheckCircle, MapPin, Users } from 'lucide-react';
 import React, { useState } from 'react';
 import {
   FacebookShareButton,
@@ -13,6 +13,7 @@ import {
   TwitterShareButton,
 } from 'react-share';
 
+import { Loader } from '@/common/Loader';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type PublicJobAPI } from '@/pages/api/jobpost/read';
 import { supabase } from '@/utils/supabase/client';
@@ -125,11 +126,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
         </div>
       )}
 
-      {loading && (
-        <div className='absolute inset-0 z-40 flex items-center justify-center bg-white'>
-          <Loader2 className='h-12 w-12 animate-spin' />
-        </div>
-      )}
+      {loading && <Loader />}
 
       <div
         className={`min-h-screen ${thank || loading ? 'overflow-hidden' : 'overflow-auto'}`}

@@ -1,6 +1,6 @@
+import { UIAlert } from '@components/ui-alert';
 import { useCallback, useEffect, useState } from 'react';
 
-import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UITextField from '@/components/Common/UITextField';
@@ -126,13 +126,14 @@ function DeleteModuleDialog({
       >
         <div className='space-y-2'>
           {isSessionExist ? (
-            <UIAlert
-              type='small'
-              color={'error'}
-              iconName='Circle'
-              title='Cannot delete interview type'
-              description={`Interview type is used in job's interview plan or scheduled interviews.`}
-            />
+            <UIAlert type='error' title='Cannot delete interview type'>
+              <div className='mt-2 flex flex-col space-y-2'>
+                <p className='text-muted-foreground'>
+                  Interview type is used in job&apos;s interview plan or
+                  scheduled interviews.
+                </p>
+              </div>
+            </UIAlert>
           ) : (
             <>
               <p className='text-muted-foreground'>
