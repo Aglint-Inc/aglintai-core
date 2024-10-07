@@ -67,15 +67,16 @@ function ConfirmAvailability() {
   }
 
   useEffect(() => {
-    if (availableSlots && selectedIndex !== availableSlots.slots.length) {
-      {
-        const selectedDate = availableSlots.slots[Number(selectedIndex)]
-          .selected_dates as CandReqSlotsType['selected_dates'];
-        handleClick(selectedDate);
-      }
+    if (
+      availableSlots &&
+      selectedIndex !== availableSlots.slots.length &&
+      availableSlots.slots[Number(selectedIndex)]
+    ) {
+      const selectedDate = availableSlots.slots[Number(selectedIndex)]
+        .selected_dates as CandReqSlotsType['selected_dates'];
+      handleClick(selectedDate);
     }
   }, [availableSlots, selectedIndex]);
-
   async function handleContinue() {
     if (selectedIndex !== availableSlots?.slots.length) {
       setSelectedIndex((pre) => pre + 1);

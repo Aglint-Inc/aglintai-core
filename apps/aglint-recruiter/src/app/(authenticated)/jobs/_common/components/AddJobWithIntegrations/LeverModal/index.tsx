@@ -183,7 +183,18 @@ export default function LeverModalComp() {
         <DialogHeader>
           <DialogTitle>Lever</DialogTitle>
           <DialogDescription>
-            Select a job to import. You can import only one job at a time.
+            <>
+              {integration.lever.step === STATE_LEVER_DIALOG.API ||
+              integration.lever.step === STATE_LEVER_DIALOG.ERROR ? (
+                <p className='text-sm text-muted-foreground'>
+                  Please enter your API key to connect to Lever.
+                </p>
+              ) : integration.lever.step === STATE_LEVER_DIALOG.LISTJOBS ? (
+                <p className='text-sm text-muted-foreground'>
+                  Select a job to import. You can import only one job at a time.
+                </p>
+              ) : null}
+            </>
           </DialogDescription>
         </DialogHeader>
         <div className='flex flex-col'>
@@ -195,7 +206,7 @@ export default function LeverModalComp() {
                   ref={apiRef}
                   type={showApiKey ? 'text' : 'password'}
                   placeholder='API key'
-                  className={error ? 'border-red-500 pr-10' : 'pr-10'}
+                  className={error ? 'border-destructive pr-10' : 'pr-10'}
                 />
                 <Button
                   variant='ghost'

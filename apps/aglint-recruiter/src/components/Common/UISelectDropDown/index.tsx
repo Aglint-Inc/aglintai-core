@@ -74,7 +74,7 @@ const UISelectDropDown = ({
   const inputClasses = cn(
     'w-full border rounded px-3 py-2 transition-colors duration-200', // Smooth transition for color changes
     fullWidth && 'w-full',
-    error ? 'border-red-500 focus:ring-0' : 'border-neutral-300',
+    error ? 'border-destructive focus:ring-0' : 'border-neutral-300',
     disabled && 'bg-neutral-100 text-muted-foreground cursor-not-allowed',
     fieldSize === 'small'
       ? 'h-6'
