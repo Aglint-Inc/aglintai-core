@@ -50,7 +50,7 @@ function RequestNotes() {
     return <Skeleton className='h-20 w-full' />;
   }
   return (
-    <div>
+    <div className='mt-2'>
       <Card
         className={cn(
           'p-0 border-none shadow-none mt-2',
@@ -77,7 +77,7 @@ function RequestNotes() {
                         requestNotes?.id,
                       );
                     }}
-                    placeholder='Add note'
+                    placeholder='Type here'
                     className='min-h-[40px] resize-none bg-transparent focus:border-transparent focus:outline-none focus:ring-0'
                     // style={{ background: 'transparent', outline: 'none' }}
                     onBlur={() => {
@@ -95,7 +95,7 @@ function RequestNotes() {
                     setTimeout(() => inputRef.current?.focus(), 300);
                   }}
                 >
-                  <p className='text-sm text-muted-foreground'>Add note</p>
+                  <p className='text-sm text-blue-700'>Add note</p>
                 </div>
               </ShowCode.Else>
             </ShowCode>

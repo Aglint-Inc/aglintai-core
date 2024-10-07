@@ -616,8 +616,8 @@ function SessionCards({
                 <div className='px-0'>
                   {session?.interview_session?.break_duration ? (
                     <div>
-                      <Card className='flex justify-between rounded-md border-2 border-dashed px-4 py-2 shadow-none'>
-                        <div className='flex items-center space-x-2'>
+                      <Card className='flex justify-between rounded-md border-2 border-dashed px-[15px] py-2 shadow-none'>
+                        <div className='flex items-center'>
                           <p className='text-sm font-medium'>Break</p>
                         </div>
                         <div className='flex flex-row gap-2'>

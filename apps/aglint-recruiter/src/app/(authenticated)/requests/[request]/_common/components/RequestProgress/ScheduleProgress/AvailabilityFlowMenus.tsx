@@ -105,16 +105,19 @@ const AvailabilityFlowMenus = ({
           )
         }
       >
-        <div className='mt-5'>
+        <div className='ml-[32px]'>
           <div>
             <Alert
               variant='default'
-              className='mb-4 border-purple-200 bg-purple-100'
+              className='mb-4 border-purple-200 bg-purple-100 p-3'
             >
-              <Lightbulb className='h-4 w-4 text-purple-500' />
+              <div className='flex flex-row items-center gap-1 text-purple-600 mb-2'>
+              <Lightbulb className='h-4 w-4  ' />
+              <div className='text-sm'>Suggestion</div>
+              </div>
               <AlertDescription className='flex flex-col items-start'>
-                <p className='mb-4 w-full'>
-                  Add Riminders to candidate for follow up.
+                <p className='mb-2 w-full text-sm'>
+                  Add Reminders to candidate for follow up.
                 </p>
                 <Button
                   variant='outline'
@@ -127,7 +130,6 @@ const AvailabilityFlowMenus = ({
                     setShowEditDialog(true);
                   }}
                 >
-                  <Bell className='mr-2 h-4 w-4' />
                   Schedule Reminder
                 </Button>
               </AlertDescription>

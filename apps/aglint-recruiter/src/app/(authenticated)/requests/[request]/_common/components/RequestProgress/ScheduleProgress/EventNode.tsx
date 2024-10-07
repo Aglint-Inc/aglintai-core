@@ -81,7 +81,7 @@ const EventNode = ({
           slotRightIcon={
             tense === 'future' &&
             showEditBtns && (
-              <div className={`flex flex-row gap-1`}>
+              <div className={`flex flex-row gap-1 mt-2`}>
                 <Button
                   variant='outline'
                   size='sm'
@@ -102,7 +102,7 @@ const EventNode = ({
                     setShowEditDialog(true);
                   }}
                 >
-                  <Edit className='mr-2 h-4 w-4' />
+                  <Edit className='mr-2 h-3 w-3' />
                   Edit
                 </Button>
                 <Button
@@ -110,7 +110,7 @@ const EventNode = ({
                   size='sm'
                   onClick={handleDeleteScheduleAction}
                 >
-                  <Trash className='mr-2 h-4 w-4 text-destructive' />
+                  <Trash className='mr-2 h-3 w-3 text-destructive' />
                   Remove
                 </Button>
               </div>
@@ -124,7 +124,7 @@ const EventNode = ({
           slotAiText={
             <>
               {eventSubProgress.length > 0 && (
-                <div className='ml-4 space-y-2'>
+                <div className=''>
                   {eventSubProgress.map((prg) => {
                     if (
                       !prg.log &&
@@ -138,7 +138,7 @@ const EventNode = ({
                     return (
                       <Label
                         key={prg.id}
-                        className='flex items-center text-sm text-muted-foreground'
+                        className='flex items-center text-sm font-normal'
                       >
                         {prg.log}
                       </Label>

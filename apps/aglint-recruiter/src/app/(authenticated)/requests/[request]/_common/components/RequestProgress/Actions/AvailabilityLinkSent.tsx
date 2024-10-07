@@ -11,7 +11,6 @@ const AvailabilityLinkSent = (
   return (
     <>
       <div className='flex items-center gap-0'>
-        Copy availability link
         <Tooltip>
           <TooltipContent>
             {isCopied ? 'Copied!' : 'Copy to clipboard'}
@@ -27,9 +26,10 @@ const AvailabilityLinkSent = (
               }, 3000);
             }}
             size={'sm'}
-            variant={'ghost'}
+            variant={'secondary'}
           >
-            {isCopied ? <Check size={16} /> : <Copy size={16} />}
+            Copy Availability Link
+            {isCopied ? <Check size={16} className='ml-2 w-3 h-3' /> : <Copy size={16} className='ml-2  w-3 h-3' />}
           </Button>
         </Tooltip>
       </div>
