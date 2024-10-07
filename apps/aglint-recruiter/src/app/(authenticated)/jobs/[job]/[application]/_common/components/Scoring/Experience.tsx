@@ -31,7 +31,7 @@ const Experience = () => {
         <AccordionTrigger>
           <div className='flex w-full items-center justify-between'>
             <div className='flex items-center space-x-2'>
-              <BriefcaseBusiness size={16} />
+              <BriefcaseBusiness size={16} className='text-muted-foreground' />
               <span className='font-medium'>Experience</span>
             </div>
             {companyLogos.length > 0 && (
@@ -277,7 +277,7 @@ const ImageWithFallback = ({
       width={24}
       height={24}
       onError={() => setImgSrc(fallbackSrc)}
-      className='rounded-full'
+      className='rounded-full '
     />
   );
 };

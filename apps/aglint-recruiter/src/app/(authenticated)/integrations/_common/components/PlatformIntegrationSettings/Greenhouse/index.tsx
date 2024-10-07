@@ -6,8 +6,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Checkbox } from '@components/ui/checkbox';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { Lightbulb, Loader2 } from 'lucide-react';
+import { Lightbulb } from 'lucide-react';
 
+import { Loader } from '@/common/Loader';
 import { useTenant } from '@/company/hooks';
 import {
   useGreenhouseDetails,
@@ -52,9 +53,7 @@ function GreenhouseSettings() {
             Candidates, Applications, Users, Office Locations, and Departments.
           </p>
           {isPending ? (
-            <div className='flex items-center justify-center'>
-              <Loader2 className='h-6 w-6 animate-spin text-primary' />
-            </div>
+            <Loader />
           ) : (
             <div className='space-y-4'>
               <div className='grid grid-cols-2 gap-4'>

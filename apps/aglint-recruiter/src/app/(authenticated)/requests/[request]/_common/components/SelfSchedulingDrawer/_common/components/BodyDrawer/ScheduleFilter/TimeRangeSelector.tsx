@@ -1,7 +1,6 @@
 'use client';
+import Typography from '@components/typography';
 import React from 'react';
-
-import UITypography from '@/components/Common/UITypography';
 
 interface TimeRangeSelectorProps {
   as?: React.ElementType;
@@ -24,9 +23,9 @@ export function TimeRangeSelector({
     <Component className='flex flex-col gap-2'>
       {isMultiDay && (
         <div>
-          <UITypography variant='p' type='small'>
+          <Typography variant='p' type='small'>
             {textDay}
-          </UITypography>
+          </Typography>
         </div>
       )}
       <div className='mb-1'>{slotSelectedTime}</div>

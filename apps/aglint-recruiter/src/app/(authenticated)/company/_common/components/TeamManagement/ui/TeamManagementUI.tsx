@@ -92,7 +92,7 @@ export const TeamManagementUI = ({
               <TableHead>Location</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>last Active</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead className='sr-only'>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

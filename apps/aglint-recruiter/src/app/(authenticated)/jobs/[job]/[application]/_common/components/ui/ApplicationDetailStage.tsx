@@ -1,8 +1,7 @@
+import Typography from '@components/typography';
 import { Card } from '@components/ui/card';
 import { ArrowBigDown } from 'lucide-react';
 import React from 'react';
-
-import UITypography from '@/components/Common/UITypography';
 
 interface ApplicantDetailStageProps {
   textName?: React.ReactNode;
@@ -27,16 +26,16 @@ export function ApplicantDetailStage({
     <Card className='rounded-mdbg-muted h-full items-center justify-between p-4'>
       <div className='flex h-10 items-center justify-between'>
         <div>
-          <UITypography type='medium' fontBold='normal'>
+          <Typography type='medium' fontBold='normal'>
             {textName}
-          </UITypography>
+          </Typography>
         </div>
         {isScheduleButtonVisible && <div>{slotScheduleButton}</div>}
         {isCountVisible && (
           <div className='flex items-center justify-start gap-3'>
-            <UITypography type='small' color='neutral'>
+            <Typography type='small' color='neutral'>
               {textInterviewCount}
-            </UITypography>
+            </Typography>
             <div className='hidden h-6 w-6 cursor-pointer items-center justify-center rounded-sm bg-white'>
               <ArrowBigDown size={16} className='text' />
             </div>

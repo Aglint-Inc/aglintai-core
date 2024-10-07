@@ -32,7 +32,7 @@ export function IntegrationNotFound({
             </div>
           ) : (
             <Alert variant='warning'>
-              <AlertTriangle className='h-4 w-4' />
+              <AlertTriangle className='h-4 w-4 text-yellow-500' />
               <AlertTitle>Warning</AlertTitle>
               <AlertDescription>
                 <div className='flex flex-row items-center'>

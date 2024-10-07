@@ -1,4 +1,5 @@
 import { type DatabaseTableInsert } from '@aglint/shared-types';
+import Typography from '@components/typography';
 import {
   Select,
   SelectContent,
@@ -9,7 +10,6 @@ import {
 import React from 'react';
 
 import TipTapAIEditor from '../TipTapAIEditor';
-import UITypography from '../UITypography';
 
 interface Props {
   senderNameChange: any;
@@ -46,9 +46,9 @@ export default function EmailTemplateEditForm({
     <div className='space-y-5'>
       {showSender && (
         <div className='space-y-2'>
-          <UITypography type='small' fontBold='normal'>
+          <Typography type='small' fontBold='normal'>
             From
-          </UITypography>
+          </Typography>
           <p className='text-sm text-gray-600'>
             This name appears as the &quot;From&quot; name in emails to
             candidates. Choose a representative name for your company or
@@ -83,9 +83,9 @@ export default function EmailTemplateEditForm({
 
       {showSubject && (
         <div className='space-y-2'>
-          <UITypography type='small' fontBold='normal'>
+          <Typography type='small' fontBold='normal'>
             Subject
-          </UITypography>
+          </Typography>
           <div className='mt-2 rounded-md'>
             <TipTapAIEditor
               enablAI={false}
@@ -106,9 +106,9 @@ export default function EmailTemplateEditForm({
       )}
 
       <div className='space-y-2'>
-        <UITypography type='small' fontBold='normal'>
+        <Typography type='small' fontBold='normal'>
           Message
-        </UITypography>
+        </Typography>
         <div className='mt-2'>
           <TipTapAIEditor
             enablAI={false}

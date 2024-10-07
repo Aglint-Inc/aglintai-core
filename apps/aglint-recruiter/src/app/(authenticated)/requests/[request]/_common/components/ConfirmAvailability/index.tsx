@@ -8,12 +8,13 @@ import { toast } from '@components/hooks/use-toast';
 import { useRequestAvailabilityDetails } from '@requests/hooks';
 import { useUpdateCandidateAvailability } from '@requests/hooks/useRequestAvailabilityDetails';
 import axios from 'axios';
-import { Check, Loader2 } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { Loader } from '@/common/Loader';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDrawer from '@/components/Common/UIDrawer';
@@ -215,9 +216,7 @@ function ConfirmAvailability() {
           </div>
         </ShowCode.When>
         <ShowCode.When isTrue={isLoading && !isFetched}>
-          <div className='h-[calc(100vh - 96px)] flex items-center justify-center'>
-            <Loader2 className='h-6 w-6 animate-spin text-primary' />
-          </div>
+          <Loader />
         </ShowCode.When>
         <ShowCode.Else>
           <SelectAvailableOption

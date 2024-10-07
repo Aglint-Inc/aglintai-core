@@ -1,8 +1,7 @@
 'use client';
+import Typography from '@components/typography';
 import { TreePine } from 'lucide-react';
 import React from 'react';
-
-import UITypography from '@/components/Common/UITypography';
 
 export function EmptySlotReason({
   textMain = 'This is a global text component',
@@ -16,9 +15,9 @@ export function EmptySlotReason({
       }
     >
       <TreePine className='h-4 w-4 text-sky-800' />
-      <UITypography type='small' className={'text-sky-800'}>
+      <Typography type='small' className={'text-sky-800'}>
         {textMain}
-      </UITypography>
+      </Typography>
     </div>
   );
 }

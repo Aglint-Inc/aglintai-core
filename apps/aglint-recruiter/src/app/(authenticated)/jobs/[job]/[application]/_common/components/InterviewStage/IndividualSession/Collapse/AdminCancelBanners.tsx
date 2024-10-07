@@ -1,8 +1,10 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
+import Typography from '@components/typography';
+import { UIAlert } from '@components/ui-alert';
+import { CalendarClock } from 'lucide-react';
 
 import { useTenant } from '@/company/hooks';
-import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 
 import { type StageWithSessions } from '../../../../hooks/useInterviewStages';
@@ -23,17 +25,10 @@ function CancelBanners({
         return (
           <UIAlert
             key={cancel.interview_session_cancel.id}
-            color={'error'}
+            type='error'
             title={`${cancel?.recruiter_user?.user_id === recruiter_user?.user_id ? 'You have' : getFullName(cancel?.recruiter_user?.first_name ?? '', cancel?.recruiter_user?.last_name ?? '')} canceled this schedule`}
-            description={`Reason: ${cancel.interview_session_cancel.reason}`}
-            notes={
-              (
-                cancel.interview_session_cancel
-                  .other_details as DatabaseTable['interview_session_cancel']['other_details']
-              )?.note
-            }
-            iconName={'CalendarClock'}
-            actions={
+            icon={CalendarClock}
+            action={
               <>
                 <UIButton
                   variant='default'
@@ -46,7 +41,19 @@ function CancelBanners({
                 </UIButton>
               </>
             }
-          />
+          >
+            <Typography>
+              {`Reason: ${cancel.interview_session_cancel.reason}`}
+            </Typography>
+            <Typography>
+              {
+                (
+                  cancel.interview_session_cancel
+                    .other_details as DatabaseTable['interview_session_cancel']['other_details']
+                )?.note
+              }
+            </Typography>
+          </UIAlert>
         );
       })}
     </>

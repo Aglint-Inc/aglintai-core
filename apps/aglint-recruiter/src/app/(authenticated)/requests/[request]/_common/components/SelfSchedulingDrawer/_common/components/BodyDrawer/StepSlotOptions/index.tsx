@@ -1,4 +1,5 @@
 import { type TargetApiPayloadType } from '@aglint/shared-types';
+import Typography from '@components/typography';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { useRequests } from '@requests/hooks';
 import dayjs from 'dayjs';
@@ -7,7 +8,6 @@ import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
 
 import { useTenant } from '@/company/hooks';
-import UITypography from '@/components/Common/UITypography';
 import { mailSender } from '@/utils/mailSender';
 
 import {
@@ -79,12 +79,12 @@ function StepSlotOptions() {
   return (
     <div className=''>
       <div className='flex flex-row items-center justify-between gap-2 border-b border-gray-200 px-4 py-2.5'>
-        <UITypography type='small'>
+        <Typography type='small'>
           Showing available options between{' '}
           {dayjs(dateRange.start_date).format('MMM DD')}
           {' - '}
           {dayjs(dateRange.end_date).format('MMM DD')}
-        </UITypography>
+        </Typography>
         <FilterButton />
       </div>
       <div className='flex h-[calc(100vh-148px)] flex-col gap-2 overflow-auto p-4'>

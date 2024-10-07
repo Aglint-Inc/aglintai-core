@@ -240,11 +240,6 @@ export const AddMemberDialogUI = ({
             </div>
           </form>
           <div className='flex space-x-2'></div>
-          {/* {isDisable && (
-          <div className='flex items-center justify-center'>
-            <Loader2 className='h-6 w-6 animate-spin text-primary' />
-          </div>
-        )} */}
         </>
       ) : menu === 'pendingMember' ? (
         <div className='space-y-4'>

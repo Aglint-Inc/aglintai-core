@@ -1,4 +1,5 @@
 // import { getFullName } from '@aglint/shared-utils';
+import Typography from '@components/typography';
 import { Button } from '@components/ui/button';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Separator } from '@components/ui/separator';
@@ -7,7 +8,6 @@ import { useState } from 'react';
 
 // import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
-import UITypography from '@/components/Common/UITypography';
 
 import { useAgentIEditor } from '../AgentEditorContext';
 import CommandShortCuts from '../CommandShortCuts';
@@ -57,18 +57,18 @@ function ChatMessageList() {
             />
           </div>
           <div className='flex flex-col gap-2 text-center'>
-            {/* <UITypography type='small'>
+            {/* <Typography type='small'>
               {`Good morning, ${getFullName(recruiter_user.first_name, '')}. I am Aglint AI, your Scheduling co-pilot.`}
-            </UITypography> */}
-            <UITypography variant='p' type='extraSmall' color='gray-500'>
+            </Typography> */}
+            <Typography variant='p' type='extraSmall' color='gray-500'>
               Aglint AI makes scheduling and rescheduling interviews easy.
-            </UITypography>
+            </Typography>
           </div>
           <div className='mt-4 flex w-full items-center justify-center'>
             <div className='flex-grow border-t border-border'></div>
-            <UITypography type='small' color='gray-500' className='mx-4'>
+            <Typography type='small' color='gray-500' className='mx-4'>
               Getting started? Try these:
-            </UITypography>
+            </Typography>
             <div className='flex-grow border-t border-border'></div>
           </div>
           <div className='mt-4 flex w-full flex-col gap-2'>

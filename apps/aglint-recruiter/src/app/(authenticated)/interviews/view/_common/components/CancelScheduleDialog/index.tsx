@@ -9,9 +9,9 @@ import {
 import { Label } from '@components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import axios from 'axios';
-import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import { Loader } from '@/common/Loader';
 import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import { UITextArea } from '@/components/Common/UITextArea';
@@ -137,9 +137,7 @@ function CancelScheduleDialog({
             disabled={isSaving || !reason}
             onClick={onClickConfirm}
           >
-            {isSaving ? (
-              <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-            ) : null}
+            {isSaving ? <Loader /> : null}
             Cancel Schedule
           </UIButton>
         </DialogFooter>

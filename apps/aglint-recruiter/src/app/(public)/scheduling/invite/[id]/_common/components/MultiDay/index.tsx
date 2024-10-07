@@ -1,4 +1,14 @@
 import { getBreakLabel } from '@aglint/shared-utils';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog';
 import { Coffee, Plus, Repeat } from 'lucide-react';
 import React, {
   type Dispatch,
@@ -127,40 +137,35 @@ const MultiDayConfirmation = (props: MultiDayConfirmationProps) => {
   }, [props.rounds]);
 
   return (
-    <UIDialog
-      title='Confirm your interview'
-      open={props.open}
-      onClose={() => handleClose()}
-      slotButtons={
-        <>
-          <UIButton variant='secondary' onClick={() => handleClose()}>
-            Cancel
-          </UIButton>
-          <UIButton variant='default' onClick={() => handleSubmit()}>
-            Confirm
-          </UIButton>
-        </>
-      }
-    >
-      <div className='gap-2'>
-        <div>
-          {selectedDateAndSessions.map((item, index) => (
-            <>
+    <AlertDialog open={props.open} onOpenChange={props.setOpen}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Confirm your interview</AlertDialogTitle>
+          <AlertDialogDescription>
+            <div className='gap-2'>
+              <div>
+                {selectedDateAndSessions.map((item, index) => (
+                  <p key={index}>
+                    Day-{index + 1} -{' '}
+                    {item.sessions.map((ele) => ele.session_name).join(' ,')} on{' '}
+                    {item.date}
+                  </p>
+                ))}
+              </div>
               <p>
-                Day-{index + 1} -{' '}
-                {item.sessions.map((ele) => ele.session_name).join(' ,')} on{' '}
-                {item.date}
+                Please review and confirm your selected time slot before we
+                finalize your schedule. It&apos;s important that your interview
+                time aligns with your availability.
               </p>
-            </>
-          ))}
-        </div>
-        <p>
-          Please review and confirm your selected time slot before we finalize
-          your schedule. It’s important that your interview time aligns with
-          your availability.
-        </p>
-      </div>
-    </UIDialog>
+            </div>
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel onClick={handleClose}>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={handleSubmit}>Confirm</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
 
