@@ -86,7 +86,7 @@ const ProfileForm = ({
             value={value.value}
             disabled={value.blocked}
             onChange={(e) => onChange(e, id)}
-            className={value.error ? 'border-red-500' : ''}
+            className={value.error ? 'border-destructive' : ''}
           />
           {value.error && (
             <p className='text-sm text-destructive'>
@@ -107,7 +107,7 @@ const ProfileForm = ({
             value={value.value}
             disabled={value.blocked}
             onChange={(e) => onChange(e, id)}
-            className={value.error ? 'border-red-500' : ''}
+            className={value.error ? 'border-destructive' : ''}
           />
           {value.error && (
             <p className='text-sm text-destructive'>
