@@ -9,6 +9,7 @@
     "dev:build": "npm run build --workspace=@aglint/shared-utils",
     "type-check": "npx tsc --noEmit",
     "lint": "next lint",
+    "tslint": "next lint && npm run type-check",
     "lint:fix": "eslint . --cache  --ext .ts,.js,.tsx,.jsx --fix",
     "lint:no-circular": "eslint . --rule \"import/no-cycle: off\" && npm run tslint",
     "format": "prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json}\"",
