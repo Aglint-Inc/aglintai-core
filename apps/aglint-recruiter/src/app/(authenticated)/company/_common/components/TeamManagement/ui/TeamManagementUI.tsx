@@ -129,7 +129,7 @@ export const TeamManagementUI = ({
             ) : !filteredMembers || filteredMembers.length === 0 ? (
               <TableCell colSpan={6}>
                 <div className='flex flex-col items-center justify-center p-8 text-center'>
-                  <Users className='mb-2 h-12 w-12 text-gray-400' />
+                  <Users className='mb-2 h-12 w-12 text-muted-foreground' />
                   <h3 className='mb-1 text-lg font-medium text-gray-900'>
                     No team members
                   </h3>

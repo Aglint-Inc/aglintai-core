@@ -118,13 +118,13 @@ export function GlobalScheduleCard({
                 <div className='flex gap-4'>
                   {isRoleVisible && (
                     <div className='flex items-center gap-1'>
-                      <BriefcaseBusiness className='h-4 w-4' />
+                      <BriefcaseBusiness className='h-4 w-4 text-muted-foreground' />
                       <Typography type='small'>{textRole}</Typography>
                     </div>
                   )}
                   {isCandidateVisible && (
                     <div className='flex items-center gap-1'>
-                      <User className='h-4 w-4' />
+                      <User className='h-4 w-4 text-muted-foreground' />
                       <Typography type='small'>{textCandidateName}</Typography>
                     </div>
                   )}

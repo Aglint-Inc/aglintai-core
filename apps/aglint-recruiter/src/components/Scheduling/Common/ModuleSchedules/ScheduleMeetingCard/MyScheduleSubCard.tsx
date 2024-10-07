@@ -2,7 +2,6 @@ import Typography from '@components/typography';
 import { BriefcaseBusiness, ChevronDown, MapPin } from 'lucide-react';
 import { type MouseEvent } from 'react';
 
-
 type MeetingSlotProps = {
   slotStatus: string | React.ReactNode;
   textTime?: string;
@@ -124,7 +123,7 @@ export function MyScheduleSubCard({
               {isLocationVisible && (
                 <div className='flex items-center gap-1'>
                   <div className='flex items-center justify-center'>
-                    <MapPin size={14} />
+                    <MapPin size={14} className='text-muted-foreground' />
                   </div>
                   <div>{textLocation}</div>
                 </div>
@@ -132,7 +131,10 @@ export function MyScheduleSubCard({
               <div className='flex items-center gap-3'>
                 <div className='flex items-center gap-1'>
                   <div className='flex items-center justify-center'>
-                    <BriefcaseBusiness size={14} />
+                    <BriefcaseBusiness
+                      size={14}
+                      className='text-muted-foreground'
+                    />
                   </div>
                   <Typography variant='p' type='small'>
                     {textJob}

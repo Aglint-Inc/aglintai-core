@@ -44,7 +44,7 @@ export function GlobalUserDetail({
               <div className='text-muted-foreground'>
                 {slotRole ?? (
                   <div className='flex items-center space-x-1'>
-                    <BriefcaseBusiness className='h-4 w-4' />
+                    <BriefcaseBusiness className='h-4 w-4 text-muted-foreground' />
                     <Typography type='small' className='text-muted-foreground'>
                       {textRole}
                     </Typography>

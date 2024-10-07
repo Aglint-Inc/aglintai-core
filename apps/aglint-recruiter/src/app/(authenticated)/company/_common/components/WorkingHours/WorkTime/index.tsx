@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { EmptyState } from '@components/empty-state';
-import { Edit, NotebookPen, Plus } from 'lucide-react';
+import { NotebookPen, Pen, Plus } from 'lucide-react';
 import {
   type Dispatch,
   type FC,
@@ -66,7 +66,7 @@ const WorkTime: FC<WorkTimeProps> = ({
               size='sm'
               onClick={() => setIsOpen(true)}
             >
-              <Edit className='mr-2 h-3 w-3' /> Edit
+              <Pen className='mr-2 h-3 w-3' /> Edit
               <span className='sr-only'>Edit Working Hours</span>
             </UIButton>
           )

@@ -1,4 +1,4 @@
-import { Edit } from 'lucide-react';
+import { Pen } from 'lucide-react';
 import Link from 'next/link';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -46,7 +46,7 @@ function ButtonGroupRight({
             variant='secondary'
             size='sm'
             iconClassName='text-muted-foreground'
-            icon={<Edit />}
+            icon={<Pen />}
             onClick={async () => {
               onClickEdit(currentSession);
             }}

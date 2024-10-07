@@ -26,9 +26,9 @@ import {
   Edit,
   FileText,
   Minus,
+  Pen,
   Phone,
   Plus,
-  SquarePen,
   Trash2,
   Trophy,
   UserCircle,
@@ -563,7 +563,7 @@ const Block = ({
             disabled={isOrderChanging}
             onClick={() => handleEdit(step.id)}
             size='sm'
-            icon={<SquarePen />}
+            icon={<Pen />}
           />
 
           <AlertDialog>
