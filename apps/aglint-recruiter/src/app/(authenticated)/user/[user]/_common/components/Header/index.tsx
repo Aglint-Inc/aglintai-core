@@ -10,10 +10,10 @@ import axios from '@/client/axios';
 import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { useInterviewer } from '../../hooks/useInterviewer';
 import { EditUser } from './EditUser';
-import { capitalizeAll } from '@/utils/text/textUtils';
 
 export const Header = () => {
   const router = useRouterPro();
