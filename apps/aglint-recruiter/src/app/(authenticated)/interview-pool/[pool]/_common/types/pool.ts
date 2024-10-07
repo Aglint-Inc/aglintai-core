@@ -11,6 +11,7 @@ export type SchedulingSlice = {
   isDeleteModuleDialogOpen: boolean;
   isPauseDialogOpen: boolean;
   isAddMemberDialogOpen: boolean;
+  isModuleSettingsDialogOpen: boolean;
   isResumeDialogOpen: boolean;
   isArchiveDialogOpen: boolean;
   selectedUsers: MemberTypeAutoComplete[];
