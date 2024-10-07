@@ -10,8 +10,8 @@ import {
 } from '@components/ui/alert-dialog';
 import { Coffee } from 'lucide-react';
 
+import { SessionIcon } from '@/common/ScheduleProgressPillComp';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import { SessionIcon } from '@/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
 import { useInviteMeta } from '../hooks/useInviteMeta';
