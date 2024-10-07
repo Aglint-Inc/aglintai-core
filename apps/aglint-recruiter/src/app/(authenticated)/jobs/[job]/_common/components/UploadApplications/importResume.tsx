@@ -14,6 +14,7 @@ export const ImportResume = () => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const { handleUploadResume } = useJob();
   const { setImportPopup } = useApplicationsActions();
+  const [loading, setLoading] = useState(false);
 
   const handleInputChange = (files: FileList) => {
     const newFiles = Array.from(files).filter((file: File) => {
@@ -36,11 +37,16 @@ export const ImportResume = () => {
   };
 
   const handleFileUpload = async () => {
-    try {
-      await handleUploadResume({ files: selectedFiles });
-      setImportPopup(false);
-    } catch {
-      //
+    if (!loading) {
+      try {
+        setLoading(true);
+        await handleUploadResume({ files: selectedFiles });
+        setImportPopup(false);
+      } catch {
+        //
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -143,7 +149,7 @@ export const ImportResume = () => {
       <div className=''>
         <Button
           onClick={handleFileUpload}
-          disabled={selectedFiles.length === 0}
+          disabled={selectedFiles.length === 0 || loading}
           className='w-full'
         >
           Upload
