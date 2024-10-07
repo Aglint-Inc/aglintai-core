@@ -612,6 +612,7 @@ export const candidatePortalMessageRowSchema = z.object({
   is_readed: z.boolean().nullable(),
   message: z.string().nullable(),
   title: z.string().nullable(),
+  type: emailSlackTypesSchema.nullable(),
 });
 
 export const candidatePortalMessageInsertSchema = z.object({
@@ -623,6 +624,7 @@ export const candidatePortalMessageInsertSchema = z.object({
   is_readed: z.boolean().optional().nullable(),
   message: z.string().optional().nullable(),
   title: z.string().optional().nullable(),
+  type: emailSlackTypesSchema.optional().nullable(),
 });
 
 export const candidatePortalMessageUpdateSchema = z.object({
@@ -634,6 +636,7 @@ export const candidatePortalMessageUpdateSchema = z.object({
   is_readed: z.boolean().optional().nullable(),
   message: z.string().optional().nullable(),
   title: z.string().optional().nullable(),
+  type: emailSlackTypesSchema.optional().nullable(),
 });
 
 export const candidatePortalMessageRelationshipsSchema = z.tuple([
@@ -1656,7 +1659,7 @@ export const interviewProgressRowSchema = z.object({
   id: z.number(),
   is_completed: z.boolean().nullable(),
   job_id: z.string().nullable(),
-  name: z.string(),
+  name: z.string().nullable(),
   order: z.number().nullable(),
   update_at: z.string().nullable(),
 });
@@ -1669,7 +1672,7 @@ export const interviewProgressInsertSchema = z.object({
   id: z.number().optional(),
   is_completed: z.boolean().optional().nullable(),
   job_id: z.string().optional().nullable(),
-  name: z.string(),
+  name: z.string().optional().nullable(),
   order: z.number().optional().nullable(),
   update_at: z.string().optional().nullable(),
 });
@@ -1682,7 +1685,7 @@ export const interviewProgressUpdateSchema = z.object({
   id: z.number().optional(),
   is_completed: z.boolean().optional().nullable(),
   job_id: z.string().optional().nullable(),
-  name: z.string().optional(),
+  name: z.string().optional().nullable(),
   order: z.number().optional().nullable(),
   update_at: z.string().optional().nullable(),
 });

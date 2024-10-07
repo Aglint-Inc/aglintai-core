@@ -96,5 +96,10 @@ export const fetchUtil: FetchUtilType<
       react_email_placeholders,
       recipient_email: cand_email,
     },
+    candidate_portal_payload: {
+      application_id,
+      availability_id: req_body.avail_req_id,
+      type: 'sendAvailabilityRequest_email_applicant',
+    },
   };
 };

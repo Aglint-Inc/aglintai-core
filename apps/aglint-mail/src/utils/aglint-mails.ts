@@ -45,6 +45,7 @@ export const sendAglintMail = async ({
       overridedMailSubBody: parsed_body.overridedMailSubBody,
       is_preview: parsed_body.is_preview,
       attachments: mail_attachments,
+      portalMessage: fetched_data.candidate_portal_payload,
     });
     if (parsed_body.is_preview) {
       return mailResp;
@@ -69,7 +70,6 @@ export const sendAglintMail = async ({
         overridedMailSubBody: parsed_body.overridedMailSubBody,
         job_id,
         attachments: mail_attachments,
-        portalMessage: fetched_data.candidate_portal_payload,
       });
     }
   }
