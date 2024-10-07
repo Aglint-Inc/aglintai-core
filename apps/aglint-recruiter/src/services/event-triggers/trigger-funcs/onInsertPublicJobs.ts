@@ -1,6 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 
-import { cloneCompWorkflowsForJob } from '@/utils/clone/clonecompWorkflows';
+import { cloneCompWorkflowsForJob } from '@/utils/clone/cloneCompWorkflowsForJob';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 export const onInsertPublicJobs = async ({
   new_data,

@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-fs-filename */
 /* eslint-disable security/detect-object-injection */
 import {
   type Applications,
@@ -546,7 +547,6 @@ export const getFiles = async (req: NextApiRequest) => {
   return (files[UploadApiFormData.FILES] ?? []).map((f) => ({
     contentType: f.mimetype,
     fileName: f.originalFilename,
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
     readStream: fs.createReadStream(f.filepath),
   })) as {
     contentType: keyof typeof supportedTypes;

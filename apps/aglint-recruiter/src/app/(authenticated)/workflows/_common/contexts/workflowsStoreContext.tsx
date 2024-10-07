@@ -1,3 +1,4 @@
+'use client';
 /**
  *
  * React Context + Zustand Store for performant and non-re-rendering store

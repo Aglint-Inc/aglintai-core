@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import OptimisticWrapper from '@components/loadingWapper';
-import { Skeleton } from '@components/ui/skeleton';
 import { UIBadge } from '@components/ui-badge';
 import {
   Bell,
@@ -31,17 +30,7 @@ const Content = memo(() => {
     workflows: { data, status },
   } = useWorkflows();
   if (status === 'error') return <>Error</>;
-  return status === 'pending' ? (
-    <div className='flex flex-row gap-4'>
-      {Array.from({ length: 6 }).map((_, index) => (
-        <div key={index} className='animate-pulse space-y-2'>
-          <Skeleton className='h-4 w-3/4' />
-          <Skeleton className='h-4 w-1/2' />
-          <Skeleton className='h-4 w-2/3' />
-        </div>
-      ))}
-    </div>
-  ) : (
+  return (
     <div className='flex flex-col gap-4'>
       <Cards data={data} />
     </div>

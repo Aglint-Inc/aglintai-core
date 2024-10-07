@@ -133,5 +133,11 @@ export const fetchUtil: FetchUtilType<
       recipient_email: cand_email,
       mail_attachments,
     },
+    candidate_portal_payload: {
+      application_id: req_body.application_id,
+      availability_id: req_body.availability_req_id,
+      filter_id: req_body.filter_id,
+      type: 'confirmInterview_email_applicant',
+    },
   };
 };

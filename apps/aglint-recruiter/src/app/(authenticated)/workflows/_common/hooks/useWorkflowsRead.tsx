@@ -1,3 +1,5 @@
 import { api } from '@/trpc/client';
 
-export const useWorkflowsRead = () => api.workflows.read.useQuery();
+export const useWorkflowsRead = () => {
+  return api.workflows.read.useSuspenseQuery()[1];
+};

@@ -7,7 +7,9 @@ import {
   useMutationState,
   useQueryClient,
 } from '@tanstack/react-query';
+import { getQueryKey } from '@trpc/react-query';
 
+import { api } from '@/trpc/client';
 import { type Workflow, type WorkflowAction } from '@/types/workflow.types';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
@@ -45,22 +47,9 @@ export const useWorkflowMutations = () => {
 
 export const useWorkflowDelete = () => {
   const { mutationKey } = workflowMutationKeys.workflows('DELETE');
-  const { queryKey } = workflowQueryKeys.workflows();
-  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deleteWorkflow,
     mutationKey,
-    onSuccess: (_data, variables) => {
-      const prevWorkflows = queryClient.getQueryData<Workflow[]>(queryKey);
-      const newWorkflows = structuredClone(prevWorkflows!).reduce(
-        (acc, curr) => {
-          if (curr.id !== variables.id) acc.push(curr);
-          return acc;
-        },
-        [] as Workflow[],
-      );
-      queryClient.setQueryData<Workflow[]>(queryKey, newWorkflows);
-    },
   });
 };
 
@@ -74,9 +63,8 @@ const deleteWorkflow = async ({ id }: DeleteWorkflow) => {
 
 export const useWorkflowUpdate = () => {
   const { mutationKey } = workflowMutationKeys.workflows('UPDATE');
-  const { queryKey } = workflowQueryKeys.workflows();
+  const queryKey = getQueryKey(api.workflows.read, undefined, 'query');
   const queryClient = useQueryClient();
-  const refresh = useWorkflowRefresh();
   return useMutation({
     mutationFn: updateWorkflow,
     mutationKey,
@@ -131,7 +119,6 @@ export const useWorkflowUpdate = () => {
         );
       }
     },
-    onSuccess: (data) => refresh({ id: data.id }),
   });
 };
 type UpdateWorkflow = {
@@ -151,7 +138,7 @@ const updateWorkflow = async ({ id, payload }: UpdateWorkflow) => {
 
 export const useWorkflowCreate = () => {
   const { mutationKey } = workflowMutationKeys.workflows('CREATE');
-  const { queryKey } = workflowQueryKeys.workflows();
+  const queryKey = getQueryKey(api.workflows.read, undefined, 'query');
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: createWorkflow,
@@ -176,9 +163,6 @@ export const useWorkflowCreate = () => {
         [] as Workflow[],
       );
       queryClient.setQueryData<Workflow[]>(queryKey, newWorkflows);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey });
     },
   });
 };

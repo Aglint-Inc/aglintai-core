@@ -58,7 +58,6 @@ export const SharedActions = () => {
         <Add />
         <Publish />
         <Switcher />
-        {/* <Dropdown /> */}
         <Link href={`/jobs/${value?.job?.id}/job-details`}>
           <UIButton variant='outline'>Edit</UIButton>
         </Link>

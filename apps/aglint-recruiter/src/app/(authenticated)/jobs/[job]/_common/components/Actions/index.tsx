@@ -30,7 +30,7 @@ export const Actions = () => {
 
   return (
     <>
-      <div className='-mx-4 flex w-full items-center bg-blue-100 px-8 py-2'>
+      <div className='flex w-full items-center bg-blue-100 px-8 py-1'>
         <div className='flex items-center justify-between'>
           <div className='flex items-center space-x-4'>
             <span className='text-sm text-gray-600'>

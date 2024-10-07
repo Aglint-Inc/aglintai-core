@@ -73,5 +73,10 @@ export const fetchUtil: FetchUtilType<
       react_email_placeholders,
       recipient_email: cand_email,
     },
+    candidate_portal_payload: {
+      availability_id: req_body.avail_req_id,
+      application_id: avail_req_data.application_id,
+      type: 'sendAvailReqReminder_email_applicant',
+    },
   };
 };

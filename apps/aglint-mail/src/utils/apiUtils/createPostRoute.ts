@@ -28,20 +28,19 @@ export const createPostRoute = (schema: any, func: any, is_form?: boolean) => {
         status: 200,
       });
     } catch (error: any) {
+      console.error(error.type);
+      console.error(error.message);
+      console.error(error.stack);
       if (error instanceof ZodError) {
         const validationError = fromError(error);
         return NextResponse.json({ error: validationError }, { status: 400 });
       } else if (error instanceof CApiError) {
-        console.error(error.type, error.message);
-        console.error(error.type, error.structuredErrorData);
+        console.error('structured output', error.structuredErrorData);
         return NextResponse.json(
           { error: error.message },
           { status: error.status },
         );
       }
-      console.error(error.type);
-      console.error(error.message);
-      console.error(error.stack);
 
       return NextResponse.json(
         { error: 'Some thing went wrong' },

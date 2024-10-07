@@ -2,7 +2,7 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import { z } from 'zod';
 
 import { createPostRoute } from '@/apiUtils/createPostRoute';
-import { cloneCompWorkflowsForJob } from '@/utils/clone/clonecompWorkflows';
+import { cloneCompWorkflowsForJob } from '@/utils/clone/cloneCompWorkflowsForJob';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const schema = z.object({
@@ -14,8 +14,8 @@ const resetJobWorkflows = async ({ company_id }: z.infer<typeof schema>) => {
     await supabase
       .from('public_jobs')
       .select('id')
-      .eq('recruiter_id', company_id)
-      .throwOnError(),
+      .eq('recruiter_id', company_id),
+    false,
   );
   const allJobs = allJobIds.map(async (job) => {
     supabase.from('workflow_job_relation').delete().eq('job_id', job.id);

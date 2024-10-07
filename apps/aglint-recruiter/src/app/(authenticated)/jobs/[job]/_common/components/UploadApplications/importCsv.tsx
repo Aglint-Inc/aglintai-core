@@ -31,6 +31,7 @@ export const ImportCsv: React.FC = () => {
   const { setImportPopup } = useApplicationsActions();
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
   const handleFileUpload = (file: File) => {
@@ -74,19 +75,24 @@ export const ImportCsv: React.FC = () => {
   };
 
   const handleImport = async () => {
-    try {
-      const formattedCandidates = candidates.map((candidate) => {
-        return {
-          ...candidate,
-          linkedin: candidate.linkedin || '',
-          file_url: candidate.file_url,
-          avatar: candidate.avatar,
-        };
-      });
-      await handleUploadCsv({ candidates: formattedCandidates });
-      setImportPopup(false);
-    } catch {
-      //
+    if (!loading) {
+      try {
+        setLoading(true);
+        const formattedCandidates = candidates.map((candidate) => {
+          return {
+            ...candidate,
+            linkedin: candidate.linkedin || '',
+            file_url: candidate.file_url,
+            avatar: candidate.avatar,
+          };
+        });
+        await handleUploadCsv({ candidates: formattedCandidates });
+        setImportPopup(false);
+      } catch {
+        //
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -158,7 +164,7 @@ export const ImportCsv: React.FC = () => {
       <div className=''>
         <UIButton
           onClick={handleImport}
-          disabled={candidates.length === 0}
+          disabled={candidates.length === 0 || loading}
           className='w-full'
         >
           Import

@@ -587,6 +587,7 @@ export type Database = {
           is_readed: boolean | null
           message: string | null
           title: string | null
+          type: Database["public"]["Enums"]["email_slack_types"] | null
         }
         Insert: {
           application_id?: string | null
@@ -597,6 +598,7 @@ export type Database = {
           is_readed?: boolean | null
           message?: string | null
           title?: string | null
+          type?: Database["public"]["Enums"]["email_slack_types"] | null
         }
         Update: {
           application_id?: string | null
@@ -607,6 +609,7 @@ export type Database = {
           is_readed?: boolean | null
           message?: string | null
           title?: string | null
+          type?: Database["public"]["Enums"]["email_slack_types"] | null
         }
         Relationships: [
           {
@@ -1610,7 +1613,7 @@ export type Database = {
           id: number
           is_completed: boolean | null
           job_id: string | null
-          name: string
+          name: string | null
           order: number | null
           update_at: string | null
         }
@@ -1622,7 +1625,7 @@ export type Database = {
           id?: number
           is_completed?: boolean | null
           job_id?: string | null
-          name: string
+          name?: string | null
           order?: number | null
           update_at?: string | null
         }
@@ -1634,7 +1637,7 @@ export type Database = {
           id?: number
           is_completed?: boolean | null
           job_id?: string | null
-          name?: string
+          name?: string | null
           order?: number | null
           update_at?: string | null
         }

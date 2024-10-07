@@ -8,14 +8,21 @@ import { UIButton } from '@/components/Common/UIButton';
 export interface InterviewPlanDetailProps {
   className?: string;
   textModuleName?: React.ReactNode;
+  isRolesvisible?: boolean;
+  slotRoles?: React.ReactNode;
   isDebriefIconVisible?: boolean;
   isOnetoOneIconVisible?: boolean;
   isPanelIconVisible?: boolean;
   textDuration?: React.ReactNode;
   slotPlatformIcon?: React.ReactNode;
+  isLinkVisilble?: boolean;
   textPlatformName?: React.ReactNode;
   textLink?: React.ReactNode;
+  isTextSelectedVisible?: boolean;
   textSelected?: React.ReactNode;
+  isTraineesVisible?: boolean;
+  slotTrainees?: React.ReactNode;
+  isInterviewersVisible?: boolean;
   slotInterviewers?: React.ReactNode;
   onClickLink?: () => void;
   onClickEditSession?: () => void;
@@ -24,21 +31,32 @@ export interface InterviewPlanDetailProps {
   onClickDeleteSession?: () => void;
   slotAddScheduleCard?: React.ReactNode;
   slotButtons?: React.ReactNode;
+  isMembersVisible?: boolean;
+  slotMembers?: React.ReactNode;
 }
 
 export function InterviewPlanDetail({
   className,
   textModuleName,
+  isRolesvisible = false,
+  slotRoles = <></>,
   isDebriefIconVisible = false,
   isOnetoOneIconVisible = false,
   isPanelIconVisible = false,
   textDuration,
   onClickEditSession,
   slotPlatformIcon,
+  isLinkVisilble = false,
+  isTextSelectedVisible = false,
+  isTraineesVisible = false,
+  slotTrainees = <></>,
+  isMembersVisible,
+  slotMembers,
   textPlatformName,
   textLink,
   textSelected,
   onClickDeleteSession,
+  isInterviewersVisible = false,
   slotInterviewers,
   onClickLink,
   isBreakCardVisible = false,
@@ -96,7 +114,7 @@ export function InterviewPlanDetail({
             <span>{textPlatformName}</span>
           </div>
         </div>
-        <div>
+        {isLinkVisilble ? (
           <div
             className='flex w-fit cursor-pointer items-center gap-2 rounded-sm p-[3px] px-2'
             onClick={onClickLink}
@@ -109,10 +127,45 @@ export function InterviewPlanDetail({
               />
             </div>
           </div>
-        </div>
-        <div>
-          <div className='mt-2 text-sm'>{textSelected}</div>
-          <div>{slotInterviewers}</div>
+        ) : (
+          <></>
+        )}
+        <div className='flex flex-col gap-2'>
+          {isMembersVisible ? (
+            <div>
+              <div className='mb-2 mt-2 text-sm'>Members</div>
+              <div className='flex flex-row gap-2'>{slotMembers}</div>
+            </div>
+          ) : (
+            <></>
+          )}
+          {isTraineesVisible ? (
+            <div>
+              <div className='mt-2 text-sm'>Trainees</div>
+              <div className='flex flex-row gap-2'>{slotTrainees}</div>
+            </div>
+          ) : (
+            <></>
+          )}
+
+          {isInterviewersVisible ? (
+            <div>
+              <div className='mt-2 text-sm'>
+                {isTextSelectedVisible ? textSelected : 'Interviewers'}
+              </div>
+              <div className='flex flex-row gap-2'>{slotInterviewers}</div>
+            </div>
+          ) : (
+            <></>
+          )}
+          {isRolesvisible ? (
+            <div>
+              <div className='mt-2 text-sm'>Roles</div>
+              <div className='mt-2 flex flex-row gap-2'>{slotRoles}</div>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
         <div className='absolute right-4 top-4 hidden gap-2 group-hover:flex'>
           {slotButtons}

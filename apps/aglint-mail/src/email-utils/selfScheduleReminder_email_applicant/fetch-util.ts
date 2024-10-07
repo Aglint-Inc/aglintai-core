@@ -69,5 +69,10 @@ export const fetchUtil: FetchUtilType<
       react_email_placeholders,
       recipient_email: cand_email,
     },
+    candidate_portal_payload: {
+      application_id: filterJson.application_id,
+      filter_id: req_body.filter_id,
+      type: 'selfScheduleReminder_email_applicant',
+    },
   };
 };

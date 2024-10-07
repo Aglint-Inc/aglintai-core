@@ -59,6 +59,34 @@ import RequestProgress from '../RequestProgress';
 import SelfSchedulingDrawer from '../SelfSchedulingDrawer';
 import UpdateDetails from '../UpdateDetails';
 
+type InterviewStatus = 
+  | 'completed' 
+  | 'cancelled' 
+  | 'waiting' 
+  | 'reschedule' 
+  | 'confirmed' 
+  | 'not_scheduled'
+  | '';
+
+const getStatusStyles = (status: InterviewStatus) => {
+  switch (status) {
+    case 'completed':
+      return 'bg-green-200 text-green-800';
+    case 'cancelled':
+      return 'bg-red-200 text-red-800';
+    case 'waiting':
+      return 'bg-yellow-200 text-yellow-800';
+    case 'reschedule':
+      return 'bg-orange-200 text-orange-800';
+    case 'confirmed':
+      return 'bg-blue-200 text-blue-800';
+    case 'not_scheduled':
+      return 'bg-gray-200 text-gray-800';
+    default:
+      return 'bg-gray-100 text-gray-600';
+  }
+};
+
 export default function ViewRequestDetails() {
   const params = useParams();
   const requestId = params?.request as string;
@@ -227,7 +255,7 @@ export default function ViewRequestDetails() {
                     Here is your next step on the request.
                   </AlertDescription>
 
-                  <div className='flex flex-row justify-end gap-2'>
+                  <div className='flex flex-row gap-2'>
                     <ShowCode.When
                       isTrue={
                         selectedRequest.type === 'schedule_request' ||
@@ -267,7 +295,7 @@ export default function ViewRequestDetails() {
           <div className='flex w-full flex-col space-y-4 px-4'>
             <div className='grid grid-cols-3 grid-rows-2 gap-4 rounded-md bg-gray-50 p-4'>
               <div className='group relative space-y-2'>
-                <div className='flex items-center justify-between'>
+                <div className='flex items-center gap-2'>
                   <span className='text-sm font-medium text-muted-foreground'>
                     Status
                   </span>
@@ -286,7 +314,7 @@ export default function ViewRequestDetails() {
                       }}
                       items={REQUEST_STATUS_LIST}
                       updateButton={
-                        <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
+                        <Edit2 className='h-3 w-3 cursor-pointer text-muted-foreground' />
                       }
                     />
                   </div>
@@ -307,7 +335,7 @@ export default function ViewRequestDetails() {
                 </Badge>
               </div>
               <div className='group relative space-y-2'>
-                <div className='flex items-center justify-between'>
+                <div className='flex items-center gap-2'>
                   <span className='text-sm font-medium text-muted-foreground'>
                     Priority
                   </span>
@@ -327,7 +355,7 @@ export default function ViewRequestDetails() {
                       }}
                       items={REQUEST_URGENT_LIST}
                       updateButton={
-                        <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
+                        <Edit2 className='h-3 w-3 cursor-pointer text-muted-foreground' />
                       }
                     />
                   </div>
@@ -340,7 +368,7 @@ export default function ViewRequestDetails() {
                 </Badge>
               </div>
               <div className='group relative space-y-2'>
-                <div className='flex items-center justify-between'>
+                <div className='flex items-center gap-2'>
                   <span className='text-sm font-medium text-muted-foreground'>
                     Interview Date
                   </span>
@@ -370,7 +398,7 @@ export default function ViewRequestDetails() {
                       }}
                       disablePastDates={true}
                       customButton={
-                        <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
+                        <Edit2 className='h-3 w-3 cursor-pointer text-muted-foreground' />
                       }
                     />
                   </div>
@@ -386,7 +414,7 @@ export default function ViewRequestDetails() {
                 </span>
               </div>
               <div className='group relative space-y-2'>
-                <div className='flex items-center justify-start gap-3'>
+                <div className='flex items-center gap-2'>
                   <h3 className='text-sm font-medium text-muted-foreground'>
                     Assigned to
                   </h3>
@@ -411,10 +439,11 @@ export default function ViewRequestDetails() {
                   </div>
                 </div>
                 <div className='flex flex-row items-center gap-2'>
-                  <Avatar className='h-6 w-6 rounded-sm'>
+                  <Avatar className='ml-0 h-6 w-6 rounded-sm'>
                     <AvatarImage
                       src={selectedMember?.profile_image}
                       alt='Avatar'
+                      className=''
                     />
                     <AvatarFallback className='h-6 w-6 rounded-sm bg-gray-200'>
                       <span className='text-sm'>
@@ -438,7 +467,7 @@ export default function ViewRequestDetails() {
                 </div>
               </div>
               <div className='group relative space-y-2'>
-                <div className='flex items-center justify-between'>
+                <div className='flex items-center gap-2'>
                   <span className='text-sm font-medium text-muted-foreground'>
                     Request Type
                   </span>
@@ -457,7 +486,7 @@ export default function ViewRequestDetails() {
                       }}
                       items={REQUEST_TYPE_LIST}
                       updateButton={
-                        <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
+                        <Edit2 className='h-3 w-3 cursor-pointer text-muted-foreground' />
                       }
                     />
                   </div>
@@ -579,9 +608,12 @@ function SessionCards({
                           <ArrowUpRight className='mr-2 h-4 w-4' />
                           View Details
                         </Button>
+
                         <Badge
                           variant='outline'
-                          className='h-[28px] rounded-md bg-gray-100 font-normal text-gray-600'
+                          className={`h-[28px] rounded-md border-none font-normal ${getStatusStyles(
+                            session?.interview_meeting?.status ?? '',
+                          )}`}
                         >
                           {capitalizeFirstLetter(
                             session?.interview_meeting?.status ?? '',

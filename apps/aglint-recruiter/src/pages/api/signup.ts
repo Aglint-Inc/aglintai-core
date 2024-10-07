@@ -67,7 +67,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     ).data!;
 
     await supabase.from('recruiter_relation').insert({
-      role: 'admin',
       recruiter_id: rec_id,
       user_id: user_id,
       is_active: true,
