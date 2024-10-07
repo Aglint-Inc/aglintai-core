@@ -3,7 +3,7 @@ import { DAYJS_FORMATS, dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import axios from 'axios';
-import { Calendar, CheckIcon } from 'lucide-react';
+import { Calendar} from 'lucide-react';
 import { useState } from 'react';
 
 import { supabase } from '@/utils/supabase/client';
