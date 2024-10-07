@@ -93,7 +93,6 @@ const RoleTable = ({
   setRole: (_role_id: string, _addMode?: boolean) => void;
 }) => {
   const { members } = useTenantMembers();
-
   if (loading) {
     return <TableLoading />;
   }

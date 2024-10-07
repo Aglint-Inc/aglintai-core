@@ -5,7 +5,6 @@ import { useState } from 'react';
 import UIDialog from '@/common/UIDialog';
 import { useTenantMembers } from '@/company/hooks';
 import { useMemberUpdate } from '@/company/hooks/useMemberUpdate';
-import { useRoleData } from '@/company/hooks/useRoleAndPermissionsHook';
 
 import { RoleEditDialogUI } from './ui/RoleEditDialogUI';
 
@@ -20,7 +19,6 @@ function RoleEditDialog({
 }) {
   const { members } = useTenantMembers();
   const { updateMember } = useMemberUpdate();
-  const { refetch } = useRoleData();
   const [search, setSearch] = useState('');
   const [selectedMember, setSelectedMember] = useState<
     (typeof members)[number] | null
@@ -59,7 +57,6 @@ function RoleEditDialog({
                   user_id: selectedMember.user_id,
                   role_id: role.id,
                 });
-                refetch();
                 setIsLoading(false);
                 close();
               }

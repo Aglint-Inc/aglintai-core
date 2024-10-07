@@ -12,9 +12,7 @@ export function useRoleData() {
     role: string;
     add: boolean;
   }>();
-  const query = api.rolesAndPermissions.get.useQuery(undefined, {
-    placeholderData: { rolesAndPermissions: {}, all_permission: {} },
-  });
+  const query = api.rolesAndPermissions.get.useQuery(undefined, {});
   useEffect(() => {
     if (
       query.isFetched &&
