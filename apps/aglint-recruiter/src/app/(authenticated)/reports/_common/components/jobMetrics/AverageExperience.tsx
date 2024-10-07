@@ -14,7 +14,7 @@ import { useCandidateExp } from '../../hook/job/jobMatrix';
 export default function AverageExperience() {
   const { data, isFetching } = useCandidateExp();
   return (
-    <Section>
+    <Section className='rounded-lg bg-muted p-4'>
       <SectionHeader>
         <SectionHeaderText>
           <SectionTitle>Average Experience</SectionTitle>
@@ -30,15 +30,15 @@ export default function AverageExperience() {
         />
       ) : (
         <div className='flex w-full flex-col items-center justify-center'>
-          <div className='mb-2 text-6xl font-bold'>
+          <div className='mb-2 text-4xl font-semibold'>
             {isFetching ? (
               <Skeleton className='h-[60px] w-[100px]' />
             ) : (
               data.avg_total_exp || '-'
             )}
           </div>
-          <div className='mb-4 text-2xl font-semibold'>Years</div>
-          <p className='text-center text-muted-foreground'>
+          <div className='mb-4 text-lg'>Years</div>
+          <p className='text-center text-sm text-muted-foreground'>
             Average of total full time experience of the candidates
           </p>
         </div>

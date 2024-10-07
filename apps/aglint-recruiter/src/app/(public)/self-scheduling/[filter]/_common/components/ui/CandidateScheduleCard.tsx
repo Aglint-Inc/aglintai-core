@@ -24,7 +24,7 @@ export function CandidateScheduleCard({
       <CardContent className='space-y-4 p-4'>
         {isTitle && (
           <div className='flex items-center justify-between'>
-            <span className='font-medium text-blue-600'>{textDay}</span>
+            <span className='font-medium'>{textDay}</span>
             {slotButton}
           </div>
         )}
