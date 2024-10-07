@@ -7,7 +7,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { Edit, Mail, MessageSquare, Plus, Star } from 'lucide-react';
+import { Mail, MessageSquare, Pen, Plus, Star } from 'lucide-react';
 
 import type { FeedbackWindowInterviewersType } from './type';
 
@@ -65,7 +65,7 @@ export function FeedbackCardDetails({
                 >
                   {int.feedback && int.feedback?.recommendation ? (
                     <>
-                      <Edit className='mr-2 h-4 w-4' />
+                      <Pen className='mr-2 h-4 w-4' />
                       Edit Feedback
                     </>
                   ) : (
@@ -135,7 +135,7 @@ export function FeedbackCardDetails({
               >
                 {int.feedback && int.feedback?.objective ? (
                   <>
-                    <Edit className='mr-2 h-4 w-4' />
+                    <Pen className='mr-2 h-4 w-4' />
                     Edit Feedback
                   </>
                 ) : (
