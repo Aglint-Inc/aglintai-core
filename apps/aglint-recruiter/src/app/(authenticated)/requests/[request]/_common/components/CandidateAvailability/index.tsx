@@ -116,7 +116,7 @@ function CandidateAvailability({
           {
             recruiter_user_id: recruiter_user?.user_id ?? '',
             avail_req_id: candidateAvailabilityIdForReRequest,
-            is_preview: true,
+            is_preview: false,
           };
         mailSender({
           target_api: 'availabilityReqResend_email_candidate',
@@ -188,7 +188,7 @@ function CandidateAvailability({
             preview_details: {
               application_id: selectedRequest.application_id,
             },
-            is_preview: true,
+            is_preview: false,
           };
 
         mailSender({
