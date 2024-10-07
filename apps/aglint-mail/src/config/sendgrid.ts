@@ -61,7 +61,7 @@ export default async function sendMail(data: APISendgridPayload) {
     }
     throw new MailSenderError(`mail failed to send`);
   } catch (error: any) {
-    console.error(error?.response?.body);
+    console.error(error);
     throw new MailSenderError(`mail failed to send`);
   }
 }

@@ -3,10 +3,12 @@ import {
   CApiError,
   createRequestProgressLogger,
   executeWorkflowAction,
+  supabaseWrap,
 } from '@aglint/shared-utils';
 import { apiTargetToEvents } from '@request/components/RequestProgress/utils/progressMaps';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
+import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfSchedule';
 import { findCandSelectedSlots } from '@/services/api-schedulings/findCandSelectedSlots';
 import { slackSuggestSlots } from '@/services/api-schedulings/slackSuggestSlots';
 import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
@@ -18,6 +20,7 @@ type BodyParams = {
   request_id: string;
   event_run_id: number;
   target_api: DatabaseEnums['email_slack_types'];
+  payload: any;
 };
 
 const candAvailRecieved = async (req_body: BodyParams) => {
@@ -41,16 +44,14 @@ const candAvailRecieved = async (req_body: BodyParams) => {
   });
   await reqProgressLogger.resetEventProgress();
 
-  const request_rec = (
+  const request_rec = supabaseWrap(
     await supabaseAdmin
       .from('request')
       .select('*,recruiter_user!request_assignee_id_fkey!inner(*)')
       .eq('id', request_id)
-      .single()
-  ).data;
-  if (!request_rec) {
-    throw new CApiError('SERVER_ERROR', 'No request record found');
-  }
+      .single(),
+  );
+
   const request_assignee_tz =
     request_rec.recruiter_user.scheduling_settings.timeZone.tzCode;
   const avail_record = (
@@ -115,26 +116,29 @@ const candAvailRecieved = async (req_body: BodyParams) => {
   } else if (
     target_api === 'onReceivingAvailReq_agent_sendSelfScheduleRequest'
   ) {
-    // await executeWorkflowAction(
-    //   candidateSelfSchedule,
-    //   {
-    //     parsed_body: {
-    //       application_id,
-    //       event_run_id,
-    //       payload,
-    //       request_id,
-    //       recruiter_id,
-    //       session_ids,
-    //       target_api,
-    //     },
-    //     reqProgressLogger,
-    //     req_assignee_tz: request_assignee_tz,
-    //     organizer_id: organizer_id,
-    //     date_range:{},
-    //     job_payload:
-    //   },
-    //   reqProgressLogger,
-    // );
+    await executeWorkflowAction(
+      candidateSelfSchedule,
+      {
+        parsed_body: {
+          application_id: request_rec.application_id,
+          event_run_id,
+          // payload:, ??
+          request_id,
+          recruiter_id,
+          session_ids,
+          target_api,
+        },
+        reqProgressLogger,
+        req_assignee_tz: request_assignee_tz,
+        organizer_id: request_rec.assignee_id,
+        date_range: {
+          start_date_str: avail_record.date_range[0],
+          end_date_str: avail_record.date_range[1],
+        },
+        job_payload: req_body.payload,
+      },
+      reqProgressLogger,
+    );
   }
 };
 

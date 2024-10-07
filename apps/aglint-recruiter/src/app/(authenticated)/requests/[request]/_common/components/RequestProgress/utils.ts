@@ -59,7 +59,7 @@ export const createRequestWorkflowAction = async ({
           phase: phase as NonNullable<typeof phase>,
           recruiter_id: recruiter_id,
           interval: interval,
-          workflow_type: 'job',
+          workflow_type: 'request',
         })
         .select(),
     );
