@@ -235,7 +235,7 @@ export default function ViewRequestDetails() {
                     Here is your next step on the request.
                   </AlertDescription>
 
-                  <div className='flex flex-row justify-end gap-2'>
+                  <div className='flex flex-row gap-2'>
                     <ShowCode.When
                       isTrue={
                         selectedRequest.type === 'schedule_request' ||

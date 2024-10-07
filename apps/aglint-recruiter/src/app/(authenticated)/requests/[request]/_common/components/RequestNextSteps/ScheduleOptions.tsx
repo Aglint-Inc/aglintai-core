@@ -99,7 +99,7 @@ const ScheduleOptions = () => {
     setCandidateAvailabilityIdForReRequest(avail_req.id);
   };
   return (
-    <>
+    <div className='mt-2 flex flex-col'>
       <ShowCode.When
         isTrue={
           Boolean(scheduleWorkflowAction) && requestDetails.status === 'to_do'
@@ -205,7 +205,7 @@ const ScheduleOptions = () => {
           </UIButton>
         </div>
       </ShowCode.When>
-    </>
+    </div>
   );
 };
 

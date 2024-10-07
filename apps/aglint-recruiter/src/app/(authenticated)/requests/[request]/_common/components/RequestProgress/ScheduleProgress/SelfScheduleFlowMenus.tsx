@@ -107,7 +107,7 @@ const SelfScheduleFlowMenus = ({
             <Lightbulb className='h-4 w-4 text-purple-500' />
             <AlertDescription className='flex flex-col items-start'>
               <p className='mb-4 w-full'>
-                Add Riminders to candidate for follow up.
+                Add Reminders to candidate for follow up.
               </p>
               <Button
                 variant='outline'

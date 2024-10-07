@@ -11,6 +11,7 @@ import { useRequestProgressProvider } from '../progressCtx';
 import { type RequestProgressMapType } from '../types';
 import { apiTargetToEvents } from '../utils/progressMaps';
 import EventNode from './EventNode';
+import SuggestionCard from './SuggestionCard';
 
 const AvailabilityFlowMenus = ({
   isManualSchedule,
@@ -105,7 +106,26 @@ const AvailabilityFlowMenus = ({
           )
         }
       >
-        <div className='ml-[32px]'>
+        <div className=''>
+          <SuggestionCard 
+          heading='Suggestion'
+          description='Add Reminders to candidate for follow up.'
+          buttonSlot={
+            <Button
+                  variant='outline'
+                  size='sm'
+                  onClick={() => {
+                    setTriggerDetails({
+                      trigger: 'sendAvailReqReminder',
+                      interval: 24 * 60,
+                    });
+                    setShowEditDialog(true);
+                  }}
+                >
+                  Schedule Reminder
+                </Button>
+          }
+          />
           <div>
             <Alert
               variant='default'
