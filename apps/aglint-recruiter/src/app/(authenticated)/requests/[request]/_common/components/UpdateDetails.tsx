@@ -18,7 +18,7 @@ function UpdateDetails({ updateButton, handleChange, items }: StatusListProps) {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>{updateButton}</PopoverTrigger>
-      <PopoverContent className='w-40 p-2' align='start' side='left'>
+      <PopoverContent className='w-52 p-2 ' align='start' side='left'>
         <div className='flex flex-col space-y-2'>
           {items.map((item) => (
             <Label
