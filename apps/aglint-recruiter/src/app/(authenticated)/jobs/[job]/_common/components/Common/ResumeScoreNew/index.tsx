@@ -4,7 +4,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { AlertCircle, AlertTriangle } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 
 import { Loader } from '@/components/Common/Loader';
 import { type Application } from '@/types/applications.types';
@@ -67,7 +67,7 @@ export const ResumeScore = ({
 
 const ErrorIcon = () => (
   <div className='flex items-center space-x-1 text-destructive'>
-    <AlertCircle size={16} />
+    <AlertTriangle size={16} />
     <span>Resume not found</span>
   </div>
 );

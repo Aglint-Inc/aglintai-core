@@ -1,4 +1,5 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { triggerToCategoryMap } from 'src/app/(authenticated)/jobs/[job]/(job-edit)/workflows/_common/lib/constants';
 import { z } from 'zod';
 
@@ -16,13 +17,13 @@ type QryReponse = {
 };
 const query = async ({ input }: PrivateProcedure<typeof schema>) => {
   const db = createPrivateClient();
-  const workflows = (
+  const workflows = supabaseWrap(
     await db
       .from('workflow_job_relation')
       .select('*, workflow!inner(*)')
       .eq('job_id', input.job_id)
-      .throwOnError()
-  ).data;
+      .eq('workflow.workflow_type', 'job'), // filter and map only job workflows
+  );
   const workflow_actions = (
     await db
       .from('workflow_action')

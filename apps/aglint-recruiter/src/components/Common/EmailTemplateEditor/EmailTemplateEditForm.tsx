@@ -64,13 +64,13 @@ export default function EmailTemplateEditForm({
             </SelectTrigger>
             <SelectContent>
               {options.length === 0 ? (
-                <div className='cursor-default px-2 py-1 italic text-muted-foreground'>
+                <div className='cursor-default px-2 py-2 italic text-muted-foreground'>
                   No options available
                 </div>
               ) : (
                 options.map((value, idx) => (
                   <SelectItem key={idx} value={value}>
-                    <span className='rounded-sm bg-[#f7ebfc] px-1 pb-[3px] text-[#B552E2]'>
+                    <span className='flex rounded-sm bg-purple-200/50 px-1 pb-[3px] text-purple-500'>
                       {value}
                     </span>
                   </SelectItem>

@@ -1,15 +1,15 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Minus, Plus } from 'lucide-react';
 
+import { SessionIcon } from '@/common/ScheduleProgressPillComp';
 import { UIButton } from '@/components/Common/UIButton';
 import { UIDivider } from '@/components/Common/UIDivider';
 import UITextField from '@/components/Common/UITextField';
-import { SessionIcon } from '@/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
+import { useAlterCount } from '@/interview-pool/details/hooks/useAlterCount';
+import { useApproveUsers } from '@/interview-pool/details/hooks/useApproveUsers';
+import { type useProgressModuleUsers } from '@/interview-pool/details/hooks/useProgressModuleUsers';
 import { numberToOrdinalText } from '@/utils/number/numberToOrdinalText';
 
-import { useAlterCount } from '../../../../hooks/useAlterCount';
-import { useApproveUsers } from '../../../../hooks/useApproveUsers';
-import { type useProgressModuleUsers } from '../../../../hooks/useProgressModuleUsers';
 import { TrainingDetailList } from '../../../ui/TrainingDetailList';
 import { TrainingStatus } from '../../../ui/TraniningStatus';
 

@@ -1,10 +1,8 @@
 'use client';
 
-/* eslint-disable security/detect-object-injection */
 import { type CandidateDirectBookingType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
-import { useCallback } from 'react';
 import { useInviteMeta } from 'src/app/(public)/scheduling/invite/[id]/_common/hooks/useInviteMeta';
 import {
   setSelectedSlots,
@@ -23,14 +21,14 @@ const useInviteActions = () => {
   const { mutateAsync, isPending } = useConfirmSlots();
   const { selectedSlots, timezone } = useCandidateInviteStore();
 
-  const handleSelectSlot = useCallback(
-    (day: number, meeting: (typeof selectedSlots)[number]) => {
-      const newSessions = day === 0 ? [] : [...selectedSlots];
-      newSessions[day] = meeting;
-      setSelectedSlots(newSessions);
-    },
-    [],
-  );
+  const handleSelectSlot = (
+    day: number,
+    meeting: (typeof selectedSlots)[number],
+  ) => {
+    const newSessions = day === 0 ? [] : [...selectedSlots];
+    newSessions[day] = meeting;
+    setSelectedSlots(newSessions);
+  };
 
   const handleSubmit = async () => {
     const candSelectedSlots = selectedSlots.map((s) => s.sessions);

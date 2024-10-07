@@ -3,17 +3,17 @@ import { create } from 'zustand';
 import { type SchedulingSlice } from '../types/pool';
 
 export const initialStateSchedulingStore: SchedulingSlice = {
+  isEditPoolDialogOpen: false,
   isCreateDialogOpen: false,
   isSettingDialogOpen: false,
   isDeleteMemberDialogOpen: false,
   isDeleteModuleDialogOpen: false,
   isPauseDialogOpen: false,
   isMovedToQualifiedDialogOpen: false,
+  isModuleSettingsDialogOpen: false,
   isAddMemberDialogOpen: false,
-  isProgressDialaogOpen: false,
   isArchiveDialogOpen: false,
   isResumeDialogOpen: false,
-  isModuleSettingsDialogOpen: false,
   selectedUsers: [],
   selUser: null,
   pause_json: { isManual: true, start_date: '', end_date: '' },
@@ -26,8 +26,15 @@ export const useModulesStore = create<SchedulingSlice>()(
   () => initialStateSchedulingStore,
 );
 
+export const setIsModuleSettingsDialogOpen = (
+  isModuleSettingsDialogOpen: boolean,
+) => useModulesStore.setState({ isModuleSettingsDialogOpen });
+
 export const setLocalModule = (localModule: SchedulingSlice['localModule']) =>
   useModulesStore.setState({ localModule });
+
+export const setIsEditPoolDialogOpen = (isEditPoolDialogOpen: boolean) =>
+  useModulesStore.setState({ isEditPoolDialogOpen });
 
 export const setInitalOpen = (initalOpen: SchedulingSlice['initalOpen']) =>
   useModulesStore.setState({ initalOpen });
@@ -53,15 +60,8 @@ export const setIsDeleteMemberDialogOpen = (
   isDeleteMemberDialogOpen: boolean,
 ) => useModulesStore.setState({ isDeleteMemberDialogOpen });
 
-export const setIsProgressDialaogOpen = (isProgressDialaogOpen: boolean) =>
-  useModulesStore.setState({ isProgressDialaogOpen });
-
 export const setIsAddMemberDialogOpen = (isAddMemberDialogOpen: boolean) =>
   useModulesStore.setState({ isAddMemberDialogOpen });
-
-export const setIsModuleSettingsDialogOpen = (
-  isModuleSettingsDialogOpen: boolean,
-) => useModulesStore.setState({ isModuleSettingsDialogOpen });
 
 export const setIsResumeDialogOpen = (isResumeDialogOpen: boolean) =>
   useModulesStore.setState({ isResumeDialogOpen });

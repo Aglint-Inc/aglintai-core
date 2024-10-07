@@ -4,8 +4,8 @@ import React from 'react';
 
 const CandAvailRecived = (d: DatabaseTable['request_progress']) => {
   return (
-    <p>
-      Candidate availability received on{' '}
+    <p className='text-sm'>
+      Received on{' '}
       {dayjsLocal(d.created_at).format(DAYJS_FORMATS.DATE_FORMAT)}
     </p>
   );

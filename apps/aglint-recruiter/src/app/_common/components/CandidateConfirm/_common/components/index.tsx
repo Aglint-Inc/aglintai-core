@@ -6,10 +6,9 @@ import {
 } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { UIAlert } from '@components/ui-alert';
-import { Building2 } from 'lucide-react';
+import { Building } from 'lucide-react';
 import Image from 'next/image';
 
-import Footer from '@/components/Common/Footer';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { UIButton } from '@/components/Common/UIButton';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
@@ -136,18 +135,17 @@ export const ConfirmedInvitePage = (
                       type='submit'
                       variant='outline'
                     >
-                      Reschedule
+                      Reschedule Interview
                     </UIButton>
                     <UIButton
                       size={'md'}
-                      color={'neutral'}
+                      variant='destructive'
                       onClick={() => {
                         setReason(scheduling_reason['cancellation'][0]);
                         setIsRescheduleCancelOpen('cancel');
                       }}
-                      variant='default'
                     >
-                      Cancel
+                      Cancel Interview
                     </UIButton>
                   </div>
                 )}
@@ -174,7 +172,6 @@ export const ConfirmedInvitePage = (
               candidate.last_name,
             )}
           />
-          <Footer brand={true} />
         </div>
       )}
     </>
@@ -302,7 +299,7 @@ const Logo = ({
         )}
 
         <div className='fallback absolute inset-0 hidden items-center justify-center'>
-          <Building2 className='h-10 w-10 text-neutral-400' />
+          <Building className='h-10 w-10 text-neutral-400' />
         </div>
       </div>
     </div>

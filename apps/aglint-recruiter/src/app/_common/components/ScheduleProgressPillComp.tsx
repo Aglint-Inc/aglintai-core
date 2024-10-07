@@ -1,6 +1,5 @@
 import { type DB } from '@aglint/shared-types';
 import {
-  Calendar,
   CalendarClock,
   CheckCircle,
   FileText,
@@ -48,35 +47,15 @@ const ProgressIcon = ({
 }: Pick<ScheduleProgressPillProps, 'status'>) => {
   switch (status) {
     case 'waiting':
-      return (
-        <div className='text-yellow-500'>
-          <WaitingIcon />
-        </div>
-      );
+      return <CalendarClock size={16} className='text-muted-foreground' />;
     case 'confirmed':
-      return (
-        <div className='text-blue-500'>
-          <ConfirmedIcon />
-        </div>
-      );
+      return <CheckCircle size={16} className='text-muted-foreground' />;
     case 'completed':
-      return (
-        <div className='text-green-500'>
-          <CompletedIcon />
-        </div>
-      );
+      return <CheckCircle size={16} className='text-muted-foreground' />;
     case 'cancelled':
-      return (
-        <div className='text-destructive'>
-          <CancelledIcon />
-        </div>
-      );
+      return <XCircle size={16} className='text-muted-foreground' />;
     default:
-      return (
-        <div className='text-muted-foreground'>
-          <NotScheduledIcon />
-        </div>
-      );
+      return <Hourglass size={16} className='text-muted-foreground' />;
   }
 };
 ProgressIcon.displayName = 'ProgressIcon';
@@ -86,43 +65,11 @@ export const SessionIcon = ({
 }: Pick<ScheduleProgressPillProps, 'session_type'>) => {
   switch (session_type) {
     case 'debrief':
-      return <DebriefSessionIcon />;
+      return <FileText size={16} className='text-muted-foreground' />;
     case 'individual':
-      return <IndividualSessionIcon />;
+      return <User size={16} className='text-muted-foreground' />;
     case 'panel':
-      return <PanelSessionIcon />;
+      return <Users size={16} className='text-muted-foreground' />;
   }
 };
 SessionIcon.displayName = 'SessionIcon';
-
-const CompletedIcon = () => {
-  return <CheckCircle size={6} />;
-};
-
-const WaitingIcon = () => {
-  return <CalendarClock size={6} />;
-};
-
-const ConfirmedIcon = () => {
-  return <Calendar size={6} />;
-};
-
-const CancelledIcon = () => {
-  return <XCircle size={6} />;
-};
-
-const NotScheduledIcon = () => {
-  return <Hourglass size={6} />;
-};
-
-const IndividualSessionIcon = () => {
-  return <User size={6} />;
-};
-
-const PanelSessionIcon = () => {
-  return <Users size={6} />;
-};
-
-const DebriefSessionIcon = () => {
-  return <FileText size={6} />;
-};

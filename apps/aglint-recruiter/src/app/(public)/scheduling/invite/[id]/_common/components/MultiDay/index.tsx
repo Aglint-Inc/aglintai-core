@@ -23,8 +23,8 @@ import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import toast from '@/utils/toast';
 
-import { SessionIcon } from '../../../../../../../../components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
 import { getScheduleType } from '../../../../../../../../utils/scheduling/colors_and_enums';
+import { SessionIcon } from '../../../../../../../_common/components/ScheduleProgressPillComp';
 import useInviteActions from '../../hooks/useInviteActions';
 import { useInviteSlots } from '../../hooks/useInviteSlots';
 import { type CandidateInviteType, useCandidateInviteStore } from '../../store';
@@ -76,6 +76,7 @@ const MultiDaySuccess = (props: ScheduleCardsProps) => {
   const { selectedSlots } = useCandidateInviteStore();
   const [open, setOpen] = useState(false);
   const enabled = selectedSlots.length === props.rounds.length;
+
   return (
     <>
       <ScheduleCards rounds={props.rounds} />

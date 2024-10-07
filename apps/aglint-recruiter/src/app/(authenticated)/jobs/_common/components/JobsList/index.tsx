@@ -24,7 +24,6 @@ import {
   Search,
 } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
 import React from 'react';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -86,24 +85,14 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
             }
           >
             <TableCell className='font-medium'>
-              <Link
-                href={ROUTES['/jobs/[job]']({ job: job?.id ?? null! }) || '#'}
-              >
-                <div className='flex flex-col'>
-                  <div className='flex items-center space-x-2'>
-                    {getAtsBadge(job.posted_by) || (
-                      <BriefcaseBusiness className='h-5 w-5 px-1 text-gray-400' />
-                    )}
-                    <span>{capitalizeSentence(job?.job_title ?? '---')}</span>
-                  </div>
-                  {/* <div className='flex items-center space-x-2 mt-1'>
-                  <Building2 className='h-4 w-4 text-gray-400' />
-                  <span className='text-sm text-gray-600'>
-                    {job?.department ?? '---'}
-                    </span>
-                    </div> */}
+              <div className='flex flex-col'>
+                <div className='flex items-center space-x-2'>
+                  {getAtsBadge(job.posted_by) || (
+                    <BriefcaseBusiness className='h-5 w-5 px-1 text-gray-400' />
+                  )}
+                  <span>{capitalizeSentence(job?.job_title ?? '---')}</span>
                 </div>
-              </Link>
+              </div>
             </TableCell>
             <TableCell>
               <div className='flex items-center space-x-2'>
