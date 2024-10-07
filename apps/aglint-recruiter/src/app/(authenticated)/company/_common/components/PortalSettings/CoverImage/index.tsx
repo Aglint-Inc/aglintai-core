@@ -71,7 +71,10 @@ export function CoverImage() {
                       accept='image/*'
                       className='hidden'
                     />
-                    <ImagePlus className='h-10 w-10' />
+                    <ImagePlus
+                      className='h-10 w-10 text-muted-foreground'
+                      strokeWidth={1.5}
+                    />
                     Add Cover Image
                   </>
                 )}
