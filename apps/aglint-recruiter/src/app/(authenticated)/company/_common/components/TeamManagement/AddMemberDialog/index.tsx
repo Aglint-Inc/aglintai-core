@@ -69,7 +69,7 @@ const AddMember = ({
   const { recruiter, recruiter_user } = useTenant();
   const { data: locations } = useTenantOfficeLocations();
   const { data: departments } = useAllDepartments();
-  const { refetchMembers } = useTenantMembers();
+  const { refetch: refetchMembers } = useTenantMembers();
   const initForm: InviteUserFormType = {
     first_name: null,
     last_name: null,
