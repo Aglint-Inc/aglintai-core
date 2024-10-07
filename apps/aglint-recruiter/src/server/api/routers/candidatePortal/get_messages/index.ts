@@ -4,7 +4,7 @@ import { type PublicProcedure, publicProcedure } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
 const schema = z.object({
-  application_id: z.array(z.string().uuid()),
+  application_id: z.string().uuid(),
 });
 
 const query = async ({ input }: PublicProcedure<typeof schema>) => {
