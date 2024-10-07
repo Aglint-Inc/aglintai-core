@@ -94,7 +94,9 @@ export default function InterviewerDetailsPage() {
         <Section className='px-4'>
           <SectionHeader>
             <SectionHeaderText>
-              <SectionTitle>Interviewer Overview</SectionTitle>
+              <SectionTitle>
+                Interviewer {tab === 'overview' ? 'Overview' : 'Calendar'}
+              </SectionTitle>
             </SectionHeaderText>
             <SectionActions>
               <Tabs

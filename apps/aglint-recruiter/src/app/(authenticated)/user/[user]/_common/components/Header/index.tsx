@@ -13,6 +13,7 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 
 import { useInterviewer } from '../../hooks/useInterviewer';
 import { EditUser } from './EditUser';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 export const Header = () => {
   const router = useRouterPro();
@@ -69,7 +70,7 @@ export const Header = () => {
                 {getFullName(first_name ?? '', last_name ?? '')}
               </div>
               <p className='line-clamp-1 text-sm text-gray-600'>
-                {role} - {department}
+                {capitalizeAll(role)} - {capitalizeAll(department)}
               </p>
             </div>
           </div>
