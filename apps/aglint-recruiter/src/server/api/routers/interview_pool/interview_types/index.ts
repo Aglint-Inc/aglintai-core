@@ -1,10 +1,5 @@
-import { dayjsLocal } from '@aglint/shared-utils';
-import isBetween from 'dayjs/plugin/isBetween';
-
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
-
-dayjsLocal.extend(isBetween);
 
 const query = async ({ ctx: { recruiter_id } }: PrivateProcedure) => {
   const db = createPrivateClient();
@@ -16,7 +11,7 @@ const query = async ({ ctx: { recruiter_id } }: PrivateProcedure) => {
       .throwOnError()
   ).data;
 
-  return interview_types;
+  return interview_types ?? [];
 };
 
 export const interviewPools = privateProcedure.query(query);

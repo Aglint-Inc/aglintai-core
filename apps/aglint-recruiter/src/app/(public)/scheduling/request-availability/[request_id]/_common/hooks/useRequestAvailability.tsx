@@ -21,14 +21,11 @@ export const useCandidateAvailabilityMeetings = () => {
 export const useCandidateAvailabilityData = () => {
   const params = useParams();
   const candidate_request_availability_id = params?.request_id as string;
-  return api.candidate_availability.getCandidateAvailabilityData.useQuery(
+  return api.candidate_availability.getCandidateAvailabilityData.useSuspenseQuery(
     {
       candidate_request_availability_id: candidate_request_availability_id,
     },
-    {
-      enabled: !!candidate_request_availability_id,
-    },
-  );
+  )[1];
 };
 
 export const useUpdateCandidateAvailability = () => {

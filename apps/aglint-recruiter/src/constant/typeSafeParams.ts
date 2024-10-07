@@ -27,15 +27,15 @@ export const TYPE_SAFE_PARAMS = {
     '/jobs/[job]/workflows': [
       'job'
     ],
+    '/jobs/[job]/[application]': [
+      'job',
+      'application'
+    ],
     '/jobs/[job]/metrics': [
       'job'
     ],
     '/jobs/[job]': [
       'job'
-    ],
-    '/jobs/[job]/[application]': [
-      'job',
-      'application'
     ],
     '/requests/[request]': [
       'request'

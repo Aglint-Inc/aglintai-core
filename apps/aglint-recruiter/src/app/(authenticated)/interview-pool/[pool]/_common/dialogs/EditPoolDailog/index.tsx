@@ -2,12 +2,12 @@ import { useToast } from '@components/hooks/use-toast';
 import { capitalize } from 'lodash';
 import { useState } from 'react';
 
+import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
 import UISelectDropDown from '@/common/UISelectDropDown';
 import { UITextArea } from '@/common/UITextArea';
 import UITextField from '@/common/UITextField';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useAllDepartments } from '@/queries/departments';
 import { api } from '@/trpc/client';
 
 import { useModuleAndUsers } from '../../hooks/useModuleAndUsers';

@@ -22,7 +22,7 @@ export function ScheduleInterviewPop({
           </Typography>
           <div className='flex items-center gap-2'>
             <div className='flex items-center justify-center'>
-              <User size={24} />
+              <User size={24} className='text-muted-foreground' />
             </div>
             <Typography variant='p' type='small'>
               {textName}

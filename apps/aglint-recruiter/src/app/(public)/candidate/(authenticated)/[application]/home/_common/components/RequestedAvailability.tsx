@@ -64,7 +64,10 @@ const AvailabilityCard = ({
       <CardHeader className='p-0 pb-4 pl-4 pt-4'>
         <h2 className='font-semibold'>Availability Requested</h2>
         <div className='flex items-center gap-2'>
-          <BriefcaseBusinessIcon className='h-4 w-4' strokeWidth={1.5} />
+          <BriefcaseBusinessIcon
+            className='h-4 w-4 text-muted-foreground'
+            strokeWidth={1.5}
+          />
           <div className='text-sm'>{job.name}</div>
         </div>
 

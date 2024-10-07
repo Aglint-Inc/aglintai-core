@@ -31,7 +31,7 @@ export default function Heatmap({
   const [arrayDates, setArrayDates] = useState<string[]>([]);
   const [dayCount, setDayCount] = useState<{ start: number; end: number }>({
     start: -7,
-    end: 22,
+    end: 29,
   });
   const [maxCount, setMaxCountInterviews] = useState(
     loadSetting.dailyLimit.value,
@@ -153,7 +153,7 @@ export default function Heatmap({
               xLabels={xLabel}
               yLabels={yLabel}
               square
-              cellHeight='16px'
+              cellHeight='20.25px'
               xLabelsPos='bottom'
               onClick={(x, y) => {
                 if (heatMapData[x][y]?.meeting_id)
@@ -172,7 +172,7 @@ export default function Heatmap({
                   height: '2px ',
                   padding: 0,
                   marginTop: '2px',
-                  width: '16px',
+                  width: '20.25px',
                 };
               }}
               yLabelsStyle={(index) => ({

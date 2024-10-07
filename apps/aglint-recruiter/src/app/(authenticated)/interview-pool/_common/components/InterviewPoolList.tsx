@@ -15,10 +15,10 @@ import {
   XCircle,
 } from 'lucide-react';
 
+import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
 import type { useAllInterviewModulesType } from '@/authenticated/types';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { useAllDepartments } from '@/queries/departments';
 
 export const InterviewPoolList = ({
   interviewType,
@@ -123,7 +123,8 @@ export const InterviewPoolList = ({
                   variant='outline'
                   className='border-indigo-200 bg-indigo-50 text-indigo-800'
                 >
-                  <BriefcaseBusiness className='mr-1 h-3 w-3' /> {` - `}
+                  <BriefcaseBusiness className='mr-1 h-3 w-3 text-muted-foreground' />{' '}
+                  {` - `}
                   {interviewType.job_names
                     ?.slice(0, 2)
                     .map((job) => job)
