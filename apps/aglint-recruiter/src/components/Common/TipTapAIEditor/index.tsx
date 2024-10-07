@@ -71,7 +71,6 @@ const TipTapAIEditor = ({
 
   const [selectedText, setSelectedText] =
     useState<TipTapAIEditorCtxType['selectedText']>('');
-
   const editor = useEditor({
     extensions:
       editor_type === 'regular'
@@ -127,7 +126,6 @@ const TipTapAIEditor = ({
       },
     },
   }) as Editor;
-
   return (
     <TipTapCtx.Provider
       value={{
@@ -166,7 +164,7 @@ const TipTapAIEditor = ({
                 '[&_.ProseMirror_*::selection]:bg-accent/20',
                 '[&_.tiptap_p.is-editor-empty:first-child::before]:text-muted-foreground/60',
                 '[&_.ProseMirror-focused]:outline-none',
-                '[&_.ProseMirror_.temp-variable]:rounded-[2px] [&_.ProseMirror_.temp-variable]:bg-primary/10 [&_.ProseMirror_.temp-variable]:px-[3px] [&_.ProseMirror_.temp-variable]:pb-[3px] [&_.ProseMirror_.temp-variable]:text-primary',
+                '[&_.ProseMirror_.temp-variable]:rounded-[2px] [&_.ProseMirror_.temp-variable]:bg-purple-200/50 [&_.ProseMirror_.temp-variable]:px-[3px] [&_.ProseMirror_.temp-variable]:pb-[3px] [&_.ProseMirror_.temp-variable]:text-purple-500',
                 '[&_.tiptap_p.is-editor-empty:first-child::before]:pointer-events-none [&_.tiptap_p.is-editor-empty:first-child::before]:float-left [&_.tiptap_p.is-editor-empty:first-child::before]:h-0 [&_.tiptap_p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)]',
               )}
               style={{

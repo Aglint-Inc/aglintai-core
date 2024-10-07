@@ -40,7 +40,5 @@
   },
   "typescript.tsdk": "./node_modules/typescript/lib",
   "typescript.preferences.autoImportSpecifierExcludeRegexes": ["@radix-ui/*"],
-  "typescript.tsserver.maxTsServerMemory": 4000,
-  "files.autoSave": "afterDelay",
-  "files.autoSaveDelay": 5000
+  "typescript.tsserver.maxTsServerMemory": 4000
 }
