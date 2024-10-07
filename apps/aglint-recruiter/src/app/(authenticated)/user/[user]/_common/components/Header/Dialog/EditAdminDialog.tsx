@@ -10,7 +10,6 @@ import {
   useTenantOfficeLocations,
   useTenantRoles,
 } from '@/company/hooks';
-import { useTeamMembers } from '@/company/hooks/useTeamMembers';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -53,8 +52,7 @@ const EditAdminDialog = ({
   const [isImageChanged, setIsImageChanged] = useState(false);
   const [isProfileChanged, setIsProfileChanged] = useState(false);
 
-  const { allMembers } = useTenantMembers();
-  const { activeMembers } = useTeamMembers();
+  const { allMembers, members: activeMembers } = useTenantMembers();
   const router = useRouterPro();
   const member = allMembers.find(
     (mem) => mem.user_id === router?.params?.user,
