@@ -247,7 +247,7 @@ function ATSTools({
         .then(({ data }) => {
           if (data) {
             setTimeout(() => {
-              inputRef?.current?.value &&
+              inputRef?.current &&
                 (inputRef.current.value = (data as string) || '');
               setInputValue(data);
             }, 10);
@@ -265,8 +265,9 @@ function ATSTools({
         .then(({ data }) => {
           if (data) {
             setTimeout(() => {
-              inputRef?.current?.value &&
-                (inputRef.current.value = (data as string) || '');
+              if (inputRef?.current && data) {
+                inputRef.current.value = (data as string) || '';
+              }
               setInputValue(data);
             }, 10);
           }
