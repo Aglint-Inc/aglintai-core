@@ -10,6 +10,7 @@ export const initialStateSchedulingStore: SchedulingSlice = {
   isDeleteModuleDialogOpen: false,
   isPauseDialogOpen: false,
   isMovedToQualifiedDialogOpen: false,
+  isModuleSettingsDialogOpen: false,
   isAddMemberDialogOpen: false,
   isArchiveDialogOpen: false,
   isResumeDialogOpen: false,
@@ -24,6 +25,10 @@ export const initialStateSchedulingStore: SchedulingSlice = {
 export const useModulesStore = create<SchedulingSlice>()(
   () => initialStateSchedulingStore,
 );
+
+export const setIsModuleSettingsDialogOpen = (
+  isModuleSettingsDialogOpen: boolean,
+) => useModulesStore.setState({ isModuleSettingsDialogOpen });
 
 export const setLocalModule = (localModule: SchedulingSlice['localModule']) =>
   useModulesStore.setState({ localModule });
