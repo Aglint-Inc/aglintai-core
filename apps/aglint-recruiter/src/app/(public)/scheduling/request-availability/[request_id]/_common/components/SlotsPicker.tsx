@@ -19,7 +19,7 @@ import { UIDivider } from '@/components/Common/UIDivider';
 
 import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityContext';
 import { useCandidateAvailabilityData } from '../hooks/useRequestAvailability';
-import { DateCard } from './DateCard';
+import { DateCard, DateCardsSkelton } from './DateCard';
 import TimeSlotsColumn from './TimeSlotsColumn';
 
 export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
@@ -34,6 +34,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
     submitAvailability,
     handleClickDate,
     multiDaySessions,
+    submitting,
   } = useRequestAvailabilityContext();
   const { data: candidateRequestAvailability } = useCandidateAvailabilityData();
 
@@ -167,14 +168,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
             </div>
 
             <div className='w-full'>
-              {/* <Carousel className='w-full'>
-                  <CarouselContent>
-                    <DaysWrapInWeek isSingleDay={singleDay} />
-                  </CarouselContent>
-                  <CarouselPrevious />
-                  <CarouselNext />
-                </Carousel> */}
-              {
+              {dateSlots.length ? (
                 <div>
                   {/* <ScrollArea className='w-[800px]'> */}
                   <div className='flex w-full flex-row flex-wrap justify-start gap-2'>
@@ -311,19 +305,14 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
                   </div>
                   {/* </ScrollArea> */}
                 </div>
-              }
+              ) : (
+                <div className='flex w-full flex-row items-start gap-4'>
+                  {Array.from({ length: 7 }).map((_, i) => (
+                    <DateCardsSkelton key={i} />
+                  ))}
+                </div>
+              )}
             </div>
-            {/* <div className="flex flex-col gap-2">
-                    <div>Selected Dates :</div>
-                    <div className="flex gap-2">
-                    <Badge variant='secondary' className='px-4 py-1 text-md font-medium flex items-center gap-2 bg-blue-100'>Sep 18 Monday
-                    <X className="w-4 h-4 cursor-pointer" />
-                    </Badge>
-                    <Badge variant='secondary' className='px-4 py-1 text-md font-medium flex items-center gap-2  bg-blue-100'>Sep 19 Tuesday
-                    <X className="w-4 h-4 cursor-pointer" />
-                    </Badge>
-                    </div>
-              </div> */}
           </div>
 
           <div className='flex w-full flex-col items-start gap-4'>
@@ -358,8 +347,13 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
                 <UIButton
                   size='md'
                   onClick={handleSubmit}
-                  disabled={!markAsAllSlotsSelected}
+                  disabled={
+                    !markAsAllSlotsSelected ||
+                    !markAsAllDateSelected ||
+                    submitting
+                  }
                   className='w-full'
+                  isLoading={submitting}
                 >
                   {singleDay ? 'Submit Availability' : 'Done'}
                 </UIButton>
