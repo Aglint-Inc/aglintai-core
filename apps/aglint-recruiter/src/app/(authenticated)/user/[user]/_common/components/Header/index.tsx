@@ -10,6 +10,7 @@ import axios from '@/client/axios';
 import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { useInterviewer } from '../../hooks/useInterviewer';
 import { EditUser } from './EditUser';
@@ -69,7 +70,7 @@ export const Header = () => {
                 {getFullName(first_name ?? '', last_name ?? '')}
               </div>
               <p className='line-clamp-1 text-sm text-gray-600'>
-                {role} - {department}
+                {capitalizeAll(role)} - {capitalizeAll(department)}
               </p>
             </div>
           </div>

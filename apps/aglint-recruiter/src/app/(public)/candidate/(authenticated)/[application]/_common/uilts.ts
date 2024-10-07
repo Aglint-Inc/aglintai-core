@@ -1,17 +1,12 @@
-import axios from 'axios';
-
-import type { candidatePortalGetEmailtype } from '@/api/candidate_portal/get_email/route';
+import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 
 export const getCandidateEmailByApplicationId = async (
   application_id: string,
 ) => {
-  const { data } = await axios.post<candidatePortalGetEmailtype>(
-    '/api/candidate_portal/get_email',
-    {
-      application_id,
-    },
-  );
+  const { data } = api.candidatePortal.get_email.useQuery({
+    application_id,
+  });
 
   return data!;
 };

@@ -58,11 +58,8 @@ function DeleteDepartmentsDialog({
           >
             <p className='font-bold'>Warning</p>
             <p className='text-sm'>
-              Cannot delete this department. Disconnect the following
-              {!isUserEmpty ? (userUsageCount > 1 ? 'users ' : 'user ') : ''}
-              {!isUserEmpty && !isJobEmpty ? 'and ' : ''}
-              {!isJobEmpty ? (jobUsageCount > 1 ? 'jobs ' : 'job') : ''}
-              first:
+              {`Cannot delete this department. Disconnect the following ${!isUserEmpty ? (userUsageCount > 1 ? 'users' : 'user') : ''}${!isUserEmpty && !isJobEmpty ? ' and ' : ''}
+              ${!isJobEmpty ? (jobUsageCount > 1 ? 'jobs' : 'job') : ''} first:`}
             </p>
             <ul className='mt-2 list-inside list-disc'>
               {!isUserEmpty && (
