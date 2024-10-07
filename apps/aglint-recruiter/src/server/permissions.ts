@@ -20,7 +20,7 @@ export const API_PERMISSIONS: ApiPermissions = {
     create_pool: ['create_interview_types'],
     delete_user: ['delete_interview_types'],
     feedbacks: ['view_interview_types'],
-    interview_pool: ['view_interview_types'],
+    list: ['view_interview_types'],
     module_and_users: ['view_interview_types'],
     schedules: ['view_interview_types'],
     training_progress: ['view_interview_types'],

@@ -19,7 +19,7 @@ export const interview_pool = createTRPCRouter({
   candidates: candidatesModule,
   feedbacks: feedbackPool,
   schedules: schedulesPool,
-  interview_pool: interviewPools,
+  list: interviewPools,
   create_pool: createInterviewPool,
   add_users: addUsers,
   delete_user: deleteUser,

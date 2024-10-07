@@ -7,6 +7,7 @@ import { useToast } from '@components/hooks/use-toast';
 import { useState } from 'react';
 
 import { useIntegrations } from '@/authenticated/hooks';
+import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
 import { UIButton } from '@/common/UIButton';
 import UIDialog from '@/common/UIDialog';
 import {
@@ -15,7 +16,6 @@ import {
   useTenantRoles,
 } from '@/company/hooks';
 import { useTenant } from '@/company/hooks';
-import { useAllDepartments } from '@/queries/departments';
 import { api } from '@/trpc/client';
 import timeZone from '@/utils/timeZone';
 
