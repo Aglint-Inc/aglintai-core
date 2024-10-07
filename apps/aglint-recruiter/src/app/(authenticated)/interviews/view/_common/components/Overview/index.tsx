@@ -158,8 +158,8 @@ function Overview() {
             <div className='flex flex-col gap-0.5'>
               <p className='text-md'>
                 {getFullName(
-                  schedule?.candidates?.first_name ?? '',
-                  schedule?.candidates?.last_name ?? '',
+                  schedule?.candidates.first_name,
+                  schedule?.candidates.last_name,
                 )}
               </p>
               <div className='flex items-center gap-1 text-sm text-gray-500'>
@@ -168,7 +168,8 @@ function Overview() {
                   {formatTimeWithTimeZone({
                     start_time: schedule.interview_meeting.start_time ?? '',
                     end_time: schedule.interview_meeting.end_time ?? '',
-                    timeZone: schedule?.candidates?.timezone ?? '',
+                    timeZone:
+                      schedule?.interview_meeting.confirmed_candidate_tz,
                   })}
                 </span>
               </div>

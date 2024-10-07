@@ -43,11 +43,9 @@ function DayCardWrapper({
   isDayCheckboxNeeded?: boolean;
   isSlotCheckboxNeeded?: boolean;
   index: number;
-  // eslint-disable-next-line no-unused-vars
-  setSelectedCombIds?: (x: string[]) => void;
+  setSelectedCombIds?: (_x: string[]) => void;
   isAutoCollapse?: boolean;
-  // eslint-disable-next-line no-unused-vars
-  setCalendarDate?: (x: string) => void;
+  setCalendarDate?: (_x: string) => void;
 }) {
   const dates = item?.date_range || [];
   const header = dates
@@ -150,7 +148,8 @@ function DayCardWrapper({
                 ? 'indeterminate'
                 : isSelected
             }
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               const slotsNo = slotsWithDaySessions.length;
               if (slotsNo > 100) {
                 toast({ title: 'It has more slots' });
