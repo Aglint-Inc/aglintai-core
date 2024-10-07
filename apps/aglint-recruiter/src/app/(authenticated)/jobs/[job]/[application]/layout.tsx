@@ -41,8 +41,10 @@ const Layout = ({
         sidebarPosition='right'
         sidebar={
           <>
-            <Requests />
-            <Activity />
+            <div className='flex flex-col space-y-8'>
+              <Requests />
+              <Activity />
+            </div>
           </>
         }
         sidebarWidth={420}

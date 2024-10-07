@@ -203,7 +203,7 @@ const FormField = ({
       type={type}
       value={value}
       onChange={onChange}
-      className={error ? 'border-red-500' : ''}
+      className={error ? 'border-destructive' : ''}
     />
     {error && (
       <p className='text-sm text-destructive'>Please provide a valid {label}</p>
@@ -218,7 +218,7 @@ const ResumeUploadComp = ({ value, handleChange, error }: any) => (
     </Label>
     <FileUploader handleChange={handleChange} types={fileTypes}>
       <div
-        className={`flex h-[100px] cursor-pointer items-center justify-center space-x-2 rounded-md border-2 border-dashed p-8 ${error ? 'border-red-500' : 'border-border'} bg-gray-50`}
+        className={`flex h-[100px] cursor-pointer items-center justify-center space-x-2 rounded-md border-2 border-dashed p-8 ${error ? 'border-destructive' : 'border-border'} bg-gray-50`}
       >
         {value ? <FileIcon size={20} /> : <UploadCloud size={24} />}
         <span

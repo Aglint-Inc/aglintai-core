@@ -79,7 +79,7 @@ export const JobNewInterviewPlanDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <Loader variant='full' />
+    <Loader />
   );
 };
 
@@ -812,11 +812,11 @@ const Roles = ({ roles }: { roles: string[] }) => {
 const getSessionType = (session_type: InterviewSessionType['session_type']) => {
   switch (session_type) {
     case 'panel':
-      return 'Group stage';
+      return 'Panel Interview';
     case 'individual':
-      return 'Individual stage';
+      return 'Individual Interview';
     case 'debrief':
-      return 'Debrief stage';
+      return 'Debrief Session';
   }
 };
 

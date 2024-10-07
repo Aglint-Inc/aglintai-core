@@ -84,7 +84,7 @@ export const AddMemberDialogUI = ({
                 onChange={(e) =>
                   setForm({ ...form, first_name: e.target.value })
                 }
-                className={formError.first_name ? 'border-red-500' : ''}
+                className={formError.first_name ? 'border-destructive' : ''}
               />
               <UITextField
                 value={form.last_name || ''}
@@ -102,7 +102,7 @@ export const AddMemberDialogUI = ({
               onChange={(e) =>
                 setForm({ ...form, email: e.target.value.trim() })
               }
-              className={formError.email ? 'border-red-500' : ''}
+              className={formError.email ? 'border-destructive' : ''}
             />
             <UITextField
               value={form.linked_in || ''}
@@ -111,7 +111,7 @@ export const AddMemberDialogUI = ({
               onChange={(e) =>
                 setForm({ ...form, linked_in: e.target.value.trim() })
               }
-              className={formError.linked_in ? 'border-red-500' : ''}
+              className={formError.linked_in ? 'border-destructive' : ''}
             />
             <div className='grid grid-cols-2 gap-4'>
               <UITextField
@@ -119,7 +119,7 @@ export const AddMemberDialogUI = ({
                 name='title'
                 placeholder='Enter title'
                 onChange={(e) => setForm({ ...form, position: e.target.value })}
-                className={formError.position ? 'border-red-500' : ''}
+                className={formError.position ? 'border-destructive' : ''}
               />
               <Select
                 value={form.employment || ''}
@@ -131,7 +131,7 @@ export const AddMemberDialogUI = ({
                 }
               >
                 <SelectTrigger
-                  className={formError.employment ? 'border-red-500' : ''}
+                  className={formError.employment ? 'border-destructive' : ''}
                 >
                   <SelectValue placeholder='Select Employment Type' />
                 </SelectTrigger>
@@ -152,7 +152,7 @@ export const AddMemberDialogUI = ({
                 }
               >
                 <SelectTrigger
-                  className={formError.location ? 'border-red-500' : ''}
+                  className={formError.location ? 'border-destructive' : ''}
                 >
                   <SelectValue placeholder='Choose Location' />
                 </SelectTrigger>
@@ -173,7 +173,7 @@ export const AddMemberDialogUI = ({
                 }
               >
                 <SelectTrigger
-                  className={formError.department ? 'border-red-500' : ''}
+                  className={formError.department ? 'border-destructive' : ''}
                 >
                   <SelectValue placeholder='Select Department' />
                 </SelectTrigger>
@@ -200,7 +200,7 @@ export const AddMemberDialogUI = ({
                 }}
               >
                 <SelectTrigger
-                  className={formError.role ? 'border-red-500' : ''}
+                  className={formError.role ? 'border-destructive' : ''}
                 >
                   <SelectValue placeholder='Choose Role' />
                 </SelectTrigger>
@@ -220,7 +220,7 @@ export const AddMemberDialogUI = ({
                   }
                 >
                   <SelectTrigger
-                    className={formError.manager ? 'border-red-500' : ''}
+                    className={formError.manager ? 'border-destructive' : ''}
                   >
                     <SelectValue placeholder='Select Manager' />
                   </SelectTrigger>

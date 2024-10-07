@@ -3,10 +3,8 @@ import { type DatabaseEnums } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
-import { UIAlert } from '@components/ui-alert';
 import { useRequest } from '@request/hooks';
 import axios from 'axios';
-import { Plus } from 'lucide-react';
 import React from 'react';
 
 import { useTenant } from '@/company/hooks';
@@ -23,6 +21,7 @@ import { workflowCopy } from '../utils/copy';
 import { progressStatusToTense } from '../utils/getProgressColor';
 import { apiTargetToEvents } from '../utils/progressMaps';
 import EventNode from './EventNode';
+import SuggestionCard from './SuggestionCard';
 
 type TenseType = 'past' | 'present' | 'future' | 'error';
 
@@ -124,10 +123,13 @@ const InterviewScheduled = () => {
             );
           })}
           <ShowCode.When isTrue={!isWorkflowSet}>
-            <UIAlert variant='tip' title='Add Automations'>
-              {workflowCopy['SEND_INTERVIEWER_ATTENDANCE_RSVP'][tense]}
-              <div className='mt-4 flex justify-end'>
-                <div className='flex justify-start'>
+            <>
+              <SuggestionCard
+                heading='Suggestion'
+                description={
+                  workflowCopy['SEND_INTERVIEWER_ATTENDANCE_RSVP'][tense]
+                }
+                buttonSlot={
                   <Button
                     variant='outline'
                     onClick={() =>
@@ -136,12 +138,11 @@ const InterviewScheduled = () => {
                       )
                     }
                   >
-                    <Plus className='h-4 w-4' />
                     Add RSVP
                   </Button>
-                </div>
-              </div>
-            </UIAlert>
+                }
+              />
+            </>
           </ShowCode.When>
         </>
       }
