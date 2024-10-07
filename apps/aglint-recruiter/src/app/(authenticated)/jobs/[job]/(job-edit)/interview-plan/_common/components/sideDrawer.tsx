@@ -189,7 +189,7 @@ const CreateSession = ({
         </>
       }
     >
-      <div className='p-2'>
+      <div className='p-4'>
         <SessionForms fields={fields} setFields={setFields} />
       </div>
     </UIDrawer>
@@ -303,7 +303,7 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
         </>
       }
     >
-      <div className='p-2'>
+      <div className='p-4'>
         <SessionForms fields={fields} setFields={setFields} />
       </div>
     </UIDrawer>
@@ -374,7 +374,7 @@ const CreateDebrief = ({
         </>
       }
     >
-      <div className='p-2'>
+      <div className='p-4'>
         <DebriefForms fields={fields} setFields={setFields} />
       </div>
     </UIDrawer>
@@ -470,7 +470,7 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
         </>
       }
     >
-      <div className='p-2'>
+      <div className='p-4'>
         <DebriefForms fields={fields} setFields={setFields} />
       </div>
     </UIDrawer>
