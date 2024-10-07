@@ -1,5 +1,6 @@
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { UIAlert } from '@components/ui-alert';
 import dayjs from 'dayjs';
 import { AlertCircle } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
@@ -124,7 +125,7 @@ function CandidateAvailability() {
   }
 
   return (
-    <div className='mx-auto flex w-full max-w-screen-md flex-col items-center gap-4 rounded-lg border border-border bg-white p-6'>
+    <div className='mx-auto flex w-full max-w-screen-md flex-col items-center'>
       <Header
         candidateRequestAvailability={candidateRequestAvailability}
         isSubmitted={isSubmitted}
@@ -154,42 +155,37 @@ function Header({
       <div className='mb-4 flex items-center justify-center'>
         {candidateRequestAvailability &&
         candidateRequestAvailability?.recruiter?.logo ? (
-          <Avatar className='h-[100px] w-[100px]'>
-            <AvatarImage
-              src={candidateRequestAvailability?.recruiter.logo}
-              alt='Recruiter logo'
-            />
-            <AvatarFallback>Logo</AvatarFallback>
-          </Avatar>
+          <>
+            <Avatar className='h-[100px] w-[100px]'>
+              <AvatarImage
+                src={candidateRequestAvailability?.recruiter.logo}
+                alt={candidateRequestAvailability?.recruiter.name}
+              />
+              <AvatarFallback>
+                {candidateRequestAvailability?.recruiter.name.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+            <h1 className='text-2xl font-semibold'>
+              {candidateRequestAvailability?.recruiter.name}
+            </h1>
+          </>
         ) : null}
       </div>
-      <div
-        className={`mb-8 flex items-center gap-2 ${isSubmitted ? 'text-green-500' : 'text-muted-foreground'}'} `}
-      >
+      <div className='mb-8 flex items-center gap-2'>
         {isSubmitted ? (
-          <></>
-        ) : (
-          <>
-            <p className='text-2xl font-semibold'>
-              Your Availability Requested
+          <UIAlert type='success' title='Availability Submitted Successfully'>
+            <p>
+              Thank you for submitting your availability. We will review the
+              selected time slots and confirm the schedule soon. You will
+              receive a confirmation shortly.
             </p>
-          </>
+          </UIAlert>
+        ) : (
+          <h1 className='text-2xl font-semibold text-muted-foreground'>
+            Your Availability Requested
+          </h1>
         )}
       </div>
-      {isSubmitted && (
-        <div className='w-full'>
-          <div className='flex w-full flex-col gap-2 rounded-md bg-green-100 p-4'>
-            <div className='text-lg font-medium text-green-700'>
-              Availability Submitted successfully
-            </div>
-            <div className='text-md font-normal text-gray-600'>
-              Thank you for submitting your availability.We will review the
-              selected time slots and confirm the schedule soon. You will
-              recieve a confirmation shortly.
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
