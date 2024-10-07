@@ -5,10 +5,12 @@ import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { type apiPortalInterviewsResponse } from '@/api/candidate_portal/get_interviews/route';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
+import { type usePortalHomePage } from '../hooks';
+
 function UpcomingInterview({
   upcomingData,
 }: {
-  upcomingData: apiPortalInterviewsResponse;
+  upcomingData: ReturnType<typeof usePortalHomePage>['data']['upcoming'];
 }) {
   const latestUpcoming = upcomingData.sort((a, b) =>
     dayjsLocal(a.start_time).isAfter(dayjsLocal(b.start_time)) ? 1 : -1,
