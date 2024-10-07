@@ -27,7 +27,7 @@ export type FetchedDebreifType = Awaited<
 
 export type ConfirmInt = Pick<
   SessionInterviewerType,
-  'session_id' | 'user_id' | 'interviewer_module_relation_id'
+  'session_id' | 'user_id' | 'interview_module_relation_id'
 >;
 export type ScheduleDBDetails = {
   company: Pick<RecruiterDB, 'id' | 'name'>;

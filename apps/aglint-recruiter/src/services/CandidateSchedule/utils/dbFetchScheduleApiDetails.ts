@@ -149,7 +149,7 @@ const mapInt = (i: SessionInterviewerType) => {
   const int: SessionInterviewerApiRespType = {
     email: i.email,
     first_name: i.first_name,
-    interviewer_module_relation_id: i.interviewer_module_relation_id,
+    interview_module_relation_id: i.interview_module_relation_id,
     interviewer_type: i.interviewer_type,
     last_name: i.last_name,
     profile_image: i.profile_image,
@@ -242,7 +242,7 @@ const getAllSessionIntDetails = (
       all_session_int_detail[s.session_id].interviewers[int.user_id] = {
         email: int.email,
         first_name: int.first_name,
-        interviewer_module_relation_id: int.interviewer_module_relation_id,
+        interview_module_relation_id: int.interview_module_relation_id,
         interviewer_type: int.interviewer_type,
         last_name: int.last_name,
         pause_json: int.pause_json,
@@ -351,7 +351,7 @@ const geAllIntsFromModules = async (session_ids: string[]) => {
       position: m.recruiter_user.position ?? '',
       int_tz: m.recruiter_user.scheduling_settings.timeZone.tzCode,
       scheduling_settings: m.recruiter_user.scheduling_settings,
-      interviewer_module_relation_id: m.id,
+      interview_module_relation_id: m.id,
       pause_json: m.pause_json!,
       schedule_auth: m.recruiter_user.schedule_auth,
     };

@@ -35,7 +35,7 @@ const useInviteActions = () => {
 
     const bodyParams: CandidateDirectBookingType = {
       cand_tz: timezone.tzCode,
-      filter_id: router.queryParams.filter_id as string,
+      filter_id: router.params.filter,
       selected_plan: candSelectedSlots.map((slot) => ({
         start_time: slot[0].start_time,
         end_time: slot[slot.length - 1].end_time,

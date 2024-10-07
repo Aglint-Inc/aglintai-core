@@ -10,10 +10,10 @@ export const updateTrainingStatus = async (
     let training_ints: AssignTrainingInt[] = [];
     booked_meeting_details.forEach((meeting) => {
       const curr_train_ints: AssignTrainingInt[] = meeting.training_ints
-        .filter((i) => Boolean(i.interviewer_module_relation_id))
+        .filter((i) => Boolean(i.interview_module_relation_id))
         .map((t) => ({
           session_id: meeting.booked_meeting.session_id,
-          interviewer_module_relation_id: t.interviewer_module_relation_id,
+          interviewer_module_relation_id: t.interview_module_relation_id,
         }));
       training_ints = [...training_ints, ...curr_train_ints];
     });

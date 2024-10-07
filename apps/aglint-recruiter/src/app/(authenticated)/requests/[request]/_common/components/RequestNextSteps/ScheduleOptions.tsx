@@ -134,7 +134,7 @@ const ScheduleOptions = () => {
               lastEvent.status === 'failed'),
         )}
       >
-        <>
+        <div className='flex space-x-2'>
           <UIButton
             onClick={async () => {
               if (scheduleWorkflowAction) {
@@ -172,7 +172,7 @@ const ScheduleOptions = () => {
           >
             Send Self Scheduling
           </UIButton>
-        </>
+        </div>
       </ShowCode.When>
       <ShowCode.When
         isTrue={Boolean(
