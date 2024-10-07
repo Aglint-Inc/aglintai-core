@@ -65,10 +65,11 @@ export const sendAglintMail = async ({
         company_id,
         react_email_placeholders,
         recipient_email,
-        api_target: 'debrief_email_interviewer',
+        api_target: target_api,
         overridedMailSubBody: parsed_body.overridedMailSubBody,
         job_id,
         attachments: mail_attachments,
+        portalMessage: fetched_data.candidate_portal_payload,
       });
     }
   }
