@@ -2,7 +2,7 @@
 /* eslint-disable security/detect-object-injection */
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import { Building2 } from 'lucide-react';
+import { Building } from 'lucide-react';
 import Image from 'next/image';
 
 import { NotFound } from '@/components/Common/404';
@@ -30,19 +30,17 @@ const CandidateInviteNew = () => {
   const { isLoading, isError } = useInviteMeta();
 
   return (
-    <div className='h-screen'>
-      <div className='w-full py-10'>
-        {isLoading ? (
-          <LoadingState />
-        ) : isError ? (
-          <ErrorState />
-        ) : (
-          <>
-            <CandidateInvitePlanPage />
-            <DetailsPopup />
-          </>
-        )}
-      </div>
+    <div className='w-full py-8'>
+      {isLoading ? (
+        <LoadingState />
+      ) : isError ? (
+        <ErrorState />
+      ) : (
+        <>
+          <CandidateInvitePlanPage />
+          <DetailsPopup />
+        </>
+      )}
     </div>
   );
 };
@@ -50,7 +48,7 @@ export default CandidateInviteNew;
 
 const LoadingState = () => (
   <div
-    className='flex h-screen w-full items-center justify-center'
+    className='flex w-full items-center justify-center'
     aria-live='polite'
     aria-busy='true'
   >
@@ -64,7 +62,7 @@ const LoadingState = () => (
 );
 
 const ErrorState = () => (
-  <div className='flex h-screen w-full items-center justify-center'>
+  <div className='flex w-full items-center justify-center'>
     <div className='text-center'>
       <NotFound />
       <p className='mt-4 text-gray-600'>
@@ -118,7 +116,7 @@ const CandidateInvitePlanPage = () => {
 
   if (meta?.meetings.length === 0)
     return (
-      <div className='h-screen w-full'>
+      <div className='w-full'>
         <NotFound />
       </div>
     );
@@ -139,8 +137,8 @@ const CandidateInvitePlanPage = () => {
     );
 
   return (
-    <div className='bg-sand-3 flex w-full flex-col items-center justify-center py-4'>
-      <Card className='border-neutral-6 w-full max-w-[900px] space-y-4'>
+    <div className='flex w-full flex-col items-center justify-center py-4'>
+      <Card className='w-full max-w-[900px] space-y-4'>
         <CardHeader className='space-y-2 text-center'>
           <div className='flex w-full justify-center'>
             <Logo
@@ -213,7 +211,7 @@ const Logo = ({ companyName, logo }: { companyName: string; logo: string }) => {
           }}
         />
         <div className='fallback absolute inset-0 hidden items-center justify-center'>
-          <Building2 className='h-10 w-10 text-muted-foreground' />
+          <Building className='h-10 w-10 text-muted-foreground' />
         </div>
       </div>
     </div>

@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Input } from '@components/ui/input';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { Building2, CheckCircle, MapPin, Users } from 'lucide-react';
+import { Building, CheckCircle, MapPin, Users } from 'lucide-react';
 import React, { useState } from 'react';
 import {
   FacebookShareButton,
@@ -108,7 +108,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                 alt={recruiter?.name}
               />
               <AvatarFallback>
-                <Building2 className='h-12 w-12' />
+                <Building className='h-12 w-12' />
               </AvatarFallback>
             </Avatar>
             <h3 className='text-xl font-semibold'>{recruiter?.name}</h3>
@@ -140,7 +140,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                   alt={recruiter?.name}
                 />
                 <AvatarFallback>
-                  <Building2 className='h-12 w-12' />
+                  <Building className='h-12 w-12' />
                 </AvatarFallback>
               </Avatar>
               <div>
