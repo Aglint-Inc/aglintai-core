@@ -3,10 +3,8 @@ import { type DatabaseEnums } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
-import { UIAlert } from '@components/ui-alert';
 import { useRequest } from '@request/hooks';
 import axios from 'axios';
-import { Plus } from 'lucide-react';
 import React from 'react';
 
 import { useTenant } from '@/company/hooks';
