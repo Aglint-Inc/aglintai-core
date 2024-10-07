@@ -92,12 +92,6 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                   )}
                   <span>{capitalizeSentence(job?.job_title ?? '---')}</span>
                 </div>
-                {/* <div className='flex items-center space-x-2 mt-1'>
-                  <Building className='h-4 w-4 text-gray-400' />
-                  <span className='text-sm text-gray-600'>
-                    {job?.department ?? '---'}
-                  </span>
-                </div> */}
               </div>
             </TableCell>
             <TableCell>

@@ -16,7 +16,7 @@ export const usePortalHomePage = ({
     enabled: !!application_id,
   });
 
-  return { ...query };
+  return { ...query, data: query.data! };
 };
 
 const fetchHomePage = async (application_id: string) => {
