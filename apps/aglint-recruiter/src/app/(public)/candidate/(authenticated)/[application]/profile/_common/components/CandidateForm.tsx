@@ -10,7 +10,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select';
-import axios from 'axios';
 import { useRef, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import {
@@ -21,7 +20,10 @@ import {
 import { supabase } from '@/utils/supabase/client';
 import timeZone from '@/utils/timeZone';
 
-import { useCandidatePortalProfile } from '../hooks';
+import {
+  useCandidatePortalProfile,
+  useCandidatePortalProfileUpdate,
+} from '../hooks';
 import ImageUploadManual from './ImageUpload';
 
 type LoginFormInputs = {
@@ -43,7 +45,7 @@ export default function CandidateForm({
   const { application_id } = useCandidatePortal();
   const { data, refetch: profileRefetch } = useCandidatePortalProfile();
   const { refetch: navRefetch } = useCandidatePortalNavbar();
-
+  const { mutateAsync, status } = useCandidatePortalProfileUpdate();
   // const [form, setForm] = useState(data);
   const [loading, setLoading] = useState(false);
   const [isImageChanged, setIsImageChanged] = useState(false);
@@ -90,23 +92,18 @@ export default function CandidateForm({
 
       const payload = {
         application_id,
-        details: {
-          first_name: form.first_name,
-          last_name: form.last_name,
-          email: form.email,
-          timezone: form.timezone,
-          phone: form.phone,
-          linkedin: form.linkedin,
-          avatar: profile_image,
-        },
+        first_name: form.first_name,
+        last_name: form.last_name,
+        email: form.email,
+        timezone: form.timezone,
+        phone: form.phone,
+        linkedin: form.linkedin,
+        avatar: profile_image,
       };
 
-      const { status } = await axios.post(
-        '/api/candidate_portal/update_profile',
-        payload,
-      );
+      await mutateAsync({ ...payload });
 
-      if (status !== 200) {
+      if (status !== 'success') {
         throw new Error('Profile update failed');
       }
       await navRefetch();
