@@ -7,7 +7,7 @@ export const useInviteSlots = () => {
   const timezone = useCandidateInviteStore((state) => state.timezone);
   const router = useRouterPro();
   const query = api.scheduling.candidate_invite.slots.useQuery({
-    filter_json_id: router.queryParams.filter_id as string,
+    filter_json_id: router.params.filter,
     candidate_tz: timezone.tzCode,
     api_options: {
       include_conflicting_slots: {

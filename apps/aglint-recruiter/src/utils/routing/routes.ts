@@ -137,10 +137,6 @@ const interviews = {
     pageRouteBuilder([interviews['/interviews'](), 'view']),
 } as const;
 
-const scheduling = {
-  '/scheduling/invite/[id]': ({ id }: { id: string }) =>
-    pageRouteBuilder(['/scheduling/', 'invite', id]),
-} as const;
 const screening = {
   '/screening': () => pageRouteBuilder([ROUTES.app(), 'screening']),
   '/screening/[id]': ({ id }: { id: string }) =>
@@ -210,7 +206,6 @@ const ROUTES = {
   ...profileLink,
   ...resetPassword,
   ...interviews,
-  ...scheduling,
   ...screening,
   ...screeningDashboard,
   ...signup,
