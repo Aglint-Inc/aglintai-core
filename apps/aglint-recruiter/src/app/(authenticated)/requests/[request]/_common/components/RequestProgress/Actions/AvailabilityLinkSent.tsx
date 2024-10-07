@@ -19,7 +19,7 @@ const AvailabilityLinkSent = (
             onClick={() => {
               setIsCopied(true);
               navigator.clipboard.writeText(
-                `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${progress_row.meta.avail_req_id}`,
+                `${process.env.NEXT_PUBLIC_HOST_NAME}/request-availability/${progress_row.meta.avail_req_id}`,
               );
               setTimeout(() => {
                 setIsCopied(false);

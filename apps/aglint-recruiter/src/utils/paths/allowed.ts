@@ -172,7 +172,7 @@ export const allowedPaths = new Set<t>([
 // Define route prefixes that expect a UUID at the end
 const dynamicPublicRoutePrefixes = [
   '/self-scheduling',
-  '/scheduling/request-availability',
+  '/request-availability',
   '/company-postings',
   '/job-post',
 ];

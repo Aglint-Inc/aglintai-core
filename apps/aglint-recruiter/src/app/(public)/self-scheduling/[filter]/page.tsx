@@ -5,7 +5,7 @@ import { PublicPageLayout } from '@components/layouts/public-layout';
 import Footer from '@/common/Footer';
 import { SeoPro } from '@/components/Common/SeoPro';
 
-import SchedulingPageHeader from '../../scheduling/_common/_components/Header';
+import SchedulingPageHeader from '../../_common/_components/SchedulingPageHeader';
 import CandidateInviteNew from './_common/components';
 import { useInviteMeta } from './_common/hooks/useInviteMeta';
 
