@@ -34,7 +34,7 @@ export function WorkflowConnectedCard({
       <CardContent className='relative p-0'>
         {/* <div className='flex flex-col gap-1'>
           <div className='flex items-center gap-2'>
-            <Building2 size={14} />
+            <Building size={14} />
             <p>{textRoleCategory}</p>
           </div>
           <div className='flex items-center gap-2'>

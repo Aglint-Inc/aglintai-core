@@ -68,7 +68,7 @@ const mutation = async ({
         ...input.request,
         assigner_id: ctx.user_id,
         status: 'to_do',
-        title: `Schedule ${sessions} for ${name}`,
+        title: `Schedule ${sessions} for ${application.name}`,
       },
     })
     .throwOnError();

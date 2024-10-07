@@ -26,7 +26,6 @@ function ATSTools({
   const [isOpen, setIsOpen] = useState(false);
   const [reason, setReason] = useState<PopUpReasonTypes>();
   const [isLoading, setLoading] = useState(false);
-  const [inputValue, setInputValue] = useState('');
 
   async function action(): Promise<boolean> {
     try {
@@ -223,9 +222,8 @@ function ATSTools({
           .then(({ data }) => {
             if (data) {
               setTimeout(() => {
-                inputRef?.current?.value &&
+                inputRef?.current &&
                   (inputRef.current.value = (data as string) || '');
-                setInputValue(data);
               }, 10);
             }
           });
@@ -247,9 +245,8 @@ function ATSTools({
         .then(({ data }) => {
           if (data) {
             setTimeout(() => {
-              inputRef?.current?.value &&
+              inputRef?.current &&
                 (inputRef.current.value = (data as string) || '');
-              setInputValue(data);
             }, 10);
           }
         });
@@ -265,9 +262,9 @@ function ATSTools({
         .then(({ data }) => {
           if (data) {
             setTimeout(() => {
-              inputRef?.current?.value &&
-                (inputRef.current.value = (data as string) || '');
-              setInputValue(data);
+              if (inputRef?.current && data) {
+                inputRef.current.value = (data as string) || '';
+              }
             }, 10);
           }
         });
@@ -397,7 +394,6 @@ function ATSTools({
         action={action}
         reason={reason!}
         isLoading={isLoading}
-        inputValue={inputValue}
       />
     </>
   );

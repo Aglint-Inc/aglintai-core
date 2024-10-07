@@ -1,6 +1,6 @@
 import { Label } from '@components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
-import { TriangleAlert } from 'lucide-react';
+import { UIAlert } from '@components/ui-alert';
 import React, { type ComponentProps } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -47,7 +47,7 @@ function RequestCancelDialog({
     <UIDialog
       open={isCancelRescheduleDialogOpen === 'cancel'}
       onClose={() => setIsRescheduleCancelOpen(null)}
-      title={'Cancel Schedule'}
+      title={'Cancel Interview'}
       slotButtons={
         <>
           <UIButton
@@ -67,7 +67,7 @@ function RequestCancelDialog({
               })
             }
           >
-            Cancel
+            Cancel Interview
           </UIButton>
         </>
       }
@@ -120,25 +120,21 @@ export function CancelSchedile({
 }: RequestRescheduleProps) {
   return (
     <div className='space-y-4'>
-      <div className='flex items-start space-x-2 rounded-lg bg-red-50 p-3'>
-        <TriangleAlert className='h-6 w-6' />
-        <div className='flex flex-col space-y-1'>
-          <p className='text-sm'>
-            If you wish to keep this job opportunity open, consider opting for
-            rescheduling rather than canceling.
-          </p>
-        </div>
-      </div>
-      <div className='space-y-2'>
-        <p className='text-sm text-neutral-600'>
+      <UIAlert type='warning' title='Consider Rescheduling'>
+        If you wish to keep this job opportunity open, consider opting for
+        rescheduling rather than canceling.
+      </UIAlert>
+      <div className='space-y-4'>
+        <Label className='text-sm text-neutral-600'>
           Please provide a reason to cancel.
-        </p>
-        {slotRadioText}
+          {slotRadioText}
+        </Label>
       </div>
-
       <div className='space-y-2'>
-        <p className='text-sm text-neutral-600'>Additional Notes</p>
-        {slotInputAdditionalNotes}
+        <Label className='text-sm text-neutral-600'>
+          Additional Notes
+          {slotInputAdditionalNotes}
+        </Label>
       </div>
     </div>
   );

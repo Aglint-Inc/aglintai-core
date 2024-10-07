@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Building2, Trash2, Upload, UserCircle } from 'lucide-react';
+import { Building, Trash2, Upload, UserCircle } from 'lucide-react';
 import { type MutableRefObject, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
@@ -56,7 +56,7 @@ function ImageUploadManual({
             {router.pathName.includes(ROUTES['/profile']()) ? (
               <UserCircle className='h-6 w-6 text-muted-foreground' />
             ) : (
-              <Building2 className='h-6 w-6 text-muted-foreground' />
+              <Building className='h-6 w-6 text-muted-foreground' />
             )}
           </AvatarFallback>
         </Avatar>

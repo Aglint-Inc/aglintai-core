@@ -28,7 +28,7 @@ import {
 } from 'date-fns';
 import {
   BriefcaseBusiness,
-  Building2,
+  Building,
   CalendarIcon,
   MapPin,
   X,
@@ -152,7 +152,7 @@ export default function Component() {
             (department) => handleFilterChange({ department: department }),
             'department',
             filtersOptions.department,
-            <Building2 className='h-4 w-4' />,
+            <Building className='h-4 w-4' />,
           )}
 
           {renderSelect(

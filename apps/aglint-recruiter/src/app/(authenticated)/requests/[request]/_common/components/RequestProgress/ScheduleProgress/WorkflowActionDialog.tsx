@@ -5,13 +5,11 @@ import {
 import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@components/ui/card';
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { useRequest } from '@request/hooks';
 import get from 'lodash/get';
@@ -19,7 +17,6 @@ import { Terminal } from 'lucide-react';
 import React, { useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
-import { UIDivider } from '@/components/Common/UIDivider';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import {
   availReminder,
@@ -179,55 +176,51 @@ const WorkflowActionDialog = () => {
     }
   };
   return (
-    <Card className='border-0 shadow-none'>
-      <CardHeader className='p-4'>
-        <CardTitle className='flex text-lg'>
+    <>
+      <DialogHeader className='border-b border-border p-4'>
+        <DialogTitle className='flex text-lg'>
           <Terminal width={24} height={24} className='mr-4' />
           Action
-        </CardTitle>
-        <CardDescription>An action to be performed</CardDescription>
-      </CardHeader>
-      <UIDivider />
-      <CardContent className='p-0'>
-        <ScrollArea className='h-96'>
-          <div className='space-y-4 p-6'>
-            <UISelectDropDown
-              label='Do this'
-              onValueChange={(value) => {
-                handleChangeSelectedAction(value as any);
-              }}
-              value={selectedActionsDetails.target_api}
-              menuOptions={ACTION_TRIGGER_MAP[triggerDetails.trigger].map(
-                (action) => ({
-                  name: action.name,
-                  value: action.value.target_api,
-                }),
-              )}
-            />
-            {(triggerDetails.trigger === 'sendAvailReqReminder' ||
-              triggerDetails.trigger === 'selfScheduleReminder') && (
-              <UISelectDropDown
-                label='Remind After'
-                value={String(triggerDetails.interval)}
-                onValueChange={(value) => {
-                  setTriggerDetails({
-                    trigger: triggerDetails.trigger,
-                    interval: Number(value),
-                  });
-                }}
-                menuOptions={[
-                  { name: '1 day', value: String(24 * 60) },
-                  { name: '2 day', value: String(48 * 60) },
-                  { name: '3 day', value: String(72 * 60) },
-                ]}
-              />
+        </DialogTitle>
+        <DialogDescription>An action to be performed</DialogDescription>
+      </DialogHeader>
+      <ScrollArea className='h-96'>
+        <div className='space-y-4 px-4'>
+          <UISelectDropDown
+            label='Do this'
+            onValueChange={(value) => {
+              handleChangeSelectedAction(value as any);
+            }}
+            value={selectedActionsDetails.target_api}
+            menuOptions={ACTION_TRIGGER_MAP[triggerDetails.trigger].map(
+              (action) => ({
+                name: action.name,
+                value: action.value.target_api,
+              }),
             )}
-            <TargetAPIBody action={selectedActionsDetails} />
-          </div>
-        </ScrollArea>
-      </CardContent>
-      <UIDivider />
-      <CardFooter className='flex justify-end gap-2 p-4'>
+          />
+          {(triggerDetails.trigger === 'sendAvailReqReminder' ||
+            triggerDetails.trigger === 'selfScheduleReminder') && (
+            <UISelectDropDown
+              label='Remind After'
+              value={String(triggerDetails.interval)}
+              onValueChange={(value) => {
+                setTriggerDetails({
+                  trigger: triggerDetails.trigger,
+                  interval: Number(value),
+                });
+              }}
+              menuOptions={[
+                { name: '1 day', value: String(24 * 60) },
+                { name: '2 day', value: String(48 * 60) },
+                { name: '3 day', value: String(72 * 60) },
+              ]}
+            />
+          )}
+          <TargetAPIBody action={selectedActionsDetails} />
+        </div>
+      </ScrollArea>
+      <DialogFooter className='flex justify-end gap-2 rounded-b-lg bg-gray-100 p-4'>
         <Button variant='outline' onClick={() => setShowEditDialog(false)}>
           Cancel
         </Button>
@@ -251,8 +244,8 @@ const WorkflowActionDialog = () => {
             <>{isSaving ? 'Adding...' : 'Add Action'}</>
           )}
         </Button>
-      </CardFooter>
-    </Card>
+      </DialogFooter>
+    </>
   );
 };
 
