@@ -78,7 +78,7 @@ export const JobNewInterviewPlanDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <Loader variant='full' />
+    <Loader />
   );
 };
 

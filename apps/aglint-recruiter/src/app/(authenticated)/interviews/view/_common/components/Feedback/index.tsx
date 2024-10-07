@@ -8,11 +8,6 @@ import {
   Calendar,
   Circle,
   Clock,
-  Mail,
-  MessageSquare,
-  Pen,
-  Plus,
-  Star,
   User,
   Users,
 } from 'lucide-react';
