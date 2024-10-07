@@ -126,35 +126,6 @@ const AvailabilityFlowMenus = ({
                 </Button>
           }
           />
-          <div>
-            <Alert
-              variant='default'
-              className='mb-4 border-purple-200 bg-purple-100 p-3'
-            >
-              <div className='flex flex-row items-center gap-1 text-purple-600 mb-2'>
-              <Lightbulb className='h-4 w-4  ' />
-              <div className='text-sm'>Suggestion</div>
-              </div>
-              <AlertDescription className='flex flex-col items-start'>
-                <p className='mb-2 w-full text-sm'>
-                  Add Reminders to candidate for follow up.
-                </p>
-                <Button
-                  variant='outline'
-                  size='sm'
-                  onClick={() => {
-                    setTriggerDetails({
-                      trigger: 'sendAvailReqReminder',
-                      interval: 24 * 60,
-                    });
-                    setShowEditDialog(true);
-                  }}
-                >
-                  Schedule Reminder
-                </Button>
-              </AlertDescription>
-            </Alert>
-          </div>
         </div>
       </ShowCode.When>
       <ShowCode.When

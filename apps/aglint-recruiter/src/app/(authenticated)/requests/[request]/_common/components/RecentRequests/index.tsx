@@ -36,14 +36,8 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
         <SectionHeaderText>
           <SectionTitle>Recent Requests</SectionTitle>
         </SectionHeaderText>
-        <div className='flex flex-col space-y-4'>
+        <div className='flex flex-col gap-3 mt-2'>
           {recentRequests.length === 0 ? (
-            // <div className='flex flex-col items-center justify-center space-y-2'>
-            //   <LayoutList className='h-8 w-8 text-gray-400' />
-            //   <span className='text-sm text-muted-foreground'>
-            //     Recent requests not found
-            //   </span>
-            // </div>
             <EmptyState header='Recent requests not found' icon={LayoutList} />
           ) : (
             recentRequests.map((request, index) => {
