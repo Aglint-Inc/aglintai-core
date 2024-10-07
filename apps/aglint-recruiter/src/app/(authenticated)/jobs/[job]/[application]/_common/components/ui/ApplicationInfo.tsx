@@ -1,4 +1,5 @@
 'use client';
+import InterviewStages from '@components/interview-stage';
 import {
   BriefcaseBusiness,
   LinkedinIcon,
@@ -22,6 +23,33 @@ export function ApplicantInfoBox({
   isRoleVisible = true,
   isDepartmentVisible = true,
 }) {
+  const stagesDemo = [
+    {
+      testName: 'Application',
+      description: 'Submit resume and cover letter',
+      status: 'completed' as const,
+    },
+    {
+      testName: 'Phone Screen',
+      description: 'Initial 30-minute call',
+      status: 'completed' as const,
+    },
+    {
+      testName: 'Technical Interview',
+      description: 'Coding and system design',
+      status: 'in_progress' as const,
+    },
+    {
+      testName: 'On-site Interview',
+      description: 'Full day of interviews',
+      status: 'not_started' as const,
+    },
+    {
+      testName: 'Offer',
+      description: 'Final decision and negotiation',
+      status: 'not_started' as const,
+    },
+  ];
   return (
     <div className='-m-4 flex flex-col gap-y-2 rounded-t-md px-4 pt-4'>
       <h1 className='text-2xl font-semibold'>{candidateName}</h1>
@@ -84,6 +112,18 @@ export function ApplicantInfoBox({
         </div>
       </dl>
       <div className='flex flex-col py-2'>
+        <div className='space-y-6 p-4'>
+          <h2 className='text-2xl font-bold'>Horizontal Layout</h2>
+          <InterviewStages stages={stagesDemo} orientation='horizontal' />
+
+          <h2 className='text-2xl font-bold'>Vertical Layout</h2>
+          <InterviewStages
+            stages={stagesDemo}
+            orientation='vertical'
+            className='max-w-md'
+          />
+        </div>
+
         <h2 className='text-md font-semibold'>Overview</h2>
         <p className='text-sm text-muted-foreground'>
           Candidate overview impsum dolor sit amet consectetur adipisicing elit.

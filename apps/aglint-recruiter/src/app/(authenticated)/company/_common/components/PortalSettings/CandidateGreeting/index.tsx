@@ -1,6 +1,6 @@
 import { EmptyState } from '@components/empty-state';
 import { ScrollArea } from '@components/ui/scroll-area';
-import { CircleUser, Plus, SquarePen } from 'lucide-react';
+import { CircleUser, Pen, Plus } from 'lucide-react';
 import { useState } from 'react';
 
 import { UIButton } from '@/common/UIButton';
@@ -50,7 +50,7 @@ export default function CandidateGreeting() {
               variant='outline'
               onClick={() => setIsDialogOpen(true)}
               size='sm'
-              leftIcon={<SquarePen className='mr-2 h-3 w-3' />}
+              leftIcon={<Pen className='mr-2 h-3 w-3' />}
             >
               Edit
             </UIButton>

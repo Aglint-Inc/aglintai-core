@@ -1,9 +1,18 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-unused-vars */
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { useState } from 'react';
 
-import { UIButton } from '@/common/UIButton';
-import UIDialog from '@/common/UIDialog';
 import { JobCoordinator } from '@/jobs/create/components/form';
 
 function DeleteMemberDialog({
@@ -109,7 +118,7 @@ function DeleteMemberDialog({
         <p className='font-medium'>
           You are about to suspend {name} from the system.
         </p>
-        <ul className='list-disc space-y-2 pl-5'>
+        <ul className='list-disc space-y-2 pl-5 text-sm'>
           <li> Once suspended, {name} will not have login access.</li>
           <li>
             The user will be removed from interview types, so no new interviews
@@ -183,23 +192,20 @@ function DeleteMemberDialog({
     //       : null;
   };
   return (
-    <UIDialog
-      open={Boolean(reason)}
-      onClose={close}
-      title={title}
-      slotButtons={
-        <>
-          <UIButton variant='secondary' onClick={close}>
-            Cancel
-          </UIButton>
-          <UIButton size='md' onClick={onClick}>
-            {button_text}
-          </UIButton>
-        </>
-      }
-    >
-      {description}
-    </UIDialog>
+    <AlertDialog open={Boolean(reason)} onOpenChange={close}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{title}</AlertDialogTitle>
+          <AlertDialogDescription>
+            <ScrollArea className='h-64'>{description}</ScrollArea>
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel onClick={close}>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={onClick}>{button_text}</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 

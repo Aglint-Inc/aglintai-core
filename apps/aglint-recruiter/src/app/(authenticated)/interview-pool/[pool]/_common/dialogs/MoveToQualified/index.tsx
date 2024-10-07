@@ -1,11 +1,19 @@
 import { getFullName } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog';
 import { useState } from 'react';
 import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
 import { useTenant } from '@/company/hooks';
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
 import { supabase } from '@/utils/supabase/client';
 
 import {
@@ -50,34 +58,31 @@ function MoveToQualifiedDialog() {
   const user = members?.find((user) => user?.user_id == selUser?.user_id);
 
   return (
-    <UIDialog
+    <AlertDialog
       open={isMovedToQualifiedDialogOpen}
-      onClose={() => {
-        setIsMovedToQualifiedDialogOpen(false);
-      }}
-      title={'Move to Qualified'}
-      slotButtons={
-        <>
-          <UIButton
-            variant='secondary'
-            onClick={() => {
-              setIsMovedToQualifiedDialogOpen(false);
-            }}
+      onOpenChange={setIsMovedToQualifiedDialogOpen}
+    >
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Move to Qualified</AlertDialogTitle>
+          <AlertDialogDescription>
+            Are you sure you want to move{' '}
+            {getFullName(user?.first_name ?? '', user?.last_name ?? '')} to
+            qualified?
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel
+            onClick={() => setIsMovedToQualifiedDialogOpen(false)}
           >
             Cancel
-          </UIButton>
-          <UIButton
-            variant='default'
-            isLoading={isSaving}
-            onClick={moveToQualified}
-          >
-            Move
-          </UIButton>
-        </>
-      }
-    >
-      {`Are you sure you want to move ${getFullName(user?.first_name ?? '', user?.last_name ?? '')} to qualified?`}
-    </UIDialog>
+          </AlertDialogCancel>
+          <AlertDialogAction onClick={moveToQualified} disabled={isSaving}>
+            {isSaving ? 'Moving...' : 'Move'}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 

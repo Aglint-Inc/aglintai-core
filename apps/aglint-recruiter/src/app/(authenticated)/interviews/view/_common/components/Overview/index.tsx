@@ -1,8 +1,8 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { getBreakLabel } from '@aglint/shared-utils';
-import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { AlertCircle, Globe, SquareArrowOutUpRight, User } from 'lucide-react';
+import { UIAlert } from '@components/ui-alert';
+import { Globe, SquareArrowOutUpRight, User } from 'lucide-react';
 import Link from 'next/link';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
@@ -62,13 +62,9 @@ function Overview() {
             );
           })
         ) : (
-          <Alert variant='info'>
-            <AlertCircle strokeWidth={1.5} className='text-muted-foreground' />
-            <AlertTitle>No Interviewers Assigned</AlertTitle>
-            <AlertDescription>
-              Interviewers will be decided once the interview is confirmed.
-            </AlertDescription>
-          </Alert>
+          <UIAlert variant='alert'>
+            <p>Interviewers will be decided once the interview is confirmed.</p>
+          </UIAlert>
         )
       }
       slotHiringTeamList={<AllRolesMeetings />}

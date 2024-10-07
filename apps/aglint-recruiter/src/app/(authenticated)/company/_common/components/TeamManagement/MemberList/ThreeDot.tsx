@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import axios from 'axios';
-import { Edit, Lock, Mail, MoreHorizontal, Power, Trash } from 'lucide-react';
+import { Lock, Mail, MoreHorizontal, Pen, Power, Trash } from 'lucide-react';
 import { useState } from 'react';
 
 import { useTenant, type useTenantMembers } from '@/company/hooks';
@@ -141,7 +141,7 @@ export const UserListThreeDot = ({
         <DropdownMenuContent align='end'>
           {member.status !== 'invited' && (
             <DropdownMenuItem onClick={() => handleAction('edit')}>
-              <Edit className='mr-2 h-4 w-4' /> Edit
+              <Pen className='mr-2 h-4 w-4' /> Edit
             </DropdownMenuItem>
           )}
           {member.status === 'invited' && (
