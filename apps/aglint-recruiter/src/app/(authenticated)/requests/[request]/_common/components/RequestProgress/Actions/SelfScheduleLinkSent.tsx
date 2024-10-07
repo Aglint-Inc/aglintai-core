@@ -2,7 +2,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
 import { useRequests } from '@requests/hooks';
-import { Check } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 const SelfScheduleLinkSent = (args: DatabaseTable['request_progress']) => {
@@ -19,10 +18,6 @@ const SelfScheduleLinkSent = (args: DatabaseTable['request_progress']) => {
   return (
     <>
       <div className='flex items-center space-x-2'>
-        <Check className='h-5 w-5 text-muted-foreground' />
-        <span className='text-sm text-muted-foreground'>
-          Candidate self schedule link
-        </span>
         <Button
           variant='outline'
           size='sm'
@@ -36,7 +31,9 @@ const SelfScheduleLinkSent = (args: DatabaseTable['request_progress']) => {
             }, 3000);
           }}
         >
-          {isCopied ? 'Copied' : 'Copy'}
+          {isCopied
+            ? 'Copied Self Scheduling Link'
+            : 'Copy Self Scheduling Link'}
         </Button>
       </div>
     </>

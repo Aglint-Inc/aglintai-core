@@ -199,11 +199,12 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
   const { data } = await db
     .from('recruiter_relation')
     .select(
-      'recruiter_id, roles!inner(name, role_permissions!inner(permissions!inner(name, is_enable)))',
+      'recruiter_id,recruiter(primary_admin), roles!inner(name, role_permissions!inner(permissions!inner(name, is_enable)))',
     )
     .eq('user_id', user.id)
     .single()
     .throwOnError();
+  data?.recruiter?.primary_admin;
 
   if (!data || !data?.roles?.role_permissions)
     throw new TRPCError({
@@ -213,7 +214,7 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
 
   const {
     recruiter_id,
-    roles: { role_permissions },
+    roles: { name: role, role_permissions },
   } = data;
   const permissions = role_permissions.reduce(
     (acc, { permissions: { is_enable, name } }) => {
@@ -231,6 +232,8 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
       ...ctx,
       user_id,
       recruiter_id,
+      role,
+      is_primary_admin: data.recruiter?.primary_admin === user_id,
     },
   });
 });

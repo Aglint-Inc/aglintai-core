@@ -14,11 +14,11 @@ const schema = customRecruiterUserUpdateSchema.extend({
 });
 
 const query = async ({
-  ctx: { recruiter_id },
+  ctx: { recruiter_id, role: user_role, is_primary_admin },
   input: data,
 }: PrivateProcedure<typeof schema>) => {
   const db = createPublicClient();
-  const temp_role = await checkRole(db, data.user_id);
+  const old_role = await checkRoleEdibility(db, data.user_id);
   let role: string;
   let role_id = data.role_id;
   let manager_id = data.manager_id;
@@ -26,8 +26,11 @@ const query = async ({
   delete data.manager_id;
   // @ts-ignore - in data manager_id is required but for setMembers manager_id is optional
   const userData = await setMembers(db, data);
-
-  if (userData && temp_role == 'admin') {
+  if (
+    userData &&
+    user_role == 'admin' &&
+    (old_role !== 'admin' || is_primary_admin)
+  ) {
     const temp = await setRelation(db, {
       user_id: userData.user_id,
       recruiter_id,
@@ -37,7 +40,6 @@ const query = async ({
     role = temp.role;
     role_id = temp.role_id;
     manager_id = temp.manager_id || undefined;
-
     return {
       data: {
         ...userData,
@@ -96,7 +98,10 @@ async function setRelation(
   };
 }
 
-async function checkRole(supabaseAdmin: SupabaseClientType, user_id: string) {
+async function checkRoleEdibility(
+  supabaseAdmin: SupabaseClientType,
+  user_id: string,
+) {
   const qData = (
     await supabaseAdmin
       .from('recruiter_relation')
