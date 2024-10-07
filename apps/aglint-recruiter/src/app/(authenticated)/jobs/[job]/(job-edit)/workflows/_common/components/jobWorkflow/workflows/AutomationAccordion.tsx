@@ -107,8 +107,12 @@ export const AutomationAccordion = ({
 };
 
 export const categoryToIcon: Record<TriggerCategory, JSX.Element> = {
-  'Candidate Experience': <User className='h-4 w-4' />,
-  'Interviewer Management': <UserCheck className='h-4 w-4' />,
-  'Interview Process': <Clock className='h-4 w-4' />,
-  'Scheduling Management': <Calendar className='h-4 w-4' />,
+  'Candidate Experience': <User className='h-4 w-4 text-muted-foreground' />,
+  'Interviewer Management': (
+    <UserCheck className='h-4 w-4 text-muted-foreground' />
+  ),
+  'Interview Process': <Clock className='h-4 w-4 text-muted-foreground' />,
+  'Scheduling Management': (
+    <Calendar className='h-4 w-4 text-muted-foreground' />
+  ),
 };

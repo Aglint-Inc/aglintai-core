@@ -45,11 +45,17 @@ const ColumnViewRequestCard = ({ ...props }: RequestProps) => {
           </div>
           <div className='flex flex-col items-start gap-2 text-sm'>
             <div className='flex items-center'>
-              <Calendar className='mr-2 h-5 w-5' strokeWidth={1.5} />
+              <Calendar
+                className='mr-2 h-5 w-5 text-muted-foreground'
+                strokeWidth={1.5}
+              />
               {dayjsLocal(props.schedule_start_date).format('MMM D, YYYY')}
             </div>
             <div className='flex items-center'>
-              <User className='mr-2 h-5 w-5' strokeWidth={1.5} />
+              <User
+                className='mr-2 h-5 w-5 text-muted-foreground'
+                strokeWidth={1.5}
+              />
               {getFullName(
                 props.applications?.candidates?.first_name ?? '',
                 props.applications?.candidates?.last_name ?? '',

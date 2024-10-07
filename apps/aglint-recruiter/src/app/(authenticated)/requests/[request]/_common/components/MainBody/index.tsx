@@ -154,7 +154,7 @@ export default function ViewRequestDetails() {
                   </h1>
                   <div className='flex items-center space-x-4 text-sm text-muted-foreground'>
                     <div className='flex items-center space-x-1'>
-                      <User className='h-4 w-4' />
+                      <User className='h-4 w-4 text-muted-foreground' />
                       <Link
                         href={
                           ROUTES['/jobs/[job]/[application]']({
