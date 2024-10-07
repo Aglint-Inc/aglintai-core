@@ -187,10 +187,6 @@ export async function POST(req: Request) {
 
     const upcomingData = await getMeetings(application_id);
 
-    // interview plan -----------------------------------------------------------------
-
-    // .throwOnError();
-
     //final -----------------------------------------------------------------------------
     const data = {
       candidate: candidateData,

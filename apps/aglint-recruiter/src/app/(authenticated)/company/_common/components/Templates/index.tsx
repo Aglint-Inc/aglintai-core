@@ -366,7 +366,7 @@ function SchedulerEmailTemps() {
                                 ? 'default'
                                 : 'outline'
                             }
-                            className={`my-1 h-16 w-[330px] justify-start text-left ${emailPath.type === temp_email ? 'border bg-white text-foreground hover:bg-white' : 'bg-gray-50 text-foreground hover:bg-white'}`}
+                            className={`my-1 h-16 w-[330px] justify-start text-left ${emailPath.type === temp_email ? 'border bg-gray-100 text-foreground hover:bg-gray-50' : 'bg-white text-foreground hover:bg-gray-50'}`}
                             onClick={() => {
                               if (temp_email !== emailPath.type) {
                                 setTipTapLoder(true);
