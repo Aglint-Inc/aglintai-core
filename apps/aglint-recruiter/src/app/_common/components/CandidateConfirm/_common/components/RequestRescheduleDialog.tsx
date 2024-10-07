@@ -1,11 +1,19 @@
 import { dayjsLocal } from '@aglint/shared-utils';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
 import { Label } from '@components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import React, { type ComponentProps } from 'react';
 
+import { Loader } from '@/common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import { UIDatePicker } from '@/components/Common/UIDatePicker';
-import UIDialog from '@/components/Common/UIDialog';
 import { UITextArea } from '@/components/Common/UITextArea';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
@@ -47,21 +55,90 @@ function RequestRescheduleDialog({
   });
 
   return (
-    <UIDialog
+    <Dialog
       open={isCancelRescheduleDialogOpen === 'reschedule'}
-      onClose={() => setIsRescheduleCancelOpen(null)}
-      title={'Request Reschedule'}
-      slotButtons={
-        <>
+      onOpenChange={() => setIsRescheduleCancelOpen(null)}
+    >
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Request Reschedule Interview</DialogTitle>
+        </DialogHeader>
+        <DialogDescription>
+          Please select new dates for your interview and provide a reason for
+          the reschedule.
+        </DialogDescription>
+
+        <RequestReschedule
+          slotDateRangeInput={
+            <div className='flex gap-2'>
+              <UIDatePicker
+                value={new Date(dateRange.startDate)}
+                onAccept={(value) => {
+                  if (dayjsLocal(value) < dayjsLocal(dateRange.startDate)) {
+                    setDateRange({
+                      startDate: dayjsLocal(value).toISOString(),
+                      endDate: dateRange.endDate,
+                    });
+                  } else {
+                    setDateRange({
+                      startDate: dayjsLocal(value).toISOString(),
+                      endDate: '',
+                    });
+                  }
+                }}
+                closeOnSelect={true}
+              />
+              <UIDatePicker
+                value={new Date(dateRange.endDate)}
+                onAccept={(value) => {
+                  setDateRange({
+                    startDate: dateRange.startDate,
+                    endDate: dayjsLocal(value).toISOString(),
+                  });
+                }}
+                closeOnSelect={true}
+              />
+            </div>
+          }
+          slotRadioText={reasons.map((item, i) => (
+            <div key={i} className='flex flex-row gap-2'>
+              <RadioGroup>
+                <RadioGroupItem
+                  checked={item === reason}
+                  value={reason}
+                  onClick={() => {
+                    setReason(item);
+                  }}
+                  id={`radio-${item + 1}`}
+                />
+              </RadioGroup>
+              <Label htmlFor={item} className='text-sm'>
+                {capitalizeFirstLetter(item)}
+              </Label>
+            </div>
+          ))}
+          slotInputAdditionalNotes={
+            <UITextArea
+              className='resize-none'
+              placeholder='Add additional notes.'
+              rows={6}
+              value={other_details?.note}
+              fullWidth
+              onChange={(e) =>
+                setOtherDetails({ ...other_details, note: e.target.value })
+              }
+            />
+          }
+        />
+        <DialogFooter>
           <UIButton
-            variant='secondary'
+            variant='outline'
             onClick={() => setIsRescheduleCancelOpen(null)}
           >
             Close
           </UIButton>
           <UIButton
-            isLoading={isPending}
-            variant='default'
+            disabled={isPending}
             onClick={() => {
               mutate({
                 reason: reason,
@@ -70,74 +147,18 @@ function RequestRescheduleDialog({
               });
             }}
           >
-            Request Reschedule
+            {isPending ? (
+              <>
+                <Loader />
+                Please wait
+              </>
+            ) : (
+              'Request Reschedule'
+            )}
           </UIButton>
-        </>
-      }
-    >
-      <RequestReschedule
-        slotDateRangeInput={
-          <div className='flex gap-2'>
-            <UIDatePicker
-              value={new Date(dateRange.startDate)}
-              onAccept={(value) => {
-                if (dayjsLocal(value) < dayjsLocal(dateRange.startDate)) {
-                  setDateRange({
-                    startDate: dayjsLocal(value).toISOString(),
-                    endDate: dateRange.endDate,
-                  });
-                } else {
-                  setDateRange({
-                    startDate: dayjsLocal(value).toISOString(),
-                    endDate: '',
-                  });
-                }
-              }}
-              closeOnSelect={true}
-            />
-            <UIDatePicker
-              value={new Date(dateRange.endDate)}
-              onAccept={(value) => {
-                setDateRange({
-                  startDate: dateRange.startDate,
-                  endDate: dayjsLocal(value).toISOString(),
-                });
-              }}
-              closeOnSelect={true}
-            />
-          </div>
-        }
-        slotRadioText={reasons.map((item, i) => (
-          <div key={i} className='flex items-center space-x-2'>
-            <RadioGroup>
-              <RadioGroupItem
-                checked={item === reason}
-                value={reason}
-                onClick={() => {
-                  setReason(item);
-                }}
-                id={`radio-${item + 1}`}
-              />
-            </RadioGroup>
-            <Label htmlFor={item} className='text-sm'>
-              {capitalizeFirstLetter(item)}
-            </Label>
-          </div>
-        ))}
-        slotInputAdditionalNotes={
-          <UITextArea
-            className='resize-none'
-            placeholder='Add additional notes.'
-            rows={6}
-            value={other_details?.note}
-            fullWidth
-            onChange={(e) =>
-              setOtherDetails({ ...other_details, note: e.target.value })
-            }
-          />
-        }
-      />
-    </UIDialog>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -157,25 +178,22 @@ export function RequestReschedule({
   return (
     <div className='space-y-4'>
       {slotDateRangeInput && (
-        <div className='space-y-2'>
-          <p className='text-sm text-neutral-600'>
-            Please select new dates for your interview and provide a reason for
-            the reschedule.
-          </p>
-          {slotDateRangeInput}
-        </div>
+        <Label className='flex flex-col gap-2'>
+          New Interview Dates
+          <div className='space-y-2'>{slotDateRangeInput}</div>
+        </Label>
       )}
 
-      <div className='space-y-2'>
-        <p className='text-sm text-neutral-600'>
-          Please provide a reason to cancel.
-        </p>
+      <div className='flex flex-col gap-2'>
+        <Label>Please provide a reason to cancel.</Label>
         {slotRadioText}
       </div>
 
       <div className='space-y-2'>
-        <p className='text-sm text-neutral-600'>Additional Notes</p>
-        {slotInputAdditionalNotes}
+        <Label className='flex flex-col gap-2'>
+          Additional Notes
+          {slotInputAdditionalNotes}
+        </Label>
       </div>
     </div>
   );

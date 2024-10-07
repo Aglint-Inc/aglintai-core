@@ -29,7 +29,11 @@ const AvailabilityLinkSent = (
             variant={'secondary'}
           >
             Copy Availability Link
-            {isCopied ? <Check size={16} className='ml-2 w-3 h-3' /> : <Copy size={16} className='ml-2  w-3 h-3' />}
+            {isCopied ? (
+              <Check size={16} className='ml-2 h-3 w-3' />
+            ) : (
+              <Copy size={16} className='ml-2 h-3 w-3' />
+            )}
           </Button>
         </Tooltip>
       </div>

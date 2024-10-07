@@ -3,8 +3,8 @@ import { cn } from '@lib/utils';
 import { Clock } from 'lucide-react';
 
 export function CandidateScheduleCard({
-  textDay = 'Day2',
-  textDuration = '2 hour 45 Minutes',
+  textDay,
+  textDuration,
   isTitle = true,
   isSelected = false,
   slotButton,
@@ -19,8 +19,7 @@ export function CandidateScheduleCard({
 }) {
   return (
     <Card
-      className={cn('relative overflow-hidden', isSelected && 'bg-neutral-100')}
-      // onClick={onClickCard}
+      className={cn('relative overflow-hidden', isSelected && 'bg-gray-100')}
     >
       <CardContent className='space-y-4 p-4'>
         {isTitle && (
@@ -37,21 +36,8 @@ export function CandidateScheduleCard({
           </div>
         </div>
 
-        <div className='space-y-2'>
-          {slotSessionInfo || (
-            <>
-              <SessionInfo />
-              <SessionInfo />
-              <SessionInfo />
-            </>
-          )}
-        </div>
+        <div className='space-y-2'>{slotSessionInfo}</div>
       </CardContent>
     </Card>
-  );
-}
-function SessionInfo() {
-  return (
-    <div className='rounded bg-gray-100 p-2'>Session Info Placeholder</div>
   );
 }
