@@ -1,12 +1,14 @@
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { UIAlert } from '@components/ui-alert';
 import dayjs from 'dayjs';
-import { AlertCircle } from 'lucide-react';
+import { AlertTriangle, RefreshCcw } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { ConfirmedInvitePage } from 'src/app/_common/components/CandidateConfirm/_common/components';
 import { type CandidateInviteType } from 'src/app/(public)/scheduling/invite/[id]/_common/store';
 
+import { UIButton } from '@/common/UIButton';
 import { Loader } from '@/components/Common/Loader';
 import timeZones from '@/utils/timeZone';
 
@@ -104,7 +106,7 @@ function CandidateAvailability() {
   }
   if (!isFetched) {
     return (
-      <div className='flex h-[100vh] w-full items-center justify-center'>
+      <div className='flex w-full items-center justify-center'>
         <Loader />
       </div>
     );
@@ -112,32 +114,47 @@ function CandidateAvailability() {
 
   if (!candidateRequestAvailability) {
     return (
-      <div className='flex min-h-screen flex-col items-center justify-center bg-gray-100'>
+      <div className='flex w-full items-center justify-center'>
         <div className='text-center'>
-          <h1 className='mb-4 text-6xl font-bold text-gray-800'>404</h1>
-          <p className='mb-8 text-xl text-gray-600'>Page not found</p>
-          <div className='flex justify-center'>
-            <AlertCircle className='h-16 w-16 text-destructive' />
-          </div>
+          <AlertTriangle
+            className='mx-auto h-12 w-12 text-red-500'
+            strokeWidth={1}
+          />
+          <p className='mt-4 text-muted-foreground'>
+            We couldn&apos;t load your availability link.
+          </p>
+          <p className='mt-2 text-sm text-muted-foreground'>
+            Contact the recruiter or try again.
+          </p>
+          <UIButton
+            variant='outline'
+            className='mt-4'
+            onClick={() => window.location.reload()}
+          >
+            <RefreshCcw className='mr-2 h-4 w-4' />
+            Try Again
+          </UIButton>
         </div>
       </div>
     );
   }
 
   return (
-    <div className='mx-auto flex w-full max-w-screen-md flex-col items-center'>
+    <>
       <Header
         candidateRequestAvailability={candidateRequestAvailability}
         isSubmitted={isSubmitted}
       />
-      {isSubmitted && <SlotsSubmitted />}
-      {!isSubmitted && (multiDaySessions ?? []).length === 1 && (
-        <SingleDaySessions />
-      )}
-      {!isSubmitted && (multiDaySessions ?? []).length > 1 && (
-        <MultiDaySessions />
-      )}
-    </div>
+      <ScrollArea className='h-[calc(100vh-400px)]'>
+        {isSubmitted && <SlotsSubmitted />}
+        {!isSubmitted && (multiDaySessions ?? []).length === 1 && (
+          <SingleDaySessions />
+        )}
+        {!isSubmitted && (multiDaySessions ?? []).length > 1 && (
+          <MultiDaySessions />
+        )}
+      </ScrollArea>
+    </>
   );
 }
 

@@ -13,8 +13,8 @@ export function PublicPageLayout({
   className,
 }: PublicPageLayoutProps) {
   return (
-    <div className='m-6 flex min-h-screen flex-col'>
-      <main className='mt-8 flex-grow rounded-lg border border-border bg-white p-8 sm:px-10'>
+    <div className='container flex min-h-screen flex-col'>
+      <main className='mt-8 flex w-full flex-col rounded-lg border border-border bg-white p-8 sm:px-10'>
         <div className={cn('', className)}>{children}</div>
       </main>
       <footer className='mt-auto'>{footer}</footer>

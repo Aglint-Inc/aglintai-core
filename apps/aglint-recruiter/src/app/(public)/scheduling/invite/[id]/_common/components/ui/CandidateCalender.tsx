@@ -1,4 +1,9 @@
-import { Calendar } from 'lucide-react';
+import {
+  Section,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 
 export function CandidateCalender({
   slotDayColumn,
@@ -8,16 +13,15 @@ export function CandidateCalender({
   textMonth: string;
 }) {
   return (
-    <div className='flex h-[500px] flex-col overflow-hidden rounded-md border border-neutral-200 bg-white'>
-      <div className='border-neutral-200bg-muted flex h-10 items-center justify-between border-b px-4'>
-        <div className='flex items-center space-x-1'>
-          <Calendar className='h-5 w-5 text-muted-foreground' />
-          <span className='font-medium'>{textMonth}</span>
-        </div>
-      </div>
-      <div className='flex items-center justify-center gap-2 overflow-auto p-2'>
-        {slotDayColumn}
-      </div>
-    </div>
+    <Section>
+      <SectionHeader>
+        <SectionHeaderText>
+          <SectionTitle>
+            <span className='font-medium'>{textMonth}</span>
+          </SectionTitle>
+        </SectionHeaderText>
+      </SectionHeader>
+      {slotDayColumn}
+    </Section>
   );
 }

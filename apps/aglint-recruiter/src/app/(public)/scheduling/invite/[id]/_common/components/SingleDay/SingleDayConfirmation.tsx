@@ -1,7 +1,14 @@
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog';
 import { useEffect, useState } from 'react';
-
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
 
 import useInviteActions from '../../hooks/useInviteActions';
 import {
@@ -56,32 +63,17 @@ export const SingleDayConfirmation = () => {
   // end
 
   return (
-    <UIDialog
-      title='Confirm your interview'
-      open={open}
-      onClose={() => handleClose()}
-      slotButtons={
-        <>
-          <UIButton variant='secondary' onClick={() => handleClose()}>
-            Cancel
-          </UIButton>
-          <UIButton
-            isLoading={isPending}
-            variant='default'
-            onClick={() => handleSubmit()}
-          >
-            Confirm
-          </UIButton>
-        </>
-      }
-    >
-      <>
-        <div>
-          <p className='mb-2'>
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Confirm your interview</AlertDialogTitle>
+          <AlertDialogDescription>
             Before we finalize your schedule, please take a moment to confirm
             the chosen option. Your interview is crucial, and we want to ensure
             it aligns perfectly with your availability.
-          </p>
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <div>
           <CandidateScheduleCard
             isTitle={false}
             textDuration={totalTimeDifference}
@@ -96,8 +88,16 @@ export const SingleDayConfirmation = () => {
             }
           />
         </div>
-      </>
-    </UIDialog>
+        <AlertDialogFooter>
+          <AlertDialogCancel onClick={handleClose} disabled={isPending}>
+            Cancel
+          </AlertDialogCancel>
+          <AlertDialogAction onClick={handleSubmit} disabled={isPending}>
+            {isPending ? 'Confirming...' : 'Confirm'}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
 
