@@ -1,8 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { useRequest } from '@request/hooks';
-import { Bell, Lightbulb } from 'lucide-react';
 import React, { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -102,27 +100,26 @@ const SelfScheduleFlowMenus = ({
       >
         <div className=''>
           <SuggestionCard
-          heading='Add automations'
-          description='The Slack RSVP for the interviewers attendance will be sent.'
-          buttonSlot={
-            <>
-             <Button
-                variant='outline'
-                size='sm'
-                onClick={() => {
-                  setTriggerDetails({
-                    trigger: 'selfScheduleReminder',
-                    interval: 24 * 60,
-                  });
-                  setShowEditDialog(true);
-                }}
-              >
-                Schedule Reminder
-              </Button>
-            </>
-          }
+            heading='Add automations'
+            description='The Slack RSVP for the interviewers attendance will be sent.'
+            buttonSlot={
+              <>
+                <Button
+                  variant='outline'
+                  size='sm'
+                  onClick={() => {
+                    setTriggerDetails({
+                      trigger: 'selfScheduleReminder',
+                      interval: 24 * 60,
+                    });
+                    setShowEditDialog(true);
+                  }}
+                >
+                  Schedule Reminder
+                </Button>
+              </>
+            }
           />
-        
         </div>
       </ShowCode.When>
       <ShowCode.When

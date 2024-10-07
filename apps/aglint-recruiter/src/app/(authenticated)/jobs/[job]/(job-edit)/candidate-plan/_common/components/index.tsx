@@ -1,21 +1,27 @@
+import {
+  Page,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
+
 import ReorderableInterviewPlan from '@/authenticated/components/ReorderableInterviewPlan';
 import { useCurrentJob } from '@/job/hooks';
 
 export const CandidatePlan = () => {
   const { job_id } = useCurrentJob();
   return (
-    <div className='w-full'>
-      <div className='flex flex-row justify-between'>
-        <div className='flex flex-col gap-2'>
-          <h2 className='mb-2 text-xl font-bold'>Candidate Plan</h2>
-          <p className='mb-4 text-sm text-gray-600'>
+    <Page>
+      <PageHeader>
+        <PageHeaderText>
+          <PageTitle>Candidate Plan</PageTitle>
+          <PageDescription>
             Update the candidate plan here. Changes will be saved automatically.
-          </p>
-        </div>
-      </div>
-      <div className='my-8 mb-10 max-w-2xl space-y-4'>
-        <ReorderableInterviewPlan jobId={job_id} applicationId={null} />
-      </div>
-    </div>
+          </PageDescription>
+        </PageHeaderText>
+      </PageHeader>
+      <ReorderableInterviewPlan jobId={job_id} applicationId={null} />
+    </Page>
   );
 };

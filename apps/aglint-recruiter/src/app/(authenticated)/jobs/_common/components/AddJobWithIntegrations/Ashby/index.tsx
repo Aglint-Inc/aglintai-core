@@ -185,7 +185,7 @@ export function AshbyModalComp() {
               <Input
                 ref={apiRef}
                 onFocus={() => setError(false)}
-                className={error ? 'border-red-500' : ''}
+                className={error ? 'border-destructive' : ''}
                 placeholder='API key'
                 type='password'
               />

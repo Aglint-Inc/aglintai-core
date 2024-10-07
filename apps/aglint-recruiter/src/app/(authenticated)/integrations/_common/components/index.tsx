@@ -6,6 +6,7 @@ import {
   PageHeaderText,
   PageTitle,
 } from '@components/layouts/page-header';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { Send } from 'lucide-react';
 import { useState } from 'react';
 
@@ -104,9 +105,11 @@ export const Integrations = () => {
 
   return (
     <div className='space-y-8 px-8'>
-      <ATSSecion data={data} invalidate={invalidate} />
-      <SchedulingSection data={data} />
-      <MessagingSection />
+      <ScrollArea className='h-[calc(100vh-180px)]'>
+        <ATSSecion data={data} invalidate={invalidate} />
+        <SchedulingSection data={data} />
+        <MessagingSection />
+      </ScrollArea>
     </div>
   );
 };
