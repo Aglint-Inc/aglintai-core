@@ -31,7 +31,6 @@ function ATSPopUps({
   action: () => Promise<boolean>;
   reason: PopUpReasonTypes;
   isLoading: boolean;
-  inputValue: string;
 }) {
   const { toast } = useToast();
   // const isDisconnect = reason?.startsWith('disconnect_');
