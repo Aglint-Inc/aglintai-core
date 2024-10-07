@@ -1,3 +1,5 @@
+import { ScrollArea } from '@components/ui/scroll-area';
+
 import CandidateDropoutFunnelReport from './_common/components/CandidateMetrics';
 import Checklist from './_common/components/InterviewerChecklist/Checklist';
 import InterviewerLeaderboard from './_common/components/InterviewerLeaderboard';
@@ -10,13 +12,13 @@ const Analytics = ({
   searchParams: { tab: string };
 }) => {
   return (
-    <div className='px-4'>
+    <ScrollArea className='h-[calc(100vh-180px)] px-4'>
       {activeTab === 'interviewMetrics' && <InterviewCount />}
       {activeTab === 'interviewerLeaderboard' && <InterviewerLeaderboard />}
       {activeTab === 'candidateMetrics' && <CandidateDropoutFunnelReport />}
       {activeTab === 'jobMetrics' && <JobMetrics />}
       {activeTab === 'requestMetrics' && <Checklist />}
-    </div>
+    </ScrollArea>
   );
 };
 

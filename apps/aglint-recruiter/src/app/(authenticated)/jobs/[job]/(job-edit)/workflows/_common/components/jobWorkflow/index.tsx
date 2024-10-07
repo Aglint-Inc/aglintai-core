@@ -42,7 +42,7 @@ export default function EnhancedAutomationPage() {
           </PageDescription>
         </PageHeaderText>
       </PageHeader>
-      <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
+      <div className='grid grid-cols-1 gap-16 md:grid-cols-3'>
         <Main />
         <Summary />
       </div>

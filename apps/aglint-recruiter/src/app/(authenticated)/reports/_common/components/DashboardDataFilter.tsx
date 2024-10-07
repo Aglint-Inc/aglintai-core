@@ -147,106 +147,97 @@ export default function Component() {
   };
 
   return (
-    <div className=''>
-      <div className='flex items-center justify-between space-x-2'>
-        <div className='flex items-center space-x-2'>
-          {renderSelect(
-            filters.job,
-            (job) => handleFilterChange({ job: job }),
-            'job',
-            filtersOptions.job,
-            <BriefcaseBusiness className='h-4 w-4' />,
-          )}
+    <div className='flex w-full items-center justify-between space-x-2'>
+      <div className='flex items-center space-x-2'>
+        {renderSelect(
+          filters.job,
+          (job) => handleFilterChange({ job: job }),
+          'job',
+          filtersOptions.job,
+          <BriefcaseBusiness className='h-4 w-4' />,
+        )}
 
-          {renderSelect(
-            filters.department,
-            (department) => handleFilterChange({ department: department }),
-            'department',
-            filtersOptions.department,
-            <Building className='h-4 w-4' />,
-          )}
+        {renderSelect(
+          filters.department,
+          (department) => handleFilterChange({ department: department }),
+          'department',
+          filtersOptions.department,
+          <Building className='h-4 w-4' />,
+        )}
 
-          {renderSelect(
-            filters.location,
-            (location) => handleFilterChange({ location: location }),
-            'location',
-            filtersOptions.location,
-            <MapPin className='h-4 w-4' />,
-          )}
+        {renderSelect(
+          filters.location,
+          (location) => handleFilterChange({ location: location }),
+          'location',
+          filtersOptions.location,
+          <MapPin className='h-4 w-4' />,
+        )}
 
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant='outline' size='sm' className='h-9 min-w-[120px]'>
-                <CalendarIcon className='mr-2 h-4 w-4' />
-                {filters.dateRange
-                  ? `${format(filters.dateRange.from, 'PP')} - ${format(filters.dateRange.to, 'PP')}`
-                  : 'Date Range'}
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className='w-auto p-4' align='start'>
-              <div className='space-y-4'>
-                <Select
-                  value={dateOption}
-                  onValueChange={handleDateOptionChange}
-                >
-                  <SelectTrigger className='w-full'>
-                    <SelectValue placeholder='Select date range' />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {dateOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                {dateOption === 'custom' && (
-                  <Calendar
-                    mode='range'
-                    selected={filters.dateRange ?? undefined}
-                    // onSelect={setDateRange}
-                    // initialFocus
-                  />
-                )}
-              </div>
-            </PopoverContent>
-          </Popover>
-          {Boolean(filters.dateRange?.to) && (
-            <Button
-              variant='outline'
-              // size='icon'
-              className='h-9 w-9 flex-shrink-0'
-              onClick={() => handleFilterChange({ dateRange: null })}
-            >
-              <X
-                style={{
-                  transform: 'scale(6.5)',
-                }}
-              />
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant='outline' size='sm' className='h-9 min-w-[120px]'>
+              <CalendarIcon className='mr-2 h-4 w-4' />
+              {filters.dateRange
+                ? `${format(filters.dateRange.from, 'PP')} - ${format(filters.dateRange.to, 'PP')}`
+                : 'Date Range'}
             </Button>
-          )}
-        </div>
-        <div className='flex items-center space-x-2'>
-          {clear_all && (
-            <Button
-              variant='ghost'
-              size='sm'
-              className='h-9 min-w-[120px]'
-              onClick={clearAllFilter}
-            >
-              Clear All
-            </Button>
-          )}
+          </PopoverTrigger>
+          <PopoverContent className='w-auto p-4' align='start'>
+            <div className='space-y-4'>
+              <Select value={dateOption} onValueChange={handleDateOptionChange}>
+                <SelectTrigger className='w-full'>
+                  <SelectValue placeholder='Select date range' />
+                </SelectTrigger>
+                <SelectContent>
+                  {dateOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {dateOption === 'custom' && (
+                <Calendar
+                  mode='range'
+                  selected={filters.dateRange ?? undefined}
+                  // onSelect={setDateRange}
+                  // initialFocus
+                />
+              )}
+            </div>
+          </PopoverContent>
+        </Popover>
+        {Boolean(filters.dateRange?.to) && (
           <Button
-            onClick={() => {
-              applyFilter(filters);
-            }}
-            size='sm'
-            className='h-9 min-w-[120px]'
+            variant='outline'
+            // size='icon'
+            className='h-9 w-9 flex-shrink-0'
+            onClick={() => handleFilterChange({ dateRange: null })}
           >
-            Apply Filters
+            <X
+              style={{
+                transform: 'scale(6.5)',
+              }}
+            />
           </Button>
-        </div>
+        )}
+      </div>
+      <div className='flex items-center space-x-2'>
+        {clear_all && (
+          <Button variant='outline' onClick={clearAllFilter}>
+            <X className='mr-2 h-4 w-4 text-muted-foreground' />
+            Clear All
+          </Button>
+        )}
+        <Button
+          onClick={() => {
+            applyFilter(filters);
+          }}
+          size='sm'
+          className='h-9 min-w-[120px]'
+        >
+          Apply Filters
+        </Button>
       </div>
     </div>
   );
