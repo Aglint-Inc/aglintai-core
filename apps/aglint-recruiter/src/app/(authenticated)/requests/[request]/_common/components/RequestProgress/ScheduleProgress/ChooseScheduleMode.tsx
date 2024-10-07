@@ -1,6 +1,6 @@
-import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
-import { Lightbulb, WandSparkles } from 'lucide-react';
+import { UIAlert } from '@components/ui-alert';
+import { WandSparkles } from 'lucide-react';
 
 import { useRequestProgressProvider } from '../progressCtx';
 
@@ -9,60 +9,26 @@ const ChooseScheduleMode = () => {
   return (
     <>
       <div className='flex flex-col gap-4'>
-        <Alert className='border border-purple-300 bg-purple-100'>
-          <Lightbulb className='h-4 w-4' />
-          <AlertTitle>Add Automations</AlertTitle>
-          <AlertDescription>
-            Streamline your workflow with Aglint AI automations.
-            <div className='mt-4 flex justify-end'>
-              <div className='flex justify-start'>
-                <Button
-                  variant='outline'
-                  onClick={() => {
-                    setTriggerDetails({
-                      trigger: 'onRequestSchedule',
-                      interval: 0,
-                    });
-                    setShowEditDialog(true);
-                  }}
-                >
-                  <WandSparkles className='mr-2 h-4 w-4' />
-                  Add Automation
-                </Button>
-              </div>
-
-              {/* <Button
-                className='mr-2'
-                variant='outline'
-                onClick={async () => {
-                  if (fetchingPlan) return;
-                  await findAvailibility({
-                    filters: initialFilters,
-                    dateRange: {
-                      start_date: dayjsLocal().toISOString(),
-                      end_date: dayjsLocal().add(7, 'day').toISOString(),
-                    },
-                  });
-                  setIsSelfScheduleDrawerOpen(true);
-                }}
-                disabled={fetchingPlan}
-              >
-                {fetchingPlan ? (
-                  <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-                ) : null}
-                Send SelfScheduling
-              </Button>
+        <UIAlert variant='tip' title='Add Automations'>
+          Streamline your workflow with Aglint AI automations.
+          <div className='mt-4 flex justify-end'>
+            <div className='flex justify-start'>
               <Button
-                variant='default'
+                variant='outline'
                 onClick={() => {
-                  setCandidateAvailabilityDrawerOpen(true);
+                  setTriggerDetails({
+                    trigger: 'onRequestSchedule',
+                    interval: 0,
+                  });
+                  setShowEditDialog(true);
                 }}
               >
-                Get Availability
-              </Button> */}
+                <WandSparkles className='mr-2 h-4 w-4' />
+                Add Automation
+              </Button>
             </div>
-          </AlertDescription>
-        </Alert>
+          </div>
+        </UIAlert>
       </div>
     </>
   );
