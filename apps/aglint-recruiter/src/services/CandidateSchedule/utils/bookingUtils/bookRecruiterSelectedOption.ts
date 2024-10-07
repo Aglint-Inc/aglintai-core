@@ -52,9 +52,9 @@ export const bookRecruiterSelectedOption = async (
     verified_slot.sessions,
     db_details,
   );
+  await confirmInterviewers(booked_meeting_details, false);
 
   await updateTrainingStatus(booked_meeting_details);
-  await confirmInterviewers(booked_meeting_details, false);
   await updateMeetingEventDetails(
     booked_meeting_details,
     req_body.user_tz,
@@ -73,7 +73,7 @@ export const bookRecruiterSelectedOption = async (
     `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
     payload,
   );
-  await supabaseWrap(
+  supabaseWrap(
     await supabaseAdmin
       .from('candidate_request_availability')
       .update({ booking_confirmed: true })
