@@ -57,8 +57,8 @@ export default function ReorderableInterviewPlan({
   jobId,
   applicationId,
 }: {
-  jobId: string;
-  applicationId: string;
+  jobId: string | null;
+  applicationId: string | null;
 }) {
   const { isLoading, data, refetch } = useInterviewPlanProgress({
     job_id: jobId!,
@@ -221,9 +221,9 @@ const Block = ({
   isAddOpen: boolean;
   step: ProgressSteps[number];
   steps: ProgressSteps[number][];
-  applicationId: string;
+  applicationId: string | null;
   refetch: () => void;
-  jobId: string;
+  jobId: string | null;
   setIsAddOpen: Dispatch<SetStateAction<boolean>>;
   setEditingId: Dispatch<SetStateAction<number | null>>;
   isOrderChanging: boolean;
