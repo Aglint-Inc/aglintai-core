@@ -35,7 +35,7 @@ export type SessionInterviewerType = {
   training_type: InterviewerSessionRelation['training_type'];
   session_id: string;
   interviewer_type: InterviewerSessionRelation['interviewer_type'];
-  interviewer_module_relation_id: string;
+  interview_module_relation_id: string;
   pause_json: PauseJson;
   int_tz: string;
 };

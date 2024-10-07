@@ -6,8 +6,6 @@ import {
 } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { UIAlert } from '@components/ui-alert';
-import { Building } from 'lucide-react';
-import Image from 'next/image';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { UIButton } from '@/components/Common/UIButton';
@@ -46,14 +44,7 @@ export const ConfirmedInvitePage = (
     avail_request_id?: string;
   },
 ) => {
-  const {
-    candidate,
-    meetings,
-    recruiter,
-    timezone,
-    application_id,
-    filter_json,
-  } = props;
+  const { candidate, meetings, timezone, application_id, filter_json } = props;
   const { data, isLoading } = useGetReasons({
     session_ids: meetings.map((ses) => ses.interview_session.id),
     application_id,
@@ -108,19 +99,12 @@ export const ConfirmedInvitePage = (
             )}
           </div>
           <InterviewConfirmed
-            slotCompanyLogo={
-              <Logo companyName={recruiter.name} logo={recruiter.logo} />
-            }
             slotInterviewConfirmedCard={
               <ConfirmedScheduleCards
                 rounds={props.rounds}
                 timezone={timezone}
               />
             }
-            textDesc={
-              'Your interview has been scheduled, and we look forward to talking with you. Your calendar invite should be in your email.'
-            }
-            textMailSent={candidate.email}
             slotButton={
               <div className='flex flex-row gap-2'>
                 {!cancelData && (
@@ -267,41 +251,4 @@ const ConfirmedScheduleCard = (
   });
 
   return sessions;
-};
-
-const Logo = ({
-  companyName,
-  logo,
-}: {
-  companyName: string;
-  logo: string | null;
-}) => {
-  return (
-    <div className={'relative max-h-[60px] max-w-[60px]'}>
-      <div className='relative h-[60px] w-[60px]'>
-        {logo && (
-          <Image
-            src={logo}
-            alt={companyName}
-            width={60}
-            height={60}
-            className='object-contain'
-            onError={(e) => {
-              if (e.currentTarget instanceof HTMLImageElement) {
-                e.currentTarget.style.display = 'none';
-                const fallback =
-                  e.currentTarget.parentElement?.querySelector('.fallback');
-                if (fallback instanceof HTMLElement)
-                  fallback.style.display = 'flex';
-              }
-            }}
-          />
-        )}
-
-        <div className='fallback absolute inset-0 hidden items-center justify-center'>
-          <Building className='h-10 w-10 text-neutral-400' />
-        </div>
-      </div>
-    </div>
-  );
 };

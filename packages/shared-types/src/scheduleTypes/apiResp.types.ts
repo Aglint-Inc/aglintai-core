@@ -70,7 +70,7 @@ export type SessionInterviewerApiRespType = Pick<
   | 'int_tz'
   | 'last_name'
   | 'profile_image'
-  | 'interviewer_module_relation_id'
+  | 'interview_module_relation_id'
   | 'interviewer_type'
 >;
 
