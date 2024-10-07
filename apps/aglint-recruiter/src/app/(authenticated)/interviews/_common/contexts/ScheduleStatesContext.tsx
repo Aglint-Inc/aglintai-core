@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import { type RecruiterUserType } from '@aglint/shared-types';
+'use client';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { type SchedulesSupabase } from 'src/app/_common/utils/schedules-query';
 
@@ -9,20 +8,20 @@ import { initialFilterState, upComingInitialFilterState } from '../types';
 
 interface ContextValue {
   filteredSchedules: SchedulesSupabase | null;
-  setFilteredSchedule: (x: SchedulesSupabase | null) => void;
+  setFilteredSchedule: (_x: SchedulesSupabase | null) => void;
   loadingSchedules: boolean;
-  setLoadingSchedules: (x: boolean) => void;
+  setLoadingSchedules: (_x: boolean) => void;
   upcomingFilterState: typeof upComingInitialFilterState;
-  setUpcomingFilterState: (x: typeof upComingInitialFilterState) => void;
+  setUpcomingFilterState: (_x: typeof upComingInitialFilterState) => void;
   filterState: typeof initialFilterState;
-  setFilterState: (x: typeof initialFilterState) => void;
+  setFilterState: (_x: typeof initialFilterState) => void;
   updateFilterState: (
-    key: keyof typeof initialFilterState,
-    value: string[] | string,
+    _key: keyof typeof initialFilterState,
+    _value: string[] | string,
   ) => void;
   updateUpComingFilterState: (
-    key: keyof typeof upComingInitialFilterState,
-    value: string[] | string,
+    _key: keyof typeof upComingInitialFilterState,
+    _value: string[] | string,
   ) => void;
 }
 
