@@ -34,15 +34,10 @@ export const useConfirmSlots = () => {
 };
 
 const confirmSlots = async (bodyParams: CandidateDirectBookingType) => {
-  try {
-    const res = await axios.post(
-      '/api/scheduling/v1/booking/candidate-self-schedule',
-      bodyParams,
-    );
-    if (res.status !== 200) throw new Error('Internal server error');
-  } catch (e) {
-    throw new Error((e as Error).message);
-  }
+  await axios.post(
+    '/api/scheduling/v1/booking/candidate-self-schedule',
+    bodyParams,
+  );
 };
 const confirmSlotNoConflict = async (
   bodyParams: APICandidateConfirmSlotNoConflict,

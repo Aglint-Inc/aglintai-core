@@ -1147,12 +1147,22 @@ export class CandidatesScheduling {
       session_start_time: string,
     ): SessionCombinationRespType[] => {
       const curr_session = plan_comb[session_idx];
-      const curr_sess_start_time =
-        this.getTimeInCandTimeZone(session_start_time);
-
-      const curr_sess_end_time = this.getTimeInCandTimeZone(
+      let curr_sess_start_time = this.getTimeInCandTimeZone(session_start_time);
+      let curr_sess_end_time = this.getTimeInCandTimeZone(
         session_start_time,
       ).add(curr_session.duration, 'minutes');
+
+      //
+      if (session_idx > 0 && plan_comb[session_idx - 1].break_duration > 0) {
+        curr_sess_start_time = curr_sess_start_time.add(
+          plan_comb[session_idx - 1].break_duration,
+          'minutes',
+        );
+        curr_sess_end_time = curr_sess_end_time.add(
+          plan_comb[session_idx - 1].break_duration,
+          'minutes',
+        );
+      }
 
       let session_slot: SessionCombinationRespType = {
         ...curr_session,
