@@ -10,8 +10,9 @@ import {
 import { LibraryBig } from 'lucide-react';
 
 import { useAllInterviewModules } from '@/authenticated/hooks';
+import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
+import UIError from '@/common/UIError';
 import { Loader } from '@/components/Common/Loader';
-import { useAllDepartments } from '@/queries/departments';
 
 import { useHeaderProp } from '../context/headerContext';
 import { InterviewPoolList } from './InterviewPoolList';
@@ -20,8 +21,11 @@ export default function InterviewTypesPage() {
   const { searchText, selectedDepartments, isFilterApplied, activeTab } =
     useHeaderProp();
 
-  const { data: allModules, isLoading: modulesLoading } =
-    useAllInterviewModules();
+  const {
+    data: allModules,
+    isLoading: modulesLoading,
+    isError,
+  } = useAllInterviewModules();
   const { isLoading: departmentLoading } = useAllDepartments();
 
   if (modulesLoading || departmentLoading)
@@ -30,6 +34,10 @@ export default function InterviewTypesPage() {
         <Loader />
       </div>
     );
+
+  if (isError) {
+    return <UIError />;
+  }
 
   //filtering
 

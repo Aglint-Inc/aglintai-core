@@ -11,6 +11,7 @@ import {
 import { Label } from '@components/ui/label';
 import { useState } from 'react';
 
+import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
 import { UIButton } from '@/components/Common/UIButton';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
@@ -21,7 +22,6 @@ import {
   useModulesStore,
 } from '@/interview-pool/details/stores/store';
 import { useCreateInterviewPool } from '@/interview-pool/hooks/useCreateInterviewPool';
-import { useAllDepartments } from '@/queries/departments';
 import { capitalize } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 

@@ -18,7 +18,7 @@ export const getEmailTemplateExtns = ({
   placeholder?: string;
   template_type?: DatabaseEnums['email_slack_types'];
 }) => {
-  if (!template_type) {
+  if (!template_type || !placeholder) {
     return [
       StarterKit,
       EventHandler,
@@ -38,7 +38,7 @@ export const getEmailTemplateExtns = ({
       StarterKit,
       EventHandler,
       Placeholder.configure({
-        placeholder: placeholder ?? '',
+        placeholder: placeholder,
       }),
       Link.configure({
         openOnClick: false,

@@ -1,4 +1,5 @@
 import { createTRPCRouter } from '../../trpc';
+import { allDepartments } from './departments';
 import { departmentsUsage } from './departmentsUsage';
 import { flags } from './flags';
 import { invite } from './invite';
@@ -25,4 +26,5 @@ export const tenant = createTRPCRouter({
   'resend-invite': resend_invite,
   templates,
   updateWithRole,
+  all_departments: allDepartments,
 });
