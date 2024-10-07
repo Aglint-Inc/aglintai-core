@@ -1,7 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
 import { useRequest } from '@request/hooks';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
 

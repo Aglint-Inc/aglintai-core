@@ -7,6 +7,7 @@ import {
   PageHeaderText,
   PageTitle,
 } from '@components/layouts/page-header';
+import { ScrollArea } from '@components/ui/scroll-area';
 
 import { Actions } from '@/workflows/components/actions';
 
@@ -40,7 +41,9 @@ const Page = () => {
         {(data ?? []).length > 0 ? (
           <div className='space-y-4 px-4'>
             <Filters />
-            <Content />
+            <ScrollArea className='h-[calc(100vh-220px)]'>
+              <Content />
+            </ScrollArea>
           </div>
         ) : (
           <EmptyWorkflow />

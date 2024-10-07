@@ -1,5 +1,6 @@
 'use client';
 import { EmptyState } from '@components/empty-state';
+import { ScrollArea } from '@components/ui/scroll-area';
 import {
   Table,
   TableBody,
@@ -66,27 +67,29 @@ export default function InterviewTypesPage() {
 
   return (
     <>
-      <Table>
-        <TableHeader className='bg-gray-100'>
-          <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Department</TableHead>
-            <TableHead>Monthly Schedules</TableHead>
-            <TableHead>Avg. Duration</TableHead>
-            <TableHead>Open Positions</TableHead>
-            <TableHead></TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {filteredInterviewModules?.length > 0 ? (
-            filteredInterviewModules.map((type, i) => (
-              <InterviewPoolList interviewType={type} key={i} />
-            ))
-          ) : (
-            <></>
-          )}
-        </TableBody>
-      </Table>
+      <ScrollArea className='h-[calc(100vh-180px)]'>
+        <Table>
+          <TableHeader className='bg-gray-100'>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Department</TableHead>
+              <TableHead>Monthly Schedules</TableHead>
+              <TableHead>Avg. Duration</TableHead>
+              <TableHead>Open Positions</TableHead>
+              <TableHead></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredInterviewModules?.length > 0 ? (
+              filteredInterviewModules.map((type, i) => (
+                <InterviewPoolList interviewType={type} key={i} />
+              ))
+            ) : (
+              <></>
+            )}
+          </TableBody>
+        </Table>
+      </ScrollArea>
       {filteredInterviewModules?.length === 0 ? (
         <div className='flex w-full items-center justify-center'>
           <EmptyState

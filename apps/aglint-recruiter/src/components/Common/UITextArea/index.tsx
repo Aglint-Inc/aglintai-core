@@ -52,7 +52,7 @@ const UITextArea = React.forwardRef<HTMLTextAreaElement, UITextFieldProps>(
     const inputClasses = cn(
       'w-full border rounded px-3 py-2',
       fullWidth && 'w-full',
-      error ? 'border-red-500 focus-visible:ring-0' : 'border-neutral-300',
+      error ? 'border-destructive focus-visible:ring-0' : 'border-neutral-300',
       disabled && 'bg-neutral-100 text-muted-foreground',
       className,
     );
