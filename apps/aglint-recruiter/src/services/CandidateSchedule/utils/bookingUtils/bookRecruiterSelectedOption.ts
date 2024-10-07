@@ -53,26 +53,31 @@ export const bookRecruiterSelectedOption = async (
     db_details,
   );
   await confirmInterviewers(booked_meeting_details, false);
-
-  await updateTrainingStatus(booked_meeting_details);
   await updateMeetingEventDetails(
     booked_meeting_details,
     req_body.user_tz,
     req_body.request_id,
   );
-  await sendMailsToOrganizer(db_details, booked_meeting_details);
-  const payload: APICandScheduleMailThankYou = {
-    cand_tz: fetched_cand_details.candidate.timezone,
-    filter_id: null,
-    application_id: fetched_cand_details.application_id,
-    session_ids: fetched_cand_details.session_ids,
-    availability_request_id: req_body.availability_req_id,
-    is_debreif: false,
-  };
-  axios.post(
-    `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
-    payload,
-  );
+
+  await Promise.all([
+    updateTrainingStatus(booked_meeting_details),
+    sendMailsToOrganizer(db_details, booked_meeting_details),
+    (async () => {
+      const payload: APICandScheduleMailThankYou = {
+        cand_tz: fetched_cand_details.candidate.timezone,
+        filter_id: null,
+        application_id: fetched_cand_details.application_id,
+        session_ids: fetched_cand_details.session_ids,
+        availability_request_id: req_body.availability_req_id,
+        is_debreif: false,
+      };
+      axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
+        payload,
+      );
+    })(),
+  ]);
+
   supabaseWrap(
     await supabaseAdmin
       .from('candidate_request_availability')
