@@ -1,6 +1,7 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
+import { Skeleton } from '@components/ui/skeleton';
 import { TableCell, TableRow } from '@components/ui/table';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -9,8 +10,7 @@ import { Globe, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
-import { useTenant } from '@/company/hooks';
-import type { useTeamMembers } from '@/company/hooks/useTeamMembers';
+import { useTenant, type useTenantMembers } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 
 import { UserListThreeDot } from './ThreeDot';
@@ -19,8 +19,13 @@ dayjs.extend(relativeTime);
 
 const Member = ({
   member,
+  lastLogin,
 }: {
-  member: ReturnType<typeof useTeamMembers>['data'][number];
+  member: ReturnType<typeof useTenantMembers>['data'][number];
+  lastLogin: {
+    time: string | undefined;
+    isPending: boolean;
+  };
 }) => {
   const { checkPermissions } = useRolesAndPermissions();
   const { recruiter_user: tempRecruiterUser, recruiter } = useTenant();
@@ -72,7 +77,13 @@ const Member = ({
         </Badge>
       </TableCell>
       <TableCell className='text-sm text-muted-foreground'>
-        {member.last_login ? dayjs(member.last_login).fromNow() : '--:--'}
+        {lastLogin.isPending ? (
+          <Skeleton className='h-6 w-24' />
+        ) : lastLogin.time ? (
+          dayjs(lastLogin.time).fromNow()
+        ) : (
+          '--:--'
+        )}
       </TableCell>
       <TableCell>
         {canManage &&

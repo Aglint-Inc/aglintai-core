@@ -3,6 +3,7 @@ import { allDepartments } from './departments';
 import { departmentsUsage } from './departmentsUsage';
 import { flags } from './flags';
 import { invite } from './invite';
+import { cancel_invite } from './invite/cancel_invite';
 import { resend_invite } from './invite/resend';
 import { members } from './members';
 import { officeLocations } from './officeLocations';
@@ -23,6 +24,7 @@ export const tenant = createTRPCRouter({
   members,
   flags,
   invite,
+  'cancel-invite': cancel_invite,
   'resend-invite': resend_invite,
   templates,
   updateWithRole,
