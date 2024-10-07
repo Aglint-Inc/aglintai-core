@@ -63,7 +63,7 @@ export const SingleDayConfirmation = () => {
   // end
 
   return (
-    <AlertDialog open={open} onOpenChange={setOpen}>
+    <AlertDialog open={open}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Confirm your interview</AlertDialogTitle>
@@ -92,7 +92,13 @@ export const SingleDayConfirmation = () => {
           <AlertDialogCancel onClick={handleClose} disabled={isPending}>
             Cancel
           </AlertDialogCancel>
-          <AlertDialogAction onClick={handleSubmit} disabled={isPending}>
+          <AlertDialogAction
+            onClick={async () => {
+              await handleSubmit();
+              handleClose();
+            }}
+            disabled={isPending}
+          >
             {isPending ? 'Confirming...' : 'Confirm'}
           </AlertDialogAction>
         </AlertDialogFooter>
