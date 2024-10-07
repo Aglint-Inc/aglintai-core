@@ -206,7 +206,6 @@ const ROUTES = {
   ...profileLink,
   ...resetPassword,
   ...interviews,
-  ...scheduling,
   ...screening,
   ...screeningDashboard,
   ...signup,
