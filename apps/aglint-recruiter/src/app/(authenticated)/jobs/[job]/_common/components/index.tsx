@@ -4,7 +4,6 @@ import {
   PageHeaderText,
   PageTitle,
 } from '@components/layouts/page-header';
-import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 
 import { useApplicationsStore, useJob } from '@/job/hooks';
@@ -80,9 +79,7 @@ export const ApplicationsComponent = () => {
         <Tabs />
         <Actionables />
       </div>
-      <ScrollArea>
-        <Table />
-      </ScrollArea>
+      <Table />
     </DNDProvider>
   );
 };
