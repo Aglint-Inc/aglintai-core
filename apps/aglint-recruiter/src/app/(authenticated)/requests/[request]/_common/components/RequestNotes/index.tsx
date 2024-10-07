@@ -51,13 +51,10 @@ function RequestNotes() {
   }
   return (
     <div>
-      <div className='my-4 flex items-center justify-between'>
-        <h3 className='text-lg font-semibold'>Notes</h3>
-      </div>
       <Card
         className={cn(
-          'p-4',
-          requestNotes?.note && !editorEnabled ? 'bg-yellow-50' : 'bg-white',
+          'p-0 border-none shadow-none mt-2',
+          requestNotes?.note && !editorEnabled ? '' : 'bg-white',
         )}
       >
         <ShowCode>
