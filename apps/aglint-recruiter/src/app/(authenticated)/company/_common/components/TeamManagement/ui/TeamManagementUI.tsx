@@ -18,7 +18,8 @@ import { RefreshCw, Send, Users } from 'lucide-react';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 
 import { UIButton } from '@/common/UIButton';
-import type { useTeamMembers } from '@/company/hooks/useTeamMembers';
+import type { useTenantMembers } from '@/company/hooks';
+import { useTeamMembersLastLogin } from '@/company/hooks/useTeamMembers';
 
 import Member from '../MemberList';
 
@@ -38,9 +39,10 @@ export const TeamManagementUI = ({
   last_sync: string;
   setOpen: Dispatch<SetStateAction<boolean>>;
   filter: ReactNode;
-  filteredMembers: ReturnType<typeof useTeamMembers>['data'];
+  filteredMembers: ReturnType<typeof useTenantMembers>['data'];
   isTableLoading: boolean;
 }) => {
+  const { data: lastLoginData, isPending } = useTeamMembersLastLogin();
   return (
     <div className='space-y-4'>
       <PageHeader>
@@ -124,7 +126,7 @@ export const TeamManagementUI = ({
                   </div>
                 </TableCell>
               </TableRow>
-            ) : filteredMembers.length === 0 ? (
+            ) : !filteredMembers || filteredMembers.length === 0 ? (
               <TableCell colSpan={6}>
                 <div className='flex flex-col items-center justify-center p-8 text-center'>
                   <Users className='mb-2 h-12 w-12 text-gray-400' />
@@ -137,8 +139,12 @@ export const TeamManagementUI = ({
                 </div>
               </TableCell>
             ) : (
-              filteredMembers?.map((member) => (
-                <Member key={member.user_id} member={member} />
+              filteredMembers.map((member) => (
+                <Member
+                  key={member.user_id}
+                  member={member}
+                  lastLogin={{ isPending, time: lastLoginData[member.user_id] }}
+                />
               ))
             )}
           </TableBody>

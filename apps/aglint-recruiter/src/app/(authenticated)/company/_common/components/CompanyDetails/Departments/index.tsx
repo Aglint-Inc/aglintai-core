@@ -6,18 +6,17 @@ import { Button } from '@components/ui/button';
 import { BookOpen, Plus } from 'lucide-react';
 import * as React from 'react';
 
+import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
 import AddChip from '@/common/AddChip';
 import UISectionCard from '@/common/UISectionCard';
 import { useTenant } from '@/company/hooks';
 import { manageDepartments } from '@/context/AuthContext/utils';
-import { useAllDepartments } from '@/queries/departments';
 
 import DeleteDepartmentsDialog from './DeleteDepartmentDialog';
 
 export default function Departments() {
   const { recruiter } = useTenant();
-  const { data: departments, refetch: refetchDepartments } =
-    useAllDepartments();
+  const { data: departments, refetch } = useAllDepartments();
 
   const { toast } = useToast();
   const handleRemoveKeyword = (id: string | number | null) => {
@@ -53,7 +52,7 @@ export default function Departments() {
           description: '',
         });
       });
-      await refetchDepartments();
+      await refetch();
     }
   };
   const initialDepartments: string[] = [];
@@ -83,7 +82,7 @@ export default function Departments() {
               data: [deleteDialog.id as number],
             }).then(() => {
               setDeleteDialog({ ...deleteDialog, open: false });
-              refetchDepartments();
+              refetch();
             })
           }
           handleClose={() => setDeleteDialog({ ...deleteDialog, open: false })}
