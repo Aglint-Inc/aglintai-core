@@ -1,8 +1,7 @@
 'use client';
+import Typography from '@components/typography';
 import { BriefcaseBusiness } from 'lucide-react';
 import React from 'react';
-
-import UITypography from '@/components/Common/UITypography';
 
 export function MemberRow({
   as: _Component = 'div',
@@ -30,14 +29,14 @@ export function MemberRow({
           {iconTraining}
         </div>
         <div className='flex flex-col'>
-          <UITypography type='small' variant='h6'>
+          <Typography type='small' variant='h6'>
             {textName}
-          </UITypography>
+          </Typography>
           <div className='text-neutral flex items-center text-sm'>
             <BriefcaseBusiness className='h-3 w-3 text-muted-foreground' />
-            <UITypography type='extraSmall' className='ml-1'>
+            <Typography type='extraSmall' className='ml-1'>
               {textRole}
-            </UITypography>
+            </Typography>
           </div>
         </div>
       </div>

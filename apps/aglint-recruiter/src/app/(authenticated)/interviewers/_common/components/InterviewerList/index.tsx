@@ -1,3 +1,4 @@
+import Typography from '@components/typography';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
 import { TableCell, TableRow } from '@components/ui/table';
@@ -11,7 +12,6 @@ import {
   MapPin,
 } from 'lucide-react';
 
-import UITypography from '@/components/Common/UITypography';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
 import { type useAllInterviewers } from '../../hooks/useAllInterviewers';
@@ -71,21 +71,21 @@ export const InterviewerList = ({
         <div className='flex w-[300px] flex-col gap-1'>
           <div className='m-0 flex items-center gap-2'>
             <BookOpen className='h-4 w-4 text-gray-400' />
-            <UITypography variant='p' type='small'>
+            <Typography variant='p' type='small'>
               {interviewer.department?.name || '-'}
-            </UITypography>
+            </Typography>
           </div>
           <div className='m-0 flex items-center gap-2'>
             <MapPin className='h-4 w-4 text-gray-400' />
-            <UITypography variant='p' type='small'>
+            <Typography variant='p' type='small'>
               {location || '-'}
-            </UITypography>
+            </Typography>
           </div>
           <div className='m-0 flex items-center gap-2'>
             <Clock8 className='h-4 w-4 text-gray-400' />
-            <UITypography variant='p' type='small'>
+            <Typography variant='p' type='small'>
               {interviewer.time_zone?.toString() || '-'}
-            </UITypography>
+            </Typography>
           </div>
         </div>
       </TableCell>

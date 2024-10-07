@@ -1,6 +1,5 @@
+import Typography from '@components/typography';
 import { BriefcaseBusiness, ChevronDown, MapPin } from 'lucide-react';
-
-import UITypography from '@/components/Common/UITypography';
 
 type MeetingSlotProps = {
   slotStatus: string | React.ReactNode;
@@ -62,9 +61,9 @@ export function MyScheduleSubCard({
             <div className='flex min-w-[148px] flex-col gap-2'>
               {isTimeVisible && (
                 <div>
-                  <UITypography variant='p' type='small'>
+                  <Typography variant='p' type='small'>
                     {textTime}
-                  </UITypography>
+                  </Typography>
                 </div>
               )}
               <div>{slotStatus}</div>
@@ -86,9 +85,9 @@ export function MyScheduleSubCard({
                     {/* Add your SVG or icon here */}
                   </div>
                 )}
-                <UITypography variant='p' type='small'>
+                <Typography variant='p' type='small'>
                   {textMeetingTitle}
-                </UITypography>
+                </Typography>
               </div>
               {isPhoneCallVisible && (
                 <div className='flex items-center gap-1'>
@@ -102,9 +101,9 @@ export function MyScheduleSubCard({
                 {isMeetingPlatformVisible && (
                   <div className='flex items-center gap-1'>
                     <div>{slotMeetingIcon}</div>
-                    <UITypography variant='p' type='small'>
+                    <Typography variant='p' type='small'>
                       {textMeetingPlatform}
-                    </UITypography>
+                    </Typography>
                   </div>
                 )}
                 {isDurationVisible && (
@@ -112,9 +111,9 @@ export function MyScheduleSubCard({
                     <div className='flex items-center justify-center'>
                       {/* Add your SVG or icon here */}
                     </div>
-                    <UITypography variant='p' type='small'>
+                    <Typography variant='p' type='small'>
                       {textDuration}
-                    </UITypography>
+                    </Typography>
                   </div>
                 )}
               </div>
@@ -131,9 +130,9 @@ export function MyScheduleSubCard({
                   <div className='flex items-center justify-center'>
                     <BriefcaseBusiness size={14} />
                   </div>
-                  <UITypography variant='p' type='small'>
+                  <Typography variant='p' type='small'>
                     {textJob}
-                  </UITypography>
+                  </Typography>
                 </div>
                 {isAvatarWithNameVisible && <div>{slotAvatarWithName}</div>}
               </div>

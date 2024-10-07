@@ -1,12 +1,12 @@
+import Typography from '@components/typography';
 import { Checkbox } from '@components/ui/checkbox';
+import { UIAlert } from '@components/ui-alert';
 import dayjs from 'dayjs';
 import { useEffect, useMemo, useState } from 'react';
 
-import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import { UIDatePicker } from '@/components/Common/UIDatePicker';
 import UIDialog from '@/components/Common/UIDialog';
-import UITypography from '@/components/Common/UITypography';
 import { supabase } from '@/utils/supabase/client';
 
 import { optionsPause } from '../../../../_common/constants/const';
@@ -115,32 +115,30 @@ function PauseDialog() {
       }
     >
       <div className='flex flex-col gap-2'>
-        <UIAlert
-          type='small'
-          color={'warning'}
-          iconName={'CircleAlert'}
-          title={'Pausing the interviewer'}
-          description={
-            'By pausing the interviewer, the member won’t be considered for any new interviews scheduled with this module until the pause is lifted. Existing interviews will not be affected.'
-          }
-        />
+        <UIAlert type='warning' title='Pausing the interviewer'>
+          <div className='mt-2 flex flex-col space-y-2'>
+            <Typography type='small'>
+              By pausing the interviewer, the member won&apos;t be considered
+              for any new interviews scheduled with this module until the pause
+              is lifted. Existing interviews will not be affected.
+            </Typography>
+          </div>
+        </UIAlert>
         {connectedJobs.length > 0 && (
           <UIAlert
-            type='small'
-            color={'warning'}
-            iconName={'CircleAlert'}
-            title={`Here is a list of job's interview plan that will be impacted:`}
-            actions={
+            type='warning'
+            title="Here is a list of job's interview plan that will be impacted:"
+            action={
               <div className='flex flex-col'>
-                <UITypography type='small'>
+                <Typography type='small'>
                   {connectedJobs.flatMap((job) => job.job_title).join(', ')}
-                </UITypography>
+                </Typography>
               </div>
             }
           />
         )}
         <div className='space-y-2'>
-          <UITypography type='small'>Pause For</UITypography>
+          <Typography type='small'>Pause For</Typography>
           {optionsPause.map((option) => (
             <div
               key={option.type}
@@ -151,11 +149,11 @@ function PauseDialog() {
               }}
             >
               <Checkbox checked={selectedType === option.type} />
-              <UITypography type='small' className=''>
+              <Typography type='small' className=''>
                 {option.label}
-              </UITypography>
+              </Typography>
               {option.description && (
-                <UITypography type='small'>{option.description}</UITypography>
+                <Typography type='small'>{option.description}</Typography>
               )}
             </div>
           ))}

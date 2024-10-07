@@ -1,12 +1,14 @@
 /* eslint-disable no-unused-vars */
 import { getFullName } from '@aglint/shared-utils';
+import { EmptyState } from '@components/empty-state';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Button } from '@components/ui/button';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { AlertCircle, Check, X } from 'lucide-react';
+import { AlertCircle, Check, Plus, PlusCircle, User, X } from 'lucide-react';
 import React, { useState } from 'react';
 
 export type MemberTypeAutoComplete = {
@@ -54,33 +56,35 @@ function MembersAutoComplete({
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   return (
-    <div className='flex w-full flex-col gap-2'>
-      <div className='flex flex-row flex-wrap gap-2'>
+    <div className='flex w-full flex-col items-start gap-2'>
+      <div className='flex flex-row flex-wrap items-start gap-2'>
         {selectedUsers.map((user) => {
           const userName = getFullName(user.first_name, user.last_name);
           return (
             <div
               key={user.user_id}
-              className={`flex items-center gap-2 rounded-full px-2 py-1 text-sm capitalize ${
-                pillColor ? `${pillColor}` : 'bg-neutral-300'
+              className={`flex items-center gap-2 rounded-full py-1 pr-2 text-sm capitalize ${
+                pillColor ? `${pillColor}` : 'bg-muted'
               }`}
             >
-              <Avatar className='h-8 w-8'>
+              <Avatar className='h-6 w-6 rounded-full'>
                 <AvatarImage src={user.profile_image} alt={userName} />
                 <AvatarFallback>{userName?.charAt(0)}</AvatarFallback>
               </Avatar>
 
               <span>{getFullName(user?.first_name, user?.last_name)}</span>
-              <button
+              <Button
+                variant='ghost'
+                size='sm'
                 onClick={() => {
                   setSelectedUsers(
                     selectedUsers.filter((us) => us.user_id !== user.user_id),
                   );
                 }}
-                className='ml-1 text-muted-foreground hover:text-gray-700'
+                className='ml-1 h-6 w-6 rounded-full p-0 text-muted-foreground hover:text-gray-700'
               >
-                <X size={12} />
-              </button>
+                <X size={16} />
+              </Button>
             </div>
           );
         })}
@@ -88,9 +92,10 @@ function MembersAutoComplete({
 
       <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
         <PopoverTrigger onClick={() => setIsPopoverOpen(true)}>
-          <button className='w-full rounded border px-4 py-2 text-left'>
+          <Button variant='outline' className='text-left text-sm'>
+            <PlusCircle size={16} className='mr-2' />
             {placeholder}
-          </button>
+          </Button>
         </PopoverTrigger>
         <PopoverContent
           className='z-[2000] w-full min-w-full p-0'
@@ -101,9 +106,12 @@ function MembersAutoComplete({
           }}
         >
           {renderUsers.length === 0 ? (
-            <div className='cursor-default px-2 py-1 italic text-muted-foreground'>
-              {emptyListText}
-            </div>
+            <EmptyState
+              variant='inline'
+              icon={User}
+              header='No members found'
+              description={emptyListText}
+            />
           ) : (
             renderUsers.map((option, ind) => {
               const userName = getFullName(option.first_name, option.last_name);
@@ -135,7 +143,7 @@ function MembersAutoComplete({
                     ) && <Check size={16} />}
                   </div>
 
-                  <Avatar className='h-8 w-8'>
+                  <Avatar className='h-6 w-6 rounded-full'>
                     <AvatarImage src={option.profile_image} alt={userName} />
                     <AvatarFallback>{userName.charAt(0)}</AvatarFallback>
                   </Avatar>

@@ -38,7 +38,9 @@ export const RoleList = ({
       <TableCell className='font-medium'>
         {capitalizeFirstLetter(role.name)}
       </TableCell>
-      <TableCell className='w-[42%]'>{role.description}</TableCell>
+      <TableCell className='w-[42%] text-muted-foreground'>
+        {role.description}
+      </TableCell>
       <TableCell>
         <div className='flex items-center gap-1'>
           {count ? (

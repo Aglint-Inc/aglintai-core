@@ -61,7 +61,7 @@ const KeywordSection: React.FC<KeywordSectionProps> = ({
           handleAddDepartment={handleAdd}
           placeholder='Enter new value...'
           btn={
-            <Button size='sm'>
+            <Button size='sm' variant='outline'>
               <Plus className='mr-2 h-4 w-4' />
               Add keyword
             </Button>

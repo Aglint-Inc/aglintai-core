@@ -8,16 +8,26 @@ import {
   PageTitle,
 } from '@components/layouts/page-header';
 import OptimisticWrapper from '@components/loadingWapper';
-import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Button } from '@components/ui/button';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
+import { UIAlert } from '@components/ui-alert';
 import { useQueryClient } from '@tanstack/react-query';
 import {
-  AlertCircle,
   ChartNoAxesGantt,
   Edit,
   PauseCircle,
@@ -32,9 +42,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { Loader } from '@/components/Common/Loader';
-import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITextField from '@/components/Common/UITextField';
 import { JobNotFound } from '@/job/components/JobNotFound';
@@ -132,18 +140,13 @@ const InterviewPlanPage = () => {
               />
             ))
           ) : (
-            <Alert>
-              <AlertCircle className='h-4 w-4' />
-              <AlertTitle>Create Interview Stages</AlertTitle>
-              <AlertDescription>
-                Create your interview stages for the job to ensure a structured
-                evaluation process. Add different interview types such as
-                &quot;Initial Screening&quot; or &quot;Technical
-                Interview.&quot; Use this template each time you schedule
-                interviews for candidates to maintain consistency and
-                efficiency.
-              </AlertDescription>
-            </Alert>
+            <UIAlert variant='tip' title='Create Interview Stages'>
+              Create your interview stages for the job to ensure a structured
+              evaluation process. Add different interview types such as
+              &quot;Initial Screening&quot; or &quot;Technical Interview.&quot;
+              Use this template each time you schedule interviews for candidates
+              to maintain consistency and efficiency.
+            </UIAlert>
           )}
 
           <AddStageComponent handleCreate={handleCreate} />
@@ -414,34 +417,35 @@ const InterviewPlan = ({
                 icon={<Trash className='h-4 w-4' color='brown' />}
               />
 
-              <UIDialog
-                open={deleteOpen}
-                onClose={() => setDeleteOpen(false)}
-                title='Delete Confirmation  '
-                slotButtons={
-                  <>
-                    <UIButton
-                      variant='secondary'
-                      size='sm'
-                      onClick={() => setDeleteOpen(false)}
-                    >
-                      Cancel
-                    </UIButton>
-                    <UIButton
-                      size='sm'
-                      isLoading={isStageDeleting}
-                      onClick={async () => {
-                        await deletePlan({ id: plan_id });
-                        setDeleteOpen(false);
-                      }}
-                    >
-                      Delete
-                    </UIButton>
-                  </>
-                }
-              >
-                Are you sure to delete this interview plan ?
-              </UIDialog>
+              <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Delete Confirmation</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Are you sure to delete this interview plan?
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel asChild>
+                      <Button variant='secondary' size='sm'>
+                        Cancel
+                      </Button>
+                    </AlertDialogCancel>
+                    <AlertDialogAction asChild>
+                      <Button
+                        size='sm'
+                        disabled={isStageDeleting}
+                        onClick={async () => {
+                          await deletePlan({ id: plan_id });
+                        }}
+                      >
+                        {isStageDeleting ? <Loader /> : null}
+                        Delete
+                      </Button>
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           }
           slotInterviewPlanDetail={
@@ -450,9 +454,9 @@ const InterviewPlan = ({
                 <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
               ) : (
                 <div className='flex h-48 flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-white'>
-                  <ChartNoAxesGantt className='mb-4 h-4 w-4 text-gray-400' />
-                  <p className='mb-4 text-muted-foreground'>
-                    No interview plan found
+                  <ChartNoAxesGantt className='mb-4 h-8 w-8 text-gray-400' />
+                  <p className='mb-4 text-sm text-muted-foreground'>
+                    No interview found
                   </p>
                   <UIButton
                     size='sm'
@@ -812,12 +816,8 @@ const InterviewSessionMembers = ({ members }: InterviewSessionMembersProps) => {
   if (members.length === 0)
     return (
       <UIAlert
-        color={'error'}
-        iconName={'CircleAlert'}
-        title={
-          'No interviewers assigned. Click on edit to assign interviewers.'
-        }
-        type='inline'
+        type='error'
+        title='No interviewers assigned. Click on edit to assign interviewers.'
       />
     );
   return members.map((member) => (

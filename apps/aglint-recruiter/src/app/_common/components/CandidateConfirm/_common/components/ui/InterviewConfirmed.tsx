@@ -1,6 +1,5 @@
+import Typography from '@components/typography';
 import React from 'react';
-
-import UITypography from '@/components/Common/UITypography';
 
 const InterviewConfirmed = ({
   textMailSent,
@@ -21,9 +20,9 @@ const InterviewConfirmed = ({
       <div className='mt-[80px] flex min-w-[760px] max-w-2xl flex-col items-center justify-center rounded-lg border border-neutral-300 bg-white p-6'>
         <div className='flex flex-col items-center text-center'>
           {slotCompanyLogo && <div className='mb-4'>{slotCompanyLogo}</div>}
-          <UITypography className='text-[18px] font-semibold'>
+          <Typography className='text-[18px] font-semibold'>
             Interview Confirmed
-          </UITypography>
+          </Typography>
           <h2 className='max-w-[500px] text-sm'>{textDesc}</h2>
           {textMailSent && (
             <p className='mt-2'>

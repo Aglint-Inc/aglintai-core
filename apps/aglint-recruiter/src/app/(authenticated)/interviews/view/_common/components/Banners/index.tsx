@@ -1,4 +1,6 @@
-import { UIAlert } from '@/components/Common/UIAlert';
+import { UIAlert } from '@components/ui-alert';
+import { Archive } from 'lucide-react';
+
 import { UIButton } from '@/components/Common/UIButton';
 
 import { useScheduleDetails } from '../../hooks/useScheduleDetails';
@@ -31,11 +33,10 @@ function Banners() {
       <DeclineScheduleDialog />
       {isConfirmed && (isDeclineVisible || isAcceptVisible) && (
         <UIAlert
-          type='inline'
-          color={'info'}
-          title={'You are invited for this interview'}
-          iconName={'Archive'}
-          actions={
+          type='info'
+          title='You are invited for this interview'
+          icon={Archive}
+          action={
             <>
               {isDeclineVisible && (
                 <UIButton

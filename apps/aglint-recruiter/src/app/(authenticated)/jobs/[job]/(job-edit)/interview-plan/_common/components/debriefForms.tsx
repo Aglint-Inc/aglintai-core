@@ -1,7 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { getBreakLabel, getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Switch } from '@components/ui/switch';
 import React, {
   type Dispatch,
   type SetStateAction,
@@ -12,6 +11,7 @@ import MembersAutoComplete, {
   type MemberTypeAutoComplete,
 } from 'src/app/_common/components/MembersTextField';
 
+import { UISwitch } from '@/common/UISwitch';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
@@ -274,11 +274,14 @@ const Attendees = ({
   return (
     <>
       {attendees}
-      <div className='flex items-center justify-between border-b p-4'>
+      <div className='flex items-center justify-between'>
         <div className='flex items-center space-x-4'>
-          <span className='text-sm font-medium'>Previous interviewers</span>
+          <span className='w-24 text-sm font-medium'>
+            Previous interviewers
+          </span>
         </div>
-        <Switch
+        <UISwitch
+          size='sm'
           checked={value.previous_interviewers}
           onCheckedChange={() =>
             handleChange('members_meta', {
@@ -323,16 +326,16 @@ const Member = ({
   if (!member) return <></>;
   const name = getFullName(member.first_name, member.last_name);
   return (
-    <div className='flex items-center justify-between border-b p-4'>
+    <div className='flex items-center justify-between'>
       <div className='flex items-center space-x-4'>
-        <span className='text-sm font-medium'>{capitalize(role)}</span>
-        <Avatar className='h-8 w-8'>
+        <span className='w-24 text-sm font-medium'>{capitalize(role)}</span>
+        <Avatar className='h-6 w-6 rounded-full'>
           <AvatarImage src={member.profile_image} alt={name} />
           <AvatarFallback>{name.charAt(0)}</AvatarFallback>
         </Avatar>
-        <span className='text-sm'>{name}</span>
+        <span className='flex-1 text-sm'>{name}</span>
       </div>
-      <Switch checked={checked} onCheckedChange={onClick} />
+      <UISwitch size='sm' checked={checked} onCheckedChange={onClick} />
     </div>
   );
 };

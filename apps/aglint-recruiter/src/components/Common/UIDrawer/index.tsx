@@ -1,3 +1,4 @@
+import Typography from '@components/typography';
 import { ScrollArea } from '@components/ui/scroll-area';
 import {
   Sheet,
@@ -9,7 +10,6 @@ import { X as CloseIcon } from 'lucide-react';
 import React from 'react';
 
 import { UIButton } from '../UIButton';
-import UITypography from '../UITypography';
 
 function UIDrawer({
   children,
@@ -52,9 +52,9 @@ function UIDrawer({
             </UIButton>
             <SheetHeader className='border-b border-gray-200 p-3'>
               <div className='flex flex-row'>
-                <UITypography className='text-sm' fontBold='normal'>
+                <Typography className='text-sm' fontBold='normal'>
                   {title}
-                </UITypography>
+                </Typography>
               </div>
             </SheetHeader>
             <ScrollArea className='h-[calc(100vh-98px)]'>{children}</ScrollArea>

@@ -6,12 +6,12 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
+import Typography from '@components/typography';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
-import UITypography from '@/components/Common/UITypography';
 
 export function InterviewMemberSide({
   isUpcomingActive = true,
@@ -120,9 +120,9 @@ const Tabs = ({
               >
                 <div>Upcoming</div>
                 <div className='flex h-5 min-w-5 items-center justify-center rounded bg-neutral-300 px-1 text-muted-foreground'>
-                  <UITypography variant='p' type='small'>
+                  <Typography variant='p' type='small'>
                     {textUpcomingCount}
-                  </UITypography>
+                  </Typography>
                 </div>
               </UIButton>
             </div>
@@ -134,9 +134,9 @@ const Tabs = ({
               >
                 <div>Canceled</div>
                 <div className='flex h-5 min-w-5 items-center justify-center rounded bg-neutral-300 px-1 text-muted-foreground'>
-                  <UITypography variant='p' type='small'>
+                  <Typography variant='p' type='small'>
                     {textCancelledCount}
-                  </UITypography>
+                  </Typography>
                 </div>
               </UIButton>
             </div>
@@ -148,9 +148,9 @@ const Tabs = ({
               >
                 <div>Past</div>
                 <div className='flex h-5 min-w-5 items-center justify-center rounded bg-neutral-300 px-1 text-muted-foreground'>
-                  <UITypography variant='p' type='small'>
+                  <Typography variant='p' type='small'>
                     {textPastCount}
-                  </UITypography>
+                  </Typography>
                 </div>
               </UIButton>
             </div>

@@ -3,6 +3,7 @@ import {
   type SchedulingSettingType,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils';
+import Typography from '@components/typography';
 import { Label } from '@components/ui/label';
 import { type Dispatch, type SetStateAction } from 'react';
 
@@ -10,7 +11,6 @@ import InterviewLimitInput from '@/authenticated/components/InterviewLoad';
 import KeywordSection from '@/authenticated/components/KeywordSection';
 import DayWithTime from '@/company/components/WorkingHours/WorkTime/WorkTimeEditDialog/ui/DayWithTime';
 import TimezonePicker from '@/components/Common/TimezonePicker';
-import UITypography from '@/components/Common/UITypography';
 import type timeZone from '@/utils/timeZone';
 
 type FormProp = {
@@ -140,16 +140,16 @@ export const EditAvailabilityForm = ({
         {keywords.map((keyword) => {
           return (
             <div className='mb-4 flex flex-col gap-4' key={keyword.title}>
-              <UITypography
+              <Typography
                 variant='p'
                 type='small'
                 className='mb-1 text-lg font-semibold'
               >
                 {keyword.title}
-              </UITypography>
-              <UITypography variant='p' type='small' className='mb-4'>
+              </Typography>
+              <Typography variant='p' type='small' className='mb-4'>
                 {keyword.description}
-              </UITypography>
+              </Typography>
               <KeywordSection
                 keywords={keyword.value}
                 setKeywords={keyword.changeHandler}

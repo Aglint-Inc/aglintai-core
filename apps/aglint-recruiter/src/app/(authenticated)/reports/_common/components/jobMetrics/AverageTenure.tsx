@@ -1,14 +1,35 @@
+import { EmptyState } from '@components/empty-state';
+import {
+  Section,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import { Skeleton } from '@components/ui/skeleton';
+import { ChartNoAxesColumn } from 'lucide-react';
 
-import UISectionCard from '@/common/UISectionCard';
+import { Loader } from '@/common/Loader';
 
 import { useCandidateExp } from '../../hook/job/jobMatrix';
 
 export default function AverageTenure() {
   const { data, isFetching } = useCandidateExp();
   return (
-    <div className='max-w-3xl'>
-      <UISectionCard title='Average Tenure'>
+    <Section>
+      <SectionHeader>
+        <SectionHeaderText>
+          <SectionTitle>Average Experience</SectionTitle>
+        </SectionHeaderText>
+      </SectionHeader>
+      {isFetching ? (
+        <Loader />
+      ) : !data?.avg_total_exp ? (
+        <EmptyState
+          icon={ChartNoAxesColumn}
+          header='No data available'
+          description='No data available for the selected time frame.'
+        />
+      ) : (
         <div className='flex w-full flex-col items-center justify-center'>
           <div className='mb-2 text-6xl font-bold'>
             {isFetching ? (
@@ -22,7 +43,7 @@ export default function AverageTenure() {
             Average time before switching companies.
           </p>
         </div>
-      </UISectionCard>
-    </div>
+      )}
+    </Section>
   );
 }

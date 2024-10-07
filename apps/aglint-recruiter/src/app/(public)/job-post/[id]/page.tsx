@@ -1,8 +1,8 @@
 'use client';
 import axios from 'axios';
-import { Loader2 } from 'lucide-react';
 import { type ReactNode, useEffect, useState } from 'react';
 
+import { Loader } from '@/common/Loader';
 import { SeoPro } from '@/components/Common/SeoPro';
 import JobPostPublic from '@/components/JobPost';
 import { type PublicJobAPI } from '@/pages/api/jobpost/read';
@@ -106,9 +106,7 @@ function JobPost({
         description='AI for People Products'
       />
       {loading ? (
-        <div className='flex h-screen w-full items-center justify-center'>
-          <Loader2 className='animate-spin' />
-        </div>
+        <Loader />
       ) : valid ? (
         <JobPostPublic post={post!} recruiter={recruiter!} jobs={jobs} />
       ) : (
