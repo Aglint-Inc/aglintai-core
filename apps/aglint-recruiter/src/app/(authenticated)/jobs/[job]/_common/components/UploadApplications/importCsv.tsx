@@ -97,7 +97,7 @@ export const ImportCsv: React.FC = () => {
           <Loader />
         ) : candidates.length ? (
           <div className='flex h-full flex-col gap-2'>
-            <ScrollArea>
+            <ScrollArea className='h-[450px]'>
               <CandidatesListTable candidates={candidates} />
             </ScrollArea>
             <div className='flex items-center justify-between overflow-hidden bg-white py-5'>
