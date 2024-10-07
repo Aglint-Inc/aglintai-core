@@ -7,8 +7,7 @@ export const useInviteMeta = () => {
   const router = useRouterPro();
 
   const query = api.scheduling.candidate_invite.meta.useQuery({
-    application_id: router.params.id,
-    filter_id: router.queryParams.filter_id as string,
+    filter_id: router.params.filter,
   });
 
   return { ...query, data: query.data! };

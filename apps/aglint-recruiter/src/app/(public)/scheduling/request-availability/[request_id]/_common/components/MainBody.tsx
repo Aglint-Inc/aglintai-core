@@ -1,11 +1,10 @@
 'use client';
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
-import { ScrollArea } from '@components/ui/scroll-area';
 import dayjs from 'dayjs';
 import { AlertTriangle, RefreshCcw } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { ConfirmedInvitePage } from 'src/app/_common/components/CandidateConfirm/_common/components';
-import { type CandidateInviteType } from 'src/app/(public)/scheduling/invite/[id]/_common/store';
+import { type CandidateInviteType } from 'src/app/(public)/self-scheduling/[filter]/_common/store';
 
 import { UIButton } from '@/common/UIButton';
 import { Loader } from '@/components/Common/Loader';
@@ -137,15 +136,13 @@ function CandidateAvailability() {
 
   return (
     <>
-      <ScrollArea className='h-[calc(100vh-400px)]'>
-        {isSubmitted && <SlotsSubmitted />}
-        {!isSubmitted && (multiDaySessions ?? []).length === 1 && (
-          <SingleDaySessions />
-        )}
-        {!isSubmitted && (multiDaySessions ?? []).length > 1 && (
-          <MultiDaySessions />
-        )}
-      </ScrollArea>
+      {isSubmitted && <SlotsSubmitted />}
+      {!isSubmitted && (multiDaySessions ?? []).length === 1 && (
+        <SingleDaySessions />
+      )}
+      {!isSubmitted && (multiDaySessions ?? []).length > 1 && (
+        <MultiDaySessions />
+      )}
     </>
   );
 }
