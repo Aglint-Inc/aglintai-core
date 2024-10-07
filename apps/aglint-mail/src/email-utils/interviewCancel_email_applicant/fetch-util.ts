@@ -91,5 +91,9 @@ export const fetchUtil: FetchUtilType<
       react_email_placeholders,
       recipient_email: candidates.email,
     },
+    candidate_portal_payload: {
+      application_id: req_body.application_id,
+      type: 'interviewCancel_email_applicant',
+    },
   };
 };

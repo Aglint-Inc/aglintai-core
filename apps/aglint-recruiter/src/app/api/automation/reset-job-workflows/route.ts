@@ -14,8 +14,8 @@ const resetJobWorkflows = async ({ company_id }: z.infer<typeof schema>) => {
     await supabase
       .from('public_jobs')
       .select('id')
-      .eq('recruiter_id', company_id)
-      .throwOnError(),
+      .eq('recruiter_id', company_id),
+    false,
   );
   const allJobs = allJobIds.map(async (job) => {
     supabase.from('workflow_job_relation').delete().eq('job_id', job.id);
