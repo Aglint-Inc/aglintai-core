@@ -196,7 +196,7 @@ export async function POST(req: Request) {
           const sessions = await getScheudleSessionDetails(filter.session_ids);
           return {
             created_at: filter.created_at,
-            link: `/scheduling/invite/${application_id}?filter_id=${filter.id}`,
+            link: `/self-scheduling/${filter.id}`,
             sessions: sessions,
           };
         }),
