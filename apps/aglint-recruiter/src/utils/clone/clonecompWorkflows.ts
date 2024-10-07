@@ -14,7 +14,9 @@ export const cloneCompWorkflowsForJob = async ({
 }) => {
   const job_trigs = supabaseWrap(
     await supabase.from('workflow_job_relation').select().eq('job_id', job_id),
+    false,
   );
+
   supabaseWrap(
     await supabase
       .from('workflow')
@@ -22,17 +24,23 @@ export const cloneCompWorkflowsForJob = async ({
       .in(
         'id',
         job_trigs.map((j) => j.workflow_id),
-      ),
+      )
+      .eq('workflow_type', 'job'),
   );
 
   const workflows = supabaseWrap(
     await supabase
       .from('workflow')
-      .select('*,workflow_action(*)')
+      .select('*,workflow_action!inner(*)')
       .eq('recruiter_id', company_id)
       .eq('workflow_type', 'company'),
-  ).filter((w) => w.workflow_action && w.is_active);
-
+    false,
+  );
+  //
+  if (workflows.length === 0) {
+    console.error('company workflows not found');
+    return;
+  }
   const promises = workflows.map(async (w) => {
     const jobTrigger = supabaseWrap(
       await supabase
@@ -60,10 +68,12 @@ export const cloneCompWorkflowsForJob = async ({
     const insertedActions = supabaseWrap(
       await supabase.from('workflow_action').insert(actions).select(),
     );
-    await supabase.from('workflow_job_relation').insert({
-      job_id,
-      workflow_id: jobTrigger.id,
-    });
+    supabaseWrap(
+      await supabase.from('workflow_job_relation').insert({
+        job_id,
+        workflow_id: jobTrigger.id,
+      }),
+    );
     return insertedActions;
   });
   return await Promise.all(promises);
