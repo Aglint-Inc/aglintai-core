@@ -616,13 +616,13 @@ function SessionCards({
                 <div className='px-0'>
                   {session?.interview_session?.break_duration ? (
                     <div>
-                      <Card className='flex justify-between rounded-md border-2 border-dashed px-4 py-2 shadow-none'>
-                        <div className='flex items-center space-x-2'>
-                          <Coffee className='h-4 w-4' /> <p>Break</p>
+                      <Card className='flex justify-between rounded-md border-2 border-dashed px-[15px] py-2 shadow-none'>
+                        <div className='flex items-center'>
+                          <p className='text-sm font-medium'>Break</p>
                         </div>
-                        <div className='pr-6'>
+                        <div className='flex flex-row gap-2'>
                           <UISelectDropDown
-                            className='max-w-[150px]'
+                            className='h-[26px] w-[150px]'
                             fullWidth
                             fieldSize='medium'
                             menuOptions={breakDurations.map((ele) => ({
@@ -637,6 +637,9 @@ function SessionCards({
                               ).then(() => refetchMeetings());
                             }}
                           />
+                          <div className='flex h-[26px] w-[26px] items-center justify-center rounded-md border border-gray-200 bg-gray-100'>
+                            <Coffee className='h-3 w-3' />
+                          </div>
                         </div>
                       </Card>
                       <div className='flex items-center justify-center space-x-2'></div>
