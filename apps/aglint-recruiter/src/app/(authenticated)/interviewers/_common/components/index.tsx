@@ -7,6 +7,7 @@ import {
   PageHeaderText,
   PageTitle,
 } from '@components/layouts/page-header';
+import { ScrollArea } from '@components/ui/scroll-area';
 import {
   Table,
   TableBody,
@@ -93,27 +94,29 @@ function Interviewers() {
         </PageHeader>
       }
     >
-      <Table>
-        <TableHeader className='bg-muted'>
-          <TableRow>
-            <TableHead>Interviewer</TableHead>
-            <TableHead>Department & Location</TableHead>
-            <TableHead>Module</TableHead>
-            <TableHead>Interview Hours</TableHead>
-            <TableHead>Interviews</TableHead>
-            <TableHead>Training</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {filteredInterviewers?.length ? (
-            filteredInterviewers.map((interviewer, i) => (
-              <InterviewerList key={i} interviewer={interviewer} />
-            ))
-          ) : (
-            <></>
-          )}
-        </TableBody>
-      </Table>
+      <ScrollArea className='h-[calc(100vh-180px)]'>
+        <Table>
+          <TableHeader className='bg-muted'>
+            <TableRow>
+              <TableHead>Interviewer</TableHead>
+              <TableHead>Department & Location</TableHead>
+              <TableHead>Module</TableHead>
+              <TableHead>Interview Hours</TableHead>
+              <TableHead>Interviews</TableHead>
+              <TableHead>Training</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredInterviewers?.length ? (
+              filteredInterviewers.map((interviewer, i) => (
+                <InterviewerList key={i} interviewer={interviewer} />
+              ))
+            ) : (
+              <></>
+            )}
+          </TableBody>
+        </Table>
+      </ScrollArea>
       {filteredInterviewers?.length === 0 ? (
         <div className='flex w-full items-center justify-center'>
           <EmptyState

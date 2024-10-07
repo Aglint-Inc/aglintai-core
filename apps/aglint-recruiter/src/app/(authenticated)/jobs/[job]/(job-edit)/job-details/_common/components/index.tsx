@@ -9,7 +9,7 @@ import {
   PageTitle,
 } from '@components/layouts/page-header';
 import { Skeleton } from '@components/ui/skeleton';
-import { AlertTriangle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import {
   type Dispatch,
   type SetStateAction,
@@ -254,13 +254,13 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
     <div>
       <div className='mb-6 grid grid-cols-2 gap-4'>{forms}</div>
       <div
-        className={`rounded-md ${fields.description!.error.value ? 'outline-red-500' : ''}`}
+        className={`rounded-md ${fields.description!.error.value ? 'outline-destructive' : ''}`}
       >
         {description}
       </div>
       {fields.description!.error.value && (
-        <div className='mt-2 flex items-center text-red-600'>
-          <AlertTriangle className='mr-2 h-4 w-4' />
+        <div className='mt-2 flex items-center text-destructive'>
+          <AlertCircle className='mr-2 h-4 w-4' />
           <span>{fields.description!.error.helper}</span>
         </div>
       )}

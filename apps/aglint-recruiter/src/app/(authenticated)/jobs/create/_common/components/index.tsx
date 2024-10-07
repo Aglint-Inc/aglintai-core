@@ -21,7 +21,7 @@ import {
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
 import { Dialog, DialogContent } from '@components/ui/dialog';
-import { AlertTriangle } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import {
   type Dispatch,
   type SetStateAction,
@@ -312,7 +312,7 @@ const JobForms = ({
         <div className='mt-4'>{description}</div>
         {fields.description!.error.value && (
           <div className='mt-2 flex items-center text-destructive'>
-            <AlertTriangle className='mr-2' />
+            <AlertCircle className='mr-2 h-4 w-4' />
             <span>{fields.description!.error.helper}</span>
           </div>
         )}

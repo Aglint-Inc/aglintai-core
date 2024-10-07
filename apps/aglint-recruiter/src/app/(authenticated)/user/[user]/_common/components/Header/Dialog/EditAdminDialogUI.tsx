@@ -88,7 +88,7 @@ export const Form = ({
             onChange={(e) =>
               setForm({ ...form, first_name: e.target.value || '' })
             }
-            className={formError.first_name ? 'border-red-500' : ''}
+            className={formError.first_name ? 'border-destructive' : ''}
           />
         </div>
         <div className='space-y-2'>
@@ -111,7 +111,7 @@ export const Form = ({
           onChange={(e) =>
             setForm({ ...form, linked_in: e.target.value.trim() })
           }
-          className={formError.linked_in ? 'border-red-500' : ''}
+          className={formError.linked_in ? 'border-destructive' : ''}
         />
       </div>
 
@@ -123,7 +123,7 @@ export const Form = ({
             value={form.position}
             placeholder='Enter position'
             onChange={(e) => setForm({ ...form, position: e.target.value })}
-            className={formError.position ? 'border-red-500' : ''}
+            className={formError.position ? 'border-destructive' : ''}
           />
         </div>
         <div className='space-y-2'>
@@ -275,7 +275,7 @@ export const Form = ({
                 placeholder='Enter phone number'
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                className={formError.phone ? 'border-red-500' : ''}
+                className={formError.phone ? 'border-destructive' : ''}
               />
             </div>
           </>
