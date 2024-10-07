@@ -7,8 +7,6 @@ import MyInterviews from '@interviews/components/MyInterviews';
 import RecentCompletedInterviews from '@interviews/components/RecentCompletedInterviews';
 import { IntegrationNotFound } from '@interviews/components/ui/IntegrationNotFound';
 import UpComingInterviews from '@interviews/components/UpComingInterviews';
-import { ScheduleStatesProvider } from '@interviews/contexts/ScheduleStatesContext';
-import React from 'react';
 
 import { useIntegrations } from '@/authenticated/hooks';
 import { useTenant } from '@/company/hooks';
@@ -39,9 +37,7 @@ function InterviewsPage() {
         filter={<UpComingInterviewFilters />}
         header={<h1 className='text-2xl font-bold'>Upcoming Interviews</h1>}
       >
-        <ScheduleStatesProvider>
-          <UpComingInterviews />
-        </ScheduleStatesProvider>
+        <UpComingInterviews />
       </TwoColumnPageLayout>
     );
   } else {
