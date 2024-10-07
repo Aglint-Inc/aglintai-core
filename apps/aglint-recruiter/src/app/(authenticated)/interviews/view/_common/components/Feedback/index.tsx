@@ -15,9 +15,9 @@ import {
   Calendar,
   Circle,
   Clock,
-  Edit,
   Mail,
   MessageSquare,
+  Pen,
   Plus,
   Star,
   User,
@@ -653,7 +653,7 @@ function FeedbackCardDetails({
                 >
                   {int.feedback && int.feedback?.recommendation ? (
                     <>
-                      <Edit className='mr-2 h-4 w-4' />
+                      <Pen className='mr-2 h-4 w-4' />
                       Edit Feedback
                     </>
                   ) : (
@@ -723,7 +723,7 @@ function FeedbackCardDetails({
               >
                 {int.feedback && int.feedback?.objective ? (
                   <>
-                    <Edit className='mr-2 h-4 w-4' />
+                    <Pen className='mr-2 h-4 w-4' />
                     Edit Feedback
                   </>
                 ) : (

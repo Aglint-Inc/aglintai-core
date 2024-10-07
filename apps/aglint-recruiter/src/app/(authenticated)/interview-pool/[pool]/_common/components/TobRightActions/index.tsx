@@ -3,7 +3,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { Archive, ArchiveRestore, Edit, MoreVertical } from 'lucide-react';
+import { Archive, ArchiveRestore, MoreHorizontal, Pen } from 'lucide-react';
 import React from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -27,7 +27,7 @@ function ActionsInterviewPools() {
           <UIButton
             variant='ghost'
             size='md'
-            icon={<MoreVertical className='h-4 w-4' />}
+            icon={<MoreHorizontal className='h-4 w-4' />}
           />
         </PopoverTrigger>
         <PopoverContent
@@ -44,7 +44,7 @@ function ActionsInterviewPools() {
             }}
           >
             <>
-              <Edit className='h-4 w-4' />
+              <Pen className='h-4 w-4' />
               <span>Edit</span>
             </>
           </div>
