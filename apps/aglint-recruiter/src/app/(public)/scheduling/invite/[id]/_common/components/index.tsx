@@ -1,10 +1,10 @@
 'use client';
 /* eslint-disable security/detect-object-injection */
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import { Building } from 'lucide-react';
-import Image from 'next/image';
+import { PublicPageLayout } from '@components/layouts/public-layout';
+import { Card, CardContent, CardHeader } from '@components/ui/card';
 
+import Footer from '@/common/Footer';
 import { NotFound } from '@/components/Common/404';
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
@@ -30,18 +30,22 @@ const CandidateInviteNew = () => {
   const { isLoading, isError } = useInviteMeta();
 
   return (
-    <div className='w-full py-8'>
-      {isLoading ? (
-        <LoadingState />
-      ) : isError ? (
-        <ErrorState />
-      ) : (
-        <>
-          <CandidateInvitePlanPage />
-          <DetailsPopup />
-        </>
-      )}
-    </div>
+    <PublicPageLayout header={<>
+    
+    </>} footer={<Footer brand={true} />}>
+      <div className='w-full py-8'>
+        {isLoading ? (
+          <LoadingState />
+        ) : isError ? (
+          <ErrorState />
+        ) : (
+          <>
+            <CandidateInvitePlanPage />
+            <DetailsPopup />
+          </>
+        )}
+      </div>
+    </PublicPageLayout>
   );
 };
 export default CandidateInviteNew;
@@ -140,19 +144,6 @@ const CandidateInvitePlanPage = () => {
     <div className='flex w-full flex-col items-center justify-center py-4'>
       <Card className='w-full max-w-[900px] space-y-4'>
         <CardHeader className='space-y-2 text-center'>
-          <div className='flex w-full justify-center'>
-            <Logo
-              companyName={meta.recruiter.name}
-              logo={meta.recruiter.logo ?? ''}
-            />
-          </div>
-          <CardTitle className='text-2xl font-medium'>
-            Select a date and time that works best for you.
-          </CardTitle>
-          <p className='text-center text-muted-foreground'>
-            Available slots are organized by day. Each slot includes the total
-            time required for your interview, including breaks.
-          </p>
           <div>
             <UIButton
               variant='ghost'
@@ -188,32 +179,4 @@ const CandidateInvitePlanPage = () => {
 const Invite = ({ rounds }: ScheduleCardsProps) => {
   if (rounds.length === 1) return <SingleDay />;
   return <MultiDay rounds={rounds} />;
-};
-
-const Logo = ({ companyName, logo }: { companyName: string; logo: string }) => {
-  return (
-    <div className={'relative max-h-[60px] max-w-[60px]'}>
-      <div className='relative h-[60px] w-[60px]'>
-        <Image
-          src={logo}
-          alt={companyName}
-          width={60}
-          height={60}
-          className='object-contain'
-          onError={(e) => {
-            if (e.currentTarget instanceof HTMLImageElement) {
-              e.currentTarget.style.display = 'none';
-              const fallback =
-                e.currentTarget.parentElement?.querySelector('.fallback');
-              if (fallback instanceof HTMLElement)
-                fallback.style.display = 'flex';
-            }
-          }}
-        />
-        <div className='fallback absolute inset-0 hidden items-center justify-center'>
-          <Building className='h-10 w-10 text-muted-foreground' />
-        </div>
-      </div>
-    </div>
-  );
 };
