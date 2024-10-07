@@ -54,11 +54,19 @@ const List = ({
   return (
     <div>
       {header}
-      <div ref={parentRef}>
+      <div
+        ref={parentRef}
+        style={{
+          height: `calc(100vh - 300px)`,
+          width: `100%`,
+          overflow: 'auto',
+        }}
+      >
         <div
-          className='relative w-full'
           style={{
             height: `${rowVirtualizer.getTotalSize()}px`,
+            width: '100%',
+            position: 'relative',
           }}
         >
           {rowVirtualizer.getVirtualItems().map((virtualRow) => {
@@ -67,8 +75,11 @@ const List = ({
             return (
               <div
                 key={virtualRow.index}
-                className='absolute left-0 top-0 w-full'
                 style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
                   height: `${virtualRow.size}px`,
                   transform: `translateY(${virtualRow.start}px)`,
                 }}
