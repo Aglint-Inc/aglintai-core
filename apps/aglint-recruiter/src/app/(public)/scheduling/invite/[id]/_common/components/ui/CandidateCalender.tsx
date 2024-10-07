@@ -21,7 +21,7 @@ export function CandidateCalender({
           </SectionTitle>
         </SectionHeaderText>
       </SectionHeader>
-      {slotDayColumn}
+      <div className='flex flex-row gap-2'>{slotDayColumn}</div>
     </Section>
   );
 }
