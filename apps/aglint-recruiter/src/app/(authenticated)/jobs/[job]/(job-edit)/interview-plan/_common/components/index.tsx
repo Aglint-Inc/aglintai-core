@@ -333,17 +333,17 @@ const InterviewPlan = ({
     [],
   );
   const sessionsCount = (data?.interview_session ?? []).length;
-  const sessions = (data?.interview_session ?? []).map((session, order) => (
+  const sessions = (data?.interview_session ?? []).map((session) => (
     <InterviewSession
       handleDeletionSession={handleDelete}
       key={session.id}
       session={session}
       plan_id={plan_id}
-      handleCreate={(key) => handleCreate(key, plan_id, order + 1)}
-      handleEdit={(key, id) => handleEdit(key, id, order + 1)}
+      handleCreate={(key) => handleCreate(key, plan_id, session.session_order)}
+      handleEdit={(key, id) => handleEdit(key, id, session.session_order)}
       handleDeletionSelect={handleDeletionSelect}
-      index={order}
-      lastSession={order === sessionsCount - 1}
+      index={session.session_order}
+      lastSession={session.session_order === sessionsCount - 1}
     />
   ));
 

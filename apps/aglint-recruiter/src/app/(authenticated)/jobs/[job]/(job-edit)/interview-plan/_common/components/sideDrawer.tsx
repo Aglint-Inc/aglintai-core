@@ -261,7 +261,7 @@ const EditSession = ({ handleClose, id, order }: DrawerProps) => {
       else {
         const { ...rest } = getSessionPayload(
           fields,
-          order + 1,
+          order,
           interview_plan_id!,
         );
         handleEditSession({ ...rest, session_id: id! });
@@ -426,9 +426,11 @@ const EditDebrief = ({ handleClose, id, order }: DrawerProps) => {
       if (error) setFields(newFields);
       else {
         const {
-          // eslint-disable-next-line no-unused-vars
+          interview_plan_id: _interview_plan_id,
+          session_order: _session_order,
           ...rest
-        } = getDebriefSessionPayload(fields, order + 1, interview_plan_id!);
+        } = getDebriefSessionPayload(fields, order, interview_plan_id!);
+
         handleEditDebriefSession({ ...rest, session_id: id! });
         handleClose();
       }
