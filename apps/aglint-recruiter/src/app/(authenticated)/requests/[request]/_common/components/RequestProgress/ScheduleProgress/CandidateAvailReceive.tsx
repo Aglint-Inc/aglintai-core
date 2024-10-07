@@ -1,10 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils';
-import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { useRequest } from '@request/hooks';
-import { Bell, Lightbulb, WandSparkles } from 'lucide-react';
+import { Bell } from 'lucide-react';
 import { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -198,10 +197,10 @@ const WActionMenu = () => {
         <div>
           <ShowCode.When isTrue={wActionAfterAvailRecive.length === 0}>
             <SuggestionCard
-            heading='Suggestion'
-            description='Automate booking when availability is received'
-            buttonSlot={
-              <Button
+              heading='Suggestion'
+              description='Automate booking when availability is received'
+              buttonSlot={
+                <Button
                   variant='outline'
                   size='sm'
                   onClick={() => {
@@ -214,9 +213,8 @@ const WActionMenu = () => {
                 >
                   Add Automation
                 </Button>
-            }
+              }
             />
-
           </ShowCode.When>
           {wActionAfterAvailRecive.map((action) => {
             const eventAction = apiTargetToEvents[action.target_api];
@@ -244,26 +242,25 @@ const WActionMenu = () => {
                   />
                   {!isSelfScheduleReminderSet && (
                     <SuggestionCard
-                    heading='Add automations'
-                    description='The Slack RSVP for the interviewers attendance will be sent.'
-                    buttonSlot={
-                      <Button
-                      variant='outline'
-                      size='sm'
-                      onClick={() => {
-                        setTriggerDetails({
-                          trigger: 'selfScheduleReminder',
-                          interval: 24 * 60,
-                        });
-                        setShowEditDialog(true);
-                      }}
-                    >
-                      <Bell className='mr-2 h-4 w-4' />
-                      Schedule Reminder
-                    </Button>
-                    }
+                      heading='Add automations'
+                      description='The Slack RSVP for the interviewers attendance will be sent.'
+                      buttonSlot={
+                        <Button
+                          variant='outline'
+                          size='sm'
+                          onClick={() => {
+                            setTriggerDetails({
+                              trigger: 'selfScheduleReminder',
+                              interval: 24 * 60,
+                            });
+                            setShowEditDialog(true);
+                          }}
+                        >
+                          <Bell className='mr-2 h-4 w-4' />
+                          Schedule Reminder
+                        </Button>
+                      }
                     />
-                    
                   )}
                 </>
               );

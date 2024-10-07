@@ -1,10 +1,9 @@
-import { FC, ReactNode } from 'react';
-
-import { Lightbulb } from 'lucide-react';
 import { Alert, AlertDescription } from '@components/ui/alert';
+import { Lightbulb } from 'lucide-react';
+import { type FC, type ReactNode } from 'react';
 
 interface SuggestionAlertProps {
-    heading: string;
+  heading: string;
   description: string;
   buttonSlot?: ReactNode;
 }
