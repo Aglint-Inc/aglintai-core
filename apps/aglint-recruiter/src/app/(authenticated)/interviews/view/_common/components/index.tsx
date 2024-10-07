@@ -90,7 +90,7 @@ function SchedulingViewComp() {
             </p>
             <div className='flex items-center gap-4 text-sm text-muted-foreground'>
               <div className='flex items-center gap-0.5'>
-                <User className='mr-2 h-4 w-4' />
+                <User className='h-4 w-4 text-muted-foreground' />
                 <span>
                   {schedule?.candidates?.first_name}{' '}
                   {schedule?.candidates?.last_name}
@@ -98,7 +98,7 @@ function SchedulingViewComp() {
               </div>
               {schedule?.candidates?.current_job_title && (
                 <div className='flex items-center gap-0.5'>
-                  <BriefcaseBusiness className='h-4 w-4' />
+                  <BriefcaseBusiness className='h-4 w-4 text-muted-foreground' />
                   <span className='ml-2'>
                     {schedule?.candidates?.current_job_title}
                   </span>

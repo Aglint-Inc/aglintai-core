@@ -59,7 +59,7 @@ export const Header = () => {
               <AvatarImage src={avatar} alt={first_name} />
               <AvatarFallback className='h-10 w-10 rounded-md bg-gray-200'>
                 <User
-                  className='h-6 w-6 text-gray-600'
+                  className='h-6 w-6 text-muted-foreground'
                   size={40}
                   strokeWidth={1.5}
                 />

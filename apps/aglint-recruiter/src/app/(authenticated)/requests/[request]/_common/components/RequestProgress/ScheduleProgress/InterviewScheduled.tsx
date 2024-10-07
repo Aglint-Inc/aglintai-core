@@ -2,11 +2,11 @@
 import { type DatabaseEnums } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
-import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
+import { UIAlert } from '@components/ui-alert';
 import { useRequest } from '@request/hooks';
 import axios from 'axios';
-import { Lightbulb, Plus } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import React from 'react';
 
 import { useTenant } from '@/company/hooks';
@@ -124,29 +124,24 @@ const InterviewScheduled = () => {
             );
           })}
           <ShowCode.When isTrue={!isWorkflowSet}>
-            <Alert
-              variant='default'
-              className='mb-4 border-purple-200 bg-purple-100'
-            >
-              <Lightbulb className='h-4 w-4 text-purple-500' />
-              <AlertDescription className='flex flex-col items-end'>
-                <p className='mb-4 w-full'>
-                  {workflowCopy['SEND_INTERVIEWER_ATTENDANCE_RSVP'][tense]}
-                </p>
-                <Button
-                  variant='outline'
-                  size='sm'
-                  onClick={() =>
-                    handleAddAction(
-                      'candidateBook_slack_interviewerForConfirmation',
-                    )
-                  }
-                >
-                  <Plus className='h-4 w-4' />
-                  Add RSVP
-                </Button>
-              </AlertDescription>
-            </Alert>
+            <UIAlert variant='tip' title='Add Automations'>
+              {workflowCopy['SEND_INTERVIEWER_ATTENDANCE_RSVP'][tense]}
+              <div className='mt-4 flex justify-end'>
+                <div className='flex justify-start'>
+                  <Button
+                    variant='outline'
+                    onClick={() =>
+                      handleAddAction(
+                        'candidateBook_slack_interviewerForConfirmation',
+                      )
+                    }
+                  >
+                    <Plus className='h-4 w-4' />
+                    Add RSVP
+                  </Button>
+                </div>
+              </div>
+            </UIAlert>
           </ShowCode.When>
         </>
       }

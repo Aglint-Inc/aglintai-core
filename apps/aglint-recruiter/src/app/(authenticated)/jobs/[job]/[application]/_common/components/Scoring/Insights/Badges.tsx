@@ -71,14 +71,20 @@ const getAllBadges = (badgesData: CustomApplicationBadges) => {
       icon: <TrendingUp className='h-4 w-4' />,
       text: 'Ambitious',
     },
-    jobStability: { icon: <Anchor className='h-4 w-4' />, text: 'Reliable' },
-    leadership: { icon: <Award className='h-4 w-4' />, text: 'Leader' },
+    jobStability: {
+      icon: <Anchor className='h-4 w-4 text-muted-foreground' />,
+      text: 'Reliable',
+    },
+    leadership: {
+      icon: <Award className='h-4 w-4 text-muted-foreground' />,
+      text: 'Leader',
+    },
     jobHopping: {
-      icon: <BriefcaseBusiness className='h-4 w-4' />,
+      icon: <BriefcaseBusiness className='h-4 w-4 text-muted-foreground' />,
       text: 'Job Hopper',
     },
     positions: {
-      icon: <BriefcaseBusiness className='h-4 w-4' />,
+      icon: <BriefcaseBusiness className='h-4 w-4 text-muted-foreground' />,
       text: 'Experienced',
     },
     schools: { icon: <BookOpen className='h-4 w-4' />, text: 'Knowledgeable' },

@@ -73,7 +73,7 @@ const ErrorIcon = () => (
 );
 
 const WarningIcon = () => (
-  <div className='flex items-center space-x-1 text-yellow-500'>
+  <div className='flex items-center space-x-1 text-destructive'>
     <AlertTriangle size={16} />
     <span>Resume not parsable</span>
   </div>

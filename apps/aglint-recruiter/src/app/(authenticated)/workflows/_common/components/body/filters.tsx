@@ -65,7 +65,7 @@ type FilterIconProps = {
 const FilterIcon = ({ filter }: FilterIconProps) => {
   switch (filter) {
     case 'job':
-      return <BriefcaseBusiness size={12} />;
+      return <BriefcaseBusiness size={12} className='text-muted-foreground' />;
     case 'tags':
       return <></>;
   }

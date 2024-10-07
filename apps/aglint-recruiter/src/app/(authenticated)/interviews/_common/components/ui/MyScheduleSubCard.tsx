@@ -128,7 +128,7 @@ export function MyScheduleSubCard({
               <div className='flex items-center gap-3'>
                 <div className='flex items-center gap-1'>
                   <div className='flex items-center justify-center'>
-                    <BriefcaseBusiness size={14} />
+                    <BriefcaseBusiness size={14} className='text-muted-foreground'/>
                   </div>
                   <Typography variant='p' type='small'>
                     {textJob}
