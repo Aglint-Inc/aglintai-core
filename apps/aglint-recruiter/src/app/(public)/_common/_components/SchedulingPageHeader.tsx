@@ -1,5 +1,6 @@
 'use client';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Separator } from '@components/ui/separator';
 
 export function SchedulingPageHeader({
   title,
@@ -13,9 +14,9 @@ export function SchedulingPageHeader({
   logo: string;
 }) {
   return (
-    <div className='w-lg flex w-full flex-col items-center'>
-      <div className='mb-4 flex items-center justify-center'>
-        <div className='flex flex-col items-center'>
+    <div className='flex w-full flex-col items-start'>
+      <div className='flex w-full items-start rounded-t-lg bg-muted p-4'>
+        <div className='flex flex-row items-center'>
           <Avatar className='h-[50px] w-[50px]'>
             <AvatarImage src={logo} alt={companyName} />
             <AvatarFallback>{companyName.charAt(0)}</AvatarFallback>
@@ -24,7 +25,10 @@ export function SchedulingPageHeader({
         </div>
       </div>
       {title ? <h1 className='text-3xl font-semibold'>{title}</h1> : null}
-      <div className='mb-8 flex items-center gap-2'>{description}</div>
+      <Separator />
+      <h2 className='flex items-center gap-2 p-8 pb-4 text-lg font-semibold'>
+        {description}
+      </h2>
     </div>
   );
 }

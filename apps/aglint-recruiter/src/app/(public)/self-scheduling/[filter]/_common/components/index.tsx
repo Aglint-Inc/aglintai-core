@@ -1,6 +1,12 @@
 'use client';
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
-import { Card, CardContent, CardHeader } from '@components/ui/card';
+import {
+  Section,
+  SectionActions,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 
 import { NotFound } from '@/components/Common/404';
 import TimezonePicker from '@/components/Common/TimezonePicker';
@@ -124,38 +130,32 @@ const CandidateInvitePlanPage = () => {
     );
 
   return (
-    <div className='flex w-full flex-col items-center justify-center py-4'>
-      <Card className='w-full max-w-[900px] space-y-4'>
-        <CardHeader className='space-y-2 text-center'>
-          <div>
-            <UIButton
-              variant='outline'
-              onClick={() => {
-                setDetailPopup(true);
+    <Section>
+      <SectionHeader>
+        <SectionHeaderText>
+          <SectionTitle>
+            <TimezonePicker
+              onChange={(e) => {
+                setTimeZone(e);
+                setSelectedSlots([]);
               }}
-            >
-              View Schedule details
-            </UIButton>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className='mx-auto w-full max-w-[900px] space-y-2'>
-            <div className='flex w-full justify-end'>
-              <div className='w-[300px]'>
-                <TimezonePicker
-                  onChange={(e) => {
-                    setTimeZone(e);
-                    setSelectedSlots([]);
-                  }}
-                  value={timezone.tzCode}
-                />
-              </div>
-            </div>
-            <Invite rounds={rounds} />
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+              value={timezone.tzCode}
+            />
+          </SectionTitle>
+        </SectionHeaderText>
+        <SectionActions>
+          <UIButton
+            variant='outline'
+            onClick={() => {
+              setDetailPopup(true);
+            }}
+          >
+            View Schedule details
+          </UIButton>
+        </SectionActions>
+      </SectionHeader>
+      <Invite rounds={rounds} />
+    </Section>
   );
 };
 
