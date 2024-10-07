@@ -23,8 +23,8 @@ import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import toast from '@/utils/toast';
 
-import { getScheduleType } from '../../../../../../../../utils/scheduling/colors_and_enums';
-import { SessionIcon } from '../../../../../../../_common/components/ScheduleProgressPillComp';
+import { getScheduleType } from '../../../../../../../utils/scheduling/colors_and_enums';
+import { SessionIcon } from '../../../../../../_common/components/ScheduleProgressPillComp';
 import useInviteActions from '../../hooks/useInviteActions';
 import { useInviteSlots } from '../../hooks/useInviteSlots';
 import { type CandidateInviteType, useCandidateInviteStore } from '../../store';

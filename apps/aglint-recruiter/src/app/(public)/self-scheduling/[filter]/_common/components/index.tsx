@@ -1,16 +1,13 @@
 'use client';
-/* eslint-disable security/detect-object-injection */
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
-import { PublicPageLayout } from '@components/layouts/public-layout';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 
-import Footer from '@/common/Footer';
 import { NotFound } from '@/components/Common/404';
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
 
-import { Loader } from '../../../../../../../components/Common/Loader';
-import { ConfirmedInvitePage } from '../../../../../../_common/components/CandidateConfirm/_common/components';
+import { Loader } from '../../../../../../components/Common/Loader';
+import { ConfirmedInvitePage } from '../../../../../_common/components/CandidateConfirm/_common/components';
 import { useInviteMeta } from '../hooks/useInviteMeta';
 import {
   setDetailPopup,
@@ -30,22 +27,18 @@ const CandidateInviteNew = () => {
   const { isLoading, isError } = useInviteMeta();
 
   return (
-    <PublicPageLayout header={<>
-    
-    </>} footer={<Footer brand={true} />}>
-      <div className='w-full py-8'>
-        {isLoading ? (
-          <LoadingState />
-        ) : isError ? (
-          <ErrorState />
-        ) : (
-          <>
-            <CandidateInvitePlanPage />
-            <DetailsPopup />
-          </>
-        )}
-      </div>
-    </PublicPageLayout>
+    <div className='w-full'>
+      {isLoading ? (
+        <LoadingState />
+      ) : isError ? (
+        <ErrorState />
+      ) : (
+        <>
+          <CandidateInvitePlanPage />
+          <DetailsPopup />
+        </>
+      )}
+    </div>
   );
 };
 export default CandidateInviteNew;
@@ -84,17 +77,9 @@ const ErrorState = () => (
 );
 
 const CandidateInvitePlanPage = () => {
-  // const { handleViewedOn } = useCandidateInvite();
-
   const { timezone } = useCandidateInviteStore();
 
   const { data: meta } = useInviteMeta();
-
-  // useEffect(() => {
-  //   if (filter_json?.id) {
-  //     handleViewedOn();
-  //   }
-  // }, [filter_json]);
 
   const waiting = (meta?.meetings || []).some(
     ({ interview_meeting: { status } }) => status === 'waiting',
@@ -129,9 +114,7 @@ const CandidateInvitePlanPage = () => {
     return (
       <ConfirmedInvitePage
         rounds={rounds}
-        //@ts-ignore // remove after nullable fix
         candidate={meta.candidate}
-        //@ts-ignore // remove after nullable fix
         filter_json={meta.filter_json}
         meetings={meta.meetings}
         recruiter={meta.recruiter}
@@ -146,7 +129,7 @@ const CandidateInvitePlanPage = () => {
         <CardHeader className='space-y-2 text-center'>
           <div>
             <UIButton
-              variant='ghost'
+              variant='outline'
               onClick={() => {
                 setDetailPopup(true);
               }}
