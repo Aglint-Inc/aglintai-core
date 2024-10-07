@@ -5,6 +5,7 @@ import {agentChain} from './graph';
 import {AIMessage, HumanMessage} from '@langchain/core/messages';
 import {handleResults, saveToDB} from './utils/savetodb';
 import {ApiBodyAgentSupervisor, CallBackAll} from '@aglint/shared-types';
+import {randomUUID} from 'crypto';
 
 export async function agentSupervisor(req: Request, res: Response) {
   const {
@@ -81,7 +82,7 @@ export async function agentSupervisor(req: Request, res: Response) {
       user_id,
       content: 'Unable to process the request',
       created_at: new Date().toISOString(),
-      id: crypto.randomUUID(),
+      id: randomUUID(),
       type: 'agent',
       function: null,
       metadata: null,

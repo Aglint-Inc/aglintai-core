@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {DynamicStructuredTool} from 'langchain/tools';
 import {z} from 'zod';
-import {WebSocket} from 'ws';
 import {TwilioClient} from '../../services/twilio/twilioClient';
+import WebSocket from 'ws';
 export const endCallTool = ({
   callSid,
   twilioClient,

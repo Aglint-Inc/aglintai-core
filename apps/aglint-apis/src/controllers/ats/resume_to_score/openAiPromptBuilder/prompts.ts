@@ -341,7 +341,7 @@ export const getPrompts = (
           [] as OpenAIPrompt['messages']
         );
         const temperature = 0;
-        const prevError = null;
+        const prevError: any = null;
         return {
           messages,
           temperature,
@@ -417,7 +417,7 @@ export const getReasoningPrompts = (
         badges
       );
       const temperature = 0;
-      const prevError = null;
+      const prevError: any = null;
       acc.push({
         messages,
         temperature,
