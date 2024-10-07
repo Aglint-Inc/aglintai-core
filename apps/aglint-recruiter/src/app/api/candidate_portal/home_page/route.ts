@@ -174,7 +174,7 @@ export async function POST(req: Request) {
         avail.map(async (ava) => {
           const sessions = await getAvailabilitySessionDetails(ava.id);
           return {
-            link: `/scheduling/request-availability/${ava.id}`,
+            link: `/request-availability/${ava.id}`,
             created_at: ava.created_at,
             sessions: sessions,
           };

@@ -28,7 +28,7 @@ export const dummy: EmailType = {
     },
   ],
   subject: '',
-  candidateLink: `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/scheduling/request-availability/f17b307d-c8ed-4355-b597-3fc642fa5989`,
+  candidateLink: `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/request-availability/f17b307d-c8ed-4355-b597-3fc642fa5989`,
 };
 
 // export get subject

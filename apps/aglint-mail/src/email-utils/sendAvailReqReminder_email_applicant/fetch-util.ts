@@ -41,7 +41,7 @@ export const fetchUtil: FetchUtilType<
   } = avail_req_data.applications;
 
   const candidate_link = req_body.avail_req_id
-    ? `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/scheduling/request-availability/${req_body.avail_req_id}`
+    ? `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/request-availability/${req_body.avail_req_id}`
     : '';
 
   const comp_email_placeholder: EmailTemplateAPi<'sendAvailReqReminder_email_applicant'>['comp_email_placeholders'] =

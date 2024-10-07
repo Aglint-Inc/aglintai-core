@@ -17,7 +17,7 @@ export const onClickCopyLink = async ({
     );
   } else if (request_id) {
     navigator.clipboard.writeText(
-      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${request_id}`,
+      `${process.env.NEXT_PUBLIC_HOST_NAME}/request-availability/${request_id}`,
     );
   }
 };

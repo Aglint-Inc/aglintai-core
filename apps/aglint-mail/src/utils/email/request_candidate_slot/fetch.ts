@@ -37,7 +37,7 @@ export default async function requestCandidateSlot(
       '[firstName]': first_name,
       '[jobTitle]': job_title,
       '[companyName]': companyName,
-      '[availabilityLink]': `${process.env.BASE_URL}/scheduling/request-availability/${request_id}`,
+      '[availabilityLink]': `${process.env.BASE_URL}/request-availability/${request_id}`,
     },
   };
 

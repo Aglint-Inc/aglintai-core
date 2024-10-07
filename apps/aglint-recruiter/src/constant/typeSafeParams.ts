@@ -67,7 +67,7 @@ export const TYPE_SAFE_PARAMS = {
     '/job-post/[id]': [
       'id'
     ],
-    '/scheduling/request-availability/[request_id]': [
+    '/request-availability/[request_id]': [
       'request_id'
     ],
     '/self-scheduling/[filter]': [
