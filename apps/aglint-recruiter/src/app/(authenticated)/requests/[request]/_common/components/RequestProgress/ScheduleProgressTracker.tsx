@@ -1,5 +1,5 @@
 import { cn } from '@lib/utils';
-import { Check, CircleX } from 'lucide-react';
+import { Circle, CircleCheckIcon, CircleDot, CircleX } from 'lucide-react';
 import React from 'react';
 
 import { type ProgressTenseType } from './types';
@@ -34,34 +34,44 @@ function ScheduleProgressTracker({
           <>
             <div
               className={cn(
-                'h-4 w-4 rounded-full border-2',
-                status === 'past'
-                  ? 'border-green-500 bg-green-500'
-                  : 'border-border',
+                'h-4 w-4 border-none',
+                status === 'past' ? 'text-green-600' : 'border-border',
               )}
             >
               {status === 'past' && (
-                <Check className='absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform text-white' />
+                <>
+                  {/* <Check className='absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform text-white' /> */}
+                  <CircleCheckIcon
+                    strokeWidth={1.5}
+                    className='absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform'
+                  />
+                </>
               )}
               {status === 'error' && (
                 <CircleX className='absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform text-destructive' />
+              )}
+              {status === 'present' && (
+                <CircleDot className='absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform text-blue-600' />
+              )}
+              {status === 'future' && (
+                <Circle className='absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform text-gray-400' />
               )}
             </div>
           </>
         )}
       </div>
-      <div className='flex flex-col items-start'>
+      <div className='mb-3 flex flex-col items-start'>
         <div className='flex items-center justify-between'>
-          <div className='flex items-start space-x-2'>
+          <div className='flex items-start'>
             <div>{slotLeftIcon}</div>
             <p className='flex-1 text-sm text-muted-foreground'>
               {textProgress}
             </p>
           </div>
         </div>
-        <div className='mb-2 mt-2'>{slotRightIcon}</div>
+        <div className=''>{slotRightIcon}</div>
         {isAiTextVisible && slotAiText && (
-          <div className='mt-1'>{slotAiText}</div>
+          <div className='mt-2'>{slotAiText}</div>
         )}
         {slotButton && <div className='mt-2'>{slotButton}</div>}
       </div>

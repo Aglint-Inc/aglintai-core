@@ -11,30 +11,27 @@ const AvailabilityLinkSent = (
   return (
     <>
       <div className='flex items-center gap-0'>
-        <Button variant={'ghost'} size={'sm'} asChild>
-          Copy availability link
-          <Copy size={16} />
-          <Tooltip>
-            <TooltipContent>
-              {isCopied ? 'Copied!' : 'Copy to clipboard'}
-            </TooltipContent>
-            <Button
-              onClick={() => {
-                setIsCopied(true);
-                navigator.clipboard.writeText(
-                  `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${progress_row.meta.avail_req_id}`,
-                );
-                setTimeout(() => {
-                  setIsCopied(false);
-                }, 3000);
-              }}
-              size={'sm'}
-              variant={'ghost'}
-            >
-              {isCopied ? <Check size={16} /> : <Copy size={16} />}
-            </Button>
-          </Tooltip>
-        </Button>
+        <Tooltip>
+          <TooltipContent>
+            {isCopied ? 'Copied!' : 'Copy to clipboard'}
+          </TooltipContent>
+          <Button
+            onClick={() => {
+              setIsCopied(true);
+              navigator.clipboard.writeText(
+                `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${progress_row.meta.avail_req_id}`,
+              );
+              setTimeout(() => {
+                setIsCopied(false);
+              }, 3000);
+            }}
+            size={'sm'}
+            variant={'secondary'}
+          >
+            Copy Availability Link
+            {isCopied ? <Check size={16} className='ml-2 w-3 h-3' /> : <Copy size={16} className='ml-2  w-3 h-3' />}
+          </Button>
+        </Tooltip>
       </div>
     </>
   );
