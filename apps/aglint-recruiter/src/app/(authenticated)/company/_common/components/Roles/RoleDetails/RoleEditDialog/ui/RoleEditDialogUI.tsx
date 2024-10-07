@@ -94,7 +94,7 @@ export const RoleEditDialogUI = ({
             {filteredMember.map((member) => (
               <Card
                 key={member.user_id}
-                className='flex cursor-pointer items-center p-4 hover:bg-accent'
+                className='m-1 flex cursor-pointer items-center p-4 hover:bg-accent'
                 onClick={() => setSelectedMember(member)}
               >
                 <Avatar className='mr-4 h-10 w-10'>

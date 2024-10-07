@@ -1,17 +1,24 @@
-import { PublicPageLayout } from '@components/layouts/public-layout';
-import React, { type PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 
-import Footer from '@/components/Common/Footer';
+import { api, HydrateClient } from '@/trpc/server';
 
 import { RequestAvailabilityProvider } from './_common/contexts/RequestAvailabilityContext';
 
-function AvailabilityLayout({ children }: PropsWithChildren) {
+async function AvailabilityLayout({
+  children,
+  params,
+}: PropsWithChildren<{
+  params: {
+    request_id: string;
+  };
+}>) {
+  void api.candidate_availability.getCandidateAvailabilityData.prefetch({
+    candidate_request_availability_id: params.request_id,
+  });
   return (
-    <RequestAvailabilityProvider>
-      <PublicPageLayout footer={<Footer brand={true} />}>
-        {children}
-      </PublicPageLayout>
-    </RequestAvailabilityProvider>
+    <HydrateClient>
+      <RequestAvailabilityProvider>{children}</RequestAvailabilityProvider>
+    </HydrateClient>
   );
 }
 

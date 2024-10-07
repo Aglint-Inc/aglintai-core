@@ -15,6 +15,7 @@ import {
 } from '@components/ui/select';
 import { type Dispatch, type SetStateAction } from 'react';
 
+import { type useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
 import { UIButton } from '@/common/UIButton';
 import UITextField from '@/common/UITextField';
 import type {
@@ -22,7 +23,6 @@ import type {
   useTenantOfficeLocations,
   useTenantRoles,
 } from '@/company/hooks';
-import { type useAllDepartments } from '@/queries/departments';
 import { api } from '@/trpc/client';
 import { numberToText } from '@/utils/number/numberToText';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';

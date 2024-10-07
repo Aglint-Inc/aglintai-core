@@ -3,8 +3,28 @@ import { NextResponse } from 'next/server';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-import { type apiPortalInterviewsResponse } from '../get_interviews/route';
-
+type meetings = {
+  start_time: string | null;
+  end_time: string | null;
+  session_name: string;
+  session_duration: number;
+  schedule_type: 'in_person_meeting' | 'google_meet' | 'phone_call' | 'zoom';
+  meeting_link: string | null;
+  status:
+    | 'completed'
+    | 'cancelled'
+    | 'waiting'
+    | 'reschedule'
+    | 'confirmed'
+    | 'not_scheduled';
+  session_id: string;
+  interviewers: {
+    first_name: string;
+    last_name: string;
+    profile_image: string;
+    position: string;
+  }[];
+}[];
 export type apiHomepageResponse = {
   candidate: {
     first_name: string;
@@ -39,7 +59,7 @@ export type apiHomepageResponse = {
     company_images: string[];
     greetings: string;
   };
-  upcoming: apiPortalInterviewsResponse;
+  upcoming: meetings;
 };
 
 export type availability = {
@@ -176,7 +196,7 @@ export async function POST(req: Request) {
           const sessions = await getScheudleSessionDetails(filter.session_ids);
           return {
             created_at: filter.created_at,
-            link: `/scheduling/invite/${application_id}?filter_id=${filter.id}`,
+            link: `/self-scheduling/${filter.id}`,
             sessions: sessions,
           };
         }),
@@ -186,10 +206,6 @@ export async function POST(req: Request) {
     //upcoming  -----------------------------------------------------------------------------
 
     const upcomingData = await getMeetings(application_id);
-
-    // interview plan -----------------------------------------------------------------
-
-    // .throwOnError();
 
     //final -----------------------------------------------------------------------------
     const data = {
@@ -265,10 +281,8 @@ const getAvailabilitySessionDetails = async (availability_id: string) => {
 const getMeetings = async (application_id: string) => {
   const interviews = await getInterviews(application_id);
 
-  let interviewWithUsers = [] as apiPortalInterviewsResponse;
-
   if (interviews?.length) {
-    interviewWithUsers = await Promise.all(
+    const data = await Promise.all(
       interviews.map(async (interview) => {
         const interviewers = await getInterviewers(interview?.session_id || '');
         return {
@@ -277,8 +291,8 @@ const getMeetings = async (application_id: string) => {
         };
       }),
     );
+    return data as meetings;
   }
-  return interviewWithUsers;
 };
 
 const getInterviews = async (application_id: string) => {
@@ -293,7 +307,7 @@ const getInterviews = async (application_id: string) => {
     .eq('status', 'confirmed')
     .throwOnError();
 
-  return interviews;
+  return interviews!;
 };
 
 const getInterviewers = async (session_id: string) => {
@@ -305,5 +319,5 @@ const getInterviewers = async (session_id: string) => {
     .eq('session_id', session_id)
     .throwOnError();
 
-  return interviewers;
+  return interviewers!;
 };

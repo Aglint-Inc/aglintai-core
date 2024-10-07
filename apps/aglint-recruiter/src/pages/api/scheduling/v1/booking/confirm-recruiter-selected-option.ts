@@ -47,6 +47,7 @@ const confirmRecruiterSelectedOptions = async (
     verified_plans[0],
     fetched_details,
   );
+  return { success: true };
 };
 
 export default createPageApiPostRoute(schema, confirmRecruiterSelectedOptions);

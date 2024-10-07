@@ -249,7 +249,7 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
             </div>
           </div>
           {isCheckboxVisiable && (
-            <div className='col-span-2 flex items-center justify-end space-x-2'>
+            <div className='col-span-2 flex items-center justify-start space-x-2'>
               <Checkbox
                 id='isHeadquarter'
                 checked={isHeadQ}

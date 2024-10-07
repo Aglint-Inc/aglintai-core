@@ -5,13 +5,13 @@ export const useTenantMembers = () => {
     refetchInterval: 1000 * 60 * 10,
     placeholderData: [],
   });
-
   const allMembers = query?.data || [];
   const members = allMembers.filter((member) => member.status === 'active');
 
   return {
+    ...query,
+    data: query.data || [],
     allMembers,
-    refetchMembers: query.refetch,
     members,
     isFetched: query.isFetched,
     isLoading: query.isLoading,

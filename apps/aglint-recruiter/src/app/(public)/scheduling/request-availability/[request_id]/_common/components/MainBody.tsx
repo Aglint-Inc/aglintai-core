@@ -1,12 +1,10 @@
+'use client';
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
-import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { ScrollArea } from '@components/ui/scroll-area';
-import { UIAlert } from '@components/ui-alert';
 import dayjs from 'dayjs';
 import { AlertTriangle, RefreshCcw } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { ConfirmedInvitePage } from 'src/app/_common/components/CandidateConfirm/_common/components';
-import { type CandidateInviteType } from 'src/app/(public)/scheduling/invite/[id]/_common/store';
+import { type CandidateInviteType } from 'src/app/(public)/self-scheduling/[filter]/_common/store';
 
 import { UIButton } from '@/common/UIButton';
 import { Loader } from '@/components/Common/Loader';
@@ -18,10 +16,7 @@ import {
   useCandidateAvailabilityMeetings,
   useCandidateAvailabilityScheduleDMeetings,
 } from '../hooks/useRequestAvailability';
-import {
-  type CandidateAvailabilityType,
-  type CandidateMeetingsType,
-} from '../types';
+import { type CandidateMeetingsType } from '../types';
 import MultiDaySessions from './MultiDaySessions';
 import SingleDaySessions from './SingleDaySessions';
 import SlotsSubmitted from './SlotsSubmitted';
@@ -141,68 +136,15 @@ function CandidateAvailability() {
 
   return (
     <>
-      <Header
-        candidateRequestAvailability={candidateRequestAvailability}
-        isSubmitted={isSubmitted}
-      />
-      <ScrollArea className='h-[calc(100vh-400px)]'>
-        {isSubmitted && <SlotsSubmitted />}
-        {!isSubmitted && (multiDaySessions ?? []).length === 1 && (
-          <SingleDaySessions />
-        )}
-        {!isSubmitted && (multiDaySessions ?? []).length > 1 && (
-          <MultiDaySessions />
-        )}
-      </ScrollArea>
+      {isSubmitted && <SlotsSubmitted />}
+      {!isSubmitted && (multiDaySessions ?? []).length === 1 && (
+        <SingleDaySessions />
+      )}
+      {!isSubmitted && (multiDaySessions ?? []).length > 1 && (
+        <MultiDaySessions />
+      )}
     </>
   );
 }
 
 export default CandidateAvailability;
-
-function Header({
-  candidateRequestAvailability,
-  isSubmitted,
-}: {
-  candidateRequestAvailability: CandidateAvailabilityType;
-  isSubmitted: boolean;
-}) {
-  return (
-    <div className='w-lg flex w-full flex-col items-center'>
-      <div className='mb-4 flex items-center justify-center'>
-        {candidateRequestAvailability &&
-        candidateRequestAvailability?.recruiter?.logo ? (
-          <>
-            <Avatar className='h-[100px] w-[100px]'>
-              <AvatarImage
-                src={candidateRequestAvailability?.recruiter.logo}
-                alt={candidateRequestAvailability?.recruiter.name}
-              />
-              <AvatarFallback>
-                {candidateRequestAvailability?.recruiter.name.charAt(0)}
-              </AvatarFallback>
-            </Avatar>
-            <h1 className='text-2xl font-semibold'>
-              {candidateRequestAvailability?.recruiter.name}
-            </h1>
-          </>
-        ) : null}
-      </div>
-      <div className='mb-8 flex items-center gap-2'>
-        {isSubmitted ? (
-          <UIAlert type='success' title='Availability Submitted Successfully'>
-            <p>
-              Thank you for submitting your availability. We will review the
-              selected time slots and confirm the schedule soon. You will
-              receive a confirmation shortly.
-            </p>
-          </UIAlert>
-        ) : (
-          <h1 className='text-2xl font-semibold text-muted-foreground'>
-            Your Availability Requested
-          </h1>
-        )}
-      </div>
-    </div>
-  );
-}

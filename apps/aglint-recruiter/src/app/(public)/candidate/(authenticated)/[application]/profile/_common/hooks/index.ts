@@ -14,8 +14,6 @@ export const useCandidatePortalProfile = () => {
 export const useCandidatePortalProfileUpdate = () => {
   const { invalidate } = useCandidatePortalProfile();
   return api.candidatePortal.update_profile.useMutation({
-    // onSuccess: () => console.log('profile update success'),
-    // onError: (e) => console.log('Error update profile :', e.message),
     onSettled: () => invalidate(),
   });
 };

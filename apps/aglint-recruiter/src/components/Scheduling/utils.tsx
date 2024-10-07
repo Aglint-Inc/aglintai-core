@@ -30,6 +30,7 @@ export const formatTimeWithTimeZone = ({
   end_time: string | null;
   timeZone?: string;
 }) => {
+  if (!timeZone) return 'Candidate timezone not found';
   const tZTime = dayjsLocal(end_time)
     .tz(timeZone || dayjsLocal.tz.guess())
     .format('zzz');

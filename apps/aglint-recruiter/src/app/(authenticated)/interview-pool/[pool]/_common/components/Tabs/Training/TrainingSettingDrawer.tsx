@@ -142,7 +142,7 @@ function TrainingSettingDrawer(
               className={`space-y-4 ${!localModule?.settings?.require_training ? 'pointer-events-none opacity-50' : ''}`}
             >
               <div className='items-left flex flex-col gap-2'>
-                <div className='flex items-center gap-2'>
+                <div className='flex items-start gap-2'>
                   <Checkbox
                     checked={localModule?.settings?.reqruire_approval}
                     onCheckedChange={(checked) => {
@@ -156,11 +156,14 @@ function TrainingSettingDrawer(
                     }}
                     id='require-approval'
                   />
-                  <Label htmlFor='require-approval'>Require Approval</Label>
-                </div>
-                <div className='text-sm text-muted-foreground'>
-                  By selecting this option, the approval of the chosen members
-                  is required to move a trainee to the qualified stage.
+                  <Label htmlFor='require-approval'>
+                    Require Approval
+                    <div className='text-sm text-muted-foreground'>
+                      By selecting this option, the approval of the chosen
+                      members is required to move a trainee to the qualified
+                      stage.
+                    </div>
+                  </Label>
                 </div>
               </div>
 

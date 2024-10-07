@@ -8,16 +8,8 @@ import { TwoColumnPageLayout } from '@components/layouts/two-column-page-layout'
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from '@components/ui/breadcrumb';
 import { Button } from '@components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
-import { Skeleton } from '@components/ui/skeleton';
+import { Card, CardHeader, CardTitle } from '@components/ui/card';
 import {
   REQUEST_STATUS_LIST,
   REQUEST_TYPE_LIST,
@@ -31,7 +23,6 @@ import {
   ChevronDown,
   Coffee,
   Edit2,
-  Home,
   MapPin,
   User,
 } from 'lucide-react';
@@ -40,6 +31,7 @@ import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
+import { Loader } from '@/common/Loader';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 // import { UIDivider } from '@/components/Common/UIDivider';
@@ -108,7 +100,7 @@ export default function ViewRequestDetails() {
       </Alert>
     );
   } else if ((isPlaceholderData && status === 'pending') || !selectedRequest) {
-    return <ViewRequestDetailsSkeleton />;
+    return <Loader />;
   } else
     return (
       <div className='w-full'>
@@ -154,7 +146,7 @@ export default function ViewRequestDetails() {
                   </h1>
                   <div className='flex items-center space-x-4 text-sm text-muted-foreground'>
                     <div className='flex items-center space-x-1'>
-                      <User className='h-4 w-4' />
+                      <User className='h-4 w-4 text-muted-foreground' />
                       <Link
                         href={
                           ROUTES['/jobs/[job]/[application]']({
@@ -616,13 +608,13 @@ function SessionCards({
                 <div className='px-0'>
                   {session?.interview_session?.break_duration ? (
                     <div>
-                      <Card className='flex justify-between rounded-md border-2 border-dashed px-4 py-2 shadow-none'>
-                        <div className='flex items-center space-x-2'>
-                          <Coffee className='h-4 w-4' /> <p>Break</p>
+                      <Card className='flex justify-between rounded-md border-2 border-dashed px-[15px] py-2 shadow-none'>
+                        <div className='flex items-center'>
+                          <p className='text-sm font-medium'>Break</p>
                         </div>
-                        <div className='pr-6'>
+                        <div className='flex flex-row gap-2'>
                           <UISelectDropDown
-                            className='max-w-[150px]'
+                            className='h-[26px] w-[150px]'
                             fullWidth
                             fieldSize='medium'
                             menuOptions={breakDurations.map((ele) => ({
@@ -637,6 +629,9 @@ function SessionCards({
                               ).then(() => refetchMeetings());
                             }}
                           />
+                          <div className='flex h-[26px] w-[26px] items-center justify-center rounded-md border border-gray-200 bg-gray-100'>
+                            <Coffee className='h-3 w-3' />
+                          </div>
                         </div>
                       </Card>
                       <div className='flex items-center justify-center space-x-2'></div>
@@ -647,112 +642,6 @@ function SessionCards({
             ))}
         </div>
       </Section>
-    </div>
-  );
-}
-
-function ViewRequestDetailsSkeleton() {
-  return (
-    <div className='container-lg mx-auto w-full px-16'>
-      <div className='space-y-8'>
-        {/* Breadcrumb */}
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href='/'>
-                <Home className='h-4 w-4' />
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink href='/requests'>Requests</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink href='#' className='font-medium text-gray-900'>
-                Request Details
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
-        {/* Header */}
-        <div className='flex flex-row items-start justify-between pb-2'>
-          <div>
-            <h1 className='mb-2 text-2xl font-bold text-gray-900'>
-              <Skeleton className='h-10 w-96' />
-            </h1>
-            <Skeleton className='h-4 w-96' />
-          </div>
-          <div className='flex flex-col items-end gap-4'>
-            <div className='item-center flex flex-row gap-2'>
-              <Skeleton className='h-6 w-20' />
-              <Skeleton className='h-6 w-20' />
-            </div>
-            <div className='flex items-center gap-2'>
-              <Skeleton className='h-4 w-24' />
-              <Skeleton className='h-6 w-6 rounded-full' />
-              <Skeleton className='h-4 w-24' />
-            </div>
-          </div>
-        </div>
-        {/* Request Details Card */}
-        <div className='flex'>
-          <div className='flex w-8/12 flex-col space-y-4 pb-6 pr-4'>
-            <Card className='bg-white shadow-sm'>
-              <CardHeader className='flex flex-row items-start justify-between pb-2'>
-                <Skeleton className='h-8 w-1/4' />
-              </CardHeader>
-              <CardContent className='space-y-4'>
-                <div className='grid grid-cols-3 gap-6'>
-                  <div className='col-span-2 grid grid-cols-2 gap-6'>
-                    <div className='space-y-4'>
-                      <Skeleton className='h-4 w-full' />
-                      <Skeleton className='h-4 w-full' />
-                    </div>
-                    <div className='space-y-4'>
-                      <Skeleton className='h-4 w-full' />
-                      <Skeleton className='h-4 w-full' />
-                    </div>
-                  </div>
-                  <div className='space-y-4'>
-                    <Skeleton className='h-4 w-full' />
-                  </div>
-                </div>
-                <Skeleton className='h-20 w-full' />
-                <Skeleton className='h-20 w-full' />
-              </CardContent>
-            </Card>
-            <Card className='bg-white shadow-sm'>
-              <CardHeader className='flex flex-row items-start justify-between pb-2'>
-                <Skeleton className='h-8 w-1/4' />
-              </CardHeader>
-              <CardContent>
-                <Skeleton className='h-20 w-full' />
-              </CardContent>
-            </Card>
-          </div>
-          <div className='flex w-4/12 flex-col space-y-4'>
-            <Card className='bg-white shadow-sm'>
-              <CardHeader className='flex flex-row items-start justify-between pb-2'>
-                <Skeleton className='h-8 w-1/4' />
-              </CardHeader>
-              <CardContent className='space-y-4'>
-                <Skeleton className='h-10 w-full' />
-              </CardContent>
-            </Card>
-            <Card className='bg-white shadow-sm'>
-              <CardHeader className='flex flex-row items-start justify-between pb-2'>
-                <Skeleton className='h-8 w-1/4' />
-              </CardHeader>
-              <CardContent className='space-y-4'>
-                <Skeleton className='h-10 w-full' />
-                <Skeleton className='h-10 w-full' />
-                <Skeleton className='h-10 w-full' />
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Input } from '@components/ui/input';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { Building2, CheckCircle, MapPin, Users } from 'lucide-react';
+import { Building, CheckCircle, MapPin, Users } from 'lucide-react';
 import React, { useState } from 'react';
 import {
   FacebookShareButton,
@@ -108,7 +108,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                 alt={recruiter?.name}
               />
               <AvatarFallback>
-                <Building2 className='h-12 w-12' />
+                <Building className='h-12 w-12' />
               </AvatarFallback>
             </Avatar>
             <h3 className='text-xl font-semibold'>{recruiter?.name}</h3>
@@ -140,7 +140,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                   alt={recruiter?.name}
                 />
                 <AvatarFallback>
-                  <Building2 className='h-12 w-12' />
+                  <Building className='h-12 w-12' />
                 </AvatarFallback>
               </Avatar>
               <div>
@@ -172,11 +172,11 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
                 <h3 className='mb-2 text-lg font-semibold'>Company Details</h3>
                 <div className='grid grid-cols-2 gap-2'>
                   <div className='flex items-center space-x-2'>
-                    <MapPin className='h-5 w-5 text-gray-400' />
+                    <MapPin className='h-5 w-5 text-muted-foreground' />
                     <span>Location: --</span>
                   </div>
                   <div className='flex items-center space-x-2'>
-                    <Users className='h-5 w-5 text-gray-400' />
+                    <Users className='h-5 w-5 text-muted-foreground' />
                     <span>Employees: {recruiter?.employee_size || '--'}</span>
                   </div>
                 </div>

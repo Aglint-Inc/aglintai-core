@@ -4,7 +4,7 @@ import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
 import { useRequest } from '@request/hooks';
-import { Edit, Loader, Trash } from 'lucide-react';
+import { Loader, Pen, Trash } from 'lucide-react';
 import React from 'react';
 
 import { useRequestProgressProvider } from '../progressCtx';
@@ -81,7 +81,7 @@ const EventNode = ({
           slotRightIcon={
             tense === 'future' &&
             showEditBtns && (
-              <div className={`flex flex-row gap-1`}>
+              <div className={`mt-2 flex flex-row gap-1`}>
                 <Button
                   variant='outline'
                   size='sm'
@@ -102,7 +102,7 @@ const EventNode = ({
                     setShowEditDialog(true);
                   }}
                 >
-                  <Edit className='mr-2 h-4 w-4' />
+                  <Pen className='mr-2 h-3 w-3' />
                   Edit
                 </Button>
                 <Button
@@ -110,7 +110,7 @@ const EventNode = ({
                   size='sm'
                   onClick={handleDeleteScheduleAction}
                 >
-                  <Trash className='mr-2 h-4 w-4 text-destructive' />
+                  <Trash className='mr-2 h-3 w-3 text-destructive' />
                   Remove
                 </Button>
               </div>
@@ -124,7 +124,7 @@ const EventNode = ({
           slotAiText={
             <>
               {eventSubProgress.length > 0 && (
-                <div className='ml-4 space-y-2'>
+                <div className=''>
                   {eventSubProgress.map((prg) => {
                     if (
                       !prg.log &&
@@ -138,7 +138,7 @@ const EventNode = ({
                     return (
                       <Label
                         key={prg.id}
-                        className='flex items-center text-sm text-muted-foreground'
+                        className='flex items-center text-sm font-normal'
                       >
                         {prg.log}
                       </Label>

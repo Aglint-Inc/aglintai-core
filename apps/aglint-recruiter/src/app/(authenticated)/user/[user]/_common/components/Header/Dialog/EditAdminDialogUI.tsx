@@ -15,6 +15,7 @@ import {
   type SetStateAction,
 } from 'react';
 
+import { type useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
 import type { useTenantOfficeLocations } from '@/company/hooks';
 import {
   type useTenant,
@@ -22,7 +23,6 @@ import {
   type useTenantRoles,
 } from '@/company/hooks';
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
-import { type useAllDepartments } from '@/queries/departments';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { type EditAdminFormErrorType, type Formtype } from './EditAdminDialog';

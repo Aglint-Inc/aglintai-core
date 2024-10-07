@@ -160,9 +160,7 @@ export const allowedPaths = new Set<t>([
   '/api/candidate_portal/get_message',
   '/api/candidate_portal/get_profile',
   '/api/candidate_portal/home_page',
-  '/api/candidate_portal/update_profile',
   '/api/candidate_portal/get_navbar',
-  '/api/candidate_portal/get_email',
   '/api/request/execute-workflow',
   '/auth/callback',
   '/auth/redirect',
@@ -173,7 +171,7 @@ export const allowedPaths = new Set<t>([
 
 // Define route prefixes that expect a UUID at the end
 const dynamicPublicRoutePrefixes = [
-  '/scheduling/invite',
+  '/self-scheduling',
   '/scheduling/request-availability',
   '/company-postings',
   '/job-post',

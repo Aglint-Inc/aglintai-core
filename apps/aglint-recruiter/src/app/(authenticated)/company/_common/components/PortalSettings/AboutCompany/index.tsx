@@ -1,7 +1,7 @@
 import { EmptyState } from '@components/empty-state';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Parser } from 'html-to-react';
-import { Building2, Plus, SquarePen } from 'lucide-react';
+import { Building, Pen, Plus } from 'lucide-react';
 import { useState } from 'react';
 
 import { UIButton } from '@/common/UIButton';
@@ -28,7 +28,7 @@ export default function AboutCompany() {
         emptyStateMessage={
           !about && (
             <EmptyState
-              icon={Building2}
+              icon={Building}
               header={`No about company found`}
               description={`Add the about company for candidate portal`}
               primarySlot={
@@ -48,7 +48,7 @@ export default function AboutCompany() {
               variant='outline'
               onClick={() => setIsDialogOpen(true)}
               size='sm'
-              leftIcon={<SquarePen className='mr-2 h-3 w-3' />}
+              leftIcon={<Pen className='mr-2 h-3 w-3' />}
             >
               Edit
             </UIButton>

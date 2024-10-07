@@ -57,7 +57,10 @@ export function SliderImages() {
           variant='outline'
           onClick={() => setIsDialogOpen(true)}
         >
-          <ImagePlus strokeWidth={1.5} className='h-10 w-10' />
+          <ImagePlus
+            strokeWidth={1.5}
+            className='h-10 w-10 text-muted-foreground'
+          />
           <span className='text-sm font-normal'>Add Images</span>
         </Button>
         <SliderImageUploadDialog

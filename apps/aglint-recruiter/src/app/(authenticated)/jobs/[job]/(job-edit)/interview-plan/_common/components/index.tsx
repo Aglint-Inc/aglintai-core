@@ -30,8 +30,8 @@ import { UIBadge } from '@components/ui-badge';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   ChartNoAxesGantt,
-  Edit,
   PauseCircle,
+  Pen,
   Pencil,
   Plus,
   Trash,
@@ -404,7 +404,7 @@ const InterviewPlan = ({
               <UIButton
                 variant='outline'
                 size='sm'
-                icon={<Edit className='h-4 w-4' />}
+                icon={<Pen className='h-4 w-4' />}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleEditPlan();

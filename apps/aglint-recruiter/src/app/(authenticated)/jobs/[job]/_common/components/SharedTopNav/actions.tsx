@@ -344,7 +344,7 @@ const HiringTeamModule = () => {
   const { handlePush } = useSettings();
   return (
     <DropdownMenuItem onSelect={() => handlePush('/jobs/[job]/hiring-team')}>
-      <UserPlus className='mr-2 h-4 w-4' />
+      <UserPlus className='mr-2 h-4 w-4 text-muted-foreground' />
       <span>Hiring Team</span>
     </DropdownMenuItem>
   );
@@ -354,7 +354,7 @@ const ProfileScoreModule = () => {
   const { handlePush } = useSettings();
   return (
     <DropdownMenuItem onSelect={() => handlePush('/jobs/[job]/profile-score')}>
-      <BarChart className='mr-2 h-4 w-4' />
+      <BarChart className='mr-2 h-4 w-4 text-muted-foreground' />
       <span>Profile Score</span>
     </DropdownMenuItem>
   );
@@ -364,7 +364,7 @@ const JobDetailsModule = () => {
   const { handlePush } = useSettings();
   return (
     <DropdownMenuItem onSelect={() => handlePush('/jobs/[job]/job-details')}>
-      <FileText className='mr-2 h-4 w-4' />
+      <FileText className='mr-2 h-4 w-4 text-muted-foreground' />
       <span>Job Details</span>
     </DropdownMenuItem>
   );
@@ -391,7 +391,7 @@ const CloseJob = () => {
         setAnchorEl(null);
       }}
     >
-      <XCircle className='mr-2 h-4 w-4' />
+      <XCircle className='mr-2 h-4 w-4 text-muted-foreground' />
       <span>{isDelete ? 'Delete' : 'Close'} Job</span>
     </DropdownMenuItem>
   );
