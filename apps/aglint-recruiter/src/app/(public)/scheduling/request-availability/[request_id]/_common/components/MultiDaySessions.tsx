@@ -1,3 +1,4 @@
+import { ScrollArea } from '@components/ui/scroll-area';
 import React from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -28,9 +29,9 @@ function MultiDaySessions() {
         size='xl'
         slotButtons={<></>}
       >
-        <div className='h-[600px] overflow-auto'>
+        <ScrollArea className='h-[600px]'>
           <SlotsPicker singleDay={false} />
-        </div>
+        </ScrollArea>
       </UIDialog>
       <div className='flex w-full flex-col items-center gap-4'>
         <div className='flex w-full flex-col gap-2'>
