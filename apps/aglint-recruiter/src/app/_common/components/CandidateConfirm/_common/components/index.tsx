@@ -17,11 +17,11 @@ import { type TimezoneObj } from '@/utils/timeZone';
 import {
   type ScheduleCardProps,
   type ScheduleCardsProps,
-} from '../../../../../(public)/scheduling/invite/[id]/_common/types/types';
+} from '../../../../../(public)/self-scheduling/[filter]/_common/types/types';
 import {
   dayJS,
   getCalenderEventUrl,
-} from '../../../../../(public)/scheduling/invite/[id]/_common/utils/utils';
+} from '../../../../../(public)/self-scheduling/[filter]/_common/utils/utils';
 import { useGetReasons } from '../hooks/useGetReasons';
 import { setIsRescheduleCancelOpen, setReason } from '../store/store';
 import RequestCancelDialog from './RequestCancelDialog';

@@ -4,29 +4,24 @@ import { type PublicProcedure, publicProcedure } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
 const schema = z.object({
-  application_id: z.string(),
   filter_id: z.string(),
 });
 
 const query = async ({
-  input: { application_id, filter_id },
+  input: { filter_id },
 }: PublicProcedure<typeof schema>) => {
-  const schedule = await getScheduleDetails(application_id, filter_id);
-
-  const filterJson = schedule.interview_filter_json[0];
-
-  const recruiter = schedule.candidates.recruiter;
+  const { applications, ...filter } = await getScheduleDetails(filter_id);
 
   const { resMeetings } = await getInterviewSessionsMeetings(
-    filterJson.session_ids,
+    filter.session_ids,
   );
 
   const redRes = {
-    job: schedule.public_jobs,
-    application_id,
-    candidate: schedule.candidates,
-    filter_json: filterJson,
-    recruiter: recruiter,
+    job: applications.public_jobs,
+    application_id: applications.id,
+    candidate: applications.candidates,
+    filter_json: filter,
+    recruiter: applications.candidates.recruiter,
     meetings: resMeetings,
   };
 
@@ -39,27 +34,18 @@ const query = async ({
 
 export const metaCandidateInvite = publicProcedure.input(schema).query(query);
 
-const getScheduleDetails = async (
-  application_id: string,
-  filter_id: string,
-) => {
+const getScheduleDetails = async (filter_id: string) => {
   const db = createPublicClient();
-  const { data: sch, error: errSch } = await db
-    .from('applications')
-    .select(
-      '*, public_jobs!inner(id,job_title,recruiter_id),candidates!inner(*,recruiter!inner(logo,name)),candidate_files(id,file_url,candidate_id,resume_json,type),interview_filter_json!inner(*)',
-    )
-    .eq('id', application_id)
-    .eq('interview_filter_json.id', filter_id)
-    .single();
-
-  if (errSch) throw new Error(errSch.message);
-
-  if (!sch) {
-    throw new Error('Schedule not found.');
-  }
-
-  return sch;
+  return (
+    await db
+      .from('interview_filter_json')
+      .select(
+        '*,applications!inner(*, public_jobs!inner(id,job_title,recruiter_id),candidates!inner(*,recruiter!inner(logo,name)),candidate_files(id,file_url,candidate_id,resume_json,type))',
+      )
+      .eq('id', filter_id)
+      .single()
+      .throwOnError()
+  ).data!;
 };
 
 const getInterviewSessionsMeetings = async (session_ids: string[]) => {
