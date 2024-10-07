@@ -73,7 +73,6 @@ const List = ({
                   style={{
                     height: `${virtualRow.size}px`,
                     transform: `translateY(${virtualRow.start}px)`,
-                    // zIndex: count - virtualRow.index,
                   }}
                 >
                   {isLoaderRow ? (

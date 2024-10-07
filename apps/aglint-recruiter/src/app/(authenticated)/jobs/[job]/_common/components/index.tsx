@@ -74,16 +74,20 @@ export const JobDetailsHeader = () => (
 );
 
 export const ApplicationsComponent = () => {
-  const checklist = useApplicationsStore((state) => state.checklist);
   return (
     <DNDProvider>
-      <div className='mb-2 flex flex-row gap-4 px-4'>
+      <div className='mb-2 flex flex-col gap-2 px-4'>
         <Tabs />
-        {checklist.length === 0 ? <Filters /> : <Actions />}
+        <Actionables />
       </div>
       <ScrollArea>
         <Table />
       </ScrollArea>
     </DNDProvider>
   );
+};
+
+const Actionables = () => {
+  const checklist = useApplicationsStore((state) => state.checklist);
+  return <>{checklist.length === 0 ? <Filters /> : <Actions />}</>;
 };

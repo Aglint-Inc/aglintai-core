@@ -17,11 +17,11 @@ const Tabs = () => {
   );
 
   return (
-    <>
+    <div className='flex flex-row gap-4'>
       {activeSections.map((section) => (
         <DNDTab key={section} section={section} />
       ))}
-    </>
+    </div>
   );
 };
 
