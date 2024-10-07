@@ -38,6 +38,7 @@ const initialFormFields: FormEntries = {
 
 export const ImportManual = () => {
   const [applicant, setApplicant] = useState(initialFormFields);
+  const [loading, setLoading] = useState(false);
   const { setImportPopup } = useApplicationsActions();
   const { handleUploadApplication } = useJob();
 
@@ -63,22 +64,27 @@ export const ImportManual = () => {
   };
 
   const handleSubmit = async () => {
-    try {
-      if (validateForm()) {
-        await handleUploadApplication({
-          candidate: {
-            first_name: applicant.first_name.value as string,
-            last_name: applicant.last_name.value as string,
-            email: applicant.email.value as string,
-            phone: applicant.phone.value as string,
-            linkedin: applicant.linkedin.value as string,
-          },
-          file: applicant.resume.value as File,
-        });
-        setImportPopup(false);
+    if (!loading) {
+      try {
+        if (validateForm()) {
+          setLoading(true);
+          await handleUploadApplication({
+            candidate: {
+              first_name: applicant.first_name.value as string,
+              last_name: applicant.last_name.value as string,
+              email: applicant.email.value as string,
+              phone: applicant.phone.value as string,
+              linkedin: applicant.linkedin.value as string,
+            },
+            file: applicant.resume.value as File,
+          });
+          setImportPopup(false);
+        }
+      } catch {
+        //
+      } finally {
+        setLoading(false);
       }
-    } catch {
-      //
     }
   };
 
@@ -91,7 +97,7 @@ export const ImportManual = () => {
         <FormBody applicant={applicant} setApplicant={setApplicant} />
       </div>
       <div className='p-0'>
-        <Button onClick={handleSubmit} className='w-full'>
+        <Button onClick={handleSubmit} className='w-full' disabled={loading}>
           Add Candidate
         </Button>
       </div>
