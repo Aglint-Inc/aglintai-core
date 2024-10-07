@@ -40,7 +40,7 @@ export const ReasonCardUI = ({
 
   return (
     <>
-      <ul className='max-w-2xl space-y-2'>
+      <ul className='max-w-2xl'>
         {reasons.map((reason, reasonIndex) => (
           <li
             key={reasonIndex}

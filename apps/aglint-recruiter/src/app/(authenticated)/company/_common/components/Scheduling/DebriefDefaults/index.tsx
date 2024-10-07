@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 import { type SchedulingSettingType } from '@aglint/shared-types';
+import Typography from '@components/typography';
 import React, { type Dispatch, type SetStateAction } from 'react';
 
 import { UISwitch } from '@/common/UISwitch';
-import UITypography from '@/common/UITypography';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 type MembersMeta = SchedulingSettingType['debrief_defaults'];
@@ -44,9 +44,7 @@ const Toggles = ({ value, setValue }: DebriefDefaultsProps) => {
                 }))
               }
             />
-            <UITypography className='text-sm'>
-              {capitalizeAll(key)}
-            </UITypography>
+            <Typography className='text-sm'>{capitalizeAll(key)}</Typography>
           </div>
         </>
       );

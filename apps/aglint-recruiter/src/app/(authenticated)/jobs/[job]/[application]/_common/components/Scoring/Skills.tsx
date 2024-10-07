@@ -25,7 +25,7 @@ const Skills = () => {
         <AccordionTrigger>
           <div className='flex w-full items-center justify-between'>
             <div className='flex items-center space-x-2'>
-              <Lightbulb size={16} />
+              <Lightbulb size={16} className='text-muted-foreground' />
               <span className='font-medium'>Skills</span>
             </div>
             {highRelevanceSkills.length > 0 && (

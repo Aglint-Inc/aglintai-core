@@ -2,9 +2,9 @@
 
 import { useToast } from '@components/hooks/use-toast';
 import axios from 'axios';
-import { Loader2 } from 'lucide-react';
 import { type ReactNode, useEffect } from 'react';
 
+import { Loader } from '@/common/Loader';
 import { useTenant } from '@/company/hooks';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { api } from '@/trpc/client';
@@ -67,9 +67,7 @@ const Google = () => {
 
   return (
     <>
-      <div className='flex h-screen w-screen items-center justify-center'>
-        <Loader2 className='h-8 w-8 animate-spin' />
-      </div>
+      <Loader />
     </>
   );
 };

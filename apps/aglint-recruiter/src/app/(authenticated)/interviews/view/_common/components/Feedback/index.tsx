@@ -1,6 +1,7 @@
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import Typography from '@components/typography';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
@@ -15,7 +16,6 @@ import {
   Circle,
   Clock,
   Edit,
-  Loader2,
   Mail,
   MessageSquare,
   Plus,
@@ -26,11 +26,11 @@ import {
 import { useMemo, useState } from 'react';
 
 import axios from '@/client/axios';
+import { Loader } from '@/common/Loader';
 import { useTenant } from '@/company/hooks';
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import UIDialog from '@/components/Common/UIDialog';
-import UITypography from '@/components/Common/UITypography';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type API_request_feedback } from '@/pages/api/request_feedback/type';
@@ -219,7 +219,7 @@ const FeedbackWindow = () => {
       <ShowCode>
         <ShowCode.When isTrue={isLoading}>
           <div className='flex items-center justify-center'>
-            <Loader2 className='h-8 w-8 animate-spin text-primary' />
+            <Loader />
           </div>
         </ShowCode.When>
         <ShowCode.When
@@ -786,9 +786,9 @@ const FeedbackForm = ({
 
     <div className='flex w-full flex-col gap-5'>
       <div className='flex flex-col gap-1'>
-        <UITypography type='small' variant='p'>
+        <Typography type='small' variant='p'>
           Recommendation Level
-        </UITypography>
+        </Typography>
         <div>
           <div className='flex gap-2'>
             {Array(10)
@@ -819,15 +819,15 @@ const FeedbackForm = ({
                 );
               })}
           </div>
-          <UITypography type='small' variant='p' className=''>
+          <Typography type='small' variant='p' className=''>
             {re_mapper[interviewer.feedback?.recommendation || 0]}
-          </UITypography>
+          </Typography>
         </div>
       </div>
       <div className='flex flex-col gap-2'>
-        <UITypography type='small' variant='p'>
+        <Typography type='small' variant='p'>
           Feedback
-        </UITypography>
+        </Typography>
         <div>
           <TipTapAIEditor
             placeholder='Your feedback.'

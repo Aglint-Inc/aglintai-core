@@ -2,13 +2,12 @@ import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
+import { UIAlert } from '@components/ui-alert';
 import _ from 'lodash';
-import { AlertCircle, AlertTriangle } from 'lucide-react';
+import { AlertCircle, AlertTriangle, Ban } from 'lucide-react';
 import MembersAutoComplete from 'src/app/_common/components/MembersTextField';
 import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
-import { UIAlert } from '@/components/Common/UIAlert';
-import { UIButton } from '@/components/Common/UIButton';
 import UIDrawer from '@/components/Common/UIDrawer';
 import NumberInput from '@/components/Common/UINumberInput';
 
@@ -46,6 +45,18 @@ function TrainingSettingDrawer(
   const dropDownMembers = members.filter((mem) =>
     qualifiedUserIds.includes(mem.user_id),
   );
+  const handleDisable = () => {
+    if (
+      editModule.relations.filter(
+        (relation) =>
+          relation.training_status === 'training' && !relation.is_archived,
+      ).length > 0
+    ) {
+      disableError();
+    } else {
+      setDisableOpen(true);
+    }
+  };
 
   return (
     <UIDrawer
@@ -217,34 +228,19 @@ function TrainingSettingDrawer(
         {editModule?.settings?.require_training && (
           <div className='mx-4 mt-6'>
             <UIAlert
-              iconName='Ban'
-              type='small'
-              color={'error'}
+              type='error'
+              icon={Ban}
               title='Disable Training'
-              description='Disabling training will stop tracking trainee progress and remove access to trainee interviewer features.'
-              actions={
-                <>
-                  <UIButton
-                    variant='destructive'
-                    onClick={() => {
-                      if (
-                        editModule.relations.filter(
-                          (relation) =>
-                            relation.training_status === 'training' &&
-                            !relation.is_archived,
-                        ).length > 0
-                      ) {
-                        disableError();
-                      } else {
-                        setDisableOpen(true);
-                      }
-                    }}
-                  >
-                    Disable
-                  </UIButton>
-                </>
-              }
-            />
+              className='max-w-md' // Approximating 'small' type with a max-width
+            >
+              Disabling training will stop tracking trainee progress and remove
+              access to trainee interviewer features.
+              <div className='mt-4'>
+                <Button variant='destructive' onClick={handleDisable}>
+                  Disable
+                </Button>
+              </div>
+            </UIAlert>
 
             {isDisableError && (
               <Alert variant='error' className='mt-1'>

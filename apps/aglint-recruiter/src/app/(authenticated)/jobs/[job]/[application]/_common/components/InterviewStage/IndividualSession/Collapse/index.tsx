@@ -1,10 +1,10 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { EmptyState } from '@components/empty-state';
+import Typography from '@components/typography';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
 import { BriefcaseBusiness, User } from 'lucide-react';
 
-import UITypography from '@/components/Common/UITypography';
 import InterviewerUserDetail from '@/components/Scheduling/Common/InterviewerUserDetail';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
 import { type fetchSessionDetails } from '@/server/api/routers/requests/utils/requestSessions';
@@ -96,7 +96,7 @@ function CollapseContent({
 
               <div className='space-y-2'>
                 {count !== 0 && (
-                  <UITypography className='text-xs text-muted-foreground'>
+                  <Typography className='text-xs text-muted-foreground'>
                     {interview_meeting?.status === 'confirmed' ||
                     interview_meeting?.status === 'completed'
                       ? 'Interviewer(s)'
@@ -107,7 +107,7 @@ function CollapseContent({
                         : interview_session.session_type === 'individual'
                           ? `One of the member below will be picked as interviewer`
                           : 'Interviewer(s)'}
-                  </UITypography>
+                  </Typography>
                 )}
 
                 {count === 0 ? (

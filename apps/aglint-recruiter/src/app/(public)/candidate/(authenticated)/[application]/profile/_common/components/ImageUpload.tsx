@@ -1,9 +1,10 @@
 'use client';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
-import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
+
+import { Loader } from '@/common/Loader';
 
 function ImageUploadManual({
   image,
@@ -43,11 +44,7 @@ function ImageUploadManual({
           />
           <AvatarFallback>Profile</AvatarFallback>
         </Avatar>
-        {loading && (
-          <div className='absolute inset-0 flex items-center justify-center rounded-lg bg-black bg-opacity-50'>
-            <Loader2 className='h-8 w-8 animate-spin text-white' />
-          </div>
-        )}
+        {loading && <Loader />}
       </div>
       <div className='flex flex-col gap-2'>
         <p className='text-sm text-gray-600'>

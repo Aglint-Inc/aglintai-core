@@ -9,7 +9,6 @@ import {
 } from '@components/ui/breadcrumb';
 import Link from 'next/link';
 
-import Seo from '@/common/Seo';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
@@ -20,10 +19,6 @@ function PlatformIntegrationSettingsComponent() {
   const { push, params } = useRouterPro();
   return (
     <>
-      <Seo
-        title={`Integrations | Aglint AI`}
-        description='AI for People Products'
-      />
       <div className='mx-auto mt-4 w-[960px]'>
         <div className='flex flex-col'>
           <h1 className='mb-4 text-xl font-bold'>

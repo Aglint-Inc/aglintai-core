@@ -1,7 +1,16 @@
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog';
 import { useCallback } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
 
 import { useJobInterviewPlan } from '../hooks';
 
@@ -34,25 +43,30 @@ const InterviewDeletePopup = ({
   return (
     <>
       {popup && (
-        <UIDialog
-          open={open}
-          onClose={handleClose}
-          title={`Delete ${popup.break ? 'Break for' : ''} ${popup.name}`}
-          slotButtons={
-            <>
-              <UIButton size='md' variant='secondary' onClick={handleClose}>
-                Cancel
-              </UIButton>
-              <UIButton size='md' onClick={onDelete}>
-                Delete
-              </UIButton>
-            </>
-          }
-        >
-          {`By clicking "Delete", ${
-            popup.break ? 'Break for' : ''
-          } ${popup.name} will be deleted from the interview plan.`}
-        </UIDialog>
+        <AlertDialog open={open} onOpenChange={handleClose}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{`Delete ${popup.break ? 'Break for' : ''} ${popup.name}`}</AlertDialogTitle>
+              <AlertDialogDescription>
+                {`By clicking "Delete", ${
+                  popup.break ? 'Break for' : ''
+                } ${popup.name} will be deleted from the interview plan.`}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel asChild>
+                <UIButton size='md' variant='secondary'>
+                  Cancel
+                </UIButton>
+              </AlertDialogCancel>
+              <AlertDialogAction asChild>
+                <UIButton size='md' onClick={onDelete}>
+                  Delete
+                </UIButton>
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       )}
     </>
   );

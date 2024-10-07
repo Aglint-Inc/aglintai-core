@@ -4,6 +4,7 @@ import type {
   DatabaseTable,
 } from '@aglint/shared-types';
 import OptimisticWrapper from '@components/loadingWapper';
+import Typography from '@components/typography';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { CardContent } from '@components/ui/card';
@@ -14,7 +15,6 @@ import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { Loader } from '@/components/Common/Loader';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import UISelect from '@/components/Common/UISelectDropDown';
-import UITypography from '@/components/Common/UITypography';
 import { WorkflowItem } from '@/components/Workflow/_common/WorkflowItem';
 import { type WorkflowAction } from '@/types/workflow.types';
 import { useWorkflow } from '@/workflow/hooks';
@@ -73,9 +73,9 @@ const ActionRecommendations = memo(() => {
       <WorkflowConnector />
 
       <div className='flex flex-col items-center gap-4 py-2'>
-        <UITypography type='small' variant='p'>
+        <Typography type='small' variant='p'>
           Choose an action from below
-        </UITypography>
+        </Typography>
         <CardContent className='flex flex-col items-center gap-2'>
           {options}
         </CardContent>
@@ -207,7 +207,7 @@ const EmailSubject: React.FC<FormsType> = memo(
   ({ name, value, disabled = true }) => {
     return (
       <div>
-        <UITypography type='small'>Email Subject</UITypography>
+        <Typography type='small'>Email Subject</Typography>
         <div className='mt-2 rounded-md border border-neutral-300'>
           <TipTapAIEditor
             singleLine={true}
@@ -230,7 +230,7 @@ const EmailBody: React.FC<FormsType> = memo(
   ({ name, value, disabled = true }) => {
     return (
       <div>
-        <UITypography type='small'>Email Body</UITypography>
+        <Typography type='small'>Email Body</Typography>
         <div className='mt-2 rounded-md border border-neutral-300'>
           <TipTapAIEditor
             toolbar={false}
@@ -310,7 +310,7 @@ const AgentInstructionBody: React.FC<
   if (action_type !== 'agent_instruction') return <></>;
   return (
     <div>
-      <UITypography type='small'>Aglint AI Instruction</UITypography>
+      <Typography type='small'>Aglint AI Instruction</Typography>
       <div className='mt-2 rounded-md border border-neutral-300'>
         <TipTapAIEditor
           toolbar={false}

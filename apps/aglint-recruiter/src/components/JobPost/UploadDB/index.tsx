@@ -7,12 +7,13 @@ import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
 import { Input } from '@components/ui/input';
 import axios from 'axios';
-import { CloudUpload, Loader2, Trash } from 'lucide-react';
+import { CloudUpload, Trash } from 'lucide-react';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { errorMessages } from 'src/app/_common/utils/errorMessages';
 import { v4 as uuidv4 } from 'uuid';
 
+import { Loader } from '@/common/Loader';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type PublicJobAPI } from '@/pages/api/jobpost/read';
 import { supabase } from '@/utils/supabase/client';
@@ -332,9 +333,7 @@ function UploadDB({
               if (!isDisabled) submitHandler();
             }}
           >
-            {isDisabled ? (
-              <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-            ) : null}
+            {isDisabled ? <Loader /> : null}
             Apply Now
           </Button>
         </div>

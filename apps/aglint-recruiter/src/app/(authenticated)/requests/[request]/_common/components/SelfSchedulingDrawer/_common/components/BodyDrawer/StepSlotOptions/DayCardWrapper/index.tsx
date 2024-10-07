@@ -1,5 +1,6 @@
 import { type MultiDayPlanType } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
+import Typography from '@components/typography';
 import { Checkbox } from '@components/ui/checkbox';
 import { Collapsible, CollapsibleContent } from '@components/ui/collapsible';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
@@ -8,7 +9,6 @@ import { ChevronDown } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
-import UITypography from '@/components/Common/UITypography';
 
 import { DayCard } from '../../../ui/DayCard';
 import { EmptySlotReason } from '../../../ui/EmptySlotReason';
@@ -117,7 +117,7 @@ function DayCardWrapper({
   return (
     <>
       <DayCard
-        slotLeftBlock={<UITypography type='small'>{header}</UITypography>}
+        slotLeftBlock={<Typography type='small'>{header}</Typography>}
         onClickDateOption={() => {
           setCollapse(!collapse);
         }}

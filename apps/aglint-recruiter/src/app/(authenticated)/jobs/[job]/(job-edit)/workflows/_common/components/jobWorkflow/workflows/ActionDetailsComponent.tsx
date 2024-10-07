@@ -1,9 +1,9 @@
 import { type DatabaseEnums } from '@aglint/shared-types';
+import Typography from '@components/typography';
+import { UIAlert } from '@components/ui-alert';
 
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
-import { UIAlert } from '@/components/Common/UIAlert';
-import UITypography from '@/components/Common/UITypography';
 
 export type WActionProps =
   | {
@@ -56,9 +56,9 @@ const EmailTemplate = ({
   return (
     <div className='gap-2'>
       <div className='mb-4'>
-        <UITypography className='mb-1 text-sm font-semibold'>
+        <Typography className='mb-1 text-sm font-semibold'>
           Email Subject
-        </UITypography>
+        </Typography>
         <div>
           {!isTemplateLoading && (
             <TipTapAIEditor
@@ -76,9 +76,9 @@ const EmailTemplate = ({
         </div>
       </div>
       <div>
-        <UITypography className='mb-1 text-sm font-semibold'>
+        <Typography className='mb-1 text-sm font-semibold'>
           Email Body
-        </UITypography>
+        </Typography>
         <div>
           {!isTemplateLoading && (
             <TipTapAIEditor
@@ -100,16 +100,14 @@ const EmailTemplate = ({
 const SlackTemplate = () => {
   return (
     <UIAlert
-      type='inline'
-      title={'A slack notification will be sent for this action.'}
+      type='info'
+      title='A slack notification will be sent for this action.'
     />
   );
 };
 
 const EndPointTemplate = () => {
-  return (
-    <UIAlert type='inline' title={'Aglint system will handle this action'} />
-  );
+  return <UIAlert type='info' title='Aglint system will handle this action' />;
 };
 
 type AgentInstructionTemplateProps = {
@@ -132,9 +130,9 @@ const AgentInstructionTemplate = ({
     <>
       <div>
         <div>
-          <UITypography className='mb-1 text-sm font-semibold'>
+          <Typography className='mb-1 text-sm font-semibold'>
             Aglint AI Instruction
-          </UITypography>
+          </Typography>
           <div>
             {!isTemplateLoading && (
               <TipTapAIEditor

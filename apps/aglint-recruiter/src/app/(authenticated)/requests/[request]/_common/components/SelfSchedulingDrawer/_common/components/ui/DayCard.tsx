@@ -1,9 +1,8 @@
+import Typography from '@components/typography';
 import { Checkbox } from '@components/ui/checkbox';
 import { cn } from '@lib/utils';
 import { Calendar } from 'lucide-react';
 import React from 'react';
-
-import UITypography from '@/components/Common/UITypography';
 
 interface DateOptionProps {
   as?: React.ElementType;
@@ -51,7 +50,7 @@ export function DayCard({
                 <>
                   <Calendar size={16} />
                   <div className='flex items-center gap-1'>
-                    <UITypography>{textdate}</UITypography>
+                    <Typography>{textdate}</Typography>
                   </div>
                 </>
               )}
@@ -68,7 +67,7 @@ export function DayCard({
               <div className='relative z-[2] flex items-center gap-2 text-foreground'>
                 <Calendar size={16} />
                 <div className='flex items-center gap-1'>
-                  <UITypography>{textdate}</UITypography>
+                  <Typography>{textdate}</Typography>
                 </div>
               </div>
               <div className='relative z-[2] flex items-center gap-5'>

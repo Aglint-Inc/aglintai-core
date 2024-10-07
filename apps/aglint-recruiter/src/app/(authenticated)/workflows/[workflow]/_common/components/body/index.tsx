@@ -5,14 +5,16 @@ import {
   SectionTitle,
 } from '@components/layouts/sections-header';
 import OptimisticWrapper from '@components/loadingWapper';
-import { Button } from '@components/ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@components/ui/dialog';
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog';
 import { BriefcaseBusiness } from 'lucide-react';
 import { useState } from 'react';
 
@@ -61,32 +63,27 @@ export const ConnectedJobs = () => {
   const { devlinkProps } = useRolesAndPermissions();
   const devlink = devlinkProps(['manage_job']);
   const count = workflow?.jobs?.length ?? 0;
-  if (count === 0)
-    return (
-      <Section>
-        <SectionHeader>
-          <SectionTitle>Connected Jobs</SectionTitle>
-        </SectionHeader>
-        <EmptyState
-          header='No jobs connected'
-          description='You can connect jobs to this workflow to automate your workflow.'
-          icon={BriefcaseBusiness}
-        />
-      </Section>
-    );
   return (
     <Section>
       <SectionHeader>
         <SectionTitle>Connected Jobs</SectionTitle>
       </SectionHeader>
-      {(workflow?.jobs ?? []).map((job) => (
-        <WorkflowJob
-          key={job.id}
-          {...(job as Workflow['jobs'][number])}
-          devlinkProps={devlink}
-          workflow_id={workflow?.id ?? null!}
+      {count === 0 ? (
+        <EmptyState
+          header='No jobs connected'
+          description='You can connect jobs to this workflow to automate your workflow.'
+          icon={BriefcaseBusiness}
         />
-      ))}
+      ) : (
+        (workflow?.jobs ?? []).map((job) => (
+          <WorkflowJob
+            key={job.id}
+            {...(job as Workflow['jobs'][number])}
+            devlinkProps={devlink}
+            workflow_id={workflow?.id ?? null!}
+          />
+        ))
+      )}
     </Section>
   );
 };
@@ -142,31 +139,28 @@ const WorkflowJob = ({
           // }}
         />
       </OptimisticWrapper>
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Unlink confirmation</DialogTitle>
-          </DialogHeader>
-          <div className='py-4'>
-            <p className='text-sm text-muted-foreground'>
+      <AlertDialog open={open} onOpenChange={setOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Unlink confirmation</AlertDialogTitle>
+            <AlertDialogDescription>
               Are you sure to unlink this job from this workflow?
-            </p>
-          </div>
-          <DialogFooter>
-            <Button variant='outline' size='sm' onClick={() => setOpen(false)}>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setOpen(false)}>
               Cancel
-            </Button>
-            <Button
-              size='sm'
+            </AlertDialogCancel>
+            <AlertDialogAction
               onClick={async () =>
                 await mutateAsync({ job_id: id!, workflow_id })
               }
             >
               Unlink
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };
