@@ -17,7 +17,10 @@ const mutation = async ({
   await db
     .from('interview_module')
     .update({ ...input })
-    .eq('id', recruiter_id);
+    .eq('id', input.id)
+    .eq('recruiter_id', recruiter_id);
+
+  return true;
 };
 
 export const updateInterviewPool = privateProcedure

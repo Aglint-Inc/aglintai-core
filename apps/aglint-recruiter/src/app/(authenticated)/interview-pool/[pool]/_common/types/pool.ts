@@ -4,6 +4,7 @@ import { type MemberTypeAutoComplete } from 'src/app/_common/components/MembersT
 import { type useModuleAndUsers } from '../hooks/useModuleAndUsers';
 
 export type SchedulingSlice = {
+  isEditPoolDialogOpen: boolean;
   isCreateDialogOpen: boolean;
   isSettingDialogOpen: boolean;
   isDeleteMemberDialogOpen: boolean;
@@ -11,9 +12,7 @@ export type SchedulingSlice = {
   isPauseDialogOpen: boolean;
   isAddMemberDialogOpen: boolean;
   isResumeDialogOpen: boolean;
-  isModuleSettingsDialogOpen: boolean;
   isArchiveDialogOpen: boolean;
-  isProgressDialaogOpen: boolean;
   selectedUsers: MemberTypeAutoComplete[];
   selUser:
     | NonNullable<ReturnType<typeof useModuleAndUsers>['data']>['relations'][0]
