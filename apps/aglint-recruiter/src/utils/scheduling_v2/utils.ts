@@ -77,7 +77,7 @@ export const convertIntToResp = (inters: SessionInterviewerType[]) => {
     profile_image: i.profile_image,
     training_type: i.training_type,
     interviewer_type: i.interviewer_type,
-    interviewer_module_relation_id: i.interviewer_module_relation_id,
+    interview_module_relation_id: i.interview_module_relation_id,
     user_id: i.user_id,
     int_tz: i.int_tz,
     position: i.position,

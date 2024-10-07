@@ -110,7 +110,7 @@ const CandidateInvitePlanPage = () => {
       </div>
     );
 
-  if (!waiting && meta)
+  if (waiting && meta)
     return (
       <ConfirmedInvitePage
         rounds={rounds}

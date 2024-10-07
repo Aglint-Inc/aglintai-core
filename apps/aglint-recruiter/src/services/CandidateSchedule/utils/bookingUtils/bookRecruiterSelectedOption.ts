@@ -71,7 +71,7 @@ export const bookRecruiterSelectedOption = async (
         availability_request_id: req_body.availability_req_id,
         is_debreif: false,
       };
-      axios.post(
+      await axios.post(
         `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
         payload,
       );
