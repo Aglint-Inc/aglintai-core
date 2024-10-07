@@ -3,7 +3,7 @@
  *@author Dileep BC
  */
 
-import { Dayjs } from 'dayjs';
+import { type Dayjs } from 'dayjs';
 
 import { CalendarEvent, ScheduleAuthType } from './calEvent.types';
 import {
@@ -13,8 +13,9 @@ import {
   InterviewModuleType,
   InterviewMeetingTypeDb,
 } from '../data.types';
-import { schedulingSettingType } from './scheduleSetting';
+import { SchedulingSettingType } from './scheduleSetting';
 import { CalConflictType, ConflictReason } from './apiResp.types';
+import { CustomSchedulingSettingsUser } from '../db/tables/recruiter_user.types';
 
 export type PauseJson = {
   start_date: string;
@@ -22,32 +23,26 @@ export type PauseJson = {
   isManual: boolean;
 };
 
-export type SessionInterviewerType = Pick<
-  RecruiterUserType,
-  | 'first_name'
-  | 'last_name'
-  | 'email'
-  | 'profile_image'
-  | 'schedule_auth'
-  | 'scheduling_settings'
-  | 'user_id'
-  | 'position'
-> &
-  Pick<
-    InterviewerSessionRelation,
-    | 'training_type'
-    | 'session_id'
-    | 'interviewer_type'
-    | 'interview_module_relation_id'
-  > & {
-    pause_json: PauseJson;
-  } & {
-    int_tz: string;
-  };
+export type SessionInterviewerType = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  profile_image: string | null;
+  schedule_auth: ScheduleAuthType | null;
+  scheduling_settings: CustomSchedulingSettingsUser;
+  user_id: string;
+  position: string;
+  training_type: InterviewerSessionRelation['training_type'];
+  session_id: string;
+  interviewer_type: InterviewerSessionRelation['interviewer_type'];
+  interviewer_module_relation_id: string;
+  pause_json: PauseJson;
+  int_tz: string;
+};
 
 export type InterviewSessionApiType = {
   session_id: InterviewSession['id'];
-  meeting_id: InterviewSession['meeting_id'];
+  meeting_id: NonNullable<InterviewSession['meeting_id']>;
   module_id: InterviewSession['module_id'];
   session_name: InterviewSession['name'];
   duration: InterviewSession['session_duration'];
@@ -56,7 +51,7 @@ export type InterviewSessionApiType = {
   session_type: InterviewSession['session_type'];
   qualifiedIntervs: SessionInterviewerType[];
   trainingIntervs: SessionInterviewerType[];
-  break_duration: InterviewSession['break_duration'];
+  break_duration: NonNullable<InterviewSession['break_duration']>;
   session_order: InterviewSession['session_order'];
   interviewer_cnt: InterviewSession['interviewer_cnt'];
   module_name: InterviewModuleType['name'];
@@ -114,7 +109,7 @@ export type InterDetailsType = {
   freeTimes: InterDayFreeTime;
   work_hours: InterDayWorkHr;
   isCalenderConnected: boolean;
-  int_schedule_setting: schedulingSettingType;
+  int_schedule_setting: CustomSchedulingSettingsUser;
   day_off: InterDayHolidayOff;
   holiday: InterDayHolidayOff;
 };

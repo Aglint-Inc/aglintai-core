@@ -7,5 +7,5 @@ type Types = keyof MetricsOutputs;
 export type Metrics<T extends Types> = MetricsOutputs[T];
 
 export type MetricsOptions<T extends Types> = {
-  [_id in keyof Metrics<T>]: string;
+  [_id in keyof NonNullable<Metrics<T>>]: string;
 };

@@ -1,9 +1,8 @@
 'use client';
 
+import { RequestProvider } from '@request/contexts';
 import { useParams } from 'next/navigation';
 import React from 'react';
-
-import { RequestProvider } from '@/context/RequestContext';
 
 function Layout({ children }: { children: React.ReactNode }) {
   const params = useParams();

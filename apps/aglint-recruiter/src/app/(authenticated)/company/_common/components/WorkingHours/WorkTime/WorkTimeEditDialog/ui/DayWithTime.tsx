@@ -1,8 +1,8 @@
-import type { schedulingSettingType } from '@aglint/shared-types';
+import type { SchedulingSettingType } from '@aglint/shared-types';
 import { Checkbox } from '@components/ui/checkbox';
 import type { Dispatch } from 'react';
 
-import TimePicker from '@/components/Common/TimePicker';
+import TimePicker from '@/common/TimePicker';
 import { capitalize } from '@/utils/text/textUtils';
 
 function DayWithTime({
@@ -14,11 +14,11 @@ function DayWithTime({
   selectEndTime,
   i,
 }: {
-  day: schedulingSettingType['workingHours'][0];
+  day: SchedulingSettingType['workingHours'][0];
   endTime: string;
   startTime: string;
   setWorkingHours: Dispatch<
-    React.SetStateAction<schedulingSettingType['workingHours']>
+    React.SetStateAction<SchedulingSettingType['workingHours']>
   >;
   // eslint-disable-next-line no-unused-vars
   selectStartTime: (value: any, i: number) => void;

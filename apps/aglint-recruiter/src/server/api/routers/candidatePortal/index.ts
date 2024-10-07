@@ -48,14 +48,14 @@ export const candidatePortal = createTRPCRouter({
           .throwOnError()
       ).data;
 
-      if (interviews.length) {
+      if (interviews?.length) {
         return await Promise.all(
           interviews.map(async (interview) => {
             const interviewers = (
               await adminDb
                 .from('meeting_interviewers')
                 .select('first_name,last_name,profile_image,position')
-                .eq('session_id', interview.session_id)
+                .eq('session_id', interview?.session_id || '')
                 .throwOnError()
             ).data;
             return {
@@ -85,7 +85,7 @@ export const candidatePortal = createTRPCRouter({
           .throwOnError()
       ).data;
 
-      const enrichedMessages = messages.map((message) => {
+      const enrichedMessages = messages?.map((message) => {
         const {
           candidate_request_availability,
           interview_filter_json,
@@ -93,25 +93,25 @@ export const candidatePortal = createTRPCRouter({
           ...rest
         } = message;
 
-        const company = applications.recruiter;
+        const company = applications?.recruiter;
 
         const messageWithCompany = {
           ...rest,
-          company_name: company.name,
-          company_logo: company.logo,
+          company_name: company?.name,
+          company_logo: company?.logo,
         };
         if (message.availability_id)
           return {
             ...messageWithCompany,
-            isNew: !candidate_request_availability.visited,
-            isSubmitted: Boolean(candidate_request_availability.slots),
+            isNew: !candidate_request_availability?.visited,
+            isSubmitted: Boolean(candidate_request_availability?.slots),
             link: `/scheduling/request-availability/${message.availability_id}`,
           };
         if (message.filter_id)
           return {
             ...messageWithCompany,
-            isNew: !interview_filter_json.viewed_on,
-            isSubmitted: Boolean(interview_filter_json.confirmed_on),
+            isNew: !interview_filter_json?.viewed_on,
+            isSubmitted: Boolean(interview_filter_json?.confirmed_on),
             link: `/scheduling/invite/${application_id}?filter_id=${message.filter_id}`,
           };
         return {
@@ -122,7 +122,7 @@ export const candidatePortal = createTRPCRouter({
         };
       });
 
-      return enrichedMessages;
+      return enrichedMessages!;
     }),
   // get navbar ----------------------------------------------------------------
   get_navbar: publicProcedure
@@ -134,19 +134,20 @@ export const candidatePortal = createTRPCRouter({
         await adminDb
           .from('applications')
           .select(
-            'candidates(avatar,first_name,last_name,recruiter(name,logo))',
+            'candidates!inner(avatar,first_name,last_name,recruiter!inner(name,logo))',
           )
           .eq('id', application_id)
           .single()
           .throwOnError()
-      ).data;
+      ).data!;
+      const { candidates } = company;
       return {
         candidate: {
-          first_name: company.candidates.first_name,
-          last_name: company.candidates.last_name,
-          avatar: company.candidates.avatar,
+          first_name: candidates.first_name,
+          last_name: candidates.last_name,
+          avatar: candidates.avatar,
         },
-        company: company.candidates.recruiter,
+        company: candidates.recruiter,
       };
     }),
   //get profile ------------------------------------------------------------------
@@ -159,16 +160,18 @@ export const candidatePortal = createTRPCRouter({
         await adminDb
           .from('applications')
           .select(
-            'candidate_files(file_url),candidates(id,first_name,last_name,linkedin,phone,avatar,timezone,email)',
+            'candidate_files(file_url),candidates!inner(id,first_name,last_name,linkedin,phone,avatar,timezone,email)',
           )
           .eq('id', application_id)
           .single()
           .throwOnError()
-      ).data;
+      ).data!;
+
+      const { candidates } = data;
 
       return {
-        resume_url: data.candidate_files.file_url,
-        ...data.candidates,
+        resume_url: data?.candidate_files?.file_url || '',
+        ...candidates,
       };
     }),
   update_profile: publicProcedure

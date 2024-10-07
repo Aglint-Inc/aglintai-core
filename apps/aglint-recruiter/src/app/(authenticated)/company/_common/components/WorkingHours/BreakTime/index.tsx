@@ -8,7 +8,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { PopoverClose } from '@radix-ui/react-popover';
 import { Coffee, Edit } from 'lucide-react';
 import {
   type Dispatch,
@@ -19,8 +18,8 @@ import {
   useState,
 } from 'react';
 
-import TimePicker from '@/components/Common/TimePicker';
-import UISectionCard from '@/components/Common/UISectionCard';
+import TimePicker from '@/common/TimePicker';
+import UISectionCard from '@/common/UISectionCard';
 
 interface BreakTime {
   start_time: string;
@@ -28,19 +27,19 @@ interface BreakTime {
 }
 
 interface BreakTimeCardProps {
-  breaktime: BreakTime;
-  setSelectedHourBreak: Dispatch<SetStateAction<BreakTime>>;
+  breakTime: BreakTime;
+  setSelectedHourBreak: Dispatch<SetStateAction<BreakTime | null>>;
   handleUpdate: (data: { break_hour: BreakTime }) => Promise<void>;
 }
 
 const BreakTimeCard: FC<BreakTimeCardProps> = ({
-  breaktime,
+  breakTime,
   setSelectedHourBreak,
   handleUpdate,
 }) => {
-  const handleUpdateAndClose = async (newBreaktime) => {
-    await handleUpdate({ break_hour: newBreaktime });
-    setSelectedHourBreak(newBreaktime);
+  const handleUpdateAndClose = async (newBreakTime: BreakTime) => {
+    await handleUpdate({ break_hour: newBreakTime });
+    setSelectedHourBreak(newBreakTime);
   };
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -58,13 +57,13 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
                 setIsPopoverOpen(true);
               }}
             >
-              <Edit className='h-3 w-3' />
+              <Edit className='mr-2 h-3 w-3' /> Edit
               <span className='sr-only'>Edit Break Time</span>
             </Button>
           </PopoverTrigger>
           <PopoverContent className='w-full' align='start' side='left'>
             <EditBreakTime
-              breaktime={breaktime}
+              breakTime={breakTime}
               handleUpdateAndClose={handleUpdateAndClose}
             />
           </PopoverContent>
@@ -73,18 +72,17 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
     >
       <div className='flex items-center space-x-2'>
         <div>
-          <p className='text-sm font-medium'>Default Break Times</p>
           <div className='flex items-center space-x-2'>
             <Coffee className='h-4 w-4 text-muted-foreground' />
             <p>
               {dayjsLocal()
-                .set('hour', parseInt(breaktime?.start_time?.split(':')[0]))
-                .set('minute', parseInt(breaktime?.start_time?.split(':')[1]))
+                .set('hour', parseInt(breakTime?.start_time?.split(':')[0]))
+                .set('minute', parseInt(breakTime?.start_time?.split(':')[1]))
                 .format('hh:mm A')}
               {' - '}
               {dayjsLocal()
-                .set('hour', parseInt(breaktime?.end_time?.split(':')[0]))
-                .set('minute', parseInt(breaktime?.end_time?.split(':')[1]))
+                .set('hour', parseInt(breakTime?.end_time?.split(':')[0]))
+                .set('minute', parseInt(breakTime?.end_time?.split(':')[1]))
                 .format('hh:mm A')}
             </p>
           </div>
@@ -97,13 +95,13 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
 export default BreakTimeCard;
 
 const EditBreakTime = ({
-  breaktime,
+  breakTime,
   handleUpdateAndClose,
 }: {
-  breaktime: BreakTime;
+  breakTime: BreakTime;
   handleUpdateAndClose: (arg: BreakTime) => void;
 }) => {
-  const [localBreakTime, setLocalBreakTime] = useState<BreakTime>(breaktime);
+  const [localBreakTime, setLocalBreakTime] = useState<BreakTime>(breakTime);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -166,23 +164,21 @@ const EditBreakTime = ({
           }
         />
       </div>
-      <PopoverClose>
-        <Button
-          className='w-full'
-          onClick={async () => {
-            if (isStartTimeLessThanEndTime(localBreakTime)) {
-              await handleUpdateAndClose(localBreakTime);
-            } else {
-              toast({
-                variant: 'destructive',
-                title: 'End time must greater than start time',
-              });
-            }
-          }}
-        >
-          Update
-        </Button>
-      </PopoverClose>
+      <Button
+        className='w-full'
+        onClick={async () => {
+          if (isStartTimeLessThanEndTime(localBreakTime)) {
+            await handleUpdateAndClose(localBreakTime);
+          } else {
+            toast({
+              variant: 'destructive',
+              title: 'End time must greater than start time',
+            });
+          }
+        }}
+      >
+        Update
+      </Button>
     </div>
   );
 };

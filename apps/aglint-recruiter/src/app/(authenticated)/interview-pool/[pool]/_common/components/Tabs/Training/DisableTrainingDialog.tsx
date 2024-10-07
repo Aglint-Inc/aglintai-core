@@ -1,8 +1,16 @@
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog';
+import { Button } from '@components/ui/button';
+import { Loader } from 'lucide-react';
 import React from 'react';
-
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
-import UITypography from '@/components/Common/UITypography';
 
 import { type useEnableDisableTraining } from '../../../hooks/useEnableDisableTraining';
 
@@ -16,42 +24,43 @@ function DisableTrainingDialog(
     enableDiabaleTraining,
   } = props;
   return (
-    <UIDialog
-      title='Disable Training'
-      open={disableOpen}
-      onClose={() => setDisableOpen(false)}
-      slotButtons={
-        <>
-          <UIButton
-            variant='outline'
-            size='sm'
-            onClick={() => setDisableOpen(false)}
-          >
-            Cancel
-          </UIButton>
-
-          <UIButton
-            variant='destructive'
-            size='sm'
-            isLoading={isBannerLoading}
-            disabled={isBannerLoading}
-            onClick={() => enableDiabaleTraining({ type: 'disable' })}
-          >
-            Disable Training
-          </UIButton>
-        </>
-      }
-    >
-      <>
-        <UITypography>Are you sure you want to disable training?</UITypography>
-        <div>
-          <ol>
-            <li>Stop tracking trainee progress</li>
-            <li>Remove access to trainee interviewer features</li>
-          </ol>
-        </div>
-      </>
-    </UIDialog>
+    <AlertDialog open={disableOpen} onOpenChange={setDisableOpen}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Disable Training</AlertDialogTitle>
+          <AlertDialogDescription>
+            Are you sure you want to disable training?
+            <ol className='mt-2 list-decimal pl-5'>
+              <li>Stop tracking trainee progress</li>
+              <li>Remove access to trainee interviewer features</li>
+            </ol>
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel asChild>
+            <Button variant='outline' size='sm'>
+              Cancel
+            </Button>
+          </AlertDialogCancel>
+          <AlertDialogAction asChild>
+            <Button
+              variant='destructive'
+              disabled={isBannerLoading}
+              onClick={() => enableDiabaleTraining({ type: 'disable' })}
+            >
+              {isBannerLoading ? (
+                <>
+                  <Loader />
+                  Disabling...
+                </>
+              ) : (
+                'Disable Training'
+              )}
+            </Button>
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 

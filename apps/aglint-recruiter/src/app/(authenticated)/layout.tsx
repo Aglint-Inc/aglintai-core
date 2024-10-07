@@ -1,9 +1,33 @@
-'use client';
+import { AppLayout } from '@components/layouts/app-layout';
+import { unstable_noStore as noStore } from 'next/cache';
+import dynamic from 'next/dynamic';
+import { type PropsWithChildren } from 'react';
 
-import { type ReactNode } from 'react';
+import { OnboardPending } from '@/components/Navigation/OnboardPending';
+import SideNavbar from '@/components/Navigation/SideNavbar';
+import { api, HydrateClient } from '@/trpc/server';
 
-import { PrivateProviders } from '@/context/Providers';
+import { Provider } from './providers';
 
-export default function RootLayout({ children }: { children: ReactNode }) {
-  return <PrivateProviders appRouter>{children}</PrivateProviders>;
-}
+const TopBar = dynamic(() => import('@/components/Navigation/TopBar'), {
+  ssr: false,
+});
+
+const Layout = async ({ children }: PropsWithChildren) => {
+  noStore();
+  void api.tenant.read.prefetch();
+  void api.tenant.flags.prefetch();
+
+  return (
+    <HydrateClient>
+      <Provider>
+        <AppLayout topbar={<TopBar />} sidebar={<SideNavbar />}>
+          {children}
+          <OnboardPending />
+        </AppLayout>
+      </Provider>
+    </HydrateClient>
+  );
+};
+
+export default Layout;

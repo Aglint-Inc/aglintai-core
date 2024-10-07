@@ -1,63 +1,71 @@
-"use client";
+'use client';
 
-import { ArrowUpFromLine, Pause, Play, Trash2 } from "lucide-react";
-
-import UITypography from "@/components/Common/UITypography";
+import Typography from '@components/typography';
+import { ArrowUpFromLine, Pause, Play, Trash2 } from 'lucide-react';
 
 export function MemberListCardOption({
-  onClickMoveToQualifier ,
+  onClickMoveToQualifier,
   isMoveToQualifierVisible = true,
-  onClickPauseInterview ,
+  onClickPauseInterview,
   isPauseVisible = true,
-  onClickResumeInterview ,
+  onClickResumeInterview,
   isResumeVisible = true,
-  onClickRemoveModule ,
+  onClickRemoveModule,
   isRemoveVisible = true,
+}: {
+  onClickMoveToQualifier: () => void;
+  isMoveToQualifierVisible?: boolean;
+  onClickPauseInterview: () => void;
+  isPauseVisible?: boolean;
+  onClickResumeInterview: () => void;
+  isResumeVisible?: boolean;
+  onClickRemoveModule: () => void;
+  isRemoveVisible?: boolean;
 }) {
   return (
-    <div className="z-2 block w-fit p-2 bg-white rounded-sm">
+    <div className='z-2 block w-fit rounded-sm bg-white p-2'>
       {isMoveToQualifierVisible && (
         <div
-          className="flex cursor-pointer items-center gap-2 p-2 rounded transition-all duration-200 ease hover:bg-neutral-300 hover:text-neutral-900"
-          {...onClickMoveToQualifier}
+          className='ease flex cursor-pointer items-center gap-2 rounded p-2 transition-all duration-200 hover:bg-neutral-300 hover:text-foreground'
+          onClick={onClickMoveToQualifier}
         >
-          <ArrowUpFromLine size={16}/>
-          <UITypography variant="p" type="small">
+          <ArrowUpFromLine size={16} />
+          <Typography variant='p' type='small'>
             Move to qualified
-          </UITypography>
+          </Typography>
         </div>
       )}
       {isPauseVisible && (
         <div
-          className="flex cursor-pointer items-center gap-2 p-2 rounded transition-all duration-200 ease hover:bg-neutral-300 hover:text-neutral-900"
-          {...onClickPauseInterview}
+          className='ease flex cursor-pointer items-center gap-2 rounded p-2 transition-all duration-200 hover:bg-neutral-300 hover:text-foreground'
+          onClick={onClickPauseInterview}
         >
-        <Pause size={16}/>
-          <UITypography variant="p" type="small">
+          <Pause size={16} />
+          <Typography variant='p' type='small'>
             Pause
-          </UITypography>
+          </Typography>
         </div>
       )}
       {isResumeVisible && (
         <div
-          className="flex cursor-pointer items-center gap-2 p-2 rounded transition-all duration-200 ease hover:bg-neutral-300 hover:text-neutral-900"
-          {...onClickResumeInterview}
+          className='ease flex cursor-pointer items-center gap-2 rounded p-2 transition-all duration-200 hover:bg-neutral-300 hover:text-foreground'
+          onClick={onClickResumeInterview}
         >
-            <Play size={16}/>   
-          <UITypography variant="p" type="small">
+          <Play size={16} />
+          <Typography variant='p' type='small'>
             Resume
-          </UITypography>
+          </Typography>
         </div>
       )}
       {isRemoveVisible && (
         <div
-          className="flex cursor-pointer items-center gap-2 p-2 rounded transition-all duration-200 ease hover:bg-neutral-300 hover:text-neutral-900"
-          {...onClickRemoveModule}
+          className='ease flex cursor-pointer items-center gap-2 rounded p-2 transition-all duration-200 hover:bg-neutral-300 hover:text-foreground'
+          onClick={onClickRemoveModule}
         >
-          <Trash2 size={16} className="text-red-600"/>
-          <UITypography variant="p" type="small">
+          <Trash2 size={16} className='text-red-600' />
+          <Typography variant='p' type='small'>
             Remove
-          </UITypography>
+          </Typography>
         </div>
       )}
     </div>

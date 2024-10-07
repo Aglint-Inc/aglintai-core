@@ -11,11 +11,11 @@ function IconScheduleType({
   return (
     <>
       {type === 'in_person_meeting' ? (
-        <MapPin size={size} className='text-neutral-600' />
+        <MapPin size={size} className='text-muted-foreground' />
       ) : type === 'phone_call' ? (
-        <PhoneOutgoing size={size} className='text-neutral-600' />
+        <PhoneOutgoing size={size} className='text-muted-foreground' />
       ) : type === 'google_meet' || type === 'zoom' ? (
-        <Video size={size} className='text-neutral-600' />
+        <Video size={size} className='text-muted-foreground' />
       ) : null}
     </>
   );

@@ -12,7 +12,7 @@ import {
   type ProgressLoggerType,
   supabaseWrap,
 } from '@aglint/shared-utils';
-import { apiTargetToEvents } from '@requests/components/RequestProgress/utils/progressMaps';
+import { apiTargetToEvents } from '@request/components/RequestProgress/utils/progressMaps';
 import { v4 as uuidv4 } from 'uuid';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
@@ -35,9 +35,11 @@ const schedule_wf = async (req_body: any) => {
     job_payload,
   } = await fetchUtil(req_body);
   const event_log_id = uuidv4();
-  const target_api =
-    parsed_body.target_api as DatabaseEnums['email_slack_types'];
+  const target_api = parsed_body.target_api as keyof typeof apiTargetToEvents;
   const eventAction = apiTargetToEvents[target_api];
+  if (!eventAction) {
+    throw new CApiError('SERVER_ERROR', 'eventAction not found');
+  }
 
   const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
     request_id: parsed_body.request_id,
@@ -130,12 +132,17 @@ const fetchUtil = async (req_body: any) => {
   const supabaseAdmin = getSupabaseServer();
 
   const parsed_body = candidate_new_schedule_schema.parse(req_body);
-  const [request_rec] = supabaseWrap(
+  const request_rec = (
     await supabaseAdmin
       .from('request')
-      .select('*,recruiter_user!request_assignee_id_fkey(*)')
-      .eq('id', parsed_body.request_id),
-  );
+      .select('*,recruiter_user!request_assignee_id_fkey!inner(*)')
+      .eq('id', parsed_body.request_id)
+      .single()
+      .throwOnError()
+  ).data;
+  if (!request_rec) {
+    throw new CApiError('SERVER_ERROR', 'invalid request id');
+  }
   const request_assignee_tz =
     request_rec.recruiter_user.scheduling_settings.timeZone.tzCode;
   const date_range = {
@@ -156,13 +163,14 @@ const fetchUtil = async (req_body: any) => {
     parsed_body.application_id,
     supabaseAdmin,
   );
-  const meeting_details = supabaseWrap(
+  const meeting_details = (
     await supabaseAdmin
       .from('meeting_details')
       .select()
-      .in('session_id', parsed_body.session_ids),
-  );
-  if (meeting_details.length === 0) {
+      .in('session_id', parsed_body.session_ids)
+      .throwOnError()
+  ).data;
+  if (!meeting_details) {
     throw new CApiError('SERVER_ERROR', 'invalid session id');
   }
   const job_payload =

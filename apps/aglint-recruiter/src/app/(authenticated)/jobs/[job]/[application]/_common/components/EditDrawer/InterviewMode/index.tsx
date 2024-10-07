@@ -1,11 +1,12 @@
+import Typography from '@components/typography';
+import { UIAlert } from '@components/ui-alert';
 import MembersAutoComplete from 'src/app/_common/components/MembersTextField';
+import { useInterviewPools } from 'src/app/_common/hooks/useInterviewPools';
+import { InterviewMode } from 'src/app/(authenticated)/jobs/[job]/(job-edit)/interview-plan/_common/components/_common/InterviewMode';
 
-import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import { UISwitch } from '@/components/Common/UISwitch';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { InterviewMode } from '@/job/interview-plan/components/_common/InterviewMode';
-import { useInterviewModules } from '@/queries/interview-modules';
 import ROUTES from '@/utils/routing/routes';
 
 import {
@@ -35,12 +36,12 @@ function InterviewModeComp() {
     errorValidation: state.errorValidation,
   }));
 
-  const interviewModules = useInterviewModules();
+  const interviewModules = useInterviewPools();
 
   let optionsInterviewers: EditSessionDrawer['selectedInterviewers'] = [];
   let optionTrainees: EditSessionDrawer['trainingInterviewers'] = [];
 
-  const filterArchivedModules = interviewModules?.data?.filter(
+  const filterArchivedModules = (interviewModules?.data ?? []).filter(
     (module) =>
       editSession?.interview_session.module_id === module.id ||
       !module.is_archived,
@@ -85,10 +86,12 @@ function InterviewModeComp() {
 
   return (
     <InterviewMode
-      isIndividual={editSession.interview_session.session_type === 'individual'}
+      isIndividual={
+        editSession!.interview_session.session_type === 'individual'
+      }
       isPanel={
         selectedInterviewers?.length > 1 &&
-        editSession.interview_session.session_type === 'panel'
+        editSession!.interview_session.session_type === 'panel'
       }
       isTraining={true}
       textToggleLabel={`Training ${trainingToggle ? 'On' : 'Off'}`}
@@ -110,12 +113,9 @@ function InterviewModeComp() {
       slotInterviewersDropdown={
         moduleCurrent?.members.length === 0 ? (
           <UIAlert
-            type='small'
-            iconName={'CircleAlert'}
-            title={'Interview type has no interviewers.'}
-            description={'Please add members to the selected interview type.'}
-            color={'error'}
-            actions={
+            type='error'
+            title='Interview type has no interviewers.'
+            action={
               <UIButton
                 variant='destructive'
                 size='sm'
@@ -130,7 +130,11 @@ function InterviewModeComp() {
                 Go to interview type
               </UIButton>
             }
-          />
+          >
+            <Typography>
+              Please add members to the selected interview type.
+            </Typography>
+          </UIAlert>
         ) : (
           <>
             <MembersAutoComplete
@@ -138,7 +142,11 @@ function InterviewModeComp() {
               placeholder='Select Interviewers'
               renderUsers={optionsInterviewers}
               selectedUsers={selectedInterviewers}
-              setSelectedUsers={setSelectedInterviewers}
+              setSelectedUsers={
+                setSelectedInterviewers as Parameters<
+                  typeof MembersAutoComplete
+                >[0]['setSelectedUsers']
+              }
               pillColor='bg-neutral-200'
               error={
                 errorValidation.find(
@@ -175,7 +183,11 @@ function InterviewModeComp() {
           placeholder='Select Training Interviewers'
           renderUsers={optionTrainees}
           selectedUsers={trainingInterviewers}
-          setSelectedUsers={setTrainingInterviewers}
+          setSelectedUsers={
+            setTrainingInterviewers as Parameters<
+              typeof MembersAutoComplete
+            >[0]['setSelectedUsers']
+          }
           pillColor='bg-neutral-200'
           error={
             errorValidation.find((err) => err.field === 'training_interviewers')

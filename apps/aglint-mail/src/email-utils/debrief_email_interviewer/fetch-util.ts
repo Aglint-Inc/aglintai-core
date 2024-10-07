@@ -10,7 +10,7 @@ import {
   sessionTypeIcon,
   scheduleTypeIcon,
 } from '../../utils/email/common/functions';
-import { FetchUtilResp, FetchUtilType } from '../../types/emailfetchUtil';
+import type { FetchUtilResp, FetchUtilType } from '../../types/emailfetchUtil';
 
 export const fetchUtil: FetchUtilType<'debrief_email_interviewer'> = async (
   supabaseAdmin,
@@ -88,7 +88,7 @@ export const fetchUtil: FetchUtilType<'debrief_email_interviewer'> = async (
       };
 
     const candidateLink = req_body.application_id
-      ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}`
+      ? `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/scheduling/application/${req_body.application_id}`
       : '';
 
     const react_email_placeholders: EmailTemplateAPi<'debrief_email_interviewer'>['react_email_placeholders'] =
@@ -101,7 +101,7 @@ export const fetchUtil: FetchUtilType<'debrief_email_interviewer'> = async (
     const resp: FetchUtilResp<'debrief_email_interviewer'> = {
       company_id: candidateJob.candidates.recruiter_id,
       comp_email_placeholder,
-      react_email_placeholders: react_email_placeholders,
+      react_email_placeholders,
       recipient_email: inter.email,
     };
     return resp;

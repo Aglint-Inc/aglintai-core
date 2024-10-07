@@ -11,7 +11,7 @@ import { useCallback } from 'react';
 
 import { UploadApiFormData } from '@/apiUtils/job/candidateUpload/types';
 import { handleJobApi } from '@/apiUtils/job/utils';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { type GetInterviewPlansType } from '@/pages/api/scheduling/get_interview_plans';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
@@ -32,19 +32,19 @@ export const jobQueries = {
     queryOptions({
       queryKey: [...jobsQueryKeys.jobs().queryKey, { id }],
       enabled,
-      initialData,
+      initialData: initialData!,
       refetchOnMount,
       queryFn: async () => {
         const job = await readJob(id);
         const { queryKey } = jobsQueryKeys.jobs();
-        const jobs = queryClient.getQueryData<Job[]>(queryKey);
-        queryClient.setQueryData<Job[]>(
+        const jobs = queryClient!.getQueryData<Job[]>(queryKey)!;
+        queryClient!.setQueryData<Job[]>(
           queryKey,
           jobs.reduce((acc, curr) => {
             if (curr.id === id) acc.push(job);
             else acc.push(curr);
             return acc;
-          }, []),
+          }, [] as Job[]),
         );
         return job;
       },
@@ -73,10 +73,10 @@ export const jobQueries = {
     });
   },
   refresh: async ({ id, queryClient }: Pollers) => {
-    await queryClient.invalidateQueries({
+    await queryClient!.invalidateQueries({
       predicate: (query) =>
         query.queryKey.includes(jobKey) &&
-        query.queryKey.find((key) => (key as any)?.id === id) &&
+        !!query.queryKey.find((key) => (key as any)?.id === id) &&
         !query.queryKey.includes(noPollingKey),
     });
   },
@@ -99,10 +99,10 @@ export const useInvalidateJobQueries = () => {
   const queryClient = useQueryClient();
   const utils = api.useUtils();
   const predicateFn = useCallback(
-    (id): QueryFilters['predicate'] =>
+    (id: string): QueryFilters['predicate'] =>
       (query) =>
         query.queryKey.includes(jobKey) &&
-        query.queryKey.find((key) => (key as any)?.id === id) &&
+        Boolean(query.queryKey.find((key) => (key as any)?.id === id)) &&
         !query.queryKey.includes(noPollingKey),
     [jobKey, noPollingKey],
   );
@@ -110,13 +110,13 @@ export const useInvalidateJobQueries = () => {
     await Promise.allSettled([
       queryClient.invalidateQueries({
         type: 'active',
-        predicate: predicateFn(id),
+        predicate: predicateFn(id!),
       }),
       queryClient.removeQueries({
         type: 'inactive',
-        predicate: predicateFn(id),
+        predicate: predicateFn(id!),
       }),
-      utils.jobs.job.applications.read.invalidate({ job_id: id }),
+      utils.jobs.job.applications.read.invalidate({ job_id: id! }),
     ]);
 
   return { revalidateJobQueries };
@@ -139,7 +139,7 @@ export const readJob = async (id: string) =>
       .eq('id', id)
       .throwOnError()
       .single()
-  ).data;
+  ).data!;
 
 type ApplicationsAllQueryPrerequistes = {
   recruiter_id: DatabaseTable['recruiter']['id'];
@@ -149,7 +149,7 @@ type ApplicationsAllQueryPrerequistes = {
 };
 
 export const useUploadApplication = ({ job_id }: { job_id: string }) => {
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   const { revalidateJobQueries } = useInvalidateJobQueries();
   return useMutation({
     mutationFn: async (
@@ -192,7 +192,7 @@ const handleUploadApplication = async (payload: HandleUploadApplication) => {
 };
 
 export const useUploadResume = (params: { job_id: string }) => {
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   const { revalidateJobQueries } = useInvalidateJobQueries();
   return useMutation({
     mutationFn: async (
@@ -248,7 +248,7 @@ const handleBulkResumeUpload = async (payload: HandleUploadResume) => {
 };
 
 export const useUploadCsv = (params: { job_id: string }) => {
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   const { revalidateJobQueries } = useInvalidateJobQueries();
   return useMutation({
     mutationFn: async (

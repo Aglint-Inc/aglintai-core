@@ -31,18 +31,21 @@ const useWorkflowContext = () => {
         ? (data ?? []).find((workflow) => workflow.id === id)
         : null,
     [status, data],
-  );
+  )!;
 
   const handleUpdateWorkflow = useCallback(
     (payload: Parameters<typeof updateWorkflowMuation>[0]['payload']) =>
-      updateWorkflowMuation({ id: workflow?.id ?? null, payload }),
+      updateWorkflowMuation({ id: workflow?.id ?? null!, payload }),
     [workflow],
   );
 
   const handleAsyncUpdateWorkflow = useCallback(
     async (payload: Parameters<typeof updateWorkflowMuation>[0]['payload']) => {
       try {
-        await updateWorkflowAsyncMuation({ id: workflow?.id ?? null, payload });
+        await updateWorkflowAsyncMuation({
+          id: workflow?.id ?? null!,
+          payload,
+        });
       } catch {
         //
       }
@@ -50,26 +53,26 @@ const useWorkflowContext = () => {
     [workflow],
   );
 
-  const actions = useWorkflowActions({ workflow_id: workflow?.id });
+  const actions = useWorkflowActions({ workflow_id: workflow?.id ?? null! })!;
   const actionMutations = useWorkflowActionMutations({
-    workflow_id: workflow?.id,
+    workflow_id: workflow?.id ?? null!,
   });
   const { mutate: createActionMutation } = useWorkflowActionCreate({
-    workflow_id: workflow?.id,
+    workflow_id: workflow?.id ?? null!,
   });
   const { mutate: handleDeleteAction } = useWorkflowActionDelete({
-    workflow_id: workflow?.id,
+    workflow_id: workflow?.id ?? null!,
   });
   const { mutate: handleUpdateAction } = useWorkflowActionUpdate({
-    workflow_id: workflow?.id,
+    workflow_id: workflow?.id ?? null!,
   });
 
   const handleCreateAction = useCallback(
     (payload: Parameters<typeof createActionMutation>[0]) => {
       const id = uuidv4();
       createActionMutation({
-        workflow_id: workflow.id,
         ...payload,
+        workflow_id: workflow?.id ?? null!,
         id,
       });
     },
@@ -90,8 +93,9 @@ const useWorkflowContext = () => {
   };
 };
 
-export const WorkflowContext =
-  createContext<ReturnType<typeof useWorkflowContext>>(undefined);
+export const WorkflowContext = createContext<
+  ReturnType<typeof useWorkflowContext> | undefined
+>(undefined);
 
 export const WorkflowProvider = memo((props: React.PropsWithChildren) => {
   const value = useWorkflowContext();

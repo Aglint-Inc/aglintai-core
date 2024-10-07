@@ -1,6 +1,6 @@
+import { UIAlert } from '@components/ui-alert';
 import { useCallback, useEffect, useState } from 'react';
 
-import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UITextField from '@/components/Common/UITextField';
@@ -35,13 +35,14 @@ function DeleteModuleDialog({
   }, [editModule?.id]);
 
   const fetchMeetings = async () => {
+    if (!editModule?.id) return;
     try {
       const { data } = await supabase
         .from('interview_session')
         .select('*')
         .eq('module_id', editModule.id);
 
-      if (data.length > 0) {
+      if (data?.length && data?.length > 0) {
         setIsSessionExist(true);
       }
     } catch {
@@ -52,7 +53,7 @@ function DeleteModuleDialog({
   };
 
   const deleteModule = async () => {
-    if (!loading) {
+    if (!loading && editModule?.id) {
       try {
         setLoading(true);
         const { data } = await supabase
@@ -60,7 +61,7 @@ function DeleteModuleDialog({
           .select('*')
           .eq('module_id', editModule.id);
 
-        if (data.length === 0) {
+        if (data?.length === 0) {
           const isdeleted = await deleteModuleById(editModule.id);
           if (isdeleted) {
             router.push(`${ROUTES['/interview-pool']()}`);
@@ -115,7 +116,7 @@ function DeleteModuleDialog({
                 isFetching || isSessionExist || moduleName !== value.trim()
               }
               onClick={() => {
-                if (editModule.id) deleteModule();
+                if (editModule?.id) deleteModule();
               }}
             >
               Delete
@@ -125,13 +126,14 @@ function DeleteModuleDialog({
       >
         <div className='space-y-2'>
           {isSessionExist ? (
-            <UIAlert
-              type='small'
-              color={'error'}
-              iconName='Circle'
-              title='Cannot delete interview type'
-              description={`Interview type is used in job's interview plan or scheduled interviews.`}
-            />
+            <UIAlert type='error' title='Cannot delete interview type'>
+              <div className='mt-2 flex flex-col space-y-2'>
+                <p className='text-muted-foreground'>
+                  Interview type is used in job&apos;s interview plan or
+                  scheduled interviews.
+                </p>
+              </div>
+            </UIAlert>
           ) : (
             <>
               <p className='text-muted-foreground'>
@@ -154,7 +156,7 @@ function DeleteModuleDialog({
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     if (value === moduleName) {
-                      if (editModule.id) deleteModule();
+                      if (editModule?.id) deleteModule();
                     }
                   }
                 }}

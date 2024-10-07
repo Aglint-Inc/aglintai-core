@@ -2,7 +2,7 @@ import { Input } from '@components/ui/input';
 import { Trash2 } from 'lucide-react';
 import React, { useState } from 'react';
 
-import { UIButton } from '@/components/Common/UIButton';
+import { UIButton } from '@/common/UIButton';
 
 interface CustomSocialFieldProps {
   socialName: string;
@@ -36,7 +36,9 @@ const CustomSocialField: React.FC<CustomSocialFieldProps> = ({
           onChange={(e) => onChange(e.target.value)}
           className={`${error?.error ? 'border-red-500' : ''} ${isHovered ? 'pr-10' : ''}`}
         />
-        {error?.error && <p className='text-sm text-red-500'>{error.msg}</p>}
+        {error?.error && (
+          <p className='text-sm text-destructive'>{error.msg}</p>
+        )}
       </div>
 
       {isHovered && (

@@ -1,11 +1,11 @@
 import { getFullName } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
 import { useState } from 'react';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
+import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useMemberList } from '@/hooks/useMemberList';
 import { supabase } from '@/utils/supabase/client';
 
 import {
@@ -13,10 +13,9 @@ import {
   useModulesStore,
 } from '../../stores/store';
 
-function MoveToQualifiedDialog({ refetch }: { refetch: () => void }) {
+function MoveToQualifiedDialog() {
   const { toast } = useToast();
-  const { recruiterUser } = useAuthDetails();
-  // const { members } = useSchedulingContext();
+  const { recruiter_user } = useTenant();
   const { data: members } = useMemberList();
   const isMovedToQualifiedDialogOpen = useModulesStore(
     (state) => state.isMovedToQualifiedDialogOpen,
@@ -25,22 +24,22 @@ function MoveToQualifiedDialog({ refetch }: { refetch: () => void }) {
   const [isSaving, setIsSaving] = useState(false);
 
   const moveToQualified = async () => {
+    if (!selUser) return null;
     try {
       setIsSaving(true);
       await supabase
         .from('interview_module_relation')
         .update({
           training_status: 'qualified',
-          training_approver: recruiterUser.user_id,
+          training_approver: recruiter_user.user_id,
         })
         .eq('id', selUser.id)
         .throwOnError();
-      refetch();
     } catch (error) {
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: error.message,
+        description: (error as Error).message,
       });
     } finally {
       setIsSaving(false);
@@ -77,7 +76,7 @@ function MoveToQualifiedDialog({ refetch }: { refetch: () => void }) {
         </>
       }
     >
-      {`Are you sure you want to move ${getFullName(user?.first_name, user?.last_name)} to qualified?`}
+      {`Are you sure you want to move ${getFullName(user?.first_name ?? '', user?.last_name ?? '')} to qualified?`}
     </UIDialog>
   );
 }

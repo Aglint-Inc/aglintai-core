@@ -3,10 +3,10 @@ import { useEffect, useState } from 'react';
 import MembersAutoComplete, {
   type MemberTypeAutoComplete,
 } from 'src/app/_common/components/MembersTextField';
+import { ScheduleTypeField } from 'src/app/(authenticated)/jobs/[job]/(job-edit)/interview-plan/_common/components/sessionForms';
 
+import { useTenant } from '@/company/hooks';
 import UITextField from '@/components/Common/UITextField';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { ScheduleTypeField } from '@/job/interview-plan/components/sessionForms';
 import {
   type BodyParamsFetchUserDetails,
   type CompanyMembersAPI,
@@ -20,7 +20,7 @@ import {
 import SessionDuration from '../DurationDropdown';
 
 function DebriedForm() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const [members, setMembers] = useState<CompanyMembersAPI>([]);
   const { editSession, debriefMembers, errorValidation } =
     useEditSessionDrawerStore((state) => ({
@@ -71,11 +71,11 @@ function DebriedForm() {
           <UITextField
             name={'name'}
             placeholder={'Session name'}
-            value={editSession.interview_session.name}
+            value={editSession!.interview_session.name}
             onChange={(e) =>
               setEditSession({
                 interview_session: {
-                  ...editSession.interview_session,
+                  ...editSession!.interview_session,
                   name: e.target.value,
                 },
               })
@@ -87,11 +87,11 @@ function DebriedForm() {
         </div>
         <div>
           <ScheduleTypeField
-            value={editSession.interview_session.schedule_type}
+            value={editSession!.interview_session.schedule_type}
             handleTypeChange={(value) => {
               setEditSession({
                 interview_session: {
-                  ...editSession.interview_session,
+                  ...editSession!.interview_session,
                   schedule_type: value,
                 },
               });

@@ -17,7 +17,7 @@ export const cloneWorkflows = async ({
   const [request] = supabaseWrap(
     await supabaseAdmin
       .from('request')
-      .select('*,applications(*)')
+      .select('*,applications!inner(*)')
       .eq('id', request_id),
   );
   const job_id = request.applications.job_id;
@@ -25,15 +25,17 @@ export const cloneWorkflows = async ({
   const job_workflows = supabaseWrap(
     await supabaseAdmin
       .from('workflow_job_relation')
-      .select('*, workflow(*, workflow_action(*))')
+      .select('*, workflow!inner(*, workflow_action(*))')
       .eq('job_id', job_id),
     false,
   );
 
-  const filtered_workflows: typeof job_workflows = [...job_workflows];
+  const filtered_workflows: typeof job_workflows = [...job_workflows].filter(
+    (w) => w.workflow.is_active,
+  );
 
   const new_relations_promises = filtered_workflows.map(async (j_w) => {
-    const [req_workflow] = supabaseWrap(
+    const req_workflow = supabaseWrap(
       await supabaseAdmin
         .from('workflow')
         .insert({
@@ -47,7 +49,8 @@ export const cloneWorkflows = async ({
           workflow_type: j_w.workflow.workflow_type,
           request_id: request_id,
         })
-        .select(),
+        .select()
+        .single(),
     );
 
     const req_w_actions: DatabaseTableInsert['workflow_action'][] =

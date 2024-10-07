@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { Edit } from 'lucide-react';
+import { EmptyState } from '@components/empty-state';
+import { Edit, NotebookPen, Plus } from 'lucide-react';
 import {
   type Dispatch,
   type FC,
@@ -9,23 +10,14 @@ import {
   useState,
 } from 'react';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UISectionCard from '@/components/Common/UISectionCard';
+import { UIButton } from '@/common/UIButton';
+import UISectionCard from '@/common/UISectionCard';
 
+import type { WorkingHour } from './ui/TimeList';
 import { WorkTimeUI } from './ui/WorkTimeUI';
 import { WorkTimeEditDialog } from './WorkTimeEditDialog';
 
 // Define types for the component props
-interface TimeRange {
-  startTime: string;
-  endTime: string;
-}
-
-interface WorkingHour {
-  day: string;
-  isWorkDay: boolean;
-  timeRange: TimeRange;
-}
 
 interface WorkTimeProps {
   workingHours: WorkingHour[];
@@ -54,6 +46,7 @@ const WorkTime: FC<WorkTimeProps> = ({
     };
   }, []);
 
+  const currentWorkingDays = workingHours.filter((wh) => wh.isWorkDay);
   return (
     <>
       <WorkTimeEditDialog
@@ -67,13 +60,36 @@ const WorkTime: FC<WorkTimeProps> = ({
         title='Working Hours'
         description="Set your company's operational hours for each day of the week."
         action={
-          <UIButton variant='outline' size='sm' onClick={() => setIsOpen(true)}>
-            <Edit className='h-3 w-3' />
-            <span className='sr-only'>Edit Working Hours</span>
-          </UIButton>
+          currentWorkingDays?.length > 0 && (
+            <UIButton
+              variant='outline'
+              size='sm'
+              onClick={() => setIsOpen(true)}
+            >
+              <Edit className='mr-2 h-3 w-3' /> Edit
+              <span className='sr-only'>Edit Working Hours</span>
+            </UIButton>
+          )
         }
       >
-        <WorkTimeUI workingHours={workingHours} />
+        {currentWorkingDays?.length > 0 ? (
+          <WorkTimeUI workingHours={workingHours} />
+        ) : (
+          <EmptyState
+            icon={NotebookPen}
+            header='No Working day yet'
+            description='Add the company Working day'
+            primarySlot={
+              <UIButton
+                className='mb-2 w-full'
+                leftIcon={<Plus />}
+                onClick={() => setIsOpen(true)}
+              >
+                Add Working Day
+              </UIButton>
+            }
+          />
+        )}
       </UISectionCard>
     </>
   );

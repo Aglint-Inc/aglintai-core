@@ -34,11 +34,32 @@
   --fc-today-bg-color: hsl(var(--primary) / 0.05);
 }
 
+
 /* Additional custom styles */
 .fc-theme-standard .fc-scrollgrid,
 .fc-theme-standard td,
 .fc-theme-standard th {
   border-color: hsl(var(--primary) / 0.12);
+}
+.fc-theme-standard .fc-scrollgrid {
+  overflow: hidden;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.fc {
+  border-radius: 12px;
+}
+.fc-theme-standard .fc-list {
+  overflow: hidden;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+
+}
+.fc-theme-standard th {
+  font-size: 12px;
+}
+.fc-timegrid-slot.fc-timegrid-slot-label {
+  font-size: 12px;
 }
 
 .fc .fc-daygrid-day.fc-day-today {

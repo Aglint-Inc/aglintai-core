@@ -1,17 +1,19 @@
-import { type APIFindAvailability } from '@aglint/shared-types';
+import { type schema_find_availability_payload } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { useMeetingList } from '@requests/hooks';
 // import { type ApiResponseFindAvailability } from '@requests/types';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { useParams } from 'next/navigation';
+import { type z } from 'zod';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import type {
   ApiBodyParamsSelfSchedule,
   ApiResponseSelfSchedule,
 } from '@/pages/api/scheduling/application/sendselfschedule';
 import { type ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
+import { type fetchSessionDetails } from '@/server/api/routers/requests/utils/requestSessions';
 
 import { filterSchedulingOptionsArray } from '../components/BodyDrawer/ScheduleFilter/utils';
 import {
@@ -40,10 +42,12 @@ export const useSelfSchedulingDrawer = () => {
   const params = useParams();
   const requestId = params?.request as string;
 
-  const { recruiter, recruiterUser } = useAuthDetails();
+  const { recruiter, recruiter_user } = useTenant();
   const request_id = requestId || '';
   const { data } = useMeetingList();
-  const allSessions = data || [];
+  const allSessions = (data || []) as Awaited<
+    ReturnType<typeof fetchSessionDetails>
+  >;
   const selectedSessionIds = allSessions?.map(
     (session) => session.interview_session.id,
   );
@@ -208,7 +212,7 @@ export const useSelfSchedulingDrawer = () => {
       const bodyParams: ApiBodyParamsSelfSchedule = {
         dateRange,
         allSessions,
-        user_id: recruiterUser?.user_id ?? '',
+        user_id: recruiter_user?.user_id ?? '',
         selectedSlots,
         application_id,
         request_id,
@@ -251,7 +255,7 @@ export const useSelfSchedulingDrawer = () => {
   }) => {
     try {
       setFetchingPlan(true);
-      const bodyParams: APIFindAvailability = {
+      const bodyParams: z.input<typeof schema_find_availability_payload> = {
         session_ids: session_ids,
         recruiter_id: rec_id,
         start_date_str: dayjs(dateRange.start_date).format('DD/MM/YYYY'),
@@ -280,12 +284,14 @@ export const useSelfSchedulingDrawer = () => {
         throw new Error();
       }
     } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: error?.message
-          ? error.message
-          : 'Error retrieving availability.',
-      });
+      if (error instanceof Error) {
+        toast({
+          variant: 'destructive',
+          title: error?.message
+            ? error.message
+            : 'Error retrieving availability.',
+        });
+      }
       return null;
     } finally {
       setFetchingPlan(false);

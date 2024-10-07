@@ -1,9 +1,8 @@
 import type { DatabaseTable } from '@aglint/shared-types';
+import { getBreakLabel } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Card, CardContent } from '@components/ui/card';
 import { Calendar, Clock } from 'lucide-react';
-
-import { getBreakLabel } from '@/utils/getBreakLabel';
 
 import { getScheduleType } from '../../../utils/scheduling/colors_and_enums';
 import IconScheduleType from '../../Common/Icons/IconScheduleType';
@@ -46,11 +45,13 @@ function BookingConfirmation({
                     <span>{getScheduleType(session.schedule_type)}</span>
                   </div>
                   <p className='mt-1 text-sm'>
-                    {formatTimeWithTimeZone({
-                      start_time: session.interview_meeting.start_time,
-                      end_time: session.interview_meeting.end_time,
-                      timeZone: dayjsLocal.tz.guess(),
-                    })}
+                    {session.interview_meeting.start_time
+                      ? formatTimeWithTimeZone({
+                          start_time: session.interview_meeting.start_time,
+                          end_time: session.interview_meeting.end_time,
+                          timeZone: dayjsLocal.tz.guess(),
+                        })
+                      : ''}
                   </p>
                 </div>
               </div>

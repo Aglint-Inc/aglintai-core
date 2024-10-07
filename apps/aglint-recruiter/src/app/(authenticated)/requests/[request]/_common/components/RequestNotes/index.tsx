@@ -3,30 +3,33 @@ import { Card } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import { Textarea } from '@components/ui/textarea';
 import { cn } from '@lib/utils';
-import {
-  useReadNotes,
-  useUpdateRequestNote,
-} from '@requests/hooks/useRequestNotes';
+import { useReadNotes, useUpdateRequestNote } from '@requests/hooks';
 import debounce from 'lodash/debounce';
 import { useParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
+import { api } from '@/trpc/client';
 
 function RequestNotes() {
   const params = useParams();
   const requestId = params?.request as string;
-
-  const { data: requestNotes, isFetched } = useReadNotes({
-    request_id: requestId,
-  });
-  const [note, setNote] = useState('');
+  api.requests.note.read;
+  const { data: notes, isFetched } = useReadNotes(
+    {
+      request_id: requestId,
+    },
+    {
+      enabled: !!requestId,
+    },
+  );
+  const [note, setNote] = useState<string | null>('');
   const [editorEnabled, setEditorEnabled] = useState(false);
-
+  const requestNotes = notes;
   const inputRef = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
-    if (isFetched) {
-      setNote(requestNotes?.[0]?.note || '');
+    if (requestNotes) {
+      setNote(requestNotes?.note);
     }
   }, [isFetched]);
   const { updateRequestNote, isPending } = useUpdateRequestNote();
@@ -43,24 +46,18 @@ function RequestNotes() {
     }, 500),
     [],
   );
-
+  if (!isFetched) {
+    return <Skeleton className='h-20 w-full' />;
+  }
   return (
-    <div>
-      <div className='my-4 flex items-center justify-between'>
-        <h3 className='text-lg font-semibold'>Notes</h3>
-      </div>
+    <div className='mt-2'>
       <Card
         className={cn(
-          'p-4',
-          requestNotes?.[0]?.note && !editorEnabled
-            ? 'bg-yellow-50'
-            : 'bg-white',
+          'p-0 border-none shadow-none mt-2',
+          requestNotes?.note && !editorEnabled ? '' : 'bg-white',
         )}
       >
         <ShowCode>
-          <ShowCode.When isTrue={!isFetched}>
-            <Skeleton className='h-20 w-full' />
-          </ShowCode.When>
           <ShowCode.When isTrue={isFetched}>
             <ShowCode>
               <ShowCode.When isTrue={!!note || editorEnabled}>
@@ -77,10 +74,10 @@ function RequestNotes() {
                       setNote(e.target.value);
                       debouncedUpsertRequestNotes(
                         e.target.value,
-                        requestNotes?.[0]?.id,
+                        requestNotes?.id,
                       );
                     }}
-                    placeholder='Add note'
+                    placeholder='Type here'
                     className='min-h-[40px] resize-none bg-transparent focus:border-transparent focus:outline-none focus:ring-0'
                     // style={{ background: 'transparent', outline: 'none' }}
                     onBlur={() => {
@@ -98,22 +95,22 @@ function RequestNotes() {
                     setTimeout(() => inputRef.current?.focus(), 300);
                   }}
                 >
-                  <p className='text-sm text-neutral-500'>Add note</p>
+                  <p className='text-sm text-blue-700'>Add note</p>
                 </div>
               </ShowCode.Else>
             </ShowCode>
           </ShowCode.When>
         </ShowCode>
         <div className='mt-2 flex flex-row items-center gap-1'>
-          <p className='text-xs text-neutral-500'>
-            {!requestNotes?.[0]?.note
+          <p className='text-xs text-muted-foreground'>
+            {!requestNotes?.note
               ? 'Notes will remain here until you clear it.'
               : 'Last edited on ' +
-                dayjsLocal(requestNotes?.[0]?.updated_at).format(
-                  'hh:mm A, MMM DD',
-                )}
+                dayjsLocal(requestNotes?.updated_at).format('hh:mm A, MMM DD')}
           </p>
-          {isPending && <p className='text-xs text-neutral-500'>Saving...</p>}
+          {isPending && (
+            <p className='text-xs text-muted-foreground'>Saving...</p>
+          )}
         </div>
       </Card>
     </div>

@@ -1,40 +1,31 @@
 import { useToast } from '@components/hooks/use-toast';
-import { useEffect, useState } from 'react';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 import { api } from '@/trpc/client';
 
 import MembersAutoComplete from '../../../../../../_common/components/MembersTextField';
-import { useAddMemberHandler } from '../../hooks/useAddMemberHandler';
 import { useModuleAndUsers } from '../../hooks/useModuleAndUsers';
 import {
   setIsAddMemberDialogOpen,
   setSelectedUsers,
-  setTrainingStatus,
   useModulesStore,
 } from '../../stores/store';
 
 function AddMemberDialog() {
   const { toast } = useToast();
-  const utils = api.useUtils();
-  const { members } = useSchedulingContext();
-  const [loading, setLoading] = useState(false);
+  const { data: members } = useMemberList(false, true);
   const isAddMemberDialogOpen = useModulesStore(
     (state) => state.isAddMemberDialogOpen,
   );
   const selectedUsers = useModulesStore((state) => state.selectedUsers);
   const trainingStatus = useModulesStore((state) => state.trainingStatus);
-  const initalOpen = useModulesStore((state) => state.initalOpen);
-
   const { data: editModule } = useModuleAndUsers();
 
-  const { addMemberHandler } = useAddMemberHandler({
-    editModule,
-  });
+  const { mutateAsync, isPending } = api.interview_pool.add_users.useMutation();
 
-  const relations = editModule?.relations.filter((rel) => !rel.is_archived);
+  const relations = editModule.relations.filter((rel) => !rel.is_archived);
 
   const allMembers = members.filter(
     (user) =>
@@ -42,38 +33,28 @@ function AddMemberDialog() {
   );
 
   const onClickAddMember = async () => {
+    if (selectedUsers.length === 0) return;
     try {
-      setLoading(true);
-      await addMemberHandler({
+      await mutateAsync({
         selectedUsers: selectedUsers,
         trainingStatus: trainingStatus,
+        relations: editModule.relations,
+        pool: {
+          id: editModule.id,
+          noReverseShadow: editModule.settings.noReverseShadow,
+          noShadow: editModule.settings.noShadow,
+        },
       });
       setIsAddMemberDialogOpen(false);
       setSelectedUsers([]);
-      await utils.interview_pool.module_and_users.invalidate({
-        module_id: editModule.id,
-      });
     } catch {
       toast({
         variant: 'destructive',
         title: 'Error',
         description: 'Error adding member.',
       });
-    } finally {
-      // extra time for refetching
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
     }
   };
-
-  //add member button directly open dialog to add member
-  useEffect(() => {
-    if (initalOpen) {
-      setIsAddMemberDialogOpen(Boolean(initalOpen));
-      setTrainingStatus(initalOpen);
-    }
-  }, []);
 
   return (
     <UIDialog
@@ -99,10 +80,10 @@ function AddMemberDialog() {
 
           <UIButton
             variant='default'
-            isLoading={loading}
+            isLoading={isPending}
             disabled={selectedUsers.length === 0}
             onClick={() => {
-              if (!loading) onClickAddMember();
+              if (!isPending) onClickAddMember();
             }}
           >
             Add
@@ -118,11 +99,7 @@ function AddMemberDialog() {
           renderUsers={allMembers}
           selectedUsers={selectedUsers}
           setSelectedUsers={(users) => {
-            const updateUsers = users.map((user) => ({
-              ...user,
-              role: null,
-            })); // role is not used in the code
-            setSelectedUsers(updateUsers);
+            setSelectedUsers(users);
           }}
         />
       </div>

@@ -1,13 +1,13 @@
+import { z } from "zod";
 import type { Database, Tables } from "./schema.types";
 import type { Custom, Type } from "./utils.types";
 
 export type CustomMembersMeta = {
-  [id in
-    | keyof Pick<
-        Tables<"public_jobs">,
-        "hiring_manager" | "recruiter" | "recruiting_coordinator" | "sourcer"
-      >
-    | "previous_interviewers"]: boolean;
+  recruiter: boolean;
+  hiring_manager: boolean;
+  recruiting_coordinator: boolean;
+  sourcer: boolean;
+  previous_interviewers: boolean;
 };
 
 export type CustomApplicationBadges = {
@@ -18,6 +18,15 @@ export type CustomApplicationBadges = {
   jobStability: number;
   careerGrowth: number;
   jobHopping: number;
+};
+
+export type CustomSchedulingReason = {
+  internal: {
+    rescheduling: string[];
+    cancellation: string[];
+    decline: string[];
+  };
+  candidate: { rescheduling: string[]; cancellation: string[] };
 };
 
 export type CustomJobParamters = Custom<

@@ -25,7 +25,7 @@ const Skills = () => {
         <AccordionTrigger>
           <div className='flex w-full items-center justify-between'>
             <div className='flex items-center space-x-2'>
-              <Lightbulb size={16} />
+              <Lightbulb size={16} className='text-muted-foreground' />
               <span className='font-medium'>Skills</span>
             </div>
             {highRelevanceSkills.length > 0 && (
@@ -83,7 +83,7 @@ const Content = () => {
   )
     return (
       <div className='mx-auto flex flex-col items-center justify-center p-4'>
-        <Medal className='mb-2 h-12 w-12 text-gray-500' />
+        <Medal className='mb-2 h-12 w-12 text-muted-foreground' />
         <p className='text-sm text-gray-600'>No skills found</p>
       </div>
     );

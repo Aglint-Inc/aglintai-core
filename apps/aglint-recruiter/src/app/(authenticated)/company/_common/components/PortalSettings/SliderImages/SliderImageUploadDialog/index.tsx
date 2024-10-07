@@ -1,14 +1,20 @@
 import { DialogDescription } from '@components/ui/dialog';
-import { useState } from 'react';
+import { type Dispatch, type SetStateAction, useState } from 'react';
 
-import { usePortalSettings } from '@/company/hooks/hook';
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
+import { UIButton } from '@/common/UIButton';
+import UIDialog from '@/common/UIDialog';
+import { usePortalSettings } from '@/company/hooks/usePortalSettings';
 
 import ImagesUpload from './ImagesUpload';
 
-export const SliderImageUploadDialog = ({ isDialogOpen, setIsDialogOpen }) => {
-  const { updateImages, isImageUploading } = usePortalSettings();
+export const SliderImageUploadDialog = ({
+  isDialogOpen,
+  setIsDialogOpen,
+}: {
+  isDialogOpen: boolean;
+  setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
+}) => {
+  const { updateImages, loading } = usePortalSettings();
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   return (
     <UIDialog
@@ -29,8 +35,8 @@ export const SliderImageUploadDialog = ({ isDialogOpen, setIsDialogOpen }) => {
           <UIButton
             type='submit'
             className='w-full'
-            disabled={isImageUploading}
-            isLoading={isImageUploading}
+            disabled={loading.isImageUploading}
+            isLoading={loading.isImageUploading}
             onClick={async () => {
               await updateImages(selectedImages, setSelectedImages);
               setIsDialogOpen(false);

@@ -10,42 +10,63 @@ import axios from 'axios';
 import { Edit, Lock, Mail, MoreHorizontal, Power, Trash } from 'lucide-react';
 import { useState } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { updateMember } from '@/context/AuthContext/utils';
+import { useTenant } from '@/company/hooks';
+import { useMemberUpdate } from '@/company/hooks/useMemberUpdate';
+import type { useTeamMembers } from '@/company/hooks/useTeamMembers';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type API_reset_password } from '@/pages/api/reset_password/type';
+import { api } from '@/trpc/client';
 
-import { reinviteUser } from '../utils';
 import DeleteMemberDialog from './DeleteMemberDialog';
 
-export const UserListThreeDot = ({ member }) => {
+export const UserListThreeDot = ({
+  member,
+}: {
+  member: ReturnType<typeof useTeamMembers>['data'][number];
+}) => {
   const { toast } = useToast();
-  const [dialogReason, setDialogReason] = useState(null);
+  const { updateMember } = useMemberUpdate();
+  const { mutateAsync: reinviteUser } =
+    api.tenant['resend-invite'].useMutation();
+  const [dialogReason, setDialogReason] = useState<
+    'delete' | 'suspend' | 'cancel_invite' | null
+  >(null);
   const router = useRouterPro();
-  const { recruiterUser } = useAuthDetails();
-
+  const { recruiter_user } = useTenant();
   const canSuspend = member.role !== 'admin';
 
-  const handleAction = (action) => {
+  const handleAction = (
+    action:
+      | 'edit'
+      | 'resend'
+      | 'activate'
+      | 'suspend'
+      | 'cancel_invite'
+      | 'delete'
+      | 'reset_password',
+  ) => {
     switch (action) {
       case 'edit':
         router.push(`/user/${member.user_id}?edit_enable=true`);
         break;
-      case 'resend':
-        reinviteUser(member.email, recruiterUser.user_id).then(
-          ({ error, emailSend }) => {
-            if (!error && emailSend) {
-              toast({ description: 'Invite sent successfully.' });
-            } else {
-              toast({ variant: 'destructive', description: error });
-            }
-          },
-        );
+      case 'resend': {
+        reinviteUser({ email: member.email })
+          .then(() => {
+            toast({
+              variant: 'default',
+              title: 'Invite sent successfully.',
+            });
+          })
+          .catch(() => {
+            toast({
+              variant: 'destructive',
+              title: 'Failed to resend invite',
+            });
+          });
         break;
+      }
       case 'activate':
-        updateMember({
-          data: { user_id: member.user_id, status: 'active' },
-        }).then(() => {
+        updateMember({ user_id: member.user_id, status: 'active' }).then(() => {
           toast({
             description: `${member.first_name}'s account is activated successfully.`,
           });
@@ -70,9 +91,7 @@ export const UserListThreeDot = ({ member }) => {
   };
 
   const handleSuspend = () => {
-    updateMember({
-      data: { user_id: member.user_id, status: 'suspended' },
-    }).then(() => {
+    updateMember({ user_id: member.user_id, status: 'suspended' }).then(() => {
       toast({
         description: `${member.first_name}'s account is suspended successfully.`,
       });
@@ -81,19 +100,42 @@ export const UserListThreeDot = ({ member }) => {
   };
 
   const handleRemove = () => {
-    // Implement your remove logic here
-    // For example:
-    // deleteMember(member.user_id).then(() => {
-    //   toast({ description: `${member.first_name} has been removed from the team.` })
-    //   setDialogReason(null)
-    // })
+    removeMember();
+  };
+
+  const removeMember = async () => {
+    if (recruiter_user.user_id === member.user_id) {
+      toast({
+        variant: 'destructive',
+        title: "Can't remove Your own account.",
+      });
+    }
+    if (member.status !== 'invited' && member.role === 'admin') {
+      toast({
+        variant: 'destructive',
+        title: "Can't remove Admin account.",
+      });
+    } else {
+      try {
+        // await axios.post('/api/supabase/deleteuser', {
+        //   user_id: member.user_id,
+        // });
+      } catch (error) {
+        toast({
+          variant: 'destructive',
+          title:
+            "This member is tied to an active schedule, so removal is unavailable until it's finished.",
+        });
+        return null;
+      }
+    }
   };
 
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant='ghost' className='h-8 w-8 p-0'>
+          <Button variant='outline' className='h-8 w-8 p-0'>
             <MoreHorizontal className='h-4 w-4' />
           </Button>
         </DropdownMenuTrigger>
@@ -115,7 +157,7 @@ export const UserListThreeDot = ({ member }) => {
           )}
           {canSuspend &&
             member.status === 'active' &&
-            recruiterUser.user_id !== member.user_id && (
+            recruiter_user.user_id !== member.user_id && (
               <DropdownMenuItem onClick={() => handleAction('suspend')}>
                 <Power className='mr-2 h-4 w-4' /> Suspend
               </DropdownMenuItem>
@@ -126,20 +168,22 @@ export const UserListThreeDot = ({ member }) => {
             </DropdownMenuItem>
           )}
           {member.status !== 'invited' &&
-            recruiterUser.user_id !== member.user_id && (
+            recruiter_user.user_id !== member.user_id && (
               <DropdownMenuItem onClick={() => handleAction('reset_password')}>
                 <Lock className='mr-2 h-4 w-4' /> Reset Password
               </DropdownMenuItem>
             )}
         </DropdownMenuContent>
       </DropdownMenu>
-      <DeleteMemberDialog
-        name={`${member.first_name} ${member.last_name}`.trim()}
-        action={dialogReason === 'suspend' ? handleSuspend : handleRemove}
-        role={member.role}
-        reason={dialogReason}
-        close={() => setDialogReason(null)}
-      />
+      {!!dialogReason && (
+        <DeleteMemberDialog
+          name={`${member.first_name} ${member.last_name}`.trim()}
+          action={dialogReason === 'suspend' ? handleSuspend : handleRemove}
+          role={member.role}
+          reason={dialogReason}
+          close={() => setDialogReason(null)}
+        />
+      )}
     </>
   );
 };

@@ -28,7 +28,6 @@ import {
   Calendar,
   Clock,
   FileText,
-  Loader2,
   MoreHorizontal,
   RefreshCw,
   UserPlus,
@@ -38,6 +37,7 @@ import {
 import Link from 'next/link';
 import { createContext, memo, useCallback, useContext, useState } from 'react';
 
+import { Loader } from '@/common/Loader';
 import PublishButton from '@/components/Common/PublishButton';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
@@ -59,7 +59,7 @@ export const SharedActions = () => {
         <Publish />
         <Switcher />
         {/* <Dropdown /> */}
-        <Link href={`/jobs/${value.job.id}/job-details`}>
+        <Link href={`/jobs/${value?.job?.id}/job-details`}>
           <UIButton variant='outline'>Edit</UIButton>
         </Link>
       </div>
@@ -70,7 +70,7 @@ export const SharedActions = () => {
 const Sync = () => {
   const { job, handleJobSync } = useJob();
   const [load, setLoad] = useState(false);
-  if (!job.syncable) return <></>;
+  if (!job?.syncable) return <></>;
   const handleSync = async () => {
     if (load) return;
     setLoad(true);
@@ -83,7 +83,7 @@ const Sync = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <div className='flex flex-shrink-0 items-center'>
-            <Clock className='mr-1 h-4 w-4 text-neutral-500' />
+            <Clock className='mr-1 h-4 w-4 text-muted-foreground' />
           </div>
         </TooltipTrigger>
         <TooltipContent>
@@ -106,7 +106,7 @@ const Score = () => {
   if (!applicationScoringPollEnabled) return null;
   return (
     <div className='flex items-center space-x-2 rounded-md bg-blue-100 px-3 py-2 text-blue-800'>
-      <Loader2 className='h-4 w-4 animate-spin' />
+      <Loader />
       <span className='text-sm font-medium'>
         Application scoring in progress:{' '}
         {job?.processing_count.processed +
@@ -172,7 +172,7 @@ const useSettingsActions = () => {
 
   const handleDeleteJob = useCallback(() => {
     push(`${ROUTES['/jobs']()}?status=${job?.status ?? 'all'}`);
-    handleJobDelete(job.id);
+    handleJobDelete(job?.id ?? null!);
   }, [job?.id]);
 
   const handleCloseModal = useCallback(() => {
@@ -219,10 +219,15 @@ const useSettingsActions = () => {
   };
 };
 
-const SettingsContext =
-  createContext<ReturnType<typeof useSettingsActions>>(undefined);
+const SettingsContext = createContext<
+  ReturnType<typeof useSettingsActions> | undefined
+>(undefined);
 
-const useSettings = () => useContext(SettingsContext);
+const useSettings = () => {
+  const value = useContext(SettingsContext);
+  if (!value) throw new Error('SettingsContext not found as a provider');
+  return value;
+};
 
 export const Settings = memo(() => {
   const value = useSettingsActions();
@@ -272,9 +277,12 @@ const Close = () => {
           </DialogDescription>
         </DialogHeader>
         <div className='py-4'>
-          <p className='mb-2'>
+          <p className='text-sm text-muted-foreground'>
             Confirm by typing the job title{' '}
-            <span className='text-red-500'>{job_title.trim()}</span> below.
+            <span className='font-semibold text-destructive'>
+              {job_title.trim()}
+            </span>{' '}
+            below.
           </p>
           <Input
             placeholder={job_title.trim()}

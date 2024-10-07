@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Instructions from 'src/app/_common/components/Instructions';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
 import { useScheduleDetails } from '../../hooks/useScheduleDetails';
 
 function ScheduleDetailInstructions() {
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
   const {
     data: { schedule_data: schedule },
     refetch,
@@ -29,16 +29,17 @@ function ScheduleDetailInstructions() {
         toast.warning('Please provide instructions.');
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error((error as Error).message);
     }
   }
   return (
-    <div className='max-w-4xl'>
+    <div className='min-h-[calc(100vh-310px)] max-w-4xl'>
       <Instructions
         instruction={schedule?.interview_meeting.instructions as string}
         setTextValue={setTextValue}
         showEditButton={
-          recruiterUser?.role === 'admin' || recruiterUser?.role === 'recruiter'
+          recruiter_user?.role === 'admin' ||
+          recruiter_user?.role === 'recruiter'
         }
         updateInstruction={updateInstruction}
       />

@@ -1,4 +1,5 @@
 import { useToast } from '@components/hooks/use-toast';
+import { ScrollArea } from '@components/ui/scroll-area';
 import {
   Table,
   TableBody,
@@ -54,7 +55,7 @@ export const ImportCsv: React.FC = () => {
         .map((line) => {
           const values = line.split(',');
           return headers.reduce((obj, header, index) => {
-            obj[header.trim()] = values[index]?.trim();
+            obj[header.trim() as keyof typeof obj] = values[index]?.trim();
             return obj;
           }, {} as Candidate);
         })
@@ -90,17 +91,19 @@ export const ImportCsv: React.FC = () => {
   };
 
   return (
-    <div className='flex h-[500px] flex-col border-0 shadow-none'>
-      <div className='flex-grow overflow-auto'>
+    <div className='flex h-[550px] flex-col border-0 shadow-none'>
+      <div className='h-full flex-grow overflow-auto'>
         {isLoading ? (
           <Loader />
         ) : candidates.length ? (
-          <div className='flex flex-col gap-2'>
-            <CandidatesListTable candidates={candidates} />
-            <div className='flex items-center justify-between overflow-hidden'>
+          <div className='flex h-full flex-col gap-2'>
+            <ScrollArea>
+              <CandidatesListTable candidates={candidates} />
+            </ScrollArea>
+            <div className='flex items-center justify-between overflow-hidden bg-white py-5'>
               <label
                 htmlFor='file-upload'
-                className='flex cursor-pointer items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50'
+                className='flex cursor-pointer items-center justify-center rounded-md border border-border bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50'
               >
                 <Upload className='mr-2 h-5 w-5 text-gray-400' />
                 Re-Upload
@@ -113,7 +116,7 @@ export const ImportCsv: React.FC = () => {
                     handleFileUpload(
                       (
                         event.target as React.ChangeEvent<HTMLInputElement>['target']
-                      ).files[0],
+                      ).files![0],
                     )
                   }
                 />
@@ -125,17 +128,25 @@ export const ImportCsv: React.FC = () => {
           </div>
         ) : (
           <div className='flex h-full flex-col'>
-            <div className='flex-grow overflow-auto'>
+            <div className='h-full flex-grow overflow-auto pb-4'>
               <FileUploader
                 handleChange={(
-                  file: React.ChangeEvent<HTMLInputElement>['target']['files'][number],
+                  file: NonNullable<
+                    React.ChangeEvent<HTMLInputElement>['target']['files']
+                  >[number],
                 ) => {
                   handleFileUpload(file);
                 }}
               >
-                <div className='rounded-lg border-2 border-dashed border-gray-300 bg-slate-50  text-center h-[450px] flex flex-col items-center justify-center'>
-                  <FileText className='mx-auto mb-4 h-12 w-12' strokeWidth={1.5}/>
-                  <p className='text-gray-500'>
+                <div className='flex h-full flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-slate-50 text-center'>
+                  <FileText
+                    className='mx-auto mb-4 h-12 w-12'
+                    strokeWidth={1.5}
+                  />
+                  <h3 className='mt-2 text-sm font-semibold text-gray-900'>
+                    Import CSV
+                  </h3>
+                  <p className='mt-1 text-sm text-muted-foreground'>
                     Upload a CSV file to import candidates
                   </p>
                 </div>
@@ -160,24 +171,22 @@ export const ImportCsv: React.FC = () => {
 const CandidatesListTable: React.FC<{ candidates: Candidate[] }> = ({
   candidates,
 }) => (
-  <div className='max-h-[330px] overflow-auto'>
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Name</TableHead>
-          <TableHead>Email</TableHead>
-          <TableHead>Phone</TableHead>
+  <Table>
+    <TableHeader>
+      <TableRow>
+        <TableHead>Name</TableHead>
+        <TableHead>Email</TableHead>
+        <TableHead>Phone</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      {candidates.map((candidate, index) => (
+        <TableRow key={index}>
+          <TableCell>{`${candidate.first_name} ${candidate.last_name}`}</TableCell>
+          <TableCell>{candidate.email}</TableCell>
+          <TableCell>{candidate.phone}</TableCell>
         </TableRow>
-      </TableHeader>
-      <TableBody>
-        {candidates.map((candidate, index) => (
-          <TableRow key={index}>
-            <TableCell>{`${candidate.first_name} ${candidate.last_name}`}</TableCell>
-            <TableCell>{candidate.email}</TableCell>
-            <TableCell>{candidate.phone}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </div>
+      ))}
+    </TableBody>
+  </Table>
 );

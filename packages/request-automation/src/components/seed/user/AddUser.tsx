@@ -40,7 +40,7 @@ function AddUser({
         };
         error: any;
       } = await axios.post("/api/automation/get_users", {
-        recruiter_id,
+        recruiter_id: "",
       });
 
       if (error) {
@@ -61,6 +61,12 @@ function AddUser({
       }
 
       const currentUsersEmails = data.users.map((user) => user.email);
+
+      console.log(
+        "newUsers : ",
+        newUsers.map((user) => user.email)
+      );
+      console.log("currentUsersEmails : ", currentUsersEmails);
       const availaibleUsers = newUsers.filter(
         (user) => !currentUsersEmails.includes(user.email)
       );
@@ -92,6 +98,8 @@ function AddUser({
       const forms = avaUsers.filter((user) =>
         selectedUser.includes(user.email)
       );
+      console.log("forms :", forms);
+      // return;
       const { data, status } = await axios.post("/api/automation/add_users", {
         recruiter_id,
         forms,
@@ -104,7 +112,11 @@ function AddUser({
       ]);
       await fetchUsers();
     } catch (e: any) {
-      setMessage(["failed to add a users", e.message]);
+      if (e.response && e.response.data && e.response.data.message) {
+        setMessage(["Failed to add users:", e.response.data.message]);
+      } else {
+        setMessage(["Failed to add users", e.message]);
+      }
     } finally {
       setIsLoading(false);
     }

@@ -1,5 +1,3 @@
-'use client';
-
 import ApplicationDetailComp from './_common/components';
 
 function Page() {

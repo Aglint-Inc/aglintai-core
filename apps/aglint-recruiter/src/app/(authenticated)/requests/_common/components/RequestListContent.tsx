@@ -35,9 +35,9 @@ function RequestListContent({
         <ScrollableSection section={urgentRequests} isFetched={isFetched} />
       )}
 
-      <div className='container-lg mx-auto w-full px-12'>
+      <div className='container-lg mx-auto w-full px-4'>
         <div
-          className={`${view === 'kanban' ? 'grid grid-cols-4 gap-4' : 'space-y-4'}`}
+          className={`${view === 'kanban' ? 'grid grid-cols-4 rounded-lg border' : 'space-y-4'}`}
         >
           {otherSections.map(({ requests, sectionName }) => (
             <div
@@ -47,9 +47,9 @@ function RequestListContent({
               {isFetched ? (
                 view === 'list' ? (
                   <ListSection
-                    collapseScheduleRequestSections={
-                      urgentRequests && !urgentRequests.requests.length
-                    }
+                    collapseScheduleRequestSections={Boolean(
+                      urgentRequests && !!urgentRequests.requests.length,
+                    )}
                     sectionName={sectionName}
                     requests={requests}
                     expandedSections={expandedSections}

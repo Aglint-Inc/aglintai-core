@@ -56,65 +56,100 @@ export type schedule = {
 
 type sessions = Awaited<ReturnType<typeof getScheudleSessionDetails>>;
 
-export async function POST(req) {
+export async function POST(req: Request) {
   try {
     const supabaseAdmin = getSupabaseServer();
 
     const { application_id } = await req.json();
 
-    const { data: application } = await supabaseAdmin
-      .from('applications')
-      .select(
-        'candidates(first_name,last_name,phone,email,linkedin,timezone,avatar,recruiter(id,name,email,logo,phone_number,socials,company_overview)),public_jobs(job_title,description)',
-      )
-      .eq('id', application_id)
-      .single()
-      .throwOnError();
+    const applicationPromise = (
+      await supabaseAdmin
+        .from('applications')
+        .select(
+          'candidates(first_name,last_name,phone,email,linkedin,timezone,avatar,recruiter(id,name,logo,phone_number,socials,company_overview)),public_jobs(job_title,description)',
+        )
+        .eq('id', application_id)
+        .single()
+        .throwOnError()
+    ).data;
+
+    const availabilityPromise = (
+      await supabaseAdmin
+        .from('candidate_request_availability')
+        .select('id,slots,created_at')
+        .eq('application_id', application_id)
+        .is('slots', null)
+        .throwOnError()
+    ).data;
+
+    const filterJsonPromise = (
+      await supabaseAdmin
+        .from('interview_filter_json')
+        .select('id,confirmed_on,session_ids,created_at')
+        .eq('application_id', application_id)
+        .is('confirmed_on', null)
+        .throwOnError()
+    ).data;
+
+    const interviewPlanPromise = (
+      await supabaseAdmin
+        .from('interview_progress')
+        .select('name,description,order,update_at,is_completed')
+        .eq('application_id', application_id)
+        .order('order', { ascending: true })
+    ).data;
+
+    const [application, availability, filter_json, interviewPlan] =
+      await Promise.all([
+        applicationPromise,
+        availabilityPromise,
+        filterJsonPromise,
+        interviewPlanPromise,
+      ]);
+
+    /// promise all
 
     const { data: recruiter } = await supabaseAdmin
       .from('recruiter_preferences')
       .select('banner_image,company_images,greetings,about')
-      .eq('recruiter_id', application.candidates.recruiter.id)
+      .eq('recruiter_id', application?.candidates?.recruiter?.id || '')
       .single()
       .throwOnError();
 
     const jobData = {
-      name: application.public_jobs.job_title,
-      description: application.public_jobs.description,
+      name: application?.public_jobs?.job_title ?? '',
+      description: application?.public_jobs?.description ?? '',
     };
 
+    const candidates = application?.candidates;
+    const candidatesRecruiter = candidates?.recruiter;
+
     const candidateData = {
-      first_name: application.candidates.first_name,
-      last_name: application.candidates.last_name,
-      email: application.candidates.email,
-      linkedin: application.candidates.linkedin,
-      phone: application.candidates.phone,
-      timezone: application.candidates.timezone,
-      avatar: application.candidates.avatar,
+      first_name: candidates?.first_name || '',
+      last_name: candidates?.last_name || '',
+      email: candidates?.email || '',
+      linkedin: candidates?.linkedin || '',
+      phone: candidates?.phone || '',
+      timezone: candidates?.timezone || '',
+      avatar: candidates?.avatar || '',
     };
 
     const companyData = {
-      name: application.candidates.recruiter.name,
-      email: application.candidates.recruiter.email,
-      logo: application.candidates.recruiter.logo,
-      socials: application.candidates.recruiter.socials,
-      phone: application.candidates.recruiter.phone_number,
+      name: candidatesRecruiter?.name,
+      logo: candidatesRecruiter?.logo,
+      socials: candidatesRecruiter?.socials,
+      phone: candidatesRecruiter?.phone_number,
       about: recruiter?.about || '',
       banner_image: recruiter?.banner_image || '',
       company_images: recruiter?.company_images || [],
       greetings: recruiter?.greetings || '',
     };
     //availability  ----------------------------------------------------------------
-    const { data: availability } = await supabaseAdmin
-      .from('candidate_request_availability')
-      .select('id,slots,created_at')
-      .eq('application_id', application_id)
-      .is('slots', null)
-      .throwOnError();
-    const avail = availability.filter((ava) => !ava.slots);
 
-    let availabilityData = [] as availability;
-    if (avail.length) {
+    const avail = availability?.filter((ava) => !ava.slots);
+
+    let availabilityData = [] as unknown;
+    if (avail?.length) {
       const availabilityWithSession = await Promise.all(
         avail.map(async (ava) => {
           const sessions = await getAvailabilitySessionDetails(ava.id);
@@ -125,22 +160,17 @@ export async function POST(req) {
           };
         }),
       );
-      availabilityData = availabilityWithSession;
+      availabilityData = (
+        availabilityWithSession ? availabilityWithSession : []
+      ) as availability;
     }
     //self scheudle  ----------------------------------------------------------------
 
-    const { data: filter_json } = await supabaseAdmin
-      .from('interview_filter_json')
-      .select('id,confirmed_on,session_ids,created_at')
-      .eq('application_id', application_id)
-      .is('confirmed_on', null)
-      .throwOnError();
-
-    const filteredSchudles = filter_json.filter((fil) => !fil.confirmed_on);
+    const filteredSchudles = filter_json?.filter((fil) => !fil.confirmed_on);
 
     let scheduleData = [] as schedule;
 
-    if (filteredSchudles.length) {
+    if (filteredSchudles?.length) {
       scheduleData = await Promise.all(
         filteredSchudles.map(async (filter) => {
           const sessions = await getScheudleSessionDetails(filter.session_ids);
@@ -158,11 +188,6 @@ export async function POST(req) {
     const upcomingData = await getMeetings(application_id);
 
     // interview plan -----------------------------------------------------------------
-    const { data: interviewPlan } = await supabaseAdmin
-      .from('interview_progress')
-      .select('name,description,order,update_at,is_completed')
-      .eq('application_id', application_id)
-      .order('order', { ascending: true });
 
     // .throwOnError();
 
@@ -184,10 +209,12 @@ export async function POST(req) {
       { status: 200 },
     );
   } catch (e) {
-    return NextResponse.json(
-      { message: 'error ' + e.message },
-      { status: 400 },
-    );
+    if (e instanceof Error) {
+      return NextResponse.json(
+        { message: 'error ' + e.message },
+        { status: 400 },
+      );
+    } else return NextResponse.json({ message: 'error ' }, { status: 400 });
   }
 }
 
@@ -196,15 +223,17 @@ const getScheudleSessionDetails = async (session_ids: string[]) => {
 
   const { data: scheduleSession } = await supabaseAdmin
     .from('interview_session')
-    .select('name,session_duration,interview_meeting(start_time,end_time)')
+    .select(
+      'name,session_duration,interview_meeting!inner(start_time,end_time)',
+    )
     .in('id', session_ids)
     .throwOnError();
 
-  const scheduleSessions = scheduleSession.map((scheSess) => ({
+  const scheduleSessions = (scheduleSession || [])?.map((scheSess) => ({
     name: scheSess.name,
     duration: scheSess.session_duration,
-    start_time: scheSess.interview_meeting.start_time,
-    end_time: scheSess.interview_meeting.end_time,
+    start_time: scheSess?.interview_meeting?.start_time,
+    end_time: scheSess?.interview_meeting?.end_time,
   }));
   return scheduleSessions;
 };
@@ -220,25 +249,28 @@ const getAvailabilitySessionDetails = async (availability_id: string) => {
     .eq('request_availability_id', availability_id)
     .throwOnError();
 
-  return availabilitySess.map((avaSess) => ({
-    name: avaSess.interview_session.name,
-    duration: avaSess.interview_session.session_duration,
-    start_time: avaSess.interview_session.interview_meeting.start_time,
-    end_time: avaSess.interview_session.interview_meeting.end_time,
-  }));
+  return availabilitySess?.map((avaSess) => {
+    const { interview_session } = avaSess;
+    return {
+      name: interview_session?.name,
+      duration: interview_session?.session_duration,
+      start_time: interview_session?.interview_meeting?.start_time,
+      end_time: interview_session?.interview_meeting?.end_time,
+    };
+  });
 };
 
 //  ---------------------------------- meeting
 
-const getMeetings = async (application_id) => {
+const getMeetings = async (application_id: string) => {
   const interviews = await getInterviews(application_id);
 
   let interviewWithUsers = [] as apiPortalInterviewsResponse;
 
-  if (interviews.length) {
+  if (interviews?.length) {
     interviewWithUsers = await Promise.all(
       interviews.map(async (interview) => {
-        const interviewers = await getInterviewers(interview.session_id);
+        const interviewers = await getInterviewers(interview?.session_id || '');
         return {
           ...interview,
           interviewers: interviewers,
@@ -249,7 +281,7 @@ const getMeetings = async (application_id) => {
   return interviewWithUsers;
 };
 
-const getInterviews = async (application_id) => {
+const getInterviews = async (application_id: string) => {
   const supabaseAdmin = getSupabaseServer();
 
   const { data: interviews } = await supabaseAdmin
@@ -264,7 +296,7 @@ const getInterviews = async (application_id) => {
   return interviews;
 };
 
-const getInterviewers = async (session_id) => {
+const getInterviewers = async (session_id: string) => {
   const supabaseAdmin = getSupabaseServer();
 
   const { data: interviewers } = await supabaseAdmin

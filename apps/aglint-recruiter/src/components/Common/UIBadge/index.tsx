@@ -26,7 +26,7 @@ const badgeVariants = cva(
         purple:
           'border-transparent bg-purple-100 text-purple-600 hover:bg-purple-200',
         neutral:
-          'border-transparent bg-neutral-100 text-neutral-600 hover:bg-neutral-200',
+          'border-transparentbg-muted text-muted-foreground hover:bg-neutral-200',
       },
       size: {
         default: 'h-6',
@@ -70,7 +70,9 @@ export function UIBadge({
   iconSize = 16,
   icon,
 }: UIBadgeProps) {
-  const IconComponent = Icons[iconName ?? ''] as React.ElementType;
+  const IconComponent = (
+    iconName ? Icons[iconName] : <></>
+  ) as React.ElementType;
 
   return (
     <Badge

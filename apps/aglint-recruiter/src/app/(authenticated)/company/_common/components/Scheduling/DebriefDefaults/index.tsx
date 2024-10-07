@@ -1,16 +1,15 @@
 /* eslint-disable security/detect-object-injection */
-import { type schedulingSettingType } from '@aglint/shared-types';
-import { Switch } from '@components/ui/switch';
+import { type SchedulingSettingType } from '@aglint/shared-types';
+import Typography from '@components/typography';
 import React, { type Dispatch, type SetStateAction } from 'react';
 
-import UITypography from '@/components/Common/UITypography';
+import { UISwitch } from '@/common/UISwitch';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-type MembersMeta = schedulingSettingType['debrief_defaults'];
+type MembersMeta = SchedulingSettingType['debrief_defaults'];
 
 type DebriefDefaultsProps = {
   value: MembersMeta;
-
   setValue: Dispatch<SetStateAction<MembersMeta>>;
 };
 
@@ -30,11 +29,13 @@ const Toggles = ({ value, setValue }: DebriefDefaultsProps) => {
     recruiting_coordinator,
     sourcer,
   } = Object.entries(value).reduce(
-    (acc, [key, value]) => {
+    (acc, [tempKey, value]) => {
+      const key = tempKey as keyof MembersMeta;
       acc[key] = (
         <>
           <div className='flex items-center gap-3'>
-            <Switch
+            <UISwitch
+              size='sm'
               checked={value}
               onCheckedChange={() =>
                 setValue((prev) => ({
@@ -43,7 +44,7 @@ const Toggles = ({ value, setValue }: DebriefDefaultsProps) => {
                 }))
               }
             />
-            <UITypography>{capitalizeAll(key)}</UITypography>
+            <Typography className='text-sm'>{capitalizeAll(key)}</Typography>
           </div>
         </>
       );

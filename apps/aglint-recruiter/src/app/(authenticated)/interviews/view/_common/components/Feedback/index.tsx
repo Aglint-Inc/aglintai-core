@@ -1,6 +1,7 @@
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import Typography from '@components/typography';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
@@ -15,7 +16,6 @@ import {
   Circle,
   Clock,
   Edit,
-  Loader2,
   Mail,
   MessageSquare,
   Plus,
@@ -26,11 +26,11 @@ import {
 import { useMemo, useState } from 'react';
 
 import axios from '@/client/axios';
+import { Loader } from '@/common/Loader';
+import { useTenant } from '@/company/hooks';
 import { ShowCode } from '@/components/Common/ShowCode';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import UIDialog from '@/components/Common/UIDialog';
-import UITypography from '@/components/Common/UITypography';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type API_request_feedback } from '@/pages/api/request_feedback/type';
@@ -42,6 +42,7 @@ import {
   saveInterviewerFeedback,
   useInterviewerRelations,
 } from './util.function';
+
 type FeedbackWindowInterviewersType = {
   [key: string]: {
     feedback: {
@@ -107,23 +108,25 @@ const FeedbackWindow = () => {
     session_ids: interview_sessions.map((item) => item.id),
   });
 
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
   const { checkPermissions } = useRolesAndPermissions();
-  const user_id = recruiterUser?.user_id;
-  const isAdmin = recruiterUser?.role === 'admin';
+  const user_id = recruiter_user?.user_id;
+  const isAdmin = recruiter_user?.role === 'admin';
 
   const tempRelations = useMemo(() => {
     const tempData = (
       (relationsData || []) as unknown as {
         session_id: string;
-        feedback: (typeof relationsData)[number]['feedback'];
-        interview_module_relation: (typeof relationsData)[number]['interview_module_relation'];
+        feedback: NonNullable<typeof relationsData>[number]['feedback'];
+        interview_module_relation: NonNullable<
+          typeof relationsData
+        >[number]['interview_module_relation'];
       }[]
     ).filter((item) => Boolean(item.interview_module_relation?.id));
 
     const tempRelation: {
       [key: string]: {
-        feedback: (typeof relationsData)[number]['feedback'];
+        feedback: NonNullable<typeof relationsData>[number]['feedback'];
         relation_id: string;
         user_id: string;
       }[];
@@ -131,10 +134,11 @@ const FeedbackWindow = () => {
 
     for (const item of tempData) {
       const temp = tempRelation[item.session_id] || [];
+      if (!item.interview_module_relation) continue;
       temp.push({
         feedback: item.feedback,
-        relation_id: item.interview_module_relation.id,
-        user_id: item.interview_module_relation.user_id,
+        relation_id: item.interview_module_relation?.id,
+        user_id: item.interview_module_relation?.user_id,
       });
       tempRelation[item.session_id] = temp;
     }
@@ -148,12 +152,13 @@ const FeedbackWindow = () => {
       interview_sessions.forEach((session) => {
         const temp = tempRelations[String(session.id)] || [];
         temp.forEach((memRelation) => {
-          const tempMem = relationsData.find(
+          const tempMem = relationsData?.find(
             (item) =>
-              item.interview_module_relation.user_id === memRelation.user_id,
-          ).interview_module_relation.recruiter_user;
+              item?.interview_module_relation?.user_id === memRelation?.user_id,
+          )?.interview_module_relation?.recruiter_user;
           if (!tempMem) return;
           interviewers[String(session.id)] = [
+            //@ts-ignore fix this
             ...(interviewers[String(session.id)] || []),
             {
               user_id: tempMem.user_id,
@@ -172,9 +177,9 @@ const FeedbackWindow = () => {
               first_name: tempMem.first_name,
               last_name: tempMem.last_name,
               email: tempMem.email,
-              profile_image: tempMem.profile_image,
-              position: tempMem.position,
-              feedback: memRelation.feedback,
+              profile_image: tempMem.profile_image ?? '',
+              position: tempMem.position ?? '',
+              feedback: memRelation.feedback!,
             },
           ];
         });
@@ -214,7 +219,7 @@ const FeedbackWindow = () => {
       <ShowCode>
         <ShowCode.When isTrue={isLoading}>
           <div className='flex items-center justify-center'>
-            <Loader2 className='h-8 w-8 animate-spin text-primary' />
+            <Loader />
           </div>
         </ShowCode.When>
         <ShowCode.When
@@ -313,7 +318,7 @@ const AdminFeedback = ({
     session_id: string;
     relation_id: string;
     tool: 'email' | 'slack';
-    recruiter_user_id;
+    recruiter_user_id: string;
   }) => {
     e.stopPropagation();
 
@@ -351,15 +356,15 @@ const AdminFeedback = ({
                     <CardHeader className='space-y-2'>
                       <div className='flex items-center space-x-2'>
                         {session[0].session.session_type === 'panel' ? (
-                          <Users size={18} className='text-gray-500' />
+                          <Users size={18} className='text-muted-foreground' />
                         ) : (
-                          <User size={18} className='text-gray-500' />
+                          <User size={18} className='text-muted-foreground' />
                         )}
                         <span className='text-lg font-medium'>
                           {session[0].session.title}
                         </span>
                       </div>
-                      <div className='flex items-center space-x-2 text-sm text-gray-500'>
+                      <div className='flex items-center space-x-2 text-sm text-muted-foreground'>
                         <Calendar className='h-4 w-4' />
                         <span>
                           {dayjsLocal(session[0].session.time.start).format(
@@ -367,7 +372,7 @@ const AdminFeedback = ({
                           )}
                         </span>
                       </div>
-                      <div className='flex items-center space-x-2 text-sm text-gray-500'>
+                      <div className='flex items-center space-x-2 text-sm text-muted-foreground'>
                         <Clock className='h-4 w-4' />
                         <span>
                           {`${dayjsLocal(session[0].session.time.start).format('hh:mm')} - ${dayjsLocal(session[0].session.time.end).format('hh:mm')}`}
@@ -484,7 +489,7 @@ const InterviewerFeedback = ({
                             )}
                           </span>
                         </div>
-                        <div className='flex items-center space-x-2 text-sm text-neutral-500'>
+                        <div className='flex items-center space-x-2 text-sm text-muted-foreground'>
                           <Clock size={16} />
                           <span>{`${dayjsLocal(
                             session[0].session.time.start,
@@ -607,19 +612,19 @@ function FeedbackCardDetails({
   handelFeedbackRequest?: any;
 }) {
   return (
-    <Card className='mb-4 w-full'>
-      <CardHeader className='flex flex-row items-center space-x-4 p-4'>
-        <Avatar className='h-12 w-12'>
+    <Card className='mb-4 w-full border-none bg-slate-50 shadow-none'>
+      <CardHeader className='flex flex-row items-center gap-3 p-4'>
+        <Avatar className='h-12 w-12 rounded-md'>
           <AvatarImage
             src={int.profile_image}
             alt={getFullName(int.first_name, int.last_name)}
           />
-          <AvatarFallback>
+          <AvatarFallback className='h-12 w-12 rounded-md bg-slate-200'>
             {getFullName(int.first_name, int.last_name).charAt(0)}
           </AvatarFallback>
         </Avatar>
-        <div className='flex-grow'>
-          <h3 className='text-lg font-semibold'>
+        <div className='flex flex-col'>
+          <h3 className='text-md font-medium'>
             {getFullName(int.first_name, int.last_name)}
           </h3>
           <p className='text-sm text-muted-foreground'>{int.position}</p>
@@ -726,7 +731,7 @@ function FeedbackCardDetails({
           </div>
         )}
       </CardHeader>
-      <CardContent className='p-4'>
+      <CardContent className='p-4 pt-0'>
         <div className='space-y-2.5'>
           {int.feedback?.recommendation ? (
             <>
@@ -781,9 +786,9 @@ const FeedbackForm = ({
 
     <div className='flex w-full flex-col gap-5'>
       <div className='flex flex-col gap-1'>
-        <UITypography type='small' variant='p'>
+        <Typography type='small' variant='p'>
           Recommendation Level
-        </UITypography>
+        </Typography>
         <div>
           <div className='flex gap-2'>
             {Array(10)
@@ -814,15 +819,15 @@ const FeedbackForm = ({
                 );
               })}
           </div>
-          <UITypography type='small' variant='p' className=''>
+          <Typography type='small' variant='p' className=''>
             {re_mapper[interviewer.feedback?.recommendation || 0]}
-          </UITypography>
+          </Typography>
         </div>
       </div>
       <div className='flex flex-col gap-2'>
-        <UITypography type='small' variant='p'>
+        <Typography type='small' variant='p'>
           Feedback
-        </UITypography>
+        </Typography>
         <div>
           <TipTapAIEditor
             placeholder='Your feedback.'

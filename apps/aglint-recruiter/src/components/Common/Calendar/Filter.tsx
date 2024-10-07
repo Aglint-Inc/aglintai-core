@@ -1,7 +1,16 @@
+import { type DatabaseTable } from '@aglint/shared-types';
 import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
 
-function CalendarFilter({ setFilter, filter }) {
+function CalendarFilter({
+  setFilter,
+  filter,
+}: {
+  setFilter: React.Dispatch<
+    React.SetStateAction<DatabaseTable['interview_meeting']['status'][]>
+  >;
+  filter: DatabaseTable['interview_meeting']['status'][];
+}) {
   return (
     <div className='!mt-4 flex flex-row gap-2'>
       <div className='flex flex-row items-center gap-1'>
@@ -44,7 +53,7 @@ function CalendarFilter({ setFilter, filter }) {
             }
           }}
         />
-        <Label htmlFor='cancelled'>Cancelled</Label>
+        <Label htmlFor='cancelled'>Canceled</Label>
       </div>
     </div>
   );

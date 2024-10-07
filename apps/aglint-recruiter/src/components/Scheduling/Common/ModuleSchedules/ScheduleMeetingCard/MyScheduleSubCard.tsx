@@ -1,6 +1,7 @@
-import { Briefcase, ChevronDown, MapPin } from 'lucide-react';
+import Typography from '@components/typography';
+import { BriefcaseBusiness, ChevronDown, MapPin } from 'lucide-react';
+import { type MouseEvent } from 'react';
 
-import UITypography from '@/components/Common/UITypography';
 
 type MeetingSlotProps = {
   slotStatus: string | React.ReactNode;
@@ -21,7 +22,9 @@ type MeetingSlotProps = {
   bgColorProps?: React.CSSProperties;
   textJob?: string | React.ReactNode;
   slotMembersList?: React.ReactNode;
-  onClickDropdownIocn?: any;
+  onClickDropdownIcon?: (
+    _e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
+  ) => void;
   isMembersListVisible?: boolean;
   isDropdownIconVisible?: boolean;
   slotAvatarWithName?: React.ReactNode;
@@ -47,7 +50,7 @@ export function MyScheduleSubCard({
   // bgColorProps,
   textJob,
   slotMembersList,
-  onClickDropdownIocn,
+  onClickDropdownIcon,
   isMembersListVisible,
   isDropdownIconVisible,
   slotAvatarWithName,
@@ -62,9 +65,9 @@ export function MyScheduleSubCard({
             <div className='flex min-w-[148px] flex-col gap-2'>
               {isTimeVisible && (
                 <div>
-                  <UITypography variant='p' type='small'>
+                  <Typography variant='p' type='small'>
                     {textTime}
-                  </UITypography>
+                  </Typography>
                 </div>
               )}
               <div>{slotStatus}</div>
@@ -86,9 +89,9 @@ export function MyScheduleSubCard({
                     {/* Add your SVG or icon here */}
                   </div>
                 )}
-                <UITypography variant='p' type='small'>
+                <Typography variant='p' type='small'>
                   {textMeetingTitle}
-                </UITypography>
+                </Typography>
               </div>
               {isPhoneCallVisible && (
                 <div className='flex items-center gap-1'>
@@ -102,9 +105,9 @@ export function MyScheduleSubCard({
                 {isMeetingPlatformVisible && (
                   <div className='flex items-center gap-1'>
                     <div>{slotMeetingIcon}</div>
-                    <UITypography variant='p' type='small'>
+                    <Typography variant='p' type='small'>
                       {textMeetingPlatform}
-                    </UITypography>
+                    </Typography>
                   </div>
                 )}
                 {isDurationVisible && (
@@ -112,9 +115,9 @@ export function MyScheduleSubCard({
                     <div className='flex items-center justify-center'>
                       {/* Add your SVG or icon here */}
                     </div>
-                    <UITypography variant='p' type='small'>
+                    <Typography variant='p' type='small'>
                       {textDuration}
-                    </UITypography>
+                    </Typography>
                   </div>
                 )}
               </div>
@@ -129,11 +132,11 @@ export function MyScheduleSubCard({
               <div className='flex items-center gap-3'>
                 <div className='flex items-center gap-1'>
                   <div className='flex items-center justify-center'>
-                    <Briefcase size={14} />
+                    <BriefcaseBusiness size={14} />
                   </div>
-                  <UITypography variant='p' type='small'>
+                  <Typography variant='p' type='small'>
                     {textJob}
-                  </UITypography>
+                  </Typography>
                 </div>
                 {isAvatarWithNameVisible && <div>{slotAvatarWithName}</div>}
               </div>
@@ -142,7 +145,7 @@ export function MyScheduleSubCard({
           {isDropdownIconVisible && (
             <div
               className='flex h-6 w-6 cursor-pointer items-center justify-center rounded hover:bg-neutral-300'
-              onClick={onClickDropdownIocn}
+              onClick={(e) => onClickDropdownIcon && onClickDropdownIcon(e)}
             >
               <ChevronDown size={14} />
             </div>

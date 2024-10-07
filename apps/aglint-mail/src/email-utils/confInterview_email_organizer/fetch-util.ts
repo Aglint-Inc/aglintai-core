@@ -7,7 +7,7 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../../utils/email/common/functions';
-import { FetchUtilResp, FetchUtilType } from '../../types/emailfetchUtil';
+import type { FetchUtilResp, FetchUtilType } from '../../types/emailfetchUtil';
 
 export const fetchUtil: FetchUtilType<'confInterview_email_organizer'> = async (
   supabaseAdmin,
@@ -52,12 +52,12 @@ export const fetchUtil: FetchUtilType<'confInterview_email_organizer'> = async (
         organizerLastName: organizer.last_name,
         organizerName: getFullName(organizer.first_name, organizer.last_name),
         OrganizerTimeZone: org_tz,
-        companyName: companyName,
+        companyName,
         jobRole: public_jobs.job_title,
       };
 
     const candidateLink = req_body.application_id
-      ? `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}`
+      ? `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/scheduling/application/${req_body.application_id}`
       : '';
     const react_email_placeholders: EmailTemplateAPi<'confInterview_email_organizer'>['react_email_placeholders'] =
       {

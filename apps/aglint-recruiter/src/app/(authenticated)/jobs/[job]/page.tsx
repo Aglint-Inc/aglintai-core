@@ -1,14 +1,14 @@
 'use client';
 
-import { ApplicationsDashboard } from '@/job/components';
+import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
 
-import { ApplicationsStoreProvider } from './_common/contexts';
+import { ApplicationsComponent, JobDetailsHeader } from '@/job/components';
 
 const Page = () => {
   return (
-    <ApplicationsStoreProvider>
-      <ApplicationsDashboard />
-    </ApplicationsStoreProvider>
+    <OneColumnPageLayout header={<JobDetailsHeader />}>
+      <ApplicationsComponent />
+    </OneColumnPageLayout>
   );
 };
 

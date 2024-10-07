@@ -69,7 +69,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).send(resAgent);
   } catch (error) {
     // console.log('error', error);
-    res.status(500).send(error.message);
+    res.status(500).send((error as Error).message);
   }
 };
 
@@ -147,6 +147,7 @@ export const scheduleWithAgent = async ({
       supabase,
       rec_user_id,
       application_id,
+      request_id: '', // TODO: add request_id,
     });
 
     await supabase

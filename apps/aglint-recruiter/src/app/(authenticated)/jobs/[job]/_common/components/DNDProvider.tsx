@@ -24,7 +24,7 @@ const DNDLayer = (props: PropsWithChildren) => {
   );
 };
 
-const CustomDragLayer = ({ x }: { x: number }) => {
+const CustomDragLayer = ({ x }: ReturnType<typeof useMousePosition>) => {
   const {
     job: { section_count },
   } = useJob();
@@ -60,7 +60,7 @@ const CustomDragLayer = ({ x }: { x: number }) => {
       <div
         className='transform'
         style={getItemStyles(initialOffset, {
-          x: x - 180 + (currentOffset?.x ?? 0),
+          x: x! - 180 + (currentOffset?.x ?? 0),
           y: currentOffset?.y ?? 0,
         })}
       >

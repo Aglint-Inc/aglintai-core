@@ -1,3 +1,5 @@
+'use client';
+import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { Calendar } from '@components/ui/calendar';
 import {
@@ -26,13 +28,20 @@ import {
   startOfYear,
   subDays,
 } from 'date-fns';
-import { Briefcase, Building2, CalendarIcon, MapPin, X } from 'lucide-react';
+import {
+  BriefcaseBusiness,
+  Building,
+  CalendarIcon,
+  MapPin,
+  X,
+} from 'lucide-react';
 import React, { useState } from 'react';
 import { useAnalyticsContext } from 'src/app/(authenticated)/reports/_common/context/AnalyticsContext/AnalyticsContextProvider';
 
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 export default function Component() {
+  const { toast } = useToast();
   const {
     filtersOptions,
     filters: init_filters,
@@ -45,8 +54,16 @@ export default function Component() {
   const handleDateOptionChange = (value: string) => {
     setDateOption(value);
     const { from, to } = MapDateOption(value);
+    if (!from || !to) {
+      toast({
+        variant: 'destructive',
+        title: 'failed to update date range',
+      });
+      return;
+    }
     handleFilterChange({
-      dateRange: { from: startOfDay(from), to: endOfDay(to) },
+      dateRange:
+        from && to ? { from: startOfDay(from), to: endOfDay(to) } : null,
     });
   };
 
@@ -67,8 +84,8 @@ export default function Component() {
     });
   };
 
-  const applyFilter = (filters) => {
-    handleSetFilter(filters);
+  const applyFilter = (newFilters: typeof filters) => {
+    handleSetFilter(newFilters);
   };
   const clear_all =
     filters.job ||
@@ -138,7 +155,7 @@ export default function Component() {
             (job) => handleFilterChange({ job: job }),
             'job',
             filtersOptions.job,
-            <Briefcase className='h-4 w-4' />,
+            <BriefcaseBusiness className='h-4 w-4' />,
           )}
 
           {renderSelect(
@@ -146,7 +163,7 @@ export default function Component() {
             (department) => handleFilterChange({ department: department }),
             'department',
             filtersOptions.department,
-            <Building2 className='h-4 w-4' />,
+            <Building className='h-4 w-4' />,
           )}
 
           {renderSelect(
@@ -186,7 +203,7 @@ export default function Component() {
                 {dateOption === 'custom' && (
                   <Calendar
                     mode='range'
-                    selected={filters.dateRange}
+                    selected={filters.dateRange ?? undefined}
                     // onSelect={setDateRange}
                     // initialFocus
                   />
@@ -248,7 +265,7 @@ const dateOptions = [
 
 const MapDateOption = (value: string) => {
   const today = new Date();
-  let from: Date, to: Date;
+  let from: Date | undefined, to: Date | undefined;
   switch (value) {
     case 'today':
       from = to = today;

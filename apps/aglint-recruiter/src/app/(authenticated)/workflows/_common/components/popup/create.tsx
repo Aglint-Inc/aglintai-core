@@ -3,17 +3,18 @@ import { Button } from '@components/ui/button';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogTitle,
 } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
-import { Switch } from '@components/ui/switch';
 import { Textarea } from '@components/ui/textarea';
 import { Plus } from 'lucide-react';
 import { useCallback, useEffect } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
+import { UISwitch } from '@/components/Common/UISwitch';
 import {
   useWorkflows,
   useWorkflowsActions,
@@ -38,9 +39,9 @@ const Create = () => {
       return;
     }
     handleCreateWorkflow({
-      title: form.title.value,
+      title: form.title.value!,
       description: form.description.value,
-      auto_connect: form.auto_connect.value,
+      auto_connect: form.auto_connect.value!,
       phase: 'after',
       trigger: 'sendAvailReqReminder',
     });
@@ -57,23 +58,28 @@ const Create = () => {
 
   return (
     <>
-      <UIButton leftIcon={<Plus/>} size='md' variant='default' onClick={() => setPopup({ open: true })}>
+      <UIButton
+        leftIcon={<Plus />}
+        size='md'
+        variant='default'
+        onClick={() => setPopup({ open: true })}
+      >
         Create
       </UIButton>
       <Dialog open={open} onOpenChange={handleClose}>
         <DialogContent>
           <AlertDialogHeader>
-            <DialogTitle>Create Workflow</DialogTitle>
+            <DialogTitle>Create Automation</DialogTitle>
+            <DialogDescription>
+              Enter the name for automation. Next, you will be able to add steps
+              to the automation.
+            </DialogDescription>
           </AlertDialogHeader>
           <div className='space-y-4'>
-            <Label className='mb-2'>
-              Enter the name for workflow. Next, you will be able to add steps
-              to the workflow.
-            </Label>
             <div className='space-y-4'>
               <Input
                 placeholder='Workflow Title'
-                value={form.title.value}
+                value={form.title.value!}
                 onChange={(e) =>
                   setForm({
                     title: {
@@ -81,14 +87,14 @@ const Create = () => {
                       error: false,
                       helperText: '',
                       required: true,
-                      validation: (value) => value.trim().length > 0,
+                      validation: (value) => value!.trim().length > 0,
                     },
                   })
                 }
               />
               <Textarea
                 placeholder='Workflow Description'
-                value={form.description.value}
+                value={form.description.value!}
                 onChange={(e) =>
                   setForm({
                     description: {
@@ -96,14 +102,15 @@ const Create = () => {
                       error: false,
                       helperText: '',
                       required: true,
-                      validation: (value) => value.trim().length > 0,
+                      validation: (value) => value!.trim().length > 0,
                     },
                   })
                 }
               />
               <div className='flex items-center space-x-2'>
-                <Switch
-                  checked={form.auto_connect.value}
+                <UISwitch
+                  size='sm'
+                  checked={form.auto_connect.value!}
                   onCheckedChange={(checked) =>
                     setForm({
                       auto_connect: {
@@ -111,7 +118,7 @@ const Create = () => {
                         error: false,
                         helperText: '',
                         required: true,
-                        validation: (value) => value,
+                        validation: (value) => value!,
                       },
                     })
                   }
@@ -120,11 +127,11 @@ const Create = () => {
               </div>
             </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className='flex justify-end'>
             <Button variant='outline' onClick={handleClose}>
               Cancel
             </Button>
-            <Button onClick={handleSubmit}>Create Workflow</Button>
+            <Button onClick={handleSubmit}>Create Automation</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

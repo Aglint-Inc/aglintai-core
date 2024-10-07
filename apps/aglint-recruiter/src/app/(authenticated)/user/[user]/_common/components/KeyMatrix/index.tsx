@@ -1,29 +1,44 @@
 import { dayjsLocal } from '@aglint/shared-utils';
+import { EmptyState } from '@components/empty-state';
+import { ChartNoAxesColumn } from 'lucide-react';
 
 import UISectionCard from '@/components/Common/UISectionCard';
 
-export const KeyMatrics = ({
-  totalHour,
-  completedCount,
-  declineCount,
-}: {
-  totalHour: string | number;
-  completedCount: string | number;
-  declineCount: string | number;
-}) => {
-  const completedHour = dayjsLocal.duration(+totalHour, 'minutes').asHours();
+import { useInterviewer } from '../../hooks/useInterviewer';
+
+export const KeyMatrics = () => {
+  const { data } = useInterviewer();
+
+  const {
+    meeting_count: { completed_hour, completed, cancelled },
+  } = data;
+
+  const completedHour = dayjsLocal
+    .duration(+completed_hour, 'minutes')
+    .asHours();
+
+  const isEmpty = completedHour == 0 && completed == 0 && cancelled == 0;
+
   return (
     <>
-      <UISectionCard title='Key Metrics'>
-        <div className='grid grid-cols-2 gap-4 sm:grid-cols-4'>
-          <Card color='green' title='Interview Hours' value={completedHour} />
-          <Card
-            color='green'
-            title='Interviews Completed'
-            value={completedCount}
+      <UISectionCard title='Key Metrics' type='compact'>
+        {isEmpty ? (
+          <EmptyState
+            variant='inline'
+            icon={ChartNoAxesColumn}
+            description='No data available'
           />
-          <Card color='red' title='Declines' value={declineCount} />
-        </div>
+        ) : (
+          <div className='flex flex-row gap-3'>
+            <Card color='green' title='Interview Hours' value={completedHour} />
+            <Card
+              color='green'
+              title='Interviews Completed'
+              value={completed}
+            />
+            <Card color='red' title='Declines' value={cancelled} />
+          </div>
+        )}
       </UISectionCard>
     </>
   );
@@ -39,9 +54,9 @@ const Card = ({
   color: 'green' | 'red' | 'blue';
 }) => {
   return (
-    <div className='text-center'>
-      <p className={`text-xl font-bold text-${color}-600`}>{value}</p>
-      <div className='text-sm text-gray-500'>{title}</div>
+    <div className='flex flex-col gap-1 rounded-md bg-gray-50 p-4 text-left'>
+      <p className={`text-2xl font-medium text-${color}-600`}>{value}</p>
+      <div className='text-sm text-muted-foreground'>{title}</div>
     </div>
   );
 };

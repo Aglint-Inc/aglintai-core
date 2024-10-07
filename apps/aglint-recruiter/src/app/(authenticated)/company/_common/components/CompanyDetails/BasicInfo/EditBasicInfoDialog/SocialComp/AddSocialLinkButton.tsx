@@ -10,7 +10,16 @@ import { useState } from 'react';
 
 import { validation } from './utils';
 
-const AddSocialLinkButton = ({ AddCustomSocialHandle, customSocials }) => {
+const AddSocialLinkButton = ({
+  AddCustomSocialHandle,
+  customSocials,
+}: {
+  // eslint-disable-next-line no-unused-vars
+  AddCustomSocialHandle: (name: string, value: string) => void;
+  customSocials: {
+    [key: string]: string;
+  };
+}) => {
   const [open, setOpen] = useState(false);
   const [social, setSocial] = useState({
     name: { value: '', error: false, type: 'string' },
@@ -25,7 +34,7 @@ const AddSocialLinkButton = ({ AddCustomSocialHandle, customSocials }) => {
 
     Object.entries(social).forEach(([key, curr]) => {
       const err = !validation(curr.value, curr.type);
-      newSocial[key] = { ...curr, error: err };
+      newSocial[key as keyof typeof social] = { ...curr, error: err };
       if (err) hasError = true;
     });
 
@@ -56,7 +65,7 @@ const AddSocialLinkButton = ({ AddCustomSocialHandle, customSocials }) => {
     setIsExist(false);
   };
 
-  const handleChange = (e, key: 'name' | 'url') => {
+  const handleChange = (e: any, key: 'name' | 'url') => {
     setSocial((prev) => ({
       ...prev,
       [key]: { ...prev[key], value: e.target.value, error: false },
@@ -90,7 +99,7 @@ const AddSocialLinkButton = ({ AddCustomSocialHandle, customSocials }) => {
                 onChange={(e) => handleChange(e, 'name')}
               />
               {social.name.error && (
-                <p className='text-sm text-red-500'>
+                <p className='text-sm text-destructive'>
                   Please enter a valid social media name
                 </p>
               )}
@@ -105,12 +114,12 @@ const AddSocialLinkButton = ({ AddCustomSocialHandle, customSocials }) => {
                 onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
               />
               {social.url.error && (
-                <p className='text-sm text-red-500'>
+                <p className='text-sm text-destructive'>
                   Please enter a valid social media URL
                 </p>
               )}
               {isExist && (
-                <p className='text-sm text-red-500'>
+                <p className='text-sm text-destructive'>
                   This social already exist. please check
                 </p>
               )}

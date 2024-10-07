@@ -1,7 +1,4 @@
-import {
-  createContext,
-  useContext,
-} from 'react';
+import { createContext, useContext } from 'react';
 import {
   type AnalyticsContextInterface,
   type AnalyticsFilters,
@@ -9,9 +6,9 @@ import {
 
 const InitialAnalyticsContext: AnalyticsContextInterface = {
   filtersOptions: {
-    job: [] as undefined,
-    department: [] as undefined,
-    location: [] as undefined,
+    job: [],
+    department: [],
+    location: [],
     dateRange: [
       { id: 'today', label: 'Today' },
       { id: 'yesterday', label: 'Yesterday' },

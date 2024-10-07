@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import type { SchedulingSettingType } from '@aglint/shared-types';
 import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
 import {
@@ -6,21 +7,18 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { PopoverClose } from '@radix-ui/react-popover';
 import { Clock, Edit } from 'lucide-react';
 import { type FC, useEffect, useRef, useState } from 'react';
 
-import TimezonePicker from '@/components/Common/TimezonePicker';
-import UISectionCard from '@/components/Common/UISectionCard';
+import TimezonePicker from '@/common/TimezonePicker';
+import UISectionCard from '@/common/UISectionCard';
 import { type TimezoneObj } from '@/utils/timeZone';
 
 interface TimeZoneProps {
   timeZone: string;
   selectedTimeZone: TimezoneObj | null;
   setSelectedTimeZone: (value: TimezoneObj) => void;
-  handleUpdate: (data: {
-    timeZone: { tzCode: string } | null;
-  }) => Promise<void>;
+  handleUpdate: (data: Partial<SchedulingSettingType>) => Promise<void>;
 }
 
 const TimeZone: FC<TimeZoneProps> = ({
@@ -32,6 +30,7 @@ const TimeZone: FC<TimeZoneProps> = ({
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleUpdateAndClose = async () => {
+    // @ts-ignore
     await handleUpdate({ timeZone: selectedTimeZone });
     setIsPopoverOpen(false);
   };
@@ -54,7 +53,7 @@ const TimeZone: FC<TimeZoneProps> = ({
         <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
           <PopoverTrigger asChild>
             <Button variant='outline' size='sm' className=''>
-              <Edit className='h-3 w-3' />
+              <Edit className='mr-2 h-3 w-3' /> Edit
               <span className='sr-only'>Edit Time Zone</span>
             </Button>
           </PopoverTrigger>
@@ -62,15 +61,13 @@ const TimeZone: FC<TimeZoneProps> = ({
             <div className='flex w-[300px] flex-col gap-4'>
               <Label>Time Zone</Label>
               <TimezonePicker
-                value={selectedTimeZone?.tzCode}
+                value={selectedTimeZone?.tzCode || null}
                 onChange={(value) => setSelectedTimeZone(value)}
                 width={'300'}
               />
-              <PopoverClose asChild>
-                <Button className='w-full' onClick={handleUpdateAndClose}>
-                  Update
-                </Button>
-              </PopoverClose>
+              <Button className='w-full' onClick={handleUpdateAndClose}>
+                Update
+              </Button>
             </div>
           </PopoverContent>
         </Popover>
@@ -78,7 +75,6 @@ const TimeZone: FC<TimeZoneProps> = ({
     >
       <div className='flex items-center space-x-2'>
         <div>
-          <p className='text-sm font-medium'>Current Time Zone</p>
           <div className='flex items-center space-x-2'>
             <Clock className='h-4 w-4 text-muted-foreground' />
             <p>{timeZone}</p>

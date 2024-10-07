@@ -31,20 +31,25 @@ function LocationCard({
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <Card
-      className='relative h-full border-none p-4 shadow-none'
+    <div
+      className='relative h-full rounded-md bg-gray-100 p-4'
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {!isFormDisabled && isHovered && (
         <div className='absolute right-2 top-2 flex space-x-1'>
-          <Button variant='ghost' size='sm' onClick={() => onEdit(id)}>
+          <Button
+            variant='secondary'
+            size='sm'
+            onClick={() => onEdit(id)}
+            className='h-8 w-8 bg-white p-0 shadow-sm hover:bg-gray-200'
+          >
             <PencilIcon className='h-3 w-3' />
           </Button>
           <Button
-            variant='ghost'
+            variant='secondary'
             size='sm'
-            className='hover:bg-red-200'
+            className='h-8 w-8 bg-white p-0 shadow-sm hover:bg-red-500 hover:text-white'
             onClick={() => onDelete(id)}
           >
             <Trash2 className='h-3 w-3' />
@@ -52,16 +57,18 @@ function LocationCard({
         </div>
       )}
       <div className='flex items-center justify-between'>
-        <h4 className='text-base font-semibold'>{location}</h4>
+        <h4 className='text-md font-medium'>{location}</h4>
       </div>
       <div className='mt-2'>
         <div className='flex items-center'>
-          <MapPin className='mr-2 h-4 w-4 text-gray-500' />
-          <p>{address || '-'}</p>
+          <MapPin className='mr-2 h-4 w-4 text-muted-foreground' />
+          <span className='text-sm text-muted-foreground'>
+            {address || '-'}
+          </span>
         </div>
         <div className='mt-1 flex items-center'>
-          <Clock className='mr-2 h-4 w-4 text-gray-500' />
-          <p>{timeZone}</p>
+          <Clock className='mr-2 h-4 w-4 text-muted-foreground' />
+          <span className='text-sm text-muted-foreground'>{timeZone}</span>
         </div>
       </div>
       {isHeadquarter && (
@@ -69,7 +76,7 @@ function LocationCard({
           <Badge variant='outline'>Headquarters</Badge>
         </div>
       )}
-    </Card>
+    </div>
   );
 }
 

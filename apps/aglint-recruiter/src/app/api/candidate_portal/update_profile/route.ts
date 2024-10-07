@@ -1,6 +1,6 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
-import { NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
@@ -15,7 +15,7 @@ export type profileDetailsPayload = Pick<
   | 'avatar'
 >;
 
-export async function POST(req) {
+export async function POST(req: NextRequest) {
   try {
     const {
       application_id,
@@ -34,7 +34,8 @@ export async function POST(req) {
       { status: 200 },
     );
   } catch (e) {
-    return NextResponse.json(e.message, { status: 400 });
+    if (e instanceof Error)
+      return NextResponse.json(e.message, { status: 400 });
   }
 }
 
@@ -51,7 +52,7 @@ const updateCandidateDetails = async (
       .eq('id', application_id)
       .single()
       .throwOnError(),
-  ).candidate_id;
+  ).candidate_id!;
 
   const { error } = await supabaseAdmin
     .from('candidates')

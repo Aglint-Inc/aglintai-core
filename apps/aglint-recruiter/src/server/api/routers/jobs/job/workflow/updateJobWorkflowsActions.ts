@@ -19,21 +19,21 @@ const mutation = async ({ input }: PrivateProcedure<typeof schema>) => {
   const updated_workflow_actions: DatabaseTableUpdate['workflow_action'][] =
     input.updated_actions as any;
 
-  db.from('workflow')
+  await db
+    .from('workflow')
     .upsert(updated_workflows as any)
     .select()
     .throwOnError();
-  db.from('workflow_action')
+  await db
+    .from('workflow_action')
     .upsert(updated_workflow_actions as any)
     .select()
     .throwOnError();
 
-  db.from('workflow_action')
+  await db
+    .from('workflow_action')
     .delete()
-    .in(
-      'id',
-      input.deleted_actions.map((id) => id),
-    )
+    .in('id', input.deleted_actions)
     .throwOnError();
   return { success: true };
 };

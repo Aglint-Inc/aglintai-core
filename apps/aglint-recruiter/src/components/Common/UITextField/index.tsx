@@ -40,7 +40,7 @@ const UITextField = forwardRef<HTMLInputElement, Props>(
     ref,
   ) => {
     const labelClasses = cn(
-      'text-neutral-900',
+      'text-foreground',
       labelBold === 'default' ? 'font-semibold' : 'font-normal',
       {
         'text-sm': labelSize === 'small',
@@ -50,15 +50,15 @@ const UITextField = forwardRef<HTMLInputElement, Props>(
         'text-2xl': labelSize === 'xxLarge',
         'text-3xl': labelSize === 'xxxLarge',
       },
-      disabled && 'text-neutral-500',
+      disabled && 'text-muted-foreground',
       defaultLabelColor,
     );
 
     const inputClasses = cn(
-      'w-full border rounded px-3 py-2 transition-colors duration-200', // Smooth transition for color changes
+      'w-full border rounded px-3 transition-colors duration-200', // Smooth transition for color changes
       fullWidth && 'w-full',
-      error ? 'border-red-500 focus-visible:ring-0' : 'border-neutral-300',
-      disabled && 'bg-neutral-100 text-neutral-500 cursor-not-allowed',
+      error ? 'border-red-500 focus-visible:ring-0' : 'border-gray-200',
+      disabled && 'bg-gray-100 text-gray-500 cursor-not-allowed',
       fieldSize === 'small'
         ? 'h-6'
         : fieldSize === 'medium'
@@ -82,12 +82,12 @@ const UITextField = forwardRef<HTMLInputElement, Props>(
             <Label htmlFor={id} className={labelClasses}>
               {label}
             </Label>
-            {required && <span className='ml-1 text-red-500'>*</span>}{' '}
+            {required && <span className='ml-1 text-destructive'>*</span>}{' '}
             {/* Corrected color class */}
           </div>
         )}
         {secondaryText && (
-          <p className='text-sm text-neutral-600'>{secondaryText}</p>
+          <p className='text-sm text-muted-foreground'>{secondaryText}</p>
         )}
         <div>
           <Input
@@ -100,7 +100,7 @@ const UITextField = forwardRef<HTMLInputElement, Props>(
           />
           {error && helperText && (
             <div className='mt-1 flex flex-row items-center'>
-              <AlertCircle className='mr-1 h-4 w-4 text-red-500' />
+              <AlertCircle className='mr-1 h-4 w-4 text-destructive' />
               <p className='text-sm text-red-700'>{helperText}</p>
             </div>
           )}

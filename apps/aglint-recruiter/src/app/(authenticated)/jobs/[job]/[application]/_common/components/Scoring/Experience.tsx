@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
-import { Briefcase } from 'lucide-react';
+import { BriefcaseBusiness } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -31,7 +31,7 @@ const Experience = () => {
         <AccordionTrigger>
           <div className='flex w-full items-center justify-between'>
             <div className='flex items-center space-x-2'>
-              <Briefcase size={16} />
+              <BriefcaseBusiness size={16} className='text-muted-foreground' />
               <span className='font-medium'>Experience</span>
             </div>
             {companyLogos.length > 0 && (
@@ -49,9 +49,9 @@ const Experience = () => {
 
 export { Experience };
 
-const getCompanyLogos = (data) => {
+const getCompanyLogos = (data: any) => {
   if (!data?.resume_json?.positions) return [];
-  const positions = data.resume_json.positions.slice(0, 3); // Get top 3 positions
+  const positions: any[] = data.resume_json.positions.slice(0, 3); // Get top 3 positions
   return positions.map((position, i) => (
     <ImageWithFallback
       key={i}
@@ -84,7 +84,7 @@ const Content = () => {
   )
     return (
       <div className='flex flex-col items-center justify-center p-4'>
-        <Briefcase className='mb-2 h-12 w-12 text-gray-500' />
+        <BriefcaseBusiness className='mb-2 h-12 w-12 text-muted-foreground' />
         <p className='text-sm text-gray-600'>No experience found</p>
       </div>
     );
@@ -139,7 +139,7 @@ const Experiences = () => {
   return (
     <>
       <Table>
-        <TableHeader>
+        <TableHeader className='bg-gray-100'>
           <TableRow>
             <TableHead className='w-1/4'>Company</TableHead>
             <TableHead className='w-1/2'>Title</TableHead>
@@ -227,7 +227,10 @@ const timeFormat = (
 };
 
 // New function to calculate duration
-const calculateDuration = (start, end) => {
+const calculateDuration = (
+  start: Record<string, any>,
+  end: Record<string, any>,
+) => {
   if (!start) return '';
 
   const startDate = new Date(start.year || 0, (start.month || 1) - 1);
@@ -256,7 +259,15 @@ const calculateDuration = (start, end) => {
   return duration || 'Less than a month';
 };
 
-const ImageWithFallback = ({ src, alt, fallbackSrc }) => {
+const ImageWithFallback = ({
+  src,
+  alt,
+  fallbackSrc,
+}: {
+  src: string;
+  alt: string;
+  fallbackSrc: string;
+}) => {
   const [imgSrc, setImgSrc] = useState(src);
 
   return (
@@ -266,7 +277,7 @@ const ImageWithFallback = ({ src, alt, fallbackSrc }) => {
       width={24}
       height={24}
       onError={() => setImgSrc(fallbackSrc)}
-      className='rounded-full'
+      className='rounded-full '
     />
   );
 };

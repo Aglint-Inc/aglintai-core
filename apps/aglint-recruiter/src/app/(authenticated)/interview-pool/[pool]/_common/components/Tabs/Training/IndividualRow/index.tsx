@@ -31,16 +31,18 @@ function IndividualRow({
   relation,
   progress,
 }: {
-  relation: ReturnType<typeof useModuleAndUsers>['data']['relations'][0];
+  relation: NonNullable<
+    ReturnType<typeof useModuleAndUsers>['data']
+  >['relations'][0];
   progress: ReturnType<typeof useProgressModuleUsers>['data'];
 }) {
-  const shadowProgress = progress.filter(
+  const shadowProgress = (progress || []).filter(
     (prog) => prog.interview_session_relation.training_type == 'shadow',
   );
   const mutatedShadowProgress = Array.from({
     length: relation.number_of_shadow - shadowProgress.length,
   });
-  const reverseShadowProgress = progress.filter(
+  const reverseShadowProgress = (progress || []).filter(
     (prog) => prog.interview_session_relation.training_type == 'reverse_shadow',
   );
   const mutatedReverseShadowProgress = Array.from({
@@ -66,22 +68,22 @@ function IndividualRow({
     <>
       <tr
         key={relation.id}
-        className='border-b last:border-b-0 hover:bg-gray-50 '
+        className='border-b last:border-b-0 hover:bg-gray-50'
       >
         <td className='p-4'>
           <Link
             href={ROUTES['/user/[user]']({
-              user_id: relation.recruiter_user.user_id,
+              user_id: relation.recruiter_user.user_id ?? '',
             })}
           >
             <div className='flex items-center space-x-3'>
               <Avatar className='h-8 w-8'>
                 <AvatarImage
-                  src={relation.recruiter_user.profile_image}
-                  alt={relation.recruiter_user.first_name}
+                  src={relation.recruiter_user.profile_image ?? ''}
+                  alt={relation.recruiter_user.first_name ?? ''}
                 />
                 <AvatarFallback>
-                  {relation.recruiter_user.first_name.charAt(0)}
+                  {(relation.recruiter_user.first_name ?? '').charAt(0)}
                 </AvatarFallback>
               </Avatar>
               <div>
@@ -97,7 +99,7 @@ function IndividualRow({
                     />
                   )}
                 </div>
-                <div className='text-sm text-gray-500'>
+                <div className='text-sm text-muted-foreground'>
                   {relation.recruiter_user.position}
                 </div>
               </div>
@@ -120,16 +122,16 @@ function IndividualRow({
         </td>
         <td className='p-4'>
           <div className='flex items-center'>
-          <div className='flex flex-row gap-0.5 overflow-hidden rounded-md'>
-            {pills.map((pill, i) => (
-              <HistoryPillShadcn
-                key={i}
-                isShadow={pill.sessionType === 'shadow'}
-                isReverseShadow={pill.sessionType === 'rshadow'}
-                isActive={pill.completed}
-              />
-            ))}
-          </div>
+            <div className='flex flex-row gap-0.5 overflow-hidden rounded-md'>
+              {pills.map((pill, i) => (
+                <HistoryPillShadcn
+                  key={i}
+                  isShadow={pill.sessionType === 'shadow'}
+                  isReverseShadow={pill.sessionType === 'rshadow'}
+                  isActive={pill.completed}
+                />
+              ))}
+            </div>
           </div>
         </td>
         <td className='p-4'>
@@ -170,7 +172,9 @@ const ThreeDot = ({
   user,
 }: {
   isMoveToQualifierVisible: boolean;
-  user: ReturnType<typeof useModuleAndUsers>['data']['relations'][0];
+  user: NonNullable<
+    ReturnType<typeof useModuleAndUsers>['data']
+  >['relations'][0];
 }) => {
   return (
     <Popover>
@@ -183,29 +187,21 @@ const ThreeDot = ({
           isRemoveVisible={true}
           isPauseVisible={!user.pause_json}
           isResumeVisible={Boolean(user.pause_json)}
-          onClickMoveToQualifier={{
-            onClick: () => {
-              setSelUser(user);
-              setIsMovedToQualifiedDialogOpen(true);
-            },
+          onClickMoveToQualifier={() => {
+            setSelUser(user);
+            setIsMovedToQualifiedDialogOpen(true);
           }}
-          onClickRemoveModule={{
-            onClick: () => {
-              setSelUser(user);
-              setIsDeleteMemberDialogOpen(true);
-            },
+          onClickRemoveModule={() => {
+            setSelUser(user);
+            setIsDeleteMemberDialogOpen(true);
           }}
-          onClickResumeInterview={{
-            onClick: () => {
-              setSelUser(user);
-              setIsResumeDialogOpen(true);
-            },
+          onClickResumeInterview={() => {
+            setSelUser(user);
+            setIsResumeDialogOpen(true);
           }}
-          onClickPauseInterview={{
-            onClick: () => {
-              setSelUser(user);
-              setIsPauseDialogOpen(true);
-            },
+          onClickPauseInterview={() => {
+            setSelUser(user);
+            setIsPauseDialogOpen(true);
           }}
         />
       </PopoverContent>

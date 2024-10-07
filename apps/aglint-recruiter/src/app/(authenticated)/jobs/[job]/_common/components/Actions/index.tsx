@@ -1,12 +1,12 @@
-import type { DatabaseTableInsert } from '@aglint/shared-types';
+import type { DatabaseTable } from '@aglint/shared-types';
 import { AlertDialog, AlertDialogContent } from '@components/ui/alert-dialog';
 import { Button } from '@components/ui/button';
+import { UIAlert } from '@components/ui-alert';
 import { X } from 'lucide-react';
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 
-import { UIAlert } from '@/components/Common/UIAlert';
+import { useFlags } from '@/company/hooks/useFlags';
 import { UIButton } from '@/components/Common/UIButton';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import {
   useApplicationsActions,
   useApplicationsMove,
@@ -110,12 +110,12 @@ const MoveCandidateNew = () => {
       title={title}
       slotBody={
         <div className='space-y-4'>
-          <UIAlert
-            color={'error'}
-            iconName={'CircleAlert'}
-            title={`You are about to ${description}`}
-            description={<li>All the schedules will be deleted</li>}
-          />
+          <UIAlert type='info' title={`You are about to:`}>
+            <ul className='list-disc pl-4'>
+              {description}
+              <li>All the schedules will be deleted</li>
+            </ul>
+          </UIAlert>
         </div>
       }
       slotButtons={buttons}
@@ -124,9 +124,9 @@ const MoveCandidateNew = () => {
 };
 
 const MoveCandidateInterview = () => {
-  const { isShowFeature } = useAuthDetails();
+  const { isShowFeature } = useFlags();
   const { mutate, isPending } = useApplicationsMove();
-  const [request, setRequest] = useState<DatabaseTableInsert['request']>(null);
+  const [request, setRequest] = useState<DatabaseTable['request'] | null>(null);
   const [priority, setPriority] = useState<'urgent' | 'standard'>('standard');
   const [note, setNote] = useState<string>('');
   const [selectedSession, setSelectedSession] = useState<SessionType[]>([]);
@@ -139,12 +139,12 @@ const MoveCandidateInterview = () => {
     () => {
       mutate({
         status: 'interview',
-        body: showRequest
+        body: (showRequest
           ? {
-              request: { ...request, note },
+              request: { ...request!, note },
               sessions: selectedSession.map(({ id }) => id),
             }
-          : null,
+          : null)!,
       });
     },
     isPending,
@@ -208,19 +208,15 @@ const MoveCandidateDisqualified = () => {
         title={title}
         slotBody={
           <div className='flex flex-col gap-4'>
-            <UIAlert
-              color={'error'}
-              iconName={'CircleAlert'}
-              title={`You are about to ${description}`}
-              description={
-                <div className='pt-1'>
-                  <li>All the schedules will be cancelled</li>
-                  <li>All the related requests will be closed</li>
-                  <li>You can still view the candidate details</li>
-                  <li>Move to new state to start the process again</li>
-                </div>
-              }
-            />
+            <UIAlert type='error' title={`You are about to:`}>
+              <ul className='pt-1'>
+                ${description}
+                <li>All the schedules will be canceled</li>
+                <li>All the related requests will be closed</li>
+                <li>You can still view the candidate details</li>
+                <li>Move to new state to start the process again</li>
+              </ul>
+            </UIAlert>
           </div>
         }
         slotButtons={buttons}
@@ -232,7 +228,7 @@ const MoveCandidateDisqualified = () => {
 function useMeta(
   onSubmit: () => void,
   isPending = false,
-  buttonText: string = null,
+  buttonText: string | null = null,
 ) {
   const checklist = useApplicationsStore((state) => state.checklist);
   const actionPopup = useApplicationsStore((state) => state.actionPopup);
@@ -262,7 +258,15 @@ function useMeta(
   const action = `Send ${actionPopup} email${count === 1 ? '' : 's'} to ${count} candidate${count === 1 ? '' : 's'}`;
   return { title, description, buttons, action, count };
 }
-const Popup = ({ title, slotBody, slotButtons }) => {
+const Popup = ({
+  title,
+  slotBody,
+  slotButtons,
+}: {
+  title: string;
+  slotBody: ReactNode;
+  slotButtons: ReactNode;
+}) => {
   const { resetActionPopup } = useApplicationsActions();
   return (
     <div className='mx-autojustify-center mx-auto flex w-[500px] items-center'>

@@ -158,7 +158,7 @@ export function FilterOptions({
           ))
         ) : (
           <div className='flex h-[150px] flex-col items-center justify-center'>
-            <p className='text-sm text-gray-500'>
+            <p className='text-sm text-muted-foreground'>
               No {sectionHeading || 'Options'} found
             </p>
           </div>

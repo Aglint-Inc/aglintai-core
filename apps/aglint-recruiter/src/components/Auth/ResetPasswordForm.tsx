@@ -5,11 +5,10 @@ import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import { Eye, EyeOff } from 'lucide-react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
-import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 
 interface ResetFormInputs {
@@ -50,7 +49,7 @@ export default function ResetPasswordComponent() {
         title: 'Success',
         description: 'Password reset successfully.',
       });
-      router.push(ROUTES['/auth/redirect']());
+      router.push('/auth/redirect');
     } else {
       toast({
         variant: 'destructive',
@@ -120,7 +119,9 @@ export default function ResetPasswordComponent() {
               </Button>
             </div>
             {errors.password && (
-              <p className='text-sm text-red-500'>{errors.password.message}</p>
+              <p className='text-sm text-destructive'>
+                {errors.password.message}
+              </p>
             )}
           </div>
           <div className='space-y-2'>
@@ -136,7 +137,7 @@ export default function ResetPasswordComponent() {
               })}
             />
             {errors.confirmPassword && (
-              <p className='text-sm text-red-500'>
+              <p className='text-sm text-destructive'>
                 {errors.confirmPassword.message}
               </p>
             )}

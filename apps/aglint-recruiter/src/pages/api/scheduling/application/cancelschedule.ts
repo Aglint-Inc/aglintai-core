@@ -79,7 +79,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           type: 'declined',
           session_id,
           other_details: {
-            dateRange: null,
+            dateRange: undefined,
             note: notes,
           },
           cancel_user_id: cancel_user_id,
@@ -130,8 +130,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(400).send('Invalid meeting_id or session_id');
     }
   } catch (error) {
-    // console.log('error', error);
-    res.status(400).send(error.message);
+    if (error instanceof Error) {
+      return res.status(400).send(error.message);
+    }
   }
 };
 

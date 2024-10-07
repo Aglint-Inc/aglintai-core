@@ -1,6 +1,6 @@
 import type {
   DatabaseEnums,
-  schedulingSettingType,
+  SchedulingSettingType,
 } from '@aglint/shared-types';
 
 export type InterviewDateRangeType =
@@ -61,7 +61,7 @@ export type ScheduleListType = {
     location: string;
     position: string;
     profile_image: string;
-    scheduling_settings: schedulingSettingType;
+    scheduling_settings: SchedulingSettingType;
     training_type: DatabaseEnums['interviewer_type'];
     is_confirmed: boolean;
     weekly_meetings: {

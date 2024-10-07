@@ -1,14 +1,14 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
-import { deleteRequestWorkflowAction } from '@requests/components/RequestProgress/utils';
+import { deleteRequestWorkflowAction } from '@request/components/RequestProgress/utils';
+import { useRequest } from '@request/hooks';
 import { useRequestAvailabilityDetails } from '@requests/hooks';
+import { useRequests } from '@requests/hooks';
 import React, { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
-import { useRequest } from '@/context/RequestContext';
-import { useRequests } from '@/context/RequestsContext';
 import { supabase } from '@/utils/supabase/client';
 
 import {
@@ -36,13 +36,18 @@ const ScheduleOptions = () => {
   const { handleAsyncUpdateRequest } = useRequests();
   const { candidateAvailabilityId } =
     useConfirmAvailabilitySchedulingFlowStore();
-  const { isFetching } = useRequestAvailabilityDetails({
-    availability_id: candidateAvailabilityId,
-  });
+  const { isFetching } = useRequestAvailabilityDetails(
+    {
+      availability_id: candidateAvailabilityId,
+    },
+    {
+      enabled: !!candidateAvailabilityId,
+    },
+  );
   const addedWorkflow = request_workflow.data.find(
     (w) => w.trigger === 'onRequestSchedule',
   );
-  let scheduleWorkflowAction: DatabaseTable['workflow_action'] = null;
+  let scheduleWorkflowAction: DatabaseTable['workflow_action'] | null = null;
   if (addedWorkflow && addedWorkflow.workflow_action.length > 0) {
     scheduleWorkflowAction = addedWorkflow.workflow_action[0];
   }
@@ -120,13 +125,13 @@ const ScheduleOptions = () => {
         </>
       </ShowCode.When>
       <ShowCode.When
-        isTrue={
+        isTrue={Boolean(
           (!scheduleWorkflowAction && !lastEvent) ||
-          (lastEvent &&
-            (lastEvent.event_type === 'SELF_SCHEDULE_LINK' ||
-              lastEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK') &&
-            lastEvent.status === 'failed')
-        }
+            (lastEvent &&
+              (lastEvent.event_type === 'SELF_SCHEDULE_LINK' ||
+                lastEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK') &&
+              lastEvent.status === 'failed'),
+        )}
       >
         <>
           <UIButton
@@ -134,7 +139,7 @@ const ScheduleOptions = () => {
               if (scheduleWorkflowAction) {
                 await deleteRequestWorkflowAction(scheduleWorkflowAction.id);
                 await deleteRequestProgress(requestDetails.id);
-                await await request_workflow.refetch();
+                await request_workflow.refetch();
               }
               setCandidateAvailabilityDrawerOpen(true);
             }}
@@ -169,19 +174,19 @@ const ScheduleOptions = () => {
         </>
       </ShowCode.When>
       <ShowCode.When
-        isTrue={
+        isTrue={Boolean(
           lastEvent &&
-          lastEvent.event_type === 'CAND_AVAIL_REC' &&
-          (!isActionSetAfterAvailabilityRecieved ||
-            lastEvent.status === 'failed')
-        }
+            lastEvent.event_type === 'CAND_AVAIL_REC' &&
+            (!isActionSetAfterAvailabilityRecieved ||
+              lastEvent.status === 'failed'),
+        )}
       >
         <div className='flex space-x-2'>
           <UIButton
             variant='default'
             size='sm'
             onClick={async () => {
-              handleConfirmSlot(lastEvent.request_id);
+              lastEvent && handleConfirmSlot(lastEvent.request_id);
             }}
             isLoading={isFetching}
           >
@@ -191,7 +196,9 @@ const ScheduleOptions = () => {
             variant='outline'
             size='sm'
             onClick={() => {
-              handleReReq(lastEvent.request_id);
+              if (lastEvent) {
+                handleReReq(lastEvent.request_id);
+              }
             }}
           >
             Re Request Availability

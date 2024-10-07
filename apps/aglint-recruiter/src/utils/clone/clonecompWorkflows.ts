@@ -1,73 +1,79 @@
+import { supabaseWrap } from '@aglint/shared-utils';
 import { v4 } from 'uuid';
 
 import { type SupabaseClientType } from '../supabase/supabaseAdmin';
 
-export const cloneCompWorkflows = async ({
+export const cloneCompWorkflowsForJob = async ({
   job_id,
   company_id,
   supabase,
 }: {
   job_id: string;
-  company_id;
+  company_id: string;
   supabase: SupabaseClientType;
 }) => {
-  const job_trigs = await supabase
-    .from('workflow_job_relation')
-    .select()
-    .eq('job_id', job_id)
-    .throwOnError();
+  const job_trigs = supabaseWrap(
+    await supabase.from('workflow_job_relation').select().eq('job_id', job_id),
+    false,
+  );
 
-  await supabase
-    .from('workflow')
-    .delete()
-    .in(
-      'id',
-      job_trigs.data.map((j) => j.workflow_id),
-    )
-    .throwOnError();
-
-  const workflows = await supabase
-    .from('workflow')
-    .select('*,workflow_action(*)')
-    .eq('recruiter_id', company_id)
-    .eq('workflow_type', 'company')
-    .throwOnError();
-
-  const promises = workflows.data.map(async (w) => {
-    const jobTrigger = await supabase
+  supabaseWrap(
+    await supabase
       .from('workflow')
-      .insert({
-        phase: w.phase,
-        recruiter_id: company_id,
-        trigger: w.trigger,
-        auto_connect: w.auto_connect,
-        interval: w.interval,
-        is_active: w.is_active,
-        title: w.title,
-        workflow_type: 'job',
-      })
-      .select()
-      .single()
-      .throwOnError();
+      .delete()
+      .in(
+        'id',
+        job_trigs.map((j) => j.workflow_id),
+      )
+      .eq('workflow_type', 'job'),
+  );
+
+  const workflows = supabaseWrap(
+    await supabase
+      .from('workflow')
+      .select('*,workflow_action!inner(*)')
+      .eq('recruiter_id', company_id)
+      .eq('workflow_type', 'company'),
+    false,
+  );
+  //
+  if (workflows.length === 0) {
+    console.error('company workflows not found');
+    return;
+  }
+  const promises = workflows.map(async (w) => {
+    const jobTrigger = supabaseWrap(
+      await supabase
+        .from('workflow')
+        .insert({
+          phase: w.phase,
+          recruiter_id: company_id,
+          trigger: w.trigger,
+          auto_connect: w.auto_connect,
+          interval: w.interval,
+          is_active: false,
+          title: w.title,
+          workflow_type: 'job',
+        })
+        .select()
+        .single(),
+    );
     const actions = w.workflow_action.map((a) => {
       return {
         ...a,
         id: v4(),
-        workflow_id: jobTrigger.data.id,
+        workflow_id: jobTrigger.id,
       };
     });
-    delete w.workflow_action;
-    const insertedActions = (
-      await supabase
-        .from('workflow_action')
-        .insert(actions)
-        .throwOnError()
-        .select()
-    ).data;
-    await supabase.from('workflow_job_relation').insert({
-      job_id,
-      workflow_id: jobTrigger.data.id,
-    });
+    const insertedActions = supabaseWrap(
+      await supabase.from('workflow_action').insert(actions).select(),
+    );
+    supabaseWrap(
+      await supabase.from('workflow_job_relation').insert({
+        job_id,
+        workflow_id: jobTrigger.id,
+      }),
+    );
     return insertedActions;
   });
   return await Promise.all(promises);

@@ -81,7 +81,6 @@ export const scheduleInterviewSlot = () => {
           }
         );
 
-        cand_info.candidate_tz.tz_code;
         const req_day_slots = findCurrDayPlan(
           cand_info.all_slots,
           slot_date,
@@ -121,7 +120,6 @@ export const scheduleInterviewSlot = () => {
           },
           filter_id: cand_info.req_payload.filter_json_id,
           agent_type: 'phone_agent',
-          task_id: cand_info.req_payload.task_id,
         };
 
         await axios.post(

@@ -5,10 +5,12 @@ import {
   Anchor,
   Award,
   BookOpen,
-  Briefcase,
+  BriefcaseBusiness,
   TrendingUp,
   Zap,
 } from 'lucide-react';
+
+import { SafeObject } from '@/utils/safeObject';
 
 import { useApplicationMeta } from '../../../hooks/useApplicationMeta';
 
@@ -71,14 +73,20 @@ const getAllBadges = (badgesData: CustomApplicationBadges) => {
     },
     jobStability: { icon: <Anchor className='h-4 w-4' />, text: 'Reliable' },
     leadership: { icon: <Award className='h-4 w-4' />, text: 'Leader' },
-    jobHopping: { icon: <Briefcase className='h-4 w-4' />, text: 'Job Hopper' },
-    positions: { icon: <Briefcase className='h-4 w-4' />, text: 'Experienced' },
+    jobHopping: {
+      icon: <BriefcaseBusiness className='h-4 w-4' />,
+      text: 'Job Hopper',
+    },
+    positions: {
+      icon: <BriefcaseBusiness className='h-4 w-4' />,
+      text: 'Experienced',
+    },
     schools: { icon: <BookOpen className='h-4 w-4' />, text: 'Knowledgeable' },
     skills: { icon: <Zap className='h-4 w-4' />, text: 'Skilled' },
   };
 
   // Filter and collect all badges
-  return Object.entries(badgesData)
+  return SafeObject.entries(badgesData)
     .filter(([key, value]) => value >= BADGE_CONSTANTS[key])
     .map(([key]) => badgeIcons[key]);
 };

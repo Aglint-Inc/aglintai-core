@@ -10,7 +10,7 @@ import { useSelfSchedulingFlowStore } from '../store/store';
 function SelfScheduleSuccess() {
   const [isCopied, setIsCopied] = React.useState(false);
   const { data } = useMeetingList();
-  const allSessions = data;
+  const allSessions = data ?? [];
 
   const application_id = allSessions[0]?.interview_meeting.application_id;
 
@@ -19,11 +19,13 @@ function SelfScheduleSuccess() {
   }));
 
   const handleCopyLink = async () => {
-    setIsCopied(true);
-    navigator.clipboard.writeText(
-      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${application_id}?filter_id=${resSendToCandidate.filter_id}`,
-    );
-    await new Promise((resolve) => setTimeout(resolve, 4000));
+    if (resSendToCandidate) {
+      setIsCopied(true);
+      navigator.clipboard.writeText(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${application_id}?filter_id=${resSendToCandidate.filter_id}`,
+      );
+      await new Promise((resolve) => setTimeout(resolve, 4000));
+    }
   };
 
   return (

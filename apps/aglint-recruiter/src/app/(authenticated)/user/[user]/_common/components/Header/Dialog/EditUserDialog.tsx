@@ -1,5 +1,5 @@
-import { type RecruiterUserType } from '@aglint/shared-types';
-import { type CustomSchedulingSettings } from '@aglint/shared-types/src/db/tables/common.types';
+import { type CustomSchedulingSettingsUser } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
+import { toast } from '@components/hooks/use-toast';
 import { type Dispatch, type SetStateAction, useRef, useState } from 'react';
 import {
   type FormFields,
@@ -9,17 +9,16 @@ import {
   validateString,
 } from 'src/app/_common/components/Profile/uitls';
 
+import { useTenant } from '@/company/hooks';
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { supabase } from '@/utils/supabase/client';
 import type timeZone from '@/utils/timeZone';
-import toast from '@/utils/toast';
 
+import { useUserUpdate } from '../../../hooks/useMemberUpdate';
 import { ProfileForms } from './EditUserDialogUI';
-
 const initialFormValues: FormValues = {
   value: '',
   label: '',
@@ -39,43 +38,45 @@ const initialFormValues: FormValues = {
 export const EditUserDialog = ({
   isOpen,
   setIsOpen,
-  interviewerDetailsRefetch,
 }: {
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
-  interviewerDetailsRefetch: () => void;
 }) => {
-  const { recruiterUser, setRecruiterUser } = useAuthDetails();
-  const [selectedTimeZone, setSelectedTimeZone] = useState(
-    recruiterUser?.scheduling_settings.timeZone || null,
-  );
+  const { recruiter_user } = useTenant();
 
-  const recruUser = recruiterUser as RecruiterUserType;
+  const initialTimeZone = recruiter_user?.scheduling_settings?.timeZone
+    ? recruiter_user.scheduling_settings.timeZone
+    : null;
+
+  const [selectedTimeZone, setSelectedTimeZone] = useState(initialTimeZone);
+  const { mutateAsync } = useUserUpdate();
+
+  const recruUser = recruiter_user;
   const initialProfileFormFields: FormFields = {
     first_name: {
       ...initialFormValues,
-      value: recruiterUser?.first_name ?? '',
+      value: recruiter_user?.first_name ?? '',
       required: true,
       label: 'First Name',
       placeholder: 'Enter your first name.',
     },
     last_name: {
       ...initialFormValues,
-      value: recruiterUser?.last_name ?? '',
+      value: recruiter_user?.last_name ?? '',
       required: true,
       label: 'Last Name',
       placeholder: 'Enter your last name.',
     },
     phone: {
       ...initialFormValues,
-      value: recruiterUser?.phone ?? '',
+      value: recruiter_user?.phone ?? '',
       validation: 'phone',
       label: 'Contact Number',
       required: false,
     },
     linked_in: {
       ...initialFormValues,
-      value: recruiterUser?.linked_in ?? '',
+      value: recruiter_user?.linked_in ?? '',
       validation: 'linkedIn',
       label: 'LinkedIn',
       required: false,
@@ -137,67 +138,53 @@ export const EditUserDialog = ({
 
   async function onUpdateSubmit() {
     try {
-      if (!profileChange && !isImageChanged) {
-        toast.error('No changes.');
-      } else {
-        const { error } = handleValidate(profile);
+      const { error } = handleValidate(profile);
 
-        if (error) return;
-        let profile_image = recruiterUser?.profile_image;
-        setLoading(true);
+      if (error) return;
+      let profile_image = recruiter_user?.profile_image;
+      setLoading(true);
 
-        if (isImageChanged && imageFile.current) {
-          const { data } = await supabase.storage
-            .from('recruiter-user')
-            .upload(`public/${recruiterUser?.user_id}`, imageFile.current, {
-              cacheControl: '3600',
-              upsert: true,
-            });
+      if (isImageChanged && imageFile.current) {
+        const { data } = await supabase.storage
+          .from('recruiter-user')
+          .upload(`public/${recruiter_user?.user_id}`, imageFile.current, {
+            cacheControl: '3600',
+            upsert: true,
+          });
 
-          if (data?.path && imageFile?.current?.size) {
-            profile_image = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/recruiter-user/${data?.path}?t=${new Date().toISOString()}`;
-            setError(false);
-          } else {
-            profile_image = null;
-          }
-          setIsImageChanged(false);
+        if (data?.path && imageFile?.current?.size) {
+          profile_image = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/recruiter-user/${data?.path}?t=${new Date().toISOString()}`;
+          setError(false);
+        } else {
+          profile_image = null;
         }
-
-        const scheduling_settings = {
-          ...recruiterUser?.scheduling_settings,
-          timeZone: selectedTimeZone,
-        } as CustomSchedulingSettings;
-
-        const user_id = recruiterUser?.user_id as string;
-        await supabase
-          .from('recruiter_user')
-          .update({
-            first_name: profile.first_name.value,
-            last_name: profile.last_name.value,
-            phone: profile.phone.value,
-            linked_in: profile.linked_in.value,
-            profile_image,
-            scheduling_settings,
-          })
-          .eq('user_id', user_id);
-
-        // const profile_img = profile_image;
-
-        setRecruiterUser({
-          ...recruiterUser,
-          first_name: profile.first_name.value,
-          last_name: profile.last_name.value,
-          phone: profile.phone.value,
-          linked_in: profile.linked_in.value,
-          scheduling_settings,
-          profile_image,
-        });
-        await interviewerDetailsRefetch();
-        setProfileChange(false);
-        setIsOpen(false);
+        setIsImageChanged(false);
       }
-    } catch (e) {
-      toast.error('Unable to udpate profile. Please contact support');
+
+      const scheduling_settings = {
+        ...recruiter_user?.scheduling_settings,
+        timeZone: selectedTimeZone,
+      } as CustomSchedulingSettingsUser;
+
+      const { user_id } = recruiter_user;
+      const data = {
+        first_name: profile.first_name.value,
+        last_name: profile.last_name.value,
+        phone: profile.phone.value,
+        linked_in: profile.linked_in.value,
+        profile_image,
+        scheduling_settings,
+        user_id,
+      };
+
+      await mutateAsync({ ...data });
+
+      setProfileChange(false);
+      setIsOpen(false);
+
+      toast({ title: 'profile update successfully' });
+    } catch (e: any) {
+      toast({ title: 'profile update failed', description: e.message });
     } finally {
       setLoading(false);
     }
@@ -211,7 +198,7 @@ export const EditUserDialog = ({
       title='Edit Profile'
       onClose={() => {
         setProfile(structuredClone(initialProfileFormFields));
-        setSelectedTimeZone(recruUser.scheduling_settings.timeZone);
+        setSelectedTimeZone(initialTimeZone);
         setIsOpen(false);
       }}
       slotButtons={
@@ -227,6 +214,7 @@ export const EditUserDialog = ({
           </UIButton>
           <UIButton
             variant='default'
+            disabled={!profileChange && !isImageChanged}
             isLoading={Loading}
             onClick={() => {
               if (!Loading) {
@@ -241,7 +229,7 @@ export const EditUserDialog = ({
     >
       <div className='space-y-4'>
         <div className='flex items-center space-x-4'>
-          <div className='max-w-[64px]'>
+          <div className='w-16'>
             <ImageUploadManual
               image={recruUser.profile_image ?? ''}
               size={64}
@@ -254,14 +242,14 @@ export const EditUserDialog = ({
 
           <div>
             <p className='text-sm font-medium'>
-              <span className='text-red-500'>Change profile photo</span>{' '}
+              <span className='text-destructive'>Change profile photo</span>{' '}
               (optional)
             </p>
-            <p className='text-sm text-gray-500'>
+            <p className='text-sm text-muted-foreground'>
               Upload a square profile image (PNG or JPEG). Maximum size: 5 MB.
             </p>
             {isError && (
-              <p className='text-sm text-red-500'>
+              <p className='text-sm text-destructive'>
                 The file you uploaded exceeds the maximum allowed size. Please
                 ensure that the file size is less than 5 MB
               </p>

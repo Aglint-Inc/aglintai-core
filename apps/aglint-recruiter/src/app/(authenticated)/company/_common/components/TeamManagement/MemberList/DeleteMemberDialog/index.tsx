@@ -2,8 +2,8 @@
 /* eslint-disable no-unused-vars */
 import { useState } from 'react';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
+import { UIButton } from '@/common/UIButton';
+import UIDialog from '@/common/UIDialog';
 import { JobCoordinator } from '@/jobs/create/components/form';
 
 function DeleteMemberDialog({
@@ -25,11 +25,11 @@ function DeleteMemberDialog({
 }) {
   // const { status } = useCompanyMembers();
   const [form, setForm] = useState<{
-    values: { interviewTypes: string };
+    values: { interviewTypes: string | undefined };
     error: { interviewTypes: boolean };
   }>({
     values: {
-      interviewTypes: null,
+      interviewTypes: undefined,
     },
     error: {
       interviewTypes: false,
@@ -37,8 +37,9 @@ function DeleteMemberDialog({
   });
   function handelFormUpdate(val: Partial<(typeof form)['values']>) {
     const temp = structuredClone(form);
-    for (const item in val) {
-      if (val[item].length) {
+    for (const tempItem in val) {
+      const item = tempItem as keyof typeof val;
+      if (val[item]?.length) {
         temp.values[item] = val[item];
         temp.error[item] = false;
       } else {
@@ -47,14 +48,16 @@ function DeleteMemberDialog({
     }
     setForm(temp);
   }
-  const isInterviewTypesRequire = [
-    'recruiter',
-    'recruiting_coordinator',
-    'sourcer',
-    'hiring_manager',
-  ].find((item) =>
+  const isInterviewTypesRequire = (
+    [
+      'recruiter',
+      'recruiting_coordinator',
+      'sourcer',
+      'hiring_manager',
+    ] as const
+  ).find((item) =>
     item.replace('_', '').includes(role?.replace(' ', '') || ''),
-  );
+  )!;
   function validateForm() {
     const temp = structuredClone(form);
     let flag = true;
@@ -126,7 +129,6 @@ function DeleteMemberDialog({
             <div className='space-y-1'>
               <p>Reassign current Interview Types to:</p>
               <JobCoordinator
-                // @ts-expect-error
                 name={isInterviewTypesRequire}
                 value={{
                   required: true,
@@ -134,7 +136,7 @@ function DeleteMemberDialog({
                     helper: '',
                     value: form.error.interviewTypes,
                   },
-                  value: form.values.interviewTypes,
+                  value: form.values.interviewTypes!,
                 }}
                 label={false}
                 onChange={(_, val) => handelFormUpdate({ interviewTypes: val })}
@@ -147,20 +149,39 @@ function DeleteMemberDialog({
       <></>
     );
 
-  const onClick = () =>
-    reason === 'delete'
-      ? action
-      : reason === 'cancel_invite'
-        ? action
-        : reason === 'suspend'
-          ? () => {
-              if (validateForm()) {
-                action({
-                  interviewTypes: form.values.interviewTypes,
-                });
-              }
-            }
-          : null;
+  const onClick = () => {
+    switch (reason) {
+      case 'delete':
+      case 'cancel_invite':
+        // @ts-ignore
+        action();
+        break;
+      case 'suspend':
+        if (validateForm()) {
+          action({
+            interviewTypes: form.values.interviewTypes!,
+          });
+        }
+        break;
+    }
+    // reason === 'delete'
+    //   ? action
+    //   : reason === 'cancel_invite'
+    //     ? action
+    //     : reason === 'suspend'
+    //       ? () => {
+    //           console.log(
+    //             'form.values.interviewTypes',
+    //             form.values.interviewTypes,
+    //           );
+    //           if (validateForm()) {
+    //             action({
+    //               interviewTypes: form.values.interviewTypes!,
+    //             });
+    //           }
+    //         }
+    //       : null;
+  };
   return (
     <UIDialog
       open={Boolean(reason)}

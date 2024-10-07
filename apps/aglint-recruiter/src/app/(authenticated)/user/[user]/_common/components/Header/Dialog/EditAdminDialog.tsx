@@ -1,35 +1,26 @@
-import { type employmentTypeEnum } from '@aglint/shared-types';
+import { getFullName } from '@aglint/shared-utils';
+import { toast } from '@components/hooks/use-toast';
 import _ from 'lodash';
 import { useEffect, useRef, useState } from 'react';
-import { type MemberType } from 'src/app/_common/types/memberType';
 
-import { useRolesOptions } from '@/authenticated/hooks/useRolesOptions';
-import axios from '@/client/axios';
+import {
+  useTenant,
+  useTenantMembers,
+  useTenantOfficeLocations,
+  useTenantRoles,
+} from '@/company/hooks';
+import { useTeamMembers } from '@/company/hooks/useTeamMembers';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { type API_setMembersWithRole } from '@/pages/api/setMembersWithRole/type';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { useAllDepartments } from '@/queries/departments';
-import { useAllOfficeLocations } from '@/queries/officeLocations';
+import { type UserAdminUpdateType } from '@/server/api/routers/user/update_admin_user';
 import { supabase } from '@/utils/supabase/client';
-import toast from '@/utils/toast';
 
+import { useAdminUpdate } from '../../../hooks/useAdminUpdate';
+import { useInterviewer } from '../../../hooks/useInterviewer';
 import { Form } from './EditAdminDialogUI';
 
-export type EditAdminFormType = {
-  first_name: string;
-  last_name: string;
-  linked_in: string;
-  location_id: number | null;
-  employment: employmentTypeEnum;
-  position: string;
-  department_id: number | null;
-  role: string;
-  role_id: string;
-  manager_id: string;
-  phone: string;
-  profile_image: string;
-};
 export type EditAdminFormErrorType = {
   first_name: boolean;
   department: boolean;
@@ -42,51 +33,104 @@ export type EditAdminFormErrorType = {
   manager: boolean;
 };
 
+export type Formtype = Omit<UserAdminUpdateType, 'recruiter_id' | 'user_id'>;
+
 const EditAdminDialog = ({
   open,
-  member,
-  refetch,
-  memberList,
   onClose,
 }: {
   open: boolean;
-  refetch: any;
-  member: MemberType;
-  memberList: { id: string; name: string }[];
   onClose: () => void;
 }) => {
-  const { data: roleOptions } = useRolesOptions();
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
+  const { data: roleOptions } = useTenantRoles();
   const { data: departments } = useAllDepartments();
-  const { data: officeLocations } = useAllOfficeLocations();
+  const { data: officeLocations } = useTenantOfficeLocations();
   const [isUpdating, setIsUpdating] = useState(false);
   const imageFile = useRef<File>(null);
+  const { mutateAsync } = useAdminUpdate();
 
   const [isImageChanged, setIsImageChanged] = useState(false);
   const [isProfileChanged, setIsProfileChanged] = useState(false);
 
-  const initForm: EditAdminFormType = {
-    first_name: member.first_name,
-    last_name: member.last_name,
-    phone: member.phone,
-    linked_in: member.linked_in,
-    location_id: member.office_location_id,
-    employment: member.employment,
-    profile_image: member.profile_image,
-    department_id: member.department_id,
-    position: member.position,
-    role: member?.role,
-    role_id: member?.role_id,
-    manager_id: member?.manager_id,
-  };
-  const [form, setForm] = useState<EditAdminFormType>(initForm);
+  const { allMembers } = useTenantMembers();
+  const { activeMembers } = useTeamMembers();
+  const router = useRouterPro();
+  const member = allMembers.find(
+    (mem) => mem.user_id === router?.params?.user,
+  ) as ReturnType<typeof useTenantMembers>['allMembers'][number];
+
+  const { data: interviewerDetail } = useInterviewer();
+
+  const {
+    first_name,
+    last_name,
+    phone,
+    linked_in,
+    office_location_id,
+    employment,
+    profile_image,
+    department_id,
+    position,
+    role_id,
+    manager_id,
+    scheduling_settings,
+    role,
+  } = interviewerDetail;
+
+  const [form, setForm] = useState<Formtype>({
+    first_name,
+    last_name,
+    phone,
+    linked_in,
+    scheduling_settings,
+    office_location_id,
+    employment,
+    profile_image,
+    department_id,
+    position,
+    role_id,
+    manager_id,
+    role,
+  });
+
+  const memberList = activeMembers
+    .map((mem) => ({
+      id: mem.user_id ?? '',
+      name: getFullName(mem?.first_name ?? '', mem?.last_name ?? ''),
+    }))
+    .filter((mem) => mem.id !== recruiter_user.user_id);
+
   useEffect(() => {
-    if (_.isEqual(initForm, form)) {
-      setIsProfileChanged(false);
-    } else {
-      setIsProfileChanged(true);
+    if (interviewerDetail) {
+      const initForm: Formtype = {
+        first_name: interviewerDetail.first_name,
+        last_name: interviewerDetail.last_name ?? '',
+        phone: interviewerDetail?.phone,
+        scheduling_settings,
+        linked_in: interviewerDetail?.linked_in,
+        office_location_id: interviewerDetail?.office_location_id,
+        employment: interviewerDetail?.employment,
+        profile_image: interviewerDetail?.profile_image,
+        department_id: interviewerDetail?.department_id,
+        position: interviewerDetail?.position,
+        role_id: interviewerDetail?.role_id,
+        manager_id: interviewerDetail?.manager_id,
+        role: interviewerDetail?.role,
+      };
+      if (_.isEqual(initForm, form)) {
+        setIsProfileChanged(false);
+      } else {
+        setIsProfileChanged(true);
+      }
     }
   }, [form]);
+
+  useEffect(() => {
+    if (member && interviewerDetail) {
+      setForm(initForm);
+    }
+  }, []);
 
   const [formError, setFormError] = useState<EditAdminFormErrorType>({
     first_name: false,
@@ -103,6 +147,24 @@ const EditAdminDialog = ({
   useEffect(() => {
     if (member?.user_id) setForm(initForm);
   }, [member?.user_id]);
+
+  if (!member || !interviewerDetail) return <>Error </>;
+
+  const initForm: Formtype = {
+    first_name: interviewerDetail.first_name,
+    last_name: interviewerDetail.last_name ?? '',
+    phone: interviewerDetail?.phone,
+    scheduling_settings,
+    linked_in: interviewerDetail?.linked_in,
+    office_location_id: interviewerDetail?.office_location_id,
+    employment: interviewerDetail?.employment,
+    profile_image: interviewerDetail?.profile_image,
+    department_id: interviewerDetail?.department_id,
+    position: interviewerDetail?.position,
+    role_id: interviewerDetail?.role_id,
+    manager_id: interviewerDetail?.manager_id,
+    role: interviewerDetail?.role,
+  };
 
   const checkValidation = () => {
     const temp = { ...formError };
@@ -138,36 +200,37 @@ const EditAdminDialog = ({
   };
 
   function permissionCheck() {
-    if (recruiterUser?.role === 'admin') {
+    if (recruiter_user?.role === 'admin') {
       if (
-        recruiterUser?.user_id === member.user_id ||
-        form?.role !== 'admin' ||
-        recruiterUser?.user_id === member.created_by
+        recruiter_user?.user_id === member.user_id ||
+        form.role !== 'admin' ||
+        recruiter_user?.user_id === member.created_by
       ) {
         return true;
       } else if (
-        form?.role === 'admin' &&
-        recruiterUser?.created_by === member.user_id
+        form.role === 'admin' &&
+        recruiter_user?.created_by === member.user_id
       ) {
-        toast.error('Permission Denied');
+        toast({ title: 'Permission Denied' });
 
         return false;
       } else if (
-        form?.role === 'admin' &&
-        recruiterUser?.user_id !== member.created_by
+        form.role === 'admin' &&
+        recruiter_user?.user_id !== member.created_by
       ) {
-        toast.error('Permission Denied');
-        // toast.error('You cannot edit another admin detail');
+        toast({ title: 'Permission Denied' });
         return false;
       }
     }
-    toast.error('Permission Denied');
-    // toast.error('Admin only edit Team member details');
+    toast({ title: 'Permission Denied' });
     return false;
   }
 
   const updateHandle = async () => {
     try {
+      if (recruiter_user?.role !== 'admin')
+        return toast({ title: 'Permission Denied' });
+
       setIsUpdating(true);
 
       let profile_image: string | null = member.profile_image;
@@ -188,31 +251,34 @@ const EditAdminDialog = ({
         setIsImageChanged(false);
       }
 
-      const data = {
+      const data: UserAdminUpdateType = {
         first_name: form?.first_name,
         last_name: form?.last_name,
         linked_in: form?.linked_in,
-        employment: form?.employment,
-        profile_image: profile_image,
+        office_location_id: form?.office_location_id,
+        employment: form?.employment as 'fulltime' | 'parttime' | 'contractor',
         position: form?.position,
+        department_id: form?.department_id,
         role_id: form?.role_id,
         phone: form?.phone,
         manager_id: form?.manager_id,
-        department_id: form?.department_id,
-        office_location_id: form?.location_id,
         user_id: member.user_id,
+        scheduling_settings: member.scheduling_settings,
+        profile_image: profile_image,
+        recruiter_id: recruiter_user.recruiter_id,
       };
-      await axios
-        .call<API_setMembersWithRole>('POST', '/api/setMembersWithRole', {
-          data,
-        })
-        .then((res) => res.data);
-      await refetch();
-      const profile_pic = profile_image as string;
+
+      await mutateAsync({ ...data });
+
+      const profile_pic = profile_image as string | null;
       setForm({ ...form, profile_image: profile_pic });
       onClose();
-    } catch (e) {
-      console.error(e);
+    } catch (e: any) {
+      toast({
+        title: 'Profile update Failed',
+        description: e.message,
+        variant: 'destructive',
+      });
     } finally {
       setIsUpdating(false);
     }
@@ -238,7 +304,7 @@ const EditAdminDialog = ({
               }
             }}
             disabled={
-              recruiterUser?.role !== 'admin' ||
+              recruiter_user?.role !== 'admin' ||
               isUpdating ||
               (!isProfileChanged && !isImageChanged)
             }
@@ -257,7 +323,7 @@ const EditAdminDialog = ({
           formError={formError}
           officeLocations={officeLocations}
           member={member}
-          recruiterUser={recruiterUser}
+          recruiterUser={recruiter_user}
           departments={departments}
           roleOptions={roleOptions}
           memberList={memberList}

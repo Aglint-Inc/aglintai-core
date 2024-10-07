@@ -6,13 +6,15 @@ import { Switch } from '@components/ui/switch';
 import { CirclePlus, Info } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { type useRoleAndPermissionsHook } from '@/company/hooks/useRoleAndPermissionsHook';
-import UISectionCard from '@/components/Common/UISectionCard';
+import UISectionCard from '@/common/UISectionCard';
+import { useTenantMembers } from '@/company/hooks';
+import type {
+  useRoleData,
+  useRoleDataSetter,
+} from '@/company/hooks/useRoleAndPermissionsHook';
 import { allPermissions } from '@/constant/role_and_permissions';
 import { useRolesAndPermissions as useRolesAndPermissionsContext } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useSearchQuery } from '@/hooks/useSearchQuery';
-import { type GetRoleAndPermissionsAPI } from '@/pages/api/getRoleAndPermissions/type';
-import { useAllMembers } from '@/queries/members';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import RoleEditDialog from './RoleEditDialog';
@@ -25,14 +27,12 @@ function RoleDetails({
   AllRoles,
   updateRoles,
 }: {
-  role: GetRoleAndPermissionsAPI['response']['rolesAndPermissions'][string] & {
-    name: string;
-  };
+  role: ReturnType<typeof useRoleData>['role'];
   back: () => void;
   roleDetails: {
     [key: string]: {
       description: string;
-      permissions: (typeof role)['permissions'];
+      permissions: NonNullable<typeof role>['permissions'];
     };
   };
   AllRoles: {
@@ -43,19 +43,14 @@ function RoleDetails({
   }[];
   updateRoles: (
     // eslint-disable-next-line no-unused-vars
-    x: Parameters<
-      ReturnType<typeof useRoleAndPermissionsHook>['handelUpdateRole']
-    >[0],
+    x: Parameters<ReturnType<typeof useRoleDataSetter>['handelUpdateRole']>[0],
   ) => void;
 }) {
   const { checkPermissions } = useRolesAndPermissionsContext();
   const { queryParams } = useSearchQuery<{ add: boolean }>();
 
   const [editUser, setEditUser] = useState(false);
-  const { members } = useAllMembers();
-  const activePermissionCount = role.permissions.filter(
-    (item) => item.isActive && allPermissions.includes(item.name),
-  ).length;
+  const { members } = useTenantMembers();
   const editDisabled = !checkPermissions(['manage_roles']);
   useEffect(() => {
     if (queryParams?.add) {
@@ -63,6 +58,10 @@ function RoleDetails({
     }
   }, [queryParams?.add]);
   const { ifAllowed } = useRolesAndPermissionsContext();
+  if (!role) return;
+  const activePermissionCount = role.permissions.filter(
+    (item) => item.isActive && item.name && allPermissions.includes(item.name),
+  ).length;
   const roleUsers = members.filter((mem) =>
     role.assignedTo.includes(mem.user_id),
   );
@@ -93,7 +92,7 @@ function RoleDetails({
       </div>
 
       {role.name === 'admin' && (
-        <Alert className='mb-6'>
+        <Alert variant='info'>
           <Info size={16} />
           <AlertDescription>
             You cannot edit the primary admin role permissions.
@@ -125,7 +124,7 @@ function RoleDetails({
                             {permission.title}
                           </span>
                           {permission.description && (
-                            <span className='text-sm text-gray-500'>
+                            <span className='text-sm text-muted-foreground'>
                               {permission.description}
                             </span>
                           )}
@@ -135,8 +134,8 @@ function RoleDetails({
                           disabled={editDisabled || !role.isEditable}
                           onCheckedChange={(checked) => {
                             const data = {
-                              add: null,
-                              delete: null,
+                              add: null as number | null,
+                              delete: null as string | null,
                               role_id: role.id,
                             };
 

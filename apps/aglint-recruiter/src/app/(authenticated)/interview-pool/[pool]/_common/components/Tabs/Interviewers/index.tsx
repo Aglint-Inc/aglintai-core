@@ -1,6 +1,12 @@
 import { type PauseJson } from '@aglint/shared-types';
+import { EmptyState } from '@components/empty-state';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Card, CardContent } from '@components/ui/card';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@components/ui/popover';
 import {
   Table,
   TableBody,
@@ -9,27 +15,16 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@radix-ui/react-popover';
-import { MoreVertical, User } from 'lucide-react';
-import { Pause, Play, Trash2 } from 'lucide-react';
+import { MoreVertical, Pause, Play, Plus, Trash2, User } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
 import { getPauseMemberText } from '@/authenticated/utils';
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import ROUTES from '@/utils/routing/routes';
 
-import AddMemberDialog from '../../../dialogs/AddMemberDialog';
-import DeleteMemberDialog from '../../../dialogs/DeleteMemberDialog';
-import PauseDialog from '../../../dialogs/PauseDialog';
-import ResumeMemberDialog from '../../../dialogs/ResumeMemberDialog';
 import { useModuleAndUsers } from '../../../hooks/useModuleAndUsers';
 import {
   setIsAddMemberDialogOpen,
@@ -48,12 +43,14 @@ function Interviewers() {
 
   const filtererdUsers: {
     name: string;
-    image: string;
-    role: string;
+    image: string | null;
+    role: string | null;
     today: string;
     week: string;
     load: number;
-    rel: ReturnType<typeof useModuleAndUsers>['data']['relations'][0];
+    rel: NonNullable<
+      ReturnType<typeof useModuleAndUsers>['data']
+    >['relations'][0];
   }[] = allUsers
     .filter(
       (rel) =>
@@ -73,14 +70,10 @@ function Interviewers() {
 
   return (
     <>
-      <DeleteMemberDialog />
-      <AddMemberDialog />
-      <PauseDialog />
-      <ResumeMemberDialog />
       <div className='mb-4 flex justify-between'>
         <UITextField
           placeholder='Search interviewers...'
-          className='w-64 bg-white '
+          className='w-64 bg-white'
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -98,7 +91,7 @@ function Interviewers() {
         <CardContent className='p-0'>
           <Table className='overflow-hidden'>
             <TableHeader>
-              <TableRow className="border-b-gray-200" >
+              <TableRow className='border-b-gray-200'>
                 <TableHead className='w-4/12'>Name</TableHead>
                 <TableHead className='w-2/12'>Today</TableHead>
                 <TableHead className='w-2/12'>Week</TableHead>
@@ -110,7 +103,24 @@ function Interviewers() {
               {filtererdUsers.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={5} className='text-center'>
-                    <GlobalEmpty iconSlot={<User strokeWidth={1.5} className='mb-2 h-10 w-10 text-muted-foreground'/>} text={'No interviewers found'} height='250px'/>
+                    <EmptyState
+                      variant='inline'
+                      icon={User}
+                      description='No interviewers found'
+                      primarySlot={
+                        <UIButton
+                          variant='outline'
+                          onClick={() => {
+                            setIsAddMemberDialogOpen(true);
+                            setTrainingStatus('qualified');
+                          }}
+                          size='sm'
+                        >
+                          <Plus className='mr-2 h-4 w-4' />
+                          Add Interviewer now
+                        </UIButton>
+                      }
+                    />
                   </TableCell>
                 </TableRow>
               ) : (
@@ -121,14 +131,18 @@ function Interviewers() {
                   >
                     <TableCell className='w-4/12'>
                       <Link
-                        href={ROUTES['/user/[user]']({
-                          user_id: interviewer.rel.recruiter_user.user_id,
-                        })}
+                        href={
+                          interviewer.rel.recruiter_user.user_id
+                            ? ROUTES['/user/[user]']({
+                                user_id: interviewer.rel.recruiter_user.user_id,
+                              })
+                            : ''
+                        }
                       >
                         <div className='flex items-center space-x-3'>
                           <Avatar className='h-8 w-8'>
                             <AvatarImage
-                              src={interviewer.image}
+                              src={interviewer.image ?? ''}
                               alt={interviewer.name}
                             />
                             <AvatarFallback>
@@ -148,7 +162,7 @@ function Interviewers() {
                                 />
                               )}
                             </div>
-                            <div className='text-sm text-gray-500'>
+                            <div className='text-sm text-muted-foreground'>
                               {interviewer.role}
                             </div>
                           </div>
@@ -222,44 +236,6 @@ function Interviewers() {
                           </div>
                         </PopoverContent>
                       </Popover>
-                      {/* <div className='invisible flex space-x-2 group-hover:visible'>
-                        <UIButton
-                          variant='destructive'
-                          size='sm'
-                          onClick={() => {
-                            setSelUser(interviewer.rel);
-                            setIsDeleteMemberDialogOpen(true);
-                          }}
-                        >
-                          <Trash2 className='mr-2 h-4 w-4' />
-                          Remove
-                        </UIButton>
-                        {interviewer.rel.pause_json ? (
-                          <UIButton
-                            variant='ghost'
-                            size='sm'
-                            onClick={() => {
-                              setSelUser(interviewer.rel);
-                              setIsResumeDialogOpen(true);
-                            }}
-                          >
-                            <Play className='mr-2 h-4 w-4' />
-                            Resume
-                          </UIButton>
-                        ) : (
-                          <UIButton
-                            variant='ghost'
-                            size='sm'
-                            onClick={() => {
-                              setSelUser(interviewer.rel);
-                              setIsPauseDialogOpen(true);
-                            }}
-                          >
-                            <Pause className='mr-2 h-4 w-4' />
-                            Pause
-                          </UIButton>
-                        )}
-                      </div> */}
                     </TableCell>
                   </TableRow>
                 ))

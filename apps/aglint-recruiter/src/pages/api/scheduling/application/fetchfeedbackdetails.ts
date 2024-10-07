@@ -1,21 +1,25 @@
+import { type NextApiRequest, type NextApiResponse } from 'next';
+
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-const getInterviewersRelations = async (session_ids) => {
+export const getInterviewersRelationsApi = async (session_ids: string[]) => {
   const supabaseAdmin = getSupabaseServer();
-
-  const { data, error } = await supabaseAdmin
-    .from('interview_session_relation')
-    .select(
-      'session_id, feedback, interview_module_relation(id,user_id,recruiter_user(user_id,email,first_name,last_name,profile_image,position))',
-    )
-    .eq('is_confirmed', true)
-    .in('session_id', session_ids);
-
-  if (error) throw new Error(error.message);
-  return data;
+  return (
+    await supabaseAdmin
+      .from('interview_session_relation')
+      .select(
+        'session_id, feedback, interview_module_relation(id,user_id,recruiter_user(user_id,email,first_name,last_name,profile_image,position))',
+      )
+      .eq('is_confirmed', true)
+      .in('session_id', session_ids)
+      .throwOnError()
+  ).data!;
 };
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -29,9 +33,9 @@ export default async function handler(req, res) {
   }
 
   try {
-    const data = await getInterviewersRelations(session_ids);
+    const data = await getInterviewersRelationsApi(session_ids);
     res.status(200).json(data);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: (error as Error).message });
   }
 }

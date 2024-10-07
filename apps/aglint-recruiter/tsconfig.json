@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "ES2023",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -19,6 +19,10 @@
       "@/definitions/*": ["./src/definitions/*"],
       "@/api/*": ["./src/app/api/*"],
       "@/authenticated/*": ["./src/app/(authenticated)/_common/*"],
+      "@/common/*": [
+        "./src/app/_common/components/*",
+        "./src/components/Common/*"
+      ],
       "@/company/*": ["./src/app/(authenticated)/company/_common/*"],
       "@/candidate/authenticated/*": [
         "./src/app/(public)/candidate/(authenticated)/[application_id]/_common/*"
@@ -91,8 +95,8 @@
         "name": "next"
       }
     ],
-    "strict": false,
-    "strictNullChecks": false
+    "strict": true,
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",

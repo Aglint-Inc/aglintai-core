@@ -6,7 +6,7 @@ type usersToUpdate = {
   user_id: string;
 };
 
-export async function POST(req) {
+export async function POST(req: Request) {
   const supabaseAdmin = getSupabaseServer();
   const {
     emailAuthData,
@@ -31,7 +31,7 @@ export async function POST(req) {
       { message: 'successfully update' },
       { status: 200 },
     );
-  } catch (e) {
+  } catch (e: any) {
     return NextResponse.json({ message: e.message }, { status: 400 });
   }
 }

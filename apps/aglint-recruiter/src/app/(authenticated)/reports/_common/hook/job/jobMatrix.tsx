@@ -1,22 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 
 import { useAnalyticsContext } from '../../context/AnalyticsContext/AnalyticsContextProvider';
 
 export function useJobLocations() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
   const [view, setView] = useState<'city' | 'state' | 'country'>('city');
   const { data, isFetching, isError } =
     api.analytics.job.location_count.useQuery(
       {
         recruiter_id: recruiter.id,
-        locations: filters.location && [filters.location],
-        departments: filters.department && [filters.department],
+        locations: filters.location ? [filters.location] : undefined,
+        departments: filters.department ? [filters.department] : undefined,
         data_range: filters.dateRange,
       },
       {
@@ -65,15 +65,15 @@ export function useJobLocations() {
 }
 
 export function useCandidateExp() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
 
   const { data, isFetching, isError } =
     api.analytics.candidate.candidates_exp.useQuery(
       {
         recruiter_id: recruiter.id,
-        locations: filters.location && [filters.location],
-        departments: filters.department && [filters.department],
+        locations: filters.location ? [filters.location] : undefined,
+        departments: filters.department ? [filters.department] : undefined,
         data_range: filters.dateRange,
       },
       {
@@ -126,28 +126,28 @@ export function useCandidateExp() {
 }
 
 export function useCandidateSkills() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
   const [view, setView] = useState<'Top skills' | 'JD Skills'>('Top skills');
   const { data: skills } = useQuery({
     queryKey: ['job', filters.job, 'skills'],
     queryFn: async () =>
-      (
+      ((
         await supabase
           .from('public_jobs')
           .select('jd_json->skills')
-          .eq('id', filters.job)
+          .eq('id', filters.job!)
           .single()
           .throwOnError()
-      ).data.skills as string[],
+      )?.data?.skills || []) as string[],
     enabled: !!filters.job,
   });
   const { data, isFetching, isError } =
     api.analytics.candidate.candidates_skills.useQuery(
       {
         recruiter_id: recruiter.id,
-        locations: filters.location && [filters.location],
-        departments: filters.department && [filters.department],
+        locations: filters.location ? [filters.location] : undefined,
+        departments: filters.department ? [filters.department] : undefined,
         data_range: filters.dateRange,
       },
       {

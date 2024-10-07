@@ -19,11 +19,11 @@ const List = ({
     applications,
   } = useApplications();
 
-  const parentRef = useRef();
+  const parentRef = useRef<HTMLDivElement | null>(null);
 
   const rowVirtualizer = useVirtualizer({
     count: hasNextPage ? applications.length + 1 : applications.length,
-    getScrollElement: () => parentRef.current,
+    getScrollElement: () => parentRef.current!,
     estimateSize: () => 68,
     overscan: 5,
   });
@@ -55,8 +55,8 @@ const List = ({
   return (
     <div>
       {header}
-      <div ref={parentRef} className='h-[calc(100vh-350px)]'>
-        <ScrollArea className='w-full'>
+      <div ref={parentRef}>
+        <ScrollArea className='h-[calc(100vh-260px)] w-full'>
           <div
             className='relative w-full'
             style={{

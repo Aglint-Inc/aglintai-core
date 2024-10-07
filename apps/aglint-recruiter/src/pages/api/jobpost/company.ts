@@ -54,6 +54,6 @@ const getJob = async (rec_id: string) =>
       .eq('id', rec_id)
       .single()
       .throwOnError()
-  ).data;
+  ).data!;
 
 export type CompanyPostAPI = Awaited<ReturnType<typeof getResponse>>;

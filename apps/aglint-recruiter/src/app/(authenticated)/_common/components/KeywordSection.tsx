@@ -1,5 +1,6 @@
+import { EmptyState } from '@components/empty-state';
 import { Button } from '@components/ui/button';
-import { Plus } from 'lucide-react';
+import { Plus, Text } from 'lucide-react';
 import React from 'react';
 
 import AddChip from '@/components/Common/AddChip';
@@ -14,7 +15,7 @@ const KeywordSection: React.FC<KeywordSectionProps> = ({
   keywords,
   setKeywords,
 }) => {
-  const handleAdd = ({ name }) => {
+  const handleAdd = ({ name }: { name: string }) => {
     const newKeywords = String(name).split(',');
     newKeywords.forEach((item) => {
       const trimmedItem = item.trim();
@@ -28,11 +29,11 @@ const KeywordSection: React.FC<KeywordSectionProps> = ({
     });
   };
 
-  const handleDelete = (itemToDelete) => {
+  const handleDelete = (itemToDelete: string) => {
     setKeywords((prev) => prev.filter((item) => item !== itemToDelete));
   };
 
-  return (
+  return keywords?.length > 0 ? (
     <AddChip
       options={keywords.map((item) => ({ name: item, id: item }))}
       suggestionsList={[]}
@@ -47,6 +48,29 @@ const KeywordSection: React.FC<KeywordSectionProps> = ({
       handleRemoveKeyword={({ name }) => {
         handleDelete(name);
       }}
+    />
+  ) : (
+    <EmptyState
+      variant='inline'
+      icon={Text}
+      description='No keywords added yet. Add now.'
+      primarySlot={
+        <AddChip
+          options={keywords.map((item) => ({ name: item, id: item }))}
+          suggestionsList={[]}
+          handleAddDepartment={handleAdd}
+          placeholder='Enter new value...'
+          btn={
+            <Button size='sm' variant='outline'>
+              <Plus className='mr-2 h-4 w-4' />
+              Add keyword
+            </Button>
+          }
+          handleRemoveKeyword={({ name }) => {
+            handleDelete(name);
+          }}
+        />
+      }
     />
   );
 };

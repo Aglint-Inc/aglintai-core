@@ -3,7 +3,6 @@ import { RotateCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import SearchField from '../SearchField/SearchField';
-import DateRangeSelector from './DateRangeSelector';
 import { Filters, type FiltersTypes } from './filters';
 import SortComponent, { type sortComponentType } from './SortComponent';
 
@@ -13,7 +12,6 @@ export default function FilterHeader({
   filters,
   isResetAll,
   sort,
-  dateRangeSelector,
   showFiltersByDefault,
   setShowFilters = (x) => {
     x;
@@ -79,9 +77,6 @@ export default function FilterHeader({
                 showFilters={showFiltersByDefault}
                 setShowFilters={setShowFilters}
               />
-              {!!dateRangeSelector && (
-                <DateRangeSelector {...dateRangeSelector} />
-              )}
               {isResetAll && isFiltersActive && (
                 <Button
                   variant='ghost'
@@ -116,11 +111,4 @@ type FilterHeaderType = {
   setShowFilters?: (x: string[]) => void;
   sort?: sortComponentType;
   isResetAll?: boolean;
-  dateRangeSelector?: {
-    name: string;
-    values: string[];
-    // eslint-disable-next-line no-unused-vars
-    setValue: (x: any) => void;
-    disablePast?: boolean;
-  };
 };

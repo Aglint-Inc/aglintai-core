@@ -1,6 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import FilterHeader from 'aglint-recruiter/src/components/Common/FilterHeader';
-import { Briefcase } from 'lucide-react';
+import { BriefcaseBusiness } from 'lucide-react';
 import { memo, useMemo } from 'react';
 
 import { UIBadge } from '@/components/Common/UIBadge';
@@ -35,7 +35,8 @@ const Filters = memo(() => {
         icon: <FilterIcon filter={key as FilterIconProps['filter']} />,
         setValue: (newValue) =>
           setFilters({ [key]: structuredClone(newValue) }),
-        options: options[key] ?? [],
+        options: (options?.[key as keyof typeof options] ??
+          []) as unknown as string[],
       })),
     [filters],
   );
@@ -46,7 +47,7 @@ const Filters = memo(() => {
         search={{
           value: search,
           setValue: (newValue) => setFilters({ search: newValue }),
-          placeholder: 'Search for a workflow',
+          placeholder: 'Search for an automation',
         }}
       />
     ),
@@ -64,7 +65,7 @@ type FilterIconProps = {
 const FilterIcon = ({ filter }: FilterIconProps) => {
   switch (filter) {
     case 'job':
-      return <Briefcase size={12} />;
+      return <BriefcaseBusiness size={12} />;
     case 'tags':
       return <></>;
   }
@@ -113,27 +114,33 @@ export const getFilteredWorkflows = (
       if (!acc) return acc;
       switch (key as keyof typeof filters) {
         case 'search':
-          return title.toLowerCase().includes((value as string).toLowerCase());
+          return title!.toLowerCase().includes((value as string).toLowerCase());
         case 'job':
           return (
             value.length === 0 ||
-            !!jobs.reduce((acc, curr) => {
-              if ((value as string[]).includes(curr.id)) acc.push(curr);
-              return acc;
-            }, []).length
+            !!jobs.reduce(
+              (acc, curr) => {
+                if ((value as string[]).includes(curr.id!)) acc.push(curr);
+                return acc;
+              },
+              [] as typeof jobs,
+            ).length
           );
         case 'tags':
           return (
             value.length === 0 ||
-            !!tags.reduce((acc, curr) => {
-              if (
-                (value as (typeof filters)['tags']).find((tag) =>
-                  curr.includes(tag),
+            !!tags.reduce(
+              (acc, curr) => {
+                if (
+                  (value as (typeof filters)['tags']).find((tag) =>
+                    curr.includes(tag),
+                  )
                 )
-              )
-                acc.push(curr);
-              return acc;
-            }, []).length
+                  acc.push(curr);
+                return acc;
+              },
+              [] as typeof tags,
+            ).length
           );
       }
     }, true);

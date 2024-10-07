@@ -118,6 +118,11 @@ const BadgeContent = ({
   isSoftConflict,
   isOutsideWorkHours,
   textCount,
+}: {
+  isHardConflict: boolean;
+  isSoftConflict: boolean;
+  isOutsideWorkHours: boolean;
+  textCount: number | string;
 }) => {
   if (isHardConflict) {
     return (

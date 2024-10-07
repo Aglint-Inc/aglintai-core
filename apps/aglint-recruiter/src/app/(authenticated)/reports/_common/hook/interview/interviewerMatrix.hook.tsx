@@ -1,17 +1,21 @@
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { api } from '@/trpc/client';
 
 import { useAnalyticsContext } from '../../context/AnalyticsContext/AnalyticsContextProvider';
 
 export function useInterviewerLeaderboard() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
   const { data, isFetching } = api.analytics.interviewer_leaderboard.useQuery(
     {
       recruiter_id: recruiter.id,
       job_id: filters.job,
-      locations: filters.location && [filters.location],
-      departments: filters.department && [filters.department],
+      locations: Number.isInteger(filters.location)
+        ? [filters.location!]
+        : undefined,
+      departments: Number.isInteger(filters.department)
+        ? [filters.department!]
+        : undefined,
       data_range: filters.dateRange,
     },
     {
@@ -32,7 +36,7 @@ export function useInterviewerLeaderboard() {
   };
 }
 export function useInterviewer_upcoming() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
   const { data: interviewers, isFetching: iFInterviewers } =
     useInterviewerLeaderboard();
@@ -40,8 +44,12 @@ export function useInterviewer_upcoming() {
     {
       recruiter_id: recruiter.id,
       job_id: filters.job,
-      locations: filters.location && [filters.location],
-      departments: filters.department && [filters.department],
+      locations: Number.isInteger(filters.location)
+        ? [filters.location!]
+        : undefined,
+      departments: Number.isInteger(filters.department)
+        ? [filters.department!]
+        : undefined,
       data_range: filters.dateRange,
     },
     {
@@ -51,7 +59,7 @@ export function useInterviewer_upcoming() {
   const temp = [...(interviewers || []), ...(data || [])].reduce(
     (acc, curr) => {
       const temp = acc[curr.user_id] || ({} as (typeof acc)[string]);
-      acc[curr.user_id] = {
+      const base = {
         accepted: 0,
         feedback: 0,
         rejected: 0,
@@ -63,13 +71,17 @@ export function useInterviewer_upcoming() {
         average_weekly_count: 0,
         average_weekly_duration: 0,
         duration: 0,
+      };
+      acc[curr.user_id] = {
+        ...base,
         ...temp,
         ...curr,
       };
       return acc;
     },
     {} as {
-      [key: string]: (typeof interviewers)[number] & (typeof data)[number];
+      [key: string]: (typeof interviewers)[number] &
+        NonNullable<typeof data>[number];
     },
   );
   return {
@@ -80,23 +92,28 @@ export function useInterviewer_upcoming() {
 }
 
 export function useInterviewerDeclines() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
-  const { data, isFetching, isError } = api.analytics.interviewer_rejections.useQuery(
-    {
-      recruiter_id: recruiter.id,
-      job_id: filters.job,
-      locations: filters.location && [filters.location],
-      departments: filters.department && [filters.department],
-      data_range: filters.dateRange,
-    },
-    {
-      enabled: !!recruiter.id,
-    },
-  );
+  const { data, isFetching, isError } =
+    api.analytics.interviewer_rejections.useQuery(
+      {
+        recruiter_id: recruiter.id,
+        job_id: filters.job,
+        locations: Number.isInteger(filters.location)
+          ? [filters.location!]
+          : undefined,
+        departments: Number.isInteger(filters.department)
+          ? [filters.department!]
+          : undefined,
+        data_range: filters.dateRange,
+      },
+      {
+        enabled: !!recruiter.id,
+      },
+    );
   return {
     data,
     isFetching: isFetching,
-    isError
+    isError,
   };
 }

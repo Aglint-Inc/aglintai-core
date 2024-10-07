@@ -33,14 +33,14 @@ export default async function handler(
     // end here
     return res.status(200).json({ success: true });
   } catch (err) {
-    return res.status(500).send(err.message);
+    return res.status(500).send((err as Error).message);
   }
 }
 
 // eslint-disable-next-line no-unused-vars
 async function seedRolesAndPermissions(rec_id: string) {
-  const tempRoles = await createRoles(rec_id);
-  const tempPermissions = await getPermissions();
+  const tempRoles = (await createRoles(rec_id)) || [];
+  const tempPermissions = (await getPermissions()) || [];
   const tempRolePermissions: {
     permission_id: number;
     recruiter_id: string;
@@ -48,7 +48,9 @@ async function seedRolesAndPermissions(rec_id: string) {
   }[] = [];
 
   tempRoles.forEach((role) => {
-    defaultRolePermissionRelation[role.name].forEach((permission) => {
+    defaultRolePermissionRelation[
+      role.name as keyof typeof defaultRolePermissionRelation
+    ].forEach((permission) => {
       const permission_id = tempPermissions[String(permission)];
       if (permission_id) {
         tempRolePermissions.push({
@@ -81,9 +83,9 @@ async function createRoles(rec_id: string) {
 async function getPermissions() {
   const supabaseAdmin = getSupabaseServer();
 
-  const temp_p = (
-    await supabaseAdmin.from('permissions').select('id,name').throwOnError()
-  ).data;
+  const temp_p =
+    (await supabaseAdmin.from('permissions').select('id,name').throwOnError())
+      .data || [];
   return temp_p.reduce(
     (acc, crr) => {
       acc[crr.name] = crr.id;
@@ -123,7 +125,7 @@ const removeAllTemps = async (recruiter_id: string) => {
   );
 };
 
-const seedCompTemplate = async (recruiter_id) => {
+const seedCompTemplate = async (recruiter_id: string) => {
   const supabaseAdmin = getSupabaseServer();
 
   const all_templates = supabaseWrap(
@@ -158,7 +160,7 @@ const seedWorkFlow = async (
           interval: work_flow_act.workflow.interval,
           title: work_flow_act.workflow.title,
           recruiter_id,
-          is_active: true,
+          is_active: false,
           workflow_type: 'company',
         })
         .select(),

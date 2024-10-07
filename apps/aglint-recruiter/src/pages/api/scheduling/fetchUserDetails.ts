@@ -33,7 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       isCalendar,
     );
     return res.status(200).json(resUsers);
-  } catch (error) {
+  } catch (error: any) {
     res.status(400).send(error.message);
   }
 };

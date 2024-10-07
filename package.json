@@ -6,23 +6,26 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build",
     "dev": "turbo run dev",
-    "lint": "eslint . --cache --cache-location .eslintcache && tsc",
-    "test": "turbo run test",
+    "build": "turbo run build",
+    "format": "turbo run format --verbosity",
+    "lint": "turbo run lint --verbosity 1 --ui tui",
+    "type-check": "turbo run type-check --verbosity 1 --ui tui",
+    "test": "vitest",
     "supabase:dev": "turbo run supabase:dev",
     "supabase:local": "turbo run supabase:local",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "autofix": "eslint . --fix",
-    "pull": "git pull origin development --no-rebase"
+    "pull": "git pull origin development --no-rebase",
+    "prepare": "husky install"
   },
   "devDependencies": {
+    "eslint-plugin-vitest-globals": "^1.5.0",
+    "husky": "^8.0.0",
     "prettier": "^3.3.2",
-    "turbo": "^2.0.14"
+    "turbo": "^2.0.14",
+    "vitest": "^2.1.2"
   },
   "packageManager": "npm@10.5.2",
   "engines": {
     "node": "^18.18.0 || >=20.0.0"
-  },
-  "dependencies": {}
+  }
 }

@@ -1,103 +1,48 @@
 import {
   type DatabaseTable,
-  type schedulingSettingType,
+  type SchedulingSettingType,
 } from '@aglint/shared-types';
-import { getFullName } from '@aglint/shared-utils';
+import { Page, PageHeader } from '@components/layouts/page-header';
+import {
+  Section,
+  SectionActions,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
+import { TwoColumnPageLayout } from '@components/layouts/two-column-page-layout';
+import Typography from '@components/typography';
+import { ScrollArea } from '@components/ui/scroll-area';
+import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useInterviewsByUserId } from '@interviews/hooks/useInterviewsByUserId';
 import { useParams } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 
 import CalendarComp from '@/components/Common/Calendar/Calendar';
 import Heatmap from '@/components/Common/Heatmap/HeatmapUser';
 import { Loader } from '@/components/Common/Loader';
-import UISectionCard from '@/components/Common/UISectionCard';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { capitalizeAll } from '@/utils/text/textUtils';
 
 import {
   type InterviewerDetailType,
   useInterviewer,
 } from '../hooks/useInterviewer';
-import { BreadCrumb } from './BreadCrumb';
 import { Feedback } from './FeedbackCard';
 import { Header } from './Header';
 import { KeyMatrics } from './KeyMatrix';
 import { Qualifications } from './Qualification';
 import { RecentInterviews } from './RecentInterviewCard';
 import ScheduleAvailability from './ScheduleAvailability';
-import { SideBar } from './SideBar';
 import { UpcomingInterview } from './UpcomingInterviews';
 
-export type sectionKeys =
-  | 'overview'
-  | 'qualifications'
-  | 'performance'
-  | 'availability'
-  | 'pendingActions'
-  | 'recentActivity'
-  | 'upcomingInterviews'
-  | 'recentInterviews'
-  | 'interviewFeedback'
-  | 'scheduleAvailabilityRef'
-  | 'meetingOverview'
-  | 'calendar';
-
+type TabType = 'overview' | 'calendar';
 export default function InterviewerDetailsPage() {
-  //scrolling-------------------
-  const [activeSection, setActiveSection] = useState('overview');
-
-  const { isShowFeature } = useAuthDetails();
-  const sectionRefs = {
-    overview: useRef<HTMLDivElement>(null),
-    qualifications: useRef<HTMLDivElement>(null),
-    performance: useRef<HTMLDivElement>(null),
-    availability: useRef<HTMLDivElement>(null),
-    pendingActions: useRef<HTMLDivElement>(null),
-    recentActivity: useRef<HTMLDivElement>(null),
-    upcomingInterviews: useRef<HTMLDivElement>(null),
-    recentInterviews: useRef<HTMLDivElement>(null),
-    interviewFeedback: useRef<HTMLDivElement>(null),
-    scheduleAvailabilityRef: useRef<HTMLDivElement>(null),
-    meetingOverview: useRef<HTMLDivElement>(null),
-    calendar: useRef<HTMLDivElement>(null),
-  };
-
-  const userCardRef = useRef<HTMLDivElement>(null);
-
-  const handleScroll = () => {
-    Object.entries(sectionRefs).forEach(([key, ref]) => {
-      if (
-        ref.current &&
-        ref.current.getBoundingClientRect().top < 90 &&
-        ref.current.getBoundingClientRect().top > 0
-      ) {
-        setActiveSection(key);
-      }
-    });
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToSection = (sectionKey: sectionKeys) => {
-    const section = sectionRefs[sectionKey].current;
-
-    if (section) {
-      const sectionTop = section.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({ top: sectionTop - 80, behavior: 'smooth' });
-    }
-  };
-
-  //----------------------- page data
-
-  const { data: interviewerDetails, isLoading } = useInterviewer();
+  const { data: interviewerDetails, isLoading, error } = useInterviewer();
 
   //------------------------ calendar data
   const param = useParams() as { user: string };
   const user_id = param.user as string;
 
+  const [tab, setTab] = useState<TabType>('overview');
   const [filter, setFilter] = useState<
     DatabaseTable['interview_meeting']['status'][]
   >([]);
@@ -106,32 +51,6 @@ export default function InterviewerDetailsPage() {
     member_id: user_id,
   });
 
-  const allSchedules = data?.schedules;
-  // ---------------- data
-
-  const interviewLoad = interviewerDetails?.scheduling_settings
-    ?.interviewLoad as schedulingSettingType['interviewLoad'];
-
-  const interviewType =
-    interviewerDetails?.interview_type as InterviewerDetailType['interview_type'];
-
-  const feedbacks =
-    interviewerDetails?.feedbacks as InterviewerDetailType['feedbacks'];
-
-  const schedulingSettings =
-    interviewerDetails?.scheduling_settings as NonNullable<
-      InterviewerDetailType['scheduling_settings']
-    >;
-  const interviewTodayWeek =
-    interviewerDetails?.interview_week_today as NonNullable<
-      InterviewerDetailType['interview_week_today']
-    >;
-
-  const interviewerName = getFullName(
-    interviewerDetails?.first_name ?? '',
-    interviewerDetails?.last_name ?? '',
-  );
-
   //--------------------------------------
   if (isLoading)
     return (
@@ -139,152 +58,86 @@ export default function InterviewerDetailsPage() {
         <Loader />
       </div>
     );
-  return (
-    <div className='container mx-auto'>
-      <div className='relative'>
-        <div className='sticky top-0 z-10 bg-gray-50'>
-          <BreadCrumb name={interviewerDetails?.first_name || ''} />
-        </div>
-        <div>
-          <Header
-            avatar={interviewerDetails?.avatar || ''}
-            name={interviewerName}
-            role={capitalizeAll(interviewerDetails?.role || ' - ')}
-            department={interviewerDetails?.department || ' - '}
-            location={interviewerDetails?.location || ' - '}
-            timeZone={interviewerDetails?.timeZone || ' - '}
-            email={interviewerDetails?.email || ' - '}
-            phone={interviewerDetails?.phone || ' - '}
-            userCardRef={userCardRef}
-          />
-        </div>
-        {isShowFeature('SCHEDULING') && (
-          <div className='relative flex gap-5'>
-            <div className='sticky top-20 self-start' style={{ top: '90px' }}>
-              <aside>
-                <SideBar
-                  activeSection={activeSection}
-                  scrollToSection={scrollToSection}
-                />
-              </aside>
-            </div>
-            <main className='relative z-0 space-y-6'>
-              <section ref={sectionRefs.overview}>
-                <KeyMatrics
-                  declineCount={
-                    interviewerDetails?.meeting_count.cancelled || 0
-                  }
-                  completedCount={
-                    interviewerDetails?.meeting_count.completed || 0
-                  }
-                  totalHour={
-                    interviewerDetails?.meeting_count.completed_hour || 0
-                  }
-                />
-              </section>
 
-              <section ref={sectionRefs.qualifications}>
-                <Qualifications interview_types={interviewType} />
-              </section>
-
-              <section ref={sectionRefs.upcomingInterviews}>
-                <UpcomingInterview
-                  interviews={
-                    interviewerDetails?.all_meetings?.length
-                      ? interviewerDetails?.all_meetings.filter(
-                          (meeting) => meeting.status === 'confirmed',
-                        )
-                      : []
-                  }
-                />
-              </section>
-
-              <section ref={sectionRefs.recentInterviews}>
-                <RecentInterviews
-                  interviews={
-                    interviewerDetails?.all_meetings?.length
-                      ? interviewerDetails?.all_meetings.filter(
-                          (meeting) => meeting.status === 'completed',
-                        )
-                      : []
-                  }
-                />
-              </section>
-              <section ref={sectionRefs.interviewFeedback}>
-                <Feedback feedbacks={feedbacks} />
-              </section>
-
-              <section ref={sectionRefs.meetingOverview}>
-                <UISectionCard title='Meetings overview'>
-                  <Heatmap loadSetting={interviewLoad} />
-                </UISectionCard>
-              </section>
-              <section ref={sectionRefs.scheduleAvailabilityRef}>
-                <ScheduleAvailability
-                  schedulingSettings={schedulingSettings}
-                  interviewTodayWeek={interviewTodayWeek}
-                />
-              </section>
-              <section ref={sectionRefs.calendar}>
-                <UISectionCard title='Schedule Calendar'>
-                  <CalendarComp
-                    allSchedules={allSchedules ?? []}
-                    isLoading={iscalendarLoading}
-                    filter={filter}
-                    setFilter={setFilter}
-                  />
-                </UISectionCard>
-              </section>
-            </main>
-          </div>
-        )}
+  if (!interviewerDetails || error)
+    return (
+      <div className='flex min-h-screen w-full items-center justify-center'>
+        <Typography>Fetching Error</Typography>
       </div>
-    </div>
+    );
+
+  const allSchedules = data?.schedules;
+  // ---------------- data
+
+  const interviewLoad = interviewerDetails.scheduling_settings
+    .interviewLoad as SchedulingSettingType['interviewLoad'];
+
+  const interviewType =
+    interviewerDetails?.interview_type as InterviewerDetailType['interview_type'];
+
+  return (
+    <TwoColumnPageLayout
+      sidebar={
+        <div className='col-span-4 bg-white'>
+          <UpcomingInterview />
+          <RecentInterviews />
+          <Feedback />
+        </div>
+      }
+      sidebarPosition='right'
+      sidebarWidth='420'
+    >
+      <Page>
+        <PageHeader className='-mt-4 border-b border-gray-200 bg-gray-50 p-4'>
+          <Header />
+        </PageHeader>
+        <Section className='px-4'>
+          <SectionHeader>
+            <SectionHeaderText>
+              <SectionTitle>Interviewer Overview</SectionTitle>
+            </SectionHeaderText>
+            <SectionActions>
+              <Tabs
+                defaultValue='overview'
+                className='w-full'
+                onValueChange={(value) => setTab(value as TabType)}
+              >
+                <TabsList className='grid w-full grid-cols-2'>
+                  <TabsTrigger value='overview'>Overview</TabsTrigger>
+                  <TabsTrigger value='calendar'>Calendar</TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </SectionActions>
+          </SectionHeader>
+        </Section>
+        <ScrollArea className='h-[calc(100vh-246px)]'>
+          {tab === 'overview' ? (
+            <div className='flex flex-col space-y-8 px-4'>
+              <div className='col-span-8 grid space-y-12'>
+                <div className='grid grid-cols-2 gap-4'>
+                  <div>
+                    <KeyMatrics />
+                  </div>
+                  <div>
+                    <Heatmap loadSetting={interviewLoad} />
+                  </div>
+                </div>
+                <Qualifications interview_types={interviewType} />
+                <ScheduleAvailability />
+              </div>
+            </div>
+          ) : (
+            <div className='px-4'>
+              <CalendarComp
+                allSchedules={allSchedules ?? []}
+                isLoading={iscalendarLoading}
+                filter={filter}
+                setFilter={setFilter}
+              />
+            </div>
+          )}
+        </ScrollArea>
+      </Page>
+    </TwoColumnPageLayout>
   );
-}
-
-//for feature use
-{
-  /* 
-          <section ref={sectionRefs.performance}>
-            <Performance interviewer={interviewer} />
-          </section> */
-}
-
-{
-  /* <section ref={sectionRefs.availability}>
-            <Availability interviewer={interviewer} />
-          </section> */
-}
-
-{
-  /* <section ref={sectionRefs.pendingActions}>
-            <PendingActions interviewer={interviewer} />
-          </section> */
-}
-
-{
-  /* <section ref={sectionRefs.recentActivity}>
-            <RecentActivity interviewer={interviewer} />
-          </section> */
-}
-
-// const [isTopBarVisible, setIsTopBarVisible] = useState<boolean>(false);
-// const scrollPosition = window.scrollY;
-// const userCardBottom = userCardRef.current?.getBoundingClientRect().bottom;
-// setIsTopBarVisible(!!userCardBottom && scrollPosition > userCardBottom);
-
-{
-  /* <Top
-        interviewer={{
-          avatar: interviewerDetails?.avatar || '',
-          department: interviewerDetails?.department || '-',
-          name: interviewerName,
-          role: interviewerDetails?.role || '',
-          //need to change dynamic values
-          calendarConnected: false,
-          gmailConnected: false,
-        }}
-        isTopBarVisible={isTopBarVisible}
-      /> */
 }

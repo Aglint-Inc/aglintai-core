@@ -9,8 +9,8 @@ import { Globe, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
+import { useTenant } from '@/company/hooks';
 import type { useTeamMembers } from '@/company/hooks/useTeamMembers';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 
 import { UserListThreeDot } from './ThreeDot';
@@ -23,7 +23,7 @@ const Member = ({
   member: ReturnType<typeof useTeamMembers>['data'][number];
 }) => {
   const { checkPermissions } = useRolesAndPermissions();
-  const { recruiterUser: tempRecruiterUser } = useAuthDetails();
+  const { recruiter_user: tempRecruiterUser, recruiter } = useTenant();
   const recruiterUser = tempRecruiterUser!;
 
   const canManage = checkPermissions(['manage_users']);
@@ -31,10 +31,12 @@ const Member = ({
   return (
     <TableRow>
       <TableCell>
-        <div className='flex items-center space-x-3'>
-          <Avatar className='h-8 w-8'>
+        <div className='flex items-center gap-2'>
+          <Avatar className='h-10 w-10 rounded-sm'>
             <AvatarImage src={member.profile_image || ''} alt={fullName} />
-            <AvatarFallback>{fullName.charAt(0)}</AvatarFallback>
+            <AvatarFallback className='h-10 w-10 rounded-sm bg-gray-200'>
+              {fullName.charAt(0)}
+            </AvatarFallback>
           </Avatar>
           <div>
             <Link
@@ -53,17 +55,19 @@ const Member = ({
       <TableCell>
         <div className='flex flex-col space-y-1'>
           <div className='flex items-center space-x-2 text-sm'>
-            <MapPin className='h-4 w-4' />
+            <MapPin className='h-3 w-3 text-gray-500' />
             <span>{member?.office_location?.city || '--'}</span>
           </div>
           <div className='flex items-center space-x-2 text-sm'>
-            <Globe className='h-4 w-4' />
+            <Globe className='h-3 w-3 text-gray-500' />
             <span>{member?.office_location?.timezone || '--'}</span>
           </div>
         </div>
       </TableCell>
       <TableCell>
-        <Badge variant={member.status !== 'active' ? 'outline' : 'default'}>
+        <Badge
+          className={`rounded-sm ${member.status === 'active' ? 'bg-green-100 text-green-800 hover:bg-green-100 hover:text-green-800' : ''} ${member.status === 'invited' ? 'bg-blue-100 text-blue-800 hover:bg-blue-100 hover:text-blue-800' : ''} ${member.status === 'suspended' ? 'bg-red-100 text-red-800 hover:bg-red-100 hover:text-red-800' : ''} `}
+        >
           {capitalize(member.status)}
         </Badge>
       </TableCell>
@@ -74,7 +78,7 @@ const Member = ({
         {canManage &&
           (member.role !== 'admin' ||
             member.status === 'invited' ||
-            recruiterUser.primary ||
+            recruiter.primary_admin === recruiterUser.user_id ||
             recruiterUser.user_id === member.user_id) && (
             <UserListThreeDot member={member} />
           )}

@@ -1,22 +1,18 @@
 import {
   type InterviewLoadType,
-  type schedulingSettingType,
+  type SchedulingSettingType,
 } from '@aglint/shared-types';
+import { type CustomSchedulingSettingsUser } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
 import { toast } from '@components/hooks/use-toast';
-import { ScrollArea } from '@components/ui/scroll-area';
 import cloneDeep from 'lodash/cloneDeep';
-import { useParams } from 'next/navigation';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
+import { useTenantMembers } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
-import { supabase } from '@/utils/supabase/client';
+import { useRouterPro } from '@/hooks/useRouterPro';
+import { api } from '@/trpc/client';
 import { type timeZone as timeZones } from '@/utils/timeZone';
 
-import {
-  type InterviewerDetailType,
-  useInterviewer,
-} from '../../../hooks/useInterviewer';
 import { EditAvailabilityForm } from './ui/EditAvailabilityFormUI';
 
 export const LoadMax = {
@@ -29,25 +25,32 @@ export const LoadMax = {
 type TimeZoneType = (typeof timeZones)[number];
 
 export const EditAvailabiityDialog = ({
-  schedulingSettings,
   setIsEditOpen,
-  isEditOpen,
 }: {
   setIsEditOpen: Dispatch<SetStateAction<boolean>>;
-  isEditOpen: boolean;
-  schedulingSettings: InterviewerDetailType['scheduling_settings'];
 }) => {
+  const { allMembers } = useTenantMembers();
+  const router = useRouterPro();
+  const user_id = router?.params?.user as string;
+  const member = allMembers.find((mem) => mem.user_id === user_id);
   const [isSaving, setIsSaving] = useState(false);
+
+  const { mutateAsync } = api.user.update_user.useMutation();
+  // State variables for scheduling settings
   const [workingHours, setWorkingHours] = useState<
-    schedulingSettingType['workingHours']
+    SchedulingSettingType['workingHours']
   >([]);
   const [timeZone, setTimeZone] = useState<TimeZoneType | null>(null);
+
+  // State variables for keywords
   const [freeKeyWords, setFreeKeywords] = useState<string[]>([]);
   const [softConflictsKeyWords, setSoftConflictsKeyWords] = useState<string[]>(
     [],
   );
   const [outOfOffice, setOutOfOffice] = useState<string[]>([]);
   const [recruitingBlocks, setRecruitingBlocks] = useState<string[]>([]);
+
+  // State variables for interview limits
   const [dailyLmit, setDailyLimit] = useState<InterviewLoadType['daily']>({
     type: 'Hours',
     value: 20,
@@ -58,9 +61,6 @@ export const EditAvailabiityDialog = ({
     value: 10,
     max: LoadMax.weeklyHours,
   });
-  const { refetch } = useInterviewer();
-  const param = useParams() as { user: string };
-  const user_id = param.user as string;
 
   const handleDailyValue = (value: number) => {
     setDailyLimit((pre) => ({
@@ -105,11 +105,12 @@ export const EditAvailabiityDialog = ({
     handleWeeklyValue(weeklyLmit.value);
   };
 
+  const schedulingSettings = member?.scheduling_settings;
   function initialLoad() {
     if (schedulingSettings) {
       const schedulingSettingData = cloneDeep(
         schedulingSettings,
-      ) as schedulingSettingType;
+      ) as SchedulingSettingType;
 
       const workingHoursCopy = cloneDeep(schedulingSettingData.workingHours);
       const timeZoneCopy = cloneDeep(
@@ -149,51 +150,9 @@ export const EditAvailabiityDialog = ({
     }
   }
 
-  const updateHandle = async () => {
-    try {
-      setIsSaving(true);
-      const schedulingSettingObj = {
-        ...schedulingSettings,
-        interviewLoad: {
-          dailyLimit: {
-            type: dailyLmit.type,
-            value: dailyLmit.value,
-          },
-          weeklyLimit: {
-            type: weeklyLmit.type,
-            value: weeklyLmit.value,
-          },
-        },
-        timeZone: timeZone,
-        workingHours: workingHours,
-        schedulingKeyWords: {
-          free: freeKeyWords,
-          SoftConflicts: softConflictsKeyWords,
-          outOfOffice: outOfOffice,
-          recruitingBlocks: recruitingBlocks,
-        },
-      } as schedulingSettingType;
-      await supabase
-        .from('recruiter_user')
-        .update({
-          scheduling_settings: schedulingSettingObj,
-        })
-        .eq('user_id', user_id)
-        .throwOnError();
-
-      await refetch();
-      toast({ title: 'Availability update Successfully' });
-      setIsEditOpen(false);
-    } catch (e) {
-      //   console.log(e);
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
   useEffect(() => {
-    initialLoad();
-  }, []);
+    if (allMembers) initialLoad();
+  }, [allMembers]);
 
   const keywords = [
     {
@@ -226,48 +185,80 @@ export const EditAvailabiityDialog = ({
     },
   ];
 
+  if (!member) return null;
+
+  const updateHandle = async () => {
+    if (!timeZone || !workingHours)
+      return toast({ title: 'Please fill required fields' });
+
+    try {
+      setIsSaving(true);
+      const schedulingSettingObj = {
+        ...schedulingSettings,
+        interviewLoad: {
+          dailyLimit: {
+            type: dailyLmit.type,
+            value: dailyLmit.value,
+          },
+          weeklyLimit: {
+            type: weeklyLmit.type,
+            value: weeklyLmit.value,
+          },
+        },
+        timeZone: timeZone,
+        workingHours: workingHours,
+        schedulingKeyWords: {
+          free: freeKeyWords,
+          SoftConflicts: softConflictsKeyWords,
+          outOfOffice: outOfOffice,
+          recruitingBlocks: recruitingBlocks,
+        },
+      } as CustomSchedulingSettingsUser;
+
+      await mutateAsync({
+        scheduling_settings: schedulingSettingObj,
+        user_id,
+      });
+      toast({ title: 'Availability update Successfully' });
+      setIsEditOpen(false);
+    } catch (e) {
+      toast({ title: 'Availability update failed', variant: 'destructive' });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   return (
     <>
-      <UIDialog
-        open={isEditOpen}
-        title='Update Availability'
-        size='xl'
-        onClose={() => setIsEditOpen(false)}
-        slotButtons={
-          <>
-            <UIButton
-              variant='secondary'
-              onClick={() => {
-                if (!isSaving) setIsEditOpen(false);
-              }}
-            >
-              Cancel
-            </UIButton>
-            <UIButton
-              isLoading={isSaving}
-              disabled={isSaving}
-              onClick={updateHandle}
-            >
-              Update
-            </UIButton>
-          </>
-        }
-      >
-        <ScrollArea>
-          <EditAvailabilityForm
-            dailyLimit={dailyLmit}
-            handleDailyValue={handleDailyValue}
-            handleType={handleType}
-            handleWeeklyValue={handleWeeklyValue}
-            keywords={keywords}
-            setTimeZone={setTimeZone}
-            setWorkingHours={setWorkingHours}
-            timeZone={timeZone || null}
-            weeklyLmit={weeklyLmit}
-            workingHours={workingHours}
-          />
-        </ScrollArea>
-      </UIDialog>
+      <EditAvailabilityForm
+        dailyLimit={dailyLmit}
+        handleDailyValue={handleDailyValue}
+        handleType={handleType}
+        handleWeeklyValue={handleWeeklyValue}
+        keywords={keywords}
+        setTimeZone={setTimeZone}
+        setWorkingHours={setWorkingHours}
+        timeZone={timeZone || null}
+        weeklyLmit={weeklyLmit}
+        workingHours={workingHours}
+      />
+      <div className='ml-auto flex gap-4'>
+        <UIButton
+          variant='secondary'
+          onClick={() => {
+            if (!isSaving) setIsEditOpen(false);
+          }}
+        >
+          Cancel
+        </UIButton>
+        <UIButton
+          isLoading={isSaving}
+          disabled={isSaving}
+          onClick={updateHandle}
+        >
+          Update
+        </UIButton>
+      </div>
     </>
   );
 };

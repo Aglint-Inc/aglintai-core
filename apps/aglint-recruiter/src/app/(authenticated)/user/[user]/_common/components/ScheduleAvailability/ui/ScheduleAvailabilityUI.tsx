@@ -1,23 +1,26 @@
-import { type schedulingSettingType } from '@aglint/shared-types';
+import { type SchedulingSettingType } from '@aglint/shared-types';
+import { type CustomSchedulingSettingsUser } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
 import { dayjsLocal } from '@aglint/shared-utils';
+import { EmptyState } from '@components/empty-state';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@components/ui/table';
+  Section,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
+import Typography from '@components/typography';
+import { TableCell, TableRow } from '@components/ui/table';
 import { capitalize } from 'lodash';
-
-import UITypography from '@/components/Common/UITypography';
+import { Calendar } from 'lucide-react';
 
 import { type InterviewLoadItemType, type ScheduleKeywordType } from '..';
 
 type Props = {
   interviewLoads: InterviewLoadItemType[];
   timeZone: string;
-  workingHours: schedulingSettingType['workingHours'];
+  workingHours: SchedulingSettingType['workingHours'];
+  schedulingSettings: CustomSchedulingSettingsUser;
   scheduleKeywords: ScheduleKeywordType[];
 };
 export const ScheduleAvailabilityUI = ({
@@ -27,67 +30,74 @@ export const ScheduleAvailabilityUI = ({
   scheduleKeywords,
 }: Props) => {
   return (
-    <>
-      <SectionSubCard title='Time Zone'>
-        <UITypography variant='p' type='small'>
-          {timeZone || ' - '}
-        </UITypography>
-      </SectionSubCard>
-
-      <SectionSubCard title='Interview Load'>
-        <div className='flex gap-5'>
-          {interviewLoads.map((load) => {
-            return <LoadCard key={load.title} load={load} />;
-          })}
-        </div>
-      </SectionSubCard>
-
-      <SectionSubCard title='Working Hours'>
-        <p className='mb-4 text-sm text-muted-foreground'>
-          Set your company&apos;s working hours to define the availability for
-          interviews.
-        </p>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Day</TableHead>
-              <TableHead>Hours</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
+    <div className='flex flex-col space-y-8'>
+      <div className='grid grid-cols-2 gap-8'>
+        <Section>
+          <SectionHeader>
+            <SectionHeaderText className='flex w-full flex-row justify-between'>
+              <div>
+                <SectionTitle>Working Hours</SectionTitle>
+                <SectionDescription>
+                  Set your company&apos;s working hours to define the
+                  availability for interviews.
+                </SectionDescription>
+              </div>
+            </SectionHeaderText>
+          </SectionHeader>
+          <>
             {workingHours.map((day, i) => (
               <WorkHourList key={i} day={day} />
             ))}
-          </TableBody>
-        </Table>
-      </SectionSubCard>
-      <SectionSubCard title='Scheduling Keywords'>
+          </>
+        </Section>
+        <div className='flex flex-col gap-8'>
+          <Section>
+            <SectionHeader>
+              <SectionHeaderText>
+                <SectionTitle>Time Zone</SectionTitle>
+              </SectionHeaderText>
+            </SectionHeader>
+            {timeZone || ' - '}
+          </Section>
+
+          <Section>
+            <SectionHeader>
+              <SectionHeaderText>
+                <SectionTitle>Interview Load</SectionTitle>
+              </SectionHeaderText>
+            </SectionHeader>
+            <div className='flex gap-3'>
+              {interviewLoads.map((load) => {
+                return <LoadCard key={load.title} load={load} />;
+              })}
+            </div>
+          </Section>
+        </div>
+      </div>
+
+      <Section>
+        <SectionHeader>
+          <SectionHeaderText>
+            <SectionTitle>Scheduling Keywords</SectionTitle>
+            <SectionDescription>
+              Scheduling Keywords help candidates find your interviews
+              availability.
+            </SectionDescription>
+          </SectionHeaderText>
+        </SectionHeader>
         {scheduleKeywords.map((keyword) => {
           return (
-            <KeywordViewSection
-              key={keyword.title}
-              title={keyword.title}
-              description={keyword.description}
-              keywords={keyword.keywords}
-            />
+            <div key={keyword.title}>
+              <KeywordViewSection
+                key={keyword.title}
+                title={keyword.title}
+                description={keyword.description}
+                keywords={keyword.keywords}
+              />
+            </div>
           );
         })}
-      </SectionSubCard>
-    </>
-  );
-};
-
-const SectionSubCard = ({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) => {
-  return (
-    <div className='mb-6'>
-      <h3 className='mb-2 text-lg font-semibold'>{title}</h3>
-      <div>{children}</div>
+      </Section>
     </div>
   );
 };
@@ -95,7 +105,7 @@ const SectionSubCard = ({
 const WorkHourList = ({
   day,
 }: {
-  day: schedulingSettingType['workingHours'][number];
+  day: SchedulingSettingType['workingHours'][number];
 }) => {
   const time =
     dayjsLocal()
@@ -109,7 +119,7 @@ const WorkHourList = ({
       .format('hh:mm A');
 
   return (
-    <TableRow>
+    <TableRow className='border-none hover:bg-transparent'>
       <TableCell className='font-medium'>{capitalize(day.day)}</TableCell>
       <TableCell>{time}</TableCell>
     </TableRow>
@@ -118,13 +128,13 @@ const WorkHourList = ({
 
 const LoadCard = ({ load }: { load: InterviewLoadItemType }) => {
   return (
-    <div className='h-fit min-w-[150px] rounded-sm border-[1px]'>
-      <UITypography className='bg-gray-100 px-4 py-2 text-lg font-semibold'>
-        {load.title}
-      </UITypography>
-      <div className='flex gap-2 px-4 py-2'>
-        <UITypography className='text-sm font-bold'>{load.count}</UITypography>
-        <UITypography className='text-sm'>{load.type}</UITypography>
+    <div className='h-fit min-w-[150px] rounded-sm bg-gray-50'>
+      <Typography className='px-4 pt-2 text-sm'>{load.title}</Typography>
+      <div className='flex flex-col gap-1 px-4 py-2'>
+        <Typography className='text-xl font-medium'>{load.count}</Typography>
+        <Typography className='text-sm text-muted-foreground'>
+          {load.type}
+        </Typography>
       </div>
     </div>
   );
@@ -140,30 +150,31 @@ const KeywordViewSection = ({
   keywords: string[];
 }) => {
   return (
-    <div className='mb-6'>
-      <UITypography
+    <div className='mb-12 flex flex-col'>
+      <Typography variant='p' type='small' className='mb-1 text-sm font-medium'>
+        {title}
+      </Typography>
+      <Typography
         variant='p'
         type='small'
-        className='mb-1 text-lg font-semibold'
+        className='mb-2 text-muted-foreground'
       >
-        {title}
-      </UITypography>
-      <UITypography variant='p' type='small' className='mb-4'>
         {description}
-      </UITypography>
+      </Typography>
       <div className='flex flex-wrap gap-2'>
-        {keywords.map((keyword, i) => {
-          return (
-            <div
-              key={i}
-              className='w-fit rounded-full bg-gray-100 px-4 py-1 text-gray-900'
-            >
-              <UITypography type='small' variant='p'>
-                {keyword}
-              </UITypography>
-            </div>
-          );
-        })}
+        {keywords?.length > 0 ? (
+          keywords.map((keyword, i) => {
+            return (
+              <div key={i} className='w-fit rounded-sm bg-gray-100 px-4 py-1'>
+                <Typography type='small' variant='p'>
+                  {keyword}
+                </Typography>
+              </div>
+            );
+          })
+        ) : (
+          <EmptyState icon={Calendar} header={'No ' + title} />
+        )}
       </div>
     </div>
   );

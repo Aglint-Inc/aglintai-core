@@ -17,11 +17,11 @@ function CountDropDown() {
       className='w-16'
       fieldSize='small'
       name={'interviewer_cnt'}
-      value={editSession.interview_session.interviewer_cnt.toString() || '1'}
+      value={editSession!.interview_session.interviewer_cnt.toString() || '1'}
       onValueChange={(value) => {
         setEditSession({
           interview_session: {
-            ...editSession.interview_session,
+            ...editSession!.interview_session,
             interviewer_cnt: Number(value),
           },
         });

@@ -2,7 +2,11 @@ import { useEffect, useRef } from 'react';
 
 import { useAgentChatStore } from '../store';
 
-export const useScrollListenerAgentChat = ({ fetchNextPage }) => {
+export const useScrollListenerAgentChat = ({
+  fetchNextPage,
+}: {
+  fetchNextPage: () => Promise<void>;
+}) => {
   const { isFetchingNextPage, hasNextPage, chatList, tempLoading } =
     useAgentChatStore((state) => ({
       isFetchingNextPage: state.isFetchingNextPage,
@@ -11,7 +15,7 @@ export const useScrollListenerAgentChat = ({ fetchNextPage }) => {
       tempLoading: state.tempLoading,
     }));
   const topRef = useRef(null);
-  const chatContainerRef = useRef(null);
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
   const isFetching = useRef(false);
 
   useEffect(() => {
@@ -28,8 +32,10 @@ export const useScrollListenerAgentChat = ({ fetchNextPage }) => {
           isFetching.current = true;
           fetchNextPage().finally(() => {
             isFetching.current = false;
-            chatContainerRef.current.scrollTop =
-              scrollHeight - clientHeight - 50;
+            if (chatContainerRef?.current?.scrollTop) {
+              chatContainerRef.current.scrollTop =
+                scrollHeight - clientHeight - 50;
+            }
           });
         }
       };

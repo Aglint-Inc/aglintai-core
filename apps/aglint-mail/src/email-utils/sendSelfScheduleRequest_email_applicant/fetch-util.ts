@@ -1,6 +1,6 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
-import { FetchUtilType } from '../../types/emailfetchUtil';
+import type { FetchUtilType } from '../../types/emailfetchUtil';
 
 export const fetchUtil: FetchUtilType<
   'sendSelfScheduleRequest_email_applicant'
@@ -60,7 +60,7 @@ export const fetchUtil: FetchUtilType<
 
   let scheduleLink = '';
   if (filterJson.applications.id && req_body.filter_json_id) {
-    scheduleLink = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.applications.id}?filter_id=${req_body.filter_json_id}`;
+    scheduleLink = `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/scheduling/invite/${filterJson.applications.id}?filter_id=${req_body.filter_json_id}`;
   }
   const comp_email_placeholder: EmailTemplateAPi<'sendSelfScheduleRequest_email_applicant'>['comp_email_placeholders'] =
     {
@@ -84,7 +84,7 @@ export const fetchUtil: FetchUtilType<
   return {
     mail_data: {
       company_id: recruiter_id,
-      application_id: application_id,
+      application_id,
       comp_email_placeholder,
       react_email_placeholders,
       recipient_email: cand_email,

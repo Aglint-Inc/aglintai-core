@@ -1,15 +1,24 @@
 import { DialogDescription } from '@components/ui/dialog';
 import { useState } from 'react';
 
-import { usePortalSettings } from '@/company/hooks/hook';
-import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
+import TipTapAIEditor from '@/common/TipTapAIEditor';
+import { UIButton } from '@/common/UIButton';
+import UIDialog from '@/common/UIDialog';
+import { useFlags } from '@/company/hooks/useFlags';
+import { usePortalSettings } from '@/company/hooks/usePortalSettings';
 
-export const AboutCompanyDialog = ({ isDialogOpen, setIsDialogOpen }) => {
-  const { data, updateAbout, isPortalUpdating } = usePortalSettings();
-  const [text, setText] = useState(data?.about || '');
-  const handleTextChange = (value) => {
+export const AboutCompanyDialog = ({
+  isDialogOpen,
+  setIsDialogOpen,
+}: {
+  isDialogOpen: boolean;
+  // eslint-disable-next-line no-unused-vars
+  setIsDialogOpen: (x: boolean) => void;
+}) => {
+  const { updateAbout, loading } = usePortalSettings();
+  const { about } = useFlags();
+  const [text, setText] = useState(about || '');
+  const handleTextChange = (value: string) => {
     setText(value);
   };
   return (
@@ -23,8 +32,8 @@ export const AboutCompanyDialog = ({ isDialogOpen, setIsDialogOpen }) => {
             variant='secondary'
             className='w-full'
             onClick={() => {
-              setText(data?.about || '');
-              setIsDialogOpen(null); // Updated to close the dialog
+              setText(about || '');
+              setIsDialogOpen(false); // Updated to close the dialog
             }}
           >
             Cancel
@@ -32,8 +41,8 @@ export const AboutCompanyDialog = ({ isDialogOpen, setIsDialogOpen }) => {
           <UIButton
             type='submit'
             className='w-full'
-            isLoading={isPortalUpdating}
-            disabled={isPortalUpdating}
+            isLoading={loading.isAboutUpdating}
+            disabled={loading.isAboutUpdating}
             onClick={async () => {
               await updateAbout(text);
               setIsDialogOpen(false);
@@ -58,7 +67,7 @@ export const AboutCompanyDialog = ({ isDialogOpen, setIsDialogOpen }) => {
           editor_type='email'
           isSize
           handleChange={handleTextChange}
-          initialValue={data?.about}
+          initialValue={about || undefined}
         />
       </div>
     </UIDialog>

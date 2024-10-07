@@ -40,13 +40,13 @@ const nextConfig = {
       },
       ...(process.env.NODE_ENV === 'production'
         ? [
-            {
-              source: '/signup',
-              destination: '/login',
-              basePath: undefined,
-              permanent: false,
-            },
-          ]
+          {
+            source: '/signup',
+            destination: '/login',
+            basePath: undefined,
+            permanent: false,
+          },
+        ]
         : []),
     ];
   },
@@ -78,6 +78,11 @@ const nextConfig = {
         hostname: 'gwlinbuxtrnvwvyyhaht.supabase.co',
       },
       {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        port: '64321',
+      },
+      {
         protocol: 'https',
         hostname: 'logo.clearbit.com',
       },
@@ -97,6 +102,7 @@ const nextConfig = {
       },
     },
   },
+  transpilePackages: ['@aglint-recruiter/shared-utils']
 };
 
 module.exports = withBundleAnalyzer(nextConfig);

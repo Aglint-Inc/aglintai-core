@@ -1,103 +1,128 @@
 import { getFullName } from '@aglint/shared-utils';
+import { EmptyState } from '@components/empty-state';
+import {
+  Section,
+  SectionHeader,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { Separator } from '@components/ui/separator';
 import { useQuery } from '@tanstack/react-query';
-import { Calendar } from 'lucide-react';
+import { LayoutList } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
-import { useRouterPro } from '@/hooks/useRouterPro';
+import { WithPermission } from '@/components/withPermission';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-function Requests({ session_id }) {
-  const router = useRouterPro();
+import { useScheduleDetails } from '../hooks/useScheduleDetails';
+
+function Component() {
+  const { data } = useScheduleDetails();
+
+  const schedule = data?.schedule_data;
+  const session_id = schedule?.interview_session?.id;
   const { data: requests, isLoading } = useSessionRequests({ id: session_id });
 
   return (
-    <div className='rounded-md border border-gray-200 bg-white p-4 shadow-sm'>
-      <h3 className='mb-3 text-sm font-semibold'>Request History</h3>
+    <Section>
+      <SectionHeader>
+        <SectionTitle>Request History</SectionTitle>
+      </SectionHeader>
       {isLoading ? (
         <Loader />
       ) : (
         <div className='space-y-2'>
           {(requests ?? []).length === 0 && (
-            <GlobalEmpty
-              iconSlot={<Calendar className='text-gray-500' />}
-              text={'No requests found'}
+            <EmptyState
+              header={'No requests found'}
+              description='Requests are created when a interview process starts for candidates.'
+              icon={LayoutList}
             />
           )}
-          {requests?.map((request) => (
-            <Card
-              key={request.id}
-              className='cursor-pointer border-none p-3 shadow-none hover:bg-gray-50'
-              onClick={() => {
-                router.push(
-                  ROUTES['/requests/[request]']({
-                    request: request.id,
-                  }),
-                );
-              }}
-            >
-              <CardHeader className='mb-2 p-0'>
-                <CardTitle className='line-clamp-1 text-sm font-medium'>
-                  {request.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className='p-0'>
-                <div className='flex items-center justify-between'>
-                  <div className='flex items-center space-x-2'>
-                    <Avatar className='h-6 w-6'>
-                      <AvatarImage
-                        src={
-                          request?.assignee_details?.profile_image ??
-                          '/avatar.png'
+          <ul className='flex flex-col gap-3'>
+            {requests?.map((request, index) => (
+              <React.Fragment key={request.id}>
+                <li className='rounded-md bg-gray-50 p-3 text-lg duration-300 hover:bg-gray-100 hover:no-underline'>
+                  <Link
+                    href={ROUTES['/requests/[request]']({
+                      request: request.id,
+                    })}
+                    className='hover:no-underline'
+                  >
+                    <div className='text-sm font-medium'>
+                      dewxwed{request.title}
+                    </div>
+                    <div className='mt-2 flex cursor-pointer items-center gap-4'>
+                      <div className='flex items-center gap-2'>
+                        <Avatar className='h-6 w-6 rounded-sm'>
+                          <AvatarImage
+                            src={
+                              request?.assignee_details?.profile_image ??
+                              '/avatar.png'
+                            }
+                            alt={getFullName(
+                              request?.assignee_details?.first_name ?? '',
+                              request?.assignee_details?.last_name ?? '',
+                            )}
+                          />
+                          <AvatarFallback className='h-6 w-6 rounded-md bg-gray-200 text-sm text-gray-500'>
+                            {getFullName(
+                              request?.assignee_details?.first_name ?? '',
+                              request?.assignee_details?.last_name ?? '',
+                            ).charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <span className='text-sm text-gray-600'>
+                          {getFullName(
+                            request?.assignee_details?.first_name ?? '',
+                            request?.assignee_details?.last_name ?? '',
+                          )}
+                        </span>
+                      </div>
+                      <UIBadge
+                        size={'default'}
+                        textBadge={capitalizeFirstLetter(request.status)}
+                        color={
+                          request.status === 'to_do'
+                            ? 'purple'
+                            : request.status === 'in_progress'
+                              ? 'info'
+                              : request.status === 'blocked'
+                                ? 'error'
+                                : request.status === 'completed'
+                                  ? 'success'
+                                  : 'neutral'
                         }
-                        alt={getFullName(
-                          request?.assignee_details?.first_name ?? '',
-                          request?.assignee_details?.last_name ?? '',
-                        )}
                       />
-                      <AvatarFallback className='text-xs'>
-                        {getFullName(
-                          request?.assignee_details?.first_name ?? '',
-                          request?.assignee_details?.last_name ?? '',
-                        ).charAt(0)}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span className='text-xs text-gray-600'>
-                      {getFullName(
-                        request?.assignee_details?.first_name ?? '',
-                        request?.assignee_details?.last_name ?? '',
-                      )}
-                    </span>
-                  </div>
-                  <UIBadge
-                    size={'sm'}
-                    textBadge={capitalizeFirstLetter(request.status)}
-                    color={
-                      request.status === 'to_do'
-                        ? 'purple'
-                        : request.status === 'in_progress'
-                          ? 'info'
-                          : request.status === 'blocked'
-                            ? 'error'
-                            : request.status === 'completed'
-                              ? 'success'
-                              : 'neutral'
-                    }
-                  />
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                    </div>
+                  </Link>
+                </li>
+                {index < requests.length - 1 && (
+                  <li className='hidden'>
+                    <Separator className='my-2' />
+                  </li>
+                )}
+              </React.Fragment>
+            ))}
+          </ul>
         </div>
       )}
-    </div>
+    </Section>
   );
 }
+
+const Requests = () => {
+  return (
+    <WithPermission permission={['scheduling_actions']}>
+      <Component />
+    </WithPermission>
+  );
+};
 
 export default Requests;
 

@@ -1,7 +1,8 @@
 'use client';
 
+import Typography from '@components/typography';
+
 import { UIButton } from '@/components/Common/UIButton';
-import UITypography from '@/components/Common/UITypography';
 
 interface SlotComponentProps {
   slotImage: React.ReactNode;
@@ -62,17 +63,17 @@ export function MembersList({
         </div>
         <div className='flex flex-col gap-0'>
           <div className='flex items-center justify-start gap-1'>
-            <UITypography variant='p' className='font-semibold' type='small'>
+            <Typography variant='p' className='font-semibold' type='small'>
               {textName}
-            </UITypography>
+            </Typography>
             <div>{slotIcon}</div>
           </div>
           <div className='flex flex-col gap-3'>
             {isDesignationVisible && (
               <div>
-                <UITypography variant='p' type='small' color='neutral'>
+                <Typography variant='p' type='small' color='neutral'>
                   {textDesignation}
-                </UITypography>
+                </Typography>
               </div>
             )}
             {isButtonVisible && (
@@ -82,16 +83,16 @@ export function MembersList({
                   {...onClickResendInvite}
                 >
                   {/* SVG content */}
-                  <UITypography variant='p' type='small'></UITypography>
+                  <Typography variant='p' type='small'></Typography>
                 </div>
                 <div
                   className='flex cursor-pointer items-center justify-start gap-1'
                   {...onClickCopyInvite}
                 >
                   {/* SVG content */}
-                  <UITypography variant='p' type='small'>
+                  <Typography variant='p' type='small'>
                     Booking Link
-                  </UITypography>
+                  </Typography>
                 </div>
               </div>
             )}
@@ -115,9 +116,9 @@ export function MembersList({
         </div>
       </div>
       <div>
-        <UITypography variant='p' type='small' color='neutral'>
+        <Typography variant='p' type='small' color='neutral'>
           {textTime}
-        </UITypography>
+        </Typography>
       </div>
       {isDetailVisible && (
         <div className='border-neutral-6 absolute left-0 right-0 top-12 z-10 flex flex-col gap-3 rounded-md border bg-white shadow-md'>

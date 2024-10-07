@@ -10,7 +10,7 @@ const Footer: React.FC<FooterProps> = ({ brand = false }) => {
     <footer className='flex items-center justify-center py-4'>
       {brand ? (
         <div className='flex items-center justify-center'>
-          <p className='flex items-center text-sm text-neutral-600'>
+          <p className='flex items-center text-sm text-muted-foreground'>
             Powered by{' '}
             <Image
               src='/images/brand/footer-logo.svg'
@@ -23,7 +23,7 @@ const Footer: React.FC<FooterProps> = ({ brand = false }) => {
           </p>
         </div>
       ) : (
-        <p className='text-sm text-neutral-600'>
+        <p className='text-sm text-muted-foreground'>
           &copy; {new Date().getFullYear()} Aglint Inc. All rights reserved.
         </p>
       )}

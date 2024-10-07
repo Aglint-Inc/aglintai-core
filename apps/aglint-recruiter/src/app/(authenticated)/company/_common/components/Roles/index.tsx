@@ -1,40 +1,38 @@
-/* eslint-disable */
-
-import { rolesOrder } from '@/constant/role_and_permissions';
-import { useAllMembers } from '@/queries/members';
-
-import { capitalizeFirstLetter } from '@/utils/text/textUtils';
-import RoleDetails from './RoleDetails';
-import { CirclePlus } from 'lucide-react';
-import { Button } from '@components/ui/button';
+import {
+  Page,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import {
   Table,
   TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from '@components/ui/table';
-import { Skeleton } from '@components/ui/skeleton';
-import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Badge } from '@components/ui/badge';
+
+import { useTenantMembers } from '@/company/hooks';
 import {
-  getRoleAndPermissionsWithUserCount,
-  useRoleAndPermissionsHook,
+  useRoleData,
+  useRoleDataSetter,
 } from '@/company/hooks/useRoleAndPermissionsHook';
-import { TableLoading } from './ui/TableLoading';
+import { rolesOrder } from '@/constant/role_and_permissions';
+
+import RoleDetails from './RoleDetails';
 import { RoleList } from './ui/RoleList';
+import { TableLoading } from './ui/TableLoading';
 
 function RolesAndPermissionsComponent() {
   const {
     data,
     isPending: loading,
-    handelUpdateRole,
     role,
-    roleDetails,
     setSelectRole,
-  } = useRoleAndPermissionsHook();
-
+    roleDetails,
+  } = useRoleData();
+  const { handelUpdateRole } = useRoleDataSetter();
   return (
     <>
       {role ? ( // roleDetailsComponent
@@ -59,20 +57,25 @@ function RolesAndPermissionsComponent() {
           updateRoles={handelUpdateRole}
         />
       ) : (
-        <div>
-          <h1 className='mb-4 text-lg font-semibold'>Roles & Permissions</h1>
-          <p className='mb-6 text-gray-600'>
-            Customize permissions for each role and control access by enabling
-            or disabling the toggle next to each permission.
-          </p>
-          <div className='mt-6 overflow-x-auto rounded-lg border bg-white'>
+        <Page>
+          <PageHeader>
+            <PageHeaderText>
+              <PageTitle>Roles & Permissions</PageTitle>
+              <PageDescription>
+                {' '}
+                Customize permissions for each role and control access by
+                enabling or disabling the toggle next to each permission.
+              </PageDescription>
+            </PageHeaderText>
+          </PageHeader>
+          <div className='flex flex-col gap-4'>
             <RoleTable
               roles={data?.rolesAndPermissions || {}}
               loading={loading}
               setRole={setSelectRole}
             />
           </div>
-        </div>
+        </Page>
       )}
     </>
   );
@@ -86,48 +89,52 @@ const RoleTable = ({
   setRole,
 }: {
   loading: boolean;
-  roles: Awaited<
-    ReturnType<typeof getRoleAndPermissionsWithUserCount>
-  >['rolesAndPermissions'];
-  setRole: (role_id: string, addMode?: boolean) => void;
+  roles: ReturnType<typeof useRoleData>['data']['rolesAndPermissions'];
+  setRole: (_role_id: string, _addMode?: boolean) => void;
 }) => {
-  const { members } = useAllMembers();
-
+  const { members } = useTenantMembers();
   if (loading) {
     return <TableLoading />;
   }
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow className='bg-gray-100'>
-          <TableHead>Role</TableHead>
-          <TableHead>Description</TableHead>
-          <TableHead>Users</TableHead>
-          <TableHead>Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {Object.entries(roles || {})
-          .sort((a, b) => rolesOrder[a[1].name] - rolesOrder[b[1].name])
-          .map(([key, details]) => {
-            const role = details;
-            const count = role.assignedTo.length;
-            return (
-              <RoleList
-                count={count}
-                details={details}
-                members={members}
-                onClickAdd={(e) => {
-                  e.stopPropagation();
-                  setRole(key, true);
-                }}
-                onClickRow={() => setRole(key)}
-                role={role}
-              />
-            );
-          })}
-      </TableBody>
-    </Table>
+    <div className='mt-2 overflow-hidden rounded-lg border'>
+      <Table>
+        <TableHeader>
+          <TableRow className='bg-gray-100'>
+            <TableHead>Role</TableHead>
+            <TableHead className='w-[42%]'>Description</TableHead>
+            <TableHead>Users</TableHead>
+            <TableHead className='sr-only'>Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {Object.entries(roles || {})
+            .sort(
+              (a, b) =>
+                rolesOrder[a[1].name as keyof typeof rolesOrder] -
+                rolesOrder[b[1].name as keyof typeof rolesOrder],
+            )
+            .map(([key, details], i) => {
+              const role = details;
+              const count = role.assignedTo.length;
+              return (
+                <RoleList
+                  key={i}
+                  count={count}
+                  details={details}
+                  members={members}
+                  onClickAdd={(e) => {
+                    e.stopPropagation();
+                    setRole(key, true);
+                  }}
+                  onClickRow={() => setRole(key)}
+                  role={role}
+                />
+              );
+            })}
+        </TableBody>
+      </Table>
+    </div>
   );
 };

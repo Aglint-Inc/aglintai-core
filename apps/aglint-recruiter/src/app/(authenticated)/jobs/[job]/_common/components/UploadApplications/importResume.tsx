@@ -1,4 +1,5 @@
 import { Button } from '@components/ui/button';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { File, FileText, Plus, Upload, X } from 'lucide-react';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
@@ -10,7 +11,7 @@ const MAX_FILE_SIZE = 4;
 const FILE_TYPES = ['PDF', 'DOCX', 'TXT'];
 
 export const ImportResume = () => {
-  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const { handleUploadResume } = useJob();
   const { setImportPopup } = useApplicationsActions();
 
@@ -30,7 +31,7 @@ export const ImportResume = () => {
     setSelectedFiles((prev) => [...prev, ...newFiles]);
   };
 
-  const handleDeleteFile = (index) => {
+  const handleDeleteFile = (index: number) => {
     setSelectedFiles((files) => files.filter((_, i) => i !== index));
   };
 
@@ -43,7 +44,7 @@ export const ImportResume = () => {
     }
   };
 
-  const formatFileSize = (bytes) => {
+  const formatFileSize = (bytes: number) => {
     const units = ['B', 'KB', 'MB'];
     let size = bytes;
     let unitIndex = 0;
@@ -67,13 +68,13 @@ export const ImportResume = () => {
       name='file'
       types={FILE_TYPES}
     >
-      <div className='flex h-full items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-slate-50'>
+      <div className='flex h-full items-center justify-center rounded-lg border-2 border-dashed border-border bg-slate-50'>
         <div className='text-center'>
           <Upload strokeWidth={1.5} className='mx-auto h-12 w-12' />
           <h3 className='mt-2 text-sm font-semibold text-gray-900'>
             Import Resume
           </h3>
-          <p className='mt-1 text-sm text-gray-500'>
+          <p className='mt-1 text-sm text-muted-foreground'>
             Drag and drop or click to upload
           </p>
         </div>
@@ -82,12 +83,12 @@ export const ImportResume = () => {
   );
 
   const renderFileList = () => (
-    <div className='space-y-4'>
-      <div className='max-h-[300px] space-y-2 overflow-auto'>
+    <div className='flex h-full flex-col content-between'>
+      <ScrollArea className='h-[450px]'>
         {selectedFiles.map((file, index) => (
           <div
             key={index}
-            className='flex items-center justify-between rounded-md bg-gray-50 p-2'
+            className='mb-2 flex items-center justify-between rounded-md bg-gray-50 p-2'
           >
             {file.type.includes('pdf') ? (
               <FileText className='h-5 w-5 text-blue-500' />
@@ -95,7 +96,7 @@ export const ImportResume = () => {
               <File className='h-5 w-5 text-green-500' />
             )}
             <span className='ml-2 flex-1 truncate'>{file.name}</span>
-            <span className='text-sm text-gray-500'>
+            <span className='text-sm text-muted-foreground'>
               {formatFileSize(file.size)}
             </span>
             <Button
@@ -107,9 +108,9 @@ export const ImportResume = () => {
               <X className='h-4 w-4' />
             </Button>
           </div>
-        ))}
-      </div>
-      <div className='flex items-center justify-between'>
+        ))}{' '}
+      </ScrollArea>
+      <div className='mt-[10px] flex items-center justify-between'>
         <FileUploader
           handleChange={handleInputChange}
           multiple={true}
@@ -122,12 +123,12 @@ export const ImportResume = () => {
             )
           }
         >
-          <Button variant='outline' size='sm'>
+          <Button variant='outline' size='md'>
             <Plus className='mr-2 h-4 w-4' />
             Add More Resume
           </Button>
         </FileUploader>
-        <span className='text-sm text-gray-500'>
+        <span className='text-sm text-muted-foreground'>
           {selectedFiles.length} Resumes
         </span>
       </div>
@@ -135,12 +136,16 @@ export const ImportResume = () => {
   );
 
   return (
-    <div className='flex h-[500px] flex-col'>
-      <div className='mb-4 flex-grow overflow-auto'>
+    <div className='flex h-[550px] flex-col'>
+      <div className='mb-4 h-full flex-grow overflow-auto'>
         {selectedFiles.length === 0 ? renderFileUploader() : renderFileList()}
       </div>
       <div className=''>
-        <Button onClick={handleFileUpload} className='w-full'>
+        <Button
+          onClick={handleFileUpload}
+          disabled={selectedFiles.length === 0}
+          className='w-full'
+        >
           Upload
         </Button>
       </div>

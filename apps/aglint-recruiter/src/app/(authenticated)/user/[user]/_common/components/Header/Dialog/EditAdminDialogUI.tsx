@@ -1,4 +1,5 @@
 import { type employmentTypeEnum } from '@aglint/shared-types';
+import Typography from '@components/typography';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import {
@@ -13,32 +14,30 @@ import {
   type MutableRefObject,
   type SetStateAction,
 } from 'react';
-import { type MemberType } from 'src/app/_common/types/memberType';
 
-import { type useRolesOptions } from '@/authenticated/hooks/useRolesOptions';
+import type { useTenantOfficeLocations } from '@/company/hooks';
+import {
+  type useTenant,
+  type useTenantMembers,
+  type useTenantRoles,
+} from '@/company/hooks';
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
-import UITypography from '@/components/Common/UITypography';
-import { type useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type useAllDepartments } from '@/queries/departments';
-import { type useAllOfficeLocations } from '@/queries/officeLocations';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import {
-  type EditAdminFormErrorType,
-  type EditAdminFormType,
-} from './EditAdminDialog';
+import { type EditAdminFormErrorType, type Formtype } from './EditAdminDialog';
 
 type Props = {
-  form: EditAdminFormType;
+  form: Formtype;
   imageFile: MutableRefObject<File | null>;
   setIsImageChanged: Dispatch<SetStateAction<boolean>>;
-  setForm: Dispatch<SetStateAction<EditAdminFormType>>;
+  setForm: Dispatch<SetStateAction<Formtype>>;
   formError: EditAdminFormErrorType;
-  officeLocations: ReturnType<typeof useAllOfficeLocations>['data'];
-  member: MemberType;
-  recruiterUser: ReturnType<typeof useAuthDetails>['recruiterUser'];
+  officeLocations: ReturnType<typeof useTenantOfficeLocations>['data'];
+  member: ReturnType<typeof useTenantMembers>['allMembers'][number];
+  recruiterUser: ReturnType<typeof useTenant>['recruiter_user'];
   departments: ReturnType<typeof useAllDepartments>['data'];
-  roleOptions: ReturnType<typeof useRolesOptions>['data'];
+  roleOptions: ReturnType<typeof useTenantRoles>['data'];
   memberList: { id: string; name: string }[];
 };
 export const Form = ({
@@ -57,9 +56,9 @@ export const Form = ({
   return (
     <div className='mt-4 space-y-4'>
       <div className='flex items-center space-x-4'>
-        <div className='max-w-[64px]'>
+        <div className='w-16'>
           <ImageUploadManual
-            image={form.profile_image}
+            image={form.profile_image ?? ''}
             size={64}
             imageFile={imageFile}
             setChanges={() => {
@@ -70,10 +69,10 @@ export const Form = ({
 
         <div>
           <p className='text-sm font-medium'>
-            <span className='text-red-500'>Change profile photo</span>{' '}
+            <span className='text-destructive'>Change profile photo</span>{' '}
             (optional)
           </p>
-          <p className='text-sm text-gray-500'>
+          <p className='text-sm text-muted-foreground'>
             Upload a square profile image (PNG or JPEG). Maximum size: 5 MB.
           </p>
         </div>
@@ -86,7 +85,9 @@ export const Form = ({
             id='first_name'
             placeholder='Enter first name'
             value={form.first_name}
-            onChange={(e) => setForm({ ...form, first_name: e.target.value })}
+            onChange={(e) =>
+              setForm({ ...form, first_name: e.target.value || '' })
+            }
             className={formError.first_name ? 'border-red-500' : ''}
           />
         </div>
@@ -95,7 +96,7 @@ export const Form = ({
           <Input
             id='last_name'
             placeholder='Enter last name'
-            value={form.last_name}
+            value={form.last_name ?? ''}
             onChange={(e) => setForm({ ...form, last_name: e.target.value })}
           />
         </div>
@@ -106,7 +107,7 @@ export const Form = ({
         <Input
           id='linked_in'
           placeholder='Enter linkedin url'
-          value={form.linked_in}
+          value={form.linked_in ?? ''}
           onChange={(e) =>
             setForm({ ...form, linked_in: e.target.value.trim() })
           }
@@ -151,9 +152,9 @@ export const Form = ({
         <div className='space-y-2'>
           <Label htmlFor='location'>Location</Label>
           <Select
-            value={form.location_id?.toString()}
+            value={form.office_location_id?.toString()}
             onValueChange={(value) =>
-              setForm({ ...form, location_id: parseInt(value) })
+              setForm({ ...form, office_location_id: parseInt(value) })
             }
           >
             <SelectTrigger>
@@ -170,9 +171,9 @@ export const Form = ({
                   </SelectItem>
                 ))
               ) : (
-                <UITypography className='px-4 py-1 text-sm'>
+                <Typography className='px-4 py-1 text-sm'>
                   No Location
-                </UITypography>
+                </Typography>
               )}
             </SelectContent>
           </Select>
@@ -199,9 +200,9 @@ export const Form = ({
                   </SelectItem>
                 ))
               ) : (
-                <UITypography className='px-4 py-1 text-sm'>
+                <Typography className='px-4 py-1 text-sm'>
                   No Departments
-                </UITypography>
+                </Typography>
               )}
             </SelectContent>
           </Select>
@@ -213,7 +214,7 @@ export const Form = ({
             <div className='space-y-2'>
               <Label htmlFor='role'>Role</Label>
               <Select
-                value={form.role_id}
+                value={form.role_id || ''}
                 onValueChange={(value) => {
                   const selectedRole = roleOptions?.find(
                     (role) => role.id === value,
@@ -237,9 +238,9 @@ export const Form = ({
                       </SelectItem>
                     ))
                   ) : (
-                    <UITypography className='px-4 py-1 text-sm'>
+                    <Typography className='px-4 py-1 text-sm'>
                       No Roles
-                    </UITypography>
+                    </Typography>
                   )}
                 </SelectContent>
               </Select>
@@ -248,7 +249,7 @@ export const Form = ({
               <div className='space-y-2'>
                 <Label htmlFor='manager'>Manager</Label>
                 <Select
-                  value={form.manager_id}
+                  value={form?.manager_id || ''}
                   onValueChange={(value) =>
                     setForm({ ...form, manager_id: value })
                   }

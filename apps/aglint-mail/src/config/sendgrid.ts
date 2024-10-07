@@ -5,10 +5,9 @@ import { CApiError } from '@aglint/shared-utils';
 import { MailSenderError } from '../utils/apiUtils/customErrors';
 import { getOutboundEmail } from './get-outbound-email';
 
-const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
-sgMail.setApiKey(SENDGRID_API_KEY);
-
 export default async function sendMail(data: APISendgridPayload) {
+  const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+  sgMail.setApiKey(SENDGRID_API_KEY);
   const {
     email,
     fromEmail,
@@ -20,7 +19,10 @@ export default async function sendMail(data: APISendgridPayload) {
     html,
   } = data;
   try {
-    if (subject.length === 0 && text.length === 0 && html.length === 0) {
+    if (
+      (subject.length === 0 && text.length === 0 && !html) ||
+      (html && html.length === 0)
+    ) {
       throw new CApiError(
         'SERVER_ERROR',
         'Email must have a subject, text or html',
@@ -58,7 +60,7 @@ export default async function sendMail(data: APISendgridPayload) {
       return 'ok';
     }
     throw new MailSenderError(`mail failed to send`);
-  } catch (error) {
+  } catch (error: any) {
     console.error(error?.response?.body);
     throw new MailSenderError(`mail failed to send`);
   }

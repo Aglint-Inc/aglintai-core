@@ -6,13 +6,12 @@ import { Input } from '@components/ui/input';
 import { Skeleton } from '@components/ui/skeleton';
 import axios from 'axios';
 import Image from 'next/image';
-import posthog from 'posthog-js';
 import { useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { useAllIntegrations } from '@/authenticated/hooks';
+import { useIntegrations } from '@/authenticated/hooks';
+import { useTenant } from '@/company/hooks';
 import { Loader } from '@/components/Common/Loader';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { STATE_ASHBY_DIALOG } from '@/jobs/constants';
 import {
@@ -30,7 +29,7 @@ import { type JobAshby } from './types';
 import { createJobObject, fetchAllJobs } from './utils';
 
 export function AshbyModalComp() {
-  const { recruiter, setRecruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { setIntegrations, resetIntegrations } = useIntegrationActions();
   const integration = useIntegrationStore((state) => state.integrations);
   const router = useRouterPro();
@@ -42,8 +41,8 @@ export function AshbyModalComp() {
   >([]);
   const [initialFetch, setInitialFetch] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
-  const apiRef = useRef(null);
-  const { data: allIntegrations } = useAllIntegrations();
+  const apiRef = useRef<HTMLInputElement | null>(null);
+  const { data: allIntegrations } = useIntegrations();
 
   useEffect(() => {
     if (jobs.status === 'success' && allIntegrations?.ashby_key) {
@@ -52,7 +51,7 @@ export function AshbyModalComp() {
   }, [jobs.status, allIntegrations?.ashby_key]);
 
   const fetchJobs = async () => {
-    const allJobs = await fetchAllJobs(allIntegrations?.ashby_key);
+    const allJobs = await fetchAllJobs(allIntegrations?.ashby_key ?? null!);
 
     const { data } = await supabase
       .from('public_jobs')
@@ -114,13 +113,12 @@ export function AshbyModalComp() {
       toast.error(
         'Sorry unable to import. Please try again later or contact support.',
       );
-      posthog.capture('Error Importing Asbhy Jobs');
       resetIntegrations();
     }
   };
 
   const submitApiKey = async () => {
-    if (!apiRef.current.value) {
+    if (!apiRef.current!.value) {
       setError(true);
       return;
     }
@@ -128,7 +126,7 @@ export function AshbyModalComp() {
       setLoading(true);
       const response = await axios.post('/api/ashby/getPostings', {
         page: 1,
-        apiKey: apiRef.current.value,
+        apiKey: apiRef.current!.value,
         isInitial: true,
       });
 
@@ -138,14 +136,13 @@ export function AshbyModalComp() {
         });
         const responseRec = await axios.post('/api/ashby/saveApiKey', {
           recruiterId: recruiter.id,
-          apiKey: apiRef.current.value,
+          apiKey: apiRef.current!.value,
         });
 
         if (responseRec.status === 200 && responseRec.data[0]?.ashby_key) {
-          setRecruiter(responseRec.data[0]);
           setPostings(response.data?.results);
           setInitialFetch(false);
-          posthog.capture('Asbhy Data Fetched');
+
           setTimeout(() => {
             setIntegrations({
               ashby: {
@@ -193,7 +190,9 @@ export function AshbyModalComp() {
                 type='password'
               />
               {error && (
-                <p className='text-sm text-red-500'>Please enter an API key</p>
+                <p className='text-sm text-destructive'>
+                  Please enter an API key
+                </p>
               )}
               <Button
                 variant='default'
@@ -204,7 +203,7 @@ export function AshbyModalComp() {
                 {loading ? 'Submitting...' : 'Submit'}
               </Button>
               {integration.ashby.step === STATE_ASHBY_DIALOG.ERROR && (
-                <p className='text-sm text-red-500'>
+                <p className='text-sm text-destructive'>
                   Invalid API key. Please try again.
                 </p>
               )}
@@ -234,7 +233,6 @@ export function AshbyModalComp() {
                 disabled={selectedAshbyPostings.length === 0}
                 onClick={() => {
                   importAshby();
-                  posthog.capture('Ashby Jobs successfully imported');
                 }}
                 className='w-full'
               >
@@ -248,10 +246,12 @@ export function AshbyModalComp() {
                         <CardContent className='flex items-center justify-between p-4'>
                           <div>
                             <p className='font-medium'>{post.title}</p>
-                            <p className='text-sm text-gray-500'>
+                            <p className='text-sm text-muted-foreground'>
                               {post.location}
                             </p>
-                            <p className='text-sm text-gray-500'>Live</p>
+                            <p className='text-sm text-muted-foreground'>
+                              Live
+                            </p>
                           </div>
                           <Checkbox
                             checked={selectedAshbyPostings?.some(

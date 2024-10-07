@@ -31,9 +31,10 @@ const defaultProvider: ContextValue = {
 };
 const AvailabilityContext = createContext<ContextValue>(defaultProvider);
 const useAvailabilityContext = () => useContext(AvailabilityContext);
-function AvailabilityProvider({ children }) {
-  const [selectedDayAvailableBlocks, setSelectedDayAvailableBlocks] =
-    useState<CandReqSlotsType['selected_dates']>(null);
+function AvailabilityProvider({ children }: { children: React.ReactNode }) {
+  const [selectedDayAvailableBlocks, setSelectedDayAvailableBlocks] = useState<
+    CandReqSlotsType['selected_dates'] | null
+  >(null);
 
   const [selectedDateSlots, setSelectedDateSlots] = useState<
     CandReqSlotsType[]

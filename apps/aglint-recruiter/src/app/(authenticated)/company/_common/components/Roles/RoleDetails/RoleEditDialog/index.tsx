@@ -1,11 +1,10 @@
 import { Button } from '@components/ui/button';
-import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
-import { useRoleAndPermissionsHook } from '@/company/hooks/useRoleAndPermissionsHook';
-import UIDialog from '@/components/Common/UIDialog';
-import { updateMember } from '@/context/AuthContext/utils';
-import { useAllMembers } from '@/queries/members';
+import { Loader } from '@/common/Loader';
+import UIDialog from '@/common/UIDialog';
+import { useTenantMembers } from '@/company/hooks';
+import { useMemberUpdate } from '@/company/hooks/useMemberUpdate';
 
 import { RoleEditDialogUI } from './ui/RoleEditDialogUI';
 
@@ -18,8 +17,8 @@ function RoleEditDialog({
   role: { role: string; id: string; assignedTo: string[] };
   close: () => void;
 }) {
-  const { members } = useAllMembers();
-  const { refetch } = useRoleAndPermissionsHook();
+  const { members } = useTenantMembers();
+  const { updateMember } = useMemberUpdate();
   const [search, setSearch] = useState('');
   const [selectedMember, setSelectedMember] = useState<
     (typeof members)[number] | null
@@ -37,7 +36,7 @@ function RoleEditDialog({
         `${member.first_name || ''} ${member.last_name || ''}`
           .toLowerCase()
           .includes(search.toLowerCase()) ||
-        member.role.toLowerCase().includes(search.toLowerCase()),
+        member.role?.toLowerCase().includes(search.toLowerCase()),
     );
 
   return (
@@ -53,21 +52,18 @@ function RoleEditDialog({
           <Button
             onClick={async () => {
               setIsLoading(true);
-              await updateMember({
-                data: {
+              if (selectedMember) {
+                await updateMember({
                   user_id: selectedMember.user_id,
                   role_id: role.id,
-                },
-              });
-              refetch();
-              setIsLoading(false);
-              close();
+                });
+                setIsLoading(false);
+                close();
+              }
             }}
             disabled={!selectedMember || isLoading}
           >
-            {isLoading ? (
-              <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-            ) : null}
+            {isLoading ? <Loader /> : null}
             Update
           </Button>
         </>
@@ -77,7 +73,7 @@ function RoleEditDialog({
         filteredMember={filteredMember}
         role={role.role}
         search={search}
-        selectedMember={selectedMember}
+        selectedMember={selectedMember!}
         setSearch={setSearch}
         setSelectedMember={setSelectedMember}
       />

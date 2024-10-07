@@ -5,21 +5,20 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
-import { Calendar } from 'lucide-react';
 
-import { TimeList } from './TimeList';
+import { TimeList, type WorkingHour } from './TimeList';
 
-export const WorkTimeUI = ({ workingHours }) => {
+export const WorkTimeUI = ({
+  workingHours,
+}: {
+  workingHours: WorkingHour[];
+}) => {
   return (
-    <div className='group relative rounded-lg py-4'>
-      <div className='mb-4 flex items-center space-x-2'>
-        <Calendar className='h-4 w-4 text-muted-foreground' />
-        <p className='text-sm font-medium'>Weekly Schedule</p>
-      </div>
-      <div className=''>
+    <div className='group relative rounded-lg'>
+      <div className='max-w-[400px] overflow-hidden rounded-lg border border-border'>
         <Table>
           <TableHeader className='bg-gray-100'>
-            <TableRow>
+            <TableRow className=''>
               <TableHead>Day</TableHead>
               <TableHead>Hours</TableHead>
             </TableRow>

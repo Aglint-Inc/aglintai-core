@@ -9,15 +9,14 @@ import List from './List';
 import { TableHeader } from './TableHeader';
 
 export const Table = memo(() => {
-  const {
-    job: { section_count },
-  } = useJob();
+  const { job } = useJob();
+  const section_count = job?.section_count;
   const status = useApplicationsStore((state) => state.status);
   const { query } = useApplications();
 
-  if ((section_count[status] ?? 0) === 0) return <EmptyList />;
-  if (query.status === 'error') return <>Error</>;
   if (query.status === 'pending') return <Skeleton />;
+  if (query.status === 'error') return <>Error</>;
+  if ((section_count?.[status] ?? 0) === 0) return <EmptyList />;
 
   return <List key={status} loader={<Skeleton />} header={<TableHeader />} />;
 });

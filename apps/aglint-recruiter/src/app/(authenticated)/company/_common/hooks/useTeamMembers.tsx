@@ -1,15 +1,14 @@
 import { useMemo } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant, useTenantMembers } from '@/company/hooks';
 import { useGreenhouseDetails } from '@/queries/greenhouse';
-import { useAllMembers } from '@/queries/members';
 import { api } from '@/trpc/client';
 
 export const useTeamMembers = () => {
-  const { recruiter: tempRecruiter } = useAuthDetails();
+  const { recruiter: tempRecruiter } = useTenant();
   const recruiter = tempRecruiter!;
 
-  const { allMembers, members, refetchMembers } = useAllMembers();
+  const { allMembers, members, refetchMembers } = useTenantMembers();
   const {
     data: syncData,
     isPending,

@@ -3,20 +3,20 @@ import { Badge } from '@components/ui/badge';
 import { TableCell, TableRow } from '@components/ui/table';
 import { CirclePlus } from 'lucide-react';
 
-import { type getRoleAndPermissionsWithUserCount } from '@/company/hooks/useRoleAndPermissionsHook';
-import { UIButton } from '@/components/Common/UIButton';
-import { type useAllMembers } from '@/queries/members';
+import { UIButton } from '@/common/UIButton';
+import type { useTenantMembers } from '@/company/hooks';
+import type { useRoleData } from '@/company/hooks/useRoleAndPermissionsHook';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-type getRoleAndPermissionsWithUserCountType = Awaited<
-  ReturnType<typeof getRoleAndPermissionsWithUserCount>
->['rolesAndPermissions'][number];
+type getRoleAndPermissionsWithUserCountType = NonNullable<
+  ReturnType<typeof useRoleData>['role']
+>;
 
 type Props = {
   role: getRoleAndPermissionsWithUserCountType;
   details: getRoleAndPermissionsWithUserCountType;
   count: number;
-  members: ReturnType<typeof useAllMembers>['members'];
+  members: ReturnType<typeof useTenantMembers>['members'];
   // eslint-disable-next-line no-unused-vars
   onClickAdd: (e: any) => void;
   onClickRow: () => void;
@@ -38,9 +38,11 @@ export const RoleList = ({
       <TableCell className='font-medium'>
         {capitalizeFirstLetter(role.name)}
       </TableCell>
-      <TableCell>{role.description}</TableCell>
+      <TableCell className='w-[42%] text-muted-foreground'>
+        {role.description}
+      </TableCell>
       <TableCell>
-        <div className='flex items-center space-x-2'>
+        <div className='flex items-center gap-1'>
           {count ? (
             <>
               {role.assignedTo.slice(0, 3).map((user_id) => {
@@ -51,21 +53,25 @@ export const RoleList = ({
                 );
                 if (!user) return null;
                 return (
-                  <Avatar key={user_id} className='h-6 w-6'>
+                  <Avatar key={user_id} className='m-0 h-8 w-8 rounded-sm'>
                     <AvatarImage
-                      src={user.profile_image}
+                      src={user.profile_image || undefined}
                       alt={user.first_name}
                     />
-                    <AvatarFallback>{user.first_name[0]}</AvatarFallback>
+                    <AvatarFallback className='m-0 h-8 w-8 rounded-sm bg-gray-200'>
+                      {user.first_name[0]}
+                    </AvatarFallback>
                   </Avatar>
                 );
               })}
               {count > 3 && (
-                <Badge variant='secondary'>+{count - 3} more</Badge>
+                <Badge variant='secondary' className='rounded-sm'>
+                  +{count - 3} more
+                </Badge>
               )}
             </>
           ) : (
-            <p className='text-sm text-gray-500'>
+            <p className='text-sm text-muted-foreground'>
               {`No users with ${details.name}`}
             </p>
           )}

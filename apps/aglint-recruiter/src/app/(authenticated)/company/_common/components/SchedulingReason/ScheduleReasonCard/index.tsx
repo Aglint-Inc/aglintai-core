@@ -1,12 +1,29 @@
 'use client';
 
+import { EmptyState } from '@components/empty-state';
+import {
+  Section,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog';
+import { List, Plus } from 'lucide-react';
 import React, { useState } from 'react';
 
-import UISectionCard from '@/components/Common/UISectionCard';
+import { UIButton } from '@/common/UIButton';
 
-import { DeleteReasonDialog } from './DeleteReasonDialog';
 import { ReasonCardUI } from './ui/ReasonCardUI';
-
 interface ReasonSectionProps {
   title: string;
   description: string;
@@ -26,20 +43,9 @@ interface ScheduleReasonProps {
   sections: ReasonSectionProps[];
 }
 
-export function ScheduleReasonCard({
-  textMainHeading = 'Interview Scheduling Options',
-  textMainHelperText = 'Configure default reasons for candidates to cancel or reschedule their interviews. These reasons will be available as options for candidates when they request to modify their scheduled interviews.',
-  isMainHeadingVisible = true,
-  sections,
-}: ScheduleReasonProps) {
+export function ScheduleReasonCard({ sections }: ScheduleReasonProps) {
   return (
     <div className='w-full py-6'>
-      {isMainHeadingVisible && (
-        <div className='mb-6'>
-          <h2 className='mb-2 text-lg font-bold'>{textMainHeading}</h2>
-          <p className='text-sm text-gray-500'>{textMainHelperText}</p>
-        </div>
-      )}
       <div className='space-y-6'>
         {sections.map((section, index) => (
           <ReasonSection key={index} {...section} />
@@ -99,29 +105,70 @@ function ReasonSection({
 
   return (
     <>
-      <DeleteReasonDialog
-        confirmDelete={confirmDelete}
-        isDeleteDialogOpen={isDeleteDialogOpen}
-        setIsDeleteDialogOpen={setIsDeleteDialogOpen}
-      />
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirm Deletion</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this reason?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmDelete}
+              className='bg-destructive text-destructive-foreground hover:bg-destructive/90'
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
-      <UISectionCard title={title} description={description}>
-        <ReasonCardUI
-          editingIndex={editingIndex}
-          reasons={reasons}
-          editingReason={editingReason}
-          setEditingReason={setEditingReason}
-          setEditingIndex={setEditingIndex}
-          isAddingNew={isAddingNew}
-          setIsAddingNew={setIsAddingNew}
-          handleAdd={handleAdd}
-          handleDelete={handleDelete}
-          handleEdit={handleEdit}
-          handleUpdate={handleUpdate}
-          setNewReason={setNewReason}
-          newReason={newReason}
-        />
-      </UISectionCard>
+      <Section>
+        <SectionHeader>
+          <SectionHeaderText>
+            <SectionTitle>{title}</SectionTitle>
+            <SectionDescription>{description}</SectionDescription>
+          </SectionHeaderText>
+        </SectionHeader>
+        {reasons?.length > 0 || isAddingNew ? (
+          <ReasonCardUI
+            editingIndex={editingIndex}
+            reasons={reasons}
+            editingReason={editingReason}
+            setEditingReason={setEditingReason}
+            setEditingIndex={setEditingIndex}
+            isAddingNew={isAddingNew}
+            setIsAddingNew={setIsAddingNew}
+            handleAdd={handleAdd}
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
+            handleUpdate={handleUpdate}
+            setNewReason={setNewReason}
+            newReason={newReason}
+          />
+        ) : (
+          <EmptyState
+            variant='inline'
+            icon={List}
+            description={`No ${title} added yet.`}
+            primarySlot={
+              <UIButton
+                variant='outline'
+                onClick={() => setIsAddingNew(true)}
+                leftIcon={<Plus />}
+                size='sm'
+              >
+                Add Reason
+              </UIButton>
+            }
+          />
+        )}
+      </Section>
     </>
   );
 }

@@ -1,9 +1,17 @@
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog';
 import type { Dispatch, SetStateAction } from 'react';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
+import { useTenantOfficeLocations } from '@/company/hooks';
 import { manageOfficeLocation } from '@/context/AuthContext/utils';
-import { useAllOfficeLocations } from '@/queries/officeLocations';
 
 function DeleteLocationDialog({
   dialog,
@@ -11,57 +19,54 @@ function DeleteLocationDialog({
 }: {
   dialog: {
     open: boolean;
-    id: number;
+    id: number | null;
   };
   setDialog: Dispatch<
     SetStateAction<{
       open: boolean;
-      id: number;
+      id: number | null;
     }>
   >;
 }) {
-  const { refetch: refetchLocations } = useAllOfficeLocations();
+  const { refetch: refetchLocations } = useTenantOfficeLocations();
   const handleDeleteLocation = async (id: number) => {
     await manageOfficeLocation({ type: 'delete', data: id });
     refetchLocations();
   };
 
   return (
-    <UIDialog
+    <AlertDialog
       open={dialog.open}
-      onClose={() => {
-        setDialog({ open: false, id: null });
-      }}
-      title='Delete Office Location'
-      slotButtons={
-        <>
-          <UIButton
-            variant='secondary'
-            size='sm'
-            onClick={() => {
-              setDialog({ open: false, id: null });
-            }}
+      onOpenChange={(open) => setDialog({ open, id: open ? dialog.id : null })}
+    >
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Delete Office Location</AlertDialogTitle>
+          <AlertDialogDescription>
+            Are you sure you want to delete this office location? This action is
+            permanent.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel
+            onClick={() => setDialog({ open: false, id: null })}
           >
             Cancel
-          </UIButton>
-          <UIButton
-            variant='destructive'
-            size='sm'
+          </AlertDialogCancel>
+          <AlertDialogAction
             onClick={() => {
-              handleDeleteLocation(dialog.id);
+              if (dialog.id) {
+                handleDeleteLocation(dialog.id);
+              }
               setDialog({ open: false, id: null });
             }}
+            className='bg-destructive text-destructive-foreground hover:bg-destructive/90'
           >
             Delete
-          </UIButton>
-        </>
-      }
-    >
-      <p>
-        Are you sure you want to delete this office location? This action is
-        permanent.
-      </p>
-    </UIDialog>
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 

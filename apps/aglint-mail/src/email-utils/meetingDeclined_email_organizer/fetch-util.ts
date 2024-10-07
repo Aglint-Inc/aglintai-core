@@ -7,7 +7,7 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../../utils/email/common/functions';
-import { FetchUtilType } from '../../types/emailfetchUtil';
+import type { FetchUtilType } from '../../types/emailfetchUtil';
 
 export const fetchUtil: FetchUtilType<
   'meetingDeclined_email_organizer'
@@ -80,7 +80,7 @@ export const fetchUtil: FetchUtilType<
       ),
       interviewerFirstName: interviewer.first_name,
       interviewerLastName: interviewer.last_name,
-      meetingDetailsLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/interviews/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=candidate_details" target="_blank">here</a>`,
+      meetingDetailsLink: `<a href="${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/interviews/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=candidate_details" target="_blank">here</a>`,
     };
 
   const react_email_placeholders: EmailTemplateAPi<'meetingDeclined_email_organizer'>['react_email_placeholders'] =

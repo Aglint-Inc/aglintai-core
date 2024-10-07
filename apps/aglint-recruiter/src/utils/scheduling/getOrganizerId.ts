@@ -4,15 +4,16 @@ export const getOrganizerId = async (
   application_id: string,
   supabase: SupabaseType,
 ) => {
-  const { data: app, error: errApp } = await supabase
-    .from('applications')
-    .select(
-      'public_jobs(recruiter,recruiting_coordinator,hiring_manager,sourcer,recruiter_id)',
-    )
-    .eq('id', application_id)
-    .single();
-
-  if (errApp) throw new Error(errApp.message);
+  const app = (
+    await supabase
+      .from('applications')
+      .select(
+        'public_jobs!inner(recruiter,recruiting_coordinator,hiring_manager,sourcer,recruiter_id)',
+      )
+      .eq('id', application_id)
+      .single()
+      .throwOnError()
+  ).data!;
 
   let organizer_id =
     app.public_jobs.recruiting_coordinator ||
@@ -20,14 +21,15 @@ export const getOrganizerId = async (
     app.public_jobs.hiring_manager;
 
   if (!organizer_id) {
-    const { data: recRel, error: errRecRel } = await supabase
-      .from('recruiter_relation')
-      .select('*')
-      .eq('recruiter_id', app.public_jobs.recruiter_id)
-      .eq('role', 'admin')
-      .single();
-
-    if (errRecRel) throw new Error(errRecRel.message);
+    const recRel = (
+      await supabase
+        .from('recruiter_relation')
+        .select('*')
+        .eq('recruiter_id', app.public_jobs.recruiter_id)
+        .eq('role', 'admin')
+        .single()
+        .throwOnError()
+    ).data!;
 
     organizer_id = recRel.user_id;
   }

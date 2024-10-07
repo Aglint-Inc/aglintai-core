@@ -1,3 +1,4 @@
+import { EmptyState } from '@components/empty-state';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import {
@@ -14,11 +15,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { AlertCircle, Briefcase, Clock, MapPin, Pin } from 'lucide-react';
+import {
+  AlertCircle,
+  BriefcaseBusiness,
+  Clock,
+  MapPin,
+  Pin,
+  Search,
+} from 'lucide-react';
 import Image from 'next/image';
 import React from 'react';
 
-import EmptyState from '@/components/Common/EmptyStates/EmptyStates';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJobs } from '@/jobs/hooks';
 import { calculateTimeDifference } from '@/jobs/utils/calculateTimeDifference';
@@ -38,13 +45,18 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
   const router = useRouterPro();
 
   if (jobs?.length === 0) {
-    return <EmptyState type={'job-jobList'} />;
+    return (
+      <EmptyState
+        icon={Search}
+        description='No matching jobs found for this search query.'
+      />
+    );
   }
 
   return (
     <Table>
-      <TableHeader>
-        <TableRow className='border-b border-gray-200'>
+      <TableHeader className='bg-gray-100'>
+        <TableRow>
           <TableHead className='py-3 font-semibold text-gray-600'>
             Job Title
           </TableHead>
@@ -68,18 +80,20 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
           <TableRow
             key={job.id}
             className='cursor-pointer hover:bg-gray-50'
-            onClick={() => router.push(ROUTES['/jobs/[job]']({ job: job.id }))}
+            onClick={() =>
+              router.push(ROUTES['/jobs/[job]']({ job: job?.id ?? null! }))
+            }
           >
             <TableCell className='font-medium'>
               <div className='flex flex-col'>
                 <div className='flex items-center space-x-2'>
                   {getAtsBadge(job.posted_by) || (
-                    <Briefcase className='h-5 w-5 px-1 text-gray-400' />
+                    <BriefcaseBusiness className='h-5 w-5 px-1 text-gray-400' />
                   )}
                   <span>{capitalizeSentence(job?.job_title ?? '---')}</span>
                 </div>
                 {/* <div className='flex items-center space-x-2 mt-1'>
-                  <Building2 className='h-4 w-4 text-gray-400' />
+                  <Building className='h-4 w-4 text-gray-400' />
                   <span className='text-sm text-gray-600'>
                     {job?.department ?? '---'}
                   </span>
@@ -111,7 +125,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
             <TableCell>
               <div className='flex items-center space-x-2'>
                 <Clock className='h-4 w-4 text-gray-400' />
-                <span className='text-sm text-gray-500'>
+                <span className='text-sm text-muted-foreground'>
                   {getTimestamp(job)}
                 </span>
               </div>
@@ -126,14 +140,14 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                       : 'bg-gray-100 text-gray-800'
                   }`}
                 >
-                  {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
+                  {job.status!.charAt(0).toUpperCase() + job.status!.slice(1)}
                 </Badge>
                 {job.status === 'published' &&
                   (!job.jd_json || !job.description) && (
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger>
-                          <AlertCircle className='h-4 w-4 text-red-500' />
+                          <AlertCircle className='h-4 w-4 text-destructive' />
                         </TooltipTrigger>
                         <TooltipContent>
                           <p>Missing Job Description</p>
@@ -173,7 +187,7 @@ const getAtsBadge = (postedBy: string) => {
     [POSTED_BY.ASHBY]: '/images/ats/ashby-job-badge.svg',
   };
 
-  const src = badgeMap[postedBy];
+  const src = badgeMap[postedBy as keyof typeof badgeMap];
   return src ? (
     <Image
       src={src}

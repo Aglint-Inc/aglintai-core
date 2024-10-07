@@ -1,13 +1,13 @@
 import {
   type DatabaseTable,
   type RecruiterUserType,
-  type schedulingSettingType,
+  type SchedulingSettingType,
   type SupabaseType,
 } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { NextResponse } from 'next/server';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
-import timeZone from '@/utils/timeZone';
 import { companyType } from '@/utils/userRoles';
 
 export const dynamic = 'force-dynamic';
@@ -24,7 +24,7 @@ type emp = 'fulltime' | 'parttime' | 'contractor';
 
 const employment: emp[] = ['fulltime', 'parttime', 'contractor'];
 
-export async function POST(req) {
+export async function POST(req: Request) {
   const supabaseAdmin = getSupabaseServer();
   try {
     const {
@@ -35,39 +35,43 @@ export async function POST(req) {
       forms: user[];
     } = await req.json();
 
-    const { data: recruiter_user } = await supabaseAdmin
-      .from('recruiter_relation')
-      .select(
-        'recruiter_user!public_recruiter_relation_user_id_fkey(user_id),roles(name)',
-      )
-      .eq('recruiter_id', recruiter_id)
-      .eq('recruiter_user.status', 'active')
-      .throwOnError();
-
-    const { data: recruiter } = await supabaseAdmin
-      .from('recruiter')
-      .select('*')
-      .eq('id', recruiter_id)
-      .single()
-      .throwOnError();
-
-    const { data: locations } = await supabaseAdmin
-      .from('office_locations')
-      .select('*')
-      .eq('recruiter_id', recruiter_id)
-      .throwOnError();
-
-    const { data: departments } = await supabaseAdmin
-      .from('departments')
-      .select('*')
-      .eq('recruiter_id', recruiter_id)
-      .throwOnError();
-
-    const { data: roles } = await supabaseAdmin
-      .from('roles')
-      .select('*')
-      .eq('recruiter_id', recruiter_id)
-      .throwOnError();
+    const [recruiter_user, recruiter, locations, departments, roles] =
+      await Promise.all([
+        (
+          await supabaseAdmin
+            .from('recruiter_relation')
+            .select(
+              'recruiter_user!public_recruiter_relation_user_id_fkey!inner(user_id),roles!inner(name)',
+            )
+            .eq('recruiter_id', recruiter_id)
+            .eq('recruiter_user.status', 'active')
+        ).data!,
+        (
+          await supabaseAdmin
+            .from('recruiter')
+            .select('scheduling_settings')
+            .eq('id', recruiter_id)
+            .single()
+        ).data!,
+        (
+          await supabaseAdmin
+            .from('office_locations')
+            .select('*')
+            .eq('recruiter_id', recruiter_id)
+        ).data!,
+        (
+          await supabaseAdmin
+            .from('departments')
+            .select('*')
+            .eq('recruiter_id', recruiter_id)
+        ).data!,
+        (
+          await supabaseAdmin
+            .from('roles')
+            .select('*')
+            .eq('recruiter_id', recruiter_id)
+        ).data!,
+      ]);
 
     const manager_ids = recruiter_user
       .filter((user) => user?.recruiter_user?.user_id)
@@ -101,7 +105,6 @@ export async function POST(req) {
         position: form.title,
         department_id: departmentId,
         role_id: role.id,
-        role: role.name,
         is_calendar_connected: true,
         manager_id:
           role.name === 'admin'
@@ -110,12 +113,7 @@ export async function POST(req) {
         office_location_id: locationId,
         scheduling_settings: {
           ...recruiter.scheduling_settings,
-          timeZone: timeZone.find(
-            (item) =>
-              item.label ===
-              locations.find((loc) => loc.id === locationId).timezone,
-          ),
-        } as schedulingSettingType,
+        } as SchedulingSettingType,
       } as InviteUserAPIType['request']['users'][number];
     });
 
@@ -126,8 +124,7 @@ export async function POST(req) {
     );
 
     const results = await Promise.allSettled(requests);
-
-    const addedUserEmails = [];
+    const addedUserEmails: string[] = [];
 
     results.forEach((result) => {
       if (result.status === 'fulfilled') {
@@ -141,8 +138,13 @@ export async function POST(req) {
       { message: 'success', data: addedUserEmails },
       { status: 200 },
     );
-  } catch (e) {
-    return NextResponse.json({ message: e.message }, { status: 400 });
+  } catch (e: any) {
+    return NextResponse.json(
+      {
+        message: `please check the department, location and roles are present\n${e.message}`,
+      },
+      { status: 400 },
+    );
   }
 }
 
@@ -169,55 +171,58 @@ export async function registerMember(
     },
     email_confirm: true,
   });
+
+  //
   if (error) throw new Error(error.message);
+  if (!data.user) throw new Error('User not created');
+  if (!data.user.email) throw new Error('User email not found');
   const email = data.user.email;
   const userId = data.user.id;
-  const { data: recUser } = await supabaseAdmin
-    .from('recruiter_user')
-    .insert({
-      user_id: userId,
-      first_name: user.first_name,
-      last_name: user.last_name,
-      email: email,
-      position: user.position,
-      is_calendar_connected: true,
-      department_id: user.department_id,
-      office_location_id: user.office_location_id,
-      employment: user.employment,
-      status: 'invited',
-      scheduling_settings: user.scheduling_settings,
-      remote_id: user.remote_id,
-    })
-    .select(
-      '*,  office_location:office_locations(*), department:departments(id,name)',
-    )
-    .single()
-    .throwOnError();
+  const recUser = supabaseWrap(
+    await supabaseAdmin
+      .from('recruiter_user')
+      .insert({
+        user_id: userId,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: email,
+        position: user.position,
+        is_calendar_connected: true,
+        department_id: user.department_id,
+        office_location_id: user.office_location_id,
+        employment: user.employment,
+        status: 'invited',
+        scheduling_settings: user.scheduling_settings,
+        remote_id: user.remote_id,
+      })
+      .select(
+        '*,  office_location:office_locations(*), department:departments(id,name)',
+      )
+      .single(),
+  );
 
-  const { data: relation, error: relationError } = await supabaseAdmin
-    .from('recruiter_relation')
-    .insert({
-      recruiter_id,
-      user_id: userId,
-      role: 'interviewer',
-      role_id: user.role_id,
-      manager_id: user.manager_id,
-      is_active: true,
-      created_by: create_id,
-    })
-    .select('id, role_id, manager_id, created_by, roles(name)')
-    .single();
-  if (relationError) {
-    throw new Error(
-      'user relation creation failed!\n message' + relationError.message,
-    );
+  const relation = supabaseWrap(
+    await supabaseAdmin
+      .from('recruiter_relation')
+      .insert({
+        recruiter_id,
+        user_id: userId,
+        role_id: user.role_id,
+        manager_id: user.manager_id,
+        is_active: true,
+        created_by: create_id,
+      })
+      .select('id, role_id, manager_id, created_by, roles!inner(name)')
+      .single(),
+  );
+  if (!relation.created_by) {
+    throw new Error('Created by not found');
   }
-
-  const recUserType: RecruiterUserType = {
+  const recUserType = {
     ...recUser,
     role_id: relation.role_id,
     role: relation.roles.name,
-    manager_id: relation.manager_id,
+    manager_id: relation?.manager_id ?? null,
     created_by: relation.created_by,
     recruiter_relation_id: relation.id,
   };

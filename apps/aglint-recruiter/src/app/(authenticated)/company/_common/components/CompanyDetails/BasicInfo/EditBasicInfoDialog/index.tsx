@@ -1,3 +1,4 @@
+import { useToast } from '@components/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
@@ -11,14 +12,15 @@ import {
   useRef,
   useState,
 } from 'react';
-import { toast } from 'sonner';
 
-import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
-import UIDialog from '@/components/Common/UIDialog';
-// import ImageUpload from '@/components/Common/ImageUpload';
-import UISelectDropDown from '@/components/Common/UISelectDropDown';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import ImageUploadManual from '@/common/ImageUpload/ImageUploadManual';
+import { UIButton } from '@/common/UIButton';
+import UIDialog from '@/common/UIDialog';
+// import ImageUpload from '@/common/ImageUpload';
+import UISelectDropDown from '@/common/UISelectDropDown';
+import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 
 import SocialComp from './SocialComp';
@@ -41,22 +43,21 @@ const EditBasicInfoDialog = ({
   editDialog: boolean;
   setEditDialog: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { recruiter, setRecruiter, recruiterUser } = useAuthDetails();
+  const { recruiter } = useTenant();
   const [isError, setError] = useState(false);
-  const [IsLoading, setIsLoading] = useState(false);
-  const [logo, setLogo] = useState(null);
+  const [logo, setLogo] = useState<string | null>(null);
   const [nameError, setNameError] = useState(false);
   const { checkPermissions } = useRolesAndPermissions();
   const isFormDisabled = !checkPermissions(['manage_company']);
-  const imageFile = useRef(null);
+  const imageFile = useRef<File>(null);
   const [isImageChanged, setIsImageChanged] = useState(false);
+  const [recruiterLocal, setRecruiterLocal] =
+    useState<typeof recruiter>(recruiter);
 
-  const [recruiterLocal, setRecruiterLocal] = useState<typeof recruiter | null>(
-    recruiter,
-  );
+  const { toast } = useToast();
 
   useEffect(() => {
-    setLogo(recruiter?.logo);
+    setLogo(recruiter.logo);
   }, [recruiter]);
 
   const handleChange = async (recruit: typeof recruiter) => {
@@ -82,62 +83,56 @@ const EditBasicInfoDialog = ({
       return false;
     return true;
   };
+
+  const { mutateAsync, isPending } = api.tenant.updateTenant.useMutation({
+    onError: () =>
+      toast({
+        title: 'Unable to update company info',
+        variant: 'destructive',
+      }),
+  });
+
   const handleUpdate = async () => {
-    delete recruiterLocal.recruiter_preferences;
-
     if (!isValidation()) return;
-
     try {
-      setIsLoading(true);
-
+      // setIsLoading(true);
       let logo = recruiter.logo;
-
-      if (isImageChanged) {
+      if (isImageChanged && imageFile.current) {
         const { data } = await supabase.storage
-          .from('recruiter-user')
-          .upload(`public/${recruiterUser.user_id}`, imageFile.current, {
+          .from('company-logo')
+          .upload(`public/${recruiter.id}`, imageFile.current!, {
             cacheControl: '3600',
             upsert: true,
           });
-
         if (data?.path && imageFile?.current?.size) {
-          logo = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/recruiter-user/${data?.path}?t=${new Date().toISOString()}`;
+          logo = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/company-logo/${data?.path}?t=${new Date().toISOString()}`;
           setError(false);
         } else {
           logo = null;
         }
         setIsImageChanged(false);
       }
-
-      const { error } = await supabase
-        .from('recruiter')
-        .update({
-          ...recruiterLocal,
-          name: recruiterLocal.name ? recruiterLocal.name : recruiter?.name,
-          departments: undefined,
-          office_locations: undefined,
-          logo: logo,
-        })
-        .eq('id', recruiter.id)
-        .select()
-        .throwOnError();
-
-      if (!error) {
-        setRecruiter({
-          ...recruiterLocal,
-          logo: logo,
-          name: recruiterLocal.name ? recruiterLocal.name : recruiter?.name,
-        });
-        setEditDialog(false);
-      }
-    } catch (e) {
-      toast.error(e.message);
-    } finally {
-      setIsLoading(false);
+      await mutateAsync({
+        name: recruiterLocal.name ? recruiterLocal.name : recruiter?.name,
+        industry: recruiterLocal.industry,
+        company_website: recruiterLocal.company_website,
+        socials: recruiterLocal.socials,
+        logo,
+        employee_size: recruiterLocal.employee_size,
+      });
+      setEditDialog(false);
+    } catch (e: any) {
+      toast({
+        title: e.message,
+        variant: 'destructive',
+      });
     }
   };
 
-  function compareObjects(obj1, obj2) {
+  function compareObjects(
+    obj1: Record<string, any>,
+    obj2: Record<string, any>,
+  ) {
     const propertiesToCompare: (keyof typeof recruiter)[] = [
       'name',
       'industry',
@@ -168,9 +163,13 @@ const EditBasicInfoDialog = ({
           <Button variant='outline' onClick={handleClose}>
             Cancel
           </Button>
-          <Button onClick={handleUpdate} disabled={IsLoading || isSame}>
-            {IsLoading ? 'Updating...' : 'Update'}
-          </Button>
+          <UIButton
+            onClick={handleUpdate}
+            disabled={isSame}
+            isLoading={isPending}
+          >
+            Update
+          </UIButton>
         </>
       }
     >
@@ -189,8 +188,8 @@ const EditBasicInfoDialog = ({
         <div className='flex items-center space-x-4'>
           <div className='max-w-[64px]'>
             <ImageUploadManual
-              image={logo}
-              size={64}
+              image={logo!}
+              size={70}
               imageFile={imageFile}
               setChanges={() => {
                 setIsImageChanged(true);
@@ -216,6 +215,7 @@ const EditBasicInfoDialog = ({
             <Input
               id='company-name'
               placeholder='Ex. Acme Inc.'
+              // @ts-ignore
               value={recruiterLocal?.name}
               onChange={(e) => {
                 handleChange({
@@ -238,7 +238,7 @@ const EditBasicInfoDialog = ({
             <Input
               id='industry'
               placeholder='Ex. Healthcare'
-              value={recruiterLocal?.industry}
+              value={recruiterLocal?.industry ?? undefined}
               onChange={(e) => {
                 handleChange({
                   ...recruiterLocal,
@@ -255,7 +255,7 @@ const EditBasicInfoDialog = ({
                 name: size,
                 value: size,
               }))}
-              value={recruiterLocal?.employee_size}
+              value={recruiterLocal?.employee_size ?? undefined}
               onValueChange={(value) => {
                 handleChange({
                   ...recruiterLocal,
@@ -269,7 +269,7 @@ const EditBasicInfoDialog = ({
             <Input
               id='company-website'
               placeholder='https://companydomain.com'
-              value={recruiterLocal?.company_website}
+              value={recruiterLocal?.company_website ?? undefined}
               onChange={(e) => {
                 handleChange({
                   ...recruiterLocal,

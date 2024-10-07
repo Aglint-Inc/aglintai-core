@@ -12,10 +12,10 @@ import { cn } from '@lib/utils';
 import { UserX } from 'lucide-react';
 import React, { type FC, memo } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITextField from '@/components/Common/UITextField';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import type { Form } from '@/jobs/types';
 import { useCompanyMembers } from '@/queries/company-members';
 import { formatOfficeLocation } from '@/utils/formatOfficeLocation';
@@ -133,9 +133,11 @@ const JobCompany: FC<MetaForms> = memo(({ name, value, onChange }) => {
 JobCompany.displayName = 'JobCompany';
 
 const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const options = (recruiter?.office_locations ?? []).map((s) => ({
+    // @ts-ignore
     name: formatOfficeLocation(s),
+    // TODO: fix with null checks
     value: s.id,
   }));
   return (
@@ -165,7 +167,7 @@ JobLocation.displayName = 'JobLocation';
 
 type Defaults = {
   [id in keyof Pick<Form, 'workplace_type' | 'job_type'>]: {
-    value: Form[id]['value'];
+    value: NonNullable<Form[id]>['value'];
     label: string;
   }[];
 };
@@ -186,9 +188,9 @@ const defaults: Defaults = {
   ],
 };
 const getOptions = (type: keyof Defaults) => {
-  return defaults[type].reduce(
+  return defaults[type]!.reduce(
     (acc, { label, value }) => {
-      acc.push({ name: label, value });
+      acc.push({ name: label, value: value! });
       return acc;
     },
     [] as { name: string; value: string }[],
@@ -223,7 +225,7 @@ const JobType: FC<MetaForms> = memo(({ name, value, onChange }) => {
 JobType.displayName = 'JobType';
 
 const JobDepartment: FC<MetaForms> = memo(({ name, value, onChange }) => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const options = recruiter.departments.map((department) => ({
     name: department.name,
     value: department.id,
@@ -254,7 +256,9 @@ const JobDepartment: FC<MetaForms> = memo(({ name, value, onChange }) => {
 });
 JobDepartment.displayName = 'JobDepartment';
 
-type Roles = ReturnType<typeof useCompanyMembers>['data'][number]['role'];
+type Roles = NonNullable<
+  ReturnType<typeof useCompanyMembers>['data']
+>[number]['role'];
 
 const roles = {
   'hiring manager': () => [...new Set<Roles>(['admin', 'hiring manager'])],
@@ -308,10 +312,10 @@ export const JobCoordinator: FC<MetaForms & { label?: boolean }> = memo(
       <UISelectDropDown
         onValueChange={(value) => {
           if (value === '_') onChange(name, null);
-          const coordinator = data.find((c) => c.user_id === value);
+          const coordinator = (data ?? []).find((c) => c.user_id === value);
           if (coordinator) onChange(name, coordinator.user_id);
         }}
-        label={label && capitalizeAll(name)}
+        label={label ? capitalizeAll(name) : '---'}
         menuOptions={options}
         required={value.required}
         value={safeValue.toString()}
@@ -368,7 +372,7 @@ JobDescription.displayName = 'JobDescription';
 
 type MetaForms = {
   name: keyof Form;
-  value: Form[keyof Form];
+  value: NonNullable<Form[keyof Form]>;
   // eslint-disable-next-line no-unused-vars
   onChange: (name: keyof Form, value: any) => void;
 };

@@ -3,7 +3,7 @@ import {
   type RecruiterUserType,
 } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
-import { toast } from '@components/hooks/use-toast';
+import { useToast } from '@components/hooks/use-toast';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
@@ -13,17 +13,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@components/ui/select';
-import converter from 'number-to-words';
 import { type Dispatch, type SetStateAction } from 'react';
 
-import { type useRolesOptions } from '@/authenticated/hooks/useRolesOptions';
-import { UIButton } from '@/components/Common/UIButton';
-import UITextField from '@/components/Common/UITextField';
+import { UIButton } from '@/common/UIButton';
+import UITextField from '@/common/UITextField';
+import type {
+  useTenant,
+  useTenantOfficeLocations,
+  useTenantRoles,
+} from '@/company/hooks';
 import { type useAllDepartments } from '@/queries/departments';
-import { type useAllOfficeLocations } from '@/queries/officeLocations';
+import { api } from '@/trpc/client';
+import { numberToText } from '@/utils/number/numberToText';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
-import { reinviteUser } from '../../utils';
 import { type InviteUserFormErrorType, type InviteUserFormType } from '..';
 
 type Props = {
@@ -31,17 +34,17 @@ type Props = {
   menu: 'addMember' | 'pendingMember';
   formError: InviteUserFormErrorType;
   setForm: Dispatch<SetStateAction<InviteUserFormType>>;
-  locations: ReturnType<typeof useAllOfficeLocations>['data'];
+  locations: ReturnType<typeof useTenantOfficeLocations>['data'];
   departments: ReturnType<typeof useAllDepartments>['data'];
-  roleOptions: ReturnType<typeof useRolesOptions>['data'];
+  roleOptions: ReturnType<typeof useTenantRoles>['data'];
   memberList: {
     id: string;
     name: string;
   }[];
   pendingList: RecruiterUserType[];
-  isResendDisable: string;
-  setResendDisable: Dispatch<SetStateAction<string>>;
-  recruiterUser: RecruiterUserType;
+  isResendDisable: string | null;
+  setResendDisable: Dispatch<SetStateAction<string | null>>;
+  recruiterUser: ReturnType<typeof useTenant>['recruiter_user'];
 };
 
 export const AddMemberDialogUI = ({
@@ -58,6 +61,16 @@ export const AddMemberDialogUI = ({
   setResendDisable,
   recruiterUser,
 }: Props) => {
+  const { toast } = useToast();
+  const { mutateAsync: reinviteUser } =
+    api.tenant['resend-invite'].useMutation();
+  if (!roleOptions) {
+    toast({
+      variant: 'destructive',
+      title: 'failed to load role Options',
+    });
+    roleOptions = [];
+  }
   return (
     <div className='mt-4 space-y-4'>
       {menu === 'addMember' ? (
@@ -176,13 +189,15 @@ export const AddMemberDialogUI = ({
             <div className='grid grid-cols-2 gap-4'>
               <Select
                 value={form.role_id?.toString()}
-                onValueChange={(value) =>
+                onValueChange={(value) => {
+                  const role =
+                    roleOptions.find((op) => op.id === value)?.name || null;
                   setForm({
                     ...form,
                     role_id: value,
-                    role: roleOptions.find((op) => op.id === value)?.name,
-                  })
-                }
+                    role,
+                  });
+                }}
               >
                 <SelectTrigger
                   className={formError.role ? 'border-red-500' : ''}
@@ -225,16 +240,11 @@ export const AddMemberDialogUI = ({
             </div>
           </form>
           <div className='flex space-x-2'></div>
-          {/* {isDisable && (
-          <div className='flex items-center justify-center'>
-            <Loader2 className='h-6 w-6 animate-spin text-primary' />
-          </div>
-        )} */}
         </>
       ) : menu === 'pendingMember' ? (
         <div className='space-y-4'>
-          <p className='text-sm text-gray-500'>
-            You currently have {converter.toWords(pendingList?.length)} pending
+          <p className='text-sm text-muted-foreground'>
+            You currently have {numberToText(pendingList?.length)} pending
             invites awaiting your response.
           </p>
           {pendingList.map((member) => (
@@ -245,7 +255,7 @@ export const AddMemberDialogUI = ({
               <div className='flex items-center space-x-4'>
                 <Avatar>
                   <AvatarImage
-                    src={member.profile_image}
+                    src={member.profile_image || undefined}
                     alt={getFullName(member.first_name, member.last_name)}
                   />
                   <AvatarFallback>
@@ -264,23 +274,22 @@ export const AddMemberDialogUI = ({
                 size='sm'
                 onClick={() => {
                   setResendDisable(member.user_id);
-                  reinviteUser(member.email, recruiterUser.user_id).then(
-                    ({ error, emailSend }) => {
-                      setResendDisable(null);
-                      if (!error && emailSend) {
+                  if (recruiterUser.user_id)
+                    reinviteUser({ email: member.email })
+                      .then(() => {
+                        setResendDisable(null);
                         toast({
                           variant: 'default',
                           title: 'Invite sent successfully.',
                         });
-                      } else {
+                      })
+                      .catch(() => {
+                        setResendDisable(null);
                         toast({
                           variant: 'destructive',
                           title: 'Failed to resend invite',
-                          description: error,
                         });
-                      }
-                    },
-                  );
+                      });
                 }}
                 disabled={isResendDisable === member.user_id}
               >

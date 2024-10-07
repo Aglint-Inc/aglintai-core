@@ -1,10 +1,9 @@
-import { type DB } from '@aglint/shared-types';
+import type { Custom, DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { interviewPlanRecruiterUserQuery } from '@/constant/interviewPlanRecruiterUserQuery';
 import { type JobCreate } from '@/queries/jobs/types';
-import { type CustomType } from '@/queries/scheduling-dashboard/types';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -33,10 +32,10 @@ export default handler;
 type Response = Awaited<ReturnType<typeof getInterviewPlans>>;
 export type GetInterviewPlansType = {
   request: Parameters<typeof getInterviewPlans>[0];
-  respone: CustomType<
+  respone: Custom<
     Response,
     {
-      interview_session: CustomType<
+      interview_session: Custom<
         Response[number]['interview_session'],
         {
           members_meta: {
@@ -77,5 +76,5 @@ const getInterviewPlans = async ({ job_id }: { job_id: string }) => {
     });
   }
 
-  return response;
+  return response ?? [];
 };

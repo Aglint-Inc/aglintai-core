@@ -155,7 +155,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
   } catch (error) {
     console.log('error', error);
-    return res.status(500).send(error.message);
+    return res.status(500).send((error as Error).message);
   }
 };
 

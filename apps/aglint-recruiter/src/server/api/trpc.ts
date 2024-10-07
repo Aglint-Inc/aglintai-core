@@ -7,13 +7,13 @@
  * need to use are documented accordingly near the end.
  */
 import type { DatabaseTable } from '@aglint/shared-types';
+import type { User } from '@supabase/supabase-js';
 import { initTRPC, TRPCError } from '@trpc/server';
 import type { ProcedureBuilder } from '@trpc/server/unstable-core-do-not-import';
 import superjson from 'superjson';
 import { type TypeOf, ZodError, type ZodSchema } from 'zod';
 
 import { createPrivateClient, createPublicClient } from '../db';
-import { UNAUTHENTICATED, UNAUTHORIZED } from '../enums';
 import { authorize } from '../utils';
 import { getDecryptKey } from './routers/ats/greenhouse/util';
 
@@ -84,16 +84,18 @@ export const createTRPCRouter = t.router;
 const timingMiddleware = t.middleware(async ({ next, path }) => {
   const start = Date.now();
 
-  // if (t._config.isDev) {
-  //   const waitMs = Math.floor(Math.random() * 400) + 100;
-  //   await new Promise((resolve) => setTimeout(resolve, waitMs));
-  // }
+  if (t._config.isDev) {
+    const waitMs = Math.floor(Math.random() * 400) + 1000;
+    await new Promise((resolve) => setTimeout(resolve, waitMs));
+  }
 
   const result = await next();
 
   const end = Date.now();
-  // eslint-disable-next-line no-console
-  console.log(`[TRPC] ${path} took ${end - start}ms to execute`);
+  if (process.env.NEXT_PUBLIC_HOST_NAME === 'http://localhost:3000') {
+    // eslint-disable-next-line no-console
+    console.log(`[TRPC] ${path} took ${end - start}ms to execute`);
+  }
   return result;
 });
 
@@ -107,7 +109,7 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
       code: 'UNPROCESSABLE_CONTENT',
       message: 'Invalid payload',
     });
-  const { ats } = (
+  const recruiter_preferences = (
     await adminDb
       .from('recruiter_preferences')
       .select('ats')
@@ -115,20 +117,33 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
       .single()
       .throwOnError()
   ).data;
+  if (!recruiter_preferences)
+    throw new TRPCError({
+      code: 'UNPROCESSABLE_CONTENT',
+      message: 'No preference found',
+    });
+  const { ats } = recruiter_preferences;
   if (ats === 'Aglint')
     throw new TRPCError({
       code: 'FORBIDDEN',
       message: 'Not supported',
     });
   let decryptKey: string;
-  const { greenhouse_key, greenhouse_metadata, ashby_key, lever_key } = (
+  const integrations = (
     await adminDb
       .from('integrations')
       .select('greenhouse_key, greenhouse_metadata, lever_key, ashby_key')
       .eq('recruiter_id', recruiter_id)
       .single()
       .throwOnError()
-  ).data;
+  ).data!;
+  if (!integrations)
+    throw new TRPCError({
+      code: 'UNPROCESSABLE_CONTENT',
+      message: 'No integrations found',
+    });
+  const { greenhouse_key, greenhouse_metadata, ashby_key, lever_key } =
+    integrations;
   if (ats === 'Greenhouse') {
     if (!greenhouse_key)
       throw new TRPCError({
@@ -161,35 +176,45 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
   });
 });
 
+/**
+ *  @see https://stackoverflow.com/questions/3297048/403-forbidden-vs-401-unauthorized-http-responses
+ */
 const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
   const db = createPrivateClient();
 
-  const {
-    data: { user },
-  } = await db.auth.getUser();
+  let user: User | null = null;
 
-  if (!user) {
-    throw new TRPCError({ code: 'FORBIDDEN', message: UNAUTHENTICATED });
-  }
+  if (process.env.NODE_ENV === 'development')
+    user = (await db.auth.getSession())?.data?.session?.user ?? null;
+  else user = (await db.auth.getUser()).data.user;
+
+  if (!user)
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'User unauthenticated',
+    });
 
   const user_id = user.id;
 
   const { data } = await db
     .from('recruiter_relation')
     .select(
-      'recruiter_id, roles(name, role_permissions(permissions(name, is_enable)))',
+      'recruiter_id,recruiter(primary_admin), roles!inner(name, role_permissions!inner(permissions!inner(name, is_enable)))',
     )
     .eq('user_id', user.id)
     .single()
     .throwOnError();
+  data?.recruiter?.primary_admin;
 
-  if (!data) {
-    throw new TRPCError({ code: 'FORBIDDEN', message: UNAUTHENTICATED });
-  }
+  if (!data || !data?.roles?.role_permissions)
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'User unauthenticated',
+    });
 
   const {
     recruiter_id,
-    roles: { role_permissions },
+    roles: { name: role, role_permissions },
   } = data;
   const permissions = role_permissions.reduce(
     (acc, { permissions: { is_enable, name } }) => {
@@ -200,13 +225,15 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
   );
 
   if (!authorize(path, permissions))
-    throw new TRPCError({ code: 'UNAUTHORIZED', message: UNAUTHORIZED });
+    throw new TRPCError({ code: 'FORBIDDEN', message: 'User unauthorized' });
 
   return await next({
     ctx: {
       ...ctx,
       user_id,
       recruiter_id,
+      role,
+      is_primary_admin: data.recruiter?.primary_admin === user_id,
     },
   });
 });
@@ -222,9 +249,7 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
 export const publicProcedure = t.procedure.use(timingMiddleware);
 export type PublicProcedure<T = unknown> = Procedure<typeof publicProcedure, T>;
 
-export const atsProcedure = t.procedure
-  .use(timingMiddleware)
-  .use(atsMiddleware);
+export const atsProcedure = publicProcedure.use(atsMiddleware);
 export type ATSProcedure<T = unknown> = Procedure<typeof atsProcedure, T>;
 
 /**
@@ -235,9 +260,7 @@ export type ATSProcedure<T = unknown> = Procedure<typeof atsProcedure, T>;
  * are always accessible through the middleware chain, and you can safely assume the presence of an authenticated user.
  */
 
-export const privateProcedure = t.procedure
-  .use(timingMiddleware)
-  .use(authMiddleware);
+export const privateProcedure = publicProcedure.use(authMiddleware);
 export type PrivateProcedure<T = unknown> = Procedure<
   typeof privateProcedure,
   T
@@ -259,7 +282,7 @@ type Procedure<
     >
     ? {
         ctx: TContext & TContextOverrides;
-        input: Required<TypeOf<T>>;
+        input: TypeOf<T>;
       }
     : never
   : U extends ProcedureBuilder<
@@ -277,3 +300,6 @@ type Procedure<
         input: undefined;
       }
     : never;
+
+export type RequiredPayload<T extends Record<any, any>[] | Record<any, any>> =
+  T extends Record<any, any>[] ? Required<T[number]>[] : Required<T>;

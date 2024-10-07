@@ -15,4 +15,4 @@ export const companySettingTabs = [
   'agentTemplate',
   'portalSettings',
 ] as const;
-export type companySettingTabsType = (typeof companySettingTabs)[number];
+export type CompanySettingTabsType = (typeof companySettingTabs)[number];

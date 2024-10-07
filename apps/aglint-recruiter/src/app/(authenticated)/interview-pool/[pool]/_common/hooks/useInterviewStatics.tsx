@@ -1,8 +1,8 @@
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { api } from '@/trpc/client';
 
 export function useInterviewStatistics(module_id: string) {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { data, isFetched } =
     api.analytics.interview.interview_statistics.useQuery(
       {
@@ -10,6 +10,7 @@ export function useInterviewStatistics(module_id: string) {
       },
       {
         enabled: !!recruiter.id,
+        staleTime: Infinity,
       },
     );
   return {
@@ -41,28 +42,30 @@ function getInterval(interval: {
 }
 
 export function useCandidatePipeline(module_id: string) {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { data, isFetched } =
     api.analytics.interview.candidate_pipeline.useQuery(
       {
         module_id,
       },
       {
-        enabled: !!recruiter.id,
+        enabled: !!recruiter?.id,
+        staleTime: Infinity,
       },
     );
   return { data, isFetched };
 }
 
 export function useInterviewerPerformance(module_id: string) {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { data, isFetched } =
     api.analytics.interview.interviewer_performance.useQuery(
       {
         module_id,
       },
       {
-        enabled: !!recruiter.id,
+        enabled: !!recruiter?.id,
+        staleTime: Infinity,
       },
     );
   return {

@@ -1,9 +1,9 @@
-/* eslint-disable security/detect-object-injection */
 import type {
   DatabaseFunctions,
   DatabaseTable,
   DatabaseTableUpdate,
 } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { toast as specialToast } from '@components/hooks/use-toast';
 import { type RealtimePostgresInsertPayload } from '@supabase/supabase-js';
@@ -48,7 +48,7 @@ export const requestQueries = {
       queryFn: async () =>
         getRequests(await getUnfilteredRequests({ payload, sort, filters })),
       refetchInterval:
-        process.env.NODE_ENV === 'development' ? 1000 : undefined, //NOTE: only required in local db
+        process.env.NODE_ENV === 'development' ? 30000 : undefined, //NOTE: only required in local db
       placeholderData: {
         urgent_request: [],
         schedule_request: [],
@@ -72,7 +72,7 @@ export const requestQueries = {
       mutationKey: requestQueries.requests_mutationKey(method),
       status: 'pending',
     } as MutationFilters,
-    select: (mutation) => mutation.state.variables as U,
+    select: (mutation: any) => mutation.state.variables as U,
   }),
   requests_invalidate: () => ({
     predicate: ((query) =>
@@ -99,15 +99,15 @@ export const requestQueries = {
       requestQueries.request_progress_key(),
       { request_id },
     ] as const,
-  all_request_progress_predicate: () => (query) =>
+  all_request_progress_predicate: () => (query: any) =>
     query.queryKey.includes(requestQueries.request_progress_key()) &&
     query.state.data !== undefined,
   request_progress_predicate:
     ({ request_id }: GetRequestProgress) =>
-    (query) =>
+    (query: any) =>
       query.queryKey.includes(requestQueries.request_progress_key()) &&
       query.state.data !== undefined &&
-      !!query.queryKey.find((key) => key?.request_id === request_id),
+      !!query.queryKey.find((key: any) => key?.request_id === request_id),
   request_progress: ({
     request_id,
     enabled = true,
@@ -118,7 +118,7 @@ export const requestQueries = {
       placeholderData: [],
       refetchOnMount: true,
       refetchInterval:
-        process.env.NODE_ENV === 'development' ? 1000 : undefined,
+        process.env.NODE_ENV === 'development' ? 30000 : undefined,
       queryKey: requestQueries.request_progress_queryKey({ request_id }),
       queryFn: async () =>
         (
@@ -128,7 +128,7 @@ export const requestQueries = {
             .eq('request_id', request_id)
             .order('updated_at', { ascending: true })
             .throwOnError()
-        ).data,
+        ).data ?? [],
     }),
   request_workflow: ({
     request_id,
@@ -143,13 +143,15 @@ export const requestQueries = {
       gcTime: request_id ? GC_TIME : 0,
       queryKey: requestQueries.requests_workflow_queryKey({ request_id }),
       queryFn: async () => {
-        const d = (
+        const d = supabaseWrap(
           await supabase
             .from('workflow')
-            .select('*, workflow_action(*)')
+            .select('*, workflow_action!inner(*)')
             .eq('request_id', request_id)
-            .throwOnError()
-        ).data;
+            .eq('workflow_type', 'request'),
+          false,
+        );
+
         return d ?? [];
       },
     }),
@@ -302,7 +304,7 @@ export const useRequestRealtime = () => {
           queryClient.setQueryData<RequestResponse>(
             queryKey,
             getRequests(
-              Object.values(queryData)
+              Object.values(queryData!)
                 .flatMap((entry) => entry)
                 .reduce((acc, curr) => {
                   if (curr.id === payload.new.id)
@@ -332,7 +334,7 @@ export const useRequestRealtime = () => {
           queryClient.setQueryData<RequestResponse>(
             queryKey,
             getRequests(
-              Object.values(queryData)
+              Object.values(queryData!)
                 .flatMap((entry) => entry)
                 .reduce((acc, curr) => {
                   if (curr.id !== (payload.old as any).id) acc.push(curr);
@@ -355,7 +357,7 @@ export const useRequestRealtime = () => {
         .forEach(([queryKey, queryData]) => {
           queryClient.setQueryData<RequestProgress[]>(
             queryKey,
-            [...queryData, payload.new].toSorted(
+            [...queryData!, payload.new].toSorted(
               (a, z) =>
                 dayjsLocal(a.created_at).date() -
                 dayjsLocal(z.created_at).date(),
@@ -376,7 +378,7 @@ export const useRequestRealtime = () => {
         .forEach(([queryKey, queryData]) => {
           queryClient.setQueryData<RequestProgress[]>(
             queryKey,
-            queryData.reduce((acc, curr) => {
+            queryData!.reduce((acc, curr) => {
               if (curr.id === payload.new.id) acc.push(payload.new);
               else acc.push(curr);
               return acc;
@@ -395,7 +397,7 @@ export const useRequestRealtime = () => {
         .forEach(([queryKey, queryData]) => {
           queryClient.setQueryData<RequestProgress[]>(
             queryKey,
-            queryData.reduce((acc, curr) => {
+            queryData!.reduce((acc, curr) => {
               if (curr.id !== (payload.old as any).id) acc.push(curr);
               return acc;
             }, [] as RequestProgress[]),
@@ -431,12 +433,11 @@ type RequestsFilterKeys =
   | 'assigneeList';
 type RequestFilterValues = {
   is_new: DatabaseTable['request']['is_new'];
-  status: DatabaseTable['request']['status'][];
+  status: string[];
   title: DatabaseTable['request']['title'];
-  type: DatabaseTable['request']['type'][];
+  type: string[];
   created_at: DatabaseTable['request']['created_at'];
   end_at: DatabaseTable['request']['created_at'];
-  // assignee_id: DatabaseTable['request']['assignee_id'][];
   jobs: string[];
   applications?: string[];
   assignerList?: string[];
@@ -493,9 +494,6 @@ export const getUnfilteredRequests = async ({
     );
   }
 
-  // if (assignee_id?.length)
-  //   query.or(`assignee_id.in.(${assignee_id.join(',')})`);
-
   if (status?.length) query.or(`status.in.(${status.join(',')})`);
 
   if (filterType?.length) query.or(`type.in.(${filterType.join(',')})`);
@@ -551,7 +549,6 @@ export const getRequests = (response: Request[]) => {
           cancel_schedule_request: [],
           decline_request: [],
           completed_request: [],
-          // eslint-disable-next-line no-unused-vars
         } as { [_id in Sections]: typeof response },
       ),
     ) as [Sections, typeof response][]
@@ -570,7 +567,6 @@ export const getRequests = (response: Request[]) => {
       }
       return acc;
     },
-    // eslint-disable-next-line no-unused-vars
     {} as { [_id in Sections]: typeof response },
   );
 };
@@ -587,7 +583,6 @@ const requestSort = (request: Request[]) => {
         return acc;
       },
       { to_do: [], in_progress: [], rest: [] } as {
-        // eslint-disable-next-line no-unused-vars
         [_id in SortRequest]: typeof request;
       },
     ),
@@ -610,7 +605,7 @@ export const getRequestProgress = async ({ request_id }: GetRequestProgress) =>
       .eq('request_id', request_id)
       .order('created_at', { ascending: true })
       .throwOnError()
-  ).data;
+  ).data ?? [];
 
 type CreateRequests = DatabaseFunctions['create_session_request']['Args'];
 const createRequests = async (requestPayload: CreateRequests) =>
@@ -620,10 +615,7 @@ type UpdateRequest = {
   requestId: DatabaseTable['request']['id'];
   requestPayload: Omit<DatabaseTableUpdate['request'], 'id'>;
 };
-const updateRequest = async ({
-  requestId,
-  requestPayload,
-}: UpdateRequest) =>
+const updateRequest = async ({ requestId, requestPayload }: UpdateRequest) =>
   await supabase
     .from('request')
     .update(requestPayload)

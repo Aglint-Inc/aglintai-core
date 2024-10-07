@@ -1,15 +1,15 @@
-import type { DatabaseTableInsert } from '@aglint/shared-types';
+import type { DatabaseTable } from '@aglint/shared-types';
 import { Textarea } from '@components/ui/textarea';
 import dayjs from 'dayjs';
 import { Edit2 } from 'lucide-react';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 import { type MemberType } from 'src/app/_common/types/memberType';
 
+import { useTenant } from '@/company/hooks';
 import MemberCard from '@/components/Common/MemberCard';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 import UpdateMembers from '@/components/Common/UpdateMembers';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useMemberList } from '@/hooks/useMemberList';
 import { useJob } from '@/job/hooks';
 import { ScheduleInterviewPop } from '@/jobs/job/application/components/InterviewTab/ScheduleInterviewPop';
 import { RequestOption } from '@/jobs/job/application/components/ScheduleDialog';
@@ -24,7 +24,7 @@ function CreateRequest({
   setSelectedSession,
   selectedSession,
 }: {
-  setRequest: Dispatch<SetStateAction<DatabaseTableInsert['request']>>;
+  setRequest: Dispatch<SetStateAction<DatabaseTable['request'] | null>>;
   priority: 'urgent' | 'standard';
   setPriority: Dispatch<SetStateAction<'urgent' | 'standard'>>;
   note: string;
@@ -36,16 +36,18 @@ function CreateRequest({
   const {
     job: { hiring_manager, recruiting_coordinator, sourcer, recruiter },
   } = useJob();
-  const { recruiterUser } = useAuthDetails();
-  const selectedMember =
-    membersStatus === 'success' &&
-    members.find(
-      (member) =>
-        member.user_id === recruiting_coordinator ||
-        hiring_manager ||
-        sourcer ||
-        recruiter,
-    );
+  const { recruiter_user } = useTenant();
+  const selectedMember = (
+    membersStatus === 'success'
+      ? members.find(
+          (member) =>
+            member.user_id === recruiting_coordinator ||
+            hiring_manager ||
+            sourcer ||
+            recruiter,
+        )
+      : null
+  )!;
   const [selectedInterviewer, setSelectedInterviewer] =
     useState<MemberType>(selectedMember);
 
@@ -84,10 +86,10 @@ function CreateRequest({
             sourcer ||
             recruiter,
 
-          assigner_id: recruiterUser.user_id,
+          assigner_id: recruiter_user.user_id,
           type: 'schedule_request',
           status: 'to_do',
-        };
+        } as typeof pre;
       });
     }
   }, [status]);
@@ -95,7 +97,7 @@ function CreateRequest({
   useEffect(() => {
     if (priority) {
       setRequest((pre) => {
-        const preData = { ...pre };
+        const preData = { ...pre! };
         return {
           ...preData,
           priority: priority,
@@ -143,7 +145,7 @@ function CreateRequest({
                   handleChange={(member) => {
                     setSelectedInterviewer(member);
                     setRequest((pre) => {
-                      const preData = { ...pre };
+                      const preData = { ...pre! };
                       return {
                         ...preData,
                         assignee_id: member.user_id,
@@ -153,7 +155,7 @@ function CreateRequest({
                   updateButton={
                     <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                   }
-                  members={members}
+                  members={members!}
                 />
               </div>
             )

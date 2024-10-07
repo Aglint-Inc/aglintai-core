@@ -4,11 +4,11 @@ import {
   type CompServiceKeyCred,
   type InterviewModuleType,
   type NewCalenderEvent,
-  type schedulingSettingType,
+  type SchedulingSettingType,
 } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { type CustomSchedulingSettingsUser } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
+import { dayjsLocal } from '@aglint/shared-utils';
 
-import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 import { type GoogleCalender } from '@/services/GoogleCalender/google-calender';
 
 import { getSupabaseServer } from '../supabase/supabaseAdmin';
@@ -67,26 +67,35 @@ export const seedCalendersUtil = (
   const supabaseAdmin = getSupabaseServer();
 
   let comp_details: {
-    comp_schedule_setting: schedulingSettingType;
+    comp_schedule_setting: SchedulingSettingType;
     companyCred: CompServiceKeyCred;
   };
-  let interview_modules: InterviewModuleType[];
+  let interview_modules: InterviewModuleType[] | null;
   const fetchDetails = async (company_id: string) => {
-    const [rec_details] = supabaseWrap(
+    const rec_details = (
       await supabaseAdmin
         .from('recruiter')
         .select('scheduling_settings,integrations(*)')
-        .eq('id', company_id),
-    );
+        .eq('id', company_id)
+        .single()
+        .throwOnError()
+    ).data;
+    if (!rec_details) {
+      throw new Error('No company found');
+    }
     const { scheduling_settings: comp_schedule_setting } = rec_details;
 
-    interview_modules = supabaseWrap(
+    interview_modules = (
       await supabaseAdmin
         .from('interview_module')
         .select()
-        .eq('recruiter_id', company_id),
-    );
-    const interviewers = supabaseWrap(
+        .eq('recruiter_id', company_id)
+        .throwOnError()
+    ).data;
+    if (!interview_modules) {
+      throw new Error('No modules found');
+    }
+    const interviewers = (
       await supabaseAdmin
         .from('interview_module_relation')
         .select(
@@ -95,13 +104,19 @@ export const seedCalendersUtil = (
         .in(
           'module_id',
           interview_modules.map((i) => i.id),
-        ),
-    );
+        )
+        .throwOnError()
+    ).data;
+    if (!interviewers) {
+      throw new Error('No interviewers found');
+    }
 
     const uniq_inters = Array.from(new Set(interviewers.map((i) => i.user_id)));
 
     return {
-      company_cred_hash_str: rec_details.integrations.service_json,
+      company_cred_hash_str: rec_details.integrations
+        ? rec_details.integrations.service_json
+        : null,
       comp_schedule_setting,
       interview_type_details: interviewers,
       uniq_inters,
@@ -109,8 +124,8 @@ export const seedCalendersUtil = (
   };
   const deleteAllMeetings = async (google_cal: GoogleCalender) => {
     const cal_events = await google_cal.getAllCalenderEvents(
-      userTzDayjs(cal_start_date).toISOString(),
-      userTzDayjs(cal_end_date).toISOString(),
+      dayjsLocal(cal_start_date).toISOString(),
+      dayjsLocal(cal_end_date).toISOString(),
     );
 
     for (const evt of cal_events) {
@@ -177,10 +192,14 @@ export const seedCalendersUtil = (
         duration: generateMeetingDuration(),
       };
     }
+    throw new Error('Invalid random number');
   };
 
   const getSeedEvent = (meeting_type: MeetingTypeEnum) => {
-    const getRandomArrayIdx = (arr_length): number => {
+    if (!interview_modules) {
+      throw new Error('No interview modules found');
+    }
+    const getRandomArrayIdx = (arr_length: number): number => {
       return Math.floor(Math.random() * arr_length);
     };
     const new_cal_event: NewCalenderEvent = {
@@ -230,7 +249,7 @@ export const seedCalendersUtil = (
   const fillEventsForTheDay = async (
     curr_day: string,
     google_cal: GoogleCalender,
-    int_schd_sett: schedulingSettingType,
+    int_schd_sett: CustomSchedulingSettingsUser,
     monthly_interviewer_config: MeetingLimitsConfig,
   ) => {
     const day_interviewer_config: MeetingLimitsConfig = {
@@ -242,7 +261,7 @@ export const seedCalendersUtil = (
       [MeetingTypeEnum.RecruiterBlock]: { occ_cnt: 0 },
       [MeetingTypeEnum.NOMeeting]: { occ_cnt: 0 },
     };
-    let curr_time = userTzDayjs(curr_day)
+    let curr_time = dayjsLocal(curr_day)
       .tz(int_schd_sett.timeZone.tzCode)
       .startOf('day')
       .set('hours', 9);
@@ -253,7 +272,7 @@ export const seedCalendersUtil = (
     ) {
       return;
     }
-    const work_end_time = userTzDayjs(curr_day)
+    const work_end_time = dayjsLocal(curr_day)
       .tz(int_schd_sett.timeZone.tzCode)
       .startOf('day')
       .set('hours', 17);

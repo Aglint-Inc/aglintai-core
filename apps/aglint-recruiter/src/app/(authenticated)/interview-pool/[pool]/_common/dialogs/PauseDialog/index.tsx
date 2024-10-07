@@ -1,12 +1,12 @@
+import Typography from '@components/typography';
 import { Checkbox } from '@components/ui/checkbox';
+import { UIAlert } from '@components/ui-alert';
 import dayjs from 'dayjs';
 import { useEffect, useMemo, useState } from 'react';
 
-import { UIAlert } from '@/components/Common/UIAlert';
 import { UIButton } from '@/components/Common/UIButton';
 import { UIDatePicker } from '@/components/Common/UIDatePicker';
 import UIDialog from '@/components/Common/UIDialog';
-import UITypography from '@/components/Common/UITypography';
 import { supabase } from '@/utils/supabase/client';
 
 import { optionsPause } from '../../../../_common/constants/const';
@@ -51,6 +51,7 @@ function PauseDialog() {
   }, [selUser?.user_id]);
 
   const fetchSessionDetails = async () => {
+    if (!selUser) return;
     try {
       const { data: meetInt } = await supabase
         .from('meeting_interviewers')
@@ -64,11 +65,15 @@ function PauseDialog() {
         .select('id,job_title')
         .in(
           'id',
-          meetInt.flatMap((meet) => meet.job_id),
+          (meetInt || []).flatMap((meet) => meet.job_id),
         )
         .throwOnError();
 
-      setConnectedJobs(jobs);
+      const typedJobs = (jobs || []).filter(
+        (j): j is { id: string; job_title: string } => j?.job_title !== null,
+      );
+
+      setConnectedJobs(typedJobs);
     } catch (e) {
       //
     }
@@ -90,7 +95,7 @@ function PauseDialog() {
             isLoading={isSaving}
             variant='default'
             onClick={async () => {
-              if (isSaving) return;
+              if (isSaving || !pause_json || !selUser) return;
               else {
                 setIsSaving(true);
                 await pauseHandler({
@@ -110,34 +115,30 @@ function PauseDialog() {
       }
     >
       <div className='flex flex-col gap-2'>
-        <UIAlert
-          type='small'
-          color={'warning'}
-          iconName={'CircleAlert'}
-          title={'Pausing the interviewer'}
-          description={
-            'By pausing the interviewer, the member won’t be considered for any new interviews scheduled with this module until the pause is lifted. Existing interviews will not be affected.'
-          }
-        />
+        <UIAlert type='warning' title='Pausing the interviewer'>
+          <div className='mt-2 flex flex-col space-y-2'>
+            <Typography type='small'>
+              By pausing the interviewer, the member won&apos;t be considered
+              for any new interviews scheduled with this module until the pause
+              is lifted. Existing interviews will not be affected.
+            </Typography>
+          </div>
+        </UIAlert>
         {connectedJobs.length > 0 && (
           <UIAlert
-            type='small'
-            color={'warning'}
-            iconName={'CircleAlert'}
-            title={`Here is a list of job's interview plan that will be impacted:`}
-            actions={
+            type='warning'
+            title="Here is a list of job's interview plan that will be impacted:"
+            action={
               <div className='flex flex-col'>
-                <UITypography type='small'>
+                <Typography type='small'>
                   {connectedJobs.flatMap((job) => job.job_title).join(', ')}
-                </UITypography>
+                </Typography>
               </div>
             }
           />
         )}
-        <div className='space-y-1'>
-          <UITypography type='small' color='#2F3941'>
-            Pause For
-          </UITypography>
+        <div className='space-y-2'>
+          <Typography type='small'>Pause For</Typography>
           {optionsPause.map((option) => (
             <div
               key={option.type}
@@ -148,45 +149,63 @@ function PauseDialog() {
               }}
             >
               <Checkbox checked={selectedType === option.type} />
-              <UITypography type='small' className='text-neutral-800'>
+              <Typography type='small' className=''>
                 {option.label}
-              </UITypography>
+              </Typography>
               {option.description && (
-                <UITypography type='small'>{option.description}</UITypography>
+                <Typography type='small'>{option.description}</Typography>
               )}
             </div>
           ))}
           {selectedType === 'custom' && (
             <div className='flex w-full space-x-1'>
               <UIDatePicker
-                value={new Date(pause_json?.start_date)}
+                value={
+                  pause_json?.start_date
+                    ? new Date(pause_json.start_date)
+                    : new Date()
+                }
                 onAccept={(newValue) => {
-                  if (dayjs(newValue).toISOString() < pause_json?.end_date) {
-                    setPauseJson({
-                      ...pause_json,
-                      start_date: dayjs(newValue).toISOString(),
-                    });
-                  } else {
-                    setPauseJson({
-                      ...pause_json,
-                      start_date: dayjs(newValue).toISOString(),
-                      end_date: null,
-                    });
+                  if (pause_json) {
+                    if (dayjs(newValue).toISOString() < pause_json?.end_date) {
+                      setPauseJson({
+                        ...pause_json,
+                        start_date: dayjs(newValue).toISOString(),
+                        end_date: dayjs(newValue).add(1, 'day').toISOString(),
+                      });
+                    } else {
+                      setPauseJson({
+                        ...pause_json,
+                        start_date: dayjs(newValue).toISOString(),
+                      });
+                    }
                   }
                 }}
                 minDate={new Date(currentDate.toISOString())}
               />
               <UIDatePicker
-                value={new Date(pause_json?.end_date)}
+                value={
+                  pause_json?.end_date
+                    ? new Date(pause_json.end_date)
+                    : new Date()
+                }
                 onAccept={(newValue) => {
-                  if (dayjs(newValue).toISOString() > pause_json?.start_date) {
-                    setPauseJson({
-                      ...pause_json,
-                      end_date: dayjs(newValue).toISOString(),
-                    });
+                  if (pause_json) {
+                    if (
+                      dayjs(newValue).toISOString() > pause_json?.start_date
+                    ) {
+                      setPauseJson({
+                        ...pause_json,
+                        end_date: dayjs(newValue).toISOString(),
+                      });
+                    }
                   }
                 }}
-                minDate={new Date(pause_json?.start_date)}
+                minDate={
+                  pause_json?.start_date
+                    ? new Date(pause_json.start_date)
+                    : new Date()
+                }
               />
             </div>
           )}

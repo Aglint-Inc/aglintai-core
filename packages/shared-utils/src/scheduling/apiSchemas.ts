@@ -25,7 +25,8 @@ const scheduling_options_schema = z
       .optional()
       .default({}),
   })
-  .optional();
+  .optional()
+  .default({});
 
 const schema_find_availability_payload = z.object({
   session_ids: z.array(z.string()),
@@ -33,7 +34,7 @@ const schema_find_availability_payload = z.object({
   candidate_tz: z.string(),
   start_date_str: z.string(),
   end_date_str: z.string(),
-  options: scheduling_options_schema.nullish().default({}),
+  options: scheduling_options_schema.optional().default({}),
 });
 
 const schema_find_interview_slot = z.object({
@@ -41,7 +42,7 @@ const schema_find_interview_slot = z.object({
   recruiter_id: z.string(),
   candidate_tz: z.string(),
   schedule_date: z.string(),
-  options: scheduling_options_schema.nullish().default({}),
+  options: scheduling_options_schema.optional().default({}),
 });
 
 const schema_find_slots_date_range = z.object({

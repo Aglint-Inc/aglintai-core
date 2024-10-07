@@ -26,7 +26,13 @@ import {
   startOfYear,
   subDays,
 } from 'date-fns';
-import { Briefcase, Building2, CalendarIcon, MapPin, X } from 'lucide-react';
+import {
+  BriefcaseBusiness,
+  Building,
+  CalendarIcon,
+  MapPin,
+  X,
+} from 'lucide-react';
 import React, { useState } from 'react';
 import { useAnalyticsContext } from 'src/app/(authenticated)/reports/_common/context/AnalyticsContext/AnalyticsContextProvider';
 
@@ -67,7 +73,7 @@ export default function Component() {
     });
   };
 
-  const applyFilter = (filters) => {
+  const applyFilter = (filters: any) => {
     handleSetFilter(filters);
   };
   const clear_all =
@@ -138,7 +144,7 @@ export default function Component() {
             (job) => handleFilterChange({ job: job }),
             'job',
             filtersOptions.job,
-            <Briefcase className='h-4 w-4' />,
+            <BriefcaseBusiness className='h-4 w-4' />,
           )}
 
           {renderSelect(
@@ -146,7 +152,7 @@ export default function Component() {
             (department) => handleFilterChange({ department: department }),
             'department',
             filtersOptions.department,
-            <Building2 className='h-4 w-4' />,
+            <Building className='h-4 w-4' />,
           )}
 
           {renderSelect(
@@ -186,7 +192,7 @@ export default function Component() {
                 {dateOption === 'custom' && (
                   <Calendar
                     mode='range'
-                    selected={filters.dateRange}
+                    selected={filters.dateRange!}
                     // onSelect={setDateRange}
                     // initialFocus
                   />
@@ -248,7 +254,8 @@ const dateOptions = [
 
 const MapDateOption = (value: string) => {
   const today = new Date();
-  let from: Date, to: Date;
+  let from: Date = new Date();
+  let to: Date = new Date();
   switch (value) {
     case 'today':
       from = to = today;

@@ -22,17 +22,24 @@ export const handleJobApi = async <T extends keyof ApiRouteTypes>(
   payload: ApiRouteTypes[T]['request'],
   signal?: AbortSignal,
 ) => {
-  if (payload[UploadApiFormData.PARAMS] && payload[UploadApiFormData.FILES]) {
-    const params = Object.entries(payload[UploadApiFormData.PARAMS])
+  if (
+    payload[UploadApiFormData.PARAMS as keyof typeof payload] &&
+    payload[UploadApiFormData.FILES as keyof typeof payload]
+  ) {
+    const params = Object.entries(
+      //@ts-ignore
+      payload[UploadApiFormData.PARAMS as keyof typeof payload],
+    )
       .reduce((acc, [key, value]) => {
         if (value) acc.push(`${key}=${encodeURIComponent(value as string)}`);
         return acc;
-      }, [])
+      }, [] as string[])
       .join('&');
     const { data } = await axios<ApiRouteTypes[T]['response']>({
       method: 'post',
       url: `/api/job/${route}?${params}`,
-      data: payload[UploadApiFormData.FILES],
+
+      data: payload[UploadApiFormData.FILES as keyof typeof payload],
       timeout: 60000,
       signal: signal,
     });

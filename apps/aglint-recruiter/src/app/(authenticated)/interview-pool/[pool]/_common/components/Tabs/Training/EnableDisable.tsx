@@ -1,10 +1,10 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
-import { Settings } from 'lucide-react';
+import { GraduationCap, Settings } from 'lucide-react';
 import Link from 'next/link';
 
-import { UIAlert } from '@/components/Common/UIAlert';
+import { EmptyState } from '@/common/EmptyState';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 
@@ -29,13 +29,13 @@ function EnableDisable() {
       <DisableTrainingDialog {...props} />
       <TrainingSettingDrawer {...props} />
       {!editModule?.settings?.require_training ? (
-        <UIAlert
-          title='To add trainee interviewers and track their progress, enable training using the button on the right.'
-          color={'warning'}
-          actions={
+        <EmptyState
+          icon={GraduationCap}
+          header='Enable Training'
+          description='To add trainee interviewers and track their progress, enable training.'
+          primarySlot={
             <UIButton
-              variant='outline'
-              size='sm'
+              variant='default'
               disabled={isBannerLoading}
               onClick={() => enableDiabaleTraining({ type: 'enable' })}
             >
@@ -46,7 +46,7 @@ function EnableDisable() {
       ) : (
         <>
           {
-            <div className='flex flex-col gap-2 w-full'>
+            <div className='flex w-full flex-col gap-2'>
               <TrainingSetting
                 isApprovalVisible={editModule?.settings?.reqruire_approval}
                 isDisable={!editModule?.settings?.require_training}
@@ -59,7 +59,7 @@ function EnableDisable() {
                 textShadow={`${editModule.settings.noShadow} shadow interviews required by each trainee`}
                 textReverseShadow={`${editModule.settings.noReverseShadow} reverse shadow interviews required by each trainee`}
                 slotButton={
-                  checkPermissions(['interview_types']) ? (
+                  checkPermissions && checkPermissions(['interview_types']) ? (
                     <Button variant='outline' onClick={() => setOpen(true)}>
                       <Settings className='mr-2 h-4 w-4' />
                       Settings

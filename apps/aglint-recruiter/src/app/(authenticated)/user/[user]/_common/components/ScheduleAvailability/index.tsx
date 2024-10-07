@@ -1,11 +1,17 @@
-import { type schedulingSettingType } from '@aglint/shared-types';
-import { Pencil } from 'lucide-react';
+import { type SchedulingSettingType } from '@aglint/shared-types';
+import {
+  Section,
+  SectionActions,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
-import UISectionCard from '@/components/Common/UISectionCard';
 
-import { type InterviewerDetailType } from '../../hooks/useInterviewer';
+import { useInterviewer } from '../../hooks/useInterviewer';
 import { EditAvailabiityDialog } from './Dialog/EditAvailabiityDialog';
 import { ScheduleAvailabilityUI } from './ui/ScheduleAvailabilityUI';
 
@@ -21,53 +27,41 @@ export type ScheduleKeywordType = {
   keywords: string[];
 };
 
-export default function ScheduleAvailability({
-  schedulingSettings,
-  interviewTodayWeek,
-}: {
-  schedulingSettings: NonNullable<InterviewerDetailType['scheduling_settings']>;
-  interviewTodayWeek: NonNullable<
-    InterviewerDetailType['interview_week_today']
-  >;
-}) {
+export default function ScheduleAvailability() {
+  const { data } = useInterviewer();
   const [isEditOpen, setIsEditOpen] = useState(false);
+
+  if (!data) return <></>;
+
+  const { scheduling_settings, interview_week_today } = data;
   const {
     total_hours_this_week,
     total_interviews_this_week,
     total_hours_today,
     total_interviews_today,
-  } = interviewTodayWeek;
+  } = interview_week_today;
+
+  const {
+    interviewLoad: { weeklyLimit, dailyLimit },
+    schedulingKeyWords,
+  } = scheduling_settings;
 
   const interviewLoads: InterviewLoadItemType[] = [
     {
       title: 'Week',
-      type:
-        schedulingSettings?.interviewLoad?.weeklyLimit.type === 'Interviews'
-          ? 'Interview'
-          : 'Hour',
+      type: weeklyLimit.type === 'Interviews' ? 'Interview' : 'Hour',
       count:
-        schedulingSettings?.interviewLoad?.weeklyLimit.type === 'Interviews'
-          ? total_interviews_this_week +
-              ' / ' +
-              schedulingSettings?.interviewLoad?.weeklyLimit.value || 0
-          : total_hours_this_week +
-              ' / ' +
-              schedulingSettings?.interviewLoad?.weeklyLimit.value || 0,
+        weeklyLimit.type === 'Interviews'
+          ? total_interviews_this_week + ' / ' + weeklyLimit.value || 0
+          : total_hours_this_week + ' / ' + weeklyLimit.value || 0,
     },
     {
       title: 'Today',
-      type:
-        schedulingSettings?.interviewLoad?.dailyLimit.type === 'Interviews'
-          ? 'Interview'
-          : 'Hour',
+      type: dailyLimit.type === 'Interviews' ? 'Interview' : 'Hour',
       count:
-        schedulingSettings?.interviewLoad?.dailyLimit.type === 'Interviews'
-          ? total_interviews_today +
-              ' / ' +
-              schedulingSettings?.interviewLoad?.dailyLimit.value || 0
-          : total_hours_today +
-              ' / ' +
-              schedulingSettings?.interviewLoad?.dailyLimit.value || 0,
+        dailyLimit.type === 'Interviews'
+          ? total_interviews_today + ' / ' + dailyLimit.value || 0
+          : total_hours_today + ' / ' + dailyLimit.value || 0,
     },
   ];
 
@@ -76,58 +70,62 @@ export default function ScheduleAvailability({
       title: 'Free',
       description:
         'When these keywords appear in a calendar event title, overlapping interviews will not be considered scheduling conflicts.',
-      keywords: schedulingSettings.schedulingKeyWords.free,
+      keywords: schedulingKeyWords.free,
     },
     {
       title: 'Soft Conflicts',
       description:
         'When these keywords are found in a calendar event title overlapping will be as soft conflicts and will require your confirmation to schedule.',
-      keywords: schedulingSettings.schedulingKeyWords.SoftConflicts,
+      keywords: schedulingKeyWords.SoftConflicts,
     },
     {
       title: 'Out of Office',
       description:
         'When any of these specified keywords appear in a calendar event title, the day will be considered an Out of Office day and interviews will not be scheduled.',
-      keywords: schedulingSettings.schedulingKeyWords.outOfOffice,
+      keywords: schedulingKeyWords.outOfOffice,
     },
     {
       title: 'Recruiting Blocks',
       description:
         'If these keywords are found in a calendar event title, these blocks will be given first preference for scheduling interviews.',
-      keywords: schedulingSettings.schedulingKeyWords.recruitingBlocks,
+      keywords: schedulingKeyWords.recruitingBlocks,
     },
   ];
 
-  const workingHours = schedulingSettings.workingHours.filter(
+  const workingHours = scheduling_settings.workingHours.filter(
     (day) => day.isWorkDay,
-  ) as schedulingSettingType['workingHours'];
+  ) as SchedulingSettingType['workingHours'];
 
   return (
     <>
-      {/* edit availability dialog */}
-      <EditAvailabiityDialog
-        schedulingSettings={schedulingSettings}
-        setIsEditOpen={setIsEditOpen}
-        isEditOpen={isEditOpen}
-      />
-      <UISectionCard
-        title='Availability'
-        action={
-          <UIButton
-            size='sm'
-            variant='secondary'
-            onClick={() => setIsEditOpen(true)}
-            icon={<Pencil />}
+      <Section>
+        <SectionHeader>
+          <SectionHeaderText>
+            <SectionTitle>Availability</SectionTitle>
+            <SectionDescription>
+              Set your availability to let candidates know when you are
+              available to interview.
+            </SectionDescription>
+          </SectionHeaderText>
+          <SectionActions>
+            {!isEditOpen && (
+              <UIButton variant='outline' onClick={() => setIsEditOpen(true)}>
+                Edit
+              </UIButton>
+            )}
+          </SectionActions>
+        </SectionHeader>
+        {!isEditOpen && (
+          <ScheduleAvailabilityUI
+            interviewLoads={interviewLoads}
+            timeZone={scheduling_settings?.timeZone?.label || ' - '}
+            workingHours={workingHours}
+            scheduleKeywords={scheduleKeywords}
+            schedulingSettings={scheduling_settings}
           />
-        }
-      >
-        <ScheduleAvailabilityUI
-          interviewLoads={interviewLoads}
-          timeZone={schedulingSettings?.timeZone?.label || ' - '}
-          workingHours={workingHours}
-          scheduleKeywords={scheduleKeywords}
-        />
-      </UISectionCard>
+        )}
+        {isEditOpen && <EditAvailabiityDialog setIsEditOpen={setIsEditOpen} />}
+      </Section>
     </>
   );
 }

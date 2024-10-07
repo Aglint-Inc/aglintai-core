@@ -19,6 +19,6 @@ export const interviewer_performance = privateProcedure
           module_id,
         })
         .throwOnError()
-    ).data;
+    ).data!;
     return data[0];
   });

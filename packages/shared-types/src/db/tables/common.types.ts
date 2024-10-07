@@ -1,7 +1,7 @@
-import type { CustomMembersMeta } from '../common.types';
+import type { CustomMembersMeta } from "../common.types";
 
 export type CustomSchedulingSettings = {
-  isAutomaticTimezone: boolean;
+  isAutomaticTimeZone: boolean;
   timeZone: {
     label: string;
     name: string;
@@ -11,11 +11,11 @@ export type CustomSchedulingSettings = {
   interviewLoad: {
     dailyLimit: {
       value: number;
-      type: 'Hours' | 'Interviews';
+      type: "Hours" | "Interviews";
     };
     weeklyLimit: {
       value: number;
-      type: 'Hours' | 'Interviews';
+      type: "Hours" | "Interviews";
     };
   };
   workingHours: {
@@ -29,7 +29,7 @@ export type CustomSchedulingSettings = {
   totalDaysOff: {
     date: string;
     event_name: string;
-    locations: string[];
+    locations?: string[];
   }[];
   schedulingKeyWords: {
     free: string[];

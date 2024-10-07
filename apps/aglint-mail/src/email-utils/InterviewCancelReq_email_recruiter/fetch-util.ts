@@ -10,7 +10,7 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../../utils/email/common/functions';
-import { FetchUtilType } from '../../types/emailfetchUtil';
+import type { FetchUtilType } from '../../types/emailfetchUtil';
 
 export const fetchUtil: FetchUtilType<
   'InterviewCancelReq_email_recruiter'
@@ -84,7 +84,7 @@ export const fetchUtil: FetchUtilType<
       organizerFirstName: meeting_organizer.first_name,
       organizerLastName: meeting_organizer.last_name,
       OrganizerTimeZone: org_tz,
-      candidateScheduleLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/application/${req_body.application_id}" target="_blank">here</a>`,
+      candidateScheduleLink: `<a href="${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/scheduling/application/${req_body.application_id}" target="_blank">here</a>`,
     };
 
   const react_email_placeholders: EmailTemplateAPi<'InterviewCancelReq_email_recruiter'>['react_email_placeholders'] =

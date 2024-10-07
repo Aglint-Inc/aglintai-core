@@ -1,16 +1,14 @@
 {
   "name": "@aglint/shared-utils",
   "scripts": {
-    "build": "tsup",
-    "lint": "tsup&& tsc",
-    "dev": "tsup --watch"
+    "build": "rimraf dist && tsup",
+    "lint": "rimraf dist && tsup && tsc",
+    "type-check": "tsc --noEmit",
+    "dev": "rimraf dist && tsup --watch"
   },
   "version": "0.0.1",
   "main": "./dist/index.js",
-  "types": "./src/index.ts",
-  "files": [
-    "./dist"
-  ],
+  "types": "./dist/index.d.ts",
   "dependencies": {
     "@types/node": "^20.11.24",
     "dayjs": "^1.11.11",
@@ -20,6 +18,8 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@aglint/typescript-config": "*"
+    "@aglint/typescript-config": "*",
+    "@types/html-to-text": "^9.0.4",
+    "rimraf": "^6.0.1"
   }
 }

@@ -29,11 +29,12 @@ const reqTypes = [
 
 async function generateTypesAndSaveToFile() {
   for (const item of reqTypes) {
-    const typesValues = [];
+    const typesValues: any[] = [];
     new Set(
       (
-        await supabase.from(item.table).select(item.column).throwOnError()
-      ).data.map((row) => String(row[item.column])),
+        (await supabase.from(item.table).select(item.column).throwOnError())
+          .data ?? []
+      ).map((row) => String(row[item.column as any])),
     ).forEach((item) => typesValues.push(item));
     typesValues.sort();
     if (typesValues?.length) {

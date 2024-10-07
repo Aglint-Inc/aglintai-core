@@ -1,17 +1,16 @@
 'use strict';
 
-import { type DatabaseTable } from '@aglint/shared-types';
+import { getBreakLabel } from '@aglint/shared-utils';
 import { Checkbox } from '@components/ui/checkbox';
 import dayjs from 'dayjs';
 import { useState } from 'react';
 import { MeetingStatusBadge } from 'src/app/_common/components/MeetingStatusBadge';
 
-import { useAllIntegrations } from '@/authenticated/hooks';
+import { useIntegrations } from '@/authenticated/hooks';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import InterviewerAcceptDeclineIcon from '@/components/Common/Icons/InterviewerAcceptDeclineIcon';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
-import { getBreakLabel } from '@/utils/getBreakLabel';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
 import { type StageWithSessions } from '../../../hooks/useInterviewStages';
@@ -48,7 +47,7 @@ function ScheduleIndividualCard({
   hideDateAndTime?: boolean;
 }) {
   const [collapsed, setCollapsed] = useState(false);
-  const { data: allIntegrations } = useAllIntegrations();
+  const { data: allIntegrations } = useIntegrations();
 
   const users = session.users;
   const interview_meeting = session.interview_meeting;
@@ -110,26 +109,21 @@ function ScheduleIndividualCard({
       isRoleVisible={false}
       slotGlobalBadge={
         isStatusVisible && (
-          <MeetingStatusBadge
-            status={
-              interview_session?.interview_meeting
-                ?.status as DatabaseTable['interview_meeting']['status']
-            }
-          />
+          <MeetingStatusBadge status={interview_meeting.status} />
         )
       }
       isDateVisible={
         !hideDateAndTime &&
-        (interview_meeting?.status === 'confirmed' ||
-          interview_meeting?.status === 'completed')
+        (interview_meeting.status === 'confirmed' ||
+          interview_meeting.status === 'completed')
       }
       isTimeVisible={
         !hideDateAndTime &&
-        (interview_meeting?.status === 'confirmed' ||
-          interview_meeting?.status === 'completed')
+        (interview_meeting.status === 'confirmed' ||
+          interview_meeting.status === 'completed')
       }
       textDate={
-        interview_meeting?.end_time
+        interview_meeting.end_time
           ? dayjs(interview_meeting.end_time).format('ddd, MMM DD, YYYY')
           : '--'
       }

@@ -1,3 +1,10 @@
+import {
+  PageActions,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import { Skeleton } from '@components/ui/skeleton';
 import {
   Table,
@@ -10,8 +17,8 @@ import {
 import { RefreshCw, Send, Users } from 'lucide-react';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 
+import { UIButton } from '@/common/UIButton';
 import type { useTeamMembers } from '@/company/hooks/useTeamMembers';
-import { UIButton } from '@/components/Common/UIButton';
 
 import Member from '../MemberList';
 
@@ -35,19 +42,17 @@ export const TeamManagementUI = ({
   isTableLoading: boolean;
 }) => {
   return (
-    <div className='flex flex-col'>
-      <div className='flex justify-between'>
-        <div className='max-w-[700px]'>
-          <h2 className='mb-1 text-xl font-semibold'>Manage User</h2>
-          <p className='mb-6 text-gray-600'>
-            Invite your hiring team members and manage their roles and profile
-            details in one place. Assign roles such as interviewer, hiring
-            manager, or recruiter to ensure an organized team structure and
-            compliance with user permissions in the organization.
-          </p>
-        </div>
-
-        <div className='row flex justify-end pb-4'>
+    <div className='space-y-4'>
+      <PageHeader>
+        <PageHeaderText>
+          <PageTitle>Manage User</PageTitle>
+          <PageDescription>
+            Invite your hiring team, assign roles like interviewer or recruiter,
+            and manage profiles in one place for a streamlined team structure
+            and user permissions.
+          </PageDescription>
+        </PageHeaderText>
+        <PageActions>
           {canManage &&
             (isRemoteSync ? (
               <div className='flex flex-col space-y-2'>
@@ -74,12 +79,12 @@ export const TeamManagementUI = ({
                 Invite Member
               </UIButton>
             ))}
-        </div>
-      </div>
+        </PageActions>
+      </PageHeader>
 
       {filter}
 
-      <div className='mt-6 overflow-x-auto rounded-lg border bg-white'>
+      <div className='rounded-lg border'>
         <Table>
           <TableHeader className='bg-gray-100'>
             <TableRow>
@@ -87,7 +92,7 @@ export const TeamManagementUI = ({
               <TableHead>Location</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>last Active</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead className='sr-only'>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -126,7 +131,7 @@ export const TeamManagementUI = ({
                   <h3 className='mb-1 text-lg font-medium text-gray-900'>
                     No team members
                   </h3>
-                  <p className='text-sm text-gray-500'>
+                  <p className='text-sm text-muted-foreground'>
                     Get started by adding a new team member.
                   </p>
                 </div>

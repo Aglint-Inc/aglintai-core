@@ -1,14 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { useCallback } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import { tourQuery, useCreateTourLog } from '@/queries/tour';
-
-import { useAuthDetails } from '../AuthContext/AuthContext';
 
 export const useTourContext = () => {
   const {
-    recruiterUser: { recruiter_relation_id },
-  } = useAuthDetails();
+    recruiter_user: { recruiter_relation_id },
+  } = useTenant();
   const tour = useQuery(tourQuery.tours(recruiter_relation_id));
   const { mutate } = useCreateTourLog();
   const handleCreateTourLog = useCallback(

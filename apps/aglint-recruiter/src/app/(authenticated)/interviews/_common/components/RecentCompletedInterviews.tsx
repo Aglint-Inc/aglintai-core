@@ -1,6 +1,16 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import {
+  Section,
+  SectionActions,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
+import { ScrollArea } from '@components/ui/scroll-area';
+import { ChevronDown } from 'lucide-react';
+import { ChevronUp } from 'lucide-react';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 
@@ -17,27 +27,40 @@ function RecentCompletedInterviews() {
     session_types: [],
     searchText: '',
   });
+  const [isExpanded, setIsExpanded] = useState(true);
   return (
     <>
       {/* {!isFetched && <Loader />} */}
       {isFetched && (schedules ?? [])?.length > 1 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className='text-lg font-semibold'>
-              <div className='flex justify-between'>
-                <h1>Recently Completed</h1>
-                <Link href={'/interviews/all'}>
-                  <UIButton size='sm' variant='ghost'>
-                    View All
-                  </UIButton>
-                </Link>
-              </div>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ScheduleMeetingList filterSchedules={(schedules??[]).slice(0, 5)} />
-          </CardContent>
-        </Card>
+        <Section>
+          <SectionHeader>
+            <SectionHeaderText>
+              <SectionTitle>Recently Completed</SectionTitle>
+              <SectionDescription>
+                View your recently completed interviews.
+              </SectionDescription>
+            </SectionHeaderText>
+            <SectionActions>
+              <Link href={'/interviews/all'}>
+                <UIButton size='sm' variant='ghost'>
+                  View All
+                </UIButton>
+              </Link>
+              {isExpanded ? (
+                <ChevronUp size={20} onClick={() => setIsExpanded(false)} />
+              ) : (
+                <ChevronDown size={20} onClick={() => setIsExpanded(true)} />
+              )}
+            </SectionActions>
+          </SectionHeader>
+          {isExpanded && (
+            <ScrollArea className='h-[340px] gap-4'>
+              <ScheduleMeetingList
+                filterSchedules={(schedules ?? []).slice(0, 5)}
+              />
+            </ScrollArea>
+          )}
+        </Section>
       )}
     </>
   );

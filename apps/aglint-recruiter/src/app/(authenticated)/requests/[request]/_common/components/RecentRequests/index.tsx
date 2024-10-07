@@ -1,4 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import { EmptyState } from '@components/empty-state';
+import {
+  Section,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import { useApplicantRequests } from '@requests/hooks/useApplicantRequests';
 import { LayoutList } from 'lucide-react';
 import { useParams } from 'next/navigation';
@@ -14,46 +19,39 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
   });
   const recentRequests =
     status === 'success'
-      ? (requestList ?? []).filter((item) => item.id !== requestId)
+      ? requestList.filter((item) => item.id !== requestId)
       : [];
   if (status === 'pending') {
     return (
-      <Card className='min-h-[500] bg-white shadow-sm'>
-        <CardHeader>
-          <CardTitle className='text-xl font-semibold'>
-            Recent Requests
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Loader />
-        </CardContent>
-      </Card>
+      <Section>
+        <SectionHeaderText>
+          <SectionTitle>Recent Requests</SectionTitle>
+        </SectionHeaderText>
+        <Loader />
+      </Section>
     );
   } else
     return (
-      <Card className='mb-10 min-h-[200px] bg-white shadow-sm'>
-        <CardHeader>
-          <CardTitle className='text-xl font-semibold'>
-            Recent Requests
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className='flex flex-col space-y-4'>
-            {recentRequests.length === 0 ? (
-              <div className='flex flex-col items-center justify-center space-y-2'>
-                <LayoutList className='h-8 w-8 text-gray-400' />
-                <span className='text-sm text-gray-500'>
-                  Recent requests not found
-                </span>
-              </div>
-            ) : (
-              recentRequests.map((request, index) => {
-                return <RequestCard key={index} request={request} />;
-              })
-            )}
-          </div>
-        </CardContent>
-      </Card>
+      <Section>
+        <SectionHeaderText>
+          <SectionTitle>Recent Requests</SectionTitle>
+        </SectionHeaderText>
+        <div className='flex flex-col space-y-4'>
+          {recentRequests.length === 0 ? (
+            // <div className='flex flex-col items-center justify-center space-y-2'>
+            //   <LayoutList className='h-8 w-8 text-gray-400' />
+            //   <span className='text-sm text-muted-foreground'>
+            //     Recent requests not found
+            //   </span>
+            // </div>
+            <EmptyState header='Recent requests not found' icon={LayoutList} />
+          ) : (
+            recentRequests.map((request, index) => {
+              return <RequestCard key={index} request={request} />;
+            })
+          )}
+        </div>
+      </Section>
     );
 }
 

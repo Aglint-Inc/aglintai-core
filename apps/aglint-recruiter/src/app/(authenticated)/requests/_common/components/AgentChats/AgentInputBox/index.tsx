@@ -2,9 +2,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useRequests } from '@/context/RequestsContext';
-import { SafeObject } from '@/utils/safeObject';
+import { useTenant } from '@/company/hooks';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
@@ -15,7 +13,7 @@ import CreateSchedulePopUp from './CreateSchedulePopUp';
 import { scheduleTypes, type selectedItemsType } from './utils';
 
 function AgentInputBox() {
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   const {
     text,
     setText,
@@ -25,16 +23,15 @@ function AgentInputBox() {
     setPlanText,
   } = useAgentIEditor();
 
-  const [selectedItems, setSelectedItems] = useState<selectedItemsType>(null);
+  const [selectedItems, setSelectedItems] = useState<selectedItemsType | null>(
+    null,
+  );
   // eslint-disable-next-line no-unused-vars
 
-  const { requests } = useRequests();
-
-  const { data: jobsAndApplications, isFetched: isJobFetched } =
-    useAllJobsAndApplications({
-      recruiter_id,
-      schedule_type: selectedItems?.schedule_type[0]?.id,
-    });
+  const { data: jobsAndApplications } = useAllJobsAndApplications({
+    recruiter_id,
+    schedule_type: selectedItems?.schedule_type[0]?.id ?? 'schedule',
+  });
   const applications = selectedItems?.job_title[0]?.id
     ? jobsAndApplications?.applications.filter(
         (application) => application.job_id === selectedItems?.job_title[0]?.id,
@@ -42,7 +39,7 @@ function AgentInputBox() {
     : jobsAndApplications?.applications;
 
   const applicant_sessions = selectedItems?.applicant_name[0]?.id
-    ? applications.find(
+    ? (applications ?? []).find(
         (ele) => ele.id === selectedItems?.applicant_name[0]?.id,
       )?.applicantSessions
     : [];
@@ -77,14 +74,15 @@ function AgentInputBox() {
       const regex = /(\w+)\[([^[\]]+)\]:\[([^[\]]+)\]/g;
       let match;
       const result = {
-        schedule_type: [],
-        job_title: [],
-        applicant_name: [],
-        interview_name: [],
-        request_name: [],
+        schedule_type: [] as selectedItemsType['schedule_type'],
+        job_title: [] as selectedItemsType['job_title'],
+        applicant_name: [] as selectedItemsType['applicant_name'],
+        interview_name: [] as selectedItemsType['interview_name'],
+        request_name: [] as selectedItemsType['request_name'],
       };
 
       while ((match = regex.exec(input)) !== null) {
+        // @ts-ignore
         result[match[1]].push({ id: match[2], name: match[3] });
       }
 
@@ -94,15 +92,17 @@ function AgentInputBox() {
     const items = extractIdsAndNames(newValue);
     if (selectedItems?.applicant_name.length) {
       const id = selectedItems.applicant_name[0].id;
-      const selectedApplication = jobsAndApplications.applications.find(
-        (application) => application.id === id,
-      ) as Awaited<
-        ReturnType<typeof getJobsAndApplications>
-      >['applications'][number];
+      const selectedApplication =
+        jobsAndApplications &&
+        (jobsAndApplications.applications.find(
+          (application) => application.id === id,
+        ) as Awaited<
+          ReturnType<typeof getJobsAndApplications>
+        >['applications'][number]);
       items.job_title = [
         {
-          id: selectedApplication.public_jobs.id,
-          name: selectedApplication.public_jobs.job_title,
+          id: selectedApplication?.public_jobs?.id ?? '',
+          name: selectedApplication?.public_jobs?.job_title ?? '',
         },
       ];
     }
@@ -125,25 +125,10 @@ function AgentInputBox() {
           setText={setText}
           handleTextChange={handleTextChange}
           handleSubmit={handleSubmit}
-          requestList={
-            requests.status === 'success'
-              ? (SafeObject.values(requests?.data) ?? [])
-                  .flatMap((ele) => ele)
-                  .filter((ele) =>
-                    selectedItems?.schedule_type[0]?.id === 're_schedule' ||
-                    selectedItems?.schedule_type[0]?.id === 'cancel'
-                      ? ele.status === 'completed'
-                      : ele,
-                  )
-                  .map((ele) => ({
-                    id: ele.id,
-                    display: ele.title,
-                  }))
-              : []
-          }
+          requestList={[]}
           scheduleTypes={scheduleTypes}
           jobList={
-            isJobFetched
+            jobsAndApplications
               ? jobsAndApplications.jobs.map((job) => ({
                   id: job.id,
                   display: job.job_title,
@@ -155,9 +140,9 @@ function AgentInputBox() {
               ? applications.map((application) => ({
                   id: application.id,
                   display:
-                    application.candidates.first_name +
+                    application?.candidates?.first_name +
                     ' ' +
-                    application.candidates.last_name,
+                    application?.candidates?.last_name,
                 }))
               : []
           }
@@ -227,7 +212,7 @@ async function getJobsAndApplications({
       : [];
     return { ...ele, applicantSessions };
   });
-  const jobsWithoutApplicationSessions = jobs
+  const jobsWithoutApplicationSessions = (jobs ?? [])
     .filter((ele) =>
       applications
         .filter((ele) => ele.applicantSessions.length === 0)
@@ -236,7 +221,7 @@ async function getJobsAndApplications({
     )
     .map((ele) => ele.id);
   return {
-    jobs: jobs
+    jobs: (jobs ?? [])
       .filter((ele) => ele.applications.length)
       .filter((ele) => !jobsWithoutApplicationSessions.includes(ele.id)),
     applications: applications.filter((ele) => ele.applicantSessions.length),

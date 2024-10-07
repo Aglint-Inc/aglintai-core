@@ -1,13 +1,13 @@
 import { type TargetApiPayloadType } from '@aglint/shared-types';
+import Typography from '@components/typography';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
+import { useRequests } from '@requests/hooks';
 import dayjs from 'dayjs';
 import { AlertCircle } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
 
-import UITypography from '@/components/Common/UITypography';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useRequests } from '@/context/RequestsContext';
+import { useTenant } from '@/company/hooks';
 import { mailSender } from '@/utils/mailSender';
 
 import {
@@ -30,7 +30,7 @@ function StepSlotOptions() {
     (state) => state.filteredSchedulingOptions,
   );
 
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
 
   const {
     requests: { data: requestList },
@@ -57,7 +57,7 @@ function StepSlotOptions() {
   const payload: TargetApiPayloadType<'sendSelfScheduleRequest_email_applicant'> =
     {
       is_preview: true,
-      organizer_id: recruiterUser?.user_id ?? '',
+      organizer_id: recruiter_user?.user_id ?? '',
       application_id: selectedRequest?.application_id,
     };
 
@@ -77,14 +77,14 @@ function StepSlotOptions() {
   }, []);
 
   return (
-    <div className='border-l border-gray-200'>
+    <div className=''>
       <div className='flex flex-row items-center justify-between gap-2 border-b border-gray-200 px-4 py-2.5'>
-        <UITypography type='small'>
+        <Typography type='small'>
           Showing available options between{' '}
           {dayjs(dateRange.start_date).format('MMM DD')}
           {' - '}
           {dayjs(dateRange.end_date).format('MMM DD')}
-        </UITypography>
+        </Typography>
         <FilterButton />
       </div>
       <div className='flex h-[calc(100vh-148px)] flex-col gap-2 overflow-auto p-4'>

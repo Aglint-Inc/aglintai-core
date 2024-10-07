@@ -21,7 +21,7 @@ export const greenhouseJobsMutation = async ({
     decryptKey: ctx.decryptKey,
     recruiter_id: input.recruiter_id,
     supabaseAdmin: adminDb,
-    last_sync: ctx.greenhouse_metadata?.last_sync?.jobs ?? null,
+    last_sync: ctx.greenhouse_metadata?.last_sync?.jobs ?? null!,
   });
 };
 

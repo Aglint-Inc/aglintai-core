@@ -7,7 +7,7 @@ type setting = {
   application_id: string;
   request_id: string;
 };
-export async function POST(req) {
+export async function POST(req: Request) {
   const setting: setting = await req.json();
   const supabaseAdmin = getSupabaseServer();
   try {
@@ -17,7 +17,7 @@ export async function POST(req) {
       { message: 'reSchedule requested successfully' },
       { status: 200 },
     );
-  } catch (e) {
+  } catch (e: any) {
     return NextResponse.json({ message: e.message }, { status: 400 });
   }
 }

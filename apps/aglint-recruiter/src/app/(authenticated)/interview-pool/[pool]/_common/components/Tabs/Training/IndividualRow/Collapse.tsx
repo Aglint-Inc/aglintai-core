@@ -1,15 +1,15 @@
 import { getFullName } from '@aglint/shared-utils';
 import { Minus, Plus } from 'lucide-react';
 
+import { SessionIcon } from '@/common/ScheduleProgressPillComp';
 import { UIButton } from '@/components/Common/UIButton';
 import { UIDivider } from '@/components/Common/UIDivider';
 import UITextField from '@/components/Common/UITextField';
-import { SessionIcon } from '@/components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
+import { useAlterCount } from '@/interview-pool/details/hooks/useAlterCount';
+import { useApproveUsers } from '@/interview-pool/details/hooks/useApproveUsers';
+import { type useProgressModuleUsers } from '@/interview-pool/details/hooks/useProgressModuleUsers';
 import { numberToOrdinalText } from '@/utils/number/numberToOrdinalText';
 
-import { useAlterCount } from '../../../../hooks/useAlterCount';
-import { useApproveUsers } from '../../../../hooks/useApproveUsers';
-import { type useProgressModuleUsers } from '../../../../hooks/useProgressModuleUsers';
 import { TrainingDetailList } from '../../../ui/TrainingDetailList';
 import { TrainingStatus } from '../../../ui/TraniningStatus';
 
@@ -26,9 +26,13 @@ function CollapseTrainingProgress({
   reverse_shadow_to_complete: number;
   module_realtion_id: string;
   mutatedShadowProgress: any[];
-  shadowProgress: ReturnType<typeof useProgressModuleUsers>['data'];
+  shadowProgress: NonNullable<
+    ReturnType<typeof useProgressModuleUsers>['data']
+  >;
   mutatedReverseShadowProgress: any[];
-  reverseShadowProgress: ReturnType<typeof useProgressModuleUsers>['data'];
+  reverseShadowProgress: NonNullable<
+    ReturnType<typeof useProgressModuleUsers>['data']
+  >;
 }) {
   const { approveTrainingProgress } = useApproveUsers();
 
@@ -39,11 +43,13 @@ function CollapseTrainingProgress({
       <div className='w-full'>
         <div>
           <div className='flex flex-col gap-3 p-4'>
-            <div className='flex flex-col gap-4 w-full'>
+            <div className='flex w-full flex-col gap-4'>
               {
                 <>
-                <div className="text-sm text-muted-foreground">TrainingStatus</div>
-                  
+                  <div className='text-sm text-muted-foreground'>
+                    TrainingStatus
+                  </div>
+
                   {shadowProgress.map((prog, ind) => (
                     <TrainingDetailList
                       key={ind}
@@ -185,7 +191,7 @@ function CollapseTrainingProgress({
           </div>
         </div>
         <div className='mb-4'>
-          <UIDivider/>
+          <UIDivider />
         </div>
         <div className='flex flex-row space-x-3 px-4 pb-4'>
           <div className='flex items-center space-x-1'>
@@ -208,7 +214,7 @@ function CollapseTrainingProgress({
               }}
             />
             <UITextField
-              style={{ width: '60px' , height:'28px' }}
+              style={{ width: '60px', height: '28px' }}
               fieldSize='small'
               type='number'
               value={mutatedShadowProgress.length + shadowProgress.length}
@@ -256,7 +262,7 @@ function CollapseTrainingProgress({
               }}
             />
             <UITextField
-              style={{ width: '60px' , height:'28px' }}
+              style={{ width: '60px', height: '28px' }}
               fieldSize='small'
               type='number'
               value={

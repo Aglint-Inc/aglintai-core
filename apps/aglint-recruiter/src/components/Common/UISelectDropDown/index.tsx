@@ -49,7 +49,7 @@ const UISelectDropDown = ({
   label,
   labelSize = 'small',
   labelBold = 'default',
-  defaultLabelColor = null,
+  defaultLabelColor = '',
   id,
   className,
   fieldSize,
@@ -57,7 +57,7 @@ const UISelectDropDown = ({
   ...props
 }: Props) => {
   const labelClasses = cn(
-    'text-neutral-900',
+    'text-foreground',
     labelBold === 'default' ? 'font-semibold' : 'font-normal',
     {
       'text-sm': labelSize === 'small',
@@ -67,7 +67,7 @@ const UISelectDropDown = ({
       'text-2xl': labelSize === 'xxLarge',
       'text-3xl': labelSize === 'xxxLarge',
     },
-    disabled && 'text-neutral-500',
+    disabled && 'text-muted-foreground',
     defaultLabelColor,
   );
 
@@ -75,7 +75,7 @@ const UISelectDropDown = ({
     'w-full border rounded px-3 py-2 transition-colors duration-200', // Smooth transition for color changes
     fullWidth && 'w-full',
     error ? 'border-red-500 focus:ring-0' : 'border-neutral-300',
-    disabled && 'bg-neutral-100 text-neutral-500 cursor-not-allowed',
+    disabled && 'bg-neutral-100 text-muted-foreground cursor-not-allowed',
     fieldSize === 'small'
       ? 'h-6'
       : fieldSize === 'medium'
@@ -101,21 +101,21 @@ const UISelectDropDown = ({
           <Label htmlFor={id} className={labelClasses}>
             {label}
           </Label>
-          {required && <span className='text-error-500 ml-1'>*</span>}
+          {required && <span className='ml-1 text-destructive'>*</span>}
         </div>
       )}
 
       <Select {...props} disabled={disabled} required={required}>
         <SelectTrigger className={inputClasses}>
           {startIcon && <span className='mr-2'>{startIcon}</span>}
-          <SelectValue placeholder={placeholder} id={id} />
+          <SelectValue placeholder={placeholder} id={id} className='text-sm' />
         </SelectTrigger>
         <SelectContent className='z-[2000]'>
           <SelectGroup>
             {children ? (
               children
             ) : menuOptions.length === 0 ? (
-              <div className='cursor-default px-2 py-1 italic text-gray-500'>
+              <div className='cursor-default px-2 py-1 italic text-muted-foreground'>
                 No options available
               </div>
             ) : (
@@ -130,7 +130,7 @@ const UISelectDropDown = ({
       </Select>
       {error && helperText && (
         <div className='mt-1 flex flex-row items-center'>
-          <AlertCircle className='mr-1 h-4 w-4 text-red-500' />
+          <AlertCircle className='mr-1 h-4 w-4 text-destructive' />
           <p className='text-sm text-red-700'>{helperText}</p>
         </div>
       )}

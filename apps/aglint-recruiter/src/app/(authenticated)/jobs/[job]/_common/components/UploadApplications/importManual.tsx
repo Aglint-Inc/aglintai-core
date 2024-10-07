@@ -3,11 +3,12 @@ import { Card } from '@components/ui/card';
 import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import { CheckCircle2, FileIcon, UploadCloud } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { type ChangeEvent, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
 import { PhoneInput } from '@/components/PhoneInput';
 import { useApplicationsActions, useJob } from '@/job/hooks';
+import { SafeObject } from '@/utils/safeObject';
 
 const fileTypes = ['PDF', 'DOCX', 'TXT'];
 
@@ -44,7 +45,7 @@ export const ImportManual = () => {
     const newApplicant = { ...applicant };
     let isValid = true;
 
-    Object.entries(newApplicant).forEach(([key, field]) => {
+    SafeObject.entries(newApplicant).forEach(([key, field]) => {
       if (field.required && !field.value) {
         newApplicant[key].error = true;
         isValid = false;
@@ -82,7 +83,10 @@ export const ImportManual = () => {
   };
 
   return (
-    <Card className='flex flex-col border-0 shadow-none pt-2' style={{height:'550px'}}>
+    <Card
+      className='flex flex-col border-0 pt-2 shadow-none'
+      style={{ height: '550px' }}
+    >
       <div className='flex-grow overflow-auto'>
         <FormBody applicant={applicant} setApplicant={setApplicant} />
       </div>
@@ -95,8 +99,17 @@ export const ImportManual = () => {
   );
 };
 
-const FormBody = ({ applicant, setApplicant }) => {
-  const handleChange = (value, key) => {
+const FormBody = ({
+  applicant,
+  setApplicant,
+}: {
+  applicant: FormEntries;
+  setApplicant: React.Dispatch<React.SetStateAction<FormEntries>>;
+}) => {
+  const handleChange = (
+    value: FormEntries['email']['value'],
+    key: keyof FormEntries,
+  ) => {
     setApplicant((prev) => ({
       ...prev,
       [key]: { ...prev[key], value, error: false },
@@ -110,30 +123,36 @@ const FormBody = ({ applicant, setApplicant }) => {
           label='First Name'
           id='first_name'
           value={applicant.first_name.value}
-          onChange={(e) => handleChange(e.target.value, 'first_name')}
+          onChange={(e: ChangeEvent<{ value: string }>) =>
+            handleChange(e.target.value, 'first_name')
+          }
           error={applicant.first_name.error}
         />
         <FormField
           label='Last Name'
           id='last_name'
           value={applicant.last_name.value}
-          onChange={(e) => handleChange(e.target.value, 'last_name')}
+          onChange={(e: ChangeEvent<{ value: string }>) =>
+            handleChange(e.target.value, 'last_name')
+          }
           error={applicant.last_name.error}
         />
       </div>
       <div className='flex flex-col gap-4'>
-      <FormField
+        <FormField
           label='Email'
           id='email'
           type='email'
           value={applicant.email.value}
-          onChange={(e) => handleChange(e.target.value, 'email')}
+          onChange={(e: ChangeEvent<{ value: string }>) =>
+            handleChange(e.target.value, 'email')
+          }
           error={applicant.email.error}
         />
         <div className='space-y-2'>
           <Label htmlFor='phone'>Phone Number</Label>
           <PhoneInput
-            value={applicant.phone.value}
+            value={applicant.phone.value as string}
             onChange={(value) => handleChange(value, 'phone')}
           />
         </div>
@@ -142,19 +161,35 @@ const FormBody = ({ applicant, setApplicant }) => {
         label='LinkedIn URL'
         id='linkedin'
         value={applicant.linkedin.value}
-        onChange={(e) => handleChange(e.target.value, 'linkedin')}
+        onChange={(e: ChangeEvent<{ value: string }>) =>
+          handleChange(e.target.value, 'linkedin')
+        }
         error={applicant.linkedin.error}
       />
       <ResumeUploadComp
         value={applicant.resume.value}
         error={applicant.resume.error}
-        handleChange={(file) => handleChange(file, 'resume')}
+        handleChange={(file: File) => handleChange(file, 'resume')}
       />
     </div>
   );
 };
 
-const FormField = ({ label, id, value, onChange, error, type = 'text' }) => (
+const FormField = ({
+  label,
+  id,
+  value,
+  onChange,
+  error,
+  type = 'text',
+}: {
+  label: string;
+  id: string;
+  value: any;
+  onChange: any;
+  error: any;
+  type?: string;
+}) => (
   <div className='space-y-2'>
     <Label htmlFor={id}>{label}</Label>
     <Input
@@ -165,23 +200,23 @@ const FormField = ({ label, id, value, onChange, error, type = 'text' }) => (
       className={error ? 'border-red-500' : ''}
     />
     {error && (
-      <p className='text-sm text-red-500'>Please provide a valid {label}</p>
+      <p className='text-sm text-destructive'>Please provide a valid {label}</p>
     )}
   </div>
 );
 
-const ResumeUploadComp = ({ value, handleChange, error }) => (
+const ResumeUploadComp = ({ value, handleChange, error }: any) => (
   <div className='space-y-2'>
     <Label htmlFor='resume' className='mb-3 flex items-center gap-1'>
-      Upload Resume <span className='text-red-500'>*</span>
+      Upload Resume <span className='text-destructive'>*</span>
     </Label>
     <FileUploader handleChange={handleChange} types={fileTypes}>
       <div
-        className={`flex cursor-pointer items-center justify-center space-x-2 rounded-md border-2 h-[100px] border-dashed p-8 ${error ? 'border-red-500' : 'border-gray-300'} bg-gray-50`}
+        className={`flex h-[100px] cursor-pointer items-center justify-center space-x-2 rounded-md border-2 border-dashed p-8 ${error ? 'border-red-500' : 'border-border'} bg-gray-50`}
       >
         {value ? <FileIcon size={20} /> : <UploadCloud size={24} />}
         <span
-          className={`text-sm ${error ? 'text-red-500' : 'text-gray-600'} ${value ? 'font-medium' : ''}`}
+          className={`text-sm ${error ? 'text-destructive' : 'text-gray-600'} ${value ? 'font-medium' : ''}`}
         >
           {value ? value.name : 'Upload candidate resume [PDF/DOCX]'}
         </span>
@@ -189,7 +224,9 @@ const ResumeUploadComp = ({ value, handleChange, error }) => (
       </div>
     </FileUploader>
     {error && (
-      <p className='text-sm text-red-500'>Please upload the candidate resume</p>
+      <p className='text-sm text-destructive'>
+        Please upload the candidate resume
+      </p>
     )}
   </div>
 );

@@ -5,7 +5,7 @@ import {
   updateRequestStatus,
 } from '@/utils/automation/utils/update_request_functions';
 
-export async function POST(req) {
+export async function POST(req: Request) {
   const { count, type } = await req.json();
   try {
     const requests: Awaited<ReturnType<typeof fetchTodoRequests>> =
@@ -33,7 +33,7 @@ export async function POST(req) {
       },
       { status: 200 },
     );
-  } catch (e) {
+  } catch (e: any) {
     return NextResponse.json(
       { message: 'error ' + e.message },
       { status: 400 },

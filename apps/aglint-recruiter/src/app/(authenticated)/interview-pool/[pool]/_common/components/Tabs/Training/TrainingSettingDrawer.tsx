@@ -1,20 +1,19 @@
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
 import { Label } from '@components/ui/label';
+import { UIAlert } from '@components/ui-alert';
 import _ from 'lodash';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, AlertTriangle, Ban } from 'lucide-react';
 import MembersAutoComplete from 'src/app/_common/components/MembersTextField';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
-import { UIAlert } from '@/components/Common/UIAlert';
-import { UIButton } from '@/components/Common/UIButton';
 import UIDrawer from '@/components/Common/UIDrawer';
 import NumberInput from '@/components/Common/UINumberInput';
-import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
 
 import { type useEnableDisableTraining } from '../../../hooks/useEnableDisableTraining';
 import { useModuleAndUsers } from '../../../hooks/useModuleAndUsers';
 import { setLocalModule, useModulesStore } from '../../../stores/store';
-
 function TrainingSettingDrawer(
   props: ReturnType<typeof useEnableDisableTraining>,
 ) {
@@ -36,7 +35,7 @@ function TrainingSettingDrawer(
     localModule: state.localModule,
   }));
 
-  const { members } = useSchedulingContext();
+  const { data: members } = useMemberList(false);
 
   const qualifiedUserIds =
     editModule?.relations
@@ -46,6 +45,18 @@ function TrainingSettingDrawer(
   const dropDownMembers = members.filter((mem) =>
     qualifiedUserIds.includes(mem.user_id),
   );
+  const handleDisable = () => {
+    if (
+      editModule.relations.filter(
+        (relation) =>
+          relation.training_status === 'training' && !relation.is_archived,
+      ).length > 0
+    ) {
+      disableError();
+    } else {
+      setDisableOpen(true);
+    }
+  };
 
   return (
     <UIDrawer
@@ -96,6 +107,7 @@ function TrainingSettingDrawer(
         </>
       }
       onClose={() => {
+        if (!editModule || !localModule) return;
         if (
           !_.isEqual(
             {
@@ -129,25 +141,26 @@ function TrainingSettingDrawer(
             <div
               className={`space-y-4 ${!localModule?.settings?.require_training ? 'pointer-events-none opacity-50' : ''}`}
             >
-              <div className='flex flex-col items-left gap-2'>
-                <div className="flex items-center gap-2">
-                <Checkbox
-                  checked={localModule?.settings?.reqruire_approval}
-                  onCheckedChange={(checked) => {
-                    setLocalModule({
-                      ...localModule,
-                      settings: {
-                        ...localModule.settings,
-                        reqruire_approval: checked === true,
-                      },
-                    });
-                  }}
-                  id='require-approval'
-                />
-                <Label htmlFor='require-approval'>Require Approval</Label>
+              <div className='items-left flex flex-col gap-2'>
+                <div className='flex items-center gap-2'>
+                  <Checkbox
+                    checked={localModule?.settings?.reqruire_approval}
+                    onCheckedChange={(checked) => {
+                      setLocalModule({
+                        ...localModule,
+                        settings: {
+                          ...localModule.settings,
+                          reqruire_approval: checked === true,
+                        },
+                      });
+                    }}
+                    id='require-approval'
+                  />
+                  <Label htmlFor='require-approval'>Require Approval</Label>
                 </div>
-                <div className="text-sm text-muted-foreground">
-                By selecting this option, the approval of the chosen members is required to move a trainee to the qualified stage.
+                <div className='text-sm text-muted-foreground'>
+                  By selecting this option, the approval of the chosen members
+                  is required to move a trainee to the qualified stage.
                 </div>
               </div>
 
@@ -164,7 +177,7 @@ function TrainingSettingDrawer(
                     onUserSelect={() => setErrorApproval(false)}
                   />
                   {errorApproval && selectedUsers.length === 0 && (
-                    <div className='flex items-center text-sm text-red-500'>
+                    <div className='flex items-center text-sm text-destructive'>
                       <AlertCircle className='mr-1 h-3 w-3' />
                       Please select users to approve or uncheck require approval
                     </div>
@@ -215,39 +228,28 @@ function TrainingSettingDrawer(
         {editModule?.settings?.require_training && (
           <div className='mx-4 mt-6'>
             <UIAlert
-              type='small'
-              color={'error'}
+              type='error'
+              icon={Ban}
               title='Disable Training'
-              description='Disabling training will stop tracking trainee progress and remove access to trainee interviewer features.'
-              actions={
-                <>
-                  <UIButton
-                    variant='destructive'
-                    onClick={() => {
-                      if (
-                        editModule.relations.filter(
-                          (relation) =>
-                            relation.training_status === 'training' &&
-                            !relation.is_archived,
-                        ).length > 0
-                      ) {
-                        disableError();
-                      } else {
-                        setDisableOpen(true);
-                      }
-                    }}
-                  >
-                    Disable
-                  </UIButton>
-                </>
-              }
-            />
+              className='max-w-md' // Approximating 'small' type with a max-width
+            >
+              Disabling training will stop tracking trainee progress and remove
+              access to trainee interviewer features.
+              <div className='mt-4'>
+                <Button variant='destructive' onClick={handleDisable}>
+                  Disable
+                </Button>
+              </div>
+            </UIAlert>
 
             {isDisableError && (
-              <div className='text-error mt-1 flex items-center'>
-                <AlertCircle size={12} className='text-error-9 mr-1' />
-                Cannot disable training while members are still in training.
-              </div>
+              <Alert variant='error' className='mt-1'>
+                <AlertTriangle className='h-4 w-4' />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>
+                  Cannot disable training while members are still in training.
+                </AlertDescription>
+              </Alert>
             )}
           </div>
         )}

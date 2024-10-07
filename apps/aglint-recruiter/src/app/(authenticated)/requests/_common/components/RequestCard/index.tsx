@@ -1,13 +1,13 @@
 import { type RequestProps } from '@requests/types';
 import { useState } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 
 import ColumnViewRequestCard from './ui/ColunmViewRequestCard';
 import DefaultViewRequestCard from './ui/DefaultViewRequestCard';
 
 export const RequestCard = ({ ...props }: RequestProps) => {
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
   const { mode = 'expanded' } = props;
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -24,7 +24,7 @@ export const RequestCard = ({ ...props }: RequestProps) => {
       props={props}
       isExpanded={isExpanded}
       setIsExpanded={setIsExpanded}
-      currentUserId={recruiterUser?.user_id}
+      currentUserId={recruiter_user?.user_id}
     />
   );
 };

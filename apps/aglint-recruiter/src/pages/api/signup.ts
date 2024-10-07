@@ -22,46 +22,49 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { email, user_id, first_name, last_name } =
       req.body as ApiBodyParamsSignup;
 
-    const { error: errUser, data: recUser } = await supabase
-      .from('recruiter_user')
-      .insert({
-        user_id: user_id,
-        email: email,
-        first_name: first_name,
-        last_name: last_name || '',
-        status: 'active',
-      })
-      .select()
-      .single();
+    const recUser = (
+      await supabase
+        .from('recruiter_user')
+        .insert({
+          user_id: user_id,
+          email: email,
+          first_name: first_name,
+          last_name: last_name || '',
+          status: 'active',
+        })
+        .select()
+        .single()
+    ).data!;
 
     console.log('recUser', recUser.user_id);
 
-    if (errUser) throw new Error(errUser.message);
-
     const rec_id = uuidv4();
-    const { data: rec } = await supabase
-      .from('recruiter')
-      .insert({
-        email: email,
-        recruiter_type: 'Company',
-        id: rec_id,
-        primary_admin: user_id,
-      })
-      .select()
-      .single()
-      .throwOnError();
+    const rec = (
+      await supabase
+        .from('recruiter')
+        .insert({
+          id: rec_id,
+          primary_admin: user_id,
+          name: 'Temp',
+        })
+        .select()
+        .single()
+        .throwOnError()
+    ).data!;
 
     await axios.post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/pre-seed`, {
       record: rec,
     });
 
-    const { data: rol } = await supabase
-      .from('roles')
-      .select()
-      .eq('name', 'admin')
-      .eq('recruiter_id', rec.id)
-      .single()
-      .throwOnError();
+    const rol = (
+      await supabase
+        .from('roles')
+        .select()
+        .eq('name', 'admin')
+        .eq('recruiter_id', rec.id)
+        .single()
+        .throwOnError()
+    ).data!;
 
     await supabase.from('recruiter_relation').insert({
       role: 'admin',
@@ -85,8 +88,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       recruiter: rec,
     });
   } catch (error) {
-    console.log('error', error.message);
-    res.status(400).send(error.message);
+    if (error instanceof Error) {
+      console.log('error', error.message);
+      res.status(400).send(error.message);
+    }
   }
 };
 

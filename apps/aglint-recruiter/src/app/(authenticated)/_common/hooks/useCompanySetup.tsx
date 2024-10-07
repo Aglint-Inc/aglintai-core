@@ -1,12 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
-import { useAllIntegrations } from '@/authenticated/hooks';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useAllMembers } from '@/queries/members';
+import { useIntegrations } from '@/authenticated/hooks';
+import { useTenant, useTenantMembers } from '@/company/hooks';
+import { useFlags } from '@/company/hooks/useFlags';
+import { api } from '@/trpc/client';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
+
+import { setIsOnboardOpen } from '../store/OnboardStore';
 
 type SetupType = {
   id: string;
@@ -55,22 +58,60 @@ const requestIds: SetupStepType['id'][] = [
 export function useCompanySetup() {
   //states ---
   const [steps, setSteps] = useState<SetupStepType[]>([]);
+  const [selectedStep, setSelectedStep] = useState<SetupStepType>();
+  const [selectedIndex, setSelectedIndex] = useState<number>();
+  const [isOnboardCompleteRemote, setIsOnboardCompleteRemote] = useState(true);
+
+  const { mutateAsync } = api.tenant.updateTenantPreference.useMutation();
   //Hooks ---
-  const { recruiter, loading: recruiterLoading } = useAuthDetails();
+  const { recruiter } = useTenant();
+
   const { data: integrations, isLoading: integrationLoading } =
-    useAllIntegrations();
-  const { allMembers, isLoading: memberLoading } = useAllMembers();
+    useIntegrations();
+  const {
+    allMembers,
+    isLoading: memberLoading,
+    isFetched: isMembersFetched,
+  } = useTenantMembers();
   const { data: compandDetails, isLoading: companySettingLoading } =
     useFetchcompanySetup();
 
-  const { isShowFeature } = useAuthDetails();
+  const { isShowFeature } = useFlags();
+
+  useEffect(() => {
+    if (recruiter.recruiter_preferences) {
+      setIsOnboardCompleteRemote(
+        recruiter.recruiter_preferences.onboard_complete,
+      );
+    }
+  }, [recruiter]);
+
+  useEffect(() => {
+    const firstIncompleteStep = steps.find((step) => !step.isCompleted);
+    const firstIncompleteStepIndex = steps.findIndex(
+      (step) => !step.isCompleted,
+    );
+    setSelectedStep(
+      firstIncompleteStep
+        ? firstIncompleteStep
+        : selectedIndex
+          ? steps[selectedIndex]
+          : undefined,
+    );
+
+    if (firstIncompleteStepIndex) {
+      setSelectedIndex(
+        firstIncompleteStepIndex ? firstIncompleteStepIndex : selectedIndex,
+      );
+    }
+    if (isCompanySetupPending && !isOnboardCompleteRemote) {
+      setIsOnboardOpen(true);
+    }
+  }, [steps, recruiter]);
 
   //loading ---
   const isLoading =
-    recruiterLoading ||
-    memberLoading ||
-    integrationLoading ||
-    companySettingLoading;
+    memberLoading || integrationLoading || companySettingLoading;
 
   //checking --- jobs
   const isIntegrationsPresent =
@@ -102,8 +143,6 @@ export function useCompanySetup() {
   const isJobsPresent = !!compandDetails?.public_jobs.length;
 
   //steps ------
-
-  const companySetupSteps = steps;
 
   const requestSetupSteps = steps.filter((step) =>
     requestIds.includes(step.id),
@@ -146,6 +185,31 @@ export function useCompanySetup() {
     (jobSetupSteps?.filter((step) => step.isCompleted).length /
       jobSetupSteps.length) *
     100;
+
+  //complelet functions ------------------------
+  async function currentStepMarkAsComplete(id: string) {
+    if (steps.filter((step) => !step.isCompleted).length === 1) {
+      await MarkAallAsComplete();
+    } else
+      setSteps((pre) =>
+        pre.map((step) =>
+          step.id === id ? { ...step, isCompleted: true } : step,
+        ),
+      );
+  }
+
+  async function MarkAallAsComplete() {
+    await mutateAsync({ onboard_complete: true });
+    setSteps((pre) => {
+      return pre.map((step) => {
+        return { ...step, isCompleted: true };
+      });
+    });
+  }
+
+  async function finishHandler() {
+    setIsOnboardOpen(false);
+  }
 
   useEffect(() => {
     if (recruiter && integrations && allMembers && compandDetails) {
@@ -262,24 +326,32 @@ export function useCompanySetup() {
         .sort((a, b) => Number(b?.isCompleted) - Number(a?.isCompleted));
       setSteps(newSteps);
     }
-  }, [recruiter, integrations, allMembers]);
+  }, [recruiter, integrations, isMembersFetched]);
 
   return {
     isLoading,
     companySetupProgress,
     requestSetupProgress,
     jobSetupProgress,
-    companySetupSteps,
+    companySetupSteps: steps,
     requestSetupSteps,
     jobSetupSteps,
     isCompanySetupPending,
     isRequestSetupPending,
     isJobSetupPending,
+    currentStepMarkAsComplete,
+    MarkAallAsComplete,
+    selectedIndex,
+    setSelectedIndex,
+    selectedStep,
+    setSelectedStep,
+    isOnboardCompleteRemote,
+    finishHandler,
   };
 }
 
 const useFetchcompanySetup = () => {
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   return useQuery({
     queryKey: ['company_setup'],
     queryFn: () => fetchCompanySetup(recruiter_id ? recruiter_id : ''),

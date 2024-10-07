@@ -4,14 +4,14 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import Image from 'next/image';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 
 import { type ChatType } from '../hooks/fetch';
 import Widgets from '../Widgets';
 import CustomTypographyLink from './CustomTypographyLink';
 
 function MessageIndividual({ chat }: { chat: ChatType }) {
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
 
   const definedUi: FunctionNames[] = [
     'fetch_scheduled_interviews',
@@ -22,7 +22,7 @@ function MessageIndividual({ chat }: { chat: ChatType }) {
   const replaceLinks =
     chat?.metadata
       ?.flatMap((ele) => ele?.links?.map((link) => link))
-      .filter(Boolean) || [];
+      .filter((ele) => ele !== undefined) || [];
 
   return (
     <div className='w-full' id={chat.id}>
@@ -30,11 +30,11 @@ function MessageIndividual({ chat }: { chat: ChatType }) {
         {chat.type === 'user' ? (
           <Avatar className='h-8 w-8'>
             <AvatarImage
-              src={recruiterUser.profile_image}
-              alt={recruiterUser.first_name}
+              src={recruiter_user.profile_image ?? ''}
+              alt={recruiter_user.first_name}
             />
             <AvatarFallback>
-              {recruiterUser.first_name.charAt(0)}
+              {recruiter_user.first_name.charAt(0)}
             </AvatarFallback>
           </Avatar>
         ) : (
@@ -52,18 +52,21 @@ function MessageIndividual({ chat }: { chat: ChatType }) {
               {chat.type === 'agent'
                 ? 'Aglint'
                 : getFullName(
-                    recruiterUser.first_name,
-                    recruiterUser.last_name,
+                    recruiter_user.first_name,
+                    recruiter_user.last_name,
                   )}
             </p>
             <p className='text-sm text-muted-foreground'>
               {dayjsLocal(chat.created_at).fromNow()}
             </p>
           </div>
-          {definedUi.includes(chat.function) ? (
+          {chat?.function && definedUi.includes(chat.function) ? (
             <Widgets chat={chat} />
           ) : (
-            <CustomTypographyLink text={chat.content} links={replaceLinks} />
+            <CustomTypographyLink
+              text={chat?.content ?? ''}
+              links={replaceLinks}
+            />
           )}
         </div>
       </div>

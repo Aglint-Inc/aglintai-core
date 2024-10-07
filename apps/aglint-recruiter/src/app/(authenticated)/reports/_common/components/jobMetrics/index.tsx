@@ -1,3 +1,4 @@
+'use client';
 import AverageExperience from './AverageExperience';
 import AverageTenure from './AverageTenure';
 import CandidatesByExperienceChart from './CandidatesByExperienceChart';
@@ -6,7 +7,7 @@ import CandidatesBySkillsChart from './CandidatesBySkillsChart';
 
 export default function JobMetrics() {
   return (
-    <>
+    <div className='flex flex-col gap-4 pb-4'>
       <CandidatesByLocationChart />
       <CandidatesBySkillsChart />
       <CandidatesByExperienceChart />
@@ -14,6 +15,6 @@ export default function JobMetrics() {
         <AverageExperience />
         <AverageTenure />
       </div>
-    </>
+    </div>
   );
 }

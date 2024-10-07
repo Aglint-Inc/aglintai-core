@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import './EditorStyle.css'; // We will define some styles here
 
-import { CommandShortcut } from '@components/ui/command';
-import { Command } from 'cmdk';
-import { ArrowDown, ArrowUp } from 'lucide-react';
+import { EmptyState } from '@components/empty-state';
+import { Clock, Info } from 'lucide-react';
 import React, { type Dispatch, type SetStateAction, useState } from 'react';
-import { Mention, MentionsInput } from 'react-mentions';
+//@ts-ignore
+import { Mention, MentionsInput } from 'react-mentions'; // install the mentions library
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { ShowCode } from '@/components/Common/ShowCode';
 
 import ScrollingText from '../../Components/ScrollingText';
@@ -55,6 +55,29 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
   text = '',
   setText,
   inputRef,
+}: {
+  applicationsList?: { id: string; display: string }[];
+  jobList?: { id: string; display: string }[];
+  scheduleTypes?: { id: ScheduleType; display: string }[];
+  sessionList?: { id: string; display: string }[];
+  requestList?: { id: string; display: string }[];
+  handleTextChange?: ({
+    newValue,
+    newPlainTextValue,
+  }: {
+    newValue: string;
+    newPlainTextValue: string;
+  }) => void;
+  handleSubmit?: ({
+    planText,
+    markupText,
+  }: {
+    planText: string;
+    markupText: string;
+  }) => void;
+  text: string;
+  setText: Dispatch<SetStateAction<string>>;
+  inputRef?: React.RefObject<HTMLInputElement>;
 }) => {
   const [inputText, setInputText] = useState<{
     planText: string;
@@ -64,7 +87,9 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
     '@' | '#' | '$' | '%' | '/' | null
   >(null);
 
-  const [selectedItems, setSelectedItems] = useState<selectedItemsType>(null);
+  const [selectedItems, setSelectedItems] = useState<selectedItemsType | null>(
+    null,
+  );
 
   const filteredSessions = sessionList.filter(
     (session) => !inputText.mentions.map((m) => m.id).includes(session.id),
@@ -128,7 +153,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
                 ? scheduleTypes[2]?.display
                 : '';
 
-        if (regex.test(text)) {
+        if (regex.test(text) && handleTextChange) {
           setText(text.replace(regex, taskType));
           handleTextChange({
             newPlainTextValue: `${newTaskDisplay} ${inputText?.planText || ''}`,
@@ -136,10 +161,11 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
           });
         } else {
           setText(`${taskType}${text}`);
-          handleTextChange({
-            newPlainTextValue: `${newTaskDisplay} ${inputText?.planText || ''}`,
-            newValue: `${taskType}${text}`,
-          });
+          handleTextChange &&
+            handleTextChange({
+              newPlainTextValue: `${newTaskDisplay} ${inputText?.planText || ''}`,
+              newValue: `${taskType}${text}`,
+            });
         }
       }
     }
@@ -230,6 +256,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
         };
 
         while ((match = regex.exec(input)) !== null) {
+          // @ts-ignore
           result[match[1]].push({ id: match[2], name: match[3] });
         }
 
@@ -280,15 +307,15 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
               >
                 {selectedItems?.applicant_name[0]?.name ? (
                   <>
-                    <GlobalEmpty
-                      iconSlot={''}
-                      text={`There are no session found for ${selectedItems?.applicant_name[0]?.name}`}
+                    <EmptyState
+                      icon={Clock}
+                      header={`There are no session found for ${selectedItems?.applicant_name[0]?.name}`}
                     />
                   </>
                 ) : (
-                  <GlobalEmpty
-                    iconSlot={''}
-                    text={`Please select an application first`}
+                  <EmptyState
+                    icon={Info}
+                    header={`Please select an application first`}
                   />
                 )}
               </ShowCode>
@@ -299,7 +326,7 @@ const AgentEditor: React.FC<AgentEditorProps> = ({
                   (triggerType === '/' && requestList.length === 0)
                 }
               >
-                <GlobalEmpty iconSlot={''} text={`Results not found`} />
+                <EmptyState icon={Info} header={`Results not found`} />
               </ShowCode.When>
             </ShowCode>
             {children}
@@ -408,6 +435,12 @@ const Suggestion = ({
   focused,
   index,
   search: _search,
+}: {
+  entry: MentionType;
+  highlightedDisplay: React.ReactNode;
+  focused: boolean;
+  index: number;
+  search: string;
 }) => {
   if (entry.display === 'No results') {
     return null;

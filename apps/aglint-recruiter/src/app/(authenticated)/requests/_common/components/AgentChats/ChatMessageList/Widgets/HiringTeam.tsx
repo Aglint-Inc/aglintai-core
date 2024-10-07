@@ -61,7 +61,7 @@ function HiringTeam({ chat }: { chat: ChatType }) {
               >
                 {item.name}
               </Link>
-              <p className='text-sm text-gray-500'>{item.role}</p>
+              <p className='text-sm text-muted-foreground'>{item.role}</p>
             </div>
           </div>
         );
@@ -69,7 +69,7 @@ function HiringTeam({ chat }: { chat: ChatType }) {
 
       {job?.id && (
         <Link href={`/jobs/${job?.id}/hiring-team`} className='flex flex-row'>
-          <button className='rounded bg-neutral-200 px-4 py-2 text-neutral-700'>
+          <button className='rounded bg-neutral-200 px-4 py-2 text-muted-foreground'>
             View Hiring Team
           </button>
         </Link>

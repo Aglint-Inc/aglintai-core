@@ -1,6 +1,6 @@
 import { DatabaseTable } from "..";
 
-export type schedulingSettingType =
+export type SchedulingSettingType =
   DatabaseTable["recruiter"]["scheduling_settings"];
 
 export type holidayType = {

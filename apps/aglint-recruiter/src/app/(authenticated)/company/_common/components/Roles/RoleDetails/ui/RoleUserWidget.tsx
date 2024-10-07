@@ -3,23 +3,19 @@ import { Badge } from '@components/ui/badge';
 import Link from 'next/link';
 import React from 'react';
 
-import { type GetRoleAndPermissionsAPI } from '@/pages/api/getRoleAndPermissions/type';
-import type { useAllMembers } from '@/queries/members';
+import type { useRoleData } from '@/company/hooks/useRoleAndPermissionsHook';
+import type { TenantMembersType } from '@/company/hooks/useTenantMembers';
 
 export const RoleUserWidget = ({
   role,
   members,
 }: {
-  role: Awaited<
-    GetRoleAndPermissionsAPI['response']
-  >['rolesAndPermissions'][string] & {
-    name: string;
-  };
-  members: ReturnType<typeof useAllMembers>['members'];
+  role: ReturnType<typeof useRoleData>['role'];
+  members: TenantMembersType['members'];
 }) => {
   return (
     <>
-      {role.assignedTo.length ? (
+      {role?.assignedTo.length ? (
         members.map((member) => (
           <UserCard member={member} key={member.user_id} />
         ))
@@ -32,7 +28,11 @@ export const RoleUserWidget = ({
   );
 };
 
-const UserCard = ({ member }) => {
+const UserCard = ({
+  member,
+}: {
+  member: TenantMembersType['members'][number];
+}) => {
   if (!member) return null;
   return (
     <div className='flex flex-col space-x-4 p-2'>
@@ -41,11 +41,13 @@ const UserCard = ({ member }) => {
           <Link href={`/user/${member.user_id}`} className='font-medium'>
             {`${member.first_name || ''} ${member.last_name || ''}`.trim()}
           </Link>
-          <p className='text-sm text-gray-500'>{member.position}</p>
+          <p className='text-sm text-muted-foreground'>{member.position}</p>
         </div>
         <div>
-          <Badge variant={member.is_suspended ? 'destructive' : 'default'}>
-            {member.is_suspended ? 'Suspended' : 'Active'}
+          <Badge
+            variant={member.status === 'suspended' ? 'destructive' : 'default'}
+          >
+            {member.status === 'suspended' ? 'Suspended' : 'Active'}
           </Badge>
         </div>
       </div>

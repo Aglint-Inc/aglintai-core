@@ -32,7 +32,7 @@ function Header({
   activeDiv: tabs;
   setActiveDiv: React.Dispatch<React.SetStateAction<tabs>>;
 }) {
-  const { getSupabaseSession } = useAppContext();
+  const { getSupabaseSession, session } = useAppContext();
   return (
     <div id="header">
       <div className="flex-h">
@@ -41,7 +41,8 @@ function Header({
             <strong>⚠️ Warning:</strong> This is a utility for testing not a
             product feature. <InfoDisplay />
           </span>
-          <button onClick={getSupabaseSession}>sync</button>
+
+          {!session && <button onClick={getSupabaseSession}>Connect</button>}
         </div>
         <span>
           {Tabs.map((tab) => (

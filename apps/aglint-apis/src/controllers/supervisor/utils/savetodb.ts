@@ -1,5 +1,6 @@
 import {CallBackAll} from '@aglint/shared-types';
 import {FunctionNames} from '@aglint/shared-types/src/aglintApi/supervisor/functions';
+import {randomUUID} from 'crypto';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 
 export const saveToDB = async ({
@@ -76,7 +77,7 @@ export const handleError = async ({
   } else {
     resSave = {
       content: 'Sorry unable to process your request. Please try again later.',
-      id: crypto.randomUUID(),
+      id: randomUUID(),
       function: null,
       user_id,
       type: 'agent',

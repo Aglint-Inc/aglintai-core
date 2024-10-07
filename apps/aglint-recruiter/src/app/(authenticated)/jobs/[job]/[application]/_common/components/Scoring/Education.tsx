@@ -31,7 +31,7 @@ const Education = () => {
         <AccordionTrigger>
           <div className='flex w-full items-center justify-between'>
             <div className='flex items-center space-x-2'>
-              <GraduationCap size={16} />
+              <GraduationCap size={16} className='text-muted-foreground' />
               <span className='font-medium'>Education</span>
             </div>
             {schoolLogos.length > 0 && (
@@ -49,9 +49,9 @@ const Education = () => {
 
 export { Education };
 
-const getSchoolLogos = (data) => {
+const getSchoolLogos = (data: any) => {
   if (!data?.resume_json?.schools) return [];
-  const schools = data.resume_json.schools.slice(0, 3); // Get top 3 schools
+  const schools: any[] = data.resume_json.schools.slice(0, 3); // Get top 3 schools
   return schools.map((school, i) => (
     <ImageWithFallback
       key={i}
@@ -87,7 +87,7 @@ const Content = () => {
   )
     return (
       <div className='flex flex-col items-center justify-center p-4'>
-        <School className='mb-2 h-12 w-12 text-gray-500' />
+        <School className='mb-2 h-12 w-12 text-muted-foreground' />
         <p className='text-sm text-gray-600'>No education found</p>
       </div>
     );
@@ -142,7 +142,7 @@ const Schools = () => {
   return (
     <>
       <Table>
-        <TableHeader>
+        <TableHeader className='bg-gray-100'>
           <TableRow>
             <TableHead className='w-1/4'>Institution</TableHead>
             <TableHead className='w-1/2'>Degree</TableHead>
@@ -229,7 +229,10 @@ const timeFormat = (
 };
 
 // New function to calculate duration
-const calculateDuration = (start, end) => {
+const calculateDuration = (
+  start: Record<string, any>,
+  end: Record<string, any>,
+) => {
   if (!start) return '';
 
   const startDate = new Date(start.year || 0, (start.month || 1) - 1);
@@ -258,7 +261,15 @@ const calculateDuration = (start, end) => {
   return duration || 'Less than a month';
 };
 
-const ImageWithFallback = ({ src, alt, fallbackSrc }) => {
+const ImageWithFallback = ({
+  src,
+  alt,
+  fallbackSrc,
+}: {
+  src: string;
+  alt: string;
+  fallbackSrc: string;
+}) => {
   const [imgSrc, setImgSrc] = useState(src);
 
   return (

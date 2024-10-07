@@ -1,4 +1,14 @@
-import { type SessionsCombType } from '@aglint/shared-types';
+import { getBreakLabel } from '@aglint/shared-utils';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog';
 import { Coffee, Plus, Repeat } from 'lucide-react';
 import React, {
   type Dispatch,
@@ -11,13 +21,13 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useCandidateInvite } from '@/context/CandidateInviteContext';
-import { useInviteSlots } from '@/queries/candidate-invite';
-import { getBreakLabel } from '@/utils/getBreakLabel';
 import toast from '@/utils/toast';
 
-import { SessionIcon } from '../../../../../../../../components/Scheduling/Common/ScheduleProgress/ScheduleProgressPillComp';
 import { getScheduleType } from '../../../../../../../../utils/scheduling/colors_and_enums';
+import { SessionIcon } from '../../../../../../../_common/components/ScheduleProgressPillComp';
+import useInviteActions from '../../hooks/useInviteActions';
+import { useInviteSlots } from '../../hooks/useInviteSlots';
+import { type CandidateInviteType, useCandidateInviteStore } from '../../store';
 import {
   type ScheduleCardProps,
   type ScheduleCardsProps,
@@ -25,15 +35,14 @@ import {
 import { dayJS, getDurationText } from '../../utils/utils';
 import CandidateInviteCalendar, {
   type CandidateInviteCalendarProps,
-} from '../calender';
-import { CandidateScheduleCard } from '../Components/CandidateScheduleCard';
-import { SelectedDateAndTime } from '../Components/SelectedDateAndTime';
-import { SessionAndTime } from '../Components/SessionAndTime';
-import { SessionInfo } from '../Components/SessionInfo';
+} from '../CalenderComp';
+import { CandidateScheduleCard } from '../ui/CandidateScheduleCard';
+import { SelectedDateAndTime } from '../ui/SelectedDateAndTime';
+import { SessionAndTime } from '../ui/SessionAndTime';
+import { SessionInfo } from '../ui/SessionInfo';
 
 const MultiDay = ({ rounds }: ScheduleCardsProps) => {
-  const { params } = useCandidateInvite();
-  const { status } = useInviteSlots(params);
+  const { status } = useInviteSlots();
   if (status === 'error') return <MultiDayError />;
   if (status === 'pending') return <MultiDayLoading />;
   return <MultiDaySuccess rounds={rounds} />;
@@ -42,8 +51,7 @@ const MultiDay = ({ rounds }: ScheduleCardsProps) => {
 export default MultiDay;
 
 const MultiDayError = () => {
-  const { params } = useCandidateInvite();
-  const { refetch } = useInviteSlots(params);
+  const { refetch } = useInviteSlots();
   useEffect(() => {
     toast.error('Something went wrong. Please try again.');
   }, []);
@@ -65,9 +73,10 @@ const MultiDayLoading = () => {
 };
 
 const MultiDaySuccess = (props: ScheduleCardsProps) => {
-  const { selectedSlots } = useCandidateInvite();
+  const { selectedSlots } = useCandidateInviteStore();
   const [open, setOpen] = useState(false);
   const enabled = selectedSlots.length === props.rounds.length;
+
   return (
     <>
       <ScheduleCards rounds={props.rounds} />
@@ -98,15 +107,15 @@ type MultiDayConfirmationProps = {
 };
 
 const MultiDayConfirmation = (props: MultiDayConfirmationProps) => {
-  const { handleSubmit } = useCandidateInvite();
+  const { handleSubmit } = useInviteActions();
   const handleClose = () => {
     props.setOpen(false);
   };
-  const { selectedSlots, timezone } = useCandidateInvite();
+  const { selectedSlots, timezone } = useCandidateInviteStore();
 
   type SelectedDateAndSessionsType = {
     date: string;
-    sessions: SessionsCombType['sessions'] | null;
+    sessions: CandidateInviteType['selectedSlots'][0]['sessions'];
   }[];
   const [selectedDateAndSessions, setSelectedDateAndSessions] =
     useState<SelectedDateAndSessionsType>([]);
@@ -129,40 +138,35 @@ const MultiDayConfirmation = (props: MultiDayConfirmationProps) => {
   }, [props.rounds]);
 
   return (
-    <UIDialog
-      title='Confirm your interview'
-      open={props.open}
-      onClose={() => handleClose()}
-      slotButtons={
-        <>
-          <UIButton variant='secondary' onClick={() => handleClose()}>
-            Cancel
-          </UIButton>
-          <UIButton variant='default' onClick={() => handleSubmit()}>
-            Confirm
-          </UIButton>
-        </>
-      }
-    >
-      <div className='gap-2'>
-        <div>
-          {selectedDateAndSessions.map((item, index) => (
-            <>
+    <AlertDialog open={props.open} onOpenChange={props.setOpen}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Confirm your interview</AlertDialogTitle>
+          <AlertDialogDescription>
+            <div className='gap-2'>
+              <div>
+                {selectedDateAndSessions.map((item, index) => (
+                  <p key={index}>
+                    Day-{index + 1} -{' '}
+                    {item.sessions.map((ele) => ele.session_name).join(' ,')} on{' '}
+                    {item.date}
+                  </p>
+                ))}
+              </div>
               <p>
-                Day-{index + 1} -{' '}
-                {item.sessions.map((ele) => ele.session_name).join(' ,')} on{' '}
-                {item.date}
+                Please review and confirm your selected time slot before we
+                finalize your schedule. It&apos;s important that your interview
+                time aligns with your availability.
               </p>
-            </>
-          ))}
-        </div>
-        <p>
-          Please review and confirm your selected time slot before we finalize
-          your schedule. It’s important that your interview time aligns with
-          your availability.
-        </p>
-      </div>
-    </UIDialog>
+            </div>
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel onClick={handleClose}>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={handleSubmit}>Confirm</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 };
 
@@ -175,9 +179,9 @@ const ScheduleCards = (props: ScheduleCardsProps) => {
 };
 
 const ScheduleCard = (props: ScheduleCardProps) => {
-  const { params, selectedSlots, handleSelectSlot, timezone } =
-    useCandidateInvite();
-  const { data } = useInviteSlots(params);
+  const { selectedSlots, timezone } = useCandidateInviteStore();
+  const { handleSelectSlot } = useInviteActions();
+  const { data } = useInviteSlots();
 
   const [open, setOpen] = useState(false);
 
@@ -318,7 +322,7 @@ type SingleDaySessionsProps = {
   index: number;
 };
 const SingleDaySessions = (props: SingleDaySessionsProps) => {
-  const { selectedSlots } = useCandidateInvite();
+  const { selectedSlots } = useCandidateInviteStore();
   const sessions = (selectedSlots?.[props.index]?.sessions ?? []).map(
     (session) => (
       <SingleDaySession key={session.session_id} session={session} />
@@ -328,12 +332,10 @@ const SingleDaySessions = (props: SingleDaySessionsProps) => {
 };
 
 type SingleDaySessionProps = {
-  session: ReturnType<
-    typeof useCandidateInvite
-  >['selectedSlots'][number]['sessions'][number];
+  session: CandidateInviteType['selectedSlots'][number]['sessions'][number];
 };
 const SingleDaySession = (props: SingleDaySessionProps) => {
-  const { timezone } = useCandidateInvite();
+  const { timezone } = useCandidateInviteStore();
   const name = props.session.session_name;
   const duration = `${dayJS(props.session.start_time, timezone.tzCode).format(
     'hh:mm A',

@@ -12,8 +12,11 @@
     "noUnusedParameters": false,
     "preserveWatchOutput": true,
     "skipLibCheck": true,
-    "strictNullChecks": false,
-    "plugins": [{ "name": "next" }],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "allowJs": true,
     "declaration": false,
     "declarationMap": false,
@@ -22,13 +25,14 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "noEmit": true,
     "strict": false,
+    "strictNullChecks": false,
     "target": "es5",
     "module": "CommonJS",
-    "noUncheckedIndexedAccess": true,
+    "noUncheckedIndexedAccess": false,
     "resolveJsonModule": true,
     // "types": ["vitest/globals"],
     "outDir": "dist"
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["tsconfig.export.json", ".next", "cli", "node_modules"]
+  "exclude": ["tsconfig.export.json", ".next", "cli", "node_modules", "dist"]
 }

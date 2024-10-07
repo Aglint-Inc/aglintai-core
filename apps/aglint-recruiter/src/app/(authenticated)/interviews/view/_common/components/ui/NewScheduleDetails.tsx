@@ -1,5 +1,6 @@
 'use client';
-import UITypography from '@/components/Common/UITypography';
+import Typography from '@components/typography';
+import { Clock, Hourglass } from 'lucide-react';
 
 type MeetingDetails = {
   slotCandidateList?: React.ReactNode;
@@ -59,76 +60,82 @@ export function NewScheduleDetail({
   textInterviewer = 'Interviewers',
 }: MeetingDetails) {
   return (
-    <div className='flex w-full flex-col gap-6 rounded-lg border bg-white p-6'>
+    <div className='flex w-full flex-col gap-6 rounded-lg border-none bg-white'>
       <div className='flex items-start justify-between'>
-        <div className='flex items-start gap-6'>
+        <div className='flex items-start gap-4'>
           {isDateCardVisible && (
-            <div className='flex h-20 w-20 flex-col items-center justify-center rounded-md bg-neutral-100'>
-              <UITypography
+            <div className='rounded-mdbg-muted flex h-20 w-20 flex-col items-center justify-center'>
+              <Typography
                 variant='p'
                 type='small'
-                className='text-xs text-neutral-600'
+                className='text-xs text-muted-foreground'
               >
                 {textMonth}
-              </UITypography>
-              <UITypography
+              </Typography>
+              <Typography
                 variant='p'
                 type='large'
-                className='text-2xl font-bold text-neutral-800'
+                className='text-2xl font-medium'
               >
                 {textDate}
-              </UITypography>
-              <UITypography
+              </Typography>
+              <Typography
                 variant='p'
                 type='extraSmall'
-                className='text-xs text-neutral-600'
+                className='text-xs text-muted-foreground'
               >
                 {textDay}
-              </UITypography>
+              </Typography>
             </div>
           )}
           <div className='flex flex-col gap-2'>
             <div className='flex items-center gap-2'>
-              <div>{slotPanelIcon}</div>
-              <UITypography
-                variant='h2'
+              <div className='hidden'>{slotPanelIcon}</div>
+              <Typography
+                variant='p'
                 type='medium'
-                className='text-xl font-semibold'
+                className='text-md font-medium'
               >
                 {textPanelName}
-              </UITypography>
+              </Typography>
               <div>{slotStatusBadge}</div>
             </div>
-            <div className='flex items-center gap-4 text-sm text-neutral-600'>
+            <div className='flex items-center gap-3 text-sm text-muted-foreground'>
               {isTimingVisible && (
                 <div className='flex items-center gap-1'>
-                  <div>{slotMeetingIcon}</div>
-                  <UITypography variant='p' type='small'>
+                  <div className='hidden'>{slotMeetingIcon}</div>
+                  <Clock className='h-4 w-4' />
+                  <Typography variant='p' type='small'>
                     {textTime}
-                  </UITypography>
+                  </Typography>
                 </div>
               )}
-              <UITypography variant='p' type='small'>
-                {textDuration}
-              </UITypography>
-            </div>
-            <div className='flex items-center gap-2 text-sm'>
-              <UITypography
+              <Typography
                 variant='p'
                 type='small'
-                className='text-neutral-600'
+                className='flex flex-row items-center gap-1'
               >
-                {textMeetingPlatform}
-              </UITypography>
+                <Hourglass className='h-4 w-4' />
+                {textDuration}
+              </Typography>
+            </div>
+            <div className='flex items-center gap-2 text-sm'>
+              <Typography
+                variant='p'
+                type='small'
+                className='text-muted-foreground'
+              >
+                {textMeetingPlatform}:
+              </Typography>
               {isMeetingLinkVisible && (
                 <div className='flex items-center gap-1'>
-                  <UITypography
+                  <Typography
                     variant='p'
                     type='small'
-                    className='text-primary'
+                    className='hidden text-primary'
                   >
                     {textMeetingLink}
-                  </UITypography>
+                  </Typography>
                   <div>{slotJoinMeeting}</div>
                 </div>
               )}
@@ -138,33 +145,33 @@ export function NewScheduleDetail({
       </div>
       <div className='flex h-full w-full items-stretch justify-start gap-12'>
         <div className='flex h-full w-2/3 flex-col gap-6'>
-          <div className='flex flex-col gap-4'>
-            <UITypography
+          <div className='flex flex-col gap-2'>
+            <Typography
               variant='h3'
               type='medium'
-              className='text-lg font-semibold'
+              className='text-sm text-muted-foreground'
             >
               Candidate
-            </UITypography>
+            </Typography>
             <div className='flex flex-col gap-2'>{slotCandidateList}</div>
             {isCandidateButtonVisible && <div>{slotCandidateButton}</div>}
           </div>
           <div className='flex flex-col gap-4'>
-            <div className='flex items-center gap-2'>
-              <UITypography
+            <div className='flex items-center gap-1'>
+              <Typography
                 variant='h3'
                 type='medium'
-                className='text-lg font-semibold'
+                className='text-sm text-muted-foreground'
               >
                 {textInterviewer}
-              </UITypography>
-              <UITypography
+              </Typography>
+              <Typography
                 variant='p'
                 type='small'
-                className='text-sm text-neutral-600'
+                className='text-sm text-muted-foreground'
               >
                 {textInterviewerCount}
-              </UITypography>
+              </Typography>
             </div>
             <div className='flex flex-col gap-4'>{slotInterviewerList}</div>
             {isInterviewerButtonVisible && <div>{slotInterviewerButton}</div>}
@@ -172,23 +179,23 @@ export function NewScheduleDetail({
         </div>
         <div className='flex w-1/3 flex-col gap-6'>
           <div className='flex flex-col gap-4'>
-            <UITypography
+            <Typography
               variant='h3'
               type='medium'
-              className='text-lg font-semibold'
+              className='text-sm text-muted-foreground'
             >
               Interview Type
-            </UITypography>
+            </Typography>
             <div>{slotInterviewTypeButton}</div>
           </div>
           <div className='flex flex-col gap-4'>
-            <UITypography
+            <Typography
               variant='h3'
               type='medium'
-              className='text-lg font-semibold'
+              className='text-sm text-muted-foreground'
             >
               Organizer & Hiring Team
-            </UITypography>
+            </Typography>
             <div className='flex flex-col gap-4'>
               {slotOrganizerList}
               {slotHiringTeamList}
