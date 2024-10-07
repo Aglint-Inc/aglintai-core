@@ -143,8 +143,8 @@ export default function ReorderableInterviewPlan({
             >
               {step.is_completed ? (
                 <CircleCheck
-                  strokeWidth={1.5}
-                  className='h-5 w-5 text-primary'
+                  strokeWidth={1}
+                  className='h-2 w-4 text-primary'
                   color='green'
                 />
               ) : (

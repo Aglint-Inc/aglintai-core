@@ -14,7 +14,7 @@ import {
   SectionTitle,
 } from '@components/layouts/sections-header';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
-import { ScrollArea } from '@components/ui/scroll-area';
+import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useState } from 'react';
@@ -124,28 +124,30 @@ const Dashboard = () => {
           <SharedActions />
         </PageActions>
       </PageHeader>
-      <div className='mb-6 flex flex-col gap-6 px-4'>
-        <div>
-          <div className='flex flex-col gap-4 py-4'>
-            <div className='space-y-4 rounded-lg bg-muted p-4'>
-              <JobStats
-                isScoringEnabled={isScoringEnabled}
-                score_matches={score_matches}
-              />
+      <ScrollBar className='h-[calc(100vh-220px)]'>
+        <div className='mb-6 flex flex-col gap-6 px-4'>
+          <div>
+            <div className='flex flex-col gap-4 py-4'>
+              <div className='space-y-4 rounded-lg bg-muted p-4'>
+                <JobStats
+                  isScoringEnabled={isScoringEnabled}
+                  score_matches={score_matches}
+                />
+              </div>
             </div>
-          </div>
-          <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-            <div className='space-y-4'>
-              <Doughnut />
-              <Bars />
-            </div>
-            <div className='space-y-4'>
-              <LineGraph />
-              <TenureAndExpSummary />
+            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+              <div className='space-y-4'>
+                <Doughnut />
+                <Bars />
+              </div>
+              <div className='space-y-4'>
+                <LineGraph />
+                <TenureAndExpSummary />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </ScrollBar>
     </Page>
   );
 };
