@@ -9,6 +9,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@components/ui/alert-dialog';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { Coffee, Plus, Repeat } from 'lucide-react';
 import React, {
   type Dispatch,
@@ -79,7 +80,9 @@ const MultiDaySuccess = (props: ScheduleCardsProps) => {
 
   return (
     <>
-      <ScheduleCards rounds={props.rounds} />
+      <div className='mb-4 space-y-4'>
+        <ScheduleCards rounds={props.rounds} />
+      </div>
       <div className={'flex justify-center'}>
         <UIButton
           variant='default'
@@ -307,12 +310,14 @@ const ScheduleCard = (props: ScheduleCardProps) => {
         size='lg'
         title='Select Date and Time'
       >
-        <CandidateInviteCalendar
-          sessions={sessions}
-          selections={selectedSlots}
-          handleSelect={handleSelect}
-          tz={timezone.tzCode}
-        />
+        <ScrollArea className='w-[500px]'>
+          <CandidateInviteCalendar
+            sessions={sessions}
+            selections={selectedSlots}
+            handleSelect={handleSelect}
+            tz={timezone.tzCode}
+          />
+        </ScrollArea>
       </UIDialog>
     </div>
   );
