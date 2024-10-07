@@ -15,10 +15,10 @@ import {
   XCircle,
 } from 'lucide-react';
 
+import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
 import type { useAllInterviewModulesType } from '@/authenticated/types';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { useAllDepartments } from '@/queries/departments';
 
 export const InterviewPoolList = ({
   interviewType,
