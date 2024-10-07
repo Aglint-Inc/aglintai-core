@@ -1,11 +1,13 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Building, CircleDot, Locate, User } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import FilterHeader from '@/common/FilterHeader';
 import { type FiltersTypes } from '@/common/FilterHeader/filters';
-import { useTeamMembers } from '@/company/hooks/useTeamMembers';
+import { useTenantMembers } from '@/company/hooks';
+import { useUserSync } from '@/company/hooks/useTeamMembers';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useGreenhouseDetails } from '@/queries/greenhouse';
 
 import AddMember from './AddMemberDialog';
 import { TeamManagementUI } from './ui/TeamManagementUI';
@@ -14,13 +16,17 @@ type ItemType = string;
 
 const TeamManagement = () => {
   const { checkPermissions } = useRolesAndPermissions();
-  const { data: members, isPending, remote_sync } = useTeamMembers();
-  const timeStamp = remote_sync?.lastSync;
+  const { sync_users } = useUserSync();
+  const { allMembers: members, isPending } = useTenantMembers();
+  const { data: remote_sync } = useGreenhouseDetails();
+  const timeStamp = remote_sync.last_sync?.users;
   const last_sync = timeStamp ? dayjsLocal(timeStamp).fromNow() : 'Never';
+  // console.log('render TeamManagement');
 
   // filter members
   const [searchText, setSearchText] = useState('');
-  const [filteredMembers, setFilteredMembers] = useState(members);
+  // const [filteredMembers, setFilteredMembers] = useState(members);
+  // const filteredMembers = members;
 
   const [selectedDepartments, setSelectedDepartments] = useState<ItemType[]>(
     [],
@@ -62,33 +68,23 @@ const TeamManagement = () => {
     ),
   ].map((item) => (item === 'joined' ? 'active' : item));
 
-  useEffect(() => {
-    const filtered = members.filter((member) => {
-      const departmentMatch =
-        !selectedDepartments.length ||
-        (member.department?.name &&
-          selectedDepartments.includes(member.department?.name));
-      const locationMatch =
-        !selectedLocations.length ||
-        (member.office_location?.city &&
-          selectedLocations.includes(member.office_location?.city));
-      const statusMatch =
-        !selectedStatus.length ||
-        selectedStatus.includes(String(member.status).toLowerCase());
-      const roleMatch =
-        !selectedRoles.length || selectedRoles.includes(String(member.role));
+  const filteredMembers = members.filter((member) => {
+    const departmentMatch =
+      !selectedDepartments.length ||
+      (member.department?.name &&
+        selectedDepartments.includes(member.department?.name));
+    const locationMatch =
+      !selectedLocations.length ||
+      (member.office_location?.city &&
+        selectedLocations.includes(member.office_location?.city));
+    const statusMatch =
+      !selectedStatus.length ||
+      selectedStatus.includes(String(member.status).toLowerCase());
+    const roleMatch =
+      !selectedRoles.length || selectedRoles.includes(String(member.role));
+    return departmentMatch && locationMatch && statusMatch && roleMatch;
+  });
 
-      return departmentMatch && locationMatch && statusMatch && roleMatch;
-    });
-
-    setFilteredMembers(filtered);
-  }, [
-    selectedDepartments,
-    selectedLocations,
-    selectedStatus,
-    selectedRoles,
-    members,
-  ]);
   const canManage = checkPermissions(['manage_users']);
   // const [isInitialLoading, setIsInitialLoading] = useState(
   //   filteredMembers.length ? false : true,
@@ -161,9 +157,9 @@ const TeamManagement = () => {
         canManage={canManage}
         filteredMembers={filteredMembers}
         isRemoteSync={remote_sync.isEnabled}
-        isTableLoading={!filteredMembers?.length && isPending}
+        isTableLoading={isPending}
         last_sync={last_sync}
-        remote_sync={remote_sync.sync}
+        remote_sync={sync_users}
         setOpen={setOpen}
         filter={
           <FilterHeader

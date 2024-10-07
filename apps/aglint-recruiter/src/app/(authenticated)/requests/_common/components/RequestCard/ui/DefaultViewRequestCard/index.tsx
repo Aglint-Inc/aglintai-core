@@ -160,7 +160,9 @@ function DefaultViewRequestCard({
                       <>
                         <div className='flex flex-row items-center gap-4'>
                           <div className='flex flex-row items-center space-x-2 text-sm'>
-                            {<UserCircle className='h-4 w-4' />}
+                            {
+                              <UserCircle className='h-4 w-4 text-muted-foreground' />
+                            }
                             <Link
                               href={`/user/${props.assigner_id}`}
                               target='_blank'
@@ -215,7 +217,7 @@ function DefaultViewRequestCard({
                 }
               />
               <InfoItem
-                icon={<User className='h-4 w-4' />}
+                icon={<User className='h-4 w-4 text-muted-foreground' />}
                 label='Candidate and Job'
                 variant='column'
                 value={

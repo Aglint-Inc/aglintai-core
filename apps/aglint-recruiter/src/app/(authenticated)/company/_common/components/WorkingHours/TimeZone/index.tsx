@@ -7,7 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { Clock, Edit } from 'lucide-react';
+import { Clock, Pen } from 'lucide-react';
 import { type FC, useEffect, useRef, useState } from 'react';
 
 import TimezonePicker from '@/common/TimezonePicker';
@@ -53,7 +53,7 @@ const TimeZone: FC<TimeZoneProps> = ({
         <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
           <PopoverTrigger asChild>
             <Button variant='outline' size='sm' className=''>
-              <Edit className='mr-2 h-3 w-3' /> Edit
+              <Pen className='mr-2 h-3 w-3' /> Edit
               <span className='sr-only'>Edit Time Zone</span>
             </Button>
           </PopoverTrigger>

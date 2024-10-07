@@ -10,7 +10,6 @@ import { confirmInterviewers } from './confirmInterviewers';
 import { createMeetingEvents } from './createMeetingEvents';
 import { sendMailsToOrganizer } from './sendMailsToOrganizer';
 import { type FetchDBScheduleDetails, type ScheduleDBDetails } from './types';
-import { updateConfirmTime } from './updateConfirmTime';
 import { updateMeetingEventDetails } from './updateMeetingInfo';
 import { updateTrainingStatus } from './updateTrainingStatus';
 
@@ -51,7 +50,6 @@ export const confirmSlotNoConflict = async (
     parsed_body.cand_tz,
     db_details.request_id,
   );
-  await updateConfirmTime(parsed_body.filter_id);
   await sendMailsToOrganizer(db_details, booked_meeting_details);
   const payload: APICandScheduleMailThankYou = {
     cand_tz: parsed_body.cand_tz,

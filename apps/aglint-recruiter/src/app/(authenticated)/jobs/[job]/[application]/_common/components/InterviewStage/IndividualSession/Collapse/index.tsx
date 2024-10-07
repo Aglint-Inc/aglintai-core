@@ -76,7 +76,7 @@ function CollapseContent({
                         </p>
                         {candidate.current_job_title && (
                           <div className='mt-1 flex items-center text-xs text-muted-foreground'>
-                            <BriefcaseBusiness className='mr-1 h-3 w-3' />
+                            <BriefcaseBusiness className='mr-1 h-3 w-3 text-muted-foreground' />
                             <span>{candidate.current_job_title}</span>
                           </div>
                         )}

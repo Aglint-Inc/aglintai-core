@@ -21,7 +21,7 @@ const Content = () => {
   return (
     <RequestList
       onSelect={selectSchedule}
-      icon={<User className='mr-2 h-4 w-4' />}
+      icon={<User className='mr-2 h-4 w-4 text-muted-foreground' />}
       {...props}
     />
   );

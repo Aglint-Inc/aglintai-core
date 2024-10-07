@@ -121,14 +121,14 @@ export const InterviewerList = ({
       </TableCell>
       <TableCell>
         <Badge variant='secondary' className='bg-blue-100 text-blue-800'>
-          <Clock className='mr-1 h-3 w-3' />
+          <Clock className='mr-1 h-3 w-3 text-muted-foreground' />
           {interviewer.completed_count}
         </Badge>
       </TableCell>
       <TableCell>
         <div className='flex items-center space-x-2'>
           <Badge variant='secondary' className='bg-green-100 text-green-800'>
-            <BriefcaseBusiness className='mr-1 h-3 w-3' />
+            <BriefcaseBusiness className='mr-1 h-3 w-3 text-muted-foreground' />
             {interviewer.completed_count}
           </Badge>
         </div>
@@ -137,7 +137,7 @@ export const InterviewerList = ({
       <TableCell>
         <div className='flex items-center space-x-2'>
           <Badge variant='secondary' className='bg-purple-100 text-purple-800'>
-            <GraduationCap className='mr-1 h-3 w-3' />
+            <GraduationCap className='mr-1 h-3 w-3 text-muted-foreground' />
             {interviewer.training_types?.length}
           </Badge>
         </div>

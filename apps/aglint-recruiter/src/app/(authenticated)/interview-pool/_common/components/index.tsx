@@ -41,7 +41,7 @@ export default function InterviewTypesPage() {
 
   //filtering
 
-  const archiveFiltered = (allModules || []).filter((module) => {
+  const archiveFiltered = allModules.filter((module) => {
     return activeTab === 'active' ? !module.is_archived : module.is_archived;
   });
 

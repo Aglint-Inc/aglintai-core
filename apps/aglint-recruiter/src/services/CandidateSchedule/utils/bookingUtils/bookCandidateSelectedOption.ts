@@ -11,7 +11,6 @@ import { confirmInterviewers } from './confirmInterviewers';
 import { createMeetingEvents } from './createMeetingEvents';
 import { sendMailsToOrganizer } from './sendMailsToOrganizer';
 import { type FetchDBScheduleDetails, type ScheduleDBDetails } from './types';
-import { updateConfirmTime } from './updateConfirmTime';
 import { updateMeetingEventDetails } from './updateMeetingInfo';
 import { updateTrainingStatus } from './updateTrainingStatus';
 
@@ -48,26 +47,47 @@ export const bookCandidateSelectedOption = async (
     db_details,
   );
 
-  await updateTrainingStatus(booked_meeting_details);
   await confirmInterviewers(booked_meeting_details, false);
   await updateMeetingEventDetails(
     booked_meeting_details,
     parsed_body.cand_tz,
     fetched_cand_details.request_id,
   );
-  await updateConfirmTime(parsed_body.filter_id);
-  await sendMailsToOrganizer(db_details, booked_meeting_details);
-  const payload: APICandScheduleMailThankYou = {
-    cand_tz: parsed_body.cand_tz,
-    filter_id: parsed_body.filter_id,
-    application_id: fetched_cand_details.application_id,
-    session_ids: fetched_cand_details.session_ids,
-    availability_request_id: null,
-    is_debreif: false,
-  };
-  await axios.post(
-    `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
-    payload,
-  );
+
+  await Promise.all([
+    sendMailsToOrganizer(db_details, booked_meeting_details),
+    updateTrainingStatus(booked_meeting_details),
+    (async () => {
+      const payload: APICandScheduleMailThankYou = {
+        cand_tz: parsed_body.cand_tz,
+        filter_id: parsed_body.filter_id,
+        application_id: fetched_cand_details.application_id,
+        session_ids: fetched_cand_details.session_ids,
+        availability_request_id: null,
+        is_debreif: false,
+      };
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
+        payload,
+      );
+    })(),
+  ]);
+
+  // await sendMailsToOrganizer(db_details, booked_meeting_details);
+
+  // await updateTrainingStatus(booked_meeting_details); // not required
+
+  // const payload: APICandScheduleMailThankYou = {
+  //   cand_tz: parsed_body.cand_tz,
+  //   filter_id: parsed_body.filter_id,
+  //   application_id: fetched_cand_details.application_id,
+  //   session_ids: fetched_cand_details.session_ids,
+  //   availability_request_id: null,
+  //   is_debreif: false,
+  // };
+  // await axios.post(
+  //   `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
+  //   payload,
+  // );
   return booked_meeting_details;
 };

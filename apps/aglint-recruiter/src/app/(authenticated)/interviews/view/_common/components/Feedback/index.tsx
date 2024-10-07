@@ -439,17 +439,17 @@ const InterviewerFeedback = ({
                     <div className='space-y-2'>
                       {session[0].session.session_type === 'panel' ? (
                         <div className='flex items-center space-x-2'>
-                          <Users size={18} />
+                          <Users size={18} className='text-muted-foreground' />
                           <span>{session[0].session.title}</span>
                         </div>
                       ) : (
                         <div className='flex items-center space-x-2'>
-                          <User size={18} />
+                          <User size={18} className='text-muted-foreground' />
                           <span>{session[0].session.title}</span>
                         </div>
                       )}
                       <div className='flex items-center space-x-2'>
-                        <Calendar size={16} />
+                        <Calendar size={16} className='text-muted-foreground' />
                         <span>
                           {dayjsLocal(session[0].session.time.start).format(
                             'ddd, MMMM DD, YYYY',
@@ -457,7 +457,7 @@ const InterviewerFeedback = ({
                         </span>
                       </div>
                       <div className='flex items-center space-x-2 text-sm text-muted-foreground'>
-                        <Clock size={16} />
+                        <Clock size={16} className='text-muted-foreground' />
                         <span>{`${dayjsLocal(
                           session[0].session.time.start,
                         ).format('hh:mm')} - ${dayjsLocal(
@@ -466,7 +466,7 @@ const InterviewerFeedback = ({
                       </div>
 
                       <Badge className='flex items-center space-x-1'>
-                        <Circle size={12} />
+                        <Circle size={12} className='text-muted-foreground' />
                         <span>{session[0].session.status}</span>
                       </Badge>
                     </div>

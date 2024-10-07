@@ -1,4 +1,4 @@
-import { SquarePen } from 'lucide-react';
+import { Pen } from 'lucide-react';
 import { useState } from 'react';
 
 import { UIButton } from '@/common/UIButton';
@@ -31,7 +31,7 @@ export const BasicInfo = () => {
               variant='outline'
               size='sm'
               onClick={() => setEditDrawer(true)}
-              leftIcon={<SquarePen className='mr-2 h-3 w-3' />}
+              leftIcon={<Pen className='mr-2 h-3 w-3' />}
             >
               Edit
             </UIButton>

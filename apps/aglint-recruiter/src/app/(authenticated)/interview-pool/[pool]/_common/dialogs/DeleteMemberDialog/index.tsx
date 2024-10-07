@@ -1,9 +1,17 @@
 import Typography from '@components/typography';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog';
 import { Skeleton } from '@components/ui/skeleton';
 import { UIAlert } from '@components/ui-alert';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
 import { api } from '@/trpc/client';
 import toast from '@/utils/toast';
 
@@ -61,106 +69,108 @@ function DeleteMemberDialog() {
   };
 
   return (
-    <UIDialog
-      open={isDeleteMemberDialogOpen}
-      title='Remove member'
-      onClose={resetState}
-      slotButtons={
-        <>
-          <UIButton variant='secondary' onClick={resetState}>
-            Cancel
-          </UIButton>
-          <UIButton
-            isLoading={isPending}
-            disabled={isOngoingSchedules || isLoading || isError}
-            variant='destructive'
+    <AlertDialog open={isDeleteMemberDialogOpen} onOpenChange={resetState}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Remove member</AlertDialogTitle>
+          <AlertDialogDescription>
+            Are you sure you want to remove this member? This action cannot be
+            undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <div className='flex flex-col gap-2'>
+          <Typography type='small' color='neutral'>
+            By clicking remove, the member will be permanently removed from this
+            interview type.
+          </Typography>
+
+          {isLoading ? (
+            <div className='flex flex-col gap-2'>
+              <Skeleton className='h-4 w-[250px]' />
+              <Skeleton className='h-4 w-[250px]' />
+            </div>
+          ) : (
+            <>
+              {isOngoingSchedules ? (
+                <UIAlert type='error' title='User cannot be removed'>
+                  <div className='mt-2 flex flex-col space-y-2'>
+                    <Typography
+                      variant='small'
+                      className='text-muted-foreground'
+                    >
+                      There are ongoing schedules for this user. Once the
+                      schedules are completed, you can remove the user.
+                    </Typography>
+                  </div>
+                </UIAlert>
+              ) : (
+                <>
+                  {isError ? (
+                    <UIAlert type='error' title='Error'>
+                      <div className='mt-2 flex flex-col space-y-2'>
+                        <Typography
+                          variant='small'
+                          className='text-muted-foreground'
+                        >
+                          Failed to fetch data. Please contact support.
+                        </Typography>
+                      </div>
+                    </UIAlert>
+                  ) : (
+                    <>
+                      {' '}
+                      {connectedJobs.length > 0 ? (
+                        <UIAlert
+                          type='warning'
+                          title="Here is a list of job's interview plan that will be impacted:"
+                        >
+                          <div className='mt-2 flex flex-col space-y-2'>
+                            <Typography
+                              variant='small'
+                              className='text-muted-foreground'
+                            >
+                              {connectedJobs
+                                .map((job) => job.job_title)
+                                .join(', ')}
+                            </Typography>
+                            <Typography
+                              variant='small'
+                              className='text-muted-foreground'
+                            >
+                              If the user exists in previously scheduled
+                              interviews, the user will be removed from those
+                              schedules.
+                            </Typography>
+                          </div>
+                        </UIAlert>
+                      ) : (
+                        <UIAlert type='warning' title='Note :'>
+                          User is not connected to any interview plan. If user
+                          exists in previous scheduled interviews, the user will
+                          be removed from those schedules.
+                        </UIAlert>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+            </>
+          )}
+        </div>
+        <AlertDialogFooter>
+          <AlertDialogCancel onClick={resetState}>Cancel</AlertDialogCancel>
+          <AlertDialogAction
             onClick={async () => {
               if (isPending || !selUser) return;
               onClickRemove(selUser);
             }}
+            disabled={isOngoingSchedules || isLoading || isError}
           >
-            Remove
-          </UIButton>
-        </>
-      }
-    >
-      <div className='flex flex-col gap-2'>
-        <Typography type='small' color='neutral'>
-          By clicking remove, the member will be permanently removed from this
-          interview type.
-        </Typography>
-
-        {isLoading ? (
-          <div className='flex flex-col gap-2'>
-            <Skeleton className='h-4 w-[250px]' />
-            <Skeleton className='h-4 w-[250px]' />
-          </div>
-        ) : (
-          <>
-            {isOngoingSchedules ? (
-              <UIAlert type='error' title='User cannot be removed'>
-                <div className='mt-2 flex flex-col space-y-2'>
-                  <Typography variant='small' className='text-muted-foreground'>
-                    There are ongoing schedules for this user. Once the
-                    schedules are completed, you can remove the user.
-                  </Typography>
-                </div>
-              </UIAlert>
-            ) : (
-              <>
-                {isError ? (
-                  <UIAlert type='error' title='Error'>
-                    <div className='mt-2 flex flex-col space-y-2'>
-                      <Typography
-                        variant='small'
-                        className='text-muted-foreground'
-                      >
-                        Failed to fetch data. Please contact support.
-                      </Typography>
-                    </div>
-                  </UIAlert>
-                ) : (
-                  <>
-                    {' '}
-                    {connectedJobs.length > 0 ? (
-                      <UIAlert
-                        type='warning'
-                        title="Here is a list of job's interview plan that will be impacted:"
-                      >
-                        <div className='mt-2 flex flex-col space-y-2'>
-                          <Typography
-                            variant='small'
-                            className='text-muted-foreground'
-                          >
-                            {connectedJobs
-                              .map((job) => job.job_title)
-                              .join(', ')}
-                          </Typography>
-                          <Typography
-                            variant='small'
-                            className='text-muted-foreground'
-                          >
-                            If the user exists in previously scheduled
-                            interviews, the user will be removed from those
-                            schedules.
-                          </Typography>
-                        </div>
-                      </UIAlert>
-                    ) : (
-                      <UIAlert type='warning' title='Note :'>
-                        User is not connected to any interview plan. If user
-                        exists in previous scheduled interviews, the user will
-                        be removed from those schedules.
-                      </UIAlert>
-                    )}
-                  </>
-                )}
-              </>
-            )}
-          </>
-        )}
-      </div>
-    </UIDialog>
+            {isPending ? 'Removing...' : 'Remove'}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 

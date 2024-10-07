@@ -4,7 +4,7 @@ import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { Label } from '@components/ui/label';
 import { useRequest } from '@request/hooks';
-import { Edit, Loader, Trash } from 'lucide-react';
+import { Loader, Pen, Trash } from 'lucide-react';
 import React from 'react';
 
 import { useRequestProgressProvider } from '../progressCtx';
@@ -81,7 +81,7 @@ const EventNode = ({
           slotRightIcon={
             tense === 'future' &&
             showEditBtns && (
-              <div className={`flex flex-row gap-1 mt-2`}>
+              <div className={`mt-2 flex flex-row gap-1`}>
                 <Button
                   variant='outline'
                   size='sm'
@@ -102,7 +102,7 @@ const EventNode = ({
                     setShowEditDialog(true);
                   }}
                 >
-                  <Edit className='mr-2 h-3 w-3' />
+                  <Pen className='mr-2 h-3 w-3' />
                   Edit
                 </Button>
                 <Button
