@@ -117,7 +117,7 @@ function Overview() {
           ? formatTimeWithTimeZone({
               start_time: schedule.interview_meeting.start_time,
               end_time: schedule.interview_meeting.end_time,
-              timeZone: schedule?.candidates?.timezone || '--',
+              timeZone: schedule?.candidates?.timezone || '',
             })
           : '--'
       }
