@@ -757,11 +757,11 @@ const InterviewModePills = ({
 };
 
 export const PanelIcon = ({ size = 24 }: { size?: number }) => (
-  <Users size={size} />
+  <Users size={size} className='text-muted-foreground' />
 );
 
 export const IndividualIcon = ({ size = 24 }: { size?: number }) => (
-  <User size={size} />
+  <User size={size} className='text-muted-foreground' />
 );
 
 export const validateSessionFields = (fields: SessionFormFields) => {

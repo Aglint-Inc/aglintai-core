@@ -3,17 +3,16 @@ import { toast } from '@components/hooks/use-toast';
 import _ from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 
+import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
 import {
   useTenant,
   useTenantMembers,
   useTenantOfficeLocations,
   useTenantRoles,
 } from '@/company/hooks';
-import { useTeamMembers } from '@/company/hooks/useTeamMembers';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { useAllDepartments } from '@/queries/departments';
 import { type UserAdminUpdateType } from '@/server/api/routers/user/update_admin_user';
 import { supabase } from '@/utils/supabase/client';
 
@@ -53,8 +52,7 @@ const EditAdminDialog = ({
   const [isImageChanged, setIsImageChanged] = useState(false);
   const [isProfileChanged, setIsProfileChanged] = useState(false);
 
-  const { allMembers } = useTenantMembers();
-  const { activeMembers } = useTeamMembers();
+  const { allMembers, members: activeMembers } = useTenantMembers();
   const router = useRouterPro();
   const member = allMembers.find(
     (mem) => mem.user_id === router?.params?.user,

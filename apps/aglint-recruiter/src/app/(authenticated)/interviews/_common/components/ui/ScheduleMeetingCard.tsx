@@ -122,7 +122,7 @@ function ScheduleMeetingCard({
           textDuration={getBreakLabel(meetingDetails?.session_duration ?? 0)}
           slotAvatarWithName={
             <div className='flex items-center space-x-2'>
-              <User className='h-4 w-4' />
+              <User className='h-4 w-4 text-muted-foreground' />
               <span className='text-sm font-medium'>
                 {getFullName(
                   meetingDetails?.applications?.candidates?.first_name ?? '',

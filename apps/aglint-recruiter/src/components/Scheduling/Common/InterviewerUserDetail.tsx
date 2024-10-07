@@ -138,7 +138,7 @@ function InterviewerUserDetail({
             </div>
             {userDetails?.position && (
               <div className='flex items-center gap-1'>
-                <BriefcaseBusiness className='h-3 w-3' />
+                <BriefcaseBusiness className='h-3 w-3 text-muted-foreground' />
                 <span>{userDetails.position}</span>
               </div>
             )}

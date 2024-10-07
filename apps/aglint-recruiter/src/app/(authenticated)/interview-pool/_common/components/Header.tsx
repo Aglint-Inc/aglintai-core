@@ -8,11 +8,11 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 
 import { useAllInterviewModules } from '@/authenticated/hooks';
+import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
 import FilterHeader from '@/components/Common/FilterHeader';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { useAllDepartments } from '@/queries/departments';
 
 import { setIsCreateDialogOpen } from '../../[pool]/_common/stores/store';
 import { useHeaderProp } from '../context/headerContext';

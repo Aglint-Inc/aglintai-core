@@ -7,12 +7,12 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import axios from 'axios';
-import { Edit, Lock, Mail, MoreHorizontal, Power, Trash } from 'lucide-react';
+import { Lock, Mail, MoreHorizontal, Pen, Power, Trash } from 'lucide-react';
 import { useState } from 'react';
 
-import { useTenant } from '@/company/hooks';
+import { useTenant, type useTenantMembers } from '@/company/hooks';
 import { useMemberUpdate } from '@/company/hooks/useMemberUpdate';
-import type { useTeamMembers } from '@/company/hooks/useTeamMembers';
+import { useCancelInvite } from '@/company/hooks/useTeamMembers';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type API_reset_password } from '@/pages/api/reset_password/type';
 import { api } from '@/trpc/client';
@@ -22,12 +22,13 @@ import DeleteMemberDialog from './DeleteMemberDialog';
 export const UserListThreeDot = ({
   member,
 }: {
-  member: ReturnType<typeof useTeamMembers>['data'][number];
+  member: ReturnType<typeof useTenantMembers>['data'][number];
 }) => {
   const { toast } = useToast();
   const { updateMember } = useMemberUpdate();
   const { mutateAsync: reinviteUser } =
     api.tenant['resend-invite'].useMutation();
+  const { cancelInvite } = useCancelInvite();
   const [dialogReason, setDialogReason] = useState<
     'delete' | 'suspend' | 'cancel_invite' | null
   >(null);
@@ -117,9 +118,7 @@ export const UserListThreeDot = ({
       });
     } else {
       try {
-        // await axios.post('/api/supabase/deleteuser', {
-        //   user_id: member.user_id,
-        // });
+        await cancelInvite({ user_id: member.user_id });
       } catch (error) {
         toast({
           variant: 'destructive',
@@ -142,7 +141,7 @@ export const UserListThreeDot = ({
         <DropdownMenuContent align='end'>
           {member.status !== 'invited' && (
             <DropdownMenuItem onClick={() => handleAction('edit')}>
-              <Edit className='mr-2 h-4 w-4' /> Edit
+              <Pen className='mr-2 h-4 w-4' /> Edit
             </DropdownMenuItem>
           )}
           {member.status === 'invited' && (

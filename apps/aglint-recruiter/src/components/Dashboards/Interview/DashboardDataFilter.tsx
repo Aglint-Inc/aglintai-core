@@ -144,7 +144,7 @@ export default function Component() {
             (job) => handleFilterChange({ job: job }),
             'job',
             filtersOptions.job,
-            <BriefcaseBusiness className='h-4 w-4' />,
+            <BriefcaseBusiness className='h-4 w-4 text-muted-foreground' />,
           )}
 
           {renderSelect(
@@ -160,13 +160,13 @@ export default function Component() {
             (location) => handleFilterChange({ location: location }),
             'location',
             filtersOptions.location,
-            <MapPin className='h-4 w-4' />,
+            <MapPin className='h-4 w-4 text-muted-foreground' />,
           )}
 
           <Popover>
             <PopoverTrigger asChild>
               <Button variant='outline' size='sm' className='h-9 min-w-[120px]'>
-                <CalendarIcon className='mr-2 h-4 w-4' />
+                <CalendarIcon className='mr-2 h-4 w-4 text-muted-foreground' />
                 {filters.dateRange
                   ? `${format(filters.dateRange.from, 'PP')} - ${format(filters.dateRange.to, 'PP')}`
                   : 'Date Range'}

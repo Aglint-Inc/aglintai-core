@@ -69,7 +69,7 @@ type ColumnType = {
 const Column = (props: ColumnType) => {
   const date = dayJS(props.session.date, props.tz);
   return (
-    <div className='relative min-w-[237px] max-w-[237px] flex-1 rounded-lg border border-gray-200'>
+    <div className='relative min-w-[237px] max-w-[237px] flex-1 flex-col rounded-lg border border-gray-200'>
       <div className='flex h-10 items-center justify-center rounded-t-lg bg-gray-50 px-2.5'>
         <div>{dayjsLocal(date).format('dddd DD, MMMM')}</div>
       </div>

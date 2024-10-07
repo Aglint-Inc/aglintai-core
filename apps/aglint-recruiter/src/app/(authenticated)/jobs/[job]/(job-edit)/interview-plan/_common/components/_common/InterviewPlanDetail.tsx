@@ -57,9 +57,15 @@ export function InterviewPlanDetail({
         <div className='flex h-[30px] items-center justify-between gap-1'>
           <div>
             <div className='flex items-center gap-1'>
-              {isDebriefIconVisible && <Users size={16} />}
-              {isOnetoOneIconVisible && <UserRound size={16} />}
-              {isPanelIconVisible && <UserRound size={16} />}
+              {isDebriefIconVisible && (
+                <Users size={16} className='text-muted-foreground' />
+              )}
+              {isOnetoOneIconVisible && (
+                <UserRound size={16} className='text-muted-foreground' />
+              )}
+              {isPanelIconVisible && (
+                <UserRound size={16} className='text-muted-foreground' />
+              )}
               <div>{textModuleName}</div>
             </div>
           </div>

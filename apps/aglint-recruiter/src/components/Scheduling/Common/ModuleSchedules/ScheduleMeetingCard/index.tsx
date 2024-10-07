@@ -49,7 +49,9 @@ function ScheduleMeetingCard({
               <div className={`${collapseOpen ? 'block' : 'hidden'}`}>
                 <div className='flex flex-col space-y-2'>
                   <MembersList
-                    slotImage={<User size={40} />}
+                    slotImage={
+                      <User size={40} className='text-muted-foreground' />
+                    }
                     textName={getFullName(
                       meetingDetails.applications.candidates.first_name,
                       meetingDetails.applications.candidates.last_name,
@@ -115,7 +117,7 @@ function ScheduleMeetingCard({
           textDuration={getBreakLabel(meetingDetails.session_duration)}
           slotAvatarWithName={
             <div className='flex items-center space-x-2'>
-              <User className='h-4 w-4' />
+              <User className='h-4 w-4 text-muted-foreground' />
               <span className='text-sm font-medium'>
                 {getFullName(
                   meetingDetails.applications.candidates.first_name,

@@ -315,7 +315,7 @@ export const JobCoordinator: FC<MetaForms & { label?: boolean }> = memo(
           const coordinator = (data ?? []).find((c) => c.user_id === value);
           if (coordinator) onChange(name, coordinator.user_id);
         }}
-        label={label ? capitalizeAll(name) : '---'}
+        label={label ? capitalizeAll(name) : undefined}
         menuOptions={options}
         required={value.required}
         value={safeValue.toString()}
