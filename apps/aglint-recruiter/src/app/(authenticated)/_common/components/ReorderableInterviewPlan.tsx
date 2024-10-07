@@ -233,63 +233,74 @@ const Block = ({
 }) => {
   const [isHover, setIsHover] = useState(false);
   const handleDown = async (selectIndex: number) => {
-    setIsOrderChanging(true);
-    // update order in db
-    const selectedStep = steps[selectIndex];
-    const lowerStep = steps[selectIndex + 1];
+    try {
+      setIsOrderChanging(true);
+      setIsHover(false);
+      // update order in db
+      const selectedStep = steps[selectIndex];
+      const lowerStep = steps[selectIndex + 1];
 
-    const updates = [
-      { id: lowerStep.id, order: selectedStep?.order },
-      { id: selectedStep.id, order: lowerStep?.order },
-    ];
+      const updates = [
+        { id: lowerStep.id, order: selectedStep?.order },
+        { id: selectedStep.id, order: lowerStep?.order },
+      ];
 
-    const promises = updates.map((item) =>
-      supabase
-        .from('interview_progress')
-        .update({ order: item.order })
-        .eq('id', item.id),
-    );
-    await Promise.all(promises);
-    setSteps((pre) =>
-      pre.map((step) =>
-        step.id === selectedStep.id
-          ? { ...step, order: lowerStep?.order }
-          : step.id === lowerStep.id
-            ? { ...step, order: selectedStep?.order }
-            : step,
-      ),
-    );
-    setIsOrderChanging(false);
+      const promises = updates.map((item) =>
+        supabase
+          .from('interview_progress')
+          .update({ order: item.order })
+          .eq('id', item.id),
+      );
+      await Promise.all(promises);
+      setSteps((pre) =>
+        pre.map((step) =>
+          step.id === selectedStep.id
+            ? { ...step, order: lowerStep?.order }
+            : step.id === lowerStep.id
+              ? { ...step, order: selectedStep?.order }
+              : step,
+        ),
+      );
+    } catch (e) {
+      //
+    } finally {
+      setIsOrderChanging(false);
+    }
   };
   const handleUp = async (selectIndex: number) => {
-    // update order in db
-    setIsOrderChanging(true);
-    const selectedStep = steps[selectIndex];
-    const upperStep = steps[selectIndex - 1];
+    try {
+      setIsOrderChanging(true);
+      setIsHover(false);
+      const selectedStep = steps[selectIndex];
+      const upperStep = steps[selectIndex - 1];
 
-    const updates = [
-      { id: upperStep.id, order: selectedStep?.order },
-      { id: selectedStep.id, order: upperStep?.order },
-    ];
+      const updates = [
+        { id: upperStep.id, order: selectedStep?.order },
+        { id: selectedStep.id, order: upperStep?.order },
+      ];
 
-    const promises = updates.map((item) =>
-      supabase
-        .from('interview_progress')
-        .update({ order: item.order })
-        .eq('id', item.id),
-    );
-    await Promise.all(promises);
+      const promises = updates.map((item) =>
+        supabase
+          .from('interview_progress')
+          .update({ order: item.order })
+          .eq('id', item.id),
+      );
+      await Promise.all(promises);
 
-    setSteps((pre) =>
-      pre.map((step) =>
-        step.id === selectedStep.id
-          ? { ...step, order: upperStep?.order }
-          : step.id === upperStep.id
-            ? { ...step, order: selectedStep?.order }
-            : step,
-      ),
-    );
-    setIsOrderChanging(false);
+      setSteps((pre) =>
+        pre.map((step) =>
+          step.id === selectedStep.id
+            ? { ...step, order: upperStep?.order }
+            : step.id === upperStep.id
+              ? { ...step, order: selectedStep?.order }
+              : step,
+        ),
+      );
+    } catch (e) {
+      //
+    } finally {
+      setIsOrderChanging(false);
+    }
   };
   const completeHandle = async (id: number, status: boolean) => {
     try {
@@ -398,6 +409,7 @@ const Block = ({
 
   const handleSave = async (id: number) => {
     try {
+      setIsOrderChanging(true);
       const updatedStep = steps.find((step) => step.id === id)!;
       const { error } = await supabase
         .from('interview_progress')
@@ -417,6 +429,8 @@ const Block = ({
       setEditingId(null);
     } catch (e: any) {
       toast({ title: e.message, variant: 'destructive' });
+    } finally {
+      setIsOrderChanging(false);
     }
   };
   return (
