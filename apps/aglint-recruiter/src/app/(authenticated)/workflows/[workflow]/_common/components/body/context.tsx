@@ -20,11 +20,13 @@ const useActionsContext = () => {
   );
 
   const {
-    workflow: { trigger },
+    workflow: { trigger, id },
     actions: { data: actions },
     handleUpdateAction,
     handleCreateAction,
   } = useWorkflow();
+
+  const workflow_id = id!;
 
   const globalOptions = useMemo(
     () =>
@@ -45,7 +47,7 @@ const useActionsContext = () => {
   const handleCreateSelectAction = useCallback(
     (
       fn: typeof handleCreateAction | typeof handleUpdateAction,
-      { action_type, target_api, order, id }: Partial<WorkflowAction>,
+      { action_type, target_api, order, id }: WorkflowAction,
     ) => {
       switch (action_type) {
         case 'email':
@@ -54,6 +56,7 @@ const useActionsContext = () => {
               ({ type }) => type === target_api,
             );
             fn({
+              workflow_id,
               id,
               action_type,
               target_api,
@@ -64,50 +67,45 @@ const useActionsContext = () => {
                   subject: emailTemplate?.subject ?? '',
                 },
               },
-              workflow_id: null,
-            } as any);
+            });
           }
           break;
         case 'slack':
           {
             fn({
+              workflow_id,
               id,
               action_type,
               target_api,
               order,
-              payload: null,
-              workflow_id: null,
-            } as any);
+            });
           }
           break;
         case 'end_point':
           {
             fn({
+              workflow_id,
               id,
               action_type,
               target_api,
-              order: order!,
-              payload: null!,
-              workflow_id: null!,
+              order,
             });
           }
           break;
         case 'agent_instruction':
           {
             fn({
+              workflow_id,
               id,
               action_type,
               target_api,
               order,
-              workflow_id: null,
-
               payload: {
                 agent: {
                   instruction: '',
-                  ai_response: AI_RESPONSE_PLACEHOLDER,
                 },
               },
-            } as any);
+            });
           }
           break;
       }
