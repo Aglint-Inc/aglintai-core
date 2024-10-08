@@ -1,38 +1,15 @@
-import React from 'react';
-
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
-
 import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityContext';
 import DaySessionCard from './DaySessionCard';
-import SlotsPicker from './SlotsPicker';
 
 function MultiDaySessions() {
   const {
-    submitting,
-    isSubmitted,
     multiDaySessions,
-    daySlots,
-    submitAvailability,
-    openDaySlotPopup,
-    setOpenDaySlotPopup,
+
+    selectedSlots,
   } = useRequestAvailabilityContext();
   return (
     <>
-      <UIDialog
-        open={openDaySlotPopup > 0}
-        onClose={() => {
-          setOpenDaySlotPopup(0);
-        }}
-        title='Available Slots'
-        size='xl'
-        slotButtons={<></>}
-      >
-        <div className='h-[600px] overflow-auto'>
-          <SlotsPicker singleDay={false} />
-        </div>
-      </UIDialog>
-      <div className='flex w-full flex-col items-center gap-4'>
+      <div className='flex max-h-[60vh] w-full flex-col items-center gap-4 overflow-auto'>
         <div className='flex w-full flex-col gap-2'>
           {multiDaySessions.map((sessions, i) => {
             const totalSessionMinutes = sessions.reduce(
@@ -40,7 +17,7 @@ function MultiDaySessions() {
               0,
             );
             const dates =
-              daySlots.find((ele) => ele.round === i + 1)?.dates || [];
+              selectedSlots.find((ele) => ele.round === i + 1)?.dates || [];
             return (
               <DaySessionCard
                 key={i}
@@ -51,22 +28,6 @@ function MultiDaySessions() {
               />
             );
           })}
-        </div>
-        <div className='w-72'>
-          {!isSubmitted && (
-            <UIButton
-              size='md'
-              className='w-full'
-              onClick={submitAvailability}
-              variant='outline'
-              disabled={
-                multiDaySessions.length !== daySlots.length || submitting
-              }
-              isLoading={submitting}
-            >
-              Submit Availability
-            </UIButton>
-          )}
         </div>
       </div>
     </>
