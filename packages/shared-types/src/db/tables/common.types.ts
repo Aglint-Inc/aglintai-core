@@ -1,7 +1,6 @@
 import type { CustomMembersMeta } from "../common.types";
 
 export type CustomSchedulingSettings = {
-  isAutomaticTimeZone: boolean;
   timeZone: {
     label: string;
     name: string;

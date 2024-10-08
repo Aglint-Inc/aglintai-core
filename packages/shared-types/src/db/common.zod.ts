@@ -11,7 +11,6 @@ export const customMembersMetaSchema = z.object({
 });
 
 export const customSchedulingSettingsSchema = z.object({
-  isAutomaticTimeZone: z.boolean(),
   timeZone: z.object({
     label: z.string(),
     name: z.string(),
