@@ -13,26 +13,12 @@ import {
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { type UserAdminUpdateType } from '@/server/api/routers/user/update_admin_user';
 import { supabase } from '@/utils/supabase/client';
 
-import { useAdminUpdate } from '../../../hooks/useAdminUpdate';
 import { useInterviewer } from '../../../hooks/useInterviewer';
+import { useUserUpdate } from '../../../hooks/useUserUpdate';
 import { Form } from './EditAdminDialogUI';
-
-export type EditAdminFormErrorType = {
-  first_name: boolean;
-  department: boolean;
-  linked_in: boolean;
-  location: boolean;
-  employment: boolean;
-  position: boolean;
-  phone: boolean;
-  role: boolean;
-  manager: boolean;
-};
-
-export type Formtype = Omit<UserAdminUpdateType, 'recruiter_id' | 'user_id'>;
+import { type EditAdminFormErrorType, type Formtype } from './type';
 
 const EditAdminDialog = ({
   open,
@@ -47,7 +33,7 @@ const EditAdminDialog = ({
   const { data: officeLocations } = useTenantOfficeLocations();
   const [isUpdating, setIsUpdating] = useState(false);
   const imageFile = useRef<File>(null);
-  const { mutateAsync } = useAdminUpdate();
+  const { mutateAsync } = useUserUpdate();
 
   const [isImageChanged, setIsImageChanged] = useState(false);
   const [isProfileChanged, setIsProfileChanged] = useState(false);
@@ -81,7 +67,6 @@ const EditAdminDialog = ({
     last_name,
     phone,
     linked_in,
-    scheduling_settings,
     office_location_id,
     employment,
     profile_image,
@@ -90,6 +75,7 @@ const EditAdminDialog = ({
     role_id,
     manager_id,
     role,
+    timeZone: scheduling_settings.timeZone,
   });
 
   const memberList = activeMembers
@@ -104,17 +90,17 @@ const EditAdminDialog = ({
       const initForm: Formtype = {
         first_name: interviewerDetail.first_name,
         last_name: interviewerDetail.last_name ?? '',
-        phone: interviewerDetail?.phone,
-        scheduling_settings,
-        linked_in: interviewerDetail?.linked_in,
-        office_location_id: interviewerDetail?.office_location_id,
-        employment: interviewerDetail?.employment,
-        profile_image: interviewerDetail?.profile_image,
-        department_id: interviewerDetail?.department_id,
-        position: interviewerDetail?.position,
-        role_id: interviewerDetail?.role_id,
-        manager_id: interviewerDetail?.manager_id,
-        role: interviewerDetail?.role,
+        phone: interviewerDetail.phone,
+        linked_in: interviewerDetail.linked_in,
+        office_location_id: interviewerDetail.office_location_id,
+        employment: interviewerDetail.employment,
+        profile_image: interviewerDetail.profile_image,
+        department_id: interviewerDetail.department_id,
+        position: interviewerDetail.position,
+        role_id: interviewerDetail.role_id,
+        manager_id: interviewerDetail.manager_id,
+        role: interviewerDetail.role,
+        timeZone: scheduling_settings?.timeZone,
       };
       if (_.isEqual(initForm, form)) {
         setIsProfileChanged(false);
@@ -152,7 +138,6 @@ const EditAdminDialog = ({
     first_name: interviewerDetail.first_name,
     last_name: interviewerDetail.last_name ?? '',
     phone: interviewerDetail?.phone,
-    scheduling_settings,
     linked_in: interviewerDetail?.linked_in,
     office_location_id: interviewerDetail?.office_location_id,
     employment: interviewerDetail?.employment,
@@ -162,6 +147,7 @@ const EditAdminDialog = ({
     role_id: interviewerDetail?.role_id,
     manager_id: interviewerDetail?.manager_id,
     role: interviewerDetail?.role,
+    timeZone: scheduling_settings?.timeZone,
   };
 
   const checkValidation = () => {
@@ -249,23 +235,27 @@ const EditAdminDialog = ({
         setIsImageChanged(false);
       }
 
-      const data: UserAdminUpdateType = {
-        first_name: form?.first_name,
-        last_name: form?.last_name,
-        linked_in: form?.linked_in,
-        office_location_id: form?.office_location_id,
-        employment: form?.employment as 'fulltime' | 'parttime' | 'contractor',
-        position: form?.position,
-        department_id: form?.department_id,
-        role_id: form?.role_id,
-        phone: form?.phone,
-        manager_id: form?.manager_id,
+      const data = {
+        first_name: form.first_name,
+        last_name: form.last_name,
+        linked_in: form.linked_in,
+        office_location_id: form.office_location_id,
+        employment: form.employment as 'fulltime' | 'parttime' | 'contractor',
+        position: form.position,
+        department_id: form.department_id,
+        role_id: form.role_id || undefined,
+        phone: form.phone,
+        manager_id: form.manager_id || undefined,
         user_id: member.user_id,
-        scheduling_settings: member.scheduling_settings,
+        scheduling_settings: {
+          ...member.scheduling_settings,
+          timeZone: form.timeZone,
+        },
         profile_image: profile_image,
         recruiter_id: recruiter_user.recruiter_id,
       };
 
+      // return;
       await mutateAsync({ ...data });
 
       const profile_pic = profile_image as string | null;

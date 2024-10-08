@@ -2,13 +2,13 @@ import { Button } from '@components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
 import React from 'react';
 
+import { useFlags } from '@/company/hooks/useFlags';
 import UIDialog from '@/components/Common/UIDialog';
 import { useApplicationsStore } from '@/job/hooks';
 
 import { ImportCsv } from './importCsv';
 import { ImportManual } from './importManual';
 import { ImportResume } from './importResume';
-
 export const UploadApplications = ({
   children,
 }: {
@@ -16,6 +16,7 @@ export const UploadApplications = ({
 }) => {
   const { importPopup } = useApplicationsStore((state) => state);
   const { setImportPopup } = useApplicationsStore((state) => state.actions);
+  const { isShowFeature } = useFlags();
   return (
     <>
       {children || (
@@ -35,10 +36,15 @@ export const UploadApplications = ({
         size='lg'
       >
         <Tabs defaultValue='manual' className='mt-5 w-full'>
-          <TabsList className='grid w-full grid-cols-3'>
+          <TabsList
+            className={`grid w-full ${isShowFeature('SCORING') ? 'grid-cols-3' : 'grid-cols-2'}`}
+          >
             <TabsTrigger value='manual'>Manual</TabsTrigger>
             <TabsTrigger value='csv'>CSV</TabsTrigger>
-            <TabsTrigger value='resume'>Resume</TabsTrigger>
+
+            {isShowFeature('SCORING') && (
+              <TabsTrigger value='resume'>Resume</TabsTrigger>
+            )}
           </TabsList>
           <div className='p-0'>
             <TabsContent value='manual'>
@@ -47,9 +53,11 @@ export const UploadApplications = ({
             <TabsContent value='csv'>
               <ImportCsv />
             </TabsContent>
-            <TabsContent value='resume'>
-              <ImportResume />
-            </TabsContent>
+            {isShowFeature('SCORING') && (
+              <TabsContent value='resume'>
+                <ImportResume />
+              </TabsContent>
+            )}
           </div>
         </Tabs>
       </UIDialog>

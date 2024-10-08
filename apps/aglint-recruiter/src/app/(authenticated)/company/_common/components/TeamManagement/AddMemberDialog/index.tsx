@@ -1,7 +1,6 @@
 import {
   type employmentTypeEnum,
   type RecruiterUserType,
-  type SchedulingSettingType,
 } from '@aglint/shared-types';
 import { useToast } from '@components/hooks/use-toast';
 import { useState } from 'react';
@@ -11,14 +10,15 @@ import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
 import { UIButton } from '@/common/UIButton';
 import UIDialog from '@/common/UIDialog';
 import {
+  useTenant,
   useTenantMembers,
   useTenantOfficeLocations,
   useTenantRoles,
 } from '@/company/hooks';
-import { useTenant } from '@/company/hooks';
 import { api } from '@/trpc/client';
 import timeZone from '@/utils/timeZone';
 
+import { defaultSchedulingSettings } from './contants';
 import { AddMemberDialogUI } from './ui/AddMemberDialogUI';
 
 export type InviteUserFormType = {
@@ -66,7 +66,7 @@ const AddMember = ({
 }) => {
   const { toast } = useToast();
   const { mutateAsync: inviteUserApi } = api.tenant.invite.useMutation();
-  const { recruiter, recruiter_user } = useTenant();
+  const { recruiter_user } = useTenant();
   const { data: locations } = useTenantOfficeLocations();
   const { data: departments } = useAllDepartments();
   const { refetch: refetchMembers } = useTenantMembers();
@@ -164,7 +164,6 @@ const AddMember = ({
     }
     return true;
   };
-
   const inviteUser = async () => {
     try {
       const resData = await inviteUserApi([
@@ -179,13 +178,13 @@ const AddMember = ({
           department_id: form.department_id!,
           office_location_id: form.location_id!,
           scheduling_settings: {
-            ...recruiter.scheduling_settings,
+            ...defaultSchedulingSettings,
             timeZone: timeZone.find(
               (item) =>
                 item.tzCode ===
                 locations.find((loc) => loc.id === form.location_id)?.timezone,
-            ),
-          } as SchedulingSettingType,
+            )!,
+          },
         },
       ]);
 
