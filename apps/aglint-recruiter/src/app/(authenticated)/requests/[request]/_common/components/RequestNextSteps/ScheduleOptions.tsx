@@ -210,6 +210,7 @@ const ScheduleOptions = () => {
       <UIButton
         variant='default'
         size='sm'
+        isLoading={fetchingPlan}
         onClick={async () => {
           if (fetchingPlan) return;
           await findAvailibility({
