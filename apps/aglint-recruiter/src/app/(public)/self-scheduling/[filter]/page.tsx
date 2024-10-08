@@ -24,9 +24,15 @@ const CandidateInvitePage = () => {
         <SchedulingPageHeader
           companyName={data?.recruiter?.name ?? ''}
           description={
-            <h2 className='flex items-center gap-2 p-8 pb-4 text-lg font-semibold'>
-              {`Available slots are organized by day. Each slot includes the total time required for your interview, including breaks.`}
-            </h2>
+            <div className='flex w-full flex-row justify-center p-4 text-lg font-semibold'>
+              {data.isBooked ? (
+                <h2>{`Interview confirmed.`}</h2>
+              ) : (
+                <h2>
+                  {`Available slots are organized by day. Each slot includes the total time required for your interview, including breaks.`}
+                </h2>
+              )}
+            </div>
           }
           logo={data?.recruiter?.logo ?? ''}
         />

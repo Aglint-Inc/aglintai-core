@@ -12,14 +12,20 @@ export const ButtonSolid = ({
   color?: Color;
 }) => {
   return (
-    <Button
-      className={`px-3 py-2 bg-${color}-9 text-white br rounded-[4px] text-text-xs cursor-not-allowed`}
-      href={href}
-      style={{
-        pointerEvents: href ? 'auto' : 'none',
-      }}
-    >
-      {buttonText}
-    </Button>
+    <>
+      <Button
+        className={`px-3 py-2 bg-${color}-9 text-white br rounded-[4px] text-text-xs cursor-not-allowed`}
+        href={href}
+        style={{
+          pointerEvents: href ? 'auto' : 'none',
+        }}
+      >
+        {buttonText}
+      </Button>
+      <p>
+        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+        <a>{href}</a>
+      </p>
+    </>
   );
 };
