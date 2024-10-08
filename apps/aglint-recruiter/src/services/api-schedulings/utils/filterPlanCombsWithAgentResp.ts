@@ -1,9 +1,10 @@
 import { type PlanCombinationRespType } from '@aglint/shared-types';
 import { CApiError, dayjsLocal } from '@aglint/shared-utils';
 
+import { compareTimes } from '@/services/CandidateSchedule/utils/time_range_utils';
+
 import { type extractPreferredInterviewers } from '../textTransforms/extractPreferredInterviewers';
 import { type selfScheduleLinkInstruction } from '../textTransforms/selfScheduleLinkInstruction';
-import { compareTimes } from '@/services/CandidateSchedule/utils/time_range_utils';
 
 export const filterPlanCombsWithAgentResp = ({
   flattened_plans,
