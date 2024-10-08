@@ -1,6 +1,5 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { EmptyState } from '@components/empty-state';
-import { Card } from '@components/ui/card';
 import { Calendar } from 'lucide-react';
 import { useState } from 'react';
 
@@ -33,14 +32,12 @@ function Schedules() {
           />
         </div>
       ) : (
-        <Card className='p-4'>
-          <CalendarComp
-            allSchedules={allSchedules as any} //TODO:fix
-            isLoading={isLoading}
-            setFilter={setFilter}
-            filter={filter}
-          />
-        </Card>
+        <CalendarComp
+          allSchedules={allSchedules as any} //TODO:fix
+          isLoading={isLoading}
+          setFilter={setFilter}
+          filter={filter}
+        />
       )}
     </>
   );
