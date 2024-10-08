@@ -188,6 +188,7 @@ const candidate_interview_decline = async (interaction_data: any) => {
   const payload: APICreateInterviewerRequest = {
     session_id: metadata.event_payload.session_id,
     session_relation_id: metadata.event_payload.session_relation_id,
+    declined_place: 'slack',
   };
   await axios.post(
     `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/api/request/interviewer-request`,
