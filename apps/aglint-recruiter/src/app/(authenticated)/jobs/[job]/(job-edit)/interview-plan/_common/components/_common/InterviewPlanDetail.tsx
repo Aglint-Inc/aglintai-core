@@ -1,8 +1,15 @@
+import { UIBadge } from '@components/ui-badge';
 import { cn } from '@lib/utils';
-import { Hourglass, Pencil, Trash, UserRound, Users } from 'lucide-react';
+import {
+  ExternalLink,
+  Hourglass,
+  Pencil,
+  Trash,
+  UserRound,
+  Users,
+} from 'lucide-react';
 import React, { useState } from 'react';
 
-import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 
 export interface InterviewPlanDetailProps {
@@ -121,9 +128,9 @@ export function InterviewPlanDetail({
           >
             <div onClick={onClickLink}>
               <UIBadge
-                color='info'
+                variant='info'
                 textBadge={textLink?.toString()}
-                iconName='ExternalLink'
+                icon={ExternalLink}
               />
             </div>
           </div>
