@@ -46,9 +46,9 @@ export const triggerToQuestion: Record<JobRelatedCTriggers, string> = {
   candidateBook: 'What happens when a candidate books a meeting ?',
   onRequestCancel: 'How do we respond if a candidate cancels ?',
   onRequestReschedule: 'What our process for rescheduling requests ?',
-  selfScheduleReminder: 'how do we remind candidate for self schedule ?',
-  interviewStart: 'remind interviewer before interview start ?',
-  sendAvailReqReminder: 'how do we remind candidate for availability ?',
+  selfScheduleReminder: 'How do we remind candidate for self schedule ?',
+  interviewStart: 'Remind interviewer before interview start ?',
+  sendAvailReqReminder: 'How do we remind candidate for availability ?',
   interviewerConfirmation:
     'How do we confirm when an interviewer accepts an invitation ?',
   interviewEnd: 'What happens after an interview ends ?',
