@@ -11,117 +11,122 @@ type WorkflowCopyType = {
 };
 export const workflowCopy: WorkflowCopyType = {
   CANCEL_AVAIL_REQ: {
-    past: 'The availability request was cancelled.',
-    present: 'The availability request is being cancelled.',
-    future: 'The availability request will be cancelled.',
-    error: 'There was an error cancelling the availability request.',
+    past: 'Availability request canceled.',
+    present: 'Canceling availability request.',
+    future: 'Awaiting to cancel availability request.',
+    error: 'Error occurred while canceling availability request.',
   },
 
   REQ_CAND_AVAIL_EMAIL_LINK: {
-    past: 'The candidate availability email link was requested.',
-    present: 'Requesting candidate availability email link.',
-    future: 'The candidate availability email link will be requested.',
-    error:
-      'There was an error requesting the candidate availability email link.',
+    past: 'Candidate availability link requested.',
+    present: 'Requesting candidate availability link.',
+    future: 'Awaiting candidate availability link request.',
+    error: 'Error occurred while requesting candidate availability link.',
   },
+
   CAND_AVAIL_REC: {
-    past: 'Candidate availability was received.',
+    past: 'Candidate availability received.',
     present: 'Receiving candidate availability.',
-    future: 'Candidate availability will be received.',
-    error: 'There was an error receiving the candidate availability.',
+    future: 'Awaiting candidate availability receipt.',
+    error: 'Error occurred while receiving candidate availability.',
   },
+
   SELF_SCHEDULE_LINK: {
-    past: 'The self-scheduling link was sent.',
-    present: 'Sending the self-scheduling link.',
-    future: 'The self-scheduling link will be sent.',
-    error: 'There was an error sending the self-scheduling link.',
+    past: 'Self-scheduling link sent.',
+    present: 'Sending self-scheduling link.',
+    future: 'Awaiting to send self-scheduling link.',
+    error: 'Error occurred while sending self-scheduling link.',
   },
+
   CAND_CONFIRM_SLOT: {
-    past: 'The candidate confirmed the slot.',
-    present: 'The candidate is confirming the slot.',
-    future: 'The candidate will confirm the slot.',
-    error: 'There was an error with the candidate confirming the slot.',
+    past: 'Candidate confirmed the slot.',
+    present: 'Candidate confirming slot.',
+    future: 'Awaiting candidate to confirm slot.',
+    error: 'Error occurred while confirming slot with candidate.',
   },
 
   SELF_SCHEDULE_CANCEL: {
-    past: 'The self-scheduling was cancelled.',
-    present: 'Cancelling the self-scheduling.',
-    future: 'The self-scheduling will be cancelled.',
-    error: 'There was an error cancelling the self-scheduling.',
+    past: 'Self-scheduling canceled.',
+    present: 'Canceling self-scheduling.',
+    future: 'Awaiting self-scheduling cancellation.',
+    error: 'Error occurred while canceling self-scheduling.',
   },
+
   RESEND_CAND_AVAIL_EMAIL_LINK: {
-    past: 'The candidate availability email link was resent.',
-    present: 'Resending the candidate availability email link.',
-    future: 'The candidate availability email link will be resent.',
-    error:
-      'There was an error resending the candidate availability email link.',
+    past: 'Candidate availability link resent.',
+    present: 'Resending candidate availability link.',
+    future: 'Awaiting to resend candidate availability link.',
+    error: 'Error occurred while resending candidate availability link.',
   },
+
   CANCEL_INTERVIEW_MEETINGS: {
-    past: 'The interview meetings were cancelled.',
-    present: 'Cancelling the interview meetings.',
-    future: 'The interview meetings will be cancelled.',
-    error: 'There was an error cancelling the interview meetings.',
+    past: 'Interview meetings canceled.',
+    present: 'Canceling interview meetings.',
+    future: 'Awaiting interview meetings cancellation.',
+    error: 'Error occurred while canceling interview meetings.',
   },
+
   MEETING_CANCEL_INFORM_INTERVIEWER_ORGANIZER: {
-    past: 'The interviewer and organizer were informed about the meeting cancellation.',
-    present:
-      'Informing the interviewer and organizer about the meeting cancellation.',
-    future:
-      'The interviewer and organizer will be informed about the meeting cancellation.',
-    error:
-      'There was an error informing the interviewer and organizer about the meeting cancellation.',
+    past: 'Informed interviewer and organizer about cancellation.',
+    present: 'Informing interviewer and organizer about cancellation.',
+    future: 'Awaiting to inform interviewer and organizer about cancellation.',
+    error: 'Error occurred while informing interviewer and organizer about cancellation.',
   },
+
   REPLACE_ALTERNATIVE_INTERVIEWER: {
-    past: 'An alternative interviewer was replaced.',
-    present: 'Replacing an alternative interviewer.',
-    future: 'An alternative interviewer will be replaced.',
-    error: 'There was an error replacing the alternative interviewer.',
+    past: 'Alternative interviewer replaced.',
+    present: 'Replacing alternative interviewer.',
+    future: 'Awaiting replacement of alternative interviewer.',
+    error: 'Error occurred while replacing alternative interviewer.',
   },
+
   SEND_INTERVIEWER_ATTENDANCE_RSVP: {
-    past: "The Slack RSVP for the interviewer's attendance was sent.",
-    present: "Sending Slack RSVP for the interviewer's attendance.",
-    future: "The Slack RSVP for the interviewer's attendance will be sent.",
-    error:
-      "There was an error sending the Slack RSVP for the interviewer's attendance.",
+    past: "RSVP for interviewer's attendance sent on Slack.",
+    present: "Sending RSVP for interviewer's attendance on Slack.",
+    future: "Awaiting to send RSVP for interviewer's attendance on Slack.",
+    error: "Error occurred while sending RSVP for interviewer's attendance on Slack.",
   },
+
   SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK: {
-    past: 'The availability link for the first follow-up has been scheduled.',
-    present: 'Scheduling the availability link for the first follow-up.',
-    future: 'The availability link for the first follow-up will be scheduled.',
-    error:
-      'An error occurred while scheduling the availability link for the first follow-up.',
+    past: 'First follow-up availability link scheduled.',
+    present: 'Scheduling first follow-up availability link.',
+    future: 'Awaiting to schedule first follow-up availability link.',
+    error: 'Error occurred while scheduling first follow-up availability link.',
   },
+
   SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE: {
-    past: 'The follow-up email for self-scheduling has been scheduled.',
-    present: 'Scheduling the follow-up email for self-scheduling.',
-    future: 'The follow-up email for self-scheduling will be scheduled.',
-    error:
-      'An error occurred while scheduling the follow-up email for self-scheduling.',
+    past: 'Follow-up email for self-scheduling scheduled.',
+    present: 'Scheduling follow-up email for self-scheduling.',
+    future: 'Awaiting to schedule follow-up email for self-scheduling.',
+    error: 'Error occurred while scheduling follow-up email for self-scheduling.',
   },
+
   CANDIDATE_AVAILABILITY_RE_REQUESTED: {
-    past: "The candidate's availability has been re-requested.",
-    present: "Re-requesting the candidate's availability.",
-    future: "The candidate's availability will be re-requested.",
-    error:
-      "An error occurred while re-requesting the candidate's availability.",
+    past: "Candidate's availability re-requested.",
+    present: "Re-requesting candidate's availability.",
+    future: "Awaiting re-request for candidate's availability.",
+    error: "Error occurred while re-requesting candidate's availability.",
   },
+
   SCHEDULE_INTERVIEW_SLOT: {
-    past: 'The interview slot has been scheduled.',
-    present: 'Scheduling the interview slot.',
-    future: 'The interview slot will be scheduled.',
-    error: 'An error occurred while scheduling the interview slot.',
+    past: 'Interview slot scheduled.',
+    present: 'Scheduling interview slot.',
+    future: 'Awaiting interview slot scheduling.',
+    error: 'Error occurred while scheduling interview slot.',
   },
+
   SCHEDULE_INTERVIEW_SLOT_FROM_CANDIDATE_AVAILABILITY: {
-    past: 'The interview slot has been scheduled from candidate availability.',
-    present: 'Scheduling the interview slot from candidate availability.',
-    future: 'The interview slot will be scheduled from candidate availability.',
-    error:
-      'An error occurred while scheduling the interview slot from candidate availability.',
+    past: 'Interview slot scheduled from candidate availability.',
+    present: 'Scheduling interview slot from candidate availability.',
+    future: 'Awaiting interview slot scheduling from candidate availability.',
+    error: 'Error occurred while scheduling interview slot from candidate availability.',
   },
+
   SLOT_SUGGESTION: {
-    past: 'The slot suggestion has been sent in Slack.',
-    present: 'Sending the slot suggestion in Slack.',
-    future: 'The slot suggestion will be sent in Slack.',
-    error: 'An error occurred while sending the slot suggestion in Slack.',
+    past: 'Slot suggestion sent on Slack.',
+    present: 'Sending slot suggestion on Slack.',
+    future: 'Awaiting to send slot suggestion on Slack.',
+    error: 'Error occurred while sending slot suggestion on Slack.',
   },
 };
+
