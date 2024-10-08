@@ -74,7 +74,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .from('interview_session_cancel')
         .insert({
           reason,
-          type: 'declined',
+          type: 'admin_cancel',
           session_id,
           other_details: {
             dateRange: undefined,
