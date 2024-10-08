@@ -3,7 +3,10 @@ import { useApplicationMeta } from '../../hooks/useApplicationMeta';
 export const Resume = () => {
   const { data } = useApplicationMeta();
 
-  const url = data?.file_url ?? '';
+  const url = data?.file_url;
+
+  if (!url) return null;
+
   const exten = getExtension(url);
 
   if (exten === '.docx' || exten === '.doc' || exten === '.pdf')

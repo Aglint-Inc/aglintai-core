@@ -180,7 +180,6 @@ function CandidateAvailability({
             request_id: selectedRequest.id,
             supabaseAdmin: supabase,
             event_type: 'REQ_CAND_AVAIL_EMAIL_LINK',
-            event_run_id: null,
           });
         const payload: TargetApiPayloadType<'sendAvailabilityRequest_email_applicant'> =
           {
