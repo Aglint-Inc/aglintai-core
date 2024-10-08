@@ -1,8 +1,16 @@
-import { Skeleton } from '@components/ui/skeleton';
 import { UIAlert } from '@components/ui-alert';
+import { Skeleton } from '@components/ui/skeleton';
 
 import { UIButton } from '@/common/UIButton';
 
+import UIDialog from '@/common/UIDialog';
+import { useFlags } from '@/company/hooks/useFlags';
+import CreateRequest from '@/job/components/Actions/CreateRequest';
+import { SessionType } from '@/job/components/Actions/CreateRequest/SessionsList';
+import { api } from '@/trpc/client';
+import { DatabaseTable } from '@aglint/shared-types';
+import { useParams } from 'next/navigation';
+import { useState } from 'react';
 import { useApplicationDetails } from '../../hooks/useApplicationDetails';
 import { useInterviewStages } from '../../hooks/useInterviewStages';
 import SideDrawerEdit from '../EditDrawer';
@@ -12,10 +20,39 @@ import DialogSchedule from '../ScheduleDialog';
 import { InterviewStage } from '../ui/InterviewStage';
 
 function InterviewTabContent() {
+  const params = useParams();
+  const application_id = (params?.application ?? '') as string;
+  const job_id = (params?.job ?? '') as string;
   const { data: stages, isLoading, error, refetch } = useInterviewStages();
   const { data: details, isLoading: isLoadingDetails } =
     useApplicationDetails();
+  const { isShowFeature } = useFlags();
 
+  const [request, setRequest] = useState<DatabaseTable['request'] | null>(null);
+  const [priority, setPriority] = useState<'urgent' | 'standard'>('standard');
+  const [note, setNote] = useState<string>('');
+  const [selectedSession, setSelectedSession] = useState<SessionType[]>([]);
+  const showRequest = isShowFeature('SCHEDULING') && selectedSession.length > 0;
+  const [openMovePopup, setOpenMovePopup] = useState(false);
+  const { mutate, isPending } = api.jobs.job.applications.move.useMutation({
+    onSuccess: () => {
+      setOpenMovePopup(false);
+    },
+  });
+
+  async function handleSubmit() {
+    mutate({
+      status: 'interview',
+      job_id: job_id,
+      applications: [application_id],
+      body: showRequest
+        ? {
+            request: { ...request!, note },
+            sessions: selectedSession.map(({ id }) => id),
+          }
+        : null,
+    });
+  }
   if (isLoading || isLoadingDetails)
     return (
       <div className='flex flex-row gap-4'>
@@ -39,11 +76,33 @@ function InterviewTabContent() {
   if (details?.status === 'new') {
     return (
       <div className='p-4'>
+        <UIDialog
+          title='Move candidate to interview stage'
+          open={openMovePopup}
+          onClickPrimary={handleSubmit}
+          onClose={() => setOpenMovePopup(false)}
+        >
+          <CreateRequest
+            setRequest={setRequest}
+            setSelectedSession={setSelectedSession}
+            selectedSession={selectedSession}
+            setPriority={setPriority}
+            priority={priority}
+            note={note}
+            setNote={setNote}
+          />
+        </UIDialog>
         <UIAlert
           type='info'
           title='Move candidate to interview stage'
           action={
-            <UIButton variant='outline' size='sm'>
+            <UIButton
+              onClick={() => setOpenMovePopup(true)}
+              variant='outline'
+              size='sm'
+              isLoading={isPending}
+              disabled={isPending}
+            >
               Move
             </UIButton>
           }

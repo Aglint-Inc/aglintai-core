@@ -15,7 +15,7 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
   const params = useParams();
   const requestId = params?.request as string;
   const { data: requestList, status } = useApplicantRequests({
-    application_id: applicationId,
+    request_id: requestId,
   });
   const recentRequests =
     status === 'success'
