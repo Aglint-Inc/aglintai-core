@@ -14,7 +14,7 @@ import {
   SectionTitle,
 } from '@components/layouts/sections-header';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
-import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useState } from 'react';
@@ -124,7 +124,7 @@ const Dashboard = () => {
           <SharedActions />
         </PageActions>
       </PageHeader>
-      <ScrollBar className='h-[calc(100vh-220px)]'>
+      <ScrollArea className='h-[calc(100vh-220px)]'>
         <div className='mb-6 flex flex-col gap-6 px-4'>
           <div>
             <div className='flex flex-col gap-4 py-4'>
@@ -147,7 +147,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-      </ScrollBar>
+      </ScrollArea>
     </Page>
   );
 };
