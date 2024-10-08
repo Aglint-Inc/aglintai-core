@@ -2,11 +2,10 @@ import { api } from '@/trpc/client';
 
 export const useTenantOfficeLocations = () => {
   const query = api.tenant.officeLocations.useQuery(undefined, {
-    refetchInterval: 1000 * 60 * 10,
-    placeholderData: [],
+    staleTime: Infinity,
   });
   return {
     ...query,
-    data: query.data!,
+    data: query.data! || [],
   };
 };
