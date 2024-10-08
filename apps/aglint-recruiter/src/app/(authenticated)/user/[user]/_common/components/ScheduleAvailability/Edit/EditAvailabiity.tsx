@@ -215,7 +215,6 @@ export const EditAvailabiity = ({
         },
       } as CustomSchedulingSettingsUser;
 
-      console.log(schedulingSettingObj);
       await mutateAsync({
         scheduling_settings: schedulingSettingObj,
         user_id,

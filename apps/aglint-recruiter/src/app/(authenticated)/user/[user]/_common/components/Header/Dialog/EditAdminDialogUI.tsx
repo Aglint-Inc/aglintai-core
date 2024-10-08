@@ -24,8 +24,9 @@ import {
 } from '@/company/hooks';
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+import timeZone from '@/utils/timeZone';
 
-import { type EditAdminFormErrorType, type Formtype } from './EditAdminDialog';
+import { type EditAdminFormErrorType, type Formtype } from './type';
 
 type Props = {
   form: Formtype;
@@ -153,9 +154,19 @@ export const Form = ({
           <Label htmlFor='location'>Location</Label>
           <Select
             value={form.office_location_id?.toString()}
-            onValueChange={(value) =>
-              setForm({ ...form, office_location_id: parseInt(value) })
-            }
+            onValueChange={(value) => {
+              const seleteTzCode = officeLocations.find(
+                (offLoc) => String(offLoc.id) == value,
+              )!.timezone;
+              const selectedTimeZone = timeZone.find(
+                (tz) => tz.tzCode === seleteTzCode,
+              )!;
+              setForm({
+                ...form,
+                office_location_id: parseInt(value),
+                timeZone: selectedTimeZone,
+              });
+            }}
           >
             <SelectTrigger>
               <SelectValue placeholder='Choose Location' />

@@ -2,7 +2,7 @@ import { customSchedulingSettingsUserSchema } from '@aglint/shared-types/src/db/
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
+import { createPublicClient } from '@/server/db';
 
 const Schema = z.object({
   first_name: z.string().optional(),
@@ -17,27 +17,14 @@ const Schema = z.object({
 export type UserUpdateType = z.infer<typeof Schema>;
 
 const mutation = async ({ input }: PrivateProcedure<typeof Schema>) => {
-  const db = createPrivateClient();
+  const db = createPublicClient();
 
-  const {
-    first_name,
-    last_name,
-    phone,
-    scheduling_settings,
-    profile_image,
-    linked_in,
-    user_id,
-  } = input;
+  const { user_id, ...payload } = input;
 
   await db
     .from('recruiter_user')
     .update({
-      first_name,
-      last_name,
-      phone,
-      linked_in,
-      profile_image,
-      scheduling_settings,
+      ...payload,
     })
     .eq('user_id', user_id)
     .throwOnError();
