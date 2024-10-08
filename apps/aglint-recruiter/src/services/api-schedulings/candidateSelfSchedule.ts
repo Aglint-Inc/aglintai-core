@@ -1,7 +1,4 @@
-import {
-  type ActionPayloadType,
-  type PlanCombinationRespType,
-} from '@aglint/shared-types';
+import { type ActionPayloadType } from '@aglint/shared-types';
 import {
   type candidate_new_schedule_schema,
   DAYJS_FORMATS,
@@ -14,6 +11,8 @@ import { type z } from 'zod';
 import { mailSender } from '@/utils/mailSender';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
+import { findPlansForSelfSchedule } from './findPlansForSelfSchedule';
+
 export const candidateSelfSchedule = async ({
   parsed_body,
   date_range,
@@ -21,7 +20,6 @@ export const candidateSelfSchedule = async ({
   job_payload,
   req_assignee_tz,
   organizer_id,
-  candidate_slots,
 }: {
   parsed_body: z.infer<typeof candidate_new_schedule_schema>;
   date_range: {
@@ -32,10 +30,16 @@ export const candidateSelfSchedule = async ({
   job_payload: ActionPayloadType['agent_instruction'];
   req_assignee_tz: string;
   organizer_id: string;
-  candidate_slots: PlanCombinationRespType[];
 }) => {
   const supabaseAdmin = getSupabaseServer();
-
+  const candidate_slots = await findPlansForSelfSchedule({
+    agent_instruction: job_payload.agent.instruction,
+    date_range,
+    recruiter_id: parsed_body.recruiter_id,
+    reqProgressLogger,
+    session_ids: parsed_body.session_ids,
+    time_zone: req_assignee_tz,
+  });
   const filter_json = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')

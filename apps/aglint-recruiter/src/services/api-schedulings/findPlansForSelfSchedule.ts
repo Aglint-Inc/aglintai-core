@@ -11,7 +11,7 @@ import { CandidatesScheduling } from '../CandidateSchedule/CandidatesScheduling'
 import { extractPreferredInterviewers } from './textTransforms/extractPreferredInterviewers';
 import { selfScheduleLinkInstruction } from './textTransforms/selfScheduleLinkInstruction';
 
-export const findPlansFromCandAvailWithAgentInstruct = async ({
+export const findPlansForSelfSchedule = async ({
   date_range,
   recruiter_id,
   session_ids,
@@ -24,7 +24,6 @@ export const findPlansFromCandAvailWithAgentInstruct = async ({
   session_ids: string[];
   reqProgressLogger: ProgressLoggerType;
   time_zone: string;
-  // schedule_filters: SelfSchedulingFlow['filters'];
   agent_instruction: string;
 }): Promise<PlanCombinationRespType[]> => {
   const formatted_ai_reponse = await selfScheduleLinkInstruction({

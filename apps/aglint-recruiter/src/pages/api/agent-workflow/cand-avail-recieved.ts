@@ -9,7 +9,6 @@ import { apiTargetToEvents } from '@request/components/RequestProgress/utils/pro
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfSchedule';
-import { findPlansFromCandAvailWithAgentInstruct } from '@/services/api-schedulings/findPlansFromCandAvailWithAgentInstruct';
 import { slackSuggestSlots } from '@/services/api-schedulings/slackSuggestSlots';
 import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
