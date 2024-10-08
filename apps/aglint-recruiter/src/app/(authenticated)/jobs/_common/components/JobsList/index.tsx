@@ -46,25 +46,28 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
   const stages = [
     {
       name: 'New',
-      color: 'bg-blue-100',
+      color: 'bg-blue-300/20',
+      borderColor: 'border-blue-300',
       arrowColor: 'text-blue-100',
       textColor: 'text-blue-800',
     },
     {
       name: 'Interview',
-      color: 'bg-purple-100',
+      color: 'bg-purple-300/20',
+      borderColor: 'border-purple-300',
       arrowColor: 'text-purple-100',
       textColor: 'text-purple-800',
     },
     {
       name: 'Qualified',
-      color: 'bg-green-100',
+      color: 'bg-green-300/20',
+      borderColor: 'border-green-300',
       arrowColor: 'text-green-100',
       textColor: 'text-green-800',
     },
     {
       name: 'Disqualified',
-      color: 'bg-red-100',
+      color: 'bg-red-200/20',
       arrowColor: 'text-red-100',
       textColor: 'text-red-800',
     },
@@ -131,8 +134,10 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                   <div
                     key={stage.name}
                     className={`${stage.color} relative cursor-pointer px-4 py-1 ${
-                      index === 0 ? 'rounded-l-md' : ''
-                    } ${index === stages.length - 1 ? 'rounded-r-md' : ''}`}
+                      index === stages.length - 1
+                        ? 'rounded-r-md'
+                        : 'border-r-0'
+                    } ${index === 0 ? 'rounded-l-md' : ''}`}
                   >
                     <div
                       className={`flex items-center space-x-1 ${index < stages.length - 2 ? 'pr-4' : ''}`}
@@ -152,7 +157,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                         {stage.name}
                       </div>
                     </div>
-                    {index < stages.length - 2 && (
+                    {/* {index < stages.length - 2 && (
                       <div className='absolute right-0 top-0 h-full w-4 overflow-hidden'>
                         <div
                           className={`absolute inset-0 bg-gradient-to-br ${stages[index + 1].color}`}
@@ -167,7 +172,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                           <path d='M0 0L16 50L0 100Z' fill='currentColor' />
                         </svg>
                       </div>
-                    )}
+                    )} */}
                   </div>
                 ))}
               </div>
