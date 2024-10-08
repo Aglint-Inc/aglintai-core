@@ -60,14 +60,17 @@ export const useHandleReschedule = ({
         type: 'candidate_response_self_schedule',
         reason: reason,
         other_details: other_details,
-        response_type: type === 'declined' ? 'cancel' : 'reschedule',
+        response_type:
+          type === 'candidate_request_decline'
+            ? 'candidate_request_decline'
+            : 'candidate_request_reschedule',
         filter_id: filter_json_id,
         session_ids: session_ids,
       };
 
       addScheduleActivity({
         title:
-          type === 'declined'
+          type === 'candidate_request_decline'
             ? `Canceled ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`
             : `${candidate_name} requested to reschedule the ${meetings?.map((ses) => ses.interview_session.name).join(' , ')}`,
         application_id,

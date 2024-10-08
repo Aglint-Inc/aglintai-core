@@ -35,7 +35,7 @@ const candidateRequest = async (
     sessions: parsed.session_ids,
   };
 
-  if (parsed.type === 'declined') {
+  if (parsed.type === 'candidate_request_decline') {
     details.request = {
       ...details.request,
       title: `${candidate_name} Requested for Cancelling Interview`,

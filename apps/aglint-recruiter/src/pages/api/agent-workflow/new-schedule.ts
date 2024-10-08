@@ -19,7 +19,6 @@ import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { candidateAvailRequest } from '@/services/api-schedulings/candidateAvailRequest';
 import { candidateAvailReRequest } from '@/services/api-schedulings/candidateAvailReRequest';
 import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfSchedule';
-import { getOrganizerId } from '@/utils/scheduling/getOrganizerId';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const schedule_wf = async (req_body: any) => {
@@ -159,10 +158,7 @@ const fetchUtil = async (req_body: any) => {
   }
   const api_target =
     parsed_body.target_api as DatabaseEnums['email_slack_types'];
-  const organizer_id = await getOrganizerId(
-    parsed_body.application_id,
-    supabaseAdmin,
-  );
+  const organizer_id = request_rec.assignee_id;
   const meeting_details = (
     await supabaseAdmin
       .from('meeting_details')

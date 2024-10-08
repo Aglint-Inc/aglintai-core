@@ -73,10 +73,12 @@ export const ConfirmedInvitePage = (
                     <span className='text-sm'>
                       {'Request to '}
                       {capitalizeFirstLetter(
-                        cancelData.type == 'declined' ? 'cancel' : 'reschedule',
+                        cancelData.type == 'candidate_request_decline'
+                          ? 'cancel'
+                          : 'reschedule',
                       )}
                       {' all sessions'}
-                      {cancelData.type == 'reschedule' &&
+                      {cancelData.type == 'candidate_request_reschedule' &&
                         cancelData?.other_details?.dateRange?.start &&
                         ` from ${dayjsLocal(cancelData.other_details.dateRange.start).format('MMMM DD')} to ${dayjsLocal(cancelData.other_details.dateRange.end).format('MMMM DD, YYYY')}`}
                       {' received,'} and under review.

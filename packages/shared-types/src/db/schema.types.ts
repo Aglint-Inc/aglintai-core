@@ -1824,7 +1824,7 @@ export type Database = {
           is_resolved: boolean
           other_details: Json | null
           reason: string
-          request_id: string
+          request_id: string | null
           session_id: string
           session_relation_id: string | null
           type: Database["public"]["Enums"]["cancel_type"]
@@ -1838,7 +1838,7 @@ export type Database = {
           is_resolved?: boolean
           other_details?: Json | null
           reason: string
-          request_id: string
+          request_id?: string | null
           session_id: string
           session_relation_id?: string | null
           type?: Database["public"]["Enums"]["cancel_type"]
@@ -1852,7 +1852,7 @@ export type Database = {
           is_resolved?: boolean
           other_details?: Json | null
           reason?: string
-          request_id?: string
+          request_id?: string | null
           session_id?: string
           session_relation_id?: string | null
           type?: Database["public"]["Enums"]["cancel_type"]
@@ -6540,7 +6540,11 @@ export type Database = {
         | "apply_link"
         | "candidate_database"
       assessment_mode: "classic" | "verbal" | "visual"
-      cancel_type: "reschedule" | "declined"
+      cancel_type:
+        | "interviewer_request_decline"
+        | "candidate_request_decline"
+        | "admin_cancel"
+        | "candidate_request_reschedule"
       db_search_type: "aglint" | "candidate"
       email_fetch_status: "not fetched" | "success" | "unable to fetch"
       email_slack_types:
