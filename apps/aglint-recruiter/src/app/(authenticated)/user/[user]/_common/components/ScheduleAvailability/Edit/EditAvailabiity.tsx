@@ -242,7 +242,7 @@ export const EditAvailabiity = ({
         weeklyLmit={weeklyLmit}
         workingHours={workingHours}
       />
-      <div className='ml-auto flex gap-4'>
+      <div className='sticky bottom-0 ml-auto flex gap-4'>
         <UIButton
           variant='secondary'
           onClick={() => {
