@@ -11,7 +11,7 @@ import RequestCard from 'src/app/_common/components/Requests/RequestCard';
 
 import { Loader } from '@/components/Common/Loader';
 
-function RecentRequests({ applicationId }: { applicationId: string }) {
+function RecentRequests() {
   const params = useParams();
   const requestId = params?.request as string;
   const { data: requestList, status } = useApplicantRequests({

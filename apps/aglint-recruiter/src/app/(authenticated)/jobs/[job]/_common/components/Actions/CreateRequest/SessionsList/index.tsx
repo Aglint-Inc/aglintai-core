@@ -74,7 +74,6 @@ export function SessionList({
                     <CommandItem key={i} value={item.id}>
                       <div
                         onClick={() => {
-                          console.log('object');
                           const exist = selectedSession
                             .map((ele) => ele.id)
                             .includes(item.id);

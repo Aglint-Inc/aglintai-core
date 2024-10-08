@@ -1,16 +1,16 @@
-import { UIAlert } from '@components/ui-alert';
+import { type DatabaseTable } from '@aglint/shared-types';
 import { Skeleton } from '@components/ui/skeleton';
+import { UIAlert } from '@components/ui-alert';
+import { useParams } from 'next/navigation';
+import { useState } from 'react';
 
 import { UIButton } from '@/common/UIButton';
-
 import UIDialog from '@/common/UIDialog';
 import { useFlags } from '@/company/hooks/useFlags';
 import CreateRequest from '@/job/components/Actions/CreateRequest';
-import { SessionType } from '@/job/components/Actions/CreateRequest/SessionsList';
+import { type SessionType } from '@/job/components/Actions/CreateRequest/SessionsList';
 import { api } from '@/trpc/client';
-import { DatabaseTable } from '@aglint/shared-types';
-import { useParams } from 'next/navigation';
-import { useState } from 'react';
+
 import { useApplicationDetails } from '../../hooks/useApplicationDetails';
 import { useInterviewStages } from '../../hooks/useInterviewStages';
 import SideDrawerEdit from '../EditDrawer';
