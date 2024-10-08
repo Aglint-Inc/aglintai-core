@@ -70,6 +70,7 @@ function CreateRequest({
       const interview_session = data?.flatMap((item) => item.interview_session);
       setSelectedSession(
         interview_session
+          .filter((ele) => ele.session_type !== 'debrief')
           .slice(0, 2)
           .map((ele) => ({ id: ele.id, name: ele.name }) as SessionType),
       );

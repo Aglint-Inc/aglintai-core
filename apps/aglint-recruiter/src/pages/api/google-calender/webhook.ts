@@ -72,7 +72,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
             const cancelReasons =
               interviewer.cancel_reasons?.filter(
-                (reason) => !reason.is_resolved && reason.type === 'declined',
+                (reason) =>
+                  !reason.is_resolved &&
+                  reason.type === 'interviewer_request_decline',
               ) || [];
 
             return {
@@ -126,7 +128,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         (ses) =>
           ses &&
           ses.cancel_reasons?.filter(
-            (reason) => !reason.is_resolved && reason.type === 'declined',
+            (reason) =>
+              !reason.is_resolved &&
+              reason.type === 'interviewer_request_decline',
           ).length > 0,
       )
       .flatMap((ses) => ses?.cancel_reasons);

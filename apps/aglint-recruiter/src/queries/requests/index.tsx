@@ -44,6 +44,8 @@ export const requestQueries = {
       enabled: !!payload.assigner_id,
       gcTime: payload.assigner_id ? GC_TIME : 0,
       refetchOnMount: true,
+      refetchOnWindowFocus: true,
+      staleTime: 0,
       queryKey: [...requestQueries.requests_queryKey(), { filters }, { sort }],
       queryFn: async () =>
         getRequests(await getUnfilteredRequests({ payload, sort, filters })),

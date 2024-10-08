@@ -1824,7 +1824,7 @@ export type Database = {
           is_resolved: boolean
           other_details: Json | null
           reason: string
-          request_id: string
+          request_id: string | null
           session_id: string
           session_relation_id: string | null
           type: Database["public"]["Enums"]["cancel_type"]
@@ -1838,7 +1838,7 @@ export type Database = {
           is_resolved?: boolean
           other_details?: Json | null
           reason: string
-          request_id: string
+          request_id?: string | null
           session_id: string
           session_relation_id?: string | null
           type?: Database["public"]["Enums"]["cancel_type"]
@@ -1852,7 +1852,7 @@ export type Database = {
           is_resolved?: boolean
           other_details?: Json | null
           reason?: string
-          request_id?: string
+          request_id?: string | null
           session_id?: string
           session_relation_id?: string | null
           type?: Database["public"]["Enums"]["cancel_type"]
@@ -2578,8 +2578,6 @@ export type Database = {
           hiring_manager: string | null
           id: string
           interview_coordinator: string | null
-          interview_plan_warning_ignore: boolean
-          interview_session_warning_ignore: boolean
           is_ats_sync: boolean
           is_pinned: boolean
           jd_changed: boolean | null
@@ -2615,8 +2613,6 @@ export type Database = {
           hiring_manager?: string | null
           id?: string
           interview_coordinator?: string | null
-          interview_plan_warning_ignore?: boolean
-          interview_session_warning_ignore?: boolean
           is_ats_sync?: boolean
           is_pinned?: boolean
           jd_changed?: boolean | null
@@ -2652,8 +2648,6 @@ export type Database = {
           hiring_manager?: string | null
           id?: string
           interview_coordinator?: string | null
-          interview_plan_warning_ignore?: boolean
-          interview_session_warning_ignore?: boolean
           is_ats_sync?: boolean
           is_pinned?: boolean
           jd_changed?: boolean | null
@@ -4651,8 +4645,6 @@ export type Database = {
           hiring_manager: string | null
           id: string | null
           interview_coordinator: string | null
-          interview_plan_warning_ignore: boolean | null
-          interview_session_warning_ignore: boolean | null
           is_pinned: boolean | null
           jd_json: Json | null
           job_title: string | null
@@ -6540,7 +6532,11 @@ export type Database = {
         | "apply_link"
         | "candidate_database"
       assessment_mode: "classic" | "verbal" | "visual"
-      cancel_type: "reschedule" | "declined"
+      cancel_type:
+        | "interviewer_request_decline"
+        | "candidate_request_decline"
+        | "admin_cancel"
+        | "candidate_request_reschedule"
       db_search_type: "aglint" | "candidate"
       email_fetch_status: "not fetched" | "success" | "unable to fetch"
       email_slack_types:

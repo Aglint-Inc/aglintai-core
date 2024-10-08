@@ -56,7 +56,7 @@ function CalendarHeader({
               currentViewType === 'timeGridWeek'
                 ? `${dayjsLocal(currentDate?.startStr).format('MMM DD ')} - ${dayjsLocal(currentDate?.endStr).format('DD YYYY')}`
                 : dayjsLocal(currentDate?.startStr).format(
-                    dateFormat[currentViewType],
+                    dateFormat[currentViewType] || 'MMMM YYYY',
                   )}
             </p>
             <UIButton
