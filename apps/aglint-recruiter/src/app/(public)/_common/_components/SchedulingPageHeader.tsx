@@ -1,6 +1,7 @@
 'use client';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Separator } from '@components/ui/separator';
+import { Briefcase, Clock, MapPin } from 'lucide-react';
 import React from 'react';
 
 export function SchedulingPageHeader({
@@ -22,7 +23,29 @@ export function SchedulingPageHeader({
             <AvatarImage src={logo} alt={companyName} />
             <AvatarFallback>{companyName.charAt(0)}</AvatarFallback>
           </Avatar>
-          <h1 className='text-2xl font-semibold'>{companyName}</h1>
+          <div className='flex flex-col'>
+            <h1 className='text-2xl font-semibold'>{companyName}</h1>
+            <dl className='flex flex-row items-center'>
+              <dt>
+                <MapPin size={16} className='mr-1' />
+              </dt>
+              <dd>
+                <p>Location</p>
+              </dd>
+              <dt className='ml-12'>
+                <Briefcase size={16} className='mr-1' />
+              </dt>
+              <dd>
+                <p>Job Title</p>
+              </dd>
+              <dt className='ml-12'>
+                <Clock size={16} className='mr-1' />
+              </dt>
+              <dd>
+                <p>Full time</p>
+              </dd>
+            </dl>
+          </div>
         </div>
       </div>
       {title ? title : null}

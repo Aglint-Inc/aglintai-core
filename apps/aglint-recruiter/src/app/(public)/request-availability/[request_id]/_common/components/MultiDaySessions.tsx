@@ -9,7 +9,7 @@ function MultiDaySessions() {
   } = useRequestAvailabilityContext();
   return (
     <>
-      <div className='flex max-h-[60vh] w-full flex-col items-center gap-4 overflow-auto'>
+      <div className='flex flex-col items-center'>
         <div className='flex w-full flex-col gap-2'>
           {multiDaySessions.map((sessions, i) => {
             const totalSessionMinutes = sessions.reduce(
