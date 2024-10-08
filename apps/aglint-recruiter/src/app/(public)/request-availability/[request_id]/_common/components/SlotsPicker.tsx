@@ -141,7 +141,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
   return (
     <>
       <div className='bg-white'>
-        <div className='flex flex-col gap-10 px-0'>
+        <div className='flex max-h-[60vh] flex-col gap-10 overflow-auto px-0'>
           <div className='items-left flex flex-col gap-4'>
             <div className='flex items-start gap-2'>
               <div className='relative'>
@@ -341,25 +341,25 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
             ) : null}
             <div>{markAsAllDateSelected ? <TimeSlotsWrapper /> : null}</div>
           </div>
-          <div className='flex w-full items-center justify-center'>
-            {markAsAllDateSelected && markAsAllSlotsSelected ? (
-              <div className='mx-auto mb-4 w-[300px]'>
-                <UIButton
-                  size='md'
-                  onClick={handleSubmit}
-                  disabled={
-                    !markAsAllSlotsSelected ||
-                    !markAsAllDateSelected ||
-                    submitting
-                  }
-                  className='w-full'
-                  isLoading={submitting}
-                >
-                  {singleDay ? 'Submit Availability' : 'Done'}
-                </UIButton>
-              </div>
-            ) : null}
-          </div>
+        </div>
+        <div className='flex w-full items-center justify-center'>
+          {markAsAllDateSelected && markAsAllSlotsSelected ? (
+            <div className='mx-auto w-[300px] pt-4'>
+              <UIButton
+                size='md'
+                onClick={handleSubmit}
+                disabled={
+                  !markAsAllSlotsSelected ||
+                  !markAsAllDateSelected ||
+                  submitting
+                }
+                className='w-full'
+                isLoading={submitting}
+              >
+                {singleDay ? 'Submit Availability' : 'Done'}
+              </UIButton>
+            </div>
+          ) : null}
         </div>
       </div>
     </>
