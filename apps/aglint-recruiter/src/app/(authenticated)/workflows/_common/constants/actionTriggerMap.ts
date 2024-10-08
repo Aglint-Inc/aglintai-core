@@ -275,7 +275,8 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
         action_type: 'agent_instruction',
         payload: {
           agent: {
-            instruction: 'TODO:dileep',
+            instruction:
+              'Pick maximum slots of 5 without any conflicts and candidate preferred time is morning 9 to 12',
           },
         },
       },
