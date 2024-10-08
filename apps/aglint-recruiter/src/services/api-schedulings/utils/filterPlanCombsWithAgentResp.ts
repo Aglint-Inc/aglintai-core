@@ -1,7 +1,4 @@
-import {
-  type PlanCombinationRespType,
-  type TimeDurationDayjsType,
-} from '@aglint/shared-types';
+import { type PlanCombinationRespType } from '@aglint/shared-types';
 import { CApiError, dayjsLocal } from '@aglint/shared-utils';
 
 import { type extractPreferredInterviewers } from '../textTransforms/extractPreferredInterviewers';
