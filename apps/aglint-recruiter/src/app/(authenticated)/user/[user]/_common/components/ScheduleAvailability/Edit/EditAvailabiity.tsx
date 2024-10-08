@@ -24,7 +24,7 @@ export const LoadMax = {
 
 type TimeZoneType = (typeof timeZones)[number];
 
-export const EditAvailabiityDialog = ({
+export const EditAvailabiity = ({
   setIsEditOpen,
 }: {
   setIsEditOpen: Dispatch<SetStateAction<boolean>>;
@@ -215,6 +215,7 @@ export const EditAvailabiityDialog = ({
         },
       } as CustomSchedulingSettingsUser;
 
+      console.log(schedulingSettingObj);
       await mutateAsync({
         scheduling_settings: schedulingSettingObj,
         user_id,

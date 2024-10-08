@@ -14,7 +14,6 @@ export type CustomSchedulingSettingsUser = Pick<
   CustomSchedulingSettings,
   | "break_hour"
   | "interviewLoad"
-  | "isAutomaticTimeZone"
   | "schedulingKeyWords"
   | "timeZone"
   | "totalDaysOff"
