@@ -4,8 +4,6 @@ import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { cancelMailHandler } from '@/utils/scheduling/mailUtils';
-import { removeSessionsFromFilterJson } from '@/utils/scheduling/removeSessionsFromFilterJson';
-import { removeSessionsFromRequestAvailability } from '@/utils/scheduling/removeSessionsFromRequestAvailability';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
 import { createClient } from '@/utils/supabase/server';
 
@@ -87,20 +85,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         });
       if (errIntSesCancel) throw new Error(errIntSesCancel.message);
 
-      const meeting_flow = meetSession[0].meeting_flow;
       const session_name = meetSession[0].interview_session[0].name;
-
-      if (meeting_flow !== 'candidate_request') {
-        await removeSessionsFromFilterJson({
-          session_ids: [session_id],
-          supabase,
-        });
-      } else if (meeting_flow === 'candidate_request') {
-        await removeSessionsFromRequestAvailability({
-          session_ids: [session_id],
-          supabase,
-        });
-      }
 
       cancelMailHandler({
         application_id,
