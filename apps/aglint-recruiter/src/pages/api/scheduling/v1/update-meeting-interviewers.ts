@@ -94,31 +94,24 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
 
   const [meeting_details] = await Promise.all([
     (async () => {
-      const meeting_details = (
+      const meeting_details = supabaseWrap(
         await supabaseAdmin
           .from('meeting_details')
           .select()
           .eq('session_id', session_id)
-          .single()
-          .throwOnError()
-      ).data;
-      if (!meeting_details) {
-        throw new CApiError('SERVER_ERROR', 'No meeting found');
-      }
+          .single(),
+      );
       if (!meeting_details.organizer_id) {
         throw new CApiError('SERVER_ERROR', 'No organizer found');
       }
-      const rec_auth = await (
+      const rec_auth = supabaseWrap(
         await supabaseAdmin
           .from('recruiter_user')
           .select('user_id,email,schedule_auth')
           .eq('user_id', meeting_details.organizer_id)
-          .single()
-          .throwOnError()
-      ).data;
-      if (!rec_auth) {
-        throw new CApiError('SERVER_ERROR', 'No organizer auth found');
-      }
+          .single(),
+      );
+
       return {
         ...meeting_details,
         organizer_email: rec_auth.email,
@@ -256,29 +249,29 @@ const createSesnRelnIfNotExists = async ({
   session_id: string;
 }) => {
   const supabaseAdmin = getSupabaseServer();
-
-  const new_int_module_reln = (
+  console.log('debug 1');
+  const new_int_module_reln = supabaseWrap(
     await supabaseAdmin
       .from('interview_module_relation')
       .select()
       .eq('user_id', user_id)
       .eq('module_id', module_id)
-      .single()
-      .throwOnError()
-  ).data;
-  if (!new_int_module_reln) {
-    throw new CApiError('SERVER_ERROR', 'No interview module relation found');
-  }
-  const sesnReln = (
+      .single(),
+  );
+  console.log('debug 2');
+
+  const sesnReln = supabaseWrap(
     await supabaseAdmin
       .from('interview_session_relation')
       .select()
-      .eq('interview_module_relation_id', new_int_module_reln.id)
-      .single()
-      .throwOnError()
-  ).data;
+      .eq('interview_module_relation_id', new_int_module_reln.id),
+    false,
+  );
+
+  console.log('debug 3');
+
   if (!sesnReln) {
-    await supabaseWrap(
+    supabaseWrap(
       await supabaseAdmin.from('interview_session_relation').insert({
         interview_module_relation_id: new_int_module_reln.id,
         is_confirmed: false,
@@ -288,6 +281,7 @@ const createSesnRelnIfNotExists = async ({
       }),
     );
   }
+  console.log('debug 4');
 };
 
 export default createPageApiPostRoute(
