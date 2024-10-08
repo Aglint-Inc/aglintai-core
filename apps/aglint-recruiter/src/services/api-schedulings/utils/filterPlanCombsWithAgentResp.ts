@@ -6,6 +6,7 @@ import { CApiError, dayjsLocal } from '@aglint/shared-utils';
 
 import { type extractPreferredInterviewers } from '../textTransforms/extractPreferredInterviewers';
 import { type selfScheduleLinkInstruction } from '../textTransforms/selfScheduleLinkInstruction';
+import { compareTimes } from '@/services/CandidateSchedule/utils/time_range_utils';
 
 export const filterPlanCombsWithAgentResp = ({
   flattened_plans,
@@ -46,11 +47,13 @@ export const filterPlanCombsWithAgentResp = ({
         dayjsLocal(
           ai_response.candidateAvailability.preferredDates.startDate,
         ).tz(time_zone),
+        'date',
       ) &&
       plan_date.isSameOrBefore(
         dayjsLocal(ai_response.candidateAvailability.preferredDates.endDate).tz(
           time_zone,
         ),
+        'date',
       )
     );
   });
@@ -113,25 +116,21 @@ export const filterPlanCombsWithAgentResp = ({
     }
   }
 
+  const ai_resp_preferred_time =
+    ai_response.candidateAvailability.prefferredTime;
   // Filter out plans with preferred time range
   const time_filtered_plans = filtered_plans.filter((plan) => {
-    const plan_time: TimeDurationDayjsType = {
-      startTime: dayjsLocal(plan.sessions[0].start_time).tz(time_zone),
-      endTime: dayjsLocal(plan.sessions[plan.sessions.length - 1].end_time).tz(
-        time_zone,
-      ),
-    };
     return (
-      plan_time.startTime.isSameOrAfter(
-        dayjsLocal(
-          ai_response.candidateAvailability.prefferredTime.startTime,
-        ).tz(time_zone),
-      ) &&
-      plan_time.endTime.isSameOrBefore(
-        dayjsLocal(ai_response.candidateAvailability.prefferredTime.endTime).tz(
-          time_zone,
-        ),
-      )
+      compareTimes(
+        plan.sessions[0].start_time,
+        ai_resp_preferred_time.startTime,
+        time_zone,
+      ) >= 0 &&
+      compareTimes(
+        plan.sessions[plan.sessions.length - 1].end_time,
+        ai_resp_preferred_time.endTime,
+        time_zone,
+      ) <= 0
     );
   });
   if (time_filtered_plans.length === 0) {

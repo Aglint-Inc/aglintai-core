@@ -17,6 +17,7 @@ export const sendSelfScheduleLink = async ({
   reqProgressLogger,
   parsed_body,
   job_payload,
+  req_assignee_id,
 }: {
   agent_instruction: string;
   date_range: { start_date_str: string; end_date_str: string };
@@ -26,6 +27,7 @@ export const sendSelfScheduleLink = async ({
   session_ids: string[];
   reqProgressLogger: ProgressLoggerType;
   parsed_body: z.infer<typeof candidate_new_schedule_schema>;
+  req_assignee_id: string;
 }) => {
   const filtered_slots = await findPlansForSelfSchedule({
     agent_instruction,
@@ -37,7 +39,7 @@ export const sendSelfScheduleLink = async ({
   await candidateSelfScheduleLink({
     date_range,
     job_payload: job_payload,
-    organizer_id: recruiter_id,
+    organizer_id: req_assignee_id,
     parsed_body,
     reqProgressLogger: reqProgressLogger,
     req_assignee_tz: time_zone,

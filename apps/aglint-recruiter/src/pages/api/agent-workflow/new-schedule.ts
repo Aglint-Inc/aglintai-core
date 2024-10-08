@@ -22,7 +22,6 @@ import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const schedule_wf = async (req_body: any) => {
   const supabaseAdmin = getSupabaseServer();
-
   const {
     parsed_body,
     api_target,
@@ -66,6 +65,7 @@ const schedule_wf = async (req_body: any) => {
         recruiter_id: parsed_body.recruiter_id,
         session_ids: parsed_body.session_ids,
         time_zone: request_assignee_tz,
+        req_assignee_id: organizer_id,
       },
       reqProgressLogger,
     );
