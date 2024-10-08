@@ -1,4 +1,4 @@
-import { InterviewPlan } from './InterviewPlans';
+import { InterviewPlan } from './InterviewPlan';
 
 export const Banners = () => {
   return (
