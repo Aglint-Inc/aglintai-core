@@ -14,7 +14,7 @@ import {
   SectionTitle,
 } from '@components/layouts/sections-header';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
-import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useState } from 'react';

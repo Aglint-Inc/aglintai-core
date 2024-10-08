@@ -723,12 +723,9 @@ const InterviewSession = ({
                       }
                     >
                       {hover ? (
-                        <div className='absolute inset-0 flex w-full flex-col items-center justify-center'>
-                          <div className='duration-250 ease relative top-[50%] flex h-[2px] w-full cursor-pointer flex-col items-center justify-center bg-[#cc4e00] transition-all'></div>
-                          <div className='z-10 flex h-[20px] w-[20px] items-center justify-center rounded-[20px] bg-[#cc4e00]'>
-                            <Plus size={10} color='white' />
-                          </div>
-                        </div>
+                        <>
+                          <UIButton size='sm' icon={<Plus />}></UIButton>
+                        </>
                       ) : (
                         <></>
                       )}
