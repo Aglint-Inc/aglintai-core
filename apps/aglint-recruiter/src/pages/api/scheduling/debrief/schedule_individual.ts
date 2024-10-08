@@ -117,17 +117,12 @@ const confirmSlot = async ({
     filter_id,
   };
 
-  const resConfirmSlot = await axios.post(
+  await axios.post(
     `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/booking/schedule-debreif`,
     bodyParams,
   );
 
-  if (resConfirmSlot.status === 200) {
-    console.log(`confirmed slot`);
-    return true;
-  } else {
-    throw new Error('error in confirm_interview_slot api');
-  }
+  return true;
 };
 
 const findAvailibilityNoConflictOnly = async ({

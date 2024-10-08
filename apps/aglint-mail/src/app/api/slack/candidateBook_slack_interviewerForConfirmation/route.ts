@@ -78,6 +78,7 @@ const notifyInts = async ({
           event_payload: {
             email: interviewer.email,
             session_relation_id: interviewer.session_relation_id,
+            session_id,
           },
         },
         blocks: [
