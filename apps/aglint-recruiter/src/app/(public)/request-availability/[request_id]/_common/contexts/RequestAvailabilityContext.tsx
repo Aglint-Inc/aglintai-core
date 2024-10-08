@@ -7,7 +7,11 @@ import {
   type DatabaseTableUpdate,
   type InterviewSessionTypeDB,
 } from '@aglint/shared-types';
-import { dayjsLocal, ScheduleUtils } from '@aglint/shared-utils';
+import {
+  dayjsLocal,
+  ScheduleUtils,
+  SINGLE_DAY_TIME,
+} from '@aglint/shared-utils';
 import axios from 'axios';
 import dayjs, { type Dayjs } from 'dayjs';
 import { useParams } from 'next/navigation';
@@ -18,9 +22,14 @@ import toast from '@/utils/toast';
 
 import {
   useCandidateAvailabilityData,
+  useCandidateAvailabilityMeetings,
+  useCandidateAvailabilityScheduleDMeetings,
   useUpdateCandidateAvailability,
 } from '../hooks/useRequestAvailability';
-import { type CandidateAvailabilityType } from '../types';
+import {
+  type CandidateAvailabilityType,
+  type CandidateMeetingsType,
+} from '../types';
 
 interface ContextValue {
   dateSlots: NonNullable<
@@ -81,6 +90,23 @@ interface ContextValue {
       DatabaseTable['candidate_request_availability']['slots']
     >[number]['dates'][number]['slots'][number];
   }) => void;
+  meetingsAndRounds: {
+    rounds: any[];
+    meetings: any[];
+    schedule: ReturnType<
+      typeof useCandidateAvailabilityScheduleDMeetings
+    >['data'];
+  } | null;
+
+  setMeetingsAndRounds: (
+    _x: {
+      rounds: any[];
+      meetings: any[];
+      schedule: ReturnType<
+        typeof useCandidateAvailabilityScheduleDMeetings
+      >['data'];
+    } | null,
+  ) => void;
 }
 const defaultProvider: ContextValue = {
   dateSlots: [],
@@ -104,6 +130,8 @@ const defaultProvider: ContextValue = {
   submitting: false,
   setSubmitting: () => {},
   handleSlotClick: () => {},
+  meetingsAndRounds: null,
+  setMeetingsAndRounds: () => {},
 };
 const RequestAvailabilityContext = createContext<ContextValue>(defaultProvider);
 const useRequestAvailabilityContext = () =>
@@ -118,6 +146,9 @@ function RequestAvailabilityProvider({
   const { data: requestAvailability, isFetched } =
     useCandidateAvailabilityData();
   const { updateRequestAvailability } = useUpdateCandidateAvailability();
+  const { data: meetings } = useCandidateAvailabilityMeetings();
+  const { data: scheduledMeetings } =
+    useCandidateAvailabilityScheduleDMeetings();
 
   const [dateSlots, setDateSlots] = useState<
     NonNullable<DatabaseTable['candidate_request_availability']['slots']>
@@ -421,6 +452,52 @@ function RequestAvailabilityProvider({
     }
   }
 
+  //check if meeting scheduled
+  const [meetingsAndRounds, setMeetingsAndRounds] = useState<{
+    rounds: any[];
+    meetings: any[];
+    schedule: ReturnType<
+      typeof useCandidateAvailabilityScheduleDMeetings
+    >['data'];
+  } | null>(null);
+  const getMeetings = async (meetings: CandidateMeetingsType) => {
+    if (meetings) {
+      const { rounds } = meetings.reduce(
+        (acc, curr) => {
+          const count = acc.rounds.length;
+          if (
+            count === 0 ||
+            acc.rounds[count - 1].sessions[
+              acc.rounds[count - 1].sessions.length - 1
+            ].interview_session.break_duration >= SINGLE_DAY_TIME
+          )
+            acc.rounds.push({
+              title: `Day ${acc.rounds.length + 1}`,
+              sessions: [curr],
+            });
+          else acc.rounds[count - 1].sessions.push(curr);
+          return acc;
+        },
+        { rounds: [] as any },
+      );
+
+      setMeetingsAndRounds({
+        rounds: rounds,
+        meetings: meetings,
+        schedule: scheduledMeetings,
+      });
+    }
+  };
+  useEffect(() => {
+    if (
+      requestAvailability &&
+      requestAvailability.booking_confirmed &&
+      meetings?.length
+    ) {
+      getMeetings(meetings);
+    }
+  }, [meetings]);
+
   return (
     <RequestAvailabilityContext.Provider
       value={{
@@ -446,6 +523,8 @@ function RequestAvailabilityProvider({
         setMultiDaySessions,
         setSelectedDate,
         handleSlotClick,
+        meetingsAndRounds,
+        setMeetingsAndRounds,
       }}
     >
       {children}

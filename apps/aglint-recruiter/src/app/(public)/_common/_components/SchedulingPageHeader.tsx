@@ -1,6 +1,7 @@
 'use client';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Separator } from '@components/ui/separator';
+import React from 'react';
 
 export function SchedulingPageHeader({
   title,
@@ -8,8 +9,8 @@ export function SchedulingPageHeader({
   companyName,
   logo,
 }: {
-  title?: string;
-  description: string;
+  title?: React.ReactNode;
+  description: React.ReactNode;
   companyName: string;
   logo: string;
 }) {
@@ -24,11 +25,9 @@ export function SchedulingPageHeader({
           <h1 className='text-2xl font-semibold'>{companyName}</h1>
         </div>
       </div>
-      {title ? <h1 className='text-3xl font-semibold'>{title}</h1> : null}
+      {title ? title : null}
       <Separator />
-      <h2 className='flex items-center gap-2 p-8 pb-4 text-lg font-semibold'>
-        {description}
-      </h2>
+      {description ? description : null}
     </div>
   );
 }
