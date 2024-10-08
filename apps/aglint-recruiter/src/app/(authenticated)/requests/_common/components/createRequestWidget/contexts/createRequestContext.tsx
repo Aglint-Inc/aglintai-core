@@ -43,6 +43,7 @@ type States = {
   priority: DatabaseTable['request']['priority'];
   selections: SafeSelections;
   payloads: SafePayload;
+  error: string | null;
 };
 
 type Actions = {
@@ -75,6 +76,8 @@ type Actions = {
   setDates: (_dates: States['dates']) => void;
   setNote: (_note: States['note']) => void;
   setPriority: (_priority: States['priority']) => void;
+  setError: (_error: string | null) => void;
+  resetError: () => void;
 };
 
 export type Store = States & {
@@ -117,6 +120,7 @@ const initial = Object.freeze<States>({
   },
   note: '',
   priority: 'standard',
+  error: null,
 });
 
 const useCreateRequestContext = () => {
@@ -130,25 +134,29 @@ const useCreateRequestContext = () => {
       priority: initial.priority,
       payloads: structuredClone(initial.payloads),
       selections: structuredClone(initial.selections),
+      error: initial.error,
       actions: {
         onOpenChange: (open) =>
           set((state) => {
             if (open === true) return { open };
-            return { open, ...resetPayload('requestType', state) };
+            return { open, ...resetPayload('requestType', state), error: null };
           }),
         previousPage: () =>
           set((state) => ({
             step: state.step !== 0 ? state.step - 1 : state.step,
+            error: null,
           })),
         nextPage: () =>
           set((state) => ({
             step: state.step !== STEPS.length ? state.step + 1 : state.step,
+            error: null,
           })),
         setRequestTypeSearch: (search) =>
           set((state) => ({
             payloads: {
               ...state.payloads,
               requestType: { ...state.payloads.requestType, search },
+              error: null,
             },
           })),
         selectRequestType: (requestType) =>
@@ -158,6 +166,7 @@ const useCreateRequestContext = () => {
               ...newPayload,
               selections: { ...newPayload.selections!, requestType },
               step: newPayload.step! + 1,
+              error: null,
             };
           }),
         setJobSearch: (search) =>
@@ -165,6 +174,7 @@ const useCreateRequestContext = () => {
             payloads: {
               ...state.payloads,
               jobs: { ...state.payloads.jobs, search },
+              error: null,
             },
           })),
         selectJob: (jobs) =>
@@ -174,6 +184,7 @@ const useCreateRequestContext = () => {
               ...newPayload,
               selections: { ...newPayload.selections!, jobs },
               step: newPayload.step! + 1,
+              error: null,
             };
           }),
         setCandidateSearch: (search) =>
@@ -181,6 +192,7 @@ const useCreateRequestContext = () => {
             payloads: {
               ...state.payloads,
               candidate: { ...state.payloads.candidate, search },
+              error: null,
             },
           })),
         selectCandidate: (candidate) =>
@@ -190,6 +202,7 @@ const useCreateRequestContext = () => {
               ...newPayload,
               selections: { ...newPayload.selections!, candidate },
               step: newPayload.step! + 1,
+              error: null,
             };
           }),
         setScheduleSearch: (search) =>
@@ -197,12 +210,13 @@ const useCreateRequestContext = () => {
             payloads: {
               ...state.payloads,
               schedules: { ...state.payloads.schedules, search },
+              error: null,
             },
           })),
         selectSchedule: (schedule) =>
           set((state) => {
             if (state.selections.schedules.find(({ id }) => id === schedule.id))
-              return state;
+              return { ...state, error: null };
             const newPayload = resetPayload('schedules', state);
             return {
               ...newPayload,
@@ -210,6 +224,7 @@ const useCreateRequestContext = () => {
                 ...newPayload.selections!,
                 schedules: [...state.selections.schedules, schedule],
               },
+              error: null,
             };
           }),
         setAssigneeSearch: (search) =>
@@ -217,6 +232,7 @@ const useCreateRequestContext = () => {
             payloads: {
               ...state.payloads,
               assignees: { ...state.payloads.assignees, search },
+              error: null,
             },
           })),
         selectAssignee: (assignees) =>
@@ -229,13 +245,16 @@ const useCreateRequestContext = () => {
                 assignees,
               },
               step: newPayload.step! + 1,
+              error: null,
             };
           }),
-        setDates: (dates) => set(() => ({ dates })),
-        setNote: (note) => set(() => ({ note })),
-        setPriority: (priority) => set(() => ({ priority })),
+        setDates: (dates) => set(() => ({ dates, error: null })),
+        setNote: (note) => set(() => ({ note, error: null })),
+        setPriority: (priority) => set(() => ({ priority, error: null })),
         resetSelection: (payload) =>
-          set((state) => resetPayload(payload, state)),
+          set((state) => ({ ...resetPayload(payload, state), error: null })),
+        setError: (error) => set(() => ({ error })),
+        resetError: () => set(() => ({ error: null })),
       },
     })),
   );

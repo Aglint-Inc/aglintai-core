@@ -2,7 +2,7 @@ import {
   recruiterUserRowSchema,
   type RecruiterUserType,
 } from '@aglint/shared-types';
-import { customSchedulingSettingsSchema } from '@aglint/shared-types/src/db/common.zod';
+import { customSchedulingSettingsUserSchema } from '@aglint/shared-types/src/db/common.zod';
 import { z } from 'zod';
 
 import { checkCalenderStatus } from '@/pages/api/scheduling/v1/check_calendar_status';
@@ -21,7 +21,7 @@ const schema = z
     department_id: z.number(),
     office_location_id: z.number(),
     employment: recruiterUserRowSchema.shape.employment,
-    scheduling_settings: customSchedulingSettingsSchema,
+    scheduling_settings: customSchedulingSettingsUserSchema,
     manager_id: z.string().uuid(),
     role_id: z.string(),
     remote_id: z.string().optional(),

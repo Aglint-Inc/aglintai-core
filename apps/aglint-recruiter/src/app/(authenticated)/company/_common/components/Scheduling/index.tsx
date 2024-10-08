@@ -15,7 +15,7 @@ import {
 } from '@components/layouts/sections-header';
 import { cloneDeep, debounce } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
-import { LoadMax } from 'src/app/(authenticated)/user/[user]/_common/components/ScheduleAvailability/Dialog/EditAvailabiityDialog';
+import { LoadMax } from 'src/app/(authenticated)/user/[user]/_common/components/ScheduleAvailability/Edit/EditAvailabiity';
 
 import InterviewLimitInput from '@/authenticated/components/InterviewLoad';
 import UISectionCard from '@/common/UISectionCard';
