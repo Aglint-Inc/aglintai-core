@@ -1,5 +1,7 @@
 /* eslint-disable no-unreachable-loop */
 import { supabaseWrap } from '@aglint/shared-utils';
+import type { APICreateInterviewerRequest } from '@aglint/shared-types';
+import axios from 'axios';
 import { getSlackWeb } from '../../../../slack/slackWeb';
 import { getSupabaseServer } from '../../../../supabase/supabaseAdmin';
 import { createPostRoute } from '../../../../utils/apiUtils/createPostRoute';
@@ -182,22 +184,14 @@ const candidate_interview_accept = async (interaction_data: any) => {
 const candidate_interview_decline = async (interaction_data: any) => {
   const channel_id = interaction_data.channel.id;
   const metadata = interaction_data.message.metadata;
-  const supabaseAdmin = getSupabaseServer();
   const slackWeb = getSlackWeb();
-  const [rec] = supabaseWrap(
-    await supabaseAdmin
-      .from('interview_session_relation')
-      .update({ accepted_status: 'declined' })
-      .eq('id', metadata.event_payload.session_relation_id)
-      .select(),
-  );
-
-  supabaseWrap(
-    await supabaseAdmin.from('interview_session_cancel').insert({
-      reason: 'interview declined',
-      session_id: rec.session_id,
-      session_relation_id: metadata.event_payload.session_relation_id,
-    }),
+  const payload: APICreateInterviewerRequest = {
+    session_id: metadata.event_payload.session_id,
+    session_relation_id: metadata.event_payload.session_relation_id,
+  };
+  await axios.post(
+    `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/api/request/interviewer-request`,
+    payload,
   );
   const response = await slackWeb.chat.update({
     channel: channel_id,

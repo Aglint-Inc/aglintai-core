@@ -7,6 +7,7 @@ import { dayjsLocal } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
+import { interviewerDeclineRequest } from '@/services/requests/interviewerDeclineRequest';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -168,19 +169,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     //creating new request for the declined interview
     const cancelSessions: DatabaseTableInsert['interview_session_cancel'][] =
       updateRelations
-        .filter((interviewer) => interviewer?.status === 'declined')
-        .map((interviewer) => ({
-          reason: 'Declined in google calendar',
-          session_id: interviewer?.session_id,
-          session_relation_id: interviewer?.session_relation_id,
-          type: 'declined',
-        }));
+        .filter(
+          (interviewer) => interviewer && interviewer.status === 'declined',
+        )
+        .map(async (interviewer) => {
+          if (!interviewer) return;
+          await interviewerDeclineRequest({
+            declined_place: 'calender',
+            session_relation_id: interviewer.session_relation_id,
+            session_id: interviewer.session_id,
+          });
+        });
 
-    await supabaseAdmin
-      .from('interview_session_cancel')
-      .upsert(cancelSessions)
-      .throwOnError();
-    //creating new request for the declined interview
+    await Promise.all(cancelSessions);
 
     return res.status(200).send(cancelSessions);
   } catch (err) {
