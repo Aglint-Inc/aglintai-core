@@ -1,12 +1,6 @@
 import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@components/ui/dialog';
+import { DialogDescription, DialogHeader } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
@@ -17,6 +11,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useIntegrations } from '@/authenticated/hooks';
 import axios from '@/client/axios';
+import UIDialog from '@/common/UIDialog';
 import { useTenant } from '@/company/hooks';
 import { Loader } from '@/components/Common/Loader';
 import { UIBadge } from '@/components/Common/UIBadge';
@@ -172,16 +167,20 @@ export default function LeverModalComp() {
   };
 
   return (
-    <Dialog
+    <UIDialog
       open={integration.lever.open}
-      onOpenChange={(open) => {
-        if (open && integration.lever.step !== STATE_LEVER_DIALOG.IMPORTING)
+      title='Lever'
+      slotButtons={<></>}
+      onClose={() => {
+        if (
+          integration.lever.open &&
+          integration.lever.step !== STATE_LEVER_DIALOG.IMPORTING
+        )
           resetIntegrations();
       }}
     >
-      <DialogContent>
+      <>
         <DialogHeader>
-          <DialogTitle>Lever</DialogTitle>
           <DialogDescription>
             <>
               {integration.lever.step === STATE_LEVER_DIALOG.API ||
@@ -365,7 +364,7 @@ export default function LeverModalComp() {
             )}
           </div>
         )}
-      </DialogContent>
-    </Dialog>
+      </>
+    </UIDialog>
   );
 }
