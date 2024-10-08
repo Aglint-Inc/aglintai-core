@@ -1,6 +1,6 @@
 'use client';
 import { PublicPageLayout } from '@components/layouts/public-layout';
-import { CheckCircle } from 'lucide-react';
+import { UIAlert } from '@components/ui-alert';
 
 import Footer from '@/common/Footer';
 
@@ -19,27 +19,27 @@ function RequestAvailability() {
           companyName={candidateRequestAvailability?.recruiter?.name ?? ''}
           description={
             isSubmitted && !candidateRequestAvailability?.booking_confirmed ? (
-              <div className='ml-8 flex flex-row items-center justify-center gap-2'>
-                <CheckCircle className='h-8 w-8 text-green-600' />
-                <p className='flex items-center gap-2 py-4 text-sm font-semibold'>
-                  Thank you for submitting your availability. We will review the
-                  selected time slots and confirm the schedule soon. You will
-                  receive a confirmation shortly.
-                </p>
+              <div className='flex w-full'>
+                <UIAlert type='success' className='mx-8 mt-8'>
+                  <p className='text-sm'>
+                    Thank you for submitting your availability. We will review
+                    the selected time slots and confirm the schedule soon. You
+                    will receive a confirmation shortly.
+                  </p>
+                </UIAlert>
               </div>
             ) : candidateRequestAvailability?.booking_confirmed &&
               meetingsAndRounds?.meetings ? (
-              <div className='ml-8 flex flex-row items-center justify-center gap-2'>
-                <CheckCircle className='h-8 w-8 text-green-600' />
-                <p className='flex items-center gap-2 py-4 text-sm font-semibold'>
-                  Your meeting has been confirmed.
-                </p>
+              <div className='flex w-full'>
+                <UIAlert type='success' className='mx-8 mt-8 w-full'>
+                  <p className='text-sm'>Your meeting has been confirmed.</p>
+                </UIAlert>
               </div>
             ) : null
           }
           title={
-            <h2 className='flex items-center gap-2 p-8 text-lg font-semibold'>
-              Your Request availability
+            <h2 className='flex items-center gap-2 p-4 text-lg font-semibold'>
+              Availability Request
             </h2>
           }
           logo={candidateRequestAvailability?.recruiter?.logo ?? ''}

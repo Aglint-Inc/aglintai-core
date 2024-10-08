@@ -113,7 +113,7 @@ export default function InterviewStages({
               )}
             >
               <CSSArrow
-                direction={orientation === 'horizontal' ? 'up' : 'right'}
+                direction={orientation === 'horizontal' ? 'up' : 'down'}
                 size='sm'
                 borderColor={statusColors[stage.status].border}
                 backgroundColor={statusColors[stage.status].bg}
@@ -128,11 +128,11 @@ export default function InterviewStages({
                 'absolute',
                 orientation === 'horizontal'
                   ? '-left-2 top-1/2 -translate-y-1/2'
-                  : 'bottom-0 left-1/2 -translate-x-1/2 rotate-90',
+                  : '-bottom--2 left-1/2 -translate-x-1/2 rotate-90',
               )}
             >
               <CSSArrow
-                direction={orientation === 'horizontal' ? 'up' : 'right'}
+                direction={orientation === 'horizontal' ? 'up' : 'up'}
                 size='sm'
                 borderColor={statusColors[stage.status].border}
                 backgroundColor={'bg-white'}
