@@ -3,68 +3,31 @@ import {
   useMutationState,
   useQueryClient,
 } from '@tanstack/react-query';
+import { getQueryKey } from '@trpc/react-query';
 
+import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
 import { type JobRequisite } from '../job';
-import { workflowQueryKeys } from '../workflow/keys';
 import { jobWorkflowMutationKeys } from './keys';
 
 export const useJobWorkflowMutations = ({ id }: JobRequisite) => {
-  const { mutationKey: updateKey } = jobWorkflowMutationKeys.update({
-    id,
-  });
   const { mutationKey: deleteKey } = jobWorkflowMutationKeys.delete({
     id,
-  });
-  const update = useMutationState({
-    filters: { mutationKey: updateKey, status: 'pending' },
-    select: (mutation) => mutation.state.variables as ConnectJobWorkflow,
   });
   const remove = useMutationState({
     filters: { mutationKey: deleteKey, status: 'pending' },
     select: (mutation) => mutation.state.variables as DisconnectJobWorkflow,
   });
-  return { update, remove };
-};
-
-export const useJobWorkflowConnect = ({ id }: JobRequisite) => {
-  const { mutationKey } = jobWorkflowMutationKeys.update({
-    id,
-  });
-  const { queryKey } = workflowQueryKeys.workflows();
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationKey,
-    mutationFn: connectJobWorkflow,
-    onError: () => toast.error('Unable to connect workflow'),
-    onSuccess: async () => {
-      await queryClient.refetchQueries({ queryKey });
-      toast.success('Workflow connected successfully');
-    },
-  });
-};
-type ConnectJobWorkflow = {
-  job_id: string;
-  workflow_ids: string[];
-};
-const connectJobWorkflow = async ({
-  job_id,
-  workflow_ids,
-}: ConnectJobWorkflow) => {
-  const payload = workflow_ids.map((workflow_id) => ({ workflow_id, job_id }));
-  const { error } = await supabase
-    .from('workflow_job_relation')
-    .insert(payload);
-  if (error) throw new Error(error.message);
+  return { remove };
 };
 
 export const useJobWorkflowDisconnect = ({ id }: JobRequisite) => {
   const { mutationKey } = jobWorkflowMutationKeys.delete({
     id,
   });
-  const { queryKey } = workflowQueryKeys.workflows();
+  const queryKey = getQueryKey(api.workflows.read, undefined, 'query');
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey,

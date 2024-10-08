@@ -14,7 +14,6 @@ import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
 import { GC_TIME } from '..';
-import { useWorkflowRefresh } from '../workflow';
 import { workflowActionMutationKeys, workflowActionQueryKeys } from './keys';
 
 type ContextAction = 'update' | 'create' | 'delete';
@@ -65,7 +64,6 @@ type Mutations =
 export const useWorkflowActionDelete = (args: WorkflowActionKeys) => {
   const { mutationKey } = workflowActionMutationKeys.workflowAction(args);
   const { queryKey } = workflowActionQueryKeys.workflowAction(args);
-  const refresh = useWorkflowRefresh();
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey,
@@ -74,7 +72,6 @@ export const useWorkflowActionDelete = (args: WorkflowActionKeys) => {
       return { action: 'delete' } as Context;
     },
     onSuccess: (_data, variables) => {
-      refresh({ id: args.workflow_id });
       const prevWorkflowActions =
         queryClient.getQueryData<WorkflowAction[]>(queryKey)!;
       const newWorkflowActions = structuredClone(prevWorkflowActions).reduce(
@@ -103,8 +100,6 @@ const deleteWorkflowAction = async ({ id }: DeleteWorkflowAction) => {
 export const useWorkflowActionUpdate = (args: WorkflowActionKeys) => {
   const { mutationKey } = workflowActionMutationKeys.workflowAction(args);
   const { queryKey } = workflowActionQueryKeys.workflowAction(args);
-  const refresh = useWorkflowRefresh();
-
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (payload: UpdateWorkflowAction) =>
@@ -140,7 +135,6 @@ export const useWorkflowActionUpdate = (args: WorkflowActionKeys) => {
       queryClient.setQueryData<WorkflowAction[]>(queryKey, newWorkflowActions);
       toast.error('Unable to update workflow');
     },
-    onSuccess: () => refresh({ id: args.workflow_id }),
   });
 };
 type UpdateWorkflowAction = DatabaseTableUpdate['workflow_action'];
@@ -157,7 +151,6 @@ const updateWorkflowAction = async (payload: UpdateWorkflowAction) => {
 export const useWorkflowActionCreate = (args: WorkflowActionKeys) => {
   const { mutationKey } = workflowActionMutationKeys.workflowAction(args);
   const { queryKey } = workflowActionQueryKeys.workflowAction(args);
-  const refresh = useWorkflowRefresh();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: createWorkflowAction,
@@ -194,7 +187,6 @@ export const useWorkflowActionCreate = (args: WorkflowActionKeys) => {
         return acc;
       }, [] as WorkflowAction[]);
       queryClient.setQueryData<WorkflowAction[]>(queryKey, newWorkflowActions);
-      refresh({ id: args.workflow_id });
     },
   });
 };

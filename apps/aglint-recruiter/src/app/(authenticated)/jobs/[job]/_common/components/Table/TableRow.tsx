@@ -39,6 +39,10 @@ export function TableRow({
     section === 'qualified' ||
     section === 'disqualified';
 
+  const currentStage = application.interview_plans
+    .sort((a, b) => a.plan_order - b.plan_order)
+    .findLastIndex((plan) => plan.status.confirmed > 0);
+
   return (
     <div
       className={cn(
@@ -99,7 +103,7 @@ export function TableRow({
           <ScrollArea className='w-full'>
             <StageProgress
               interview_plans={application.interview_plans}
-              currentStep={application.interview_plans.length}
+              currentStep={currentStage >= 0 ? currentStage : 0}
             />
             <ScrollBar orientation='horizontal' />
           </ScrollArea>

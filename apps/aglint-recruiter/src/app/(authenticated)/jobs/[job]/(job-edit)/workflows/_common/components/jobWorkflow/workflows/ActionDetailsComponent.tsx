@@ -107,7 +107,12 @@ const SlackTemplate = () => {
 };
 
 const EndPointTemplate = () => {
-  return <UIAlert type='info' title='Aglint system will handle this action' />;
+  return (
+    <UIAlert
+      type='info'
+      title='Aglint AI will automatically reassign to the best available interviewer. If none are found, it will notify the organizer.'
+    />
+  );
 };
 
 type AgentInstructionTemplateProps = {

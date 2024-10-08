@@ -106,9 +106,11 @@ export const Integrations = () => {
   return (
     <div className='space-y-8 px-8'>
       <ScrollArea className='h-[calc(100vh-180px)]'>
-        <ATSSecion data={data} invalidate={invalidate} />
-        <SchedulingSection data={data} />
-        <MessagingSection />
+        <div className='space-y-8'>
+          <ATSSecion data={data} invalidate={invalidate} />
+          <SchedulingSection data={data} />
+          <MessagingSection />
+        </div>
       </ScrollArea>
     </div>
   );

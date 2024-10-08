@@ -12,15 +12,15 @@ const Details = (props: PropsWithChildren) => {
   const { isScoringEnabled } = useRolesAndPermissions();
   if (!isScoringEnabled) return <></>;
   return (
-    <div className='flex flex-col gap-4 rounded-lg border bg-white p-4'>
+    <div className='flex flex-col gap-4'>
       {props.children ?? (
-        <>
+        <div className='flex flex-col gap-3 p-4'>
           <Insights />
           <Analysis />
           <Experience />
           <Education />
           <Skills />
-        </>
+        </div>
       )}
     </div>
   );

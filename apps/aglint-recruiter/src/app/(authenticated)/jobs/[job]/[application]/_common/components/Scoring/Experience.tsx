@@ -1,66 +1,31 @@
 /* eslint-disable security/detect-object-injection */
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@components/ui/accordion';
 import { Skeleton } from '@components/ui/skeleton';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@components/ui/table';
 import { BriefcaseBusiness } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
+import { EmptyState } from '@/common/EmptyState';
+
 import { useApplicationDetails } from '../../hooks/useApplicationDetails';
+import ApplicationDetailAccordion from '../ui/ApplicationDetailAccordian';
 
 const Experience = () => {
-  const { data } = useApplicationDetails();
-
-  const companyLogos = getCompanyLogos(data);
+  // const companyLogos = getCompanyLogos(data);
 
   return (
-    <Accordion type='single' collapsible>
-      <AccordionItem value='experience'>
-        <AccordionTrigger>
-          <div className='flex w-full items-center justify-between'>
-            <div className='flex items-center space-x-2'>
-              <BriefcaseBusiness size={16} className='text-muted-foreground' />
-              <span className='font-medium'>Experience</span>
-            </div>
-            {companyLogos.length > 0 && (
-              <div className='flex space-x-1'>{companyLogos}</div>
-            )}
-          </div>
-        </AccordionTrigger>
-        <AccordionContent>
-          <Content />
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+    <>
+      <ApplicationDetailAccordion
+        title='Experience'
+        Icon={BriefcaseBusiness}
+        headerSlot={<></>}
+      >
+        <Content />
+      </ApplicationDetailAccordion>
+    </>
   );
 };
 
 export { Experience };
-
-const getCompanyLogos = (data: any) => {
-  if (!data?.resume_json?.positions) return [];
-  const positions: any[] = data.resume_json.positions.slice(0, 3); // Get top 3 positions
-  return positions.map((position, i) => (
-    <ImageWithFallback
-      key={i}
-      src={`https://logo.clearbit.com/${position.org.toLowerCase().replace(/\s+/g, '')}.com`}
-      alt={`${position.org || 'Company'} logo`}
-      fallbackSrc={'/images/default/company.svg'}
-    />
-  ));
-};
 
 const Content = () => {
   const { data, status } = useApplicationDetails();
@@ -83,10 +48,11 @@ const Content = () => {
     )
   )
     return (
-      <div className='flex flex-col items-center justify-center p-4'>
-        <BriefcaseBusiness className='mb-2 h-12 w-12 text-muted-foreground' />
-        <p className='text-sm text-gray-600'>No experience found</p>
-      </div>
+      <EmptyState
+        header='No experience found'
+        description="No experience was identified from the candidate's resume."
+        icon={BriefcaseBusiness}
+      />
     );
   return <Experiences />;
 };
@@ -129,7 +95,7 @@ const Experiences = () => {
   ];
 
   // State to control the collapsible
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded] = useState(false);
 
   // Determine the items to display
   const itemsToShow = isExpanded
@@ -138,55 +104,48 @@ const Experiences = () => {
 
   return (
     <>
-      <Table>
-        <TableHeader className='bg-gray-100'>
-          <TableRow>
-            <TableHead className='w-1/4'>Company</TableHead>
-            <TableHead className='w-1/2'>Title</TableHead>
-            <TableHead className='w-1/4'>Duration</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {itemsToShow.map(({ org, title, start, end }, i) => (
-            <TableRow key={i}>
-              <TableCell className='flex w-1/4 items-center space-x-2'>
-                <ImageWithFallback
-                  key={i}
-                  src={`https://logo.clearbit.com/${org.toLowerCase().replace(/\s+/g, '')}.com`}
-                  alt={`${org || 'Company'} logo`}
-                  fallbackSrc={'/images/default/company.png'}
-                />
-                <span>{capitalize(org, conjunctions)}</span>
-              </TableCell>
-              <TableCell className='w-1/2'>
+      {itemsToShow.map(({ org, title, start, end }, i) => (
+        <div key={i} className='flex items-center gap-3'>
+          <div className='flex h-12 w-12 items-center justify-center rounded-md border bg-white'>
+            <ImageWithFallback
+              key={i}
+              src={`https://logo.clearbit.com/${org.toLowerCase().replace(/\s+/g, '')}.com`}
+              alt={`${org || 'Company'} logo`}
+              fallbackSrc={'/images/default/company.svg'}
+              height={30}
+              width={30}
+            />
+          </div>
+          <div className='flex w-full flex-row items-center justify-between gap-1'>
+            <div className='flex flex-col gap-1'>
+              <span className='text-sm font-medium'>
+                {' '}
                 {capitalize(title, conjunctions)}
-              </TableCell>
-              <TableCell className='w-1/4'>
-                {calculateDuration(start, end)} (
-                {start?.year && start?.month && end?.year && end?.month
-                  ? timeRange(
-                      String(
-                        timeFormat({ year: start.year, month: start.month }),
-                      ),
-                      String(timeFormat({ year: end.year, month: end.month })),
-                    )
-                  : ''}
-                )
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      {positionsWithRelevance.length > 3 && (
-        <div className='mt-2'>
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className='text-blue-500 hover:underline'
-          >
-            {isExpanded ? 'Show Less' : 'Show More'}
-          </button>
+              </span>
+              <span className='text-sm text-muted-foreground'>
+                {capitalize(org, conjunctions)}
+              </span>
+            </div>
+            <div className='text-sm text-muted-foreground'>
+              {calculateDuration(start, end)} (
+              {start &&
+              end &&
+              start.year &&
+              start.month &&
+              end.year &&
+              end.month
+                ? timeRange(
+                    String(
+                      timeFormat({ year: start.year, month: start.month }),
+                    ),
+                    String(timeFormat({ year: end.year, month: end.month })),
+                  )
+                : ''}
+              )
+            </div>
+          </div>
         </div>
-      )}
+      ))}
     </>
   );
 };
@@ -263,10 +222,14 @@ const ImageWithFallback = ({
   src,
   alt,
   fallbackSrc,
+  width,
+  height,
 }: {
   src: string;
   alt: string;
   fallbackSrc: string;
+  width: number;
+  height: number;
 }) => {
   const [imgSrc, setImgSrc] = useState(src);
 
@@ -274,10 +237,9 @@ const ImageWithFallback = ({
     <Image
       src={imgSrc}
       alt={alt}
-      width={24}
-      height={24}
+      width={width}
+      height={height}
       onError={() => setImgSrc(fallbackSrc)}
-      className='rounded-full'
     />
   );
 };

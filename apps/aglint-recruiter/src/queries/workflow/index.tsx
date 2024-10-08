@@ -15,7 +15,7 @@ import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
 import { workflowActionQueryKeys } from '../workflow-action/keys';
-import { workflowMutationKeys, workflowQueryKeys } from './keys';
+import { workflowMutationKeys } from './keys';
 
 export const useWorkflowMutations = () => {
   const { mutationKey: createMutationKey } =
@@ -36,13 +36,7 @@ export const useWorkflowMutations = () => {
     filters: { mutationKey: deleteMutationKey, status: 'pending' },
     select: (mutation) => mutation.state.variables as DeleteWorkflow,
   });
-  const { mutationKey: refreshMutationKey } =
-    workflowMutationKeys.workflows('REFRESH');
-  const refresh = useMutationState({
-    filters: { mutationKey: refreshMutationKey, status: 'pending' },
-    select: (mutation) => mutation.state.variables as RefreshWorkflow,
-  });
-  return { create, update, remove, refresh };
+  return { create, update, remove };
 };
 
 export const useWorkflowDelete = () => {
@@ -180,36 +174,4 @@ const createWorkflow = async ({
     .from('workflow')
     .insert({ ...payload, id, recruiter_id });
   if (error) throw new Error(error.message);
-};
-
-type RefreshWorkflow = {
-  id: string;
-};
-export const useWorkflowRefresh = () => {
-  const { mutationKey } = workflowMutationKeys.workflows('REFRESH');
-  const { queryKey } = workflowQueryKeys.workflows();
-  const queryClient = useQueryClient();
-  const { mutate } = useMutation({
-    mutationKey,
-    mutationFn: async ({ id }: RefreshWorkflow) =>
-      (
-        await supabase
-          .from('workflow_view')
-          .select()
-          .eq('id', id)
-          .single()
-          .throwOnError()
-      ).data,
-    onError: () => toast.error('Unable to refresh workflow'),
-    onSuccess: (data) => {
-      const prevCache = queryClient.getQueryData<Workflow[]>(queryKey);
-      const newCache = prevCache!.reduce((acc, curr) => {
-        if (curr.id === data!.id) acc.push(data!);
-        else acc.push(curr);
-        return acc;
-      }, [] as Workflow[]);
-      queryClient.setQueryData<Workflow[]>(queryKey, newCache);
-    },
-  });
-  return mutate;
 };
