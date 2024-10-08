@@ -184,26 +184,6 @@ const fetch_details = async (payload: APIUpdateMeetingInterviewers) => {
   const hashed_comp_cred =
     session_ints_auth_details[0].recruiter.integrations.service_json;
 
-  if (
-    !session_ints_auth.find(
-      (int) =>
-        int.session_relation_id === payload.curr_declined_int_sesn_reln_id,
-    )
-  ) {
-    throw new CApiError(
-      'SERVER_ERROR',
-      `${payload.curr_declined_int_sesn_reln_id} not exist in meeting_interviewers`,
-    );
-  }
-
-  if (
-    !session_ints_auth.find((int) => int.user_id === payload.new_int_user_id)
-  ) {
-    throw new CApiError(
-      'SERVER_ERROR',
-      `${payload.new_int_user_id} not exist in meeting_interviewers`,
-    );
-  }
   return {
     company_cred_hash_str: hashed_comp_cred,
     meeting_organizer_auth,
