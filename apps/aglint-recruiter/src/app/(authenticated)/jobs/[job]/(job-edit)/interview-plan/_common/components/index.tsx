@@ -79,7 +79,9 @@ export const JobNewInterviewPlanDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <Loader />
+    <div className='flex min-h-[80vh] w-full items-center'>
+      <Loader />
+    </div>
   );
 };
 
