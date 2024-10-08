@@ -111,8 +111,16 @@ const ActionsContainer = ({
             agentInstructions: wAction.payload.agent.instruction,
             emailTemplateTargetAPI: wAction.target_api,
             isTemplateLoading: false,
-            setAgentInstructions: () => {
-              //TODO: finish this
+            setAgentInstructions: (s) => {
+              updateWAction({
+                ...wAction,
+                payload: {
+                  ...wAction.payload,
+                  agent: {
+                    instruction: s,
+                  },
+                },
+              });
             },
             isShowEmailTemplate:
               wAction.target_api in agentInstructionEmailTargetApi,

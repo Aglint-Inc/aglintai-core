@@ -229,7 +229,7 @@ const createSesnRelnIfNotExists = async ({
   session_id: string;
 }) => {
   const supabaseAdmin = getSupabaseServer();
-  console.log('debug 1');
+
   const new_int_module_reln = supabaseWrap(
     await supabaseAdmin
       .from('interview_module_relation')
@@ -238,7 +238,6 @@ const createSesnRelnIfNotExists = async ({
       .eq('module_id', module_id)
       .single(),
   );
-  console.log('debug 2');
 
   const sesnReln = supabaseWrap(
     await supabaseAdmin
@@ -247,8 +246,6 @@ const createSesnRelnIfNotExists = async ({
       .eq('interview_module_relation_id', new_int_module_reln.id),
     false,
   );
-
-  console.log('debug 3');
 
   if (!sesnReln) {
     supabaseWrap(
@@ -261,7 +258,6 @@ const createSesnRelnIfNotExists = async ({
       }),
     );
   }
-  console.log('debug 4');
 };
 
 export default createPageApiPostRoute(

@@ -26,7 +26,6 @@
     }
   },
   "remoteCache": {
-    "enabled": true,
-    "signature": true
+    "enabled": true
   }
 }
