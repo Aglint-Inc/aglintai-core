@@ -1,13 +1,10 @@
 import { getBreakLabel } from '@aglint/shared-utils';
 import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@components/ui/alert-dialog';
+  Section,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import { Coffee } from 'lucide-react';
 
 import { SessionIcon } from '@/common/ScheduleProgressPillComp';
@@ -15,14 +12,12 @@ import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
 import { useInviteMeta } from '../hooks/useInviteMeta';
-import { setDetailPopup, useCandidateInviteStore } from '../store';
 import { type ScheduleCardProps } from '../types/types';
 import { getDurationText } from '../utils/utils';
 import { CandidateScheduleCard } from './ui/CandidateScheduleCard';
 import { SessionInfo } from './ui/SessionInfo';
 
 export const DetailsPopup = () => {
-  const { detailPopup } = useCandidateInviteStore();
   const {
     data: { meetings },
   } = useInviteMeta();
@@ -35,28 +30,20 @@ export const DetailsPopup = () => {
   // const schedule_name = '';
 
   return (
-    <AlertDialog
-      open={detailPopup}
-      onOpenChange={(open) => setDetailPopup(open)}
-    >
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Schedule Details</AlertDialogTitle>
-        </AlertDialogHeader>
-        <AlertDialogDescription>
-          <CandidateScheduleCard
-            isSelected={false}
-            slotButton={null}
-            textDuration={getDurationText(duration)}
-            slotSessionInfo={<Sessions sessions={meetings} showBreak={true} />}
-            isTitle={false}
-          />
-        </AlertDialogDescription>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Close</AlertDialogCancel>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <Section>
+      <SectionHeader>
+        <SectionHeaderText>
+          <SectionTitle>Interview Details</SectionTitle>
+        </SectionHeaderText>
+      </SectionHeader>
+      <CandidateScheduleCard
+        isSelected={false}
+        slotButton={null}
+        textDuration={getDurationText(duration)}
+        slotSessionInfo={<Sessions sessions={meetings} showBreak={true} />}
+        isTitle={false}
+      />
+    </Section>
   );
 };
 
