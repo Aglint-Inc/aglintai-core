@@ -12,6 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { cn } from '@lib/utils';
 import { Check } from 'lucide-react';
 import React, { useState } from 'react';
@@ -49,37 +50,39 @@ function UpdateMembers({
           <CommandList>
             <CommandEmpty>No members found.</CommandEmpty>
             <CommandGroup>
-              {members.map((member) => (
-                <CommandItem
-                  key={member.user_id}
-                  value={
-                    member.first_name +
-                    ' ' +
-                    member.last_name +
-                    ' ' +
-                    member.role
-                  }
-                  onSelect={() => {
-                    handleChange(member);
-                    setOpen(false);
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      'mr-2 h-4 w-4',
-                      value ===
-                        member.first_name +
-                          ' ' +
-                          member.last_name +
-                          ' ' +
-                          member.role
-                        ? 'opacity-100'
-                        : 'opacity-0',
-                    )}
-                  />
-                  <MemberCard selectedMember={member} />
-                </CommandItem>
-              ))}
+              <ScrollArea className='h-64'>
+                {members.map((member) => (
+                  <CommandItem
+                    key={member.user_id}
+                    value={
+                      member.first_name +
+                      ' ' +
+                      member.last_name +
+                      ' ' +
+                      member.role
+                    }
+                    onSelect={() => {
+                      handleChange(member);
+                      setOpen(false);
+                    }}
+                  >
+                    <Check
+                      className={cn(
+                        'mr-2 h-4 w-4',
+                        value ===
+                          member.first_name +
+                            ' ' +
+                            member.last_name +
+                            ' ' +
+                            member.role
+                          ? 'opacity-100'
+                          : 'opacity-0',
+                      )}
+                    />
+                    <MemberCard selectedMember={member} />
+                  </CommandItem>
+                ))}
+              </ScrollArea>
             </CommandGroup>
           </CommandList>
         </Command>
