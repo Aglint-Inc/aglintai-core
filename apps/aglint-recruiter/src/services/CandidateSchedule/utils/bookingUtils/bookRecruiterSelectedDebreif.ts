@@ -48,25 +48,30 @@ export const bookRecruiterSelectedDebreif = async (
     db_details,
   );
 
-  await updateTrainingStatus(booked_meeting_details);
   await confirmInterviewers(booked_meeting_details, true);
   await updateMeetingEventDetails(
     booked_meeting_details,
     req_body.user_tz,
     fetched_cand_details.request_id,
   );
-  await sendMailsToOrganizer(db_details, booked_meeting_details);
-  const payload: APICandScheduleMailThankYou = {
-    cand_tz: fetched_cand_details.cand_tz,
-    filter_id: req_body.filter_id,
-    application_id: db_details.application.id,
-    session_ids: [req_body.session_id],
-    availability_request_id: null,
-    is_debreif: true,
-  };
-  axios.post(
-    `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
-    payload,
-  );
+
+  await Promise.all([
+    updateTrainingStatus(booked_meeting_details),
+    sendMailsToOrganizer(db_details, booked_meeting_details),
+    (async () => {
+      const payload: APICandScheduleMailThankYou = {
+        cand_tz: fetched_cand_details.cand_tz,
+        filter_id: req_body.filter_id,
+        application_id: db_details.application.id,
+        session_ids: [req_body.session_id],
+        availability_request_id: null,
+        is_debreif: true,
+      };
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
+        payload,
+      );
+    })(),
+  ]);
   return booked_meeting_details;
 };
