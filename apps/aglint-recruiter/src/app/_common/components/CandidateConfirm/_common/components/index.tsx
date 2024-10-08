@@ -7,6 +7,7 @@ import {
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { UIAlert } from '@components/ui-alert';
 
+import { Loader } from '@/common/Loader';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { UIButton } from '@/components/Common/UIButton';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
@@ -58,25 +59,22 @@ export const ConfirmedInvitePage = (
 
   return (
     <>
-      {!isLoading && (
+      {!isLoading ? (
         <div className='h-full w-full bg-white p-4'>
           <div className='mx-auto w-full max-w-[600px]'>
             {cancelData && (
-              <UIAlert
-                type='info'
-                title={
-                  'Your interview has been scheduled, and we look forward to talking with you. Your calendar invite should be in your email.'
-                }
-              >
+              <UIAlert type='info' title={''}>
                 {
                   <>
                     <span className='text-sm'>
                       {'Request to '}
                       {capitalizeFirstLetter(
-                        cancelData.type == 'declined' ? 'cancel' : 'reschedule',
+                        cancelData.type == 'candidate_request_decline'
+                          ? 'cancel'
+                          : 'reschedule',
                       )}
                       {' all sessions'}
-                      {cancelData.type == 'reschedule' &&
+                      {cancelData.type == 'candidate_request_reschedule' &&
                         cancelData?.other_details?.dateRange?.start &&
                         ` from ${dayjsLocal(cancelData.other_details.dateRange.start).format('MMMM DD')} to ${dayjsLocal(cancelData.other_details.dateRange.end).format('MMMM DD, YYYY')}`}
                       {' received,'} and under review.
@@ -103,6 +101,8 @@ export const ConfirmedInvitePage = (
               <ConfirmedScheduleCards
                 rounds={props.rounds}
                 timezone={timezone}
+                isAddtoCalenderVisible={!cancelData}
+                isJoinMeetingButtonVisible={!cancelData}
               />
             }
             slotButton={
@@ -157,13 +157,30 @@ export const ConfirmedInvitePage = (
             )}
           />
         </div>
+      ) : (
+        <div
+          className='flex w-full items-center justify-center'
+          aria-live='polite'
+          aria-busy='true'
+        >
+          <div className='space-y-4'>
+            <Loader className='mx-auto h-12 w-12' />
+            <p className='text-center text-gray-600'>
+              Loading your interview details...
+            </p>
+          </div>
+        </div>
       )}
     </>
   );
 };
 
 const ConfirmedScheduleCards = (
-  props: ScheduleCardsProps & { timezone: TimezoneObj },
+  props: ScheduleCardsProps & {
+    timezone: TimezoneObj;
+    isJoinMeetingButtonVisible: boolean;
+    isAddtoCalenderVisible: boolean;
+  },
 ) => {
   const scheduleCards = props.rounds.map((round, index) => (
     <ConfirmedScheduleCard
@@ -172,6 +189,8 @@ const ConfirmedScheduleCards = (
       index={index}
       showTitle={props.rounds.length !== 1}
       timezone={props.timezone}
+      isJoinMeetingButtonVisible={props.isJoinMeetingButtonVisible}
+      isAddtoCalenderVisible={props.isAddtoCalenderVisible}
     />
   ));
 
@@ -179,7 +198,11 @@ const ConfirmedScheduleCards = (
 };
 
 const ConfirmedScheduleCard = (
-  props: ScheduleCardProps & { timezone: TimezoneObj },
+  props: ScheduleCardProps & {
+    timezone: TimezoneObj;
+    isJoinMeetingButtonVisible: boolean;
+    isAddtoCalenderVisible: boolean;
+  },
 ) => {
   const { timezone } = props;
   const [month, date, day, year] = dayJS(
@@ -209,8 +232,8 @@ const ConfirmedScheduleCard = (
         slotMeetingIcon={
           <IconScheduleType type={session.interview_session.schedule_type} />
         }
-        isAddtoCalenderVisible={true}
-        isJoinMeetingButtonVisible={true}
+        isAddtoCalenderVisible={props.isAddtoCalenderVisible}
+        isJoinMeetingButtonVisible={props.isJoinMeetingButtonVisible}
         onClickAddCalendar={() => {
           if (
             session.interview_meeting.start_time &&

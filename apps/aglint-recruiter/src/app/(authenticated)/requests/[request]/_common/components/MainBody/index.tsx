@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { Card, CardHeader, CardTitle } from '@components/ui/card';
+import { Skeleton } from '@components/ui/skeleton';
 import {
   REQUEST_STATUS_LIST,
   REQUEST_TYPE_LIST,
@@ -59,12 +60,12 @@ import RequestProgress from '../RequestProgress';
 import SelfSchedulingDrawer from '../SelfSchedulingDrawer';
 import UpdateDetails from '../UpdateDetails';
 
-type InterviewStatus = 
-  | 'completed' 
-  | 'cancelled' 
-  | 'waiting' 
-  | 'reschedule' 
-  | 'confirmed' 
+type InterviewStatus =
+  | 'completed'
+  | 'cancelled'
+  | 'waiting'
+  | 'reschedule'
+  | 'confirmed'
   | 'not_scheduled'
   | '';
 
@@ -520,12 +521,36 @@ export default function ViewRequestDetails() {
               </div>
             </div>
             <div className='mt-4 flex flex-col gap-8'>
-              <SessionCards
-                refetchMeetings={refetchMeetings}
-                sessions={
-                  sessions as Awaited<ReturnType<typeof fetchSessionDetails>>
-                }
-              />
+              <Section>
+                <SectionHeaderText>
+                  <SectionTitle>Sessions</SectionTitle>
+                </SectionHeaderText>
+                {status === 'pending' ? (
+                  <div className='space-y-2'>
+                    <Skeleton className='h-10 w-full' />
+                    <Skeleton className='h-10 w-full' />
+                  </div>
+                ) : null}
+
+                {status === 'success' && sessions.length ? (
+                  <SessionCards
+                    refetchMeetings={refetchMeetings}
+                    sessions={
+                      sessions as Awaited<
+                        ReturnType<typeof fetchSessionDetails>
+                      >
+                    }
+                  />
+                ) : null}
+                {status === 'success' && !sessions.length ? (
+                  <Alert>
+                    <AlertTitle>No sessions found</AlertTitle>
+                    <AlertDescription>
+                      No sessions found for this request
+                    </AlertDescription>
+                  </Alert>
+                ) : null}
+              </Section>
               <Section>
                 <SectionHeaderText>
                   <SectionTitle>Request Notes</SectionTitle>
@@ -552,128 +577,118 @@ function SessionCards({
 }) {
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const { onClickEdit } = useEditSession();
-
   return (
-    <div>
-      {/* <SideDrawerEdit refetch={refetch} /> */}
-      <Section>
-        <SectionHeaderText>
-          <SectionTitle>Sessions</SectionTitle>
-        </SectionHeaderText>
-        <div className='mt-2 flex flex-col gap-1'>
-          {sessions &&
-            sessions.map((session, index) => (
-              <>
-                <Card
-                  key={index}
-                  className='group rounded-md border-none bg-gray-50 shadow-none'
-                >
-                  <CardHeader
-                    className='cursor-pointer px-4 py-2'
-                    onClick={() => {
-                      setExpandedCard(expandedCard === index ? null : index);
+    <div className='mt-2 flex flex-col gap-1'>
+      {sessions.map((session, index) => (
+        <>
+          <Card
+            key={index}
+            className='group rounded-md border-none bg-gray-50 shadow-none'
+          >
+            <CardHeader
+              className='cursor-pointer px-4 py-2'
+              onClick={() => {
+                setExpandedCard(expandedCard === index ? null : index);
+              }}
+            >
+              <div className='flex items-center justify-between'>
+                <CardTitle className='flex-1 truncate text-sm font-medium'>
+                  {capitalizeFirstLetter(
+                    session?.interview_session?.name ?? '',
+                  )}
+                </CardTitle>
+                <div className='flex items-center space-x-2'>
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onClickEdit(session);
                     }}
+                    variant='outline'
+                    size='sm'
+                    className='hidden group-hover:flex'
                   >
-                    <div className='flex items-center justify-between'>
-                      <CardTitle className='flex-1 truncate text-sm font-medium'>
-                        {capitalizeFirstLetter(
-                          session?.interview_session?.name ?? '',
-                        )}
-                      </CardTitle>
-                      <div className='flex items-center space-x-2'>
-                        <Button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onClickEdit(session);
-                          }}
-                          variant='outline'
-                          size='sm'
-                          className='hidden group-hover:flex'
-                        >
-                          <Edit2 className='mr-2 h-4 w-4' />
-                          Edit
-                        </Button>
-                        <Button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            window.open(
-                              `/interviews/view?meeting_id=${session?.interview_meeting?.id}&tab=job_details`,
-                              '_blank',
-                            );
-                          }}
-                          variant='outline'
-                          size='sm'
-                          className='hidden group-hover:flex'
-                        >
-                          <ArrowUpRight className='mr-2 h-4 w-4' />
-                          View Details
-                        </Button>
+                    <Edit2 className='mr-2 h-4 w-4' />
+                    Edit
+                  </Button>
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(
+                        `/interviews/view?meeting_id=${session?.interview_meeting?.id}&tab=job_details`,
+                        '_blank',
+                      );
+                    }}
+                    variant='outline'
+                    size='sm'
+                    className='hidden group-hover:flex'
+                  >
+                    <ArrowUpRight className='mr-2 h-4 w-4' />
+                    View Details
+                  </Button>
 
-                        <Badge
-                          variant='outline'
-                          className={`h-[28px] rounded-md border-none font-normal ${getStatusStyles(
-                            session?.interview_meeting?.status ?? '',
-                          )}`}
-                        >
-                          {capitalizeFirstLetter(
-                            session?.interview_meeting?.status ?? '',
-                          )}
-                        </Badge>
-                        <div className='flex h-[26px] w-[26px] items-center justify-center rounded-md border border-gray-200 bg-gray-100'>
-                          <ChevronDown
-                            className={`h-4 w-4 transition-transform ${
-                              expandedCard === index
-                                ? 'rotate-180 transform'
-                                : ''
-                            }`}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CollapseContent
-                    collapsed={expandedCard === index}
-                    currentSession={session}
-                    candidate={null}
-                  />
-                </Card>
-                <div className='px-0'>
-                  {session?.interview_session?.break_duration ? (
-                    <div>
-                      <Card className='flex justify-between rounded-md border-2 border-dashed px-[15px] py-2 shadow-none'>
-                        <div className='flex items-center'>
-                          <p className='text-sm font-medium'>Break</p>
-                        </div>
-                        <div className='flex flex-row gap-2'>
-                          <UISelectDropDown
-                            className='h-[26px] w-[150px]'
-                            fullWidth
-                            fieldSize='medium'
-                            menuOptions={breakDurations.map((ele) => ({
-                              name: getBreakLabel(ele),
-                              value: ele.toString(),
-                            }))}
-                            value={session.interview_session.break_duration.toString()}
-                            onValueChange={(value) => {
-                              updateInterviewSessionsDurations(
-                                session?.interview_session?.id ?? '',
-                                parseInt(value),
-                              ).then(() => refetchMeetings());
-                            }}
-                          />
-                          <div className='flex h-[26px] w-[26px] items-center justify-center rounded-md border border-gray-200 bg-gray-100'>
-                            <Coffee className='h-3 w-3' />
-                          </div>
-                        </div>
-                      </Card>
-                      <div className='flex items-center justify-center space-x-2'></div>
-                    </div>
-                  ) : null}
+                  <Badge
+                    variant='outline'
+                    className={`h-[28px] rounded-md border-none font-normal ${getStatusStyles(
+                      session?.interview_meeting?.status ?? '',
+                    )}`}
+                  >
+                    {capitalizeFirstLetter(
+                      session?.interview_meeting?.status ?? '',
+                    )}
+                  </Badge>
+                  <div className='flex h-[26px] w-[26px] items-center justify-center rounded-md border border-gray-200 bg-gray-100'>
+                    <ChevronDown
+                      className={`h-4 w-4 transition-transform ${
+                        expandedCard === index ? 'rotate-180 transform' : ''
+                      }`}
+                    />
+                  </div>
                 </div>
-              </>
-            ))}
-        </div>
-      </Section>
+              </div>
+            </CardHeader>
+            <CollapseContent
+              collapsed={expandedCard === index}
+              currentSession={session}
+              candidate={null}
+            />
+          </Card>
+          <div className='px-0'>
+            {sessions.length > 1 &&
+            index < sessions.length - 1 &&
+            session?.interview_session?.break_duration ? (
+              <div>
+                <Card className='flex justify-between rounded-md border-2 border-dashed px-[15px] py-2 shadow-none'>
+                  <div className='flex items-center'>
+                    <p className='text-sm font-medium'>Break</p>
+                  </div>
+                  <div className='flex flex-row gap-2'>
+                    <UISelectDropDown
+                      className='h-[26px] w-[150px]'
+                      fullWidth
+                      fieldSize='medium'
+                      menuOptions={breakDurations.map((ele) => ({
+                        name: getBreakLabel(ele),
+                        value: ele.toString(),
+                      }))}
+                      value={session.interview_session.break_duration.toString()}
+                      onValueChange={(value) => {
+                        updateInterviewSessionsDurations(
+                          session?.interview_session?.id ?? '',
+                          parseInt(value),
+                        ).then(() => refetchMeetings());
+                      }}
+                    />
+                    <div className='flex h-[26px] w-[26px] items-center justify-center rounded-md border border-gray-200 bg-gray-100'>
+                      <Coffee className='h-3 w-3' />
+                    </div>
+                  </div>
+                </Card>
+                <div className='flex items-center justify-center space-x-2'></div>
+              </div>
+            ) : null}
+          </div>
+        </>
+      ))}
     </div>
   );
 }

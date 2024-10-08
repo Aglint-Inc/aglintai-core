@@ -72,7 +72,12 @@ const MainBody = () => {
     }
   }, [isShowFeature]);
 
-  if (isLoading || !isFetched || isLoadingCompanySetup) return <Loader />;
+  if (isLoading || !isFetched || isLoadingCompanySetup)
+    return (
+      <div className='flex min-h-[80vh] w-full items-center justify-center'>
+        <Loader />
+      </div>
+    );
 
   if (showEmptyPage)
     return (

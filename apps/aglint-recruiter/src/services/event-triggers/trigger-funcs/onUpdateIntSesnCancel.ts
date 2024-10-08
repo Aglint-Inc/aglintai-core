@@ -23,7 +23,7 @@ export const declineRequestCompletion = async ({
 }) => {
   try {
     const supabaseAdmin = getSupabaseServer();
-
+    if (!new_data.request_id) return;
     await supabaseAdmin
       .from('request')
       .update({ status: 'completed' })

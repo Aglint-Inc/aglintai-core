@@ -55,7 +55,7 @@ export default async function sendMail(data: APISendgridPayload) {
     const resp = await sgMail.send(msg);
     const Response = resp[0];
 
-    console.log(msg.to);
+    console.log('Mail Send to', msg.to);
     if (Response.statusCode >= 200 && Response.statusCode < 300) {
       return 'ok';
     }
