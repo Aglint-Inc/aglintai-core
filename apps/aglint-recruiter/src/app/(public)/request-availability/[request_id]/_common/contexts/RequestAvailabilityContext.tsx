@@ -119,7 +119,7 @@ const defaultProvider: ContextValue = {
   setSelectedSlots: () => {},
   multiDaySessions: [],
   setMultiDaySessions: () => {},
-  openDaySlotPopup: 0,
+  openDaySlotPopup: 1,
   setOpenDaySlotPopup: () => {},
   isSubmitted: false,
   setIsSubmitted: () => {},
@@ -171,7 +171,7 @@ function RequestAvailabilityProvider({
     InterviewSessionTypeDB[][]
   >([]);
 
-  const [openDaySlotPopup, setOpenDaySlotPopup] = useState<number>(0);
+  const [openDaySlotPopup, setOpenDaySlotPopup] = useState<number>(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   async function defaultValues({
@@ -182,12 +182,7 @@ function RequestAvailabilityProvider({
     if (!requestAvailability) {
       return;
     }
-    if (requestAvailability?.slots) {
-      setDateSlots(requestAvailability.slots || []);
-      setDaySlots(requestAvailability.slots || []);
-      setIsSubmitted(true);
-      return;
-    }
+
     if (!requestAvailability.visited) {
       updateRequestAvailability({
         id: String(request_id),
@@ -242,6 +237,12 @@ function RequestAvailabilityProvider({
       );
     } catch (error) {
       toast.error('Something went wrong!');
+    }
+    if (requestAvailability?.slots) {
+      setDateSlots(requestAvailability.slots || []);
+      setSelectedSlots(requestAvailability.slots || []);
+      setIsSubmitted(true);
+      return;
     }
   }
 
@@ -429,7 +430,7 @@ function RequestAvailabilityProvider({
       setSubmitting(true);
       if (multiDaySessions.length > 1) {
         const requestData = await updateRequestAvailability({
-          slots: daySlots,
+          slots: selectedSlots,
           user_timezone: dayjsLocal.tz.guess(),
           id: String(request_id),
         });

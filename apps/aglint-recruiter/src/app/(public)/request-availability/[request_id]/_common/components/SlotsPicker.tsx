@@ -37,7 +37,8 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
     submitting,
   } = useRequestAvailabilityContext();
   const { data: candidateRequestAvailability } = useCandidateAvailabilityData();
-
+  const NoOfSlotsNeeds = candidateRequestAvailability?.number_of_slots || 2;
+  const NoOfDaysNeeds = candidateRequestAvailability?.number_of_days || 2;
   useEffect(() => {
     if (candidateRequestAvailability?.slots) {
       setIsSubmitted(true);
@@ -49,16 +50,11 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
   const daySlotDates =
     selectedDateSlots.find((ele) => ele.round === day)?.dates ?? [];
 
-  const markAsAllDateSelected =
-    daySlotDates.length >= (candidateRequestAvailability?.number_of_days ?? 0);
+  const markAsAllDateSelected = daySlotDates.length >= (NoOfDaysNeeds ?? 0);
   const markAsAllSlotsSelected = selectedSlots.length
     ? selectedSlots
         .find((ele) => ele.round === day)
-        ?.dates.every(
-          (item) =>
-            item.slots.length >=
-            (candidateRequestAvailability?.number_of_slots ?? 0),
-        )
+        ?.dates.every((item) => item.slots.length >= (NoOfSlotsNeeds ?? 0))
     : false;
   const handleSubmit = async () => {
     const eventsByDate = (
@@ -75,9 +71,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
         return acc;
       }, {});
     const checkMinimumSlotsSelected = Object.keys(eventsByDate).filter(
-      (date) =>
-        eventsByDate[date].length <
-        (candidateRequestAvailability?.number_of_slots ?? 0),
+      (date) => eventsByDate[date].length < (NoOfSlotsNeeds ?? 0),
     );
 
     const checkSlotsSelectedForDates = daySlotDates
@@ -86,7 +80,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
 
     if (!markAsAllDateSelected) {
       toast({
-        title: `Please Select minimum ${candidateRequestAvailability.number_of_days} days`,
+        title: `Please Select minimum ${NoOfDaysNeeds} days`,
       });
       return;
     }
@@ -98,7 +92,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
     }
     if (checkMinimumSlotsSelected.length) {
       toast({
-        title: `You have to select minimum ${candidateRequestAvailability.number_of_slots} slots on ${checkMinimumSlotsSelected.map((date) => dayjs(date).format('MMM DD')).join(',')} `,
+        title: `You have to select minimum ${NoOfSlotsNeeds} slots on ${checkMinimumSlotsSelected.map((date) => dayjs(date).format('MMM DD')).join(',')} `,
       });
       return;
     }
@@ -124,20 +118,26 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
             updatedSlots[existingSlotIndex] = {
               ...daySlots,
             };
+            if (day < multiDaySessions.length) setOpenDaySlotPopup(day + 1);
           } else {
             updatedSlots.push({
               ...daySlots,
             });
+            if (day < multiDaySessions.length) setOpenDaySlotPopup(day + 1);
           }
           return updatedSlots;
         },
       );
-    } else {
-      submitAvailability();
     }
-    setOpenDaySlotPopup(0);
   };
 
+  const allCriteriaMeets = candidateRequestAvailability
+    ? multiDaySessions.length === selectedSlots.length &&
+      selectedDateSlots.every((ele) => ele.dates.length >= NoOfDaysNeeds) &&
+      selectedSlots
+        .flatMap((ele) => ele.dates)
+        .every((ele) => ele.slots.length >= NoOfSlotsNeeds)
+    : false;
   return (
     <>
       <div className='bg-white'>
@@ -159,7 +159,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
                 </div>
                 <span className='text-sm'>
                   {' '}
-                  {`Select ${candidateRequestAvailability.number_of_days} or more days.`}
+                  {`Select ${NoOfDaysNeeds} or more days.`}
                 </span>
               </div>
             </div>
@@ -331,7 +331,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
                   </div>
                   <div className='flex flex-col'>
                     <div className='text-lg font-medium'>Choose time slots</div>
-                    <span className='text-sm'>{`Choose ${candidateRequestAvailability.number_of_slots} or more slots per day.`}</span>
+                    <span className='text-sm'>{`Choose ${NoOfSlotsNeeds} or more slots per day.`}</span>
                   </div>
                 </div>
                 <div className='text-muted-foreground'>
@@ -342,9 +342,11 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
             <div>{markAsAllDateSelected ? <TimeSlotsWrapper /> : null}</div>
           </div>
         </div>
-        <div className='flex w-full items-center justify-center'>
-          {markAsAllDateSelected && markAsAllSlotsSelected ? (
-            <div className='mx-auto w-[300px] pt-4'>
+        <div className='flex w-full items-center justify-end'>
+          {!allCriteriaMeets &&
+          markAsAllDateSelected &&
+          markAsAllSlotsSelected ? (
+            <div className='w-[200px] pt-4'>
               <UIButton
                 size='md'
                 onClick={handleSubmit}
@@ -356,10 +358,25 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
                 className='w-full'
                 isLoading={submitting}
               >
-                {singleDay ? 'Submit Availability' : 'Done'}
+                Done
               </UIButton>
             </div>
           ) : null}
+          {allCriteriaMeets && (
+            <div className='w-[200px] pt-4'>
+              <UIButton
+                size='md'
+                className='w-full'
+                onClick={submitAvailability}
+                disabled={
+                  multiDaySessions.length !== selectedSlots.length || submitting
+                }
+                isLoading={submitting}
+              >
+                Submit Availability
+              </UIButton>
+            </div>
+          )}
         </div>
       </div>
     </>

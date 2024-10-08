@@ -1,4 +1,5 @@
 'use client';
+import { cn } from '@lib/utils';
 import dayjs from 'dayjs';
 import { AlertTriangle, RefreshCcw } from 'lucide-react';
 import { useMemo } from 'react';
@@ -15,11 +16,10 @@ import {
   useCandidateAvailabilityMeetings,
 } from '../hooks/useRequestAvailability';
 import MultiDaySessions from './MultiDaySessions';
-import SingleDaySessions from './SingleDaySessions';
-import SlotsSubmitted from './SlotsSubmitted';
+import SlotsPicker from './SlotsPicker';
 
 function CandidateAvailability() {
-  const { multiDaySessions, isSubmitted, meetingsAndRounds } =
+  const { multiDaySessions, meetingsAndRounds } =
     useRequestAvailabilityContext();
   const { isFetched: isMeetingFetched } = useCandidateAvailabilityMeetings();
 
@@ -87,17 +87,24 @@ function CandidateAvailability() {
       </div>
     );
   }
-
   return (
-    <>
-      {isSubmitted && <SlotsSubmitted />}
-      {!isSubmitted && (multiDaySessions ?? []).length === 1 && (
-        <SingleDaySessions />
-      )}
-      {!isSubmitted && (multiDaySessions ?? []).length > 1 && (
+    <div className='flex h-full w-full flex-row gap-4'>
+      <div
+        className={cn('h-full w-full overflow-auto', {
+          'min-w-[450px] max-w-[450px]': !candidateRequestAvailability?.slots,
+        })}
+      >
         <MultiDaySessions />
+      </div>
+      {!candidateRequestAvailability?.slots && (
+        <>
+          <hr className='h-[60vh] w-[2px] bg-gray-400' />
+          <div className='w-full'>
+            <SlotsPicker singleDay={multiDaySessions.length === 1} />
+          </div>
+        </>
       )}
-    </>
+    </div>
   );
 }
 
