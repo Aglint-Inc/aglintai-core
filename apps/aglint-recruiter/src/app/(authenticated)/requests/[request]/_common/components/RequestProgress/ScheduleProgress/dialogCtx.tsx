@@ -117,4 +117,6 @@ export const agentTargetApiEmailEndPoint: Partial<
     'sendSelfScheduleRequest_email_applicant',
   onRequestSchedule_emailLink_getCandidateAvailability:
     'sendAvailabilityRequest_email_applicant',
+  onReceivingAvailReq_agent_sendSelfScheduleRequest:
+    'sendSelfScheduleRequest_email_applicant',
 };

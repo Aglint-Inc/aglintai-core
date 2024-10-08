@@ -2,7 +2,6 @@
 import sgMail from '@sendgrid/mail';
 import type { APISendgridPayload } from '@aglint/shared-types';
 import { CApiError } from '@aglint/shared-utils';
-import { MailSenderError } from '../utils/apiUtils/customErrors';
 import { getOutboundEmail } from './get-outbound-email';
 
 export default async function sendMail(data: APISendgridPayload) {
