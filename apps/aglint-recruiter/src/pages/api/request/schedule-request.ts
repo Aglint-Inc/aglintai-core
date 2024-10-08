@@ -3,7 +3,6 @@ import { getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { z } from 'zod';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
-import { resetSessionRelations } from '@/utils/scheduling/resetSessionRelations';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const createScheduleRequest = z.object({
@@ -52,11 +51,6 @@ async function scheduleRequest(parsed: z.output<typeof createScheduleRequest>) {
     },
     sessions: parsed.session_ids,
   };
-
-  await resetSessionRelations({
-    session_ids: parsed.session_ids,
-    supabase: supabaseAdmin,
-  });
 
   const { data } = await supabaseAdmin
     .rpc('create_session_request', details)

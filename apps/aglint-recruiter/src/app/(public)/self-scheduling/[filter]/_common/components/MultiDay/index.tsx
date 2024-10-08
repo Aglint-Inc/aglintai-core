@@ -110,9 +110,9 @@ type MultiDayConfirmationProps = {
 };
 
 const MultiDayConfirmation = (props: MultiDayConfirmationProps) => {
-  const { handleSubmit } = useInviteActions();
+  const { handleSubmit, isPending } = useInviteActions();
   const handleClose = () => {
-    props.setOpen(false);
+    if (!isPending) props.setOpen(false);
   };
   const { selectedSlots, timezone } = useCandidateInviteStore();
 
@@ -136,12 +136,13 @@ const MultiDayConfirmation = (props: MultiDayConfirmationProps) => {
     });
     setSelectedDateAndSessions(sessions);
   }
+
   useEffect(() => {
     getSelectedDateAndSessions();
   }, [props.rounds]);
 
   return (
-    <AlertDialog open={props.open} onOpenChange={props.setOpen}>
+    <AlertDialog open={props.open}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Confirm your interview</AlertDialogTitle>
@@ -166,7 +167,16 @@ const MultiDayConfirmation = (props: MultiDayConfirmationProps) => {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={handleClose}>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleSubmit}>Confirm</AlertDialogAction>
+          <AlertDialogAction
+            onClick={async () => {
+              if (!isPending) {
+                await handleSubmit();
+              }
+            }}
+            disabled={isPending}
+          >
+            {isPending ? 'Confirming...' : 'Confirm'}
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
