@@ -44,7 +44,6 @@ export const API_PERMISSIONS: ApiPermissions = {
   user: {
     update_current_user: ['authorized'],
     get_oauth_user: ['authorized'],
-    update_user: ['manage_interviewers'],
   },
   rolesAndPermissions: [],
   candidate_availability: {
