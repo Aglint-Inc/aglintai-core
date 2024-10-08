@@ -17,36 +17,39 @@ type QryReponse = {
 };
 const query = async ({ input }: PrivateProcedure<typeof schema>) => {
   const db = createPrivateClient();
-  const workflows = supabaseWrap(
+  const fetched_workflows = supabaseWrap(
     await db
       .from('workflow_job_relation')
       .select('*, workflow!inner(*)')
-      .eq('job_id', input.job_id)
-      .eq('workflow.workflow_type', 'job'), // filter and map only job workflows
+      .eq('job_id', input.job_id),
+    // filter and map only job workflows
   );
-  const workflow_actions = (
+  const filtered_workflows = fetched_workflows.filter(
+    (w) => w.workflow.workflow_type === 'job',
+  );
+  const workflow_actions = supabaseWrap(
     await db
       .from('workflow_action')
       .select('*')
       .in(
         'workflow_id',
-        (workflows ?? [])
+        (filtered_workflows ?? [])
           .filter((j) => {
             return j.workflow.trigger in triggerToCategoryMap;
           })
           .map((workflow) => workflow.workflow_id),
-      )
-      .throwOnError()
-  ).data;
-  const company_email_templates = (
+      ),
+  );
+  const company_email_templates = supabaseWrap(
     await db
       .from('company_email_template')
       .select()
-      .eq('recruiter_id', input.company_id)
-      .throwOnError()
-  ).data;
+      .eq('recruiter_id', input.company_id),
+  );
   const responseQryReponse: QryReponse = {
-    job_workflows: (workflows ?? []).map((workflow) => workflow.workflow),
+    job_workflows: (filtered_workflows ?? []).map(
+      (workflow) => workflow.workflow,
+    ),
     job_workflow_actions: workflow_actions ?? [],
     company_email_templates: company_email_templates ?? [],
   };
