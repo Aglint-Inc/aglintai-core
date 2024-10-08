@@ -87,9 +87,7 @@ const CandidateInvitePlanPage = () => {
 
   const { data: meta } = useInviteMeta();
 
-  const waiting = (meta?.meetings || []).some(
-    ({ interview_meeting: { status } }) => status === 'waiting',
-  );
+  const waiting = !meta.isBooked;
   const { rounds } = (meta?.meetings || []).reduce(
     (acc, curr) => {
       const count = acc.rounds.length;
