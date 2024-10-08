@@ -126,6 +126,7 @@ const AgentInstructionTemplate = () => {
     useSelectedActionsDetails();
   const email_body = <AgentInstructionBody />;
   const forms = <div>{email_body}</div>;
+
   return (
     <>
       {forms}
