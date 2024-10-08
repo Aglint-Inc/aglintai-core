@@ -76,10 +76,9 @@ function RequestAvailabilityBody({
     <div className='flex w-[500px] flex-col gap-2 p-4'>
       <div className='mb-2 flex w-full'>
         {availableSlots &&
-          availableSlots.map((_, i) => {
+          [availableSlots, {}].map((_, i) => {
             const firstIndex = 0;
             const lastIndex = [...availableSlots, {}].length - 1;
-
             return (
               <Stepper
                 key={i}
