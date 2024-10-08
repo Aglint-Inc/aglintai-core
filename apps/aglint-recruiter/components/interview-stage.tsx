@@ -1,21 +1,10 @@
 import { cn } from '@lib/utils';
-import {
-  CalendarCheck2,
-  CalendarOff,
-  CalendarX2,
-  CircleCheckBig,
-  Clock3,
-} from 'lucide-react';
+import { CalendarCheck2, CalendarOff, CircleCheckBig } from 'lucide-react';
 import React from 'react';
 
 import CSSArrow from './css-arrow';
 
-type StageStatus =
-  | 'completed'
-  | 'confirmed'
-  | 'not_scheduled'
-  | 'waiting'
-  | 'cancelled';
+type StageStatus = 'completed' | 'confirmed' | 'not_scheduled';
 
 export interface StageProps {
   testName: string;
@@ -52,18 +41,6 @@ const statusColors: Record<
     text: 'text-green-700',
     border: 'border-green-500',
     icon: <CircleCheckBig size={16} />,
-  },
-  cancelled: {
-    bg: 'bg-red-100',
-    text: 'text-red-700',
-    border: 'border-red-500',
-    icon: <CalendarX2 size={16} />,
-  },
-  waiting: {
-    bg: 'bg-yellow-100',
-    text: 'text-yellow-700',
-    border: 'border-yellow-500',
-    icon: <Clock3 size={16} />,
   },
 };
 

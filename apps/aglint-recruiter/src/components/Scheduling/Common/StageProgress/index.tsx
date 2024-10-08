@@ -18,7 +18,13 @@ const StageProgress = forwardRef(
         key={index}
         pillProps={pillProps}
         isLast={index === count - 1}
-        isActive={index === currentStep}
+        color={
+          currentStep === index
+            ? 'info'
+            : currentStep < index
+              ? 'neutral'
+              : 'success'
+        }
       />
     ));
 
