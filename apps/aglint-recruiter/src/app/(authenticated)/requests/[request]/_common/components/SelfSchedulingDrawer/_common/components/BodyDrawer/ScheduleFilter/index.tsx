@@ -21,7 +21,7 @@ function ScheduleFilter() {
   return (
     <div className='space-y-2'>
       <ErrorConflicts />
-      {/* <div className='w-full space-y-1'>
+      <div className='w-full space-y-1'>
         <span className='text-base font-medium'>Date Range</span>
         {localFilters.dateRange && (
           <RangePicker
@@ -33,7 +33,7 @@ function ScheduleFilter() {
             }}
           />
         )}
-      </div> */}
+      </div>
       <ToogleList />
       <DateRangeField />
       <PreferedInterviewers />
