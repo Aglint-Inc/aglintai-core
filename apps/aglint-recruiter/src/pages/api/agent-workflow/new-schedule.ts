@@ -16,9 +16,9 @@ import { apiTargetToEvents } from '@request/components/RequestProgress/utils/pro
 import { v4 as uuidv4 } from 'uuid';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
-import { candidateAvailRequest } from '@/services/api-schedulings/candidateAvailRequest';
-import { candidateAvailReRequest } from '@/services/api-schedulings/candidateAvailReRequest';
-import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfSchedule';
+import { candidateAvailRequest } from '@/services/api-schedulings/avail-recieved/candidateAvailRequest';
+import { candidateAvailReRequest } from '@/services/api-schedulings/avail-recieved/candidateAvailReRequest';
+import { candidateSelfSchedule } from '@/services/api-schedulings/avail-recieved/candidateSelfSchedule';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const schedule_wf = async (req_body: any) => {
@@ -63,6 +63,7 @@ const schedule_wf = async (req_body: any) => {
         job_payload,
         req_assignee_tz: request_assignee_tz,
         organizer_id,
+        selected_slots_from_instruction,
       },
       reqProgressLogger,
       event_log_id,
