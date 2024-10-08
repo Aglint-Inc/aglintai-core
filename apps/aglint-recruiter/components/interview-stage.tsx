@@ -1,19 +1,27 @@
 import { cn } from '@lib/utils';
+import {
+  CalendarCheck2,
+  CalendarOff,
+  CalendarX2,
+  CircleCheckBig,
+  Clock3,
+} from 'lucide-react';
 import React from 'react';
 
 import CSSArrow from './css-arrow';
 
 type StageStatus =
-  | 'not_started'
-  | 'in_progress'
   | 'completed'
-  | 'dropped_out'
-  | 'planned';
+  | 'confirmed'
+  | 'not_scheduled'
+  | 'waiting'
+  | 'cancelled';
 
-interface StageProps {
+export interface StageProps {
   testName: string;
   description: string;
   status: StageStatus;
+  onClick: () => void;
 }
 
 interface InterviewStagesProps {
@@ -24,32 +32,37 @@ interface InterviewStagesProps {
 
 const statusColors: Record<
   StageStatus,
-  { bg: string; text: string; border: string }
+  { bg: string; text: string; border: string; icon: React.ReactNode }
 > = {
-  not_started: {
+  not_scheduled: {
     bg: 'bg-gray-100',
     text: 'text-gray-600',
     border: 'border-gray-300',
+    icon: <CalendarOff size={16} />,
   },
-  in_progress: {
+  confirmed: {
     bg: 'bg-blue-100',
     text: 'text-blue-700',
     border: 'border-blue-500',
+    icon: <CalendarCheck2 size={16} />,
   },
   completed: {
     bg: 'bg-green-100',
     text: 'text-green-700',
     border: 'border-green-500',
+    icon: <CircleCheckBig size={16} />,
   },
-  dropped_out: {
+  cancelled: {
     bg: 'bg-red-100',
     text: 'text-red-700',
     border: 'border-red-500',
+    icon: <CalendarX2 size={16} />,
   },
-  planned: {
+  waiting: {
     bg: 'bg-yellow-100',
     text: 'text-yellow-700',
     border: 'border-yellow-500',
+    icon: <Clock3 size={16} />,
   },
 };
 
@@ -66,7 +79,7 @@ export default function InterviewStages({
 
   const stageClass = (index: number) =>
     cn(
-      'flex-1 relative',
+      'flex-1 relative cursor-pointer',
       orientation === 'horizontal' ? 'text-center' : 'text-left',
       index !== 0 && orientation === 'horizontal' && 'ml-6',
       index !== 0 && orientation === 'vertical' && 'mt-6',
@@ -75,7 +88,7 @@ export default function InterviewStages({
   return (
     <div className={containerClass}>
       {stages.map((stage, index) => (
-        <div key={index} className={stageClass(index)}>
+        <div key={index} className={stageClass(index)} onClick={stage.onClick}>
           <div
             className={cn(
               'h-full rounded-md border p-4',
@@ -85,8 +98,11 @@ export default function InterviewStages({
             )}
           >
             <h3 className='font-semibold'>{stage.testName}</h3>
-            <p className='mt-1 text-sm'>{stage.description}</p>
+            <p className='mt-1 flex items-center gap-2 text-sm'>
+              {statusColors[stage.status].icon} {stage.description}
+            </p>
           </div>
+          {/* Last item */}
           {index < stages.length - 1 && (
             <div
               className={cn(
@@ -105,6 +121,7 @@ export default function InterviewStages({
               />
             </div>
           )}
+          {/* after first item */}
           {index > 0 && (
             <div
               className={cn(
