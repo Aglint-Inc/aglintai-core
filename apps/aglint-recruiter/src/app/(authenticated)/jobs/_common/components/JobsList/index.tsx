@@ -43,7 +43,32 @@ interface JobsListProps {
 const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
   const { handleJobPin } = useJobs();
   const router = useRouterPro();
-
+  const stages = [
+    {
+      name: 'New',
+      color: 'bg-blue-100',
+      arrowColor: 'text-blue-100',
+      textColor: 'text-blue-800',
+    },
+    {
+      name: 'Interview',
+      color: 'bg-purple-100',
+      arrowColor: 'text-purple-100',
+      textColor: 'text-purple-800',
+    },
+    {
+      name: 'Qualified',
+      color: 'bg-green-100',
+      arrowColor: 'text-green-100',
+      textColor: 'text-green-800',
+    },
+    {
+      name: 'Disqualified',
+      color: 'bg-red-100',
+      arrowColor: 'text-red-100',
+      textColor: 'text-red-800',
+    },
+  ];
   if (jobs?.length === 0) {
     return (
       <EmptyState
@@ -101,19 +126,50 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
               </div>
             </TableCell>
             <TableCell>
-              <div className='flex flex-wrap gap-1'>
-                <Badge variant='outline' className='text-xs'>
-                  New: {job?.section_count?.new ?? 0}
-                </Badge>
-                <Badge variant='outline' className='text-xs'>
-                  Interview: {job?.section_count?.interview ?? 0}
-                </Badge>
-                <Badge variant='outline' className='text-xs'>
-                  Qualified: {job?.section_count?.qualified ?? 0}
-                </Badge>
-                <Badge variant='outline' className='text-xs'>
-                  Disqualified: {job?.section_count?.disqualified ?? 0}
-                </Badge>
+              <div className='flex flex-row'>
+                {stages.map((stage, index) => (
+                  <div
+                    key={stage.name}
+                    className={`${stage.color} relative cursor-pointer px-4 py-1 ${
+                      index === 0 ? 'rounded-l-md' : ''
+                    } ${index === stages.length - 1 ? 'rounded-r-md' : ''}`}
+                  >
+                    <div
+                      className={`flex items-center space-x-1 ${index < stages.length - 2 ? 'pr-4' : ''}`}
+                    >
+                      <div
+                        className={`text-sm font-semibold ${stage.textColor}`}
+                      >
+                        {stage.name === 'New'
+                          ? (job?.section_count?.new ?? 0)
+                          : stage.name === 'Interview'
+                            ? (job?.section_count?.interview ?? 0)
+                            : stage.name === 'Qualified'
+                              ? (job?.section_count?.qualified ?? 0)
+                              : (job?.section_count?.disqualified ?? 0)}
+                      </div>
+                      <div className={`text-sm ${stage.textColor}`}>
+                        {stage.name}
+                      </div>
+                    </div>
+                    {index < stages.length - 2 && (
+                      <div className='absolute right-0 top-0 h-full w-4 overflow-hidden'>
+                        <div
+                          className={`absolute inset-0 bg-gradient-to-br ${stages[index + 1].color}`}
+                        ></div>
+                        <svg
+                          className={`absolute inset-0 ${stage.arrowColor}`}
+                          width='16'
+                          height='100%'
+                          viewBox='0 0 16 100'
+                          preserveAspectRatio='none'
+                        >
+                          <path d='M0 0L16 50L0 100Z' fill='currentColor' />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
             </TableCell>
             <TableCell>
