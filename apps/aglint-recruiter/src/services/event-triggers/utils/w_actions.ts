@@ -24,7 +24,10 @@ export const getWActions = async ({
 
   return {
     company_actions: all_actions
-      .filter((act) => act.workflow.workflow_type === 'company')
+      .filter(
+        (act) =>
+          act.workflow.workflow_type === 'company' && act.workflow.is_active,
+      )
       .map((t) => {
         return {
           ...t,

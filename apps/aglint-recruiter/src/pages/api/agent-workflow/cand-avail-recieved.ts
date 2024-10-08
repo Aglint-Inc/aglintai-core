@@ -9,6 +9,7 @@ import { apiTargetToEvents } from '@request/components/RequestProgress/utils/pro
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfSchedule';
+import { findCandSelectedSlots } from '@/services/api-schedulings/findCandSelectedSlots';
 import { slackSuggestSlots } from '@/services/api-schedulings/slackSuggestSlots';
 import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
@@ -53,13 +54,18 @@ const candAvailRecieved = async (req_body: BodyParams) => {
 
   const request_assignee_tz =
     request_rec.recruiter_user.scheduling_settings.timeZone.tzCode;
-  const avail_record = supabaseWrap(
+  const avail_record = (
     await supabaseAdmin
       .from('candidate_request_availability')
       .select('*,request_session_relation!inner(*)')
       .eq('id', candidate_availability_request_id)
-      .single(),
-  );
+      .single()
+      .throwOnError()
+  ).data;
+
+  if (!avail_record) {
+    throw new CApiError('SERVER_ERROR', 'No availability record found');
+  }
 
   const session_ids = avail_record.request_session_relation.map(
     (s) => s.session_id,
@@ -84,19 +90,13 @@ const candAvailRecieved = async (req_body: BodyParams) => {
   if (!cand_schedule.db_details) {
     throw new CApiError('SERVER_ERROR', 'No db details found');
   }
-
-  const picked_slots = await executeWorkflowAction(
-    findPlansFromCandAvailWithAgentInstruct,
+  const cand_picked_slots = await executeWorkflowAction(
+    findCandSelectedSlots,
     {
+      cand_avail: avail_record.slots,
       reqProgressLogger,
-      session_ids,
-      time_zone: request_assignee_tz,
-      recruiter_id: recruiter_id,
-      date_range: {
-        start_date_str: avail_record.date_range[0],
-        end_date_str: avail_record.date_range[1],
-      },
-      agent_instruction: req_body.payload.agent.instruction,
+      cand_schedule,
+      request_assignee_tz: request_assignee_tz,
     },
     reqProgressLogger,
   );
@@ -105,7 +105,7 @@ const candAvailRecieved = async (req_body: BodyParams) => {
     await executeWorkflowAction(
       slackSuggestSlots,
       {
-        avail_plans: picked_slots,
+        avail_plans: cand_picked_slots ?? [],
         cand_avail_rec: avail_record,
         cand_schedule_db: cand_schedule.db_details,
         reqProgressLogger,
@@ -122,6 +122,7 @@ const candAvailRecieved = async (req_body: BodyParams) => {
         parsed_body: {
           application_id: request_rec.application_id,
           event_run_id,
+          // payload:, ??
           request_id,
           recruiter_id,
           session_ids,
@@ -135,7 +136,6 @@ const candAvailRecieved = async (req_body: BodyParams) => {
           end_date_str: avail_record.date_range[1],
         },
         job_payload: req_body.payload,
-        candidate_slots: picked_slots,
       },
       reqProgressLogger,
     );
