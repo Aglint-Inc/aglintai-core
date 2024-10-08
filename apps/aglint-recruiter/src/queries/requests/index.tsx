@@ -48,7 +48,7 @@ export const requestQueries = {
       queryFn: async () =>
         getRequests(await getUnfilteredRequests({ payload, sort, filters })),
       refetchInterval:
-        process.env.NODE_ENV === 'development' ? 30000 : undefined, //NOTE: only required in local db
+        process.env.NODE_ENV === 'development' ? 20000 : undefined, //NOTE: only required in local db
       placeholderData: {
         urgent_request: [],
         schedule_request: [],

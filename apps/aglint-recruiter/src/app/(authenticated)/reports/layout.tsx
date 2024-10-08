@@ -1,7 +1,9 @@
 'use client';
 import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
 import {
+  Section,
   SectionDescription,
+  SectionHeader,
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
@@ -20,15 +22,17 @@ export default function AnalyticsLayout({
     <AnalyticsProvider>
       <OneColumnPageLayout
         sidebar={
-          <>
-            <SectionHeaderText>
-              <SectionTitle>Reports</SectionTitle>
-              <SectionDescription>
-                All the Reports can be found here.
-              </SectionDescription>
-            </SectionHeaderText>
+          <Section>
+            <SectionHeader>
+              <SectionHeaderText>
+                <SectionTitle>Reports</SectionTitle>
+                <SectionDescription>
+                  All the Reports can be found here.
+                </SectionDescription>
+              </SectionHeaderText>
+            </SectionHeader>
             <InterviewDashboardSideNav />
-          </>
+          </Section>
         }
         filter={<DashboardDataFilter />}
         sidebarPosition='left'

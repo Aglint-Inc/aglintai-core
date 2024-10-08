@@ -68,9 +68,9 @@ export const createMeetingEvents = async (
       meeting_organizer,
       ...meeting_attendees_auth.map(
         (attendee): ConfirmInt => ({
-          interviewer_module_relation_id:
+          interview_module_relation_id:
             sess_inters_full_details.interviewers[attendee.user_id]
-              .interviewer_module_relation_id,
+              .interview_module_relation_id,
           session_id: session.session_id,
           user_id: attendee.user_id,
         }),

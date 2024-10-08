@@ -14,7 +14,7 @@ export function CandidateCalender({
 }) {
   return (
     <Section>
-      <SectionHeader>
+      <SectionHeader className='sr-only'>
         <SectionHeaderText>
           <SectionTitle>
             <span className='font-medium'>{textMonth}</span>

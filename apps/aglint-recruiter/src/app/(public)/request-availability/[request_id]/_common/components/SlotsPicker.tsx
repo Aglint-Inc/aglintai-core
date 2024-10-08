@@ -143,10 +143,10 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
       <div className='bg-white'>
         <div className='flex flex-col gap-10 px-0'>
           <div className='items-left flex flex-col gap-4'>
-            <div className='flex items-center gap-4'>
+            <div className='flex items-start gap-2'>
               <div className='relative'>
                 {markAsAllDateSelected ? (
-                  <CheckCircle className='h-10 w-10 text-green-500' />
+                  <CheckCircle className='mt-1 h-6 w-6 text-green-500' />
                 ) : (
                   <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200'>
                     1
@@ -319,10 +319,10 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
             {markAsAllDateSelected ? (
               <div className='flex w-full flex-col items-start gap-4'>
                 <UIDivider />
-                <div className='flex items-center gap-4'>
+                <div className='flex items-start gap-2'>
                   <div className='relative'>
                     {markAsAllSlotsSelected ? (
-                      <CheckCircle className='h-10 w-10 text-green-500' />
+                      <CheckCircle className='mt-1 h-6 w-6 text-green-500' />
                     ) : (
                       <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200'>
                         2

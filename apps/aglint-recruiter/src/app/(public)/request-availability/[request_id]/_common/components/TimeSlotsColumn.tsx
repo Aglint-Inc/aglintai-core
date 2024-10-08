@@ -24,7 +24,7 @@ function TimeSlotsColumn({
 
   return (
     <>
-      <div className='relative w-full flex-1 rounded-lg border-none bg-blue-100'>
+      <div className='relative w-full flex-1 rounded-lg border-none bg-gray-100'>
         <div className='flex h-12 items-center justify-start rounded-t-lg px-4'>
           <div>{dayjs(slotTime.curr_day).format('dddd DD, MMMM')}</div>
         </div>

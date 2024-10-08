@@ -53,7 +53,7 @@ export default function Checklist() {
             <ScrollArea className='h-[calc(100vh-17rem)]'>
               <TableHeader className='bg-gray-100'>
                 <TableRow>
-                  <TableHead className='w-[150px]'>Coordinator</TableHead>
+                  {/* <TableHead className='w-[150px]'>Coordinator</TableHead> */}
                   <TableHead className='w-[150px]'>Candidate Name</TableHead>
                   <TableHead className='w-[150px]'>Recruiter</TableHead>
                   <TableHead className='w-[150px]'>Interview Type</TableHead>
@@ -69,7 +69,7 @@ export default function Checklist() {
               <TableBody>
                 {data.map((item, index) => (
                   <TableRow key={index}>
-                    <TableCell>{item.interviewing_coordinator}</TableCell>
+                    {/* <TableCell>{item.interviewing_coordinator}</TableCell> */}
                     <TableCell>{item.candidate_name}</TableCell>
                     <TableCell>{item.recruiting_coord}</TableCell>
                     <TableCell>{item.type}</TableCell>
