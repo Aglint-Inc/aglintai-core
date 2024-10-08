@@ -12,9 +12,8 @@ import { useState } from 'react';
 import { UIButton } from '@/components/Common/UIButton';
 
 import { useInterviewer } from '../../hooks/useInterviewer';
-import { EditAvailabiityDialog } from './Dialog/EditAvailabiityDialog';
+import { EditAvailabiity } from './Edit/EditAvailabiity';
 import { ScheduleAvailabilityUI } from './ui/ScheduleAvailabilityUI';
-
 export type InterviewLoadItemType = {
   title: string;
   type: string;
@@ -124,7 +123,7 @@ export default function ScheduleAvailability() {
             schedulingSettings={scheduling_settings}
           />
         )}
-        {isEditOpen && <EditAvailabiityDialog setIsEditOpen={setIsEditOpen} />}
+        {isEditOpen && <EditAvailabiity setIsEditOpen={setIsEditOpen} />}
       </Section>
     </>
   );

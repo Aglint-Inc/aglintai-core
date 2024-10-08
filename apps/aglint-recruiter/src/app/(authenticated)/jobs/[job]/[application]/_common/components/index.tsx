@@ -35,8 +35,8 @@ function ApplicationDetailComp() {
   };
 
   return (
-    <div className='space-y-4 p-4'>
-      <ScrollArea className='h-[calc(100vh-300px)]'>
+    <div className='space-y-4'>
+      <ScrollArea >
         {renderTabContent()}
       </ScrollArea>
     </div>
