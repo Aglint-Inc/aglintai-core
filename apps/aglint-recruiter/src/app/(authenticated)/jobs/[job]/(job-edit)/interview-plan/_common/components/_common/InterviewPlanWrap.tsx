@@ -1,4 +1,3 @@
-'use client';
 import {
   Section,
   SectionActions,
@@ -8,7 +7,7 @@ import {
   SectionTitle,
 } from '@components/layouts/sections-header';
 import { ArrowDown, ArrowUp, ChevronDown, ChevronUp } from 'lucide-react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 
@@ -23,7 +22,21 @@ export function InterviewPlanWrap({
   onClickDown,
   isTopArrowVisible = true,
   isBottomArrowVisible = true,
-}: any) {
+  isInputVisible = false,
+  slotInputButton,
+}: {
+  textStageName?: string;
+  textInterviewCount?: string;
+  slotRightIconButton: React.ReactNode;
+  slotInterviewPlanDetail: React.ReactNode;
+  isSlotInterviewPlanVisible?: boolean;
+  onClickUp: () => void;
+  onClickDown: () => void;
+  isTopArrowVisible?: boolean;
+  isBottomArrowVisible?: boolean;
+  isInputVisible?: boolean;
+  slotInputButton: React.ReactNode;
+}) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [hover, setHover] = useState(false);
 
@@ -37,24 +50,28 @@ export function InterviewPlanWrap({
     >
       <div className='relative rounded-md bg-muted p-2 px-4'>
         <Section>
-          <SectionHeader
-            className={`cursor-pointer ${isExpanded ? 'mb-4' : 'mb-0'}`}
-            onClick={() => setIsExpanded(!isExpanded)}
-          >
-            <SectionHeaderText>
-              <SectionTitle>{textStageName}</SectionTitle>
-              <SectionDescription>{textInterviewCount}</SectionDescription>
-            </SectionHeaderText>
-            {hover && (
-              <SectionActions>
-                {isExpanded ? (
-                  <ChevronUp size={20} />
-                ) : (
-                  <ChevronDown size={20} />
-                )}
-              </SectionActions>
-            )}
-          </SectionHeader>
+          {isInputVisible ? (
+            slotInputButton
+          ) : (
+            <SectionHeader
+              className={`cursor-pointer ${isExpanded ? 'mb-4' : 'mb-0'}`}
+              onClick={() => setIsExpanded(!isExpanded)}
+            >
+              <SectionHeaderText>
+                <SectionTitle>{textStageName}</SectionTitle>
+                <SectionDescription>{textInterviewCount}</SectionDescription>
+              </SectionHeaderText>
+              {hover && (
+                <SectionActions>
+                  {isExpanded ? (
+                    <ChevronUp size={20} />
+                  ) : (
+                    <ChevronDown size={20} />
+                  )}
+                </SectionActions>
+              )}
+            </SectionHeader>
+          )}
           {isSlotInterviewPlanVisible && isExpanded && (
             <div className='flex flex-col gap-2'>
               {slotInterviewPlanDetail ?? <InterviewPlanDetail />}
