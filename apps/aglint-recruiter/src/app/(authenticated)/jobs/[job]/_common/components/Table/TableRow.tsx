@@ -99,7 +99,9 @@ export function TableRow({
           <ScrollArea className='w-full'>
             <StageProgress
               interview_plans={application.interview_plans}
-              currentStep={application.interview_plans.length}
+              currentStep={application.interview_plans
+                .sort((a, b) => a.plan_order - b.plan_order)
+                .findLastIndex((plan) => plan.status.confirmed > 0)}
             />
             <ScrollBar orientation='horizontal' />
           </ScrollArea>
