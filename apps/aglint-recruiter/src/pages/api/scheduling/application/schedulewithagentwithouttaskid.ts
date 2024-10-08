@@ -4,7 +4,7 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { agentTrigger } from '@/utils/scheduling/agentTrigger';
 import { createFilterJson } from '@/utils/scheduling/createFilterJson';
-import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsertMeetingsWithOrganizerId';
+import { updateMeetingStatus } from '@/utils/scheduling/updateMeetingStatus';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
@@ -148,7 +148,7 @@ const scheduleWithAgentWithoutTaskId = async ({
       recruiter_user_id: rec_user_id,
     });
 
-    await handleMeetingsOrganizerResetRelations({
+    await updateMeetingStatus({
       application_id,
       selectedSessions: (sessions || [])
         ?.filter((ses) => ses?.interview_meeting !== null)
