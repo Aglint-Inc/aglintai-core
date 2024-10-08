@@ -5,6 +5,7 @@ import { Input } from '@components/ui/input';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { UIBadge } from '@components/ui-badge';
 import { ExternalLink, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
@@ -14,7 +15,6 @@ import axios from '@/client/axios';
 import UIDialog from '@/common/UIDialog';
 import { useTenant } from '@/company/hooks';
 import { Loader } from '@/components/Common/Loader';
-import { UIBadge } from '@/components/Common/UIBadge';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { STATE_LEVER_DIALOG } from '@/jobs/constants';
 import {
@@ -107,7 +107,7 @@ export default function LeverModalComp() {
     | 'info'
     | 'success'
     | 'warning'
-    | 'error'
+    | 'destructive'
     | 'purple'
     | 'neutral' {
     switch (state.toLowerCase()) {
@@ -116,7 +116,7 @@ export default function LeverModalComp() {
       case 'internal':
         return 'info';
       case 'closed':
-        return 'error';
+        return 'destructive';
       default:
         return 'neutral';
     }
@@ -281,7 +281,7 @@ export default function LeverModalComp() {
                                       post.state.charAt(0).toUpperCase() +
                                       post.state.slice(1)
                                     }
-                                    color={getLeverStatusColor(post.state)}
+                                    variant={getLeverStatusColor(post.state)}
                                     size='sm'
                                   />
                                 </div>

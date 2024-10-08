@@ -6,9 +6,9 @@ import {
   PageTitle,
 } from '@components/layouts/page-header';
 import { TwoColumnPageLayout } from '@components/layouts/two-column-page-layout';
+import { UIBadge } from '@components/ui-badge';
 import { useEffect } from 'react';
 
-import { UIBadge } from '@/components/Common/UIBadge';
 import { useBreadcrumContext } from '@/context/BreadcrumContext/BreadcrumContext';
 import ROUTES from '@/utils/routing/routes';
 
@@ -54,7 +54,9 @@ export default function InterviewTypeDetail({
                   <div className='mt-2 flex items-center space-x-2'>
                     <UIBadge
                       textBadge={editModule.is_archived ? 'Archived' : 'Active'}
-                      color={editModule.is_archived ? 'error' : 'success'}
+                      variant={
+                        editModule.is_archived ? 'destructive' : 'success'
+                      }
                     />
                     <span className='text-muted-foreground'>•</span>
                     <span className='text-muted-foreground'>

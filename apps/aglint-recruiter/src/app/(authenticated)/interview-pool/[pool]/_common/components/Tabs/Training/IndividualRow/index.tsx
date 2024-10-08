@@ -5,12 +5,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
+import { UIBadge } from '@components/ui-badge';
 import { ChevronDown, MoreVertical } from 'lucide-react';
 import Link from 'next/link';
 
 import { getPauseMemberText } from '@/authenticated/utils';
 import { HistoryPillShadcn } from '@/components/Common/Member/HistoryPill';
-import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import ROUTES from '@/utils/routing/routes';
 
@@ -92,7 +92,7 @@ function IndividualRow({
                   {relation.pause_json && (
                     <UIBadge
                       size='sm'
-                      color='warning'
+                      variant='warning'
                       textBadge={getPauseMemberText(
                         relation.pause_json as PauseJson,
                       )}
@@ -110,9 +110,9 @@ function IndividualRow({
         <td className='p-4 text-gray-700'>{relation.textWeekInterview}</td>
         <td className='p-4'>
           <UIBadge
-            color={
+            variant={
               relation.week_load > 50
-                ? 'error'
+                ? 'destructive'
                 : relation.week_load > 25
                   ? 'warning'
                   : 'success'
