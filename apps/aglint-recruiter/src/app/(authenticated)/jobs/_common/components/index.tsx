@@ -46,6 +46,7 @@ export const Body = ({ jobs }: { jobs: Job[] }) => {
   return (
     <>
       <LeverModalComp />
+
       <div className='h-[70vh] w-full'>
         {!initialLoad ? (
           <Loader />

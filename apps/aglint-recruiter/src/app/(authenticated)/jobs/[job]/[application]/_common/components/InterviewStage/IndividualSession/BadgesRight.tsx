@@ -113,12 +113,14 @@ function BadgesRight({
       {rescheduleRequests.length > 0 &&
         interview_meeting?.status !== 'completed' &&
         interview_meeting?.status !== 'cancelled' && (
-          <UIBadge
-            size={'sm'}
-            color={'warning'}
-            iconName='RefreshCcw'
-            textBadge={`${rescheduleRequests.length} Reschedule Request`}
-          />
+          <>
+            <UIBadge
+              size={'sm'}
+              color={'warning'}
+              iconName='RefreshCcw'
+              textBadge={`${rescheduleRequests.length} Reschedule Request`}
+            />
+          </>
         )}
     </>
   );

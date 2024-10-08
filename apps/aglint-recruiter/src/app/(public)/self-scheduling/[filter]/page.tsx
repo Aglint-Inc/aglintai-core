@@ -23,7 +23,11 @@ const CandidateInvitePage = () => {
       header={
         <SchedulingPageHeader
           companyName={data?.recruiter?.name ?? ''}
-          description={`Available slots are organized by day. Each slot includes the total time required for your interview, including breaks.`}
+          description={
+            <h2 className='flex items-center gap-2 p-8 pb-4 text-lg font-semibold'>
+              {`Available slots are organized by day. Each slot includes the total time required for your interview, including breaks.`}
+            </h2>
+          }
           logo={data?.recruiter?.logo ?? ''}
         />
       }

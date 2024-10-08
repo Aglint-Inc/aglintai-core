@@ -76,7 +76,7 @@ const Column = (props: ColumnType) => {
         </div>
       </div>
 
-      <div className='flex h-[390px] flex-col gap-2 overflow-auto p-2.5'>
+      <div className='flex h-[calc(100vh-420px)] flex-col gap-2 overflow-auto p-2.5'>
         <Slots
           slots={props.session.slots}
           selections={props.selections}
