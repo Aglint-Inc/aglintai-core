@@ -8,8 +8,8 @@ import {
 import { apiTargetToEvents } from '@request/components/RequestProgress/utils/progressMaps';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
-import { candidateSelfSchedule } from '@/services/api-schedulings/avail-recieved/candidateSelfSchedule';
 import { slackSuggestSlots } from '@/services/api-schedulings/avail-recieved/slackSuggestSlots';
+import { candidateSelfScheduleLink } from '@/services/api-schedulings/utils/candidateSelfScheduleLink';
 import { findCandSelectedSlots } from '@/services/api-schedulings/utils/findCandSelectedSlots';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
@@ -101,7 +101,7 @@ const candAvailRecieved = async (req_body: BodyParams) => {
     target_api === 'onReceivingAvailReq_agent_sendSelfScheduleRequest'
   ) {
     await executeWorkflowAction(
-      candidateSelfSchedule,
+      candidateSelfScheduleLink,
       {
         parsed_body: {
           application_id: request_rec.application_id,

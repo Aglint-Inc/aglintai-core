@@ -2,27 +2,23 @@ import {
   type PlanCombinationRespType,
   type SessionInterviewerType,
 } from '@aglint/shared-types';
-import { CApiError, dayjsLocal, getFullName } from '@aglint/shared-utils';
-import type { ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
-import { filterSchedulingOptionsArray } from '@request/components/SelfSchedulingDrawer/_common/components/BodyDrawer/ScheduleFilter/utils';
+import { CApiError, getFullName } from '@aglint/shared-utils';
 
-// import { filterSchedulingOptionsArray } from '@/components/Requests/ViewRequestDetails/SelfSchedulingDrawer/_common/components/BodyDrawer/ScheduleFilter/utils';
 import { CandidatesScheduling } from '../../CandidateSchedule/CandidatesScheduling';
 import { extractPreferredInterviewers } from '../textTransforms/extractPreferredInterviewers';
 import { selfScheduleLinkInstruction } from '../textTransforms/selfScheduleLinkInstruction';
+import { filterPlanCombsWithAgentResp } from './filterPlanCombsWithAgentResp';
 
 export const findPlansForSelfSchedule = async ({
   date_range,
   recruiter_id,
   session_ids,
-  reqProgressLogger,
   time_zone,
   agent_instruction,
 }: {
   recruiter_id: string;
   date_range: { start_date_str: string; end_date_str: string };
   session_ids: string[];
-  reqProgressLogger: ProgressLoggerType;
   time_zone: string;
   agent_instruction: string;
 }): Promise<PlanCombinationRespType[]> => {
@@ -40,7 +36,7 @@ export const findPlansForSelfSchedule = async ({
       out_of_working_hrs: true,
       show_soft_conflicts: true,
     },
-    return_empty_slots_err: true,
+    return_empty_slots_err: false,
   });
   await cand_schedule.fetchDetails({
     params: {
@@ -71,117 +67,31 @@ export const findPlansForSelfSchedule = async ({
     },
   });
 
-  const slots = cand_schedule.findAvailabilitySlotsDateRange();
-  const schedule_filters: Parameters<
-    typeof filterSchedulingOptionsArray
-  >[number]['filters'] = {
-    isNoConflicts: true,
-    isSoftConflicts: true,
-    isHardConflicts: true,
-    isOutSideWorkHours: formatted_ai_reponse.include_outside_working_hours,
-    preferredTimeRanges: [
-      {
-        startTime:
-          formatted_ai_reponse.candidateAvailability.prefferredTime.startTime,
-        endTime:
-          formatted_ai_reponse.candidateAvailability.prefferredTime.endTime,
-      },
-    ], //this is not date but time
-    preferredInterviewers: preferredInterviewers.interviewers.map((i) => ({
-      user_id: i.user_id,
-    })),
-    isWorkLoad: true,
-  };
-
-  const filtered_slot_info = filterSchedulingOptionsArray({
-    schedulingOptions: slots,
-    filters: schedule_filters,
-    user_tz: time_zone,
-  });
-  const plans = filtered_slot_info.combs
-    .flatMap((c) => c.plans)
-    .filter((p) => p.no_slot_reasons.length === 0);
-  const schedule_dates = cand_schedule.db_details.schedule_dates;
-
-  if (plans.length === 0) {
-    const conflicts = filtered_slot_info.combs
-      .flatMap((c) => c.plans)
-      .map((p) => p.no_slot_reasons)
-      .map((p) => p.map((r) => r.reason))
-      .flat();
-    const unique_conflicts = [...new Set(conflicts)];
-    await reqProgressLogger({
-      log: `No slots found within ${schedule_dates.user_start_date_js.format('DD, MMMM')} - ${schedule_dates.user_end_date_js.format('DD, MMMM YYYY')} due to ${unique_conflicts.join(', ')}`,
-      status: 'completed',
-      is_progress_step: true,
-    });
-    return [];
-  }
-
-  const date_filtered_slots = getPrefferredDateSlots(
-    plans,
-    {
-      startDate:
-        formatted_ai_reponse.candidateAvailability.preferredDates.startDate,
-      endDate:
-        formatted_ai_reponse.candidateAvailability.preferredDates.endDate,
-    },
-    time_zone,
-  );
-  if (date_filtered_slots.length === 0) {
-    throw new CApiError('CLIENT', 'No plans matched for given preferred dates');
-  }
-  const candidate_slots = getNSlots(
-    date_filtered_slots,
-    formatted_ai_reponse.maxTotalSlots,
-  );
-
-  return candidate_slots;
-};
-
-const getNSlots = (
-  slots: PlanCombinationRespType[],
-  slot_cnt: number,
-): PlanCombinationRespType[] => {
-  const slot_time = new Set<string>();
-  let added_slots_cnt = 0;
-  const filtered_slots: PlanCombinationRespType[] = [];
-
-  for (const curr_slot of slots) {
-    if (added_slots_cnt >= slot_cnt) {
-      break;
-    }
-    if (!slot_time.has(curr_slot.sessions[0].start_time)) {
-      slot_time.add(curr_slot.sessions[0].start_time);
-      filtered_slots.push(curr_slot);
-      added_slots_cnt++;
-    }
-  }
-  return filtered_slots;
-};
-
-// supports only single round
-const getPrefferredDateSlots = (
-  slots: PlanCombinationRespType[],
-  preferred_dates: {
-    startDate: string;
-    endDate: string;
-  },
-  tz: string,
-): PlanCombinationRespType[] => {
-  const preferred_dates_dayjs = {
-    startDate: dayjsLocal(preferred_dates.startDate).tz(tz),
-    endDate: dayjsLocal(preferred_dates.endDate).tz(tz),
-  };
-  const filtered_slots: PlanCombinationRespType[] = slots.filter((slot) => {
-    return (
-      dayjsLocal(slot.sessions[0].start_time)
-        .tz(tz)
-        .isSameOrAfter(preferred_dates_dayjs.startDate, 'date') &&
-      dayjsLocal(slot.sessions[0].start_time)
-        .tz(tz)
-        .isSameOrBefore(preferred_dates_dayjs.endDate, 'date')
+  const date_range_slots = cand_schedule.findAvailabilitySlotsDateRange();
+  if (date_range_slots.length === 0) {
+    throw new CApiError(
+      'CLIENT',
+      'unable to find slots , Please Schedule manually .',
     );
+  }
+  if (date_range_slots[0].interview_rounds.length > 1) {
+    throw new CApiError(
+      'CLIENT',
+      'Automation does not support multi day plans for now. Please use the app to schedule the interview.',
+    );
+  }
+  const flattened_plans = date_range_slots
+    .map((curr_date) => {
+      return curr_date.interview_rounds[0].plans;
+    })
+    .flat();
+
+  const agent_instruction_slots = filterPlanCombsWithAgentResp({
+    ai_response: formatted_ai_reponse,
+    flattened_plans: flattened_plans,
+    preferred_interviewers: preferredInterviewers,
+    time_zone: time_zone,
   });
-  return filtered_slots;
+
+  return agent_instruction_slots;
 };

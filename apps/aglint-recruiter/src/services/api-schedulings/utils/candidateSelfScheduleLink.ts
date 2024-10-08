@@ -14,7 +14,7 @@ import { type z } from 'zod';
 import { mailSender } from '@/utils/mailSender';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-export const candidateSelfSchedule = async ({
+export const candidateSelfScheduleLink = async ({
   parsed_body,
   date_range,
   reqProgressLogger,
