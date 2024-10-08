@@ -701,7 +701,7 @@ const InterviewSession = ({
             }}
             onClickLink={() =>
               window.open(
-                `interview-pools/${session.interview_module!.id}?tab=qualified`,
+                `/interview-pool/${session.interview_module!.id}`,
                 '_blank',
               )
             }
