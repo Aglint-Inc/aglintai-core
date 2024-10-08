@@ -417,37 +417,49 @@ const InterviewPlan = ({
                 onClick={() => setDeleteOpen(true)}
                 icon={<Trash className='h-4 w-4' color='brown' />}
               />
-
-              <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Delete Confirmation</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Are you sure to delete this interview plan?
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel asChild>
-                      <Button variant='secondary' size='sm'>
-                        Cancel
-                      </Button>
-                    </AlertDialogCancel>
-                    <AlertDialogAction asChild>
-                      <Button
-                        size='sm'
-                        disabled={isStageDeleting}
-                        onClick={async () => {
-                          await deletePlan({ id: plan_id });
-                        }}
-                      >
-                        {isStageDeleting ? <Loader /> : null}
-                        Delete
-                      </Button>
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
             </div>
+          }
+          deleteModal={
+            <AlertDialog
+              key={plan_id}
+              open={deleteOpen}
+              onOpenChange={setDeleteOpen}
+            >
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Delete Confirmation</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    <div className='flex flex-col gap-2'>
+                      <> Are you sure to delete this interview plan?</>
+                      <UIAlert
+                        variant='alert'
+                        title='This will also
+                    delete the interviews in it.'
+                      />
+                    </div>
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel asChild>
+                    <Button variant='secondary' size='sm'>
+                      Cancel
+                    </Button>
+                  </AlertDialogCancel>
+                  <AlertDialogAction asChild>
+                    <Button
+                      size='sm'
+                      disabled={isStageDeleting}
+                      onClick={async () => {
+                        await deletePlan({ id: plan_id });
+                      }}
+                    >
+                      {isStageDeleting ? <Loader /> : null}
+                      Delete
+                    </Button>
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           }
           slotInterviewPlanDetail={
             <div className='pt-2'>
