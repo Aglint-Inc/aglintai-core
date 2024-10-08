@@ -1,7 +1,7 @@
 import { UIButton } from '@/components/Common/UIButton';
 import { RangePicker } from '@/jobs/job/application/components/ScheduleDialog';
 
-import { useSelfSchedulingDrawer } from '../../../hooks/useSelfSchedulingDrawer';
+import { useFilterSlots } from '../../../hooks/useFilterSlots';
 import {
   setLocalFilters,
   useSelfSchedulingFlowStore,
@@ -11,12 +11,16 @@ import ErrorConflicts from './ErrorConflicts';
 import PreferedInterviewers from './PreferedInterviewers';
 import ToogleList from './ToogleList';
 
-function ScheduleFilter() {
+function ScheduleFilter({
+  setIsOpen,
+}: {
+  setIsOpen: (_value: boolean) => void;
+}) {
   const { localFilters } = useSelfSchedulingFlowStore((state) => ({
     localFilters: state.localFilters,
   }));
 
-  const { filterSlots } = useSelfSchedulingDrawer();
+  const { filterSlots } = useFilterSlots();
 
   return (
     <div className='space-y-2'>
@@ -37,7 +41,13 @@ function ScheduleFilter() {
       <ToogleList />
       <DateRangeField />
       <PreferedInterviewers />
-      <UIButton variant='secondary' onClick={() => filterSlots()}>
+      <UIButton
+        variant='secondary'
+        onClick={() => {
+          filterSlots();
+          setIsOpen(false);
+        }}
+      >
         Apply Filters
       </UIButton>
     </div>

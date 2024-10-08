@@ -3,8 +3,7 @@ import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { deleteRequestWorkflowAction } from '@request/components/RequestProgress/utils';
 import { useRequest } from '@request/hooks';
-import { useRequestAvailabilityDetails } from '@requests/hooks';
-import { useRequests } from '@requests/hooks';
+import { useRequestAvailabilityDetails, useRequests } from '@requests/hooks';
 import React, { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -21,7 +20,7 @@ import {
   setCandidateAvailabilityId,
   useConfirmAvailabilitySchedulingFlowStore,
 } from '../ConfirmAvailability/_common/contexts/AvailabilitySchedulingStore';
-import { useSelfSchedulingDrawer } from '../SelfSchedulingDrawer/_common/hooks/useSelfSchedulingDrawer';
+import { useFindAvailibility } from '../SelfSchedulingDrawer/_common/hooks/useFindAvailibility';
 import {
   initialFilters,
   setIsSelfScheduleDrawerOpen,
@@ -30,7 +29,7 @@ import {
 
 const ScheduleOptions = () => {
   const [isProceeding, setIsProceeding] = React.useState(false);
-  const { findAvailibility } = useSelfSchedulingDrawer();
+  const { findAvailibility } = useFindAvailibility();
   const { fetchingPlan } = useSelfSchedulingFlowStore();
   const { request_workflow, requestDetails, request_progress } = useRequest();
   const { handleAsyncUpdateRequest } = useRequests();
