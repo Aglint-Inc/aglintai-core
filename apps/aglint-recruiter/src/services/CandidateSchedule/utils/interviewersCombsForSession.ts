@@ -42,6 +42,10 @@ const calcInterversCombsForSesson = (
     session: InterviewSessionApiRespType,
     comb: number,
   ) => {
+    if (comb === 0 || comb < session.qualifiedIntervs.length) {
+      throw new CApiError('CLIENT', `Interviewer count mismatch`);
+    }
+
     const session_combs: InterviewSessionApiRespType[] = [];
     const combs = findCombinationOfStrings(
       [...session.qualifiedIntervs.map((int) => int.user_id)],
