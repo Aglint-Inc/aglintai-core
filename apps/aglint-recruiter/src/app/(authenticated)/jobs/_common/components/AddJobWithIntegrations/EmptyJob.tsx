@@ -8,6 +8,7 @@ import {
 import { Briefcase, TriangleAlert } from 'lucide-react';
 
 import { useIntegrations } from '@/authenticated/hooks';
+import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import { useOnboarding } from '@/components/Navigation/OnboardPending/context/onboarding';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -17,17 +18,22 @@ import ROUTES from '@/utils/routing/routes';
 
 export const EmptyJob = () => {
   const { data: allIntegrations, isLoading } = useIntegrations();
+  const { recruiter } = useTenant();
   const isATSConnected =
     allIntegrations?.greenhouse_key ||
     allIntegrations?.ashby_key ||
     allIntegrations?.lever_key;
-  const connectedATSName = allIntegrations?.greenhouse_key
-    ? 'Green House'
-    : allIntegrations?.ashby_key
-      ? 'Ashby'
-      : allIntegrations?.lever_key
-        ? 'Lever'
-        : '';
+  const ats = recruiter.recruiter_preferences.ats;
+  const connectedATSName =
+    allIntegrations?.greenhouse_key && ats === 'Greenhouse'
+      ? 'Green House'
+      : allIntegrations?.ashby_key && ats === 'Ashby'
+        ? 'Ashby'
+        : allIntegrations?.lever_key && ats === 'Lever'
+          ? 'Lever'
+          : '';
+
+  recruiter.recruiter_preferences.ats;
   const router = useRouterPro();
   const { setIntegrations } = useIntegrationActions();
   const integration = useIntegrationStore((state) => state.integrations);
@@ -45,7 +51,18 @@ export const EmptyJob = () => {
               if (isATSConnected) {
                 setIntegrations({
                   ...integration,
-                  lever: { open: true, step: STATE_LEVER_DIALOG.LISTJOBS },
+                  lever: {
+                    open: ats === 'Lever',
+                    step: STATE_LEVER_DIALOG.LISTJOBS,
+                  },
+                  ashby: {
+                    open: ats === 'Ashby',
+                    step: STATE_LEVER_DIALOG.LISTJOBS,
+                  },
+                  greenhouse: {
+                    open: ats === 'Greenhouse',
+                    step: STATE_LEVER_DIALOG.LISTJOBS,
+                  },
                 });
               } else {
                 router.push(ROUTES['/integrations']());
