@@ -77,13 +77,14 @@ const sendToCandidate = async ({
 }) => {
   const supabaseAdmin = getSupabaseServer();
 
-  const assignee_id = (
-    await supabaseAdmin
-      .from('request')
-      .select('assignee_id')
-      .eq('id', request_id)
-      .single()
-  ).data?.assignee_id!;
+  const assignee_id =
+    (
+      await supabaseAdmin
+        .from('request')
+        .select('assignee_id')
+        .eq('id', request_id)
+        .single()
+    ).data?.assignee_id ?? '';
 
   const selectedSessionIds = allSessions
     .map((ses) => ses?.interview_session?.id)

@@ -28,6 +28,7 @@ import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { type Request as RequestType } from '@/queries/requests/types';
 import { getCompanyDaysCnt } from '@/services/CandidateSchedule/utils/companyWorkingDays';
 import { mailSender } from '@/utils/mailSender';
+import { updateMeetingStatus } from '@/utils/scheduling/updateMeetingStatus';
 import { supabase } from '@/utils/supabase/client';
 
 import EmailTemplate from './_common/components/EmailTemplate';
@@ -38,8 +39,6 @@ import {
   useCandidateAvailabilitySchedulingFlowStore,
 } from './_common/contexts/CandidateAvailabilityFlowStore';
 import { useCandidateAvailability } from './_common/hooks';
-
-import { updateMeetingStatus } from '@/utils/scheduling/updateMeetingStatus';
 
 function CandidateAvailability({
   selectedRequest,
