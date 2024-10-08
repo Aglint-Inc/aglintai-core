@@ -10,9 +10,9 @@ import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import { useTenantMembers } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { api } from '@/trpc/client';
 import { type timeZone as timeZones } from '@/utils/timeZone';
 
+import { useUserUpdate } from '../../../hooks/useUserUpdate';
 import { EditAvailabilityForm } from './ui/EditAvailabilityFormUI';
 
 export const LoadMax = {
@@ -35,7 +35,7 @@ export const EditAvailabiity = ({
   const member = allMembers.find((mem) => mem.user_id === user_id);
   const [isSaving, setIsSaving] = useState(false);
 
-  const { mutateAsync } = api.user.update_user.useMutation();
+  const { mutateAsync } = useUserUpdate();
   // State variables for scheduling settings
   const [workingHours, setWorkingHours] = useState<
     SchedulingSettingType['workingHours']

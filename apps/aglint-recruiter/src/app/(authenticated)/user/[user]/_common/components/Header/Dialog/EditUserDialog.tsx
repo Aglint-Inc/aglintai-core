@@ -17,8 +17,9 @@ import UIDialog from '@/components/Common/UIDialog';
 import { supabase } from '@/utils/supabase/client';
 import type timeZone from '@/utils/timeZone';
 
-import { useUserUpdate } from '../../../hooks/useMemberUpdate';
+import { useUserUpdate } from '../../../hooks/useUserUpdate';
 import { ProfileForms } from './EditUserDialogUI';
+
 const initialFormValues: FormValues = {
   value: '',
   label: '',
@@ -51,19 +52,19 @@ export const EditUserDialog = ({
   const [selectedTimeZone, setSelectedTimeZone] = useState(initialTimeZone);
   const { mutateAsync } = useUserUpdate();
 
-  const recruUser = recruiter_user;
   const initialProfileFormFields: FormFields = {
     first_name: {
       ...initialFormValues,
       value: recruiter_user?.first_name ?? '',
       required: true,
       label: 'First Name',
+
       placeholder: 'Enter your first name.',
     },
     last_name: {
       ...initialFormValues,
       value: recruiter_user?.last_name ?? '',
-      required: true,
+      required: false,
       label: 'Last Name',
       placeholder: 'Enter your last name.',
     },
@@ -80,6 +81,7 @@ export const EditUserDialog = ({
       validation: 'linkedIn',
       label: 'LinkedIn',
       required: false,
+      placeholder: 'Enter your linkedin url',
     },
   };
 
@@ -88,9 +90,10 @@ export const EditUserDialog = ({
   const [profile, setProfile] = useState<FormFields>(
     structuredClone(initialProfileFormFields),
   );
+
   const [isError, setError] = useState(false);
   const [isImageChanged, setIsImageChanged] = useState(false);
-  const imageFile = useRef<File>(null);
+  const imageFile = useRef<File | null>(null);
 
   const handleValidate = (profile: FormFields) => {
     return Object.entries(profile).reduce(
@@ -144,17 +147,19 @@ export const EditUserDialog = ({
       let profile_image = recruiter_user?.profile_image;
       setLoading(true);
 
-      if (isImageChanged && imageFile.current) {
-        const { data } = await supabase.storage
-          .from('recruiter-user')
-          .upload(`public/${recruiter_user?.user_id}`, imageFile.current, {
-            cacheControl: '3600',
-            upsert: true,
-          });
+      if (isImageChanged) {
+        if (imageFile?.current) {
+          const { data } = await supabase.storage
+            .from('recruiter-user')
+            .upload(`public/${recruiter_user?.user_id}`, imageFile.current, {
+              cacheControl: '3600',
+              upsert: true,
+            });
 
-        if (data?.path && imageFile?.current?.size) {
-          profile_image = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/recruiter-user/${data?.path}?t=${new Date().toISOString()}`;
-          setError(false);
+          if (data?.path && imageFile?.current?.size) {
+            profile_image = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/recruiter-user/${data?.path}?t=${new Date().toISOString()}`;
+            setError(false);
+          }
         } else {
           profile_image = null;
         }
@@ -231,7 +236,7 @@ export const EditUserDialog = ({
         <div className='flex items-center space-x-4'>
           <div className='w-16'>
             <ImageUploadManual
-              image={recruUser.profile_image ?? ''}
+              image={recruiter_user.profile_image ?? ''}
               size={64}
               imageFile={imageFile}
               setChanges={() => {

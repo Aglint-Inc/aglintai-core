@@ -281,8 +281,21 @@ export const Form = ({
 
             <div className='space-y-2'>
               <Label htmlFor='phone'>Phone</Label>
+              {/* <div className='max-w-[200px]'>
+                <ShadcnPhoneInput
+                  width={'200px'}
+                  className='w-[200px]'
+                  country={'us'}
+                  placeholder={'Enter phone number'}
+                  value={form.phone}
+                  onChange={(phone) => {
+                    setForm({ ...form, phone: phone });
+                  }}
+                />
+              </div> */}
               <Input
                 id='phone'
+                type='tel'
                 placeholder='Enter phone number'
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}

@@ -15,8 +15,8 @@ import UIDialog from '@/components/Common/UIDialog';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { supabase } from '@/utils/supabase/client';
 
-import { useAdminUpdate } from '../../../hooks/useAdminUpdate';
 import { useInterviewer } from '../../../hooks/useInterviewer';
+import { useUserUpdate } from '../../../hooks/useUserUpdate';
 import { Form } from './EditAdminDialogUI';
 import { type EditAdminFormErrorType, type Formtype } from './type';
 
@@ -33,7 +33,7 @@ const EditAdminDialog = ({
   const { data: officeLocations } = useTenantOfficeLocations();
   const [isUpdating, setIsUpdating] = useState(false);
   const imageFile = useRef<File>(null);
-  const { mutateAsync } = useAdminUpdate();
+  const { mutateAsync } = useUserUpdate();
 
   const [isImageChanged, setIsImageChanged] = useState(false);
   const [isProfileChanged, setIsProfileChanged] = useState(false);
