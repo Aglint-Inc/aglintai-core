@@ -55,7 +55,7 @@ const getSchoolLogos = (data: any) => {
   return schools.map((school, i) => (
     <ImageWithFallback
       key={i}
-      src={`https://logo.clearbit.com/${school.institution?.toLowerCase().replace(/\s+/g, '')}.com`}
+      src={`/images/scoring/education.svg`}
       alt={`${school?.institution || 'Institution'} logo`}
       fallbackSrc={'/images/scoring/education.svg'}
     />
@@ -144,26 +144,24 @@ const Schools = () => {
       <Table>
         <TableHeader className='bg-gray-100'>
           <TableRow>
-            <TableHead className='w-1/4'>Institution</TableHead>
-            <TableHead className='w-1/2'>Degree</TableHead>
-            <TableHead className='w-1/4'>Duration</TableHead>
+            <TableHead>Institution</TableHead>
+            <TableHead>Degree</TableHead>
+            <TableHead>Duration</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {itemsToShow.map(({ institution, degree, start, end }, i) => (
             <TableRow key={i}>
-              <TableCell className='flex w-1/4 items-center space-x-2'>
+              <TableCell className='flex items-center space-x-2'>
                 <ImageWithFallback
                   src={`https://logo.clearbit.com/${institution.toLowerCase().replace(/\s+/g, '')}.com`}
                   alt={`${institution} logo`}
-                  fallbackSrc={'/images/de/education.png'}
+                  fallbackSrc={'/images/scoring/education.svg'}
                 />
-                <span>{capitalize(institution, conjunctions)}</span>
+                <div>{capitalize(institution, conjunctions)}</div>
               </TableCell>
-              <TableCell className='w-1/2'>
-                {capitalize(degree, conjunctions)}
-              </TableCell>
-              <TableCell className='w-1/4'>
+              <TableCell>{capitalize(degree, conjunctions)}</TableCell>
+              <TableCell>
                 {calculateDuration(start, end)} (
                 {start?.year && start?.month && end?.year && end?.month
                   ? timeRange(

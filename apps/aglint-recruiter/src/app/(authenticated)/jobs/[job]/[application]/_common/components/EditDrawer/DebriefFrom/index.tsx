@@ -15,6 +15,7 @@ import {
 import {
   setDebriefMembers,
   setEditSession,
+  setErrorValidation,
   useEditSessionDrawerStore,
 } from '../../../stores/editSessionDrawer';
 import SessionDuration from '../DurationDropdown';
@@ -116,6 +117,15 @@ function DebriedForm() {
                 (err) => err.field === 'qualified_interviewers',
               )?.message
             }
+            onUserSelect={() => {
+              setErrorValidation(
+                errorValidation.map((err) =>
+                  err.field === 'qualified_interviewers'
+                    ? { ...err, error: false }
+                    : err,
+                ),
+              );
+            }}
           />
         </div>
       </div>

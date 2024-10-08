@@ -141,15 +141,15 @@ const Experiences = () => {
       <Table>
         <TableHeader className='bg-gray-100'>
           <TableRow>
-            <TableHead className='w-1/4'>Company</TableHead>
-            <TableHead className='w-1/2'>Title</TableHead>
-            <TableHead className='w-1/4'>Duration</TableHead>
+            <TableHead>Company</TableHead>
+            <TableHead>Title</TableHead>
+            <TableHead>Duration</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {itemsToShow.map(({ org, title, start, end }, i) => (
             <TableRow key={i}>
-              <TableCell className='flex w-1/4 items-center space-x-2'>
+              <TableCell className='flex items-center space-x-2'>
                 <ImageWithFallback
                   key={i}
                   src={`https://logo.clearbit.com/${org.toLowerCase().replace(/\s+/g, '')}.com`}
@@ -158,10 +158,8 @@ const Experiences = () => {
                 />
                 <span>{capitalize(org, conjunctions)}</span>
               </TableCell>
-              <TableCell className='w-1/2'>
-                {capitalize(title, conjunctions)}
-              </TableCell>
-              <TableCell className='w-1/4'>
+              <TableCell>{capitalize(title, conjunctions)}</TableCell>
+              <TableCell>
                 {calculateDuration(start, end)} (
                 {start?.year && start?.month && end?.year && end?.month
                   ? timeRange(

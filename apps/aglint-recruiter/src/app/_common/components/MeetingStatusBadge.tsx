@@ -16,7 +16,7 @@ export function MeetingStatusBadge({
       ) : status === 'cancelled' ? (
         <UIBadge color='error' textBadge={'Canceled'} />
       ) : status === 'not_scheduled' ? (
-        <UIBadge color='neutral' textBadge={'Not Scheduled'} />
+        <UIBadge color='secondary' textBadge={'Not Scheduled'} />
       ) : status === 'waiting' ? (
         <UIBadge color='warning' textBadge={'In Progress'} />
       ) : status === 'confirmed' ? (

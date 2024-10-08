@@ -206,6 +206,24 @@ const ScheduleOptions = () => {
           </UIButton>
         </div>
       </ShowCode.When>
+
+      <UIButton
+        variant='default'
+        size='sm'
+        onClick={async () => {
+          if (fetchingPlan) return;
+          await findAvailibility({
+            filters: initialFilters,
+            dateRange: {
+              start_date: dayjsLocal().toISOString(),
+              end_date: dayjsLocal().add(14, 'day').toISOString(),
+            },
+          });
+          setIsSelfScheduleDrawerOpen(true);
+        }}
+      >
+        Schedule Debrief
+      </UIButton>
     </div>
   );
 };

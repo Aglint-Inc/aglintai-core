@@ -133,7 +133,7 @@ const Skill = () => {
               ? skill.toLowerCase()
               : skill.charAt(0).toUpperCase() + skill.slice(1)
           }
-          color={relevance === 'high' ? 'purple' : 'neutral'}
+          color={relevance === 'high' ? 'purple' : 'secondary'}
         />
       ))}
       {skillsWithRelevance.length > 10 && (
