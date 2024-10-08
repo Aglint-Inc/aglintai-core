@@ -30,7 +30,8 @@ function BadgesRight({
   }
 
   const rescheduleRequests = cancelReasons.filter(
-    (reason) => reason.interview_session_cancel.type === 'reschedule',
+    (reason) =>
+      reason.interview_session_cancel.type === 'candidate_request_reschedule',
   );
 
   const pausedUser = users.filter(

@@ -30,11 +30,11 @@ import MultiDay from './MultiDay';
 import { SingleDay } from './SingleDay';
 
 const CandidateInviteNew = () => {
-  const { isLoading, isError } = useInviteMeta();
+  const { isLoading, isError, isRefetching } = useInviteMeta();
 
   return (
     <div className='w-full'>
-      {isLoading ? (
+      {isLoading || isRefetching ? (
         <LoadingState />
       ) : isError ? (
         <ErrorState />

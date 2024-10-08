@@ -163,7 +163,7 @@ const Experiences = () => {
               </TableCell>
               <TableCell className='w-1/4'>
                 {calculateDuration(start, end)} (
-                {start.year && start.month && end.year && end.month
+                {start?.year && start?.month && end?.year && end?.month
                   ? timeRange(
                       String(
                         timeFormat({ year: start.year, month: start.month }),
@@ -277,7 +277,7 @@ const ImageWithFallback = ({
       width={24}
       height={24}
       onError={() => setImgSrc(fallbackSrc)}
-      className='rounded-full '
+      className='rounded-full'
     />
   );
 };

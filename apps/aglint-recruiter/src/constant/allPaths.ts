@@ -53,7 +53,6 @@ export const PATHS = [
   '/api/scheduling/application/fetchfeedbackdetails',
   '/api/scheduling/application/mailthankyou',
   '/api/scheduling/application/openselfscheduling',
-  '/api/scheduling/application/schedulewithagent',
   '/api/scheduling/application/schedulewithagentwithouttaskid',
   '/api/scheduling/application/sendselfschedule',
   '/api/scheduling/calendar_check_recruiter',

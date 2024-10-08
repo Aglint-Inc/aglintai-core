@@ -1,3 +1,5 @@
+import { supabaseWrap } from '@aglint/shared-utils';
+
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export const getWActions = async ({
@@ -8,15 +10,15 @@ export const getWActions = async ({
   request_id: string | null;
 }) => {
   const supabaseAdmin = getSupabaseServer();
-  const all_actions = (
+  const all_actions = supabaseWrap(
     await supabaseAdmin
       .from('workflow_action')
       .select('*,workflow!inner(*)')
-      .eq('workflow.recruiter_id', company_id)
-      .throwOnError()
-  ).data;
+      .eq('workflow.recruiter_id', company_id),
+    false,
+  );
 
-  if (!all_actions) {
+  if (all_actions.length === 0) {
     return { company_actions: [], request_workflows: [] };
   }
 
@@ -32,6 +34,7 @@ export const getWActions = async ({
     request_workflows: request_id
       ? all_actions
           .filter((act) => act.workflow.request_id === request_id)
+          .filter((act) => act.workflow.workflow_type === 'request')
           .map((t) => {
             return {
               ...t,

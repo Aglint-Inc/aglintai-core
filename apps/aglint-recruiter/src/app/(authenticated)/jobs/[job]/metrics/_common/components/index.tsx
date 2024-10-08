@@ -124,7 +124,7 @@ const Dashboard = () => {
           <SharedActions />
         </PageActions>
       </PageHeader>
-      <ScrollBar className='h-[calc(100vh-220px)]'>
+      <ScrollArea className='h-[calc(100vh-220px)]'>
         <div className='mb-6 flex flex-col gap-6 px-4'>
           <div>
             <div className='flex flex-col gap-4 py-4'>
@@ -147,7 +147,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-      </ScrollBar>
+      </ScrollArea>
     </Page>
   );
 };
