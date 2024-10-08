@@ -55,7 +55,7 @@ function DeclineScheduleDialog() {
           .insert({
             reason,
             session_relation_id: sessionRelation.id,
-            type: 'declined',
+            type: 'interviewer_request_decline',
             session_id: schedule.interview_session.id,
             other_details: {
               note: notes,

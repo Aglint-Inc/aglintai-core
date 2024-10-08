@@ -1862,8 +1862,10 @@ export const interviewSessionRelationshipsSchema = z.tuple([
 ]);
 
 export const cancelTypeSchema = z.union([
-  z.literal("reschedule"),
-  z.literal("declined"),
+  z.literal("interviewer_request_decline"),
+  z.literal("candidate_request_decline"),
+  z.literal("admin_cancel"),
+  z.literal("candidate_request_reschedule"),
 ]);
 
 export const interviewSessionCancelInsertSchema = z.object({
@@ -1875,7 +1877,7 @@ export const interviewSessionCancelInsertSchema = z.object({
   is_resolved: z.boolean().optional(),
   other_details: jsonSchema.optional().nullable(),
   reason: z.string(),
-  request_id: z.string(),
+  request_id: z.string().optional().nullable(),
   session_id: z.string(),
   session_relation_id: z.string().optional().nullable(),
   type: cancelTypeSchema.optional(),
@@ -1890,7 +1892,7 @@ export const interviewSessionCancelUpdateSchema = z.object({
   is_resolved: z.boolean().optional(),
   other_details: jsonSchema.optional().nullable(),
   reason: z.string().optional(),
-  request_id: z.string().optional(),
+  request_id: z.string().optional().nullable(),
   session_id: z.string().optional(),
   session_relation_id: z.string().optional().nullable(),
   type: cancelTypeSchema.optional(),
@@ -5729,7 +5731,7 @@ export const interviewSessionCancelRowSchema = z.object({
   is_resolved: z.boolean(),
   other_details: jsonSchema.nullable(),
   reason: z.string(),
-  request_id: z.string(),
+  request_id: z.string().nullable(),
   session_id: z.string(),
   session_relation_id: z.string().nullable(),
   type: cancelTypeSchema,
