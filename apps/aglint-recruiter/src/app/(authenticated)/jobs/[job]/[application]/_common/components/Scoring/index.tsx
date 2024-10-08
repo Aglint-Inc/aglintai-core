@@ -14,13 +14,13 @@ const Details = (props: PropsWithChildren) => {
   return (
     <div className='flex flex-col gap-4'>
       {props.children ?? (
-        <>
+        <div className='flex flex-col gap-3 p-4'>
           <Insights />
           <Analysis />
           <Experience />
           <Education />
           <Skills />
-        </>
+        </div>
       )}
     </div>
   );

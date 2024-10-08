@@ -4,11 +4,12 @@ import { BriefcaseBusiness } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
+import { EmptyState } from '@/common/EmptyState';
+
 import { useApplicationDetails } from '../../hooks/useApplicationDetails';
 import ApplicationDetailAccordion from '../ui/ApplicationDetailAccordian';
 
 const Experience = () => {
-
   // const companyLogos = getCompanyLogos(data);
 
   return (
@@ -16,10 +17,7 @@ const Experience = () => {
       <ApplicationDetailAccordion
         title='Experience'
         Icon={BriefcaseBusiness}
-        headerSlot={
-          <>
-          </>
-        }
+        headerSlot={<></>}
       >
         <Content />
       </ApplicationDetailAccordion>
@@ -50,10 +48,11 @@ const Content = () => {
     )
   )
     return (
-      <div className='flex flex-col items-center justify-center p-4'>
-        <BriefcaseBusiness className='mb-2 h-12 w-12 text-muted-foreground' />
-        <p className='text-sm text-gray-600'>No experience found</p>
-      </div>
+      <EmptyState
+        header='No experience found'
+        description="No experience was identified from the candidate's resume."
+        icon={BriefcaseBusiness}
+      />
     );
   return <Experiences />;
 };
@@ -106,44 +105,47 @@ const Experiences = () => {
   return (
     <>
       {itemsToShow.map(({ org, title, start, end }, i) => (
-            <div key={i} className='flex items-center gap-3'>
-                <div className='w-12 h-12 flex items-center justify-center border rounded-md bg-white'>
-                <ImageWithFallback
-                  key={i}
-                  src={`https://logo.clearbit.com/${org.toLowerCase().replace(/\s+/g, '')}.com`}
-                  alt={`${org || 'Company'} logo`}
-                  fallbackSrc={'/images/default/company.svg'}
-                  height={30}
-                  width={30}
-                />
-                </div>
-                <div className='flex flex-row w-full justify-between items-center gap-1'>
-                <div className='flex flex-col gap-1'>
-                <span className='text-sm font-medium'> {capitalize(title, conjunctions)}</span>
-                <span  className="text-sm text-muted-foreground">{capitalize(org, conjunctions)}</span>
-                </div>
-                <div className="text-sm text-muted-foreground">
-                {calculateDuration(start, end)} (
-                {start &&
-                end &&
-                start.year &&
-                start.month &&
-                end.year &&
-                end.month
-                  ? timeRange(
-                      String(
-                        timeFormat({ year: start.year, month: start.month }),
-                      ),
-                      String(timeFormat({ year: end.year, month: end.month })),
-                    )
-                  : ''}
-                )
-              </div>
-                </div>
-
-             
+        <div key={i} className='flex items-center gap-3'>
+          <div className='flex h-12 w-12 items-center justify-center rounded-md border bg-white'>
+            <ImageWithFallback
+              key={i}
+              src={`https://logo.clearbit.com/${org.toLowerCase().replace(/\s+/g, '')}.com`}
+              alt={`${org || 'Company'} logo`}
+              fallbackSrc={'/images/default/company.svg'}
+              height={30}
+              width={30}
+            />
+          </div>
+          <div className='flex w-full flex-row items-center justify-between gap-1'>
+            <div className='flex flex-col gap-1'>
+              <span className='text-sm font-medium'>
+                {' '}
+                {capitalize(title, conjunctions)}
+              </span>
+              <span className='text-sm text-muted-foreground'>
+                {capitalize(org, conjunctions)}
+              </span>
             </div>
-          ))}
+            <div className='text-sm text-muted-foreground'>
+              {calculateDuration(start, end)} (
+              {start &&
+              end &&
+              start.year &&
+              start.month &&
+              end.year &&
+              end.month
+                ? timeRange(
+                    String(
+                      timeFormat({ year: start.year, month: start.month }),
+                    ),
+                    String(timeFormat({ year: end.year, month: end.month })),
+                  )
+                : ''}
+              )
+            </div>
+          </div>
+        </div>
+      ))}
     </>
   );
 };
@@ -221,7 +223,7 @@ const ImageWithFallback = ({
   alt,
   fallbackSrc,
   width,
-  height
+  height,
 }: {
   src: string;
   alt: string;
@@ -237,7 +239,7 @@ const ImageWithFallback = ({
       alt={alt}
       width={width}
       height={height}
-      onError={() => setImgSrc(fallbackSrc)}  
+      onError={() => setImgSrc(fallbackSrc)}
     />
   );
 };

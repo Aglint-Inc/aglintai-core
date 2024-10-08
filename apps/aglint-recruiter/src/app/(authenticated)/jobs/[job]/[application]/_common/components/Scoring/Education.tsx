@@ -4,6 +4,8 @@ import { GraduationCap, School } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
+import { EmptyState } from '@/common/EmptyState';
+
 import { useApplicationDetails } from '../../hooks/useApplicationDetails';
 import ApplicationDetailAccordion from '../ui/ApplicationDetailAccordian';
 
@@ -47,10 +49,11 @@ const Content = () => {
     )
   )
     return (
-      <div className='flex flex-col items-center justify-center p-4'>
-        <School className='mb-2 h-12 w-12 text-muted-foreground' />
-        <p className='text-sm text-gray-600'>No education found</p>
-      </div>
+      <EmptyState
+      header='No education found'
+      description="No education was identified from the candidate's resume."
+      icon={School}
+    />
     );
 
   return <Schools />;

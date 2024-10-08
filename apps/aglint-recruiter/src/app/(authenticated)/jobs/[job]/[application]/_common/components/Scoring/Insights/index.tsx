@@ -1,4 +1,4 @@
-import { Lightbulb } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 import ApplicationDetailAccordion from '../../ui/ApplicationDetailAccordian';
 import { Badges } from './Badges';
@@ -9,7 +9,7 @@ export const Insights = () => {
     <>
       <ApplicationDetailAccordion
         title='Insights'
-        Icon={Lightbulb}
+        Icon={Sparkles}
         headerSlot={<></>}
         isOpen={true}
       >
