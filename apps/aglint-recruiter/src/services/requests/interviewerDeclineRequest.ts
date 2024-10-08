@@ -66,7 +66,7 @@ export async function interviewerDeclineRequest(
         reason,
         session_id: rec.session_id,
         session_relation_id: parsed.session_relation_id,
-        type: 'declined',
+        type: 'interviewer_request_decline',
         request_id: decline_request_id,
       })
       .select()
