@@ -1,7 +1,5 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { EmptyState } from '@components/empty-state';
 import { Card } from '@components/ui/card';
-import { Calendar } from 'lucide-react';
 import { useState } from 'react';
 
 import CalendarComp from '@/components/Common/Calendar/Calendar';
@@ -23,14 +21,6 @@ function Schedules() {
       {isLoading ? (
         <div className='flex h-[400px] w-full items-center justify-center'>
           <Loader />
-        </div>
-      ) : (allSchedules || []).length === 0 ? (
-        <div className='w-full'>
-          <EmptyState
-            icon={Calendar}
-            header={'There are no schedules available at the moment.'}
-            description='Create a new interview pool to get started.'
-          />
         </div>
       ) : (
         <Card className='p-4'>
