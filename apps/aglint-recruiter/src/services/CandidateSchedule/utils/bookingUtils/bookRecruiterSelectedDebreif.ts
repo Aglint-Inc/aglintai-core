@@ -61,7 +61,7 @@ export const bookRecruiterSelectedDebreif = async (
     (async () => {
       const payload: APICandScheduleMailThankYou = {
         cand_tz: fetched_cand_details.cand_tz,
-        filter_id: req_body.filter_id,
+        filter_id: null,
         application_id: db_details.application.id,
         session_ids: [req_body.session_id],
         availability_request_id: null,
