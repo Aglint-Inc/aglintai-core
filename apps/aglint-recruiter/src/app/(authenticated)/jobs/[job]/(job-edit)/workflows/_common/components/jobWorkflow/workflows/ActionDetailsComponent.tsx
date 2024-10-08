@@ -131,6 +131,8 @@ const AgentInstructionTemplate = ({
   isShowEmailTemplate,
   emailTempParams,
 }: AgentInstructionTemplateProps) => {
+  console.log('loglog', isShowEmailTemplate);
+
   return (
     <>
       <div>

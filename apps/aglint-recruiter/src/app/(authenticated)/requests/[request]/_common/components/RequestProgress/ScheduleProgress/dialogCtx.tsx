@@ -75,15 +75,13 @@ export const SelectedActionsDetailsProvider: React.FC<
   const emailTemplateTargetAPI: DatabaseEnums['email_slack_types'] =
     useMemo(() => {
       const tempTargetAPI = selectedActionsDetails.target_api;
-      if (
-        selectedActionsDetails.action_type === 'agent_instruction' &&
-        tempTargetAPI
-      ) {
-        return tempTargetAPI;
+      if (agentTargetApiEmailEndPoint[tempTargetAPI]) {
+        return agentTargetApiEmailEndPoint[tempTargetAPI];
       }
 
       return selectedActionsDetails.target_api;
     }, [selectedActionsDetails.target_api]);
+
   return (
     <SelectedActionsDetailsContext.Provider
       value={{
