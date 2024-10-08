@@ -32,15 +32,15 @@ function ListSection({
   const isExpanded =
     expandedSections.includes(sectionName) ||
     (sectionName === 'schedule_request' && collapseScheduleRequestSections);
-  const [slicedRequests, setSlicedRequests] = useState<any[]>(
-    requests.slice(0, 5),
-  );
+
+  const [slice, setSlice] = useState(5);
+  const slicedRequests = requests.slice(0, slice);
   const viewMore = () => {
     if (slicedRequests.length === requests.length) {
       if (isExpanded) {
         setExpandedSections(expandedSections.filter((s) => s !== sectionName));
       }
-    } else setSlicedRequests(requests.slice(0, slicedRequests.length + 5));
+    } else setSlice((prev) => prev + 5);
   };
   return (
     <Accordion
