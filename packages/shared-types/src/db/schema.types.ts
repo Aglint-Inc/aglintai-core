@@ -2578,8 +2578,6 @@ export type Database = {
           hiring_manager: string | null
           id: string
           interview_coordinator: string | null
-          interview_plan_warning_ignore: boolean
-          interview_session_warning_ignore: boolean
           is_ats_sync: boolean
           is_pinned: boolean
           jd_changed: boolean | null
@@ -2615,8 +2613,6 @@ export type Database = {
           hiring_manager?: string | null
           id?: string
           interview_coordinator?: string | null
-          interview_plan_warning_ignore?: boolean
-          interview_session_warning_ignore?: boolean
           is_ats_sync?: boolean
           is_pinned?: boolean
           jd_changed?: boolean | null
@@ -2652,8 +2648,6 @@ export type Database = {
           hiring_manager?: string | null
           id?: string
           interview_coordinator?: string | null
-          interview_plan_warning_ignore?: boolean
-          interview_session_warning_ignore?: boolean
           is_ats_sync?: boolean
           is_pinned?: boolean
           jd_changed?: boolean | null
@@ -4651,8 +4645,6 @@ export type Database = {
           hiring_manager: string | null
           id: string | null
           interview_coordinator: string | null
-          interview_plan_warning_ignore: boolean | null
-          interview_session_warning_ignore: boolean | null
           is_pinned: boolean | null
           jd_json: Json | null
           job_title: string | null
