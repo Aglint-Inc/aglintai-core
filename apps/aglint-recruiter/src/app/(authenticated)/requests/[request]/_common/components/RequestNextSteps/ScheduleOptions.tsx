@@ -21,7 +21,7 @@ import {
   setCandidateAvailabilityId,
   useConfirmAvailabilitySchedulingFlowStore,
 } from '../ConfirmAvailability/_common/contexts/AvailabilitySchedulingStore';
-import { useSelfSchedulingDrawer } from '../SelfSchedulingDrawer/_common/hooks/hooks';
+import { useSelfSchedulingDrawer } from '../SelfSchedulingDrawer/_common/hooks/useSelfSchedulingDrawer';
 import {
   initialFilters,
   setIsSelfScheduleDrawerOpen,

@@ -1,6 +1,6 @@
-import { UIAlert } from '@components/ui-alert';
-import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
+
+import { UIBadge } from '@/common/UIBadge';
 
 import { useSelfSchedulingFlowStore } from '../../store/store';
 import SelfScheduleSuccess from '../SelfScheduleSuccess';
@@ -21,8 +21,8 @@ function BodyDrawer() {
       <ErrorBoundary
         fallback={
           <>
-            <UIAlert
-              title={'Error while self schedule. Please contact support'}
+            <UIBadge
+              textBadge={'Error self scheduling. Please contact support'}
             />
           </>
         }

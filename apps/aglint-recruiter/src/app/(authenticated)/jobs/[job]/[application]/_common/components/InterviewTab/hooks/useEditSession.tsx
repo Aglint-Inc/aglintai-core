@@ -23,14 +23,14 @@ export const useEditSession = () => {
               'qualified',
           )
           .map((user) => ({
-            email: (user?.user_details?.email ?? null)!,
-            user_id: (user?.interview_module_relation?.user_id ?? null)!,
-            first_name: (user?.user_details?.first_name ?? null)!,
-            last_name: (user?.user_details?.last_name ?? null)!,
-            position: (user?.user_details?.position ?? null)!,
-            profile_image: (user?.user_details?.profile_image ?? null)!,
-            module_relation_id: (user?.interview_module_relation?.id ?? null)!,
-          })) || [],
+            email: user?.user_details?.email,
+            user_id: user?.interview_module_relation?.user_id ?? '',
+            first_name: user?.user_details?.first_name,
+            last_name: user?.user_details?.last_name ?? '',
+            position: user?.user_details?.position ?? '',
+            profile_image: user?.user_details?.profile_image ?? '',
+            module_relation_id: user?.interview_module_relation?.id ?? '',
+          })),
       );
 
       const trainingInterviewers = currentSession?.users?.filter(
@@ -40,14 +40,14 @@ export const useEditSession = () => {
 
       setTrainingInterviewers(
         trainingInterviewers?.map((user) => ({
-          email: (user?.user_details?.email ?? null)!,
-          user_id: (user?.interview_module_relation?.user_id ?? null)!,
-          first_name: (user?.user_details?.first_name ?? null)!,
-          last_name: (user?.user_details?.last_name ?? null)!,
-          position: (user?.user_details?.position ?? null)!,
-          profile_image: (user?.user_details?.profile_image ?? null)!,
-          module_relation_id: (user?.interview_module_relation?.id ?? null)!,
-        })) || [],
+          email: user?.user_details?.email,
+          user_id: user?.interview_module_relation?.user_id ?? '',
+          first_name: user?.user_details?.first_name,
+          last_name: user?.user_details?.last_name ?? '',
+          position: user?.user_details?.position ?? '',
+          profile_image: user?.user_details?.profile_image ?? '',
+          module_relation_id: user?.interview_module_relation?.id ?? '',
+        })),
       );
 
       if ((trainingInterviewers ?? []).length > 0) {
@@ -55,14 +55,14 @@ export const useEditSession = () => {
       }
     } else {
       setDebriefMembers(
-        currentSession?.users?.map((user) => ({
-          email: (user?.user_details?.email ?? null)!,
-          user_id: (user?.interview_module_relation?.user_id ?? null)!,
-          first_name: (user?.user_details?.first_name ?? null)!,
-          last_name: (user?.user_details?.last_name ?? null)!,
-          position: (user?.user_details?.position ?? null)!,
-          profile_image: (user?.user_details?.profile_image ?? null)!,
-        })) || [],
+        currentSession.users.map((user) => ({
+          email: user.user_details?.email,
+          user_id: user.user_details.user_id,
+          first_name: user.user_details?.first_name,
+          last_name: user.user_details?.last_name ?? '',
+          position: user.user_details?.position ?? '',
+          profile_image: user?.user_details?.profile_image ?? '',
+        })),
       );
     }
     setIsEditOpen(true);

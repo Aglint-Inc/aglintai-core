@@ -1,4 +1,8 @@
-import { type schema_find_availability_payload } from '@aglint/shared-utils';
+import { type APIScheduleDebreif } from '@aglint/shared-types';
+import {
+  dayjsLocal,
+  type schema_find_availability_payload,
+} from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { useMeetingList } from '@requests/hooks';
 // import { type ApiResponseFindAvailability } from '@requests/types';
@@ -13,7 +17,6 @@ import type {
   ApiResponseSelfSchedule,
 } from '@/pages/api/scheduling/application/sendselfschedule';
 import { type ApiResponseFindAvailability } from '@/pages/api/scheduling/v1/find_availability';
-import { type fetchSessionDetails } from '@/server/api/routers/requests/utils/requestSessions';
 
 import { filterSchedulingOptionsArray } from '../components/BodyDrawer/ScheduleFilter/utils';
 import {
@@ -44,10 +47,8 @@ export const useSelfSchedulingDrawer = () => {
 
   const { recruiter, recruiter_user } = useTenant();
   const request_id = requestId || '';
-  const { data } = useMeetingList();
-  const allSessions = (data || []) as Awaited<
-    ReturnType<typeof fetchSessionDetails>
-  >;
+  const { data: allSessions } = useMeetingList();
+
   const selectedSessionIds = allSessions?.map(
     (session) => session.interview_session.id,
   );
@@ -75,6 +76,10 @@ export const useSelfSchedulingDrawer = () => {
     isSendingToCandidate: state.isSendingToCandidate,
     localFilters: state.localFilters,
   }));
+
+  const isDebrief = allSessions.some(
+    (ele) => ele?.interview_session?.session_type === 'debrief',
+  );
 
   const onClickPrimary = async () => {
     await selfSchedulingOrDebriefFlow();
@@ -187,16 +192,47 @@ export const useSelfSchedulingDrawer = () => {
 
   const selfSchedulingOrDebriefFlow = async () => {
     if (stepScheduling === 'slot_options') {
-      // if it normal session then user has to select atleast 5 combinations
-      if (selectedCombIds.length < 5) {
-        toast({ title: 'Please select at least 5 time slots to schedule.' });
-        return;
+      if (isDebrief) {
+        onClickScheduleDebrief();
+      } else {
+        // if it normal session then user has to select atleast 5 combinations
+        if (selectedCombIds.length < 5) {
+          toast({ title: 'Please select at least 5 time slots to schedule.' });
+          return;
+        }
+        setStepScheduling('self_scheduling_email_preview');
       }
-      setStepScheduling('self_scheduling_email_preview');
     } else if (stepScheduling === 'self_scheduling_email_preview') {
       if (!isSendingToCandidate) {
         await onClickSendToCandidate();
       }
+    }
+  };
+
+  const onClickScheduleDebrief = async () => {
+    try {
+      setIsSendingToCandidate(true);
+      const plans = filteredSchedulingOptions.map((opt) => opt.plans).flat();
+      const selectedSlot = plans.filter((opt) =>
+        selectedCombIds.includes(opt.plan_comb_id),
+      )[0];
+      const bodyParams: APIScheduleDebreif = {
+        session_id: allSessions[0].interview_session.id,
+        user_tz: dayjsLocal.tz.guess(),
+        selectedOption: selectedSlot,
+        request_id,
+      };
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/booking/schedule-debreif`,
+        bodyParams,
+      );
+    } catch (e) {
+      toast({
+        variant: 'destructive',
+        title: 'Error sending to candidate. Please contact support.',
+      });
+    } finally {
+      setIsSendingToCandidate(false);
     }
   };
 

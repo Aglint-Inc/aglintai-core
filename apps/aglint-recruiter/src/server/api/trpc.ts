@@ -184,8 +184,7 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
   let user_id: string | null = null;
 
   if (process.env.NODE_ENV === 'development')
-    user_id =
-      (await db.auth.getUserIdentities())?.data?.identities[0].user_id ?? null;
+    user_id = (await db.auth.getSession())?.data?.session?.user?.id ?? null;
   else user_id = (await db.auth.getUser()).data.user?.id ?? null;
 
   if (!user_id)

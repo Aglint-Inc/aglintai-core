@@ -1,7 +1,7 @@
 import { UIButton } from '@/components/Common/UIButton';
 import { RangePicker } from '@/jobs/job/application/components/ScheduleDialog';
 
-import { useSelfSchedulingDrawer } from '../../../hooks/hooks';
+import { useSelfSchedulingDrawer } from '../../../hooks/useSelfSchedulingDrawer';
 import {
   setLocalFilters,
   useSelfSchedulingFlowStore,
