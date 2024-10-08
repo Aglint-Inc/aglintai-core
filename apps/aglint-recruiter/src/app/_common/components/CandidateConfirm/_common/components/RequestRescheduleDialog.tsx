@@ -142,7 +142,7 @@ function RequestRescheduleDialog({
             onClick={() => {
               mutate({
                 reason: reason,
-                type: 'reschedule',
+                type: 'candidate_request_reschedule',
                 other_details,
               });
             }}
