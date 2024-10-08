@@ -12,11 +12,11 @@ import { Clock } from 'lucide-react';
 import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityContext';
 
 function SlotsSubmitted() {
-  const { daySlots } = useRequestAvailabilityContext();
+  const { selectedSlots } = useRequestAvailabilityContext();
   return (
     <>
       <div className='flex w-full flex-col space-y-16'>
-        {daySlots.map((daySlot) => (
+        {selectedSlots.map((daySlot) => (
           <Section key={daySlot.round}>
             <SectionHeader>
               <SectionHeaderText>
