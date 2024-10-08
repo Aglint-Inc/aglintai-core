@@ -93,7 +93,7 @@ export const selfScheduleLinkInstruction = async ({
   const pref_dates =
     availability.candidateAvailability.preferredDates ??
     default_preferred_dates;
-  const formatOutput: z.infer<typeof agentSelfScheduleInstruction> = {
+  const formatOutput: z.output<typeof agentSelfScheduleInstruction> = {
     ...availability,
     candidateAvailability: {
       prefferredTime: {
