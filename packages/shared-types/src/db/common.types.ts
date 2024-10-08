@@ -32,13 +32,14 @@ export type CustomSchedulingReason = {
 export type CustomJobParamters = Custom<
   Pick<
     Database["public"]["Tables"]["public_jobs"]["Row"],
-    "parameter_weights" | "jd_json" | "draft" | "posted_by"
+    "parameter_weights" | "jd_json" | "draft" | "posted_by" | "draft_jd_json"
   >,
   {
     parameter_weights: CustomParameterWeights;
     jd_json: CustomJdJson;
     draft: CustomDraft;
     posted_by: ATSIntegrations;
+    draft_jd_json: NewJdJson;
   }
 >;
 
@@ -48,6 +49,23 @@ type CustomParameterWeights = {
   skills: number;
   experience: number;
   education: number;
+};
+
+type NewJdJson = {
+  level:
+    | "Fresher-level"
+    | "Associate-level"
+    | "Mid-level"
+    | "Senior-level"
+    | "Executive-level";
+  experience: NewJdJsonItem[];
+  skills: NewJdJsonItem[];
+  education: NewJdJsonItem[];
+};
+
+type NewJdJsonItem = {
+  field: string;
+  mustHave: boolean;
 };
 
 type CustomJdJson = {

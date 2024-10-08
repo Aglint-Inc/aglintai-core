@@ -1,6 +1,7 @@
 import { createTRPCRouter } from '../../../trpc';
 import { applications } from './applications';
 import { filters } from './filters';
+import { jd } from './jd';
 import { metrics } from './metrics';
 import { workflow } from './workflow';
 
@@ -9,4 +10,5 @@ export const job = createTRPCRouter({
   filters,
   metrics,
   workflow,
+  jd,
 });

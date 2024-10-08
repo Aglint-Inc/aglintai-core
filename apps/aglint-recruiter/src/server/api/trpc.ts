@@ -252,6 +252,9 @@ export type PublicProcedure<T = unknown> = Procedure<typeof publicProcedure, T>;
 export const atsProcedure = publicProcedure.use(atsMiddleware);
 export type ATSProcedure<T = unknown> = Procedure<typeof atsProcedure, T>;
 
+export const dbProcedure = publicProcedure;
+export type DBProcedure<T = unknown> = Procedure<typeof dbProcedure, T>;
+
 /**
  * Private (authenticated) procedure
  *
