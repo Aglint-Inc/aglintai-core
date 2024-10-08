@@ -94,7 +94,7 @@ export const dbFetchScheduleApiDetails = async ({
         interviewer_cnt: s.interviewer_cnt,
         session_order: s.session_order,
         qualifiedIntervs: interviewers.filter(
-          (i) => i.session_id === s.id && i.training_type === 'qualified',
+          (i) => i.session_id === s.id && i.interviewer_type === 'qualified',
         ),
         trainingIntervs: [],
         location: s.location,
