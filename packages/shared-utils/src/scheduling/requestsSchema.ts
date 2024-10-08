@@ -16,5 +16,6 @@ export const createCandidateRequestSchema = z.object({
 
 export const createInterviewerRequestSchema = z.object({
   session_id: z.string(),
-  interview_cancel_id: z.string(),
+  session_relation_id: z.string(),
+  declined_place: z.enum(['slack', 'calender']),
 });
