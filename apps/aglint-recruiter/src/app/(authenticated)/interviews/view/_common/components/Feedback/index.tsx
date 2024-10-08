@@ -163,7 +163,7 @@ const FeedbackWindow = () => {
         </ShowCode.When>
         <ShowCode.When
           isTrue={Boolean(
-            checkPermissions && checkPermissions(['scheduling_actions']),
+            checkPermissions && checkPermissions(['manage_interview']),
           )}
         >
           <AdminFeedback

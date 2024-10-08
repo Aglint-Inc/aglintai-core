@@ -12,59 +12,58 @@ const app_modules: {
     description:
       'Manage the apps available for the [role_name] in your Aglint account. By enabling an app, the role will have access to it. You can configure permissions for each app in the sections below.',
     permissions: [
-      'job_module',
-      'task_module',
-      'scheduling_module',
-      'workflow_module',
-      'integrations_module',
-      'company_settings_module',
+      'view_jobs',
+      'view_requests',
+      'view_interview',
+      'view_workflow',
+      'view_integrations',
+      'view_company',
     ],
   },
   {
     name: 'Tasks Application Permissions',
-    dependency: 'task_module',
+    dependency: 'view_requests',
     description:
       'Here are the permissions enabled for the [role_name] role to manage the Tasks Application:',
-    permissions: ['view_all_task'],
+    permissions: ['view_requests'],
   },
   {
     name: 'Jobs Application Permissions',
-    dependency: 'job_module',
+    dependency: 'view_jobs',
     description:
       'Here are the permissions enabled for the [role_name] role to manage the Jobs Application:',
-    permissions: ['manage_job'],
+    permissions: ['manage_jobs'],
   },
   {
     name: 'Scheduling Application Permissions',
-    dependency: 'scheduling_module',
+    dependency: 'view_interview',
     description:
       'Here are the permissions enabled for the [role_name] role to manage the Scheduling Application:',
     permissions: [
-      'interview_types',
-      'scheduling_actions',
+      'view_interview_pool',
+      'manage_interview',
       'manage_interviewers',
-      'scheduling_settings_and_reports',
     ],
   },
   {
     name: 'Workflows Application Permissions',
-    dependency: 'workflow_module',
+    dependency: 'view_workflow',
     description:
       'Here are the permissions enabled for the [role_name] role to manage the Workflows Application:',
     permissions: ['manage_workflow'],
   },
   {
     name: 'Company Settings Permissions',
-    dependency: 'company_settings_module',
+    dependency: 'view_company',
     description:
       'Here are the permissions enabled for the [role_name] role to manage the Company Settings',
     permissions: [
       'view_company',
       'manage_company',
-      'view_roles',
-      'manage_roles',
-      'view_users',
-      'manage_users',
+      'view_company',
+      'manage_company',
+      'view_company',
+      'manage_company',
     ],
   },
 ];

@@ -32,7 +32,7 @@ const ResumePreviewer = ({
 }) => {
   const { checkPermissions } = useRolesAndPermissions();
   const isAllowed = useMemo(
-    () => checkPermissions(['manage_job']),
+    () => checkPermissions(['manage_jobs']),
     [checkPermissions],
   );
 

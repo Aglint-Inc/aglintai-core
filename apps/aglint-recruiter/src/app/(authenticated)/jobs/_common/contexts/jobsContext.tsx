@@ -23,7 +23,7 @@ const useJobContext = () => {
     useRolesAndPermissions();
 
   const manageJob = useMemo(
-    () => checkPermissions(['manage_job']),
+    () => checkPermissions(['manage_jobs']),
     [checkPermissions],
   );
 
@@ -83,7 +83,7 @@ const useJobContext = () => {
   };
 
   const devlinkProps = useMemo(
-    () => getDevlinkProps(['manage_job']),
+    () => getDevlinkProps(['manage_jobs']),
     [getDevlinkProps],
   );
 

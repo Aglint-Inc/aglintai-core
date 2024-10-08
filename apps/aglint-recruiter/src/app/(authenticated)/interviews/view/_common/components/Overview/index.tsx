@@ -137,7 +137,7 @@ function Overview() {
           size='sm'
           onClick={() => {
             if (checkPermissions) {
-              checkPermissions(['interview_types']) &&
+              checkPermissions(['view_interview_pool']) &&
                 window.open(
                   `/interview-pool/${schedule.interview_session.module_id}`,
                   '_blank',

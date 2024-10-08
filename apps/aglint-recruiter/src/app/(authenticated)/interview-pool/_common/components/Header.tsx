@@ -87,15 +87,16 @@ export const InterviewPoolHeader = () => {
                 ]}
               />
 
-              {checkPermissions && checkPermissions(['interview_types']) && (
-                <UIButton
-                  onClick={() => {
-                    setIsCreateDialogOpen(true);
-                  }}
-                >
-                  Create
-                </UIButton>
-              )}
+              {checkPermissions &&
+                checkPermissions(['view_interview_pool']) && (
+                  <UIButton
+                    onClick={() => {
+                      setIsCreateDialogOpen(true);
+                    }}
+                  >
+                    Create
+                  </UIButton>
+                )}
               {archivedLength > 0 && (
                 <Tabs value={activeTab} onValueChange={handleTabChange}>
                   <TabsList className='rounded-lg bg-gray-100 p-1'>

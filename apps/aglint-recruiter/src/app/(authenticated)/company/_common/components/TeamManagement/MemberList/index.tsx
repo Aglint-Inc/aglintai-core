@@ -31,7 +31,7 @@ const Member = ({
   const { recruiter_user: tempRecruiterUser, recruiter } = useTenant();
   const recruiterUser = tempRecruiterUser!;
 
-  const canManage = checkPermissions(['manage_users']);
+  const canManage = checkPermissions(['manage_company']);
   const fullName = getFullName(member.first_name, member.last_name || '');
   return (
     <TableRow>

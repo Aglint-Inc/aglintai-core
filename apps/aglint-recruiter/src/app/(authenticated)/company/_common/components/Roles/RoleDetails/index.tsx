@@ -51,7 +51,7 @@ function RoleDetails({
 
   const [editUser, setEditUser] = useState(false);
   const { members } = useTenantMembers();
-  const editDisabled = !checkPermissions(['manage_roles']);
+  const editDisabled = !checkPermissions(['manage_company']);
   useEffect(() => {
     if (queryParams?.add) {
       setEditUser(true);
@@ -170,7 +170,7 @@ function RoleDetails({
                     <CirclePlus className='mr-1 h-3 w-3' />
                     Add
                   </Button>,
-                  ['manage_roles'],
+                  ['manage_company'],
                 )}
               </CardTitle>
             </CardHeader>

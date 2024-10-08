@@ -52,7 +52,7 @@ export const Body = ({ jobs }: { jobs: Job[] }) => {
         ) : (
           <>
             {data?.length === 0 ? (
-              ifAllowed(<EmptyJob />, ['manage_job'])
+              ifAllowed(<EmptyJob />, ['manage_jobs'])
             ) : (
               <ScrollArea>
                 <JobsList jobs={jobs} />

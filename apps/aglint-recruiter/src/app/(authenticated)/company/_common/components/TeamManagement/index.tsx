@@ -85,7 +85,7 @@ const TeamManagement = () => {
     return departmentMatch && locationMatch && statusMatch && roleMatch;
   });
 
-  const canManage = checkPermissions(['manage_users']);
+  const canManage = checkPermissions(['manage_company']);
   // const [isInitialLoading, setIsInitialLoading] = useState(
   //   filteredMembers.length ? false : true,
   // );

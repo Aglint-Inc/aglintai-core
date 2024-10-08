@@ -118,7 +118,7 @@ function Component() {
 
 const Requests = () => {
   return (
-    <WithPermission permission={['scheduling_actions']}>
+    <WithPermission permission={['manage_interview']}>
       <Component />
     </WithPermission>
   );

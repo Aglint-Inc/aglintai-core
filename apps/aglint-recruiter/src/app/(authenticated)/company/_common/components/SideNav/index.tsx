@@ -56,7 +56,7 @@ function VerticalNav() {
       name: 'Roles',
       id: 'roles',
       icon: 'Shield',
-      show: isShowFeature('ROLES') && checkPermissions(['view_roles']),
+      show: isShowFeature('ROLES') && checkPermissions(['view_company']),
     },
     {
       name: 'Templates',

@@ -61,7 +61,7 @@ export default Body;
 export const ConnectedJobs = () => {
   const { workflow } = useWorkflow();
   const { devlinkProps } = useRolesAndPermissions();
-  const devlink = devlinkProps(['manage_job']);
+  const devlink = devlinkProps(['manage_jobs']);
   const count = workflow?.jobs?.length ?? 0;
   return (
     <Section>

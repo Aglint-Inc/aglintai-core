@@ -20,7 +20,7 @@ function ButtonGroup() {
     schedule?.recruiter?.user_id === userId;
 
   const isCancelButtonVisible =
-    ((checkPermissions && checkPermissions(['scheduling_actions'])) ||
+    ((checkPermissions && checkPermissions(['manage_interview'])) ||
       isMeetingJobHiringTeam) &&
     schedule?.interview_meeting?.status === 'confirmed';
 

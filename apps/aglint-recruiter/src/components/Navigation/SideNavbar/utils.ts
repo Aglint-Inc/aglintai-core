@@ -20,7 +20,7 @@ export const navList: {
     route: ROUTES['/requests'](),
     comingSoon: false,
     isVisible: true,
-    permission: ['task_module'],
+    permission: ['view_requests'],
     active: ['/requests'],
   },
   {
@@ -29,7 +29,7 @@ export const navList: {
     route: ROUTES['/jobs'](),
     comingSoon: false,
     isVisible: true,
-    permission: ['job_module'],
+    permission: ['view_jobs'],
     active: [
       '/jobs',
       '/jobs/[job]',
@@ -48,7 +48,7 @@ export const navList: {
     route: ROUTES['/interviews'](),
     comingSoon: false,
     isVisible: true,
-    permission: ['scheduling_module'],
+    permission: ['view_interview'],
     active: ['/interviews'],
   },
 
@@ -67,7 +67,7 @@ export const navList: {
     route: ROUTES['/interview-pool'](),
     comingSoon: false,
     isVisible: true,
-    permission: ['interview_types'],
+    permission: ['view_interview_pool'],
     active: ['/interview-pool', '/interview-pool/[pool]'],
   },
   {
@@ -94,7 +94,7 @@ export const navList: {
     route: ROUTES['/integrations'](),
     comingSoon: false,
     isVisible: true,
-    permission: ['integrations_module'],
+    permission: ['view_integrations'],
     active: ['/integrations', '/integrations/[platform]'],
   },
   {
@@ -103,7 +103,7 @@ export const navList: {
     route: '/reports?tab=interviewMetrics',
     comingSoon: false,
     isVisible: true,
-    permission: ['company_settings_module'],
+    permission: ['view_company'],
     active: ['/reports'],
   },
   {
@@ -112,7 +112,7 @@ export const navList: {
     route: ROUTES['/company']() + '?tab=company-info',
     comingSoon: false,
     isVisible: true,
-    permission: ['company_settings_module'],
+    permission: ['view_company'],
     active: ['/company'],
   },
 ];
