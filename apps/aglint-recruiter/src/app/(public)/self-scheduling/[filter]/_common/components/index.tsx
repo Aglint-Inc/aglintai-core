@@ -150,7 +150,7 @@ const CandidateInvitePlanPage = () => {
               setDetailPopup(true);
             }}
           >
-            View Schedule details
+            View Interview details
           </UIButton>
         </SectionActions>
       </SectionHeader>

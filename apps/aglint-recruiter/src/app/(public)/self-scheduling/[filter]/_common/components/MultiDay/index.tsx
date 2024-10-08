@@ -9,6 +9,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@components/ui/alert-dialog';
+import { Button } from '@components/ui/button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@components/ui/dialog';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Coffee, Plus, Repeat } from 'lucide-react';
 import React, {
@@ -21,7 +30,6 @@ import React, {
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
 import toast from '@/utils/toast';
 
 import { getScheduleType } from '../../../../../../../utils/scheduling/colors_and_enums';
@@ -83,7 +91,7 @@ const MultiDaySuccess = (props: ScheduleCardsProps) => {
       <div className='mb-4 space-y-4'>
         <ScheduleCards rounds={props.rounds} />
       </div>
-      <div className={'flex justify-center'}>
+      <div className={'absolute bottom-8 right-8 flex justify-center'}>
         <UIButton
           variant='default'
           onClick={() => {
@@ -284,19 +292,27 @@ const ScheduleCard = (props: ScheduleCardProps) => {
           )
         }
       />
-      <UIDialog
-        open={open}
-        onClose={() => setOpen(false)}
-        slotButtons={
-          <>
-            <UIButton
-              variant='ghost'
-              onClick={() => {
-                setOpen(false);
-              }}
-            >
-              Cancel
-            </UIButton>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className='sm:max-w-[825px]'>
+          <DialogHeader>
+            <DialogTitle>Select Date and Time</DialogTitle>
+          </DialogHeader>
+          <ScrollArea className='mx-auto w-[760px] whitespace-nowrap'>
+            <div className='flex p-4'>
+              <CandidateInviteCalendar
+                sessions={sessions}
+                selections={selectedSlots}
+                handleSelect={handleSelect}
+                tz={timezone.tzCode}
+              />
+            </div>
+          </ScrollArea>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button type='button' variant='secondary'>
+                Close
+              </Button>
+            </DialogClose>
             <UIButton
               onClick={() => {
                 setOpen(false);
@@ -305,20 +321,9 @@ const ScheduleCard = (props: ScheduleCardProps) => {
             >
               Choose
             </UIButton>
-          </>
-        }
-        size='lg'
-        title='Select Date and Time'
-      >
-        <ScrollArea className='w-[500px]'>
-          <CandidateInviteCalendar
-            sessions={sessions}
-            selections={selectedSlots}
-            handleSelect={handleSelect}
-            tz={timezone.tzCode}
-          />
-        </ScrollArea>
-      </UIDialog>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
