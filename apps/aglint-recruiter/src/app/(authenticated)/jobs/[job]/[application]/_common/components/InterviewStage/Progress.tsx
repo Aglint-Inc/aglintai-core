@@ -52,6 +52,7 @@ function Progress() {
         setSelectedSessionIds([]);
         router.setQueryParams({ stage: stage.interview_plan.id });
       },
+      isActive: selectedStageId === stage.interview_plan.id,
       status: isCompleted
         ? 'completed'
         : isConfirmed

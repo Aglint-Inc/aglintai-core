@@ -22,6 +22,7 @@ export interface StageProps {
   description: string;
   status: StageStatus;
   onClick: () => void;
+  isActive: boolean;
 }
 
 interface InterviewStagesProps {
