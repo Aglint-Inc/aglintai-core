@@ -16,7 +16,7 @@ export function SchedulingPageHeader({
   return (
     <div className='flex w-full flex-col items-start'>
       <div className='flex w-full items-start rounded-t-lg bg-muted p-4'>
-        <div className='flex flex-row items-center'>
+        <div className='flex flex-row items-center space-x-4'>
           <Avatar className='h-[50px] w-[50px]'>
             <AvatarImage src={logo} alt={companyName} />
             <AvatarFallback>{companyName.charAt(0)}</AvatarFallback>

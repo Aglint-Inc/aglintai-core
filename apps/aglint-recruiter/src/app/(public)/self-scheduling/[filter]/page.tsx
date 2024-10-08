@@ -3,6 +3,8 @@
 import { PublicPageLayout } from '@components/layouts/public-layout';
 
 import Footer from '@/common/Footer';
+import { Loader } from '@/common/Loader';
+import UIError from '@/common/UIError';
 import { SeoPro } from '@/components/Common/SeoPro';
 
 import SchedulingPageHeader from '../../_common/_components/SchedulingPageHeader';
@@ -10,7 +12,11 @@ import CandidateInviteNew from './_common/components';
 import { useInviteMeta } from './_common/hooks/useInviteMeta';
 
 const CandidateInvitePage = () => {
-  const { data } = useInviteMeta();
+  const { data, isLoading, isError } = useInviteMeta();
+
+  if (isLoading) return <Loader />;
+
+  if (!data || isError) return <UIError />;
 
   return (
     <PublicPageLayout
