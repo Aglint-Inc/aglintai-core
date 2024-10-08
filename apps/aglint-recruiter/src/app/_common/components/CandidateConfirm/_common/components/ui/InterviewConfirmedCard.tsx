@@ -4,16 +4,14 @@ import { Clock, SquareUser } from 'lucide-react';
 import { UIButton } from '@/components/Common/UIButton';
 
 export function InterviewConfirmedCard({
-  as: _Component = '', // Default to div
+  as: _Component = '',
   textDate = '',
   textTime = '',
   textPanel = '',
   slotMeetingIcon,
   textPlatformName = '',
   textDuration = '',
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onClickJoinGoogleMeet = () => {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onClickAddCalendar = () => {},
   isJoinMeetingButtonVisible = true,
   isAddtoCalenderVisible = true,

@@ -115,35 +115,45 @@ function CalendarComp({
                 type={viewType}
               />
             </div>
-            <FullCalendar
-              key={events?.length}
-              ref={calendarRef}
-              plugins={[
-                resourceTimelinePlugin,
-                dayGridPlugin,
-                listPlugin,
-                timeGridPlugin,
-              ]}
-              // eslint-disable-next-line security/detect-object-injection
-              initialView={view[viewMode][viewType]}
-              initialEvents={events}
-              eventContent={renderEventContent}
-              noEventsContent={onEventContent}
-              nowIndicator={true}
-              editable={true}
-              selectable={false}
-              aspectRatio={1.0}
-              selectMirror={true}
-              allDaySlot={false}
-              resources={events}
-              datesSet={handleDatesSet}
-              height='auto'
-              views={{
-                dayGridMonth: {
-                  dayMaxEventRows: 2,
-                },
-              }}
-            />
+            {(allSchedules || []).length === 0 ? (
+              <div className='flex min-h-[500px] w-full items-center justify-center'>
+                <EmptyState
+                  icon={Calendar}
+                  header={'There are no schedules available at the moment.'}
+                  description='Create a new interview pool to get started.'
+                />
+              </div>
+            ) : (
+              <FullCalendar
+                key={events?.length}
+                ref={calendarRef}
+                plugins={[
+                  resourceTimelinePlugin,
+                  dayGridPlugin,
+                  listPlugin,
+                  timeGridPlugin,
+                ]}
+                // eslint-disable-next-line security/detect-object-injection
+                initialView={view[viewMode][viewType]}
+                initialEvents={events}
+                eventContent={renderEventContent}
+                noEventsContent={onEventContent}
+                nowIndicator={true}
+                editable={true}
+                selectable={false}
+                aspectRatio={1.0}
+                selectMirror={true}
+                allDaySlot={false}
+                resources={events}
+                datesSet={handleDatesSet}
+                height='auto'
+                views={{
+                  dayGridMonth: {
+                    dayMaxEventRows: 2,
+                  },
+                }}
+              />
+            )}
           </div>
           <CalendarFilter filter={filter} setFilter={setFilter} />
         </>
