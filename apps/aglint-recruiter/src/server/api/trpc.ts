@@ -7,7 +7,6 @@
  * need to use are documented accordingly near the end.
  */
 import type { DatabaseTable } from '@aglint/shared-types';
-import type { User } from '@supabase/supabase-js';
 import { initTRPC, TRPCError } from '@trpc/server';
 import type { ProcedureBuilder } from '@trpc/server/unstable-core-do-not-import';
 import superjson from 'superjson';
@@ -182,26 +181,24 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
 const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
   const db = createPrivateClient();
 
-  let user: User | null = null;
+  let user_id: string | null = null;
 
   if (process.env.NODE_ENV === 'development')
-    user = (await db.auth.getSession())?.data?.session?.user ?? null;
-  else user = (await db.auth.getUser()).data.user;
+    user_id = (await db.auth.getSession())?.data?.session?.user?.id ?? null;
+  else user_id = (await db.auth.getUser()).data.user?.id ?? null;
 
-  if (!user)
+  if (!user_id)
     throw new TRPCError({
       code: 'UNAUTHORIZED',
       message: 'User unauthenticated',
     });
-
-  const user_id = user.id;
 
   const { data } = await db
     .from('recruiter_relation')
     .select(
       'recruiter_id,recruiter(primary_admin), roles!inner(name, role_permissions!inner(permissions!inner(name, is_enable)))',
     )
-    .eq('user_id', user.id)
+    .eq('user_id', user_id)
     .single()
     .throwOnError();
   data?.recruiter?.primary_admin;

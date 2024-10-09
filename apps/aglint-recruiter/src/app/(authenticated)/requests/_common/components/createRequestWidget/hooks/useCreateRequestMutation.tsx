@@ -10,16 +10,16 @@ export const useCreateRequestMutation = () => {
   const dates = useCreateRequest((state) => state.dates);
   const priority = useCreateRequest((state) => state.priority);
   const selections = useCreateRequest((state) => state.selections);
-  const { onOpenChange } = useCreateRequestActions();
+  const { onOpenChange, setError, resetError } = useCreateRequestActions();
   const mutation = api.requests.create.create_request.useMutation({
-    onError: () =>
-      toast({ title: 'Unable to create request', variant: 'destructive' }),
+    onError: (e) => {
+      setError(e.shape?.message||null);
+    },
     onSuccess: () => {
       toast({ title: 'Successfully created request' });
       onOpenChange(false);
     },
   });
-
   const application = selections.candidate.id;
   const sessions = selections.schedules.map(({ id }) => id);
   const request: Unvoid<
@@ -38,8 +38,12 @@ export const useCreateRequestMutation = () => {
       sessions,
       request,
     };
-  const mutate = () => mutation.mutate(payload);
+  const mutate = () => {
+    resetError();
+    mutation.mutate(payload);
+  };
   const mutateAsync = async () => {
+    resetError();
     try {
       await mutation.mutateAsync(payload);
     } catch {

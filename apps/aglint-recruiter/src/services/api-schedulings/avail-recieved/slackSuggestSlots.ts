@@ -3,11 +3,9 @@ import type {
   PlanCombinationRespType,
   TargetApiSchema,
 } from '@aglint/shared-types';
-import { CApiError, type ProgressLoggerType } from '@aglint/shared-utils';
+import { CApiError } from '@aglint/shared-utils';
 import axios from 'axios';
 import { type z } from 'zod';
-
-import { type ScheduleApiDetails } from '../CandidateSchedule/types';
 
 export const slackSuggestSlots = async ({
   avail_plans,
@@ -15,9 +13,6 @@ export const slackSuggestSlots = async ({
 }: {
   avail_plans: PlanCombinationRespType[];
   cand_avail_rec: DatabaseTable['candidate_request_availability'];
-  cand_schedule_db: ScheduleApiDetails;
-  reqProgressLogger: ProgressLoggerType;
-  request_id: string;
 }) => {
   if (!cand_avail_rec.user_timezone) {
     throw new CApiError('CLIENT', 'User timezone is not available');

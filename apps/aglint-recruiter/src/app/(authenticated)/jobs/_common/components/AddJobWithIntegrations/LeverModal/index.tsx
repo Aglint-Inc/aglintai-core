@@ -1,25 +1,20 @@
 import { Button } from '@components/ui/button';
 import { Card, CardContent } from '@components/ui/card';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from '@components/ui/dialog';
+import { DialogDescription, DialogHeader } from '@components/ui/dialog';
 import { Input } from '@components/ui/input';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { UIBadge } from '@components/ui-badge';
 import { ExternalLink, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
 import { useIntegrations } from '@/authenticated/hooks';
 import axios from '@/client/axios';
+import UIDialog from '@/common/UIDialog';
 import { useTenant } from '@/company/hooks';
 import { Loader } from '@/components/Common/Loader';
-import { UIBadge } from '@/components/Common/UIBadge';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { STATE_LEVER_DIALOG } from '@/jobs/constants';
 import {
@@ -110,7 +105,7 @@ export default function LeverModalComp() {
     | 'info'
     | 'success'
     | 'warning'
-    | 'error'
+    | 'destructive'
     | 'purple'
     | 'neutral' {
     switch (state.toLowerCase()) {
@@ -119,7 +114,7 @@ export default function LeverModalComp() {
       case 'internal':
         return 'info';
       case 'closed':
-        return 'error';
+        return 'destructive';
       default:
         return 'neutral';
     }
@@ -170,16 +165,20 @@ export default function LeverModalComp() {
   };
 
   return (
-    <Dialog
+    <UIDialog
       open={integration.lever.open}
-      onOpenChange={(open) => {
-        if (open && integration.lever.step !== STATE_LEVER_DIALOG.IMPORTING)
+      title='Lever'
+      slotButtons={<></>}
+      onClose={() => {
+        if (
+          integration.lever.open &&
+          integration.lever.step !== STATE_LEVER_DIALOG.IMPORTING
+        )
           resetIntegrations();
       }}
     >
-      <DialogContent>
+      <>
         <DialogHeader>
-          <DialogTitle>Lever</DialogTitle>
           <DialogDescription>
             <>
               {integration.lever.step === STATE_LEVER_DIALOG.API ||
@@ -280,7 +279,7 @@ export default function LeverModalComp() {
                                       post.state.charAt(0).toUpperCase() +
                                       post.state.slice(1)
                                     }
-                                    color={getLeverStatusColor(post.state)}
+                                    variant={getLeverStatusColor(post.state)}
                                     size='sm'
                                   />
                                 </div>
@@ -363,7 +362,7 @@ export default function LeverModalComp() {
             )}
           </div>
         )}
-      </DialogContent>
-    </Dialog>
+      </>
+    </UIDialog>
   );
 }

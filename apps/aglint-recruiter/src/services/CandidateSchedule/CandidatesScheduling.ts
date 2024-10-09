@@ -1336,7 +1336,7 @@ export class CandidatesScheduling {
         'hours',
         this.api_options.cand_end_time,
       );
-      // TODO: flag
+
       let cand_time = cand_start_time;
       if (
         !this.api_options.include_conflicting_slots.day_passed &&

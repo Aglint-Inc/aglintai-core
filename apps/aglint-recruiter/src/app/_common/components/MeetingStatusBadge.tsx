@@ -1,8 +1,7 @@
 'use client';
 import { type DatabaseTable } from '@aglint/shared-types';
+import { UIBadge } from '@components/ui-badge';
 import React from 'react';
-
-import { UIBadge } from '@/components/Common/UIBadge';
 
 export function MeetingStatusBadge({
   status,
@@ -12,15 +11,15 @@ export function MeetingStatusBadge({
   return (
     <>
       {status === 'completed' ? (
-        <UIBadge color='success' textBadge={'Completed'} />
+        <UIBadge variant='success' textBadge={'Completed'} />
       ) : status === 'cancelled' ? (
-        <UIBadge color='error' textBadge={'Canceled'} />
+        <UIBadge variant='destructive' textBadge={'Canceled'} />
       ) : status === 'not_scheduled' ? (
-        <UIBadge color='neutral' textBadge={'Not Scheduled'} />
+        <UIBadge color='secondary' textBadge={'Not Scheduled'} />
       ) : status === 'waiting' ? (
-        <UIBadge color='warning' textBadge={'In Progress'} />
+        <UIBadge variant='warning' textBadge={'In Progress'} />
       ) : status === 'confirmed' ? (
-        <UIBadge color='info' textBadge={'Confirmed'} />
+        <UIBadge variant='info' textBadge={'Confirmed'} />
       ) : (
         ''
       )}

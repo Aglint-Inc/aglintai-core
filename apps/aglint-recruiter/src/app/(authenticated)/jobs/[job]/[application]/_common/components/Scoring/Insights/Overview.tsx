@@ -1,4 +1,7 @@
 import { Skeleton } from '@components/ui/skeleton';
+import { Sparkles } from 'lucide-react';
+
+import { EmptyState } from '@/common/EmptyState';
 
 import { useApplicationDetails } from '../../../hooks/useApplicationDetails';
 
@@ -14,7 +17,14 @@ export const Overview = () => {
     );
   }
 
-  if (!data?.resume_json?.overview) return null;
+  if (!data?.resume_json?.overview)
+    return (
+      <EmptyState
+        header='Unable to generate insights'
+        description='unable to generate insights of the candidate'
+        icon={Sparkles}
+      />
+    );
 
   return <p className='text-sm text-gray-800'>{data.resume_json.overview}</p>;
 };

@@ -19,14 +19,17 @@ const SelectScheduleFlow = ({ scheduleFlow }: { scheduleFlow: any }) => {
     isManualSchedule = false;
   }
   let isSelectScheduleFlowComplete = false;
-  if (reqProgressMap['CAND_CONFIRM_SLOT'] || reqProgressMap['CAND_AVAIL_REC']) {
+  if (
+    reqProgressMap['INTERVIEW_SCHEDULED'] ||
+    reqProgressMap['CAND_AVAIL_REC']
+  ) {
     isSelectScheduleFlowComplete = true;
   }
 
   return (
     <>
       <RequestProgressTracker
-        circleIndicator={isSelectScheduleFlowComplete ? 'success' : 'default'}
+        circleIndicator={isSelectScheduleFlowComplete ? 'success' : 'neutral'}
         textRequestProgress={'When scheduling request recieved'}
         slotProgress={
           <>

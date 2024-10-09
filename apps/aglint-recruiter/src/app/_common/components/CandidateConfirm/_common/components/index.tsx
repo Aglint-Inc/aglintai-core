@@ -159,7 +159,7 @@ export const ConfirmedInvitePage = (
         </div>
       ) : (
         <div
-          className='flex w-full items-center justify-center'
+          className='flex h-full w-full items-center justify-center'
           aria-live='polite'
           aria-busy='true'
         >

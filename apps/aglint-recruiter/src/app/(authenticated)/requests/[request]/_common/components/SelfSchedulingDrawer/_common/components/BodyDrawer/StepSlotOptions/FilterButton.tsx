@@ -4,6 +4,7 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { Filter } from 'lucide-react';
+import { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 
@@ -14,12 +15,18 @@ function FilterButton() {
   const { filterLoading } = useSelfSchedulingFlowStore((state) => ({
     filterLoading: state.filterLoading,
   }));
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <Popover>
+      <Popover open={isOpen}>
         <PopoverTrigger asChild>
-          <UIButton size={'sm'} leftIcon={<Filter />} isLoading={filterLoading}>
+          <UIButton
+            size={'sm'}
+            leftIcon={<Filter />}
+            isLoading={filterLoading}
+            onClick={() => setIsOpen(true)}
+          >
             Filters
           </UIButton>
         </PopoverTrigger>
@@ -30,7 +37,7 @@ function FilterButton() {
             backgroundColor: '#fff',
           }}
         >
-          <ScheduleFilter />
+          <ScheduleFilter setIsOpen={setIsOpen} />
         </PopoverContent>
       </Popover>
     </>

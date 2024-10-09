@@ -1,9 +1,12 @@
 import {
   Section,
   SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
 import { ScrollArea } from '@components/ui/scroll-area';
+import { UIAlert } from '@components/ui-alert';
 
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
@@ -29,11 +32,15 @@ export const Summary = () => {
   ];
   return (
     <Section>
-      <SectionTitle>Automation Summary</SectionTitle>
-      <SectionDescription>
-        Configured automated actions for this job. Total automations set :{' '}
-        {enabledActions.length}
-      </SectionDescription>
+      <SectionHeader>
+        <SectionHeaderText>
+          <SectionTitle>Automation Summary</SectionTitle>
+          <SectionDescription>
+            Configured automated actions for this job. Total automations set :{' '}
+            {enabledActions.length}
+          </SectionDescription>
+        </SectionHeaderText>
+      </SectionHeader>
       <ScrollArea className='h-[calc(100vh-200px)] pr-4'>
         <ul className='space-y-4'>
           {allCategories.map((categ) => {
@@ -88,9 +95,8 @@ export const Summary = () => {
 
 const renderAIAutomationCTA = () => {
   return (
-    <Section>
-      <SectionTitle>Supercharge Your Hiring</SectionTitle>
-      <SectionDescription>Unlock the power of AI automation</SectionDescription>
+    <UIAlert variant='tip' title='Supercharge Your Hiring'>
+      <p className='mb-2 text-sm'>Unlock the power of AI automation</p>
       <div className='space-y-4'>
         <p className='font-semibold'>Key Benefits:</p>
         <ul className='list-inside list-disc space-y-2'>
@@ -107,6 +113,6 @@ const renderAIAutomationCTA = () => {
           </ol>
         </div>
       </div>
-    </Section>
+    </UIAlert>
   );
 };

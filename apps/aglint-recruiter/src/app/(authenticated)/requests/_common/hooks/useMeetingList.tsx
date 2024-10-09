@@ -13,6 +13,6 @@ export const useMeetingList = () => {
   );
   return {
     ...apiResp,
-    data: apiResp.data!,
+    data: apiResp.data! || [],
   };
 };

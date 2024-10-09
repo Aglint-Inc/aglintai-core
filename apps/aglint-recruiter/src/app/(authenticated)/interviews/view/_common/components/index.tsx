@@ -44,7 +44,7 @@ function SchedulingViewComp() {
 
   if (isLoading)
     return (
-      <div className='flex h-full w-full items-center justify-center'>
+      <div className='flex h-[80vh] w-full items-center justify-center'>
         <Loader />
       </div>
     );

@@ -1,6 +1,13 @@
 import { type CustomSchedulingSettingsUser } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
 import { toast } from '@components/hooks/use-toast';
-import { type Dispatch, type SetStateAction, useRef, useState } from 'react';
+import { useParams } from 'next/navigation';
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {
   type FormFields,
   type FormValues,
@@ -9,7 +16,7 @@ import {
   validateString,
 } from 'src/app/_common/components/Profile/uitls';
 
-import { useTenant } from '@/company/hooks';
+import { useTenantMembers } from '@/company/hooks';
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
@@ -17,8 +24,9 @@ import UIDialog from '@/components/Common/UIDialog';
 import { supabase } from '@/utils/supabase/client';
 import type timeZone from '@/utils/timeZone';
 
-import { useUserUpdate } from '../../../hooks/useMemberUpdate';
+import { useUserUpdate } from '../../../hooks/useUserUpdate';
 import { ProfileForms } from './EditUserDialogUI';
+
 const initialFormValues: FormValues = {
   value: '',
   label: '',
@@ -42,7 +50,15 @@ export const EditUserDialog = ({
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { recruiter_user } = useTenant();
+  const { allMembers } = useTenantMembers();
+
+  const param = useParams()!;
+
+  const user_id = param.user;
+
+  const recruiter_user = allMembers.find(
+    (member) => member.user_id === user_id,
+  )!;
 
   const initialTimeZone = recruiter_user?.scheduling_settings?.timeZone
     ? recruiter_user.scheduling_settings.timeZone
@@ -51,19 +67,19 @@ export const EditUserDialog = ({
   const [selectedTimeZone, setSelectedTimeZone] = useState(initialTimeZone);
   const { mutateAsync } = useUserUpdate();
 
-  const recruUser = recruiter_user;
   const initialProfileFormFields: FormFields = {
     first_name: {
       ...initialFormValues,
       value: recruiter_user?.first_name ?? '',
       required: true,
       label: 'First Name',
+
       placeholder: 'Enter your first name.',
     },
     last_name: {
       ...initialFormValues,
       value: recruiter_user?.last_name ?? '',
-      required: true,
+      required: false,
       label: 'Last Name',
       placeholder: 'Enter your last name.',
     },
@@ -80,6 +96,7 @@ export const EditUserDialog = ({
       validation: 'linkedIn',
       label: 'LinkedIn',
       required: false,
+      placeholder: 'Enter your linkedin url',
     },
   };
 
@@ -88,9 +105,14 @@ export const EditUserDialog = ({
   const [profile, setProfile] = useState<FormFields>(
     structuredClone(initialProfileFormFields),
   );
+
+  useEffect(() => {
+    setProfile(structuredClone(initialProfileFormFields));
+  }, [isOpen]);
+
   const [isError, setError] = useState(false);
   const [isImageChanged, setIsImageChanged] = useState(false);
-  const imageFile = useRef<File>(null);
+  const imageFile = useRef<File | null>(null);
 
   const handleValidate = (profile: FormFields) => {
     return Object.entries(profile).reduce(
@@ -144,17 +166,19 @@ export const EditUserDialog = ({
       let profile_image = recruiter_user?.profile_image;
       setLoading(true);
 
-      if (isImageChanged && imageFile.current) {
-        const { data } = await supabase.storage
-          .from('recruiter-user')
-          .upload(`public/${recruiter_user?.user_id}`, imageFile.current, {
-            cacheControl: '3600',
-            upsert: true,
-          });
+      if (isImageChanged) {
+        if (imageFile?.current) {
+          const { data } = await supabase.storage
+            .from('recruiter-user')
+            .upload(`public/${recruiter_user?.user_id}`, imageFile.current, {
+              cacheControl: '3600',
+              upsert: true,
+            });
 
-        if (data?.path && imageFile?.current?.size) {
-          profile_image = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/recruiter-user/${data?.path}?t=${new Date().toISOString()}`;
-          setError(false);
+          if (data?.path && imageFile?.current?.size) {
+            profile_image = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/recruiter-user/${data?.path}?t=${new Date().toISOString()}`;
+            setError(false);
+          }
         } else {
           profile_image = null;
         }
@@ -231,7 +255,7 @@ export const EditUserDialog = ({
         <div className='flex items-center space-x-4'>
           <div className='w-16'>
             <ImageUploadManual
-              image={recruUser.profile_image ?? ''}
+              image={recruiter_user.profile_image ?? ''}
               size={64}
               imageFile={imageFile}
               setChanges={() => {

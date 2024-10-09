@@ -1,6 +1,8 @@
 'use client';
 
+import { getFullName } from '@aglint/shared-utils';
 import { PublicPageLayout } from '@components/layouts/public-layout';
+import { UIBadge } from '@components/ui-badge';
 
 import Footer from '@/common/Footer';
 import { Loader } from '@/common/Loader';
@@ -18,13 +20,46 @@ const CandidateInvitePage = () => {
 
   if (!data || isError) return <UIError />;
 
+  const candidate = {
+    name: getFullName(data.candidate.first_name, data.candidate.last_name),
+    position: data.candidate.current_job_title ?? '',
+    email: data.candidate.email ?? '',
+  };
+
   return (
     <PublicPageLayout
       header={
         <SchedulingPageHeader
-          companyName={data?.recruiter?.name ?? ''}
-          description={`Available slots are organized by day. Each slot includes the total time required for your interview, including breaks.`}
-          logo={data?.recruiter?.logo ?? ''}
+          companyDetails={{
+            jobTitle: data.job.title,
+            name: data.recruiter.name,
+            location: data.job.location,
+            logo: data.recruiter.logo ?? '',
+          }}
+          description={
+            <div className='flex w-full flex-row justify-end p-4'>
+              {data.isBooked ? (
+                <div className='flex flex-col items-end space-y-2'>
+                  <div className='flex flex-row items-end gap-2'>
+                    <UIBadge
+                      className='min-w-[140px]'
+                      variant='success'
+                      textBadge='Interview confirmed'
+                    />
+                    <p className='max-w-[420px] text-sm text-muted-foreground'>
+                      {`Your interview has been confirmed. Please find the interview details below. An email has been sent with the interview details.`}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className='flex flex-row items-start gap-2'>
+                  <UIBadge variant='info' textBadge='Pending' />
+                  <h1 className='text-lg font-semibold'>Book your interview</h1>
+                </div>
+              )}
+            </div>
+          }
+          candidateDetails={candidate}
         />
       }
       footer={<Footer brand={true} />}

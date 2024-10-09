@@ -1,8 +1,10 @@
 'use client';
+
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import {
   Section,
   SectionActions,
+  SectionDescription,
   SectionHeader,
   SectionHeaderText,
   SectionTitle,
@@ -15,8 +17,8 @@ import { UIButton } from '@/components/Common/UIButton';
 import { Loader } from '../../../../../../components/Common/Loader';
 import { ConfirmedInvitePage } from '../../../../../_common/components/CandidateConfirm/_common/components';
 import { useInviteMeta } from '../hooks/useInviteMeta';
+import { useInviteSlots } from '../hooks/useInviteSlots';
 import {
-  setDetailPopup,
   setSelectedSlots,
   setTimeZone,
   useCandidateInviteStore,
@@ -25,33 +27,52 @@ import {
   type ScheduleCardProps,
   type ScheduleCardsProps,
 } from '../types/types';
-import { DetailsPopup } from './DetailsPopup';
 import MultiDay from './MultiDay';
+import RightPanel from './RightPanel';
 import { SingleDay } from './SingleDay';
 
 const CandidateInviteNew = () => {
-  const { isLoading, isError, isRefetching } = useInviteMeta();
+  const {
+    isLoading,
+    isError,
+    data: { isBooked },
+  } = useInviteMeta();
+
+  const {
+    isLoading: loadingSlots,
+    isError: errorSlots,
+    isRefetching,
+  } = useInviteSlots();
 
   return (
-    <div className='w-full'>
-      {isLoading || isRefetching ? (
+    <div className='h-full w-full'>
+      {isLoading || loadingSlots || isRefetching ? (
         <LoadingState />
-      ) : isError ? (
+      ) : isError || errorSlots ? (
         <ErrorState />
       ) : (
         <>
-          <CandidateInvitePlanPage />
-          <DetailsPopup />
+          <div className='flex h-full w-full flex-row justify-center'>
+            <div className={isBooked ? 'h-full w-full' : 'h-full w-8/12'}>
+              <CandidateInvitePlanPage />
+            </div>
+            {!isBooked && (
+              <div className='w-4/12 border-l p-4'>
+                <RightPanel />
+              </div>
+            )}
+          </div>
         </>
       )}
     </div>
   );
 };
+
 export default CandidateInviteNew;
 
 const LoadingState = () => (
   <div
-    className='flex w-full items-center justify-center'
+    className='flex h-full w-full items-center justify-center'
     aria-live='polite'
     aria-busy='true'
   >
@@ -87,9 +108,8 @@ const CandidateInvitePlanPage = () => {
 
   const { data: meta } = useInviteMeta();
 
-  const waiting = (meta?.meetings || []).some(
-    ({ interview_meeting: { status } }) => status === 'waiting',
-  );
+  const waiting = !meta.isBooked;
+
   const { rounds } = (meta?.meetings || []).reduce(
     (acc, curr) => {
       const count = acc.rounds.length;
@@ -131,27 +151,22 @@ const CandidateInvitePlanPage = () => {
 
   return (
     <Section>
-      <SectionHeader>
+      <SectionHeader className='px-4 pt-4'>
         <SectionHeaderText>
-          <SectionTitle>
-            <TimezonePicker
-              onChange={(e) => {
-                setTimeZone(e);
-                setSelectedSlots([]);
-              }}
-              value={timezone.tzCode}
-            />
-          </SectionTitle>
+          <SectionTitle>Book Now</SectionTitle>
+          <SectionDescription>
+            Available slots are organized by day. Each slot includes the total
+            time required for your interview, including breaks.
+          </SectionDescription>
         </SectionHeaderText>
         <SectionActions>
-          <UIButton
-            variant='outline'
-            onClick={() => {
-              setDetailPopup(true);
+          <TimezonePicker
+            onChange={(e) => {
+              setTimeZone(e);
+              setSelectedSlots([]);
             }}
-          >
-            View Schedule details
-          </UIButton>
+            value={timezone.tzCode}
+          />
         </SectionActions>
       </SectionHeader>
       <Invite rounds={rounds} />
@@ -161,5 +176,5 @@ const CandidateInvitePlanPage = () => {
 
 const Invite = ({ rounds }: ScheduleCardsProps) => {
   if (rounds.length === 1) return <SingleDay />;
-  return <MultiDay rounds={rounds} />;
+  return <MultiDay />;
 };

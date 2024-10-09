@@ -16,12 +16,34 @@ const query = async ({
     filter.session_ids,
   );
 
+  const isBooked = (resMeetings || []).some(
+    ({ interview_meeting: { status } }) => status !== 'waiting',
+  );
+
+  const recruiter = {
+    name: applications.candidates.recruiter.name,
+    logo: applications.candidates.recruiter.logo,
+  };
+
+  const job = {
+    location: [
+      applications.public_jobs.office_locations?.city,
+      applications.public_jobs.office_locations?.region,
+      applications.public_jobs.office_locations?.country,
+    ]
+      .filter(Boolean)
+      .join(', '),
+    title: applications.public_jobs.job_title,
+    type: applications.public_jobs.job_type,
+  };
+
   const redRes = {
-    job: applications.public_jobs,
+    isBooked,
+    job,
     application_id: applications.id,
     candidate: applications.candidates,
     filter_json: filter,
-    recruiter: applications.candidates.recruiter,
+    recruiter,
     meetings: resMeetings,
   };
 
@@ -40,7 +62,7 @@ const getScheduleDetails = async (filter_id: string) => {
     await db
       .from('interview_filter_json')
       .select(
-        '*,applications!inner(*, public_jobs!inner(id,job_title,recruiter_id),candidates!inner(*,recruiter!inner(logo,name)),candidate_files(id,file_url,candidate_id,resume_json,type))',
+        '*,applications!inner(*, public_jobs!inner(id,job_title,job_type,recruiter_id,office_locations(*)),candidates!inner(*,recruiter!inner(logo,name)),candidate_files(id,file_url,candidate_id,resume_json,type))',
       )
       .eq('id', filter_id)
       .single()
