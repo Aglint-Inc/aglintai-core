@@ -14,6 +14,7 @@ export const API_PERMISSIONS: ApiPermissions = {
   },
   integrations: ['integrations_module'],
   interviewers: ['job_module'],
+  interviews: [],
   interview_pool: {
     add_users: ['update_interview_types'],
     candidates: ['view_interview_types'],
