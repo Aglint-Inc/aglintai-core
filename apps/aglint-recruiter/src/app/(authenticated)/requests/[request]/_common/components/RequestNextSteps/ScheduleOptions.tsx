@@ -28,6 +28,56 @@ import {
 } from '../SelfSchedulingDrawer/_common/store/store';
 
 const ScheduleOptions = () => {
+  const { requestDetails } = useRequest();
+  let isDebreifSchedule = false;
+  if (
+    requestDetails.request_relation[0].interview_session?.session_type ===
+    'debrief'
+  ) {
+    isDebreifSchedule = true;
+  }
+  return (
+    <div className='mt-2 flex flex-col'>
+      <ShowCode.When isTrue={isDebreifSchedule}>
+        <DebriefSchedule />
+      </ShowCode.When>
+      <ShowCode.When isTrue={!isDebreifSchedule}>
+        <CandidateScheduleReschedule />
+      </ShowCode.When>
+    </div>
+  );
+};
+
+const DebriefSchedule = () => {
+  const { findAvailibility } = useFindAvailibility();
+
+  const { fetchingPlan } = useSelfSchedulingFlowStore();
+
+  return (
+    <>
+      <UIButton
+        variant='default'
+        size='sm'
+        isLoading={fetchingPlan}
+        onClick={async () => {
+          if (fetchingPlan) return;
+          await findAvailibility({
+            filters: initialFilters,
+            dateRange: {
+              start_date: dayjsLocal().toISOString(),
+              end_date: dayjsLocal().add(14, 'day').toISOString(),
+            },
+          });
+          setIsSelfScheduleDrawerOpen(true);
+        }}
+      >
+        Schedule Debrief
+      </UIButton>
+    </>
+  );
+};
+
+const CandidateScheduleReschedule = () => {
   const [isProceeding, setIsProceeding] = React.useState(false);
   const { findAvailibility } = useFindAvailibility();
   const { fetchingPlan } = useSelfSchedulingFlowStore();
@@ -98,8 +148,9 @@ const ScheduleOptions = () => {
     setReRequestAvailability(true);
     setCandidateAvailabilityIdForReRequest(avail_req.id);
   };
+
   return (
-    <div className='mt-2 flex flex-col'>
+    <div>
       <ShowCode.When
         isTrue={
           Boolean(scheduleWorkflowAction) && requestDetails.status === 'to_do'
@@ -124,6 +175,7 @@ const ScheduleOptions = () => {
           </UIButton>
         </>
       </ShowCode.When>
+
       <ShowCode.When
         isTrue={Boolean(
           (!scheduleWorkflowAction && !lastEvent) ||
@@ -173,6 +225,7 @@ const ScheduleOptions = () => {
           </UIButton>
         </div>
       </ShowCode.When>
+
       <ShowCode.When
         isTrue={Boolean(
           lastEvent &&
@@ -205,25 +258,6 @@ const ScheduleOptions = () => {
           </UIButton>
         </div>
       </ShowCode.When>
-
-      <UIButton
-        variant='default'
-        size='sm'
-        isLoading={fetchingPlan}
-        onClick={async () => {
-          if (fetchingPlan) return;
-          await findAvailibility({
-            filters: initialFilters,
-            dateRange: {
-              start_date: dayjsLocal().toISOString(),
-              end_date: dayjsLocal().add(14, 'day').toISOString(),
-            },
-          });
-          setIsSelfScheduleDrawerOpen(true);
-        }}
-      >
-        Schedule Debrief
-      </UIButton>
     </div>
   );
 };
