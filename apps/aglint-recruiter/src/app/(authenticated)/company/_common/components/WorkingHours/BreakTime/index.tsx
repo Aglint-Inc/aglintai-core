@@ -19,6 +19,7 @@ import {
 } from 'react';
 
 import TimePicker from '@/common/TimePicker';
+import { UIButton } from '@/common/UIButton';
 import UISectionCard from '@/common/UISectionCard';
 
 interface BreakTime {
@@ -30,31 +31,41 @@ interface BreakTimeCardProps {
   breakTime: BreakTime;
   setSelectedHourBreak: Dispatch<SetStateAction<BreakTime | null>>;
   handleUpdate: (data: { break_hour: BreakTime }) => Promise<void>;
+  isUpdating: boolean;
 }
 
 const BreakTimeCard: FC<BreakTimeCardProps> = ({
   breakTime,
   setSelectedHourBreak,
   handleUpdate,
+  isUpdating,
 }) => {
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
   const handleUpdateAndClose = async (newBreakTime: BreakTime) => {
     await handleUpdate({ break_hour: newBreakTime });
+    setIsPopoverOpen(false);
     setSelectedHourBreak(newBreakTime);
   };
 
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   return (
     <UISectionCard
       title='Break Time'
       description=" Set the default break time for your company's working hours."
+      isHoverEffect={!isPopoverOpen}
       action={
-        <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+        <Popover
+          open={isPopoverOpen}
+          onOpenChange={() => {
+            if (!isUpdating && isPopoverOpen) setIsPopoverOpen(false);
+          }}
+        >
           <PopoverTrigger asChild>
             <Button
               variant='outline'
               size='sm'
               onClick={() => {
-                setIsPopoverOpen(true);
+                if (!isUpdating) setIsPopoverOpen(true);
               }}
             >
               <Pen className='mr-2 h-3 w-3' /> Edit
@@ -64,6 +75,7 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
           <PopoverContent className='w-full' align='start' side='left'>
             <EditBreakTime
               breakTime={breakTime}
+              isUpdating={isUpdating}
               handleUpdateAndClose={handleUpdateAndClose}
             />
           </PopoverContent>
@@ -96,9 +108,11 @@ export default BreakTimeCard;
 
 const EditBreakTime = ({
   breakTime,
+  isUpdating,
   handleUpdateAndClose,
 }: {
   breakTime: BreakTime;
+  isUpdating: boolean;
   handleUpdateAndClose: (arg: BreakTime) => void;
 }) => {
   const [localBreakTime, setLocalBreakTime] = useState<BreakTime>(breakTime);
@@ -164,8 +178,9 @@ const EditBreakTime = ({
           }
         />
       </div>
-      <Button
+      <UIButton
         className='w-full'
+        isLoading={isUpdating}
         onClick={async () => {
           if (isStartTimeLessThanEndTime(localBreakTime)) {
             await handleUpdateAndClose(localBreakTime);
@@ -178,7 +193,7 @@ const EditBreakTime = ({
         }}
       >
         Update
-      </Button>
+      </UIButton>
     </div>
   );
 };

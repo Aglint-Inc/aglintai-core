@@ -24,9 +24,7 @@ export default function WorkingHour() {
   const [workingHours, setWorkingHours] = useState<
     SchedulingSettingType['workingHours']
   >([]);
-  const [selectedTimeZone, setSelectedTimeZone] = useState<TimezoneObj | null>(
-    null,
-  );
+  const [timeZone, setTimeZone] = useState<TimezoneObj | null>(null);
   const [selectedHourBreak, setSelectedHourBreak] = useState<{
     start_time: string;
     end_time: string;
@@ -41,7 +39,7 @@ export default function WorkingHour() {
       const schedulingSettingData = cloneDeep(
         initialData,
       ) as SchedulingSettingType;
-      setSelectedTimeZone({ ...schedulingSettingData.timeZone } as TimezoneObj);
+      setTimeZone({ ...schedulingSettingData.timeZone } as TimezoneObj);
       setSelectedHourBreak({
         start_time: schedulingSettingData.break_hour?.start_time,
         end_time: schedulingSettingData.break_hour?.end_time,
@@ -50,14 +48,15 @@ export default function WorkingHour() {
     }
   }
 
-  const { mutate } = api.tenant.updateTenant.useMutation({
-    onError: () => {
-      toast({
-        title: 'Unable to update working hours',
-        variant: 'destructive',
-      });
-    },
-  });
+  const { mutateAsync, isPending: isUpdating } =
+    api.tenant.updateTenant.useMutation({
+      onError: () => {
+        toast({
+          title: 'Unable to update working hours',
+          variant: 'destructive',
+        });
+      },
+    });
 
   const handleUpdate = async (updatedData: Partial<SchedulingSettingType>) => {
     try {
@@ -65,7 +64,7 @@ export default function WorkingHour() {
         ...initialData,
         ...updatedData,
       } as SchedulingSettingType;
-      mutate({
+      await mutateAsync({
         scheduling_settings: schedulingSettingObj,
       });
     } catch (error) {
@@ -89,21 +88,22 @@ export default function WorkingHour() {
       </PageHeader> */}
       <div className='flex flex-col gap-8'>
         <TimeZone
-          timeZone={initialData?.timeZone?.label}
-          selectedTimeZone={selectedTimeZone}
-          setSelectedTimeZone={setSelectedTimeZone}
+          timeZone={timeZone}
+          setTimeZone={setTimeZone}
           handleUpdate={handleUpdate}
+          isUpdating={isUpdating}
         />
         <WorkTime
           workingHours={workingHours}
-          setWorkingHours={setWorkingHours}
           handleUpdate={handleUpdate}
+          isUpdating={isUpdating}
         />
         {!!selectedHourBreak && (
           <BreakTimeCard
             breakTime={selectedHourBreak}
             setSelectedHourBreak={setSelectedHourBreak}
             handleUpdate={handleUpdate}
+            isUpdating={isUpdating}
           />
         )}
       </div>

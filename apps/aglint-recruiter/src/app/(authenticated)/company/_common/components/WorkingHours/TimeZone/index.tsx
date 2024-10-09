@@ -8,31 +8,41 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { Clock, Pen } from 'lucide-react';
-import { type FC, useEffect, useRef, useState } from 'react';
+import {
+  type Dispatch,
+  type FC,
+  type SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import TimezonePicker from '@/common/TimezonePicker';
+import { UIButton } from '@/common/UIButton';
 import UISectionCard from '@/common/UISectionCard';
 import { type TimezoneObj } from '@/utils/timeZone';
 
 interface TimeZoneProps {
-  timeZone: string;
-  selectedTimeZone: TimezoneObj | null;
-  setSelectedTimeZone: (value: TimezoneObj) => void;
+  timeZone: TimezoneObj | null;
+  setTimeZone: Dispatch<SetStateAction<TimezoneObj | null>>;
   handleUpdate: (data: Partial<SchedulingSettingType>) => Promise<void>;
+  isUpdating: boolean;
 }
 
 const TimeZone: FC<TimeZoneProps> = ({
   timeZone,
-  selectedTimeZone,
-  setSelectedTimeZone,
+  setTimeZone,
   handleUpdate,
+  isUpdating,
 }) => {
+  const [localTimeZone, setLocalTimeZone] = useState<TimezoneObj>(timeZone!);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleUpdateAndClose = async () => {
     // @ts-ignore
-    await handleUpdate({ timeZone: selectedTimeZone });
+    await handleUpdate({ timeZone: localTimeZone });
     setIsPopoverOpen(false);
+    setTimeZone(localTimeZone);
   };
 
   useEffect(() => {
@@ -48,11 +58,24 @@ const TimeZone: FC<TimeZoneProps> = ({
   return (
     <UISectionCard
       title='Time Zone'
+      isHoverEffect={!isPopoverOpen}
       description='Set the default time zone for your company.'
       action={
-        <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+        <Popover
+          open={isPopoverOpen}
+          onOpenChange={() => {
+            if (!isUpdating && isPopoverOpen) setIsPopoverOpen(false);
+          }}
+        >
           <PopoverTrigger asChild>
-            <Button variant='outline' size='sm' className=''>
+            <Button
+              variant='outline'
+              size='sm'
+              className=''
+              onClick={() => {
+                if (!isUpdating) setIsPopoverOpen(true);
+              }}
+            >
               <Pen className='mr-2 h-3 w-3' /> Edit
               <span className='sr-only'>Edit Time Zone</span>
             </Button>
@@ -61,13 +84,17 @@ const TimeZone: FC<TimeZoneProps> = ({
             <div className='flex w-[300px] flex-col gap-4'>
               <Label>Time Zone</Label>
               <TimezonePicker
-                value={selectedTimeZone?.tzCode || null}
-                onChange={(value) => setSelectedTimeZone(value)}
+                value={localTimeZone?.tzCode || timeZone?.tzCode}
+                onChange={(value) => setLocalTimeZone(value)}
                 width={'300'}
               />
-              <Button className='w-full' onClick={handleUpdateAndClose}>
+              <UIButton
+                className='w-full'
+                onClick={handleUpdateAndClose}
+                isLoading={isUpdating}
+              >
                 Update
-              </Button>
+              </UIButton>
             </div>
           </PopoverContent>
         </Popover>
@@ -77,7 +104,7 @@ const TimeZone: FC<TimeZoneProps> = ({
         <div>
           <div className='flex items-center space-x-2'>
             <Clock className='h-4 w-4 text-muted-foreground' />
-            <p>{timeZone}</p>
+            <p>{timeZone?.label ?? '-'}</p>
           </div>
         </div>
       </div>

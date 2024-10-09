@@ -1,5 +1,5 @@
 import { dayjsLocal } from '@aglint/shared-utils';
-import type { Dispatch, SetStateAction } from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import { UIButton } from '@/common/UIButton';
 import UIDialog from '@/common/UIDialog';
@@ -9,17 +9,29 @@ import DayWithTime from './ui/DayWithTime';
 
 export const WorkTimeEditDialog = ({
   isOpen,
-  handleUpdateAndClose,
+  handleUpdate,
   workingHours,
-  setWorkingHours,
   setIsOpen,
+  isUpdating,
 }: {
   isOpen: boolean;
-  handleUpdateAndClose: () => Promise<void>;
+  isUpdating: boolean;
+  // eslint-disable-next-line no-unused-vars
+  handleUpdate: (data: { workingHours: WorkingHour[] }) => Promise<void>;
   workingHours: WorkingHour[];
-  setWorkingHours: Dispatch<SetStateAction<WorkingHour[]>>;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const [localWorkingHours, setLocalWorkingHours] =
+    useState<WorkingHour[]>(workingHours);
+
+  const handleUpdateAndClose = async () => {
+    await handleUpdate({ workingHours: localWorkingHours });
+    setIsOpen(false);
+  };
+
+  useEffect(() => {
+    setLocalWorkingHours(workingHours);
+  }, [workingHours]);
   return (
     <UIDialog
       open={isOpen}
@@ -35,14 +47,18 @@ export const WorkTimeEditDialog = ({
           >
             Cancel
           </UIButton>
-          <UIButton size='sm' onClick={handleUpdateAndClose}>
+          <UIButton
+            size='sm'
+            onClick={handleUpdateAndClose}
+            isLoading={isUpdating}
+          >
             Update
           </UIButton>
         </>
       }
     >
       <div className='flex flex-col gap-4'>
-        {workingHours.map((day, i) => {
+        {localWorkingHours.map((day, i) => {
           const startTime = dayjsLocal()
             .set(
               'hour',
@@ -70,7 +86,7 @@ export const WorkTimeEditDialog = ({
               startTime={startTime}
               endTime={endTime}
               selectStartTime={(value, i) => {
-                setWorkingHours((pre) => {
+                setLocalWorkingHours((pre) => {
                   const data = [...pre];
                   data[i].timeRange.startTime =
                     dayjsLocal(value).format('HH:mm');
@@ -78,13 +94,13 @@ export const WorkTimeEditDialog = ({
                 });
               }}
               selectEndTime={(value, i) => {
-                setWorkingHours((pre) => {
+                setLocalWorkingHours((pre) => {
                   const data = [...pre];
                   data[i].timeRange.endTime = dayjsLocal(value).format('HH:mm');
                   return data;
                 });
               }}
-              setWorkingHours={setWorkingHours}
+              setWorkingHours={setLocalWorkingHours}
             />
           );
         })}

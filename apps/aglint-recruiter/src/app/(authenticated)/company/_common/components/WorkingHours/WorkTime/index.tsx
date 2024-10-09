@@ -21,22 +21,17 @@ import { WorkTimeEditDialog } from './WorkTimeEditDialog';
 
 interface WorkTimeProps {
   workingHours: WorkingHour[];
-  setWorkingHours: Dispatch<SetStateAction<WorkingHour[]>>;
   handleUpdate: (data: { workingHours: WorkingHour[] }) => Promise<void>;
+  isUpdating: boolean;
 }
 
 const WorkTime: FC<WorkTimeProps> = ({
   workingHours,
-  setWorkingHours,
   handleUpdate,
+  isUpdating,
 }) => {
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-
-  const handleUpdateAndClose = async () => {
-    await handleUpdate({ workingHours });
-    setIsOpen(false);
-  };
 
   useEffect(() => {
     return () => {
@@ -50,10 +45,10 @@ const WorkTime: FC<WorkTimeProps> = ({
   return (
     <>
       <WorkTimeEditDialog
-        handleUpdateAndClose={handleUpdateAndClose}
+        handleUpdate={handleUpdate}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        setWorkingHours={setWorkingHours}
+        isUpdating={isUpdating}
         workingHours={workingHours}
       />
       <UISectionCard
