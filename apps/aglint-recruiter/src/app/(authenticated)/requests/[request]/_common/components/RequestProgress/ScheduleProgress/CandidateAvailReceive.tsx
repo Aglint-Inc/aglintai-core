@@ -188,7 +188,7 @@ const WActionMenu = () => {
   }
   return (
     <RequestProgressTracker
-      circleIndicator='default'
+      circleIndicator='neutral'
       textRequestProgress='When candidate submits availability'
       slotProgress={
         <div>
