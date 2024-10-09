@@ -285,7 +285,6 @@ function CandidateAvailability({
             <UIDatePicker
               closeOnSelect={true}
               minDate={dayjsLocal(schedulingStartDate).toDate()}
-              maxDate={dayjsLocal(selectedRequest.schedule_end_date).toDate()}
               value={new Date(selectedDate.start_date.toISOString())}
               onAccept={(value: Date) => {
                 setSelectedDate({
@@ -298,8 +297,7 @@ function CandidateAvailability({
           slotEndDateInput={
             <UIDatePicker
               closeOnSelect={true}
-              minDate={dayjsLocal(schedulingStartDate).add(-1, 'day').toDate()}
-              maxDate={dayjsLocal(selectedRequest.schedule_end_date).toDate()}
+              minDate={dayjsLocal(schedulingStartDate).toDate()}
               value={new Date(selectedDate.end_date.toISOString())}
               onAccept={(value: Date) => {
                 setSelectedDate({
