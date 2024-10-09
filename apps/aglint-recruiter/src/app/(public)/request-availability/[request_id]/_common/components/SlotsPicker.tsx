@@ -1,7 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
-import { ScrollArea } from '@components/ui/scroll-area';
+import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
 import { Separator } from '@components/ui/separator';
 import dayjs from 'dayjs';
 import { CheckCircle } from 'lucide-react';
@@ -154,12 +154,11 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
               </span>
             </div>
           </div>
-
           <div className='w-full'>
             {dateSlots.length ? (
               <div>
-                <ScrollArea className='w-[710px] whitespace-nowrap'>
-                  <div className='flex w-max gap-2'>
+                <ScrollArea className='w-[710px]'>
+                  <div className='flex gap-2 pb-4'>
                     {singleDay
                       ? (
                           dateSlots?.find((slot) => slot.round === day || 1)
@@ -291,6 +290,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
                           );
                         })}
                   </div>
+                  <ScrollBar orientation='horizontal' />
                 </ScrollArea>
               </div>
             ) : (
@@ -319,7 +319,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
                   )}
                 </div>
                 <div className='flex flex-col'>
-                  <div className='text-sm font-semibold'>
+                  <div className='text-md font-semibold'>
                     Choose time slots.
                   </div>
                   <span className='text-sm text-muted-foreground'>{`Choose ${NoOfSlotsNeeds} or more slots per day. Click on a timeslot to select. Click again to deselect.`}</span>
@@ -327,7 +327,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
               </div>
             </div>
           ) : null}
-          <ScrollArea className='h-[408px]'>
+          <ScrollArea className='h-[380px]'>
             {markAsAllDateSelected ? <TimeSlotsWrapper /> : null}
           </ScrollArea>
         </div>
