@@ -21,7 +21,6 @@ function Holidays() {
         <PageHeaderText>
           <PageTitle>Holidays</PageTitle>
           <PageDescription>
-            {' '}
             List company holidays to exclude them from scheduling.
           </PageDescription>
         </PageHeaderText>

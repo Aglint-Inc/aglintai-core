@@ -36,6 +36,15 @@ const Google = () => {
             access_token: tokens.access_token,
             refresh_token: tokens.refresh_token,
           });
+          if (!email) {
+            toast({
+              variant: 'destructive',
+              title: 'Error',
+              description:
+                'Unable to get email from Google. Please contact support.',
+            });
+          }
+
           await mutateAsync({
             is_calendar_connected: true,
             schedule_auth: {
@@ -54,12 +63,12 @@ const Google = () => {
             });
           }
         } finally {
-          // const path = localStorage.getItem('gmail-redirect-path');
-          // if (path) {
-          //   router.replace(path);
-          // } else {
-          //   router.replace('/jobs');
-          // }
+          const path = localStorage.getItem('gmail-redirect-path');
+          if (path) {
+            router.replace(path);
+          } else {
+            router.replace('/jobs');
+          }
         }
       })();
     }

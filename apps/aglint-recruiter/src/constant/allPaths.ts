@@ -90,7 +90,7 @@ export const PATHS = [
   '/api/workflow-cron',
   '/auth/callback',
   '/auth/redirect',
-  '/auth-cal',
+  '/auth-cal/google',
   '/company',
   '/integrations/[platform]',
   '/integrations',

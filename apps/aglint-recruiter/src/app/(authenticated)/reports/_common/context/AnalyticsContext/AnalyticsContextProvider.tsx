@@ -10,7 +10,6 @@ import { useTenant } from '@/company/hooks';
 import { supabase } from '@/utils/supabase/client';
 
 import { type AnalyticsContextInterface, type AnalyticsFilters } from './Type';
-
 const InitialAnalyticsContext: AnalyticsContextInterface = {
   filtersOptions: {
     job: [],
@@ -111,10 +110,13 @@ async function getOptions(recruiter_id: string) {
   const location = (
     await supabase
       .from('office_locations')
-      .select('id, label:name')
+      .select('id, line1,city')
       .in('id', loc_id_filter)
       .throwOnError()
-  ).data!.map((item) => ({ label: item.label!, id: item.id }));
+  ).data!.map((item) => ({
+    label: [item.city, item.line1!].filter((L) => L).join(', '),
+    id: item.id,
+  }));
   return {
     department,
     location,

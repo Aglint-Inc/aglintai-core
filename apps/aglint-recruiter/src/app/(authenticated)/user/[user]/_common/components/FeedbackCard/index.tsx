@@ -10,8 +10,6 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { ChevronDown, ChevronUp, MessageSquareOff } from 'lucide-react';
 import { useState } from 'react';
 
-import { UIButton } from '@/components/Common/UIButton';
-
 import { useInterviewer } from '../../hooks/useInterviewer';
 import { List } from './ui/List';
 
@@ -31,9 +29,6 @@ export const Feedback = () => {
             <SectionTitle>Interview Feedback</SectionTitle>
           </SectionHeaderText>
           <SectionActions>
-            <UIButton size='sm' variant='ghost'>
-              View All
-            </UIButton>
             {isExpanded ? (
               <ChevronUp size={20} onClick={() => setIsExpanded(false)} />
             ) : (

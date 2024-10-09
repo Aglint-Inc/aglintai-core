@@ -1,4 +1,5 @@
 import { dayjsLocal } from '@aglint/shared-utils';
+import { useToast } from '@components/hooks/use-toast';
 import { useEffect } from 'react';
 import { DateCard } from 'src/app/(public)/_common/_components/DateCard';
 import TimeSlotsColumn from 'src/app/(public)/_common/_components/TimeSlotsColumn';
@@ -10,11 +11,7 @@ import toast from '@/utils/toast';
 
 import useInviteActions from '../../hooks/useInviteActions';
 import { useInviteSlots } from '../../hooks/useInviteSlots';
-import {
-  setSelectedDate,
-  setSelectedSlots,
-  useCandidateInviteStore,
-} from '../../store';
+import { setSelectedDate, useCandidateInviteStore } from '../../store';
 import { type SessionData } from '../../types/types';
 
 const MultiDay = () => {
@@ -49,8 +46,9 @@ const MultiDayLoading = () => {
 };
 
 const MultiDaySuccess = () => {
+  const { toast } = useToast();
   const { handleSelectSlot } = useInviteActions();
-  const { selectedSlots, selectedDate, selectedDay, timezone } =
+  const { selectedDate, selectedDay, timezone, rounds } =
     useCandidateInviteStore();
 
   const { data } = useInviteSlots();
@@ -69,11 +67,30 @@ const MultiDaySuccess = () => {
   );
 
   useEffect(() => {
-    if (!selectedDate) {
-      setSelectedDate(sessions[0].date);
-      setSelectedSlots([sessions[0].slots[0]]);
+    if (!selectedDate && sessions?.length > 0) {
+      if (selectedDay === 1) {
+        setSelectedDate(sessions[0].date);
+      } else {
+        const validsessions = sessions.filter(
+          (session) =>
+            !dayjsLocal(selectedSlots[selectedDay - 2].sessions[0].start_time)
+              .tz(timezone.tzCode)
+              .isSameOrAfter(session.date, 'day'),
+        );
+        if (validsessions.length === 0) {
+          toast({
+            title: 'No available slots',
+            variant: 'destructive',
+          });
+        }
+        setSelectedDate(validsessions[0].date);
+      }
     }
-  }, []);
+  }, [selectedDay]);
+
+  const selectedSlots = rounds
+    .map((round) => round.selectedSlots)
+    .filter((slot) => slot !== null);
 
   return (
     <>
@@ -127,14 +144,7 @@ const MultiDaySuccess = () => {
                 return (
                   <UITimeRangeCard
                     onClickTime={() => {
-                      if (
-                        selectedSlots[selectedDay - 1]?.slot_comb_id ===
-                        slot.slot_comb_id
-                      ) {
-                        setSelectedSlots([]);
-                      } else {
-                        handleSelectSlot(selectedDay - 1, slot);
-                      }
+                      handleSelectSlot(selectedDay - 1, slot);
                     }}
                     isSemiActive={false}
                     isActive={
@@ -145,7 +155,7 @@ const MultiDaySuccess = () => {
                     }
                     key={ind}
                     textTime={`${startTime} - ${endTime}`}
-                    ShowCloseIcon={true}
+                    ShowCloseIcon={false}
                   />
                 );
               })}
