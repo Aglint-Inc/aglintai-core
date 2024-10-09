@@ -19,27 +19,17 @@ function Progress() {
     }
   }, [stages]);
 
+  const currentIndex = stages.findLastIndex((stage) => {
+    return !!stage.sessions.find(
+      (session) =>
+        session.interview_meeting.status === 'completed' ||
+        session.interview_meeting.status === 'confirmed',
+    );
+  });
+
+  const cur = currentIndex >= 0 ? currentIndex : 0;
+
   const stageList: StageProps[] = stages.map((stage, index) => {
-    const isCompleted = stage.sessions.every((session) => {
-      return session.interview_meeting.status === 'completed';
-    });
-
-    const isConfirmed = stage.sessions.every((session) => {
-      return session.interview_meeting.status === 'confirmed';
-    });
-
-    // const isNotScheduled = stage.sessions.every((session) => {
-    //   return session.interview_meeting.status === 'not_scheduled';
-    // });
-
-    const isCancelled = stage.sessions.every((session) => {
-      return session.interview_meeting.status === 'cancelled';
-    });
-
-    const isWaiting = stage.sessions.every((session) => {
-      return session.interview_meeting.status === 'waiting';
-    });
-
     const totalSessions = stage.sessions.length;
     const completedSessions = stage.sessions.filter(
       (session) => session.interview_meeting.status === 'completed',
@@ -52,15 +42,13 @@ function Progress() {
         setSelectedSessionIds([]);
         router.setQueryParams({ stage: stage.interview_plan.id });
       },
-      status: isCompleted
-        ? 'completed'
-        : isConfirmed
+      isActive: selectedStageId === stage.interview_plan.id,
+      status:
+        cur === index
           ? 'confirmed'
-          : isWaiting
-            ? 'waiting'
-            : isCancelled
-              ? 'cancelled'
-              : 'not_scheduled',
+          : cur < index
+            ? 'not_scheduled'
+            : 'completed',
     };
   });
 
@@ -68,7 +56,7 @@ function Progress() {
     <>
       <InterviewStages
         stages={stageList}
-        orientation='vertical'
+        orientation='horizontal'
         className='max-w-md'
       />
     </>

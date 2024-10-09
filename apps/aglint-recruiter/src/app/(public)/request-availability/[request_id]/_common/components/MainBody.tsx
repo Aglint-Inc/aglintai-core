@@ -1,4 +1,5 @@
 'use client';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { cn } from '@lib/utils';
 import dayjs from 'dayjs';
 import { AlertTriangle, RefreshCcw } from 'lucide-react';
@@ -88,18 +89,19 @@ function CandidateAvailability() {
     );
   }
   return (
-    <div className='flex h-full w-full flex-row gap-4'>
+    <div className='flex flex-row'>
       <div
-        className={cn('h-full w-full overflow-auto', {
-          'min-w-[450px] max-w-[450px]': !candidateRequestAvailability?.slots,
+        className={cn('w-4/12', {
+          '': !candidateRequestAvailability?.slots,
         })}
       >
-        <MultiDaySessions />
+        <ScrollArea className='h-[calc(100vh-280px)] border-r border-border p-4'>
+          <MultiDaySessions />
+        </ScrollArea>
       </div>
       {!candidateRequestAvailability?.slots && (
         <>
-          <hr className='h-[60vh] w-[2px] bg-gray-400' />
-          <div className='w-full'>
+          <div className='w-8/12 p-4'>
             <SlotsPicker singleDay={multiDaySessions.length === 1} />
           </div>
         </>
