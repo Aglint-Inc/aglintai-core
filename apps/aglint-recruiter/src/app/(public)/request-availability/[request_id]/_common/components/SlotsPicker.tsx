@@ -244,7 +244,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
               </div>
             </div>
           ) : null}
-          <ScrollArea className='h-[380px]'>
+          <ScrollArea className='h-[calc(100vh-550px)]'>
             {markAsAllDateSelected ? <TimeSlotsWrapper /> : null}
           </ScrollArea>
         </div>
