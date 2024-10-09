@@ -80,6 +80,7 @@ const scheduleWithAgentWithoutTaskId = async ({
   rec_user_phone,
   rec_user_id,
   supabase,
+  user_tz,
 }: {
   type: 'phone_agent' | 'email_agent';
   session_ids: string[];
@@ -134,6 +135,7 @@ const scheduleWithAgentWithoutTaskId = async ({
       rec_user_id,
       application_id,
       request_id: '', //TODO: add request_id,
+      plans_time_zone: user_tz,
     });
 
     await agentTrigger({

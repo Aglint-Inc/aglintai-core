@@ -125,6 +125,7 @@ export const useSelfSchedulingDrawer = () => {
         selectedSlots,
         application_id,
         request_id,
+        plans_time_zone: dayjsLocal.tz.guess(),
       };
       const res = await axios.post(
         '/api/scheduling/application/sendselfschedule',

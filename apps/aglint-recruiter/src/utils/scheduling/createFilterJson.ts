@@ -9,6 +9,7 @@ export const createFilterJson = async ({
   supabase,
   rec_user_id,
   request_id,
+  plans_time_zone,
 }: {
   sessions_ids: string[];
   application_id: string;
@@ -20,6 +21,7 @@ export const createFilterJson = async ({
   supabase: SupabaseType;
   rec_user_id: string;
   request_id: string;
+  plans_time_zone: string;
 }) => {
   const { data: filterJson, error: errorFilterJson } = await supabase
     .from('interview_filter_json')
@@ -33,6 +35,7 @@ export const createFilterJson = async ({
       created_by: rec_user_id,
       application_id,
       request_id,
+      plans_time_zone,
     })
     .select();
 

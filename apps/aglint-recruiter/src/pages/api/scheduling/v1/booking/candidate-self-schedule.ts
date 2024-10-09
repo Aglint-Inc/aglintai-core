@@ -18,12 +18,14 @@ const candidateSelfSchedule = async (
 ) => {
   const schedule_db_details = await fetchDBScheduleDetails(parsed);
 
-  const { filtered_selected_options, company } = schedule_db_details;
+  const { filtered_selected_options, company, plans_time_zone } =
+    schedule_db_details;
   const interviewer_selected_options = filtered_selected_options;
 
   const cand_filtered_plans: PlanCombinationRespType[] = getCandFilteredSlots(
     interviewer_selected_options,
     parsed,
+    plans_time_zone,
   );
 
   const cand_schedule = new CandidatesScheduling({
@@ -38,7 +40,7 @@ const candidateSelfSchedule = async (
 
   await cand_schedule.fetchDetails({
     params: {
-      req_user_tz: parsed.cand_tz,
+      req_user_tz: plans_time_zone,
       start_date_str: schedule_db_details.dates.start_date_str,
       end_date_str: schedule_db_details.dates.end_date_str,
       company_id: company.id,
@@ -47,6 +49,7 @@ const candidateSelfSchedule = async (
       ),
     },
   });
+  //
   if (!cand_schedule.db_details) {
     throw new CApiError('SERVER_ERROR', 'No db details found');
   }
@@ -68,6 +71,7 @@ const candidateSelfSchedule = async (
 const getCandFilteredSlots = (
   interviewer_selected_options: PlanCombinationRespType[],
   parsed_body: CandidateDirectBookingType,
+  plans_time_zone: string,
 ) => {
   const int_rounds_length = ScheduleUtils.getSessionRounds(
     interviewer_selected_options[0].sessions.map((s) => ({
@@ -98,14 +102,14 @@ const getCandFilteredSlots = (
     ) {
       if (
         dayjsLocal(session_rounds[curr_round_idx][0].start_time)
-          .tz(parsed_body.cand_tz)
+          .tz(plans_time_zone)
           .format() !== parsed_body.selected_plan[curr_round_idx].start_time &&
         dayjsLocal(
           session_rounds[curr_round_idx][
             session_rounds[curr_round_idx].length - 1
           ].end_time,
         )
-          .tz(parsed_body.cand_tz)
+          .tz(plans_time_zone)
           .format() !== parsed_body.selected_plan[curr_round_idx].end_time
       ) {
         is_valid = false;

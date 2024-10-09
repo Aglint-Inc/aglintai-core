@@ -3,7 +3,7 @@ import {
   type PlanCombinationRespType,
 } from '@aglint/shared-types';
 import { type SchemaCandidateDirectBooking } from '@aglint/shared-types/src/aglintApi/zodSchemas/candidate-self-schedule';
-import { CApiError } from '@aglint/shared-utils';
+import { CApiError, supabaseWrap } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { type z } from 'zod';
 
@@ -14,16 +14,15 @@ export const fetchDBScheduleDetails = async (
 ) => {
   const supabaseAdmin = getSupabaseServer();
 
-  const filter_json_data = (
+  const filter_json_data = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
         '*,applications!inner(id,candidate_id,candidates!inner(email,first_name,last_name,recruiter!inner(id,name)),public_jobs!inner(job_title))',
       )
       .eq('id', parsed_body.filter_id)
-      .single()
-      .throwOnError()
-  ).data;
+      .single(),
+  );
 
   if (!filter_json_data) {
     throw new CApiError('CLIENT', 'Filter does not exist');
@@ -79,6 +78,7 @@ export const fetchDBScheduleDetails = async (
       end_date_str: end_date_str,
     },
     request_id: filter_json_data.request_id,
+    plans_time_zone: filter_json_data.plans_time_zone,
   };
   return fetchDetails;
 };
@@ -105,4 +105,5 @@ type FetchDBScheduleDetailsType = {
     end_date_str: string;
   };
   session_ids: string[];
+  plans_time_zone: string;
 };

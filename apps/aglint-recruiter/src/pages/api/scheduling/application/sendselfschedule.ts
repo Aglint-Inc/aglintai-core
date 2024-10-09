@@ -5,6 +5,7 @@ import {
   executeWorkflowAction,
   getFullName,
   type ProgressLoggerType,
+  supabaseWrap,
 } from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 import { type NextApiRequest, type NextApiResponse } from 'next';
@@ -25,6 +26,7 @@ export interface ApiBodyParamsSelfSchedule {
   selectedSlots?: PlanCombinationRespType[];
   user_id: string;
   request_id: string;
+  plans_time_zone: string;
 }
 
 export interface ApiResponseSelfSchedule {
@@ -72,6 +74,7 @@ const sendToCandidate = async ({
   application_id,
   request_id,
   reqProgressLogger,
+  plans_time_zone,
 }: ApiBodyParamsSelfSchedule & {
   reqProgressLogger: ProgressLoggerType;
 }) => {
@@ -90,14 +93,13 @@ const sendToCandidate = async ({
     .map((ses) => ses?.interview_session?.id)
     .filter((id) => id !== undefined);
 
-  const schedule = (
+  const schedule = supabaseWrap(
     await supabaseAdmin
       .from('applications')
       .select('id,job_id,recruiter_id,candidates(*)')
       .eq('id', application_id)
-      .single()
-      .throwOnError()
-  ).data;
+      .single(),
+  );
 
   if (!schedule) throw new Error('Application not found');
 
@@ -129,6 +131,7 @@ const sendToCandidate = async ({
       created_by: user_id,
       request_id,
       application_id,
+      plans_time_zone,
     })
     .select();
 
