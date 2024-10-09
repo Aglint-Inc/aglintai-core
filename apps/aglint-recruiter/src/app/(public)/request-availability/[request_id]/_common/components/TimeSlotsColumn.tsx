@@ -41,8 +41,7 @@ function TimeSlotsColumn({
         <SectionActions>
           {day === 1 && (
             <Button variant='outline' size='sm' onClick={onClose}>
-              <X className='mr-2 h-4 w-4 text-destructive' />
-              Remove
+              <X className='h-4 w-4 text-destructive' />
             </Button>
           )}
         </SectionActions>

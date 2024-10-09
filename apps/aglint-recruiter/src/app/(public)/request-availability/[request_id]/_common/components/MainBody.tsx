@@ -90,15 +90,6 @@ function CandidateAvailability() {
   }
   return (
     <div className='flex flex-row'>
-      <div
-        className={cn('w-4/12', {
-          '': !candidateRequestAvailability?.slots,
-        })}
-      >
-        <ScrollArea className='h-[calc(100vh-280px)] border-r border-border p-4'>
-          <MultiDaySessions />
-        </ScrollArea>
-      </div>
       {!candidateRequestAvailability?.slots && (
         <>
           <div className='w-8/12 p-4'>
@@ -106,6 +97,15 @@ function CandidateAvailability() {
           </div>
         </>
       )}
+      <div
+        className={cn('w-4/12', {
+          '': !candidateRequestAvailability?.slots,
+        })}
+      >
+        <ScrollArea className='h-[calc(100vh-260px)] border-r border-border p-4'>
+          <MultiDaySessions />
+        </ScrollArea>
+      </div>
     </div>
   );
 }

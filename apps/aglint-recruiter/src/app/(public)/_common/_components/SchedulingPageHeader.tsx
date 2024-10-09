@@ -1,6 +1,5 @@
 'use client';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Separator } from '@components/ui/separator';
 import { Briefcase, Clock, MapPin } from 'lucide-react';
 import React from 'react';
 
@@ -16,9 +15,9 @@ export function SchedulingPageHeader({
   logo: string;
 }) {
   return (
-    <div className='flex w-full flex-col items-start'>
-      <div className='flex w-full items-start rounded-t-lg bg-muted p-4'>
-        <div className='flex flex-row items-center'>
+    <div className='flex w-full flex-row items-start justify-between space-x-16 rounded-t-lg bg-muted p-4'>
+      <div className='flex flex-col items-start'>
+        <div className='flex flex-row items-start'>
           <Avatar className='h-[50px] w-[50px]'>
             <AvatarImage src={logo} alt={companyName} />
             <AvatarFallback>{companyName.charAt(0)}</AvatarFallback>
@@ -48,9 +47,10 @@ export function SchedulingPageHeader({
           </div>
         </div>
       </div>
-      {title ? title : null}
-      <Separator />
-      {description ? description : null}
+      <div className='flex flex-1 flex-col items-end text-right'>
+        {title ? title : null}
+        {description ? description : null}
+      </div>
     </div>
   );
 }

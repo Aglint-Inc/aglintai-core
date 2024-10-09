@@ -1,6 +1,7 @@
 'use client';
 import { PublicPageLayout } from '@components/layouts/public-layout';
-import { UIAlert } from '@components/ui-alert';
+import { UIBadge } from '@components/ui-badge';
+import { CheckCircle } from 'lucide-react';
 
 import Footer from '@/common/Footer';
 
@@ -19,28 +20,26 @@ function RequestAvailability() {
           companyName={candidateRequestAvailability?.recruiter?.name ?? ''}
           description={
             isSubmitted && !candidateRequestAvailability?.booking_confirmed ? (
-              <div className='flex w-full'>
-                <UIAlert type='success' className='mx-8 mt-8'>
-                  <p className='text-sm'>
-                    Thank you for submitting your availability. We will review
-                    the selected time slots and confirm the schedule soon. You
-                    will receive a confirmation shortly.
-                  </p>
-                </UIAlert>
-              </div>
+              <p className='text-sm text-muted-foreground'>
+                Thanks for submitting. We&apos;ll review and confirm soon.
+              </p>
             ) : candidateRequestAvailability?.booking_confirmed &&
               meetingsAndRounds?.meetings ? (
-              <div className='flex w-full'>
-                <UIAlert type='success' className='mx-8 mt-8 w-full'>
-                  <p className='text-sm'>Your meeting has been confirmed.</p>
-                </UIAlert>
-              </div>
+              <p className='text-sm'>Your meeting has been confirmed.</p>
             ) : null
           }
           title={
-            <h2 className='flex items-center gap-2 p-4 text-lg font-semibold'>
-              Availability Request
-            </h2>
+            <div className='flex flex-row items-center'>
+              <UIBadge
+                icon={CheckCircle}
+                variant='success'
+                className='mr-2'
+                textBadge='Submitted'
+              />
+              <h2 className='flex items-center gap-2 text-lg font-semibold'>
+                Availability Request
+              </h2>
+            </div>
           }
           logo={candidateRequestAvailability?.recruiter?.logo ?? ''}
         />
