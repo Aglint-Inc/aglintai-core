@@ -8,7 +8,7 @@ export const Navigation = () => {
   const { previousPage } = useCreateRequestActions();
   if (step === 0) return <></>;
   return (
-    <Button variant='ghost' size='sm' onClick={() => previousPage()}>
+    <Button variant='outline' size='sm' onClick={() => previousPage()}>
       <ChevronLeft className='mr-2 h-4 w-4' /> Back
     </Button>
   );

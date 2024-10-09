@@ -43,12 +43,16 @@ const AddActionMenu = ({
     <>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <UIButton variant='secondary'>
+          <div className='mb-4'>
+          <UIButton variant='secondary' >
             <div className='flex items-center gap-1'>
+            <PlusCircle className='h-4 w-4' />
               <span>Add Action</span>
-              <PlusCircle className='h-4 w-4' />
+             
             </div>
+            
           </UIButton>
+          </div>
         </PopoverTrigger>
         <PopoverContent
           className='min-w-450 flex flex-col gap-4 p-2'

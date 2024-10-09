@@ -56,18 +56,22 @@ function CandidateAvailability({
   // states
   const [selectedDays, setSelectedDays] = useState(DAYS_LIST[1]);
   const [selectedSlots, setSelectedSlots] = useState(SLOTS_LIST[1]);
+  const isDateLessThanToday = dayjsLocal(
+    selectedRequest.schedule_start_date,
+  ).isBefore(dayjsLocal(), 'day');
+
+  const schedulingStartDate = isDateLessThanToday
+    ? dayjsLocal().toISOString()
+    : selectedRequest.schedule_start_date;
   const [selectedDate, setSelectedDate] = useState<{
     start_date: Dayjs;
     end_date: Dayjs;
   }>({
-    start_date: dayjsLocal(
-      selectedRequest.schedule_start_date || dayjsLocal().toISOString(),
-    ),
+    start_date: dayjsLocal(schedulingStartDate || dayjsLocal().toISOString()),
     end_date: dayjsLocal(
       selectedRequest.schedule_end_date || dayjsLocal().toISOString(),
     ),
   });
-  dayjsLocal;
   const [submitting, setSubmitting] = useState(false);
   const { data: sessions } = useMeetingList();
 
@@ -280,9 +284,7 @@ function CandidateAvailability({
           slotStartDateInput={
             <UIDatePicker
               closeOnSelect={true}
-              minDate={dayjsLocal(selectedDate.start_date)
-                .add(-1, 'day')
-                .toDate()}
+              minDate={dayjsLocal(schedulingStartDate).toDate()}
               value={new Date(selectedDate.start_date.toISOString())}
               onAccept={(value: Date) => {
                 setSelectedDate({
@@ -295,9 +297,7 @@ function CandidateAvailability({
           slotEndDateInput={
             <UIDatePicker
               closeOnSelect={true}
-              minDate={dayjsLocal(selectedDate.start_date)
-                .add(-1, 'day')
-                .toDate()}
+              minDate={dayjsLocal(schedulingStartDate).toDate()}
               value={new Date(selectedDate.end_date.toISOString())}
               onAccept={(value: Date) => {
                 setSelectedDate({

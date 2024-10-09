@@ -12,13 +12,13 @@ import {
   ScheduleUtils,
   SINGLE_DAY_TIME,
 } from '@aglint/shared-utils';
+import { toast } from '@components/hooks/use-toast';
 import axios from 'axios';
 import dayjs, { type Dayjs } from 'dayjs';
 import { useParams } from 'next/navigation';
 import { createContext, useContext, useEffect, useState } from 'react';
 
 import { supabase } from '@/utils/supabase/client';
-import toast from '@/utils/toast';
 
 import {
   useCandidateAvailabilityData,
@@ -202,6 +202,12 @@ function RequestAvailabilityProvider({
     ) as unknown as InterviewSessionTypeDB[][];
     setMultiDaySessions(meetingsRound);
 
+    if (requestAvailability?.slots) {
+      setDateSlots(requestAvailability.slots || []);
+      setSelectedSlots(requestAvailability.slots || []);
+      setIsSubmitted(true);
+      return;
+    }
     try {
       await Promise.all(
         meetingsRound.map(async (_, idx) => {
@@ -237,13 +243,7 @@ function RequestAvailabilityProvider({
         }),
       );
     } catch (error) {
-      toast.error('Something went wrong!');
-    }
-    if (requestAvailability?.slots) {
-      setDateSlots(requestAvailability.slots || []);
-      setSelectedSlots(requestAvailability.slots || []);
-      setIsSubmitted(true);
-      return;
+      toast({ title: 'Something went wrong!', variant: 'destructive' });
     }
   }
 
@@ -429,26 +429,18 @@ function RequestAvailabilityProvider({
   async function submitAvailability() {
     if (selectedSlots) {
       setSubmitting(true);
-      if (multiDaySessions.length > 1) {
-        const requestData = await updateRequestAvailability({
-          slots: selectedSlots,
-          user_timezone: dayjsLocal.tz.guess(),
-          id: String(request_id),
-        });
-        if (requestData) {
-          setDaySlots(requestData?.slots ?? []);
-        }
-      } else {
-        const requestData = await updateRequestAvailability({
-          slots: [{ round: 1, dates: selectedSlots[0].dates }],
-          user_timezone: dayjsLocal.tz.guess(),
-          id: String(request_id),
-        });
-        if (requestData) {
-          setDaySlots(requestData?.slots ?? []);
-        }
+      const requestData = await updateRequestAvailability({
+        slots: selectedSlots,
+        user_timezone: dayjsLocal.tz.guess(),
+        id: String(request_id),
+      });
+      if (requestData) {
+        setDaySlots(requestData?.slots ?? []);
       }
-
+      toast({
+        title: 'Availability submitted successfully',
+        description: 'We will get back to you shortly',
+      });
       setIsSubmitted(true);
       setSubmitting(false);
     }
@@ -554,7 +546,9 @@ export async function updateCandidateRequestAvailability({
     if (error) throw new Error(error.message);
     return result;
   } catch (error) {
-    if (error instanceof Error) toast.error(error?.message);
+    if (error instanceof Error) {
+      toast({ title: 'Something went wrong!', variant: 'destructive' });
+    }
   }
 }
 

@@ -13,7 +13,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import { Check, FileQuestion, Plus, User, Users } from 'lucide-react';
+import { Check, Plus, User, Users } from 'lucide-react';
 import React from 'react';
 
 export type SessionType = {
@@ -47,11 +47,6 @@ export function SessionList({
         <div className='flex min-h-[24px] w-full cursor-pointer flex-wrap items-center gap-2'>
           {selectedSession.length > 0 ? (
             <>
-              {selectedSession.map((ele, i) => (
-                <Button key={i} variant='secondary' size='sm'>
-                  {ele.name}
-                </Button>
-              ))}
               <Button variant='outline' size='sm'>
                 <Plus className='h-4 w-4' />
               </Button>

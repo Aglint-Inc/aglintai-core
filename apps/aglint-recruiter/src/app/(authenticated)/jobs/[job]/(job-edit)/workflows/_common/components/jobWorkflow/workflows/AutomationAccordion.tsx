@@ -3,7 +3,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@components/ui/accordion';
-import { Badge } from '@components/ui/badge';
 import { Label } from '@components/ui/label';
 import { Switch } from '@components/ui/switch';
 import { Calendar, Clock, User, UserCheck } from 'lucide-react';
@@ -30,25 +29,21 @@ export const AutomationAccordion = ({
   currentActions: JobAutomationState['jobWorkflowActions'];
 }) => {
   return (
-    <AccordionItem key={category} value={category}>
-      <AccordionTrigger>
+    <AccordionItem key={category} value={category} className='border rounded-md overflow-hidden'>
+      <AccordionTrigger className='hover:no-underline bg-gray-50 h-12 px-2 '>
         <div className='flex w-full items-center justify-between'>
           <div className='flex items-center space-x-2'>
-            {categoryToIcon[category]}
+            <div className='hidden'>{categoryToIcon[category]}</div>
             <div className='text-sm font-medium'>{category}</div>
           </div>
-          <Badge
-            variant={
-              currentTriggers.some((s) => s.is_active) ? 'default' : 'secondary'
-            }
-          >
-            {currentTriggers.filter((a) => a.is_active).length} /{' '}
-            {currentTriggers.length} enabled
-          </Badge>
+          <div className={`text-xs font-normal px-3 py-1 mr-2 rounded-sm ${currentTriggers.some((s) => s.is_active) ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600'}`}>
+          {currentTriggers.filter((a) => a.is_active).length} /{' '}
+          {currentTriggers.length} enabled
+          </div>
         </div>
       </AccordionTrigger>
-      <AccordionContent>
-        <div className='space-y-4'>
+      <AccordionContent className='py-2'>
+        <div className='flex flex-col gap-2 px-3'>
           {currentTriggers
             .filter(
               (w) =>
@@ -58,19 +53,9 @@ export const AutomationAccordion = ({
             )
             .map((wTrigger) => {
               return (
-                <div key={wTrigger.id} className='py-2'>
-                  <div className='mb-2 flex items-center justify-between'>
-                    <Label
-                      htmlFor={wTrigger.id}
-                      className='text-sm font-medium'
-                    >
-                      {
-                        triggerToQuestion[
-                          wTrigger.trigger as keyof typeof triggerToCategoryMap
-                        ]
-                      }
-                    </Label>
-                    <Switch
+                <div key={wTrigger.id} className=''>
+                  <div className='mb-2 flex items-center gap-2'>
+                  <Switch
                       id={wTrigger.id}
                       checked={wTrigger.is_active}
                       onCheckedChange={(checked) => {
@@ -79,10 +64,22 @@ export const AutomationAccordion = ({
                           is_active: checked,
                         });
                       }}
+                      className='transform scale-75'
                     />
+                    <Label
+                      htmlFor={wTrigger.id}
+                      className='text-sm font-medium cursor-pointer'
+                    >
+                      {
+                        triggerToQuestion[
+                          wTrigger.trigger as keyof typeof triggerToCategoryMap
+                        ]
+                      }
+                    </Label>
+                    
                   </div>
                   {wTrigger.is_active && (
-                    <div className='mt-2 space-y-4'>
+                    <div className='my-4 flex flex-col gap-2'>
                       {currentActions
                         .filter((act) => act.workflow_id === wTrigger.id)
                         .map((action) => {

@@ -188,7 +188,7 @@ const WActionMenu = () => {
   }
   return (
     <RequestProgressTracker
-      circleIndicator='default'
+      circleIndicator='neutral'
       textRequestProgress='When candidate submits availability'
       slotProgress={
         <div>
@@ -239,7 +239,7 @@ const WActionMenu = () => {
                   />
                   {!isSelfScheduleReminderSet && (
                     <SuggestionCard
-                      heading='Add automations'
+                      heading='Add automation'
                       description='The Slack RSVP for the interviewers attendance will be sent.'
                       buttonSlot={
                         <Button

@@ -89,11 +89,6 @@ const JobEdit = () => {
   const [saving, setSaving] = useState(false);
   const [show, setShow] = useState(false);
 
-  const handleSave = async () => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setSaving(false);
-  };
-
   useEffect(() => {
     if (saving) setShow(true);
     const timeout = setTimeout(() => (!saving ? setShow(false) : null), 1000);
@@ -117,7 +112,7 @@ const JobEdit = () => {
       <JobEditForm
         fields={fields}
         setFields={setFields}
-        setSaving={handleSave}
+        setSaving={setSaving}
       />
     </Page>
   );
@@ -209,7 +204,7 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
 
   return (
     <div>
-      <div className='grid grid-cols-2 gap-4'>{forms}</div>
+      <div className='grid grid-cols-2 gap-4 mt-2 max-w-3xl'>{forms}</div>
     </div>
   );
 };

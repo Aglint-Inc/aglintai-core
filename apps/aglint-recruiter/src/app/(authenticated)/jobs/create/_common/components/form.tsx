@@ -356,13 +356,14 @@ JobWorkPlace.displayName = 'JobWorkPlace';
 
 const JobDescription: FC<MetaForms> = memo(({ name, value, onChange }) => {
   return (
-    <div className='w-full'>
+    <div className='max-w-3xl'>
       <div className={cn('w-full')}>
         <TipTapAIEditor
           initialValue={value.value as string}
           handleChange={(e) => onChange(name, e)}
           placeholder='Enter job description'
           disabled={false}
+          height='calc(100vh - 480px)'
         />
       </div>
     </div>

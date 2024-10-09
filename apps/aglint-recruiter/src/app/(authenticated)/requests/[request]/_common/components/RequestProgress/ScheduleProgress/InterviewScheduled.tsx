@@ -63,8 +63,8 @@ const InterviewScheduled = () => {
   }
   return (
     <RequestProgressTracker
-      circleIndicator={tense === 'past' ? 'success' : 'default'}
-      textRequestProgress={'When inteview is scheduled'}
+      circleIndicator={tense === 'past' ? 'success' : 'neutral'}
+      textRequestProgress={'When interview is scheduled'}
       isLastNode={true}
       slotProgress={
         <>

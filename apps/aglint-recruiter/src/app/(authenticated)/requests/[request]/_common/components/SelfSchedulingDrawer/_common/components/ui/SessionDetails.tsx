@@ -4,7 +4,7 @@ import { Clock } from 'lucide-react';
 
 export function SessionDetails({
   slotSessionIcon,
-  textSessionName = 'Behavioural Session',
+  textSessionName = 'Behavioral Session',
   textSessionDuration = '30 Minutes',
   isMemberRow = true,
   slotMemberRow,

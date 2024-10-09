@@ -9,8 +9,8 @@ const ChooseScheduleMode = () => {
   return (
     <>
       <div className='flex flex-col gap-4'>
-        <UIAlert variant='tip' title='Add Automations'>
-          Streamline your workflow with Aglint AI automations.
+        <UIAlert variant='tip' title='Add Automation'>
+          Streamline your workflow with Aglint AI automation.
           <div className='mt-4 flex justify-end'>
             <div className='flex justify-start'>
               <Button

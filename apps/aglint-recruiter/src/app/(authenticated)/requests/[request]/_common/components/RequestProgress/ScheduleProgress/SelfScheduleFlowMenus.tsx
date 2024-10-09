@@ -100,7 +100,7 @@ const SelfScheduleFlowMenus = ({
       >
         <div className=''>
           <SuggestionCard
-            heading='Add automations'
+            heading='Add automation'
             description={
               'Self-schedule reminders will be sent to the applicant.'
             }

@@ -42,7 +42,7 @@ export const Send = ({
             </p>
           </>
         ) : (
-          <p className='mb-4 font-medium'>Invalide Candidate</p>
+          <p className='mb-4 font-medium'>Invalid Candidate</p>
         )}
       </CardContent>
       {email && (

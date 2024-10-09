@@ -1,4 +1,5 @@
 'use client';
+
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import {
   Section,
@@ -16,6 +17,7 @@ import { UIButton } from '@/components/Common/UIButton';
 import { Loader } from '../../../../../../components/Common/Loader';
 import { ConfirmedInvitePage } from '../../../../../_common/components/CandidateConfirm/_common/components';
 import { useInviteMeta } from '../hooks/useInviteMeta';
+import { useInviteSlots } from '../hooks/useInviteSlots';
 import {
   setSelectedSlots,
   setTimeZone,
@@ -25,39 +27,52 @@ import {
   type ScheduleCardProps,
   type ScheduleCardsProps,
 } from '../types/types';
-import { DetailsPopup } from './DetailsPopup';
 import MultiDay from './MultiDay';
+import RightPanel from './RightPanel';
 import { SingleDay } from './SingleDay';
 
 const CandidateInviteNew = () => {
-  const { isLoading, isError, isRefetching } = useInviteMeta();
+  const {
+    isLoading,
+    isError,
+    data: { isBooked },
+  } = useInviteMeta();
+
+  const {
+    isLoading: loadingSlots,
+    isError: errorSlots,
+    isRefetching,
+  } = useInviteSlots();
 
   return (
-    <div className='w-full'>
-      {isLoading || isRefetching ? (
+    <div className='h-full w-full'>
+      {isLoading || loadingSlots || isRefetching ? (
         <LoadingState />
-      ) : isError ? (
+      ) : isError || errorSlots ? (
         <ErrorState />
       ) : (
         <>
-          <div className='flex w-full flex-row justify-center'>
-            <div className='w-8/12 p-4'>
+          <div className='flex h-full w-full flex-row justify-center'>
+            <div className={isBooked ? 'h-full w-full' : 'h-full w-8/12'}>
               <CandidateInvitePlanPage />
             </div>
-            <div className='w-4/12 p-4'>
-              <DetailsPopup />
-            </div>
+            {!isBooked && (
+              <div className='w-4/12 border-l p-4'>
+                <RightPanel />
+              </div>
+            )}
           </div>
         </>
       )}
     </div>
   );
 };
+
 export default CandidateInviteNew;
 
 const LoadingState = () => (
   <div
-    className='flex w-full items-center justify-center'
+    className='flex h-full w-full items-center justify-center'
     aria-live='polite'
     aria-busy='true'
   >
@@ -94,6 +109,7 @@ const CandidateInvitePlanPage = () => {
   const { data: meta } = useInviteMeta();
 
   const waiting = !meta.isBooked;
+
   const { rounds } = (meta?.meetings || []).reduce(
     (acc, curr) => {
       const count = acc.rounds.length;
@@ -122,27 +138,20 @@ const CandidateInvitePlanPage = () => {
 
   if (!waiting && meta)
     return (
-      <Section>
-        <SectionHeader>
-          <SectionHeaderText>
-            <SectionTitle>Interview Details</SectionTitle>
-          </SectionHeaderText>
-        </SectionHeader>
-        <ConfirmedInvitePage
-          rounds={rounds}
-          candidate={meta.candidate}
-          filter_json={meta.filter_json}
-          meetings={meta.meetings}
-          recruiter={meta.recruiter}
-          timezone={timezone}
-          application_id={meta.application_id}
-        />
-      </Section>
+      <ConfirmedInvitePage
+        rounds={rounds}
+        candidate={meta.candidate}
+        filter_json={meta.filter_json}
+        meetings={meta.meetings}
+        recruiter={meta.recruiter}
+        timezone={timezone}
+        application_id={meta.application_id}
+      />
     );
 
   return (
     <Section>
-      <SectionHeader>
+      <SectionHeader className='px-4 pt-4'>
         <SectionHeaderText>
           <SectionTitle>Book Now</SectionTitle>
           <SectionDescription>
@@ -167,5 +176,5 @@ const CandidateInvitePlanPage = () => {
 
 const Invite = ({ rounds }: ScheduleCardsProps) => {
   if (rounds.length === 1) return <SingleDay />;
-  return <MultiDay rounds={rounds} />;
+  return <MultiDay />;
 };

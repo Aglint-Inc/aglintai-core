@@ -64,7 +64,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
           slack: null!,
         },
       },
-      name: 'Send slack messages to interviewers',
+      name: 'Send Slack messages to interviewers',
     },
   ],
   interviewerConfirmation: [
@@ -76,7 +76,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
           slack: null!,
         },
       },
-      name: 'Send slack messages to interviewers',
+      name: 'Send Slack messages to interviewers',
     },
   ],
   interviewEnd: [
@@ -98,7 +98,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
           slack: null!,
         },
       },
-      name: 'Send feedback messages to interviewers on slack',
+      name: 'Send feedback messages to interviewers on Slack',
     },
     {
       value: {
@@ -118,7 +118,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
           slack: null!,
         },
       },
-      name: 'Send a meeting completion confirmation form to the organizer, through slack',
+      name: 'Send a meeting completion confirmation form to the organizer, through Slack',
     },
     {
       value: {
@@ -138,7 +138,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
           slack: null!,
         },
       },
-      name: 'Send an attendance confirmation form to shadowing trainees, through slack',
+      name: 'Send an attendance confirmation form to shadowing trainees, through Slack',
     },
     {
       value: {
@@ -158,7 +158,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
           slack: null!,
         },
       },
-      name: 'Send an attendance confirmation form to reverse shadowing trainees, through slack',
+      name: 'Send an attendance confirmation form to reverse shadowing trainees, through Slack',
     },
   ],
   meetingDeclined: [
@@ -194,7 +194,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
           slack: null!,
         },
       },
-      name: 'Send confirmation messages to interviewers on slack',
+      name: 'Send confirmation messages to interviewers on Slack',
     },
   ],
   onQualified: [
@@ -216,7 +216,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
           slack: null!,
         },
       },
-      name: 'Send slack notification to trainee',
+      name: 'Send Slack notification to trainee',
     },
   ],
   onTrainingComplete: [
@@ -280,7 +280,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
           },
         },
       },
-      name: 'Pick Suitable slot/s and suggest to the Meeting Organizer in slack',
+      name: 'Pick Suitable slot/s and suggest to the Meeting Organizer in Slack',
     },
     {
       value: {
@@ -308,7 +308,7 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
       },
     },
     {
-      name: 'Inform interviewers and slack regarding interview cancellation through slack',
+      name: 'Inform interviewers and Slack regarding interview cancellation through Slack',
       value: {
         action_type: 'end_point',
         target_api: 'onRequestCancel_slack_interviewersOrganizer',

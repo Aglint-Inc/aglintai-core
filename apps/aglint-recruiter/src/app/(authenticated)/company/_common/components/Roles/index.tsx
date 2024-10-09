@@ -62,7 +62,6 @@ function RolesAndPermissionsComponent() {
             <PageHeaderText>
               <PageTitle>Roles & Permissions</PageTitle>
               <PageDescription>
-                {' '}
                 Customize permissions for each role and control access by
                 enabling or disabling the toggle next to each permission.
               </PageDescription>

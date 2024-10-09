@@ -9,6 +9,8 @@ export type CandidateInviteType = {
   timezone: TimezoneObj;
   selectedSlots: ReturnType<typeof useInviteSlots>['data'][number][number];
   detailPopup: boolean;
+  selectedDate: string | null;
+  selectedDay: number;
 };
 
 const initialStateSchedulingStore: CandidateInviteType = {
@@ -17,11 +19,21 @@ const initialStateSchedulingStore: CandidateInviteType = {
     timeZone[0],
   selectedSlots: [],
   detailPopup: false,
+  selectedDate: null,
+  selectedDay: 1,
 };
 
 export const useCandidateInviteStore = create<CandidateInviteType>()(
   () => initialStateSchedulingStore,
 );
+
+export const setSelectedDay = (
+  selectedDay: CandidateInviteType['selectedDay'],
+) => useCandidateInviteStore.setState({ selectedDay });
+
+export const setSelectedDate = (
+  selectedDate: CandidateInviteType['selectedDate'],
+) => useCandidateInviteStore.setState({ selectedDate });
 
 export const setDetailPopup = (
   detailPopup: CandidateInviteType['detailPopup'],

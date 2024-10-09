@@ -252,7 +252,7 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
 
   return (
     <div>
-      <div className='mb-6 grid grid-cols-2 gap-4'>{forms}</div>
+      <div className='mb-6 grid grid-cols-2 gap-4 mt-4 max-w-3xl'>{forms}</div>
       <div
         className={`rounded-md ${fields.description!.error.value ? 'outline-destructive' : ''}`}
       >

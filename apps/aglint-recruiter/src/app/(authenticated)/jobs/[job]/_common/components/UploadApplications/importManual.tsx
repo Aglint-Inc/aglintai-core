@@ -128,6 +128,7 @@ const FormBody = ({
         <FormField
           label='First Name'
           id='first_name'
+          placeholder='Enter the first name'
           value={applicant.first_name.value}
           onChange={(e: ChangeEvent<{ value: string }>) =>
             handleChange(e.target.value, 'first_name')
@@ -137,6 +138,7 @@ const FormBody = ({
         <FormField
           label='Last Name'
           id='last_name'
+          placeholder='Enter the last name'
           value={applicant.last_name.value}
           onChange={(e: ChangeEvent<{ value: string }>) =>
             handleChange(e.target.value, 'last_name')
@@ -148,6 +150,7 @@ const FormBody = ({
         <FormField
           label='Email'
           id='email'
+          placeholder='Enter the email'
           type='email'
           value={applicant.email.value}
           onChange={(e: ChangeEvent<{ value: string }>) =>
@@ -166,6 +169,7 @@ const FormBody = ({
       <FormField
         label='LinkedIn URL'
         id='linkedin'
+        placeholder='Enter the linkedin url'
         value={applicant.linkedin.value}
         onChange={(e: ChangeEvent<{ value: string }>) =>
           handleChange(e.target.value, 'linkedin')
@@ -184,6 +188,7 @@ const FormBody = ({
 const FormField = ({
   label,
   id,
+  placeholder,
   value,
   onChange,
   error,
@@ -195,12 +200,14 @@ const FormField = ({
   onChange: any;
   error: any;
   type?: string;
+  placeholder?: string;
 }) => (
   <div className='space-y-2'>
     <Label htmlFor={id}>{label}</Label>
     <Input
       id={id}
       type={type}
+      placeholder={placeholder}
       value={value}
       onChange={onChange}
       className={error ? 'border-destructive' : ''}

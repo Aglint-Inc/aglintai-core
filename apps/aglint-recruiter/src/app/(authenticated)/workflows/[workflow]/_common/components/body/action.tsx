@@ -253,7 +253,7 @@ const SlackTemplate = ({ action: { action_type } }: ActionProps) => {
   return (
     <Alert>
       <AlertDescription>
-        A slack notification will be sent for this action.
+        A Slack notification will be sent for this action.
       </AlertDescription>
     </Alert>
   );
