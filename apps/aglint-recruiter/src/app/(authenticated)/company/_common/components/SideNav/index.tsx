@@ -96,6 +96,7 @@ function VerticalNav() {
     <UITabs
       vertical
       tabs={filteredTabs}
+      isKeyDisable={true}
       defaultValue={
         (router.queryParams.tab as unknown as string) || filteredTabs[0].id
       }
