@@ -69,14 +69,14 @@ type ColumnType = {
 const Column = (props: ColumnType) => {
   const date = dayJS(props.session.date, props.tz);
   return (
-    <div className='relative min-w-[237px] max-w-[237px] flex-1 flex-col rounded-lg border border-gray-200'>
-      <div className='flex h-10 items-center justify-center rounded-t-lg border-b border-border bg-muted px-2.5'>
+    <div className='relative flex flex-col rounded-lg border border-gray-200'>
+      <div className='flex rounded-t-lg border-b border-border bg-muted p-2'>
         <div className='font-semibold'>
           {dayjsLocal(date).format('dddd DD, MMMM')}
         </div>
       </div>
 
-      <div className='flex h-[calc(100vh-420px)] flex-col gap-2 overflow-auto p-2.5'>
+      <div className='flex flex-wrap gap-2 p-4'>
         <Slots
           slots={props.session.slots}
           selections={props.selections}

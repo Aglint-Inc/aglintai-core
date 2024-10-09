@@ -1,6 +1,7 @@
 import { getBreakLabel } from '@aglint/shared-utils';
 import {
   Section,
+  SectionDescription,
   SectionHeader,
   SectionHeaderText,
   SectionTitle,
@@ -34,6 +35,9 @@ export const DetailsPopup = () => {
       <SectionHeader>
         <SectionHeaderText>
           <SectionTitle>Interview Details</SectionTitle>
+          <SectionDescription>
+            Here are the details of your interview.
+          </SectionDescription>
         </SectionHeaderText>
       </SectionHeader>
       <CandidateScheduleCard

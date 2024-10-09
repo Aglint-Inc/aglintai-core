@@ -26,7 +26,7 @@ function SelfScheduleSuccess() {
   return (
     <div className='flex w-full flex-row items-center justify-center p-4'>
       <Alert variant='success'>
-        <CheckCircle2 className='h-4 w-4' />
+        <CheckCircle2 className='h-4 w-4 text-green-500' />
         <AlertTitle>Self scheduling link sent successfully</AlertTitle>
         <AlertDescription>
           The candidate received an email containing a link to select from the
