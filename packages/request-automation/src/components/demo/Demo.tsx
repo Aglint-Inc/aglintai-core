@@ -1,13 +1,14 @@
-import React, { useState } from "react";
-import { requestType } from "../../type/localStorageTypes";
-import { buttonsType, radioBtnOptions } from "../../type/UITypes";
+import React, { useState } from 'react';
+import { requestType } from '../../type/localStorageTypes';
+import { buttonsType, radioBtnOptions } from '../../type/UITypes';
 import {
   bookSelfSchedule,
   requestForCancel,
   requestForReschedule,
   submitAvailability,
   updateRequest,
-} from "../../utils/util_functions";
+} from '../../utils/util_functions';
+import { useAppContext } from '../../context/AppContext';
 
 function Demo() {
   const [consoleMessage, setConsoleMessage] = useState<string[]>([]);
@@ -18,22 +19,28 @@ function Demo() {
     btn4: false,
     btn5: false,
   });
+  const { userId } = useAppContext();
   const handleApiRequest = async ({
     btn,
     count = 8,
-    type = "schedule_request",
+    type = 'schedule_request',
   }: {
     btn: buttonsType;
     count: number;
     type: requestType;
   }) => {
     switch (btn) {
-      case "proceed":
+      case 'proceed':
         try {
           console.clear();
           setConsoleMessage([]);
           setLoading((pre) => ({ ...pre, btn1: true }));
-          await updateRequest({ count, type, setConsoleMessage });
+          await updateRequest({
+            count,
+            type,
+            setConsoleMessage,
+            assignee_id: userId,
+          });
         } catch (e) {
           //
         } finally {
@@ -41,7 +48,7 @@ function Demo() {
         }
         break;
 
-      case "update_availability":
+      case 'update_availability':
         try {
           console.clear();
           setConsoleMessage([]);
@@ -55,7 +62,7 @@ function Demo() {
         }
         break;
 
-      case "booking_self_schedule":
+      case 'booking_self_schedule':
         try {
           console.clear();
           setConsoleMessage([]);
@@ -67,7 +74,7 @@ function Demo() {
         }
         break;
 
-      case "reSchedule_request":
+      case 'reSchedule_request':
         try {
           setConsoleMessage([]);
           setLoading((pre) => ({ ...pre, btn4: true }));
@@ -78,7 +85,7 @@ function Demo() {
         }
         break;
 
-      case "cancel_request":
+      case 'cancel_request':
         try {
           console.clear();
           setConsoleMessage([]);
@@ -93,18 +100,18 @@ function Demo() {
   };
 
   return (
-    <div id="demo">
-      <div className="drawer-body">
+    <div id='demo'>
+      <div className='drawer-body'>
         <Request
           isLoading={loading.btn1}
-          title={"Proceed Request."}
+          title={'Proceed Request.'}
           showInput={true}
           defaultCount={8}
           isRadio
           options={[
-            { name: "Schedule", value: "schedule_request" },
-            { name: "Reschedule", value: "reschedule_request" },
-            { name: "Cancel Schedule", value: "cancel_schedule_request" },
+            { name: 'Schedule', value: 'schedule_request' },
+            { name: 'Reschedule', value: 'reschedule_request' },
+            { name: 'Cancel Schedule', value: 'cancel_schedule_request' },
           ]}
           handleSubmit={({
             count,
@@ -112,17 +119,17 @@ function Demo() {
           }: {
             count: number;
             type: requestType;
-          }) => handleApiRequest({ btn: "proceed", count, type })}
+          }) => handleApiRequest({ btn: 'proceed', count, type })}
         />
         <Request
           isLoading={loading.btn2}
-          title={"Submits Availability."}
+          title={'Submits Availability.'}
           defaultCount={4}
           showInput={true}
           isRadio
           options={[
-            { name: "Schedule", value: "schedule_request" },
-            { name: "Reschedule", value: "reschedule_request" },
+            { name: 'Schedule', value: 'schedule_request' },
+            { name: 'Reschedule', value: 'reschedule_request' },
           ]}
           handleSubmit={({
             count,
@@ -130,17 +137,17 @@ function Demo() {
           }: {
             count: number;
             type: requestType;
-          }) => handleApiRequest({ btn: "update_availability", count, type })}
+          }) => handleApiRequest({ btn: 'update_availability', count, type })}
         />
         <Request
           isLoading={loading.btn3}
-          title={"Coinfirms Interview."}
+          title={'Coinfirms Interview.'}
           defaultCount={2}
           showInput={true}
           isRadio
           options={[
-            { name: "Schedule", value: "schedule_request" },
-            { name: "Reschedule", value: "reschedule_request" },
+            { name: 'Schedule', value: 'schedule_request' },
+            { name: 'Reschedule', value: 'reschedule_request' },
           ]}
           handleSubmit={({
             count,
@@ -150,7 +157,7 @@ function Demo() {
             type: requestType;
           }) =>
             handleApiRequest({
-              btn: "booking_self_schedule",
+              btn: 'booking_self_schedule',
               count,
               type,
             })
@@ -158,43 +165,43 @@ function Demo() {
         />
         <Request
           isLoading={loading.btn4}
-          title={"Requests for Rescedule"}
+          title={'Requests for Rescedule'}
           defaultCount={1}
           showInput={true}
           handleSubmit={({ count }: { count: number }) =>
             handleApiRequest({
-              btn: "reSchedule_request",
+              btn: 'reSchedule_request',
               count,
-              type: "schedule_request",
+              type: 'schedule_request',
             })
           }
         />
         <Request
           isLoading={loading.btn5}
           defaultCount={2}
-          title={"Cancels Interview."}
+          title={'Cancels Interview.'}
           showInput={true}
           handleSubmit={({ count }: { count: number }) =>
             handleApiRequest({
-              btn: "cancel_request",
+              btn: 'cancel_request',
               count,
-              type: "schedule_request",
+              type: 'schedule_request',
             })
           }
         />
       </div>
 
       {consoleMessage.length ? (
-        <div className="console">
+        <div className='console'>
           <h5>Console</h5>
           <div>
             {consoleMessage.length
               ? consoleMessage.map((mes, i) => (
                   <p>
-                    {i + 1 < 10 ? "0" + (i + 1) : i + 1} - {mes}
+                    {i + 1 < 10 ? '0' + (i + 1) : i + 1} - {mes}
                   </p>
                 ))
-              : "No message"}
+              : 'No message'}
           </div>
         </div>
       ) : (
@@ -225,24 +232,24 @@ const Request = ({
 }) => {
   const [count, setCount] = useState(defaultCount ? defaultCount : 0);
   const [selectedOption, setSelectedOption] = useState(
-    options ? options[0].value : ""
+    options ? options[0].value : ''
   );
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedOption(event.target.value);
-    console.log("sdjfk");
+    console.log('sdjfk');
   };
 
   return (
-    <div className="button-container">
+    <div className='button-container'>
       <h5>{title}</h5>
 
       {isRadio &&
         options &&
         options.map((option) => (
-          <label className="radio-lable">
+          <label className='radio-lable'>
             <input
-              type="radio"
+              type='radio'
               name={title}
               value={option.value}
               checked={selectedOption === option.value}
@@ -254,18 +261,18 @@ const Request = ({
       {showInput && (
         <input
           min={1}
-          type="number"
-          className="input-field"
+          type='number'
+          className='input-field'
           value={count}
           onChange={(e) => setCount(+e.target.value)}
         />
       )}
       <button
-        className={isLoading ? `request-button visible` : "request-button"}
+        className={isLoading ? `request-button visible` : 'request-button'}
         disabled={isLoading}
         onClick={() => handleSubmit({ count, type: selectedOption })}
       >
-        {isLoading ? "Running" : "Run"}
+        {isLoading ? 'Running' : 'Run'}
       </button>
     </div>
   );

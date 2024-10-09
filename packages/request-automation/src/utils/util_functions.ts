@@ -1,12 +1,12 @@
 import {
   localScheduleRequestType,
   requestType,
-} from "../type/localStorageTypes";
+} from '../type/localStorageTypes';
 import {
   createLocalStorage,
   getRequestLocalStorage,
   updateLocalStorage,
-} from "./localStorageFunctions";
+} from './localStorageFunctions';
 
 function shuffleArray(array: localScheduleRequestType[]) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -17,9 +17,9 @@ function shuffleArray(array: localScheduleRequestType[]) {
 }
 
 function fullForm(type: requestType) {
-  if (type === "schedule_request") return "Schedule";
-  else if (type === "reschedule_request") return "Reschedule";
-  else if (type === "cancel_schedule_request") return "Cancel";
+  if (type === 'schedule_request') return 'Schedule';
+  else if (type === 'reschedule_request') return 'Reschedule';
+  else if (type === 'cancel_schedule_request') return 'Cancel';
 }
 export function shuffleAndSplitAsTwo(
   array: localScheduleRequestType[],
@@ -56,12 +56,12 @@ const sumbitAva = async ({
 }) => {
   settingsForSubmitAva.map(async (setting, i) => {
     const payload = {
-      request_id: setting["request_id"],
+      request_id: setting['request_id'],
     };
 
     await fetch(`/api/automation/update_availability`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...payload }),
     })
       .then((res) => {
@@ -76,9 +76,9 @@ const sumbitAva = async ({
         updateLocalStorage({
           application_id: setting.application_id,
           request_id: setting.request_id,
-          field: "isSubmitAvailabilitySubmitted",
+          field: 'isSubmitAvailabilitySubmitted',
           value: true,
-          status: "in_progress",
+          status: 'in_progress',
           type: type,
         });
         setConsoleMessage((pre) => [
@@ -99,15 +99,17 @@ export const updateRequest = async ({
   count,
   type,
   setConsoleMessage,
+  assignee_id,
 }: {
   count: number;
   type: requestType;
   setConsoleMessage: React.Dispatch<React.SetStateAction<string[]>>;
+  assignee_id: string;
 }) => {
-  await fetch("/api/automation/update_request", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ count, type }),
+  await fetch('/api/automation/update_request', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ count, type, assignee_id }),
   })
     .then((res) => {
       if (res.status != 200) {
@@ -117,7 +119,6 @@ export const updateRequest = async ({
       }
       return res.json();
     })
-    .then((data) => data.data)
     .then((data) => {
       if (data?.length) {
         createLocalStorage(data, type);
@@ -152,7 +153,7 @@ export const submitAvailability = async ({
 
   const filteredSettings = settings.filter(
     (setting) =>
-      !setting.isSubmitAvailabilitySubmitted && setting.status !== "completed"
+      !setting.isSubmitAvailabilitySubmitted && setting.status !== 'completed'
   );
   if (!(filteredSettings?.length > 0)) {
     setConsoleMessage((pre) => [
@@ -194,13 +195,13 @@ export const sendAvailabilityReminder = async ({
 }) => {
   settingsForSendRemainder.map(async (setting, i) => {
     const payload = {
-      request_id: setting["request_id"],
-      target_api: "sendAvailReqReminder_email_applicant",
+      request_id: setting['request_id'],
+      target_api: 'sendAvailReqReminder_email_applicant',
     };
 
     await fetch(`/api/automation/send_availability_reminder`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...payload }),
     })
       .then((res) => {
@@ -215,8 +216,8 @@ export const sendAvailabilityReminder = async ({
         updateLocalStorage({
           application_id: setting.application_id,
           request_id: setting.request_id,
-          field: "isAvailabilityReminders",
-          status: "in_progress",
+          field: 'isAvailabilityReminders',
+          status: 'in_progress',
           type: type,
           value: true,
         });
@@ -251,12 +252,12 @@ const bookSchedule = async ({
 }) => {
   settingsForBookSchedule.map(async (setting, i) => {
     const payload = {
-      request_id: setting["request_id"],
+      request_id: setting['request_id'],
     };
 
-    await fetch("/api/automation/booking_self_schedule", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    await fetch('/api/automation/booking_self_schedule', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...payload }),
     })
       .then((res) => {
@@ -271,19 +272,16 @@ const bookSchedule = async ({
         updateLocalStorage({
           application_id: setting.application_id,
           request_id: setting.request_id,
-          field: "isSelfScheduleSubmitted",
-          status: "completed",
+          field: 'isSelfScheduleSubmitted',
+          status: 'completed',
           type,
           value: true,
         });
-        setConsoleMessage((pre) => [
-          ...pre,
-          "Interviews booked successfully.",
-        ]);
+        setConsoleMessage((pre) => [...pre, 'Interviews booked successfully.']);
       })
 
       .catch((e) => {
-        setConsoleMessage((pre) => [...pre, "Interviews booking failed."]);
+        setConsoleMessage((pre) => [...pre, 'Interviews booking failed.']);
       });
   });
 };
@@ -339,12 +337,12 @@ export const sendReminderSelfSchedule = async ({
 }) => {
   settingsForSendScheduleReminder.map(async (setting, i) => {
     const payload = {
-      request_id: setting["request_id"],
-      target_api: "selfScheduleReminder_email_applicant",
+      request_id: setting['request_id'],
+      target_api: 'selfScheduleReminder_email_applicant',
     };
     await fetch(`/api/automation/send_selfSchedule_reminder`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ...payload }),
     })
       .then((res) => {
@@ -359,14 +357,14 @@ export const sendReminderSelfSchedule = async ({
         updateLocalStorage({
           application_id: setting.application_id,
           request_id: setting.request_id,
-          field: "isSelfSchedulingReminders",
+          field: 'isSelfSchedulingReminders',
           value: true,
-          status: "in_progress",
+          status: 'in_progress',
           type: type,
         });
         setConsoleMessage((pre) => [
           ...pre,
-          "Self Schedule reminder sent succesfully.",
+          'Self Schedule reminder sent succesfully.',
         ]);
       })
       .catch((e) => {
@@ -396,11 +394,11 @@ export const requestForReschedule = async ({
 
   const filteredSettings = localSettings.filter(
     (set) =>
-      set.status === "completed" && !set.isReschedule && !set.isCancelRequest
+      set.status === 'completed' && !set.isReschedule && !set.isCancelRequest
   );
 
   if (!(filteredSettings?.length > 0)) {
-    setConsoleMessage((pre) => [...pre, "No requests found for Reschedule."]);
+    setConsoleMessage((pre) => [...pre, 'No requests found for Reschedule.']);
     return;
   }
 
@@ -418,8 +416,8 @@ export const requestForReschedule = async ({
     };
 
     await fetch(`api/automation/reschedule_request`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     })
       .then((res) => {
@@ -434,12 +432,12 @@ export const requestForReschedule = async ({
         updateLocalStorage({
           application_id: setting.application_id,
           request_id: setting.request_id,
-          field: "isReschedule",
-          status: "completed",
+          field: 'isReschedule',
+          status: 'completed',
           type,
           value: true,
         });
-        setConsoleMessage((pre) => [...pre, "Reschedule request succesfully"]);
+        setConsoleMessage((pre) => [...pre, 'Reschedule request succesfully']);
       })
       .catch((e) => {
         setConsoleMessage((pre) => [
@@ -459,17 +457,17 @@ export const requestForCancel = async ({
   count: number;
   setConsoleMessage: React.Dispatch<React.SetStateAction<string[]>>;
 }) => {
-  const localSettings1 = await getRequestLocalStorage("schedule_request");
-  const localSettings2 = await getRequestLocalStorage("reschedule_request");
+  const localSettings1 = await getRequestLocalStorage('schedule_request');
+  const localSettings2 = await getRequestLocalStorage('reschedule_request');
   const localSettings = [...localSettings1, ...localSettings2];
 
   const filteredSettings = localSettings.filter(
     (set) =>
-      set.status === "completed" && !set.isCancelRequest && !set.isReschedule
+      set.status === 'completed' && !set.isCancelRequest && !set.isReschedule
   );
 
   if (!(filteredSettings?.length > 0)) {
-    setConsoleMessage((pre) => [...pre, "No request found to cancel."]);
+    setConsoleMessage((pre) => [...pre, 'No request found to cancel.']);
     return;
   }
 
@@ -487,8 +485,8 @@ export const requestForCancel = async ({
     };
 
     await fetch(`api/automation/cancel_request`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     })
       .then((res) => {
@@ -503,12 +501,15 @@ export const requestForCancel = async ({
         updateLocalStorage({
           application_id: setting.application_id,
           request_id: setting.request_id,
-          field: "isCancelRequest",
-          status: "completed",
+          field: 'isCancelRequest',
+          status: 'completed',
           type: type,
           value: true,
         });
-        setConsoleMessage((pre) => [...pre, "Raised cancel requests  succesfully."]);
+        setConsoleMessage((pre) => [
+          ...pre,
+          'Raised cancel requests  succesfully.',
+        ]);
       })
       .catch((e) => {
         setConsoleMessage((pre) => [

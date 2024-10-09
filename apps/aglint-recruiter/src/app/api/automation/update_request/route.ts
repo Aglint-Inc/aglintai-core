@@ -1,42 +1,35 @@
-import { NextResponse } from 'next/server';
+import { supabaseWrap } from '@aglint/shared-utils';
+import { z } from 'zod';
 
-import {
-  fetchTodoRequests,
-  updateRequestStatus,
-} from '@/utils/automation/utils/update_request_functions';
+import { createPostRoute } from '@/apiUtils/createPostRoute';
+import { executeRequestWorkflow } from '@/services/requests/executeRequestWorkflow';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-export async function POST(req: Request) {
-  const { count, type } = await req.json();
-  try {
-    const requests: Awaited<ReturnType<typeof fetchTodoRequests>> =
-      await fetchTodoRequests(count, type);
+const schema = z.object({
+  assignee_id: z.string(),
+  count: z.number(),
+  type: z.any(),
+});
 
-    if (!requests.length) {
-      return NextResponse.json(
-        {
-          message: 'success',
-          data: [],
-        },
-        { status: 200 },
-      );
-    }
+const exececteReq = async (parsed_body: z.output<typeof schema>) => {
+  const supabaseAdmin = getSupabaseServer();
+  const requests = supabaseWrap(
+    await supabaseAdmin
+      .from('request')
+      .select()
+      .eq('type', parsed_body.type)
+      .or(
+        `assignee_id.eq.${parsed_body.assignee_id}, assigner_id.eq.${parsed_body.assignee_id}`,
+      ),
+    false,
+  );
+  const trigggerReqs = requests.slice(0, parsed_body.count);
+  const promises = trigggerReqs.map(async (request) => {
+    await executeRequestWorkflow({ request_id: request.id });
+  });
 
-    await updateRequestStatus(requests.map((request) => request.id));
+  await Promise.all(promises);
+  return trigggerReqs;
+};
 
-    return NextResponse.json(
-      {
-        message: 'success',
-        data: requests.map((req) => ({
-          request_id: req.id,
-          application_id: req.application_id,
-        })),
-      },
-      { status: 200 },
-    );
-  } catch (e: any) {
-    return NextResponse.json(
-      { message: 'error ' + e.message },
-      { status: 400 },
-    );
-  }
-}
+export const POST = createPostRoute(schema, exececteReq);

@@ -102,7 +102,7 @@ const SelfScheduleFlowMenus = ({
           <SuggestionCard
             heading='Add automations'
             description={
-              'Self-schedule reminders will be sent to the applicant to remind them to schedule their interview.'
+              'Self-schedule reminders will be sent to the applicant.'
             }
             buttonSlot={
               <>
