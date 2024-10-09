@@ -1,5 +1,6 @@
 import Typography from '@components/typography';
 import { Card } from '@components/ui/card';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { ArrowBigDown } from 'lucide-react';
 import React from 'react';
 
@@ -23,19 +24,20 @@ export function ApplicantDetailStage({
   isScheduleButtonVisible = false,
 }: ApplicantDetailStageProps) {
   return (
-    <Card className='rounded-mdbg-muted h-full items-center justify-between p-4'>
+    <ScrollArea className=' h-[calc(100vh-250px)] bg-muted border rounded-md'>
+    <Card className='rounded-md shadow-none border-none items-center justify-between p-2  bg-muted'>
       <div className='flex h-10 items-center justify-between'>
-        <div>
-          <Typography type='medium' fontBold='normal'>
+        <div className='flex items-end gap-1'>
+          <Typography type='medium' fontBold='default'>
             {textName}
           </Typography>
+          <Typography type='small' className='text-muted-foreground'>
+             ({textInterviewCount})
+            </Typography>
         </div>
         {isScheduleButtonVisible && <div>{slotScheduleButton}</div>}
         {isCountVisible && (
           <div className='flex items-center justify-start gap-3'>
-            <Typography type='small' color='neutral'>
-              {textInterviewCount}
-            </Typography>
             <div className='hidden h-6 w-6 cursor-pointer items-center justify-center rounded-sm bg-white'>
               <ArrowBigDown size={16} className='text' />
             </div>
@@ -43,10 +45,11 @@ export function ApplicantDetailStage({
         )}
       </div>
       {isInterviewStageDetailVisible && (
-        <div className='mt-4 flex flex-col flex-nowrap gap-3'>
+        <div className='mt-2 flex flex-col flex-nowrap gap-3'>
           {slotInterviewStageDetail}
         </div>
       )}
     </Card>
+    </ScrollArea>
   );
 }

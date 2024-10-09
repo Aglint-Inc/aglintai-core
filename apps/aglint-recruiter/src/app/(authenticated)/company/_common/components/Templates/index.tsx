@@ -1,5 +1,6 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
+import AutoSave from '@components/auto-save';
 import { useToast } from '@components/hooks/use-toast';
 import {
   Section,
@@ -66,6 +67,9 @@ function SchedulerEmailTemps() {
 
   const [isFocus, setIsFocus] = useState(false);
 
+  const [saving, setSaving] = useState(false);
+  const [show, setShow] = useState(false);
+
   const temp_tab = router.queryParams.tab as keyof typeof tempFilterOptions;
   const temp_email = router.queryParams
     .email as DatabaseEnums['email_slack_types'];
@@ -107,6 +111,7 @@ function SchedulerEmailTemps() {
     updated_template: DatabaseTable['company_email_template'],
   ) {
     try {
+      setSaving(true);
       await mutateAsync({
         template_id: updated_template.id,
         updated_template: {
@@ -118,6 +123,8 @@ function SchedulerEmailTemps() {
         variant: 'destructive',
         title: 'Something went wrong!',
       });
+    } finally {
+      setSaving(false);
     }
   }
   const preview = async () => {
@@ -238,8 +245,15 @@ function SchedulerEmailTemps() {
       return [...arr, ...tempFilterOptions[temp_tab][key]];
     }, []);
 
+  useEffect(() => {
+    if (saving) setShow(true);
+    const timeout = setTimeout(() => (!saving ? setShow(false) : null), 1000);
+    return () => clearTimeout(timeout);
+  }, [saving]);
+
   return (
     <div className='flex flex-row'>
+      <AutoSave show={show} saving={saving} />
       {isEditorLoad ? (
         <div className='space-y-2'>
           <Skeleton className='h-4 w-[250px]' />

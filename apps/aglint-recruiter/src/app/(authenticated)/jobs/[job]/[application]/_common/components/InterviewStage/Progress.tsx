@@ -56,7 +56,7 @@ function Progress() {
     <>
       <InterviewStages
         stages={stageList}
-        orientation='horizontal'
+        orientation='vertical'
         className='max-w-md'
       />
     </>

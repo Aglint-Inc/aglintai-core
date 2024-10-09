@@ -20,7 +20,7 @@ const InterviewerDecline = () => {
   return (
     <>
       <RequestProgressTracker
-        circleIndicator={'default'}
+        circleIndicator={'neutral'}
         textRequestProgress={'The interviewer declines the interview'}
         slotProgress={
           <>
