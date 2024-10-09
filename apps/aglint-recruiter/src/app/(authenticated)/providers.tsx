@@ -6,16 +6,13 @@ import { type PropsWithChildren } from 'react';
 import { OnboardingProvider } from '@/components/Navigation/OnboardPending/context/onboarding';
 import { BreadcrumProvider } from '@/context/BreadcrumContext/BreadcrumContext';
 import { RolesAndPermissionsProvider } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import { JobsProvider } from '@/jobs/contexts';
 
 export const Provider = ({ children }: PropsWithChildren) => {
   return (
     <TooltipProvider>
       <OnboardingProvider>
         <RolesAndPermissionsProvider>
-          <BreadcrumProvider>
-            <JobsProvider>{children}</JobsProvider>
-          </BreadcrumProvider>
+          <BreadcrumProvider>{children}</BreadcrumProvider>
         </RolesAndPermissionsProvider>
       </OnboardingProvider>
     </TooltipProvider>
