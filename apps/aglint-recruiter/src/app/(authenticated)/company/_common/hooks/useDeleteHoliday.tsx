@@ -5,7 +5,7 @@ import { api } from '@/trpc/client';
 import { useTenant } from './useTenant';
 
 export const useDeleteHoliday = () => {
-  const { recruiter } = useTenant();
+  const { recruiter, refetch } = useTenant();
   const { toast } = useToast();
   const mutation = api.tenant.updateTenant.useMutation({
     onError: () =>
@@ -13,6 +13,9 @@ export const useDeleteHoliday = () => {
         title: 'Unable to update holiday',
         variant: 'destructive',
       }),
+    onSuccess: () => {
+      refetch();
+    },
   });
   const filter = (date: string) => {
     return recruiter.scheduling_settings.totalDaysOff.filter(
