@@ -39,26 +39,18 @@ const useJobContext = () => {
   const { isScoringEnabled } = useRolesAndPermissions();
   const { mutateAsync: syncJob } = useJobSync();
 
-  const {
-    jobs,
-    initialLoad: jobsLoad,
-    manageJob,
-    devlinkProps,
-  } = useJobsContext();
+  const { jobs, devlinkProps } = useJobsContext();
 
-  const jobLoad = useMemo(
-    () => !!(recruiter_id && jobsLoad),
-    [recruiter_id, jobsLoad],
-  );
+  const jobLoad = useMemo(() => !!recruiter_id, [recruiter_id]);
 
   const { job_id } = useCurrentJob();
 
   const job = useMemo(
     () =>
       jobLoad
-        ? ((jobs.data ?? []).find((job) => job.id === job_id) ?? null)
+        ? ((jobs ?? []).find((job) => job.id === job_id) ?? null)
         : undefined,
-    [jobs.data, job_id, jobs.status, jobLoad],
+    [jobs, job_id, jobLoad],
   )!;
 
   const scoringCriteriaLoading =
@@ -268,7 +260,6 @@ const useJobContext = () => {
     publishStatus,
     status,
     jdValidity,
-    manageJob,
     devlinkProps,
   };
 };

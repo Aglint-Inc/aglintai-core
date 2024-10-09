@@ -18,7 +18,6 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 import { useIntegrations } from '@/authenticated/hooks';
-import { Loader } from '@/common/Loader';
 import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -37,28 +36,18 @@ import FilterJobDashboard, { type useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';
 
 export const Body = ({ jobs }: { jobs: Job[] }) => {
-  const {
-    jobs: { data },
-    initialLoad,
-  } = useJobsContext();
   const { ifAllowed } = useRolesAndPermissions();
 
   return (
     <>
       <LeverModalComp />
       <div className='h-[70vh] w-full'>
-        {!initialLoad ? (
-          <Loader />
+        {jobs.length === 0 ? (
+          ifAllowed(<EmptyJob />, ['manage_job'])
         ) : (
-          <>
-            {data?.length === 0 ? (
-              ifAllowed(<EmptyJob />, ['manage_job'])
-            ) : (
-              <ScrollArea>
-                <JobsList jobs={jobs} />
-              </ScrollArea>
-            )}
-          </>
+          <ScrollArea>
+            <JobsList jobs={jobs} />
+          </ScrollArea>
         )}
       </div>
     </>

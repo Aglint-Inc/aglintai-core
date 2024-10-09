@@ -14,12 +14,9 @@ import { useJobsContext } from './_common/hooks';
 
 const Page = () => {
   const { checkPermissions } = useRolesAndPermissions();
-  const {
-    jobs: { data },
-    initialLoad,
-  } = useJobsContext();
+  const { jobs } = useJobsContext();
   const router = useRouterPro();
-  const payload = useJobFilterAndSort(data ?? []);
+  const payload = useJobFilterAndSort(jobs ?? []);
   return (
     <IntegrationStoreProvider>
       {checkPermissions(
@@ -27,10 +24,8 @@ const Page = () => {
       ) ? (
         <>
           <OneColumnPageLayout
-            header={initialLoad && data?.length !== 0 && <Header />}
-            filter={
-              initialLoad && data?.length !== 0 && <Filter {...payload} />
-            }
+            header={jobs?.length !== 0 && <Header />}
+            filter={jobs?.length !== 0 && <Filter {...payload} />}
           >
             <Body jobs={payload.jobs} />
           </OneColumnPageLayout>

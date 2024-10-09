@@ -13,7 +13,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { useJobsRead } from '@/queries/jobs';
+import { useJobs } from '@/jobs/hooks';
 import ROUTES from '@/utils/routing/routes';
 
 import { useApplicationMeta } from '../hooks/useApplicationMeta';
@@ -23,7 +23,7 @@ function BreadCrumb() {
   const [breadcrumbItems, setBreadcrumbItems] = useState<
     Array<{ name: string; route?: string }>
   >([]);
-  const { data: allJobs } = useJobsRead();
+  const allJobs = useJobs();
   const { data: detail } = useApplicationMeta();
   const job_id = router.params.job;
 

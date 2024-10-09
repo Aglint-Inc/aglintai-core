@@ -115,13 +115,12 @@ function AllInterviewFilters() {
           {
             type: 'filter',
             name: 'Jobs',
-            options:
-              jobs.isFetched && jobs.data
-                ? jobs.data.map((ele) => ({
-                    id: ele.id ?? '',
-                    label: ele.job_title ?? '',
-                  }))
-                : [],
+            options: jobs
+              ? jobs.map((ele) => ({
+                  id: ele.id ?? '',
+                  label: ele.job_title ?? '',
+                }))
+              : [],
             setValue: (val) => {
               updateFilterState('jobs', val);
             },

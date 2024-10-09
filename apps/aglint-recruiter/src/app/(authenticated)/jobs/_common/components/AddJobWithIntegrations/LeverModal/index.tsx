@@ -53,17 +53,17 @@ export default function LeverModalComp() {
   const [showApiKey, setShowApiKey] = useState(false);
 
   useEffect(() => {
-    if (jobs.status === 'success' && integrations?.lever_key) {
+    if (integrations?.lever_key) {
       fetchJobs();
     }
-  }, [jobs.status, integrations?.lever_key]);
+  }, [integrations?.lever_key]);
 
   const fetchJobs = async () => {
     const allJobs = await fetchAllJobs(integrations.lever_key!);
     setLeverPostings(
       allJobs.filter((post) => {
         if (
-          jobs.data?.filter(
+          jobs.filter(
             (job) =>
               job.posted_by === POSTED_BY.LEVER && job.job_title === post.text,
           ).length == 0

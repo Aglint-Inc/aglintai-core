@@ -118,13 +118,15 @@ const Score = () => {
 };
 
 const Add = () => {
-  const { job, manageJob } = useJob();
+  const { manageJob } = useJobsContext();
+  const { job } = useJob();
   if (job?.status === 'closed' || !manageJob) return null;
   return <UploadApplications></UploadApplications>;
 };
 
 const Publish = () => {
-  const { handlePublish, canPublish, manageJob, job } = useJob();
+  const { manageJob } = useJobsContext();
+  const { handlePublish, canPublish, job } = useJob();
   if (job?.status === 'closed' || !manageJob) return null;
   return (
     <PublishButton
@@ -307,7 +309,7 @@ const Close = () => {
 };
 
 const Modules = () => {
-  const { manageJob } = useJob();
+  const { manageJob } = useJobsContext();
   const { currentPath } = useSettings();
   const { isScoringEnabled } = useRolesAndPermissions();
   if (!manageJob)

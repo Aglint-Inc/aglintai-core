@@ -6,10 +6,6 @@ import toast from '@/utils/toast';
 
 import { type Job, type JobUpdate } from './types';
 
-export const useJobsRead = () => {
-  return api.jobs.read.useQuery();
-};
-
 export const useJobsSync = () => {
   return api.ats.sync.jobs.useMutation({
     onSuccess: () => toast.success('Synced successfully'),

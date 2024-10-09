@@ -5,13 +5,10 @@ import { createContext, memo, type ReactNode, useMemo } from 'react';
 
 import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import {
-  useJobDelete,
-  useJobsRead,
-  useJobsSync,
-  useJobUpdate,
-} from '@/queries/jobs';
+import { useJobDelete, useJobsSync, useJobUpdate } from '@/queries/jobs';
 import type { JobUpdate } from '@/queries/jobs/types';
+
+import { useJobs } from '../hooks/useJobs';
 
 const useJobContext = () => {
   const { recruiter_id } = useTenant();
@@ -24,15 +21,13 @@ const useJobContext = () => {
     [checkPermissions],
   );
 
-  const jobs = useJobsRead();
+  const jobs = useJobs();
 
   const { mutateAsync: handleSync } = useJobsSync();
 
   const { mutate: jobUpdate } = useJobUpdate();
 
   const { mutate: jobDelete } = useJobDelete();
-
-  const initialLoad = !!(jobs.status !== 'pending' && !!recruiter_id);
 
   const handleJobPin = (
     args: Pick<DatabaseView['job_view'], 'id' | 'is_pinned'>,
@@ -62,7 +57,6 @@ const useJobContext = () => {
     handleJobDelete,
     handleJobsSync,
     handleJobPin,
-    initialLoad,
     manageJob,
     devlinkProps,
   };

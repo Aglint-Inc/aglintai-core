@@ -93,8 +93,8 @@ function UpComingInterviewFilters() {
           {
             type: 'filter',
             name: 'Jobs',
-            options: jobs.data
-              ? jobs.data?.map((ele) => {
+            options: jobs
+              ? jobs?.map((ele) => {
                   return {
                     id: ele.id ?? '',
                     label: ele.job_title ?? '',
