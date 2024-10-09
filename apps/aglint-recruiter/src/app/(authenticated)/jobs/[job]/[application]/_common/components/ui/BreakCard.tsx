@@ -19,7 +19,7 @@ function BreakCard({
   return (
     <Card className='p-2'>
       <div className='bg- flex flex-row items-center gap-8 rounded-md p-2'>
-        <div className='flex flex-row items-center gap-2'>
+        <div className='flex flex-row items-center gap-2 w-[184px]'>
           <Coffee size={16} />
           <Typography type='small' fontBold='normal'>
             Break

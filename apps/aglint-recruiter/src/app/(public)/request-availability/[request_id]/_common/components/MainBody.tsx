@@ -97,8 +97,8 @@ function CandidateAvailability() {
         </>
       )}
       <div
-        className={cn('min-w-4/12', {
-          '': !candidateRequestAvailability?.slots,
+        className={cn('w-4/12', {
+          'w-full': !!candidateRequestAvailability?.slots,
         })}
       >
         <DaySessions singleDay={multiDaySessions.length === 1} />

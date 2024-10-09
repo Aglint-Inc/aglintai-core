@@ -15,7 +15,7 @@ import type { Menus } from '../types';
 
 export const Actions = () => {
   return (
-    <div className='flex flex-col gap-4'>
+    <div className='flex flex-col gap-2'>
       <Selections />
       <Buttons />
     </div>
@@ -30,13 +30,19 @@ const Selections = () => {
       Array.isArray(value) ? value.length !== 0 : Boolean(value),
     )
     .map(([key, value]) => (
-      <Badge key={key} variant='secondary' className='text-sm'>
-        {getKey(key)} :{' '}
-        {Array.isArray(value)
-          ? value.map(({ label }) => label).join(', ')
-          : value.label}
+      <Badge
+        key={key}
+        variant='secondary'
+        className='justify-between py-1 text-sm'
+      >
+        <div className='flex items-center'>
+          {getKey(key)} :{' '}
+          {Array.isArray(value)
+            ? value.map(({ label }) => label).join(', ')
+            : value.label}
+        </div>
         <button className='ml-1' onClick={() => resetSelection(key)}>
-          <X className='h-3 w-4' />
+          <X className='h-4 w-4' />
         </button>
       </Badge>
     ));

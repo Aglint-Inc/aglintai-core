@@ -61,15 +61,15 @@ function RequestAvailability() {
           }
           title={
             <div className='flex flex-row items-center'>
-              <UIBadge
-                icon={CheckCircle}
-                variant='success'
-                className='mr-2'
-                textBadge='Submitted'
-              />
-              <h2 className='flex items-center gap-2 text-lg font-semibold'>
+              <h2 className='mr-2 flex items-center gap-2 text-lg font-semibold'>
                 Availability Request
               </h2>
+              <UIBadge
+                icon={CheckCircle}
+                variant={isSubmitted ? 'success' : 'info'}
+                className='mr-2'
+                textBadge={isSubmitted ? 'Submitted' : 'Pending'}
+              />
             </div>
           }
         />

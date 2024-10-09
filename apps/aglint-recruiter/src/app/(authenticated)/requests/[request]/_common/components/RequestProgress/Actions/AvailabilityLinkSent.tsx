@@ -28,7 +28,7 @@ const AvailabilityLinkSent = (
             size={'sm'}
             variant={'secondary'}
           >
-            Copy Availability Link
+            Copy Link
             {isCopied ? (
               <Check size={16} className='ml-2 h-3 w-3' />
             ) : (

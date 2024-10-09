@@ -39,15 +39,16 @@ function RequestCard({ request }: { request: ApplicantRequest }) {
             }
           />
           <div className='flex items-center gap-1'>
-            <Avatar className='h-5 w-5'>
+            <Avatar className='h-6 w-6 rounded-sm overflow-hidden'>
               <AvatarImage
+              className=''
                 src={request?.assignee_details?.profile_image ?? ''}
                 alt={getFullName(
                   request?.assignee_details?.first_name ?? '',
                   request?.assignee_details?.last_name ?? '',
                 )}
               />
-              <AvatarFallback>
+              <AvatarFallback className=''>
                 {getFullName(
                   request?.assignee_details?.first_name ?? '',
                   request?.assignee_details?.last_name ?? '',
