@@ -6,48 +6,75 @@ import React from 'react';
 export function SchedulingPageHeader({
   title,
   description,
-  companyName,
-  logo,
+  companyDetails,
+  candidateDetails,
 }: {
   title?: React.ReactNode;
   description: React.ReactNode;
-  companyName: string;
-  logo: string;
+  companyDetails?: {
+    name?: string;
+    logo?: string;
+    location?: string;
+    jobTitle?: string;
+    jobType?: string;
+  };
+  candidateDetails?: {
+    name?: string;
+    position?: string;
+    email?: string;
+  };
 }) {
   return (
     <div className='flex w-full flex-row items-center justify-between space-x-16 rounded-t-lg bg-muted p-4'>
       <div className='flex flex-col items-center'>
         <div className='flex flex-row items-center'>
           <Avatar className='h-[50px] w-[50px]'>
-            <AvatarImage src={logo} alt={companyName} />
-            <AvatarFallback>{companyName.charAt(0)}</AvatarFallback>
+            <AvatarImage
+              src={companyDetails?.logo}
+              alt={companyDetails?.name}
+            />
+            <AvatarFallback>{companyDetails?.name?.charAt(0)}</AvatarFallback>
           </Avatar>
           <div className='flex flex-col'>
-            <h1 className='text-2xl font-semibold'>{companyName}</h1>
+            <h1 className='text-2xl font-semibold'>{companyDetails?.name}</h1>
             <dl className='flex flex-row items-center'>
-              <dt>
-                <MapPin size={16} className='mr-1' />
-              </dt>
-              <dd>
-                <p>Location</p>
-              </dd>
-              <dt className='ml-12'>
-                <Briefcase size={16} className='mr-1' />
-              </dt>
-              <dd>
-                <p>Job Title</p>
-              </dd>
-              <dt className='ml-12'>
-                <Clock size={16} className='mr-1' />
-              </dt>
-              <dd>
-                <p>Full time</p>
-              </dd>
+              {companyDetails?.location && (
+                <>
+                  <dt>
+                    <MapPin size={16} className='mr-1' />
+                  </dt>
+                  <dd>
+                    <p>{companyDetails?.location}</p>
+                  </dd>
+                </>
+              )}
+
+              {companyDetails?.jobTitle && (
+                <>
+                  <dt>
+                    <Briefcase size={16} className='mr-1' />
+                  </dt>
+                  <dd>
+                    <p>{companyDetails?.jobTitle}</p>
+                  </dd>
+                </>
+              )}
+              {companyDetails?.jobType && (
+                <>
+                  <dt>
+                    <Clock size={16} className='mr-1' />
+                  </dt>
+                  <dd>
+                    <p>{companyDetails?.jobType}</p>
+                  </dd>
+                </>
+              )}
             </dl>
           </div>
         </div>
       </div>
       <div className='flex flex-1 flex-col items-end text-right'>
+        {candidateDetails?.name} ({candidateDetails?.position})
         {title ? title : null}
         {description ? description : null}
       </div>
