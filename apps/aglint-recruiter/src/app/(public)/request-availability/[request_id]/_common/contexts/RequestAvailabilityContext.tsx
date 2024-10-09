@@ -202,6 +202,12 @@ function RequestAvailabilityProvider({
     ) as unknown as InterviewSessionTypeDB[][];
     setMultiDaySessions(meetingsRound);
 
+    if (requestAvailability?.slots) {
+      setDateSlots(requestAvailability.slots || []);
+      setSelectedSlots(requestAvailability.slots || []);
+      setIsSubmitted(true);
+      return;
+    }
     try {
       await Promise.all(
         meetingsRound.map(async (_, idx) => {
@@ -238,12 +244,6 @@ function RequestAvailabilityProvider({
       );
     } catch (error) {
       toast({ title: 'Something went wrong!', variant: 'destructive' });
-    }
-    if (requestAvailability?.slots) {
-      setDateSlots(requestAvailability.slots || []);
-      setSelectedSlots(requestAvailability.slots || []);
-      setIsSubmitted(true);
-      return;
     }
   }
 
@@ -429,24 +429,13 @@ function RequestAvailabilityProvider({
   async function submitAvailability() {
     if (selectedSlots) {
       setSubmitting(true);
-      if (multiDaySessions.length > 1) {
-        const requestData = await updateRequestAvailability({
-          slots: selectedSlots,
-          user_timezone: dayjsLocal.tz.guess(),
-          id: String(request_id),
-        });
-        if (requestData) {
-          setDaySlots(requestData?.slots ?? []);
-        }
-      } else {
-        const requestData = await updateRequestAvailability({
-          slots: [{ round: 1, dates: selectedSlots[0].dates }],
-          user_timezone: dayjsLocal.tz.guess(),
-          id: String(request_id),
-        });
-        if (requestData) {
-          setDaySlots(requestData?.slots ?? []);
-        }
+      const requestData = await updateRequestAvailability({
+        slots: selectedSlots,
+        user_timezone: dayjsLocal.tz.guess(),
+        id: String(request_id),
+      });
+      if (requestData) {
+        setDaySlots(requestData?.slots ?? []);
       }
       toast({
         title: 'Availability submitted successfully',
