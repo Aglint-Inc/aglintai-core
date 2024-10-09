@@ -41,7 +41,6 @@ export const fetchDBScheduleDetails = async (filter_id: string) => {
     email_templates: email_templates,
     session_ids: filter_json_data.session_ids,
     request_id: filter_json_data.request_id,
-    plans_time_zone: filter_json_data.plans_time_zone,
     selected_plans: filter_json_data.selected_options,
   };
   return fetchDetails;
@@ -64,6 +63,5 @@ type FetchDBScheduleDetailsType = {
   request_id: string;
   email_templates: DatabaseTable['company_email_template'][];
   session_ids: string[];
-  plans_time_zone: string;
   selected_plans: PlanCombinationRespType[];
 };

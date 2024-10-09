@@ -47,7 +47,6 @@ export const candidateSelfScheduleLink = async ({
         selected_options: selected_slots_from_instruction,
         request_id: parsed_body.request_id,
         application_id: parsed_body.application_id,
-        plans_time_zone: req_assignee_tz,
       })
       .select()
       .single(),

@@ -26,7 +26,6 @@ export interface ApiBodyParamsSelfSchedule {
   selectedSlots?: PlanCombinationRespType[];
   user_id: string;
   request_id: string;
-  plans_time_zone: string;
 }
 
 export interface ApiResponseSelfSchedule {
@@ -74,7 +73,6 @@ const sendToCandidate = async ({
   application_id,
   request_id,
   reqProgressLogger,
-  plans_time_zone,
 }: ApiBodyParamsSelfSchedule & {
   reqProgressLogger: ProgressLoggerType;
 }) => {
@@ -131,7 +129,6 @@ const sendToCandidate = async ({
       created_by: user_id,
       request_id,
       application_id,
-      plans_time_zone,
     })
     .select();
 

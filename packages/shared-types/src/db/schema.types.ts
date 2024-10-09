@@ -1042,7 +1042,6 @@ export type Database = {
           filter_json: Json
           id: string
           is_flow_agent: boolean
-          plans_time_zone: string
           request_id: string
           schedule_options: Json | null
           selected_options: Json[] | null
@@ -1057,7 +1056,6 @@ export type Database = {
           filter_json: Json
           id?: string
           is_flow_agent?: boolean
-          plans_time_zone: string
           request_id: string
           schedule_options?: Json | null
           selected_options?: Json[] | null
@@ -1072,7 +1070,6 @@ export type Database = {
           filter_json?: Json
           id?: string
           is_flow_agent?: boolean
-          plans_time_zone?: string
           request_id?: string
           schedule_options?: Json | null
           selected_options?: Json[] | null
