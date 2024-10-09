@@ -102,7 +102,7 @@ function CandidateAvailability() {
           '': !candidateRequestAvailability?.slots,
         })}
       >
-        <ScrollArea className='h-[calc(100vh-260px)] border-r border-border p-4'>
+        <ScrollArea className='h-[calc(100vh-260px)] border-l border-border p-4'>
           <MultiDaySessions />
         </ScrollArea>
       </div>
