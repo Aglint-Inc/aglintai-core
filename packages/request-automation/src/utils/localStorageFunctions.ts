@@ -55,18 +55,18 @@ export const updateLocalStorage = async <
   let requestsWithSettings: localScheduleRequestType[] = storedData
     ? JSON.parse(storedData)
     : [];
-  requestsWithSettings = requestsWithSettings.map((item) => {
+  requestsWithSettings = requestsWithSettings.map((request) => {
     if (
-      item.application_id === application_id &&
-      item.request_id === request_id
+      request.application_id === application_id &&
+      request.id === request_id
     ) {
       return {
-        ...item,
+        ...request,
         [field]: value,
         status: status,
       };
     }
-    return item;
+    return request;
   });
   await localStorage.setItem(type, JSON.stringify(requestsWithSettings));
 };
@@ -86,12 +86,9 @@ export const removeRequestLocalStorage = async ({
   let requestsWithSettings: localScheduleRequestType[] = storedData
     ? JSON.parse(storedData)
     : [];
-  requestsWithSettings = requestsWithSettings.filter((item) => {
-    if (
-      item.application_id !== application_id &&
-      item.request_id !== request_id
-    )
-      return item;
+  requestsWithSettings = requestsWithSettings.filter((request) => {
+    if (request.application_id !== application_id && request.id !== request_id)
+      return request;
   });
   await localStorage.setItem(type, JSON.stringify(requestsWithSettings));
 };
