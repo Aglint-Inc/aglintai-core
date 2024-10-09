@@ -19,7 +19,9 @@ export default function UITabs({
   tabs,
   onClick,
   defaultValue,
+  isKeyDisable = false,
 }: {
+  isKeyDisable?: boolean;
   vertical?: boolean;
   tabs: UITabType[];
   // eslint-disable-next-line no-unused-vars
@@ -79,20 +81,21 @@ export default function UITabs({
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (
-        event.key === (vertical ? 'ArrowDown' : 'ArrowRight') ||
-        event.key === (vertical ? 'ArrowUp' : 'ArrowLeft')
-      ) {
-        const currentIndex = tabs.findIndex((tab) => tab.id === activeTab);
-        let newIndex = currentIndex;
-        if (event.key === (vertical ? 'ArrowDown' : 'ArrowRight')) {
-          newIndex = (currentIndex + 1) % tabs.length;
-        } else {
-          newIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+      if (!isKeyDisable)
+        if (
+          event.key === (vertical ? 'ArrowDown' : 'ArrowRight') ||
+          event.key === (vertical ? 'ArrowUp' : 'ArrowLeft')
+        ) {
+          const currentIndex = tabs.findIndex((tab) => tab.id === activeTab);
+          let newIndex = currentIndex;
+          if (event.key === (vertical ? 'ArrowDown' : 'ArrowRight')) {
+            newIndex = (currentIndex + 1) % tabs.length;
+          } else {
+            newIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+          }
+          onClick(tabs[newIndex].id);
+          setActiveTab(tabs[newIndex].id);
         }
-        onClick(tabs[newIndex].id);
-        setActiveTab(tabs[newIndex].id);
-      }
     };
 
     window.addEventListener('keydown', handleKeyDown);

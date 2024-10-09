@@ -24,11 +24,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const dbuser = await getUser(user_id);
     const google_cal = new GoogleCalender(null, null, user_id);
     await google_cal.authorizeUser();
-    if (!dbuser?.calendar_sync_token) {
-      return res.status(200).send('No sync token found');
-    }
+
     const results = await google_cal.fullCalendarSync(
-      dbuser.calendar_sync_token,
+      dbuser?.calendar_sync_token,
     );
     if (!results || results.events?.length === 0) {
       return res.status(200).send('No events found');
