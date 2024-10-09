@@ -28,7 +28,6 @@ const ActionsContainer = ({
     (t) => t.value.target_api === wAction.target_api,
   );
   const copy_details = target_api_details!.name;
-
   return (
     <div className='rounded-md bg-secondary p-4'>
       <div className='mb-2 flex items-center justify-between'>

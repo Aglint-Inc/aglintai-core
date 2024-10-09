@@ -1,43 +1,34 @@
 /* eslint-disable security/detect-object-injection */
-import { type DatabaseTable } from '@aglint/shared-types';
-import { toast } from '@components/hooks/use-toast';
-// import { Badge } from '@components/ui/badge';
-// import {
-//   Carousel,
-//   CarouselContent,
-//   CarouselItem,
-//   CarouselNext,
-//   CarouselPrevious,
-// } from '@components/ui/carousel';
-// import { ScrollArea } from '@components/ui/scroll-area';
+import { Button } from '@components/ui/button';
+import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
+import { Separator } from '@components/ui/separator';
 import dayjs from 'dayjs';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, X } from 'lucide-react';
 import { useEffect } from 'react';
 
-import { UIButton } from '@/components/Common/UIButton';
-import { UIDivider } from '@/components/Common/UIDivider';
+import { UITimeRangeCard } from '@/common/UITimeRangeCard';
 
+import {
+  DateCard,
+  DateCardsSkelton,
+} from '../../../../_common/_components/DateCard';
+import TimeSlotsColumn from '../../../../_common/_components/TimeSlotsColumn';
 import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityContext';
 import { useCandidateAvailabilityData } from '../hooks/useRequestAvailability';
-import { DateCard, DateCardsSkelton } from './DateCard';
-import TimeSlotsColumn from './TimeSlotsColumn';
 
 export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
   const {
     selectedDateSlots,
     selectedSlots,
-    setDaySlots,
     openDaySlotPopup: day,
-    setOpenDaySlotPopup,
     setIsSubmitted,
     dateSlots,
-    submitAvailability,
     handleClickDate,
     multiDaySessions,
-    submitting,
   } = useRequestAvailabilityContext();
   const { data: candidateRequestAvailability } = useCandidateAvailabilityData();
-
+  const NoOfSlotsNeeds = candidateRequestAvailability?.number_of_slots || 2;
+  const NoOfDaysNeeds = candidateRequestAvailability?.number_of_days || 2;
   useEffect(() => {
     if (candidateRequestAvailability?.slots) {
       setIsSubmitted(true);
@@ -49,129 +40,42 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
   const daySlotDates =
     selectedDateSlots.find((ele) => ele.round === day)?.dates ?? [];
 
-  const markAsAllDateSelected =
-    daySlotDates.length >= (candidateRequestAvailability?.number_of_days ?? 0);
+  const markAsAllDateSelected = daySlotDates.length >= (NoOfDaysNeeds ?? 0);
   const markAsAllSlotsSelected = selectedSlots.length
     ? selectedSlots
         .find((ele) => ele.round === day)
-        ?.dates.every(
-          (item) =>
-            item.slots.length >=
-            (candidateRequestAvailability?.number_of_slots ?? 0),
-        )
+        ?.dates.every((item) => item.slots.length >= (NoOfSlotsNeeds ?? 0))
     : false;
-  const handleSubmit = async () => {
-    const eventsByDate = (
-      selectedSlots.find((ele) => ele.round === day)?.dates ?? []
-    )
-      .map((ele) => ele.slots)
-      .flat()
-      .reduce((acc: Record<string, any[]>, event) => {
-        const date = event.startTime.split('T')[0];
-        if (!acc[date]) {
-          acc[date] = [];
-        }
-        acc[date].push(event);
-        return acc;
-      }, {});
-    const checkMinimumSlotsSelected = Object.keys(eventsByDate).filter(
-      (date) =>
-        eventsByDate[date].length <
-        (candidateRequestAvailability?.number_of_slots ?? 0),
-    );
-
-    const checkSlotsSelectedForDates = daySlotDates
-      .map((ele) => ele.curr_day.split('T')[0])
-      .filter((date) => !Object.keys(eventsByDate).includes(date));
-
-    if (!markAsAllDateSelected) {
-      toast({
-        title: `Please Select minimum ${candidateRequestAvailability.number_of_days} days`,
-      });
-      return;
-    }
-    if (checkSlotsSelectedForDates.length) {
-      toast({
-        title: `You have not selected any slots for ${checkSlotsSelectedForDates.map((date) => dayjs(date).format('MMM DD')).join(',')}`,
-      });
-      return;
-    }
-    if (checkMinimumSlotsSelected.length) {
-      toast({
-        title: `You have to select minimum ${candidateRequestAvailability.number_of_slots} slots on ${checkMinimumSlotsSelected.map((date) => dayjs(date).format('MMM DD')).join(',')} `,
-      });
-      return;
-    }
-
-    if (!singleDay) {
-      setDaySlots(
-        //@ts-expect-error
-        (
-          pre: NonNullable<
-            DatabaseTable['candidate_request_availability']['slots']
-          >,
-        ) => {
-          const updatedSlots = [...pre];
-          const existingSlotIndex = updatedSlots.findIndex(
-            (slot) => slot.round === day,
-          );
-
-          const daySlots = (selectedSlots.find((ele) => ele.round === day) ||
-            []) as NonNullable<
-            DatabaseTable['candidate_request_availability']['slots']
-          >[0];
-          if (existingSlotIndex !== -1) {
-            updatedSlots[existingSlotIndex] = {
-              ...daySlots,
-            };
-          } else {
-            updatedSlots.push({
-              ...daySlots,
-            });
-          }
-          return updatedSlots;
-        },
-      );
-    } else {
-      submitAvailability();
-    }
-    setOpenDaySlotPopup(0);
-  };
 
   return (
     <>
-      <div className='bg-white'>
-        <div className='flex flex-col gap-10 px-0'>
-          <div className='items-left flex flex-col gap-4'>
-            <div className='flex items-start gap-2'>
-              <div className='relative'>
-                {markAsAllDateSelected ? (
-                  <CheckCircle className='mt-1 h-6 w-6 text-green-500' />
-                ) : (
-                  <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200'>
-                    1
-                  </div>
-                )}
-              </div>
-              <div className='flex flex-col'>
-                <div className='text-lg font-medium'>
-                  Select available dates
+      <div className='flexflex-col gap-10 px-0'>
+        <div className='items-left flex flex-col gap-4'>
+          <div className='flex items-start gap-2'>
+            <div className='relative'>
+              {markAsAllDateSelected ? (
+                <CheckCircle className='mt-1 h-6 w-6 text-green-500' />
+              ) : (
+                <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200'>
+                  1
                 </div>
-                <span className='text-sm'>
-                  {' '}
-                  {`Select ${candidateRequestAvailability.number_of_days} or more days.`}
-                </span>
+              )}
+            </div>
+            <div className='flex flex-col'>
+              <div className='text-md font-semibold'>
+                Select available dates
               </div>
+              <span className='text-sm text-muted-foreground'>
+                {' '}
+                {`Select ${NoOfDaysNeeds} or more days. Click on a date to select. Click again to deselect.`}
+              </span>
             </div>
-            <div className='text-muted-foreground'>
-              Click on a date to select. Click again to deselect.
-            </div>
-
-            <div className='w-full'>
-              {dateSlots.length ? (
-                <div>
-                  {/* <ScrollArea className='w-[800px]'> */}
-                  <div className='flex w-full flex-row flex-wrap justify-start gap-2'>
+          </div>
+          <div className='w-full'>
+            {dateSlots.length ? (
+              <div>
+                <ScrollArea className='w-[710px]'>
+                  <div className='flex gap-2 pb-4'>
                     {singleDay
                       ? (
                           dateSlots?.find((slot) => slot.round === day || 1)
@@ -303,63 +207,46 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
                           );
                         })}
                   </div>
-                  {/* </ScrollArea> */}
-                </div>
-              ) : (
-                <div className='flex w-full flex-row items-start gap-4'>
-                  {Array.from({ length: 7 }).map((_, i) => (
-                    <DateCardsSkelton key={i} />
-                  ))}
-                </div>
-              )}
-            </div>
+                  <ScrollBar orientation='horizontal' />
+                </ScrollArea>
+              </div>
+            ) : (
+              <div className='flex w-full flex-row items-start gap-4'>
+                {Array.from({ length: 7 }).map((_, i) => (
+                  <DateCardsSkelton key={i} />
+                ))}
+              </div>
+            )}
           </div>
+        </div>
 
-          <div className='flex w-full flex-col items-start gap-4'>
-            {markAsAllDateSelected ? (
-              <div className='flex w-full flex-col items-start gap-4'>
-                <UIDivider />
-                <div className='flex items-start gap-2'>
-                  <div className='relative'>
-                    {markAsAllSlotsSelected ? (
-                      <CheckCircle className='mt-1 h-6 w-6 text-green-500' />
-                    ) : (
-                      <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200'>
-                        2
-                      </div>
-                    )}
-                  </div>
-                  <div className='flex flex-col'>
-                    <div className='text-lg font-medium'>Choose time slots</div>
-                    <span className='text-sm'>{`Choose ${candidateRequestAvailability.number_of_slots} or more slots per day.`}</span>
-                  </div>
+        <Separator className='my-4' />
+
+        <div className='flex w-full flex-col items-start gap-4'>
+          {markAsAllDateSelected ? (
+            <div className='flex w-full flex-col items-start gap-4'>
+              <div className='flex items-start gap-2'>
+                <div className='relative'>
+                  {markAsAllSlotsSelected ? (
+                    <CheckCircle className='mt-1 h-6 w-6 text-green-500' />
+                  ) : (
+                    <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200'>
+                      2
+                    </div>
+                  )}
                 </div>
-                <div className='text-muted-foreground'>
-                  Click on a timeslot to select. Click again to deselect.
+                <div className='flex flex-col'>
+                  <div className='text-md font-semibold'>
+                    Choose time slots.
+                  </div>
+                  <span className='text-sm text-muted-foreground'>{`Choose ${NoOfSlotsNeeds} or more slots per day. Click on a timeslot to select. Click again to deselect.`}</span>
                 </div>
               </div>
-            ) : null}
-            <div>{markAsAllDateSelected ? <TimeSlotsWrapper /> : null}</div>
-          </div>
-          <div className='flex w-full items-center justify-center'>
-            {markAsAllDateSelected && markAsAllSlotsSelected ? (
-              <div className='mx-auto mb-4 w-[300px]'>
-                <UIButton
-                  size='md'
-                  onClick={handleSubmit}
-                  disabled={
-                    !markAsAllSlotsSelected ||
-                    !markAsAllDateSelected ||
-                    submitting
-                  }
-                  className='w-full'
-                  isLoading={submitting}
-                >
-                  {singleDay ? 'Submit Availability' : 'Done'}
-                </UIButton>
-              </div>
-            ) : null}
-          </div>
+            </div>
+          ) : null}
+          <ScrollArea className='h-[calc(100vh-550px)]'>
+            {markAsAllDateSelected ? <TimeSlotsWrapper /> : null}
+          </ScrollArea>
         </div>
       </div>
     </>
@@ -371,7 +258,11 @@ function TimeSlotsWrapper() {
     selectedDateSlots,
     handleClickDate,
     openDaySlotPopup: day,
+    selectedSlots,
+    isSubmitted,
+    handleSlotClick,
   } = useRequestAvailabilityContext();
+
   return (
     <div className=''>
       <div className='flex flex-col gap-3'>
@@ -382,160 +273,58 @@ function TimeSlotsWrapper() {
           )
           .map((slotTime, i) => (
             <TimeSlotsColumn
-              onClose={() =>
-                handleClickDate({
-                  selectedDate: slotTime,
-                  day,
-                })
-              }
               key={i}
-              slotTime={slotTime}
+              date={slotTime.curr_day}
+              closeBtn={
+                <Button
+                  variant='outline'
+                  size='sm'
+                  onClick={() =>
+                    handleClickDate({ selectedDate: slotTime, day })
+                  }
+                >
+                  <X className='h-4 w-4 text-destructive' />
+                </Button>
+              }
+              timeRangeArea={slotTime.slots.map((slot, ind) => {
+                const daySlot = (selectedSlots ?? []).find(
+                  (ele) => ele.round === day,
+                );
+
+                const daySlotDates =
+                  daySlot &&
+                  daySlot.dates.find(
+                    (ele) => ele.curr_day === slotTime.curr_day,
+                  );
+
+                const isSelected =
+                  (!isSubmitted &&
+                    daySlotDates &&
+                    daySlotDates.slots
+                      .map((ele) => ele.startTime)
+                      .includes(slot.startTime)) ||
+                  isSubmitted;
+                return (
+                  <div key={ind}>
+                    <UITimeRangeCard
+                      onClickTime={() => {
+                        if (!isSubmitted)
+                          handleSlotClick({
+                            curr_day: slotTime.curr_day,
+                            slot: slot,
+                          });
+                      }}
+                      isSemiActive={slot.isSlotAvailable && !isSelected}
+                      isActive={isSelected}
+                      key={ind}
+                      textTime={`${dayjs(slot.startTime).format('hh:mm A')} - ${dayjs(slot.endTime).format('hh:mm A')}`}
+                    />
+                  </div>
+                );
+              })}
             />
           ))}
       </div>
     </div>
   );
 }
-// function DaysWrapInWeek({ isSingleDay }: { isSingleDay: boolean }) {
-//   const {
-//     multiDaySessions,
-//     dateSlots,
-//     handleClickDate,
-//     selectedDateSlots,
-//     openDaySlotPopup: day,
-//   } = useRequestAvailabilityContext();
-//   const dates = dateSlots?.find((slot) => slot.round === day || 1)?.dates || [];
-//   const weeks: DatabaseTable['candidate_request_availability']['slots'][number]['dates'][] =
-//     [];
-//   for (let i = 0; i < dates.length; i += 7) {
-//     weeks.push(dates.slice(i, i + 7));
-//   }
-
-//   return (
-//     <>
-//       {weeks.map((week, weekIndex) => {
-//         return (
-//           <CarouselItem key={weekIndex}>
-//             <div className='flex justify-center space-x-2 p-2'>
-//               {isSingleDay
-//                 ? week.map((dateSlot, i) => {
-//                     return (
-//                       <DateCard
-//                         isDisable={dateSlot.slots.length === 0}
-//                         isActive={selectedDateSlots
-//                           .find((ele) => ele.round === day || 1)
-//                           ?.dates.map((ele) => ele.curr_day)
-//                           .includes(dateSlot.curr_day)}
-//                         key={i}
-//                         textDate={dayjs(dateSlot.curr_day).format('DD')}
-//                         textDay={dayjs(dateSlot.curr_day).format('dddd')}
-//                         textMonth={dayjs(dateSlot.curr_day).format('MMM')}
-//                         onClickDate={() => {
-//                           handleClickDate({ selectedDate: dateSlot, day });
-//                         }}
-//                       />
-//                     );
-//                   })
-//                 : week.map((dateSlot, i) => {
-//                     let enable = false;
-//                     const justPrevDay =
-//                       day > 1 &&
-//                       multiDaySessions[day - 2][0].break_duration / 1440;
-//                     const dates = dateSlots
-//                       .find((ele) => ele.round === day || 1)
-//                       ?.dates.filter((ele) => ele.slots.length);
-//                     const prevSelectedDates = selectedDateSlots
-//                       .filter((ele) => ele.round === day - 1)
-//                       .map((ele) => ele.dates)
-//                       .flat()
-//                       ?.map((ele) => ele.curr_day.split('T')[0]);
-
-//                     const totalDayDurations = multiDaySessions.reduce(
-//                       (accumulator, sessions) => {
-//                         const breakDurations = sessions.filter(
-//                           (session) => session.break_duration >= 1440,
-//                         );
-//                         return (
-//                           accumulator +
-//                           breakDurations.reduce(
-//                             (acc, session) => acc + session.break_duration,
-//                             0,
-//                           )
-//                         );
-//                       },
-//                       0,
-//                     );
-//                     const prevDayDurations = multiDaySessions
-//                       .slice(0, day - 1)
-//                       .reduce((accumulator, sessions) => {
-//                         const breakDurations = sessions.filter(
-//                           (session) => session.break_duration >= 1440,
-//                         );
-//                         return (
-//                           accumulator +
-//                           breakDurations.reduce(
-//                             (acc, session) => acc + session.break_duration,
-//                             0,
-//                           )
-//                         );
-//                       }, 0);
-
-//                     const prevNumberOfDay = prevDayDurations / 1440;
-
-//                     const numberOfDay =
-//                       totalDayDurations / 1440 - prevNumberOfDay;
-
-//                     if (i >= dates.length - numberOfDay) {
-//                       enable = true;
-//                     }
-
-//                     if (
-//                       day > 1 &&
-//                       dayjs(prevSelectedDates[justPrevDay]).isAfter(
-//                         dayjs(dateSlot.curr_day),
-//                         'day',
-//                       )
-//                     ) {
-//                       enable = true;
-//                     }
-
-//                     if (
-//                       dayjs(dayjs(dateSlot.curr_day)).isAfter(
-//                         prevSelectedDates[0],
-//                         'day',
-//                       ) &&
-//                       dayjs(dayjs(dateSlot.curr_day)).isBefore(
-//                         prevSelectedDates[prevSelectedDates.length - 1],
-//                         'day',
-//                       ) &&
-//                       !prevSelectedDates.includes(
-//                         dateSlot.curr_day.split('T')[0],
-//                       )
-//                     ) {
-//                       enable = false;
-//                     }
-
-//                     return (
-//                       <DateCard
-//                         isDisable={enable || dateSlot.slots.length === 0}
-//                         isActive={selectedDateSlots
-//                           .find((ele) => ele.round === day)
-//                           ?.dates.map((ele) => ele.curr_day)
-//                           .includes(dateSlot.curr_day)}
-//                         key={i}
-//                         textDate={dayjs(dateSlot.curr_day).format('DD')}
-//                         textDay={dayjs(dateSlot.curr_day).format('dddd')}
-//                         textMonth={dayjs(dateSlot.curr_day).format('MMM')}
-//                         onClickDate={() => {
-//                           handleClickDate({ selectedDate: dateSlot, day });
-//                         }}
-//                       />
-//                     );
-//                   })}
-//             </div>
-//           </CarouselItem>
-//         );
-//       })}
-//     </>
-//   );
-// }

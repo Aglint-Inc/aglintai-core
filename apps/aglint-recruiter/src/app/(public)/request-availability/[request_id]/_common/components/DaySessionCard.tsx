@@ -2,12 +2,11 @@ import {
   type DatabaseTable,
   type InterviewSessionTypeDB,
 } from '@aglint/shared-types';
-import { dayjsLocal } from '@aglint/shared-utils';
-import { Button } from '@components/ui/button';
-import { CheckCircle, MapPin, Timer, Users } from 'lucide-react';
+import { cn } from '@lib/utils';
+import { MapPin, Timer, Users } from 'lucide-react';
+import { SelectedSessionSlotsCard } from 'src/app/(public)/_common/_components/SelectedSessionStotsCard';
 
 import { ShowCode } from '@/components/Common/ShowCode';
-import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 
 import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityContext';
@@ -19,6 +18,7 @@ function DaySessionCard({
   totalSessionMinutes,
   sessions,
   dates,
+  singleDay,
 }: {
   showDayCount?: boolean;
   cardIndex: number;
@@ -27,20 +27,26 @@ function DaySessionCard({
   dates: NonNullable<
     DatabaseTable['candidate_request_availability']['slots']
   >[number]['dates'];
+  singleDay: boolean;
 }) {
-  const { setOpenDaySlotPopup, daySlots, isSubmitted } =
+  const { setOpenDaySlotPopup, selectedSlots, isSubmitted, openDaySlotPopup } =
     useRequestAvailabilityContext();
   const handleOpen = async (day: number) => {
     setOpenDaySlotPopup(day);
   };
 
   return (
-    <>
-      <MultiDayCard
+    <div
+      className={cn('rounded-lg border', {
+        'border-blue-500': cardIndex + 1 === openDaySlotPopup && !isSubmitted,
+      })}
+    >
+      <SelectedSessionSlotsCard
+        isSubmitted={isSubmitted}
         textDayCount={showDayCount ? `Day ${cardIndex + 1}` : ''}
         isSelected={
-          daySlots.length
-            ? daySlots.map((ele) => ele.round).includes(cardIndex + 1)
+          selectedSlots.length
+            ? selectedSlots.map((ele) => ele.round).includes(cardIndex + 1)
             : false
         }
         textTotalDuration={convertMinutesToHoursAndMinutes(totalSessionMinutes)}
@@ -55,31 +61,14 @@ function DaySessionCard({
             />
           );
         })}
-        slotPickDateButton={
-          <ShowCode>
-            <ShowCode.When
-              isTrue={
-                (daySlots.map((ele) => ele.round).includes(cardIndex) ||
-                  cardIndex < 1) &&
-                !daySlots.map((ele) => ele.round).includes(cardIndex + 1)
-              }
-            >
-              <Button
-                variant='secondary'
-                size='sm'
-                onClick={() => handleOpen(cardIndex + 1)}
-              >
-                Pick Slots
-              </Button>
-            </ShowCode.When>
-          </ShowCode>
-        }
         slotChangeButton={
           <ShowCode>
             <ShowCode.When
               isTrue={
-                !isSubmitted && daySlots.length
-                  ? daySlots.map((ele) => ele.round).includes(cardIndex + 1)
+                !singleDay && !isSubmitted && selectedSlots.length
+                  ? selectedSlots
+                      .map((ele) => ele.round)
+                      .includes(cardIndex + 1)
                   : false
               }
             >
@@ -95,109 +84,14 @@ function DaySessionCard({
         }
         textSelectedSlots={`Selected ${dates.map((ele) => ele.slots).flat().length} slots across ${dates.length} days `}
         // date listing slots
-
-        slotSelected={
-          dates.length &&
-          dates.map((ele, i) => {
-            return (
-              <SelectedSlot
-                textDate={dayjsLocal(ele.curr_day).format('DD MMMM YYYY')}
-                slotBadge={ele.slots.map((slot, i) => {
-                  return (
-                    <UIBadge
-                      iconName={null}
-                      color={isSubmitted ? 'success' : 'warning'}
-                      key={i}
-                      className='text-black'
-                      textBadge={`${dayjsLocal(slot.startTime).format('hh:mm A')} - ${dayjsLocal(slot.endTime).format('hh:mm A')}`}
-                    />
-                  );
-                })}
-                key={i}
-              />
-            );
-          })
-        }
+        selectedDates={dates}
       />
-    </>
+    </div>
   );
 }
 
 export default DaySessionCard;
 
-interface MultiDayCardCardProps {
-  textDayCount: string;
-  isSelected: boolean;
-  textTotalDuration: string;
-  slotSessionInfo: React.ReactNode;
-  slotPickDateButton: React.ReactNode;
-  slotChangeButton: React.ReactNode;
-  textSelectedSlots: string;
-  slotSelected: React.ReactNode;
-}
-
-export function MultiDayCard({
-  textDayCount,
-  isSelected,
-  textTotalDuration,
-  slotSessionInfo,
-  slotPickDateButton,
-  slotChangeButton,
-  textSelectedSlots,
-  slotSelected,
-}: MultiDayCardCardProps) {
-  return (
-    <div className='w-full rounded-lg border border-neutral-200'>
-      <div className='space-y-4 p-4'>
-        <div className='flex items-start justify-between'>
-          <div>
-            <h1 className='mb-2 text-black'>{textDayCount}</h1>
-            <div className='flex items-center space-x-2 text-sm text-muted-foreground'>
-              <Timer className='h-5 w-5 text-muted-foreground' />
-              <span>Total Duration: {textTotalDuration}</span>
-            </div>
-          </div>
-          <div>{slotPickDateButton}</div>
-        </div>
-        <div className='space-y-2'>{slotSessionInfo}</div>
-      </div>
-      {isSelected ? (
-        <>
-          <hr className='border-t border-neutral-200' />
-          <div className='space-y-4 p-4'>
-            <div className='flex items-center justify-between'>
-              <div className='flex items-center space-x-2'>
-                <CheckCircle className='h-4 w-4 text-green-800' />
-                <span className='text-sm text-muted-foreground'>
-                  {textSelectedSlots}
-                </span>
-              </div>
-              {slotChangeButton}
-            </div>
-            <div className='flex flex-col'>{slotSelected}</div>
-          </div>
-        </>
-      ) : null}
-    </div>
-  );
-}
-export function SelectedSlot({
-  textDate,
-  slotBadge,
-}: {
-  textDate: string;
-  slotBadge: React.ReactNode;
-}) {
-  return (
-    <div className='mb-4 flex w-full flex-row gap-4'>
-      <div className='flex flex-col items-start gap-2'>
-        {/* <Calendar className='h-4 w-4 text-muted-foreground' /> */}
-        <span className='text-sm font-medium text-gray-700'>{textDate}</span>
-        <div className='flex flex-wrap gap-1'>{slotBadge}</div>
-      </div>
-    </div>
-  );
-}
 export function SessionInfo({
   textSessionName,
   textSessionDuration,

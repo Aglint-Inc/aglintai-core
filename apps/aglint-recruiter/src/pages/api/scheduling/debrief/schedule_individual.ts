@@ -26,7 +26,7 @@ export type ApiBodyParamScheduleIndividual = {
   recruiter_user_name: string;
   rec_user_id: string;
   user_tz: string;
-  filter_id: string;
+  request_id: string;
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -40,7 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       recruiter_user_name,
       task_id,
       user_tz,
-      filter_id,
+      request_id,
     } = req.body as ApiBodyParamScheduleIndividual;
 
     console.log(application_id, 'application_id');
@@ -52,7 +52,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       !session_id ||
       !task_id ||
       !user_tz ||
-      !filter_id
+      !request_id
     ) {
       return res.status(400).send('Missing required parameters');
     }
@@ -77,7 +77,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         task_id,
         user_tz,
         selectedDebrief: firstSlot[0],
-        filter_id,
+        request_id,
       });
       return res.status(200).send('success');
     } else {
@@ -103,18 +103,18 @@ export default handler;
 const confirmSlot = async ({
   user_tz,
   selectedDebrief,
-  filter_id,
+  request_id,
 }: {
   task_id: string;
   user_tz: string;
   selectedDebrief: PlanCombinationRespType;
-  filter_id: string;
+  request_id: string;
 }) => {
   const bodyParams: APIScheduleDebreif = {
     session_id: selectedDebrief.sessions[0].session_id,
     user_tz,
     selectedOption: selectedDebrief,
-    filter_id,
+    request_id,
   };
 
   await axios.post(

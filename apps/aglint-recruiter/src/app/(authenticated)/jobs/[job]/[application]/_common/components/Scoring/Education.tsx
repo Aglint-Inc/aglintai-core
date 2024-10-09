@@ -50,10 +50,10 @@ const Content = () => {
   )
     return (
       <EmptyState
-      header='No education found'
-      description="No education was identified from the candidate's resume."
-      icon={School}
-    />
+        header='No education found'
+        description="No education was identified from the candidate's resume."
+        icon={School}
+      />
     );
 
   return <Schools />;

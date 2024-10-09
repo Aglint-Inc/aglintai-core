@@ -13,17 +13,15 @@ import {
   supabaseWrap,
 } from '@aglint/shared-utils';
 import { apiTargetToEvents } from '@request/components/RequestProgress/utils/progressMaps';
-import { v4 as uuidv4 } from 'uuid';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
-import { candidateAvailRequest } from '@/services/api-schedulings/candidateAvailRequest';
-import { candidateAvailReRequest } from '@/services/api-schedulings/candidateAvailReRequest';
-import { candidateSelfSchedule } from '@/services/api-schedulings/candidateSelfSchedule';
+import { candidateAvailRequest } from '@/services/api-schedulings/avail-recieved/candidateAvailRequest';
+import { candidateAvailReRequest } from '@/services/api-schedulings/avail-recieved/candidateAvailReRequest';
+import { sendSelfScheduleLink } from '@/services/api-schedulings/new-schedule/sendSelfScheduleLink';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const schedule_wf = async (req_body: any) => {
   const supabaseAdmin = getSupabaseServer();
-
   const {
     parsed_body,
     api_target,
@@ -33,7 +31,6 @@ const schedule_wf = async (req_body: any) => {
     request_assignee_tz,
     job_payload,
   } = await fetchUtil(req_body);
-  const event_log_id = uuidv4();
   const target_api = parsed_body.target_api as keyof typeof apiTargetToEvents;
   const eventAction = apiTargetToEvents[target_api];
   if (!eventAction) {
@@ -55,17 +52,22 @@ const schedule_wf = async (req_body: any) => {
   if (api_target === 'onRequestSchedule_emailLink_sendSelfSchedulingLink') {
     meeting_flow = 'self_scheduling';
     await executeWorkflowAction(
-      candidateSelfSchedule,
+      sendSelfScheduleLink,
       {
+        agent_instruction: job_payload.agent.instruction,
         parsed_body,
-        date_range,
-        reqProgressLogger,
+        date_range: {
+          start_date_str: date_range.start_date_str,
+          end_date_str: date_range.end_date_str,
+        },
         job_payload,
-        req_assignee_tz: request_assignee_tz,
-        organizer_id,
+        reqProgressLogger,
+        recruiter_id: parsed_body.recruiter_id,
+        session_ids: parsed_body.session_ids,
+        time_zone: request_assignee_tz,
+        req_assignee_id: organizer_id,
       },
       reqProgressLogger,
-      event_log_id,
     );
   } else if (
     api_target === 'onRequestSchedule_emailLink_getCandidateAvailability'

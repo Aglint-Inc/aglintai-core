@@ -76,7 +76,7 @@ export async function executeWorkflowAction<T1 extends any, U extends unknown>(
   logger: ProgressLoggerType,
   log_id = uuidv4(),
   logger_args?: Pick<DatabaseTableInsert['request_progress'], 'meta'>
-): Promise<U | null> {
+): Promise<U> {
   try {
     await logger({
       ...(logger_args ?? {}),
@@ -100,10 +100,16 @@ export async function executeWorkflowAction<T1 extends any, U extends unknown>(
     await logger({
       ...(logger_args ?? {}),
       status: 'failed',
-      id: log_id,
       log: err_log,
+      is_progress_step: true,
+    });
+    await logger({
+      ...(logger_args ?? {}),
+      status: 'failed',
+      id: log_id,
       is_progress_step: false,
     });
+
     throw new CApiError('WORKFLOW_ACTION', err.message, undefined, 500);
   }
 }

@@ -3,6 +3,7 @@ import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import {
   Section,
   SectionActions,
+  SectionDescription,
   SectionHeader,
   SectionHeaderText,
   SectionTitle,
@@ -16,7 +17,6 @@ import { Loader } from '../../../../../../components/Common/Loader';
 import { ConfirmedInvitePage } from '../../../../../_common/components/CandidateConfirm/_common/components';
 import { useInviteMeta } from '../hooks/useInviteMeta';
 import {
-  setDetailPopup,
   setSelectedSlots,
   setTimeZone,
   useCandidateInviteStore,
@@ -40,8 +40,14 @@ const CandidateInviteNew = () => {
         <ErrorState />
       ) : (
         <>
-          <CandidateInvitePlanPage />
-          <DetailsPopup />
+          <div className='flex w-full flex-row justify-center'>
+            <div className='w-8/12 p-4'>
+              <CandidateInvitePlanPage />
+            </div>
+            <div className='w-4/12 p-4'>
+              <DetailsPopup />
+            </div>
+          </div>
         </>
       )}
     </div>
@@ -87,9 +93,7 @@ const CandidateInvitePlanPage = () => {
 
   const { data: meta } = useInviteMeta();
 
-  const waiting = (meta?.meetings || []).some(
-    ({ interview_meeting: { status } }) => status === 'waiting',
-  );
+  const waiting = !meta.isBooked;
   const { rounds } = (meta?.meetings || []).reduce(
     (acc, curr) => {
       const count = acc.rounds.length;
@@ -118,40 +122,42 @@ const CandidateInvitePlanPage = () => {
 
   if (!waiting && meta)
     return (
-      <ConfirmedInvitePage
-        rounds={rounds}
-        candidate={meta.candidate}
-        filter_json={meta.filter_json}
-        meetings={meta.meetings}
-        recruiter={meta.recruiter}
-        timezone={timezone}
-        application_id={meta.application_id}
-      />
+      <Section>
+        <SectionHeader>
+          <SectionHeaderText>
+            <SectionTitle>Interview Details</SectionTitle>
+          </SectionHeaderText>
+        </SectionHeader>
+        <ConfirmedInvitePage
+          rounds={rounds}
+          candidate={meta.candidate}
+          filter_json={meta.filter_json}
+          meetings={meta.meetings}
+          recruiter={meta.recruiter}
+          timezone={timezone}
+          application_id={meta.application_id}
+        />
+      </Section>
     );
 
   return (
     <Section>
       <SectionHeader>
         <SectionHeaderText>
-          <SectionTitle>
-            <TimezonePicker
-              onChange={(e) => {
-                setTimeZone(e);
-                setSelectedSlots([]);
-              }}
-              value={timezone.tzCode}
-            />
-          </SectionTitle>
+          <SectionTitle>Book Now</SectionTitle>
+          <SectionDescription>
+            Available slots are organized by day. Each slot includes the total
+            time required for your interview, including breaks.
+          </SectionDescription>
         </SectionHeaderText>
         <SectionActions>
-          <UIButton
-            variant='outline'
-            onClick={() => {
-              setDetailPopup(true);
+          <TimezonePicker
+            onChange={(e) => {
+              setTimeZone(e);
+              setSelectedSlots([]);
             }}
-          >
-            View Interview details
-          </UIButton>
+            value={timezone.tzCode}
+          />
         </SectionActions>
       </SectionHeader>
       <Invite rounds={rounds} />

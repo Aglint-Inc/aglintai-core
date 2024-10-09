@@ -7,7 +7,11 @@ import {
   type DatabaseTableUpdate,
   type InterviewSessionTypeDB,
 } from '@aglint/shared-types';
-import { dayjsLocal, ScheduleUtils } from '@aglint/shared-utils';
+import {
+  dayjsLocal,
+  ScheduleUtils,
+  SINGLE_DAY_TIME,
+} from '@aglint/shared-utils';
 import axios from 'axios';
 import dayjs, { type Dayjs } from 'dayjs';
 import { useParams } from 'next/navigation';
@@ -18,9 +22,14 @@ import toast from '@/utils/toast';
 
 import {
   useCandidateAvailabilityData,
+  useCandidateAvailabilityMeetings,
+  useCandidateAvailabilityScheduleDMeetings,
   useUpdateCandidateAvailability,
 } from '../hooks/useRequestAvailability';
-import { type CandidateAvailabilityType } from '../types';
+import {
+  type CandidateAvailabilityType,
+  type CandidateMeetingsType,
+} from '../types';
 
 interface ContextValue {
   dateSlots: NonNullable<
@@ -81,6 +90,23 @@ interface ContextValue {
       DatabaseTable['candidate_request_availability']['slots']
     >[number]['dates'][number]['slots'][number];
   }) => void;
+  meetingsAndRounds: {
+    rounds: any[];
+    meetings: any[];
+    schedule: ReturnType<
+      typeof useCandidateAvailabilityScheduleDMeetings
+    >['data'];
+  } | null;
+
+  setMeetingsAndRounds: (
+    _x: {
+      rounds: any[];
+      meetings: any[];
+      schedule: ReturnType<
+        typeof useCandidateAvailabilityScheduleDMeetings
+      >['data'];
+    } | null,
+  ) => void;
 }
 const defaultProvider: ContextValue = {
   dateSlots: [],
@@ -93,7 +119,7 @@ const defaultProvider: ContextValue = {
   setSelectedSlots: () => {},
   multiDaySessions: [],
   setMultiDaySessions: () => {},
-  openDaySlotPopup: 0,
+  openDaySlotPopup: 1,
   setOpenDaySlotPopup: () => {},
   isSubmitted: false,
   setIsSubmitted: () => {},
@@ -104,6 +130,8 @@ const defaultProvider: ContextValue = {
   submitting: false,
   setSubmitting: () => {},
   handleSlotClick: () => {},
+  meetingsAndRounds: null,
+  setMeetingsAndRounds: () => {},
 };
 const RequestAvailabilityContext = createContext<ContextValue>(defaultProvider);
 const useRequestAvailabilityContext = () =>
@@ -118,6 +146,9 @@ function RequestAvailabilityProvider({
   const { data: requestAvailability, isFetched } =
     useCandidateAvailabilityData();
   const { updateRequestAvailability } = useUpdateCandidateAvailability();
+  const { data: meetings } = useCandidateAvailabilityMeetings();
+  const { data: scheduledMeetings } =
+    useCandidateAvailabilityScheduleDMeetings();
 
   const [dateSlots, setDateSlots] = useState<
     NonNullable<DatabaseTable['candidate_request_availability']['slots']>
@@ -140,7 +171,7 @@ function RequestAvailabilityProvider({
     InterviewSessionTypeDB[][]
   >([]);
 
-  const [openDaySlotPopup, setOpenDaySlotPopup] = useState<number>(0);
+  const [openDaySlotPopup, setOpenDaySlotPopup] = useState<number>(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   async function defaultValues({
@@ -151,12 +182,7 @@ function RequestAvailabilityProvider({
     if (!requestAvailability) {
       return;
     }
-    if (requestAvailability?.slots) {
-      setDateSlots(requestAvailability.slots || []);
-      setDaySlots(requestAvailability.slots || []);
-      setIsSubmitted(true);
-      return;
-    }
+
     if (!requestAvailability.visited) {
       updateRequestAvailability({
         id: String(request_id),
@@ -170,6 +196,7 @@ function RequestAvailabilityProvider({
           break_duration: ele?.interview_session?.break_duration ?? 0,
           session_duration: ele?.interview_session?.session_duration ?? 0,
           session_order: ele?.interview_session?.session_order ?? 0,
+          name: ele?.interview_session?.name ?? '',
         };
       }),
     ) as unknown as InterviewSessionTypeDB[][];
@@ -211,6 +238,12 @@ function RequestAvailabilityProvider({
       );
     } catch (error) {
       toast.error('Something went wrong!');
+    }
+    if (requestAvailability?.slots) {
+      setDateSlots(requestAvailability.slots || []);
+      setSelectedSlots(requestAvailability.slots || []);
+      setIsSubmitted(true);
+      return;
     }
   }
 
@@ -398,7 +431,7 @@ function RequestAvailabilityProvider({
       setSubmitting(true);
       if (multiDaySessions.length > 1) {
         const requestData = await updateRequestAvailability({
-          slots: daySlots,
+          slots: selectedSlots,
           user_timezone: dayjsLocal.tz.guess(),
           id: String(request_id),
         });
@@ -420,6 +453,52 @@ function RequestAvailabilityProvider({
       setSubmitting(false);
     }
   }
+
+  //check if meeting scheduled
+  const [meetingsAndRounds, setMeetingsAndRounds] = useState<{
+    rounds: any[];
+    meetings: any[];
+    schedule: ReturnType<
+      typeof useCandidateAvailabilityScheduleDMeetings
+    >['data'];
+  } | null>(null);
+  const getMeetings = async (meetings: CandidateMeetingsType) => {
+    if (meetings) {
+      const { rounds } = meetings.reduce(
+        (acc, curr) => {
+          const count = acc.rounds.length;
+          if (
+            count === 0 ||
+            acc.rounds[count - 1].sessions[
+              acc.rounds[count - 1].sessions.length - 1
+            ].interview_session.break_duration >= SINGLE_DAY_TIME
+          )
+            acc.rounds.push({
+              title: `Day ${acc.rounds.length + 1}`,
+              sessions: [curr],
+            });
+          else acc.rounds[count - 1].sessions.push(curr);
+          return acc;
+        },
+        { rounds: [] as any },
+      );
+
+      setMeetingsAndRounds({
+        rounds: rounds,
+        meetings: meetings,
+        schedule: scheduledMeetings,
+      });
+    }
+  };
+  useEffect(() => {
+    if (
+      requestAvailability &&
+      requestAvailability.booking_confirmed &&
+      meetings?.length
+    ) {
+      getMeetings(meetings);
+    }
+  }, [meetings]);
 
   return (
     <RequestAvailabilityContext.Provider
@@ -446,6 +525,8 @@ function RequestAvailabilityProvider({
         setMultiDaySessions,
         setSelectedDate,
         handleSlotClick,
+        meetingsAndRounds,
+        setMeetingsAndRounds,
       }}
     >
       {children}

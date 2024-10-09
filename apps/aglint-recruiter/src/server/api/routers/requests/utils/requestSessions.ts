@@ -53,7 +53,7 @@ export const fetchSessionDetails = async ({
   const { data } = await supabaseCaller
     .from('request')
     .select(
-      `*,request_relation(*,interview_session(*,interview_meeting!inner(*),${interviewCancelReasons},interview_module!inner(*),interview_session_relation(*,interview_module_relation(*,${userDetails}),debrief_user:${userDetails})))`,
+      `*,request_relation(*,interview_session(*,interview_meeting!inner(*),${interviewCancelReasons},interview_module(*),interview_session_relation(*,interview_module_relation(*,${userDetails}),debrief_user:${userDetails})))`,
     )
     .eq('id', request_id)
     .single();

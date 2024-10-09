@@ -42,6 +42,13 @@ const calcInterversCombsForSesson = (
     session: InterviewSessionApiRespType,
     comb: number,
   ) => {
+    if (comb === 0 || comb > session.qualifiedIntervs.length) {
+      throw new CApiError(
+        'CLIENT',
+        `Required number of interviewers is ${comb} found only ${session.qualifiedIntervs.length}`,
+      );
+    }
+
     const session_combs: InterviewSessionApiRespType[] = [];
     const combs = findCombinationOfStrings(
       [...session.qualifiedIntervs.map((int) => int.user_id)],
@@ -79,9 +86,13 @@ const calcInterversCombsForSesson = (
   const total_combs: InterviewSessionApiRespType[][] = [];
 
   for (const session of sessions) {
+    let required_interviewer_cnt = session.interviewer_cnt;
+    if (session.session_type === 'debrief') {
+      required_interviewer_cnt = session.qualifiedIntervs.length;
+    }
     const combs = calcSingleSessionCombinations(
       session,
-      session.interviewer_cnt,
+      required_interviewer_cnt,
     );
     total_combs.push(combs);
   }

@@ -78,9 +78,7 @@ export const dbFetchScheduleApiDetails = async ({
   db_ses_with_ints = interview_sessions
     .map((s) => {
       const int_module = int_modules.find((m) => m.id === s.module_id);
-      if (!int_module) {
-        throw new CApiError('CLIENT', 'Module not found');
-      }
+
       if (!s.meeting_id) {
         throw new CApiError('CLIENT', 'Meeting ID not found');
       }
@@ -92,11 +90,11 @@ export const dbFetchScheduleApiDetails = async ({
         session_name: s.name,
         break_duration: s.break_duration,
         module_id: s.module_id,
-        module_name: int_module.name,
+        module_name: int_module ? int_module.name : null,
         interviewer_cnt: s.interviewer_cnt,
         session_order: s.session_order,
         qualifiedIntervs: interviewers.filter(
-          (i) => i.session_id === s.id && i.training_type === 'qualified',
+          (i) => i.session_id === s.id && i.interviewer_type === 'qualified',
         ),
         trainingIntervs: [],
         location: s.location,

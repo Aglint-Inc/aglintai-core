@@ -558,9 +558,7 @@ export default function ViewRequestDetails() {
                 <RequestNotes />
               </Section>
 
-              <RecentRequests
-                applicationId={selectedRequest?.application_id ?? ''}
-              />
+              <RecentRequests />
             </div>
           </div>
         </TwoColumnPageLayout>
