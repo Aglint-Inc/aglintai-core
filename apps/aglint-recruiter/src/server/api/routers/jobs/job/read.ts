@@ -30,3 +30,5 @@ const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
 };
 
 export const read = privateProcedure.input(schema).query(query);
+
+export type Read = Awaited<ReturnType<typeof query>>;

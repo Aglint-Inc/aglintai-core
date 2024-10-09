@@ -1,12 +1,11 @@
 'use client';
 
-import { type DatabaseView } from '@aglint/shared-types';
+import type { DatabaseTableUpdate, DatabaseView } from '@aglint/shared-types';
 import { createContext, memo, type ReactNode, useMemo } from 'react';
 
 import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useJobDelete, useJobsSync, useJobUpdate } from '@/queries/jobs';
-import type { JobUpdate } from '@/queries/jobs/types';
 
 import { useJobs } from '../hooks/useJobs';
 
@@ -32,7 +31,10 @@ const useJobContext = () => {
   const handleJobPin = (
     args: Pick<DatabaseView['job_view'], 'id' | 'is_pinned'>,
   ) => {
-    return jobUpdate({ recruiter_id, ...args } as JobUpdate);
+    return jobUpdate({
+      recruiter_id,
+      ...args,
+    } as DatabaseTableUpdate['public_jobs']);
   };
 
   const handleJobsSync = async () => {

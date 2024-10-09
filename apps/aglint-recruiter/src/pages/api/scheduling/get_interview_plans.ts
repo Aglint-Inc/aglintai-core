@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { interviewPlanRecruiterUserQuery } from '@/constant/interviewPlanRecruiterUserQuery';
-import { type JobCreate } from '@/queries/jobs/types';
+import type { JobCreate } from '@/jobs/types';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,

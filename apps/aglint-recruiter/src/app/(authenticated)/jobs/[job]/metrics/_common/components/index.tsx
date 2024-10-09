@@ -24,7 +24,7 @@ import { JobNotFound } from '@/job/components/JobNotFound';
 import { SharedActions } from '@/job/components/SharedTopNav/actions';
 import { SharedBreadCrumbs } from '@/job/components/SharedTopNav/breadcrumbs';
 import { useJob } from '@/job/hooks';
-import { type Job } from '@/queries/jobs/types';
+import type { Job } from '@/jobs/types';
 import { SafeObject } from '@/utils/safeObject';
 import { capitalizeAll } from '@/utils/text/textUtils';
 

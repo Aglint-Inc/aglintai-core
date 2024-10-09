@@ -1,8 +1,6 @@
 import { type DatabaseTableInsert } from '@aglint/shared-types';
 import axios from 'axios';
 
-import { type JobInsert } from '@/queries/jobs/types';
-
 import { POSTED_BY } from '../utils';
 import {
   type AshbyApplication,
@@ -91,7 +89,7 @@ export const createJobObject = async (
           education: 0,
           experience: 0,
         },
-      } as JobInsert;
+      } as DatabaseTableInsert['public_jobs'];
     },
   );
   return dbJobs;

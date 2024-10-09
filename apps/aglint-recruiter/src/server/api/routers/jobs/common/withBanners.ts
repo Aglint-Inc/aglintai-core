@@ -27,9 +27,9 @@ type Banner = {
   };
 };
 
-export const withBanners = (
-  job: DatabaseView['job_view'],
-): DatabaseView['job_view'] & { banner: Banner } => {
+export const withBanners = <T extends DatabaseView['job_view']>(
+  job: T,
+): T & { banner: Banner } => {
   const banner: Banner = {
     interview_plan_missing: interviewPlanMissing(job),
     scoring_criteria_changed: scoringCriteriaChanged(job),

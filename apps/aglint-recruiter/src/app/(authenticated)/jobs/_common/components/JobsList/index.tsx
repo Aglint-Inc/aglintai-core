@@ -28,8 +28,8 @@ import React from 'react';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJobsContext } from '@/jobs/hooks';
+import type { Job } from '@/jobs/types';
 import { calculateTimeDifference } from '@/jobs/utils/calculateTimeDifference';
-import { type Job } from '@/queries/jobs/types';
 import { formatOfficeLocation } from '@/utils/formatOfficeLocation';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';

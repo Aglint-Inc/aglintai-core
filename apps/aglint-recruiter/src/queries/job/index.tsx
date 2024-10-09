@@ -12,13 +12,12 @@ import { useCallback } from 'react';
 import { UploadApiFormData } from '@/apiUtils/job/candidateUpload/types';
 import { handleJobApi } from '@/apiUtils/job/utils';
 import { useTenant } from '@/company/hooks';
+import type { Job } from '@/jobs/types';
 import { type GetInterviewPlansType } from '@/pages/api/scheduling/get_interview_plans';
 import { api } from '@/trpc/client';
-import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
 import { appKey, GC_TIME, noPollingKey } from '..';
-import { type Job } from '../jobs/types';
 
 const jobKey = 'job';
 
@@ -100,16 +99,6 @@ type Pollers = JobRequisite &
   }>;
 
 export type JobRequisite = Pick<DatabaseTable['public_jobs'], 'id'>;
-
-export const readJob = async (id: string) =>
-  (
-    await supabase
-      .from('job_view')
-      .select()
-      .eq('id', id)
-      .throwOnError()
-      .single()
-  ).data!;
 
 type ApplicationsAllQueryPrerequistes = {
   recruiter_id: DatabaseTable['recruiter']['id'];

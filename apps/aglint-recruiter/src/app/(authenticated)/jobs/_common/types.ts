@@ -1,4 +1,14 @@
-import type { Job, JobCreate } from '@/queries/jobs/types';
+import type { Api } from '@/server/api/root';
+
+export type Job = Api['jobs']['job']['read'];
+
+export type JobCreate = Required<
+  Job['draft'] &
+    Pick<
+      Job,
+      'hiring_manager' | 'recruiter' | 'recruiting_coordinator' | 'sourcer'
+    >
+>;
 
 export type JobHiringTeamForm = Pick<
   Required<Form>,
@@ -27,5 +37,3 @@ export type HiringTeamValidity = {
   >)[];
   message: string;
 };
-
-export type { Job };
