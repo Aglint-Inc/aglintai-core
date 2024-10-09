@@ -27,7 +27,6 @@ import {
   type Modes,
   type Types,
 } from './calendarTypes';
-import CalendarFilter from './Filter';
 
 function CalendarComp({
   allSchedules,
@@ -107,6 +106,8 @@ function CalendarComp({
           <div className='flex flex-col'>
             <div className='rounded-t-lg border border-b-0 border-border px-2 py-2'>
               <CalendarHeader
+                filter={filter}
+                setFilter={setFilter}
                 calendarApi={calendarApi}
                 currentDate={currentDate}
                 handleMode={handleMode}
@@ -155,7 +156,6 @@ function CalendarComp({
               />
             )}
           </div>
-          <CalendarFilter filter={filter} setFilter={setFilter} />
         </>
       )}
     </div>
