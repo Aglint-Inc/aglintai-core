@@ -32,6 +32,7 @@ import type { Job } from '@/jobs/types';
 import { calculateTimeDifference } from '@/jobs/utils/calculateTimeDifference';
 import { formatOfficeLocation } from '@/utils/formatOfficeLocation';
 import ROUTES from '@/utils/routing/routes';
+import { SafeObject } from '@/utils/safeObject';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 
 import { POSTED_BY } from '../AddJobWithIntegrations/utils';
@@ -119,6 +120,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
                     <BriefcaseBusiness className='h-5 w-5 px-1 text-gray-400' />
                   )}
                   <span>{capitalizeSentence(job?.job_title ?? '---')}</span>
+                  <Banners job={job} />
                 </div>
               </div>
             </TableCell>
@@ -258,4 +260,94 @@ const getTimestamp = (job: Job) => {
   if (job.posted_by === 'Greenhouse')
     return `Last synced ${calculateTimeDifference(job?.remote_sync_time ?? job?.created_at ?? '')}`;
   return `Posted ${calculateTimeDifference(job?.created_at ?? '')}`;
+};
+
+const DEFAULT = 2;
+
+const Banners = ({ job }: { job: Job }) => {
+  return (
+    <>
+      <Banner {...errorCount(job)} />
+      <Banner {...warningCount(job)} />
+      <Banner
+        type='generating'
+        state={job.banner.scoring_criteria_generating || Boolean(DEFAULT)}
+      />
+      <Banner {...processingCount(job)} />
+    </>
+  );
+};
+
+const errorCount = ({ banner }: Job): CountBanner => {
+  let count = DEFAULT;
+  if (banner.scoring_criteria_missing) count++;
+  count += SafeObject.values(banner.missing_info).filter(Boolean).length;
+  return {
+    count,
+    type: 'error',
+  };
+};
+
+const warningCount = ({ banner }: Job): CountBanner => {
+  let count = DEFAULT;
+  if (banner.interview_plan_missing) count++;
+  return {
+    count,
+    type: 'warning',
+  };
+};
+
+const processingCount = ({ processing_count }: Job): ProcessingBanner => {
+  const total = SafeObject.values(processing_count).reduce((acc, curr) => {
+    acc += curr;
+    return acc;
+  }, DEFAULT);
+  const processed =
+    processing_count.processed +
+    processing_count.unavailable +
+    processing_count.unparsable +
+    processing_count.unscorable;
+  return {
+    type: 'processing',
+    processed,
+    total,
+  };
+};
+
+type BannerProps = CountBanner | GenerationBanner | ProcessingBanner;
+
+type CountBanner = {
+  type: 'warning' | 'error';
+  count: number;
+};
+
+type GenerationBanner = {
+  type: 'generating';
+  state: boolean;
+};
+
+type ProcessingBanner = {
+  type: 'processing';
+  processed: number;
+  total: number;
+};
+
+const Banner = (props: BannerProps) => {
+  if (props.type === 'generating')
+    return props.state ? <div>⚙️ Generating criteria</div> : <></>;
+  if (props.type === 'processing')
+    return props.processed !== props.total ? (
+      <div>
+        ⏳ {props.processed}/{props.total} Applications processed{' '}
+      </div>
+    ) : (
+      <></>
+    );
+  if (props.count === 0) return <></>;
+  switch (props.type) {
+    case 'error':
+      return <div>🚫 {props.count} Errors</div>;
+    case 'warning':
+      return <div>⚠️ {props.count} Warnings</div>;
+  }
 };
