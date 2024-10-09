@@ -1,5 +1,7 @@
 import { api } from '@/trpc/client';
 
-export const useJobs = () => {
+import type { Job } from '../types';
+
+export const useJobs = (): Job[] => {
   return api.jobs.read.useSuspenseQuery()[0];
 };

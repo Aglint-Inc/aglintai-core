@@ -17,7 +17,7 @@ const missingInfoSchema = z.object({
   recruiter: z.string().uuid(),
 }) satisfies ZodSchema<MissingInfo>;
 
-type Banner = {
+export type Banner = {
   interview_plan_missing: boolean;
   scoring_criteria_missing: boolean;
   scoring_criteria_generating: boolean;
@@ -27,9 +27,7 @@ type Banner = {
   };
 };
 
-export const withBanners = <T extends DatabaseView['job_view']>(
-  job: T,
-): T & { banner: Banner } => {
+export const getBanners = (job: DatabaseView['job_view']): Banner => {
   const banner: Banner = {
     interview_plan_missing: interviewPlanMissing(job),
     scoring_criteria_changed: scoringCriteriaChanged(job),
@@ -37,10 +35,7 @@ export const withBanners = <T extends DatabaseView['job_view']>(
     scoring_criteria_missing: scoringCriteriaMissing(job),
     missing_info: missingInfo(job),
   };
-  return {
-    ...job,
-    banner,
-  };
+  return banner;
 };
 
 const interviewPlanMissing = (job: DatabaseView['job_view']) => {

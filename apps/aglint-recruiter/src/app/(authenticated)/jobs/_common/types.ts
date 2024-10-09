@@ -1,6 +1,6 @@
-import type { Api } from '@/server/api/root';
+import type { Read } from '@/routers/jobs/job/read';
 
-export type Job = Api['jobs']['job']['read'];
+export type Job = Read;
 
 export type JobCreate = Required<
   Job['draft'] &
