@@ -16,6 +16,7 @@ import { useState } from 'react';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type API_request_feedback } from '@/pages/api/request_feedback/type';
+import { capitalizeAll } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 
 import { EditFeedbackDialog } from './editFeedbackDialog';
@@ -83,7 +84,9 @@ export const AdminFeedback = ({
       relation_id: relation_id,
       feedback: { recommendation: 0, objective: '' },
     }).then(() => {
-      toast.success(`Feedback request sent to ${tool} successfully.`);
+      toast.success(
+        `Feedback request sent to ${capitalizeAll(tool)} successfully.`,
+      );
       return true;
     });
   };

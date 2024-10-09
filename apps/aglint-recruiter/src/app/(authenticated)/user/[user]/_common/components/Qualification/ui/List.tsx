@@ -24,7 +24,7 @@ export const List = ({
           value={interviewType.confirmed_meeting_count || 0}
         />
         <Card
-          title='Cancalled Slots'
+          title='Canceled Slots'
           value={interviewType.cancelled_meeting_count || 0}
         />
       </div>

@@ -266,7 +266,7 @@ function SchedulerEmailTemps() {
             <Section>
               <SectionHeader>
                 <SectionHeaderText>
-                  <SectionTitle>Communcation Templates</SectionTitle>
+                  <SectionTitle>Communication Templates</SectionTitle>
                   <SectionDescription>
                     All communication templates used in the system.
                   </SectionDescription>
