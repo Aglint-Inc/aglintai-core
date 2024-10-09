@@ -109,10 +109,7 @@ const ProfileScorePage = () => {
         <PageHeaderText>
           <PageTitle>Profile Scoring</PageTitle>
           <PageDescription className='max-w-2xl'>
-            Profile scoring helps evaluate candidates objectively, assigning
-            numerical values to their qualifications and experience to
-            streamline the hiring process and identify the best-fit applicants
-            efficiently.
+          Profile scoring assigns numerical values to candidates&apos; qualifications, simplifying the hiring process.
           </PageDescription>
         </PageHeaderText>
         <PageActions></PageActions>

@@ -7,6 +7,7 @@ import {
 } from '@components/layouts/sections-header';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { UIAlert } from '@components/ui-alert';
+import { CheckCircle } from 'lucide-react';
 
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
@@ -31,18 +32,19 @@ export const Summary = () => {
     TriggerCategory.InterviewProcess,
   ];
   return (
-    <Section>
+    <ScrollArea className='border min-h-[calc(100vh-160px)] w-[320px] rounded-md' >
+    <Section className='p-3'>
       <SectionHeader>
         <SectionHeaderText>
-          <SectionTitle>Automation Summary</SectionTitle>
+          <SectionTitle className='flex items-center'> <CheckCircle className='w-4 h-4 text-green-600 mr-2'/> {enabledActions.length} Automations enabled </SectionTitle>
           <SectionDescription>
-            Configured automated actions for this job. Total automations set :{' '}
-            {enabledActions.length}
+            Here is the summary of configured automated actions for this job. 
+            {/* Total automations set :{' '}
+            {enabledActions.length} */}
           </SectionDescription>
         </SectionHeaderText>
       </SectionHeader>
-      <ScrollArea className='h-[calc(100vh-200px)] pr-4'>
-        <ul className='space-y-4'>
+        <ul className='space-y-2'>
           {allCategories.map((categ) => {
             const currentTriggers = jobWorkflowTriggers.filter(
               (trig) => trig.category === categ && trig.is_active,
@@ -54,9 +56,9 @@ export const Summary = () => {
                   return (
                     <li
                       key={wTrigger.id}
-                      className='border-b pb-4 last:border-b-0'
+                      className='last:border-b-0 p-3 bg-gray-100 rounded-md'
                     >
-                      <h4 className='mb-2 font-semibold'>
+                      <h4 className='mb-2 font-medium text-sm '>
                         {
                           triggerToQuestion[
                             wTrigger.trigger as keyof typeof triggerToQuestion
@@ -74,7 +76,7 @@ export const Summary = () => {
                             );
                             return (
                               <li key={action.id}>
-                                <div className='rounded bg-gray-100 p-2 text-sm'>
+                                <div className='  text-muted-foreground text-sm'>
                                   <p>{target_api_details!.name}</p>
                                 </div>
                               </li>
@@ -88,8 +90,8 @@ export const Summary = () => {
             );
           })}
         </ul>
-      </ScrollArea>
     </Section>
+    </ScrollArea>
   );
 };
 
