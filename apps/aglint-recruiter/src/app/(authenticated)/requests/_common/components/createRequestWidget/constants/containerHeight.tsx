@@ -1,1 +1,1 @@
-export const CONTAINER_HEIGHT = 200;
+export const CONTAINER_HEIGHT = 400;

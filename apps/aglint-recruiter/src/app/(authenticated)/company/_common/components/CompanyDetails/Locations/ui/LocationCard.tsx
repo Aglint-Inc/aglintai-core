@@ -1,9 +1,8 @@
 /* eslint-disable no-unused-vars */
 import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
-import { Card } from '@components/ui/card';
 import { Clock, MapPin, PencilIcon, Trash2 } from 'lucide-react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 

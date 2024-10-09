@@ -138,7 +138,6 @@ function InterviewModeComp() {
         ) : (
           <>
             <MembersAutoComplete
-              maxWidth='466px'
               placeholder='Select Interviewers'
               renderUsers={optionsInterviewers}
               selectedUsers={selectedInterviewers}

@@ -52,9 +52,7 @@ const CandidateAvailReceive = () => {
     });
     if (
       request_progress.data.find(
-        (prg) =>
-          prg.event_type === 'CAND_CONFIRM_SLOT' ||
-          prg.event_type === 'SCHEDULE_INTERVIEW_SLOT',
+        (prg) => prg.event_type === 'INTERVIEW_SCHEDULED',
       )
     ) {
       isScheduled = true;
@@ -190,7 +188,7 @@ const WActionMenu = () => {
   }
   return (
     <RequestProgressTracker
-      circleIndicator='default'
+      circleIndicator='neutral'
       textRequestProgress='When candidate submits availability'
       slotProgress={
         <div>

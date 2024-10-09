@@ -70,7 +70,7 @@ function CandidateAvailability() {
             strokeWidth={1}
           />
           <p className='mt-4 text-muted-foreground'>
-            We couldn&apos;t load your availability link.
+            {` We couldn't load your availability link.`}
           </p>
           <p className='mt-2 text-sm text-muted-foreground'>
             Contact the recruiter or try again.
@@ -97,8 +97,8 @@ function CandidateAvailability() {
         </>
       )}
       <div
-        className={cn('min-w-4/12', {
-          '': !candidateRequestAvailability?.slots,
+        className={cn('w-4/12', {
+          'w-full': !!candidateRequestAvailability?.slots,
         })}
       >
         <DaySessions singleDay={multiDaySessions.length === 1} />

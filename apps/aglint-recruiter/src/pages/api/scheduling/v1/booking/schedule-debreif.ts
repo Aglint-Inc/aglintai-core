@@ -23,16 +23,16 @@ const scheduleDebrief = async (req_body: APIScheduleDebreif) => {
   if (!cand_schedule.db_details) {
     throw new CApiError('SERVER_ERROR', 'No db details found');
   }
-  const verified_plans = cand_schedule.verifyIntSelectedSlots([
-    body.selectedOption,
-  ]);
-  if (verified_plans.length === 0) {
-    throw new Error('Requested plan does not exist');
-  }
+  // const verified_plans = cand_schedule.verifyIntSelectedSlots([
+  //   body.selectedOption,
+  // ]);
+  // if (verified_plans.length === 0) {
+  //   throw new Error('Requested plan does not exist');
+  // }
   await bookRecruiterSelectedDebreif(
     body,
     cand_schedule.db_details,
-    verified_plans[0],
+    body.selectedOption,
     fetched_details,
   );
 };

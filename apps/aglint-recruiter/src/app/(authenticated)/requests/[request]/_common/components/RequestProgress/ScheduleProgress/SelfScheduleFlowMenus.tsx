@@ -35,7 +35,7 @@ const SelfScheduleFlowMenus = ({
 
     for (const prog of request_progress.data) {
       const key = prog.event_type;
-      if (key === 'CAND_CONFIRM_SLOT') {
+      if (key === 'INTERVIEW_SCHEDULED') {
         break;
       }
       if (!reqProgresMap[key]) {
@@ -101,7 +101,9 @@ const SelfScheduleFlowMenus = ({
         <div className=''>
           <SuggestionCard
             heading='Add automations'
-            description='The Slack RSVP for the interviewers attendance will be sent.'
+            description={
+              'Self-schedule reminders will be sent to the applicant to remind them to schedule their interview.'
+            }
             buttonSlot={
               <>
                 <Button

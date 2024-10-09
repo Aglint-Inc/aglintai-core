@@ -77,10 +77,12 @@ export function GlobalScheduleCard({
     <div className={cn('relative', className)}>
       <div className='relative rounded-md border border-neutral-200 bg-white'>
         <div className='flex gap-1 p-4'>
-          {isCheckboxVisible && (
+          
+          <div className='grid w-full grid-cols-[200px_1.7fr_1fr] gap-4'>
+            <div className='flex'>
+            {isCheckboxVisible && (
             <div className='relative z-10 w-6 flex-none'>{slotCheckbox}</div>
           )}
-          <div className='grid w-full grid-cols-[1.1fr_1.7fr_1fr] gap-4'>
             <div className='flex flex-col gap-2'>
               {isStatusVisible && (
                 <div className='flex items-center gap-1'>{slotGlobalBadge}</div>
@@ -99,12 +101,13 @@ export function GlobalScheduleCard({
               )}
               {isRequestStatusVisible && <div>{slotRequestStatus}</div>}
             </div>
+            </div>
             <div className='flex flex-col gap-2'>
               <div className='flex items-center gap-1'>
-                {iconPanel}
-                <Typography type='medium'>{textPanelName}</Typography>
+                <div className='hidden'>{iconPanel}</div>
+                <Typography type='medium' className='font-medium'>{textPanelName}</Typography>
               </div>
-              <div className='flex gap-4'>
+              <div className='flex flex-col gap-2 mt-1'>
                 <div className='flex items-center gap-1'>
                   <Hourglass className='h-4 w-4 text-muted-foreground' />
                   <Typography type='small'>{textDuration}</Typography>

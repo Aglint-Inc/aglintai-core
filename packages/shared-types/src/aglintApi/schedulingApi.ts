@@ -99,9 +99,9 @@ export type APICandidateConfirmSlotNoConflict = z.infer<
 export type APIScheduleDebreif = {
   selectedOption: PlanCombinationRespType;
   user_tz: string;
-  filter_id: string;
   session_id: string;
   options?: APIOptions;
+  request_id: string;
 };
 
 export type APICandidateConfirmSlot = {

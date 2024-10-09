@@ -32,7 +32,11 @@ import RightPanel from './RightPanel';
 import { SingleDay } from './SingleDay';
 
 const CandidateInviteNew = () => {
-  const { isLoading, isError } = useInviteMeta();
+  const {
+    isLoading,
+    isError,
+    data: { isBooked },
+  } = useInviteMeta();
 
   const {
     isLoading: loadingSlots,
@@ -41,7 +45,7 @@ const CandidateInviteNew = () => {
   } = useInviteSlots();
 
   return (
-    <div className='w-full'>
+    <div className='h-full w-full'>
       {isLoading || loadingSlots || isRefetching ? (
         <LoadingState />
       ) : isError || errorSlots ? (
@@ -52,9 +56,11 @@ const CandidateInviteNew = () => {
             <div className='w-8/12'>
               <CandidateInvitePlanPage />
             </div>
-            <div className='w-4/12 border-l p-4'>
-              <RightPanel />
-            </div>
+            {!isBooked && (
+              <div className='w-4/12 border-l p-4'>
+                <RightPanel />
+              </div>
+            )}
           </div>
         </>
       )}
@@ -66,7 +72,7 @@ export default CandidateInviteNew;
 
 const LoadingState = () => (
   <div
-    className='flex w-full items-center justify-center'
+    className='flex h-full w-full items-center justify-center'
     aria-live='polite'
     aria-busy='true'
   >
@@ -132,12 +138,7 @@ const CandidateInvitePlanPage = () => {
 
   if (!waiting && meta)
     return (
-      <Section>
-        <SectionHeader>
-          <SectionHeaderText>
-            <SectionTitle>Interview Details</SectionTitle>
-          </SectionHeaderText>
-        </SectionHeader>
+      <Section className='p-8'>
         <ConfirmedInvitePage
           rounds={rounds}
           candidate={meta.candidate}
