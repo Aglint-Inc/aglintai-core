@@ -30,7 +30,6 @@ const query = async ({
   const { verified_slots } = await verifyRecruiterSelectedSlots({
     candidate_tz,
     company_id: company_id,
-    filter_json_data: filter_json,
     selected_options: filter_json.selected_options,
     session_ids: filter_json.session_ids,
   });

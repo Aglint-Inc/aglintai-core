@@ -67,6 +67,11 @@ export type APIGetCandidateSelectedSlots = {
   cand_availability_id: string;
 };
 
+export type APIVerifyRecruiterSelectedSlots = {
+  candidate_tz: string;
+  filter_json_id: string;
+};
+
 export type AssignTrainingInt = {
   interviewer_module_relation_id: string | null;
   session_id: string;

@@ -1,29 +1,31 @@
 import {
-  type DatabaseTable,
+  type APIVerifyRecruiterSelectedSlots,
   type DateRangePlansType,
   type PlanCombinationRespType,
   type SessionCombinationRespType,
   type SessionsCombType,
 } from '@aglint/shared-types';
-import { CApiError, dayjsLocal, ScheduleUtils } from '@aglint/shared-utils';
+import { dayjsLocal, ScheduleUtils } from '@aglint/shared-utils';
 import { nanoid } from 'nanoid';
 
-import { CandidatesScheduling } from '../../CandidatesScheduling';
-import { planCombineSlots } from '../planCombine';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-export const verifyRecruiterSelectedSlots = async ({
-  candidate_tz,
-  company_id,
-  selected_options,
-  session_ids,
-}: {
-  candidate_tz: string;
-  company_id: string;
-  selected_options: DatabaseTable['interview_filter_json']['selected_options'];
-  session_ids: string[];
-}) => {
-  const { filered_selected_options, start_date_str, end_date_str } =
-    sortSelctedPlans({ selected_options, candidate_tz, session_ids });
+import { CandidatesScheduling } from '../CandidatesScheduling';
+import { planCombineSlots } from './planCombine';
+
+export const verifyRecruiterSelectedSlots = async (
+  req_body: APIVerifyRecruiterSelectedSlots,
+) => {
+  const { candidate_tz } = req_body;
+  const fetched_details = await fetch_details_from_db(req_body);
+  const {
+    filter_json_data,
+    end_date_str,
+    start_date_str,
+    filered_selected_options,
+  } = fetched_details;
+  const selected_options = filered_selected_options;
+
   const cand_schedule = new CandidatesScheduling({
     include_conflicting_slots: {
       out_of_office: true,
@@ -37,36 +39,46 @@ export const verifyRecruiterSelectedSlots = async ({
     params: {
       req_user_tz: candidate_tz,
       end_date_str: end_date_str,
-      company_id: company_id,
-      session_ids: session_ids,
+      company_id: filter_json_data.applications.public_jobs.recruiter_id,
+      session_ids: filter_json_data.session_ids,
       start_date_str: start_date_str,
     },
   });
+  let all_day_plans: ReturnType<typeof convertOptionsToDateRangeSlots> = [];
 
-  const verified_slots = cand_schedule.verifyIntSelectedSlots(
-    filered_selected_options,
-  );
-
-  if (verified_slots.length === 0) {
-    throw new CApiError('CLIENT', 'All slots are booked or invalid');
-  }
-  return { cand_schedule, verified_slots };
+  const verified_slots = cand_schedule.verifyIntSelectedSlots(selected_options);
+  all_day_plans = convertOptionsToDateRangeSlots(verified_slots, candidate_tz);
+  return { all_day_plans, fetched_details, cand_schedule, verified_slots };
 };
 
-const sortSelctedPlans = ({
-  candidate_tz,
-  selected_options,
-  session_ids,
-}: {
-  selected_options: DatabaseTable['interview_filter_json']['selected_options'];
-  session_ids: string[];
-  candidate_tz: string;
-}) => {
+const fetch_details_from_db = async (
+  req_body: APIVerifyRecruiterSelectedSlots,
+) => {
+  const supabaseAdmin = getSupabaseServer();
+
+  const filter_json_data = (
+    await supabaseAdmin
+      .from('interview_filter_json')
+      .select('*, applications!inner(public_jobs!inner(id,recruiter_id))')
+      .eq('id', req_body.filter_json_id)
+      .single()
+      .throwOnError()
+  ).data;
+  if (!filter_json_data) throw new Error('invalid filter_json_id');
+  let start_date_str = filter_json_data.filter_json.start_date;
+  let end_date_str = filter_json_data.filter_json.end_date;
+  if (
+    !filter_json_data.selected_options ||
+    filter_json_data.selected_options.length === 0
+  ) {
+    throw new Error('NO Plans');
+  }
+
   let filered_selected_options: PlanCombinationRespType[] = [];
-  filered_selected_options = selected_options.map((plan) => {
+  filered_selected_options = filter_json_data.selected_options.map((plan) => {
     const updated_plan = { ...plan };
     updated_plan.sessions = updated_plan.sessions.filter((s) =>
-      session_ids.includes(s.session_id),
+      filter_json_data.session_ids.includes(s.session_id),
     );
     return updated_plan;
   });
@@ -75,27 +87,28 @@ const sortSelctedPlans = ({
       dayjsLocal(plan1.sessions[0].start_time).unix() -
       dayjsLocal(plan2.sessions[0].start_time).unix(),
   );
-  const start_date_str = dayjsLocal(sorted_options[0].sessions[0].start_time)
-    .tz(candidate_tz)
+  start_date_str = dayjsLocal(sorted_options[0].sessions[0].start_time)
+    .tz(req_body.candidate_tz)
     .startOf('date')
     .format('DD/MM/YYYY');
-  const end_date_str = dayjsLocal(
+  end_date_str = dayjsLocal(
     sorted_options[sorted_options.length - 1].sessions[
       sorted_options[0].sessions.length - 1
     ].end_time,
   )
-    .tz(candidate_tz)
+    .tz(req_body.candidate_tz)
     .endOf('date')
     .format('DD/MM/YYYY');
 
   return {
     filered_selected_options,
+    filter_json_data,
     start_date_str,
     end_date_str,
   };
 };
 
-export const convertOptionsToDateRangeSlots = (
+const convertOptionsToDateRangeSlots = (
   verified_options: PlanCombinationRespType[],
   candidate_tz: string,
 ) => {
