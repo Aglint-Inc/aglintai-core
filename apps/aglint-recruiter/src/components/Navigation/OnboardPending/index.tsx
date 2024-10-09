@@ -46,7 +46,7 @@ export const OnboardPending = () => {
         <> </>
       ) : (
         <>
-          {companySetupSteps?.length && isCompanySetupPending && !isOpen && (
+          {!!companySetupSteps?.length && isCompanySetupPending && !isOpen && (
             <UIButton
               className='fixed bottom-8 left-20 z-50 rounded-full shadow-lg'
               onClick={toggleOpen}

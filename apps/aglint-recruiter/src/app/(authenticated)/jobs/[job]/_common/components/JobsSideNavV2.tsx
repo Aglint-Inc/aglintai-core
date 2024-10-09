@@ -90,11 +90,13 @@ const JobsSideNavV2 = () => {
       <nav className='space-y-2'>
         <UITabs
           vertical
-          tabs={navItems.map((tab) => ({
-            icon: tab.icon,
-            name: tab.name,
-            id: tab.id,
-          }))}
+          tabs={navItems
+            .filter((tab) => tab.show)
+            .map((tab) => ({
+              icon: tab.icon,
+              name: tab.name,
+              id: tab.id,
+            }))}
           defaultValue={currentTab}
           onClick={(value) => {
             handlePush(`/jobs/[job]/${value}`);
