@@ -31,13 +31,10 @@ const EventNode = ({
 }: {
   eventType: DatabaseTable['request_progress']['event_type'] | undefined;
   reqProgresMap: RequestProgressMapType;
-  currEventTrigger: DatabaseTable['workflow']['trigger'];
+  currEventTrigger?: DatabaseTable['workflow']['trigger'];
   currWAction?: DatabaseTable['workflow_action'];
   showEditBtns?: boolean;
 }) => {
-  const { request_workflow } = useRequest();
-  const { setShowEditDialog, setTriggerDetails } = useRequestProgressProvider();
-  const [, setOnHover] = React.useState(false);
   if (!eventType) return <></>;
   const eventProg = reqProgresMap[eventType];
   let tense: ProgressTenseType = 'future';
@@ -53,67 +50,22 @@ const EventNode = ({
   const eventSubProgress = (eventProg ?? []).filter(
     (prg) => prg.is_progress_step === true,
   );
-  const handleDeleteScheduleAction = async () => {
-    if (!currWAction) return null;
-    try {
-      await deleteRequestWorkflowAction(currWAction.id);
-      await request_workflow.refetch();
-    } catch (err) {
-      toast({ title: 'Failed to remove action', variant: 'destructive' });
-    }
-  };
+
   return (
     <>
-      <div
-        className='relative mb-1'
-        onMouseEnter={() => {
-          if (tense === 'future') {
-            setOnHover(true);
-          }
-        }}
-        onMouseLeave={() => {
-          setOnHover(false);
-        }}
-      >
+      <div className='relative mb-1'>
         <ScheduleProgressTracker
           status={tense}
           textProgress={workflowCopy[eventType][tense]}
           slotRightIcon={
             tense === 'future' &&
-            showEditBtns && (
-              <div className={`mt-2 flex flex-row gap-1`}>
-                <Button
-                  variant='outline'
-                  size='sm'
-                  onClick={() => {
-                    let interval = 0;
-                    const trigger_info = request_workflow.data.find(
-                      (rw) => rw.trigger === currEventTrigger,
-                    );
-                    if (trigger_info) {
-                      interval = trigger_info.interval;
-                    } else if (defaultTriggerDurations[currEventTrigger]) {
-                      interval = defaultTriggerDurations[currEventTrigger];
-                    }
-                    setTriggerDetails({
-                      trigger: currEventTrigger,
-                      interval,
-                    });
-                    setShowEditDialog(true);
-                  }}
-                >
-                  <Pen className='mr-2 h-3 w-3' />
-                  Edit
-                </Button>
-                <Button
-                  variant='outline'
-                  size='sm'
-                  onClick={handleDeleteScheduleAction}
-                >
-                  <Trash className='mr-2 h-3 w-3 text-destructive' />
-                  Remove
-                </Button>
-              </div>
+            showEditBtns &&
+            currEventTrigger &&
+            currWAction && (
+              <EventNodeCntrls
+                currEventTrigger={currEventTrigger}
+                currWAction={currWAction}
+              />
             )
           }
           slotLoader={
@@ -133,7 +85,11 @@ const EventNode = ({
                       const key =
                         `${prg.event_type}_${prg.status}` as keyof typeof progressActionMap;
                       const Comp = progressActionMap[key];
-                      return <Comp key={prg.id} {...prg} />;
+                      return (
+                        <div key={prg.id} className='mt-2'>
+                          <Comp key={prg.id} {...prg} />
+                        </div>
+                      );
                     }
                     return (
                       <Label
@@ -155,3 +111,54 @@ const EventNode = ({
 };
 
 export default EventNode;
+
+const EventNodeCntrls = ({
+  currEventTrigger,
+  currWAction,
+}: {
+  currEventTrigger: DatabaseTable['workflow']['trigger'];
+  currWAction: DatabaseTable['workflow_action'];
+}) => {
+  const { request_workflow } = useRequest();
+  const { setShowEditDialog, setTriggerDetails } = useRequestProgressProvider();
+  const handleDeleteScheduleAction = async () => {
+    if (!currWAction) return null;
+    try {
+      await deleteRequestWorkflowAction(currWAction.id);
+      await request_workflow.refetch();
+    } catch (err) {
+      toast({ title: 'Failed to remove action', variant: 'destructive' });
+    }
+  };
+  return (
+    <div className={`mt-2 flex flex-row gap-1`}>
+      <Button
+        variant='outline'
+        size='sm'
+        onClick={() => {
+          let interval = 0;
+          const trigger_info = request_workflow.data.find(
+            (rw) => rw.trigger === currEventTrigger,
+          );
+          if (trigger_info) {
+            interval = trigger_info.interval;
+          } else if (defaultTriggerDurations[currEventTrigger]) {
+            interval = defaultTriggerDurations[currEventTrigger];
+          }
+          setTriggerDetails({
+            trigger: currEventTrigger,
+            interval,
+          });
+          setShowEditDialog(true);
+        }}
+      >
+        <Pen className='mr-2 h-3 w-3' />
+        Edit
+      </Button>
+      <Button variant='outline' size='sm' onClick={handleDeleteScheduleAction}>
+        <Trash className='mr-2 h-3 w-3 text-destructive' />
+        Remove
+      </Button>
+    </div>
+  );
+};

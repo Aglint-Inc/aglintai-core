@@ -98,6 +98,7 @@ function MembersAutoComplete({
           </Button>
         </PopoverTrigger>
         <PopoverContent
+          align='start'
           className='z-[2000] w-full min-w-full p-0'
           style={{
             width: maxWidth,
