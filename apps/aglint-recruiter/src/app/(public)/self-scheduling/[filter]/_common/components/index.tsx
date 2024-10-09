@@ -1,4 +1,5 @@
 'use client';
+
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import {
   Section,
@@ -25,8 +26,8 @@ import {
   type ScheduleCardProps,
   type ScheduleCardsProps,
 } from '../types/types';
-import { DetailsPopup } from './DetailsPopup';
 import MultiDay from './MultiDay';
+import RightPanel from './RightPanel';
 import { SingleDay } from './SingleDay';
 
 const CandidateInviteNew = () => {
@@ -34,7 +35,7 @@ const CandidateInviteNew = () => {
 
   return (
     <div className='w-full'>
-      {isLoading || isRefetching ? (
+      {isLoading ? (
         <LoadingState />
       ) : isError ? (
         <ErrorState />
@@ -45,7 +46,7 @@ const CandidateInviteNew = () => {
               <CandidateInvitePlanPage />
             </div>
             <div className='w-4/12 p-4'>
-              <DetailsPopup />
+              <RightPanel />
             </div>
           </div>
         </>

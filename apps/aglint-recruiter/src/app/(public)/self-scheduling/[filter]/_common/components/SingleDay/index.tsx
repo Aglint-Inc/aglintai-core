@@ -81,7 +81,7 @@ const SingleDaySuccess = () => {
         }}
         tz={timezone.tzCode}
       />
-      <SingleDayConfirmation />
+      {/* <SingleDayConfirmation /> */}
     </>
   );
 };

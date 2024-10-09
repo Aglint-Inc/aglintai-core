@@ -30,11 +30,6 @@ export const SingleDayConfirmation = () => {
     if (selectedSlots.length !== 0) setOpen(true);
   }, [selectedSlots.length]);
 
-  const handleClose = () => {
-    if (isPending) return;
-    setOpen(false);
-    setTimeout(() => setSelectedSlots([]), 200);
-  };
   const [month, date, day] = dayJS(
     selectedSlots?.[0]?.sessions?.[0]?.start_time ?? null,
     timezone.tzCode,
@@ -64,45 +59,21 @@ export const SingleDayConfirmation = () => {
 
   return (
     <AlertDialog open={open}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Confirm your interview</AlertDialogTitle>
-          <AlertDialogDescription>
-            Before we finalize your schedule, please take a moment to confirm
-            the chosen option. Your interview is crucial, and we want to ensure
-            it aligns perfectly with your availability.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <div>
-          <CandidateScheduleCard
-            isTitle={false}
-            textDuration={totalTimeDifference}
-            slotButton={<></>}
-            slotSessionInfo={
-              <SelectedDateAndTime
-                slotSessionAndTime={<SingleDaySessions index={0} />}
-                textDate={date}
-                textDay={day}
-                textMonth={month}
-              />
-            }
-          />
-        </div>
-        <AlertDialogFooter>
-          <AlertDialogCancel onClick={handleClose} disabled={isPending}>
-            Cancel
-          </AlertDialogCancel>
-          <AlertDialogAction
-            onClick={async () => {
-              await handleSubmit();
-              handleClose();
-            }}
-            disabled={isPending}
-          >
-            {isPending ? 'Confirming...' : 'Confirm'}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
+      <div>
+        <CandidateScheduleCard
+          isTitle={false}
+          textDuration={totalTimeDifference}
+          slotButton={<></>}
+          slotSessionInfo={
+            <SelectedDateAndTime
+              slotSessionAndTime={<SingleDaySessions index={0} />}
+              textDate={date}
+              textDay={day}
+              textMonth={month}
+            />
+          }
+        />
+      </div>
     </AlertDialog>
   );
 };

@@ -12,13 +12,13 @@ import { SessionIcon } from '@/common/ScheduleProgressPillComp';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { getScheduleType } from '@/utils/scheduling/colors_and_enums';
 
-import { useInviteMeta } from '../hooks/useInviteMeta';
-import { type ScheduleCardProps } from '../types/types';
-import { getDurationText } from '../utils/utils';
-import { CandidateScheduleCard } from './ui/CandidateScheduleCard';
-import { SessionInfo } from './ui/SessionInfo';
+import { useInviteMeta } from '../../hooks/useInviteMeta';
+import { type ScheduleCardProps } from '../../types/types';
+import { getDurationText } from '../../utils/utils';
+import { CandidateScheduleCard } from '../ui/CandidateScheduleCard';
+import { SessionInfo } from '../ui/SessionInfo';
 
-export const DetailsPopup = () => {
+export const SessionDetails = () => {
   const {
     data: { meetings },
   } = useInviteMeta();
@@ -27,8 +27,6 @@ export const DetailsPopup = () => {
     acc += curr.interview_session.session_duration;
     return acc;
   }, 0);
-
-  // const schedule_name = '';
 
   return (
     <Section>
