@@ -10,7 +10,7 @@ import { useCurrentJob } from './_common/hooks';
 
 const Page = () => {
   const { job_id } = useCurrentJob();
-  const { mutate } = api.jobs.job.jd.generate.useMutation();
+  const { mutate } = api.jobs.job.jd.useMutation();
   return (
     <OneColumnPageLayout
       header={

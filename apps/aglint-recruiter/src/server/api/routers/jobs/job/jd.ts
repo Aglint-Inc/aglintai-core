@@ -11,7 +11,7 @@ import { type DBProcedure, dbProcedure } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 import { SafeObject } from '@/utils/safeObject';
 
-import { jobDescriptionSchema } from '../../common/jobDescriptionSchema';
+import { jobDescriptionSchema } from '../common/jobDescriptionSchema';
 
 const schema = z.object({
   job_id: z.string(),
@@ -86,7 +86,7 @@ export const generateJd = async (payload: DBProcedure<typeof schema>) => {
   }
 };
 
-export const generate = dbProcedure.input(schema).mutation(generateJd);
+export const jd = dbProcedure.input(schema).mutation(generateJd);
 
 const getJobDetails = async ({ input }: DBProcedure<typeof schema>) => {
   const db = createPublicClient();

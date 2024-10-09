@@ -5,7 +5,7 @@ import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 import { jobDescriptionSchema } from '../common/jobDescriptionSchema';
-import { generateJd } from '../job/jd/generate';
+import { generateJd } from '../job/jd';
 
 const schema = z.object({
   job_title: z.string(),
