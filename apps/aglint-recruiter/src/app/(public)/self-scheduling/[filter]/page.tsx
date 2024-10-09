@@ -23,7 +23,10 @@ const CandidateInvitePage = () => {
     <PublicPageLayout
       header={
         <SchedulingPageHeader
-          companyName={data?.recruiter?.name ?? ''}
+          companyDetails={{
+            name: data?.recruiter?.name ?? '',
+            logo: data?.recruiter?.logo ?? '',
+          }}
           description={
             <div className='flex w-full flex-row justify-end p-4'>
               {data.isBooked ? (
@@ -57,7 +60,6 @@ const CandidateInvitePage = () => {
               )}
             </div>
           }
-          logo={data?.recruiter?.logo ?? ''}
         />
       }
       footer={<Footer brand={true} />}
