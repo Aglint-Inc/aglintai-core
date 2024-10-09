@@ -44,7 +44,18 @@ export const workflowCopy: WorkflowCopyType = {
     future: 'Awaiting candidate to confirm slot.',
     error: 'Error occurred while confirming slot with candidate.',
   },
-
+  INTERVIEW_SCHEDULED: {
+    past: 'Interview scheduled.',
+    present: 'Scheduling interview.',
+    error: 'Error occurred while scheduling interview.',
+    future: 'Awaiting interview scheduling.',
+  },
+  RECRUITER_SCHEDULED: {
+    future: 'Awaiting recruiter scheduling.',
+    present: 'Scheduling recruiter.',
+    past: 'Recruiter scheduled.',
+    error: 'Error occurred while scheduling recruiter.',
+  },
   SELF_SCHEDULE_CANCEL: {
     past: 'Self-scheduling canceled.',
     present: 'Canceling self-scheduling.',
@@ -70,7 +81,8 @@ export const workflowCopy: WorkflowCopyType = {
     past: 'Informed interviewer and organizer about cancellation.',
     present: 'Informing interviewer and organizer about cancellation.',
     future: 'Awaiting to inform interviewer and organizer about cancellation.',
-    error: 'Error occurred while informing interviewer and organizer about cancellation.',
+    error:
+      'Error occurred while informing interviewer and organizer about cancellation.',
   },
 
   REPLACE_ALTERNATIVE_INTERVIEWER: {
@@ -84,7 +96,8 @@ export const workflowCopy: WorkflowCopyType = {
     past: "RSVP for interviewer's attendance sent on Slack.",
     present: "Sending RSVP for interviewer's attendance on Slack.",
     future: "Awaiting to send RSVP for interviewer's attendance on Slack.",
-    error: "Error occurred while sending RSVP for interviewer's attendance on Slack.",
+    error:
+      "Error occurred while sending RSVP for interviewer's attendance on Slack.",
   },
 
   SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK: {
@@ -98,7 +111,8 @@ export const workflowCopy: WorkflowCopyType = {
     past: 'Follow-up email for self-scheduling scheduled.',
     present: 'Scheduling follow-up email for self-scheduling.',
     future: 'Awaiting to schedule follow-up email for self-scheduling.',
-    error: 'Error occurred while scheduling follow-up email for self-scheduling.',
+    error:
+      'Error occurred while scheduling follow-up email for self-scheduling.',
   },
 
   CANDIDATE_AVAILABILITY_RE_REQUESTED: {
@@ -119,7 +133,8 @@ export const workflowCopy: WorkflowCopyType = {
     past: 'Interview slot scheduled from candidate availability.',
     present: 'Scheduling interview slot from candidate availability.',
     future: 'Awaiting interview slot scheduling from candidate availability.',
-    error: 'Error occurred while scheduling interview slot from candidate availability.',
+    error:
+      'Error occurred while scheduling interview slot from candidate availability.',
   },
 
   SLOT_SUGGESTION: {
@@ -129,4 +144,3 @@ export const workflowCopy: WorkflowCopyType = {
     error: 'Error occurred while sending slot suggestion on Slack.',
   },
 };
-

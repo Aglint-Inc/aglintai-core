@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { createContext, type PropsWithChildren } from 'react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -84,9 +83,6 @@ const useRequestsContext = () => {
   const handleAsyncUpdateRequest = useCallback(
     async (payload: Parameters<typeof asyncUpdateRequest>[0]) => {
       try {
-        await axios.post('/api/request/execute-workflow', {
-          request_id: payload.payload.requestId,
-        });
         await asyncUpdateRequest(payload);
       } catch {
         //

@@ -4,6 +4,7 @@ import { toast } from '@components/hooks/use-toast';
 import { deleteRequestWorkflowAction } from '@request/components/RequestProgress/utils';
 import { useRequest } from '@request/hooks';
 import { useRequestAvailabilityDetails, useRequests } from '@requests/hooks';
+import axios from 'axios';
 import React, { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -160,6 +161,9 @@ const CandidateScheduleReschedule = () => {
           <UIButton
             onClick={async () => {
               setIsProceeding(true);
+              await axios.post('/api/request/execute-workflow', {
+                request_id: requestDetails.id,
+              });
               await handleAsyncUpdateRequest({
                 payload: {
                   requestId: requestDetails.id,

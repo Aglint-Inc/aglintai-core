@@ -86,9 +86,13 @@ const calcInterversCombsForSesson = (
   const total_combs: InterviewSessionApiRespType[][] = [];
 
   for (const session of sessions) {
+    let required_interviewer_cnt = session.interviewer_cnt;
+    if (session.session_type === 'debrief') {
+      required_interviewer_cnt = session.qualifiedIntervs.length;
+    }
     const combs = calcSingleSessionCombinations(
       session,
-      session.interviewer_cnt,
+      required_interviewer_cnt,
     );
     total_combs.push(combs);
   }
