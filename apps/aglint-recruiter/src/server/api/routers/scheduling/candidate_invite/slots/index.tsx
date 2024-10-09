@@ -1,26 +1,40 @@
 /* eslint-disable security/detect-object-injection */
 import {} from '@aglint/shared-types';
-import { scheduling_options_schema } from '@aglint/shared-utils';
+import { supabaseWrap } from '@aglint/shared-utils';
 import { z } from 'zod';
 
 import { type PublicProcedure, publicProcedure } from '@/server/api/trpc';
-import { verifyRecruiterSelectedSlots } from '@/services/CandidateSchedule/utils/bookingUtils/verifyRecruiterSelctedOptions';
+import {
+  convertOptionsToDateRangeSlots,
+  verifyRecruiterSelectedSlots,
+} from '@/services/CandidateSchedule/utils/bookingUtils/verifyRecruiterSelctedOptions';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const schema = z.object({
   candidate_tz: z.string(),
   filter_json_id: z.string(),
-  api_options: scheduling_options_schema,
+  company_id: z.string(),
 });
 
 const query = async ({
-  input: { api_options, candidate_tz, filter_json_id },
+  input: { candidate_tz, filter_json_id, company_id },
 }: PublicProcedure<typeof schema>) => {
-  const { all_day_plans } = await verifyRecruiterSelectedSlots({
-    api_options,
+  const supabaseAdmin = getSupabaseServer();
+  const filter_json = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_filter_json')
+      .select()
+      .eq('id', filter_json_id)
+      .single(),
+  );
+  const { verified_slots } = await verifyRecruiterSelectedSlots({
     candidate_tz,
-    filter_json_id,
+    company_id: company_id,
+    filter_json_data: filter_json,
+    selected_options: filter_json.selected_options,
+    session_ids: filter_json.session_ids,
   });
-  const res = all_day_plans;
+  const res = convertOptionsToDateRangeSlots(verified_slots, candidate_tz);
   return res;
 };
 

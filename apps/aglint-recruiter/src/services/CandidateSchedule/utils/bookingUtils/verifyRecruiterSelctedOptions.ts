@@ -1,5 +1,5 @@
 import {
-  type APIVerifyRecruiterSelectedSlots,
+  type DatabaseTable,
   type DateRangePlansType,
   type PlanCombinationRespType,
   type SessionCombinationRespType,
@@ -8,24 +8,22 @@ import {
 import { dayjsLocal, ScheduleUtils } from '@aglint/shared-utils';
 import { nanoid } from 'nanoid';
 
-import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
-
 import { CandidatesScheduling } from '../../CandidatesScheduling';
 import { planCombineSlots } from '../planCombine';
 
-export const verifyRecruiterSelectedSlots = async (
-  req_body: APIVerifyRecruiterSelectedSlots,
-) => {
-  const { candidate_tz } = req_body;
-  const fetched_details = await fetchFilterJsonDetails(req_body);
-  const {
-    filter_json_data,
-    end_date_str,
-    start_date_str,
-    filered_selected_options,
-  } = fetched_details;
-  const selected_options = filered_selected_options;
-
+export const verifyRecruiterSelectedSlots = async ({
+  candidate_tz,
+  company_id,
+  selected_options,
+  session_ids,
+}: {
+  candidate_tz: string;
+  company_id: string;
+  selected_options: DatabaseTable['interview_filter_json']['selected_options'];
+  session_ids: string[];
+}) => {
+  const { filered_selected_options, start_date_str, end_date_str } =
+    sortSelctedPlans({ selected_options, candidate_tz, session_ids });
   const cand_schedule = new CandidatesScheduling({
     include_conflicting_slots: {
       out_of_office: true,
@@ -39,46 +37,32 @@ export const verifyRecruiterSelectedSlots = async (
     params: {
       req_user_tz: candidate_tz,
       end_date_str: end_date_str,
-      company_id: filter_json_data.applications.public_jobs.recruiter_id,
-      session_ids: filter_json_data.session_ids,
+      company_id: company_id,
+      session_ids: session_ids,
       start_date_str: start_date_str,
     },
   });
-  let all_day_plans: ReturnType<typeof convertOptionsToDateRangeSlots> = [];
 
-  const verified_slots = cand_schedule.verifyIntSelectedSlots(selected_options);
-  all_day_plans = convertOptionsToDateRangeSlots(verified_slots, candidate_tz);
-  return { fetched_details, cand_schedule, all_day_plans };
+  const verified_slots = cand_schedule.verifyIntSelectedSlots(
+    filered_selected_options,
+  );
+  return { cand_schedule, verified_slots };
 };
 
-const fetchFilterJsonDetails = async (
-  req_body: APIVerifyRecruiterSelectedSlots,
-) => {
-  const supabaseAdmin = getSupabaseServer();
-
-  const filter_json_data = (
-    await supabaseAdmin
-      .from('interview_filter_json')
-      .select('*, applications!inner(public_jobs!inner(id,recruiter_id))')
-      .eq('id', req_body.filter_json_id)
-      .single()
-      .throwOnError()
-  ).data;
-  if (!filter_json_data) throw new Error('invalid filter_json_id');
-  let start_date_str = filter_json_data.filter_json.start_date;
-  let end_date_str = filter_json_data.filter_json.end_date;
-  if (
-    !filter_json_data.selected_options ||
-    filter_json_data.selected_options.length === 0
-  ) {
-    throw new Error('NO Plans');
-  }
-
+const sortSelctedPlans = ({
+  candidate_tz,
+  selected_options,
+  session_ids,
+}: {
+  selected_options: DatabaseTable['interview_filter_json']['selected_options'];
+  session_ids: string[];
+  candidate_tz: string;
+}) => {
   let filered_selected_options: PlanCombinationRespType[] = [];
-  filered_selected_options = filter_json_data.selected_options.map((plan) => {
+  filered_selected_options = selected_options.map((plan) => {
     const updated_plan = { ...plan };
     updated_plan.sessions = updated_plan.sessions.filter((s) =>
-      filter_json_data.session_ids.includes(s.session_id),
+      session_ids.includes(s.session_id),
     );
     return updated_plan;
   });
@@ -87,28 +71,27 @@ const fetchFilterJsonDetails = async (
       dayjsLocal(plan1.sessions[0].start_time).unix() -
       dayjsLocal(plan2.sessions[0].start_time).unix(),
   );
-  start_date_str = dayjsLocal(sorted_options[0].sessions[0].start_time)
-    .tz(req_body.candidate_tz)
+  const start_date_str = dayjsLocal(sorted_options[0].sessions[0].start_time)
+    .tz(candidate_tz)
     .startOf('date')
     .format('DD/MM/YYYY');
-  end_date_str = dayjsLocal(
+  const end_date_str = dayjsLocal(
     sorted_options[sorted_options.length - 1].sessions[
       sorted_options[0].sessions.length - 1
     ].end_time,
   )
-    .tz(req_body.candidate_tz)
+    .tz(candidate_tz)
     .endOf('date')
     .format('DD/MM/YYYY');
 
   return {
     filered_selected_options,
-    filter_json_data,
     start_date_str,
     end_date_str,
   };
 };
 
-const convertOptionsToDateRangeSlots = (
+export const convertOptionsToDateRangeSlots = (
   verified_options: PlanCombinationRespType[],
   candidate_tz: string,
 ) => {
