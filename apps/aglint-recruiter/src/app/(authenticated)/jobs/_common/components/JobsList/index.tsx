@@ -262,8 +262,6 @@ const getTimestamp = (job: Job) => {
   return `Posted ${calculateTimeDifference(job?.created_at ?? '')}`;
 };
 
-const DEFAULT = 2;
-
 const Banners = ({ job }: { job: Job }) => {
   return (
     <>
@@ -271,7 +269,7 @@ const Banners = ({ job }: { job: Job }) => {
       <Banner {...warningCount(job)} />
       <Banner
         type='generating'
-        state={job.banner.scoring_criteria_generating || Boolean(DEFAULT)}
+        state={job.banner.scoring_criteria_generating}
       />
       <Banner {...processingCount(job)} />
     </>
@@ -279,7 +277,7 @@ const Banners = ({ job }: { job: Job }) => {
 };
 
 const errorCount = ({ banner }: Job): CountBanner => {
-  let count = DEFAULT;
+  let count = 0;
   if (banner.scoring_criteria_missing) count++;
   count += SafeObject.values(banner.missing_info).filter(Boolean).length;
   return {
@@ -289,8 +287,9 @@ const errorCount = ({ banner }: Job): CountBanner => {
 };
 
 const warningCount = ({ banner }: Job): CountBanner => {
-  let count = DEFAULT;
+  let count = 0;
   if (banner.interview_plan_missing) count++;
+  if (banner.scoring_criteria_changed) count++;
   return {
     count,
     type: 'warning',
@@ -301,7 +300,7 @@ const processingCount = ({ processing_count }: Job): ProcessingBanner => {
   const total = SafeObject.values(processing_count).reduce((acc, curr) => {
     acc += curr;
     return acc;
-  }, DEFAULT);
+  }, 0);
   const processed =
     processing_count.processed +
     processing_count.unavailable +
