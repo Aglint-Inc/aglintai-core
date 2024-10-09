@@ -17,7 +17,6 @@ export const onUpdateInterviewFilterJson = async ({
     new_data.confirmed_on.length > 0
   ) {
     await stopSelfScheduleReminder(new_data);
-    await candConfirmSlot(new_data);
   }
 };
 
@@ -36,32 +35,5 @@ const stopSelfScheduleReminder = async (
     );
   } catch (err: any) {
     console.error('Failed to stop self schedule reminder', err.message);
-  }
-};
-
-const candConfirmSlot = async (
-  new_data: DatabaseTable['interview_filter_json'],
-) => {
-  const supabaseAdmin = getSupabaseServer();
-  try {
-    if (!new_data.request_id) return;
-    supabaseWrap(
-      await supabaseAdmin.from('request_progress').insert({
-        event_type: 'CAND_CONFIRM_SLOT',
-        request_id: new_data.request_id,
-        status: 'completed',
-        is_progress_step: false,
-      }),
-    );
-    supabaseWrap(
-      await supabaseAdmin
-        .from('request')
-        .update({
-          status: 'completed',
-        })
-        .eq('id', new_data.request_id),
-    );
-  } catch (err: any) {
-    console.error('Failed to candConfirmSlot', err.message);
   }
 };

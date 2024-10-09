@@ -1,7 +1,7 @@
 import { type TargetApiPayloadType } from '@aglint/shared-types';
 import Typography from '@components/typography';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
-import { useRequests } from '@requests/hooks';
+import { useMeetingList, useRequests } from '@requests/hooks';
 import dayjs from 'dayjs';
 import { AlertCircle } from 'lucide-react';
 import { useParams } from 'next/navigation';
@@ -25,16 +25,17 @@ export type GroupByDateRange = ReturnType<typeof groupByDateRange>;
 function StepSlotOptions() {
   const params = useParams();
   const requestId = params?.request as string;
-
-  const filteredSchedulingOptions = useSelfSchedulingFlowStore(
-    (state) => state.filteredSchedulingOptions,
-  );
-
-  const { recruiter_user } = useTenant();
-
   const {
     requests: { data: requestList },
   } = useRequests();
+  const { recruiter_user } = useTenant();
+  const { data } = useMeetingList();
+  const isDebrief = data.some(
+    (ele) => ele?.interview_session?.session_type === 'debrief',
+  );
+  const filteredSchedulingOptions = useSelfSchedulingFlowStore(
+    (state) => state.filteredSchedulingOptions,
+  );
 
   const selectedRequest = Object.values(requestList ?? [])
     .flat()
@@ -47,10 +48,15 @@ function StepSlotOptions() {
   );
 
   const onClickSelect = (comb_id: string) => {
-    if (!selectedCombIds.includes(comb_id)) {
-      setSelectedCombIds([...selectedCombIds, comb_id]);
+    if (isDebrief) {
+      setSelectedCombIds([comb_id]);
+      return;
     } else {
-      setSelectedCombIds(selectedCombIds.filter((id) => id !== comb_id));
+      if (!selectedCombIds.includes(comb_id)) {
+        setSelectedCombIds([...selectedCombIds, comb_id]);
+      } else {
+        setSelectedCombIds(selectedCombIds.filter((id) => id !== comb_id));
+      }
     }
   };
 
@@ -92,13 +98,13 @@ function StepSlotOptions() {
           return (
             <DayCardWrapper
               key={item.date_range.join(', ')}
-              isRadioNeeded={false}
+              isRadioNeeded={isDebrief}
               item={item}
               onClickSelect={onClickSelect}
               selectedCombIds={selectedCombIds}
               isDisabled={false}
-              isDayCheckboxNeeded={true}
-              isSlotCheckboxNeeded={true}
+              isDayCheckboxNeeded={!isDebrief}
+              isSlotCheckboxNeeded={!isDebrief}
               isDayCollapseNeeded={true}
               isSlotCollapseNeeded={true}
               index={index}

@@ -96,7 +96,8 @@
       }
     ],
     "strict": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "useUnknownInCatchVariables": false
   },
   "include": [
     "next-env.d.ts",

@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
+
 import UIDrawer from '@/components/Common/UIDrawer';
 
 import BodyDrawer from './_common/components/BodyDrawer';
 import ButtonMain from './_common/components/ButtonGroup';
 import Calendar from './_common/components/Calendar';
-import { useSelfSchedulingDrawer } from './_common/hooks/hooks';
+import { useSelfSchedulingDrawer } from './_common/hooks/useSelfSchedulingDrawer';
 import { useSelfSchedulingFlowStore } from './_common/store/store';
 
 function SelfSchedulingDrawer() {
@@ -20,6 +22,12 @@ function SelfSchedulingDrawer() {
   }));
 
   const { resetStateSelfScheduling } = useSelfSchedulingDrawer();
+
+  useEffect(() => {
+    return () => {
+      resetStateSelfScheduling();
+    };
+  }, []);
 
   return (
     <>

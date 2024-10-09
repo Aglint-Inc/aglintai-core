@@ -20,9 +20,7 @@ const SelfScheduleLinkSent = (args: DatabaseTable['request_progress']) => {
             }, 3000);
           }}
         >
-          {isCopied
-            ? 'Copied Self Scheduling Link'
-            : 'Copy Self Scheduling Link'}
+          {isCopied ? 'Copied' : 'Copy Link'}
         </Button>
       </div>
     </>

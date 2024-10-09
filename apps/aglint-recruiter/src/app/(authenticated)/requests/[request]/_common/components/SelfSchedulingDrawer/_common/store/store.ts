@@ -72,7 +72,6 @@ export interface SelfSchedulingFlow {
     };
   };
   filterLoading: boolean;
-  anchorEl: null | HTMLButtonElement;
   calendarDate: string;
 }
 
@@ -116,7 +115,6 @@ const initialState: SelfSchedulingFlow = {
     },
   },
   filterLoading: false,
-  anchorEl: null,
   calendarDate: dayjsLocal().toISOString(),
 };
 
@@ -130,9 +128,6 @@ export const setEmailData = (emailData: SelfSchedulingFlow['emailData']) =>
 export const setCalendarDate = (
   calendarDate: SelfSchedulingFlow['calendarDate'],
 ) => useSelfSchedulingFlowStore.setState({ calendarDate });
-
-export const setAnchorEl = (anchorEl: SelfSchedulingFlow['anchorEl']) =>
-  useSelfSchedulingFlowStore.setState({ anchorEl });
 
 export const setFilterLoading = (filterLoading: boolean) =>
   useSelfSchedulingFlowStore.setState({ filterLoading });

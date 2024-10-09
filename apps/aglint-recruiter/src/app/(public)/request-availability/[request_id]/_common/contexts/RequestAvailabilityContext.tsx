@@ -196,6 +196,7 @@ function RequestAvailabilityProvider({
           break_duration: ele?.interview_session?.break_duration ?? 0,
           session_duration: ele?.interview_session?.session_duration ?? 0,
           session_order: ele?.interview_session?.session_order ?? 0,
+          name: ele?.interview_session?.name ?? '',
         };
       }),
     ) as unknown as InterviewSessionTypeDB[][];
