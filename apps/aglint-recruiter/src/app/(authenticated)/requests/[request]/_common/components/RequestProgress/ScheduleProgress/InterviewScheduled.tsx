@@ -24,9 +24,7 @@ const InterviewScheduled = () => {
     useRequestProgressProvider();
   const { recruiter } = useTenant();
   const { request_workflow, requestDetails: currentRequest } = useRequest();
-  const event_status =
-    reqProgressMap['CAND_CONFIRM_SLOT']?.[0] ??
-    reqProgressMap['SCHEDULE_INTERVIEW_SLOT']?.[0];
+  const event_status = reqProgressMap['INTERVIEW_SCHEDULED']?.[0];
 
   let tense: TenseType = 'future';
   if (event_status) {

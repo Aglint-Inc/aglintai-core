@@ -18,10 +18,9 @@ export const onUpdateInterviewMeeting = async ({
   old_data: DatabaseTable['interview_meeting'];
   new_data: DatabaseTable['interview_meeting'];
 }) => {
-  if (old_data.status !== 'confirmed' && new_data.status === 'confirmed') {
+  if (new_data.status === 'confirmed' && old_data.status !== 'confirmed') {
     await updateScheduleProgress({ new_data });
-  }
-  if (new_data.status === 'confirmed' && old_data.status === 'waiting') {
+
     await addJobsToQueue(new_data);
   }
 };
@@ -29,7 +28,14 @@ export const onUpdateInterviewMeeting = async ({
 const addJobsToQueue = async (new_data: DatabaseTable['interview_meeting']) => {
   try {
     const supabaseAdmin = getSupabaseServer();
-    const jobs_set: Set<DatabaseEnums['email_slack_types']> = new Set([
+    const session_details = supabaseWrap(
+      await supabaseAdmin
+        .from('interview_session')
+        .select()
+        .eq('meeting_id', new_data.id)
+        .single(),
+    );
+    let actions: DatabaseEnums['email_slack_types'][] = [
       'interviewStart_email_applicant',
       'interviewStart_email_organizer',
       'candidateBook_slack_interviewerForConfirmation',
@@ -39,7 +45,29 @@ const addJobsToQueue = async (new_data: DatabaseTable['interview_meeting']) => {
       'interviewEnd_email_rShadowTraineeForMeetingAttendence',
       'interviewEnd_slack_rShadowTraineeForMeetingAttendence',
       'interviewEnd_slack_shadowTraineeForMeetingAttendence',
-    ]);
+    ];
+    if (session_details.session_type === 'debrief') {
+      actions = [
+        'interviewStart_email_applicant',
+        'interviewStart_email_organizer',
+        'candidateBook_slack_interviewerForConfirmation',
+        'interviewEnd_slack_organizerForMeetingStatus',
+        'interviewEnd_email_organizerForMeetingStatus',
+      ];
+    } else {
+      actions = [
+        'interviewStart_email_applicant',
+        'interviewStart_email_organizer',
+        'candidateBook_slack_interviewerForConfirmation',
+        'interviewEnd_slack_organizerForMeetingStatus',
+        'interviewEnd_email_organizerForMeetingStatus',
+        'interviewEnd_email_shadowTraineeForMeetingAttendence',
+        'interviewEnd_email_rShadowTraineeForMeetingAttendence',
+        'interviewEnd_slack_rShadowTraineeForMeetingAttendence',
+        'interviewEnd_slack_shadowTraineeForMeetingAttendence',
+      ];
+    }
+    const jobs_set: Set<DatabaseEnums['email_slack_types']> = new Set(actions);
     await stopJobPreviouslyQueuedJobs(new_data);
     const schedule_application = (
       await supabaseAdmin

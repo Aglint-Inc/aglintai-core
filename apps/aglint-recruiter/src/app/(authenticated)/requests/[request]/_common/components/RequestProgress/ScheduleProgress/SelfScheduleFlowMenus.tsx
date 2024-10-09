@@ -35,7 +35,7 @@ const SelfScheduleFlowMenus = ({
 
     for (const prog of request_progress.data) {
       const key = prog.event_type;
-      if (key === 'CAND_CONFIRM_SLOT') {
+      if (key === 'INTERVIEW_SCHEDULED') {
         break;
       }
       if (!reqProgresMap[key]) {
