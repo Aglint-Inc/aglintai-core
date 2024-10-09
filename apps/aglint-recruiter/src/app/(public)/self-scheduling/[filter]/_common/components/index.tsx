@@ -2,6 +2,8 @@
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import {
   Section,
+  SectionActions,
+  SectionDescription,
   SectionHeader,
   SectionHeaderText,
   SectionTitle,
@@ -38,11 +40,11 @@ const CandidateInviteNew = () => {
         <ErrorState />
       ) : (
         <>
-          <div className='flex w-full flex-row justify-center p-4'>
-            <div className='w-8/12 pr-8'>
+          <div className='flex w-full flex-row justify-center'>
+            <div className='w-8/12 p-4'>
               <CandidateInvitePlanPage />
             </div>
-            <div className='w-4/12'>
+            <div className='w-4/12 p-4'>
               <DetailsPopup />
             </div>
           </div>
@@ -142,16 +144,21 @@ const CandidateInvitePlanPage = () => {
     <Section>
       <SectionHeader>
         <SectionHeaderText>
-          <SectionTitle>
-            <TimezonePicker
-              onChange={(e) => {
-                setTimeZone(e);
-                setSelectedSlots([]);
-              }}
-              value={timezone.tzCode}
-            />
-          </SectionTitle>
+          <SectionTitle>Book Now</SectionTitle>
+          <SectionDescription>
+            Available slots are organized by day. Each slot includes the total
+            time required for your interview, including breaks.
+          </SectionDescription>
         </SectionHeaderText>
+        <SectionActions>
+          <TimezonePicker
+            onChange={(e) => {
+              setTimeZone(e);
+              setSelectedSlots([]);
+            }}
+            value={timezone.tzCode}
+          />
+        </SectionActions>
       </SectionHeader>
       <Invite rounds={rounds} />
     </Section>

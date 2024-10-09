@@ -25,9 +25,9 @@ export function SchedulingPageHeader({
   };
 }) {
   return (
-    <div className='flex w-full flex-row items-start justify-between space-x-16 rounded-t-lg bg-muted p-4'>
-      <div className='flex flex-col items-start'>
-        <div className='flex flex-row items-start'>
+    <div className='flex w-full flex-row items-center justify-between space-x-16 rounded-t-lg bg-muted p-4'>
+      <div className='flex flex-col items-center'>
+        <div className='flex flex-row items-center'>
           <Avatar className='h-[50px] w-[50px]'>
             <AvatarImage
               src={companyDetails?.logo}
