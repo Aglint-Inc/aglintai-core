@@ -40,7 +40,7 @@ const fetchSessionDetails = async (
   const { data } = await db
     .from('interview_plan')
     .select(
-      `*,interview_session(*,interview_meeting!inner(*),${interviewCancelReasons},interview_module!inner(*),interview_session_relation(*,interview_module_relation(*,${userDetails}),debrief_user:${userDetails}))`,
+      `*,interview_session(*,interview_meeting!inner(*),${interviewCancelReasons},interview_module(*),interview_session_relation(*,interview_module_relation(*,${userDetails}),debrief_user:${userDetails}))`,
     )
     .eq('interview_session.interview_meeting.application_id', application_id)
     .not('interview_session', 'is', null)

@@ -1,6 +1,8 @@
+import { useMeetingList } from '@requests/hooks';
+
 import { UIButton } from '@/components/Common/UIButton';
 
-import { useSelfSchedulingDrawer } from '../../hooks/hooks';
+import { useSelfSchedulingDrawer } from '../../hooks/useSelfSchedulingDrawer';
 import {
   setStepScheduling,
   useSelfSchedulingFlowStore,
@@ -17,9 +19,18 @@ function ButtonMain() {
   const { resetStateSelfScheduling, onClickPrimary } =
     useSelfSchedulingDrawer();
 
+  const { data } = useMeetingList();
+  const isDebrief = data.some(
+    (ele) => ele?.interview_session?.session_type === 'debrief',
+  );
+
   const primaryButtonText = () => {
     if (stepScheduling === 'slot_options') {
-      return 'Continue';
+      if (isDebrief) {
+        return 'Schedule';
+      } else {
+        return 'Continue';
+      }
     } else if (stepScheduling === 'self_scheduling_email_preview') {
       return 'Send to Candidate';
     }

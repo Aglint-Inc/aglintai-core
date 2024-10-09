@@ -3,8 +3,14 @@ import {
   type CandidateDirectBookingType,
   type PlanCombinationRespType,
 } from '@aglint/shared-types';
-import { CApiError } from '@aglint/shared-utils';
+import {
+  CApiError,
+  createRequestProgressLogger,
+  type ProgressLoggerType,
+} from '@aglint/shared-utils';
 import axios from 'axios';
+
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { type ScheduleApiDetails } from '../../types';
 import { confirmInterviewers } from './confirmInterviewers';
@@ -53,41 +59,41 @@ export const bookCandidateSelectedOption = async (
     parsed_body.cand_tz,
     fetched_cand_details.request_id,
   );
+  const postScheduleActions = async () => {
+    const supabaseAdmin = getSupabaseServer();
+    const payload: APICandScheduleMailThankYou = {
+      cand_tz: parsed_body.cand_tz,
+      filter_id: parsed_body.filter_id,
+      application_id: fetched_cand_details.application_id,
+      session_ids: fetched_cand_details.session_ids,
+      availability_request_id: null,
+      is_debreif: false,
+    };
+    await axios.post(
+      `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
+      payload,
+    );
+    const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
+      request_id: db_details.request_id,
+      supabaseAdmin,
+      event_type: 'CAND_CONFIRM_SLOT',
+    });
+    await reqProgressLogger.resetEventProgress();
+    await reqProgressLogger({
+      status: 'completed',
+      is_progress_step: false,
+    });
+    await reqProgressLogger({
+      status: 'completed',
+      is_progress_step: true,
+    });
+  };
 
   await Promise.all([
     sendMailsToOrganizer(db_details, booked_meeting_details),
     updateTrainingStatus(booked_meeting_details),
-    (async () => {
-      const payload: APICandScheduleMailThankYou = {
-        cand_tz: parsed_body.cand_tz,
-        filter_id: parsed_body.filter_id,
-        application_id: fetched_cand_details.application_id,
-        session_ids: fetched_cand_details.session_ids,
-        availability_request_id: null,
-        is_debreif: false,
-      };
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
-        payload,
-      );
-    })(),
+    postScheduleActions(),
   ]);
 
-  // await sendMailsToOrganizer(db_details, booked_meeting_details);
-
-  // await updateTrainingStatus(booked_meeting_details); // not required
-
-  // const payload: APICandScheduleMailThankYou = {
-  //   cand_tz: parsed_body.cand_tz,
-  //   filter_id: parsed_body.filter_id,
-  //   application_id: fetched_cand_details.application_id,
-  //   session_ids: fetched_cand_details.session_ids,
-  //   availability_request_id: null,
-  //   is_debreif: false,
-  // };
-  // await axios.post(
-  //   `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
-  //   payload,
-  // );
   return booked_meeting_details;
 };
