@@ -71,19 +71,19 @@ type InterviewStatus =
 const getStatusStyles = (status: InterviewStatus) => {
   switch (status) {
     case 'completed':
-      return 'bg-green-200 hover:bg-green-200 text-green-800';
+      return 'bg-green-200  text-green-800';
     case 'cancelled':
-      return 'bg-red-200 hover:bg-red-200 text-red-800';
+      return 'bg-red-200  text-red-800';
     case 'waiting':
-      return 'bg-yellow-200 hover:bg-yellow-200 text-yellow-800';
+      return 'bg-yellow-200  text-yellow-800';
     case 'reschedule':
-      return 'bg-orange-200 hover:bg-orange-200 text-orange-800';
+      return 'bg-orange-200  text-orange-800';
     case 'confirmed':
-      return 'bg-blue-200 hover:bg-blue-200 text-blue-800';
+      return 'bg-blue-200  text-blue-800';
     case 'not_scheduled':
-      return 'bg-gray-200 hover:bg-gray-200 text-gray-800';
+      return 'bg-gray-200  text-gray-800';
     default:
-      return 'bg-gray-100 hover:bg-gray-100 text-gray-600';
+      return 'bg-gray-100  text-gray-600';
   }
 };
 
