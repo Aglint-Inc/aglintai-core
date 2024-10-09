@@ -1,5 +1,4 @@
 'use client';
-import { ScrollArea } from '@components/ui/scroll-area';
 import { cn } from '@lib/utils';
 import React from 'react';
 
@@ -22,9 +21,9 @@ export function PublicPageLayout({
         <header className='flex w-full flex-row justify-between'>
           {header}
         </header>
-        <ScrollArea className='h-[calc(100vh-260px)]'>
+        <div className='flex h-[calc(100vh-260px)] flex-col overflow-auto'>
           <div className={cn('h-full', className)}>{children}</div>
-        </ScrollArea>
+        </div>
       </main>
       <footer>{footer}</footer>
     </div>
