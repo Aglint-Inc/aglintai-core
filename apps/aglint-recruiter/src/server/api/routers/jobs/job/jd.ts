@@ -7,14 +7,14 @@ import type { ChatCompletionMessageParam } from 'openai/resources';
 import type { ParsedChatCompletion } from 'openai/resources/beta/chat/completions';
 import { z, type ZodSchema } from 'zod';
 
-import { type DBProcedure, dbProcedure } from '@/server/api/trpc';
+import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 import { SafeObject } from '@/utils/safeObject';
 
 import { jobDescriptionSchema } from '../common/jobDescriptionSchema';
 
 const schema = z.object({
-  job_id: z.string(),
+  id: z.string(),
   type: z.enum(['generate', 'regenerate']),
 });
 
@@ -73,7 +73,7 @@ const trimmedJdSchema = z.object({
   education: trimmedJdItemSchema,
 }) satisfies ZodSchema<TrimmedJd>;
 
-export const generateJd = async (payload: DBProcedure<typeof schema>) => {
+export const generateJd = async (payload: PrivateProcedure<typeof schema>) => {
   const { description, job_title } = await getJobDetails(payload);
   try {
     await startScoreLoading(payload);
@@ -86,15 +86,15 @@ export const generateJd = async (payload: DBProcedure<typeof schema>) => {
   }
 };
 
-export const jd = dbProcedure.input(schema).mutation(generateJd);
+export const jd = privateProcedure.input(schema).mutation(generateJd);
 
-const getJobDetails = async ({ input }: DBProcedure<typeof schema>) => {
+const getJobDetails = async ({ input }: PrivateProcedure<typeof schema>) => {
   const db = createPublicClient();
   const job = (
     await db
       .from('public_jobs')
       .select('job_title, description')
-      .eq('id', input.job_id)
+      .eq('id', input.id)
       .single()
       .throwOnError()
   ).data;
@@ -109,21 +109,23 @@ const getJobDetails = async ({ input }: DBProcedure<typeof schema>) => {
   };
 };
 
-const startScoreLoading = async ({ input }: DBProcedure<typeof schema>) => {
+const startScoreLoading = async ({
+  input,
+}: PrivateProcedure<typeof schema>) => {
   const db = createPublicClient();
   return await db
     .from('public_jobs')
     .update({ scoring_criteria_loading: true })
-    .eq('id', input.job_id)
+    .eq('id', input.id)
     .throwOnError();
 };
 
-const stopScoreLoading = async ({ input }: DBProcedure<typeof schema>) => {
+const stopScoreLoading = async ({ input }: PrivateProcedure<typeof schema>) => {
   const db = createPublicClient();
   return await db
     .from('public_jobs')
     .update({ scoring_criteria_loading: false })
-    .eq('id', input.job_id)
+    .eq('id', input.id)
     .throwOnError();
 };
 
@@ -131,7 +133,7 @@ const finishScoreLoading = async ({
   input,
   draft_jd_json,
   parameter_weights,
-}: DBProcedure<typeof schema> &
+}: PrivateProcedure<typeof schema> &
   Pick<
     DatabaseTable['public_jobs'],
     'draft_jd_json' | 'parameter_weights'
@@ -146,7 +148,7 @@ const finishScoreLoading = async ({
   return await db
     .from('public_jobs')
     .update(payload)
-    .eq('id', input.job_id)
+    .eq('id', input.id)
     .throwOnError();
 };
 

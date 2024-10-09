@@ -45,7 +45,7 @@ const mutation = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
       message: 'Unable to create job',
     });
   try {
-    generateJd({ ctx, input: { job_id: response.id, type: 'generate' } });
+    generateJd({ ctx, input: { id: response.id, type: 'generate' } });
   } catch {
     //
   }
