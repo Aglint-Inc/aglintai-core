@@ -101,7 +101,9 @@ const SelfScheduleFlowMenus = ({
         <div className=''>
           <SuggestionCard
             heading='Add automations'
-            description='The Slack RSVP for the interviewers attendance will be sent.'
+            description={
+              'Self-schedule reminders will be sent to the applicant to remind them to schedule their interview.'
+            }
             buttonSlot={
               <>
                 <Button

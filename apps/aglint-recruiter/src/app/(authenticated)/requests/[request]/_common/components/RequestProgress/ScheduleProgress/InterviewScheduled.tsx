@@ -81,6 +81,19 @@ const InterviewScheduled = () => {
               />
             </ShowCode.When>
           }
+          {
+            <ShowCode.When
+              isTrue={Boolean(
+                reqProgressMap['CAND_CONFIRM_SLOT'] &&
+                  reqProgressMap['CAND_CONFIRM_SLOT'].length > 0,
+              )}
+            >
+              <EventNode
+                eventType='CAND_CONFIRM_SLOT'
+                reqProgresMap={reqProgressMap}
+              />
+            </ShowCode.When>
+          }
           {triggerActionMp['candidateBook']?.map((action, idx) => {
             return (
               <EventNode

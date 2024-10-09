@@ -85,7 +85,11 @@ const EventNode = ({
                       const key =
                         `${prg.event_type}_${prg.status}` as keyof typeof progressActionMap;
                       const Comp = progressActionMap[key];
-                      return <Comp key={prg.id} {...prg} />;
+                      return (
+                        <div key={prg.id} className='mt-2'>
+                          <Comp key={prg.id} {...prg} />
+                        </div>
+                      );
                     }
                     return (
                       <Label

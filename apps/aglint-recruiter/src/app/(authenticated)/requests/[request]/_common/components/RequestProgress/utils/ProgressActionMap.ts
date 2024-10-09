@@ -2,6 +2,7 @@ import { type DatabaseTable } from '@aglint/shared-types';
 
 import AvailabilityLinkSent from '../Actions/AvailabilityLinkSent';
 import CandAvailRecived from '../Actions/CandAvailRecived';
+import CandidateConfirmSlot from '../Actions/CandidateConfirmSlot';
 import FirstFollowUp from '../Actions/FirstFollowUp';
 import RecruiterScheduled from '../Actions/RecruiterScheduled';
 import SelfScheduleLinkSent from '../Actions/SelfScheduleLinkSent';
@@ -19,4 +20,5 @@ export const progressActionMap: Partial<
   CANDIDATE_AVAILABILITY_RE_REQUESTED_completed: AvailabilityLinkSent,
   CAND_AVAIL_REC_completed: CandAvailRecived,
   RECRUITER_SCHEDULED_completed: RecruiterScheduled,
+  CAND_CONFIRM_SLOT_completed: CandidateConfirmSlot,
 };

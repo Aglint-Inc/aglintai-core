@@ -85,6 +85,7 @@ export const bookCandidateSelectedOption = async (
     });
     await reqProgressLogger({
       status: 'completed',
+      is_progress_step: true,
     });
   };
 
