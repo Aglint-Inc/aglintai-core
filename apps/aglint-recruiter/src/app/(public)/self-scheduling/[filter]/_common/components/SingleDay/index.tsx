@@ -1,17 +1,22 @@
+import { dayjsLocal } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import { useEffect } from 'react';
+import { DateCard } from 'src/app/(public)/_common/_components/DateCard';
+import TimeSlotsColumn from 'src/app/(public)/_common/_components/TimeSlotsColumn';
 
+import { UITimeRangeCard } from '@/common/UITimeRangeCard';
 import { UIButton } from '@/components/Common/UIButton';
 
 import useInviteActions from '../../hooks/useInviteActions';
 import { useInviteSlots } from '../../hooks/useInviteSlots';
-import { useCandidateInviteStore } from '../../store';
-import CandidateInviteCalendar, {
-  type CandidateInviteCalendarProps,
-} from '../CalenderComp';
-import { SingleDayConfirmation } from './SingleDayConfirmation';
+import {
+  setSelectedDate,
+  setSelectedSlots,
+  useCandidateInviteStore,
+} from '../../store';
+import { type SessionData } from '../../types/types';
 
 export const SingleDay = () => {
   const { status } = useInviteSlots();
@@ -57,31 +62,91 @@ const SingleDayLoading = () => {
 
 const SingleDaySuccess = () => {
   const { handleSelectSlot } = useInviteActions();
-  const { selectedSlots, timezone } = useCandidateInviteStore();
+  const { selectedSlots, selectedDate, timezone } = useCandidateInviteStore();
   const { data } = useInviteSlots();
-  const sessions = (data || []).reduce(
-    (acc, curr) => {
-      const { start_time } = curr[0][0].sessions[0];
-      acc.push({
-        date: start_time,
-        slots: curr[0],
-      });
-      return acc;
-    },
-    [] as CandidateInviteCalendarProps['sessions'],
+
+  const sessions: SessionData[] = data.reduce((acc: SessionData[], curr) => {
+    const { start_time } = curr[0][0].sessions[0];
+    acc.push({
+      date: start_time,
+      slots: curr[0],
+    });
+    return acc;
+  }, []);
+
+  const filteredSession = sessions.find((session) =>
+    dayjsLocal(session.date).isSame(selectedDate, 'day'),
   );
 
+  useEffect(() => {
+    if (!selectedDate) {
+      setSelectedDate(sessions[0].date);
+      setSelectedSlots([sessions[0].slots[0]]);
+    }
+  }, []);
+
   return (
-    <>
-      <CandidateInviteCalendar
-        sessions={sessions}
-        selections={selectedSlots}
-        handleSelect={(id) => {
-          handleSelectSlot(0, id);
-        }}
-        tz={timezone.tzCode}
-      />
-      <SingleDayConfirmation />
-    </>
+    <div className='flex flex-col'>
+      <div className='flex flex-row gap-2 border-b px-4 pb-4'>
+        {sessions.map((session, index) => {
+          return (
+            <DateCard
+              key={index}
+              textDate={dayjsLocal(session.date)
+                .tz(timezone.tzCode)
+                .format('DD')}
+              textMonth={dayjsLocal(session.date)
+                .tz(timezone.tzCode)
+                .format('MMM')}
+              textDay={dayjsLocal(session.date)
+                .tz(timezone.tzCode)
+                .format('dddd')}
+              onClickDate={() => {
+                setSelectedDate(session.date);
+              }}
+              isActive={selectedDate === session.date}
+            />
+          );
+        })}
+      </div>
+      <div className='p-4'>
+        {selectedDate && (
+          <TimeSlotsColumn
+            date={selectedDate ?? ''}
+            timeRangeArea={filteredSession?.slots.map((slot, ind) => {
+              const startTime = dayjsLocal(slot.sessions[0].start_time)
+                .tz(timezone.tzCode)
+                .format('hh:mm A');
+              const endTime = dayjsLocal(
+                slot.sessions[slot.sessions.length - 1].end_time,
+              )
+                .tz(timezone.tzCode)
+                .format('hh:mm A');
+
+              return (
+                <UITimeRangeCard
+                  onClickTime={() => {
+                    if (selectedSlots[0]?.slot_comb_id === slot.slot_comb_id) {
+                      setSelectedSlots([]);
+                    } else {
+                      handleSelectSlot(0, slot);
+                    }
+                  }}
+                  isSemiActive={false}
+                  isActive={
+                    selectedSlots?.length > 0
+                      ? selectedSlots[0]?.slot_comb_id === slot.slot_comb_id
+                      : false
+                  }
+                  key={ind}
+                  textTime={`${startTime} - ${endTime}`}
+                  ShowCloseIcon={true}
+                />
+              );
+            })}
+          />
+        )}
+      </div>
+    </div>
   );
 };
