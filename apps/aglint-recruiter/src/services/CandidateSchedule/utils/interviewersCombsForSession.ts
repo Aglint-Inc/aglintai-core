@@ -45,7 +45,7 @@ const calcInterversCombsForSesson = (
     if (comb === 0 || comb > session.qualifiedIntervs.length) {
       throw new CApiError(
         'CLIENT',
-        `Please add more interviewers to match the interviewer count in the session`,
+        `Required number of interviewers is ${comb} found only ${session.qualifiedIntervs.length}`,
       );
     }
 
