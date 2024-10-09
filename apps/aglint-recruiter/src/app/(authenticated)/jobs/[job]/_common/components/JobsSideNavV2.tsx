@@ -16,13 +16,15 @@ import UITabs from '@/components/Common/UITabs';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJob } from '@/job/hooks';
+import { useJobsContext } from '@/jobs/hooks';
 import ROUTES from '@/utils/routing/routes';
 
 type IconName = keyof typeof Icons;
 
 const JobsSideNavV2 = () => {
   const router = useRouterPro();
-  const { job, manageJob } = useJob();
+  const { manageJob } = useJobsContext();
+  const { job } = useJob();
   const { isScoringEnabled } = useRolesAndPermissions();
   const [isCloseJobDialogOpen, setIsCloseJobDialogOpen] = useState(false);
   const [confirmText, setConfirmText] = useState('');

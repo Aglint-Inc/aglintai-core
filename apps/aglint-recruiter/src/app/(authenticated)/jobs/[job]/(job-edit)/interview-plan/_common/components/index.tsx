@@ -73,8 +73,7 @@ export type CompanyMember = CompanyMemberGlobal & { paused: boolean };
 
 export const JobNewInterviewPlanDashboard = () => {
   const { job } = useJobInterviewPlan();
-  return;
-  job ? <InterviewPlanPage /> : <JobNotFound />;
+  return job ? <InterviewPlanPage /> : <JobNotFound />;
 };
 
 const InterviewPlanPage = () => {

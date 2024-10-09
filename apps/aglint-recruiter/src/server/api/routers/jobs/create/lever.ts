@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import {
   type DatabaseTable,
   type DatabaseTableInsert,
@@ -17,6 +16,7 @@ import { decrypt } from '@/pages/api/decryptApiKey';
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { processEmailsInBatches } from '@/utils/processEmailsInBatches';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
+
 import { safeGenerateJd } from '../common/generateJd';
 
 const schema = z.object({
@@ -45,9 +45,6 @@ const mutation = async ({
       .throwOnError()
   ).data!;
 
-  console.log('integration :', integration);
-  console.log('dbJob :', dbJob);
-
   const newJobs = (
     await supabaseAdmin
       .from('public_jobs')
@@ -55,8 +52,6 @@ const mutation = async ({
       .select()
       .throwOnError()
   ).data!;
-
-  console.log('newJobs :', newJobs);
 
   if (!integration?.lever_key) {
     throw new Error('No Lever Key found');
@@ -176,8 +171,6 @@ const createJobApplications = async ({
     .filter((cand) => cand.email);
   // for creating lever job reference
 
-  console.log('refCandidates', refCandidates.length);
-
   const emails = [
     ...new Set(
       refCandidates.map((cand) => {
@@ -219,8 +212,6 @@ const createJobApplications = async ({
     .from('candidates')
     .insert(dbCandidates)
     .select();
-
-  console.log(errorCandidates);
 
   if (!errorCandidates) {
     const allCandidates = [...newCandidates, ...checkCandidates];

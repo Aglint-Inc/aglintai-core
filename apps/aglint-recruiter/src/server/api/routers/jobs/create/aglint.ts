@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
-import { generateJd, safeGenerateJd } from '../common/generateJd';
+import { safeGenerateJd } from '../common/generateJd';
 import { jobDescriptionSchema } from '../common/jobDescriptionSchema';
 
 const schema = z.object({
