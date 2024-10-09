@@ -29,7 +29,7 @@ type Banner = {
 
 export const withBanners = (
   job: DatabaseView['job_view'],
-): DatabaseView['job_view'] & Banner => {
+): DatabaseView['job_view'] & { banner: Banner } => {
   const banner: Banner = {
     interview_plan_missing: interviewPlanMissing(job),
     scoring_criteria_changed: scoringCriteriaChanged(job),
@@ -39,7 +39,7 @@ export const withBanners = (
   };
   return {
     ...job,
-    ...banner,
+    banner,
   };
 };
 
