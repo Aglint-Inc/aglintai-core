@@ -22,7 +22,7 @@ export default function Main() {
     isStateUpdating,
   } = useJobAutomationStore();
   const { data } = useGetJobWorkflow();
-  const { mutate: updateJobWorkflowsActions } =
+  const { mutateAsync: updateJobWorkflowsActions, isPending } =
     api.jobs.job.workflow.updateJobWorkflowsActions.useMutation();
   const allCategories: TriggerCategory[] = [
     TriggerCategory.CandidateExperience,
@@ -66,32 +66,36 @@ export default function Main() {
     <div className='md:col-span-2'>
       {isStateUpdating && <Skeleton className='h-[500px] w-full' />}
       {!isStateUpdating && (
-        <Accordion type='single' collapsible className='w-full'>
-          {allCategories.map((categ, idx) => {
-            const currentTriggers = jobWorkflowTriggers.filter(
-              (trig) => trig.category === categ,
-            );
-            return (
-              <AutomationAccordion
-                key={idx}
-                category={categ}
-                currentTriggers={currentTriggers}
-                currentActions={jobWorkflowActions}
-              />
-            );
-          })}
-        </Accordion>
+        <>
+          <Accordion type='single' collapsible className='w-full'>
+            {allCategories.map((categ, idx) => {
+              const currentTriggers = jobWorkflowTriggers.filter(
+                (trig) => trig.category === categ,
+              );
+              return (
+                <AutomationAccordion
+                  key={idx}
+                  category={categ}
+                  currentTriggers={currentTriggers}
+                  currentActions={jobWorkflowActions}
+                />
+              );
+            })}
+          </Accordion>
+          <div className='mt-6 flex flex-row justify-end space-x-1'>
+            <UIButton
+              disabled={!isWorkflowsChanged}
+              variant='secondary'
+              onClick={handleReset}
+            >
+              Reset
+            </UIButton>
+            <UIButton onClick={handleSave} isLoading={isPending}>
+              Save
+            </UIButton>
+          </div>
+        </>
       )}
-      <div className='mt-6 flex flex-row justify-end space-x-1'>
-        <UIButton
-          disabled={!isWorkflowsChanged}
-          variant='secondary'
-          onClick={handleReset}
-        >
-          Reset
-        </UIButton>
-        <UIButton onClick={handleSave}>Save</UIButton>
-      </div>
     </div>
   );
 }

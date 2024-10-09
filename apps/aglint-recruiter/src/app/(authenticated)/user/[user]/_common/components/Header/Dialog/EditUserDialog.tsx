@@ -1,6 +1,13 @@
 import { type CustomSchedulingSettingsUser } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
 import { toast } from '@components/hooks/use-toast';
-import { type Dispatch, type SetStateAction, useRef, useState } from 'react';
+import { useParams } from 'next/navigation';
+import {
+  type Dispatch,
+  type SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import {
   type FormFields,
   type FormValues,
@@ -9,7 +16,7 @@ import {
   validateString,
 } from 'src/app/_common/components/Profile/uitls';
 
-import { useTenant } from '@/company/hooks';
+import { useTenantMembers } from '@/company/hooks';
 import ImageUploadManual from '@/components/Common/ImageUpload/ImageUploadManual';
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import { UIButton } from '@/components/Common/UIButton';
@@ -43,7 +50,15 @@ export const EditUserDialog = ({
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { recruiter_user } = useTenant();
+  const { allMembers } = useTenantMembers();
+
+  const param = useParams()!;
+
+  const user_id = param.user;
+
+  const recruiter_user = allMembers.find(
+    (member) => member.user_id === user_id,
+  )!;
 
   const initialTimeZone = recruiter_user?.scheduling_settings?.timeZone
     ? recruiter_user.scheduling_settings.timeZone
@@ -90,6 +105,10 @@ export const EditUserDialog = ({
   const [profile, setProfile] = useState<FormFields>(
     structuredClone(initialProfileFormFields),
   );
+
+  useEffect(() => {
+    setProfile(structuredClone(initialProfileFormFields));
+  }, [isOpen]);
 
   const [isError, setError] = useState(false);
   const [isImageChanged, setIsImageChanged] = useState(false);

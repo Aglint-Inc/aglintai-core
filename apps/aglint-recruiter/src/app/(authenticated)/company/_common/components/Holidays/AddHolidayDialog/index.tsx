@@ -25,7 +25,7 @@ type Props = {
   setDaysOffOpen: Dispatch<SetStateAction<boolean>>;
 };
 export const AddHolidayDialog = ({ addDayOffOpen, setDaysOffOpen }: Props) => {
-  const { recruiter } = useTenant();
+  const { recruiter, refetch } = useTenant();
   const [selectedDate, setSelectedDate] = useState<string | null>(
     dayjsLocal().format('DD MMM YYYY'),
   );
@@ -35,6 +35,9 @@ export const AddHolidayDialog = ({ addDayOffOpen, setDaysOffOpen }: Props) => {
     useState<SpecificLocationType>('all_locations');
 
   const { mutateAsync, isPending } = api.tenant.updateTenant.useMutation({
+    onSuccess: () => {
+      refetch();
+    },
     onError: () =>
       toast({
         title: 'Unable to update holiday',

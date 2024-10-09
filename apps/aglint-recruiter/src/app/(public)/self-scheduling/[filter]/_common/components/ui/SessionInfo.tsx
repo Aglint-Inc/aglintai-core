@@ -1,4 +1,4 @@
-import { Phone, Timer, User, Users, Video } from 'lucide-react';
+import { Timer, Users } from 'lucide-react';
 import React from 'react';
 
 interface SessionInfoProps {
@@ -7,7 +7,6 @@ interface SessionInfoProps {
   textMeetingType: string;
   slotMeetingTypeIcon?: React.ReactNode;
   slotInterviewtypeIcon?: React.ReactNode;
-  iconName: 'videocam' | 'call' | 'person' | null;
 }
 
 export function SessionInfo({
@@ -16,7 +15,6 @@ export function SessionInfo({
   textMeetingType,
   slotMeetingTypeIcon,
   slotInterviewtypeIcon,
-  iconName,
 }: SessionInfoProps) {
   return (
     <div className='flex flex-row gap-4'>
@@ -33,19 +31,7 @@ export function SessionInfo({
         <span className='text-sm'>{textSessionDuration}</span>
       </div>
       <div className='flex items-center gap-1'>
-        {slotMeetingTypeIcon || (
-          <>
-            {iconName === 'videocam' && (
-              <Video className='h-4 w-4 text-muted-foreground' />
-            )}
-            {iconName === 'call' && (
-              <Phone className='h-4 w-4 text-muted-foreground' />
-            )}
-            {iconName === 'person' && (
-              <User className='h-4 w-4 text-muted-foreground' />
-            )}
-          </>
-        )}
+        {slotMeetingTypeIcon}
         <span className='text-sm'>{textMeetingType}</span>
       </div>
     </div>

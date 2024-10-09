@@ -1,8 +1,9 @@
+import { UIBadge } from '@components/ui-badge';
 import { cn } from '@lib/utils';
 import React from 'react';
 
 interface RequestProgressProps {
-  circleIndicator?: 'success' | 'error' | 'default' | 'info' | 'warning';
+  circleIndicator?: 'success' | 'destructive' | 'neutral' | 'info' | 'warning';
   textRequestProgress: string;
   slotProgress?: React.ReactNode;
   isDividerVisible?: boolean;
@@ -10,7 +11,7 @@ interface RequestProgressProps {
 }
 
 export function RequestProgressTracker({
-  circleIndicator = 'default',
+  circleIndicator = 'neutral',
   textRequestProgress,
   slotProgress,
   isDividerVisible = true,
@@ -22,9 +23,9 @@ export function RequestProgressTracker({
         <div className='flex h-[18px] w-[18px] items-center justify-center'>
           <div
             className={cn('h-[10px] w-[10px] rounded-full', {
-              'bg-neutral-300': circleIndicator === 'default',
+              'bg-neutral-300': circleIndicator === 'neutral',
               'bg-green-500': circleIndicator === 'success',
-              'bg-red-500': circleIndicator === 'error',
+              'bg-red-500': circleIndicator === 'destructive',
               'bg-gray-500': circleIndicator === 'info',
               'bg-yello-500': circleIndicator === 'warning',
             })}
@@ -35,7 +36,8 @@ export function RequestProgressTracker({
         )}
       </div>
       <div className='mb-8 flex flex-col gap-4'>
-        <div
+        <UIBadge variant={circleIndicator} textBadge={textRequestProgress} />
+        {/* <div
           className={cn(
             'borde inline-flex max-w-max whitespace-nowrap rounded px-3 py-0.5 text-sm',
             {
@@ -49,7 +51,8 @@ export function RequestProgressTracker({
           )}
         >
           {textRequestProgress}
-        </div>
+        </div> */}
+
         <div className='flex flex-col gap-2'>{slotProgress}</div>
       </div>
     </div>
