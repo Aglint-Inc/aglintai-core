@@ -1,95 +1,113 @@
 'use client';
 
-import React from 'react';
+import { ScrollArea } from '@components/ui/scroll-area';
+import { cn } from '@lib/utils';
+import { type ComponentProps } from 'react';
+import { SelectedSessionSlotsCard } from 'src/app/(public)/_common/_components/SelectedSessionStotsCard';
 
-import { useCandidateInviteStore } from '../../store';
-import { dayJS } from '../../utils/utils';
-import { CandidateScheduleCard } from '../ui/CandidateScheduleCard';
-import { SelectedDateAndTime } from '../ui/SelectedDateAndTime';
-import { SessionAndTime } from '../ui/SessionAndTime';
-import { SessionDetails } from './SessionDetails';
+import { UIButton } from '@/common/UIButton';
+
+import useInviteActions from '../../hooks/useInviteActions';
+import { useInviteSlots } from '../../hooks/useInviteSlots';
+import {
+  setSelectedDate,
+  setSelectedDay,
+  useCandidateInviteStore,
+} from '../../store';
+import { getDurationText } from '../../utils/utils';
+import { SessionCard } from '../ui/SessionCard';
 
 function RightPanel() {
-  const { selectedSlots, timezone } = useCandidateInviteStore();
-  console.log(selectedSlots);
+  const { selectedSlots, selectedDay } = useCandidateInviteStore();
+  const { data } = useInviteSlots();
+  const { handleSubmit, isPending } = useInviteActions();
+
+  const numberOfDays = data?.length > 0 ? data[0]?.length : 0;
 
   return (
     <div className='flex flex-col gap-2'>
-      <SessionDetails />
-      {selectedSlots?.map((slot) => {
-        const [month, date, day] = dayJS(
-          selectedSlots?.[0]?.sessions?.[0]?.start_time ?? null,
-          timezone.tzCode,
-        )
-          .format('MMMM DD dddd')
-          .split(' ');
-        // calculate total duration of each session
-        let totalHours = 0;
-        let totalMinutes = 0;
+      <ScrollArea className='h-[63vh]'>
+        <div className='flex flex-col gap-2'>
+          {selectedSlots?.map((slot, ind) => {
+            const dates: ComponentProps<
+              typeof SelectedSessionSlotsCard
+            >['selectedDates'] = [
+              {
+                curr_day: slot.sessions[0].start_time,
+                slots: [
+                  {
+                    startTime: slot.sessions[0].start_time,
+                    endTime: slot.sessions[slot.sessions.length - 1].end_time,
+                    isSlotAvailable: true,
+                  },
+                ],
+              },
+            ];
 
-        slot.sessions.forEach((session) => {
-          const start = dayJS(session.start_time, timezone.tzCode);
-          const end = dayJS(session.end_time, timezone.tzCode);
-          const duration = end.diff(start, 'minutes');
+            const totalDuration = slot.sessions.reduce((acc, curr) => {
+              acc = acc + curr.duration;
+              return acc;
+            }, 0);
 
-          totalHours += Math.floor(duration / 60);
-          totalMinutes += duration % 60;
-        });
+            return (
+              <>
+                <div className={cn('rounded-lg border')}>
+                  <SelectedSessionSlotsCard
+                    textDayCount={`Day ${ind + 1}`}
+                    textSelectedSlots='Selected Slot'
+                    slotChangeButton={
+                      numberOfDays > 1 &&
+                      selectedSlots.length > 1 && (
+                        <UIButton
+                          size={'sm'}
+                          variant='default'
+                          onClick={() => {
+                            setSelectedDate(dates[0].curr_day);
+                            setSelectedDay(ind + 1);
+                          }}
+                        >
+                          Change
+                        </UIButton>
+                      )
+                    }
+                    isSubmitted={true}
+                    selectedDates={dates}
+                    isSelected={true}
+                    textTotalDuration={getDurationText(totalDuration)}
+                    slotSessionInfo={slot.sessions.map((session, i) => {
+                      return (
+                        <SessionCard
+                          key={i}
+                          duration={session.duration}
+                          name={session.session_name}
+                          schedule_type={session.schedule_type}
+                          session_type={session.session_type}
+                        />
+                      );
+                    })}
+                  />
+                </div>
+              </>
+            );
+          })}
+        </div>
+      </ScrollArea>
 
-        totalHours += Math.floor(totalMinutes / 60);
-        totalMinutes %= 60;
-
-        const totalTimeDifference = `${
-          totalHours ? totalHours + ' hour' : ''
-        } ${totalMinutes} minutes`;
-
-        return (
-          <>
-            <CandidateScheduleCard
-              isTitle={false}
-              textDuration={totalTimeDifference}
-              slotButton={<></>}
-              slotSessionInfo={
-                <SelectedDateAndTime
-                  slotSessionAndTime={<SingleDaySessions />}
-                  textDate={date}
-                  textDay={day}
-                  textMonth={month}
-                />
-              }
-            />
-          </>
-        );
-      })}
+      <UIButton
+        onClick={() => {
+          if (selectedSlots.length === numberOfDays) {
+            handleSubmit();
+          } else if (selectedSlots.length <= numberOfDays) {
+            setSelectedDate(null);
+            setSelectedDay(selectedDay + 1);
+          }
+        }}
+        isLoading={isPending}
+      >
+        {selectedSlots.length === numberOfDays ? 'Submit' : 'Continue'}
+      </UIButton>
     </div>
   );
 }
 
 export default RightPanel;
-
-type SingleDaySessionsProps = {
-  index: number;
-};
-
-const SingleDaySessions = (props: SingleDaySessionsProps) => {
-  const { selectedSlots } = useCandidateInviteStore();
-  const sessions = (selectedSlots?.[props.index]?.sessions ?? []).map(
-    (session) => (
-      <SingleDaySession key={session.session_id} session={session} />
-    ),
-  );
-  return <>{sessions}</>;
-};
-
-type SingleDaySessionProps = {
-  session: CandidateInviteType['selectedSlots'][number]['sessions'][number];
-};
-
-const SingleDaySession = (props: SingleDaySessionProps) => {
-  const { timezone } = useCandidateInviteStore();
-  const name = props.session.session_name;
-  const duration = `${dayJS(props.session.start_time, timezone.tzCode).format(
-    'hh:mm A',
-  )} to ${dayJS(props.session.end_time, timezone.tzCode).format('hh:mm A')}`;
-  return <SessionAndTime textSessionName={name} textTime={duration} />;
-};

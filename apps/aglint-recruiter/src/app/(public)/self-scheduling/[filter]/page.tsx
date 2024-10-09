@@ -1,5 +1,6 @@
 'use client';
 
+import { getFullName } from '@aglint/shared-utils';
 import { PublicPageLayout } from '@components/layouts/public-layout';
 import { UIBadge } from '@components/ui-badge';
 
@@ -19,11 +20,22 @@ const CandidateInvitePage = () => {
 
   if (!data || isError) return <UIError />;
 
+  const candidate = {
+    name: getFullName(data.candidate.first_name, data.candidate.last_name),
+    position: data.candidate.current_job_title ?? '',
+    email: data.candidate.email ?? '',
+  };
+
   return (
     <PublicPageLayout
       header={
         <SchedulingPageHeader
-          companyName={data?.recruiter?.name ?? ''}
+          companyDetails={{
+            jobTitle: data.job.title,
+            name: data.recruiter.name,
+            location: data.job.location,
+            logo: data.recruiter.logo ?? '',
+          }}
           description={
             <div className='flex w-full flex-row justify-end p-4'>
               {data.isBooked ? (
@@ -57,7 +69,7 @@ const CandidateInvitePage = () => {
               )}
             </div>
           }
-          logo={data?.recruiter?.logo ?? ''}
+          candidateDetails={candidate}
         />
       }
       footer={<Footer brand={true} />}

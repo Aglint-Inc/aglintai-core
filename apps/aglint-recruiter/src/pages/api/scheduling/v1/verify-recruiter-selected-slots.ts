@@ -51,7 +51,8 @@ const verifyRecruiterSelectedSlots = async (
   } else {
     const verified_slots =
       cand_schedule.verifyIntSelectedSlots(selected_options);
-    all_day_plans = convertOptionsToDateRangeSlots(
+    console.log('verified_slots', verified_slots.length);
+    all_day_plans =   (
       verified_slots,
       candidate_tz,
     );

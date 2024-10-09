@@ -17,6 +17,7 @@ import { UIButton } from '@/components/Common/UIButton';
 import { Loader } from '../../../../../../components/Common/Loader';
 import { ConfirmedInvitePage } from '../../../../../_common/components/CandidateConfirm/_common/components';
 import { useInviteMeta } from '../hooks/useInviteMeta';
+import { useInviteSlots } from '../hooks/useInviteSlots';
 import {
   setSelectedSlots,
   setTimeZone,
@@ -31,21 +32,27 @@ import RightPanel from './RightPanel';
 import { SingleDay } from './SingleDay';
 
 const CandidateInviteNew = () => {
-  const { isLoading, isError, isRefetching } = useInviteMeta();
+  const { isLoading, isError } = useInviteMeta();
+
+  const {
+    isLoading: loadingSlots,
+    isError: errorSlots,
+    isRefetching,
+  } = useInviteSlots();
 
   return (
     <div className='w-full'>
-      {isLoading ? (
+      {isLoading || loadingSlots || isRefetching ? (
         <LoadingState />
-      ) : isError ? (
+      ) : isError || errorSlots ? (
         <ErrorState />
       ) : (
         <>
           <div className='flex w-full flex-row justify-center'>
-            <div className='w-8/12 p-4'>
+            <div className='w-8/12'>
               <CandidateInvitePlanPage />
             </div>
-            <div className='w-4/12 p-4'>
+            <div className='w-4/12 border-l p-4'>
               <RightPanel />
             </div>
           </div>
@@ -54,6 +61,7 @@ const CandidateInviteNew = () => {
     </div>
   );
 };
+
 export default CandidateInviteNew;
 
 const LoadingState = () => (
@@ -95,6 +103,7 @@ const CandidateInvitePlanPage = () => {
   const { data: meta } = useInviteMeta();
 
   const waiting = !meta.isBooked;
+
   const { rounds } = (meta?.meetings || []).reduce(
     (acc, curr) => {
       const count = acc.rounds.length;
@@ -143,7 +152,7 @@ const CandidateInvitePlanPage = () => {
 
   return (
     <Section>
-      <SectionHeader>
+      <SectionHeader className='px-4 pt-4'>
         <SectionHeaderText>
           <SectionTitle>Book Now</SectionTitle>
           <SectionDescription>
@@ -168,5 +177,5 @@ const CandidateInvitePlanPage = () => {
 
 const Invite = ({ rounds }: ScheduleCardsProps) => {
   if (rounds.length === 1) return <SingleDay />;
-  return <MultiDay rounds={rounds} />;
+  return <MultiDay />;
 };

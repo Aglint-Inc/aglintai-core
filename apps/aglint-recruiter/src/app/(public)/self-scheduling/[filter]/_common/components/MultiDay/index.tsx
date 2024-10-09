@@ -1,60 +1,27 @@
-import { getBreakLabel } from '@aglint/shared-utils';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@components/ui/alert-dialog';
-import { Button } from '@components/ui/button';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@components/ui/dialog';
-import { ScrollArea } from '@components/ui/scroll-area';
-import { Coffee, Plus, Repeat } from 'lucide-react';
-import React, {
-  type Dispatch,
-  type SetStateAction,
-  useEffect,
-  useState,
-} from 'react';
+import { dayjsLocal } from '@aglint/shared-utils';
+import { useEffect } from 'react';
+import { DateCard } from 'src/app/(public)/_common/_components/DateCard';
+import TimeSlotsColumn from 'src/app/(public)/_common/_components/TimeSlotsColumn';
 
-import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
+import { UITimeRangeCard } from '@/common/UITimeRangeCard';
 import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import toast from '@/utils/toast';
 
-import { getScheduleType } from '../../../../../../../utils/scheduling/colors_and_enums';
-import { SessionIcon } from '../../../../../../_common/components/ScheduleProgressPillComp';
 import useInviteActions from '../../hooks/useInviteActions';
 import { useInviteSlots } from '../../hooks/useInviteSlots';
-import { type CandidateInviteType, useCandidateInviteStore } from '../../store';
 import {
-  type ScheduleCardProps,
-  type ScheduleCardsProps,
-} from '../../types/types';
-import { dayJS, getDurationText } from '../../utils/utils';
-import CandidateInviteCalendar, {
-  type CandidateInviteCalendarProps,
-} from '../CalenderComp';
-import { CandidateScheduleCard } from '../ui/CandidateScheduleCard';
-import { SelectedDateAndTime } from '../ui/SelectedDateAndTime';
-import { SessionAndTime } from '../ui/SessionAndTime';
-import { SessionInfo } from '../ui/SessionInfo';
+  setSelectedDate,
+  setSelectedSlots,
+  useCandidateInviteStore,
+} from '../../store';
+import { type CandidateInviteCalendarProps } from '../CalenderComp';
 
-const MultiDay = ({ rounds }: ScheduleCardsProps) => {
+const MultiDay = () => {
   const { status } = useInviteSlots();
   if (status === 'error') return <MultiDayError />;
   if (status === 'pending') return <MultiDayLoading />;
-  return <MultiDaySuccess rounds={rounds} />;
+  return <MultiDaySuccess />;
 };
 
 export default MultiDay;
@@ -81,349 +48,104 @@ const MultiDayLoading = () => {
   );
 };
 
-const MultiDaySuccess = (props: ScheduleCardsProps) => {
-  const { selectedSlots } = useCandidateInviteStore();
-  const [open, setOpen] = useState(false);
-  const enabled = selectedSlots.length === props.rounds.length;
+const MultiDaySuccess = () => {
+  const { handleSelectSlot } = useInviteActions();
+  const { selectedSlots, selectedDate, selectedDay, timezone } =
+    useCandidateInviteStore();
+
+  const { data } = useInviteSlots();
+
+  const sessions = data.reduce(
+    (acc, curr) => {
+      const { start_time } = curr[selectedDay - 1][0].sessions[0];
+      acc.push({
+        date: start_time,
+        slots: curr[selectedDay - 1],
+      });
+      return acc;
+    },
+    [] as CandidateInviteCalendarProps['sessions'],
+  );
+
+  const filteredSession = sessions.find((session) =>
+    dayjsLocal(session.date).isSame(selectedDate, 'day'),
+  );
+
+  useEffect(() => {
+    if (!selectedDate) {
+      setSelectedDate(sessions[0].date);
+      setSelectedSlots([sessions[0].slots[0]]);
+    }
+  }, []);
 
   return (
     <>
-      <div className='mb-4 space-y-4'>
-        <ScheduleCards rounds={props.rounds} />
+      <div className='flex flex-col'>
+        <div className='flex flex-row gap-2 border-b px-4 pb-4'>
+          {sessions.map((session, index) => {
+            return (
+              <DateCard
+                key={index}
+                textDate={dayjsLocal(session.date)
+                  .tz(timezone.tzCode)
+                  .format('DD')}
+                textMonth={dayjsLocal(session.date)
+                  .tz(timezone.tzCode)
+                  .format('MMM')}
+                textDay={dayjsLocal(session.date)
+                  .tz(timezone.tzCode)
+                  .format('dddd')}
+                onClickDate={() => {
+                  setSelectedDate(session.date);
+                }}
+                isActive={dayjsLocal(selectedDate).isSame(session.date, 'day')}
+              />
+            );
+          })}
+        </div>
+        <div className='p-4'>
+          {selectedDate && (
+            <TimeSlotsColumn
+              date={selectedDate ?? ''}
+              timeRangeArea={filteredSession?.slots.map((slot, ind) => {
+                const startTime = dayjsLocal(slot.sessions[0].start_time)
+                  .tz(timezone.tzCode)
+                  .format('hh:mm A');
+                const endTime = dayjsLocal(
+                  slot.sessions[slot.sessions.length - 1].end_time,
+                )
+                  .tz(timezone.tzCode)
+                  .format('hh:mm A');
+
+                return (
+                  <UITimeRangeCard
+                    onClickTime={() => {
+                      if (
+                        selectedSlots[selectedDay - 1]?.slot_comb_id ===
+                        slot.slot_comb_id
+                      ) {
+                        setSelectedSlots([]);
+                      } else {
+                        handleSelectSlot(selectedDay - 1, slot);
+                      }
+                    }}
+                    isSemiActive={false}
+                    isActive={
+                      selectedSlots?.length > 0
+                        ? selectedSlots[selectedDay - 1]?.slot_comb_id ===
+                          slot.slot_comb_id
+                        : false
+                    }
+                    key={ind}
+                    textTime={`${startTime} - ${endTime}`}
+                    ShowCloseIcon={true}
+                  />
+                );
+              })}
+            />
+          )}
+        </div>
       </div>
-      <div className={'absolute bottom-8 right-8 flex justify-center'}>
-        <UIButton
-          variant='default'
-          onClick={() => {
-            setOpen(true);
-          }}
-          disabled={!enabled}
-        >
-          Proceed
-        </UIButton>
-      </div>
-      <MultiDayConfirmation
-        rounds={props.rounds}
-        open={open}
-        setOpen={setOpen}
-      />
     </>
   );
-};
-
-type MultiDayConfirmationProps = {
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  rounds: ScheduleCardsProps['rounds'];
-};
-
-const MultiDayConfirmation = (props: MultiDayConfirmationProps) => {
-  const { handleSubmit, isPending } = useInviteActions();
-  const handleClose = () => {
-    if (!isPending) props.setOpen(false);
-  };
-  const { selectedSlots, timezone } = useCandidateInviteStore();
-
-  type SelectedDateAndSessionsType = {
-    date: string;
-    sessions: CandidateInviteType['selectedSlots'][0]['sessions'];
-  }[];
-  const [selectedDateAndSessions, setSelectedDateAndSessions] =
-    useState<SelectedDateAndSessionsType>([]);
-
-  function getSelectedDateAndSessions() {
-    const sessions = selectedSlots.map((round, i) => {
-      return {
-        date: dayJS(
-          round?.sessions?.[0]?.start_time ?? null,
-          timezone.tzCode,
-        ).format('MMMM DD'),
-        // eslint-disable-next-line security/detect-object-injection
-        sessions: selectedSlots?.[i]?.sessions,
-      };
-    });
-    setSelectedDateAndSessions(sessions);
-  }
-
-  useEffect(() => {
-    getSelectedDateAndSessions();
-  }, [props.rounds]);
-
-  return (
-    <AlertDialog open={props.open}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Confirm your interview</AlertDialogTitle>
-          <AlertDialogDescription>
-            <div className='gap-2'>
-              <div>
-                {selectedDateAndSessions.map((item, index) => (
-                  <p key={index}>
-                    Day-{index + 1} -{' '}
-                    {item.sessions.map((ele) => ele.session_name).join(' ,')} on{' '}
-                    {item.date}
-                  </p>
-                ))}
-              </div>
-              <p>
-                Please review and confirm your selected time slot before we
-                finalize your schedule. It&apos;s important that your interview
-                time aligns with your availability.
-              </p>
-            </div>
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel onClick={handleClose}>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            onClick={async () => {
-              if (!isPending) {
-                await handleSubmit();
-              }
-            }}
-            disabled={isPending}
-          >
-            {isPending ? 'Confirming...' : 'Confirm'}
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-  );
-};
-
-const ScheduleCards = (props: ScheduleCardsProps) => {
-  const scheduleCards = props.rounds.map((round, index) => (
-    <ScheduleCard key={index} round={round} index={index} showTitle={true} />
-  ));
-
-  return <>{scheduleCards}</>;
-};
-
-const ScheduleCard = (props: ScheduleCardProps) => {
-  const { selectedSlots, timezone } = useCandidateInviteStore();
-  const { handleSelectSlot } = useInviteActions();
-  const { data } = useInviteSlots();
-
-  const [open, setOpen] = useState(false);
-
-  const isSelected = !!selectedSlots[props.index];
-  const enabled = props.index <= selectedSlots.length;
-
-  const [month, date, day] = dayJS(
-    selectedSlots?.[props.index]?.sessions?.[0]?.start_time ?? null,
-    timezone.tzCode,
-  )
-    .format('MMMM DD dddd')
-    .split(' ');
-
-  const sessions =
-    props.index === 0
-      ? data.reduce(
-          (acc, curr) => {
-            const { start_time } = curr[props.index][0].sessions[0];
-            acc.push({
-              date: start_time,
-              slots: curr[props.index],
-            });
-            return acc;
-          },
-          [] as CandidateInviteCalendarProps['sessions'],
-        )
-      : data.reduce(
-          (acc, curr) => {
-            if (
-              selectedSlots.length !== 0 &&
-              curr[0].includes(selectedSlots[0])
-            ) {
-              const { start_time } = curr[props.index][0].sessions[0];
-              acc.push({
-                date: start_time,
-                slots: curr[props.index],
-              });
-            }
-            return acc;
-          },
-          [] as CandidateInviteCalendarProps['sessions'],
-        );
-
-  const handleSelect = (session: Parameters<typeof handleSelectSlot>['1']) => {
-    handleSelectSlot(props.index, session);
-    // setOpen(false);
-  };
-
-  const duration = (props?.round?.sessions ?? []).reduce((acc, curr) => {
-    acc += curr.interview_session.session_duration;
-    return acc;
-  }, 0);
-
-  return (
-    <div
-      style={{
-        pointerEvents: enabled ? 'auto' : 'none',
-        opacity: enabled ? 1 : 0.4,
-      }}
-    >
-      <CandidateScheduleCard
-        textDay={props.round.title}
-        isSelected={isSelected}
-        slotButton={
-          enabled ? (
-            isSelected ? (
-              <UIButton
-                size='sm'
-                onClick={() => setOpen(true)}
-                icon={<Repeat className='h-4 w-4' />}
-              ></UIButton>
-            ) : (
-              <UIButton
-                size='sm'
-                variant='outline'
-                onClick={() => setOpen(true)}
-              >
-                <Plus className='h-4 w-4' size={'sm'} />
-                Select Option
-              </UIButton>
-            )
-          ) : (
-            <></>
-          )
-        }
-        textDuration={getDurationText(duration)}
-        slotSessionInfo={
-          isSelected ? (
-            <SelectedDateAndTime
-              slotSessionAndTime={<SingleDaySessions index={props.index} />}
-              textDate={date}
-              textDay={day}
-              textMonth={month}
-            />
-          ) : (
-            <Sessions sessions={props.round.sessions} showBreak={false} />
-          )
-        }
-      />
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className='sm:max-w-[825px]'>
-          <DialogHeader>
-            <DialogTitle>Select Date and Time</DialogTitle>
-          </DialogHeader>
-          <ScrollArea className='mx-auto w-[760px] whitespace-nowrap'>
-            <div className='flex p-4'>
-              <CandidateInviteCalendar
-                sessions={sessions}
-                selections={selectedSlots}
-                handleSelect={handleSelect}
-                tz={timezone.tzCode}
-              />
-            </div>
-          </ScrollArea>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button type='button' variant='secondary'>
-                Close
-              </Button>
-            </DialogClose>
-            <UIButton
-              onClick={() => {
-                setOpen(false);
-              }}
-              variant='default'
-            >
-              Choose
-            </UIButton>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
-};
-
-type SingleDaySessionsProps = {
-  index: number;
-};
-const SingleDaySessions = (props: SingleDaySessionsProps) => {
-  const { selectedSlots } = useCandidateInviteStore();
-  const sessions = (selectedSlots?.[props.index]?.sessions ?? []).map(
-    (session) => (
-      <SingleDaySession key={session.session_id} session={session} />
-    ),
-  );
-  return <>{sessions}</>;
-};
-
-type SingleDaySessionProps = {
-  session: CandidateInviteType['selectedSlots'][number]['sessions'][number];
-};
-const SingleDaySession = (props: SingleDaySessionProps) => {
-  const { timezone } = useCandidateInviteStore();
-  const name = props.session.session_name;
-  const duration = `${dayJS(props.session.start_time, timezone.tzCode).format(
-    'hh:mm A',
-  )} to ${dayJS(props.session.end_time, timezone.tzCode).format('hh:mm A')}`;
-  return <SessionAndTime textSessionName={name} textTime={duration} />;
-};
-
-type SessionsProps = Pick<ScheduleCardProps['round'], 'sessions'> & {
-  showBreak: boolean;
-};
-
-const Sessions = (props: SessionsProps) => {
-  const sessions = props.sessions.reduce((acc, curr) => {
-    acc.push(
-      <SessionCard
-        key={curr.interview_session.id + curr.interview_session.id}
-        session={curr}
-      />,
-    );
-    if (curr.interview_session.break_duration !== 0 && props.showBreak)
-      acc.push(
-        <BreakCard break_duration={curr.interview_session.break_duration} />,
-      );
-    return acc;
-  }, [] as React.JSX.Element[]);
-  return <>{sessions}</>;
-};
-
-const SessionCard = ({ session: { interview_session } }: SessionCardProps) => {
-  const duration = getBreakLabel(interview_session.session_duration);
-  const scheduleType = getScheduleType(interview_session.schedule_type);
-  return (
-    <SessionInfo
-      textSessionName={interview_session.name}
-      textSessionDuration={duration}
-      textMeetingType={scheduleType}
-      slotMeetingTypeIcon={
-        <IconScheduleType type={interview_session.schedule_type} />
-      }
-      slotInterviewtypeIcon={
-        <SessionIcon session_type={interview_session.session_type} />
-      }
-      iconName={
-        interview_session.schedule_type === 'google_meet' ||
-        interview_session.schedule_type === 'zoom'
-          ? 'videocam'
-          : interview_session.schedule_type === 'phone_call'
-            ? 'call'
-            : 'person'
-      }
-    />
-  );
-};
-
-const BreakCard = ({ break_duration }: { break_duration: number }) => {
-  const duration = getBreakLabel(break_duration);
-  return (
-    <SessionInfo
-      textSessionName={'Break'}
-      textSessionDuration={duration}
-      textMeetingType={''}
-      slotMeetingTypeIcon={<></>}
-      slotInterviewtypeIcon={<Coffee size={'sm'} />}
-      iconName={null}
-    />
-  );
-};
-
-type SessionCardProps = {
-  session: SessionsProps['sessions'][number];
 };
