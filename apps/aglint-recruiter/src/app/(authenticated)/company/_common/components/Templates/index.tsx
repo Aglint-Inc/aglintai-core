@@ -132,7 +132,6 @@ function SchedulerEmailTemps() {
     try {
       const { data } = await axios.post(`/api/emails/preview`, {
         mail_type: temp_email,
-
         recruiter_id: recruiter_id,
       });
       setHtml(data);
@@ -230,11 +229,11 @@ function SchedulerEmailTemps() {
 
   const [filter, setFilter] = useState<string[]>([]);
 
-  useEffect(() => {
-    if (currentTabQueryTemplates().length > 0) {
-      setEmailRoute(currentTabQueryTemplates()[0]?.type);
-    }
-  }, [isEditorLoad]);
+  // useEffect(() => {
+  //   if (currentTabQueryTemplates().length > 0) {
+  //     setEmailRoute(currentTabQueryTemplates()[0]?.type);
+  //   }
+  // }, [isEditorLoad]);
 
   const filterOptions = Object.keys(tempFilterOptions[temp_tab]);
 
