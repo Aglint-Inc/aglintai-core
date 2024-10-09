@@ -314,7 +314,9 @@ export default function ViewRequestDetails() {
                       }}
                       items={REQUEST_STATUS_LIST}
                       updateButton={
-                        <Edit2 className='h-3 w-3 cursor-pointer text-muted-foreground' />
+                        selectedRequest.status === 'to_do' ? (
+                          <Edit2 className='h-3 w-3 cursor-pointer text-muted-foreground' />
+                        ) : null
                       }
                     />
                   </div>
@@ -484,7 +486,9 @@ export default function ViewRequestDetails() {
                       }}
                       items={REQUEST_TYPE_LIST}
                       updateButton={
-                        <Edit2 className='h-3 w-3 cursor-pointer text-muted-foreground' />
+                        selectedRequest?.status === 'to_do' ? (
+                          <Edit2 className='h-3 w-3 cursor-pointer text-muted-foreground' />
+                        ) : null
                       }
                     />
                   </div>
@@ -530,6 +534,7 @@ export default function ViewRequestDetails() {
 
                 {status === 'success' && sessions.length ? (
                   <SessionCards
+                    editable={selectedRequest?.status === 'to_do'}
                     refetchMeetings={refetchMeetings}
                     sessions={
                       sessions as Awaited<
@@ -565,9 +570,11 @@ export default function ViewRequestDetails() {
 function SessionCards({
   sessions,
   refetchMeetings,
+  editable = false,
 }: {
   sessions: Awaited<ReturnType<typeof fetchSessionDetails>>;
   refetchMeetings: () => void;
+  editable?: boolean;
 }) {
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const { onClickEdit } = useEditSession();
@@ -600,10 +607,12 @@ function SessionCards({
                     variant='outline'
                     size='sm'
                     className='hidden group-hover:flex'
+                    disabled={!editable}
                   >
                     <Edit2 className='mr-2 h-4 w-4' />
                     Edit
                   </Button>
+
                   <Button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -669,6 +678,7 @@ function SessionCards({
                           parseInt(value),
                         ).then(() => refetchMeetings());
                       }}
+                      disabled={!editable}
                     />
                     <div className='flex h-[26px] w-[26px] items-center justify-center rounded-md border border-gray-200 bg-gray-100'>
                       <Coffee className='h-3 w-3' />
