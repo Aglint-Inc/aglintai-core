@@ -19,6 +19,7 @@ function DaySessions({ singleDay }: { singleDay: boolean }) {
     setOpenDaySlotPopup,
     submitting,
     submitAvailability,
+    isSubmitted,
   } = useRequestAvailabilityContext();
   const { data: candidateRequestAvailability } = useCandidateAvailabilityData();
   const NoOfSlotsNeeds = candidateRequestAvailability?.number_of_slots || 2;
@@ -117,8 +118,8 @@ function DaySessions({ singleDay }: { singleDay: boolean }) {
 
   return (
     <>
-      <div className='flex flex-col items-center'>
-        <ScrollArea className='h-[calc(100vh-320px)] border-l border-border p-4'>
+      <div className='relative flex flex-col items-center'>
+        <ScrollArea className='h-[calc(100vh-260px)] w-full border-l border-border p-4'>
           <div className='flex w-full flex-col gap-2'>
             {multiDaySessions.map((sessions, i) => {
               const totalSessionMinutes = sessions.reduce(
@@ -141,7 +142,7 @@ function DaySessions({ singleDay }: { singleDay: boolean }) {
             })}
           </div>
         </ScrollArea>
-        <div className='flex w-full items-center p-2'>
+        <div className='absolute bottom-0 -mx-4 flex w-full items-center rounded-none'>
           {day < multiDaySessions.length ? (
             <UIButton
               size='md'
@@ -149,17 +150,17 @@ function DaySessions({ singleDay }: { singleDay: boolean }) {
               disabled={
                 !markAsAllSlotsSelected || !markAsAllDateSelected || submitting
               }
-              className='w-full'
+              className='w-full rounded-none'
               isLoading={submitting}
             >
               Next Day
             </UIButton>
           ) : null}
-          {day === multiDaySessions.length && (
+          {!isSubmitted && (
             <div className='w-full'>
               <UIButton
                 size='md'
-                className='w-full'
+                className='w-full rounded-b-md'
                 onClick={submitAvailability}
                 disabled={!allCriteriaMeets || submitting}
                 isLoading={submitting}
