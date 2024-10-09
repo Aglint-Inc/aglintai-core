@@ -62,7 +62,7 @@ export const createRequest = async ({
   other_details: DatabaseTable['interview_session_cancel']['other_details'];
   reason: DatabaseTable['interview_session_cancel']['reason'];
 }) => {
-  const creatReqPayload: APICreateCandidateRequest = {
+  const createReqPayload: APICreateCandidateRequest = {
     application_id,
     session_ids,
     type,
@@ -73,5 +73,5 @@ export const createRequest = async ({
     other_details,
     reason,
   };
-  await axios.post('/api/request/candidate-request', creatReqPayload);
+  await axios.post('/api/request/candidate-request', createReqPayload);
 };

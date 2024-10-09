@@ -14,17 +14,14 @@ function RequestAvailability() {
   const { isSubmitted, meetingsAndRounds } = useRequestAvailabilityContext();
   const { data: candidateRequestAvailability } = useCandidateAvailabilityData();
   const location =
-    candidateRequestAvailability?.applications.public_jobs.office_locations
-      ?.city ??
-    '' +
-      ' ' +
-      candidateRequestAvailability?.applications.public_jobs.office_locations
-        ?.region ??
-    '' +
-      ' ' +
-      candidateRequestAvailability?.applications.public_jobs.office_locations
-        ?.country ??
-    '';
+    (candidateRequestAvailability?.applications.public_jobs.office_locations
+      ?.city || '') +
+    ' ' +
+    (candidateRequestAvailability?.applications.public_jobs.office_locations
+      ?.region || '') +
+    ' ' +
+    (candidateRequestAvailability?.applications.public_jobs.office_locations
+      ?.country || '');
   const candidate = candidateRequestAvailability?.applications.candidates;
   return (
     <PublicPageLayout

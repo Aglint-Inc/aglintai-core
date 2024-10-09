@@ -49,7 +49,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
 
   return (
     <>
-      <div className='flexflex-col gap-10 px-0'>
+      <div className='flex flex-col gap-10 px-0'>
         <div className='items-left flex flex-col gap-4'>
           <div className='flex items-start gap-2'>
             <div className='relative'>
@@ -239,7 +239,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
                   <div className='text-md font-semibold'>
                     Choose time slots.
                   </div>
-                  <span className='text-sm text-muted-foreground'>{`Choose ${NoOfSlotsNeeds} or more slots per day. Click on a timeslot to select. Click again to deselect.`}</span>
+                  <span className='text-sm text-muted-foreground'>{`Choose ${NoOfSlotsNeeds} or more slots per day. Click on a time slot to select. Click again to deselect.`}</span>
                 </div>
               </div>
             </div>

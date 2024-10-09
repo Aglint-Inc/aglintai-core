@@ -3,6 +3,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Briefcase, Clock, MapPin } from 'lucide-react';
 import React from 'react';
 
+import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+
 export function SchedulingPageHeader({
   title,
   description,
@@ -38,7 +40,7 @@ export function SchedulingPageHeader({
           <div className='flex flex-col'>
             <h1 className='text-lg font-semibold'>{companyDetails?.name}</h1>
             <dl className='flex flex-row items-center space-x-1 text-sm text-muted-foreground'>
-              {companyDetails?.location && (
+              {companyDetails?.location?.trim() ? (
                 <>
                   <dt>
                     <MapPin size={16} className='mr-1' />
@@ -47,6 +49,8 @@ export function SchedulingPageHeader({
                     <p className='mr-2'>{companyDetails?.location}</p>
                   </dd>
                 </>
+              ) : (
+                ''
               )}
 
               {companyDetails?.jobTitle && (
@@ -55,7 +59,9 @@ export function SchedulingPageHeader({
                     <Briefcase size={16} className='mr-1' />
                   </dt>
                   <dd>
-                    <p className='mr-2'>{companyDetails?.jobTitle}</p>
+                    <p className='mr-2'>
+                      {capitalizeFirstLetter(companyDetails?.jobTitle)}
+                    </p>
                   </dd>
                 </>
               )}
@@ -65,7 +71,9 @@ export function SchedulingPageHeader({
                     <Clock size={16} className='mr-1' />
                   </dt>
                   <dd>
-                    <p className='mr-2'>{companyDetails?.jobType}</p>
+                    <p className='mr-2'>
+                      {capitalizeFirstLetter(companyDetails?.jobType)}
+                    </p>
                   </dd>
                 </>
               )}
