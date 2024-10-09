@@ -138,17 +138,15 @@ const CandidateInvitePlanPage = () => {
 
   if (!waiting && meta)
     return (
-      <Section className='p-8'>
-        <ConfirmedInvitePage
-          rounds={rounds}
-          candidate={meta.candidate}
-          filter_json={meta.filter_json}
-          meetings={meta.meetings}
-          recruiter={meta.recruiter}
-          timezone={timezone}
-          application_id={meta.application_id}
-        />
-      </Section>
+      <ConfirmedInvitePage
+        rounds={rounds}
+        candidate={meta.candidate}
+        filter_json={meta.filter_json}
+        meetings={meta.meetings}
+        recruiter={meta.recruiter}
+        timezone={timezone}
+        application_id={meta.application_id}
+      />
     );
 
   return (

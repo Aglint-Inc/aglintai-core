@@ -16,7 +16,7 @@ import {
   setSelectedSlots,
   useCandidateInviteStore,
 } from '../../store';
-import { type CandidateInviteCalendarProps } from '../CalenderComp';
+import { type SessionData } from '../../types/types';
 
 export const SingleDay = () => {
   const { status } = useInviteSlots();
@@ -65,17 +65,14 @@ const SingleDaySuccess = () => {
   const { selectedSlots, selectedDate, timezone } = useCandidateInviteStore();
   const { data } = useInviteSlots();
 
-  const sessions: CandidateInviteCalendarProps['sessions'] = data.reduce(
-    (acc, curr) => {
-      const { start_time } = curr[0][0].sessions[0];
-      acc.push({
-        date: start_time,
-        slots: curr[0],
-      });
-      return acc;
-    },
-    [],
-  );
+  const sessions: SessionData[] = data.reduce((acc: SessionData[], curr) => {
+    const { start_time } = curr[0][0].sessions[0];
+    acc.push({
+      date: start_time,
+      slots: curr[0],
+    });
+    return acc;
+  }, []);
 
   const filteredSession = sessions.find((session) =>
     dayjsLocal(session.date).isSame(selectedDate, 'day'),

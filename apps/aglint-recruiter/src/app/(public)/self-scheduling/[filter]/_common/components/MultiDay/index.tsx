@@ -15,7 +15,7 @@ import {
   setSelectedSlots,
   useCandidateInviteStore,
 } from '../../store';
-import { type CandidateInviteCalendarProps } from '../CalenderComp';
+import { type SessionData } from '../../types/types';
 
 const MultiDay = () => {
   const { status } = useInviteSlots();
@@ -55,17 +55,14 @@ const MultiDaySuccess = () => {
 
   const { data } = useInviteSlots();
 
-  const sessions = data.reduce(
-    (acc, curr) => {
-      const { start_time } = curr[selectedDay - 1][0].sessions[0];
-      acc.push({
-        date: start_time,
-        slots: curr[selectedDay - 1],
-      });
-      return acc;
-    },
-    [] as CandidateInviteCalendarProps['sessions'],
-  );
+  const sessions: SessionData[] = data.reduce((acc: SessionData[], curr) => {
+    const { start_time } = curr[selectedDay - 1][0].sessions[0];
+    acc.push({
+      date: start_time,
+      slots: curr[selectedDay - 1],
+    });
+    return acc;
+  }, []);
 
   const filteredSession = sessions.find((session) =>
     dayjsLocal(session.date).isSame(selectedDate, 'day'),
