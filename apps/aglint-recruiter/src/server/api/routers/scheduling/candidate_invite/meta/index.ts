@@ -16,7 +16,12 @@ const query = async ({
     filter.session_ids,
   );
 
+  const isBooked = (resMeetings || []).some(
+    ({ interview_meeting: { status } }) => status !== 'waiting',
+  );
+
   const redRes = {
+    isBooked,
     job: applications.public_jobs,
     application_id: applications.id,
     candidate: applications.candidates,

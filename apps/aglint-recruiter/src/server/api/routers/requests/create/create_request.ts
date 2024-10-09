@@ -33,6 +33,32 @@ const mutation = async ({
   input,
 }: PrivateProcedure<typeof createRequestSchema>) => {
   const db = createPrivateClient();
+  const data =
+    (
+      await db
+        .from('request')
+        .select(
+          'id, status, type, application_id, request_relation!inner(session_id)',
+        )
+        .eq('application_id', input.application)
+        .eq('type', input.request.type)
+        .neq('status', 'completed')
+        .throwOnError()
+    ).data ?? [];
+  const selectedSessionIds = input.sessions;
+  const isAllowed = data.some(({ request_relation }) => {
+    const sessionIds = request_relation.map(({ session_id }) => session_id);
+    return (
+      selectedSessionIds.every((id) => sessionIds.includes(id)) ||
+      sessionIds.every((id) => selectedSessionIds.includes(id!))
+    );
+  });
+  if (isAllowed)
+    throw new TRPCError({
+      code: 'UNPROCESSABLE_CONTENT',
+      message:
+        'Request already exists for the provided application and sessions',
+    });
   const [{ data: application }, { data: interview_session }] =
     await Promise.all([
       db

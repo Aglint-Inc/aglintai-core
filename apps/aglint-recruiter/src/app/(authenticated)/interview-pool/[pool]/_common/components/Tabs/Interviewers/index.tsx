@@ -15,12 +15,12 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
+import { UIBadge } from '@components/ui-badge';
 import { MoreVertical, Pause, Play, Plus, Trash2, User } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
 import { getPauseMemberText } from '@/authenticated/utils';
-import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import ROUTES from '@/utils/routing/routes';
@@ -155,7 +155,7 @@ function Interviewers() {
                               {interviewer.rel.pause_json && (
                                 <UIBadge
                                   size='sm'
-                                  color='warning'
+                                  variant='warning'
                                   textBadge={getPauseMemberText(
                                     interviewer.rel.pause_json as PauseJson,
                                   )}
@@ -175,9 +175,9 @@ function Interviewers() {
                     <TableCell className='w-2/12'>{interviewer.week}</TableCell>
                     <TableCell className='w-2/12'>
                       <UIBadge
-                        color={
+                        variant={
                           interviewer.load > 50
-                            ? 'error'
+                            ? 'destructive'
                             : interviewer.load > 25
                               ? 'warning'
                               : 'success'

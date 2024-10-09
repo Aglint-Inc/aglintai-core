@@ -79,7 +79,9 @@ export const JobNewInterviewPlanDashboard = () => {
       <JobNotFound />
     )
   ) : (
-    <Loader />
+    <div className='flex min-h-[80vh] w-full items-center'>
+      <Loader />
+    </div>
   );
 };
 
@@ -417,37 +419,49 @@ const InterviewPlan = ({
                 onClick={() => setDeleteOpen(true)}
                 icon={<Trash className='h-4 w-4' color='brown' />}
               />
-
-              <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Delete Confirmation</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Are you sure to delete this interview plan?
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel asChild>
-                      <Button variant='secondary' size='sm'>
-                        Cancel
-                      </Button>
-                    </AlertDialogCancel>
-                    <AlertDialogAction asChild>
-                      <Button
-                        size='sm'
-                        disabled={isStageDeleting}
-                        onClick={async () => {
-                          await deletePlan({ id: plan_id });
-                        }}
-                      >
-                        {isStageDeleting ? <Loader /> : null}
-                        Delete
-                      </Button>
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
             </div>
+          }
+          deleteModal={
+            <AlertDialog
+              key={plan_id}
+              open={deleteOpen}
+              onOpenChange={setDeleteOpen}
+            >
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Delete Confirmation</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    <div className='flex flex-col gap-2'>
+                      <> Are you sure to delete this interview plan?</>
+                      <UIAlert
+                        variant='alert'
+                        title='This will also
+                    delete the interviews in it.'
+                      />
+                    </div>
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel asChild>
+                    <Button variant='secondary' size='sm'>
+                      Cancel
+                    </Button>
+                  </AlertDialogCancel>
+                  <AlertDialogAction asChild>
+                    <Button
+                      size='sm'
+                      disabled={isStageDeleting}
+                      onClick={async () => {
+                        await deletePlan({ id: plan_id });
+                      }}
+                    >
+                      {isStageDeleting ? <Loader /> : null}
+                      Delete
+                    </Button>
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           }
           slotInterviewPlanDetail={
             <div className='pt-2'>
@@ -689,7 +703,7 @@ const InterviewSession = ({
             }}
             onClickLink={() =>
               window.open(
-                `interview-pools/${session.interview_module!.id}?tab=qualified`,
+                `/interview-pool/${session.interview_module!.id}`,
                 '_blank',
               )
             }
@@ -723,12 +737,9 @@ const InterviewSession = ({
                       }
                     >
                       {hover ? (
-                        <div className='absolute inset-0 flex w-full flex-col items-center justify-center'>
-                          <div className='duration-250 ease relative top-[50%] flex h-[2px] w-full cursor-pointer flex-col items-center justify-center bg-[#cc4e00] transition-all'></div>
-                          <div className='z-10 flex h-[20px] w-[20px] items-center justify-center rounded-[20px] bg-[#cc4e00]'>
-                            <Plus size={10} color='white' />
-                          </div>
-                        </div>
+                        <>
+                          <UIButton size='sm' icon={<Plus />}></UIButton>
+                        </>
                       ) : (
                         <></>
                       )}

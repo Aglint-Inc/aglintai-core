@@ -28,13 +28,12 @@ const ActionsContainer = ({
     (t) => t.value.target_api === wAction.target_api,
   );
   const copy_details = target_api_details!.name;
-
   return (
     <div className='rounded-md bg-secondary p-4'>
       <div className='mb-2 flex items-center justify-between'>
         <h3 className='text-sm font-semibold'>{copy_details}</h3>
         <Button
-          variant='ghost'
+          variant='outline'
           size='sm'
           onClick={() => {
             deleteWAcion(wAction.id, wAction.workflow_id);

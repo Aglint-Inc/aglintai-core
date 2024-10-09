@@ -44,7 +44,7 @@ function Instructions({
           <SectionTitle>Instructions</SectionTitle>
         </SectionHeaderText>
         <SectionActions>
-          {showEditButton && !isEditing && (
+          {showEditButton && !isEditing && instruction && (
             <UIButton
               variant='outline'
               size='sm'

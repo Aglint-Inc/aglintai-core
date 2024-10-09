@@ -123,7 +123,7 @@ const MoveCandidateNew = () => {
   );
 };
 
-const MoveCandidateInterview = () => {
+export const MoveCandidateInterview = () => {
   const { isShowFeature } = useFlags();
   const { mutate, isPending } = useApplicationsMove();
   const [request, setRequest] = useState<DatabaseTable['request'] | null>(null);

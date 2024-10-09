@@ -35,17 +35,13 @@ export default function CSSArrow({
     right: 'rotate-135',
   };
 
-  const positionMap = {
-    up: 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
-    down: 'bottom-1/2 left-1/2 -translate-x-1/2 translate-y-1/2',
-    left: 'left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2',
-    right: 'right-1/2 top-1/2 translate-x-1/2 -translate-y-1/2',
-  };
-
   return (
-    <div className={`z-5 relative ${sizeMap[size]}`}>
+    <div className={`relative ${sizeMap[size]}`}>
       <div
-        className={`absolute ${positionMap[direction]} h-full w-full ${arrowStyles[direction]} ${backgroundColor} ${borderColor} ${rotationMap[direction]} rounded-[0_${cornerRadius}px_0_0] `}
+        className={`absolute z-40 h-full w-full ${arrowStyles[direction]} ${backgroundColor} ${borderColor} ${rotationMap[direction]} rounded-[0_${cornerRadius}px_0_0] `}
+      ></div>
+      <div
+        className={`absolute z-50 h-1/2 w-1/2 scale-[4] bg-red-500/10`}
       ></div>
     </div>
   );

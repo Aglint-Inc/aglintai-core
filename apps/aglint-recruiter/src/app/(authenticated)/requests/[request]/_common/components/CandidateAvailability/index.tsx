@@ -5,9 +5,9 @@ import {
 import {
   createRequestProgressLogger,
   dayjsLocal,
-  type ProgressLoggerType,
   ScheduleUtils,
 } from '@aglint/shared-utils';
+import { type ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
 import { toast } from '@components/hooks/use-toast';
 import { Label } from '@components/ui/label';
 import { SelectItem } from '@components/ui/select';
@@ -280,6 +280,9 @@ function CandidateAvailability({
           slotStartDateInput={
             <UIDatePicker
               closeOnSelect={true}
+              minDate={dayjsLocal(selectedDate.start_date)
+                .add(-1, 'day')
+                .toDate()}
               value={new Date(selectedDate.start_date.toISOString())}
               onAccept={(value: Date) => {
                 setSelectedDate({
@@ -292,6 +295,9 @@ function CandidateAvailability({
           slotEndDateInput={
             <UIDatePicker
               closeOnSelect={true}
+              minDate={dayjsLocal(selectedDate.start_date)
+                .add(-1, 'day')
+                .toDate()}
               value={new Date(selectedDate.end_date.toISOString())}
               onAccept={(value: Date) => {
                 setSelectedDate({
@@ -305,14 +311,14 @@ function CandidateAvailability({
             <UISelectDropDown
               fullWidth
               value={String(selectedDays.value)}
-              menuOptions={DAYS_LIST.filter(
-                (_, index) => index + 1 < maxDays,
-              ).map(({ label, value }) => {
-                return {
-                  name: label,
-                  value,
-                };
-              })}
+              menuOptions={DAYS_LIST.filter((_, index) => index < maxDays).map(
+                ({ label, value }) => {
+                  return {
+                    name: label,
+                    value,
+                  };
+                },
+              )}
               placeholder='Days'
               onValueChange={(value) => {
                 const selectedOption = DAYS_LIST.find(

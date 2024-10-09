@@ -11,11 +11,11 @@ import RequestCard from 'src/app/_common/components/Requests/RequestCard';
 
 import { Loader } from '@/components/Common/Loader';
 
-function RecentRequests({ applicationId }: { applicationId: string }) {
+function RecentRequests() {
   const params = useParams();
   const requestId = params?.request as string;
   const { data: requestList, status } = useApplicantRequests({
-    application_id: applicationId,
+    request_id: requestId,
   });
   const recentRequests =
     status === 'success'
@@ -36,9 +36,13 @@ function RecentRequests({ applicationId }: { applicationId: string }) {
         <SectionHeaderText>
           <SectionTitle>Recent Requests</SectionTitle>
         </SectionHeaderText>
-        <div className='flex flex-col gap-3 mt-2'>
+        <div className='mt-2 flex flex-col gap-3'>
           {recentRequests.length === 0 ? (
-            <EmptyState header='Recent requests not found' icon={LayoutList} />
+            <EmptyState
+              variant='inline'
+              header='Recent requests not found'
+              icon={LayoutList}
+            />
           ) : (
             recentRequests.map((request, index) => {
               return <RequestCard key={index} request={request} />;
