@@ -1,21 +1,13 @@
 /* eslint-disable security/detect-object-injection */
 import { type DatabaseTable } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
-// import { Badge } from '@components/ui/badge';
-// import {
-//   Carousel,
-//   CarouselContent,
-//   CarouselItem,
-//   CarouselNext,
-//   CarouselPrevious,
-// } from '@components/ui/carousel';
-// import { ScrollArea } from '@components/ui/scroll-area';
+import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
+import { Separator } from '@components/ui/separator';
 import dayjs from 'dayjs';
 import { CheckCircle } from 'lucide-react';
 import { useEffect } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
-import { UIDivider } from '@/components/Common/UIDivider';
 
 import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityContext';
 import { useCandidateAvailabilityData } from '../hooks/useRequestAvailability';
@@ -37,7 +29,8 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
     submitting,
   } = useRequestAvailabilityContext();
   const { data: candidateRequestAvailability } = useCandidateAvailabilityData();
-
+  const NoOfSlotsNeeds = candidateRequestAvailability?.number_of_slots || 2;
+  const NoOfDaysNeeds = candidateRequestAvailability?.number_of_days || 2;
   useEffect(() => {
     if (candidateRequestAvailability?.slots) {
       setIsSubmitted(true);
@@ -49,16 +42,11 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
   const daySlotDates =
     selectedDateSlots.find((ele) => ele.round === day)?.dates ?? [];
 
-  const markAsAllDateSelected =
-    daySlotDates.length >= (candidateRequestAvailability?.number_of_days ?? 0);
+  const markAsAllDateSelected = daySlotDates.length >= (NoOfDaysNeeds ?? 0);
   const markAsAllSlotsSelected = selectedSlots.length
     ? selectedSlots
         .find((ele) => ele.round === day)
-        ?.dates.every(
-          (item) =>
-            item.slots.length >=
-            (candidateRequestAvailability?.number_of_slots ?? 0),
-        )
+        ?.dates.every((item) => item.slots.length >= (NoOfSlotsNeeds ?? 0))
     : false;
   const handleSubmit = async () => {
     const eventsByDate = (
@@ -75,9 +63,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
         return acc;
       }, {});
     const checkMinimumSlotsSelected = Object.keys(eventsByDate).filter(
-      (date) =>
-        eventsByDate[date].length <
-        (candidateRequestAvailability?.number_of_slots ?? 0),
+      (date) => eventsByDate[date].length < (NoOfSlotsNeeds ?? 0),
     );
 
     const checkSlotsSelectedForDates = daySlotDates
@@ -86,7 +72,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
 
     if (!markAsAllDateSelected) {
       toast({
-        title: `Please Select minimum ${candidateRequestAvailability.number_of_days} days`,
+        title: `Please Select minimum ${NoOfDaysNeeds} days`,
       });
       return;
     }
@@ -98,7 +84,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
     }
     if (checkMinimumSlotsSelected.length) {
       toast({
-        title: `You have to select minimum ${candidateRequestAvailability.number_of_slots} slots on ${checkMinimumSlotsSelected.map((date) => dayjs(date).format('MMM DD')).join(',')} `,
+        title: `You have to select minimum ${NoOfSlotsNeeds} slots on ${checkMinimumSlotsSelected.map((date) => dayjs(date).format('MMM DD')).join(',')} `,
       });
       return;
     }
@@ -124,54 +110,55 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
             updatedSlots[existingSlotIndex] = {
               ...daySlots,
             };
+            if (day < multiDaySessions.length) setOpenDaySlotPopup(day + 1);
           } else {
             updatedSlots.push({
               ...daySlots,
             });
+            if (day < multiDaySessions.length) setOpenDaySlotPopup(day + 1);
           }
           return updatedSlots;
         },
       );
-    } else {
-      submitAvailability();
     }
-    setOpenDaySlotPopup(0);
   };
 
+  const allCriteriaMeets = candidateRequestAvailability
+    ? multiDaySessions.length === selectedSlots.length &&
+      selectedDateSlots.every((ele) => ele.dates.length >= NoOfDaysNeeds) &&
+      selectedSlots
+        .flatMap((ele) => ele.dates)
+        .every((ele) => ele.slots.length >= NoOfSlotsNeeds)
+    : false;
   return (
     <>
-      <div className='bg-white'>
-        <div className='flex flex-col gap-10 px-0'>
-          <div className='items-left flex flex-col gap-4'>
-            <div className='flex items-start gap-2'>
-              <div className='relative'>
-                {markAsAllDateSelected ? (
-                  <CheckCircle className='mt-1 h-6 w-6 text-green-500' />
-                ) : (
-                  <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200'>
-                    1
-                  </div>
-                )}
-              </div>
-              <div className='flex flex-col'>
-                <div className='text-lg font-medium'>
-                  Select available dates
+      <div className='flexflex-col gap-10 px-0'>
+        <div className='items-left flex flex-col gap-4'>
+          <div className='flex items-start gap-2'>
+            <div className='relative'>
+              {markAsAllDateSelected ? (
+                <CheckCircle className='mt-1 h-6 w-6 text-green-500' />
+              ) : (
+                <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200'>
+                  1
                 </div>
-                <span className='text-sm'>
-                  {' '}
-                  {`Select ${candidateRequestAvailability.number_of_days} or more days.`}
-                </span>
+              )}
+            </div>
+            <div className='flex flex-col'>
+              <div className='text-md font-semibold'>
+                Select available dates
               </div>
+              <span className='text-sm text-muted-foreground'>
+                {' '}
+                {`Select ${NoOfDaysNeeds} or more days. Click on a date to select. Click again to deselect.`}
+              </span>
             </div>
-            <div className='text-muted-foreground'>
-              Click on a date to select. Click again to deselect.
-            </div>
-
-            <div className='w-full'>
-              {dateSlots.length ? (
-                <div>
-                  {/* <ScrollArea className='w-[800px]'> */}
-                  <div className='flex w-full flex-row flex-wrap justify-start gap-2'>
+          </div>
+          <div className='w-full'>
+            {dateSlots.length ? (
+              <div>
+                <ScrollArea className='w-[710px]'>
+                  <div className='flex gap-2 pb-4'>
                     {singleDay
                       ? (
                           dateSlots?.find((slot) => slot.round === day || 1)
@@ -303,63 +290,82 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
                           );
                         })}
                   </div>
-                  {/* </ScrollArea> */}
-                </div>
-              ) : (
-                <div className='flex w-full flex-row items-start gap-4'>
-                  {Array.from({ length: 7 }).map((_, i) => (
-                    <DateCardsSkelton key={i} />
-                  ))}
-                </div>
-              )}
-            </div>
+                  <ScrollBar orientation='horizontal' />
+                </ScrollArea>
+              </div>
+            ) : (
+              <div className='flex w-full flex-row items-start gap-4'>
+                {Array.from({ length: 7 }).map((_, i) => (
+                  <DateCardsSkelton key={i} />
+                ))}
+              </div>
+            )}
           </div>
+        </div>
 
-          <div className='flex w-full flex-col items-start gap-4'>
-            {markAsAllDateSelected ? (
-              <div className='flex w-full flex-col items-start gap-4'>
-                <UIDivider />
-                <div className='flex items-start gap-2'>
-                  <div className='relative'>
-                    {markAsAllSlotsSelected ? (
-                      <CheckCircle className='mt-1 h-6 w-6 text-green-500' />
-                    ) : (
-                      <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200'>
-                        2
-                      </div>
-                    )}
-                  </div>
-                  <div className='flex flex-col'>
-                    <div className='text-lg font-medium'>Choose time slots</div>
-                    <span className='text-sm'>{`Choose ${candidateRequestAvailability.number_of_slots} or more slots per day.`}</span>
-                  </div>
+        <Separator className='my-4' />
+
+        <div className='flex w-full flex-col items-start gap-4'>
+          {markAsAllDateSelected ? (
+            <div className='flex w-full flex-col items-start gap-4'>
+              <div className='flex items-start gap-2'>
+                <div className='relative'>
+                  {markAsAllSlotsSelected ? (
+                    <CheckCircle className='mt-1 h-6 w-6 text-green-500' />
+                  ) : (
+                    <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200'>
+                      2
+                    </div>
+                  )}
                 </div>
-                <div className='text-muted-foreground'>
-                  Click on a timeslot to select. Click again to deselect.
+                <div className='flex flex-col'>
+                  <div className='text-md font-semibold'>
+                    Choose time slots.
+                  </div>
+                  <span className='text-sm text-muted-foreground'>{`Choose ${NoOfSlotsNeeds} or more slots per day. Click on a timeslot to select. Click again to deselect.`}</span>
                 </div>
               </div>
-            ) : null}
-            <div>{markAsAllDateSelected ? <TimeSlotsWrapper /> : null}</div>
-          </div>
-          <div className='flex w-full items-center justify-center'>
-            {markAsAllDateSelected && markAsAllSlotsSelected ? (
-              <div className='mx-auto mb-4 w-[300px]'>
-                <UIButton
-                  size='md'
-                  onClick={handleSubmit}
-                  disabled={
-                    !markAsAllSlotsSelected ||
-                    !markAsAllDateSelected ||
-                    submitting
-                  }
-                  className='w-full'
-                  isLoading={submitting}
-                >
-                  {singleDay ? 'Submit Availability' : 'Done'}
-                </UIButton>
-              </div>
-            ) : null}
-          </div>
+            </div>
+          ) : null}
+          <ScrollArea className='h-[380px]'>
+            {markAsAllDateSelected ? <TimeSlotsWrapper /> : null}
+          </ScrollArea>
+        </div>
+        <div className='flex w-full items-center justify-end'>
+          {!allCriteriaMeets &&
+          markAsAllDateSelected &&
+          markAsAllSlotsSelected ? (
+            <div className='w-[200px] pt-4'>
+              <UIButton
+                size='md'
+                onClick={handleSubmit}
+                disabled={
+                  !markAsAllSlotsSelected ||
+                  !markAsAllDateSelected ||
+                  submitting
+                }
+                className='w-full'
+                isLoading={submitting}
+              >
+                Done
+              </UIButton>
+            </div>
+          ) : null}
+          {allCriteriaMeets && (
+            <div className='w-[200px] pt-4'>
+              <UIButton
+                size='md'
+                className='w-full'
+                onClick={submitAvailability}
+                disabled={
+                  multiDaySessions.length !== selectedSlots.length || submitting
+                }
+                isLoading={submitting}
+              >
+                Submit Availability
+              </UIButton>
+            </div>
+          )}
         </div>
       </div>
     </>

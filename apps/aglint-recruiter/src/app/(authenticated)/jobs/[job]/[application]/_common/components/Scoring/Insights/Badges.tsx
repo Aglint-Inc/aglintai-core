@@ -43,10 +43,10 @@ const Content = () => {
       <Badge
         key={index}
         variant='secondary'
-        className='flex items-center gap-1'
+        className='flex items-center gap-2 rounded-sm'
       >
         {badge.icon}
-        <span className='text-xs'>{badge.text}</span>
+        <span className='text-sm font-normal'>{badge.text}</span>
       </Badge>
     ))
   ) : (

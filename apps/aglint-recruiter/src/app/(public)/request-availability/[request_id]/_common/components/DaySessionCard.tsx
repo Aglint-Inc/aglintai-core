@@ -3,11 +3,11 @@ import {
   type InterviewSessionTypeDB,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils';
-import { Button } from '@components/ui/button';
+import { UIBadge } from '@components/ui-badge';
+import { cn } from '@lib/utils';
 import { CheckCircle, MapPin, Timer, Users } from 'lucide-react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
-import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 
 import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityContext';
@@ -28,19 +28,23 @@ function DaySessionCard({
     DatabaseTable['candidate_request_availability']['slots']
   >[number]['dates'];
 }) {
-  const { setOpenDaySlotPopup, daySlots, isSubmitted } =
+  const { setOpenDaySlotPopup, selectedSlots, isSubmitted, openDaySlotPopup } =
     useRequestAvailabilityContext();
   const handleOpen = async (day: number) => {
     setOpenDaySlotPopup(day);
   };
 
   return (
-    <>
+    <div
+      className={cn('rounded-lg border', {
+        'border-blue-500': cardIndex + 1 === openDaySlotPopup && !isSubmitted,
+      })}
+    >
       <MultiDayCard
         textDayCount={showDayCount ? `Day ${cardIndex + 1}` : ''}
         isSelected={
-          daySlots.length
-            ? daySlots.map((ele) => ele.round).includes(cardIndex + 1)
+          selectedSlots.length
+            ? selectedSlots.map((ele) => ele.round).includes(cardIndex + 1)
             : false
         }
         textTotalDuration={convertMinutesToHoursAndMinutes(totalSessionMinutes)}
@@ -55,31 +59,14 @@ function DaySessionCard({
             />
           );
         })}
-        slotPickDateButton={
-          <ShowCode>
-            <ShowCode.When
-              isTrue={
-                (daySlots.map((ele) => ele.round).includes(cardIndex) ||
-                  cardIndex < 1) &&
-                !daySlots.map((ele) => ele.round).includes(cardIndex + 1)
-              }
-            >
-              <Button
-                variant='secondary'
-                size='sm'
-                onClick={() => handleOpen(cardIndex + 1)}
-              >
-                Pick Slots
-              </Button>
-            </ShowCode.When>
-          </ShowCode>
-        }
         slotChangeButton={
           <ShowCode>
             <ShowCode.When
               isTrue={
-                !isSubmitted && daySlots.length
-                  ? daySlots.map((ele) => ele.round).includes(cardIndex + 1)
+                !isSubmitted && selectedSlots.length
+                  ? selectedSlots
+                      .map((ele) => ele.round)
+                      .includes(cardIndex + 1)
                   : false
               }
             >
@@ -105,10 +92,8 @@ function DaySessionCard({
                 slotBadge={ele.slots.map((slot, i) => {
                   return (
                     <UIBadge
-                      iconName={null}
                       color={isSubmitted ? 'success' : 'warning'}
                       key={i}
-                      className='text-black'
                       textBadge={`${dayjsLocal(slot.startTime).format('hh:mm A')} - ${dayjsLocal(slot.endTime).format('hh:mm A')}`}
                     />
                   );
@@ -119,7 +104,7 @@ function DaySessionCard({
           })
         }
       />
-    </>
+    </div>
   );
 }
 
@@ -130,7 +115,6 @@ interface MultiDayCardCardProps {
   isSelected: boolean;
   textTotalDuration: string;
   slotSessionInfo: React.ReactNode;
-  slotPickDateButton: React.ReactNode;
   slotChangeButton: React.ReactNode;
   textSelectedSlots: string;
   slotSelected: React.ReactNode;
@@ -141,13 +125,12 @@ export function MultiDayCard({
   isSelected,
   textTotalDuration,
   slotSessionInfo,
-  slotPickDateButton,
   slotChangeButton,
   textSelectedSlots,
   slotSelected,
 }: MultiDayCardCardProps) {
   return (
-    <div className='w-full rounded-lg border border-neutral-200'>
+    <div className='w-full'>
       <div className='space-y-4 p-4'>
         <div className='flex items-start justify-between'>
           <div>
@@ -157,7 +140,6 @@ export function MultiDayCard({
               <span>Total Duration: {textTotalDuration}</span>
             </div>
           </div>
-          <div>{slotPickDateButton}</div>
         </div>
         <div className='space-y-2'>{slotSessionInfo}</div>
       </div>

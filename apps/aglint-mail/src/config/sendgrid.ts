@@ -2,7 +2,6 @@
 import sgMail from '@sendgrid/mail';
 import type { APISendgridPayload } from '@aglint/shared-types';
 import { CApiError } from '@aglint/shared-utils';
-import { MailSenderError } from '../utils/apiUtils/customErrors';
 import { getOutboundEmail } from './get-outbound-email';
 
 export default async function sendMail(data: APISendgridPayload) {
@@ -18,16 +17,16 @@ export default async function sendMail(data: APISendgridPayload) {
     attachments,
     html,
   } = data;
+  if (
+    (subject.length === 0 && text.length === 0 && !html) ||
+    (html && html.length === 0)
+  ) {
+    throw new CApiError(
+      'SERVER_ERROR',
+      'Email must have a subject, text or html',
+    );
+  }
   try {
-    if (
-      (subject.length === 0 && text.length === 0 && !html) ||
-      (html && html.length === 0)
-    ) {
-      throw new CApiError(
-        'SERVER_ERROR',
-        'Email must have a subject, text or html',
-      );
-    }
     const msg: any = {
       to: email, // Change to your recipient
       from: {
@@ -59,9 +58,20 @@ export default async function sendMail(data: APISendgridPayload) {
     if (Response.statusCode >= 200 && Response.statusCode < 300) {
       return 'ok';
     }
-    throw new MailSenderError(`mail failed to send`);
+    throw new CApiError('SERVER_ERROR', 'Inavlid status code from sendgrid');
   } catch (error: any) {
-    console.error(error);
-    throw new MailSenderError(`mail failed to send`);
+    if (error.response?.body) {
+      console.error(error.response.body);
+      throw new CApiError(
+        'SERVER_ERROR',
+        'send grid error',
+        error.response.body,
+      );
+    }
+    throw new CApiError(
+      'SERVER_ERROR',
+      `Unknon error while sending mail`,
+      error,
+    );
   }
 }

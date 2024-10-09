@@ -1,3 +1,5 @@
+'use client';
+
 import { useRequests } from '@requests/hooks/useRequests';
 import { useQuery } from '@tanstack/react-query';
 import { createContext, type PropsWithChildren } from 'react';

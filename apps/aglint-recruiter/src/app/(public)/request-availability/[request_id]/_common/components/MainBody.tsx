@@ -1,8 +1,9 @@
 'use client';
-import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
+import { ScrollArea } from '@components/ui/scroll-area';
+import { cn } from '@lib/utils';
 import dayjs from 'dayjs';
 import { AlertTriangle, RefreshCcw } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { ConfirmedInvitePage } from 'src/app/_common/components/CandidateConfirm/_common/components';
 import { type CandidateInviteType } from 'src/app/(public)/self-scheduling/[filter]/_common/store';
 
@@ -14,55 +15,17 @@ import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityCo
 import {
   useCandidateAvailabilityData,
   useCandidateAvailabilityMeetings,
-  useCandidateAvailabilityScheduleDMeetings,
 } from '../hooks/useRequestAvailability';
-import { type CandidateMeetingsType } from '../types';
 import MultiDaySessions from './MultiDaySessions';
-import SingleDaySessions from './SingleDaySessions';
-import SlotsSubmitted from './SlotsSubmitted';
+import SlotsPicker from './SlotsPicker';
 
 function CandidateAvailability() {
-  const { multiDaySessions, isSubmitted } = useRequestAvailabilityContext();
-  const [meetingsAndRounds, setMeetingsAndRound] = useState<{
-    rounds: any[];
-    meetings: any[];
-    schedule: any;
-  } | null>(null);
+  const { multiDaySessions, meetingsAndRounds } =
+    useRequestAvailabilityContext();
+  const { isFetched: isMeetingFetched } = useCandidateAvailabilityMeetings();
 
-  const { data: meetings } = useCandidateAvailabilityMeetings();
   const { data: candidateRequestAvailability, isFetched } =
     useCandidateAvailabilityData();
-  const { data: scheduledMeetings } =
-    useCandidateAvailabilityScheduleDMeetings();
-
-  const getMeetings = async (meetings: CandidateMeetingsType) => {
-    if (meetings) {
-      const { rounds } = meetings.reduce(
-        (acc, curr) => {
-          const count = acc.rounds.length;
-          if (
-            count === 0 ||
-            acc.rounds[count - 1].sessions[
-              acc.rounds[count - 1].sessions.length - 1
-            ].interview_session.break_duration >= SINGLE_DAY_TIME
-          )
-            acc.rounds.push({
-              title: `Day ${acc.rounds.length + 1}`,
-              sessions: [curr],
-            });
-          else acc.rounds[count - 1].sessions.push(curr);
-          return acc;
-        },
-        { rounds: [] as any },
-      );
-
-      setMeetingsAndRound({
-        rounds: rounds,
-        meetings: meetings,
-        schedule: scheduledMeetings,
-      });
-    }
-  };
 
   const initialTimezone = useMemo(() => {
     const tz = dayjs.tz.guess();
@@ -70,15 +33,7 @@ function CandidateAvailability() {
       ({ tzCode }) => tzCode === tz,
     ) as CandidateInviteType['timezone'];
   }, []);
-  useEffect(() => {
-    if (
-      candidateRequestAvailability &&
-      candidateRequestAvailability.booking_confirmed &&
-      meetings?.length
-    ) {
-      getMeetings(meetings);
-    }
-  }, [meetings]);
+
   if (
     candidateRequestAvailability &&
     candidateRequestAvailability?.booking_confirmed === true &&
@@ -99,9 +54,9 @@ function CandidateAvailability() {
       />
     );
   }
-  if (!isFetched) {
+  if (!isFetched || !isMeetingFetched) {
     return (
-      <div className='flex w-full items-center justify-center'>
+      <div className='flex h-[200px] w-full items-center justify-center'>
         <Loader />
       </div>
     );
@@ -133,17 +88,25 @@ function CandidateAvailability() {
       </div>
     );
   }
-
   return (
-    <>
-      {isSubmitted && <SlotsSubmitted />}
-      {!isSubmitted && (multiDaySessions ?? []).length === 1 && (
-        <SingleDaySessions />
+    <div className='flex flex-row'>
+      {!candidateRequestAvailability?.slots && (
+        <>
+          <div className='w-8/12 p-4'>
+            <SlotsPicker singleDay={multiDaySessions.length === 1} />
+          </div>
+        </>
       )}
-      {!isSubmitted && (multiDaySessions ?? []).length > 1 && (
-        <MultiDaySessions />
-      )}
-    </>
+      <div
+        className={cn('w-4/12', {
+          '': !candidateRequestAvailability?.slots,
+        })}
+      >
+        <ScrollArea className='h-[calc(100vh-260px)] border-l border-border p-4'>
+          <MultiDaySessions />
+        </ScrollArea>
+      </div>
+    </div>
   );
 }
 

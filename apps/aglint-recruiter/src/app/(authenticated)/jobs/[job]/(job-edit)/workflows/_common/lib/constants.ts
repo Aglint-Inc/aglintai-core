@@ -43,20 +43,19 @@ export const triggerToCategoryMap: Record<
 };
 
 export const triggerToQuestion: Record<JobRelatedCTriggers, string> = {
-  candidateBook: 'What happens when a candidate books a meeting ?',
-  onRequestCancel: 'How do we respond if a candidate cancels ?',
-  onRequestReschedule: 'What our process for rescheduling requests ?',
-  selfScheduleReminder: 'how do we remind candidate for self schedule ?',
-  interviewStart: 'remind interviewer before interview start ?',
-  sendAvailReqReminder: 'how do we remind candidate for availability ?',
-  interviewerConfirmation:
-    'How do we confirm when an interviewer accepts an invitation ?',
-  interviewEnd: 'What happens after an interview ends ?',
-  meetingAccepted: 'What happens when an interviewer confirms ?',
-  onReceivingAvailReq: 'What happens after reciving candidate availability ?',
-  onRequestSchedule: 'What our process after reciveing schedule request ?',
-  onRequestInterviewerDecline:
-    'What happens when interviewer decline request ?',
+  candidateBook: 'What happens when a candidate books a meeting?',
+  onRequestCancel: 'How do we respond if a candidate cancels?',
+  onRequestReschedule: 'What is our process for rescheduling requests?',
+  selfScheduleReminder: 'How do we remind candidates to self-schedule?',
+  interviewStart: 'Remind the interviewer before the interview starts?',
+  sendAvailReqReminder: 'How do we remind candidates for availability?',
+  interviewerConfirmation: 'How do we confirm when an interviewer accepts an invitation?',
+  interviewEnd: 'What happens after an interview ends?',
+  meetingAccepted: 'What happens when an interviewer confirms?',
+  onReceivingAvailReq: 'What happens after receiving candidate availability?',
+  onRequestSchedule: 'What is our process after receiving a schedule request?',
+  onRequestInterviewerDecline: 'What happens when an interviewer declines a request?',
+
 };
 
 export const agentInstructionEmailTargetApi: Partial<
