@@ -15,7 +15,7 @@ const query = async ({ input }: PublicProcedure<typeof schema>) => {
     const { data } = await db
       .from('candidate_request_availability')
       .select(
-        '*,request_session_relation(interview_session(*)),applications!inner(candidate_id,candidates!inner(*)),recruiter!inner(id,logo,name)',
+        '*,request_session_relation(interview_session(*)),applications!inner(candidate_id,candidates!inner(*),public_jobs!inner(job_title,job_type,office_locations(city,region,country))),recruiter!inner(id,logo,name)',
       )
       .eq('id', candidate_request_availability_id)
       .single()

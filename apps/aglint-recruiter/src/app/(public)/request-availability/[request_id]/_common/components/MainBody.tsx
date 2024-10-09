@@ -1,5 +1,4 @@
 'use client';
-import { ScrollArea } from '@components/ui/scroll-area';
 import { cn } from '@lib/utils';
 import dayjs from 'dayjs';
 import { AlertTriangle, RefreshCcw } from 'lucide-react';
@@ -16,7 +15,7 @@ import {
   useCandidateAvailabilityData,
   useCandidateAvailabilityMeetings,
 } from '../hooks/useRequestAvailability';
-import MultiDaySessions from './MultiDaySessions';
+import DaySessions from './DaySessions';
 import SlotsPicker from './SlotsPicker';
 
 function CandidateAvailability() {
@@ -98,13 +97,11 @@ function CandidateAvailability() {
         </>
       )}
       <div
-        className={cn('w-4/12', {
+        className={cn('min-w-4/12', {
           '': !candidateRequestAvailability?.slots,
         })}
       >
-        <ScrollArea className='h-[calc(100vh-260px)] border-l border-border p-4'>
-          <MultiDaySessions />
-        </ScrollArea>
+        <DaySessions singleDay={multiDaySessions.length === 1} />
       </div>
     </div>
   );
