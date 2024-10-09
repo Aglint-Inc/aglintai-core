@@ -9,6 +9,7 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
+import { useEffect } from 'react';
 
 import { NotFound } from '@/components/Common/404';
 import TimezonePicker from '@/components/Common/TimezonePicker';
@@ -18,8 +19,9 @@ import { Loader } from '../../../../../../components/Common/Loader';
 import { ConfirmedInvitePage } from '../../../../../_common/components/CandidateConfirm/_common/components';
 import { useInviteMeta } from '../hooks/useInviteMeta';
 import { useInviteSlots } from '../hooks/useInviteSlots';
+import { useRounds } from '../hooks/useRounds';
 import {
-  setSelectedSlots,
+  resetCandidateInviteStore,
   setTimeZone,
   useCandidateInviteStore,
 } from '../store';
@@ -163,7 +165,6 @@ const CandidateInvitePlanPage = () => {
           <TimezonePicker
             onChange={(e) => {
               setTimeZone(e);
-              setSelectedSlots([]);
             }}
             value={timezone.tzCode}
           />
@@ -175,6 +176,12 @@ const CandidateInvitePlanPage = () => {
 };
 
 const Invite = ({ rounds }: ScheduleCardsProps) => {
+  useEffect(() => {
+    return () => {
+      resetCandidateInviteStore();
+    };
+  }, []);
+  useRounds();
   if (rounds.length === 1) return <SingleDay />;
   return <MultiDay />;
 };
