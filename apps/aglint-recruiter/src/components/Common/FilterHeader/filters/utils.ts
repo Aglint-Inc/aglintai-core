@@ -221,11 +221,6 @@ export function nestedObjectToArray(
         if (typeof temp_options[0] !== 'string') {
           temp_options = temp_options.map((item) => item.id);
         }
-        // console.log(
-        //   typeof temp_options[0] !== 'string',
-        //   temp_options,
-        //   selectedOptions,
-        // );
         const status = temp_options.includes(id) ? 'active' : 'inactive';
         return {
           id,
