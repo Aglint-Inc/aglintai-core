@@ -1,4 +1,5 @@
 'use client';
+import { getFullName } from '@aglint/shared-utils';
 import { PublicPageLayout } from '@components/layouts/public-layout';
 import { UIBadge } from '@components/ui-badge';
 import { CheckCircle } from 'lucide-react';
@@ -12,12 +13,42 @@ import { useCandidateAvailabilityData } from './_common/hooks/useRequestAvailabi
 function RequestAvailability() {
   const { isSubmitted, meetingsAndRounds } = useRequestAvailabilityContext();
   const { data: candidateRequestAvailability } = useCandidateAvailabilityData();
-
+  const location =
+    candidateRequestAvailability?.applications.public_jobs.office_locations
+      ?.city ??
+    '' +
+      ' ' +
+      candidateRequestAvailability?.applications.public_jobs.office_locations
+        ?.region ??
+    '' +
+      ' ' +
+      candidateRequestAvailability?.applications.public_jobs.office_locations
+        ?.country ??
+    '';
+  const candidate = candidateRequestAvailability?.applications.candidates;
   return (
     <PublicPageLayout
       header={
         <SchedulingPageHeader
-          companyName={candidateRequestAvailability?.recruiter?.name ?? ''}
+          companyDetails={{
+            name: candidateRequestAvailability?.recruiter?.name ?? '',
+            logo: candidateRequestAvailability?.recruiter?.logo ?? '',
+            location: location ?? '',
+            jobTitle:
+              candidateRequestAvailability?.applications.public_jobs
+                .job_title ?? '',
+            jobType:
+              candidateRequestAvailability?.applications.public_jobs.job_type ??
+              '',
+          }}
+          candidateDetails={{
+            name: getFullName(
+              candidate?.first_name ?? '',
+              candidate?.last_name ?? '',
+            ),
+            position: candidate?.current_job_title ?? '',
+            email: candidate?.email ?? '',
+          }}
           description={
             isSubmitted && !candidateRequestAvailability?.booking_confirmed ? (
               <p className='text-sm text-muted-foreground'>
@@ -41,7 +72,6 @@ function RequestAvailability() {
               </h2>
             </div>
           }
-          logo={candidateRequestAvailability?.recruiter?.logo ?? ''}
         />
       }
       footer={<Footer brand={true} />}
