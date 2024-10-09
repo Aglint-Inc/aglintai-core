@@ -1,7 +1,7 @@
 import { toast } from '@components/hooks/use-toast';
 import { Accordion } from '@components/ui/accordion';
-import { Skeleton } from '@components/ui/skeleton';
 
+import { Loader } from '@/common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import { api } from '@/trpc/client';
 
@@ -63,11 +63,11 @@ export default function Main() {
   };
 
   return (
-    <div className='md:col-span-2'>
-      {isStateUpdating && <Skeleton className='h-[500px] w-full' />}
+    <div className=''>
+      {isStateUpdating && <Loader/>}
       {!isStateUpdating && (
         <>
-          <Accordion type='single' collapsible className='w-full'>
+          <Accordion type='single' collapsible className='w-full flex flex-col gap-3'>
             {allCategories.map((categ, idx) => {
               const currentTriggers = jobWorkflowTriggers.filter(
                 (trig) => trig.category === categ,
@@ -82,7 +82,10 @@ export default function Main() {
               );
             })}
           </Accordion>
-          <div className='mt-6 flex flex-row justify-end space-x-1'>
+          <div className='mt-3 flex flex-row justify-start gap-2'>
+          <UIButton onClick={handleSave} isLoading={isPending}>
+              Save Changes
+            </UIButton>
             <UIButton
               disabled={!isWorkflowsChanged}
               variant='secondary'
@@ -90,9 +93,7 @@ export default function Main() {
             >
               Reset
             </UIButton>
-            <UIButton onClick={handleSave} isLoading={isPending}>
-              Save
-            </UIButton>
+            
           </div>
         </>
       )}

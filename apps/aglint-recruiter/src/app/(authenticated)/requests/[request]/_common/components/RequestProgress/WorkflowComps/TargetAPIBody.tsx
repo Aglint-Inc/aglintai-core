@@ -110,7 +110,7 @@ const SlackTemplate = () => {
   return (
     <UIAlert
       type='info'
-      title={'A slack notification will be sent for this action.'}
+      title={'A Slack notification will be sent for this action.'}
     />
   );
 };

@@ -21,9 +21,7 @@ import { capitalize } from 'lodash';
 import {
   Check,
   CircleDot,
-  Edit2,
   Lightbulb,
-  PlusCircle,
   RefreshCcw,
   X,
 } from 'lucide-react';
@@ -110,17 +108,14 @@ const ProfileScorePage = () => {
       <PageHeader>
         <PageHeaderText>
           <PageTitle>Profile Scoring</PageTitle>
-          <PageDescription>
-            Profile scoring helps evaluate candidates objectively, assigning
-            numerical values to their qualifications and experience to
-            streamline the hiring process and identify the best-fit applicants
-            efficiently.
+          <PageDescription className='max-w-2xl'>
+          Profile scoring assigns numerical values to candidates&apos; qualifications, simplifying the hiring process.
           </PageDescription>
         </PageHeaderText>
         <PageActions></PageActions>
       </PageHeader>
       <div className='flex'>
-        <div className='mr-4 flex-1'>
+        <div className='mr-4 flex-1 pt-3'>
           <ProfileScore />
         </div>
         <div className='w-1/3'>
@@ -208,7 +203,7 @@ const ProfileScoreControls = () => {
   }, Object.values(safeWeights));
   return (
     <div
-      className={`sticky right-0 top-0 p-4 ${
+      className={`sticky right-0 top-0 p-4 bg-muted rounded-md mt-2${
         job.scoring_criteria_loading ? 'pointer-events-none opacity-40' : ''
       }`}
     >
@@ -325,7 +320,7 @@ const SectionHeader: FC<{ type: Sections; weight: number; color: string }> = ({
   return (
     <div className='mb-4 flex items-center space-x-2'>
       <CircleDot className='h-4 w-4' style={{ color }} />
-      <span className='font-medium'>{capitalize(type)}</span>
+      <span className='font-medium text-md'>{capitalize(type)}</span>
       <span className='text-sm text-muted-foreground'>({weight}%)</span>
     </div>
   );
@@ -395,16 +390,20 @@ const SectionContent: FC<{ type: Sections }> = ({ type }) => {
   return (
     <div className='mb-8 space-y-4'>
       <div className='flex flex-wrap gap-2'>
-        {jd_json[section].map((item, index) => (
-          <Tag
-            key={item.id}
-            item={item}
-            onChange={(updatedItem) => handleTagChange(index, updatedItem)}
-            onDelete={() => handleTagDelete(index)}
-          />
-        ))}
+      {jd_json[section].length > 0 ? (
+    jd_json[section].map((item, index) => (
+      <Tag
+        key={item.id}
+        item={item}
+        onChange={(updatedItem) => handleTagChange(index, updatedItem)}
+        onDelete={() => handleTagDelete(index)}
+      />
+    ))
+  ) : (
+    <div className='text-sm text-muted-foreground'>No {type} added</div>
+  )}
       </div>
-      <div className='flex items-center pl-2'>
+      <div className='flex items-center'>
         <Input
           placeholder={`Add new ${type}`}
           value={newTags}
@@ -415,15 +414,14 @@ const SectionContent: FC<{ type: Sections }> = ({ type }) => {
               handleAddTags();
             }
           }}
-          className='h-fit flex-grow p-1 pl-3'
+          className='h-9 flex-grow p-1 pl-3'
         />
         <Button
-          size='sm'
+          size='md'
           onClick={handleAddTags}
-          variant='outline'
+          variant='secondary'
           className='ml-2'
         >
-          <PlusCircle className='mr-1 h-4 w-4' />
           Add
         </Button>
       </div>
@@ -448,39 +446,36 @@ const Tag: FC<{
   };
 
   return (
-    <div className='group relative inline-block'>
+    <div className='group relative inline-block h-8 '>
       {isEditing ? (
-        <div className='flex items-center overflow-hidden rounded-md border bg-white'>
+        <div className='flex items-center overflow-hidden rounded-md border bg-white pr-1'>
           <Input
             value={value}
             onChange={(e) => setValue(e.target.value)}
             onBlur={handleSubmit}
             onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
-            className='h-8 w-[200px] border-none p-1 pl-3 text-sm focus:outline-none focus-visible:ring-0'
+            className='h-8 w-[500px] border-none p-1 pl-3 text-sm focus:outline-none focus-visible:ring-0'
           />
           <UIButton
             onClick={handleSubmit}
-            className='bg-gray-100 px-2 py-1 transition-colors duration-200 hover:bg-gray-200'
+            className='bg-gray-100 px-2 py-1 transition-colors '
             title='Press Enter to save'
-            icon={<Check />}
+            icon={<Check/>}
             size='sm'
           />
         </div>
       ) : (
-        <div className='inline-flex items-center rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700'>
+        <div className='flex h-8 items-center gap-2 relative rounded-md bg-gray-100 pl-3 pr-1 py-1 text-sm cursor-pointer' onClick={() => setIsEditing(true)}>
           {item.field}
-          <button
-            onClick={() => setIsEditing(true)}
-            className='ml-2 opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100'
-          >
-            <Edit2 className='h-4 w-4' />
-          </button>
+          <div className='flex items-center gap-1 h-full'>
           <button
             onClick={onDelete}
-            className='ml-1 opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100'
+            className='ml-1 w-5 h-5flex items-center justify-center rounded-sm'
           >
-            <X className='h-4 w-4' />
+            <X className='h-3 w-3' />
           </button>
+          </div>
+          
         </div>
       )}
     </div>
