@@ -47,7 +47,6 @@ const verifyRecruiterSelectedSlots = async (
     end_date_str,
     start_date_str,
     filered_selected_options,
-    is_link_from_email_agent,
   } = await fetch_details_from_db(req_body);
   const selected_options = filered_selected_options;
 
@@ -57,6 +56,8 @@ const verifyRecruiterSelectedSlots = async (
       out_of_working_hrs: true,
       show_soft_conflicts: true,
     },
+    cand_start_time: 0,
+    cand_end_time: 24,
   });
   await cand_schedule.fetchDetails({
     params: {
@@ -69,18 +70,8 @@ const verifyRecruiterSelectedSlots = async (
   });
   let all_day_plans: ReturnType<typeof convertOptionsToDateRangeSlots> = [];
 
-  // email agent schedule link
-  if (is_link_from_email_agent) {
-    all_day_plans = cand_schedule.findCandSlotsForDateRange();
-  } else {
-    const verified_slots =
-      cand_schedule.verifyIntSelectedSlots(selected_options);
-    all_day_plans = convertOptionsToDateRangeSlots(
-      verified_slots,
-      candidate_tz,
-    );
-  }
-
+  const verified_slots = cand_schedule.verifyIntSelectedSlots(selected_options);
+  all_day_plans = convertOptionsToDateRangeSlots(verified_slots, candidate_tz);
   return all_day_plans;
 };
 
@@ -100,42 +91,40 @@ const fetch_details_from_db = async (
   if (!filter_json_data) throw new Error('invalid filter_json_id');
   let start_date_str = filter_json_data.filter_json.start_date;
   let end_date_str = filter_json_data.filter_json.end_date;
-
-  const is_link_from_email_agent =
+  if (
     !filter_json_data.selected_options ||
-    filter_json_data.selected_options.length === 0;
-  // NOTE: hadling cancelled interview_session
-
-  let filered_selected_options: PlanCombinationRespType[] = [];
-  if (!is_link_from_email_agent) {
-    filered_selected_options = filter_json_data.selected_options.map((plan) => {
-      const updated_plan = { ...plan };
-      updated_plan.sessions = updated_plan.sessions.filter((s) =>
-        filter_json_data.session_ids.includes(s.session_id),
-      );
-      return updated_plan;
-    });
-    const sorted_options = filered_selected_options.sort(
-      (plan1, plan2) =>
-        dayjsLocal(plan1.sessions[0].start_time).unix() -
-        dayjsLocal(plan2.sessions[0].start_time).unix(),
-    );
-    start_date_str = dayjsLocal(sorted_options[0].sessions[0].start_time)
-      .tz(req_body.candidate_tz)
-      .startOf('date')
-      .format('DD/MM/YYYY');
-    end_date_str = dayjsLocal(
-      sorted_options[sorted_options.length - 1].sessions[
-        sorted_options[0].sessions.length - 1
-      ].end_time,
-    )
-      .tz(req_body.candidate_tz)
-      .endOf('date')
-      .format('DD/MM/YYYY');
+    filter_json_data.selected_options.length === 0
+  ) {
+    throw new Error('NO Plans');
   }
 
+  let filered_selected_options: PlanCombinationRespType[] = [];
+  filered_selected_options = filter_json_data.selected_options.map((plan) => {
+    const updated_plan = { ...plan };
+    updated_plan.sessions = updated_plan.sessions.filter((s) =>
+      filter_json_data.session_ids.includes(s.session_id),
+    );
+    return updated_plan;
+  });
+  const sorted_options = filered_selected_options.sort(
+    (plan1, plan2) =>
+      dayjsLocal(plan1.sessions[0].start_time).unix() -
+      dayjsLocal(plan2.sessions[0].start_time).unix(),
+  );
+  start_date_str = dayjsLocal(sorted_options[0].sessions[0].start_time)
+    .tz(req_body.candidate_tz)
+    .startOf('date')
+    .format('DD/MM/YYYY');
+  end_date_str = dayjsLocal(
+    sorted_options[sorted_options.length - 1].sessions[
+      sorted_options[0].sessions.length - 1
+    ].end_time,
+  )
+    .tz(req_body.candidate_tz)
+    .endOf('date')
+    .format('DD/MM/YYYY');
+
   return {
-    is_link_from_email_agent,
     filered_selected_options,
     filter_json_data,
     start_date_str,
