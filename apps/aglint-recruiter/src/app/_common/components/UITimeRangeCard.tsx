@@ -1,5 +1,5 @@
 import { cn } from '@lib/utils';
-import { X } from 'lucide-react';
+import { CircleMinus } from 'lucide-react';
 
 import { UIButton } from '@/components/Common/UIButton';
 
@@ -17,24 +17,25 @@ export function UITimeRangeCard({
   ShowCloseIcon?: boolean;
 }) {
   return (
-    <div className='relative'>
+    <div className='group relative'>
       <UIButton
         variant='outline'
+        size='sm'
         className={cn(
-          'relative h-10 w-full bg-white px-4 py-1 text-center text-black transition-all duration-200 ease-in-out',
-          isActive && 'border-primary bg-primary/10 text-primary',
-          isSemiActive && 'border-dashed border-orange-400 text-black',
+          'relative h-10 w-full bg-white text-center',
+          isActive && 'border-blue-300 bg-blue-50',
+          isSemiActive && 'border-dashed border-blue-300',
         )}
         onClick={onClickTime}
       >
-        <span className='relative z-10'>{textTime}</span>
+        {textTime}
       </UIButton>
       {ShowCloseIcon && isActive && (
         <span
           onClick={onClickTime}
-          className='z-2 absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full border border-neutral-300 bg-white'
+          className='z-2 absolute -right-2 -top-2 h-4 w-4 rounded-full bg-white opacity-0 transition-opacity group-hover:opacity-100'
         >
-          <X className='h-3 w-3 text-muted-foreground' />
+          <CircleMinus className='h-4 w-4 text-destructive' />
         </span>
       )}
     </div>
