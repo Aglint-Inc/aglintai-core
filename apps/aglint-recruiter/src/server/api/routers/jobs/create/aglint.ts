@@ -1,9 +1,11 @@
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 import { jobDescriptionSchema } from '../common/jobDescriptionSchema';
+import { generateJd } from '../job/jd/generate';
 
 const schema = z.object({
   job_title: z.string(),
@@ -29,7 +31,7 @@ const schema = z.object({
 
 const mutation = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
   const db = createPrivateClient();
-  return (
+  const response = (
     await db
       .from('public_jobs')
       .insert({ recruiter_id: ctx.recruiter_id, ...input })
@@ -37,6 +39,17 @@ const mutation = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
       .single()
       .throwOnError()
   ).data;
+  if (!response)
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'Unable to create job',
+    });
+  try {
+    generateJd({ ctx, input: { job_id: response.id, type: 'generate' } });
+  } catch {
+    //
+  }
+  return response.id;
 };
 
 export const aglint = privateProcedure.input(schema).mutation(mutation);

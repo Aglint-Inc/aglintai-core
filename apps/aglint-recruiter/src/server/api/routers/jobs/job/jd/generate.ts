@@ -1,50 +1,84 @@
-import { z, ZodSchema } from 'zod';
+import type { DatabaseTable, DatabaseTableUpdate } from '@aglint/shared-types';
+import { TRPCError } from '@trpc/server';
+import { nanoid } from 'nanoid';
+import OpenAI from 'openai';
+import { zodResponseFormat } from 'openai/helpers/zod';
+import type { ChatCompletionMessageParam } from 'openai/resources';
+import type { ParsedChatCompletion } from 'openai/resources/beta/chat/completions';
+import { z, type ZodSchema } from 'zod';
 
 import { type DBProcedure, dbProcedure } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
-import { jobDescriptionSchema } from '../../common/jobDescriptionSchema';
-import { TRPCError } from '@trpc/server';
-import { ChatCompletionMessageParam } from 'openai/resources';
-import { DatabaseTable } from '@aglint/shared-types';
-import OpenAI from 'openai';
-import { nanoid } from 'nanoid';
-import { zodResponseFormat } from 'openai/helpers/zod';
-import { ParsedChatCompletion } from 'openai/resources/beta/chat/completions';
 import { SafeObject } from '@/utils/safeObject';
+
+import { jobDescriptionSchema } from '../../common/jobDescriptionSchema';
 
 const schema = z.object({
   job_id: z.string(),
+  type: z.enum(['generate', 'regenerate']),
 });
 
+type Jd = DatabaseTable['public_jobs']['draft_jd_json'];
+
+type JdItem = Jd[keyof Omit<Jd, 'level' | 'title'>];
+
 const jsonItemSchema = z.array(
+  z.object({
+    id: z.string(),
+    field: z.string(),
+    isMustHave: z.boolean(),
+  }),
+) satisfies ZodSchema<JdItem>;
+
+const levelSchema = z.enum([
+  'Fresher-level',
+  'Associate-level',
+  'Mid-level',
+  'Senior-level',
+  'Executive-level',
+]) satisfies ZodSchema<Jd['level']>;
+
+const jdSchema = z.object({
+  title: z.string(),
+  level: levelSchema,
+  rolesResponsibilities: jsonItemSchema,
+  skills: jsonItemSchema,
+  educations: jsonItemSchema,
+}) satisfies ZodSchema<Jd>;
+
+type TrimmedJdItem = {
+  field: string;
+  mustHave: boolean;
+}[];
+type TrimmedJd = {
+  level: Jd['level'];
+  roles: TrimmedJdItem;
+  responsibilities: TrimmedJdItem;
+  education: TrimmedJdItem;
+  skills: TrimmedJdItem;
+};
+
+const trimmedJdItemSchema = z.array(
   z.object({
     field: z.string(),
     mustHave: z.boolean(),
   }),
-);
+) satisfies ZodSchema<TrimmedJdItem>;
 
-const jdSchema = z.object({
-  level: z.enum([
-    'Fresher-level',
-    'Associate-level',
-    'Mid-level',
-    'Senior-level',
-    'Executive-level',
-  ]),
-  experience: jsonItemSchema,
-  skills: jsonItemSchema,
-  education: jsonItemSchema,
-}) satisfies ZodSchema<DatabaseTable['public_jobs']['draft_jd_json']>;
+const trimmedJdSchema = z.object({
+  level: levelSchema,
+  roles: trimmedJdItemSchema,
+  responsibilities: trimmedJdItemSchema,
+  skills: trimmedJdItemSchema,
+  education: trimmedJdItemSchema,
+}) satisfies ZodSchema<TrimmedJd>;
 
-const mutation = async (payload: DBProcedure<typeof schema>) => {
-  const description = await getJobDescription(payload);
+export const generateJd = async (payload: DBProcedure<typeof schema>) => {
+  const { description, job_title } = await getJobDetails(payload);
   try {
     await startScoreLoading(payload);
-    console.log(description, '🔥');
-    const draft_jd_json = await generateJd(description);
-    console.log(draft_jd_json, '💦');
+    const draft_jd_json = await getJd(description, job_title);
     const parameter_weights = getParameterWeights(draft_jd_json);
-    console.log(parameter_weights, '💨');
     await finishScoreLoading({ ...payload, draft_jd_json, parameter_weights });
   } catch (e) {
     await stopScoreLoading(payload);
@@ -52,14 +86,14 @@ const mutation = async (payload: DBProcedure<typeof schema>) => {
   }
 };
 
-export const generate = dbProcedure.input(schema).mutation(mutation);
+export const generate = dbProcedure.input(schema).mutation(generateJd);
 
-const getJobDescription = async ({ input }: DBProcedure<typeof schema>) => {
+const getJobDetails = async ({ input }: DBProcedure<typeof schema>) => {
   const db = createPublicClient();
   const job = (
     await db
       .from('public_jobs')
-      .select('description')
+      .select('job_title, description')
       .eq('id', input.job_id)
       .single()
       .throwOnError()
@@ -69,7 +103,10 @@ const getJobDescription = async ({ input }: DBProcedure<typeof schema>) => {
       code: 'UNPROCESSABLE_CONTENT',
       message: 'Job not found',
     });
-  return jobDescriptionSchema.parse(job.description);
+  return {
+    description: jobDescriptionSchema.parse(job.description),
+    job_title: job.job_title,
+  };
 };
 
 const startScoreLoading = async ({ input }: DBProcedure<typeof schema>) => {
@@ -100,37 +137,44 @@ const finishScoreLoading = async ({
     'draft_jd_json' | 'parameter_weights'
   >) => {
   const db = createPublicClient();
+  const payload: DatabaseTableUpdate['public_jobs'] = {
+    draft_jd_json,
+    parameter_weights,
+    scoring_criteria_loading: false,
+  };
+  if (input.type === 'generate') payload['jd_json'] = draft_jd_json;
   return await db
     .from('public_jobs')
-    .update({
-      draft_jd_json,
-      parameter_weights,
-      scoring_criteria_loading: false,
-    })
+    .update(payload)
     .eq('id', input.job_id)
     .throwOnError();
 };
 
-type Jd = DatabaseTable['public_jobs']['draft_jd_json'];
-
-const generateJd = async (description: string): Promise<Jd> => {
-  const [{ education }, { level }, { experience }, { skills }] =
-    await Promise.all([
-      generateJdContent('education', description),
-      generateJdContent('level', description),
-      generateJdContent('experience', description),
-      generateJdContent('skills', description),
-    ]);
-  const response = {
-    education,
+const getJd = async (description: string, title: string): Promise<Jd> => {
+  const [
+    { education },
+    { level },
+    { roles },
+    { responsibilities },
+    { skills },
+  ] = await Promise.all([
+    generateJdContent('education', description),
+    generateJdContent('level', description),
+    generateJdContent('roles', description),
+    generateJdContent('responsibilities', description),
+    generateJdContent('skills', description),
+  ]);
+  const response: Jd = {
+    title,
     level,
-    skills,
-    experience,
+    educations: jdItemMapper(education),
+    skills: jdItemMapper(skills),
+    rolesResponsibilities: jdItemMapper([...roles, ...responsibilities]),
   };
   return jdSchema.parse(response);
 };
 
-const generateJdContent = async <T extends keyof Jd>(
+const generateJdContent = async <T extends keyof TrimmedJd>(
   key: T,
   description: string,
 ) => {
@@ -152,10 +196,10 @@ const generateJdContent = async <T extends keyof Jd>(
     model: 'gpt-4o-2024-08-06',
     temperature: 0.4,
     response_format: zodResponseFormat(
-      jdSchema.pick({ [key]: true } as any),
+      trimmedJdSchema.pick({ [key]: true } as any),
       key,
     ),
-  })) as ParsedChatCompletion<Pick<Jd, T>> & {
+  })) as ParsedChatCompletion<Pick<TrimmedJd, T>> & {
     _request_id?: string | null;
   };
   const response = result.choices[0].message.parsed;
@@ -164,21 +208,23 @@ const generateJdContent = async <T extends keyof Jd>(
     if (key === 'level')
       return {
         level: 'Fresher-level',
-      } as Pick<Jd, 'level'> as unknown as Pick<Jd, T>;
+      } as Pick<TrimmedJd, 'level'> as unknown as Pick<TrimmedJd, T>;
     return {
       [key]: [],
-    } as unknown as Pick<Jd, T>;
+    } as unknown as Pick<TrimmedJd, T>;
   }
 };
 
-const getMeta = <T extends keyof Jd>(key: T) => {
+const getMeta = <T extends keyof TrimmedJd>(key: T) => {
   switch (key) {
     case 'education':
-      return 'Ignore skill or experience related requirements mentioned in the job description. Strictly consider only the education requirements that are mentioned in the job description.';
-    case 'experience':
-      return 'Ignore skill or education related requirements mentioned in the job description. Strictly consider only the experience requirements that are mentioned in the job description.';
+      return 'Consider only the education requirements that are mentioned in the job description';
+    case 'roles':
+      return 'Consider only the prior roles and durations related to those roles, as the requirement.';
+    case 'responsibilities':
+      return 'Consider only the responsibilities that are mentioned in the job description.';
     case 'skills':
-      return 'Ignore experience or education related requirements mentioned in the job description. Strictly consider only the skill requirements that are mentioned in the job description.';
+      return 'Consider only the skill requirements, tools, languages, etc., that are mentioned in the job description. These must be key terms / tags, which must be one to two words only.';
     default:
       return '';
   }
@@ -188,8 +234,8 @@ type Weights = DatabaseTable['public_jobs']['parameter_weights'];
 
 const getParameterWeights = ({ level: _level, ...jd }: Jd): Weights => {
   const weights: Weights = {
-    education: jd.education.length,
-    experience: jd.experience.length,
+    education: jd.educations.length,
+    experience: jd.rolesResponsibilities.length,
     skills: jd.skills.length,
   };
   const count = SafeObject.values(weights).filter((value) =>
@@ -225,3 +271,10 @@ const getParameterWeights = ({ level: _level, ...jd }: Jd): Weights => {
     ...result,
   };
 };
+
+const jdItemMapper = (item: TrimmedJdItem): JdItem =>
+  item.map(({ field, mustHave }) => ({
+    field,
+    isMustHave: mustHave,
+    id: nanoid(),
+  }));

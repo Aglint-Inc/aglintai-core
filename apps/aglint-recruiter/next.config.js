@@ -9,11 +9,11 @@ const nextConfig = {
     dirs: ['src'],
     ignoreDuringBuilds: true,
   },
-  logging: {
-    fetches: {
-      fullUrl: true,
-    },
-  },
+  // logging: {
+  //   fetches: {
+  //     fullUrl: true,
+  //   },
+  // },
   // typescript: {
   //   // !! WARN !!
   //   // Dangerously allow production builds to successfully complete even if
@@ -40,13 +40,13 @@ const nextConfig = {
       },
       ...(process.env.NODE_ENV === 'production'
         ? [
-          {
-            source: '/signup',
-            destination: '/login',
-            basePath: undefined,
-            permanent: false,
-          },
-        ]
+            {
+              source: '/signup',
+              destination: '/login',
+              basePath: undefined,
+              permanent: false,
+            },
+          ]
         : []),
     ];
   },
@@ -102,7 +102,7 @@ const nextConfig = {
       },
     },
   },
-  transpilePackages: ['@aglint-recruiter/shared-utils']
+  transpilePackages: ['@aglint-recruiter/shared-utils'],
 };
 
 module.exports = withBundleAnalyzer(nextConfig);

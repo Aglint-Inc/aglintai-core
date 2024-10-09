@@ -1,5 +1,4 @@
-import { z } from "zod";
-import type { Database, Tables } from "./schema.types";
+import type { Database } from "./schema.types";
 import type { Custom, Type } from "./utils.types";
 
 export type CustomMembersMeta = {
@@ -39,7 +38,7 @@ export type CustomJobParamters = Custom<
     jd_json: CustomJdJson;
     draft: CustomDraft;
     posted_by: ATSIntegrations;
-    draft_jd_json: NewJdJson;
+    draft_jd_json: CustomJdJson;
   }
 >;
 
@@ -49,23 +48,6 @@ type CustomParameterWeights = {
   skills: number;
   experience: number;
   education: number;
-};
-
-type NewJdJson = {
-  level:
-    | "Fresher-level"
-    | "Associate-level"
-    | "Mid-level"
-    | "Senior-level"
-    | "Executive-level";
-  experience: NewJdJsonItem[];
-  skills: NewJdJsonItem[];
-  education: NewJdJsonItem[];
-};
-
-type NewJdJsonItem = {
-  field: string;
-  mustHave: boolean;
 };
 
 type CustomJdJson = {
@@ -78,7 +60,7 @@ type CustomJdJson = {
     | "Executive-level";
   rolesResponsibilities: jsonItemType[];
   skills: jsonItemType[];
-  educations: jsonItemType[]; // Adjust this line based on the structure of the "education" property
+  educations: jsonItemType[];
 };
 
 type jsonItemType = {
