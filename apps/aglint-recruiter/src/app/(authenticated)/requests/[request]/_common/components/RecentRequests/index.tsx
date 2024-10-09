@@ -40,8 +40,8 @@ function RecentRequests() {
           {recentRequests.length === 0 ? (
             <EmptyState
               variant='inline'
-              header='Recent requests not found'
               icon={LayoutList}
+              description='Recent requests not found'
             />
           ) : (
             recentRequests.map((request, index) => {
