@@ -230,11 +230,11 @@ function SchedulerEmailTemps() {
 
   const [filter, setFilter] = useState<string[]>([]);
 
-  useEffect(() => {
-    if (currentTabQueryTemplates().length > 0) {
-      setEmailRoute(currentTabQueryTemplates()[0]?.type);
-    }
-  }, [isEditorLoad]);
+  // useEffect(() => {
+  //   if (currentTabQueryTemplates().length > 0) {
+  //     setEmailRoute(currentTabQueryTemplates()[0]?.type);
+  //   }
+  // }, [isEditorLoad]);
 
   const filterOptions = Object.keys(tempFilterOptions[temp_tab]);
 
