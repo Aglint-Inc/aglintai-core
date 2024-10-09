@@ -19,7 +19,7 @@ import TimeZone from './TimeZone';
 import WorkTime from './WorkTime';
 
 export default function WorkingHour() {
-  const { recruiter } = useTenant();
+  const { recruiter, refetch } = useTenant();
   const initialData = recruiter.scheduling_settings;
   const [workingHours, setWorkingHours] = useState<
     SchedulingSettingType['workingHours']
@@ -32,7 +32,7 @@ export default function WorkingHour() {
 
   useEffect(() => {
     initialLoad();
-  }, []);
+  }, [recruiter.scheduling_settings]);
 
   function initialLoad() {
     if (initialData) {
@@ -50,6 +50,9 @@ export default function WorkingHour() {
 
   const { mutateAsync, isPending: isUpdating } =
     api.tenant.updateTenant.useMutation({
+      onSuccess: () => {
+        refetch();
+      },
       onError: () => {
         toast({
           title: 'Unable to update working hours',
@@ -89,7 +92,6 @@ export default function WorkingHour() {
       <div className='flex flex-col gap-8'>
         <TimeZone
           timeZone={timeZone}
-          setTimeZone={setTimeZone}
           handleUpdate={handleUpdate}
           isUpdating={isUpdating}
         />
@@ -101,7 +103,6 @@ export default function WorkingHour() {
         {!!selectedHourBreak && (
           <BreakTimeCard
             breakTime={selectedHourBreak}
-            setSelectedHourBreak={setSelectedHourBreak}
             handleUpdate={handleUpdate}
             isUpdating={isUpdating}
           />

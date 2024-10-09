@@ -24,14 +24,12 @@ import { type TimezoneObj } from '@/utils/timeZone';
 
 interface TimeZoneProps {
   timeZone: TimezoneObj | null;
-  setTimeZone: Dispatch<SetStateAction<TimezoneObj | null>>;
   handleUpdate: (data: Partial<SchedulingSettingType>) => Promise<void>;
   isUpdating: boolean;
 }
 
 const TimeZone: FC<TimeZoneProps> = ({
   timeZone,
-  setTimeZone,
   handleUpdate,
   isUpdating,
 }) => {
@@ -42,7 +40,6 @@ const TimeZone: FC<TimeZoneProps> = ({
     // @ts-ignore
     await handleUpdate({ timeZone: localTimeZone });
     setIsPopoverOpen(false);
-    setTimeZone(localTimeZone);
   };
 
   useEffect(() => {

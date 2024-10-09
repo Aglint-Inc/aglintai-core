@@ -9,14 +9,7 @@ import {
   PopoverTrigger,
 } from '@components/ui/popover';
 import { Coffee, Pen } from 'lucide-react';
-import {
-  type Dispatch,
-  type FC,
-  type SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { type FC, useEffect, useRef, useState } from 'react';
 
 import TimePicker from '@/common/TimePicker';
 import { UIButton } from '@/common/UIButton';
@@ -29,14 +22,12 @@ interface BreakTime {
 
 interface BreakTimeCardProps {
   breakTime: BreakTime;
-  setSelectedHourBreak: Dispatch<SetStateAction<BreakTime | null>>;
   handleUpdate: (data: { break_hour: BreakTime }) => Promise<void>;
   isUpdating: boolean;
 }
 
 const BreakTimeCard: FC<BreakTimeCardProps> = ({
   breakTime,
-  setSelectedHourBreak,
   handleUpdate,
   isUpdating,
 }) => {
@@ -45,7 +36,6 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
   const handleUpdateAndClose = async (newBreakTime: BreakTime) => {
     await handleUpdate({ break_hour: newBreakTime });
     setIsPopoverOpen(false);
-    setSelectedHourBreak(newBreakTime);
   };
 
   return (
