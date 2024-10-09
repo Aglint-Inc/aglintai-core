@@ -17,45 +17,15 @@ import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import { GC_TIME, noPollingKey } from '..';
-import { jobKey, jobsQueryKeys } from '../jobs/keys';
+import { appKey, GC_TIME, noPollingKey } from '..';
 import { type Job } from '../jobs/types';
 
+const jobKey = 'job';
+
 export const jobQueries = {
-  job: ({
-    id,
-    enabled,
-    queryClient,
-    initialData,
-    refetchOnMount,
-  }: Pollers & { initialData?: Job }) =>
-    queryOptions({
-      queryKey: [...jobsQueryKeys.jobs().queryKey, { id }],
-      enabled,
-      initialData: initialData!,
-      refetchOnMount,
-      queryFn: async () => {
-        const job = await readJob(id);
-        const { queryKey } = jobsQueryKeys.jobs();
-        const jobs = queryClient!.getQueryData<Job[]>(queryKey)!;
-        queryClient!.setQueryData<Job[]>(
-          queryKey,
-          jobs.reduce((acc, curr) => {
-            if (curr.id === id) acc.push(job);
-            else acc.push(curr);
-            return acc;
-          }, [] as Job[]),
-        );
-        return job;
-      },
-    }),
   interview_plans: ({ id }: JobRequisite) =>
     queryOptions({
-      queryKey: [
-        ...jobQueries.job({ id }).queryKey,
-        'interview_plans',
-        noPollingKey,
-      ],
+      queryKey: [appKey, jobKey, { id }, 'interview_plans', noPollingKey],
       queryFn: async () =>
         (await axios.get(`/api/scheduling/get_interview_plans?job_id=${id}`))
           .data as GetInterviewPlansType['respone'],

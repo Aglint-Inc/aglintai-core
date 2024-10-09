@@ -212,12 +212,6 @@ const useJobContext = () => {
 
   useQueries({
     queries: [
-      jobQueries.job({
-        id: job_id,
-        enabled: !!job,
-        initialData: job,
-        queryClient,
-      }),
       jobQueries.polling({
         id: job_id,
         enabled: jobPolling,
