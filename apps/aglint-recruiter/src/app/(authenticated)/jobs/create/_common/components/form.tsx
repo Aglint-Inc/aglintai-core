@@ -363,6 +363,7 @@ const JobDescription: FC<MetaForms> = memo(({ name, value, onChange }) => {
           handleChange={(e) => onChange(name, e)}
           placeholder='Enter job description'
           disabled={false}
+          height='calc(100vh - 480px)'
         />
       </div>
     </div>
