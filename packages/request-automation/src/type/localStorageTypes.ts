@@ -1,7 +1,7 @@
 export type requestStatusType = "to_do" | "in_progress" | "completed";
 
 export type localScheduleRequestType = {
-  request_id: string;
+  id: string;
   application_id: string;
   status?: requestStatusType;
   isAvailabilityReminders?: boolean;
