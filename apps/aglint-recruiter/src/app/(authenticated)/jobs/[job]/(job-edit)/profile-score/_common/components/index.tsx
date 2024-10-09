@@ -489,7 +489,7 @@ const Tag: FC<{
 
 const Banners = () => {
   const { push } = useRouterPro();
-  const { job, handleRegenerateJd, status } = useJob();
+  const { job, status } = useJob();
   if (status!.loading) return <></>;
   if (status!.description_error)
     return (
@@ -514,11 +514,7 @@ const Banners = () => {
         <AlertDescription>
           <div className='flex items-center justify-between'>
             <p className='mr-4'>No profile score criterias set.</p>
-            <Button
-              size='sm'
-              variant='outline'
-              onClick={() => handleRegenerateJd(job)}
-            >
+            <Button size='sm' variant='outline'>
               Generate
             </Button>
           </div>
@@ -534,11 +530,7 @@ const Banners = () => {
               Job description has changed. Regenerate to update scoring
               criteria.
             </p>
-            <Button
-              size='sm'
-              variant='outline'
-              onClick={() => handleRegenerateJd(job)}
-            >
+            <Button size='sm' variant='outline'>
               Regenerate
             </Button>
           </div>

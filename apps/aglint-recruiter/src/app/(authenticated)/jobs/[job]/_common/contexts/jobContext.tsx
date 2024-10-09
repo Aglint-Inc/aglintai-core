@@ -39,13 +39,7 @@ const useJobContext = () => {
   const { isScoringEnabled } = useRolesAndPermissions();
   const { mutateAsync: syncJob } = useJobSync();
 
-  const {
-    jobs,
-    initialLoad: jobsLoad,
-    manageJob,
-    devlinkProps,
-    handleGenerateJd,
-  } = useJobs();
+  const { jobs, initialLoad: jobsLoad, manageJob, devlinkProps } = useJobs();
 
   const jobLoad = useMemo(
     () => !!(recruiter_id && jobsLoad),
@@ -212,13 +206,6 @@ const useJobContext = () => {
     }
   };
 
-  const handleRegenerateJd = async (job: Job) => {
-    await handleJobAsyncUpdate({
-      scoring_criteria_loading: true,
-    });
-    await handleGenerateJd(job.id!, true);
-  };
-
   const { mutateAsync: handleUploadApplication } = useUploadApplication({
     job_id,
   });
@@ -272,7 +259,6 @@ const useJobContext = () => {
     revalidateJobQueries: () => revalidateJobQueries(job_id),
     handleJobAsyncUpdate,
     handleJobUpdate,
-    handleRegenerateJd,
     handleUploadApplication,
     handleUploadResume,
     handleUploadCsv,

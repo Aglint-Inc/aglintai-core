@@ -1,10 +1,8 @@
 'use client';
 
 import { type DatabaseView } from '@aglint/shared-types';
-import { createContext, memo, type ReactNode } from 'react';
-import { useCallback, useMemo } from 'react';
+import { createContext, memo, type ReactNode, useMemo } from 'react';
 
-import { handleJobApi } from '@/apiUtils/job/utils';
 import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import {
@@ -17,7 +15,7 @@ import {
 import type { JobUpdate } from '@/queries/jobs/types';
 
 const useJobContext = () => {
-  const { recruiter, recruiter_id } = useTenant();
+  const { recruiter_id } = useTenant();
 
   const { checkPermissions, devlinkProps: getDevlinkProps } =
     useRolesAndPermissions();
@@ -27,59 +25,42 @@ const useJobContext = () => {
     [checkPermissions],
   );
 
-  const jobs = useJobsRead(manageJob);
+  const jobs = useJobsRead();
 
   const { mutateAsync: handleSync } = useJobsSync();
 
   const { mutate: jobUpdate } = useJobUpdate();
 
-  const handleJobPin = (
-    args: Pick<DatabaseView['job_view'], 'id' | 'is_pinned'>,
-  ) => {
+  const { mutateAsync: jobCreate } = useJobCreate();
+
+  const { mutate: jobDelete } = useJobDelete();
+
+  const initialLoad = !!(jobs.status !== 'pending' && !!recruiter_id);
+
+  const handleJobCreate = async (newJob: Parameters<typeof jobCreate>[0]) => {
     try {
-      jobUpdate({ recruiter_id, ...args } as JobUpdate);
+      return await jobCreate(newJob)!;
     } catch {
       //
     }
+  };
+
+  const handleJobPin = (
+    args: Pick<DatabaseView['job_view'], 'id' | 'is_pinned'>,
+  ) => {
+    return jobUpdate({ recruiter_id, ...args } as JobUpdate);
   };
 
   const handleJobsSync = async () => {
     try {
-      await handleSync({ recruiter_id });
+      return await handleSync({ recruiter_id });
     } catch {
       //
     }
   };
 
-  const { mutateAsync: jobCreate } = useJobCreate();
-
-  const initialLoad = !!(jobs.status !== 'pending' && recruiter?.id);
-
-  const handleGenerateJd = useCallback(
-    async (job_id: string, regenerate = false) => {
-      return await handleJobApi('profileScore', { job_id, regenerate });
-    },
-    [],
-  );
-
-  const handleJobCreate = async (newJob: Parameters<typeof jobCreate>[0]) => {
-    if (recruiter) {
-      try {
-        const data = await jobCreate(newJob)!;
-        handleGenerateJd(data?.id ?? null!);
-        return data;
-      } catch {
-        //
-      }
-    }
-  };
-
-  const { mutate: jobDelete } = useJobDelete();
-
   const handleJobDelete = async (jobId: string) => {
-    if (recruiter) {
-      jobDelete(jobId);
-    }
+    return jobDelete(jobId);
   };
 
   const devlinkProps = useMemo(
@@ -90,9 +71,7 @@ const useJobContext = () => {
   const value = {
     jobs,
     handleJobCreate,
-    handleJobsRefresh: jobs.refetch,
     handleJobDelete,
-    handleGenerateJd,
     handleJobsSync,
     handleJobPin,
     initialLoad,

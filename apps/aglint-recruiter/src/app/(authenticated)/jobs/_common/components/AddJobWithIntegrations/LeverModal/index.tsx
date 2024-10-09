@@ -23,11 +23,11 @@ import { UIBadge } from '@/components/Common/UIBadge';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { STATE_LEVER_DIALOG } from '@/jobs/constants';
 import {
+  useCreateLeverJobs,
   useIntegrationActions,
   useIntegrationStore,
   useJobs,
 } from '@/jobs/hooks';
-import { api } from '@/trpc/client';
 import toast from '@/utils/toast';
 
 import NoAtsResult from '../NoAtsResult';
@@ -40,7 +40,7 @@ export default function LeverModalComp() {
   const { setIntegrations, resetIntegrations } = useIntegrationActions();
   const integration = useIntegrationStore((state) => state.integrations);
   const { superPush } = useRouterPro();
-  const { jobs, handleGenerateJd } = useJobs();
+  const { jobs } = useJobs();
   const [loading, setLoading] = useState(false);
   const [leverPostings, setLeverPostings] = useState<LeverJob[]>([]);
   const [selectedLeverPostings, setSelectedLeverPostings] =
@@ -77,7 +77,7 @@ export default function LeverModalComp() {
     setInitialFetch(false);
   };
 
-  const { mutateAsync } = api.ats.lever.create_job.useMutation();
+  const { mutateAsync } = useCreateLeverJobs();
 
   const importLever = async () => {
     try {
@@ -87,8 +87,6 @@ export default function LeverModalComp() {
       const response = await mutateAsync({
         leverPost: selectedLeverPostings,
       });
-      await handleGenerateJd(response.public_job_id);
-      // await handleJobsRefresh();
       setIntegrations({
         lever: { open: false, step: STATE_LEVER_DIALOG.IMPORTING },
       });

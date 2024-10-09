@@ -73,8 +73,13 @@ const trimmedJdSchema = z.object({
   education: trimmedJdItemSchema,
 }) satisfies ZodSchema<TrimmedJd>;
 
-export const generateJd = async (payload: PrivateProcedure<typeof schema>) => {
-  const { description, job_title } = await getJobDetails(payload);
+type Params = PrivateProcedure<typeof schema>;
+
+export const generateJd = async (payload: Params) => {
+  const [{ description, job_title }] = await Promise.all([
+    getJobDetails(payload),
+    getScoringFlag(payload),
+  ]);
   try {
     await startScoreLoading(payload);
     const draft_jd_json = await getJd(description, job_title);
@@ -86,7 +91,37 @@ export const generateJd = async (payload: PrivateProcedure<typeof schema>) => {
   }
 };
 
-const getJobDetails = async ({ input }: PrivateProcedure<typeof schema>) => {
+export const safeGenerateJd = async (payload: Params) => {
+  try {
+    return await generateJd(payload);
+  } catch {
+    //
+  }
+};
+
+const getScoringFlag = async ({ ctx }: Params) => {
+  const db = createPublicClient();
+  const data = (
+    await db
+      .from('recruiter_preferences')
+      .select('scoring')
+      .eq('recruiter_id', ctx.recruiter_id)
+      .single()
+      .throwOnError()
+  ).data;
+  if (!data)
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'Missing preference',
+    });
+  if (!data.scoring)
+    throw new TRPCError({
+      code: 'FORBIDDEN',
+      message: 'Scoring is disabled',
+    });
+};
+
+const getJobDetails = async ({ input }: Params) => {
   const db = createPublicClient();
   const job = (
     await db
@@ -107,9 +142,7 @@ const getJobDetails = async ({ input }: PrivateProcedure<typeof schema>) => {
   };
 };
 
-const startScoreLoading = async ({
-  input,
-}: PrivateProcedure<typeof schema>) => {
+const startScoreLoading = async ({ input }: Params) => {
   const db = createPublicClient();
   return await db
     .from('public_jobs')
@@ -118,7 +151,7 @@ const startScoreLoading = async ({
     .throwOnError();
 };
 
-const stopScoreLoading = async ({ input }: PrivateProcedure<typeof schema>) => {
+const stopScoreLoading = async ({ input }: Params) => {
   const db = createPublicClient();
   return await db
     .from('public_jobs')
@@ -131,7 +164,7 @@ const finishScoreLoading = async ({
   input,
   draft_jd_json,
   parameter_weights,
-}: PrivateProcedure<typeof schema> &
+}: Params &
   Pick<
     DatabaseTable['public_jobs'],
     'draft_jd_json' | 'parameter_weights'

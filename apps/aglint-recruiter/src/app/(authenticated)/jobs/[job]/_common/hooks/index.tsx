@@ -9,3 +9,4 @@ export { useJobFilterLocations } from './useJobFilterLocations';
 export { useMetricsExperienceAndTenure } from './useMetricsExperienceAndTenure';
 export { useMetricsLocationPool } from './useMetricsLocationPool';
 export { useMetricsSkillPool } from './useMetricsSkillPool';
+export { useRegenerateJd } from './useRegenerateJd';

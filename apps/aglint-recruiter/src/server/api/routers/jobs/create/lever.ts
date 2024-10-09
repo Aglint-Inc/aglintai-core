@@ -17,14 +17,15 @@ import { decrypt } from '@/pages/api/decryptApiKey';
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { processEmailsInBatches } from '@/utils/processEmailsInBatches';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
+import { safeGenerateJd } from '../common/generateJd';
 
 const schema = z.object({
   leverPost: z.any(),
 });
 
-export const mutation = async ({
+const mutation = async ({
   input: { leverPost },
-  ctx: { recruiter_id },
+  ctx,
 }: PrivateProcedure<typeof schema>) => {
   const public_job_id = crypto.randomUUID();
   const leverPostTyped = leverPost as LeverJob;
@@ -32,14 +33,14 @@ export const mutation = async ({
   const supabaseAdmin = getSupabaseServer();
   const dbJob = await createJobObject({
     post: leverPostTyped,
-    recruiter_id: recruiter_id,
+    recruiter_id: ctx.recruiter_id,
     public_job_id,
   });
   const integration = (
     await supabaseAdmin
       .from('integrations')
       .select()
-      .eq('recruiter_id', recruiter_id)
+      .eq('recruiter_id', ctx.recruiter_id)
       .single()
       .throwOnError()
   ).data!;
@@ -60,20 +61,25 @@ export const mutation = async ({
   if (!integration?.lever_key) {
     throw new Error('No Lever Key found');
   }
-
-  await createJobApplications({
-    apiKey: decrypt(integration?.lever_key, process.env.ENCRYPTION_KEY),
-    ats_job_id: ats_job_id,
-    public_job_id: newJobs[0].id,
-    recruiter_id: recruiter_id,
-  });
+  await Promise.all([
+    createJobApplications({
+      apiKey: decrypt(integration?.lever_key, process.env.ENCRYPTION_KEY),
+      ats_job_id: ats_job_id,
+      public_job_id: newJobs[0].id,
+      recruiter_id: ctx.recruiter_id,
+    }),
+    safeGenerateJd({
+      ctx,
+      input: { id: newJobs[0].id, type: 'generate' },
+    }),
+  ]);
   return {
     success: true,
     public_job_id: newJobs[0].id,
   };
 };
 
-export const createLeverJob = privateProcedure.input(schema).mutation(mutation);
+export const lever = privateProcedure.input(schema).mutation(mutation);
 
 const fetchAllCandidates = async (ats_job_id: string, apiKey: string) => {
   let allCandidates: LeverApplication[] = [];
@@ -245,7 +251,7 @@ const createJobApplications = async ({
   return true;
 };
 
-export const createJobObject = async ({
+const createJobObject = async ({
   post,
   recruiter_id,
   public_job_id,
