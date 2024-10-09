@@ -132,7 +132,6 @@ function SchedulerEmailTemps() {
     try {
       const { data } = await axios.post(`/api/emails/preview`, {
         mail_type: temp_email,
-
         recruiter_id: recruiter_id,
       });
       setHtml(data);

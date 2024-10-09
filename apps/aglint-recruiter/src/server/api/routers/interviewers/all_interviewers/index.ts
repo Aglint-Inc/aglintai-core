@@ -23,7 +23,7 @@ const query = async ({
     user_id: d.user_id,
     name: getFullName(d.first_name, d.last_name),
     role: d.recruiter_relation?.[0]?.roles?.name,
-    completed_count: d.completed_meeting_count,
+    completed_count: d.completed_meeting_count ?? 0,
     avatar: d.profile_image,
     department: d.departments,
     time_zone: d.tzCode as string,
