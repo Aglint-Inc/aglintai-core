@@ -5,6 +5,7 @@ import {
   executeWorkflowAction,
   getFullName,
   type ProgressLoggerType,
+  supabaseWrap,
 } from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 import { type NextApiRequest, type NextApiResponse } from 'next';
@@ -90,14 +91,13 @@ const sendToCandidate = async ({
     .map((ses) => ses?.interview_session?.id)
     .filter((id) => id !== undefined);
 
-  const schedule = (
+  const schedule = supabaseWrap(
     await supabaseAdmin
       .from('applications')
       .select('id,job_id,recruiter_id,candidates(*)')
       .eq('id', application_id)
-      .single()
-      .throwOnError()
-  ).data;
+      .single(),
+  );
 
   if (!schedule) throw new Error('Application not found');
 

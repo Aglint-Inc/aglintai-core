@@ -69,7 +69,6 @@ export type APIGetCandidateSelectedSlots = {
 
 export type APIVerifyRecruiterSelectedSlots = {
   candidate_tz: string;
-  api_options?: APIOptions;
   filter_json_id: string;
 };
 

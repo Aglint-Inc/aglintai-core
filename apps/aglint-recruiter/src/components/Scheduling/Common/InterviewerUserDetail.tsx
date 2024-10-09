@@ -1,5 +1,5 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { getFullName } from '@aglint/shared-utils';
+import { getFullName, getShortTimeZone } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   Tooltip,
@@ -133,7 +133,9 @@ function InterviewerUserDetail({
                       end_time: interview_meeting.end_time,
                       timeZone: interviewerTimeZone ?? undefined,
                     })
-                  : 'Time not set'}
+                  : interviewerTimeZone
+                    ? getShortTimeZone(interviewerTimeZone)
+                    : ''}
               </p>
             </div>
             {userDetails?.position && (

@@ -2,7 +2,6 @@ import {
   type DatabaseTable,
   type InterviewSessionTypeDB,
 } from '@aglint/shared-types';
-import { cn } from '@lib/utils';
 import { MapPin, Timer, Users } from 'lucide-react';
 import { SelectedSessionSlotsCard } from 'src/app/(public)/_common/_components/SelectedSessionStotsCard';
 
@@ -36,57 +35,50 @@ function DaySessionCard({
   };
 
   return (
-    <div
-      className={cn('rounded-lg border', {
-        'border-blue-500': cardIndex + 1 === openDaySlotPopup && !isSubmitted,
+    <SelectedSessionSlotsCard
+      isActive={cardIndex + 1 === openDaySlotPopup && !isSubmitted}
+      isSubmitted={isSubmitted}
+      textDayCount={showDayCount ? `Day ${cardIndex + 1}` : ''}
+      isSelected={
+        selectedSlots.length
+          ? selectedSlots.map((ele) => ele.round).includes(cardIndex + 1)
+          : false
+      }
+      textTotalDuration={convertMinutesToHoursAndMinutes(totalSessionMinutes)}
+      slotSessionInfo={sessions.map((session, i) => {
+        return (
+          <SessionInfo
+            textSessionName={session.name}
+            textSessionDuration={convertMinutesToHoursAndMinutes(
+              session.session_duration,
+            )}
+            key={i}
+          />
+        );
       })}
-    >
-      <SelectedSessionSlotsCard
-        isSubmitted={isSubmitted}
-        textDayCount={showDayCount ? `Day ${cardIndex + 1}` : ''}
-        isSelected={
-          selectedSlots.length
-            ? selectedSlots.map((ele) => ele.round).includes(cardIndex + 1)
-            : false
-        }
-        textTotalDuration={convertMinutesToHoursAndMinutes(totalSessionMinutes)}
-        slotSessionInfo={sessions.map((session, i) => {
-          return (
-            <SessionInfo
-              textSessionName={session.name}
-              textSessionDuration={convertMinutesToHoursAndMinutes(
-                session.session_duration,
-              )}
-              key={i}
-            />
-          );
-        })}
-        slotChangeButton={
-          <ShowCode>
-            <ShowCode.When
-              isTrue={
-                !singleDay && !isSubmitted && selectedSlots.length
-                  ? selectedSlots
-                      .map((ele) => ele.round)
-                      .includes(cardIndex + 1)
-                  : false
-              }
+      slotChangeButton={
+        <ShowCode>
+          <ShowCode.When
+            isTrue={
+              !singleDay && !isSubmitted && selectedSlots.length
+                ? selectedSlots.map((ele) => ele.round).includes(cardIndex + 1)
+                : false
+            }
+          >
+            <UIButton
+              variant='default'
+              size='sm'
+              onClick={() => handleOpen(cardIndex + 1)}
             >
-              <UIButton
-                variant='default'
-                size='sm'
-                onClick={() => handleOpen(cardIndex + 1)}
-              >
-                Change
-              </UIButton>
-            </ShowCode.When>
-          </ShowCode>
-        }
-        textSelectedSlots={`Selected ${dates.map((ele) => ele.slots).flat().length} slots across ${dates.length} days `}
-        // date listing slots
-        selectedDates={dates}
-      />
-    </div>
+              Change
+            </UIButton>
+          </ShowCode.When>
+        </ShowCode>
+      }
+      textSelectedSlots={`Selected ${dates.map((ele) => ele.slots).flat().length} slots across ${dates.length} days `}
+      // date listing slots
+      selectedDates={dates}
+    />
   );
 }
 
