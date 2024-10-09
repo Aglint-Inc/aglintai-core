@@ -6,7 +6,6 @@ import { createContext, memo, type ReactNode, useMemo } from 'react';
 import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import {
-  useJobCreate,
   useJobDelete,
   useJobsRead,
   useJobsSync,
@@ -31,19 +30,9 @@ const useJobContext = () => {
 
   const { mutate: jobUpdate } = useJobUpdate();
 
-  const { mutateAsync: jobCreate } = useJobCreate();
-
   const { mutate: jobDelete } = useJobDelete();
 
   const initialLoad = !!(jobs.status !== 'pending' && !!recruiter_id);
-
-  const handleJobCreate = async (newJob: Parameters<typeof jobCreate>[0]) => {
-    try {
-      return await jobCreate(newJob)!;
-    } catch {
-      //
-    }
-  };
 
   const handleJobPin = (
     args: Pick<DatabaseView['job_view'], 'id' | 'is_pinned'>,
@@ -70,7 +59,6 @@ const useJobContext = () => {
 
   const value = {
     jobs,
-    handleJobCreate,
     handleJobDelete,
     handleJobsSync,
     handleJobPin,

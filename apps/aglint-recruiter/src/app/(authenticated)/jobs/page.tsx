@@ -10,14 +10,14 @@ import PERMISSIONS from '@/utils/routing/permissions';
 
 import { useJobFilterAndSort } from './_common/components/Filters';
 import { IntegrationStoreProvider } from './_common/contexts';
-import { useJobs } from './_common/hooks';
+import { useJobsContext } from './_common/hooks';
 
 const Page = () => {
   const { checkPermissions } = useRolesAndPermissions();
   const {
     jobs: { data },
     initialLoad,
-  } = useJobs();
+  } = useJobsContext();
   const router = useRouterPro();
   const payload = useJobFilterAndSort(data ?? []);
   return (

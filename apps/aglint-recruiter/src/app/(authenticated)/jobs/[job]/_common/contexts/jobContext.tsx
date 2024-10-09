@@ -17,7 +17,7 @@ import {
   validateDescription,
   validateJd,
 } from '@/job/utils';
-import { useJobs } from '@/jobs/hooks';
+import { useJobsContext } from '@/jobs/hooks';
 import type { Job } from '@/jobs/types';
 import {
   jobQueries,
@@ -35,11 +35,16 @@ import { useCurrentJob } from '../hooks/useCurrentJob';
 const useJobContext = () => {
   const queryClient = useQueryClient();
 
-  const { recruiter_id, recruiter } = useTenant();
+  const { recruiter_id } = useTenant();
   const { isScoringEnabled } = useRolesAndPermissions();
   const { mutateAsync: syncJob } = useJobSync();
 
-  const { jobs, initialLoad: jobsLoad, manageJob, devlinkProps } = useJobs();
+  const {
+    jobs,
+    initialLoad: jobsLoad,
+    manageJob,
+    devlinkProps,
+  } = useJobsContext();
 
   const jobLoad = useMemo(
     () => !!(recruiter_id && jobsLoad),
@@ -123,24 +128,19 @@ const useJobContext = () => {
   const handleJobUpdate = async (
     job: Omit<Parameters<typeof jobUpdate>[0], 'recruiter_id'>,
   ) => {
-    if (recruiter) {
-      jobUpdate({ ...job, id: job_id, recruiter_id: recruiter.id });
-    }
+    jobUpdate({ ...job, id: job_id });
   };
 
   const handleJobAsyncUpdate = async (
     job: Omit<Parameters<typeof jobUpdate>[0], 'recruiter_id'>,
   ) => {
-    if (recruiter) {
-      try {
-        return await jobAsyncUpdate({
-          ...job,
-          id: job_id,
-          recruiter_id: recruiter.id,
-        });
-      } catch {
-        //
-      }
+    try {
+      return await jobAsyncUpdate({
+        ...job,
+        id: job_id,
+      });
+    } catch {
+      //
     }
   };
 

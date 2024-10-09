@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import { useTenantMembers } from '@/company/hooks';
 import FilterHeader from '@/components/Common/FilterHeader';
-import { useJobs } from '@/jobs/hooks';
+import { useJobsContext } from '@/jobs/hooks';
 
 import { useScheduleStatesContext } from '../../contexts/ScheduleStatesContext';
 
@@ -53,7 +53,7 @@ function UpComingInterviewFilters() {
     },
   ];
 
-  const { jobs } = useJobs();
+  const { jobs } = useJobsContext();
   return (
     <div className='flex flex-row justify-between'>
       <FilterHeader

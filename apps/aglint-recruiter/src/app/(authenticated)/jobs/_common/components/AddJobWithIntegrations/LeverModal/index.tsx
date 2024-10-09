@@ -26,7 +26,7 @@ import {
   useCreateLeverJobs,
   useIntegrationActions,
   useIntegrationStore,
-  useJobs,
+  useJobsContext,
 } from '@/jobs/hooks';
 import toast from '@/utils/toast';
 
@@ -40,7 +40,7 @@ export default function LeverModalComp() {
   const { setIntegrations, resetIntegrations } = useIntegrationActions();
   const integration = useIntegrationStore((state) => state.integrations);
   const { superPush } = useRouterPro();
-  const { jobs } = useJobs();
+  const { jobs } = useJobsContext();
   const [loading, setLoading] = useState(false);
   const [leverPostings, setLeverPostings] = useState<LeverJob[]>([]);
   const [selectedLeverPostings, setSelectedLeverPostings] =

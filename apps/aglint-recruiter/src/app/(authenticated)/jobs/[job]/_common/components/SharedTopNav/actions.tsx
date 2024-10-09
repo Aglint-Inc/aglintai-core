@@ -43,7 +43,7 @@ import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJob } from '@/job/hooks';
-import { useJobs } from '@/jobs/hooks';
+import { useJobsContext } from '@/jobs/hooks';
 import ROUTES from '@/utils/routing/routes';
 
 import { UploadApplications } from '../UploadApplications';
@@ -162,7 +162,7 @@ const Switcher = () => {
 
 const useSettingsActions = () => {
   const { push, pathName: pathname } = useRouterPro();
-  const { handleJobDelete } = useJobs();
+  const { handleJobDelete } = useJobsContext();
   const { job, handleJobAsyncUpdate } = useJob();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [modal, setModal] = useState(false);

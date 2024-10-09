@@ -4,7 +4,7 @@ import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import { type Job, type JobInsert, type JobUpdate } from './types';
+import { type Job, type JobUpdate } from './types';
 
 export const useJobsRead = () => {
   return api.jobs.read.useQuery();
@@ -15,13 +15,6 @@ export const useJobsSync = () => {
     onSuccess: () => toast.success('Synced successfully'),
     onError: () => toast.error('Synced failed'),
   });
-};
-
-export const useJobCreate = () => {
-  const mutation = api.jobs.create.aglint.useMutation({
-    onError: () => toast.error('Unable to create job'),
-  });
-  return mutation;
 };
 
 export const useJobUpdate = () => {

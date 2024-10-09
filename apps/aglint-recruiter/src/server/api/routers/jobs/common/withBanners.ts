@@ -1,8 +1,9 @@
 import type { DatabaseView } from '@aglint/shared-types';
-import { z, ZodSchema } from 'zod';
-import { jobDescriptionSchema } from './jobDescriptionSchema';
-import { jdSchema } from './generateJd';
 import { isEqual } from 'lodash';
+import { z, type ZodSchema } from 'zod';
+
+import { jdSchema } from './generateJd';
+import { jobDescriptionSchema } from './jobDescriptionSchema';
 
 type MissingInfo = Pick<
   DatabaseView['job_view'],
@@ -22,7 +23,7 @@ type Banner = {
   scoring_criteria_generating: boolean;
   scoring_criteria_changed: boolean;
   missing_info: {
-    [id in keyof MissingInfo]: boolean;
+    [_id in keyof MissingInfo]: boolean;
   };
 };
 

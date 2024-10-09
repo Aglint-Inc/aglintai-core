@@ -34,8 +34,9 @@ import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import { useOnboarding } from '@/components/Navigation/OnboardPending/context/onboarding';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { useJobs } from '@/jobs/hooks';
+import { useCreateAglintJobs } from '@/jobs/hooks';
 import type { Form } from '@/jobs/types';
+import type { RouterInputs } from '@/trpc/client';
 import ROUTES from '@/utils/routing/routes';
 
 import { type JobMetaFormProps, useJobForms } from './form';
@@ -182,7 +183,7 @@ const enableCreation = (fields: Form) => {
   );
 };
 
-type Payload = Parameters<ReturnType<typeof useJobs>['handleJobCreate']>[0];
+type Payload = RouterInputs['jobs']['create']['aglint'];
 
 const JobCreateForm = ({
   fields,
@@ -192,7 +193,7 @@ const JobCreateForm = ({
   setFields: Dispatch<SetStateAction<Form>>;
 }) => {
   const [modal, setModal] = useState(false);
-  const { handleJobCreate } = useJobs();
+  const { mutateAsync } = useCreateAglintJobs();
   const { push } = useRouterPro();
 
   const handleCreate = async () => {
@@ -205,12 +206,16 @@ const JobCreateForm = ({
         return acc;
       }, {} as Payload);
 
-      const { id } = (await handleJobCreate({
-        ...newJob,
-      }))!;
+      try {
+        const id = await mutateAsync({
+          ...newJob,
+        });
 
-      setModal(false);
-      push(ROUTES['/jobs/[job]']({ job: id! }));
+        setModal(false);
+        push(ROUTES['/jobs/[job]']({ job: id! }));
+      } catch {
+        //
+      }
     } else {
       setFields(newFields);
     }

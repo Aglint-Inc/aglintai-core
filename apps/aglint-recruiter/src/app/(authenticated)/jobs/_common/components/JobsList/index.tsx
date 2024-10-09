@@ -27,7 +27,7 @@ import Image from 'next/image';
 import React from 'react';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { useJobs } from '@/jobs/hooks';
+import { useJobsContext } from '@/jobs/hooks';
 import { calculateTimeDifference } from '@/jobs/utils/calculateTimeDifference';
 import { type Job } from '@/queries/jobs/types';
 import { formatOfficeLocation } from '@/utils/formatOfficeLocation';
@@ -41,7 +41,7 @@ interface JobsListProps {
 }
 
 const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
-  const { handleJobPin } = useJobs();
+  const { handleJobPin } = useJobsContext();
   const router = useRouterPro();
 
   if (jobs?.length === 0) {

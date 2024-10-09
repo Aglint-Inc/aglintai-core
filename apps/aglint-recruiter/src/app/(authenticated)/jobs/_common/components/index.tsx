@@ -25,7 +25,7 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 import {
   useIntegrationActions,
   useIntegrationStore,
-  useJobs,
+  useJobsContext,
 } from '@/jobs/hooks';
 import ROUTES from '@/utils/routing/routes';
 
@@ -40,7 +40,7 @@ export const Body = ({ jobs }: { jobs: Job[] }) => {
   const {
     jobs: { data },
     initialLoad,
-  } = useJobs();
+  } = useJobsContext();
   const { ifAllowed } = useRolesAndPermissions();
 
   return (
@@ -66,7 +66,7 @@ export const Body = ({ jobs }: { jobs: Job[] }) => {
 };
 
 export const Header = () => {
-  const { manageJob } = useJobs();
+  const { manageJob } = useJobsContext();
   return (
     <PageHeader>
       <PageHeaderText>
@@ -158,7 +158,7 @@ export const Filter = ({
 
 const Sync = () => {
   const { recruiter } = useTenant();
-  const { handleJobsSync } = useJobs();
+  const { handleJobsSync } = useJobsContext();
   const [load, setLoad] = useState(false);
 
   if (recruiter.recruiter_preferences.ats === 'Aglint') return null;
