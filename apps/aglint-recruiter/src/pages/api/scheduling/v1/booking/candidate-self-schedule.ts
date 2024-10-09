@@ -5,12 +5,7 @@ import {
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
 import { SchemaCandidateDirectBooking } from '@aglint/shared-types/src/aglintApi/zodSchemas/candidate-self-schedule';
-import {
-  CApiError,
-  dayjsLocal,
-  ScheduleUtils,
-  scheduling_options_schema,
-} from '@aglint/shared-utils';
+import { CApiError, dayjsLocal, ScheduleUtils } from '@aglint/shared-utils';
 import { type z } from 'zod';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
@@ -31,15 +26,15 @@ const candidateSelfSchedule = async (
     parsed,
   );
 
-  const zod_options = scheduling_options_schema.parse({
-    include_conflicting_slots: {},
+  const cand_schedule = new CandidatesScheduling({
+    include_conflicting_slots: {
+      show_conflicts_events: true,
+      show_soft_conflicts: true,
+      out_of_working_hrs: true,
+    },
+    cand_start_time: 0,
+    cand_end_time: 24,
   });
-
-  zod_options.include_conflicting_slots.show_conflicts_events = true;
-  zod_options.include_conflicting_slots.show_soft_conflicts = true;
-  zod_options.include_conflicting_slots.out_of_working_hrs = true;
-
-  const cand_schedule = new CandidatesScheduling(zod_options);
 
   await cand_schedule.fetchDetails({
     params: {
