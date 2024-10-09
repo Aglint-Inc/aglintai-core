@@ -70,7 +70,7 @@ function CandidateAvailability() {
             strokeWidth={1}
           />
           <p className='mt-4 text-muted-foreground'>
-            We couldn&apos;t load your availability link.
+            {` We couldn't load your availability link.`}
           </p>
           <p className='mt-2 text-sm text-muted-foreground'>
             Contact the recruiter or try again.
