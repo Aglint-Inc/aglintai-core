@@ -36,7 +36,7 @@ export const WorkTimeEditDialog = ({
     <UIDialog
       open={isOpen}
       size='xl'
-      onClose={() => setIsOpen(false)}
+      onClose={() => !isUpdating && setIsOpen(false)}
       title={'Edit Working Hours'}
       slotButtons={
         <>
