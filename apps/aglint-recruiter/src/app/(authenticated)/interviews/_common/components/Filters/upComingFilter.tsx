@@ -1,10 +1,10 @@
 import { type DatabaseEnums } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
+import { useInterviewsFiltersJob } from '@interviews/hooks/useInterviewsFiltersJob';
 import { useState } from 'react';
 
 import { useTenantMembers } from '@/company/hooks';
 import FilterHeader from '@/components/Common/FilterHeader';
-import { useJobsContext } from '@/jobs/hooks';
 
 import { useScheduleStatesContext } from '../../contexts/ScheduleStatesContext';
 
@@ -53,7 +53,7 @@ function UpComingInterviewFilters() {
     },
   ];
 
-  const { jobs } = useJobsContext();
+  const jobs = useInterviewsFiltersJob();
   return (
     <div className='flex flex-row justify-between'>
       <FilterHeader
@@ -93,14 +93,15 @@ function UpComingInterviewFilters() {
           {
             type: 'filter',
             name: 'Jobs',
-            options: jobs
-              ? jobs?.map((ele) => {
-                  return {
-                    id: ele.id ?? '',
-                    label: ele.job_title ?? '',
-                  };
-                })
-              : [],
+            options:
+              jobs.status === 'success' && jobs.data
+                ? jobs.data.map((ele) => {
+                    return {
+                      id: ele.id ?? '',
+                      label: ele.job_title ?? '',
+                    };
+                  })
+                : [],
             setValue: (val) => {
               updateUpComingFilterState('jobs', val);
             },
