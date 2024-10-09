@@ -1,3 +1,7 @@
+import { ErrorBoundary } from 'react-error-boundary';
+
+import { UIBadge } from '@/common/UIBadge';
+
 import { useSelfSchedulingFlowStore } from '../../store/store';
 import SelfScheduleSuccess from '../SelfScheduleSuccess';
 import LoaderSlots from '../ui/Loader';
@@ -14,21 +18,31 @@ function BodyDrawer() {
 
   return (
     <>
-      {!fetchingPlan ? (
-        <>
-          {stepScheduling === 'slot_options' ? (
-            <StepSlotOptions />
-          ) : stepScheduling === 'self_scheduling_email_preview' ? (
-            <EmailPreviewSelfSchedule />
-          ) : stepScheduling === 'success_screen' ? (
-            <SelfScheduleSuccess />
-          ) : (
-            ''
-          )}
-        </>
-      ) : (
-        <LoaderSlots />
-      )}
+      <ErrorBoundary
+        fallback={
+          <>
+            <UIBadge
+              textBadge={'Error self scheduling. Please contact support'}
+            />
+          </>
+        }
+      >
+        {!fetchingPlan ? (
+          <>
+            {stepScheduling === 'slot_options' ? (
+              <StepSlotOptions />
+            ) : stepScheduling === 'self_scheduling_email_preview' ? (
+              <EmailPreviewSelfSchedule />
+            ) : stepScheduling === 'success_screen' ? (
+              <SelfScheduleSuccess />
+            ) : (
+              ''
+            )}
+          </>
+        ) : (
+          <LoaderSlots />
+        )}
+      </ErrorBoundary>
     </>
   );
 }

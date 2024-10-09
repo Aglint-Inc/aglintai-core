@@ -8,7 +8,11 @@ import {
   type APIConfirmRecruiterSelectedOption,
   type PlanCombinationRespType,
 } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import {
+  createRequestProgressLogger,
+  type ProgressLoggerType,
+  supabaseWrap,
+} from '@aglint/shared-utils';
 import axios from 'axios';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
@@ -58,24 +62,39 @@ export const bookRecruiterSelectedOption = async (
     req_body.user_tz,
     req_body.request_id,
   );
+  const postScheduleActions = async () => {
+    const supabaseAdmin = getSupabaseServer();
+    const payload: APICandScheduleMailThankYou = {
+      cand_tz: fetched_cand_details.candidate.timezone,
+      filter_id: null,
+      application_id: fetched_cand_details.application_id,
+      session_ids: fetched_cand_details.session_ids,
+      availability_request_id: req_body.availability_req_id,
+      is_debreif: false,
+    };
+    await axios.post(
+      `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
+      payload,
+    );
+    const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
+      request_id: db_details.request_id,
+      supabaseAdmin,
+      event_type: 'RECRUITER_SCHEDULED',
+    });
+    await reqProgressLogger.resetEventProgress();
+    await reqProgressLogger({
+      status: 'completed',
+      is_progress_step: false,
+    });
+    await reqProgressLogger({
+      status: 'completed',
+    });
+  };
 
   await Promise.all([
     updateTrainingStatus(booked_meeting_details),
     sendMailsToOrganizer(db_details, booked_meeting_details),
-    (async () => {
-      const payload: APICandScheduleMailThankYou = {
-        cand_tz: fetched_cand_details.candidate.timezone,
-        filter_id: null,
-        application_id: fetched_cand_details.application_id,
-        session_ids: fetched_cand_details.session_ids,
-        availability_request_id: req_body.availability_req_id,
-        is_debreif: false,
-      };
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/application/mailthankyou`,
-        payload,
-      );
-    })(),
+    postScheduleActions(),
   ]);
 
   supabaseWrap(

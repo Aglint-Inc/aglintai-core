@@ -3,8 +3,8 @@ import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { deleteRequestWorkflowAction } from '@request/components/RequestProgress/utils';
 import { useRequest } from '@request/hooks';
-import { useRequestAvailabilityDetails } from '@requests/hooks';
-import { useRequests } from '@requests/hooks';
+import { useRequestAvailabilityDetails, useRequests } from '@requests/hooks';
+import axios from 'axios';
 import React, { useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -21,7 +21,7 @@ import {
   setCandidateAvailabilityId,
   useConfirmAvailabilitySchedulingFlowStore,
 } from '../ConfirmAvailability/_common/contexts/AvailabilitySchedulingStore';
-import { useSelfSchedulingDrawer } from '../SelfSchedulingDrawer/_common/hooks/hooks';
+import { useFindAvailibility } from '../SelfSchedulingDrawer/_common/hooks/useFindAvailibility';
 import {
   initialFilters,
   setIsSelfScheduleDrawerOpen,
@@ -29,8 +29,58 @@ import {
 } from '../SelfSchedulingDrawer/_common/store/store';
 
 const ScheduleOptions = () => {
+  const { requestDetails } = useRequest();
+  let isDebreifSchedule = false;
+  if (
+    requestDetails.request_relation[0].interview_session?.session_type ===
+    'debrief'
+  ) {
+    isDebreifSchedule = true;
+  }
+  return (
+    <div className='mt-2 flex flex-col'>
+      <ShowCode.When isTrue={isDebreifSchedule}>
+        <DebriefSchedule />
+      </ShowCode.When>
+      <ShowCode.When isTrue={!isDebreifSchedule}>
+        <CandidateScheduleReschedule />
+      </ShowCode.When>
+    </div>
+  );
+};
+
+const DebriefSchedule = () => {
+  const { findAvailibility } = useFindAvailibility();
+
+  const { fetchingPlan } = useSelfSchedulingFlowStore();
+
+  return (
+    <>
+      <UIButton
+        variant='default'
+        size='sm'
+        isLoading={fetchingPlan}
+        onClick={async () => {
+          if (fetchingPlan) return;
+          await findAvailibility({
+            filters: initialFilters,
+            dateRange: {
+              start_date: dayjsLocal().toISOString(),
+              end_date: dayjsLocal().add(14, 'day').toISOString(),
+            },
+          });
+          setIsSelfScheduleDrawerOpen(true);
+        }}
+      >
+        Schedule Debrief
+      </UIButton>
+    </>
+  );
+};
+
+const CandidateScheduleReschedule = () => {
   const [isProceeding, setIsProceeding] = React.useState(false);
-  const { findAvailibility } = useSelfSchedulingDrawer();
+  const { findAvailibility } = useFindAvailibility();
   const { fetchingPlan } = useSelfSchedulingFlowStore();
   const { request_workflow, requestDetails, request_progress } = useRequest();
   const { handleAsyncUpdateRequest } = useRequests();
@@ -99,8 +149,9 @@ const ScheduleOptions = () => {
     setReRequestAvailability(true);
     setCandidateAvailabilityIdForReRequest(avail_req.id);
   };
+
   return (
-    <div className='mt-2 flex flex-col'>
+    <div>
       <ShowCode.When
         isTrue={
           Boolean(scheduleWorkflowAction) && requestDetails.status === 'to_do'
@@ -110,6 +161,9 @@ const ScheduleOptions = () => {
           <UIButton
             onClick={async () => {
               setIsProceeding(true);
+              await axios.post('/api/request/execute-workflow', {
+                request_id: requestDetails.id,
+              });
               await handleAsyncUpdateRequest({
                 payload: {
                   requestId: requestDetails.id,
@@ -125,6 +179,7 @@ const ScheduleOptions = () => {
           </UIButton>
         </>
       </ShowCode.When>
+
       <ShowCode.When
         isTrue={Boolean(
           (!scheduleWorkflowAction && !lastEvent) ||
@@ -174,6 +229,7 @@ const ScheduleOptions = () => {
           </UIButton>
         </div>
       </ShowCode.When>
+
       <ShowCode.When
         isTrue={Boolean(
           lastEvent &&
