@@ -4649,6 +4649,7 @@ export type Database = {
           hiring_manager: string | null
           id: string | null
           interview_coordinator: string | null
+          interview_plan_count: number | null
           is_pinned: boolean | null
           jd_json: Json | null
           job_title: string | null

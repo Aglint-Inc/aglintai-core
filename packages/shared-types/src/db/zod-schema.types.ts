@@ -4798,6 +4798,7 @@ export const jobViewRowSchema = z.object({
   hiring_manager: z.string().nullable(),
   id: z.string().nullable(),
   interview_coordinator: z.string().nullable(),
+  interview_plan_count: z.number().nullable(),
   is_pinned: z.boolean().nullable(),
   jd_json: jsonSchema.nullable(),
   job_title: z.string().nullable(),

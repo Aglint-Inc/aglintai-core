@@ -9,20 +9,8 @@ import { api } from '@/trpc/client';
 import { useCurrentJob } from './_common/hooks';
 
 const Page = () => {
-  const { job_id } = useCurrentJob();
-  const { mutate } = api.jobs.job.jd.useMutation();
   return (
-    <OneColumnPageLayout
-      header={
-        <>
-          <JobDetailsHeader />
-          <Button
-            title='KKKKK'
-            onClick={() => mutate({ job_id, type: 'regenerate' })}
-          />
-        </>
-      }
-    >
+    <OneColumnPageLayout header={<JobDetailsHeader />}>
       <ApplicationsComponent />
     </OneColumnPageLayout>
   );
