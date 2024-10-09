@@ -1,6 +1,7 @@
 'use client';
 
 import { PublicPageLayout } from '@components/layouts/public-layout';
+import { UIAlert } from '@components/ui-alert';
 
 import Footer from '@/common/Footer';
 import { Loader } from '@/common/Loader';
@@ -24,9 +25,21 @@ const CandidateInvitePage = () => {
         <SchedulingPageHeader
           companyName={data?.recruiter?.name ?? ''}
           description={
-            <h2 className='flex items-center gap-2 p-8 pb-4 text-lg font-semibold'>
-              {`Available slots are organized by day. Each slot includes the total time required for your interview, including breaks.`}
-            </h2>
+            <div className='flex w-full flex-row justify-center p-4'>
+              {data.isBooked ? (
+                <UIAlert type='success' title='Interview confirmed.'>
+                  <p>
+                    {`Your interview has been confirmed. Please find the interview details below. An email has been sent to the candidate with the interview details.`}
+                  </p>
+                </UIAlert>
+              ) : (
+                <UIAlert variant='default' title='Book your interview'>
+                  <p>
+                    {`Available slots are organized by day. Each slot includes the total time required for your interview, including breaks.`}
+                  </p>
+                </UIAlert>
+              )}
+            </div>
           }
           logo={data?.recruiter?.logo ?? ''}
         />

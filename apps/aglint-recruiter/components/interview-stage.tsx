@@ -1,27 +1,17 @@
 import { cn } from '@lib/utils';
-import {
-  CalendarCheck2,
-  CalendarOff,
-  CalendarX2,
-  CircleCheckBig,
-  Clock3,
-} from 'lucide-react';
+import { CalendarCheck2, CalendarOff, CircleCheckBig } from 'lucide-react';
 import React from 'react';
 
 import CSSArrow from './css-arrow';
 
-type StageStatus =
-  | 'completed'
-  | 'confirmed'
-  | 'not_scheduled'
-  | 'waiting'
-  | 'cancelled';
+type StageStatus = 'completed' | 'confirmed' | 'not_scheduled';
 
 export interface StageProps {
   testName: string;
   description: string;
   status: StageStatus;
   onClick: () => void;
+  isActive: boolean;
 }
 
 interface InterviewStagesProps {
@@ -51,18 +41,6 @@ const statusColors: Record<
     text: 'text-green-700',
     border: 'border-green-500',
     icon: <CircleCheckBig size={16} />,
-  },
-  cancelled: {
-    bg: 'bg-red-100',
-    text: 'text-red-700',
-    border: 'border-red-500',
-    icon: <CalendarX2 size={16} />,
-  },
-  waiting: {
-    bg: 'bg-yellow-100',
-    text: 'text-yellow-700',
-    border: 'border-yellow-500',
-    icon: <Clock3 size={16} />,
   },
 };
 
@@ -113,7 +91,7 @@ export default function InterviewStages({
               )}
             >
               <CSSArrow
-                direction={orientation === 'horizontal' ? 'up' : 'right'}
+                direction={orientation === 'horizontal' ? 'up' : 'down'}
                 size='sm'
                 borderColor={statusColors[stage.status].border}
                 backgroundColor={statusColors[stage.status].bg}
@@ -128,11 +106,11 @@ export default function InterviewStages({
                 'absolute',
                 orientation === 'horizontal'
                   ? '-left-2 top-1/2 -translate-y-1/2'
-                  : 'bottom-0 left-1/2 -translate-x-1/2 rotate-90',
+                  : '-bottom--2 left-1/2 -translate-x-1/2 rotate-90',
               )}
             >
               <CSSArrow
-                direction={orientation === 'horizontal' ? 'up' : 'right'}
+                direction={orientation === 'horizontal' ? 'up' : 'up'}
                 size='sm'
                 borderColor={statusColors[stage.status].border}
                 backgroundColor={'bg-white'}

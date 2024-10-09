@@ -2,7 +2,6 @@
 import { SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import {
   Section,
-  SectionActions,
   SectionHeader,
   SectionHeaderText,
   SectionTitle,
@@ -16,7 +15,6 @@ import { Loader } from '../../../../../../components/Common/Loader';
 import { ConfirmedInvitePage } from '../../../../../_common/components/CandidateConfirm/_common/components';
 import { useInviteMeta } from '../hooks/useInviteMeta';
 import {
-  setDetailPopup,
   setSelectedSlots,
   setTimeZone,
   useCandidateInviteStore,
@@ -40,8 +38,14 @@ const CandidateInviteNew = () => {
         <ErrorState />
       ) : (
         <>
-          <CandidateInvitePlanPage />
-          <DetailsPopup />
+          <div className='flex w-full flex-row justify-center p-4'>
+            <div className='w-8/12 pr-8'>
+              <CandidateInvitePlanPage />
+            </div>
+            <div className='w-4/12'>
+              <DetailsPopup />
+            </div>
+          </div>
         </>
       )}
     </div>
@@ -87,9 +91,7 @@ const CandidateInvitePlanPage = () => {
 
   const { data: meta } = useInviteMeta();
 
-  const waiting = (meta?.meetings || []).some(
-    ({ interview_meeting: { status } }) => status === 'waiting',
-  );
+  const waiting = !meta.isBooked;
   const { rounds } = (meta?.meetings || []).reduce(
     (acc, curr) => {
       const count = acc.rounds.length;
@@ -118,15 +120,22 @@ const CandidateInvitePlanPage = () => {
 
   if (!waiting && meta)
     return (
-      <ConfirmedInvitePage
-        rounds={rounds}
-        candidate={meta.candidate}
-        filter_json={meta.filter_json}
-        meetings={meta.meetings}
-        recruiter={meta.recruiter}
-        timezone={timezone}
-        application_id={meta.application_id}
-      />
+      <Section>
+        <SectionHeader>
+          <SectionHeaderText>
+            <SectionTitle>Interview Details</SectionTitle>
+          </SectionHeaderText>
+        </SectionHeader>
+        <ConfirmedInvitePage
+          rounds={rounds}
+          candidate={meta.candidate}
+          filter_json={meta.filter_json}
+          meetings={meta.meetings}
+          recruiter={meta.recruiter}
+          timezone={timezone}
+          application_id={meta.application_id}
+        />
+      </Section>
     );
 
   return (
@@ -143,16 +152,6 @@ const CandidateInvitePlanPage = () => {
             />
           </SectionTitle>
         </SectionHeaderText>
-        <SectionActions>
-          <UIButton
-            variant='outline'
-            onClick={() => {
-              setDetailPopup(true);
-            }}
-          >
-            View Interview details
-          </UIButton>
-        </SectionActions>
       </SectionHeader>
       <Invite rounds={rounds} />
     </Section>

@@ -1,6 +1,6 @@
 import type { DatabaseTable } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 import { Textarea } from '@components/ui/textarea';
-import dayjs from 'dayjs';
 import { Edit2 } from 'lucide-react';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import { useMemberList } from 'src/app/_common/hooks/useMemberList';
@@ -52,8 +52,8 @@ function CreateRequest({
     useState<MemberType>(selectedMember);
 
   const [dateRange, setDateRange] = useState({
-    start: dayjs().toString(),
-    end: dayjs().add(14, 'day').toString(),
+    start: dayjsLocal().toISOString(),
+    end: dayjsLocal().add(14, 'day').toISOString(),
   });
   const {
     interviewPlans: { data, status },
@@ -177,8 +177,16 @@ function CreateRequest({
               }}
               onAccept={(date) => {
                 setDateRange({
-                  start: dayjs(date.from).toISOString(),
-                  end: dayjs(date.to).toISOString(),
+                  start: dayjsLocal(date.from).toISOString(),
+                  end: dayjsLocal(date.to).toISOString(),
+                });
+                setRequest((pre) => {
+                  const preData = { ...pre! };
+                  return {
+                    ...preData,
+                    schedule_start_date: dayjsLocal(date.from).toISOString(),
+                    schedule_end_date: dayjsLocal(date.to).toISOString(),
+                  };
                 });
               }}
             />

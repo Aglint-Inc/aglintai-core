@@ -3,11 +3,11 @@ import {
   type InterviewSessionTypeDB,
 } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils';
+import { UIBadge } from '@components/ui-badge';
 import { cn } from '@lib/utils';
 import { CheckCircle, MapPin, Timer, Users } from 'lucide-react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
-import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 
 import { useRequestAvailabilityContext } from '../contexts/RequestAvailabilityContext';
@@ -92,10 +92,8 @@ function DaySessionCard({
                 slotBadge={ele.slots.map((slot, i) => {
                   return (
                     <UIBadge
-                      iconName={null}
                       color={isSubmitted ? 'success' : 'warning'}
                       key={i}
-                      className='text-black'
                       textBadge={`${dayjsLocal(slot.startTime).format('hh:mm A')} - ${dayjsLocal(slot.endTime).format('hh:mm A')}`}
                     />
                   );

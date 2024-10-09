@@ -12,9 +12,8 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
     .from('request_note')
     .select('*')
     .eq('request_id', input.request_id)
-    .single()
     .throwOnError();
-  return data;
+  return data ? data[0] : null;
 };
 
 export const read = privateProcedure.input(schema).query(query);

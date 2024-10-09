@@ -73,7 +73,8 @@ export const modified_seed_workflow_actions: {
         action_type: 'agent_instruction',
         payload: {
           agent: {
-            instruction: '',
+            instruction:
+              'Pick maximum slots of 5 without any conflicts and candidate preferred time is morning 9 to 12',
           },
         },
       },
