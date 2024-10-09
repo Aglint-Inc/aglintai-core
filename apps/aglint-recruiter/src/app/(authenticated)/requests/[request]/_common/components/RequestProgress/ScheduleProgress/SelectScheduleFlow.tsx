@@ -26,7 +26,7 @@ const SelectScheduleFlow = ({ scheduleFlow }: { scheduleFlow: any }) => {
   return (
     <>
       <RequestProgressTracker
-        circleIndicator={isSelectScheduleFlowComplete ? 'success' : 'default'}
+        circleIndicator={isSelectScheduleFlowComplete ? 'success' : 'neutral'}
         textRequestProgress={'When scheduling request recieved'}
         slotProgress={
           <>

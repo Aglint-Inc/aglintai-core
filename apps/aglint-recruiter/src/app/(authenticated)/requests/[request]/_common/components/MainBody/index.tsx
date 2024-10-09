@@ -7,17 +7,16 @@ import {
 import { TwoColumnPageLayout } from '@components/layouts/two-column-page-layout';
 import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { Card, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
+import { UIBadge } from '@components/ui-badge';
 import {
   REQUEST_STATUS_LIST,
   REQUEST_TYPE_LIST,
   REQUEST_URGENT_LIST,
 } from '@requests/constant';
-import { useMeetingList } from '@requests/hooks';
-import { useRequests } from '@requests/hooks';
+import { useMeetingList, useRequests } from '@requests/hooks';
 import {
   ArrowUpRight,
   BriefcaseBusiness,
@@ -72,19 +71,19 @@ type InterviewStatus =
 const getStatusStyles = (status: InterviewStatus) => {
   switch (status) {
     case 'completed':
-      return 'bg-green-200 text-green-800';
+      return 'bg-green-200 hover:bg-green-200 text-green-800';
     case 'cancelled':
-      return 'bg-red-200 text-red-800';
+      return 'bg-red-200 hover:bg-red-200 text-red-800';
     case 'waiting':
-      return 'bg-yellow-200 text-yellow-800';
+      return 'bg-yellow-200 hover:bg-yellow-200 text-yellow-800';
     case 'reschedule':
-      return 'bg-orange-200 text-orange-800';
+      return 'bg-orange-200 hover:bg-orange-200 text-orange-800';
     case 'confirmed':
-      return 'bg-blue-200 text-blue-800';
+      return 'bg-blue-200 hover:bg-blue-200 text-blue-800';
     case 'not_scheduled':
-      return 'bg-gray-200 text-gray-800';
+      return 'bg-gray-200 hover:bg-gray-200 text-gray-800';
     default:
-      return 'bg-gray-100 text-gray-600';
+      return 'bg-gray-100 hover:bg-gray-100 text-gray-600';
   }
 };
 
@@ -320,20 +319,19 @@ export default function ViewRequestDetails() {
                     />
                   </div>
                 </div>
-                <Badge
+                <UIBadge
                   variant={
                     selectedRequest?.status === 'to_do'
-                      ? 'outline'
+                      ? 'neutral'
                       : selectedRequest?.status === 'in_progress'
-                        ? 'in_progress'
+                        ? 'info'
                         : selectedRequest?.status === 'completed'
-                          ? 'completed'
+                          ? 'success'
                           : 'destructive'
                   }
                   className={`rounded-sm ${selectedRequest?.status === 'to_do' ? 'bg-gray-100' : ''}`}
-                >
-                  {capitalizeFirstLetter(selectedRequest?.status)}
-                </Badge>
+                  textBadge={capitalizeFirstLetter(selectedRequest?.status)}
+                />
               </div>
               <div className='group relative space-y-2'>
                 <div className='flex items-center gap-2'>
@@ -361,12 +359,11 @@ export default function ViewRequestDetails() {
                     />
                   </div>
                 </div>
-                <Badge
-                  variant='outline'
-                  className='rounded-sm bg-gray-100 text-gray-800'
-                >
-                  {capitalizeFirstLetter(selectedRequest?.priority)}
-                </Badge>
+                <UIBadge
+                  variant='neutral'
+                  className='rounded-sm bg-gray-200 text-gray-800'
+                  textBadge={capitalizeFirstLetter(selectedRequest?.priority)}
+                />
               </div>
               <div className='group relative space-y-2'>
                 <div className='flex items-center gap-2'>
@@ -493,16 +490,15 @@ export default function ViewRequestDetails() {
                   </div>
                 </div>
                 <div className='flex items-center space-x-2'>
-                  <Badge
+                  <UIBadge
                     variant={
                       selectedRequest?.type === 'decline_request'
                         ? 'destructive'
-                        : 'outline'
+                        : 'neutral'
                     }
-                    className='text-medium gap-1 rounded-sm bg-gray-100'
-                  >
-                    <p>{capitalizeFirstLetter(selectedRequest?.type)}</p>
-                  </Badge>
+                    className='text-medium gap-1 rounded-sm bg-gray-200 text-gray-800'
+                    textBadge={capitalizeFirstLetter(selectedRequest?.type)}
+                  />
                 </div>
               </div>
               <div className='group relative space-y-2'>
@@ -624,16 +620,14 @@ function SessionCards({
                     View Details
                   </Button>
 
-                  <Badge
-                    variant='outline'
+                  <UIBadge
                     className={`h-[28px] rounded-md border-none font-normal ${getStatusStyles(
                       session?.interview_meeting?.status ?? '',
                     )}`}
-                  >
-                    {capitalizeFirstLetter(
+                    textBadge={capitalizeFirstLetter(
                       session?.interview_meeting?.status ?? '',
                     )}
-                  </Badge>
+                  />
                   <div className='flex h-[26px] w-[26px] items-center justify-center rounded-md border border-gray-200 bg-gray-100'>
                     <ChevronDown
                       className={`h-4 w-4 transition-transform ${
