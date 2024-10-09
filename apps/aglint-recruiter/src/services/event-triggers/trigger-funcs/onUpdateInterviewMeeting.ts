@@ -1,5 +1,10 @@
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
-import { CApiError, supabaseWrap } from '@aglint/shared-utils';
+import {
+  CApiError,
+  createRequestProgressLogger,
+  type ProgressLoggerType,
+  supabaseWrap,
+} from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
@@ -13,7 +18,9 @@ export const onUpdateInterviewMeeting = async ({
   old_data: DatabaseTable['interview_meeting'];
   new_data: DatabaseTable['interview_meeting'];
 }) => {
-  if (new_data.status === 'confirmed' && old_data.status === 'waiting') {
+  if (new_data.status === 'confirmed' && old_data.status !== 'confirmed') {
+    await updateScheduleProgress({ new_data });
+
     await addJobsToQueue(new_data);
   }
 };
@@ -21,7 +28,14 @@ export const onUpdateInterviewMeeting = async ({
 const addJobsToQueue = async (new_data: DatabaseTable['interview_meeting']) => {
   try {
     const supabaseAdmin = getSupabaseServer();
-    const jobs_set: Set<DatabaseEnums['email_slack_types']> = new Set([
+    const session_details = supabaseWrap(
+      await supabaseAdmin
+        .from('interview_session')
+        .select()
+        .eq('meeting_id', new_data.id)
+        .single(),
+    );
+    let actions: DatabaseEnums['email_slack_types'][] = [
       'interviewStart_email_applicant',
       'interviewStart_email_organizer',
       'candidateBook_slack_interviewerForConfirmation',
@@ -31,7 +45,29 @@ const addJobsToQueue = async (new_data: DatabaseTable['interview_meeting']) => {
       'interviewEnd_email_rShadowTraineeForMeetingAttendence',
       'interviewEnd_slack_rShadowTraineeForMeetingAttendence',
       'interviewEnd_slack_shadowTraineeForMeetingAttendence',
-    ]);
+    ];
+    if (session_details.session_type === 'debrief') {
+      actions = [
+        'interviewStart_email_applicant',
+        'interviewStart_email_organizer',
+        'candidateBook_slack_interviewerForConfirmation',
+        'interviewEnd_slack_organizerForMeetingStatus',
+        'interviewEnd_email_organizerForMeetingStatus',
+      ];
+    } else {
+      actions = [
+        'interviewStart_email_applicant',
+        'interviewStart_email_organizer',
+        'candidateBook_slack_interviewerForConfirmation',
+        'interviewEnd_slack_organizerForMeetingStatus',
+        'interviewEnd_email_organizerForMeetingStatus',
+        'interviewEnd_email_shadowTraineeForMeetingAttendence',
+        'interviewEnd_email_rShadowTraineeForMeetingAttendence',
+        'interviewEnd_slack_rShadowTraineeForMeetingAttendence',
+        'interviewEnd_slack_shadowTraineeForMeetingAttendence',
+      ];
+    }
+    const jobs_set: Set<DatabaseEnums['email_slack_types']> = new Set(actions);
     await stopJobPreviouslyQueuedJobs(new_data);
     const schedule_application = (
       await supabaseAdmin
@@ -112,4 +148,39 @@ const stopJobPreviouslyQueuedJobs = async (
       .eq('related_table_pkey', new_data.id)
       .eq('status', 'not_started'),
   );
+};
+
+const updateScheduleProgress = async ({
+  new_data,
+}: {
+  new_data: DatabaseTable['interview_meeting'];
+}) => {
+  try {
+    const supabaseAdmin = getSupabaseServer();
+    const schedule_req_id = new_data.schedule_request_id;
+    if (!schedule_req_id) {
+      console.error('schedule_request_id not found');
+      return;
+    }
+    const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
+      request_id: schedule_req_id,
+      supabaseAdmin,
+      event_type: 'INTERVIEW_SCHEDULED',
+    });
+    await reqProgressLogger.resetEventProgress();
+    await reqProgressLogger({
+      status: 'completed',
+      is_progress_step: false,
+    });
+    supabaseWrap(
+      await supabaseAdmin
+        .from('request')
+        .update({
+          status: 'completed',
+        })
+        .eq('id', schedule_req_id),
+    );
+  } catch (err) {
+    console.error('Failed to update schedule progress', err.message);
+  }
 };

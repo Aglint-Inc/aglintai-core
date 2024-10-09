@@ -1,8 +1,8 @@
 import { type APIScheduleDebreif } from '@aglint/shared-types';
 import {
-  CApiError,
   dayjsLocal,
   type scheduling_options_schema,
+  supabaseWrap,
 } from '@aglint/shared-utils';
 import { type z } from 'zod';
 
@@ -36,19 +36,15 @@ export const fetchCandDetailsForDebreifBooking = async (
 ) => {
   const supabaseAdmin = getSupabaseServer();
 
-  const cand_debreif_details = (
+  const cand_debreif_details = supabaseWrap(
     await supabaseAdmin
-      .from('interview_filter_json')
+      .from('request')
       .select(
         '*,applications!inner(id,candidates!inner(first_name,last_name,timezone),public_jobs!inner(job_title),recruiter!inner(id,name))',
       )
-      .eq('id', req_body.filter_id)
-      .single()
-      .throwOnError()
-  ).data;
-  if (!cand_debreif_details) {
-    throw new CApiError('CLIENT', 'Filter does not exist');
-  }
+      .eq('id', req_body.request_id)
+      .single(),
+  );
 
   const fetchedData: DebriefFetchResponse = {
     application_id: cand_debreif_details.application_id,
@@ -77,7 +73,7 @@ export const fetchCandDetailsForDebreifBooking = async (
     api_options:
       req_body.options ?? ({} as z.infer<typeof scheduling_options_schema>),
     cand_tz: req_body.user_tz,
-    request_id: cand_debreif_details.request_id,
+    request_id: req_body.request_id,
   };
 
   return fetchedData;
