@@ -1,7 +1,7 @@
 import { type PlanCombinationRespType } from '@aglint/shared-types';
 import { CApiError, dayjsLocal } from '@aglint/shared-utils';
 
-import { compareTimes } from '@/services/CandidateSchedule/utils/time_range_utils';
+import { compareTimesHours } from '@/services/CandidateSchedule/utils/time_range_utils';
 
 import { type extractPreferredInterviewers } from '../textTransforms/extractPreferredInterviewers';
 import { type selfScheduleLinkInstruction } from '../textTransforms/selfScheduleLinkInstruction';
@@ -119,12 +119,12 @@ export const filterPlanCombsWithAgentResp = ({
   // Filter out plans with preferred time range
   const time_filtered_plans = filtered_plans.filter((plan) => {
     return (
-      compareTimes(
+      compareTimesHours(
         plan.sessions[0].start_time,
         ai_resp_preferred_time.startTime,
         time_zone,
       ) >= 0 &&
-      compareTimes(
+      compareTimesHours(
         plan.sessions[plan.sessions.length - 1].end_time,
         ai_resp_preferred_time.endTime,
         time_zone,

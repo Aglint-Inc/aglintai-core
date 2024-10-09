@@ -33,7 +33,7 @@ export default function EnhancedAutomationPage() {
   }, [status, data]);
 
   return (
-    <Page>
+    <Page className='relative'>
       <PageHeader>
         <PageHeaderText>
           <PageTitle>AI Automation</PageTitle>
@@ -42,9 +42,11 @@ export default function EnhancedAutomationPage() {
           </PageDescription>
         </PageHeaderText>
       </PageHeader>
-      <div className='grid grid-cols-1 gap-16 md:grid-cols-3'>
+      <div className='grid grid-cols-[1fr_max-content] gap-4 '>
         <Main />
+        <div className='w-[320px] sticky top-0  '>
         <Summary />
+        </div>
       </div>
     </Page>
   );
