@@ -76,6 +76,10 @@ export const bookRecruiterSelectedDebreif = async (
       status: 'completed',
       is_progress_step: false,
     });
+    await reqProgressLogger({
+      status: 'completed',
+      is_progress_step: true,
+    });
   };
   await Promise.all([
     updateTrainingStatus(booked_meeting_details),

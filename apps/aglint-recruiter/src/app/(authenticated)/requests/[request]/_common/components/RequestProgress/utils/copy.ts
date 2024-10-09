@@ -51,10 +51,10 @@ export const workflowCopy: WorkflowCopyType = {
     future: 'Awaiting interview scheduling.',
   },
   RECRUITER_SCHEDULED: {
-    future: 'Awaiting recruiter scheduling.',
-    present: 'Scheduling recruiter.',
-    past: 'Recruiter scheduled.',
-    error: 'Error occurred while scheduling recruiter.',
+    past: 'Interview scheduled.',
+    present: 'Scheduling interview.',
+    error: 'Error occurred while scheduling interview.',
+    future: 'Awaiting interview scheduling.',
   },
   SELF_SCHEDULE_CANCEL: {
     past: 'Self-scheduling canceled.',

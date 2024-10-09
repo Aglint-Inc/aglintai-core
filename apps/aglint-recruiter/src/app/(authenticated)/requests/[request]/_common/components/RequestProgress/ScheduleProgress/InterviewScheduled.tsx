@@ -68,6 +68,19 @@ const InterviewScheduled = () => {
       isLastNode={true}
       slotProgress={
         <>
+          {
+            <ShowCode.When
+              isTrue={Boolean(
+                reqProgressMap['RECRUITER_SCHEDULED'] &&
+                  reqProgressMap['RECRUITER_SCHEDULED'].length > 0,
+              )}
+            >
+              <EventNode
+                eventType='RECRUITER_SCHEDULED'
+                reqProgresMap={reqProgressMap}
+              />
+            </ShowCode.When>
+          }
           {triggerActionMp['candidateBook']?.map((action, idx) => {
             return (
               <EventNode
@@ -79,7 +92,7 @@ const InterviewScheduled = () => {
               />
             );
           })}
-          <ShowCode.When isTrue={!isWorkflowSet}>
+          <ShowCode.When isTrue={!isWorkflowSet && tense === 'future'}>
             <>
               <SuggestionCard
                 heading='Suggestion'
