@@ -52,8 +52,8 @@ const CandidateInviteNew = () => {
         <ErrorState />
       ) : (
         <>
-          <div className='flex w-full flex-row justify-center'>
-            <div className='w-8/12'>
+          <div className='flex h-full w-full flex-row justify-center'>
+            <div className={isBooked ? 'h-full w-full' : 'h-full w-8/12'}>
               <CandidateInvitePlanPage />
             </div>
             {!isBooked && (

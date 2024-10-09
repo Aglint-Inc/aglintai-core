@@ -95,7 +95,17 @@ const MultiDaySuccess = () => {
                 onClickDate={() => {
                   setSelectedDate(session.date);
                 }}
-                isActive={dayjsLocal(selectedDate).isSame(session.date, 'day')}
+                isActive={dayjsLocal(selectedDate)
+                  .tz(timezone.tzCode)
+                  .isSame(session.date, 'day')}
+                isDisable={
+                  selectedDay > 1 &&
+                  dayjsLocal(
+                    selectedSlots[selectedDay - 2].sessions[0].start_time,
+                  )
+                    .tz(timezone.tzCode)
+                    .isSameOrAfter(session.date, 'day')
+                }
               />
             );
           })}
