@@ -156,7 +156,7 @@ function DaySessions({ singleDay }: { singleDay: boolean }) {
               Next Day
             </UIButton>
           ) : null}
-          {!isSubmitted && (
+          {!isSubmitted && day === multiDaySessions.length && (
             <div className='w-full'>
               <UIButton
                 size='md'
