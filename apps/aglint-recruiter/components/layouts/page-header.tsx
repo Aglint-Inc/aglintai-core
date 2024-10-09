@@ -49,7 +49,7 @@ const PageDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn('max-w-3xl text-sm text-muted-foreground', className)}
+    className={cn('max-w-3xl text-sm text-muted-foreground mt-1', className)}
     {...props}
   />
 ));
