@@ -363,7 +363,7 @@ export default function ViewRequestDetails() {
                 </div>
                 <UIBadge
                   variant='neutral'
-                  className='rounded-sm bg-gray-200 text-gray-800'
+                  className='rounded-sm'
                   textBadge={capitalizeFirstLetter(selectedRequest?.priority)}
                 />
               </div>
@@ -500,7 +500,7 @@ export default function ViewRequestDetails() {
                         ? 'destructive'
                         : 'neutral'
                     }
-                    className='text-medium gap-1 rounded-sm bg-gray-200 text-gray-800'
+                    className='gap-1 rounded-sm'
                     textBadge={capitalizeFirstLetter(selectedRequest?.type)}
                   />
                 </div>
