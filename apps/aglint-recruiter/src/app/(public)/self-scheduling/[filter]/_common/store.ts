@@ -18,7 +18,7 @@ export type CandidateInviteType = {
   })[];
 };
 
-const initialStateSchedulingStore: CandidateInviteType = {
+export const initialStateSchedulingStore: CandidateInviteType = {
   timezone:
     timeZone.find(({ tzCode }) => tzCode === dayjsLocal.tz.guess()) ??
     timeZone[0],

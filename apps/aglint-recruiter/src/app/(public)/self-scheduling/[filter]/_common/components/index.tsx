@@ -22,6 +22,9 @@ import { useInviteSlots } from '../hooks/useInviteSlots';
 import { useRounds } from '../hooks/useRounds';
 import {
   resetCandidateInviteStore,
+  setRounds,
+  setSelectedDate,
+  setSelectedDay,
   setTimeZone,
   useCandidateInviteStore,
 } from '../store';
@@ -46,6 +49,12 @@ const CandidateInviteNew = () => {
     isRefetching,
   } = useInviteSlots();
 
+  useEffect(() => {
+    return () => {
+      resetCandidateInviteStore();
+    };
+  }, []);
+
   return (
     <div className='h-full w-full'>
       {isLoading || loadingSlots || isRefetching ? (
@@ -59,7 +68,7 @@ const CandidateInviteNew = () => {
               <CandidateInvitePlanPage />
             </div>
             {!isBooked && (
-              <div className='w-4/12 border-l p-4'>
+              <div className='h-full w-4/12 border-l p-4'>
                 <RightPanel />
               </div>
             )}
@@ -165,6 +174,9 @@ const CandidateInvitePlanPage = () => {
           <TimezonePicker
             onChange={(e) => {
               setTimeZone(e);
+              setSelectedDate(null);
+              setSelectedDay(1);
+              setRounds([]);
             }}
             value={timezone.tzCode}
           />
@@ -176,11 +188,6 @@ const CandidateInvitePlanPage = () => {
 };
 
 const Invite = ({ rounds }: ScheduleCardsProps) => {
-  useEffect(() => {
-    return () => {
-      resetCandidateInviteStore();
-    };
-  }, []);
   useRounds();
   if (rounds.length === 1) return <SingleDay />;
   return <MultiDay />;

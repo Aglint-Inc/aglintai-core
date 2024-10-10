@@ -126,11 +126,9 @@ export const useFindAvailibility = () => {
         bodyParams,
       );
 
-      if (res.status === 200) {
+      if (res.data.slots) {
         const resAvail = res.data as ApiResponseFindAvailability;
         return resAvail;
-      } else {
-        throw new Error();
       }
     } catch (error) {
       if (error instanceof Error) {

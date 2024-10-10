@@ -1,5 +1,6 @@
 import { dayjsLocal } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { useEffect } from 'react';
 import { DateCard } from 'src/app/(public)/_common/_components/DateCard';
 import TimeSlotsColumn from 'src/app/(public)/_common/_components/TimeSlotsColumn';
@@ -63,7 +64,7 @@ const MultiDaySuccess = () => {
   }, []);
 
   const filteredSession = sessions.find((session) =>
-    dayjsLocal(session.date).isSame(selectedDate, 'day'),
+    dayjsLocal(session.date).tz(timezone.tzCode).isSame(selectedDate, 'day'),
   );
 
   useEffect(() => {
@@ -71,9 +72,9 @@ const MultiDaySuccess = () => {
       if (selectedDay === 1) {
         setSelectedDate(sessions[0].date);
       } else {
-        const validsessions = sessions.filter(
+        const validsessions = sessions?.filter(
           (session) =>
-            !dayjsLocal(selectedSlots[selectedDay - 2].sessions[0].start_time)
+            !dayjsLocal(selectedSlots[selectedDay - 2]?.sessions[0].start_time)
               .tz(timezone.tzCode)
               .isSameOrAfter(session.date, 'day'),
         );
@@ -94,7 +95,7 @@ const MultiDaySuccess = () => {
 
   return (
     <>
-      <div className='flex flex-col'>
+      <div className='flex h-full flex-col'>
         <div className='flex flex-row gap-2 border-b px-4 pb-4'>
           {sessions.map((session, index) => {
             return (
@@ -118,7 +119,7 @@ const MultiDaySuccess = () => {
                 isDisable={
                   selectedDay > 1 &&
                   dayjsLocal(
-                    selectedSlots[selectedDay - 2].sessions[0].start_time,
+                    selectedSlots[selectedDay - 2]?.sessions[0]?.start_time,
                   )
                     .tz(timezone.tzCode)
                     .isSameOrAfter(session.date, 'day')
@@ -127,41 +128,43 @@ const MultiDaySuccess = () => {
             );
           })}
         </div>
-        <div className='p-4'>
-          {selectedDate && (
-            <TimeSlotsColumn
-              date={selectedDate ?? ''}
-              timeRangeArea={filteredSession?.slots.map((slot, ind) => {
-                const startTime = dayjsLocal(slot.sessions[0].start_time)
-                  .tz(timezone.tzCode)
-                  .format('hh:mm A');
-                const endTime = dayjsLocal(
-                  slot.sessions[slot.sessions.length - 1].end_time,
-                )
-                  .tz(timezone.tzCode)
-                  .format('hh:mm A');
+        <ScrollArea>
+          <div className='flex flex-col gap-2 overflow-auto p-4'>
+            {selectedDate && (
+              <TimeSlotsColumn
+                date={selectedDate ?? ''}
+                timeRangeArea={filteredSession?.slots.map((slot, ind) => {
+                  const startTime = dayjsLocal(slot.sessions[0].start_time)
+                    .tz(timezone.tzCode)
+                    .format('hh:mm A');
+                  const endTime = dayjsLocal(
+                    slot.sessions[slot.sessions.length - 1].end_time,
+                  )
+                    .tz(timezone.tzCode)
+                    .format('hh:mm A');
 
-                return (
-                  <UITimeRangeCard
-                    onClickTime={() => {
-                      handleSelectSlot(selectedDay - 1, slot);
-                    }}
-                    isSemiActive={false}
-                    isActive={
-                      selectedSlots?.length > 0
-                        ? selectedSlots[selectedDay - 1]?.slot_comb_id ===
-                          slot.slot_comb_id
-                        : false
-                    }
-                    key={ind}
-                    textTime={`${startTime} - ${endTime}`}
-                    ShowCloseIcon={false}
-                  />
-                );
-              })}
-            />
-          )}
-        </div>
+                  return (
+                    <UITimeRangeCard
+                      onClickTime={() => {
+                        handleSelectSlot(selectedDay - 1, slot);
+                      }}
+                      isSemiActive={false}
+                      isActive={
+                        selectedSlots?.length > 0
+                          ? selectedSlots[selectedDay - 1]?.slot_comb_id ===
+                            slot.slot_comb_id
+                          : false
+                      }
+                      key={ind}
+                      textTime={`${startTime} - ${endTime}`}
+                      ShowCloseIcon={false}
+                    />
+                  );
+                })}
+              />
+            )}
+          </div>
+        </ScrollArea>
       </div>
     </>
   );
