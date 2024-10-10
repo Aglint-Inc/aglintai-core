@@ -22,8 +22,7 @@ type EmailTemplate = DatabaseTable['company_email_template'] & {
 };
 
 function RequestProgress() {
-  const { request_progress, request_workflow, requestDetails, simpReqStatus } =
-    useRequest();
+  const { request_progress, request_workflow, requestDetails } = useRequest();
   const { data: fetchedTemps, status } = useCompanyTemplates();
   const [triggerDetails, setTriggerDetails] = React.useState<{
     trigger: DatabaseTable['workflow']['trigger'];

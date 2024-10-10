@@ -145,16 +145,8 @@ export const requestQueries = {
       gcTime: request_id ? GC_TIME : 0,
       queryKey: requestQueries.requests_workflow_queryKey({ request_id }),
       queryFn: async () => {
-        const d = supabaseWrap(
-          await supabase
-            .from('workflow')
-            .select('*, workflow_action!inner(*)')
-            .eq('request_id', request_id)
-            .eq('workflow_type', 'request'),
-          false,
-        );
-
-        return d ?? [];
+        const data = await getRequestWorkflow(request_id);
+        return data;
       },
     }),
 } as const;
@@ -629,3 +621,16 @@ type DeleteRequest = {
 };
 const deleteRequest = async ({ requestId }: DeleteRequest) =>
   await supabase.from('request').delete().eq('id', requestId).throwOnError();
+
+export const getRequestWorkflow = async (request_id: string) => {
+  const d = supabaseWrap(
+    await supabase
+      .from('workflow')
+      .select('*, workflow_action!inner(*)')
+      .eq('request_id', request_id)
+      .eq('workflow_type', 'request'),
+    false,
+  );
+
+  return d;
+};

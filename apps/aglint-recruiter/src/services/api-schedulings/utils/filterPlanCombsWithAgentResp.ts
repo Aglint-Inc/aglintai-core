@@ -1,5 +1,6 @@
 import { type PlanCombinationRespType } from '@aglint/shared-types';
-import { CApiError, dayjsLocal } from '@aglint/shared-utils';
+import { CApiError, dayjsLocal, getShortTimeZone } from '@aglint/shared-utils';
+import { DAYJS_FORMATS } from '@aglint/shared-utils/src/scheduling';
 
 import { compareTimesHours } from '@/services/CandidateSchedule/utils/time_range_utils';
 
@@ -131,10 +132,11 @@ export const filterPlanCombsWithAgentResp = ({
       ) <= 0
     );
   });
+
   if (time_filtered_plans.length === 0) {
     throw new CApiError(
       'CLIENT',
-      'No plans found within the preferred time range .',
+      `No plans found within within ${dayjsLocal(ai_resp_preferred_time.startTime).tz(time_zone).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} - ${dayjsLocal(ai_resp_preferred_time.endTime).tz(time_zone).format(DAYJS_FORMATS.STAR_TIME_FORMAT)} in timezone ${getShortTimeZone(time_zone)}.`,
     );
   }
 
