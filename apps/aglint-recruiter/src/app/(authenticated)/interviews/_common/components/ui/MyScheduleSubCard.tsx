@@ -53,9 +53,10 @@ export function MyScheduleSubCard({
   isAvatarWithNameVisible,
 }: MeetingSlotProps) {
   return (
-    <div className='relative h-full w-full rounded-lg'>
+    
+    <div className='relative w-full'>
       {/* style={bgColorProps} */}
-      <div className='flex h-full w-full flex-col items-stretch justify-start rounded-lg border-[1px] bg-white p-4'>
+      <div className='flex h-full w-full flex-col items-stretch justify-start rounded-lg border-[1px] bg-white hover:bg-gray-50 duration-200 p-4'>
         <div className='z-1 relative flex items-start justify-between gap-2'>
           <div className='flex items-start justify-start gap-5'>
             <div className='flex min-w-[148px] flex-col gap-2'>
@@ -85,7 +86,7 @@ export function MyScheduleSubCard({
                     {/* Add your SVG or icon here */}
                   </div>
                 )}
-                <Typography variant='p' type='small'>
+                <Typography variant='p' type='small' fontBold='normal'>
                   {textMeetingTitle}
                 </Typography>
               </div>

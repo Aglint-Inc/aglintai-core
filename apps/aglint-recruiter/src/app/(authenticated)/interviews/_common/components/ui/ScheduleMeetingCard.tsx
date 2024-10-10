@@ -49,7 +49,7 @@ function ScheduleMeetingCard({
               <div className={`${collapseOpen ? 'block' : 'hidden'}`}>
                 <div className='flex flex-col space-y-2'>
                   <MembersList
-                    slotImage={<User size={40} />}
+                    slotImage={<div className='w-10 h-10 bg-gray-500 text-white flex items-center justify-center'><User size={24} strokeWidth={1.5} /></div>}
                     textName={getFullName(
                       meetingDetails?.applications?.candidates?.first_name ??
                         '',
