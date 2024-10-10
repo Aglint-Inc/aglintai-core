@@ -80,7 +80,7 @@ export default function InterviewerDetailsPage() {
   return (
     <TwoColumnPageLayout
       sidebar={
-        <div className='col-span-4 bg-white'>
+        <div className='col-span-4 bg-white flex flex-col gap-4'>
           <UpcomingInterview />
           <RecentInterviews />
           <Feedback />
