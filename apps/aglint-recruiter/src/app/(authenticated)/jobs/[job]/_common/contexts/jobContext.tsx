@@ -1,21 +1,15 @@
-import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
-import {
-  createContext,
-  memo,
-  type PropsWithChildren,
-  useEffect,
-  useMemo,
-  useRef,
-} from 'react';
+'use client';
+
+import { useQuery } from '@tanstack/react-query';
+import { createContext, memo, type PropsWithChildren, useMemo } from 'react';
 
 import { useTenant } from '@/company/hooks';
-import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { JOB_NOT_FOUND } from '@/job/constants/jobNotFound';
 import { useCurrentJob } from '@/job/hooks/useCurrentJob';
+import { useJobRead } from '@/job/hooks/useJobRead';
 import { useJobsContext } from '@/jobs/hooks';
 import {
   jobQueries,
-  useInvalidateJobQueries,
   useJobSync,
   useUploadApplication,
   useUploadCsv,
@@ -23,47 +17,35 @@ import {
 } from '@/queries/job';
 import { useJobUpdate } from '@/queries/jobs';
 
-const useJobContext = () => {
-  const queryClient = useQueryClient();
+import { useJobPolling } from '../hooks/useJobPolling';
 
+const useJobContext = () => {
   const { recruiter_id } = useTenant();
-  const { isScoringEnabled } = useRolesAndPermissions();
   const { mutateAsync: syncJob } = useJobSync();
 
-  const { jobs, devlinkProps } = useJobsContext();
+  const { devlinkProps } = useJobsContext();
 
   const { job_id } = useCurrentJob();
 
-  const job = useMemo(
-    () => (jobs ?? []).find((job) => job.id === job_id) ?? null,
-    [jobs, job_id],
-  );
+  const job = useJobRead();
 
   if (!job) throw new Error(JOB_NOT_FOUND);
 
-  const scoringCriteriaLoading =
-    isScoringEnabled && job?.scoring_criteria_loading;
+  useJobPolling();
 
   const total = useMemo(
     () =>
-      Object.values(job?.section_count ?? {}).reduce((acc, curr) => {
+      Object.values(job.section_count ?? {}).reduce((acc, curr) => {
         acc += curr;
         return acc;
       }, 0),
-    [job?.section_count],
+    [
+      job.section_count.disqualified,
+      job.section_count.disqualified,
+      job.section_count.disqualified,
+      job.section_count.disqualified,
+    ],
   );
-
-  const scoreParameterPollEnabled = !!job && scoringCriteriaLoading;
-
-  const applicationScoringPollEnabled =
-    !!job &&
-    isScoringEnabled &&
-    job.status === 'published' &&
-    (job.processing_count.fetching !== 0 ||
-      job.processing_count.processing !== 0);
-
-  const jobPolling =
-    !!job && (scoreParameterPollEnabled || applicationScoringPollEnabled);
 
   const interviewPlans = useQuery(jobQueries.interview_plans({ id: job_id }));
 
@@ -106,41 +88,12 @@ const useJobContext = () => {
     job_id,
   });
 
-  const { revalidateJobQueries } = useInvalidateJobQueries();
-
-  useQueries({
-    queries: [
-      jobQueries.polling({
-        id: job_id,
-        enabled: jobPolling,
-        queryClient,
-      }),
-    ],
-  });
-
-  const initialRef = useRef(true);
-
-  useEffect(() => {
-    if (initialRef.current) {
-      initialRef.current = false;
-      return;
-    }
-    if (!jobPolling) {
-      revalidateJobQueries(job_id);
-    }
-  }, [jobPolling]);
-
   return {
     job,
     recruiter_id,
     total,
     job_id,
-
-    scoreParameterPollEnabled,
-    applicationScoringPollEnabled,
-    jobPolling,
     interviewPlans,
-    revalidateJobQueries: () => revalidateJobQueries(job_id),
     handleJobAsyncUpdate,
     handleJobUpdate,
     handleUploadApplication,

@@ -1,17 +1,27 @@
-'use client';
-
 import { type PropsWithChildren } from 'react';
 
 import { ErrorBoundary } from '@/common/ErrorBoundary';
 import { ApplicationsStoreProvider, JobProvider } from '@/job/contexts';
+import { api, HydrateClient } from '@/trpc/server';
 
-const Layout = ({ children }: PropsWithChildren) => {
+type Props = {
+  params: {
+    job: string;
+  };
+};
+
+const Layout = async (props: PropsWithChildren<Props>) => {
+  void api.jobs.job.read.prefetch({ id: props.params.job });
   return (
-    <ErrorBoundary>
-      <JobProvider>
-        <ApplicationsStoreProvider>{children}</ApplicationsStoreProvider>
-      </JobProvider>
-    </ErrorBoundary>
+    <HydrateClient>
+      <ErrorBoundary>
+        <JobProvider>
+          <ApplicationsStoreProvider>
+            {props.children}
+          </ApplicationsStoreProvider>
+        </JobProvider>
+      </ErrorBoundary>
+    </HydrateClient>
   );
 };
 

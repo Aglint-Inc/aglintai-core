@@ -1,18 +1,14 @@
 import type { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
 import {
   type QueryClient,
-  type QueryFilters,
   queryOptions,
   useMutation,
-  useQueryClient,
 } from '@tanstack/react-query';
 import axios from 'axios';
-import { useCallback } from 'react';
 
 import { UploadApiFormData } from '@/apiUtils/job/candidateUpload/types';
 import { handleJobApi } from '@/apiUtils/job/utils';
 import { useTenant } from '@/company/hooks';
-import type { Job } from '@/jobs/types';
 import { type GetInterviewPlansType } from '@/pages/api/scheduling/get_interview_plans';
 import { api } from '@/trpc/client';
 import toast from '@/utils/toast';
@@ -52,43 +48,10 @@ export const jobQueries = {
 };
 
 export const useJobSync = () => {
-  const queryClient = useQueryClient();
   return api.ats.sync.job.useMutation({
-    onSuccess: (_, data) => {
-      if (data) {
-        toast.success('Synced successfully');
-        jobQueries.refresh({ id: data.job_id, queryClient });
-      }
-    },
+    onSuccess: () => toast.success('Synced successfully'),
     onError: () => toast.error('Synced failed'),
   });
-};
-
-export const useInvalidateJobQueries = () => {
-  const queryClient = useQueryClient();
-  const utils = api.useUtils();
-  const predicateFn = useCallback(
-    (id: string): QueryFilters['predicate'] =>
-      (query) =>
-        query.queryKey.includes(jobKey) &&
-        Boolean(query.queryKey.find((key) => (key as any)?.id === id)) &&
-        !query.queryKey.includes(noPollingKey),
-    [jobKey, noPollingKey],
-  );
-  const revalidateJobQueries = async (id: Job['id']) =>
-    await Promise.allSettled([
-      queryClient.invalidateQueries({
-        type: 'active',
-        predicate: predicateFn(id!),
-      }),
-      queryClient.removeQueries({
-        type: 'inactive',
-        predicate: predicateFn(id!),
-      }),
-      utils.jobs.job.applications.read.invalidate({ job_id: id! }),
-    ]);
-
-  return { revalidateJobQueries };
 };
 
 type Pollers = JobRequisite &
@@ -109,7 +72,6 @@ type ApplicationsAllQueryPrerequistes = {
 
 export const useUploadApplication = ({ job_id }: { job_id: string }) => {
   const { recruiter_id } = useTenant();
-  const { revalidateJobQueries } = useInvalidateJobQueries();
   return useMutation({
     mutationFn: async (
       payload: Omit<HandleUploadApplication, 'job_id' | 'recruiter_id'>,
@@ -120,7 +82,6 @@ export const useUploadApplication = ({ job_id }: { job_id: string }) => {
         recruiter_id,
         ...payload,
       });
-      await revalidateJobQueries(job_id);
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: () => toast.success('Uploaded successfully'),
@@ -152,7 +113,6 @@ const handleUploadApplication = async (payload: HandleUploadApplication) => {
 
 export const useUploadResume = (params: { job_id: string }) => {
   const { recruiter_id } = useTenant();
-  const { revalidateJobQueries } = useInvalidateJobQueries();
   return useMutation({
     mutationFn: async (
       payload: Omit<HandleUploadResume, 'job_id' | 'recruiter_id'>,
@@ -163,7 +123,6 @@ export const useUploadResume = (params: { job_id: string }) => {
         recruiter_id,
         ...payload,
       });
-      await revalidateJobQueries(params.job_id);
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: () => toast.success('Uploaded successfully'),
@@ -208,7 +167,6 @@ const handleBulkResumeUpload = async (payload: HandleUploadResume) => {
 
 export const useUploadCsv = (params: { job_id: string }) => {
   const { recruiter_id } = useTenant();
-  const { revalidateJobQueries } = useInvalidateJobQueries();
   return useMutation({
     mutationFn: async (
       payload: Omit<HandleUploadCsv, 'job_id' | 'recruiter_id'>,
@@ -219,7 +177,6 @@ export const useUploadCsv = (params: { job_id: string }) => {
         recruiter_id,
         ...payload,
       });
-      await revalidateJobQueries(params.job_id);
     },
     onError: (error) => toast.error(`Upload failed. (${error.message})`),
     onSuccess: () => toast.success('Uploaded successfully'),

@@ -7,11 +7,9 @@ import { api } from '@/trpc/client';
 import type { Applications } from '../types';
 import { useApplicationsStore } from './useApplicationsStore';
 import { useCurrentJob } from './useCurrentJob';
-import { useJobPolling } from './useJobPolling';
 
 export const useApplications = () => {
   const { job_id } = useCurrentJob();
-  const { opts } = useJobPolling();
 
   const application_match = useApplicationsStore(
     (state) => state.application_match,
@@ -46,7 +44,6 @@ export const useApplications = () => {
   };
 
   const query = api.jobs.job.applications.read.useInfiniteQuery(payload, {
-    ...opts,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
   });
 
