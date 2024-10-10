@@ -57,7 +57,7 @@ export const getRequestFormattedDetails = (
   }
 
   requestProgressMeta.meta.isManualActionNeeded =
-    isHumanActionNeeded(request_progress);
+    isAnyEventsFailed(request_progress);
 
   return requestProgressMeta;
 };

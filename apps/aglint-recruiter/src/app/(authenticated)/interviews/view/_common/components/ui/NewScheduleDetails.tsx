@@ -64,7 +64,7 @@ export function NewScheduleDetail({
       <div className='flex items-start justify-between'>
         <div className='flex items-start gap-4'>
           {isDateCardVisible && (
-            <div className='rounded-mdbg-muted flex h-20 w-20 flex-col items-center justify-center'>
+            <div className='rounded-md bg-muted flex h-20 w-20 flex-col items-center justify-center'>
               <Typography
                 variant='p'
                 type='small'

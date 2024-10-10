@@ -4,8 +4,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-
-import { UIBadge } from '@/components/Common/UIBadge';
+import { UIBadge } from '@components/ui-badge';
+import {
+  Archive,
+  CalendarOff,
+  CircleAlert,
+  Info,
+  RefreshCcw,
+} from 'lucide-react';
 
 import { type StageWithSessions } from '../../../hooks/useInterviewStages';
 
@@ -46,8 +52,8 @@ function BadgesRight({
       {interview_module?.is_archived && (
         <UIBadge
           size={'sm'}
-          iconName={'Archive'}
-          color={'error'}
+          icon={Archive}
+          variant={'destructive'}
           textBadge={'Interview Type Archived'}
         />
       )}
@@ -58,8 +64,8 @@ function BadgesRight({
             {calenderNotConnectedUser.length > 0 && (
               <UIBadge
                 size={'sm'}
-                iconName={'CalendarOff'}
-                color={'error'}
+                icon={CalendarOff}
+                variant={'destructive'}
                 textBadge={calenderNotConnectedUser.length}
               />
             )}
@@ -70,8 +76,8 @@ function BadgesRight({
                     <div className='flex flex-col'>
                       <UIBadge
                         size={'sm'}
-                        iconName={'Info'}
-                        color={'warning'}
+                        icon={Info}
+                        variant={'warning'}
                         textBadge={pausedUser.length}
                       />
                     </div>
@@ -92,15 +98,15 @@ function BadgesRight({
                     <div className='flex flex-col'>
                       <UIBadge
                         size={'sm'}
-                        iconName={'CircleAlert'}
-                        color={'error'}
+                        icon={CircleAlert}
+                        variant={'destructive'}
                         textBadge={1}
                       />
                     </div>
                   </TooltipTrigger>
                   <TooltipContent
                     side='left'
-                    className='border border-neutral-300 bg-neutral-700 p-2 text-xs font-normal text-muted-foreground'
+                    className='border border-neutral-300 bg-white p-2 text-xs font-normal text-muted-foreground'
                   >
                     No interviewers assigned
                   </TooltipContent>
@@ -116,8 +122,8 @@ function BadgesRight({
           <>
             <UIBadge
               size={'sm'}
-              color={'warning'}
-              iconName='RefreshCcw'
+              variant={'warning'}
+              icon={RefreshCcw}
               textBadge={`${rescheduleRequests.length} Reschedule Request`}
             />
           </>

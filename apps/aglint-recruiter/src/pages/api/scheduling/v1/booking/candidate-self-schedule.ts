@@ -9,9 +9,9 @@ import { CApiError } from '@aglint/shared-utils/src/customApiError';
 import { type z } from 'zod';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
-import { bookCandidateSelectedOption } from '@/services/CandidateSchedule/utils/bookingUtils/bookCandidateSelectedOption';
+import { bookCandidateSelectedOption } from '@/services/CandidateSchedule/utils/bookingUtils/candidateSelfSchedule/bookCandidateSelectedOption';
+import { verifyRecruiterSelectedSlots } from '@/services/CandidateSchedule/utils/bookingUtils/candidateSelfSchedule/verifyRecruiterSelctedOptions';
 import { fetchDBScheduleDetails } from '@/services/CandidateSchedule/utils/bookingUtils/dbFetch/fetchDBScheduleDetails';
-import { verifyRecruiterSelectedSlots } from '@/services/CandidateSchedule/utils/bookingUtils/verifyRecruiterSelctedOptions';
 import { compareTimesByMinutesPrec } from '@/services/CandidateSchedule/utils/time_range_utils';
 
 const candidateSelfSchedule = async (

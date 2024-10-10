@@ -53,7 +53,7 @@ function EmailPreviewSelfSchedule() {
         selectedCombIds.includes(plan.plan_comb_id),
       ),
     }))
-    .filter((option) => option.plans.length > 1);
+    .filter((option) => option.plans.length > 0);
 
   const numberOfDays = selectedSlots.length;
 

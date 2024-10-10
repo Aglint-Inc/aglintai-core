@@ -9,13 +9,15 @@ import {
   DialogTitle,
 } from '@components/ui/dialog';
 import { Label } from '@components/ui/label';
-import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
 import { UIButton } from '@/components/Common/UIButton';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import {
   setIsCreateDialogOpen,
   setSelectedUsers,
@@ -36,6 +38,8 @@ function CreateModuleDialog() {
   const [nameError, setNameError] = useState(false);
   const [departmentError, setDepartmentError] = useState(false);
   const { data: departments } = useAllDepartments();
+  const searchParams = useSearchParams();
+  const { replace } = useRouterPro();
 
   const validate = () => {
     let error = true;
@@ -52,6 +56,19 @@ function CreateModuleDialog() {
   };
 
   const { isPending, mutateAsync } = useCreateInterviewPool();
+
+  useEffect(() => {
+    const isEditOpen = searchParams?.get('add_pool') == 'true' ? true : false;
+    if (isEditOpen) {
+      setIsCreateDialogOpen(true);
+    }
+  }, [searchParams]);
+
+  const handleRemoveEditParam = () => {
+    const params = new URLSearchParams(searchParams!);
+    params.delete('add_pool');
+    replace(`?${params.toString()}`);
+  };
 
   const createModuleHandler = async () => {
     if (!validate() && !isPending) {
@@ -76,7 +93,10 @@ function CreateModuleDialog() {
   return (
     <Dialog
       open={isCreateDialogOpen}
-      onOpenChange={(open) => setIsCreateDialogOpen(open)}
+      onOpenChange={(open) => {
+        setIsCreateDialogOpen(open);
+        handleRemoveEditParam();
+      }}
     >
       <DialogContent>
         <DialogHeader>
@@ -165,6 +185,7 @@ function CreateModuleDialog() {
             variant='outline'
             onClick={() => {
               setIsCreateDialogOpen(false);
+              handleRemoveEditParam();
             }}
           >
             Cancel

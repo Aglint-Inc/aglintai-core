@@ -38,9 +38,11 @@ const employeeSizes = [
 
 const EditBasicInfoDialog = ({
   editDialog,
+  handleRemoveEditParam,
   setEditDialog,
 }: {
   editDialog: boolean;
+  handleRemoveEditParam: () => void;
   setEditDialog: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { recruiter } = useTenant();
@@ -65,6 +67,7 @@ const EditBasicInfoDialog = ({
   };
 
   const handleClose = () => {
+    handleRemoveEditParam();
     setEditDialog(false);
     //reset a form
     setTimeout(() => {

@@ -12,13 +12,13 @@ import axios from 'axios';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-import { type ScheduleApiDetails } from '../../types';
-import { confirmInterviewers } from './confirmInterviewers';
-import { createMeetingEvents } from './createMeetingEvents';
-import { sendMailsToOrganizer } from './sendMailsToOrganizer';
-import { type FetchDBScheduleDetails, type ScheduleDBDetails } from './types';
-import { updateMeetingEventDetails } from './updateMeetingInfo';
-import { updateTrainingStatus } from './updateTrainingStatus';
+import { type ScheduleApiDetails } from '../../../types';
+import { confirmInterviewers } from '../confirmInterviewers';
+import { createMeetingEvents } from '../createMeetingEvents';
+import { sendMailsToOrganizer } from '../sendMailsToOrganizer';
+import { type FetchDBScheduleDetails, type ScheduleDBDetails } from '../types';
+import { updateMeetingEventDetails } from '../updateMeetingInfo';
+import { updateTrainingStatus } from '../updateTrainingStatus';
 
 export const bookCandidateSelectedOption = async (
   parsed_body: CandidateDirectBookingType,

@@ -4,13 +4,13 @@ import { type CandidateDirectBookingType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
 import {
-  type CandidateInviteType,
   setRounds,
-  useCandidateInviteStore,
+  useCandidateInviteSelfScheduleStore,
 } from 'src/app/(public)/self-scheduling/[filter]/_common/store';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type ApiBodyOpenSelfScheduling } from '@/pages/api/scheduling/application/openselfscheduling';
+import { type transformPlanCombinationPack } from '@/services/CandidateSchedule/utils/bookingUtils/candidateSelfSchedule/transformPlanCombinationPack';
 import toast from '@/utils/toast';
 
 import { useConfirmSlots } from './useConfirmSlots';
@@ -20,33 +20,31 @@ const useInviteActions = () => {
   const router = useRouterPro<{ filter_id: string; task_id?: string }>();
   const { data } = useInviteMeta();
   const { mutateAsync, isPending } = useConfirmSlots();
-  const { rounds, timezone } = useCandidateInviteStore();
+  const { rounds, timezone } = useCandidateInviteSelfScheduleStore();
 
   const handleSelectSlot = (
     day: number,
-    sessions: CandidateInviteType['rounds'][0]['selectedSlots'],
+    slot: ReturnType<
+      typeof transformPlanCombinationPack
+    >[number]['interview_rounds'][number]['current_day_slots'][number],
   ) => {
     const newSessions = rounds.map((round, ind) => ({
       ...round,
-      selectedSlots: ind + 1 > day ? null : round.selectedSlots,
+      selectedSlot: ind + 1 > day ? null : round.selectedSlot,
     }));
-    newSessions[day]['selectedSlots'] = sessions;
+    newSessions[day]['selectedSlot'] = slot;
     setRounds(newSessions);
   };
 
   const handleSubmit = async () => {
     const candSelectedSlots = rounds
-      .map((round) => round.selectedSlots)
-      .map((slot) => slot?.sessions)
-      .filter((ses) => ses !== undefined);
+      .map((round) => round.selectedSlot)
+      .filter((ses) => ses !== null);
 
     const bodyParams: CandidateDirectBookingType = {
       cand_tz: timezone.tzCode,
       filter_id: router.params.filter,
-      selected_plan: candSelectedSlots.map((slot) => ({
-        start_time: slot[0].start_time,
-        end_time: slot[slot.length - 1].end_time,
-      })),
+      selected_plan: candSelectedSlots,
     };
     try {
       if (!isPending) {

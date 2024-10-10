@@ -89,18 +89,18 @@ export default function InterviewTypesPage() {
             )}
           </TableBody>
         </Table>
+        {filteredInterviewModules?.length === 0 ? (
+          <div className='flex h-[70vh] w-full items-center justify-center'>
+            <EmptyState
+              icon={LibraryBig}
+              header={'No Interview pools found'}
+              description='Create a new interview pool to get started.'
+            />
+          </div>
+        ) : (
+          <></>
+        )}
       </ScrollArea>
-      {filteredInterviewModules?.length === 0 ? (
-        <div className='flex w-full items-center justify-center'>
-          <EmptyState
-            icon={LibraryBig}
-            header={'No Interview pools found'}
-            description='Create a new interview pool to get started.'
-          />
-        </div>
-      ) : (
-        <></>
-      )}
     </>
   );
 }

@@ -4,10 +4,12 @@ import { EmptyState } from '@components/empty-state';
 import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { BookOpen, Plus } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 import * as React from 'react';
 
 import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
 import AddChip from '@/common/AddChip';
+import { Indicator } from '@/common/Indicator';
 import UISectionCard from '@/common/UISectionCard';
 import { useTenant } from '@/company/hooks';
 import { manageDepartments } from '@/context/AuthContext/utils';
@@ -70,6 +72,10 @@ export default function Departments() {
   const suggestionsList = initialDepartments.filter(
     (d) => !current_departments.includes(d.replace(/\s+/g, '').toLowerCase()),
   );
+
+  const queryParams = useSearchParams();
+  const isIndicatorActive =
+    queryParams?.get('indicator') == 'true' ? true : false;
 
   return (
     <>
@@ -135,10 +141,12 @@ export default function Departments() {
                 handleAddDepartment={handleAddDepartment}
                 placeholder='Enter new value...'
                 btn={
-                  <Button variant='outline'>
-                    <Plus className='mr-2 h-4 w-4' />
-                    Add Departments
-                  </Button>
+                  <Indicator isActive={isIndicatorActive}>
+                    <Button variant='outline'>
+                      <Plus className='mr-2 h-4 w-4' />
+                      Add Departments
+                    </Button>
+                  </Indicator>
                 }
                 handleRemoveKeyword={({ id }) => {
                   handleRemoveKeyword(id);

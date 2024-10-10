@@ -1,18 +1,15 @@
 /* eslint-disable security/detect-object-injection */
-import { EmptyState } from '@components/empty-state';
 import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
-import { AlertTriangle } from 'lucide-react';
 import { useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDrawer from '@/components/Common/UIDrawer';
-import { useRouterPro } from '@/hooks/useRouterPro';
 import { type CompanyMember } from '@/queries/company-members';
 
-import { useJobInterviewPlan } from '../hooks';
 import { type DrawerType } from '.';
+import { useJobInterviewPlan } from '../hooks';
 import BreakForms, {
   getBreakFields,
   getBreakSessionPayload,
@@ -39,31 +36,10 @@ type InterviewDrawersProps = {
   handleClose: () => void;
 };
 const InterviewDrawers = ({ drawers, handleClose }: InterviewDrawersProps) => {
-  const { push } = useRouterPro();
-  const {
-    interviewModules: { data },
-  } = useJobInterviewPlan();
+ 
 
   return (
-    <>
-      {(data ?? []).length ? (
-        <InterviewSideDrawer
-          drawers={drawers}
-          handleClose={() => handleClose()}
-        />
-      ) : (
-        <EmptyState
-          icon={AlertTriangle}
-          header='No Interview Plan'
-          description='Create an interview plan to get started'
-          primarySlot={
-            <Button onClick={() => push('/scheduling?tab=interviewtypes')}>
-              Create Interview Plan
-            </Button>
-          }
-        />
-      )}
-    </>
+    <InterviewSideDrawer drawers={drawers} handleClose={() => handleClose()} />
   );
 };
 
@@ -164,7 +140,7 @@ const CreateSession = ({
 
   return (
     <UIDrawer
-      title={'Create Interview'}
+      title={'Add Interview to Plan'}
       size='sm'
       open
       onClose={handleClose}

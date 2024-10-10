@@ -6,21 +6,15 @@ import TrainingProgress from './TrainingProgress';
 
 function SchedulingReports() {
   return (
-    <div className='flex flex-col gap-2'>
-      <div className='flex flex-row gap-2'>
-        <div className='w-[30%]'>
-          <Reasons />
-        </div>
-        <div className='w-[70%]'>
-          <InterviewType />
-        </div>
-      </div>
+    <div className='flex flex-col space-y-8'>
+      <Reasons />
+      <InterviewType />
       <TrainingProgress />
-      <div className='flex flex-row gap-2'>
-        <div className='w-[30%]'>
+      <div className='flex flex-row space-x-8'>
+        <div className='w-[50%]'>
           <RecentDeclines />
         </div>
-        <div className='w-[70%]'>
+        <div className='w-[50%]'>
           <RecentReschedules />
         </div>
       </div>
