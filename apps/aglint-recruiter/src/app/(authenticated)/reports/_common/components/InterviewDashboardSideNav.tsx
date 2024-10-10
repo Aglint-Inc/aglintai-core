@@ -41,6 +41,11 @@ export default function Component() {
     //   icon: ClipboardCheck,
     //   id: "interviewConsistency"
     // },
+    {
+      name: 'Scheduling Reports',
+      icon: 'UserCheckIcon',
+      id: 'schedulingReports',
+    },
   ];
   return (
     <div className='space-y-1'>
