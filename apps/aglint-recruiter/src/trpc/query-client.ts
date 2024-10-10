@@ -14,8 +14,8 @@ import superjson from 'superjson';
 
 export const GC_TIME = 5 * 60 * 1000;
 export const STALE_TIME = 5 * 1000;
-export const REFETCH_ON_MOUNT = true;
-export const REFETCH_ON_WINDOW_FOCUS = true;
+export const REFETCH_ON_MOUNT = false;
+export const REFETCH_ON_WINDOW_FOCUS = false;
 
 export const createQueryClient = (
   logout?: (_queryClient: QueryClient) => Promise<void>,
