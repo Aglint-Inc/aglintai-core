@@ -140,18 +140,20 @@ export default function InterviewerDetailsPage() {
                   setFilter={setFilter}
                 />
               ) : (
-                <Alert variant='warning'>
-                  <AlertTriangle className='h-4 w-4 text-yellow-500' />
-                  <AlertTitle>Warning</AlertTitle>
-                  <AlertDescription>
-                    <div className='flex flex-row items-center'>
-                      <p>
-                        Your calendar is not connected. Please connect calendar
-                        from your
-                      </p>
-                    </div>
-                  </AlertDescription>
-                </Alert>
+                <div className='flex h-[70vh] w-full items-center justify-center'>
+                  <Alert variant='warning' className='w-fit'>
+                    <AlertTriangle className='h-4 w-4 text-yellow-500' />
+                    <AlertTitle>Warning</AlertTitle>
+                    <AlertDescription>
+                      <div className='flex flex-row items-center'>
+                        <p>
+                          Your calendar is not connected. Please connect
+                          calendar from your
+                        </p>
+                      </div>
+                    </AlertDescription>
+                  </Alert>
+                </div>
               )}
             </div>
           )}
