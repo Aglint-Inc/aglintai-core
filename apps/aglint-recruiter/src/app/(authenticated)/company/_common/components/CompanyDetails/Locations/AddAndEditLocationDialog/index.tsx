@@ -15,8 +15,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import TimezonePicker from '@/common/TimezonePicker';
 import { UIButton } from '@/common/UIButton';
-import { useTenant } from '@/company/hooks';
-import { useTenantOfficeLocations } from '@/company/hooks';
+import { useTenant, useTenantOfficeLocations } from '@/company/hooks';
 import { manageOfficeLocation } from '@/context/AuthContext/utils';
 import { api } from '@/trpc/client';
 import timeZone from '@/utils/timeZone';
@@ -249,7 +248,7 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
             </div>
           </div>
           {isCheckboxVisiable && (
-            <div className='col-span-2 flex items-center justify-start space-x-2'>
+            <div className='col-span-2 flex hidden items-center justify-start space-x-2'>
               <Checkbox
                 id='isHeadquarter'
                 checked={isHeadQ}
