@@ -1,5 +1,6 @@
 'use client';
 
+import { getRequestFormattedDetails } from '@request/utils/getRequestFormattedDetails';
 import { useRequests } from '@requests/hooks/useRequests';
 import { useQuery } from '@tanstack/react-query';
 import { createContext, type PropsWithChildren } from 'react';
@@ -88,7 +89,15 @@ const useRequestContext = ({ request_id }: RequestParams) => {
     [mutationQueue, request_id],
   );
 
+  const getSimpReqStatus = useCallback(() => {
+    return getRequestFormattedDetails(
+      request_progress.data!,
+      request_workflow.data!,
+    );
+  }, [request_progress.data, request_workflow.data]);
+
   return {
+    simpReqStatus: getSimpReqStatus(),
     request_progress: {
       ...request_progress,
       data: request_progress.data ?? [],
