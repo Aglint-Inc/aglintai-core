@@ -33,9 +33,15 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
   const [application, setApplication] = useState<any>();
   const [candidate, setCandidate] = useState<any[]>([]);
 
-  const editor = useEditor({
+  const editorDescription = useEditor({
     editable: false,
     content: post?.description,
+    extensions: [StarterKit],
+  });
+
+  const editorOverview = useEditor({
+    editable: false,
+    content: recruiter?.company_overview,
     extensions: [StarterKit],
   });
 
@@ -77,7 +83,7 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
     .filter((job: any) => job.status === 'published');
 
   return (
-    <div className='relative min-h-screen bg-gray-100'>
+    <div className='container relative min-h-screen bg-gray-100'>
       {thank && (
         <div className='absolute inset-0 z-50 flex flex-col bg-gray-100 p-4'>
           <div className='flex flex-grow flex-col items-center justify-center space-y-4'>
@@ -158,14 +164,14 @@ const JobPostPublic: React.FC<JobsListProps> = ({ post, recruiter, jobs }) => {
             <div className='space-y-6'>
               <div>
                 <h3 className='mb-2 text-lg font-semibold'>Job Description</h3>
-                <EditorContent editor={editor} />
+                <EditorContent editor={editorDescription} />
               </div>
 
               <div>
                 <h3 className='mb-2 text-lg font-semibold'>
                   About the Company
                 </h3>
-                <p>{recruiter?.company_overview}</p>
+                <EditorContent editor={editorOverview} />
               </div>
 
               <div>

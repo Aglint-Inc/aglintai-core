@@ -4,7 +4,7 @@ import type {
 } from '@aglint/shared-types';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { useAvailabilityContext } from '@request/components/ConfirmAvailability/_common/contexts/RequestAvailabilityContext';
-import DayCardWrapper from '@request/components/SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
+import DayCardWrapper from '@request/components/SelfSchedulingDrawer/_common/components/StepSlotOptions/DayCardWrapper';
 import { RotateCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -104,7 +104,7 @@ function FinalScreen() {
             variant='secondary'
             onClick={() => {
               window.open(
-                `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=agent_email_candidate&template_tab=email`,
+                `${process.env.NEXT_PUBLIC_HOST_NAME}/company?tab=emailTemplate&email=confirmInterview_email_applicant`,
               );
             }}
           >

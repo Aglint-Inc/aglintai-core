@@ -8,7 +8,7 @@ import { getStringColor } from 'src/app/_common/utils/getColorForText';
 import CalendarResourceView from '@/components/Common/CalendarResourceView';
 import { type EventCalendar } from '@/components/Common/CalendarResourceView/types';
 
-import { transformAvailability } from '../../../../SelfSchedulingDrawer/_common/utils/utils';
+import { transformAvailability } from '../../../../SelfSchedulingDrawer/_common/utils/transformAvailability';
 import {
   setCalendarDate,
   useConfirmAvailabilitySchedulingFlowStore,

@@ -1,9 +1,12 @@
 import { Button } from '@components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
+import { Indicator } from '@/common/Indicator';
 import { useFlags } from '@/company/hooks/useFlags';
 import UIDialog from '@/components/Common/UIDialog';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { useApplicationsStore } from '@/job/hooks';
 
 import { ImportCsv } from './importCsv';
@@ -17,20 +20,38 @@ export const UploadApplications = ({
   const { importPopup } = useApplicationsStore((state) => state);
   const { setImportPopup } = useApplicationsStore((state) => state.actions);
   const { isShowFeature } = useFlags();
+
+  const searchParams = useSearchParams();
+  const { replace } = useRouterPro();
+
+  const isIndicatorActive =
+    searchParams?.get('indicator') == 'true' ? true : false;
+
+  const handleRemoveParam = () => {
+    const params = new URLSearchParams(searchParams!);
+    params.delete('indicator');
+    replace(`?${params.toString()}`);
+  };
+
   return (
     <>
       {children || (
-        <Button
-          variant='outline'
-          className='w-auto'
-          onClick={() => setImportPopup(true)}
-        >
-          Add candidates
-        </Button>
+        <Indicator isActive={isIndicatorActive}>
+          <Button
+            variant='outline'
+            className='w-auto'
+            onClick={() => setImportPopup(true)}
+          >
+            Add candidates
+          </Button>
+        </Indicator>
       )}
       <UIDialog
         open={importPopup}
-        onClose={() => setImportPopup(false)}
+        onClose={() => {
+          setImportPopup(false);
+          handleRemoveParam();
+        }}
         slotButtons={<></>}
         title='Add Candidates'
         size='lg'

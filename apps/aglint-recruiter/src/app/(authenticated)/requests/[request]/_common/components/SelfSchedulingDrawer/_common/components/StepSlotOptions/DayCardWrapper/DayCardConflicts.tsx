@@ -1,6 +1,6 @@
 import { type SessionCombinationRespType } from '@aglint/shared-types';
 
-import ConflictWithHover from '../../../ui/ConflictWithHover';
+import ConflictWithHover from '../../ui/ConflictWithHover';
 
 function DayCardConflicts({
   slotsWithDaySessions,

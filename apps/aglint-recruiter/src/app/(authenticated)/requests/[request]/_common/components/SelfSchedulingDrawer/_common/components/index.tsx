@@ -2,11 +2,11 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 import { UIBadge } from '@/common/UIBadge';
 
-import { useSelfSchedulingFlowStore } from '../../store/store';
-import SelfScheduleSuccess from '../SelfScheduleSuccess';
-import LoaderSlots from '../ui/Loader';
+import { useSelfSchedulingFlowStore } from '../store/store';
 import EmailPreviewSelfSchedule from './EmailPreviewSelfSchedule';
+import SelfScheduleSuccess from './SelfScheduleSuccess';
 import StepSlotOptions from './StepSlotOptions';
+import LoaderSlots from './ui/Loader';
 
 function BodyDrawer() {
   const { stepScheduling, fetchingPlan } = useSelfSchedulingFlowStore(

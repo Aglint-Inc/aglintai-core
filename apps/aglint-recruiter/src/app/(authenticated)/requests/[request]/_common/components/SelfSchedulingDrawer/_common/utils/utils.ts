@@ -1,54 +1,50 @@
-import { type ApiResponseFindAvailability } from '@requests/types';
-import { getStringColor } from 'src/app/_common/utils/getColorForText';
+import { type PlanCombinationRespType } from '@aglint/shared-types';
 
-import {
-  type EventCalendar,
-  type Resource,
-} from '@/components/Common/CalendarResourceView/types';
-
-export const transformAvailability = (
-  availabilities: ApiResponseFindAvailability['availabilities'],
-) => {
-  const intArray = availabilities
-    ? Object?.entries(availabilities)?.map(([, value]) => ({
-        ...value,
-      }))
-    : [];
-
-  const events: EventCalendar[] = intArray.flatMap((cal) =>
-    cal.all_events.flatMap((event) => {
-      const data = {
-        start: event.start.dateTime,
-        end: event.end.dateTime,
-        title: event.summary,
-        resourceId: cal.interviewer_id,
-        id: event.id,
-      };
-      return {
-        ...data,
-        extendedProps: {
-          conferenceData: event.conferenceData?.conferenceSolution ?? null,
-          attendees: event.attendees,
-          color: getStringColor(cal.name.charCodeAt(0)).text,
-        },
-      };
-    }),
-  );
-
-  const resources: Resource[] = intArray.map((cal) => ({
-    id: cal.interviewer_id,
-    title: cal.name,
-    extendedProps: {
-      data: {
-        id: cal.interviewer_id,
-        profile_pic: cal.profile_image,
-        email: cal.email,
-        name: cal.name,
-        position: cal.position,
-      },
-      color: getStringColor(cal.name.charCodeAt(0)).text,
-    },
+export function extractPlanData(
+  sessionsArray: PlanCombinationRespType[],
+): (PlanCombinationRespType & { dateRange: string[] })[] {
+  return sessionsArray.map((plan) => ({
+    plan_comb_id: plan.plan_comb_id,
+    sessions: plan.sessions,
+    no_slot_reasons: [],
+    dateRange: [
+      ...new Set(
+        plan.sessions.map((session) => session.start_time.split('T')[0]),
+      ),
+    ],
   }));
+}
 
-  return { events, resources };
-};
+export function groupByDateRange(
+  plansData: (PlanCombinationRespType & {
+    dateRange: string[];
+  })[],
+): {
+  dateArray: string[];
+  plans: PlanCombinationRespType[];
+}[] {
+  const groupedData: {
+    [dateRange: string]: PlanCombinationRespType[];
+  } = {};
+
+  plansData.forEach((plan) => {
+    const dateRangeKey = JSON.stringify(plan.dateRange);
+    if (!groupedData[String(dateRangeKey)]) {
+      groupedData[String(dateRangeKey)] = [];
+    }
+    groupedData[String(dateRangeKey)].push({
+      plan_comb_id: plan.plan_comb_id,
+      sessions: plan.sessions,
+      no_slot_reasons: [],
+    });
+  });
+
+  return Object.entries(groupedData).map(([dateRange, plans]) => ({
+    dateArray: JSON.parse(dateRange),
+    plans: plans.map((plan) => ({
+      plan_comb_id: plan.plan_comb_id,
+      sessions: plan.sessions.flatMap((session) => session),
+      no_slot_reasons: [],
+    })),
+  }));
+}

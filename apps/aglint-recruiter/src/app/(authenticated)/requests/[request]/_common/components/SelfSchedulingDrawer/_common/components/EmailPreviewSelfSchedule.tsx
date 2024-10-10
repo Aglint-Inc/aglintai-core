@@ -14,7 +14,7 @@ import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import { mailSender } from '@/utils/mailSender';
 
-import { setEmailData, useSelfSchedulingFlowStore } from '../../store/store';
+import { setEmailData, useSelfSchedulingFlowStore } from '../store/store';
 import DayCardWrapper from './StepSlotOptions/DayCardWrapper';
 
 function EmailPreviewSelfSchedule() {
@@ -53,7 +53,7 @@ function EmailPreviewSelfSchedule() {
         selectedCombIds.includes(plan.plan_comb_id),
       ),
     }))
-    .filter((option) => option.plans.length > 1);
+    .filter((option) => option.plans.length > 0);
 
   const numberOfDays = selectedSlots.length;
 
@@ -122,7 +122,7 @@ function EmailPreviewSelfSchedule() {
                     size='sm'
                     onClick={() => {
                       window.open(
-                        `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling?tab=settings&subtab=emailTemplate&email=sendSelfScheduleRequest_email_applicant&template_tab=email`,
+                        `${process.env.NEXT_PUBLIC_HOST_NAME}/company?tab=emailTemplate&email=sendSelfScheduleRequest_email_applicant`,
                       );
                     }}
                   >
