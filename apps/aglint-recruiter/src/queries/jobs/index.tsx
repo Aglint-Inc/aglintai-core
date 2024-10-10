@@ -14,7 +14,7 @@ export const useJobsSync = () => {
 
 export const useJobUpdate = () => {
   const mutation = useMutation({
-    mutationFn: (job: Parameters<typeof updateJob>[0]) => updateJob(job),
+    mutationFn: updateJob,
     onError: () => toast.error('Unable to update job'),
   });
   return mutation;
@@ -22,7 +22,7 @@ export const useJobUpdate = () => {
 
 export const useJobDelete = () => {
   const mutation = useMutation({
-    mutationFn: (id: string) => deleteJob(id),
+    mutationFn: deleteJob,
     onError: () => toast.error('Unable to delete job'),
     onSuccess: () => toast.success('Job deleted successfully.'),
   });
