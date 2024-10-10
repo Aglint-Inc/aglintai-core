@@ -99,18 +99,14 @@ export const AddMemberDialogUI = ({
               value={form.email || ''}
               name='email'
               placeholder='Email'
-              onChange={(e) =>
-                setForm({ ...form, email: e.target.value.trim() })
-              }
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
               className={formError.email ? 'border-destructive' : ''}
             />
             <UITextField
               value={form.linked_in || ''}
               name='LinkedIn'
               placeholder='Enter linkedin URL'
-              onChange={(e) =>
-                setForm({ ...form, linked_in: e.target.value.trim() })
-              }
+              onChange={(e) => setForm({ ...form, linked_in: e.target.value })}
               className={formError.linked_in ? 'border-destructive' : ''}
             />
             <div className='grid grid-cols-2 gap-4'>
