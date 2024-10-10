@@ -1,5 +1,4 @@
-CREATE UNIQUE INDEX unique_request_id ON public.candidate_request_availability USING btree (request_id);
-
-alter table "public"."candidate_request_availability" add constraint "unique_request_id" UNIQUE using index "unique_request_id";
-
+-- Step 3: Add a unique constraint to the foreign key column
+ALTER TABLE candidate_request_availability
+ADD CONSTRAINT unique_request_id UNIQUE (request_id);
 
