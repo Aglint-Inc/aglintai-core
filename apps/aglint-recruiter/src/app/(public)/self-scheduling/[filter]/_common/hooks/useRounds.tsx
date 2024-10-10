@@ -27,7 +27,7 @@ export const useRounds = () => {
         acc.rounds.push({
           title: `Day ${acc.rounds.length + 1}`,
           sessions: [curr],
-          selectedSlots: null,
+          selectedSlot: null,
         });
       else acc.rounds[count - 1].sessions.push(curr);
       return acc;

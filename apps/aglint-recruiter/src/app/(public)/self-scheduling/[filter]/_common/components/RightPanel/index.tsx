@@ -5,22 +5,21 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { UIButton } from '@/common/UIButton';
 
 import useInviteActions from '../../hooks/useInviteActions';
-import { useInviteSlots } from '../../hooks/useInviteSlots';
 import {
   setSelectedDate,
   setSelectedDay,
-  useCandidateInviteStore,
+  useCandidateInviteSelfScheduleStore,
 } from '../../store';
 import Rounds from './Rounds';
 
 function RightPanel() {
-  const { selectedDay, rounds } = useCandidateInviteStore();
-  const { data } = useInviteSlots();
+  const { selectedDay, rounds } = useCandidateInviteSelfScheduleStore();
   const { handleSubmit, isPending } = useInviteActions();
 
-  const numberOfDays = data?.length > 0 ? data[0]?.length : 0;
+  const numberOfSelections = rounds.length || 0;
+
   const selectedSlots = rounds
-    .map((round) => round.selectedSlots)
+    .map((round) => round.selectedSlot)
     .filter((slot) => slot !== null);
 
   return (
@@ -28,17 +27,18 @@ function RightPanel() {
       <ScrollArea className='h-[calc(100%-50px)]'>
         <Rounds />
       </ScrollArea>
+
       <div className='w-full pt-4'>
-        {selectedDay === numberOfDays ? (
+        {selectedDay === numberOfSelections ? (
           <UIButton
             className='w-full'
             onClick={() => {
-              if (selectedSlots.length === numberOfDays) {
+              if (selectedSlots.length === numberOfSelections) {
                 handleSubmit();
               }
             }}
             isLoading={isPending}
-            disabled={selectedSlots.length !== numberOfDays}
+            disabled={selectedSlots.length !== numberOfSelections}
           >
             {'Submit'}
           </UIButton>
@@ -46,12 +46,12 @@ function RightPanel() {
           <UIButton
             className='w-full'
             onClick={() => {
-              if (selectedSlots.length <= numberOfDays) {
+              if (selectedSlots.length <= numberOfSelections) {
                 setSelectedDate(null);
                 setSelectedDay(selectedDay + 1);
               }
             }}
-            disabled={rounds[selectedDay - 1]?.selectedSlots === null}
+            disabled={rounds[selectedDay - 1]?.selectedSlot === null}
           >
             {'Continue'}
           </UIButton>

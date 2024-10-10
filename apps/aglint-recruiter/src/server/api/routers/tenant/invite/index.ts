@@ -22,7 +22,7 @@ const schema = z
     office_location_id: z.number(),
     employment: recruiterUserRowSchema.shape.employment,
     scheduling_settings: customSchedulingSettingsUserSchema,
-    manager_id: z.string().uuid(),
+    manager_id: z.string().uuid().optional(),
     role_id: z.string(),
     remote_id: z.string().optional(),
   })

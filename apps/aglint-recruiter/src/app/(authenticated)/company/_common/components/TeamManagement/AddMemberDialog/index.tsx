@@ -125,13 +125,12 @@ const AddMember = ({
       temp = { ...temp, email: true };
       flag = true;
     }
-
-    if (form.linked_in?.length) {
-      const linkedInURLPattern =
-        // eslint-disable-next-line security/detect-unsafe-regex
-        /^(https?:\/\/)?((www|in)\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
-      temp = { ...temp, linked_in: !linkedInURLPattern.test(form.linked_in) };
-      flag = !linkedInURLPattern.test(form.linked_in);
+    const linkedInURLPattern =
+      // eslint-disable-next-line security/detect-unsafe-regex
+      /^(https?:\/\/)?((www|in)\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
+    if (form.linked_in?.length && !linkedInURLPattern.test(form.linked_in)) {
+      temp = { ...temp, linked_in: true };
+      flag = true;
     }
 
     if (!form.department_id) {
@@ -173,7 +172,7 @@ const AddMember = ({
           last_name: form.last_name || undefined,
           position: form.position!,
           role_id: form.role_id!,
-          manager_id: form.manager_id!,
+          manager_id: form.manager_id || undefined,
           employment: form.employment!,
           department_id: form.department_id!,
           office_location_id: form.location_id!,
@@ -195,7 +194,6 @@ const AddMember = ({
           variant: 'default',
           title: 'Invite sent successfully.',
         });
-        setIsDisable(false);
         setForm({
           first_name: null,
           last_name: null,
@@ -218,6 +216,7 @@ const AddMember = ({
       });
     } finally {
       setIsDisable(false);
+      onClose();
     }
   };
 
@@ -228,9 +227,8 @@ const AddMember = ({
     form.position &&
     form.department_id &&
     form.location_id &&
-    (form.role === 'admin' ? !!form.role : !!form.role && !!form.manager_id)
+    (form.role === 'admin' ? form.role_id : form.role_id && form.manager_id)
   );
-
   return (
     <UIDialog
       open={open}

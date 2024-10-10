@@ -101,7 +101,7 @@ export default function Heatmap({
             </SectionHeaderText>
             <SectionActions>
               <div className='mt-1 flex items-center justify-between gap-2'>
-                <div className='flex hidden gap-4'>
+                <div className='hidden gap-4'>
                   <div className='flex gap-1'>
                     <p className='text-sm'>Daily :</p>
                     <p className='text-sm'>{loadSetting?.dailyLimit.value}</p>
@@ -153,7 +153,7 @@ export default function Heatmap({
               xLabels={xLabel}
               yLabels={yLabel}
               square
-              cellHeight='20.25px'
+              cellHeight='16px'
               xLabelsPos='bottom'
               onClick={(x, y) => {
                 if (heatMapData[x][y]?.meeting_id)

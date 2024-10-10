@@ -5,6 +5,7 @@ import Checklist from './_common/components/InterviewerChecklist/Checklist';
 import InterviewerLeaderboard from './_common/components/InterviewerLeaderboard';
 import InterviewCount from './_common/components/InterviewMetrics';
 import JobMetrics from './_common/components/jobMetrics';
+import SchedulingReports from './_common/components/scheduling';
 
 const Analytics = ({
   searchParams: { tab: activeTab },
@@ -18,6 +19,7 @@ const Analytics = ({
       {activeTab === 'candidateMetrics' && <CandidateDropoutFunnelReport />}
       {activeTab === 'jobMetrics' && <JobMetrics />}
       {activeTab === 'requestMetrics' && <Checklist />}
+      {activeTab === 'schedulingReports' && <SchedulingReports />}
     </ScrollArea>
   );
 };

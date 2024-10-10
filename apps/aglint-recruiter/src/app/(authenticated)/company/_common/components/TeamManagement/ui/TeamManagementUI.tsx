@@ -15,8 +15,10 @@ import {
   TableRow,
 } from '@components/ui/table';
 import { RefreshCw, Send, Users } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 
+import { Indicator } from '@/common/Indicator';
 import { UIButton } from '@/common/UIButton';
 import type { useTenantMembers } from '@/company/hooks';
 import { useTeamMembersLastLogin } from '@/company/hooks/useTeamMembers';
@@ -43,6 +45,10 @@ export const TeamManagementUI = ({
   isTableLoading: boolean;
 }) => {
   const { data: lastLoginData, isPending } = useTeamMembersLastLogin();
+  const queryParams = useSearchParams();
+  const isIndicatorActive =
+    queryParams?.get('indicator') == 'true' ? true : false;
+
   return (
     <div className='space-y-4'>
       <PageHeader>
@@ -69,17 +75,19 @@ export const TeamManagementUI = ({
                 </UIButton>
               </div>
             ) : (
-              <UIButton
-                leftIcon={<Send />}
-                variant='default'
-                size='sm'
-                onClick={() => {
-                  setOpen(true);
-                }}
-                className='flex items-center'
-              >
-                Invite Member
-              </UIButton>
+              <Indicator isActive={isIndicatorActive}>
+                <UIButton
+                  leftIcon={<Send />}
+                  variant='default'
+                  size='sm'
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                  className='flex items-center'
+                >
+                  Invite Member
+                </UIButton>
+              </Indicator>
             ))}
         </PageActions>
       </PageHeader>
