@@ -17,6 +17,8 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { setIsCreateDialogOpen } from '../../[pool]/_common/stores/store';
 import { useHeaderProp } from '../context/headerContext';
 import CreateModuleDialog from './CreateModuleDialog';
+import { useSearchParams } from 'next/navigation';
+import { Indicator } from '@/common/Indicator';
 
 export const InterviewPoolHeader = () => {
   const {

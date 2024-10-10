@@ -14,7 +14,6 @@ import { Progress } from '@components/ui/progress';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { AlertCircle, ArrowLeft, ArrowRight, Check } from 'lucide-react';
 
-import { type SetupStepType } from '@/authenticated/hooks/useCompanySetup';
 import {
   setIsOnboardOpen,
   useOnboard,
@@ -141,7 +140,7 @@ const MainContent = () => {
         <div className='space-y-2 md:col-span-8'>
           {selectedStep && (
             <ScrollArea className='min-h-[420px] w-[100%]'>
-              <Content selectedStep={selectedStep} />
+              <SetupCard />
             </ScrollArea>
           )}
         </div>
@@ -225,23 +224,5 @@ const Footer = () => {
         )}
       </div>
     </div>
-  );
-};
-const Content = ({ selectedStep }: { selectedStep: SetupStepType }) => {
-  return (
-    <>
-      <SetupCard
-        isCompleted={!!selectedStep.isLocalCompleted}
-        title={selectedStep.title || ''}
-        description={selectedStep.description || ''}
-        //@ts-ignore
-        bulletPoints={selectedStep.bulletPoints || []}
-        //@ts-ignore
-        scoringPoints={selectedStep.scoringPoints || []}
-        //@ts-ignore
-        schedulingPoints={selectedStep.schedulingPoints || []}
-        navLink={selectedStep.navLink || ''}
-      />
-    </>
   );
 };

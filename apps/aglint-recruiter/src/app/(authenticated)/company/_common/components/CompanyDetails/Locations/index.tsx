@@ -10,6 +10,8 @@ import timeZone from '@/utils/timeZone';
 import AddAndEditLocationDialog from './AddAndEditLocationDialog';
 import DeleteLocationDialog from './DeleteLocationDialog';
 import LocationCard from './ui/LocationCard';
+import { Indicator } from '@/common/Indicator';
+import { useSearchParams } from 'next/navigation';
 
 export const Location = () => {
   const { data: locations } = useTenantOfficeLocations();
@@ -24,6 +26,10 @@ export const Location = () => {
     open: false,
     id: null,
   });
+
+  const queryParams = useSearchParams();
+  const isIndicatorActive =
+    queryParams?.get('indicator') == 'true' ? true : false;
 
   return (
     <>
@@ -86,16 +92,18 @@ export const Location = () => {
               icon={MapPin}
               description='No company locations found.'
               primarySlot={
-                <UIButton
-                  variant='outline'
-                  onClick={() => {
-                    setAddEditDialog({ open: true, edit: -1 });
-                  }}
-                  leftIcon={<Plus />}
-                  size='sm'
-                >
-                  Add Locations
-                </UIButton>
+                <Indicator isActive={isIndicatorActive}>
+                  <UIButton
+                    variant='outline'
+                    onClick={() => {
+                      setAddEditDialog({ open: true, edit: -1 });
+                    }}
+                    leftIcon={<Plus />}
+                    size='sm'
+                  >
+                    Add Locations
+                  </UIButton>
+                </Indicator>
               }
             />
           )}

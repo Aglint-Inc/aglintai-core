@@ -26,6 +26,8 @@ export type SetupStepType = {
   isCompleted: boolean;
   isLocalCompleted: boolean;
   navLink: string;
+  isNavDisable: boolean;
+  toolTipText: string;
   isOptional: boolean;
   isVisible: boolean; // corrected typo from `isVisiable`
   bulletPoints?: string[]; // made optional
@@ -218,6 +220,7 @@ export function useCompanySetup() {
           navLink: ROUTES['/company']() + '?tab=company-info&edit=true',
           isOptional: false,
           isVisible: true,
+          isNavDisable: false,
           bulletPoints: missingCompanyProperties?.map((pro) =>
             capitalizeAll(pro),
           ),
@@ -231,6 +234,7 @@ export function useCompanySetup() {
           navLink: ROUTES['/company']() + '?tab=company-info&indicator=true',
           isOptional: false,
           isVisible: true,
+          isNavDisable: false,
           bulletPoints: ['List of departments', 'Office locations'],
         },
         {
@@ -239,9 +243,10 @@ export function useCompanySetup() {
           description: 'Invite team members to join and collaborate.',
           isCompleted: isMembersPresent,
           isLocalCompleted: isMembersPresent,
-          navLink: ROUTES['/company']() + '?tab=team&indicator=true',
+          navLink: ROUTES['/company']() + '?tab=team&add_user=true',
           isOptional: true,
           isVisible: true,
+          isNavDisable: false,
           bulletPoints: ['User email', 'User role'],
         },
         {
@@ -251,8 +256,9 @@ export function useCompanySetup() {
             'Connect your ATS or Google Workspace for seamless integration.',
           isCompleted: isIntegrationsPresent,
           isLocalCompleted: isIntegrationsPresent,
-          navLink: ROUTES['/integrations']() + '?indicator=true',
+          navLink: ROUTES['/integrations'](),
           isOptional: true,
+          isNavDisable: false,
           isVisible: isShowFeature('INTEGRATIONS'),
         },
         {
@@ -261,9 +267,10 @@ export function useCompanySetup() {
           description: 'Add at least one interviewer',
           isCompleted: isInterviewPoolPresent,
           isLocalCompleted: isInterviewPoolPresent,
-          navLink: ROUTES['/interview-pool']() + '&indicator=true',
+          navLink: ROUTES['/interview-pool']() + '?add_pool=true',
           isOptional: false,
           isVisible: true,
+          isNavDisable: false,
           bulletPoints: [
             'Interview pool name',
             'Description',
@@ -281,11 +288,10 @@ export function useCompanySetup() {
           description: 'At least one job must be present',
           isCompleted: isJobsPresent,
           isLocalCompleted: isJobsPresent,
-          navLink: isJobSetupPending
-            ? ROUTES['/jobs']()
-            : ROUTES['/jobs/create']() + '&indicator=true',
+          navLink: ROUTES['/jobs/create'](),
           isOptional: false,
           isVisible: true,
+          isNavDisable: false,
           bulletPoints: ['Job title', 'Description', 'Interview type'],
           scoringPoints: [
             'Enables efficient candidate scoring',
@@ -299,9 +305,15 @@ export function useCompanySetup() {
           description: 'Add at least one candidate/application',
           isCompleted: isCandidatePresent,
           isLocalCompleted: isCandidatePresent,
-          navLink: ROUTES['/jobs']() + '&indicator=true',
+          navLink: isJobsPresent
+            ? ROUTES['/jobs/[job]']({
+                job: compandDetails?.public_jobs[0].id,
+              }) + '&add_candidate=true'
+            : '',
           isOptional: false,
           isVisible: true,
+          isNavDisable: !isJobsPresent,
+          toolTipText: 'Please add the job first',
           bulletPoints: ['Candidate name', 'Email', 'Applied job'],
           scoringPoints: [
             'Enables candidate shortlisting based on job criteria',
@@ -314,7 +326,13 @@ export function useCompanySetup() {
           description: 'Create an interview plan for the job',
           isCompleted: isInterviewPlanPresent,
           isLocalCompleted: isInterviewPlanPresent,
-          navLink: ROUTES['/jobs']() + '&indicator=true',
+          navLink: isJobsPresent
+            ? ROUTES['/jobs/[job]/interview-plan']({
+                job: compandDetails?.public_jobs[0].id,
+              }) + '&indicator=true'
+            : '',
+          isNavDisable: !isJobsPresent,
+          toolTipText: 'Please add the job first',
           isOptional: false,
           isVisible: true,
           bulletPoints: ['Interview type', 'Assigned interviewers'],

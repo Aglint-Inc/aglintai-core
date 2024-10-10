@@ -1,7 +1,9 @@
 import { Button } from '@components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
+import { Indicator } from '@/common/Indicator';
 import { useFlags } from '@/company/hooks/useFlags';
 import UIDialog from '@/components/Common/UIDialog';
 import { useApplicationsStore } from '@/job/hooks';
@@ -17,16 +19,22 @@ export const UploadApplications = ({
   const { importPopup } = useApplicationsStore((state) => state);
   const { setImportPopup } = useApplicationsStore((state) => state.actions);
   const { isShowFeature } = useFlags();
+  const queryParams = useSearchParams();
+  const isIndicatorActive =
+    queryParams?.get('indicator') == 'true' ? true : false;
+
   return (
     <>
       {children || (
-        <Button
-          variant='outline'
-          className='w-auto'
-          onClick={() => setImportPopup(true)}
-        >
-          Add candidates
-        </Button>
+        <Indicator isActive={isIndicatorActive}>
+          <Button
+            variant='outline'
+            className='w-auto'
+            onClick={() => setImportPopup(true)}
+          >
+            Add candidates
+          </Button>
+        </Indicator>
       )}
       <UIDialog
         open={importPopup}

@@ -13,6 +13,8 @@ import { useTenant } from '@/company/hooks';
 import { manageDepartments } from '@/context/AuthContext/utils';
 
 import DeleteDepartmentsDialog from './DeleteDepartmentDialog';
+import { Indicator } from '@/common/Indicator';
+import { useSearchParams } from 'next/navigation';
 
 export default function Departments() {
   const { recruiter } = useTenant();
@@ -70,6 +72,10 @@ export default function Departments() {
   const suggestionsList = initialDepartments.filter(
     (d) => !current_departments.includes(d.replace(/\s+/g, '').toLowerCase()),
   );
+
+  const queryParams = useSearchParams();
+  const isIndicatorActive =
+    queryParams?.get('indicator') == 'true' ? true : false;
 
   return (
     <>
@@ -135,10 +141,12 @@ export default function Departments() {
                 handleAddDepartment={handleAddDepartment}
                 placeholder='Enter new value...'
                 btn={
-                  <Button variant='outline'>
-                    <Plus className='mr-2 h-4 w-4' />
-                    Add Departments
-                  </Button>
+                  <Indicator isActive={isIndicatorActive}>
+                    <Button variant='outline'>
+                      <Plus className='mr-2 h-4 w-4' />
+                      Add Departments
+                    </Button>
+                  </Indicator>
                 }
                 handleRemoveKeyword={({ id }) => {
                   handleRemoveKeyword(id);

@@ -1,5 +1,6 @@
 import { Pen } from 'lucide-react';
-import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 import { UIButton } from '@/common/UIButton';
 import UISectionCard from '@/common/UISectionCard';
@@ -8,6 +9,7 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 
 import EditBasicInfoDialog from './EditBasicInfoDialog';
 import { BasicInfoUI } from './ui/BasicInfoUI';
+import { useRouterPro } from '@/hooks/useRouterPro';
 
 export const BasicInfo = () => {
   const [editDrawer, setEditDrawer] = useState(false);
@@ -15,11 +17,27 @@ export const BasicInfo = () => {
   const { checkPermissions } = useRolesAndPermissions();
   const isFormDisabled = !checkPermissions(['manage_company']);
 
+  const searchParams = useSearchParams();
+  const { replace } = useRouterPro();
+  useEffect(() => {
+    const isEditOpen = searchParams?.get('edit') == 'true' ? true : false;
+    if (isEditOpen) {
+      setEditDrawer(true);
+    }
+  }, [searchParams]);
+
+  const handleRemoveEditParam = () => {
+    const params = new URLSearchParams(searchParams!);
+    params.delete('edit');
+    replace(`?${params.toString()}`);
+  };
+
   return (
     <>
       <EditBasicInfoDialog
         editDialog={editDrawer}
         setEditDialog={setEditDrawer}
+        handleRemoveEditParam={handleRemoveEditParam}
       />
 
       <UISectionCard

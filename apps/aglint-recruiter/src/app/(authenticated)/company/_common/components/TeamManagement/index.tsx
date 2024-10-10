@@ -1,6 +1,6 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Building, CircleDot, Locate, User } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import FilterHeader from '@/common/FilterHeader';
 import { type FiltersTypes } from '@/common/FilterHeader/filters';
@@ -11,6 +11,8 @@ import { useGreenhouseDetails } from '@/queries/greenhouse';
 
 import AddMember from './AddMemberDialog';
 import { TeamManagementUI } from './ui/TeamManagementUI';
+import { useSearchParams } from 'next/navigation';
+import { useRouterPro } from '@/hooks/useRouterPro';
 
 type ItemType = string;
 
@@ -95,6 +97,20 @@ const TeamManagement = () => {
   // }, [filteredMembers.length]);
 
   const [open, setOpen] = useState(false);
+  const searchParams = useSearchParams();
+  const { replace } = useRouterPro();
+  useEffect(() => {
+    const isEditOpen = searchParams?.get('add_user') == 'true' ? true : false;
+    if (isEditOpen) {
+      setOpen(true);
+    }
+  }, [searchParams]);
+
+  const handleRemoveEditParam = () => {
+    const params = new URLSearchParams(searchParams!);
+    params.delete('add_user');
+    replace(`?${params.toString()}`);
+  };
 
   const memberList = members
     .filter((mem) => mem.status === 'active')
@@ -144,7 +160,10 @@ const TeamManagement = () => {
       <AddMember
         memberList={memberList || []}
         menu='addMember'
-        onClose={() => setOpen(false)}
+        onClose={() => {
+          setOpen(false);
+          handleRemoveEditParam();
+        }}
         open={open}
         defaultRole={{
           role: 'Hiring Manager',

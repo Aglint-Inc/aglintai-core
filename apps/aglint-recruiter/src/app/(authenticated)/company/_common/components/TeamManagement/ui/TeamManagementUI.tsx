@@ -22,6 +22,8 @@ import type { useTenantMembers } from '@/company/hooks';
 import { useTeamMembersLastLogin } from '@/company/hooks/useTeamMembers';
 
 import Member from '../MemberList';
+import { Indicator } from '@/common/Indicator';
+import { useSearchParams } from 'next/navigation';
 
 export const TeamManagementUI = ({
   canManage,
@@ -43,6 +45,10 @@ export const TeamManagementUI = ({
   isTableLoading: boolean;
 }) => {
   const { data: lastLoginData, isPending } = useTeamMembersLastLogin();
+  const queryParams = useSearchParams();
+  const isIndicatorActive =
+    queryParams?.get('indicator') == 'true' ? true : false;
+
   return (
     <div className='space-y-4'>
       <PageHeader>
@@ -69,17 +75,19 @@ export const TeamManagementUI = ({
                 </UIButton>
               </div>
             ) : (
-              <UIButton
-                leftIcon={<Send />}
-                variant='default'
-                size='sm'
-                onClick={() => {
-                  setOpen(true);
-                }}
-                className='flex items-center'
-              >
-                Invite Member
-              </UIButton>
+              <Indicator isActive={isIndicatorActive}>
+                <UIButton
+                  leftIcon={<Send />}
+                  variant='default'
+                  size='sm'
+                  onClick={() => {
+                    setOpen(true);
+                  }}
+                  className='flex items-center'
+                >
+                  Invite Member
+                </UIButton>
+              </Indicator>
             ))}
         </PageActions>
       </PageHeader>
