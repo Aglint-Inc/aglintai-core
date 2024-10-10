@@ -56,19 +56,19 @@ const CandidateInviteNew = () => {
   }, []);
 
   return (
-    <div className='h-full w-full'>
+    <div className='max-h-[60vh] min-h-[60vh] w-full'>
       {isLoading || loadingSlots || isRefetching ? (
         <LoadingState />
       ) : isError || errorSlots ? (
         <ErrorState />
       ) : (
         <>
-          <div className='flex h-full w-full flex-row justify-center'>
-            <div className={isBooked ? 'h-full w-full' : 'h-full w-8/12'}>
+          <div className='flex max-h-[60vh] min-h-[60vh] w-full flex-row justify-center'>
+            <div className={isBooked ? 'w-full' : 'w-8/12'}>
               <CandidateInvitePlanPage />
             </div>
             {!isBooked && (
-              <div className='h-full w-4/12 border-l p-4'>
+              <div className='w-4/12 border-l p-4'>
                 <RightPanel />
               </div>
             )}
@@ -83,7 +83,7 @@ export default CandidateInviteNew;
 
 const LoadingState = () => (
   <div
-    className='flex h-full w-full items-center justify-center'
+    className='flex max-h-[60vh] min-h-[60vh] w-full items-center justify-center'
     aria-live='polite'
     aria-busy='true'
   >

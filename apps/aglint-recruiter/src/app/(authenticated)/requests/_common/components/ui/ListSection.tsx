@@ -32,8 +32,7 @@ function ListSection({
   hideSection: boolean;
 }) {
   const isExpanded =
-    expandedSections.includes(sectionName) ||
-    (sectionName === 'schedule_request' && collapseScheduleRequestSections);
+    expandedSections.includes(sectionName) || collapseScheduleRequestSections;
 
   const [slice, setSlice] = useState(5);
   const slicedRequests = requests.slice(0, slice);
