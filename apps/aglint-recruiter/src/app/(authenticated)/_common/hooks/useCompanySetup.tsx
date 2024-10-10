@@ -394,6 +394,7 @@ export function useCompanySetup() {
     integrations,
     isMembersFetched,
     jobs,
+    allMembers,
     locations,
     departments,
     candidateInterviewPlan,

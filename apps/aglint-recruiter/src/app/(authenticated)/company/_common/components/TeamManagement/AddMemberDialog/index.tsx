@@ -108,6 +108,7 @@ const AddMember = ({
       temp = { ...temp, first_name: true };
       flag = true;
     }
+
     if (!form?.email?.trim().length) {
       temp = { ...temp, email: true };
       flag = true;
