@@ -42,7 +42,7 @@ BEGIN
         SELECT w_a_l.*, w_a.payload
         FROM workflow_action_logs w_a_l
         JOIN workflow_action w_a ON w_a_l.workflow_action_id = w_a.id
-        WHERE w_a_l.id = action_id and w_a_l.tries=0
+        WHERE w_a_l.id = action_id and w_a_l.tries=0 and w_a_l.status = 'not_started'
     LOOP
         PERFORM net.http_post(
             url := url_x,
