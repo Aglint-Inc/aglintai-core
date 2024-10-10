@@ -87,8 +87,9 @@ export function filterSchedulingOptionsArray({
     }),
   }));
 
-  let allCombs: MultiDayPlanType[] =
-    createCombsForMultiDaySlots(allFilteredOptions);
+  let allCombs: MultiDayPlanType[] = createCombsForMultiDaySlots(
+    allFilteredOptions || [],
+  );
 
   // allCombs = allCombs
   //   .map(
