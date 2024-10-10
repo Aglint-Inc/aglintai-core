@@ -1,7 +1,6 @@
 'use client';
 
-import { type ComponentProps } from 'react';
-import { SelectedSessionSlotsCard } from 'src/app/(public)/_common/_components/SelectedSessionStotsCard';
+import { ScrollArea } from '@components/ui/scroll-area';
 
 import { UIButton } from '@/common/UIButton';
 
@@ -12,8 +11,7 @@ import {
   setSelectedDay,
   useCandidateInviteStore,
 } from '../../store';
-import { getDurationText } from '../../utils/utils';
-import { SessionCard } from '../ui/SessionCard';
+import Rounds from './Rounds';
 
 function RightPanel() {
   const { selectedDay, rounds } = useCandidateInviteStore();
@@ -27,77 +25,10 @@ function RightPanel() {
 
   return (
     <>
-      <div className='max-h-[calc(100%-50px)] min-h-[calc(100%-50px)] overflow-auto'>
-        <div className='flex flex-col gap-2'>
-          {rounds?.map((round, ind) => {
-            const dates: ComponentProps<
-              typeof SelectedSessionSlotsCard
-            >['selectedDates'] = round.selectedSlots
-              ? [
-                  {
-                    curr_day: round.selectedSlots.sessions[0].start_time,
-                    slots: [
-                      {
-                        startTime: round.selectedSlots.sessions[0].start_time,
-                        endTime:
-                          round.selectedSlots.sessions[
-                            round.selectedSlots.sessions.length - 1
-                          ].end_time,
-                        isSlotAvailable: true,
-                      },
-                    ],
-                  },
-                ]
-              : [];
-
-            const totalDuration = round.sessions.reduce((acc, curr) => {
-              acc = acc + curr.interview_session.session_duration;
-              return acc;
-            }, 0);
-
-            return (
-              <>
-                <SelectedSessionSlotsCard
-                  isActive={ind + 1 === selectedDay}
-                  textDayCount={`Day ${ind + 1}`}
-                  textSelectedSlots='Selected Slot'
-                  slotChangeButton={
-                    numberOfDays > 1 &&
-                    round.selectedSlots && (
-                      <UIButton
-                        size={'sm'}
-                        variant='default'
-                        onClick={() => {
-                          setSelectedDate(dates[0].curr_day);
-                          setSelectedDay(ind + 1);
-                        }}
-                      >
-                        Change
-                      </UIButton>
-                    )
-                  }
-                  isSubmitted={true}
-                  selectedDates={dates}
-                  isSelected={true}
-                  textTotalDuration={getDurationText(totalDuration)}
-                  slotSessionInfo={round.sessions.map((session, i) => {
-                    return (
-                      <SessionCard
-                        key={i}
-                        duration={session.interview_session.session_duration}
-                        name={session.interview_session.name}
-                        schedule_type={session.interview_session.schedule_type}
-                        session_type={session.interview_session.session_type}
-                      />
-                    );
-                  })}
-                />
-              </>
-            );
-          })}
-        </div>
-      </div>
-      <div className='flex h-[50px] w-full items-end rounded-none'>
+      <ScrollArea className='h-[calc(100%-50px)]'>
+        <Rounds />
+      </ScrollArea>
+      <div className='w-full pt-4'>
         {selectedDay === numberOfDays ? (
           <UIButton
             className='w-full'

@@ -1,6 +1,5 @@
 import { dayjsLocal } from '@aglint/shared-utils';
 
-import { filterSchedulingOptionsArray } from '../components/BodyDrawer/ScheduleFilter/utils';
 import {
   setDateRange,
   setErrorNoSlotFilter,
@@ -9,6 +8,7 @@ import {
   setFilters,
   useSelfSchedulingFlowStore,
 } from '../store/store';
+import { filterSchedulingOptionsArray } from '../utils/filterSchedulingOptionsArray';
 import { useFindAvailibility } from './useFindAvailibility';
 
 export const useFilterSlots = () => {

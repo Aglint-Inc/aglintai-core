@@ -10,9 +10,9 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 
-import { DayCard } from '../../../ui/DayCard';
-import { EmptySlotReason } from '../../../ui/EmptySlotReason';
-import { ScheduleOption } from '../../../ui/ScheduleOption';
+import { DayCard } from '../../ui/DayCard';
+import { EmptySlotReason } from '../../ui/EmptySlotReason';
+import { ScheduleOption } from '../../ui/ScheduleOption';
 import SingleDayCard from '../SingleDayCard';
 import DayCardConflicts from './DayCardConflicts';
 

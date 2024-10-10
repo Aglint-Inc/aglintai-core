@@ -11,6 +11,7 @@ export const API_PERMISSIONS: ApiPermissions = {
     candidate_invite: [],
     details: ['scheduling_module'],
     v1: [],
+    analytics: ['job_module'],
   },
   integrations: ['integrations_module'],
   interviewers: ['job_module'],
