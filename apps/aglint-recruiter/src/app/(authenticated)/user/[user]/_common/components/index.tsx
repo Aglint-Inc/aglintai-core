@@ -87,7 +87,7 @@ export default function InterviewerDetailsPage() {
         </div>
       }
       sidebarPosition='right'
-      sidebarWidth='420'
+      sidebarWidth= {420}
     >
       <Page>
         <PageHeader className='-mt-4 border-b border-gray-200 bg-gray-50 p-4'>
