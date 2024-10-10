@@ -159,6 +159,7 @@ const CandidateScheduleReschedule = () => {
       >
         <>
           <UIButton
+            disabled={isProceeding}
             onClick={async () => {
               setIsProceeding(true);
               await axios.post('/api/request/execute-workflow', {
