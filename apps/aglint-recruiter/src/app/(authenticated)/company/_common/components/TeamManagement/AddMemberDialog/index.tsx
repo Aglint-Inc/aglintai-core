@@ -194,6 +194,7 @@ const AddMember = ({
           variant: 'default',
           title: 'Invite sent successfully.',
         });
+        onClose();
         setForm({
           first_name: null,
           last_name: null,
@@ -216,7 +217,6 @@ const AddMember = ({
       });
     } finally {
       setIsDisable(false);
-      onClose();
     }
   };
 
