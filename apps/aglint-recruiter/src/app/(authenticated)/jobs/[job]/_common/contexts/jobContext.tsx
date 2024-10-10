@@ -31,7 +31,7 @@ const useJobContext = () => {
 
   if (!job) throw new Error(JOB_NOT_FOUND);
 
-  useJobPolling();
+  const { processing_poll } = useJobPolling();
 
   const total = useMemo(
     () =>
@@ -90,9 +90,7 @@ const useJobContext = () => {
 
   return {
     job,
-    recruiter_id,
     total,
-    job_id,
     interviewPlans,
     handleJobAsyncUpdate,
     handleJobUpdate,
@@ -101,6 +99,7 @@ const useJobContext = () => {
     handleUploadCsv,
     handleJobSync,
     devlinkProps,
+    processing_poll,
   };
 };
 

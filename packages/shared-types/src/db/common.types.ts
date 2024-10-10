@@ -31,12 +31,11 @@ export type CustomSchedulingReason = {
 export type CustomJobParamters = Custom<
   Pick<
     Database["public"]["Tables"]["public_jobs"]["Row"],
-    "parameter_weights" | "jd_json" | "draft" | "posted_by" | "draft_jd_json"
+    "parameter_weights" | "jd_json" | "posted_by" | "draft_jd_json"
   >,
   {
     parameter_weights: CustomParameterWeights;
     jd_json: CustomJdJson;
-    draft: CustomDraft;
     posted_by: ATSIntegrations;
     draft_jd_json: CustomJdJson;
   }

@@ -1,7 +1,4 @@
-import {
-  type DatabaseTable,
-  type DatabaseTableInsert,
-} from '@aglint/shared-types';
+import { type DatabaseTableInsert } from '@aglint/shared-types';
 import axios from 'axios';
 import { z } from 'zod';
 
@@ -251,32 +248,7 @@ const createJobObject = async ({
   recruiter_id: string;
   public_job_id: string;
 }) => {
-  const draft: DatabaseTable['public_jobs']['draft'] = {
-    job_type:
-      post.categories.commitment === 'Part Time'
-        ? 'part time'
-        : post.categories.commitment === 'Internship'
-          ? 'internship'
-          : 'full time',
-    workplace_type:
-      post.workplaceType === 'hybrid'
-        ? 'hybrid'
-        : post.workplaceType === 'onsite'
-          ? 'on site'
-          : 'off site',
-    job_title: post.text,
-    description: post.content.descriptionHtml,
-    jd_json: {
-      educations: [],
-      level: 'Mid-level',
-      rolesResponsibilities: [],
-      skills: [],
-      title: post.text,
-    },
-  };
-
   const insertJob: DatabaseTableInsert['public_jobs'] = {
-    draft,
     job_title: post.text,
     scoring_criteria_loading: true,
     posted_by: POSTED_BY.LEVER,
