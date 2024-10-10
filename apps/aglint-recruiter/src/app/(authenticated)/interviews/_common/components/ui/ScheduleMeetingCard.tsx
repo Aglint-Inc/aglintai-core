@@ -20,8 +20,10 @@ import { MyScheduleSubCard } from './MyScheduleSubCard';
 
 function ScheduleMeetingCard({
   meetingDetails,
+  isSmall,
 }: {
   meetingDetails: Awaited<ReturnType<typeof getAllInterviews>>[number];
+  isSmall?: boolean;
 }) {
   const [collapseOpen, setCollapseOpen] = useState(false);
   const router = useRouterPro();
@@ -38,6 +40,7 @@ function ScheduleMeetingCard({
         }}
       >
         <MyScheduleSubCard
+        isSmall={isSmall}
           onClickDropdownIcon={(e: any) => {
             setCollapseOpen((pre) => !pre);
             e.stopPropagation();

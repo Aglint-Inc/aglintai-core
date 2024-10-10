@@ -111,7 +111,7 @@ const Tabs = ({
       {isMenuTabVisible && (
         <div className='flex h-12 items-center justify-between'>
           <div className='flex items-center gap-2.5'>
-            <div className='flex flex-col gap-2.5'>{slotInterview}</div>
+            <div className='hidden'>{slotInterview}</div>
             <div className='relative'>
               <UIButton
                 variant={isUpcomingActive ? 'default' : 'secondary'}
@@ -119,10 +119,8 @@ const Tabs = ({
                 {...onClickUpcoming}
               >
                 <div>Upcoming</div>
-                <div className='flex h-5 min-w-5 items-center justify-center rounded bg-neutral-300 px-1 text-muted-foreground'>
-                  <Typography variant='p' type='small'>
+                <div className={`flex h-4 min-w-4 text-xs items-center justify-center rounded-sm  px-1 text-muted-foreground i ${isUpcomingActive ? 'bg-white text-black' : 'bg-gray-300'}`}>              
                     {textUpcomingCount}
-                  </Typography>
                 </div>
               </UIButton>
             </div>

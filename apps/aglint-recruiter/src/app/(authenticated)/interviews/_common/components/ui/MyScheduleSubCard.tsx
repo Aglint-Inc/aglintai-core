@@ -25,6 +25,7 @@ type MeetingSlotProps = {
   isDropdownIconVisible?: boolean;
   slotAvatarWithName?: React.ReactNode;
   isAvatarWithNameVisible?: boolean;
+  isSmall?:boolean;
 };
 
 export function MyScheduleSubCard({
@@ -51,6 +52,7 @@ export function MyScheduleSubCard({
   isDropdownIconVisible,
   slotAvatarWithName,
   isAvatarWithNameVisible,
+  isSmall,
 }: MeetingSlotProps) {
   return (
     
@@ -58,8 +60,8 @@ export function MyScheduleSubCard({
       {/* style={bgColorProps} */}
       <div className='flex h-full w-full flex-col items-stretch justify-start rounded-lg border-[1px] bg-white hover:bg-gray-50 duration-200 p-4'>
         <div className='z-1 relative flex items-start justify-between gap-2'>
-          <div className='flex items-start justify-start gap-5'>
-            <div className='flex min-w-[148px] flex-col gap-2'>
+          <div className={`flex ${isSmall ? 'flex-col items-start gap-2' : 'flex-row  gap-6'} items-start justify-start`}>
+            <div className={`flex ${isSmall ? 'flex-row items-center' : 'flex-col items-start'}   min-w-[148px]  gap-2`}>
               {isTimeVisible && (
                 <div>
                   <Typography variant='p' type='small'>
