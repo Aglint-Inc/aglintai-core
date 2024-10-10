@@ -27,8 +27,8 @@ function RightPanel() {
     .filter((slot) => slot !== null);
 
   return (
-    <div className='flex flex-col gap-2'>
-      <ScrollArea className='h-[63vh]'>
+    <div className='relative flex h-full w-full flex-col gap-2'>
+      <ScrollArea className='mb-[50px]'>
         <div className='flex flex-col gap-2'>
           {rounds?.map((round, ind) => {
             const dates: ComponentProps<
@@ -99,31 +99,35 @@ function RightPanel() {
         </div>
       </ScrollArea>
 
-      {selectedDay === numberOfDays ? (
-        <UIButton
-          onClick={() => {
-            if (selectedSlots.length === numberOfDays) {
-              handleSubmit();
-            }
-          }}
-          isLoading={isPending}
-          disabled={selectedSlots.length !== numberOfDays}
-        >
-          {'Submit'}
-        </UIButton>
-      ) : (
-        <UIButton
-          onClick={() => {
-            if (selectedSlots.length <= numberOfDays) {
-              setSelectedDate(null);
-              setSelectedDay(selectedDay + 1);
-            }
-          }}
-          disabled={rounds[selectedDay - 1]?.selectedSlots === null}
-        >
-          {'Continue'}
-        </UIButton>
-      )}
+      <div className='absolute bottom-0 right-0 w-full'>
+        {selectedDay === numberOfDays ? (
+          <UIButton
+            className='w-full'
+            onClick={() => {
+              if (selectedSlots.length === numberOfDays) {
+                handleSubmit();
+              }
+            }}
+            isLoading={isPending}
+            disabled={selectedSlots.length !== numberOfDays}
+          >
+            {'Submit'}
+          </UIButton>
+        ) : (
+          <UIButton
+            className='w-full'
+            onClick={() => {
+              if (selectedSlots.length <= numberOfDays) {
+                setSelectedDate(null);
+                setSelectedDay(selectedDay + 1);
+              }
+            }}
+            disabled={rounds[selectedDay - 1]?.selectedSlots === null}
+          >
+            {'Continue'}
+          </UIButton>
+        )}
+      </div>
     </div>
   );
 }

@@ -80,9 +80,9 @@ function CreateModuleDialog() {
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create Interview Type</DialogTitle>
+          <DialogTitle>Create Interview Pool</DialogTitle>
           <DialogDescription>
-            Create a new interview type by specifying the name, department, and
+            Create a new interview pool by specifying the name, department, and
             objective, and indicate if training is required.
           </DialogDescription>
         </DialogHeader>

@@ -75,7 +75,7 @@ const SingleDaySuccess = () => {
   }, []);
 
   const filteredSession = sessions.find((session) =>
-    dayjsLocal(session.date).isSame(selectedDate, 'day'),
+    dayjsLocal(session.date).tz(timezone.tzCode).isSame(selectedDate, 'day'),
   );
 
   useEffect(() => {

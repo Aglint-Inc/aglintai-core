@@ -71,7 +71,7 @@ function LocationCard({
         </div>
       </div>
       {isHeadquarter && (
-        <div className='absolute bottom-3 right-3'>
+        <div className='absolute bottom-3 right-3 hidden'>
           <Badge variant='outline'>Headquarters</Badge>
         </div>
       )}

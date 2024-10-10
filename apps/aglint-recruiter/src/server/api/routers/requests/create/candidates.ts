@@ -19,8 +19,8 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
     .from('application_view')
     .select('id, name', { count: 'exact' })
     .range(cursor, cursor + pageSize)
-    .eq('status', 'interview')
-    .eq('job_id', input.job_id);
+    .eq('job_id', input.job_id)
+    .neq('status', 'disqualified');
   if (input.search) query.ilike('name', `%${input.search}%`);
   query.order('id');
   const { data, count } = await query.throwOnError();
