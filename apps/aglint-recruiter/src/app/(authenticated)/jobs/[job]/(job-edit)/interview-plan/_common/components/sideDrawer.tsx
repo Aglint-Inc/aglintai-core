@@ -45,25 +45,7 @@ const InterviewDrawers = ({ drawers, handleClose }: InterviewDrawersProps) => {
   } = useJobInterviewPlan();
 
   return (
-    <>
-      {(data ?? []).length ? (
-        <InterviewSideDrawer
-          drawers={drawers}
-          handleClose={() => handleClose()}
-        />
-      ) : (
-        <EmptyState
-          icon={AlertTriangle}
-          header='No Interview Plan'
-          description='Create an interview plan to get started'
-          primarySlot={
-            <Button onClick={() => push('/scheduling?tab=interviewtypes')}>
-              Create Interview Plan
-            </Button>
-          }
-        />
-      )}
-    </>
+    <InterviewSideDrawer drawers={drawers} handleClose={() => handleClose()} />
   );
 };
 

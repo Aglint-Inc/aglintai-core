@@ -127,7 +127,7 @@ export function SetupCard() {
                   Complete Now
                 </UIButton>
               </TooltipTrigger>
-              {toolTipText && (
+              {toolTipText && isNavDisable && (
                 <TooltipContent>
                   <p>{toolTipText}</p>
                 </TooltipContent>

@@ -17,7 +17,7 @@ export function Indicator({ children, isActive = false }: ComponentProps) {
   }, []);
 
   return (
-    <div className={isActive ? 'relative' : ''}>
+    <div className={`w-full ${isActive ? 'relative' : ''}`}>
       {isActive && (
         <div
           className={`ease absolute right-0 top-0 h-2 w-2 translate-x-[40%] translate-y-[-40%] transform rounded-full bg-red-500 transition-all duration-700 ${

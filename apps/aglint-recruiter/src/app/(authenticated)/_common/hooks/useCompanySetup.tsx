@@ -308,7 +308,7 @@ export function useCompanySetup() {
           navLink: isJobsPresent
             ? ROUTES['/jobs/[job]']({
                 job: compandDetails?.public_jobs[0].id,
-              }) + '&add_candidate=true'
+              }) + '?indicator=true'
             : '',
           isOptional: false,
           isVisible: true,
@@ -329,7 +329,7 @@ export function useCompanySetup() {
           navLink: isJobsPresent
             ? ROUTES['/jobs/[job]/interview-plan']({
                 job: compandDetails?.public_jobs[0].id,
-              }) + '&indicator=true'
+              }) + '?indicator=true'
             : '',
           isNavDisable: !isJobsPresent,
           toolTipText: 'Please add the job first',
