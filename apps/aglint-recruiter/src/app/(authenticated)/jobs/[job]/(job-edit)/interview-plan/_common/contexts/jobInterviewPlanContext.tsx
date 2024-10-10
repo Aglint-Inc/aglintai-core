@@ -25,7 +25,7 @@ import { interviewSessionMutationKeys } from '@/queries/interview-plans/keys';
 
 const useJobInterviewPlanContext = () => {
   const { recruiter_id } = useTenant();
-  const { job, interviewPlans, jobLoad } = useJob();
+  const { job, interviewPlans } = useJob();
   const companyMembers = useCompanyMembers();
   const interviewModules = useInterviewPools();
   const { mutateAsync: createPlan } = useCreateInterviewPlan();
@@ -59,7 +59,6 @@ const useJobInterviewPlanContext = () => {
 
   const initialLoad = !!(
     job &&
-    jobLoad &&
     interviewModules.status !== 'pending' &&
     companyMembers.status !== 'pending' &&
     interviewPlans.status !== 'pending'

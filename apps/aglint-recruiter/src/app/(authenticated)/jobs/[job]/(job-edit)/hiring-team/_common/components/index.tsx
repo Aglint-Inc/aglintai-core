@@ -16,7 +16,6 @@ import {
   useState,
 } from 'react';
 
-import { Loader } from '@/components/Common/Loader';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { useJob } from '@/job/hooks';
 import {
@@ -28,19 +27,9 @@ import { SafeObject } from '@/utils/safeObject';
 import { validateString } from '@/utils/validateString';
 
 export const JobHiringTeamDashboard = () => {
-  const { jobLoad, job } = useJob();
+  const { job } = useJob();
 
-  return jobLoad ? (
-    job && job.status !== 'closed' ? (
-      <JobEdit />
-    ) : (
-      <JobNotFound />
-    )
-  ) : (
-    <div className='flex h-screen w-full items-center justify-center'>
-      <Loader />
-    </div>
-  );
+  return job && job.status !== 'closed' ? <JobEdit /> : <JobNotFound />;
 };
 
 const JobEdit = () => {

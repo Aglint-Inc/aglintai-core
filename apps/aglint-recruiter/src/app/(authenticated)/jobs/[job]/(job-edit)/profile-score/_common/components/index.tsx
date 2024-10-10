@@ -51,51 +51,20 @@ type Sections = 'experience' | 'education' | 'skills';
 
 export const JobProfileScoreDashboard = () => {
   const { isScoringEnabled } = useRolesAndPermissions();
-  const { jobLoad, job } = useJob();
+  const { job } = useJob();
 
-  return jobLoad ? (
-    job && isScoringEnabled && job?.status !== 'closed' ? (
-      <TourProvider>
-        <ProfileScorePage />
-      </TourProvider>
-    ) : (
-      // TODO: When we move to app router, we should move to separate component
-      <div className='flex h-screen items-center justify-center'>
-        <div className='text-center'>
-          <h1 className='mb-4 text-2xl font-bold'>Job Not Found</h1>
-          <p className='text-gray-600'>
-            The job you&apos;re looking for doesn&apos;t exist or you don`&apost
-            have permission to view it.
-          </p>
-        </div>
-      </div>
-    )
+  return job && isScoringEnabled && job?.status !== 'closed' ? (
+    <TourProvider>
+      <ProfileScorePage />
+    </TourProvider>
   ) : (
-    // TODO: When we move to app router, we should move to separate skeleton component
-    <div className='container-lg mx-auto flex flex-col space-y-6 px-12'>
-      <div className='flex items-center justify-between'>
-        <div className='space-y-2'>
-          <Skeleton className='h-8 w-64' />
-          <Skeleton className='h-4 w-32' />
-        </div>
-        <div className='flex gap-6'>
-          <div className='w-1/4'>
-            <Skeleton className='h-[calc(100vh-200px)] w-full' />
-          </div>
-          <div className='w-3/4 space-y-4'>
-            <Skeleton className='h-6 w-48' />
-            <Skeleton className='h-4 w-full' />
-            <div className='flex gap-6'>
-              <div className='flex-1'>
-                <Skeleton className='h-64 w-full' />
-              </div>
-              <div className='w-1/3 space-y-4'>
-                <Skeleton className='h-40 w-full' />
-                <Skeleton className='h-40 w-full' />
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className='flex h-screen items-center justify-center'>
+      <div className='text-center'>
+        <h1 className='mb-4 text-2xl font-bold'>Job Not Found</h1>
+        <p className='text-gray-600'>
+          The job you&apos;re looking for doesn&apos;t exist or you don`&apost
+          have permission to view it.
+        </p>
       </div>
     </div>
   );

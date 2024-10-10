@@ -10,6 +10,8 @@ import {
 
 import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { JOB_NOT_FOUND } from '@/job/constants/jobNotFound';
+import { useCurrentJob } from '@/job/hooks/useCurrentJob';
 import { useJobsContext } from '@/jobs/hooks';
 import {
   jobQueries,
@@ -21,8 +23,6 @@ import {
 } from '@/queries/job';
 import { useJobUpdate } from '@/queries/jobs';
 
-import { useCurrentJob } from '../hooks/useCurrentJob';
-
 const useJobContext = () => {
   const queryClient = useQueryClient();
 
@@ -32,17 +32,14 @@ const useJobContext = () => {
 
   const { jobs, devlinkProps } = useJobsContext();
 
-  const jobLoad = useMemo(() => !!recruiter_id, [recruiter_id]);
-
   const { job_id } = useCurrentJob();
 
   const job = useMemo(
-    () =>
-      jobLoad
-        ? ((jobs ?? []).find((job) => job.id === job_id) ?? null)
-        : undefined,
-    [jobs, job_id, jobLoad],
-  )!;
+    () => (jobs ?? []).find((job) => job.id === job_id) ?? null,
+    [jobs, job_id],
+  );
+
+  if (!job) throw new Error(JOB_NOT_FOUND);
 
   const scoringCriteriaLoading =
     isScoringEnabled && job?.scoring_criteria_loading;
@@ -138,7 +135,7 @@ const useJobContext = () => {
     recruiter_id,
     total,
     job_id,
-    jobLoad,
+
     scoreParameterPollEnabled,
     applicationScoringPollEnabled,
     jobPolling,

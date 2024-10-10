@@ -8,7 +8,6 @@ import {
   PageHeaderText,
   PageTitle,
 } from '@components/layouts/page-header';
-import { Skeleton } from '@components/ui/skeleton';
 import { AlertCircle } from 'lucide-react';
 import {
   type Dispatch,
@@ -30,40 +29,9 @@ import type { Form, JobDetailsForm } from '@/jobs/types';
 import { validateString } from '@/utils/validateString';
 
 export const JobDetailsDashboard = () => {
-  const { jobLoad, job } = useJob();
+  const { job } = useJob();
 
-  return jobLoad ? (
-    job && job?.status !== 'closed' ? (
-      <JobEdit />
-    ) : (
-      <JobNotFound />
-    )
-  ) : (
-    <div className='container mx-auto flex flex-col space-y-6 p-6'>
-      <div className='mb-6 flex items-center justify-between'>
-        <div className='space-y-2'>
-          <Skeleton className='h-8 w-64' />
-          <Skeleton className='h-4 w-32' />
-        </div>
-        <div className='flex gap-6'>
-          <div className='w-1/4'>
-            <Skeleton className='h-[calc(100vh-200px)] w-full' />
-          </div>
-          <div className='w-3/4 space-y-4'>
-            <Skeleton className='h-6 w-48' />
-            <Skeleton className='h-4 w-full' />
-            <div className='space-y-4'>
-              <Skeleton className='h-10 w-full' />
-              <Skeleton className='h-10 w-full' />
-              <Skeleton className='h-10 w-full' />
-              <Skeleton className='h-10 w-full' />
-              <Skeleton className='h-40 w-full' />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return job && job?.status !== 'closed' ? <JobEdit /> : <JobNotFound />;
 };
 
 const JobEdit = () => {

@@ -5,7 +5,6 @@ import {
   PageTitle,
 } from '@components/layouts/page-header';
 
-import { Loader } from '@/common/Loader';
 import { useApplicationsStore, useJob } from '@/job/hooks';
 
 import { Actions } from './Actions';
@@ -18,16 +17,8 @@ import { Table } from './Table';
 import Tabs from './Tabs';
 
 export const ApplicationsDashboard = () => {
-  const { job, jobLoad } = useJob();
-  return jobLoad ? (
-    job ? (
-      <ApplicationsComponent />
-    ) : (
-      <JobNotFound />
-    )
-  ) : (
-    <Loader />
-  );
+  const { job } = useJob();
+  return job ? <ApplicationsComponent /> : <JobNotFound />;
 };
 
 export const JobDetailsHeader = () => (
