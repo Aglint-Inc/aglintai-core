@@ -5,7 +5,7 @@ import { Check } from 'lucide-react';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIDivider } from '@/components/Common/UIDivider';
 
-import DayCardWrapper from '../../../../SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
+import DayCardWrapper from '../../../../SelfSchedulingDrawer/_common/components/StepSlotOptions/DayCardWrapper';
 import { setCalendarDate } from '../../contexts/AvailabilitySchedulingStore';
 import { useAvailabilityContext } from '../../contexts/RequestAvailabilityContext';
 import FinalScreen from '../FinalScreen';

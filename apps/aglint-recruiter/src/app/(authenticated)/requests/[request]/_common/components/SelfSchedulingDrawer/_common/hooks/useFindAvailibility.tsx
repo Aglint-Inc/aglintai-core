@@ -10,7 +10,6 @@ import { type z } from 'zod';
 
 import { useTenant } from '@/company/hooks';
 
-import { filterSchedulingOptionsArray } from '../components/BodyDrawer/ScheduleFilter/utils';
 import {
   type SelfSchedulingFlow,
   setAvailabilities,
@@ -22,7 +21,8 @@ import {
   setNoSlotsReasons,
   setSchedulingOptions,
 } from '../store/store';
-import { transformAvailability } from '../utils/utils';
+import { filterSchedulingOptionsArray } from '../utils/filterSchedulingOptionsArray';
+import { transformAvailability } from '../utils/transformAvailability';
 
 export const useFindAvailibility = () => {
   const { toast } = useToast();
