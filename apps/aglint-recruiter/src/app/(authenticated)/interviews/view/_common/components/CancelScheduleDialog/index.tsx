@@ -94,7 +94,7 @@ function CancelScheduleDialog({
     >
       <DialogContent className='sm:max-w-[500px]'>
         <DialogHeader>
-          <DialogTitle>Cancel Schedule Initial Screening</DialogTitle>
+          <DialogTitle>Cancel Schedule</DialogTitle>
           <DialogDescription>
             Please provide a reason for canceling and any additional notes.
           </DialogDescription>
