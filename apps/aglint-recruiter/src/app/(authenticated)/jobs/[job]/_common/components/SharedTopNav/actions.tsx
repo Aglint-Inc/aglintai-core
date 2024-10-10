@@ -38,10 +38,12 @@ import Link from 'next/link';
 import { createContext, memo, useCallback, useContext, useState } from 'react';
 
 import { Loader } from '@/common/Loader';
+import { useFlags } from '@/company/hooks/useFlags';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJob } from '@/job/hooks';
+import { useApplicationsRescore } from '@/job/hooks/useApplicationsRescore';
 import { useJobsContext } from '@/jobs/hooks';
 import ROUTES from '@/utils/routing/routes';
 
@@ -54,6 +56,7 @@ export const SharedActions = () => {
       <div className='flex flex-row items-center gap-2'>
         <Score />
         <Sync />
+        <Rescore />
         <Add />
         <Switcher />
         <Link href={`/jobs/${value?.job?.id}/job-details`}>
@@ -61,6 +64,23 @@ export const SharedActions = () => {
         </Link>
       </div>
     </SettingsContext.Provider>
+  );
+};
+
+const Rescore = () => {
+  const { scoring } = useFlags();
+  const { isPolling } = useJob();
+  const { mutate, isPending } = useApplicationsRescore();
+  if (!scoring) return <></>;
+  return (
+    <div className='flex flex-row gap-1'>
+      <OptimisticWrapper loading={isPolling || isPending}>
+        <Button variant='outline' onClick={() => mutate()} className='w-auto'>
+          <RefreshCw className='mr-2 h-4 w-4' />
+          Rescore
+        </Button>
+      </OptimisticWrapper>
+    </div>
   );
 };
 
