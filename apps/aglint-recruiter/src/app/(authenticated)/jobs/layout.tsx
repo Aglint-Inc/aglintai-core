@@ -8,7 +8,7 @@ const Layout = async ({ children }: PropsWithChildren) => {
   void api.jobs.read.prefetch();
   return (
     <HydrateClient>
-      <JobsProvider>{children}</JobsProvider>;
+      <JobsProvider>{children}</JobsProvider>
     </HydrateClient>
   );
 };
