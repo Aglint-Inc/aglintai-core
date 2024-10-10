@@ -11,8 +11,8 @@ import UIDrawer from '@/components/Common/UIDrawer';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type CompanyMember } from '@/queries/company-members';
 
-import { useJobInterviewPlan } from '../hooks';
 import { type DrawerType } from '.';
+import { useJobInterviewPlan } from '../hooks';
 import BreakForms, {
   getBreakFields,
   getBreakSessionPayload,
@@ -164,7 +164,7 @@ const CreateSession = ({
 
   return (
     <UIDrawer
-      title={'Create Interview'}
+      title={'Add Interview to Plan'}
       size='sm'
       open
       onClose={handleClose}
