@@ -141,7 +141,7 @@ export const JobCreate = () => {
     .join(', ');
 
   return (
-    <div className='container mx-auto flex w-full max-w-4xl flex-col space-y-4'>
+    <div className='px-4 flex w-full max-w-3xl flex-col space-y-4'>
       {isJobSetupPending && (
         <Alert variant='warning'>
           <AlertTitle>Company setup is pending </AlertTitle>
@@ -278,8 +278,8 @@ const JobForms = ({
 
   const forms = (
     <div className='space-y-4'>
-      {job_title}
-      <div className='grid grid-cols-2 gap-4'>
+      <div className='max-w-3xl'>{job_title}</div>
+      <div className='grid grid-cols-2 gap-4 max-w-3xl'>
         <div>{job_type}</div>
         <div>{workplace_type}</div>
         <div>{department_id}</div>

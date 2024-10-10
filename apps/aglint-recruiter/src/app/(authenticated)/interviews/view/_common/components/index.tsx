@@ -7,6 +7,7 @@ import {
 } from '@components/ui/breadcrumb';
 import { UIAlert } from '@components/ui-alert';
 import { BriefcaseBusiness, Calendar, Home, MapPin, User } from 'lucide-react';
+import Link from 'next/link';
 import { useEffect } from 'react';
 
 import { useTenant } from '@/company/hooks';
@@ -89,26 +90,41 @@ function SchedulingViewComp() {
               - {capitalizeFirstLetter(job?.departments?.name ?? '')}
             </p>
             <div className='flex items-center gap-4 text-sm text-muted-foreground'>
-              <div className='flex items-center gap-0.5'>
-                <User className='h-4 w-4 text-muted-foreground' />
-                <span>
-                  {schedule?.candidates?.first_name}{' '}
-                  {schedule?.candidates?.last_name}
-                </span>
-              </div>
+              <Link
+                href={`/jobs/${schedule.job.id}/${schedule.application_id}?tab=scoring`}
+                className='text-md hover:underline'
+              >
+                <div className='flex items-center gap-0.5'>
+                  <User className='h-4 w-4 text-muted-foreground' />
+                  <span>
+                    {schedule?.candidates?.first_name}{' '}
+                    {schedule?.candidates?.last_name}
+                  </span>
+                </div>
+              </Link>
               {schedule?.candidates?.current_job_title && (
+                 <Link
+                 href={`/jobs/${schedule.job.id}/${schedule.application_id}?tab=scoring`}
+                 className='text-md hover:underline'
+               >
                 <div className='flex items-center gap-0.5'>
                   <BriefcaseBusiness className='h-4 w-4 text-muted-foreground' />
                   <span className='ml-2'>
                     {schedule?.candidates?.current_job_title}
                   </span>
                 </div>
+                </Link>
               )}
               {schedule?.candidates?.city && (
+                <Link
+                href={`/jobs/${schedule.job.id}/${schedule.application_id}?tab=scoring`}
+                className='text-md hover:underline'
+              >
                 <div className='flex items-center gap-0.5'>
                   <MapPin className='h-4 w-4' />
                   <span className='ml-2'>{schedule?.candidates.city}</span>
                 </div>
+                </Link>
               )}
             </div>
           </div>
