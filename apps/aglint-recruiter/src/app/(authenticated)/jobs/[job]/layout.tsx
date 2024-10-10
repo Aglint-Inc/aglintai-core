@@ -1,3 +1,4 @@
+import { unstable_noStore as noStore } from 'next/cache';
 import { type PropsWithChildren } from 'react';
 
 import { ErrorBoundary } from '@/common/ErrorBoundary';
@@ -11,6 +12,7 @@ type Props = {
 };
 
 const Layout = async (props: PropsWithChildren<Props>) => {
+  noStore();
   void api.jobs.job.read.prefetch({ id: props.params.job });
   return (
     <HydrateClient>
