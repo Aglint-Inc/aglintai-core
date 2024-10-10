@@ -220,7 +220,6 @@ function CandidateAvailability({
       setCandidateAvailabilityDrawerOpen(false);
     }
   }
-
   const meetingsRound = ScheduleUtils.getSessionRounds(
     selectedSessions.map(
       (ele) =>
@@ -235,8 +234,7 @@ function CandidateAvailability({
       recruiter.scheduling_settings,
       selectedDate.start_date.format('DD/MM/YYYY'),
       selectedDate.end_date.format('DD/MM/YYYY'),
-    ) -
-    (meetingsRound.length - 1);
+    ) - meetingsRound.length;
   function closeDrawer() {
     setCandidateAvailabilityDrawerOpen(false);
     setReRequestAvailability(false);
@@ -321,9 +319,9 @@ function CandidateAvailability({
               )}
               placeholder='Days'
               onValueChange={(value) => {
-                const selectedOption = DAYS_LIST.find(
-                  (option) => option.value === Number(value),
-                );
+                const selectedOption = DAYS_LIST.filter(
+                  (_, index) => index < maxDays,
+                ).find((option) => option.value === Number(value));
 
                 if (selectedOption) {
                   setSelectedDays({
@@ -333,15 +331,12 @@ function CandidateAvailability({
                 }
               }}
             >
-              {DAYS_LIST.map((option, index) => {
-                if (index + 1 < maxDays) {
-                  return (
-                    <SelectItem key={option.value} value={String(option.value)}>
-                      {option.label}
-                    </SelectItem>
-                  );
-                }
-                return null;
+              {DAYS_LIST.filter((_, index) => index < maxDays).map((option) => {
+                return (
+                  <SelectItem key={option.value} value={String(option.value)}>
+                    {option.label}
+                  </SelectItem>
+                );
               })}
             </UISelectDropDown>
           }

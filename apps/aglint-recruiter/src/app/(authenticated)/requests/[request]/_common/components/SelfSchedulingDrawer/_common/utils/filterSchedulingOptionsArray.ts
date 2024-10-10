@@ -9,7 +9,7 @@ import { type ApiResponseFindAvailability } from '@requests/types';
 import { createCombsForMultiDaySlots } from '@/services/CandidateSchedule/utils/createCombsForMultiDaySlots';
 import { compareTimesHours } from '@/services/CandidateSchedule/utils/time_range_utils';
 
-import { type SelfSchedulingFlow } from '../../../store/store';
+import { type SelfSchedulingFlow } from '../store/store';
 
 type PlanFilterType = Omit<
   SelfSchedulingFlow['filters'],
@@ -87,8 +87,9 @@ export function filterSchedulingOptionsArray({
     }),
   }));
 
-  let allCombs: MultiDayPlanType[] =
-    createCombsForMultiDaySlots(allFilteredOptions);
+  let allCombs: MultiDayPlanType[] = createCombsForMultiDaySlots(
+    allFilteredOptions || [],
+  );
 
   // allCombs = allCombs
   //   .map(

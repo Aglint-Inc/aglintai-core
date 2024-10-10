@@ -1,4 +1,6 @@
-import UISelectDropDown from '@/components/Common/UISelectDropDown';
+import { useEffect } from 'react';
+
+import UITextField from '@/common/UITextField';
 
 import {
   setEditSession,
@@ -12,27 +14,41 @@ function CountDropDown() {
       selectedInterviewers: state.selectedInterviewers,
     }),
   );
+
+  useEffect(() => {
+    if (
+      Number(editSession?.interview_session.interviewer_cnt) >=
+        selectedInterviewers.length &&
+      selectedInterviewers.length !== 0
+    )
+      setEditSession({
+        interview_session: {
+          ...editSession!.interview_session,
+          interviewer_cnt: selectedInterviewers.length,
+        },
+      });
+  }, [selectedInterviewers.length]);
+
   return (
-    <UISelectDropDown
+    <UITextField
+      type='number'
       className='w-16'
       fieldSize='small'
       name={'interviewer_cnt'}
       value={editSession!.interview_session.interviewer_cnt.toString() || '1'}
-      onValueChange={(value) => {
+      onChange={(e) => {
+        if (
+          Number(e.target.value) >= selectedInterviewers.length + 1 ||
+          Number(e.target.value) === 0
+        )
+          return;
         setEditSession({
           interview_session: {
             ...editSession!.interview_session,
-            interviewer_cnt: Number(value),
+            interviewer_cnt: Number(e.target.value),
           },
         });
       }}
-      menuOptions={Array.from(
-        { length: selectedInterviewers.length },
-        (_, i) => i + 1,
-      ).map((num) => ({
-        name: num.toString(),
-        value: num.toString(),
-      }))}
     />
   );
 }

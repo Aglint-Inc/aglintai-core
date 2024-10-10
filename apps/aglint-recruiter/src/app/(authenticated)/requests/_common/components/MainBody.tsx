@@ -2,13 +2,11 @@
 import { EmptyState } from '@components/empty-state';
 import { Button } from '@components/ui/button';
 import { REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
-import { useRequestCount } from '@requests/hooks';
-import { useRequests } from '@requests/hooks';
+import { useRequestCount, useRequests } from '@requests/hooks';
 import { checkFiltersApplied } from '@requests/utils/checkFiltersApplied';
 import { LayoutList, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import { Loader } from '@/common/Loader';
 import { useTenant } from '@/company/hooks';
 import { useFlags } from '@/company/hooks/useFlags';
 import { useOnboarding } from '@/components/Navigation/OnboardPending/context/onboarding';
@@ -20,11 +18,10 @@ import Header from './ui/Header';
 
 const MainBody = () => {
   const {
-    requests: { data: requestList, isPlaceholderData, isFetched, isLoading },
+    requests: { data: requestList, isPlaceholderData, isFetched },
     filters,
   } = useRequests();
-  const { isRequestSetupPending, isLoading: isLoadingCompanySetup } =
-    useOnboarding();
+  const { isRequestSetupPending } = useOnboarding();
   const { recruiter_user } = useTenant();
   const { isShowFeature } = useFlags();
   const [openChat, setOpenChat] = useState(false);
@@ -72,12 +69,12 @@ const MainBody = () => {
     }
   }, [isShowFeature]);
 
-  if (isLoading || !isFetched || isLoadingCompanySetup)
-    return (
-      <div className='flex min-h-[80vh] w-full items-center justify-center'>
-        <Loader />
-      </div>
-    );
+  // if (isLoading || !isFetched || isLoadingCompanySetup)
+  //   return (
+  //     <div className='flex min-h-[80vh] w-full items-center justify-center'>
+  //       <Loader />
+  //     </div>
+  //   );
 
   if (showEmptyPage)
     return (

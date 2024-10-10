@@ -1,6 +1,6 @@
 import { UIAlert } from '@components/ui-alert';
 
-import { useSelfSchedulingFlowStore } from '../../../store/store';
+import { useSelfSchedulingFlowStore } from '../../store/store';
 
 function NoSlotError({
   totalNumberHardConflicts,
