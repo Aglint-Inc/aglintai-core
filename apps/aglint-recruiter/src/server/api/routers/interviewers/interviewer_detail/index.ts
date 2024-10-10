@@ -126,6 +126,7 @@ const query = async ({
     employment: user?.employment,
     profile_image: user.profile_image,
     department_id: user.departments?.id || null,
+    is_calendar_connected: user.is_calendar_connected,
     role_id: user?.recruiter_relation?.[0]?.roles?.id || null,
     manager_id: user?.recruiter_relation?.[0]?.manager_id || null,
     role: user?.recruiter_relation?.[0]?.roles?.name ?? '',

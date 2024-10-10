@@ -206,7 +206,9 @@ function CandidateAvailability() {
           </div>
         </>
       )}
-      <Separator className='mx-2 h-auto w-[1px]' />
+      {!candidateRequestAvailability?.slots && (
+        <Separator className='mx-2 h-auto w-[1px]' />
+      )}
       <div
         className={cn('w-4/12', {
           'w-full': !!candidateRequestAvailability?.slots,
@@ -215,15 +217,17 @@ function CandidateAvailability() {
         <div className='max-h-[calc(100%-50px)] min-h-[calc(100%-50px)] overflow-auto'>
           <DaySessions singleDay={multiDaySessions.length === 1} />
         </div>
-        <div className='flex h-[50px] w-full items-end rounded-none'>
-          {day < multiDaySessions.length ? (
+        <div className='flex h-[50px] w-full items-end'>
+          {markAsAllDateSelected &&
+          markAsAllSlotsSelected &&
+          day < multiDaySessions.length ? (
             <UIButton
               size='md'
               onClick={handleSubmit}
               disabled={
                 !markAsAllSlotsSelected || !markAsAllDateSelected || submitting
               }
-              className='w-full rounded-none'
+              className='w-full'
               isLoading={submitting}
             >
               Next Day
@@ -233,7 +237,7 @@ function CandidateAvailability() {
             <div className='w-full'>
               <UIButton
                 size='md'
-                className='w-full rounded-b-md'
+                className='w-full'
                 onClick={submitAvailability}
                 disabled={!allCriteriaMeets || submitting}
                 isLoading={submitting}
