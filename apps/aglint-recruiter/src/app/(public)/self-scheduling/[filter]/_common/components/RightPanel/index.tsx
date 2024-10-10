@@ -1,6 +1,5 @@
 'use client';
 
-import { ScrollArea } from '@components/ui/scroll-area';
 import { type ComponentProps } from 'react';
 import { SelectedSessionSlotsCard } from 'src/app/(public)/_common/_components/SelectedSessionStotsCard';
 
@@ -27,8 +26,8 @@ function RightPanel() {
     .filter((slot) => slot !== null);
 
   return (
-    <div className='relative flex h-full w-full flex-col gap-2'>
-      <ScrollArea className='mb-[50px]'>
+    <>
+      <div className='max-h-[calc(100%-50px)] min-h-[calc(100%-50px)] overflow-auto'>
         <div className='flex flex-col gap-2'>
           {rounds?.map((round, ind) => {
             const dates: ComponentProps<
@@ -97,9 +96,8 @@ function RightPanel() {
             );
           })}
         </div>
-      </ScrollArea>
-
-      <div className='absolute bottom-0 right-0 w-full'>
+      </div>
+      <div className='flex h-[50px] w-full items-end rounded-none'>
         {selectedDay === numberOfDays ? (
           <UIButton
             className='w-full'
@@ -128,7 +126,7 @@ function RightPanel() {
           </UIButton>
         )}
       </div>
-    </div>
+    </>
   );
 }
 
