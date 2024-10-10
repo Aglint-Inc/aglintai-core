@@ -15,10 +15,10 @@ import {
   setEmailData,
   setSelectedCombIds,
   useSelfSchedulingFlowStore,
-} from '../../../store/store';
+} from '../../store/store';
+import { type groupByDateRange } from '../../utils/utils';
 import DayCardWrapper from './DayCardWrapper';
 import FilterButton from './FilterButton';
-import { type groupByDateRange } from './utils';
 
 export type GroupByDateRange = ReturnType<typeof groupByDateRange>;
 

@@ -19,7 +19,7 @@ import { useTenant } from '@/company/hooks';
 const DefaultProfileImage = () => (
   <Image
     src={'/images/default/user.svg'}
-    alt={'Greenhouse'}
+    alt={'Profile Picture'}
     width={20}
     height={20}
   />
@@ -79,7 +79,7 @@ const TopBar = () => {
           <DropdownMenuContent side='bottom' align='end' alignOffset={20}>
             <DropdownMenuItem>
               <Link href={`/user/${userId}?profile=true`}>
-                <span>Your Profile</span>
+                <span>Profile</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>

@@ -10,9 +10,9 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 
-import { DayCard } from '../../../ui/DayCard';
-import { EmptySlotReason } from '../../../ui/EmptySlotReason';
-import { ScheduleOption } from '../../../ui/ScheduleOption';
+import { DayCard } from '../../ui/DayCard';
+import { EmptySlotReason } from '../../ui/EmptySlotReason';
+import { ScheduleOption } from '../../ui/ScheduleOption';
 import SingleDayCard from '../SingleDayCard';
 import DayCardConflicts from './DayCardConflicts';
 
@@ -98,16 +98,6 @@ function DayCardWrapper({
     }
   }, []);
 
-  useEffect(() => {
-    if (isAutoCollapse) {
-      if (isSelected) {
-        setCollapse(true);
-      } else {
-        setCollapse(false);
-      }
-    }
-  }, [selectedCombIds]);
-
   const noSlotReasons = item.plans
     .flat()
     .flatMap((plan) => plan.no_slot_reasons.map((reason) => reason.reason));
@@ -151,8 +141,8 @@ function DayCardWrapper({
             onClick={(e) => {
               e.stopPropagation();
               const slotsNo = slotsWithDaySessions.length;
-              if (slotsNo > 100) {
-                toast({ title: 'It has more slots' });
+              if (slotsNo > 200) {
+                toast({ title: 'It has more slots . Please select manually' });
                 return;
               }
               setSelectedCombIds &&

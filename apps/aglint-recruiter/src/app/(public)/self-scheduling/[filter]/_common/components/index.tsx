@@ -22,6 +22,9 @@ import { useInviteSlots } from '../hooks/useInviteSlots';
 import { useRounds } from '../hooks/useRounds';
 import {
   resetCandidateInviteStore,
+  setRounds,
+  setSelectedDate,
+  setSelectedDay,
   setTimeZone,
   useCandidateInviteStore,
 } from '../store';
@@ -46,16 +49,22 @@ const CandidateInviteNew = () => {
     isRefetching,
   } = useInviteSlots();
 
+  useEffect(() => {
+    return () => {
+      resetCandidateInviteStore();
+    };
+  }, []);
+
   return (
-    <div className='h-full w-full'>
+    <div className='max-h-[60vh] min-h-[60vh] w-full'>
       {isLoading || loadingSlots || isRefetching ? (
         <LoadingState />
       ) : isError || errorSlots ? (
         <ErrorState />
       ) : (
         <>
-          <div className='flex h-full w-full flex-row justify-center'>
-            <div className={isBooked ? 'h-full w-full' : 'h-full w-8/12'}>
+          <div className='flex max-h-[60vh] min-h-[60vh] w-full flex-row justify-center'>
+            <div className={isBooked ? 'w-full' : 'w-8/12'}>
               <CandidateInvitePlanPage />
             </div>
             {!isBooked && (
@@ -74,7 +83,7 @@ export default CandidateInviteNew;
 
 const LoadingState = () => (
   <div
-    className='flex h-full w-full items-center justify-center'
+    className='flex max-h-[60vh] min-h-[60vh] w-full items-center justify-center'
     aria-live='polite'
     aria-busy='true'
   >
@@ -165,6 +174,9 @@ const CandidateInvitePlanPage = () => {
           <TimezonePicker
             onChange={(e) => {
               setTimeZone(e);
+              setSelectedDate(null);
+              setSelectedDay(1);
+              setRounds([]);
             }}
             value={timezone.tzCode}
           />
@@ -176,11 +188,6 @@ const CandidateInvitePlanPage = () => {
 };
 
 const Invite = ({ rounds }: ScheduleCardsProps) => {
-  useEffect(() => {
-    return () => {
-      resetCandidateInviteStore();
-    };
-  }, []);
   useRounds();
   if (rounds.length === 1) return <SingleDay />;
   return <MultiDay />;

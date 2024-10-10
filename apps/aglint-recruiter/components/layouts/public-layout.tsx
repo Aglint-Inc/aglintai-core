@@ -21,8 +21,8 @@ export function PublicPageLayout({
         <header className='flex w-full flex-row justify-between'>
           {header}
         </header>
-        <div className='flex h-[calc(100vh-260px)] flex-col overflow-auto'>
-          <div className={cn('h-full', className)}>{children}</div>
+        <div className={cn('relative flex h-[100%] flex-col', className)}>
+          {children}
         </div>
       </main>
       <footer>{footer}</footer>

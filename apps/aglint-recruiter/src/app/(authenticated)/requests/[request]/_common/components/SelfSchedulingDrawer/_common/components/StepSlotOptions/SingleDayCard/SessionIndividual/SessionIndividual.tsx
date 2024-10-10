@@ -6,9 +6,9 @@ import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import InterviewerTrainingTypeIcon from '@/components/Common/Icons/InterviewerTrainingTypeIcon';
 
-import ConflictWithHover from '../../../../ui/ConflictWithHover';
-import { MemberRow } from '../../../../ui/MemberRow';
-import { SessionDetails } from '../../../../ui/SessionDetails';
+import ConflictWithHover from '../../../ui/ConflictWithHover';
+import { MemberRow } from '../../../ui/MemberRow';
+import { SessionDetails } from '../../../ui/SessionDetails';
 
 function SessionIndividual({
   session,

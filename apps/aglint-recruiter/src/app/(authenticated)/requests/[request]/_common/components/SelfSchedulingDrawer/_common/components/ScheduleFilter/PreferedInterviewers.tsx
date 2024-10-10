@@ -2,10 +2,7 @@ import MembersAutoComplete, {
   type MemberTypeAutoComplete,
 } from 'src/app/_common/components/MembersTextField';
 
-import {
-  setLocalFilters,
-  useSelfSchedulingFlowStore,
-} from '../../../store/store';
+import { setLocalFilters, useSelfSchedulingFlowStore } from '../../store/store';
 
 function PreferedInterviewers() {
   const { schedulingOptions, localFilters } = useSelfSchedulingFlowStore(

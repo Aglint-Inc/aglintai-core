@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 
-import { useSelfSchedulingFlowStore } from '../../../store/store';
+import { useSelfSchedulingFlowStore } from '../../store/store';
 import ScheduleFilter from '../ScheduleFilter';
 
 function FilterButton() {

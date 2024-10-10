@@ -18,7 +18,7 @@ const Footer: React.FC<FooterProps> = ({ brand = false }) => {
               alt='Aglint Logo'
               width={16}
               height={16}
-              className='ml-1'
+              className='mx-1'
             />{' '}
             &copy; {new Date().getFullYear()} Aglint Inc. All rights reserved.
           </p>
