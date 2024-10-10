@@ -8,8 +8,8 @@ import { UIButton } from '@/components/Common/UIButton';
 import UIDrawer from '@/components/Common/UIDrawer';
 import { type CompanyMember } from '@/queries/company-members';
 
-import { useJobInterviewPlan } from '../hooks';
 import { type DrawerType } from '.';
+import { useJobInterviewPlan } from '../hooks';
 import BreakForms, {
   getBreakFields,
   getBreakSessionPayload,
@@ -140,7 +140,7 @@ const CreateSession = ({
 
   return (
     <UIDrawer
-      title={'Create Interview'}
+      title={'Add Interview to Plan'}
       size='sm'
       open
       onClose={handleClose}
