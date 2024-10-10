@@ -64,13 +64,7 @@ export const AddMemberDialogUI = ({
   const { toast } = useToast();
   const { mutateAsync: reinviteUser } =
     api.tenant['resend-invite'].useMutation();
-  if (!roleOptions) {
-    toast({
-      variant: 'destructive',
-      title: 'failed to load role Options',
-    });
-    roleOptions = [];
-  }
+
   return (
     <div className='mt-4 space-y-4'>
       {menu === 'addMember' ? (
@@ -99,18 +93,14 @@ export const AddMemberDialogUI = ({
               value={form.email || ''}
               name='email'
               placeholder='Email'
-              onChange={(e) =>
-                setForm({ ...form, email: e.target.value.trim() })
-              }
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
               className={formError.email ? 'border-destructive' : ''}
             />
             <UITextField
               value={form.linked_in || ''}
               name='LinkedIn'
               placeholder='Enter linkedin URL'
-              onChange={(e) =>
-                setForm({ ...form, linked_in: e.target.value.trim() })
-              }
+              onChange={(e) => setForm({ ...form, linked_in: e.target.value })}
               className={formError.linked_in ? 'border-destructive' : ''}
             />
             <div className='grid grid-cols-2 gap-4'>
@@ -191,7 +181,8 @@ export const AddMemberDialogUI = ({
                 value={form.role_id?.toString()}
                 onValueChange={(value) => {
                   const role =
-                    roleOptions.find((op) => op.id === value)?.name || null;
+                    (roleOptions || []).find((op) => op.id === value)?.name ||
+                    null;
                   setForm({
                     ...form,
                     role_id: value,
@@ -205,7 +196,7 @@ export const AddMemberDialogUI = ({
                   <SelectValue placeholder='Choose Role' />
                 </SelectTrigger>
                 <SelectContent>
-                  {roleOptions.map((op) => (
+                  {(roleOptions || []).map((op) => (
                     <SelectItem key={op.id} value={op.id.toString()}>
                       {capitalizeFirstLetter(op.name)}
                     </SelectItem>

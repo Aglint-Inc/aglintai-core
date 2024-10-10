@@ -37,15 +37,18 @@ import {
   Trash,
   Trash2,
 } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
+import { Indicator } from '@/common/Indicator';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITextField from '@/components/Common/UITextField';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { type CompanyMember as CompanyMemberGlobal } from '@/queries/company-members';
 import { type DeleteInterviewSession } from '@/queries/interview-plans';
@@ -144,17 +147,18 @@ const InterviewPlanPage = () => {
             ))
           ) : (
             <div className='pr-20'>
-            <UIAlert variant='tip' title='Create Interview Stages'>
-              Create your interview stages for the job to ensure a structured
-              evaluation process. Add different interview types such as
-              &quot;Initial Screening&quot; or &quot;Technical Interview.&quot;
-              Use this template each time you schedule interviews for candidates
-              to maintain consistency and efficiency.
-            </UIAlert>
+              <UIAlert variant='tip' title='Create Interview Stages'>
+                Create your interview stages for the job to ensure a structured
+                evaluation process. Add different interview types such as
+                &quot;Initial Screening&quot; or &quot;Technical
+                Interview.&quot; Use this template each time you schedule
+                interviews for candidates to maintain consistency and
+                efficiency.
+              </UIAlert>
             </div>
           )}
           <div className='w-[688px] pr-20'>
-          <AddStageComponent handleCreate={handleCreate} />
+            <AddStageComponent handleCreate={handleCreate} />
           </div>
         </div>
       </Page>
@@ -183,6 +187,17 @@ const AddStageComponent = ({
   const { interviewPlans, handleCreatePlan } = useJobInterviewPlan();
   const [form, setForm] = useState(false);
   const nameField = useRef<null | HTMLInputElement>(null);
+  const searchParams = useSearchParams();
+  const { replace } = useRouterPro();
+
+  const isIndicatorActive =
+    searchParams?.get('indicator') == 'true' ? true : false;
+
+  const handleRemoveParam = () => {
+    const params = new URLSearchParams(searchParams!);
+    params.delete('indicator');
+    replace(`?${params.toString()}`);
+  };
 
   const handleAddStage = async () => {
     if (nameField.current!.value.length) {
@@ -197,10 +212,11 @@ const AddStageComponent = ({
   useEffect(() => {
     nameField.current?.focus();
   }, []);
+
   return (
     <>
       {form && (
-        <div className='flex flex-row items-center justify-between gap-2 rounded-md border bg-white p-4 w-[688px]'>
+        <div className='flex w-[688px] flex-row items-center justify-between gap-2 rounded-md border bg-white p-4'>
           <div className='flex flex-1'>
             <UITextField
               placeholder='Stage Name'
@@ -223,7 +239,10 @@ const AddStageComponent = ({
             <UIButton
               size='sm'
               variant='secondary'
-              onClick={() => setForm(!form)}
+              onClick={() => {
+                setForm(!form);
+                handleRemoveParam();
+              }}
             >
               Cancel
             </UIButton>
@@ -232,13 +251,15 @@ const AddStageComponent = ({
       )}
       {!form && (
         <div className='flex w-full flex-row'>
-          <UIButton
-            variant='outline'
-            onClick={() => setForm(!form)}
-            className='w-full'
-          >
-            Add Stage
-          </UIButton>
+          <Indicator isActive={isIndicatorActive}>
+            <UIButton
+              variant='outline'
+              onClick={() => setForm(!form)}
+              className='w-full'
+            >
+              Add Stage
+            </UIButton>
+          </Indicator>
         </div>
       )}
     </>

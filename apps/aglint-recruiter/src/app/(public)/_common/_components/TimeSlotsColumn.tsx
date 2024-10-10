@@ -1,4 +1,5 @@
 /* eslint-disable security/detect-object-injection */
+import { dayjsLocal } from '@aglint/shared-utils';
 import {
   Section,
   SectionActions,
@@ -6,23 +7,24 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
-import dayjs from 'dayjs';
 
 function TimeSlotsColumn({
   closeBtn,
   date,
   timeRangeArea,
+  timezone = dayjsLocal.tz.guess(),
 }: {
   closeBtn?: any;
   date: string;
   timeRangeArea?: React.ReactNode;
+  timezone?: string;
 }) {
   return (
     <Section className='rounded-lg border-none bg-gray-100 p-4'>
       <SectionHeader>
         <SectionHeaderText>
           <SectionTitle>
-            {date ? dayjs(date).format('dddd DD, MMMM') : ''}
+            {date ? dayjsLocal(date).tz(timezone).format('dddd DD, MMMM') : ''}
           </SectionTitle>
         </SectionHeaderText>
         <SectionActions>{closeBtn}</SectionActions>

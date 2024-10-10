@@ -19,7 +19,7 @@ import { ShowCode } from '@/components/Common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDrawer from '@/components/Common/UIDrawer';
 
-import DayCardWrapper from '../SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
+import DayCardWrapper from '../SelfSchedulingDrawer/_common/components/StepSlotOptions/DayCardWrapper';
 import Calendar from './_common/components/Calender';
 import SelectAvailableOption from './_common/components/SelectAvailableOption';
 import {

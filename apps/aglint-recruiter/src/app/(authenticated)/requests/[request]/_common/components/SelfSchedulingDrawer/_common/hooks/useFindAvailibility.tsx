@@ -10,18 +10,19 @@ import { type z } from 'zod';
 
 import { useTenant } from '@/company/hooks';
 
-import { filterSchedulingOptionsArray } from '../components/BodyDrawer/ScheduleFilter/utils';
 import {
   type SelfSchedulingFlow,
   setAvailabilities,
   setCalendarDate,
   setFetchingPlan,
   setFilteredSchedulingOptions,
+  setIsSelfScheduleDrawerOpen,
   setNoOptions,
   setNoSlotsReasons,
   setSchedulingOptions,
 } from '../store/store';
-import { transformAvailability } from '../utils/utils';
+import { filterSchedulingOptionsArray } from '../utils/filterSchedulingOptionsArray';
+import { transformAvailability } from '../utils/transformAvailability';
 
 export const useFindAvailibility = () => {
   const { toast } = useToast();
@@ -45,6 +46,10 @@ export const useFindAvailibility = () => {
       session_ids: selectedSessionIds,
       rec_id: recruiter?.id || '',
     });
+
+    if (!resOptions) {
+      return;
+    }
 
     //calendar resourrce view
     if (resOptions?.availabilities) {
@@ -86,6 +91,8 @@ export const useFindAvailibility = () => {
       setNoSlotsReasons([]);
       setFilteredSchedulingOptions(filterSlots.combs);
     }
+
+    setIsSelfScheduleDrawerOpen(true);
   };
 
   const findScheduleOptions = async ({
@@ -126,21 +133,15 @@ export const useFindAvailibility = () => {
         bodyParams,
       );
 
-      if (res.status === 200) {
+      if (res.data.slots) {
         const resAvail = res.data as ApiResponseFindAvailability;
         return resAvail;
-      } else {
-        throw new Error();
       }
     } catch (error) {
-      if (error instanceof Error) {
-        toast({
-          variant: 'destructive',
-          title: error?.message
-            ? error.message
-            : 'Error retrieving availability.',
-        });
-      }
+      toast({
+        variant: 'destructive',
+        title: error?.response?.data?.error || 'Error retrieving availability.',
+      });
       return null;
     } finally {
       setFetchingPlan(false);

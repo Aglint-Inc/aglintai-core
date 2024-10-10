@@ -8,6 +8,7 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { UIAlert } from '@components/ui-alert';
 
 import { Loader } from '@/common/Loader';
+import { MeetingStatusBadge } from '@/common/MeetingStatusBadge';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { UIButton } from '@/components/Common/UIButton';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
@@ -182,17 +183,19 @@ const ConfirmedScheduleCards = (
     isAddtoCalenderVisible: boolean;
   },
 ) => {
-  const scheduleCards = props.rounds.map((round, index) => (
-    <ConfirmedScheduleCard
-      key={index}
-      round={round}
-      index={index}
-      showTitle={props.rounds.length !== 1}
-      timezone={props.timezone}
-      isJoinMeetingButtonVisible={props.isJoinMeetingButtonVisible}
-      isAddtoCalenderVisible={props.isAddtoCalenderVisible}
-    />
-  ));
+  const scheduleCards = props.rounds.map((round, index) => {
+    return (
+      <ConfirmedScheduleCard
+        key={index}
+        round={round}
+        index={index}
+        showTitle={props.rounds.length !== 1}
+        timezone={props.timezone}
+        isJoinMeetingButtonVisible={props.isJoinMeetingButtonVisible}
+        isAddtoCalenderVisible={props.isAddtoCalenderVisible}
+      />
+    );
+  });
 
   return <>{scheduleCards}</>;
 };
@@ -228,12 +231,23 @@ const ConfirmedScheduleCard = (
 
     return (
       <InterviewConfirmedCard
+        slotStatus={
+          <div className='flex flex-row justify-end'>
+            <MeetingStatusBadge status={session.interview_meeting.status} />
+          </div>
+        }
         key={i}
         slotMeetingIcon={
           <IconScheduleType type={session.interview_session.schedule_type} />
         }
-        isAddtoCalenderVisible={props.isAddtoCalenderVisible}
-        isJoinMeetingButtonVisible={props.isJoinMeetingButtonVisible}
+        isAddtoCalenderVisible={
+          props.isAddtoCalenderVisible &&
+          session.interview_meeting.status === 'confirmed'
+        }
+        isJoinMeetingButtonVisible={
+          props.isJoinMeetingButtonVisible &&
+          session.interview_meeting.status === 'confirmed'
+        }
         onClickAddCalendar={() => {
           if (
             session.interview_meeting.start_time &&

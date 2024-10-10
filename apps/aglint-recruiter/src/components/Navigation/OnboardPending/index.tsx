@@ -14,7 +14,6 @@ import { Progress } from '@components/ui/progress';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { AlertCircle, ArrowLeft, ArrowRight, Check } from 'lucide-react';
 
-import { type SetupStepType } from '@/authenticated/hooks/useCompanySetup';
 import {
   setIsOnboardOpen,
   useOnboard,
@@ -27,8 +26,11 @@ import { useOnboarding } from './context/onboarding';
 import { SetupCard } from './SetupCard';
 
 export const OnboardPending = () => {
-  const { isCompanySetupPending, companySetupSteps, isOnboardCompleteRemote } =
-    useOnboarding();
+  const {
+    isCompanySetupLocalPending,
+    companySetupSteps,
+    isOnboardCompleteRemote,
+  } = useOnboarding();
 
   const { isOpen } = useOnboard();
 
@@ -37,7 +39,7 @@ export const OnboardPending = () => {
   };
 
   const pendingStepsCount = companySetupSteps.filter(
-    (step) => !step.isCompleted,
+    (step) => !step.isLocalCompleted,
   ).length;
 
   return (
@@ -46,19 +48,21 @@ export const OnboardPending = () => {
         <> </>
       ) : (
         <>
-          {!!companySetupSteps?.length && isCompanySetupPending && !isOpen && (
-            <UIButton
-              className='fixed bottom-8 left-20 z-50 rounded-full shadow-lg'
-              onClick={toggleOpen}
-            >
-              Onboarding
-              <UIBadge
-                color='warning'
-                textBadge={pendingStepsCount + ' Steps Pending'}
-                className='-mr-2 ml-2 inline-flex rounded-full'
-              />
-            </UIButton>
-          )}
+          {!!companySetupSteps?.length &&
+            isCompanySetupLocalPending &&
+            !isOpen && (
+              <UIButton
+                className='fixed bottom-8 left-20 z-50 rounded-full shadow-lg'
+                onClick={toggleOpen}
+              >
+                Onboarding
+                <UIBadge
+                  color='warning'
+                  textBadge={pendingStepsCount + ' Steps Pending'}
+                  className='-mr-2 ml-2 inline-flex rounded-full'
+                />
+              </UIButton>
+            )}
         </>
       )}
       <Dialog open={isOpen} onOpenChange={() => toggleOpen()}>
@@ -86,9 +90,9 @@ const MainContent = () => {
 
       iconComp: (
         <div
-          className={`flex h-4 w-4 items-center justify-center rounded-full ${step.isCompleted ? 'bg-green-500' : 'bg-transparent'}`}
+          className={`flex h-4 w-4 items-center justify-center rounded-full ${step.isLocalCompleted ? 'bg-green-500' : 'bg-transparent'}`}
         >
-          {step.isCompleted ? (
+          {step.isLocalCompleted ? (
             <Check className='text-white' size={12} />
           ) : (
             <AlertCircle className='text-muted-foreground' size={15} />
@@ -108,8 +112,8 @@ const MainContent = () => {
         <SectionActions className='mr-8 flex w-[300px] flex-row items-end'>
           <div className='flex flex-1 flex-col space-y-2'>
             <div className='text-sm text-muted-foreground'>
-              {companySetupSteps.filter((step) => step.isCompleted).length} of{' '}
-              {companySetupSteps.length} steps completed
+              {companySetupSteps.filter((step) => step.isLocalCompleted).length}{' '}
+              of {companySetupSteps.length} steps completed
             </div>
             <Progress value={companySetupProgress} className='h-2' />
           </div>
@@ -136,7 +140,7 @@ const MainContent = () => {
         <div className='space-y-2 md:col-span-8'>
           {selectedStep && (
             <ScrollArea className='min-h-[420px] w-[100%]'>
-              <Content selectedStep={selectedStep} />
+              <SetupCard />
             </ScrollArea>
           )}
         </div>
@@ -150,13 +154,13 @@ const Footer = () => {
   const {
     currentStepMarkAsComplete,
     finishHandler,
-    MarkAallAsComplete,
-    isCompanySetupPending,
+    isCompanySetupLocalPending,
     selectedStep,
     selectedIndex,
     companySetupSteps,
     setSelectedIndex,
     setSelectedStep,
+    isPending,
   } = useOnboarding();
 
   const goToNextStep = () => {
@@ -191,33 +195,24 @@ const Footer = () => {
         <ArrowLeft className='mr-2 h-4 w-4' /> Previous
       </Button>
       <div className='flex flex-row gap-2'>
-        {isCompanySetupPending && (
-          <UIButton
-            size='sm'
-            variant='outline'
-            onClick={MarkAallAsComplete}
-            className='hidden'
-          >
-            Mark all complete
-          </UIButton>
-        )}
-        {!selectedStep?.isCompleted && isCompanySetupPending && (
+        {!selectedStep?.isCompleted && isCompanySetupLocalPending && (
           <UIButton
             size='sm'
             variant='outline'
             onClick={() => {
               if (selectedStep?.id) currentStepMarkAsComplete(selectedStep.id);
             }}
+            isLoading={isPending}
           >
             Mark complete
           </UIButton>
         )}
-        {!isCompanySetupPending && (
-          <UIButton size='sm' onClick={finishHandler}>
+        {!isCompanySetupLocalPending && (
+          <UIButton size='sm' isLoading={isPending} onClick={finishHandler}>
             Finish
           </UIButton>
         )}
-        {isCompanySetupPending && (
+        {isCompanySetupLocalPending && (
           <UIButton
             size='sm'
             variant='outline'
@@ -229,23 +224,5 @@ const Footer = () => {
         )}
       </div>
     </div>
-  );
-};
-const Content = ({ selectedStep }: { selectedStep: SetupStepType }) => {
-  return (
-    <>
-      <SetupCard
-        isCompleted={!!selectedStep.isCompleted}
-        title={selectedStep.title || ''}
-        description={selectedStep.description || ''}
-        //@ts-ignore
-        bulletPoints={selectedStep.bulletPoints || []}
-        //@ts-ignore
-        scoringPoints={selectedStep.scoringPoints || []}
-        //@ts-ignore
-        schedulingPoints={selectedStep.schedulingPoints || []}
-        navLink={selectedStep.navLink || ''}
-      />
-    </>
   );
 };

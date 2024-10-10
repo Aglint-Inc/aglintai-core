@@ -9,21 +9,13 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import { useQueryClient } from '@tanstack/react-query';
-import { ChevronDownIcon } from 'lucide-react';
+import { ChevronDownIcon, User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { useLogout } from '@/authenticated/hooks/useLogout';
 import { useTenant } from '@/company/hooks';
 
-const DefaultProfileImage = () => (
-  <Image
-    src={'/images/default/user.svg'}
-    alt={'Greenhouse'}
-    width={20}
-    height={20}
-  />
-);
 const DefaultCompanyLogo = () => (
   <Image
     src={'/images/default/company.svg'}
@@ -56,7 +48,7 @@ const TopBar = () => {
           <span className='ml-1'>{recruiterName}</span>
         </Link>
       </Button>
-      <div className='mr-2 flex flex-row items-center'>
+      <div className='mr-2 mt-2 flex flex-row items-center'>
         <div className='sr-only mr-4 flex-row items-center gap-2 md:flex'>
           <p>👋 </p>
           <p className='text-sm text-muted-foreground'>Hey {userName}</p>
@@ -67,24 +59,27 @@ const TopBar = () => {
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Button variant='ghost'>
-              <Avatar className='h-[24px] w-[24px] cursor-pointer rounded-full'>
+              <Avatar className='h-7 w-7 cursor-pointer rounded-sm'>
                 <AvatarImage src={profileImage || ''} alt={userName} />
-                <AvatarFallback className='rounded-[4px]'>
-                  <DefaultProfileImage />
+                <AvatarFallback className='rounded-sm bg-gray-500'>
+                  <User className='h-4 w-4' />
                 </AvatarFallback>
               </Avatar>
-              <ChevronDownIcon className='ml-2 h-4 w-4' />
+              <ChevronDownIcon className='ml-1 h-4 w-4' />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent side='bottom' align='end' alignOffset={20}>
-            <DropdownMenuItem>
-              <Link href={`/user/${userId}?profile=true`}>
+            <DropdownMenuItem className='cursor-pointer'>
+              <Link
+                href={`/user/${userId}?profile=true`}
+                className='hover:no-underline'
+              >
                 <span>Your Profile</span>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem className='cursor-pointer'>
               <div onClick={() => logout(queryClient)}>
-                <span>Logout</span>
+                <span className='cursor-pointer'>Logout</span>
               </div>
             </DropdownMenuItem>
           </DropdownMenuContent>

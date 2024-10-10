@@ -89,10 +89,7 @@ function InterviewModeComp() {
       isIndividual={
         editSession!.interview_session.session_type === 'individual'
       }
-      isPanel={
-        selectedInterviewers?.length > 1 &&
-        editSession!.interview_session.session_type === 'panel'
-      }
+      isPanel={editSession!.interview_session.session_type === 'panel'}
       isTraining={true}
       textToggleLabel={`Training ${trainingToggle ? 'On' : 'Off'}`}
       slotToggle={
@@ -107,9 +104,7 @@ function InterviewModeComp() {
       }
       slotInterviewModePill={<SelectSessionType />}
       isInterviewerDropVisible={true}
-      slotMemberCountDropdown={
-        selectedInterviewers?.length > 0 && <CountDropDown />
-      }
+      slotMemberCountDropdown={<CountDropDown />}
       slotInterviewersDropdown={
         moduleCurrent?.members.length === 0 ? (
           <UIAlert

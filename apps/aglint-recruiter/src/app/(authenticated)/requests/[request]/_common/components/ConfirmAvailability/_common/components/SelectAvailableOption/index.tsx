@@ -5,7 +5,7 @@ import { Check } from 'lucide-react';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIDivider } from '@/components/Common/UIDivider';
 
-import DayCardWrapper from '../../../../SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
+import DayCardWrapper from '../../../../SelfSchedulingDrawer/_common/components/StepSlotOptions/DayCardWrapper';
 import { setCalendarDate } from '../../contexts/AvailabilitySchedulingStore';
 import { useAvailabilityContext } from '../../contexts/RequestAvailabilityContext';
 import FinalScreen from '../FinalScreen';
@@ -76,7 +76,7 @@ function RequestAvailabilityBody({
     <div className='flex w-[500px] flex-col gap-2 p-4'>
       <div className='mb-2 flex w-full'>
         {availableSlots &&
-          [availableSlots, {}].map((_, i) => {
+          [...availableSlots, {}].map((_, i) => {
             const firstIndex = 0;
             const lastIndex = [...availableSlots, {}].length - 1;
             return (

@@ -1,9 +1,9 @@
 import { dayjsLocal } from '@aglint/shared-utils';
 import { create } from 'zustand';
 
+import { type transformPlanCombinationPack } from '@/services/CandidateSchedule/utils/bookingUtils/candidateSelfSchedule/transformPlanCombinationPack';
 import timeZone, { type TimezoneObj } from '@/utils/timeZone';
 
-import { type useInviteSlots } from './hooks/useInviteSlots';
 import { type ScheduleCardProps } from './types/types';
 
 export type CandidateInviteType = {
@@ -12,13 +12,16 @@ export type CandidateInviteType = {
   selectedDate: string | null;
   selectedDay: number;
   rounds: (ScheduleCardProps['round'] & {
-    selectedSlots:
-      | ReturnType<typeof useInviteSlots>['data'][number][number][number]
+    selectedSlot:
+      | ReturnType<
+          typeof transformPlanCombinationPack
+        >[number]['interview_rounds'][number]['current_day_slots'][number]
       | null;
   })[];
+  initialDayDate: string | null;
 };
 
-const initialStateSchedulingStore: CandidateInviteType = {
+export const initialStateSchedulingStore: CandidateInviteType = {
   timezone:
     timeZone.find(({ tzCode }) => tzCode === dayjsLocal.tz.guess()) ??
     timeZone[0],
@@ -26,29 +29,33 @@ const initialStateSchedulingStore: CandidateInviteType = {
   selectedDate: null,
   selectedDay: 1,
   rounds: [],
+  initialDayDate: null,
 };
 
-export const useCandidateInviteStore = create<CandidateInviteType>()(
-  () => initialStateSchedulingStore,
-);
+export const useCandidateInviteSelfScheduleStore =
+  create<CandidateInviteType>()(() => initialStateSchedulingStore);
+
+export const setInitialDayDate = (
+  initialDayDate: CandidateInviteType['initialDayDate'],
+) => useCandidateInviteSelfScheduleStore.setState({ initialDayDate });
 
 export const setRounds = (rounds: CandidateInviteType['rounds']) =>
-  useCandidateInviteStore.setState({ rounds });
+  useCandidateInviteSelfScheduleStore.setState({ rounds });
 
 export const setSelectedDay = (
   selectedDay: CandidateInviteType['selectedDay'],
-) => useCandidateInviteStore.setState({ selectedDay });
+) => useCandidateInviteSelfScheduleStore.setState({ selectedDay });
 
 export const setSelectedDate = (
   selectedDate: CandidateInviteType['selectedDate'],
-) => useCandidateInviteStore.setState({ selectedDate });
+) => useCandidateInviteSelfScheduleStore.setState({ selectedDate });
 
 export const setDetailPopup = (
   detailPopup: CandidateInviteType['detailPopup'],
-) => useCandidateInviteStore.setState({ detailPopup });
+) => useCandidateInviteSelfScheduleStore.setState({ detailPopup });
 
 export const setTimeZone = (timezone: CandidateInviteType['timezone']) =>
-  useCandidateInviteStore.setState({ timezone });
+  useCandidateInviteSelfScheduleStore.setState({ timezone });
 
 export const resetCandidateInviteStore = () =>
-  useCandidateInviteStore.setState(initialStateSchedulingStore);
+  useCandidateInviteSelfScheduleStore.setState(initialStateSchedulingStore);
