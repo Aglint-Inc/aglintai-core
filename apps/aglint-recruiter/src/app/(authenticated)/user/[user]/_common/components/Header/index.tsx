@@ -77,7 +77,7 @@ export const Header = () => {
           <div className='mt-2 flex flex-col gap-2'>
             <span className='flex items-center text-sm'>
               <MapPin className='mr-1 h-4 w-4' />
-              {location}
+              {location || '-'}
             </span>
             <span className='flex items-center text-sm'>
               <Clock className='mr-1 h-4 w-4' />
@@ -91,7 +91,7 @@ export const Header = () => {
             </span>
             <span className='flex items-center text-sm'>
               <Phone className='mr-1 h-4 w-4' />
-              {phone}
+              {phone || '-'}
             </span>
           </div>
         </div>

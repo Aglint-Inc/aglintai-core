@@ -1,5 +1,4 @@
-import { getFullName } from '@aglint/shared-utils';
-import { getBreakLabel } from '@aglint/shared-utils';
+import { getBreakLabel, getFullName } from '@aglint/shared-utils';
 import {
   Page,
   PageDescription,
@@ -48,6 +47,7 @@ import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITextField from '@/components/Common/UITextField';
+import { useOnboarding } from '@/components/Navigation/OnboardPending/context/onboarding';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { type CompanyMember as CompanyMemberGlobal } from '@/queries/company-members';
@@ -112,6 +112,7 @@ const InterviewPlanPage = () => {
     setDrawerModal(false);
     setTimeout(() => setDrawers(initialDrawer()), 400);
   }, []);
+
   const handleEdit = useCallback(
     (key: keyof DrawerType['edit'], id: string, order: number) => {
       setDrawerModal(true);
@@ -189,6 +190,7 @@ const AddStageComponent = ({
   const nameField = useRef<null | HTMLInputElement>(null);
   const searchParams = useSearchParams();
   const { replace } = useRouterPro();
+  const { onboardRefetch } = useOnboarding();
 
   const isIndicatorActive =
     searchParams?.get('indicator') == 'true' ? true : false;
@@ -205,6 +207,7 @@ const AddStageComponent = ({
         nameField.current!.value,
         interviewPlans.data!.length + 1,
       );
+      onboardRefetch('interviewPlan');
       handleCreate('session', interviewPlan!.id, 1);
       setForm(false);
     }

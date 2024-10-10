@@ -1,4 +1,5 @@
-import { Building, Globe, Users2 } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { Building, Building2, Globe, Users2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -13,17 +14,16 @@ export const BasicInfoUI = ({
     <>
       <div className='flex items-center justify-between'>
         <div className='mb-2 flex items-center space-x-4'>
-          <div className='justify-center rounded-md border border-border'>
-            {recruiter.logo && (
-              <Image
-                src={recruiter.logo}
-                alt={recruiter.name}
-                width={80}
-                height={80}
-                className='rounded-md'
+          <Avatar className='h-[80px] w-[80px] rounded-md'>
+            <AvatarImage src={recruiter.logo || ''} alt={recruiter.name} />
+            <AvatarFallback className='h-[80px] w-[80px] rounded-md bg-gray-200'>
+              <Building2
+                className='h-6 w-6 text-muted-foreground'
+                size={40}
+                strokeWidth={1.5}
               />
-            )}
-          </div>
+            </AvatarFallback>
+          </Avatar>
           <div className='flex flex-col space-y-2'>
             {recruiter.name}
             <div className='flex flex-row gap-4'>
@@ -34,12 +34,12 @@ export const BasicInfoUI = ({
               <div className='flex items-center space-x-2'>
                 <Building className='h-4 w-4 text-muted-foreground' />
                 <span className='text-sm text-muted-foreground'>
-                  {recruiter.industry}
+                  {recruiter.industry || ' - '}
                 </span>
               </div>
               <div className='flex items-center space-x-2'>
                 <Users2 className='h-4 w-4 text-muted-foreground' />
-                <span className='text-sm text-muted-foreground'>{`${recruiter.employee_size} People`}</span>
+                <span className='text-sm text-muted-foreground'>{`${recruiter.employee_size ? recruiter.employee_size + ' People' : '-'} `}</span>
               </div>
             </div>
             <div className='flex flex-wrap gap-2'>
