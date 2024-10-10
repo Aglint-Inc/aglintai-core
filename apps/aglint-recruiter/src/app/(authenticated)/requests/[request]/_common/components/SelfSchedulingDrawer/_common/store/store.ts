@@ -8,7 +8,8 @@ import {
   type Resource,
 } from '@/components/Common/CalendarResourceView/types';
 import type { ApiResponseSelfSchedule } from '@/pages/api/scheduling/application/sendselfschedule';
-import { filterSchedulingOptionsArray } from '../utils/filterSchedulingOptionsArray';
+
+import type { filterSchedulingOptionsArray } from '../utils/filterSchedulingOptionsArray';
 
 type PrefferedInterviewer = {
   user_id: string;
