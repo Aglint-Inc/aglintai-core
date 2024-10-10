@@ -8,8 +8,8 @@ import {
 import { CApiError, dayjsLocal, ScheduleUtils } from '@aglint/shared-utils';
 import { nanoid } from 'nanoid';
 
-import { CandidatesScheduling } from '../../CandidatesScheduling';
-import { planCombineSlots } from '../planCombine';
+import { CandidatesScheduling } from '../../../CandidatesScheduling';
+import { planCombineSlots } from '../../planCombine';
 
 export const verifyRecruiterSelectedSlots = async ({
   candidate_tz,
