@@ -6,7 +6,9 @@ import { createContext, memo, type PropsWithChildren, useMemo } from 'react';
 import { useTenant } from '@/company/hooks';
 import { JOB_NOT_FOUND } from '@/job/constants/jobNotFound';
 import { useCurrentJob } from '@/job/hooks/useCurrentJob';
+import { useJobPolling } from '@/job/hooks/useJobPolling';
 import { useJobRead } from '@/job/hooks/useJobRead';
+import { useRegenerateJd } from '@/job/hooks/useRegenerateJd';
 import { useJobsContext } from '@/jobs/hooks';
 import {
   jobQueries,
@@ -16,8 +18,6 @@ import {
   useUploadResume,
 } from '@/queries/job';
 import { useJobUpdate } from '@/queries/jobs';
-
-import { useJobPolling } from '../hooks/useJobPolling';
 
 const useJobContext = () => {
   const { recruiter_id } = useTenant();
@@ -31,7 +31,11 @@ const useJobContext = () => {
 
   if (!job) throw new Error(JOB_NOT_FOUND);
 
-  const { processing_poll } = useJobPolling();
+  const { mutate: regenerateJd, isPending: isRegeneratingCriteria } =
+    useRegenerateJd();
+
+  const { isPolling, isGeneratingCriteria, isApplicationsPolling } =
+    useJobPolling(isRegeneratingCriteria);
 
   const total = useMemo(
     () =>
@@ -98,8 +102,11 @@ const useJobContext = () => {
     handleUploadResume,
     handleUploadCsv,
     handleJobSync,
+    regenerateJd,
     devlinkProps,
-    processing_poll,
+    isPolling,
+    isApplicationsPolling,
+    isScoreGenerationPolling: isGeneratingCriteria || isRegeneratingCriteria,
   };
 };
 

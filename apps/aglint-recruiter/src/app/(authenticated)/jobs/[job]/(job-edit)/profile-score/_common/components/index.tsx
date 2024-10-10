@@ -17,13 +17,7 @@ import {
 import { Input } from '@components/ui/input';
 import { Skeleton } from '@components/ui/skeleton';
 import { capitalize } from 'lodash';
-import {
-  Check,
-  CircleDot,
-  Lightbulb,
-  RefreshCcw,
-  X,
-} from 'lucide-react';
+import { Check, CircleDot, Lightbulb, RefreshCcw, X } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import {
   type ChangeEventHandler,
@@ -73,9 +67,14 @@ const ProfileScorePage = () => {
     <Page>
       <PageHeader>
         <PageHeaderText>
-          <PageTitle>Profile Scoring</PageTitle>
+          <PageTitle>
+            <div className='flex items-center gap-2'>
+              Profile Scoring <Regenerate />
+            </div>
+          </PageTitle>
           <PageDescription className='max-w-2xl'>
-          Profile scoring assigns numerical values to candidates&apos; qualifications, simplifying the hiring process.
+            Profile scoring assigns numerical values to candidates&apos;
+            qualifications, simplifying the hiring process.
           </PageDescription>
         </PageHeaderText>
         <PageActions></PageActions>
@@ -93,9 +92,23 @@ const ProfileScorePage = () => {
   );
 };
 
+const Regenerate = () => {
+  const { isScoreGenerationPolling, regenerateJd } = useJob();
+  return (
+    <UIButton
+      variant={'secondary'}
+      disabled={isScoreGenerationPolling}
+      onClick={() => regenerateJd()}
+    >
+      <RefreshCcw className='w-4' />
+    </UIButton>
+  );
+};
+
 const ProfileScoreControls = () => {
   const {
-    job: { draft_jd_json, parameter_weights, scoring_criteria_loading },
+    job: { draft_jd_json, parameter_weights },
+    isScoreGenerationPolling,
     handleJobAsyncUpdate,
   } = useJob();
   const initialRef = useRef(false);
@@ -170,8 +183,8 @@ const ProfileScoreControls = () => {
   }, Object.values(safeWeights));
   return (
     <div
-      className={`sticky right-0 top-0 p-4 bg-muted rounded-md mt-2${
-        scoring_criteria_loading ? 'pointer-events-none opacity-40' : ''
+      className={`sticky right-0 top-0 rounded-md bg-muted p-4 mt-2${
+        isScoreGenerationPolling ? 'pointer-events-none opacity-40' : ''
       }`}
     >
       <div className='space-y-4'>
@@ -217,12 +230,12 @@ const ProfileScoreControls = () => {
 };
 
 const ProfileScore = () => {
-  const { job } = useJob();
+  const { job, isScoreGenerationPolling } = useJob();
   const parameter_weights = job.parameter_weights as ScoreWheelParams;
 
   return (
     <div className='mr-4 space-y-4'>
-      {job.scoring_criteria_loading ? (
+      {isScoreGenerationPolling ? (
         <div className='space-y-4'>
           <LoaadingSkeleton />
         </div>
@@ -286,7 +299,7 @@ const SectionHeader: FC<{ type: Sections; weight: number; color: string }> = ({
   return (
     <div className='mb-4 flex items-center space-x-2'>
       <CircleDot className='h-4 w-4' style={{ color }} />
-      <span className='font-medium text-md'>{capitalize(type)}</span>
+      <span className='text-md font-medium'>{capitalize(type)}</span>
       <span className='text-sm text-muted-foreground'>({weight}%)</span>
     </div>
   );
@@ -398,7 +411,7 @@ const Tag: FC<{
   };
 
   return (
-    <div className='group relative inline-block h-8 '>
+    <div className='group relative inline-block h-8'>
       {isEditing ? (
         <div className='flex items-center overflow-hidden rounded-md border bg-white pr-1'>
           <Input
@@ -410,24 +423,26 @@ const Tag: FC<{
           />
           <UIButton
             onClick={handleSubmit}
-            className='bg-gray-100 px-2 py-1 transition-colors '
+            className='bg-gray-100 px-2 py-1 transition-colors'
             title='Press Enter to save'
-            icon={<Check/>}
+            icon={<Check />}
             size='sm'
           />
         </div>
       ) : (
-        <div className='flex h-8 items-center gap-2 relative rounded-md bg-gray-100 pl-3 pr-1 py-1 text-sm cursor-pointer' onClick={() => setIsEditing(true)}>
+        <div
+          className='relative flex h-8 cursor-pointer items-center gap-2 rounded-md bg-gray-100 py-1 pl-3 pr-1 text-sm'
+          onClick={() => setIsEditing(true)}
+        >
           {item.field}
-          <div className='flex items-center gap-1 h-full'>
-          <button
-            onClick={onDelete}
-            className='ml-1 w-5 h-5flex items-center justify-center rounded-sm'
-          >
-            <X className='h-3 w-3' />
-          </button>
+          <div className='flex h-full items-center gap-1'>
+            <button
+              onClick={onDelete}
+              className='h-5flex ml-1 w-5 items-center justify-center rounded-sm'
+            >
+              <X className='h-3 w-3' />
+            </button>
           </div>
-          
         </div>
       )}
     </div>

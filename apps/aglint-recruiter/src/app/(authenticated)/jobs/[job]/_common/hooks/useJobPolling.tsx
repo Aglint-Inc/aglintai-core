@@ -4,12 +4,13 @@ import { api } from '@/trpc/client';
 
 import { useJobRead } from './useJobRead';
 
-export const useJobPolling = () => {
+export const useJobPolling = (poll = false) => {
   const job = useJobRead();
   const utils = api.useUtils();
-  const processing_poll =
+  const isApplicationsPolling =
     job.processing_count.processing + job.processing_count.fetching !== 0;
-  const enabled = job.scoring_criteria_loading || processing_poll;
+  const isGeneratingCriteria = job.scoring_criteria_loading;
+  const enabled = isGeneratingCriteria || isApplicationsPolling || poll;
   useQuery({
     queryKey: ['job-polling', { id: job.id }],
     queryFn: () => {
@@ -24,5 +25,5 @@ export const useJobPolling = () => {
     refetchOnMount: enabled,
     refetchOnWindowFocus: false,
   });
-  return { enabled, processing_poll };
+  return { isPolling: enabled, isApplicationsPolling, isGeneratingCriteria };
 };

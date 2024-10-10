@@ -99,8 +99,8 @@ const Sync = () => {
 };
 
 const Score = () => {
-  const { processing_poll, job, total } = useJob();
-  if (!processing_poll) return <></>;
+  const { isApplicationsPolling, job, total } = useJob();
+  if (!isApplicationsPolling) return <></>;
   return (
     <div className='flex items-center space-x-2 rounded-md bg-blue-100 px-3 py-2 text-blue-800'>
       <Loader />
