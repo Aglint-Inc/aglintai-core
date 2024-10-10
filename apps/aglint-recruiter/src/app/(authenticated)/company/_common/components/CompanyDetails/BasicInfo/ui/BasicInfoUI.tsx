@@ -29,17 +29,7 @@ export const BasicInfoUI = ({
             <div className='flex flex-row gap-4'>
               <div className='flex items-center space-x-2'>
                 <Globe className='h-4 w-4 text-muted-foreground' />
-                {recruiter.company_website ? (
-                  <Link
-                    href={recruiter.company_website}
-                    target='_blank'
-                    className='text-sm text-muted-foreground'
-                  >
-                    {new URL(recruiter.company_website)?.hostname}
-                  </Link>
-                ) : (
-                  <>&nbsp; - </>
-                )}
+                {recruiter.company_website}
               </div>
               <div className='flex items-center space-x-2'>
                 <Building className='h-4 w-4 text-muted-foreground' />
