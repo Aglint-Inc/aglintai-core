@@ -16,7 +16,6 @@ import {
   setCalendarDate,
   setFetchingPlan,
   setFilteredSchedulingOptions,
-  setIsSelfScheduleDrawerOpen,
   setNoOptions,
   setNoSlotsReasons,
   setSchedulingOptions,
@@ -91,8 +90,6 @@ export const useFindAvailibility = () => {
       setNoSlotsReasons([]);
       setFilteredSchedulingOptions(filterSlots.combs);
     }
-
-    setIsSelfScheduleDrawerOpen(true);
   };
 
   const findScheduleOptions = async ({
