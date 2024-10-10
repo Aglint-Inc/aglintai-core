@@ -29,7 +29,7 @@ const Layout = ({
   void api.application.application_request.prefetch({
     application_id: params.application,
   });
-  void api.application.application_request.prefetch({
+  void api.application.interview_stages.prefetch({
     application_id: params.application,
   });
   void api.interview_pool.get_all.prefetch();
