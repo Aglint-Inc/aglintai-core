@@ -8,7 +8,6 @@ import {
   PageHeaderText,
   PageTitle,
 } from '@components/layouts/page-header';
-import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import {
   Collapsible,
@@ -44,10 +43,8 @@ import ScoreWheel, {
 import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { TourProvider, useTour } from '@/context/TourContext';
-import { useRouterPro } from '@/hooks/useRouterPro';
-// import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
-import { distributeScoreWeights } from '@/job/utils';
+import { getParameterWeights } from '@/job/utils';
 import { SafeObject } from '@/utils/safeObject';
 
 type Sections = 'experience' | 'education' | 'skills';
@@ -133,15 +130,16 @@ const ProfileScorePage = () => {
 };
 
 const ProfileScoreControls = () => {
-  const { job, handleJobAsyncUpdate } = useJob();
+  const {
+    job: { draft_jd_json, parameter_weights, scoring_criteria_loading },
+    handleJobAsyncUpdate,
+  } = useJob();
   const initialRef = useRef(false);
   const initialSubmitRef = useRef(false);
-  const jd_json = job.draft.jd_json;
-  const parameter_weights = job.parameter_weights as ScoreWheelParams;
   const disabled = {
-    experience: (jd_json?.rolesResponsibilities ?? []).length === 0,
-    skills: (jd_json?.skills ?? []).length === 0,
-    education: (jd_json?.educations ?? []).length === 0,
+    experience: (draft_jd_json?.rolesResponsibilities ?? []).length === 0,
+    skills: (draft_jd_json?.skills ?? []).length === 0,
+    education: (draft_jd_json?.educations ?? []).length === 0,
   };
   const allDisabled =
     disabled.education && disabled.skills && disabled.experience;
@@ -183,7 +181,7 @@ const ProfileScoreControls = () => {
     else setWeight((prev) => ({ ...prev, [e.target.name]: safeEntry }));
   };
   const handleReset = () => {
-    const obj = distributeScoreWeights(job.draft.jd_json);
+    const obj = getParameterWeights(draft_jd_json);
     setWeight(obj);
   };
   const handleSubmit = async () => {
@@ -209,7 +207,7 @@ const ProfileScoreControls = () => {
   return (
     <div
       className={`sticky right-0 top-0 p-4 ${
-        job.scoring_criteria_loading ? 'pointer-events-none opacity-40' : ''
+        scoring_criteria_loading ? 'pointer-events-none opacity-40' : ''
       }`}
     >
       <div className='space-y-4'>
@@ -260,7 +258,6 @@ const ProfileScore = () => {
 
   return (
     <div className='mr-4 space-y-4'>
-      <Banners />
       {job.scoring_criteria_loading ? (
         <div className='space-y-4'>
           <LoaadingSkeleton />
@@ -333,11 +330,10 @@ const SectionHeader: FC<{ type: Sections; weight: number; color: string }> = ({
 
 const SectionContent: FC<{ type: Sections }> = ({ type }) => {
   const {
-    job: { draft },
+    job: { draft_jd_json },
     handleJobUpdate,
   } = useJob();
-  const { jd_json } = draft;
-  const section: keyof typeof jd_json =
+  const section: keyof typeof draft_jd_json =
     type === 'experience'
       ? 'rolesResponsibilities'
       : type === 'education'
@@ -358,12 +354,9 @@ const SectionContent: FC<{ type: Sections }> = ({ type }) => {
         isMustHave: false,
       }));
       handleJobUpdate({
-        draft: {
-          ...draft,
-          jd_json: {
-            ...jd_json,
-            [section]: [...jd_json[section], ...newItems],
-          },
+        draft_jd_json: {
+          ...draft_jd_json,
+          [section]: [...draft_jd_json[section], ...newItems],
         },
       });
       setNewTags('');
@@ -371,31 +364,25 @@ const SectionContent: FC<{ type: Sections }> = ({ type }) => {
   };
 
   const handleTagChange = (index: number, updatedItem: any) => {
-    const newSection = jd_json[section].map((item, i) =>
+    const newSection = draft_jd_json[section].map((item, i) =>
       i === index ? updatedItem : item,
     );
     handleJobUpdate({
-      draft: {
-        ...draft,
-        jd_json: { ...jd_json, [section]: newSection },
-      },
+      draft_jd_json: { ...draft_jd_json, [section]: newSection },
     });
   };
 
   const handleTagDelete = (index: number) => {
-    const newSection = jd_json[section].filter((_, i) => i !== index);
+    const newSection = draft_jd_json[section].filter((_, i) => i !== index);
     handleJobUpdate({
-      draft: {
-        ...draft,
-        jd_json: { ...jd_json, [section]: newSection },
-      },
+      draft_jd_json: { ...draft_jd_json, [section]: newSection },
     });
   };
 
   return (
     <div className='mb-8 space-y-4'>
       <div className='flex flex-wrap gap-2'>
-        {jd_json[section].map((item, index) => (
+        {draft_jd_json[section].map((item, index) => (
           <Tag
             key={item.id}
             item={item}
@@ -487,58 +474,58 @@ const Tag: FC<{
   );
 };
 
-const Banners = () => {
-  const { push } = useRouterPro();
-  const { job, status } = useJob();
-  if (status!.loading) return <></>;
-  if (status!.description_error)
-    return (
-      <Alert variant='error'>
-        <AlertDescription>
-          <div className='flex items-center justify-between'>
-            <p className='mr-4'>Job description is unavailable</p>
-            <Button
-              size='sm'
-              variant='outline'
-              onClick={() => push(`/jobs/${job.id}/edit`)}
-            >
-              View
-            </Button>
-          </div>
-        </AlertDescription>
-      </Alert>
-    );
-  if (status!.jd_json_error)
-    return (
-      <Alert variant='warning'>
-        <AlertDescription>
-          <div className='flex items-center justify-between'>
-            <p className='mr-4'>No profile score criterias set.</p>
-            <Button size='sm' variant='outline'>
-              Generate
-            </Button>
-          </div>
-        </AlertDescription>
-      </Alert>
-    );
-  if (status!.description_changed && !status!.scoring_criteria_changed)
-    return (
-      <Alert variant='warning'>
-        <AlertDescription>
-          <div className='flex items-center justify-between'>
-            <p className='mr-4'>
-              Job description has changed. Regenerate to update scoring
-              criteria.
-            </p>
-            <Button size='sm' variant='outline'>
-              Regenerate
-            </Button>
-          </div>
-        </AlertDescription>
-      </Alert>
-    );
-  return <></>;
-};
+// const Banners = () => {
+//   const { push } = useRouterPro();
+//   const { job, status } = useJob();
+//   if (status!.loading) return <></>;
+//   if (status!.description_error)
+//     return (
+//       <Alert variant='error'>
+//         <AlertDescription>
+//           <div className='flex items-center justify-between'>
+//             <p className='mr-4'>Job description is unavailable</p>
+//             <Button
+//               size='sm'
+//               variant='outline'
+//               onClick={() => push(`/jobs/${job.id}/edit`)}
+//             >
+//               View
+//             </Button>
+//           </div>
+//         </AlertDescription>
+//       </Alert>
+//     );
+//   if (status!.jd_json_error)
+//     return (
+//       <Alert variant='warning'>
+//         <AlertDescription>
+//           <div className='flex items-center justify-between'>
+//             <p className='mr-4'>No profile score criterias set.</p>
+//             <Button size='sm' variant='outline'>
+//               Generate
+//             </Button>
+//           </div>
+//         </AlertDescription>
+//       </Alert>
+//     );
+//   if (status!.description_changed && !status!.scoring_criteria_changed)
+//     return (
+//       <Alert variant='warning'>
+//         <AlertDescription>
+//           <div className='flex items-center justify-between'>
+//             <p className='mr-4'>
+//               Job description has changed. Regenerate to update scoring
+//               criteria.
+//             </p>
+//             <Button size='sm' variant='outline'>
+//               Regenerate
+//             </Button>
+//           </div>
+//         </AlertDescription>
+//       </Alert>
+//     );
+//   return <></>;
+// };
 
 const Tips = () => {
   const {

@@ -38,7 +38,6 @@ import Link from 'next/link';
 import { createContext, memo, useCallback, useContext, useState } from 'react';
 
 import { Loader } from '@/common/Loader';
-import PublishButton from '@/components/Common/PublishButton';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -56,7 +55,6 @@ export const SharedActions = () => {
         <Score />
         <Sync />
         <Add />
-        <Publish />
         <Switcher />
         <Link href={`/jobs/${value?.job?.id}/job-details`}>
           <UIButton variant='outline'>Edit</UIButton>
@@ -122,20 +120,6 @@ const Add = () => {
   const { job } = useJob();
   if (job?.status === 'closed' || !manageJob) return null;
   return <UploadApplications></UploadApplications>;
-};
-
-const Publish = () => {
-  const { manageJob } = useJobsContext();
-  const { handlePublish, canPublish, job } = useJob();
-  if (job?.status === 'closed' || !manageJob) return null;
-  return (
-    <PublishButton
-      onClick={async () => {
-        await handlePublish();
-      }}
-      disabled={!canPublish}
-    />
-  );
 };
 
 const Switcher = () => {

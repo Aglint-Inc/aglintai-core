@@ -29,7 +29,6 @@ export const PATHS = [
   '/api/job/candidateUpload/manualUpload',
   '/api/job/candidateUpload/resumeReupload',
   '/api/job/candidateUpload/resumeUpload',
-  '/api/job/profileScore',
   '/api/jobpost/company',
   '/api/jobpost',
   '/api/jobpost/read',
@@ -192,5 +191,5 @@ export const PATHS = [
   '/api/emails/slack/onQualified_slack_trainee',
   '/api/emails/slack/onReceivingAvailReq_slack_suggestSlots',
   '/api/emails/slack/onRequestCancel_slack_interviewersOrganizer',
-  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification'
-] as const
+  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification',
+] as const;

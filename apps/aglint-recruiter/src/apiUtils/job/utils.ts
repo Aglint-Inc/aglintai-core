@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-import { type JobProfileScoreApi } from '../../pages/api/job/profileScore';
 import {
   type CsvUploadApi,
   type ManualUploadApi,
@@ -10,7 +9,6 @@ import {
 } from './candidateUpload/types';
 
 type ApiRouteTypes = {
-  profileScore: JobProfileScoreApi;
   'candidateUpload/csvUpload': CsvUploadApi;
   'candidateUpload/manualUpload': ManualUploadApi;
   'candidateUpload/resumeUpload': ResumeUploadApi;

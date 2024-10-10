@@ -1,5 +1,4 @@
 import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
-import { isEqual } from 'lodash';
 import {
   createContext,
   memo,
@@ -14,7 +13,6 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import {
   getDetailsValidity,
   getHiringTeamValidity,
-  validateDescription,
   validateJd,
 } from '@/job/utils';
 import { useJobsContext } from '@/jobs/hooks';
@@ -79,40 +77,6 @@ const useJobContext = () => {
 
   const jdValidity = !validateJd(job?.draft?.jd_json);
 
-  const status =
-    job && jobLoad
-      ? {
-          loading: scoringCriteriaLoading,
-          description_error:
-            !scoringCriteriaLoading &&
-            validateDescription(job?.draft?.description ?? ''),
-          description_changed:
-            !job.scoring_criteria_loading &&
-            !isEqual(
-              {
-                department_id: job.draft.department_id,
-                description: job.draft.description,
-                job_title: job.draft.job_title,
-                job_type: job.draft.job_type,
-                workplace_type: job.draft.workplace_type,
-                location_id: job.draft.location_id,
-              } as Omit<Job['draft'], 'jd_json'>,
-              {
-                department_id: job.department_id,
-                description: job.description,
-                job_title: job.job_title,
-                job_type: job.job_type,
-                workplace_type: job.workplace_type,
-                location_id: job.location_id,
-              } as Omit<Job['draft'], 'jd_json'>,
-            ),
-          jd_json_error: !job.scoring_criteria_loading && !jdValidity,
-          scoring_criteria_changed:
-            !job.scoring_criteria_loading &&
-            !isEqual(job.draft.jd_json, job.jd_json),
-        }
-      : null;
-
   const interviewPlans = useQuery(jobQueries.interview_plans({ id: job_id }));
 
   const { mutateAsync: jobAsyncUpdate, mutate: jobUpdate } = useJobUpdate();
@@ -158,11 +122,6 @@ const useJobContext = () => {
       jdValidity &&
       !scoringCriteriaLoading,
   };
-
-  const canPublish =
-    job?.status === 'draft' ||
-    !!status?.description_changed ||
-    !!status?.scoring_criteria_changed;
 
   const handlePublish = async () => {
     if (publishStatus.publishable) {
@@ -249,7 +208,6 @@ const useJobContext = () => {
     handleUploadResume,
     handleUploadCsv,
     handleJobSync,
-    canPublish,
     handlePublish,
     publishStatus,
     status,
