@@ -5,12 +5,12 @@ import {
 import { customSchedulingSettingsUserSchema } from '@aglint/shared-types/src/db/common.zod';
 import { z } from 'zod';
 
-import { checkCalenderStatus } from '@/pages/api/scheduling/v1/check_calendar_status';
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 import type { SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
 const redirectTo = `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`;
+const calenderStatusUrl = `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/check_calendar_status`;
 
 const schema = z
   .object({
@@ -33,6 +33,7 @@ const query = async ({
   input: users,
 }: PrivateProcedure<typeof schema>) => {
   const supabase = createPublicClient();
+  let new_user_id: string;
   try {
     for (const user of users) {
       const recUser = await registerMember(
@@ -41,7 +42,7 @@ const query = async ({
         recruiter_id,
         user_id,
       );
-      checkCalenderStatus({ user_id: recUser.user_id });
+      new_user_id = recUser.user_id;
       const { error: resetEmail } = await supabase.auth.resetPasswordForEmail(
         recUser.email,
         {
@@ -51,13 +52,22 @@ const query = async ({
       if (resetEmail) {
         throw new Error('Sending reset password failed!');
       }
+      fetch(calenderStatusUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user_id: recUser.user_id }),
+      });
+
       return {
         created: true,
         user: recUser,
       };
     }
   } catch (error: any) {
-    user_id && (await supabase.auth.admin.deleteUser(user_id));
+    // @ts-ignore
+    !!new_user_id && (await supabase.auth.admin.deleteUser(new_user_id));
     throw new Error(String(error.message));
   }
 };
