@@ -146,5 +146,5 @@ export const API_PATHS = [
   '/api/emails/slack/onQualified_slack_trainee',
   '/api/emails/slack/onReceivingAvailReq_slack_suggestSlots',
   '/api/emails/slack/onRequestCancel_slack_interviewersOrganizer',
-  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification',
-] as const;
+  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification'
+] as const

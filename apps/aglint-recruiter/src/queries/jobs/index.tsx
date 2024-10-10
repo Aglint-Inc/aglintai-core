@@ -29,14 +29,12 @@ export const useJobDelete = () => {
   return mutation;
 };
 
-const updateJob = async (job: DatabaseTableUpdate['public_jobs']) => {
-  const { error: e1 } = await supabase
+const updateJob = async (job: DatabaseTableUpdate['public_jobs']) =>
+  await supabase
     .from('public_jobs')
     .update(job)
-    .eq('id', job.id!);
-
-  if (e1) throw new Error(e1.message);
-};
+    .eq('id', job.id!)
+    .throwOnError();
 
 const deleteJob = async (id: string) => {
   const { error } = await supabase.from('public_jobs').delete().eq('id', id!);

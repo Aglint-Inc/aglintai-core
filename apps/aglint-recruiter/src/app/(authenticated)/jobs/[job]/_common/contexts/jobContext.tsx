@@ -10,13 +10,7 @@ import {
 
 import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
-import {
-  getDetailsValidity,
-  getHiringTeamValidity,
-  validateJd,
-} from '@/job/utils';
 import { useJobsContext } from '@/jobs/hooks';
-import type { Job } from '@/jobs/types';
 import {
   jobQueries,
   useInvalidateJobQueries,
@@ -26,7 +20,6 @@ import {
   useUploadResume,
 } from '@/queries/job';
 import { useJobUpdate } from '@/queries/jobs';
-import toast from '@/utils/toast';
 
 import { useCurrentJob } from '../hooks/useCurrentJob';
 
@@ -75,8 +68,6 @@ const useJobContext = () => {
   const jobPolling =
     !!job && (scoreParameterPollEnabled || applicationScoringPollEnabled);
 
-  const jdValidity = !validateJd(job?.draft?.jd_json);
-
   const interviewPlans = useQuery(jobQueries.interview_plans({ id: job_id }));
 
   const { mutateAsync: jobAsyncUpdate, mutate: jobUpdate } = useJobUpdate();
@@ -105,55 +96,6 @@ const useJobContext = () => {
       await syncJob({ job_id, recruiter_id });
     } catch {
       //
-    }
-  };
-
-  const detailsValidity = getDetailsValidity(job);
-  const hiringTeamValidity = getHiringTeamValidity(job);
-
-  const publishStatus = {
-    detailsValidity,
-    hiringTeamValidity,
-    jdValidity,
-    loading: scoringCriteriaLoading,
-    publishable:
-      detailsValidity.validity &&
-      hiringTeamValidity.validity &&
-      jdValidity &&
-      !scoringCriteriaLoading,
-  };
-
-  const handlePublish = async () => {
-    if (publishStatus.publishable) {
-      const {
-        processing_count: _processing_count,
-        section_count: _section_count,
-        application_match: _application_match,
-        department: _department,
-        location: _location,
-        syncable: _syncable,
-        ...safeJob
-      } = job;
-      await handleJobAsyncUpdate({
-        ...safeJob,
-        ...safeJob.draft,
-        status: 'published',
-      } as Job['draft']);
-      return true;
-    } else {
-      if (publishStatus.loading)
-        toast.warning(
-          'Generating profile score criteria. Please wait before publishing.',
-        );
-      else {
-        if (!detailsValidity.validity || !hiringTeamValidity.validity) {
-          if (!detailsValidity.validity) toast.error(detailsValidity.message);
-          if (!hiringTeamValidity.validity)
-            toast.error(hiringTeamValidity.message);
-        } else {
-          toast.error('Unable to publish. Please verify the job details.');
-        }
-      }
     }
   };
 
@@ -208,10 +150,6 @@ const useJobContext = () => {
     handleUploadResume,
     handleUploadCsv,
     handleJobSync,
-    handlePublish,
-    publishStatus,
-    status,
-    jdValidity,
     devlinkProps,
   };
 };
