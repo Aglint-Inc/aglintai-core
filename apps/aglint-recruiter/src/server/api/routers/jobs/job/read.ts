@@ -14,7 +14,7 @@ const schema = z.object({
 const query = async ({
   ctx,
   input,
-}: PrivateProcedure<typeof schema>): Promise<Read> => {
+}: PrivateProcedure<typeof schema>): Promise<Read['output']> => {
   const db = createPrivateClient();
   const job = (
     await db
@@ -43,4 +43,7 @@ type Meta = {
   banner: Banner;
 };
 
-export type Read = DatabaseView['job_view'] & Meta;
+export type Read = {
+  input: z.infer<typeof schema>;
+  output: DatabaseView['job_view'] & Meta;
+};

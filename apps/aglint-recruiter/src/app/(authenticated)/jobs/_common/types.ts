@@ -1,22 +1,11 @@
-import type { Read } from '@/routers/jobs/job/read';
+import type { API } from '@/server/api/root';
 
-export type Job = Read;
+export type Job = API['jobs']['job']['read']['output'];
 
-export type JobCreate = Required<
-  Job['draft'] &
-    Pick<
-      Job,
-      'hiring_manager' | 'recruiter' | 'recruiting_coordinator' | 'sourcer'
-    >
->;
-
-export type JobHiringTeamForm = Pick<
-  Required<Form>,
-  'hiring_manager' | 'recruiter' | 'recruiting_coordinator' | 'sourcer'
->;
+export type JobCreate = Omit<API['jobs']['create']['aglint']['input'], 'id'>;
 
 export type Form = Partial<{
-  [id in keyof Omit<JobCreate, 'jd_json' | 'description_hash'>]: {
+  [id in keyof JobCreate]: {
     value: JobCreate[id];
     required: boolean;
     placeholder?: string;
@@ -27,13 +16,9 @@ export type Form = Partial<{
   };
 }>;
 
-export type JobDetailsForm = Required<Omit<Form, keyof JobHiringTeamForm>>;
+export type JobHiringTeamForm = Pick<
+  Required<Form>,
+  'hiring_manager' | 'recruiter' | 'recruiting_coordinator' | 'sourcer'
+>;
 
-export type HiringTeamValidity = {
-  validity: boolean;
-  invalidFields: (keyof Pick<
-    JobHiringTeamForm,
-    'hiring_manager' | 'recruiter'
-  >)[];
-  message: string;
-};
+export type JobDetailsForm = Required<Omit<Form, keyof JobHiringTeamForm>>;

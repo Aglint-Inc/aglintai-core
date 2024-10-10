@@ -33,7 +33,7 @@ export const useJobForms = (
           acc[safeKey] = (
             <JobDepartment
               name={safeKey}
-              value={value}
+              value={Number(value) as any}
               onChange={handleChange}
             />
           );

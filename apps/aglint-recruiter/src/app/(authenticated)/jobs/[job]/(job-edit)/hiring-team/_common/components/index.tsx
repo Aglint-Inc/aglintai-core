@@ -44,17 +44,12 @@ export const JobHiringTeamDashboard = () => {
 };
 
 const JobEdit = () => {
-  const { job } = useJob();
-  //TODO: HACK FOR BACKWARDS COMPATABILITY, DELETE THIS LATER
-  const { hiring_manager, recruiter, recruiting_coordinator, sourcer } = {
-    hiring_manager: job.hiring_manager,
-    recruiter: job.recruiter,
-    recruiting_coordinator: job.recruiting_coordinator,
-    sourcer: job.sourcer,
-  };
+  const {
+    job: { hiring_manager, recruiter, recruiting_coordinator, sourcer },
+  } = useJob();
   const [fields, setFields] = useState<JobHiringTeamForm>({
     hiring_manager: {
-      value: hiring_manager,
+      value: hiring_manager!,
       required: true,
       error: {
         value: validateString(hiring_manager!),
@@ -62,7 +57,7 @@ const JobEdit = () => {
       },
     },
     recruiter: {
-      value: recruiter,
+      value: recruiter!,
       required: true,
       error: {
         value: validateString(recruiter!),
@@ -121,7 +116,7 @@ const JobEdit = () => {
 const validateForms = (fields: JobHiringTeamForm) => {
   return SafeObject.entries(fields).reduce((acc, [key, value]) => {
     acc[key] = {
-      value: value.value,
+      value: value.value!,
       required: value.required,
       error: {
         value: value?.value

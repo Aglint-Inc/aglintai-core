@@ -1,6 +1,15 @@
-import type { HiringTeamValidity, Job } from '@/jobs/types';
+import type { Job, JobHiringTeamForm } from '@/jobs/types';
 import { capitalizeAll } from '@/utils/text/textUtils';
 import { validateString } from '@/utils/validateString';
+
+type HiringTeamValidity = {
+  validity: boolean;
+  invalidFields: (keyof Pick<
+    JobHiringTeamForm,
+    'hiring_manager' | 'recruiter'
+  >)[];
+  message: string;
+};
 
 const getTeamMessage = (invalidFields: string[]) => {
   const titles = (invalidFields ?? []).map((field) => capitalizeAll(field));

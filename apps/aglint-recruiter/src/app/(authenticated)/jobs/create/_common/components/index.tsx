@@ -75,27 +75,27 @@ export const JobCreate = () => {
       error: { value: false, helper: `Job title can't be empty` },
     },
     department_id: {
-      value: null!,
+      value: null,
       required: false,
       error: { value: false, helper: `Department name can't be empty` },
     },
     job_type: {
       value: null,
-      required: true,
+      required: false,
       error: { value: false, helper: `Job type can't be empty` },
     },
     location_id: {
-      value: 0,
+      value: null,
       required: false,
       error: { value: false, helper: `Job location can't be empty` },
     },
     workplace_type: {
       value: null,
-      required: true,
+      required: false,
       error: { value: false, helper: `Workplace type can't be empty` },
     },
     description: {
-      value: '',
+      value: null!,
       required: true,
       error: {
         value: false,
@@ -103,7 +103,7 @@ export const JobCreate = () => {
       },
     },
     hiring_manager: {
-      value: null,
+      value: null!,
       required: true,
       error: {
         value: false,
@@ -111,7 +111,7 @@ export const JobCreate = () => {
       },
     },
     recruiter: {
-      value: null,
+      value: null!,
       required: true,
       error: {
         value: false,

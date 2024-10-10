@@ -6,7 +6,7 @@ import { type PrivateProcedure, privateProcedure } from '../../trpc';
 import { getBanners } from './common/getBanners';
 import type { Read } from './job/read';
 
-const query = async ({ ctx }: PrivateProcedure): Promise<Read[]> => {
+const query = async ({ ctx }: PrivateProcedure): Promise<Read['output'][]> => {
   const db = createPrivateClient();
   const jobs = (
     await db

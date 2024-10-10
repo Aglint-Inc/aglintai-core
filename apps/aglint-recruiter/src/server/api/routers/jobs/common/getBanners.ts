@@ -2,8 +2,7 @@ import type { DatabaseView } from '@aglint/shared-types';
 import { isEqual } from 'lodash';
 import { z, type ZodSchema } from 'zod';
 
-import { jdSchema } from './generateJd';
-import { jobDescriptionSchema } from './jobDescriptionSchema';
+import { jdSchema, jobDescriptionSchema } from './schema';
 
 type MissingInfo = Pick<
   DatabaseView['job_view'],

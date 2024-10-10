@@ -11,40 +11,16 @@ import { type PrivateProcedure } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 import { SafeObject } from '@/utils/safeObject';
 
-import { jobDescriptionSchema } from './jobDescriptionSchema';
-
-export const schema = z.object({
-  id: z.string(),
-  type: z.enum(['generate', 'regenerate']),
-});
+import { jdSchema, jobDescriptionSchema, levelSchema } from './schema';
 
 type Jd = DatabaseTable['public_jobs']['draft_jd_json'];
 
 type JdItem = Jd[keyof Omit<Jd, 'level' | 'title'>];
 
-const jsonItemSchema = z.array(
-  z.object({
-    id: z.string(),
-    field: z.string(),
-    isMustHave: z.boolean(),
-  }),
-) satisfies ZodSchema<JdItem>;
-
-const levelSchema = z.enum([
-  'Fresher-level',
-  'Associate-level',
-  'Mid-level',
-  'Senior-level',
-  'Executive-level',
-]) satisfies ZodSchema<Jd['level']>;
-
-export const jdSchema = z.object({
-  title: z.string(),
-  level: levelSchema,
-  rolesResponsibilities: jsonItemSchema,
-  skills: jsonItemSchema,
-  educations: jsonItemSchema,
-}) satisfies ZodSchema<Jd>;
+export const schema = z.object({
+  id: z.string(),
+  type: z.enum(['generate', 'regenerate']),
+});
 
 type TrimmedJdItem = {
   field: string;
