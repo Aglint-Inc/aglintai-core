@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
 
-import { useSelfSchedulingFlowStore } from '../../../store/store';
+import { useSelfSchedulingFlowStore } from '../../store/store';
+import { filterSchedulingOptionsArray } from '../../utils/filterSchedulingOptionsArray';
 import NoSlotError from './NoSlotError';
-import { filterSchedulingOptionsArray } from './utils';
 
 function ErrorConflicts() {
   const { schedulingOptions, errorNoSlotFilter } = useSelfSchedulingFlowStore(

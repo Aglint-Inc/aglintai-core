@@ -4,7 +4,7 @@ import type {
 } from '@aglint/shared-types';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { useAvailabilityContext } from '@request/components/ConfirmAvailability/_common/contexts/RequestAvailabilityContext';
-import DayCardWrapper from '@request/components/SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
+import DayCardWrapper from '@request/components/SelfSchedulingDrawer/_common/components/StepSlotOptions/DayCardWrapper';
 import { RotateCw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 

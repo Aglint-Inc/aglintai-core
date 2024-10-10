@@ -8,8 +8,8 @@ import React, { useEffect } from 'react';
 import { UIButton } from '@/components/Common/UIButton';
 import { formatTimeWithTimeZone } from '@/components/Scheduling/utils';
 
-import ConflictWithHover from '../../../ui/ConflictWithHover';
-import { SingleDaySchedule } from '../../../ui/SingleDaySchedule';
+import ConflictWithHover from '../../ui/ConflictWithHover';
+import { SingleDaySchedule } from '../../ui/SingleDaySchedule';
 import SessionIndividual from './SessionIndividual/SessionIndividual';
 
 function SingleDayCard({

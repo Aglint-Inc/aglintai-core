@@ -1,11 +1,8 @@
 import { UIButton } from '@/components/Common/UIButton';
 import { RangePicker } from '@/jobs/job/application/components/ScheduleDialog';
 
-import { useFilterSlots } from '../../../hooks/useFilterSlots';
-import {
-  setLocalFilters,
-  useSelfSchedulingFlowStore,
-} from '../../../store/store';
+import { useFilterSlots } from '../../hooks/useFilterSlots';
+import { setLocalFilters, useSelfSchedulingFlowStore } from '../../store/store';
 import DateRangeField from './DateRangeField';
 import ErrorConflicts from './ErrorConflicts';
 import PreferedInterviewers from './PreferedInterviewers';
