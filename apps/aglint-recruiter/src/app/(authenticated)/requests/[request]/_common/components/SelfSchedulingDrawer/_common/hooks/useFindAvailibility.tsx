@@ -17,6 +17,7 @@ import {
   setCalendarDate,
   setFetchingPlan,
   setFilteredSchedulingOptions,
+  setIsSelfScheduleDrawerOpen,
   setNoOptions,
   setNoSlotsReasons,
   setSchedulingOptions,
@@ -45,6 +46,10 @@ export const useFindAvailibility = () => {
       session_ids: selectedSessionIds,
       rec_id: recruiter?.id || '',
     });
+
+    if (!resOptions) {
+      return;
+    }
 
     //calendar resourrce view
     if (resOptions?.availabilities) {
@@ -86,6 +91,8 @@ export const useFindAvailibility = () => {
       setNoSlotsReasons([]);
       setFilteredSchedulingOptions(filterSlots.combs);
     }
+
+    setIsSelfScheduleDrawerOpen(true);
   };
 
   const findScheduleOptions = async ({
@@ -131,14 +138,10 @@ export const useFindAvailibility = () => {
         return resAvail;
       }
     } catch (error) {
-      if (error instanceof Error) {
-        toast({
-          variant: 'destructive',
-          title: error?.message
-            ? error.message
-            : 'Error retrieving availability.',
-        });
-      }
+      toast({
+        variant: 'destructive',
+        title: error?.response?.data?.error || 'Error retrieving availability.',
+      });
       return null;
     } finally {
       setFetchingPlan(false);
