@@ -6,7 +6,6 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
-import Typography from '@components/typography';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
@@ -119,8 +118,10 @@ const Tabs = ({
                 {...onClickUpcoming}
               >
                 <div>Upcoming</div>
-                <div className={`flex h-4 min-w-4 text-xs items-center justify-center rounded-sm  px-1 text-muted-foreground i ${isUpcomingActive ? 'bg-white text-black' : 'bg-gray-300'}`}>              
-                    {textUpcomingCount}
+                <div
+                  className={`i flex h-4 min-w-4 items-center justify-center rounded-sm px-1 text-xs ${isUpcomingActive ? 'bg-white text-black' : 'bg-gray-300 text-muted-foreground'}`}
+                >
+                  {textUpcomingCount}
                 </div>
               </UIButton>
             </div>
@@ -131,10 +132,10 @@ const Tabs = ({
                 {...onClickCancelled}
               >
                 <div>Canceled</div>
-                <div className='flex h-5 min-w-5 items-center justify-center rounded bg-neutral-300 px-1 text-muted-foreground'>
-                  <Typography variant='p' type='small'>
-                    {textCancelledCount}
-                  </Typography>
+                <div
+                  className={`i flex h-4 min-w-4 items-center justify-center rounded-sm px-1 text-xs ${isCancelActive ? 'bg-white text-black' : 'bg-gray-300 text-muted-foreground'}`}
+                >
+                  {textCancelledCount}
                 </div>
               </UIButton>
             </div>
@@ -145,10 +146,10 @@ const Tabs = ({
                 {...onClickCompleted}
               >
                 <div>Past</div>
-                <div className='flex h-5 min-w-5 items-center justify-center rounded bg-neutral-300 px-1 text-muted-foreground'>
-                  <Typography variant='p' type='small'>
-                    {textPastCount}
-                  </Typography>
+                <div
+                  className={`i flex h-4 min-w-4 items-center justify-center rounded-sm px-1 text-xs ${isCompletedActive ? 'bg-white text-black' : 'bg-gray-300 text-muted-foreground'}`}
+                >
+                  {textPastCount}
                 </div>
               </UIButton>
             </div>
