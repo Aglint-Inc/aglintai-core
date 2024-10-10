@@ -29,12 +29,6 @@ export const candidateAvailRequest = async ({
     candidate_avail_request_schema.parse(req_body);
   const supabaseAdmin = getSupabaseServer();
 
-  supabaseWrap(
-    await supabaseAdmin
-      .from('candidate_request_availability')
-      .delete()
-      .eq('request_id', request_id),
-  );
   const avail_req = supabaseWrap(
     await supabaseAdmin
       .from('candidate_request_availability')

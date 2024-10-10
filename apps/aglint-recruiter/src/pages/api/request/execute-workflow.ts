@@ -13,8 +13,8 @@ const executeWorkflow = async (parsed_body: z.output<typeof schema>) => {
   const supabaseAdmin = getSupabaseServer();
 
   const { request_id } = parsed_body;
-  const [request] = supabaseWrap(
-    await supabaseAdmin.from('request').select().eq('id', request_id),
+  const request = supabaseWrap(
+    await supabaseAdmin.from('request').select().eq('id', request_id).single(),
   );
   await triggerActions(request);
 };
@@ -22,6 +22,20 @@ const executeWorkflow = async (parsed_body: z.output<typeof schema>) => {
 const triggerActions = async (request_data: DatabaseTable['request']) => {
   try {
     const supabaseAdmin = getSupabaseServer();
+    const exisitng_job = supabaseWrap(
+      await supabaseAdmin
+        .from('workflow_action_logs')
+        .select()
+        .eq('related_table_pkey', request_data.id)
+        .eq('related_table', 'request')
+        .limit(1),
+      false,
+    );
+
+    if (exisitng_job.length > 0) {
+      console.error('Job already exists for this request');
+      return;
+    }
 
     const [applications] = supabaseWrap(
       await supabaseAdmin
