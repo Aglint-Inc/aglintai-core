@@ -396,6 +396,7 @@ export function useCompanySetup() {
     jobs,
     allMembers,
     locations,
+    interviewPools,
     departments,
     candidateInterviewPlan,
   ]);
