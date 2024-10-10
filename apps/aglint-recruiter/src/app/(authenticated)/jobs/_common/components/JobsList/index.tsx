@@ -1,5 +1,4 @@
 import { EmptyState } from '@components/empty-state';
-import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import {
   Table,
@@ -15,6 +14,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
+import { UIBadge } from '@components/ui-badge';
 import {
   AlertCircle,
   BriefcaseBusiness,
@@ -36,7 +36,6 @@ import { SafeObject } from '@/utils/safeObject';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 
 import { POSTED_BY } from '../AddJobWithIntegrations/utils';
-
 interface JobsListProps {
   jobs: Job[];
 }
@@ -189,16 +188,12 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
             </TableCell>
             <TableCell>
               <div className='flex items-center space-x-2'>
-                <Badge
-                  variant={job.status === 'published' ? 'default' : 'outline'}
-                  className={`${
-                    job.status === 'published'
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-gray-100 text-gray-800'
-                  }`}
-                >
-                  {job.status!.charAt(0).toUpperCase() + job.status!.slice(1)}
-                </Badge>
+                <UIBadge
+                  variant={job.status === 'published' ? 'success' : 'neutral'}
+                  textBadge={
+                    job.status!.charAt(0).toUpperCase() + job.status!.slice(1)
+                  }
+                />
                 {job.status === 'published' &&
                   (!job.jd_json || !job.description) && (
                     <TooltipProvider>

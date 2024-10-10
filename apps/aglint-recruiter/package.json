@@ -22,7 +22,8 @@
     "shadcn": "npx shadcn-ui@latest add",
     "v0": "npx v0@latest add",
     "script_cleanup": "npx tsc script/cleanup.ts --skipLibCheck && node script/cleanup.js",
-    "generate-zod-schemas": "supabase-to-zod --input ../../packages/shared-types/src/db/schema.types.ts --output ../../packages/shared-types/src/db/zod-schema.types.ts"
+    "generate-zod-schemas": "supabase-to-zod --input ../../packages/shared-types/src/db/schema.types.ts --output ../../packages/shared-types/src/db/zod-schema.types.ts",
+    "mac-fix-git": "cd ../.. && chown -R $USER:$(id -gn $USER) .git"
   },
   "dependencies": {
     "@aglint/shared-utils": "*",
@@ -140,6 +141,7 @@
     "server-only": "^0.0.1",
     "superjson": "^2.2.1",
     "tailwind-merge": "^2.5.2",
+    "tailwindcss-animate": "^1.0.7",
     "use-deep-compare-effect": "^1.8.1",
     "uuid": "^10.0.0",
     "vaul": "^0.9.2",

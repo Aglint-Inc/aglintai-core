@@ -69,7 +69,7 @@ export const emailTemplateCopy: CompanyEmailType = {
   sendSelfScheduleRequest_email_applicant: {
     heading: 'Self-Schedule Request',
     description:
-      'An intial email sent by organizer to the candidate to self-schedule the interview.',
+      'An initial email sent by organizer to the candidate to self-schedule the interview.',
   },
   availabilityReqResend_email_candidate: {
     heading: 'Availability Re Request',
@@ -155,14 +155,14 @@ export const emailTemplateCopy: CompanyEmailType = {
       'After interview end this mail is send to organizer for ask to update the meeting status',
   },
   interviewEnd_email_interviewerForFeedback: {
-    heading: 'Inteview Feedback from interviewer',
+    heading: 'Interview Feedback from interviewer',
     description:
       'After interview end this mail is send to interviewer for asking feedback',
   },
   interviewEnd_slack_interviewerForFeedback: {
-    heading: 'Inteview Feedback from interviewer',
+    heading: 'Interview Feedback from interviewer',
     description:
-      'After interview ends slack message will go to interviewer for asking feedback',
+      'After interview ends Slack message will go to interviewer for asking feedback',
   },
   onQualified_slack_trainee: {
     heading: 'Notify of Trainee Qualify',

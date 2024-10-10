@@ -36,9 +36,6 @@ export const RecentInterviews = () => {
             <SectionTitle>Recent Interviews</SectionTitle>
           </SectionHeaderText>
           <SectionActions>
-            <UIButton size='sm' variant='ghost'>
-              View All
-            </UIButton>
             {isExpanded ? (
               <ChevronUp size={20} onClick={() => setIsExpanded(false)} />
             ) : (

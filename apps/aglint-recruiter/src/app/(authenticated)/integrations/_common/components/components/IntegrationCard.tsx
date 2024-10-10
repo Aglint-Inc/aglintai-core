@@ -1,6 +1,6 @@
-import { Badge } from '@components/ui/badge';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardFooter } from '@components/ui/card';
+import { UIBadge } from '@components/ui-badge';
 import { ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
@@ -60,20 +60,18 @@ export function IntegrationCard({
             </Link>
           </div>
           {isConnected && (
-            <Badge
-              variant='outline'
-              className='ml-auto bg-green-50 text-green-700'
-            >
-              Connected
-            </Badge>
+            <UIBadge
+              variant='success'
+              className='ml-auto'
+              textBadge={'Connected'}
+            />
           )}
           {isComingSoon && (
-            <Badge
-              variant='outline'
-              className='ml-auto bg-yellow-50 text-yellow-700'
-            >
-              Coming Soon
-            </Badge>
+            <UIBadge
+              variant='warning'
+              className='ml-auto'
+              textBadge={'Coming Soon'}
+            />
           )}
         </div>
       </CardContent>

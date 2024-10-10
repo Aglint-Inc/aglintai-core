@@ -134,6 +134,7 @@ const InterviewPlanPage = () => {
               />
             ))
           ) : (
+            <div className='pr-20'>
             <UIAlert variant='tip' title='Create Interview Stages'>
               Create your interview stages for the job to ensure a structured
               evaluation process. Add different interview types such as
@@ -141,9 +142,11 @@ const InterviewPlanPage = () => {
               Use this template each time you schedule interviews for candidates
               to maintain consistency and efficiency.
             </UIAlert>
+            </div>
           )}
-
+          <div className='w-[688px] pr-20'>
           <AddStageComponent handleCreate={handleCreate} />
+          </div>
         </div>
       </Page>
 
@@ -188,7 +191,7 @@ const AddStageComponent = ({
   return (
     <>
       {form && (
-        <div className='flex w-full flex-row items-center justify-between gap-2 rounded-md border bg-white p-4'>
+        <div className='flex flex-row items-center justify-between gap-2 rounded-md border bg-white p-4 w-[688px]'>
           <div className='flex flex-1'>
             <UITextField
               placeholder='Stage Name'
@@ -219,7 +222,7 @@ const AddStageComponent = ({
         </div>
       )}
       {!form && (
-        <div className='flex w-full flex-row pr-20'>
+        <div className='flex w-full flex-row'>
           <UIButton
             variant='outline'
             onClick={() => setForm(!form)}

@@ -1,5 +1,5 @@
 import { UIAlert } from '@components/ui-alert';
-import { Archive } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 
 import { UIButton } from '@/components/Common/UIButton';
 
@@ -35,7 +35,8 @@ function Banners() {
         <UIAlert
           type='info'
           title='You are invited for this interview'
-          icon={Archive}
+          icon={Calendar}
+          className='mt-2'
           action={
             <>
               {isDeclineVisible && (

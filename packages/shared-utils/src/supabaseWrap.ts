@@ -11,7 +11,11 @@ export const supabaseWrap = <T extends unknown, U extends unknown>(
   handle_empty_records = true
 ) => {
   if (error) {
-    let err = new CApiError('CLIENT', (error as any).message, error as any); // for including stack trace
+    let err = new CApiError(
+      'SUPABASE_ERROR',
+      (error as any).message,
+      error as any
+    ); // for including stack trace
     throw err;
   }
   if (handle_empty_records) {

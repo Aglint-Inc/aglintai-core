@@ -2,6 +2,7 @@ import Typography from '@components/typography';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Badge } from '@components/ui/badge';
 import { TableCell, TableRow } from '@components/ui/table';
+import { UIBadge } from '@components/ui-badge';
 import {
   BookOpen,
   BriefcaseBusiness,
@@ -120,26 +121,29 @@ export const InterviewerList = ({
         </div>
       </TableCell>
       <TableCell>
-        <Badge variant='secondary' className='bg-blue-100 text-blue-800'>
-          <Clock className='mr-1 h-3 w-3 text-muted-foreground' />
-          {interviewer.completed_count}
-        </Badge>
+        <UIBadge
+          variant='info'
+          icon={Clock}
+          textBadge={interviewer.completed_count}
+        />
       </TableCell>
       <TableCell>
         <div className='flex items-center space-x-2'>
-          <Badge variant='secondary' className='bg-green-100 text-green-800'>
-            <BriefcaseBusiness className='mr-1 h-3 w-3 text-muted-foreground' />
-            {interviewer.completed_count}
-          </Badge>
+          <UIBadge
+            variant='success'
+            textBadge={interviewer.completed_count}
+            icon={BriefcaseBusiness}
+          />
         </div>
       </TableCell>
 
       <TableCell>
         <div className='flex items-center space-x-2'>
-          <Badge variant='secondary' className='bg-purple-100 text-purple-800'>
-            <GraduationCap className='mr-1 h-3 w-3 text-muted-foreground' />
-            {interviewer.training_types?.length}
-          </Badge>
+          <UIBadge
+            variant='purple'
+            icon={GraduationCap}
+            textBadge={interviewer.training_types?.length}
+          />
         </div>
       </TableCell>
     </TableRow>

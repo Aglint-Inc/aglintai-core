@@ -18,7 +18,7 @@ export default function AverageTenure() {
     <Section className='rounded-lg bg-muted p-4'>
       <SectionHeader>
         <SectionHeaderText>
-          <SectionTitle>Average Experience</SectionTitle>
+          <SectionTitle>Average Tenure</SectionTitle>
         </SectionHeaderText>
       </SectionHeader>
       {isFetching ? (

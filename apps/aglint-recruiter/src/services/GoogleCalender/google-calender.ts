@@ -178,9 +178,9 @@ export class GoogleCalender {
       requestBody: {
         id: `${process.env.NEXT_PUBLIC_ENV}-${organizer_id}`,
         type: 'web_hook',
-        // address: process.env.NEXT_PUBLIC_NGROK + '/api/google-calender/webhook',
         address:
-          process.env.NEXT_PUBLIC_HOST_NAME + '/api/google-calender/webhook',
+          (process.env.NEXT_PUBLIC_NGROK ?? process.env.NEXT_PUBLIC_HOST_NAME) +
+          '/api/google-calender/webhook',
         // params: {
         //   ttl: '3600',
         // },
@@ -199,7 +199,7 @@ export class GoogleCalender {
     });
     return response.data;
   }
-  public async fullCalendarSync(sync_token: string | null) {
+  public async fullCalendarSync(sync_token: string | undefined | null) {
     let events: CalendarEvent[] = [];
     let pageToken = null;
     let syncToken = sync_token; // Initially, this will be null for the first sync
@@ -223,10 +223,6 @@ export class GoogleCalender {
         events = events.concat(response.data.items as CalendarEvent[]);
       }
       pageToken = response.data.nextPageToken;
-      if (response.data.nextSyncToken === undefined) {
-        throw new CApiError('SERVER_ERROR', 'Sync Token not found');
-      }
-
       syncToken = response.data.nextSyncToken;
     } while (pageToken);
 

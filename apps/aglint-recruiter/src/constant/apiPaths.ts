@@ -71,7 +71,6 @@ export const API_PATHS = [
   '/api/scheduling/v1/assign-interviewer-training-type',
   '/api/scheduling/v1/booking/candidate-self-schedule',
   '/api/scheduling/v1/booking/confirm-recruiter-selected-option',
-  '/api/scheduling/v1/booking/confirm-slot-no-conflicts',
   '/api/scheduling/v1/booking/schedule-debreif',
   '/api/scheduling/v1/cancel_calender_event',
   '/api/scheduling/v1/cancel_interview_scheduling',

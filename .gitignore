@@ -44,3 +44,4 @@ apps/aglint-recruiter/. cursorrules
 
 apps/aglint-recruiter/.cursorignore
 .env*.local
+shScript

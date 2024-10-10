@@ -159,6 +159,7 @@ const CandidateScheduleReschedule = () => {
       >
         <>
           <UIButton
+            disabled={isProceeding}
             onClick={async () => {
               setIsProceeding(true);
               await axios.post('/api/request/execute-workflow', {
@@ -222,7 +223,6 @@ const CandidateScheduleReschedule = () => {
                   end_date: dayjsLocal().add(14, 'day').toISOString(),
                 },
               });
-              setIsSelfScheduleDrawerOpen(true);
             }}
           >
             Send Self Scheduling

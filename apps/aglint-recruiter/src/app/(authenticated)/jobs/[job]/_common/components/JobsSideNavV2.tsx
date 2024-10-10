@@ -107,8 +107,8 @@ const JobsSideNavV2 = () => {
       </nav>
 
       {manageJob && (
-        <div className='absolute bottom-0 left-0 items-start gap-2 border-t border-red-100 bg-red-50 p-4'>
-          <h4 className='mb-1 text-sm font-semibold'>Danger Zone</h4>
+        <div className='absolute bottom-2 left-2 right-2 items-start gap-2 bg-red-50 p-3 rounded-md'>
+          <h4 className='mb-1 text-sm font-semibold text-destructive'>Danger Zone</h4>
           <div className='flex flex-row items-end gap-4'>
             <p className='mb-2 text-sm text-muted-foreground'>
               {job?.status !== 'published'

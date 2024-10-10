@@ -11,6 +11,7 @@ export const API_PERMISSIONS: ApiPermissions = {
     candidate_invite: [],
     details: ['scheduling_module'],
     v1: [],
+    analytics: ['job_module'],
   },
   integrations: ['integrations_module'],
   interviewers: ['job_module'],
@@ -43,8 +44,8 @@ export const API_PERMISSIONS: ApiPermissions = {
   application: ['job_module'],
   get_last_login: ['view_users'],
   user: {
-    update_current_user: ['authorized'],
-    get_oauth_user: ['authorized'],
+    update_current_user: [],
+    get_oauth_user: [],
   },
   rolesAndPermissions: [],
   candidate_availability: {

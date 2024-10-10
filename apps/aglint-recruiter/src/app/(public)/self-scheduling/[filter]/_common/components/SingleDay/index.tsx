@@ -12,8 +12,8 @@ import { UIButton } from '@/components/Common/UIButton';
 import useInviteActions from '../../hooks/useInviteActions';
 import { useInviteSlots } from '../../hooks/useInviteSlots';
 import {
+  setRounds,
   setSelectedDate,
-  setSelectedSlots,
   useCandidateInviteStore,
 } from '../../store';
 import { type SessionData } from '../../types/types';
@@ -62,7 +62,7 @@ const SingleDayLoading = () => {
 
 const SingleDaySuccess = () => {
   const { handleSelectSlot } = useInviteActions();
-  const { selectedSlots, selectedDate, timezone } = useCandidateInviteStore();
+  const { selectedDate, timezone, rounds } = useCandidateInviteStore();
   const { data } = useInviteSlots();
 
   const sessions: SessionData[] = data.reduce((acc: SessionData[], curr) => {
@@ -75,15 +75,16 @@ const SingleDaySuccess = () => {
   }, []);
 
   const filteredSession = sessions.find((session) =>
-    dayjsLocal(session.date).isSame(selectedDate, 'day'),
+    dayjsLocal(session.date).tz(timezone.tzCode).isSame(selectedDate, 'day'),
   );
 
   useEffect(() => {
     if (!selectedDate) {
       setSelectedDate(sessions[0].date);
-      setSelectedSlots([sessions[0].slots[0]]);
     }
   }, []);
+
+  const selectedSlots = rounds[0]?.selectedSlots;
 
   return (
     <div className='flex flex-col'>
@@ -126,16 +127,24 @@ const SingleDaySuccess = () => {
               return (
                 <UITimeRangeCard
                   onClickTime={() => {
-                    if (selectedSlots[0]?.slot_comb_id === slot.slot_comb_id) {
-                      setSelectedSlots([]);
+                    if (
+                      selectedSlots &&
+                      selectedSlots?.slot_comb_id === slot.slot_comb_id
+                    ) {
+                      setRounds([
+                        {
+                          ...rounds[0],
+                          selectedSlots: null,
+                        },
+                      ]);
                     } else {
                       handleSelectSlot(0, slot);
                     }
                   }}
                   isSemiActive={false}
                   isActive={
-                    selectedSlots?.length > 0
-                      ? selectedSlots[0]?.slot_comb_id === slot.slot_comb_id
+                    selectedSlots
+                      ? selectedSlots?.slot_comb_id === slot.slot_comb_id
                       : false
                   }
                   key={ind}

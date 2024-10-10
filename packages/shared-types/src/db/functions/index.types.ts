@@ -65,7 +65,7 @@ export type Functions = Custom<
     scheduling_analytics_filters: CustomSchedulingAnalyticsFilters;
     scheduling_analytics_interviewers: CustomSchedulingAnalyticsInterviewers;
     scheduling_analytics_leaderboard: CustomSchedulingAnalyticsLeaderboard;
-    scheduling_analytics_reasons: CustomSchedulingAnalyticsReasons;
+    // scheduling_analytics_reasons: CustomSchedulingAnalyticsReasons;
     get_all_interviewers: CustomGetAllInterviewers;
     get_interview_schedule_by_job_id: CustomGetInterviewScheduleByJobId;
     getexperienceandtenure: CustomGetExperienceAndTenure;

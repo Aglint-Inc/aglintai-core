@@ -20,12 +20,10 @@ export function MemberRow({
 }) {
   const Component = _Component;
   return (
-    <Component className='flex h-10 w-full items-center justify-start gap-2'>
-      <div className='flex w-64 items-center justify-start gap-2'>
-        <div className='z-1 relative h-8 w-8 rounded-full'>
-          <div className='h-8 w-8 overflow-hidden rounded-lg'>
-            {slotInterviewerImage}
-          </div>
+    <Component className='flex h-10 w-full flex-row items-center justify-between gap-2'>
+      <div className='flex items-center justify-start gap-2'>
+        <div className='flex flex-row'>
+          {slotInterviewerImage}
           {iconTraining}
         </div>
         <div className='flex flex-col'>
@@ -40,7 +38,7 @@ export function MemberRow({
           </div>
         </div>
       </div>
-      <div className='flex flex-1 items-center justify-start gap-2'>
+      <div className='flex items-center justify-start gap-2'>
         {slotConflicts}
       </div>
     </Component>

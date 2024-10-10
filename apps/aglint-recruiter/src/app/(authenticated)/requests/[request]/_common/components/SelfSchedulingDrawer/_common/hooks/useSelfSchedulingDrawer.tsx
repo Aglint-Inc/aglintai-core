@@ -68,8 +68,8 @@ export const useSelfSchedulingDrawer = () => {
         onClickScheduleDebrief();
       } else {
         // if it normal session then user has to select atleast 5 combinations
-        if (selectedCombIds.length < 5) {
-          toast({ title: 'Please select at least 5 time slots to schedule.' });
+        if (selectedCombIds.length < 1) {
+          toast({ title: 'Please select at least 1 time slot to schedule.' });
           return;
         }
         setStepScheduling('self_scheduling_email_preview');

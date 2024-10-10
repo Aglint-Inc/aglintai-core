@@ -1,11 +1,12 @@
 import type { DatabaseTable } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils';
 import { Textarea } from '@components/ui/textarea';
-import { Edit2 } from 'lucide-react';
+import { Edit2, X } from 'lucide-react';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 import { type MemberType } from 'src/app/_common/types/memberType';
 
+import { UIButton } from '@/common/UIButton';
 import { useTenant } from '@/company/hooks';
 import MemberCard from '@/components/Common/MemberCard';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
@@ -113,26 +114,48 @@ function CreateRequest({
         <ScheduleInterviewPop
           isCandidateVisible={false}
           slotStagePill={
-            <>
-              <SessionList
-                selectedSession={selectedSession}
-                setSelectedSession={setSelectedSession}
-                onChange={({ sessions }) => {
-                  setSelectedSession([...sessions]);
-                }}
-                sessionList={
-                  data?.flatMap((item) =>
-                    item.interview_session
-                      .filter((ele) => ele.session_type !== 'debrief')
-                      .flatMap((ele) => ({
-                        id: ele.id,
-                        name: ele.name,
-                        type: ele.session_type,
-                      })),
-                  ) as SessionType[]
-                }
-              />
-            </>
+            <div className='flex w-full flex-wrap items-center gap-2'>
+              {selectedSession.map((ele, i) => (
+                <UIButton
+                  className='relative'
+                  key={i}
+                  variant='secondary'
+                  size='sm'
+                >
+                  {ele.name}
+                  {i > 0 && (
+                    <X
+                      onClick={() =>
+                        setSelectedSession((pre) => {
+                          return pre.filter((item) => item.id !== ele.id);
+                        })
+                      }
+                      className='ml-1 h-4 w-4 text-gray-700'
+                    />
+                  )}
+                </UIButton>
+              ))}
+              <div>
+                <SessionList
+                  selectedSession={selectedSession}
+                  setSelectedSession={setSelectedSession}
+                  onChange={({ sessions }) => {
+                    setSelectedSession([...sessions]);
+                  }}
+                  sessionList={
+                    data?.flatMap((item) =>
+                      item.interview_session
+                        .filter((ele) => ele.session_type !== 'debrief')
+                        .flatMap((ele) => ({
+                          id: ele.id,
+                          name: ele.name,
+                          type: ele.session_type,
+                        })),
+                    ) as SessionType[]
+                  }
+                />
+              </div>
+            </div>
           }
           slotAssignedInput={
             membersStatus === 'pending' ? (

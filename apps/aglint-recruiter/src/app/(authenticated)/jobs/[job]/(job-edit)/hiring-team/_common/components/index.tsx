@@ -188,7 +188,7 @@ const JobForms = ({ fields, handleChange }: JobMetaFormProps) => {
 
   return (
     <div>
-      <div className='grid grid-cols-2 gap-4'>{forms}</div>
+      <div className='grid grid-cols-2 gap-4 mt-2 max-w-3xl'>{forms}</div>
     </div>
   );
 };
