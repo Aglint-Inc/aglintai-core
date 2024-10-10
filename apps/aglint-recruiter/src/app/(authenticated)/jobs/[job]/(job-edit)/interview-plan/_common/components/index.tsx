@@ -37,15 +37,18 @@ import {
   Trash,
   Trash2,
 } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
+import { Indicator } from '@/common/Indicator';
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
 import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITextField from '@/components/Common/UITextField';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { type CompanyMember as CompanyMemberGlobal } from '@/queries/company-members';
 import { type DeleteInterviewSession } from '@/queries/interview-plans';
@@ -67,9 +70,6 @@ import InterviewDeletePopup, {
   type InterviewDeletePopupType,
 } from './deletePopup';
 import InterviewDrawers from './sideDrawer';
-import { useSearchParams } from 'next/navigation';
-import { Indicator } from '@/common/Indicator';
-import { useRouterPro } from '@/hooks/useRouterPro';
 
 export type CompanyMember = CompanyMemberGlobal & { paused: boolean };
 

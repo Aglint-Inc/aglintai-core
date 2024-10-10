@@ -1,5 +1,6 @@
 import { Button } from '@components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@components/ui/tabs';
+import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
 import { Indicator } from '@/common/Indicator';
@@ -11,7 +12,6 @@ import { useApplicationsStore } from '@/job/hooks';
 import { ImportCsv } from './importCsv';
 import { ImportManual } from './importManual';
 import { ImportResume } from './importResume';
-import { useSearchParams } from 'next/navigation';
 export const UploadApplications = ({
   children,
 }: {

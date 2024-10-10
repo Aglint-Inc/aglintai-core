@@ -1,5 +1,6 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Building, CircleDot, Locate, User } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import FilterHeader from '@/common/FilterHeader';
@@ -7,12 +8,11 @@ import { type FiltersTypes } from '@/common/FilterHeader/filters';
 import { useTenantMembers } from '@/company/hooks';
 import { useUserSync } from '@/company/hooks/useTeamMembers';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { useGreenhouseDetails } from '@/queries/greenhouse';
 
 import AddMember from './AddMemberDialog';
 import { TeamManagementUI } from './ui/TeamManagementUI';
-import { useSearchParams } from 'next/navigation';
-import { useRouterPro } from '@/hooks/useRouterPro';
 
 type ItemType = string;
 

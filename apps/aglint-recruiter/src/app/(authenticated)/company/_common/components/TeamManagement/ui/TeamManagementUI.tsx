@@ -15,15 +15,15 @@ import {
   TableRow,
 } from '@components/ui/table';
 import { RefreshCw, Send, Users } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 import type { Dispatch, ReactNode, SetStateAction } from 'react';
 
+import { Indicator } from '@/common/Indicator';
 import { UIButton } from '@/common/UIButton';
 import type { useTenantMembers } from '@/company/hooks';
 import { useTeamMembersLastLogin } from '@/company/hooks/useTeamMembers';
 
 import Member from '../MemberList';
-import { Indicator } from '@/common/Indicator';
-import { useSearchParams } from 'next/navigation';
 
 export const TeamManagementUI = ({
   canManage,

@@ -1,7 +1,9 @@
 import { EmptyState } from '@components/empty-state';
 import { MapPin, Plus } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 
+import { Indicator } from '@/common/Indicator';
 import { UIButton } from '@/common/UIButton';
 import UISectionCard from '@/common/UISectionCard';
 import { useTenantOfficeLocations } from '@/company/hooks';
@@ -10,8 +12,6 @@ import timeZone from '@/utils/timeZone';
 import AddAndEditLocationDialog from './AddAndEditLocationDialog';
 import DeleteLocationDialog from './DeleteLocationDialog';
 import LocationCard from './ui/LocationCard';
-import { Indicator } from '@/common/Indicator';
-import { useSearchParams } from 'next/navigation';
 
 export const Location = () => {
   const { data: locations } = useTenantOfficeLocations();

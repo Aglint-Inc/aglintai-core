@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from '@components/ui/dialog';
 import { Label } from '@components/ui/label';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
@@ -16,6 +17,7 @@ import { UIButton } from '@/components/Common/UIButton';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import {
   setIsCreateDialogOpen,
   setSelectedUsers,
@@ -24,8 +26,6 @@ import {
 import { useCreateInterviewPool } from '@/interview-pool/hooks/useCreateInterviewPool';
 import { capitalize } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
-import { useSearchParams } from 'next/navigation';
-import { useRouterPro } from '@/hooks/useRouterPro';
 
 function CreateModuleDialog() {
   const { isCreateDialogOpen } = useModulesStore();

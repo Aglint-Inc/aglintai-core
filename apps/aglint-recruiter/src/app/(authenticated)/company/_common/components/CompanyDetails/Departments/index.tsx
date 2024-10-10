@@ -4,17 +4,17 @@ import { EmptyState } from '@components/empty-state';
 import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { BookOpen, Plus } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
 import * as React from 'react';
 
 import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
 import AddChip from '@/common/AddChip';
+import { Indicator } from '@/common/Indicator';
 import UISectionCard from '@/common/UISectionCard';
 import { useTenant } from '@/company/hooks';
 import { manageDepartments } from '@/context/AuthContext/utils';
 
 import DeleteDepartmentsDialog from './DeleteDepartmentDialog';
-import { Indicator } from '@/common/Indicator';
-import { useSearchParams } from 'next/navigation';
 
 export default function Departments() {
   const { recruiter } = useTenant();

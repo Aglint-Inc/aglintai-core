@@ -6,10 +6,10 @@ import { UIButton } from '@/common/UIButton';
 import UISectionCard from '@/common/UISectionCard';
 import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 
 import EditBasicInfoDialog from './EditBasicInfoDialog';
 import { BasicInfoUI } from './ui/BasicInfoUI';
-import { useRouterPro } from '@/hooks/useRouterPro';
 
 export const BasicInfo = () => {
   const [editDrawer, setEditDrawer] = useState(false);
