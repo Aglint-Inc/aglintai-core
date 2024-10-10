@@ -1,15 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
-import { useIntegrations } from '@/authenticated/hooks';
-import { useTenant, useTenantMembers } from '@/company/hooks';
+import { useAllInterviewModules, useIntegrations } from '@/authenticated/hooks';
+import {
+  useTenant,
+  useTenantMembers,
+  useTenantOfficeLocations,
+} from '@/company/hooks';
 import { useFlags } from '@/company/hooks/useFlags';
+import { useJobs } from '@/jobs/hooks';
 import { api } from '@/trpc/client';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { setIsOnboardOpen } from '../store/OnboardStore';
+import { useAllDepartments } from './useAllDepartments';
 
 export type SetupStepType = {
   id:
@@ -29,10 +35,10 @@ export type SetupStepType = {
   isNavDisable: boolean;
   toolTipText: string;
   isOptional: boolean;
-  isVisible: boolean; // corrected typo from `isVisiable`
-  bulletPoints?: string[]; // made optional
-  scoringPoints?: string[]; // made optional
-  schedulingPoints?: string[]; // made optional
+  isVisible: boolean;
+  bulletPoints?: string[];
+  scoringPoints?: string[];
+  schedulingPoints?: string[];
 };
 
 const jobIds: SetupStepType['id'][] = [
@@ -54,11 +60,18 @@ export function useCompanySetup() {
   const [selectedStep, setSelectedStep] = useState<SetupStepType>();
   const [selectedIndex, setSelectedIndex] = useState<number>();
   const [isOnboardCompleteRemote, setIsOnboardCompleteRemote] = useState(true);
+  const [firstTimeOpened, setFirstTimeOpened] = useState(false);
 
   const { mutateAsync, isPending } =
     api.tenant.updateTenantPreference.useMutation();
   //Hooks ---
   const { recruiter } = useTenant();
+  const { data: departments } = useAllDepartments();
+  const { data: locations } = useTenantOfficeLocations();
+  const { data: interviewPools } = useAllInterviewModules();
+  const {
+    jobs: { data: jobs },
+  } = useJobs();
 
   const { data: integrations, isLoading: integrationLoading } =
     useIntegrations();
@@ -67,8 +80,11 @@ export function useCompanySetup() {
     isLoading: memberLoading,
     isFetched: isMembersFetched,
   } = useTenantMembers();
-  const { data: compandDetails, isLoading: companySettingLoading } =
-    useFetchcompanySetup();
+  const {
+    data: candidateInterviewPlan,
+    isLoading: companySettingLoading,
+    refetch: onboardCandPlanRefetch,
+  } = useFetchOnboardCandPlan();
 
   const { isShowFeature } = useFlags();
 
@@ -98,10 +114,15 @@ export function useCompanySetup() {
         firstIncompleteStepIndex ? firstIncompleteStepIndex : selectedIndex,
       );
     }
-    if (isCompanySetupLocalPending && !isOnboardCompleteRemote) {
+    if (
+      isCompanySetupLocalPending &&
+      !isOnboardCompleteRemote &&
+      !firstTimeOpened
+    ) {
       setIsOnboardOpen(true);
+      setFirstTimeOpened(true);
     }
-  }, [steps, recruiter]);
+  }, [steps]);
 
   //loading ---
   const isLoading =
@@ -124,16 +145,20 @@ export function useCompanySetup() {
     ? findMissingProperties(recruiter, requiredProperties)
     : [];
 
-  const isLocationsPresent = !!recruiter?.office_locations.length;
-  const isDepartmentsPresent = !!recruiter?.departments.length;
+  const isLocationsPresent = !!locations.length;
+  const isDepartmentsPresent = !!departments.length;
   const isMembersPresent = allMembers?.length > 1 ? true : false;
 
   // checking --- request
 
-  const isCandidatePresent = !!compandDetails?.candidates.length;
-  const isInterviewPoolPresent = !!compandDetails?.interview_module.length;
-  const isInterviewPlanPresent = !!compandDetails?.interview_plan.length;
-  const isJobsPresent = !!compandDetails?.public_jobs.length;
+  const isCandidatePresent = candidateInterviewPlan?.candidateCount
+    ? candidateInterviewPlan.candidateCount > 0
+    : false;
+  const isInterviewPlanPresent = candidateInterviewPlan?.interviewPlanCount
+    ? candidateInterviewPlan.interviewPlanCount > 0
+    : false;
+  const isInterviewPoolPresent = !!interviewPools?.length;
+  const isJobsPresent = !!jobs?.length;
 
   //steps ------
 
@@ -207,8 +232,24 @@ export function useCompanySetup() {
     setIsOnboardOpen(false);
   }
 
+  // refetch function
+  const onboardRefetch = (type: 'candidate' | 'interviewPlan') => {
+    if (type === 'candidate' && !isCandidatePresent) {
+      onboardCandPlanRefetch();
+    }
+    if (type === 'interviewPlan' && !isInterviewPlanPresent) {
+      onboardCandPlanRefetch();
+    }
+  };
   useEffect(() => {
-    if (recruiter && integrations && allMembers && compandDetails) {
+    if (
+      recruiter &&
+      integrations &&
+      allMembers &&
+      candidateInterviewPlan &&
+      locations &&
+      departments
+    ) {
       const newSteps = [
         {
           id: 'company-details',
@@ -307,7 +348,7 @@ export function useCompanySetup() {
           isLocalCompleted: isCandidatePresent,
           navLink: isJobsPresent
             ? ROUTES['/jobs/[job]']({
-                job: compandDetails?.public_jobs[0].id,
+                job: jobs?.[0].id ?? '',
               }) + '?indicator=true'
             : '',
           isOptional: false,
@@ -328,7 +369,7 @@ export function useCompanySetup() {
           isLocalCompleted: isInterviewPlanPresent,
           navLink: isJobsPresent
             ? ROUTES['/jobs/[job]/interview-plan']({
-                job: compandDetails?.public_jobs[0].id,
+                job: jobs?.[0].id ?? '',
               }) + '?indicator=true'
             : '',
           isNavDisable: !isJobsPresent,
@@ -348,7 +389,15 @@ export function useCompanySetup() {
         ) as SetupStepType[];
       setSteps(newSteps);
     }
-  }, [recruiter, integrations, isMembersFetched]);
+  }, [
+    recruiter,
+    integrations,
+    isMembersFetched,
+    jobs,
+    locations,
+    departments,
+    candidateInterviewPlan,
+  ]);
 
   return {
     isLoading,
@@ -356,6 +405,7 @@ export function useCompanySetup() {
     companySetupProgress,
     requestSetupProgress,
     jobSetupProgress,
+    onboardRefetch,
     companySetupSteps: steps,
     requestSetupSteps,
     jobSetupSteps,
@@ -373,26 +423,32 @@ export function useCompanySetup() {
   };
 }
 
-const useFetchcompanySetup = () => {
+export const useFetchOnboardCandPlan = () => {
   const { recruiter_id } = useTenant();
-  return useQuery({
-    queryKey: ['company_setup'],
-    queryFn: () => fetchCompanySetup(recruiter_id ? recruiter_id : ''),
+
+  const query = useQuery({
+    queryKey: ['company_setup', recruiter_id],
+    queryFn: () => fetchCompanySetup(recruiter_id),
     enabled: !!recruiter_id,
   });
+
+  return { ...query };
 };
 
-const fetchCompanySetup = async (recruiter_id: string) => {
-  return (
-    await supabase
-      .from('recruiter')
-      .select(
-        'public_jobs(*),interview_plan(*),candidates(*),interview_module(*)',
-      )
-      .eq('id', recruiter_id)
-      .single()
-      .throwOnError()
-  ).data;
+export const fetchCompanySetup = async (recruiter_id: string) => {
+  const { data } = await supabase
+    .from('recruiter')
+    .select('interview_plan(count),candidates(count)')
+    .eq('id', recruiter_id)
+    .single()
+    .throwOnError();
+
+  const candPlan = data!;
+
+  return {
+    candidateCount: candPlan.candidates[0].count,
+    interviewPlanCount: candPlan.interview_plan[0].count,
+  };
 };
 
 function findMissingProperties(obj: any, requiredProps: string[]) {

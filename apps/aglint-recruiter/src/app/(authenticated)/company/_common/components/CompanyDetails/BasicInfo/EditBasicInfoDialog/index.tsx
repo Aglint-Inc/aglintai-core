@@ -45,7 +45,7 @@ const EditBasicInfoDialog = ({
   handleRemoveEditParam: () => void;
   setEditDialog: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { recruiter } = useTenant();
+  const { recruiter, refetch } = useTenant();
   const [isError, setError] = useState(false);
   const [logo, setLogo] = useState<string | null>(null);
   const [nameError, setNameError] = useState(false);
@@ -123,6 +123,7 @@ const EditBasicInfoDialog = ({
         logo,
         employee_size: recruiterLocal.employee_size,
       });
+      refetch();
       setEditDialog(false);
     } catch (e: any) {
       toast({

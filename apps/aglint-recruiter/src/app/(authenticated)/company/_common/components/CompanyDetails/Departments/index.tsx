@@ -125,33 +125,33 @@ export default function Departments() {
           />
         ) : (
           <EmptyState
+            variant='inline'
             icon={BookOpen}
-            header='No Departments yet'
-            description='Add the company departments'
+            description='No company departments found.'
             primarySlot={
-              <AddChip
-                options={departments.map((item) => ({
-                  name: item.name,
-                  id: String(item.id),
-                }))}
-                suggestionsList={suggestionsList.map((item) => ({
-                  name: item,
-                  id: String(item),
-                }))}
-                handleAddDepartment={handleAddDepartment}
-                placeholder='Enter new value...'
-                btn={
-                  <Indicator isActive={isIndicatorActive}>
-                    <Button variant='outline'>
+              <Indicator isActive={isIndicatorActive}>
+                <AddChip
+                  options={departments.map((item) => ({
+                    name: item.name,
+                    id: String(item.id),
+                  }))}
+                  suggestionsList={suggestionsList.map((item) => ({
+                    name: item,
+                    id: String(item),
+                  }))}
+                  handleAddDepartment={handleAddDepartment}
+                  placeholder='Enter new value...'
+                  btn={
+                    <Button variant='outline' size='sm'>
                       <Plus className='mr-2 h-4 w-4' />
                       Add Departments
                     </Button>
-                  </Indicator>
-                }
-                handleRemoveKeyword={({ id }) => {
-                  handleRemoveKeyword(id);
-                }}
-              />
+                  }
+                  handleRemoveKeyword={({ id }) => {
+                    handleRemoveKeyword(id);
+                  }}
+                />
+              </Indicator>
             }
           />
         )}
