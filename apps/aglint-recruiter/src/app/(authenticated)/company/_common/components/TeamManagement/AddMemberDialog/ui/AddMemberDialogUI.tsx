@@ -64,13 +64,7 @@ export const AddMemberDialogUI = ({
   const { toast } = useToast();
   const { mutateAsync: reinviteUser } =
     api.tenant['resend-invite'].useMutation();
-  if (!roleOptions) {
-    toast({
-      variant: 'destructive',
-      title: 'failed to load role Options',
-    });
-    roleOptions = [];
-  }
+
   return (
     <div className='mt-4 space-y-4'>
       {menu === 'addMember' ? (
@@ -187,7 +181,8 @@ export const AddMemberDialogUI = ({
                 value={form.role_id?.toString()}
                 onValueChange={(value) => {
                   const role =
-                    roleOptions.find((op) => op.id === value)?.name || null;
+                    (roleOptions || []).find((op) => op.id === value)?.name ||
+                    null;
                   setForm({
                     ...form,
                     role_id: value,
@@ -201,7 +196,7 @@ export const AddMemberDialogUI = ({
                   <SelectValue placeholder='Choose Role' />
                 </SelectTrigger>
                 <SelectContent>
-                  {roleOptions.map((op) => (
+                  {(roleOptions || []).map((op) => (
                     <SelectItem key={op.id} value={op.id.toString()}>
                       {capitalizeFirstLetter(op.name)}
                     </SelectItem>

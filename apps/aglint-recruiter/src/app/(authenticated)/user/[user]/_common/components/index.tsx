@@ -12,9 +12,11 @@ import {
 } from '@components/layouts/sections-header';
 import { TwoColumnPageLayout } from '@components/layouts/two-column-page-layout';
 import Typography from '@components/typography';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { useInterviewsByUserId } from '@interviews/hooks/useInterviewsByUserId';
+import { AlertTriangle } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
@@ -130,12 +132,29 @@ export default function InterviewerDetailsPage() {
             </div>
           ) : (
             <div className='px-4'>
-              <CalendarComp
-                allSchedules={allSchedules ?? []}
-                isLoading={iscalendarLoading}
-                filter={filter}
-                setFilter={setFilter}
-              />
+              {interviewerDetails.is_calendar_connected ? (
+                <CalendarComp
+                  allSchedules={allSchedules ?? []}
+                  isLoading={iscalendarLoading}
+                  filter={filter}
+                  setFilter={setFilter}
+                />
+              ) : (
+                <div className='flex h-[70vh] w-full items-center justify-center'>
+                  <Alert variant='warning' className='w-fit'>
+                    <AlertTriangle className='h-4 w-4 text-yellow-500' />
+                    <AlertTitle>Warning</AlertTitle>
+                    <AlertDescription>
+                      <div className='flex flex-row items-center'>
+                        <p>
+                          Your calendar is not connected. Please connect
+                          calendar from your
+                        </p>
+                      </div>
+                    </AlertDescription>
+                  </Alert>
+                </div>
+              )}
             </div>
           )}
         </ScrollArea>
