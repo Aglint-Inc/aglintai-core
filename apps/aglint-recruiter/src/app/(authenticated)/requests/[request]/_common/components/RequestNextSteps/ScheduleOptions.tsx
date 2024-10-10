@@ -223,6 +223,7 @@ const CandidateScheduleReschedule = () => {
                   end_date: dayjsLocal().add(14, 'day').toISOString(),
                 },
               });
+              setIsSelfScheduleDrawerOpen(true);
             }}
           >
             Send Self Scheduling
