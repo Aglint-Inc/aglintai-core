@@ -1,15 +1,10 @@
 import {
   type DatabaseTable,
-  type DateRangePlansType,
   type PlanCombinationRespType,
-  type SessionCombinationRespType,
-  type SessionsCombType,
 } from '@aglint/shared-types';
-import { CApiError, dayjsLocal, ScheduleUtils } from '@aglint/shared-utils';
-import { nanoid } from 'nanoid';
+import { CApiError, dayjsLocal } from '@aglint/shared-utils';
 
-import { CandidatesScheduling } from '../../CandidatesScheduling';
-import { planCombineSlots } from '../planCombine';
+import { CandidatesScheduling } from '../../../CandidatesScheduling';
 
 export const verifyRecruiterSelectedSlots = async ({
   candidate_tz,
@@ -93,68 +88,4 @@ const sortSelctedPlans = ({
     start_date_str,
     end_date_str,
   };
-};
-
-export const convertOptionsToDateRangeSlots = (
-  verified_options: PlanCombinationRespType[],
-  candidate_tz: string,
-) => {
-  const all_day_plans: SessionsCombType[][][] = [];
-  const sesn_round_cnt = ScheduleUtils.getSessionRounds(
-    verified_options[0].sessions.map((s) => ({
-      break_duration: s.break_duration,
-      session_duration: s.duration,
-      session_order: s.session_order,
-    })),
-  ).length;
-  const slot_map: {
-    [int_start_date: string]: PlanCombinationRespType[][];
-  } = {};
-
-  for (const slot_option of verified_options) {
-    const int_start_date = dayjsLocal(slot_option.sessions[0].start_time)
-      .tz(candidate_tz)
-      .startOf('day')
-      .format();
-    if (!slot_map[int_start_date]) {
-      slot_map[int_start_date] = new Array(sesn_round_cnt);
-    }
-    const slot_rounds: SessionCombinationRespType[][] =
-      ScheduleUtils.getSessionRounds(
-        slot_option.sessions.map((s) => ({
-          ...s,
-          break_duration: s.break_duration,
-          session_duration: s.duration,
-          session_order: s.session_order,
-        })),
-      ) as unknown as SessionCombinationRespType[][];
-    for (
-      let curr_round_idx = 0;
-      curr_round_idx < sesn_round_cnt;
-      ++curr_round_idx
-    ) {
-      const curr_round_slots = slot_rounds[curr_round_idx];
-      if (!slot_map[int_start_date][curr_round_idx]) {
-        slot_map[int_start_date][curr_round_idx] = [];
-      }
-      slot_map[int_start_date][curr_round_idx].push({
-        plan_comb_id: nanoid(),
-        sessions: [...curr_round_slots],
-        no_slot_reasons: [],
-      });
-    }
-  }
-
-  for (const curr_int_day_slots of Object.values(slot_map)) {
-    const curr_day_plan: DateRangePlansType['interview_rounds'] =
-      curr_int_day_slots.map((curr_round_plans) => {
-        return {
-          curr_date: '', // not used
-          plans: curr_round_plans,
-        };
-      });
-    all_day_plans.push(planCombineSlots(curr_day_plan));
-  }
-
-  return all_day_plans;
 };

@@ -3,37 +3,33 @@ import { SelectedSessionSlotsCard } from 'src/app/(public)/_common/_components/S
 
 import { UIButton } from '@/common/UIButton';
 
-import { useInviteSlots } from '../../../hooks/useInviteSlots';
 import {
   setSelectedDate,
   setSelectedDay,
-  useCandidateInviteStore,
+  useCandidateInviteSelfScheduleStore,
 } from '../../../store';
 import { getDurationText } from '../../../utils/utils';
 import { SessionCard } from '../../ui/SessionCard';
 
 function Rounds() {
-  const { selectedDay, rounds } = useCandidateInviteStore();
-  const { data } = useInviteSlots();
+  const { selectedDay, rounds, timezone } =
+    useCandidateInviteSelfScheduleStore();
 
-  const numberOfDays = data?.length > 0 ? data[0]?.length : 0;
+  const numberOfSelections = rounds.length || 0;
 
   return (
     <div className='flex flex-col gap-2'>
       {rounds?.map((round, ind) => {
         const dates: ComponentProps<
           typeof SelectedSessionSlotsCard
-        >['selectedDates'] = round.selectedSlots
+        >['selectedDates'] = round.selectedSlot
           ? [
               {
-                curr_day: round.selectedSlots.sessions[0].start_time,
+                curr_day: round.selectedSlot.start_time,
                 slots: [
                   {
-                    startTime: round.selectedSlots.sessions[0].start_time,
-                    endTime:
-                      round.selectedSlots.sessions[
-                        round.selectedSlots.sessions.length - 1
-                      ].end_time,
+                    startTime: round.selectedSlot.start_time,
+                    endTime: round.selectedSlot.end_time,
                     isSlotAvailable: true,
                   },
                 ],
@@ -49,12 +45,13 @@ function Rounds() {
         return (
           <>
             <SelectedSessionSlotsCard
+              timezone={timezone.tzCode}
               isActive={ind + 1 === selectedDay}
               textDayCount={`Day ${ind + 1}`}
               textSelectedSlots='Selected Slot'
               slotChangeButton={
-                numberOfDays > 1 &&
-                round.selectedSlots && (
+                numberOfSelections > 1 &&
+                round.selectedSlot && (
                   <UIButton
                     size={'sm'}
                     variant='default'
