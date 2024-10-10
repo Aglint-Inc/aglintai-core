@@ -96,6 +96,7 @@ const Regenerate = () => {
   const { isScoreGenerationPolling, regenerateJd } = useJob();
   return (
     <UIButton
+      className='sr-only'
       variant={'secondary'}
       disabled={isScoreGenerationPolling}
       onClick={() => regenerateJd()}

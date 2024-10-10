@@ -259,7 +259,7 @@ const getTimestamp = (job: Job) => {
 
 const Banners = ({ job }: { job: Job }) => {
   return (
-    <>
+    <div className='sr-only'>
       <Banner {...errorCount(job)} />
       <Banner {...warningCount(job)} />
       <Banner
@@ -267,7 +267,7 @@ const Banners = ({ job }: { job: Job }) => {
         state={job.banner.scoring_criteria_generating}
       />
       <Banner {...processingCount(job)} />
-    </>
+    </div>
   );
 };
 

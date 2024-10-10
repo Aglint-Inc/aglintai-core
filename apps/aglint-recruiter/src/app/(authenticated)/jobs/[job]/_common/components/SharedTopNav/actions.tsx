@@ -73,7 +73,7 @@ const Rescore = () => {
   const { mutate, isPending } = useApplicationsRescore();
   if (!scoring) return <></>;
   return (
-    <div className='flex flex-row gap-1'>
+    <div className='sr-only flex flex-row gap-1'>
       <OptimisticWrapper loading={isPolling || isPending}>
         <Button variant='outline' onClick={() => mutate()} className='w-auto'>
           <RefreshCw className='mr-2 h-4 w-4' />
