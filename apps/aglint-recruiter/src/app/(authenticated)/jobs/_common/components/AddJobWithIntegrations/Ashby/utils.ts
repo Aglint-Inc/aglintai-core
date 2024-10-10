@@ -78,7 +78,6 @@ export const createJobObject = async (
         job_title: post.title,
         recruiter_id: recruiter_id,
         posted_by: POSTED_BY.ASHBY,
-        status: 'draft',
         id: post.public_job_id,
         description: post.description,
         job_type: post.employmentType == 'Contract' ? 'contract' : 'full time',

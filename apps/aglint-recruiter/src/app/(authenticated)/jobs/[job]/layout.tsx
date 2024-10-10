@@ -2,13 +2,16 @@
 
 import { type PropsWithChildren } from 'react';
 
+import { ErrorBoundary } from '@/common/ErrorBoundary';
 import { ApplicationsStoreProvider, JobProvider } from '@/job/contexts';
 
 const Layout = ({ children }: PropsWithChildren) => {
   return (
-    <JobProvider>
-      <ApplicationsStoreProvider>{children}</ApplicationsStoreProvider>
-    </JobProvider>
+    <ErrorBoundary>
+      <JobProvider>
+        <ApplicationsStoreProvider>{children}</ApplicationsStoreProvider>
+      </JobProvider>
+    </ErrorBoundary>
   );
 };
 

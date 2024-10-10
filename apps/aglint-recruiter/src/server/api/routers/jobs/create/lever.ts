@@ -278,7 +278,6 @@ const createJobObject = async ({
   const insertJob: DatabaseTableInsert['public_jobs'] = {
     draft,
     job_title: post.text,
-    status: 'draft',
     scoring_criteria_loading: true,
     posted_by: POSTED_BY.LEVER,
     recruiter_id,
