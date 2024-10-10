@@ -35,7 +35,7 @@ function TrainingSettingDrawer(
     localModule: state.localModule,
   }));
 
-  const { data: members } = useMemberList(false);
+  const { data: members } = useMemberList(false, true);
 
   const qualifiedUserIds =
     editModule?.relations
