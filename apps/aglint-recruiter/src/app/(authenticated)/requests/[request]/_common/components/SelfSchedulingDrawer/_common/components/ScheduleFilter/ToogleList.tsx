@@ -2,12 +2,9 @@ import React, { useMemo } from 'react';
 
 import { UISwitch } from '@/components/Common/UISwitch';
 
-import {
-  setLocalFilters,
-  useSelfSchedulingFlowStore,
-} from '../../../store/store';
+import { setLocalFilters, useSelfSchedulingFlowStore } from '../../store/store';
+import { filterSchedulingOptionsArray } from '../../utils/filterSchedulingOptionsArray';
 import { SchedulerConflictCard } from './SchedulerConflictCard';
-import { filterSchedulingOptionsArray } from './utils';
 
 type AvailabilityType =
   | 'no_conflicts'

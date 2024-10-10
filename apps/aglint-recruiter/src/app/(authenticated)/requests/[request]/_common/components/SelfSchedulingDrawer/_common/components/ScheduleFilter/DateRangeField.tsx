@@ -9,10 +9,7 @@ import React from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
 
-import {
-  setLocalFilters,
-  useSelfSchedulingFlowStore,
-} from '../../../store/store';
+import { setLocalFilters, useSelfSchedulingFlowStore } from '../../store/store';
 import { TimeRangeSelector } from './TimeRangeSelector';
 
 function DateRangeField() {
