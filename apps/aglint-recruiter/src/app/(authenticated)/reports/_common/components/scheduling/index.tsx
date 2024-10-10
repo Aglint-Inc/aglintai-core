@@ -1,4 +1,3 @@
-import React from 'react';
 import InterviewType from './interviewType';
 import Reasons from './reasons';
 import RecentDeclines from './recentDeclines';

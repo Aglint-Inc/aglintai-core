@@ -1,7 +1,8 @@
+import type { DatabaseEnums } from '@aglint/shared-types';
+import { useState } from 'react';
+
 import { useAnalyticsContext } from '@/context/AnalyticsContext/AnalyticsContextProvider';
 import { api } from '@/trpc/client';
-import { DatabaseEnums } from '@aglint/shared-types';
-import { useState } from 'react';
 
 export function useInterviewTypes() {
   const { filters } = useAnalyticsContext();
@@ -31,7 +32,7 @@ export function useTrainingProgress() {
     });
   return { data: data || [], isPending };
 }
-export function useReasons(type: DatabaseEnums['cancel_type']) {
+export function useReasons() {
   const [view, setView] = useState<DatabaseEnums['cancel_type']>(
     'candidate_request_reschedule',
   );

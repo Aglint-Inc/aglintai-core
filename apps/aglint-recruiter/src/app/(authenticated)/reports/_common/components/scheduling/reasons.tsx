@@ -1,8 +1,5 @@
 'use client';
-import React from 'react';
 
-import { useReasons } from '../../hook/scheduling';
-import { DatabaseEnums } from '@aglint/shared-types';
 import { EmptyState } from '@components/empty-state';
 import {
   Section,
@@ -23,12 +20,10 @@ import { Cell, Legend, Pie, PieChart } from 'recharts';
 
 import { Loader } from '@/common/Loader';
 
-import { useJobLocations } from '../../hook/job/jobMatrix';
+import { useReasons } from '../../hook/scheduling';
 
 function Reasons() {
-  const type: DatabaseEnums['cancel_type'] = 'candidate_request_reschedule';
-  const { data, isPending, view, isError, setView } = useReasons(type);
-  console.log({ data, isPending });
+  const { data, isPending, view, isError, setView } = useReasons();
   return (
     <Section className='rounded-md border'>
       <SectionHeader className='m-2'>
