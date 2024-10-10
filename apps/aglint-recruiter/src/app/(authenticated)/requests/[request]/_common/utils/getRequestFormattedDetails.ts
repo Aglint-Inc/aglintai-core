@@ -1,5 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import {
+  GroupReqProgress,
+  RequesProgressMetaType,
   type RequestProgressMapType,
   type TriggerActionMapType,
 } from '@request/components/RequestProgress/types';
@@ -11,25 +13,35 @@ import {
   type getRequestWorkflow,
 } from '@/queries/requests';
 
-export type RequesProgressMetaType = {
-  meta: {
-    scheduleFlow: ReturnType<typeof getSchedulFlow>;
-    isScheduled: boolean;
-    isCandidateAvailabilityReceived: boolean;
-    isManualActionNeeded: boolean;
-  };
+type RequestFormattedDetailsParams = {
+  request_progress: Awaited<ReturnType<typeof getRequestProgress>>;
+  request_workflow: Awaited<ReturnType<typeof getRequestWorkflow>>;
+  is_slack_enabled: boolean;
+  is_workflow_enabled: boolean;
 };
 
-export const getRequestFormattedDetails = (
-  request_progress: Awaited<ReturnType<typeof getRequestProgress>>,
-  request_workflow: Awaited<ReturnType<typeof getRequestWorkflow>>,
-) => {
+export const getRequestFormattedDetails = ({
+  request_progress,
+  request_workflow,
+  is_slack_enabled,
+  is_workflow_enabled,
+}: RequestFormattedDetailsParams) => {
   const requestProgressMeta = getInitialReqData();
   const eventTargetMap: TriggerActionMapType = {};
   request_workflow.forEach((trigger_act) => {
     eventTargetMap[trigger_act.trigger] = [...trigger_act.workflow_action];
   });
   const requestTargetMp: RequestProgressMapType = {};
+  const grouped_progress: GroupReqProgress[] =
+    groupReqProgress(request_progress);
+
+  request_progress.forEach((row) => {
+    const key = row.event_type;
+    if (!requestTargetMp[key]) {
+      requestTargetMp[key] = [];
+    }
+    requestTargetMp[key].push({ ...row });
+  });
   request_progress.forEach((row) => {
     const key = row.event_type;
     if (!requestTargetMp[key]) {
@@ -58,6 +70,17 @@ export const getRequestFormattedDetails = (
 
   requestProgressMeta.meta.isManualActionNeeded =
     isAnyEventsFailed(request_progress);
+  requestProgressMeta.scheduleProgressNodes = getScheduleNodes({
+    reqParams: {
+      request_progress,
+      request_workflow,
+      is_slack_enabled,
+      is_workflow_enabled,
+    },
+    scheduleFlow: requestProgressMeta.meta.scheduleFlow,
+    requestTargetMp,
+    grouped_progress,
+  });
 
   return requestProgressMeta;
 };
@@ -70,6 +93,7 @@ const getInitialReqData = () => {
       isCandidateAvailabilityReceived: false,
       isManualActionNeeded: true,
     },
+    scheduleProgressNodes: [],
   };
 
   return cloneDeep(progressMeta);
@@ -91,4 +115,93 @@ const isAnyEventsFailed = (
   );
 
   return failedEvents.length > 0;
+};
+
+type NodesParamsType = {
+  reqParams: RequestFormattedDetailsParams;
+  scheduleFlow: ReturnType<typeof getSchedulFlow>;
+  requestTargetMp: RequestProgressMapType;
+  grouped_progress: GroupReqProgress[];
+};
+
+const getScheduleNodes = ({
+  reqParams,
+  requestTargetMp,
+  scheduleFlow,
+  grouped_progress,
+}: NodesParamsType) => {
+  const scheduleProgressNodes: RequesProgressMetaType['scheduleProgressNodes'] =
+    [];
+  const selfScheduleFlow: RequesProgressMetaType['scheduleProgressNodes'][0] = {
+    type: 'SELECT_SCHEDULE',
+    status: 'not_started',
+    grouped_progress: null,
+    workflows: [],
+    banners: [],
+  };
+  let idx = 0;
+  const headingProgEvents = reqParams.request_progress.filter(
+    (p) => p.is_progress_step === false,
+  );
+  while (idx < headingProgEvents.length) {
+    const progress = headingProgEvents[idx];
+    if (
+      progress.event_type === 'INTERVIEW_SCHEDULED' ||
+      progress.event_type === 'CAND_AVAIL_REC'
+    ) {
+      selfScheduleFlow.status = 'completed';
+      break;
+    }
+    selfScheduleFlow.grouped_progress =
+      grouped_progress.find(
+        (g) => g.group_id === progress.grouped_progress_id,
+      ) ?? null;
+    if (!selfScheduleFlow.grouped_progress) {
+      console.error('Error in grouping progress');
+    }
+    idx++;
+  }
+  scheduleProgressNodes.push(selfScheduleFlow);
+
+  return scheduleProgressNodes;
+};
+
+const groupReqProgress = (progress: DatabaseTable['request_progress'][]) => {
+  const grouped_progress: GroupReqProgress[] = [];
+
+  if (progress.length === 0) {
+    return grouped_progress;
+  }
+  grouped_progress.push({
+    group_id: progress[0].grouped_progress_id,
+    heading_progress: progress[0],
+    detail_progress: [],
+  });
+
+  for (let i = 1; i < progress.length; i++) {
+    const row = progress[i];
+    if (
+      grouped_progress[grouped_progress.length - 1].group_id ===
+        row.grouped_progress_id &&
+      row.is_progress_step === true
+    ) {
+      grouped_progress[grouped_progress.length - 1].detail_progress.push({
+        ...row,
+      });
+    } else if (
+      grouped_progress[grouped_progress.length - 1].group_id !==
+        row.grouped_progress_id &&
+      row.is_progress_step === false
+    ) {
+      grouped_progress.push({
+        group_id: row.grouped_progress_id,
+        heading_progress: { ...row },
+        detail_progress: [],
+      });
+    } else {
+      console.error('Error in grouping progress');
+    }
+  }
+
+  return grouped_progress;
 };

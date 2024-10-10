@@ -632,5 +632,5 @@ export const getRequestWorkflow = async (request_id: string) => {
     false,
   );
 
-  return d;
+  return d ?? [];
 };

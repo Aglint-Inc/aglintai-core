@@ -90,14 +90,16 @@ const useRequestContext = ({ request_id }: RequestParams) => {
   );
 
   const getSimpReqStatus = useCallback(() => {
-    return getRequestFormattedDetails(
-      request_progress.data!,
-      request_workflow.data!,
-    );
+    return getRequestFormattedDetails({
+      request_progress: request_progress.data!,
+      request_workflow: request_workflow.data!,
+      is_slack_enabled: false,
+      is_workflow_enabled: false,
+    });
   }, [request_progress.data, request_workflow.data]);
 
   return {
-    simpReqStatus: getSimpReqStatus(),
+    progressMetaInfo: getSimpReqStatus(),
     request_progress: {
       ...request_progress,
       data: request_progress.data ?? [],

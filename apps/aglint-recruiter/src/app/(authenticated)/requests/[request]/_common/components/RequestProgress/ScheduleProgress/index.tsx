@@ -9,9 +9,10 @@ import { getSchedulFlow } from '../utils/getScheduleFlow';
 import CandidateAvailReceived from './CandidateAvailReceive';
 import InterviewScheduled from './InterviewScheduled';
 import SelectScheduleFlow from './SelectScheduleFlow';
+import { ProgressNodeMap } from '../utils/ProgressNodeMap';
 
 const ScheduleProgress = () => {
-  const { requestDetails } = useRequest();
+  const { requestDetails, progressMetaInfo } = useRequest();
   const { reqProgressMap, reqTriggerActionsMap } = useRequestProgressProvider();
   const scheduleFlow = getSchedulFlow({
     eventTargetMap: reqTriggerActionsMap,
@@ -25,9 +26,18 @@ const ScheduleProgress = () => {
   ) {
     isDebreifSchedule = true;
   }
+
   return (
     <>
-      <ShowCode.When isTrue={!isDebreifSchedule}>
+      {progressMetaInfo.scheduleProgressNodes.map((node) => {
+        const ProgNode = ProgressNodeMap[node.type];
+        return (
+          <div>
+            <ProgNode {...node} />
+          </div>
+        );
+      })}
+      {/* <ShowCode.When isTrue={!isDebreifSchedule}>
         <SelectScheduleFlow scheduleFlow={scheduleFlow} />
         <ShowCode.When isTrue={scheduleFlow === 'availability'}>
           <>
@@ -35,7 +45,7 @@ const ScheduleProgress = () => {
           </>
         </ShowCode.When>
       </ShowCode.When>
-      <InterviewScheduled />
+      <InterviewScheduled /> */}
     </>
   );
 };

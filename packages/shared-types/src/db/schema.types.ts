@@ -753,7 +753,7 @@ export type Database = {
           {
             foreignKeyName: "candidate_request_availability_request_id_fkey"
             columns: ["request_id"]
-            isOneToOne: false
+            isOneToOne: true
             referencedRelation: "request"
             referencedColumns: ["id"]
           },
@@ -3411,37 +3411,37 @@ export type Database = {
         Row: {
           created_at: string
           event_type: string
+          grouped_progress_id: string
           id: string
           is_progress_step: boolean
           log: string | null
           meta: Json | null
           request_id: string
           status: string
-          target_api: Database["public"]["Enums"]["email_slack_types"] | null
           updated_at: string
         }
         Insert: {
           created_at?: string
           event_type: string
+          grouped_progress_id: string
           id?: string
           is_progress_step?: boolean
           log?: string | null
           meta?: Json | null
           request_id: string
           status: string
-          target_api?: Database["public"]["Enums"]["email_slack_types"] | null
           updated_at?: string
         }
         Update: {
           created_at?: string
           event_type?: string
+          grouped_progress_id?: string
           id?: string
           is_progress_step?: boolean
           log?: string | null
           meta?: Json | null
           request_id?: string
           status?: string
-          target_api?: Database["public"]["Enums"]["email_slack_types"] | null
           updated_at?: string
         }
         Relationships: [
