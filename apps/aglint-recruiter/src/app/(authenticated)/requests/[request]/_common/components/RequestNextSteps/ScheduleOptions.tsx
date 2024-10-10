@@ -21,6 +21,7 @@ import {
   setCandidateAvailabilityId,
   useConfirmAvailabilitySchedulingFlowStore,
 } from '../ConfirmAvailability/_common/contexts/AvailabilitySchedulingStore';
+import SelfSchedulingDrawer from '../SelfSchedulingDrawer';
 import { useFindAvailibility } from '../SelfSchedulingDrawer/_common/hooks/useFindAvailibility';
 import {
   initialFilters,
@@ -45,6 +46,7 @@ const ScheduleOptions = () => {
       <ShowCode.When isTrue={!isDebreifSchedule}>
         <CandidateScheduleReschedule />
       </ShowCode.When>
+      <SelfSchedulingDrawer />
     </div>
   );
 };
@@ -205,6 +207,7 @@ const CandidateScheduleReschedule = () => {
           >
             Get Availability
           </UIButton>
+
           <UIButton
             isLoading={fetchingPlan}
             size='sm'
@@ -223,13 +226,13 @@ const CandidateScheduleReschedule = () => {
                   end_date: dayjsLocal().add(14, 'day').toISOString(),
                 },
               });
+              setIsSelfScheduleDrawerOpen(true);
             }}
           >
             Send Self Scheduling
           </UIButton>
         </div>
       </ShowCode.When>
-
       <ShowCode.When
         isTrue={Boolean(
           lastEvent &&

@@ -56,7 +56,6 @@ import RequestDecline from '../RequestNextSteps/RequestDecline';
 import ScheduleOptions from '../RequestNextSteps/ScheduleOptions';
 import RequestNotes from '../RequestNotes';
 import RequestProgress from '../RequestProgress';
-import SelfSchedulingDrawer from '../SelfSchedulingDrawer';
 import UpdateDetails from '../UpdateDetails';
 
 type InterviewStatus =
@@ -139,7 +138,6 @@ export default function ViewRequestDetails() {
           <ConfirmAvailability />
         </AvailabilityProvider>
         <SideDrawerEdit refetch={refetchMeetings} />
-        <SelfSchedulingDrawer />
 
         <TwoColumnPageLayout
           sidebarWidth={'400px'}
