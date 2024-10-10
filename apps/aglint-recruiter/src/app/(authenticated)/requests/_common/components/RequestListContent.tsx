@@ -49,7 +49,9 @@ function RequestListContent({
                 view === 'list' ? (
                   <ListSection
                     collapseScheduleRequestSections={Boolean(
-                      urgentRequests && !!urgentRequests.requests.length,
+                      sectionName === 'schedule_request' &&
+                        urgentRequests &&
+                        urgentRequests.requests.length === 0,
                     )}
                     sectionName={sectionName}
                     requests={requests}
