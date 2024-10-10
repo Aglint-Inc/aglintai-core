@@ -15,6 +15,7 @@ export function SelectedSessionSlotsCard({
   selectedDates,
   isSubmitted,
   isActive,
+  timezone = dayjsLocal.tz.guess(),
 }: {
   textDayCount: string;
   isSelected: boolean;
@@ -27,6 +28,7 @@ export function SelectedSessionSlotsCard({
   >[number]['dates'];
   isSubmitted: boolean;
   isActive: boolean;
+  timezone?: string;
 }) {
   return (
     <div
@@ -65,13 +67,15 @@ export function SelectedSessionSlotsCard({
                   return (
                     <SelectedSlot
                       key={i}
-                      textDate={dayjsLocal(ele.curr_day).format('DD MMMM YYYY')}
+                      textDate={dayjsLocal(ele.curr_day)
+                        .tz(timezone)
+                        .format('DD MMMM YYYY')}
                       slotBadge={ele.slots.map((slot, i) => {
                         return (
                           <UIBadge
                             color={isSubmitted ? 'success' : 'warning'}
                             key={i}
-                            textBadge={`${dayjsLocal(slot.startTime).format('hh:mm A')} - ${dayjsLocal(slot.endTime).format('hh:mm A')}`}
+                            textBadge={`${dayjsLocal(slot.startTime).tz(timezone).format('hh:mm A')} - ${dayjsLocal(slot.endTime).tz(timezone).format('hh:mm A')}`}
                           />
                         );
                       })}

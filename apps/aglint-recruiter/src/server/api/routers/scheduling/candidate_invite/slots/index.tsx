@@ -1,10 +1,8 @@
 /* eslint-disable security/detect-object-injection */
-import {} from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { z } from 'zod';
 
 import { type PublicProcedure, publicProcedure } from '@/server/api/trpc';
-import { transformPlanCombinationPack } from '@/services/CandidateSchedule/utils/bookingUtils/candidateSelfSchedule/transformPlanCombinationPack';
 import { verifyRecruiterSelectedSlots } from '@/services/CandidateSchedule/utils/bookingUtils/candidateSelfSchedule/verifyRecruiterSelctedOptions';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
@@ -31,8 +29,8 @@ const query = async ({
     selected_options: filter_json.selected_options,
     session_ids: filter_json.session_ids,
   });
-  const res = transformPlanCombinationPack(verified_slots, candidate_tz);
-  return res;
+
+  return verified_slots;
 };
 
 export const slotsCandidateInvite = publicProcedure.input(schema).query(query);

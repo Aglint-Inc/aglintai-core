@@ -7,23 +7,22 @@ import { SelectedSessionSlotsCard } from 'src/app/(public)/_common/_components/S
 import { UIButton } from '@/common/UIButton';
 
 import useInviteActions from '../../hooks/useInviteActions';
-import { useInviteSlots } from '../../hooks/useInviteSlots';
 import {
   setSelectedDate,
   setSelectedDay,
-  useCandidateInviteStore,
+  useCandidateInviteSelfScheduleStore,
 } from '../../store';
 import { getDurationText } from '../../utils/utils';
 import { SessionCard } from '../ui/SessionCard';
 
 function RightPanel() {
-  const { selectedDay, rounds } = useCandidateInviteStore();
-  const { data } = useInviteSlots();
+  const { selectedDay, rounds, timezone } =
+    useCandidateInviteSelfScheduleStore();
   const { handleSubmit, isPending } = useInviteActions();
 
-  const numberOfDays = data?.length > 0 ? data[0]?.length : 0;
+  const numberOfSelections = rounds.length || 0;
   const selectedSlots = rounds
-    .map((round) => round.selectedSlots)
+    .map((round) => round.selectedSlot)
     .filter((slot) => slot !== null);
 
   return (
@@ -33,17 +32,14 @@ function RightPanel() {
           {rounds?.map((round, ind) => {
             const dates: ComponentProps<
               typeof SelectedSessionSlotsCard
-            >['selectedDates'] = round.selectedSlots
+            >['selectedDates'] = round.selectedSlot
               ? [
                   {
-                    curr_day: round.selectedSlots.sessions[0].start_time,
+                    curr_day: round.selectedSlot.start_time,
                     slots: [
                       {
-                        startTime: round.selectedSlots.sessions[0].start_time,
-                        endTime:
-                          round.selectedSlots.sessions[
-                            round.selectedSlots.sessions.length - 1
-                          ].end_time,
+                        startTime: round.selectedSlot.start_time,
+                        endTime: round.selectedSlot.end_time,
                         isSlotAvailable: true,
                       },
                     ],
@@ -59,12 +55,13 @@ function RightPanel() {
             return (
               <>
                 <SelectedSessionSlotsCard
+                  timezone={timezone.tzCode}
                   isActive={ind + 1 === selectedDay}
                   textDayCount={`Day ${ind + 1}`}
                   textSelectedSlots='Selected Slot'
                   slotChangeButton={
-                    numberOfDays > 1 &&
-                    round.selectedSlots && (
+                    numberOfSelections > 1 &&
+                    round.selectedSlot && (
                       <UIButton
                         size={'sm'}
                         variant='default'
@@ -100,16 +97,16 @@ function RightPanel() {
       </ScrollArea>
 
       <div className='absolute bottom-0 right-0 w-full'>
-        {selectedDay === numberOfDays ? (
+        {selectedDay === numberOfSelections ? (
           <UIButton
             className='w-full'
             onClick={() => {
-              if (selectedSlots.length === numberOfDays) {
+              if (selectedSlots.length === numberOfSelections) {
                 handleSubmit();
               }
             }}
             isLoading={isPending}
-            disabled={selectedSlots.length !== numberOfDays}
+            disabled={selectedSlots.length !== numberOfSelections}
           >
             {'Submit'}
           </UIButton>
@@ -117,12 +114,12 @@ function RightPanel() {
           <UIButton
             className='w-full'
             onClick={() => {
-              if (selectedSlots.length <= numberOfDays) {
+              if (selectedSlots.length <= numberOfSelections) {
                 setSelectedDate(null);
                 setSelectedDay(selectedDay + 1);
               }
             }}
-            disabled={rounds[selectedDay - 1]?.selectedSlots === null}
+            disabled={rounds[selectedDay - 1]?.selectedSlot === null}
           >
             {'Continue'}
           </UIButton>
