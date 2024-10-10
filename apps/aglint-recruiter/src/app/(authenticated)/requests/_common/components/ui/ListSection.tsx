@@ -22,12 +22,14 @@ function ListSection({
   expandedSections,
   setExpandedSections,
   collapseScheduleRequestSections,
+  hideSection,
 }: {
   sectionName: (typeof REQUEST_SESSIONS_DEFAULT_DATA)[number]['sectionName'];
   requests: any[];
   expandedSections: string[];
   setExpandedSections: React.Dispatch<React.SetStateAction<string[]>>;
   collapseScheduleRequestSections: boolean;
+  hideSection: boolean;
 }) {
   const isExpanded =
     expandedSections.includes(sectionName) ||
@@ -42,6 +44,7 @@ function ListSection({
       }
     } else setSlice((prev) => prev + 5);
   };
+  if (hideSection) return null;
   return (
     <Accordion
       type='single'
