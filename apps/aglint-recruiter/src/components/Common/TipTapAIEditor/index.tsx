@@ -161,7 +161,7 @@ const TipTapAIEditor = ({
                 disabled
                   ? '[&_.ProseMirror]:cursor-not-allowed [&_.ProseMirror]:text-muted-foreground'
                   : '[&_.ProseMirror]:cursor-text [&_.ProseMirror]:text-foreground',
-                '[&_.ProseMirror_*::selection]:bg-accent/20',
+                // '[&_.ProseMirror_*::selection]:bg-red-300',
                 '[&_.tiptap_p.is-editor-empty:first-child::before]:text-muted-foreground/60',
                 '[&_.ProseMirror-focused]:outline-none',
                 '[&_.ProseMirror_.temp-variable]:rounded-[2px] [&_.ProseMirror_.temp-variable]:bg-purple-200/50 [&_.ProseMirror_.temp-variable]:px-[3px] [&_.ProseMirror_.temp-variable]:pb-[3px] [&_.ProseMirror_.temp-variable]:text-purple-500',

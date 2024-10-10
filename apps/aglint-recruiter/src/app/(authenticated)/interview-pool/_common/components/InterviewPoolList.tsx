@@ -6,6 +6,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
+import { UIBadge } from '@components/ui-badge';
 import {
   ArrowRight,
   BriefcaseBusiness,
@@ -51,13 +52,14 @@ export const InterviewPoolList = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
-                <Badge
-                  variant='secondary'
-                  className='bg-green-100 text-green-800'
-                >
-                  <CheckCircle className='mr-1 h-3 w-3' />
-                  {interviewType.this_month_completed_meeting_count}
-                </Badge>
+                <UIBadge
+                  variant='success'
+                  className='rounded-full'
+                  textBadge={
+                    interviewType.this_month_completed_meeting_count || 0
+                  }
+                  icon={CheckCircle}
+                />
               </TooltipTrigger>
               <TooltipContent>
                 <p>Completed Interviews (This Month)</p>
@@ -67,13 +69,14 @@ export const InterviewPoolList = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
-                <Badge
-                  variant='secondary'
-                  className='bg-blue-100 text-blue-800'
-                >
-                  <Calendar className='mr-1 h-3 w-3' />
-                  {interviewType.this_month_confirmed_meeting_count}
-                </Badge>
+                <UIBadge
+                  variant='info'
+                  className='rounded-full'
+                  textBadge={
+                    interviewType.this_month_confirmed_meeting_count || 0
+                  }
+                  icon={Calendar}
+                />
               </TooltipTrigger>
               <TooltipContent>
                 <p>Scheduled Interviews (This Month)</p>
@@ -83,10 +86,14 @@ export const InterviewPoolList = ({
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
-                <Badge variant='secondary' className='bg-red-100 text-red-800'>
-                  <XCircle className='mr-1 h-3 w-3' />
-                  {interviewType.this_month_cancelled_meeting_count}
-                </Badge>
+                <UIBadge
+                  variant='destructive'
+                  className='rounded-full'
+                  icon={XCircle}
+                  textBadge={
+                    interviewType.this_month_cancelled_meeting_count || 0
+                  }
+                />
               </TooltipTrigger>
               <TooltipContent>
                 <p>Cancelled Interviews (This Month)</p>
@@ -99,13 +106,12 @@ export const InterviewPoolList = ({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <Badge
-                variant='outline'
-                className='w-[80px] justify-center border-purple-200 bg-purple-50 text-purple-800'
-              >
-                <Clock className='mr-1 h-3 w-3' />
-                {interviewType.avg_meeting_duration} min
-              </Badge>
+              <UIBadge
+                variant='purple'
+                className='felx w-[80px] justify-center rounded-full'
+                textBadge={interviewType.avg_meeting_duration + ' min'}
+                icon={Clock}
+              />
             </TooltipTrigger>
             <TooltipContent>
               <p>Average Interview Duration</p>

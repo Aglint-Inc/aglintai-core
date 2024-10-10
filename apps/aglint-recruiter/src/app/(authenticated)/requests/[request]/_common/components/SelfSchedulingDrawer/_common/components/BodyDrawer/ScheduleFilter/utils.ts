@@ -7,7 +7,7 @@ import { dayjsLocal } from '@aglint/shared-utils';
 import { type ApiResponseFindAvailability } from '@requests/types';
 
 import { createCombsForMultiDaySlots } from '@/services/CandidateSchedule/utils/createCombsForMultiDaySlots';
-import { compareTimes } from '@/services/CandidateSchedule/utils/time_range_utils';
+import { compareTimesHours } from '@/services/CandidateSchedule/utils/time_range_utils';
 
 import { type SelfSchedulingFlow } from '../../../store/store';
 
@@ -41,12 +41,16 @@ export const filterByDateRanges = ({
     plans: schedulingOptions.plans.filter((option) => {
       return option.sessions.every((session) => {
         return preferredTimeRanges.some((dateRange) => {
-          const l1 = compareTimes(
+          const l1 = compareTimesHours(
             session.start_time,
             dateRange.startTime,
             user_tz,
           );
-          const l2 = compareTimes(session.end_time, dateRange.endTime, user_tz);
+          const l2 = compareTimesHours(
+            session.end_time,
+            dateRange.endTime,
+            user_tz,
+          );
           return l1 >= 0 && l2 <= 0;
         });
       });

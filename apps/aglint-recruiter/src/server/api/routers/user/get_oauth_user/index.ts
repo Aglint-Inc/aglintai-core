@@ -7,7 +7,7 @@ import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 const oAuth2Client = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  `${process.env.NEXT_PUBLIC_HOST_NAME}/auth-email/google`,
+  `${process.env.NEXT_PUBLIC_HOST_NAME}/auth-cal/google`,
 );
 
 const schema = z.object({
@@ -30,22 +30,12 @@ const mutation = async ({ input }: PrivateProcedure<typeof schema>) => {
     auth: oAuth2Client,
   });
 
-  let userEmail = '';
+  const response = await peopleApiClient.people.get({
+    resourceName: 'people/me',
+    personFields: 'emailAddresses',
+  });
 
-  // Get user's profile information
-  peopleApiClient.people.get(
-    {
-      resourceName: 'people/me',
-      personFields: 'emailAddresses',
-    },
-    (error, response) => {
-      if (error) {
-        throw new Error(error.message);
-      }
-      userEmail = response?.data?.emailAddresses?.[0].value ?? '';
-      return;
-    },
-  );
+  const userEmail = response?.data?.emailAddresses?.[0]?.value ?? '';
   return userEmail;
 };
 

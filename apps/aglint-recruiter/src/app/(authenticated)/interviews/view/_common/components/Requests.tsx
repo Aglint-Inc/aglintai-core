@@ -54,9 +54,7 @@ function Component() {
                     })}
                     className='hover:no-underline'
                   >
-                    <div className='text-sm font-medium'>
-                      dewxwed{request.title}
-                    </div>
+                    <div className='text-sm font-medium'>{request.title}</div>
                     <div className='mt-2 flex cursor-pointer items-center gap-4'>
                       <div className='flex items-center gap-2'>
                         <Avatar className='h-6 w-6 rounded-sm'>

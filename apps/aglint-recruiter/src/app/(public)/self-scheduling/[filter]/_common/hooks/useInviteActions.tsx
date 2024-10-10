@@ -4,7 +4,8 @@ import { type CandidateDirectBookingType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
 import {
-  setSelectedSlots,
+  type CandidateInviteType,
+  setRounds,
   useCandidateInviteStore,
 } from 'src/app/(public)/self-scheduling/[filter]/_common/store';
 
@@ -19,19 +20,25 @@ const useInviteActions = () => {
   const router = useRouterPro<{ filter_id: string; task_id?: string }>();
   const { data } = useInviteMeta();
   const { mutateAsync, isPending } = useConfirmSlots();
-  const { selectedSlots, timezone } = useCandidateInviteStore();
+  const { rounds, timezone } = useCandidateInviteStore();
 
   const handleSelectSlot = (
     day: number,
-    meeting: (typeof selectedSlots)[number],
+    sessions: CandidateInviteType['rounds'][0]['selectedSlots'],
   ) => {
-    const newSessions = day === 0 ? [] : [...selectedSlots];
-    newSessions[day] = meeting;
-    setSelectedSlots(newSessions);
+    const newSessions = rounds.map((round, ind) => ({
+      ...round,
+      selectedSlots: ind + 1 > day ? null : round.selectedSlots,
+    }));
+    newSessions[day]['selectedSlots'] = sessions;
+    setRounds(newSessions);
   };
 
   const handleSubmit = async () => {
-    const candSelectedSlots = selectedSlots.map((s) => s.sessions);
+    const candSelectedSlots = rounds
+      .map((round) => round.selectedSlots)
+      .map((slot) => slot?.sessions)
+      .filter((ses) => ses !== undefined);
 
     const bodyParams: CandidateDirectBookingType = {
       cand_tz: timezone.tzCode,

@@ -23,6 +23,7 @@ const query = async ({
   const recruiter = {
     name: applications.candidates.recruiter.name,
     logo: applications.candidates.recruiter.logo,
+    id: applications.public_jobs.recruiter_id,
   };
 
   const job = {

@@ -133,7 +133,7 @@ export const convertTimeDurStrToDayjsChunk = (
   return chunk;
 };
 
-export const compareTimes = (
+export const compareTimesHours = (
   isoString1: string,
   isoString2: string,
   tz: string,
@@ -153,4 +153,14 @@ export const compareTimes = (
   } else {
     return -1; // Second time is later
   }
+};
+
+export const compareTimesByMinutesPrec = (
+  time_str_1: string,
+  time_str_2: string,
+  timeZone: string,
+) => {
+  return dayjsLocal(time_str_1)
+    .tz(timeZone)
+    .diff(dayjsLocal(time_str_2).tz(timeZone), 'minutes');
 };

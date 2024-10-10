@@ -20,19 +20,21 @@ function Header({
     <div className='flex items-center justify-end gap-2 px-4'>
       <RequestListFilter />
       <CreateRequestWidget />
-      <Tabs
-        value={view}
-        onValueChange={(value) => setView(value as 'list' | 'kanban')}
-      >
-        <TabsList className='h-8'>
-          <TabsTrigger value='list'>
-            <LayoutList className='h-4 w-4' />
-          </TabsTrigger>
-          <TabsTrigger value='kanban'>
-            <Columns className='h-4 w-4' />
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
+      <div className='sr-only hidden'>
+        <Tabs
+          value={view}
+          onValueChange={(value) => setView(value as 'list' | 'kanban')}
+        >
+          <TabsList className='h-8'>
+            <TabsTrigger value='list'>
+              <LayoutList className='h-4 w-4' />
+            </TabsTrigger>
+            <TabsTrigger value='kanban'>
+              <Columns className='h-4 w-4' />
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </div>
     </div>
     // <div className='container-lg mx-auto w-full px-4'>
     //   <div className='flex items-end justify-between'>
