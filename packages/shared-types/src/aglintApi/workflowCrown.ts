@@ -2,7 +2,7 @@ import { DatabaseEnums, DatabaseTable } from '..';
 
 export type APIWorkFlowCron = {
   request: {
-    id: string;
+    id: number;
     workflow_id: string;
     workflow_action_id: string;
     meta: {

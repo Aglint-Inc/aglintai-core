@@ -7,10 +7,9 @@ import {
 } from '@aglint/shared-utils';
 import { apiTargetToEvents } from '@request/components/RequestProgress/utils/progressMaps';
 
-import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
-import { slackSuggestSlots } from '@/services/api-schedulings/avail-recieved/slackSuggestSlots';
-import { candidateSelfScheduleLink } from '@/services/api-schedulings/utils/candidateSelfScheduleLink';
-import { findCandSelectedSlots } from '@/services/api-schedulings/utils/findCandSelectedSlots';
+import { slackSuggestSlots } from '@/services/request-workflows/avail-recieved/slackSuggestSlots';
+import { candidateSelfScheduleLink } from '@/services/request-workflows/utils/candidateSelfScheduleLink';
+import { findCandSelectedSlots } from '@/services/request-workflows/utils/findCandSelectedSlots';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 type BodyParams = {
@@ -21,8 +20,7 @@ type BodyParams = {
   target_api: DatabaseEnums['email_slack_types'];
   payload: any;
 };
-
-const candAvailRecieved = async (req_body: BodyParams) => {
+export const candAvailRecieved = async (req_body: BodyParams) => {
   const {
     candidate_availability_request_id,
     recruiter_id,
@@ -127,5 +125,3 @@ const candAvailRecieved = async (req_body: BodyParams) => {
     );
   }
 };
-
-export default createPageApiPostRoute(null, candAvailRecieved);

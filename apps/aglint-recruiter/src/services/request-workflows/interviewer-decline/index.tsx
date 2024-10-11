@@ -7,9 +7,7 @@ import {
 } from '@aglint/shared-utils';
 import { apiTargetToEvents } from '@request/components/RequestProgress/utils/progressMaps';
 
-import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
-// import { apiTargetToEvents } from '@/components/Requests/_common/components/RequestProgress/utils/progressMaps';
-import { changeInterviewer } from '@/services/api-schedulings/interviewer-decline/change-interviewer';
+import { changeInterviewer } from '@/services/request-workflows/interviewer-decline/change-interviewer';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 type BodyParams = {
@@ -19,7 +17,7 @@ type BodyParams = {
   target_api: DatabaseEnums['email_slack_types'];
 };
 
-const interviewerDecline = async (req_body: BodyParams) => {
+export const oninterviewerDecline = async (req_body: BodyParams) => {
   const target_api = req_body.target_api as keyof typeof apiTargetToEvents;
   if (!apiTargetToEvents[target_api]) {
     throw new CApiError('SERVER_ERROR', 'eventAction not found');
@@ -50,5 +48,3 @@ const interviewerDecline = async (req_body: BodyParams) => {
     );
   }
 };
-
-export default createPageApiPostRoute(null, interviewerDecline);
