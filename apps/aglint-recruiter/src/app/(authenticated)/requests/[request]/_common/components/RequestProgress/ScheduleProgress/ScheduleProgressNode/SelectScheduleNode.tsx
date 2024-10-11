@@ -5,14 +5,14 @@ import { RequestProgressTracker } from '../../RequestProgressTracker';
 import AvailabilityFlowMenus from '../AvailabilityFlowMenus';
 import ChooseScheduleMode from '../ChooseScheduleMode';
 import SelfScheduleFlowMenus from '../SelfScheduleFlowMenus';
-import EventNode from '../EventNode';
+import EventNode from './EventNode';
 
 const SelectScheduleNode = ({
   banners,
-  progress,
   status,
   type,
   workflows,
+  grouped_progress,
 }: ProgressNodeParams) => {
   return (
     <div>
@@ -21,12 +21,9 @@ const SelectScheduleNode = ({
         textRequestProgress={'When scheduling request received'}
         slotProgress={
           <>
-            {progress.map((singleProgress) => {
+            {grouped_progress.map((group) => {
               return (
-                <EventNode
-                  eventType={singleProgress.event_type}
-                  reqProgresMap={{}}
-                />
+                <EventNode {...{ groupProgress: group }} key={group.group_id} />
               );
             })}
             {/* banner */}

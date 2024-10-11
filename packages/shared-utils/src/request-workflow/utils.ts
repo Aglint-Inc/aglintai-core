@@ -15,17 +15,21 @@ export const createRequestProgressLogger = ({
   request_id,
   supabaseAdmin,
   event_type,
+  group_id = uuidv4(),
 }: {
   supabaseAdmin: SupabaseType;
   event_type: DatabaseTable['request_progress']['event_type'];
   request_id: string;
+  group_id?: string;
   event_run_id?: number;
 }) => {
   const logger = async (
     payload?: Pick<
       DatabaseTableInsert['request_progress'],
       'log' | 'status' | 'id' | 'is_progress_step' | 'meta'
-    >
+    > & {
+      alternative_group_id?: string;
+    }
   ) => {
     let progress_id = uuidv4();
     if (payload?.id) {
@@ -46,6 +50,7 @@ export const createRequestProgressLogger = ({
           event_type: event_type,
           status: payload?.status,
           is_progress_step: payload?.is_progress_step,
+          grouped_progress_id: payload?.alternative_group_id ?? group_id,
         })
         .select()
         .single()

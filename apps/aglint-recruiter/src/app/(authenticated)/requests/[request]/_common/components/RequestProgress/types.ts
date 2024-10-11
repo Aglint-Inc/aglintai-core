@@ -24,6 +24,7 @@ export type ProgressNodeType =
   | 'SELECT_SCHEDULE'
   | 'CAND_AVAIL_REC'
   | 'INTERVIEW_SCHEDULED';
+
 export type GroupReqProgress = {
   group_id: string;
   heading_progress: DatabaseTable['request_progress'];
@@ -33,7 +34,7 @@ export type GroupReqProgress = {
 export type ProgressNodeParams = {
   type: ProgressNodeType;
   status: DatabaseTable['request_progress']['status'];
-  grouped_progress: GroupReqProgress | null;
+  grouped_progress: GroupReqProgress[];
   workflows: Awaited<ReturnType<typeof getRequestWorkflow>>;
   banners: [];
 };

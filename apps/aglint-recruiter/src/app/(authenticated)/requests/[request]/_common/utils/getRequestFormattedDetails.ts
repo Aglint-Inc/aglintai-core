@@ -135,7 +135,7 @@ const getScheduleNodes = ({
   const selfScheduleFlow: RequesProgressMetaType['scheduleProgressNodes'][0] = {
     type: 'SELECT_SCHEDULE',
     status: 'not_started',
-    grouped_progress: null,
+    grouped_progress: [],
     workflows: [],
     banners: [],
   };
@@ -152,11 +152,13 @@ const getScheduleNodes = ({
       selfScheduleFlow.status = 'completed';
       break;
     }
-    selfScheduleFlow.grouped_progress =
-      grouped_progress.find(
-        (g) => g.group_id === progress.grouped_progress_id,
-      ) ?? null;
-    if (!selfScheduleFlow.grouped_progress) {
+    const grouProgress = grouped_progress.find(
+      (g) => g.group_id === progress.grouped_progress_id,
+    );
+    if (grouProgress) {
+      selfScheduleFlow.grouped_progress.push(grouProgress);
+    }
+    if (selfScheduleFlow.grouped_progress.length === 0) {
       console.error('Error in grouping progress');
     }
     idx++;
