@@ -10,7 +10,7 @@ import { Loader } from '../Loader';
 
 function ImageUploadManual({
   image,
-  size = 64,
+  // size = 64,
   imageFile,
   setChanges,
 }: {
@@ -40,13 +40,27 @@ function ImageUploadManual({
   }
 
   return (
-    <div className='flex justify-center'>
+    <div className='flex justify-center w-16 h-16'>
       <div
         className='relative rounded-md'
         onMouseEnter={() => setIsStackHovered(true)}
         onMouseLeave={() => setIsStackHovered(false)}
       >
-        <Avatar className={`w-[${size}px] h-[${size}px] rounded-lg`}>
+        {/* <Avatar className={`w-[${size}px] h-[${size}px] rounded-lg`}>
+          <AvatarImage
+            src={initImage || '/images/default/user.png'}
+            alt='Profile'
+            className='object-cover'
+          />
+          <AvatarFallback>
+            {router.pathName.includes(ROUTES['/profile']()) ? (
+              <UserCircle className='h-6 w-6 text-muted-foreground' />
+            ) : (
+              <Building className='h-6 w-6 text-muted-foreground' />
+            )}
+          </AvatarFallback>
+        </Avatar> */}
+        <Avatar className={`w-16 h-16 rounded-lg m-0`}>
           <AvatarImage
             src={initImage || '/images/default/user.png'}
             alt='Profile'

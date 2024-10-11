@@ -11,13 +11,13 @@ import { JobsProvider } from '@/jobs/contexts';
 export const Provider = ({ children }: PropsWithChildren) => {
   return (
     <TooltipProvider>
-      <OnboardingProvider>
-        <RolesAndPermissionsProvider>
-          <BreadcrumProvider>
-            <JobsProvider>{children}</JobsProvider>
-          </BreadcrumProvider>
-        </RolesAndPermissionsProvider>
-      </OnboardingProvider>
+      <RolesAndPermissionsProvider>
+        <BreadcrumProvider>
+          <JobsProvider>
+            <OnboardingProvider> {children}</OnboardingProvider>
+          </JobsProvider>
+        </BreadcrumProvider>
+      </RolesAndPermissionsProvider>
     </TooltipProvider>
   );
 };

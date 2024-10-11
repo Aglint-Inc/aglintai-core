@@ -5,7 +5,7 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { cancelMailHandler } from '@/utils/scheduling/mailUtils';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
-import { createClient } from '@/utils/supabase/server';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export interface ApiBodyParamsCancelSchedule {
   meeting_id: string;
@@ -21,7 +21,7 @@ export type ApiResponseCancelSchedule = 'cancelled';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const supabase = createClient();
+    const supabase = getSupabaseServer();
 
     const {
       meeting_id,
