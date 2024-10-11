@@ -10,7 +10,6 @@ import { progressActionMap } from '../../utils/ProgressActionMap';
 import { progressStatusToTense } from '../../utils/progressStatusToTense';
 
 const EventNode = ({ groupProgress }: { groupProgress: GroupReqProgress }) => {
-  console.log('groupProgress', groupProgress);
   const eventType = groupProgress.heading_progress.event_type;
   const tense = progressStatusToTense(groupProgress.heading_progress.status);
 

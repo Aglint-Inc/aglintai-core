@@ -1,6 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import {
   type GroupReqProgress,
+  type ProgressNodeType,
   type RequesProgressMetaType,
   type RequestProgressMapType,
   type TriggerActionMapType,
@@ -114,41 +115,21 @@ const getScheduleNodes = ({
 }: NodesParamsType) => {
   const scheduleProgressNodes: RequesProgressMetaType['scheduleProgressNodes'] =
     [];
+  const {
+    availbilityGroupPrgs,
+    interviewScheduledGroupPrgs,
+    selectScheduleGroupPrgs,
+  } = getCategorizedProgress({ grouped_progress, reqParams });
 
   const getSelectScheduleFlow = () => {
     const selectScheduleFlow: RequesProgressMetaType['scheduleProgressNodes'][0] =
       {
         type: 'SELECT_SCHEDULE',
         status: 'not_started',
-        grouped_progress: [],
+        grouped_progress: [...selectScheduleGroupPrgs],
         workflows: [],
         banners: [],
       };
-    let idx = 0;
-
-    const headingProgEvents = reqParams.request_progress.filter(
-      (p) => p.is_progress_step === false,
-    );
-    while (idx < headingProgEvents.length) {
-      const progress = headingProgEvents[idx];
-      if (
-        progress.event_type === 'INTERVIEW_SCHEDULED' ||
-        progress.event_type === 'CAND_AVAIL_REC'
-      ) {
-        selectScheduleFlow.status = 'completed';
-        break;
-      }
-      const grouProgress = grouped_progress.find(
-        (g) => g.group_id === progress.grouped_progress_id,
-      );
-      if (grouProgress) {
-        selectScheduleFlow.grouped_progress.push(grouProgress);
-      }
-      if (selectScheduleFlow.grouped_progress.length === 0) {
-        console.error('Error in grouping progress');
-      }
-      idx++;
-    }
 
     if (scheduleFlow === null && reqParams.is_workflow_enabled) {
       selectScheduleFlow.banners.push('CHOOSE_SCHEDULE_FLOW');
@@ -205,7 +186,7 @@ const getScheduleNodes = ({
       {
         type: 'INTERVIEW_SCHEDULED',
         status: 'not_started',
-        grouped_progress: [],
+        grouped_progress: [...interviewScheduledGroupPrgs],
         workflows: [],
         banners: [],
       };
@@ -304,4 +285,50 @@ const getProgressMeta = ({
     requestProgMp: reqProgressMp,
   });
   return meta;
+};
+
+const getCategorizedProgress = ({
+  grouped_progress,
+  reqParams,
+}: Pick<NodesParamsType, 'grouped_progress' | 'reqParams'>) => {
+  const headingProgEvents = reqParams.request_progress.filter(
+    (p) => p.is_progress_step === false,
+  );
+
+  let currentProgressNode: ProgressNodeType = 'SELECT_SCHEDULE';
+  const selectScheduleGroupPrgs: GroupReqProgress[] = [];
+  const availbilityGroupPrgs: GroupReqProgress[] = [];
+  const interviewScheduledGroupPrgs: GroupReqProgress[] = [];
+
+  for (const headingProg of headingProgEvents) {
+    if (headingProg.event_type === 'CAND_AVAIL_REC') {
+      currentProgressNode = 'CAND_AVAIL_REC';
+    } else if (
+      headingProg.event_type === 'CAND_CONFIRM_SLOT' ||
+      headingProg.event_type === 'RECRUITER_SCHEDULED'
+    ) {
+      currentProgressNode = 'INTERVIEW_SCHEDULED';
+    }
+    const grouProgress = grouped_progress.find(
+      (g) => g.group_id === headingProg.grouped_progress_id,
+    );
+    if (!grouProgress) {
+      console.error('Error in grouping progress');
+      continue;
+    }
+    if (currentProgressNode === 'SELECT_SCHEDULE') {
+      selectScheduleGroupPrgs.push(grouProgress);
+    } else if (currentProgressNode === 'CAND_AVAIL_REC') {
+      availbilityGroupPrgs.push(grouProgress);
+    } else if (currentProgressNode === 'INTERVIEW_SCHEDULED') {
+      interviewScheduledGroupPrgs.push(grouProgress);
+    }
+    //
+  }
+
+  return {
+    selectScheduleGroupPrgs,
+    availbilityGroupPrgs,
+    interviewScheduledGroupPrgs,
+  };
 };

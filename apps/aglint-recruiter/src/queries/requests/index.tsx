@@ -123,14 +123,14 @@ export const requestQueries = {
         process.env.NODE_ENV === 'development' ? 30000 : undefined,
       queryKey: requestQueries.request_progress_queryKey({ request_id }),
       queryFn: async () =>
-        (
+        supabaseWrap(
           await supabase
             .from('request_progress')
             .select('*')
             .eq('request_id', request_id)
-            .order('updated_at', { ascending: true })
-            .throwOnError()
-        ).data ?? [],
+            .order('created_at', { ascending: true }),
+          false,
+        ) ?? [],
     }),
   request_workflow: ({
     request_id,

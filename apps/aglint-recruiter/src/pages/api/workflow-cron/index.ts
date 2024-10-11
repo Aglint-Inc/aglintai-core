@@ -6,7 +6,7 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { candAvailRecieved } from '@/services/request-workflows/avail-recieved';
 import { onCandidateScheduleCancel } from '@/services/request-workflows/candidate-schedule-cancel';
-import { oninterviewerDecline } from '@/services/request-workflows/interviewer-decline';
+// import { oninterviewerDecline } from '@/services/request-workflows/interviewer-decline';
 import { newScheduleRequest } from '@/services/request-workflows/new-schedule';
 import { mailSender } from '@/utils/mailSender';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
@@ -59,10 +59,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         event_run_id: id,
       } as any);
     } else if (meta.target_api.startsWith('onRequestInterviewerDecline')) {
-      await oninterviewerDecline({
-        ...meta,
-        event_run_id: id,
-      } as any);
+      // await oninterviewerDecline({
+      //   ...meta,
+      //   event_run_id: id,
+      // } as any);
     }
     await supabaseAdmin
       .from('workflow_action_logs')
