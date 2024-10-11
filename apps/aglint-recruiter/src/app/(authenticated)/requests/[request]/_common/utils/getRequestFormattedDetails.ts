@@ -120,7 +120,7 @@ const getScheduleNodes = ({
         type: 'SELECT_SCHEDULE',
         status: 'not_started',
         grouped_progress: [],
-        workflows: null,
+        workflows: [],
         banners: [],
       };
     let idx = 0;
@@ -152,11 +152,38 @@ const getScheduleNodes = ({
     if (scheduleFlow === null && reqParams.is_workflow_enabled) {
       selectScheduleFlow.banners.push('CHOOSE_SCHEDULE_FLOW');
     }
+
     if (
       requestTargetMp['onRequestSchedule'] &&
       requestTargetMp['onRequestSchedule'].actions.length > 0
     ) {
-      selectScheduleFlow.workflows = requestTargetMp['onRequestSchedule'] ?? [];
+      selectScheduleFlow.workflows.push({
+        ...requestTargetMp['onRequestSchedule'],
+      });
+    }
+
+    if (scheduleFlow === 'selfSchedule') {
+      if (
+        requestTargetMp['selfScheduleReminder'] &&
+        requestTargetMp['selfScheduleReminder'].actions.length > 0
+      ) {
+        selectScheduleFlow.workflows.push({
+          ...requestTargetMp['selfScheduleReminder'],
+        });
+      } else {
+        selectScheduleFlow.banners.push('SELFSCHEDULE_REMINDER');
+      }
+    } else if (scheduleFlow === 'availability') {
+      if (
+        requestTargetMp['sendAvailReqReminder'] &&
+        requestTargetMp['sendAvailReqReminder'].actions.length > 0
+      ) {
+        selectScheduleFlow.workflows.push({
+          ...requestTargetMp['sendAvailReqReminder'],
+        });
+      } else {
+        selectScheduleFlow.banners.push('AVAILABILITY_REMINDER');
+      }
     }
 
     return selectScheduleFlow;

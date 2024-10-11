@@ -25,16 +25,17 @@ const SelectScheduleNode = ({
                 <EventNode {...{ groupProgress: group }} key={group.group_id} />
               );
             })}
-            {workflows &&
-              workflows.actions.map((action) => {
+            {workflows.map((workflow) => {
+              return workflow.actions.map((action) => {
                 return (
                   <ActionNode
                     key={action.id}
-                    eventTrigger={workflows.trigger_details.trigger}
+                    eventTrigger={workflow.trigger_details.trigger}
                     triggerAction={action}
                   />
                 );
-              })}
+              });
+            })}
 
             {banners.map((bannerKey) => {
               const Banner = bannerMap[bannerKey];

@@ -43,7 +43,7 @@ export type ProgressNodeParams = {
   type: ProgressNodeType;
   status: DatabaseTable['request_progress']['status'];
   grouped_progress: GroupReqProgress[];
-  workflows: TriggerActions | null;
+  workflows: TriggerActions[];
   banners: WorkflowBanner[];
 };
 
