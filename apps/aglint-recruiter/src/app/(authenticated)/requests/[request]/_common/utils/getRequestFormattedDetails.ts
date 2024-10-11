@@ -156,14 +156,21 @@ const getScheduleNodes = ({
 
     if (
       requestTargetMp['onRequestSchedule'] &&
-      requestTargetMp['onRequestSchedule'].actions.length > 0
+      requestTargetMp['onRequestSchedule'].actions.length > 0 &&
+      !(
+        requestprogMp['SELF_SCHEDULE_LINK'] ||
+        requestprogMp['REQ_CAND_AVAIL_EMAIL_LINK']
+      )
     ) {
       selectScheduleFlow.workflows.push({
         ...requestTargetMp['onRequestSchedule'],
       });
     }
 
-    if (scheduleFlow === 'selfSchedule') {
+    if (
+      scheduleFlow === 'selfSchedule' &&
+      !requestprogMp['SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE']
+    ) {
       if (
         requestTargetMp['selfScheduleReminder'] &&
         requestTargetMp['selfScheduleReminder'].actions.length > 0
@@ -174,7 +181,10 @@ const getScheduleNodes = ({
       } else {
         selectScheduleFlow.banners.push('SELFSCHEDULE_REMINDER');
       }
-    } else if (scheduleFlow === 'availability') {
+    } else if (
+      scheduleFlow === 'availability' &&
+      !requestprogMp['SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK']
+    ) {
       if (
         requestTargetMp['sendAvailReqReminder'] &&
         requestTargetMp['sendAvailReqReminder'].actions.length > 0
@@ -200,16 +210,19 @@ const getScheduleNodes = ({
         banners: [],
       };
 
-    if (
-      requestTargetMp['candidateBook'] &&
-      requestTargetMp['candidateBook'].actions.length > 0
-    ) {
-      interviewScheduled.workflows.push({
-        ...requestTargetMp['candidateBook'],
-      });
-    } else {
-      interviewScheduled.banners.push('SLACK_CONFIRMATION');
+    if (!requestprogMp['SEND_INTERVIEWER_ATTENDANCE_RSVP']) {
+      if (
+        requestTargetMp['candidateBook'] &&
+        requestTargetMp['candidateBook'].actions.length > 0
+      ) {
+        interviewScheduled.workflows.push({
+          ...requestTargetMp['candidateBook'],
+        });
+      } else {
+        interviewScheduled.banners.push('SLACK_CONFIRMATION');
+      }
     }
+
     return interviewScheduled;
   };
 
