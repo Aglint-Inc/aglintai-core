@@ -6,7 +6,7 @@ import { bannerMap } from '../../utils/bannerMap';
 import ActionNode from './ActionNode';
 import EventNode from './EventNode';
 
-const SelectScheduleNode = ({
+const ScheduleProgressNode = ({
   banners,
   status,
   type,
@@ -69,4 +69,4 @@ const SelectScheduleNode = ({
   );
 };
 
-export default SelectScheduleNode;
+export default ScheduleProgressNode;

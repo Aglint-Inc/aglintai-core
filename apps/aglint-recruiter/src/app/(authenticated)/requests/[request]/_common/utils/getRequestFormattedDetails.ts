@@ -110,6 +110,7 @@ const getScheduleNodes = ({
   scheduleFlow,
   grouped_progress,
   requestTargetMp,
+  requestprogMp,
 }: NodesParamsType) => {
   const scheduleProgressNodes: RequesProgressMetaType['scheduleProgressNodes'] =
     [];
@@ -189,7 +190,31 @@ const getScheduleNodes = ({
     return selectScheduleFlow;
   };
 
+  const getInterviewScheduledFlow = () => {
+    const interviewScheduled: RequesProgressMetaType['scheduleProgressNodes'][0] =
+      {
+        type: 'INTERVIEW_SCHEDULED',
+        status: 'not_started',
+        grouped_progress: [],
+        workflows: [],
+        banners: [],
+      };
+
+    if (
+      requestTargetMp['candidateBook'] &&
+      requestTargetMp['candidateBook'].actions.length > 0
+    ) {
+      interviewScheduled.workflows.push({
+        ...requestTargetMp['candidateBook'],
+      });
+    } else {
+      interviewScheduled.banners.push('SLACK_CONFIRMATION');
+    }
+    return interviewScheduled;
+  };
+
   scheduleProgressNodes.push(getSelectScheduleFlow());
+  scheduleProgressNodes.push(getInterviewScheduledFlow());
 
   return scheduleProgressNodes;
 };
