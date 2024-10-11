@@ -1,16 +1,18 @@
-import React from 'react';
-import { GroupReqProgress } from '../../types';
-import ScheduleProgressTracker from '../../ScheduleProgressTracker';
-import { workflowCopy } from '../../utils/copy';
-import { progressStatusToTense } from '../../utils/progressStatusToTense';
-import { Loader } from '@/common/Loader';
-import { progressActionMap } from '../../utils/ProgressActionMap';
 import { Label } from '@components/ui/label';
+import React from 'react';
+
+import { Loader } from '@/common/Loader';
+
+import ScheduleProgressTracker from '../../ScheduleProgressTracker';
+import { type GroupReqProgress } from '../../types';
+import { workflowCopy } from '../../utils/copy';
+import { progressActionMap } from '../../utils/ProgressActionMap';
+import { progressStatusToTense } from '../../utils/progressStatusToTense';
 
 const EventNode = ({ groupProgress }: { groupProgress: GroupReqProgress }) => {
   console.log('groupProgress', groupProgress);
   const eventType = groupProgress.heading_progress.event_type;
-  let tense = progressStatusToTense(groupProgress.heading_progress.status);
+  const tense = progressStatusToTense(groupProgress.heading_progress.status);
 
   return (
     <div className='relative mb-1'>

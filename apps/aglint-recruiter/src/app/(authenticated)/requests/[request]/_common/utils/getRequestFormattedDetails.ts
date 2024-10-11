@@ -1,7 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import {
-  GroupReqProgress,
-  RequesProgressMetaType,
+  type GroupReqProgress,
+  type RequesProgressMetaType,
   type RequestProgressMapType,
   type TriggerActionMapType,
 } from '@request/components/RequestProgress/types';
@@ -27,62 +27,60 @@ export const getRequestFormattedDetails = ({
   is_workflow_enabled,
 }: RequestFormattedDetailsParams) => {
   const requestProgressMeta = getInitialReqData();
-  const eventTargetMap: TriggerActionMapType = {};
-  request_workflow.forEach((trigger_act) => {
-    eventTargetMap[trigger_act.trigger] = [...trigger_act.workflow_action];
-  });
-  const requestTargetMp: RequestProgressMapType = {};
+  const progWfMp = getProgWfMaps({ request_progress, request_workflow });
   const grouped_progress: GroupReqProgress[] =
     groupReqProgress(request_progress);
 
-  request_progress.forEach((row) => {
-    const key = row.event_type;
-    if (!requestTargetMp[key]) {
-      requestTargetMp[key] = [];
-    }
-    requestTargetMp[key].push({ ...row });
-  });
-  request_progress.forEach((row) => {
-    const key = row.event_type;
-    if (!requestTargetMp[key]) {
-      requestTargetMp[key] = [];
-    }
-    requestTargetMp[key].push({ ...row });
+  requestProgressMeta.meta = getProgressMeta({
+    reqProgressMp: progWfMp.requestProgMp,
+    triggerActionMp: progWfMp.eventTargetMap,
   });
 
-  requestProgressMeta.meta.scheduleFlow = getSchedulFlow({
-    eventTargetMap,
-    requestTargetMp,
-  });
-
-  if (
-    requestTargetMp['INTERVIEW_SCHEDULED'] &&
-    requestTargetMp['INTERVIEW_SCHEDULED'][0].status == 'completed'
-  ) {
-    requestProgressMeta.meta.isScheduled = true;
-  }
-  if (
-    requestTargetMp['CAND_AVAIL_REC'] &&
-    requestTargetMp['CAND_AVAIL_REC'][0].status == 'completed'
-  ) {
-    requestProgressMeta.meta.isCandidateAvailabilityReceived = true;
-  }
-
-  requestProgressMeta.meta.isManualActionNeeded =
-    isAnyEventsFailed(request_progress);
   requestProgressMeta.scheduleProgressNodes = getScheduleNodes({
+    grouped_progress,
     reqParams: {
-      request_progress,
-      request_workflow,
       is_slack_enabled,
       is_workflow_enabled,
+      request_progress,
+      request_workflow,
     },
+    requestprogMp: progWfMp.requestProgMp,
+    requestTargetMp: progWfMp.eventTargetMap,
     scheduleFlow: requestProgressMeta.meta.scheduleFlow,
-    requestTargetMp,
-    grouped_progress,
   });
 
   return requestProgressMeta;
+};
+
+const getProgWfMaps = ({
+  request_progress,
+  request_workflow,
+}: Pick<
+  RequestFormattedDetailsParams,
+  'request_progress' | 'request_workflow'
+>) => {
+  const requestProgMp: RequestProgressMapType = {};
+  const eventTargetMap: TriggerActionMapType = {};
+  request_progress.forEach((row) => {
+    const key = row.event_type;
+    if (!requestProgMp[key]) {
+      requestProgMp[key] = [];
+    }
+    requestProgMp[key].push({ ...row });
+  });
+
+  request_workflow.forEach((trigger_act) => {
+    const trigger = trigger_act.trigger;
+    eventTargetMap[trigger] = {
+      trigger_details: trigger_act,
+      actions: trigger_act.workflow_action ?? [],
+    };
+  });
+
+  return {
+    requestProgMp,
+    eventTargetMap,
+  };
 };
 
 const getInitialReqData = () => {
@@ -99,75 +97,77 @@ const getInitialReqData = () => {
   return cloneDeep(progressMeta);
 };
 
-const isAnyEventsFailed = (
-  request_progress: Awaited<ReturnType<typeof getRequestProgress>>,
-) => {
-  const failingEvent: DatabaseTable['request_progress']['event_type'][] = [
-    'SELF_SCHEDULE_LINK',
-    'REQ_CAND_AVAIL_EMAIL_LINK',
-    'SCHEDULE_INTERVIEW_SLOT_FROM_CANDIDATE_AVAILABILITY',
-  ];
-  const failedEvents = request_progress.filter(
-    (e) =>
-      e.is_progress_step === false &&
-      e.status === 'failed' &&
-      failingEvent.includes(e.event_type),
-  );
-
-  return failedEvents.length > 0;
-};
-
 type NodesParamsType = {
   reqParams: RequestFormattedDetailsParams;
   scheduleFlow: ReturnType<typeof getSchedulFlow>;
-  requestTargetMp: RequestProgressMapType;
+  requestprogMp: RequestProgressMapType;
+  requestTargetMp: TriggerActionMapType;
   grouped_progress: GroupReqProgress[];
 };
 
 const getScheduleNodes = ({
   reqParams,
-  requestTargetMp,
   scheduleFlow,
   grouped_progress,
+  requestTargetMp,
 }: NodesParamsType) => {
   const scheduleProgressNodes: RequesProgressMetaType['scheduleProgressNodes'] =
     [];
-  const selfScheduleFlow: RequesProgressMetaType['scheduleProgressNodes'][0] = {
-    type: 'SELECT_SCHEDULE',
-    status: 'not_started',
-    grouped_progress: [],
-    workflows: [],
-    banners: [],
-  };
-  let idx = 0;
-  const headingProgEvents = reqParams.request_progress.filter(
-    (p) => p.is_progress_step === false,
-  );
-  while (idx < headingProgEvents.length) {
-    const progress = headingProgEvents[idx];
-    if (
-      progress.event_type === 'INTERVIEW_SCHEDULED' ||
-      progress.event_type === 'CAND_AVAIL_REC'
-    ) {
-      selfScheduleFlow.status = 'completed';
-      break;
-    }
-    const grouProgress = grouped_progress.find(
-      (g) => g.group_id === progress.grouped_progress_id,
+
+  const getSelectScheduleFlow = () => {
+    const selectScheduleFlow: RequesProgressMetaType['scheduleProgressNodes'][0] =
+      {
+        type: 'SELECT_SCHEDULE',
+        status: 'not_started',
+        grouped_progress: [],
+        workflows: null,
+        banners: [],
+      };
+    let idx = 0;
+
+    const headingProgEvents = reqParams.request_progress.filter(
+      (p) => p.is_progress_step === false,
     );
-    if (grouProgress) {
-      selfScheduleFlow.grouped_progress.push(grouProgress);
+    while (idx < headingProgEvents.length) {
+      const progress = headingProgEvents[idx];
+      if (
+        progress.event_type === 'INTERVIEW_SCHEDULED' ||
+        progress.event_type === 'CAND_AVAIL_REC'
+      ) {
+        selectScheduleFlow.status = 'completed';
+        break;
+      }
+      const grouProgress = grouped_progress.find(
+        (g) => g.group_id === progress.grouped_progress_id,
+      );
+      if (grouProgress) {
+        selectScheduleFlow.grouped_progress.push(grouProgress);
+      }
+      if (selectScheduleFlow.grouped_progress.length === 0) {
+        console.error('Error in grouping progress');
+      }
+      idx++;
     }
-    if (selfScheduleFlow.grouped_progress.length === 0) {
-      console.error('Error in grouping progress');
+
+    if (scheduleFlow === null && reqParams.is_workflow_enabled) {
+      selectScheduleFlow.banners.push('CHOOSE_SCHEDULE_FLOW');
     }
-    idx++;
-  }
-  scheduleProgressNodes.push(selfScheduleFlow);
+    if (
+      requestTargetMp['onRequestSchedule'] &&
+      requestTargetMp['onRequestSchedule'].actions.length > 0
+    ) {
+      selectScheduleFlow.workflows = requestTargetMp['onRequestSchedule'] ?? [];
+    }
+
+    return selectScheduleFlow;
+  };
+
+  scheduleProgressNodes.push(getSelectScheduleFlow());
 
   return scheduleProgressNodes;
 };
 
+// inlint utils
 const groupReqProgress = (progress: DatabaseTable['request_progress'][]) => {
   const grouped_progress: GroupReqProgress[] = [];
 
@@ -206,4 +206,37 @@ const groupReqProgress = (progress: DatabaseTable['request_progress'][]) => {
   }
 
   return grouped_progress;
+};
+
+const getProgressMeta = ({
+  reqProgressMp,
+  triggerActionMp,
+}: {
+  reqProgressMp: RequestProgressMapType;
+  triggerActionMp: TriggerActionMapType;
+}) => {
+  const meta: RequesProgressMetaType['meta'] = {
+    scheduleFlow: null,
+    isScheduled: false,
+    isCandidateAvailabilityReceived: false,
+    isManualActionNeeded: false,
+  };
+
+  if (
+    reqProgressMp['INTERVIEW_SCHEDULED'] &&
+    reqProgressMp['INTERVIEW_SCHEDULED'][0].status == 'completed'
+  ) {
+    meta.isScheduled = true;
+  }
+  if (
+    reqProgressMp['CAND_AVAIL_REC'] &&
+    reqProgressMp['CAND_AVAIL_REC'][0].status == 'completed'
+  ) {
+    meta.isCandidateAvailabilityReceived = true;
+  }
+  meta.scheduleFlow = getSchedulFlow({
+    eventTargetMap: triggerActionMp,
+    requestProgMp: reqProgressMp,
+  });
+  return meta;
 };

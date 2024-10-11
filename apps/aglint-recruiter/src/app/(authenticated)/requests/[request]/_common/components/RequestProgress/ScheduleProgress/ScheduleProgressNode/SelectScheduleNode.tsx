@@ -1,10 +1,9 @@
 import React from 'react';
-import { ProgressNodeParams } from '../../types';
-import { ShowCode } from '@/common/ShowCode';
+
 import { RequestProgressTracker } from '../../RequestProgressTracker';
-import AvailabilityFlowMenus from '../AvailabilityFlowMenus';
-import ChooseScheduleMode from '../ChooseScheduleMode';
-import SelfScheduleFlowMenus from '../SelfScheduleFlowMenus';
+import { type ProgressNodeParams } from '../../types';
+import { bannerMap } from '../../utils/bannerMap';
+import ActionNode from './ActionNode';
 import EventNode from './EventNode';
 
 const SelectScheduleNode = ({
@@ -26,7 +25,25 @@ const SelectScheduleNode = ({
                 <EventNode {...{ groupProgress: group }} key={group.group_id} />
               );
             })}
-            {/* banner */}
+            {workflows &&
+              workflows.actions.map((action) => {
+                return (
+                  <ActionNode
+                    key={action.id}
+                    eventTrigger={workflows.trigger_details.trigger}
+                    triggerAction={action}
+                  />
+                );
+              })}
+
+            {banners.map((bannerKey) => {
+              const Banner = bannerMap[bannerKey];
+              return (
+                <div key={bannerKey}>
+                  <Banner />
+                </div>
+              );
+            })}
             {/* <ShowCode.When isTrue={scheduleFlow === null}>
               <ChooseScheduleMode />
             </ShowCode.When> */}

@@ -94,7 +94,7 @@ const useRequestContext = ({ request_id }: RequestParams) => {
       request_progress: request_progress.data!,
       request_workflow: request_workflow.data!,
       is_slack_enabled: false,
-      is_workflow_enabled: false,
+      is_workflow_enabled: true,
     });
   }, [request_progress.data, request_workflow.data]);
 

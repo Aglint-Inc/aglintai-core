@@ -5,19 +5,17 @@ import React from 'react';
 import { ShowCode } from '@/components/Common/ShowCode';
 
 import { useRequestProgressProvider } from '../progressCtx';
+import { bannerMap } from '../utils/bannerMap';
 import { getSchedulFlow } from '../utils/getScheduleFlow';
+import { ProgressNodeMap } from '../utils/ProgressNodeMap';
 import CandidateAvailReceived from './CandidateAvailReceive';
 import InterviewScheduled from './InterviewScheduled';
 import SelectScheduleFlow from './SelectScheduleFlow';
-import { ProgressNodeMap } from '../utils/ProgressNodeMap';
 
 const ScheduleProgress = () => {
   const { requestDetails, progressMetaInfo } = useRequest();
   const { reqProgressMap, reqTriggerActionsMap } = useRequestProgressProvider();
-  const scheduleFlow = getSchedulFlow({
-    eventTargetMap: reqTriggerActionsMap,
-    requestTargetMp: reqProgressMap,
-  });
+
   let isDebreifSchedule = false;
   if (
     requestDetails &&
@@ -32,8 +30,9 @@ const ScheduleProgress = () => {
       {progressMetaInfo.scheduleProgressNodes.map((node) => {
         const ProgNode = ProgressNodeMap[node.type];
         return (
-          <div>
+          <div key={node.type}>
             <ProgNode {...node} />
+            {/* // banners */}
           </div>
         );
       })}
