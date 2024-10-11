@@ -3,6 +3,7 @@ import React from 'react';
 import { RequestProgressTracker } from '../../RequestProgressTracker';
 import { type ProgressNodeParams } from '../../types';
 import { bannerMap } from '../../utils/bannerMap';
+import { progressNodeCopy } from '../../utils/progressNodeCopy';
 import ActionNode from './ActionNode';
 import EventNode from './EventNode';
 
@@ -17,7 +18,7 @@ const ScheduleProgressNode = ({
     <div>
       <RequestProgressTracker
         circleIndicator={status === 'completed' ? 'success' : 'neutral'}
-        textRequestProgress={'When scheduling request received'}
+        textRequestProgress={progressNodeCopy[type]}
         slotProgress={
           <>
             {grouped_progress.map((group) => {

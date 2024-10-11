@@ -135,6 +135,26 @@ const getScheduleNodes = ({
       selectScheduleFlow.banners.push('CHOOSE_SCHEDULE_FLOW');
     }
 
+    const status_event = reqParams.request_progress.find(
+      (p) =>
+        p.is_progress_step === false &&
+        (p.event_type === 'SELF_SCHEDULE_LINK' ||
+          p.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK'),
+    );
+    if (status_event) {
+      selectScheduleFlow.status = status_event.status;
+    }
+
+    if (
+      requestprogMp['REQ_CAND_AVAIL_EMAIL_LINK'] &&
+      requestprogMp['REQ_CAND_AVAIL_EMAIL_LINK'].length === 0
+    ) {
+      selectScheduleFlow.status =
+        requestprogMp['REQ_CAND_AVAIL_EMAIL_LINK'].find(
+          (p) => p.is_progress_step === false,
+        )?.status ?? 'not_started';
+    }
+
     if (
       requestTargetMp['onRequestSchedule'] &&
       requestTargetMp['onRequestSchedule'].actions.length > 0 &&
@@ -190,6 +210,16 @@ const getScheduleNodes = ({
         workflows: [],
         banners: [],
       };
+
+    const status_event = reqParams.request_progress.find(
+      (p) =>
+        p.is_progress_step === false &&
+        (p.event_type === 'CAND_CONFIRM_SLOT' ||
+          p.event_type === 'RECRUITER_SCHEDULED'),
+    );
+    if (status_event) {
+      interviewScheduled.status = status_event.status;
+    }
 
     if (!requestprogMp['SEND_INTERVIEWER_ATTENDANCE_RSVP']) {
       if (
