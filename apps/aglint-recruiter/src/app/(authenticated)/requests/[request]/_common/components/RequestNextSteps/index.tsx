@@ -12,7 +12,7 @@ import ScheduleOptions from './ScheduleOptions';
 const RequestNextSteps = () => {
   const { progressMetaInfo, requestDetails } = useRequest();
 
-  const nextStep = progressMetaInfo.nextStep;
+  const nextStep = progressMetaInfo?.nextStep;
   if (!nextStep) {
     return <></>;
   }

@@ -6,6 +6,9 @@ import ScheduleProgressNode from './ScheduleProgressNode';
 
 const ScheduleProgress = () => {
   const { progressMetaInfo } = useRequest();
+  if (!progressMetaInfo) {
+    return <></>;
+  }
   return (
     <>
       {progressMetaInfo.scheduleProgressNodes.map((node) => {
@@ -15,15 +18,6 @@ const ScheduleProgress = () => {
           </div>
         );
       })}
-      {/* <ShowCode.When isTrue={!isDebreifSchedule}>
-        <SelectScheduleFlow scheduleFlow={scheduleFlow} />
-        <ShowCode.When isTrue={scheduleFlow === 'availability'}>
-          <>
-            <CandidateAvailReceived />
-          </>
-        </ShowCode.When>
-      </ShowCode.When>
-      <InterviewScheduled /> */}
     </>
   );
 };

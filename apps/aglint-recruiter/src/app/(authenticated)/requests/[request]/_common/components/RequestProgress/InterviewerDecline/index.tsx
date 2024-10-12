@@ -28,14 +28,14 @@ const InterviewerDecline = () => {
               isTrue={
                 !reqTriggerActionsMap['onRequestInterviewerDecline'] ||
                 (reqTriggerActionsMap['onRequestInterviewerDecline'] &&
-                  reqTriggerActionsMap['onRequestInterviewerDecline'].length ===
-                    0)
+                  reqTriggerActionsMap['onRequestInterviewerDecline'].actions
+                    .length === 0)
               }
             >
               {(!reqTriggerActionsMap['onRequestInterviewerDecline'] ||
                 (reqTriggerActionsMap['onRequestInterviewerDecline'] &&
-                  reqTriggerActionsMap['onRequestInterviewerDecline'].length ===
-                    0)) && (
+                  reqTriggerActionsMap['onRequestInterviewerDecline'].actions
+                    .length === 0)) && (
                 <Button
                   variant='outline'
                   size={'sm'}
@@ -55,12 +55,12 @@ const InterviewerDecline = () => {
             <ShowCode.When
               isTrue={Boolean(
                 reqTriggerActionsMap['onRequestInterviewerDecline'] &&
-                  reqTriggerActionsMap['onRequestInterviewerDecline'].length >
-                    0,
+                  reqTriggerActionsMap['onRequestInterviewerDecline'].actions
+                    .length > 0,
               )}
             >
               {reqTriggerActionsMap['onRequestInterviewerDecline'] &&
-                reqTriggerActionsMap['onRequestInterviewerDecline'].map(
+                reqTriggerActionsMap['onRequestInterviewerDecline'].actions.map(
                   (action) => {
                     const event = apiTargetToEvents[action.target_api];
                     return (
