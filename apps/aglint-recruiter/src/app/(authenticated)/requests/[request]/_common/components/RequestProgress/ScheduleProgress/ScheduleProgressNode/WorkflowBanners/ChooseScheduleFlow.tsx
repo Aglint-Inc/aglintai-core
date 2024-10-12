@@ -1,7 +1,7 @@
 import { Button } from '@components/ui/button';
 import { UIAlert } from '@components/ui-alert';
-import { WandSparkles } from 'lucide-react';
 import { useRequestProgressProvider } from '@request/components/RequestProgress/progressCtx';
+import { WandSparkles } from 'lucide-react';
 
 const ChooseScheduleFlow = () => {
   const { setTriggerDetails, setShowEditDialog } = useRequestProgressProvider();

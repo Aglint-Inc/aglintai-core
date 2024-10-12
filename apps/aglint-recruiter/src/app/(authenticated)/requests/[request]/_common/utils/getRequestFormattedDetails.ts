@@ -19,6 +19,7 @@ type RequestFormattedDetailsParams = {
   request_workflow: Awaited<ReturnType<typeof getRequestWorkflow>>;
   is_slack_enabled: boolean;
   is_workflow_enabled: boolean;
+  requestDetails: DatabaseTable['request'];
 };
 
 export const getRequestFormattedDetails = ({
@@ -26,6 +27,7 @@ export const getRequestFormattedDetails = ({
   request_workflow,
   is_slack_enabled,
   is_workflow_enabled,
+  requestDetails,
 }: RequestFormattedDetailsParams) => {
   const requestProgressMeta = getInitialReqData();
   const progWfMp = getProgWfMaps({ request_progress, request_workflow });
@@ -59,6 +61,7 @@ export const getRequestFormattedDetails = ({
       is_workflow_enabled,
       request_progress,
       request_workflow,
+      requestDetails,
     },
     grouped_progress,
   });
@@ -350,14 +353,29 @@ const getReqNextStep = ({
       lastProgressEvent.event_type === 'SELF_SCHEDULE_LINK' &&
       lastProgressEvent.status === 'failed'
     ) {
-      nextStep = 'SELF_SCHEDULE_LINK_FAIL';
+      nextStep = 'CHOOSE_SCHEDULE_MODE';
     }
     if (
       lastProgressEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK' &&
       lastProgressEvent.status === 'failed'
     ) {
-      nextStep = 'AVAILABILITY_LINK_FAIL';
+      nextStep = 'CHOOSE_SCHEDULE_MODE';
     }
+  } else {
+    if (
+      reqParams.requestDetails.status === 'to_do' &&
+      requestTargetMp['onRequestSchedule'] &&
+      requestTargetMp['onRequestSchedule'].actions.length > 0
+    ) {
+      nextStep = 'REQUEST_PROCEED';
+    }
+  }
+
+  if (
+    reqParams.requestDetails.type === 'decline_request' &&
+    reqParams.requestDetails.status === 'to_do'
+  ) {
+    nextStep = 'SCHEDULE_DEBRIEF';
   }
 
   return nextStep;

@@ -19,13 +19,14 @@ const RequestProceed = () => {
           await axios.post('/api/request/execute-workflow', {
             request_id: requestDetails.id,
           });
-          await handleAsyncUpdateRequest({
-            payload: {
-              requestId: requestDetails.id,
-              requestPayload: { status: 'in_progress' },
-            },
-          });
-          setTimeout(() => {
+
+          setTimeout(async () => {
+            await handleAsyncUpdateRequest({
+              payload: {
+                requestId: requestDetails.id,
+                requestPayload: { status: 'in_progress' },
+              },
+            });
             setIsProceeding(false);
           }, 2000);
         }}
