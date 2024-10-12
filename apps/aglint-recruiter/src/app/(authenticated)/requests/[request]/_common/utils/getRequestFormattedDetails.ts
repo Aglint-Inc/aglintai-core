@@ -50,6 +50,19 @@ export const getRequestFormattedDetails = ({
     scheduleFlow: requestProgressMeta.meta.scheduleFlow,
   });
 
+  requestProgressMeta.nextStep = getReqNextStep({
+    requestprogMp: progWfMp.requestProgMp,
+    requestTargetMp: progWfMp.eventTargetMap,
+    scheduleFlow: requestProgressMeta.meta.scheduleFlow,
+    reqParams: {
+      is_slack_enabled,
+      is_workflow_enabled,
+      request_progress,
+      request_workflow,
+    },
+    grouped_progress,
+  });
+
   return requestProgressMeta;
 };
 
@@ -93,6 +106,7 @@ const getInitialReqData = () => {
       isManualActionNeeded: true,
     },
     scheduleProgressNodes: [],
+    nextStep: null,
   };
 
   return cloneDeep(progressMeta);
@@ -237,7 +251,22 @@ const getScheduleNodes = ({
     return interviewScheduled;
   };
 
+  const getAvailbilityFlow = () => {
+    const availability: RequesProgressMetaType['scheduleProgressNodes'][0] = {
+      type: 'CAND_AVAIL_REC',
+      status: 'not_started',
+      grouped_progress: [...availbilityGroupPrgs],
+      workflows: [],
+      banners: [],
+    };
+
+    return availability;
+  };
+
   scheduleProgressNodes.push(getSelectScheduleFlow());
+  if (scheduleFlow === 'availability') {
+    scheduleProgressNodes.push(getAvailbilityFlow());
+  }
   scheduleProgressNodes.push(getInterviewScheduledFlow());
 
   return scheduleProgressNodes;
@@ -284,6 +313,56 @@ const groupReqProgress = (progress: DatabaseTable['request_progress'][]) => {
   return grouped_progress;
 };
 
+const getReqNextStep = ({
+  requestTargetMp,
+  requestprogMp,
+  scheduleFlow,
+  reqParams,
+  grouped_progress,
+}: Pick<
+  NodesParamsType,
+  | 'requestprogMp'
+  | 'scheduleFlow'
+  | 'requestTargetMp'
+  | 'reqParams'
+  | 'grouped_progress'
+>) => {
+  let nextStep: RequesProgressMetaType['nextStep'] = null;
+  if (scheduleFlow === null) {
+    nextStep = 'CHOOSE_SCHEDULE_MODE';
+  }
+  const lastProgressEvent =
+    grouped_progress.length === 0
+      ? null
+      : grouped_progress[groupReqProgress.length - 1].heading_progress;
+
+  if (lastProgressEvent) {
+    if (
+      lastProgressEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK' ||
+      lastProgressEvent.event_type ===
+        'SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK'
+    ) {
+      if (!requestTargetMp['onReceivingAvailReq']) {
+        nextStep = 'CAND_AVAIL_RECIEVED';
+      }
+    }
+    if (
+      lastProgressEvent.event_type === 'SELF_SCHEDULE_LINK' &&
+      lastProgressEvent.status === 'failed'
+    ) {
+      nextStep = 'SELF_SCHEDULE_LINK_FAIL';
+    }
+    if (
+      lastProgressEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK' &&
+      lastProgressEvent.status === 'failed'
+    ) {
+      nextStep = 'AVAILABILITY_LINK_FAIL';
+    }
+  }
+
+  return nextStep;
+};
+
 const getProgressMeta = ({
   reqProgressMp,
   triggerActionMp,
@@ -299,8 +378,10 @@ const getProgressMeta = ({
   };
 
   if (
-    reqProgressMp['INTERVIEW_SCHEDULED'] &&
-    reqProgressMp['INTERVIEW_SCHEDULED'][0].status == 'completed'
+    (reqProgressMp['CAND_CONFIRM_SLOT'] &&
+      reqProgressMp['CAND_CONFIRM_SLOT'][0].status == 'completed') ||
+    (reqProgressMp['RECRUITER_SCHEDULED'] &&
+      reqProgressMp['RECRUITER_SCHEDULED'][0].status == 'completed')
   ) {
     meta.isScheduled = true;
   }

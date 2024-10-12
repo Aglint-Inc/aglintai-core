@@ -65,6 +65,7 @@ const ScheduleProgressNode = ({
             </ShowCode.When> */}
           </>
         }
+        isLastNode={type === 'INTERVIEW_SCHEDULED'}
       />
     </div>
   );

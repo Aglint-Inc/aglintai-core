@@ -33,6 +33,11 @@ export type ProgressNodeType =
   | 'CAND_AVAIL_REC'
   | 'INTERVIEW_SCHEDULED';
 
+export type NextStepEventType =
+  | 'CHOOSE_SCHEDULE_MODE'
+  | 'CAND_AVAIL_RECIEVED'
+  | 'SCHEDULE_DEBRIEF'
+  | 'REQUEST_PROCEED';
 export type GroupReqProgress = {
   group_id: string;
   heading_progress: DatabaseTable['request_progress'];
@@ -55,4 +60,5 @@ export type RequesProgressMetaType = {
     isManualActionNeeded: boolean;
   };
   scheduleProgressNodes: ProgressNodeParams[];
+  nextStep: NextStepEventType | null;
 };
