@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "npm run gen_path && next dev --turbo",
     "dev:debug": "next dev",
     "build": "next build",
     "start": "next start",
