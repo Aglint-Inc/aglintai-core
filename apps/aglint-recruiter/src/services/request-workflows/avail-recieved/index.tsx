@@ -51,14 +51,13 @@ export const candAvailRecieved = async (req_body: BodyParams) => {
 
   const request_assignee_tz =
     request_rec.recruiter_user.scheduling_settings.timeZone.tzCode;
-  const avail_record = (
+  const avail_record = supabaseWrap(
     await supabaseAdmin
       .from('candidate_request_availability')
       .select('*,request_session_relation!inner(*)')
       .eq('id', candidate_availability_request_id)
-      .single()
-      .throwOnError()
-  ).data;
+      .single(),
+  );
 
   if (!avail_record) {
     throw new CApiError('SERVER_ERROR', 'No availability record found');

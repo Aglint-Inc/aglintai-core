@@ -67,6 +67,8 @@ export const getRequestFormattedDetails = ({
     grouped_progress,
   });
 
+  console.log('group prog', grouped_progress);
+
   return requestProgressMeta;
 };
 
@@ -185,6 +187,7 @@ const getScheduleNodes = ({
         ...requestTargetMp['onRequestSchedule'],
       });
     }
+    console.log('debug', selectScheduleFlow.grouped_progress);
 
     if (selectScheduleFlow.status == 'completed') {
       return selectScheduleFlow;
@@ -340,7 +343,7 @@ const groupReqProgress = (progress: DatabaseTable['request_progress'][]) => {
   }
   grouped_progress.push({
     group_id: progress[0].grouped_progress_id,
-    heading_progress: progress[0],
+    heading_progress: progress[0], // should be heading arr
     detail_progress: [],
   });
 
@@ -377,6 +380,7 @@ const getReqNextStep = ({
   scheduleFlow,
   reqParams,
   grouped_progress,
+  requestprogMp,
 }: Pick<
   NodesParamsType,
   | 'requestprogMp'
@@ -403,7 +407,11 @@ const getReqNextStep = ({
       lastProgressEvent.event_type === 'SELF_SCHEDULE_LINK' &&
       lastProgressEvent.status === 'failed'
     ) {
-      nextStep = 'CHOOSE_SCHEDULE_MODE';
+      if (requestprogMp['CAND_AVAIL_REC']) {
+        nextStep = 'CAND_AVAIL_RECIEVED';
+      } else {
+        nextStep = 'CHOOSE_SCHEDULE_MODE';
+      }
     } else if (
       lastProgressEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK' &&
       lastProgressEvent.status === 'failed'
