@@ -14,13 +14,12 @@ import {
 } from '@aglint/shared-utils';
 import { apiTargetToEvents } from '@request/components/RequestProgress/utils/progressMaps';
 
-import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
-import { candidateAvailRequest } from '@/services/api-schedulings/avail-recieved/candidateAvailRequest';
-import { candidateAvailReRequest } from '@/services/api-schedulings/avail-recieved/candidateAvailReRequest';
-import { sendSelfScheduleLink } from '@/services/api-schedulings/new-schedule/sendSelfScheduleLink';
+import { candidateAvailRequest } from '@/services/request-workflows/avail-recieved/candidateAvailRequest';
+import { candidateAvailReRequest } from '@/services/request-workflows/avail-recieved/candidateAvailReRequest';
+import { sendSelfScheduleLink } from '@/services/request-workflows/new-schedule/sendSelfScheduleLink';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-const schedule_wf = async (req_body: any) => {
+export const newScheduleRequest = async (req_body: any) => {
   const supabaseAdmin = getSupabaseServer();
   const {
     parsed_body,
@@ -124,10 +123,6 @@ const schedule_wf = async (req_body: any) => {
 
   return 'ok';
 };
-
-const handler = createPageApiPostRoute(null, schedule_wf);
-
-export default handler;
 
 const fetchUtil = async (req_body: any) => {
   const supabaseAdmin = getSupabaseServer();

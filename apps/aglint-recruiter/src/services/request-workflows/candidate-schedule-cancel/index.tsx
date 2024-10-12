@@ -7,10 +7,9 @@ import {
 import axios from 'axios';
 import { type z } from 'zod';
 
-import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-const cancelSchedule = async (
+export const onCandidateScheduleCancel = async (
   parsed_body: z.infer<typeof candidate_new_schedule_schema>,
 ) => {
   const supabaseAdmin = getSupabaseServer();
@@ -34,11 +33,6 @@ const cancelSchedule = async (
     );
   }
 };
-
-export default createPageApiPostRoute(
-  candidate_new_schedule_schema,
-  cancelSchedule,
-);
 
 const cancelInterviews = async ({ session_ids }: { session_ids: string[] }) => {
   await axios.post(

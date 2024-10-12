@@ -42,7 +42,10 @@ function RequestProgress() {
   const reqTriggerActionsMap = useMemo(() => {
     const mp: TriggerActionMapType = {};
     request_workflow.data.forEach((trigger_act) => {
-      mp[trigger_act.trigger] = [...trigger_act.workflow_action];
+      mp[trigger_act.trigger] = {
+        trigger_details: trigger_act,
+        actions: trigger_act.workflow_action ?? [],
+      };
     });
     return mp;
   }, [request_workflow.data]);
@@ -169,9 +172,9 @@ const getInitialActionDetails = ({
   const editTrigger = triggerDetails.trigger;
   if (
     reqTriggerActionsMap[editTrigger] &&
-    reqTriggerActionsMap[editTrigger].length > 0
+    reqTriggerActionsMap[editTrigger].actions.length > 0
   ) {
-    return reqTriggerActionsMap[editTrigger][0];
+    return reqTriggerActionsMap[editTrigger].actions[0];
   } else {
     let template: DatabaseTable['company_email_template'] | null = null;
     let scheduleFlow: DatabaseEnums['email_slack_types'] | null = null;

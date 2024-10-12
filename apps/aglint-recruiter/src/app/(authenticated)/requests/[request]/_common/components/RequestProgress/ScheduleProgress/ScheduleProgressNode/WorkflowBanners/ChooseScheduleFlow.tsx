@@ -1,10 +1,9 @@
 import { Button } from '@components/ui/button';
 import { UIAlert } from '@components/ui-alert';
+import { useRequestProgressProvider } from '@request/components/RequestProgress/progressCtx';
 import { WandSparkles } from 'lucide-react';
 
-import { useRequestProgressProvider } from '../progressCtx';
-
-const ChooseScheduleMode = () => {
+const ChooseScheduleFlow = () => {
   const { setTriggerDetails, setShowEditDialog } = useRequestProgressProvider();
   return (
     <>
@@ -34,4 +33,4 @@ const ChooseScheduleMode = () => {
   );
 };
 
-export default ChooseScheduleMode;
+export default ChooseScheduleFlow;

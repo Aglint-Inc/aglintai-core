@@ -12,7 +12,6 @@ import {
 } from '@components/ui/dialog';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { useRequest } from '@request/hooks';
-import get from 'lodash/get';
 import { Terminal } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -59,12 +58,13 @@ const WorkflowActionDialog = () => {
   ) => {
     const editTrigger = triggerDetails.trigger;
     setTiptapLoadStatus({ email: true, agent: true });
-    if (
-      get(reqTriggerActionsMap, editTrigger, []).length > 0 &&
+    const trigAction =
       reqTriggerActionsMap[editTrigger] &&
-      reqTriggerActionsMap[editTrigger][0].target_api === target_api
-    ) {
-      const existing_workflow_action = reqTriggerActionsMap[editTrigger][0];
+      reqTriggerActionsMap[editTrigger].actions.length > 0
+        ? reqTriggerActionsMap[editTrigger].actions[0]
+        : null;
+    if (trigAction) {
+      const existing_workflow_action = trigAction;
       setEmailTemplate({
         body: (existing_workflow_action.payload as any)?.email?.body || '',
         subject:

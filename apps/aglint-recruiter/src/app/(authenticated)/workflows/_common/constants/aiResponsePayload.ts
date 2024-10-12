@@ -1,6 +1,6 @@
 import { type z } from 'zod';
 
-import { type agentSelfScheduleInstruction } from '@/services/api-schedulings/textTransforms/selfScheduleLinkInstruction';
+import { type agentSelfScheduleInstruction } from '@/services/request-workflows/textTransforms/selfScheduleLinkInstruction';
 
 export const AI_RESPONSE_PLACEHOLDER: z.infer<
   typeof agentSelfScheduleInstruction

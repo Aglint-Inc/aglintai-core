@@ -1,3 +1,5 @@
+import { type DatabaseTable } from '@aglint/shared-types';
+
 import {
   type RequestProgressMapType,
   type TriggerActionMapType,
@@ -5,31 +7,40 @@ import {
 type ScheduleFlow = 'availability' | 'selfSchedule';
 export const getSchedulFlow = ({
   eventTargetMap,
-  requestTargetMp,
+  requestProgMp,
 }: {
   eventTargetMap: TriggerActionMapType;
-  requestTargetMp: RequestProgressMapType;
+  requestProgMp: RequestProgressMapType;
 }) => {
   let scheduleFlow: ScheduleFlow | null = null;
-  if (requestTargetMp['REQ_CAND_AVAIL_EMAIL_LINK']) {
+  if (requestProgMp['REQ_CAND_AVAIL_EMAIL_LINK']) {
     scheduleFlow = 'availability';
-  } else if (requestTargetMp['SELF_SCHEDULE_LINK']) {
+  } else if (requestProgMp['SELF_SCHEDULE_LINK']) {
     scheduleFlow = 'selfSchedule';
-  } else if (
+  }
+  if (scheduleFlow) {
+    return scheduleFlow;
+  }
+
+  let workflowAction: DatabaseTable['workflow_action'] | null = null;
+  if (
     eventTargetMap['onRequestSchedule'] &&
-    eventTargetMap['onRequestSchedule'].length > 0
+    eventTargetMap['onRequestSchedule'].actions.length > 0
   ) {
-    if (
-      eventTargetMap['onRequestSchedule'][0].target_api ===
+    workflowAction = eventTargetMap['onRequestSchedule'].actions[0];
+  }
+  if (
+    workflowAction &&
+    workflowAction.target_api ===
       'onRequestSchedule_emailLink_getCandidateAvailability'
-    ) {
-      scheduleFlow = 'availability';
-    } else if (
-      eventTargetMap['onRequestSchedule'][0].target_api ===
+  ) {
+    scheduleFlow = 'availability';
+  } else if (
+    workflowAction &&
+    workflowAction.target_api ===
       'onRequestSchedule_emailLink_sendSelfSchedulingLink'
-    ) {
-      scheduleFlow = 'selfSchedule';
-    }
+  ) {
+    scheduleFlow = 'selfSchedule';
   }
 
   return scheduleFlow;
