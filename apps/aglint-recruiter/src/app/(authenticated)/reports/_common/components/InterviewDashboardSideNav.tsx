@@ -43,7 +43,7 @@ export default function Component() {
     // },
     {
       name: 'Scheduling Reports',
-      icon: 'Calendar',
+      icon: 'UserCheckIcon',
       id: 'schedulingReports',
     },
   ];

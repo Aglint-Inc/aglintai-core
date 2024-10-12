@@ -6,6 +6,7 @@ import { CheckCircle2, FileIcon, UploadCloud } from 'lucide-react';
 import React, { type ChangeEvent, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
+import { useOnboarding } from '@/components/Navigation/OnboardPending/context/onboarding';
 import { PhoneInput } from '@/components/PhoneInput';
 import { useApplicationsActions, useJob } from '@/job/hooks';
 import { SafeObject } from '@/utils/safeObject';
@@ -41,6 +42,7 @@ export const ImportManual = () => {
   const [loading, setLoading] = useState(false);
   const { setImportPopup } = useApplicationsActions();
   const { handleUploadApplication } = useJob();
+  const { onboardRefetch } = useOnboarding();
 
   const validateForm = () => {
     const newApplicant = { ...applicant };
@@ -78,6 +80,7 @@ export const ImportManual = () => {
             },
             file: applicant.resume.value as File,
           });
+          onboardRefetch('candidate');
           setImportPopup(false);
         }
       } catch {

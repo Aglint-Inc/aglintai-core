@@ -24,7 +24,7 @@ function DateRangeField() {
 
   return (
     <div className='flex flex-col space-y-2'>
-      <span className='text-base font-medium'>Preferred Date Ranges</span>
+      <span className='text-base font-medium'>Preferred Time Range</span>
       <TimeRangeSelector
         slotButton={
           <UIButton

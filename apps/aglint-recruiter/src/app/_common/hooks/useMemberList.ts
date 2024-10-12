@@ -11,12 +11,11 @@ export const useMemberList = (includeSupended = true, isCalendar = false) => {
   const { recruiter_id } = useTenant();
   const queryClient = useQueryClient();
   const query = useQuery({
-    queryKey: ['get_members_list', recruiter_id],
+    queryKey: ['get_members_list', recruiter_id, includeSupended, isCalendar],
     refetchInterval: 30000,
     refetchOnMount: true,
     queryFn: () =>
       getMembersList({ recruiter_id, includeSupended, isCalendar }),
-    gcTime: 20000,
     enabled: !!recruiter_id,
   });
 

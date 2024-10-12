@@ -107,7 +107,7 @@ const Score = () => {
     <div className='flex items-center space-x-2 rounded-md bg-blue-100 px-3 py-2 text-blue-800'>
       <Loader />
       <span className='text-sm font-medium'>
-        Application scoring in progress:{' '}
+        Scoring:{' '}
         {job?.processing_count.processed +
           job?.processing_count.unavailable +
           job?.processing_count.unparsable}
