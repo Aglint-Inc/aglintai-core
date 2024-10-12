@@ -46,6 +46,7 @@ export const getRequestFormattedDetails = ({
       is_workflow_enabled,
       request_progress,
       request_workflow,
+      requestDetails,
     },
     requestprogMp: progWfMp.requestProgMp,
     requestTargetMp: progWfMp.eventTargetMap,
@@ -318,7 +319,6 @@ const groupReqProgress = (progress: DatabaseTable['request_progress'][]) => {
 
 const getReqNextStep = ({
   requestTargetMp,
-  requestprogMp,
   scheduleFlow,
   reqParams,
   grouped_progress,
@@ -337,38 +337,30 @@ const getReqNextStep = ({
   const lastProgressEvent =
     grouped_progress.length === 0
       ? null
-      : grouped_progress[groupReqProgress.length - 1].heading_progress;
+      : grouped_progress[grouped_progress.length - 1].heading_progress;
 
   if (lastProgressEvent) {
-    if (
-      lastProgressEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK' ||
-      lastProgressEvent.event_type ===
-        'SCHEDULE_FIRST_FOLLOWUP_AVAILABILITY_LINK'
-    ) {
+    if (lastProgressEvent.event_type === 'CAND_AVAIL_REC') {
       if (!requestTargetMp['onReceivingAvailReq']) {
         nextStep = 'CAND_AVAIL_RECIEVED';
       }
-    }
-    if (
+    } else if (
       lastProgressEvent.event_type === 'SELF_SCHEDULE_LINK' &&
       lastProgressEvent.status === 'failed'
     ) {
       nextStep = 'CHOOSE_SCHEDULE_MODE';
-    }
-    if (
+    } else if (
       lastProgressEvent.event_type === 'REQ_CAND_AVAIL_EMAIL_LINK' &&
       lastProgressEvent.status === 'failed'
     ) {
       nextStep = 'CHOOSE_SCHEDULE_MODE';
     }
-  } else {
-    if (
-      reqParams.requestDetails.status === 'to_do' &&
-      requestTargetMp['onRequestSchedule'] &&
-      requestTargetMp['onRequestSchedule'].actions.length > 0
-    ) {
-      nextStep = 'REQUEST_PROCEED';
-    }
+  } else if (
+    reqParams.requestDetails.status === 'to_do' &&
+    requestTargetMp['onRequestSchedule'] &&
+    requestTargetMp['onRequestSchedule'].actions.length > 0
+  ) {
+    nextStep = 'REQUEST_PROCEED';
   }
 
   if (

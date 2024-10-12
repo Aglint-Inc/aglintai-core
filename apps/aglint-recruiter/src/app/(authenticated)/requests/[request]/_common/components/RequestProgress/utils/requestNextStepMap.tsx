@@ -11,5 +11,6 @@ export const requestNextStepMap: Record<
   CAND_AVAIL_RECIEVED: CandAvailRecived,
   CHOOSE_SCHEDULE_MODE: SelectScheduleFlow,
   SCHEDULE_DEBRIEF: () => <></>,
+
   REQUEST_PROCEED: RequestProceed,
 };
