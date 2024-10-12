@@ -186,10 +186,15 @@ const getScheduleNodes = ({
       });
     }
 
+    if (selectScheduleFlow.status == 'completed') {
+      return selectScheduleFlow;
+    }
+    // banners and workflow
     if (
       scheduleFlow === 'selfSchedule' &&
       !requestprogMp['SCHEDULE_FIRST_FOLLOWUP_SELF_SCHEDULE']
     ) {
+      // banner and workflow
       if (
         requestTargetMp['selfScheduleReminder'] &&
         requestTargetMp['selfScheduleReminder'].actions.length > 0
@@ -239,6 +244,10 @@ const getScheduleNodes = ({
       interviewScheduled.status = status_event.status;
     }
 
+    if (interviewScheduled.status == 'completed') {
+      return interviewScheduled;
+    }
+    // banners and workflow
     if (!requestprogMp['SEND_INTERVIEWER_ATTENDANCE_RSVP']) {
       if (
         requestTargetMp['candidateBook'] &&
@@ -268,7 +277,6 @@ const getScheduleNodes = ({
       ];
 
     let idx = 0;
-
     for (const groupProg of availbilityGroupPrgs) {
       availScheduleProgressNodes[idx].grouped_progress.push(groupProg);
       if (
@@ -285,6 +293,26 @@ const getScheduleNodes = ({
         idx += 1;
       } else if (groupProg.heading_progress.event_type === 'CAND_AVAIL_REC') {
         availScheduleProgressNodes[idx].status = 'completed';
+      }
+    }
+
+    for (const progNode of availScheduleProgressNodes) {
+      if (progNode.status === 'completed') continue;
+
+      if (
+        !requestprogMp['SELF_SCHEDULE_LINK'] ||
+        !requestprogMp['SLOT_SUGGESTION']
+      ) {
+        if (
+          requestTargetMp['onReceivingAvailReq'] &&
+          requestTargetMp['onReceivingAvailReq'].actions.length > 0
+        ) {
+          progNode.workflows.push({
+            ...requestTargetMp['onReceivingAvailReq'],
+          });
+        } else {
+          progNode.banners.push('AVAILABILITY_RECIEVED');
+        }
       }
     }
 
