@@ -256,20 +256,47 @@ const getScheduleNodes = ({
   };
 
   const getAvailbilityFlow = () => {
-    const availability: RequesProgressMetaType['scheduleProgressNodes'][0] = {
-      type: 'CAND_AVAIL_REC',
-      status: 'not_started',
-      grouped_progress: [...availbilityGroupPrgs],
-      workflows: [],
-      banners: [],
-    };
+    const availScheduleProgressNodes: RequesProgressMetaType['scheduleProgressNodes'] =
+      [
+        {
+          type: 'CAND_AVAIL_REC',
+          status: 'not_started',
+          grouped_progress: [],
+          workflows: [],
+          banners: [],
+        },
+      ];
 
-    return availability;
+    let idx = 0;
+
+    for (const groupProg of availbilityGroupPrgs) {
+      availScheduleProgressNodes[idx].grouped_progress.push(groupProg);
+      if (
+        groupProg.heading_progress.event_type ===
+        'CANDIDATE_AVAILABILITY_RE_REQUESTED'
+      ) {
+        availScheduleProgressNodes.push({
+          type: 'CAND_AVAIL_REC',
+          status: 'not_started',
+          grouped_progress: [],
+          workflows: [],
+          banners: [],
+        });
+        idx += 1;
+      } else if (groupProg.heading_progress.event_type === 'CAND_AVAIL_REC') {
+        availScheduleProgressNodes[idx].status = 'completed';
+      }
+    }
+
+    return availScheduleProgressNodes;
   };
 
   scheduleProgressNodes.push(getSelectScheduleFlow());
   if (scheduleFlow === 'availability') {
-    scheduleProgressNodes.push(getAvailbilityFlow());
+    const availNodes = getAvailbilityFlow();
+    availNodes.forEach((node) => {
+      scheduleProgressNodes.push(node);
+    });
   }
   scheduleProgressNodes.push(getInterviewScheduledFlow());
 
