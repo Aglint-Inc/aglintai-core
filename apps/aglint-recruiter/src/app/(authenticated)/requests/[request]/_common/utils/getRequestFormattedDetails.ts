@@ -67,8 +67,6 @@ export const getRequestFormattedDetails = ({
     grouped_progress,
   });
 
-  console.log('group prog', grouped_progress);
-
   return requestProgressMeta;
 };
 
@@ -187,7 +185,6 @@ const getScheduleNodes = ({
         ...requestTargetMp['onRequestSchedule'],
       });
     }
-    console.log('debug', selectScheduleFlow.grouped_progress);
 
     if (selectScheduleFlow.status == 'completed') {
       return selectScheduleFlow;
