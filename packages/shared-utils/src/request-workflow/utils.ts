@@ -40,7 +40,7 @@ export const createRequestProgressLogger = ({
         .from('request_progress')
         .upsert({
           request_id: request_id,
-          created_at: dayjsLocal().toISOString(),
+          updated_at: dayjsLocal().toISOString(),
           meta: {
             event_run_id,
             ...(payload?.meta ?? {}),
