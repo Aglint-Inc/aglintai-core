@@ -49,7 +49,7 @@ const useRequestsContext = () => {
 
   const [sort, setSort] = useState<GetRequestParams['sort']>({
     order: 'desc',
-    type: 'created_at',
+    type: 'updated_at',
   });
 
   const [sections, setSections] = useState(defaultSections);

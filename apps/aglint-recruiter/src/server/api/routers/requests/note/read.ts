@@ -12,6 +12,7 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
     .from('request_note')
     .select('*')
     .eq('request_id', input.request_id)
+    .order('created_at', { ascending: true })
     .throwOnError();
   return data ? data[0] : null;
 };
