@@ -11,7 +11,9 @@ import ROUTES from '@/utils/routing/routes';
 import toast from '@/utils/toast';
 
 import {
+  setIsScheduleOpen,
   setSelectedAssignee,
+  setSelectedSessionIds,
   useApplicationDetailStore,
 } from '../stores/applicationDetail';
 import { type Interviewer } from '../types/types';
@@ -83,9 +85,11 @@ export const useScheduleRequest = () => {
   }, [optionsAssignees?.length, membersStatus]);
 
   const handleCreateRequest = async () => {
-    if (!selectedAssignee || !recruiter_user) return;
+    setIsSaving(true);
+
+    if (!selectedAssignee) return;
+
     const sel_user_id = selectedAssignee.user_id;
-    const assigned_user_id = recruiter_user.user_id;
 
     const sessionNames: string[] = sessions
       .map((session) => session?.interview_session?.name)
@@ -103,7 +107,7 @@ export const useScheduleRequest = () => {
         },
         assignee_id: sel_user_id,
         priority: requestType,
-        assigner_id: assigned_user_id,
+        assigner_id: recruiter_user.user_id,
         session_names: sessionNames,
       };
 
@@ -113,32 +117,32 @@ export const useScheduleRequest = () => {
       );
       const request_id = res.data;
 
-      if (note && (res.status === 201 || res.status === 200)) {
-        const payload = {
-          note,
-          request_id,
-          updated_at: dayjsLocal().toISOString(),
-        };
-        updateRequestNote(payload);
-        if (assigned_user_id !== recruiter_user.user_id) {
+      if (res.status === 201 || res.status === 200) {
+        if (note) {
+          const payload = {
+            note,
+            request_id,
+            updated_at: dayjsLocal().toISOString(),
+          };
+          updateRequestNote(payload);
+        }
+        if (sel_user_id === recruiter_user.user_id) {
           router.push(
             ROUTES['/requests/[request]']({
               request: res.data,
             }),
           );
         }
-      } else if (res.status === 201 || res.status === 200) {
-        router.push(
-          ROUTES['/requests/[request]']({
-            request: res.data,
-          }),
-        );
       } else {
-        toast.error('Failed to create request');
+        throw new Error();
       }
     } catch (e) {
       console.error(e);
       toast.error('Failed to create request');
+    } finally {
+      setIsSaving(false);
+      setSelectedSessionIds([]);
+      setIsScheduleOpen(false);
     }
   };
 
