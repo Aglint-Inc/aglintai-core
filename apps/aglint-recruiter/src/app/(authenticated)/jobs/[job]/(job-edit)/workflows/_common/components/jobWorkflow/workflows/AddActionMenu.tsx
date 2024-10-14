@@ -16,16 +16,15 @@ import { PlusCircle } from 'lucide-react';
 import { useState } from 'react';
 import { v4 } from 'uuid';
 
+import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
-import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
+import { getSlackWorkflowActions } from '@/utils/getSlackWorkflowActions';
 
 import {
   addWaction,
   useJobAutomationStore,
 } from '../../../contexts/workflowsStoreContext';
 import { agentInstructionEmailTargetApi } from '../../../lib/constants';
-import { useTenant } from '@/company/hooks';
-import { getSlackWorkflowActions } from '@/utils/getSlackWorkflowActions';
 
 const AddActionMenu = ({
   wTrigger,
