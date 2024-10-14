@@ -17,8 +17,6 @@ import {
   setSelectedDate,
   useCandidateInviteSelfScheduleStore,
 } from '../../../store';
-import { Loader } from '@/common/Loader';
-import { LoadingStateSelfScheduling } from '../..';
 
 const SlotsSelfSchedule = () => {
   const { status } = useInviteSlots();
@@ -32,12 +30,7 @@ const Success = () => {
   const { handleSelectSlot } = useInviteActions();
   const { selectedDate, selectedDay, timezone, rounds, initialDayDate } =
     useCandidateInviteSelfScheduleStore();
-  const {
-    data: verified_slots,
-    isLoading: loadingSlots,
-    isError: errorSlots,
-    isRefetching,
-  } = useInviteSlots();
+  const { data: verified_slots } = useInviteSlots();
   const data = transformPlanCombinationPack(verified_slots, timezone.tzCode);
   useRounds();
 
@@ -70,8 +63,6 @@ const Success = () => {
   const filteredDay = data
     ?.find((ele) => ele.interview_start_date === initialDayDate)
     ?.interview_rounds.find((ele) => ele.current_round_idx === selectedDay - 1);
-
-  if (loadingSlots) return <LoadingStateSelfScheduling />;
 
   return (
     <>
