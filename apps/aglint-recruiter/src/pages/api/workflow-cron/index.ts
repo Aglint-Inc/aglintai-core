@@ -4,6 +4,10 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
+import { candAvailRecieved } from '@/services/request-workflows/avail-recieved';
+import { onCandidateScheduleCancel } from '@/services/request-workflows/candidate-schedule-cancel';
+// import { oninterviewerDecline } from '@/services/request-workflows/interviewer-decline';
+import { newScheduleRequest } from '@/services/request-workflows/new-schedule';
 import { mailSender } from '@/utils/mailSender';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
@@ -40,37 +44,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       meta.target_api.startsWith('onRequestSchedule') ||
       meta.target_api.startsWith('onRequestReschedule')
     ) {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/new-schedule`,
-        {
-          ...meta,
-          event_run_id: id,
-        },
-      );
+      await newScheduleRequest({
+        ...meta,
+        event_run_id: id,
+      });
     } else if (meta.target_api.startsWith('onReceivingAvailReq')) {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/cand-avail-recieved`,
-        {
-          ...meta,
-          event_run_id: id,
-        },
-      );
+      await candAvailRecieved({
+        ...meta,
+        event_run_id: id,
+      } as any);
     } else if (meta.target_api.startsWith('onRequestCancel')) {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/cancel-schedule`,
-        {
-          ...meta,
-          event_run_id: id,
-        },
-      );
+      await onCandidateScheduleCancel({
+        ...meta,
+        event_run_id: id,
+      } as any);
     } else if (meta.target_api.startsWith('onRequestInterviewerDecline')) {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/interviewer-decline`,
-        {
-          ...meta,
-          event_run_id: id,
-        },
-      );
+      // await oninterviewerDecline({
+      //   ...meta,
+      //   event_run_id: id,
+      // } as any);
     }
     await supabaseAdmin
       .from('workflow_action_logs')

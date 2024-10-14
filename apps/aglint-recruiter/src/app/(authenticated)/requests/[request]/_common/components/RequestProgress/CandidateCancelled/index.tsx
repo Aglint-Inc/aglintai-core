@@ -11,9 +11,9 @@ function CandidateCancelled() {
   let workflowActions: DatabaseTable['workflow_action'][] = [];
   if (
     reqTriggerActionsMap['onRequestCancel'] &&
-    reqTriggerActionsMap['onRequestCancel'].length > 0
+    reqTriggerActionsMap['onRequestCancel'].actions.length > 0
   ) {
-    workflowActions = [...reqTriggerActionsMap['onRequestCancel']];
+    workflowActions = [...reqTriggerActionsMap['onRequestCancel'].actions];
   }
 
   return (

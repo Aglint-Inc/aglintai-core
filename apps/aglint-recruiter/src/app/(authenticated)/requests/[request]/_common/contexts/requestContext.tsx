@@ -1,5 +1,6 @@
 'use client';
 
+import { getRequestFormattedDetails } from '@request/utils/getRequestFormattedDetails';
 import { useRequests } from '@requests/hooks/useRequests';
 import { useQuery } from '@tanstack/react-query';
 import { createContext, type PropsWithChildren } from 'react';
@@ -88,7 +89,20 @@ const useRequestContext = ({ request_id }: RequestParams) => {
     [mutationQueue, request_id],
   );
 
+  const getSimpReqStatus = useCallback(() => {
+    if (!requestDetails || !request_progress.data || !request_workflow.data)
+      return null;
+    return getRequestFormattedDetails({
+      request_progress: request_progress.data,
+      request_workflow: request_workflow.data,
+      is_slack_enabled: false,
+      is_workflow_enabled: true,
+      requestDetails: requestDetails,
+    });
+  }, [requestDetails, request_progress.data, request_workflow.data]);
+
   return {
+    progressMetaInfo: getSimpReqStatus(),
     request_progress: {
       ...request_progress,
       data: request_progress.data ?? [],

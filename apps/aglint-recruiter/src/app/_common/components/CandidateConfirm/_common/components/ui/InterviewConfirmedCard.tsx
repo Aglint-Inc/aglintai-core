@@ -15,6 +15,7 @@ export function InterviewConfirmedCard({
   onClickAddCalendar = () => {},
   isJoinMeetingButtonVisible = true,
   isAddtoCalenderVisible = true,
+  slotStatus,
 }: {
   as?: string;
   textDate: string;
@@ -27,10 +28,11 @@ export function InterviewConfirmedCard({
   onClickAddCalendar?: () => void;
   isJoinMeetingButtonVisible?: boolean;
   isAddtoCalenderVisible?: boolean;
+  slotStatus: React.ReactNode;
 }) {
   return (
     <div className='0 my-2 flex w-[700px] justify-between rounded border border-neutral-300 bg-white p-4 transition-colors duration-200'>
-      <div className='flex flex-col justify-between'>
+      <div className='flex flex-col justify-between gap-1'>
         <div className='flex items-center space-x-4'>
           <Typography className='font-semibold' variant='p' type='small'>
             {textDate}
@@ -60,17 +62,28 @@ export function InterviewConfirmedCard({
           </div>
         </div>
       </div>
-      <div className='flex flex-col gap-1'>
-        {isJoinMeetingButtonVisible && (
-          <UIButton onClick={onClickJoinGoogleMeet} variant='secondary'>
-            Join with Google Meet
-          </UIButton>
-        )}
-        {isAddtoCalenderVisible && (
-          <UIButton onClick={onClickAddCalendar} variant='secondary'>
-            Add to Calendar
-          </UIButton>
-        )}
+      <div className='flex flex-row gap-1'>
+        {slotStatus}
+        <div className='flex flex-col gap-1'>
+          {isJoinMeetingButtonVisible && (
+            <UIButton
+              size={'sm'}
+              onClick={onClickJoinGoogleMeet}
+              variant='secondary'
+            >
+              Join with Google Meet
+            </UIButton>
+          )}
+          {isAddtoCalenderVisible && (
+            <UIButton
+              size={'sm'}
+              onClick={onClickAddCalendar}
+              variant='secondary'
+            >
+              Add to Calendar
+            </UIButton>
+          )}
+        </div>
       </div>
     </div>
   );

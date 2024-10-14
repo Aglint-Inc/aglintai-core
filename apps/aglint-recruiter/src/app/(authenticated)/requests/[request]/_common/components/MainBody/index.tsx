@@ -32,7 +32,6 @@ import { useEffect, useState } from 'react';
 import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
 import { Loader } from '@/common/Loader';
-import { ShowCode } from '@/components/Common/ShowCode';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 // import { UIDivider } from '@/components/Common/UIDivider';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
@@ -51,12 +50,9 @@ import CandidateAvailability from '../CandidateAvailability';
 import ConfirmAvailability from '../ConfirmAvailability';
 import { AvailabilityProvider } from '../ConfirmAvailability/_common/contexts/RequestAvailabilityContext';
 import RecentRequests from '../RecentRequests';
-import CandidateCancelRequest from '../RequestNextSteps/CandidateCancelRequest';
-import RequestDecline from '../RequestNextSteps/RequestDecline';
-import ScheduleOptions from '../RequestNextSteps/ScheduleOptions';
+import RequestNextSteps from '../RequestNextSteps';
 import RequestNotes from '../RequestNotes';
 import RequestProgress from '../RequestProgress';
-import SelfSchedulingDrawer from '../SelfSchedulingDrawer';
 import UpdateDetails from '../UpdateDetails';
 
 type InterviewStatus =
@@ -139,7 +135,6 @@ export default function ViewRequestDetails() {
           <ConfirmAvailability />
         </AvailabilityProvider>
         <SideDrawerEdit refetch={refetchMeetings} />
-        <SelfSchedulingDrawer />
 
         <TwoColumnPageLayout
           sidebarWidth={'400px'}
@@ -248,38 +243,7 @@ export default function ViewRequestDetails() {
           }
           sidebar={
             <div className='flex w-full flex-col space-y-4'>
-              <ShowCode.When isTrue={selectedRequest.status !== 'completed'}>
-                <Alert>
-                  <AlertTitle>Next Step</AlertTitle>
-                  <AlertDescription>
-                    Here is your next step on the request.
-                  </AlertDescription>
-
-                  <div className='flex flex-row gap-2'>
-                    <ShowCode.When
-                      isTrue={
-                        selectedRequest.type === 'schedule_request' ||
-                        selectedRequest.type === 'reschedule_request'
-                      }
-                    >
-                      <ScheduleOptions />
-                    </ShowCode.When>
-                    <ShowCode.When
-                      isTrue={selectedRequest.type === 'decline_request'}
-                    >
-                      <RequestDecline />
-                    </ShowCode.When>
-                    <ShowCode.When
-                      isTrue={
-                        selectedRequest.type === 'cancel_schedule_request'
-                      }
-                    >
-                      <CandidateCancelRequest />
-                    </ShowCode.When>
-                  </div>
-                </Alert>
-              </ShowCode.When>
-
+              <RequestNextSteps />
               <Section>
                 <SectionHeaderText>
                   <SectionTitle className='font-medium'>

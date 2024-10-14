@@ -15,7 +15,7 @@ import { useModuleAndUsers } from './useModuleAndUsers';
 export const useEnableDisableTraining = () => {
   const { localModule } = useModulesStore();
   const { data: editModule } = useModuleAndUsers();
-  const { data: members, isFetched } = useMemberList(false);
+  const { data: members, isFetched } = useMemberList(false, true);
   const [isBannerLoading, setBannerLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [errorApproval, setErrorApproval] = useState(false);

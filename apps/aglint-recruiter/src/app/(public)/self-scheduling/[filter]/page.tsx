@@ -41,20 +41,14 @@ const CandidateInvitePage = () => {
               {data.isBooked ? (
                 <div className='flex flex-col items-end space-y-2'>
                   <div className='flex flex-row items-end gap-2'>
-                    <UIBadge
-                      className='min-w-[140px]'
-                      variant='success'
-                      textBadge='Interview confirmed'
-                    />
-                    <p className='max-w-[420px] text-sm text-muted-foreground'>
-                      {`Your interview has been confirmed. Please find the interview details below. An email has been sent with the interview details.`}
-                    </p>
+                    <h1 className='text-lg font-semibold'>Interview</h1>
+                    <UIBadge variant='success' textBadge='Confirmed' />
                   </div>
                 </div>
               ) : (
                 <div className='flex flex-row items-start gap-2'>
+                  <h1 className='text-lg font-semibold'>Interview</h1>
                   <UIBadge variant='info' textBadge='Pending' />
-                  <h1 className='text-lg font-semibold'>Book your interview</h1>
                 </div>
               )}
             </div>

@@ -187,7 +187,7 @@ export default function LeverModalComp() {
                   Please enter your API key to connect to Lever.
                 </p>
               ) : integration.lever.step === STATE_LEVER_DIALOG.LISTJOBS ? (
-                <p className='text-sm text-muted-foreground'>
+                <p className='text-sm text-muted-foreground mb-2'>
                   Select a job to import. You can import only one job at a time.
                 </p>
               ) : null}

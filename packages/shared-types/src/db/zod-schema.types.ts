@@ -793,7 +793,7 @@ export const candidateRequestAvailabilityRelationshipsSchema = z.tuple([
   z.object({
     foreignKeyName: z.literal("candidate_request_availability_request_id_fkey"),
     columns: z.tuple([z.literal("request_id")]),
-    isOneToOne: z.literal(false),
+    isOneToOne: z.literal(true),
     referencedRelation: z.literal("request"),
     referencedColumns: z.tuple([z.literal("id")]),
   }),
@@ -3034,6 +3034,7 @@ export const recruiterPreferencesRowSchema = z.object({
   roles: z.boolean().nullable(),
   scheduling: z.boolean(),
   scoring: z.boolean(),
+  slack: z.boolean(),
   themes: z.boolean(),
   workflow: z.boolean(),
 });
@@ -3055,6 +3056,7 @@ export const recruiterPreferencesInsertSchema = z.object({
   roles: z.boolean().optional().nullable(),
   scheduling: z.boolean().optional(),
   scoring: z.boolean().optional(),
+  slack: z.boolean().optional(),
   themes: z.boolean().optional(),
   workflow: z.boolean().optional(),
 });
@@ -3076,6 +3078,7 @@ export const recruiterPreferencesUpdateSchema = z.object({
   roles: z.boolean().optional().nullable(),
   scheduling: z.boolean().optional(),
   scoring: z.boolean().optional(),
+  slack: z.boolean().optional(),
   themes: z.boolean().optional(),
   workflow: z.boolean().optional(),
 });
@@ -3506,39 +3509,39 @@ export const requestNoteRelationshipsSchema = z.tuple([
 export const requestProgressRowSchema = z.object({
   created_at: z.string(),
   event_type: z.string(),
+  grouped_progress_id: z.string(),
   id: z.string(),
   is_progress_step: z.boolean(),
   log: z.string().nullable(),
   meta: jsonSchema.nullable(),
   request_id: z.string(),
   status: z.string(),
-  target_api: emailSlackTypesSchema.nullable(),
   updated_at: z.string(),
 });
 
 export const requestProgressInsertSchema = z.object({
   created_at: z.string().optional(),
   event_type: z.string(),
+  grouped_progress_id: z.string(),
   id: z.string().optional(),
   is_progress_step: z.boolean().optional(),
   log: z.string().optional().nullable(),
   meta: jsonSchema.optional().nullable(),
   request_id: z.string(),
   status: z.string(),
-  target_api: emailSlackTypesSchema.optional().nullable(),
   updated_at: z.string().optional(),
 });
 
 export const requestProgressUpdateSchema = z.object({
   created_at: z.string().optional(),
   event_type: z.string().optional(),
+  grouped_progress_id: z.string().optional(),
   id: z.string().optional(),
   is_progress_step: z.boolean().optional(),
   log: z.string().optional().nullable(),
   meta: jsonSchema.optional().nullable(),
   request_id: z.string().optional(),
   status: z.string().optional(),
-  target_api: emailSlackTypesSchema.optional().nullable(),
   updated_at: z.string().optional(),
 });
 

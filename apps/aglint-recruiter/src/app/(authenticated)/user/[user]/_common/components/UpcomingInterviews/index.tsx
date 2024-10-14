@@ -70,7 +70,7 @@ const List = ({
 }) => {
   const router = useRouterPro();
   return (
-    <div className='flex items-center gap-4 rounded-lg'>
+    <div className='grid grid-cols-[max-content_1fr] gap-4 rounded-lg mb-2'>
       <div className='flex h-[94px] w-[90px] flex-col items-center justify-center rounded-sm bg-gray-50'>
         <div className='text-sm'>
           {dayjsLocal(interview.start_time).format('MMMM')}
@@ -83,7 +83,7 @@ const List = ({
         </div>
       </div>
       <div className='flex flex-col items-start gap-2'>
-        <h3 className='text-md font-medium'>
+        <h3 className='text-md font-medium line-clamp-1'>
           {getFullName(
             interview?.candidate?.first_name || '',
             interview?.candidate?.last_name || '',

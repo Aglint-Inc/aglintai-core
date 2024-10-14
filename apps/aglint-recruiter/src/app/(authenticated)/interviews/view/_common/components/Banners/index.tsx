@@ -46,6 +46,7 @@ function Banners() {
                   onClick={() => {
                     setIsDeclineDialogOpen(true);
                   }}
+                  className='mr-2 text-black'
                 >
                   Decline
                 </UIButton>
@@ -59,6 +60,7 @@ function Banners() {
                     await onClickAccept(sessionRelation.id);
                     refetch();
                   }}
+                   className='mr-2'
                 >
                   Accept
                 </UIButton>

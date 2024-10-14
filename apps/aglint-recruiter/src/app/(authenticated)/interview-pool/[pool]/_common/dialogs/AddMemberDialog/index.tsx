@@ -16,6 +16,7 @@ import {
 function AddMemberDialog() {
   const { toast } = useToast();
   const { data: members } = useMemberList(false, true);
+
   const isAddMemberDialogOpen = useModulesStore(
     (state) => state.isAddMemberDialogOpen,
   );

@@ -38,12 +38,14 @@ const employeeSizes = [
 
 const EditBasicInfoDialog = ({
   editDialog,
+  handleRemoveEditParam,
   setEditDialog,
 }: {
   editDialog: boolean;
+  handleRemoveEditParam: () => void;
   setEditDialog: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { recruiter } = useTenant();
+  const { recruiter, refetch } = useTenant();
   const [isError, setError] = useState(false);
   const [logo, setLogo] = useState<string | null>(null);
   const [nameError, setNameError] = useState(false);
@@ -65,6 +67,7 @@ const EditBasicInfoDialog = ({
   };
 
   const handleClose = () => {
+    handleRemoveEditParam();
     setEditDialog(false);
     //reset a form
     setTimeout(() => {
@@ -120,6 +123,7 @@ const EditBasicInfoDialog = ({
         logo,
         employee_size: recruiterLocal.employee_size,
       });
+      refetch();
       setEditDialog(false);
     } catch (e: any) {
       toast({

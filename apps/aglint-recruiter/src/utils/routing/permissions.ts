@@ -106,7 +106,6 @@ const PERMISSIONS: Permissions = {
   '/api/decryptApiKey': ['manage_company'],
   '/api/request_feedback': ['scheduling_module'],
   '/api/workflow-cron/execute': ['workflow_module'],
-  '/api/agent-workflow/interviewer-decline': ['authorized'],
   '/api/google-calender/watch-changes': ['authorized'],
   '/api/google-calender/webhook': ['authorized'],
   '/api/scheduling/application/sendselfschedule': ['scheduling_actions'],

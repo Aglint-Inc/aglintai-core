@@ -10,11 +10,11 @@ import { RolesAndPermissionsProvider } from '@/context/RolesAndPermissions/Roles
 export const Provider = ({ children }: PropsWithChildren) => {
   return (
     <TooltipProvider>
-      <OnboardingProvider>
-        <RolesAndPermissionsProvider>
-          <BreadcrumProvider>{children}</BreadcrumProvider>
-        </RolesAndPermissionsProvider>
-      </OnboardingProvider>
+      <RolesAndPermissionsProvider>
+        <BreadcrumProvider>
+          <OnboardingProvider>{children} </OnboardingProvider>
+        </BreadcrumProvider>
+      </RolesAndPermissionsProvider>
     </TooltipProvider>
   );
 };

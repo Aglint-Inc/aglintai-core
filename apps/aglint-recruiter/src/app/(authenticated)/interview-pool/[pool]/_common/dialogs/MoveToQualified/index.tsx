@@ -24,7 +24,7 @@ import {
 function MoveToQualifiedDialog() {
   const { toast } = useToast();
   const { recruiter_user } = useTenant();
-  const { data: members } = useMemberList();
+  const { data: members } = useMemberList(false, true);
   const isMovedToQualifiedDialogOpen = useModulesStore(
     (state) => state.isMovedToQualifiedDialogOpen,
   );

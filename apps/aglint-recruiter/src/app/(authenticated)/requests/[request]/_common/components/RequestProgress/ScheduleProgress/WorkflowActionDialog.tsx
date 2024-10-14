@@ -12,7 +12,6 @@ import {
 } from '@components/ui/dialog';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { useRequest } from '@request/hooks';
-import get from 'lodash/get';
 import { Terminal } from 'lucide-react';
 import React, { useState } from 'react';
 
@@ -22,6 +21,7 @@ import {
   availReminder,
   selfScheduleReminder,
 } from '@/services/event-triggers/trigger-funcs/onUpdateRequestProgress';
+import { getSlackWorkflowActions } from '@/utils/getSlackWorkflowActions';
 import { supabase } from '@/utils/supabase/client';
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
@@ -59,12 +59,13 @@ const WorkflowActionDialog = () => {
   ) => {
     const editTrigger = triggerDetails.trigger;
     setTiptapLoadStatus({ email: true, agent: true });
-    if (
-      get(reqTriggerActionsMap, editTrigger, []).length > 0 &&
+    const trigAction =
       reqTriggerActionsMap[editTrigger] &&
-      reqTriggerActionsMap[editTrigger][0].target_api === target_api
-    ) {
-      const existing_workflow_action = reqTriggerActionsMap[editTrigger][0];
+      reqTriggerActionsMap[editTrigger].actions.length > 0
+        ? reqTriggerActionsMap[editTrigger].actions[0]
+        : null;
+    if (trigAction) {
+      const existing_workflow_action = trigAction;
       setEmailTemplate({
         body: (existing_workflow_action.payload as any)?.email?.body || '',
         subject:
@@ -191,12 +192,13 @@ const WorkflowActionDialog = () => {
               handleChangeSelectedAction(value as any);
             }}
             value={selectedActionsDetails.target_api}
-            menuOptions={ACTION_TRIGGER_MAP[triggerDetails.trigger].map(
-              (action) => ({
-                name: action.name,
-                value: action.value.target_api,
-              }),
-            )}
+            menuOptions={getSlackWorkflowActions(
+              triggerDetails.trigger,
+              recruiter.recruiter_preferences.slack,
+            ).map((action) => ({
+              name: action.name,
+              value: action.value.target_api,
+            }))}
           />
           {(triggerDetails.trigger === 'sendAvailReqReminder' ||
             triggerDetails.trigger === 'selfScheduleReminder') && (

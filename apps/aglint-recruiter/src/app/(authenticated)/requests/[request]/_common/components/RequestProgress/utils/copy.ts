@@ -44,12 +44,7 @@ export const workflowCopy: WorkflowCopyType = {
     future: 'Awaiting candidate to confirm slot.',
     error: 'Error occurred while confirming slot with candidate.',
   },
-  INTERVIEW_SCHEDULED: {
-    past: 'Interview scheduled.',
-    present: 'Scheduling interview.',
-    error: 'Error occurred while scheduling interview.',
-    future: 'Awaiting interview scheduling.',
-  },
+
   RECRUITER_SCHEDULED: {
     past: 'Interview scheduled.',
     present: 'Scheduling interview.',
