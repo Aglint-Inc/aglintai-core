@@ -1,5 +1,4 @@
 import { TwoColumnPageLayout } from '@components/layouts/two-column-page-layout';
-import { unstable_noStore } from 'next/cache';
 
 import { api, HydrateClient } from '@/trpc/server';
 
@@ -16,7 +15,6 @@ const Layout = ({
     application: string;
   };
 }) => {
-  unstable_noStore();
   void api.application.application_details.prefetch({
     application_id: params.application,
   });
