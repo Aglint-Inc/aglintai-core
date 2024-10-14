@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { useTenant, useTenantMembers } from '@/company/hooks';
 import { useFlags } from '@/company/hooks/useFlags';
 import FilterHeader from '@/components/Common/FilterHeader';
-import { type Job } from '@/queries/jobs/types';
+import type { Job } from '@/jobs/types';
 
 const initalFilterValue = {
   status: [],

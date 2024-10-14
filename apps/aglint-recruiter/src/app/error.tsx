@@ -1,9 +1,5 @@
 'use client';
 
-import UIError from './_common/components/UIError';
-
-const Error = () => {
-  return <UIError />;
-};
+import { Error } from '@/common/Error';
 
 export default Error;

@@ -8,7 +8,6 @@ import {
   useTenantOfficeLocations,
 } from '@/company/hooks';
 import { useFlags } from '@/company/hooks/useFlags';
-import { useJobs } from '@/jobs/hooks';
 import { api } from '@/trpc/client';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
@@ -69,9 +68,9 @@ export function useCompanySetup() {
   const { data: departments } = useAllDepartments();
   const { data: locations } = useTenantOfficeLocations();
   const { data: interviewPools } = useAllInterviewModules();
-  const {
-    jobs: { data: jobs },
-  } = useJobs();
+  // const {
+  //   jobs: { data: jobs },
+  // } = useJobs();
 
   const { data: integrations, isLoading: integrationLoading } =
     useIntegrations();
@@ -158,7 +157,7 @@ export function useCompanySetup() {
     ? candidateInterviewPlan.interviewPlanCount > 0
     : false;
   const isInterviewPoolPresent = !!interviewPools?.length;
-  const isJobsPresent = !!jobs?.length;
+  // const isJobsPresent = !!jobs?.length;
 
   //steps ------
 
@@ -323,65 +322,65 @@ export function useCompanySetup() {
           ],
         },
 
-        {
-          id: 'create-job',
-          title: 'Create Job',
-          description: 'At least one job must be present',
-          isCompleted: isJobsPresent,
-          isLocalCompleted: isJobsPresent,
-          navLink: ROUTES['/jobs/create'](),
-          isOptional: false,
-          isVisible: true,
-          isNavDisable: false,
-          bulletPoints: ['Job title', 'Description', 'Interview type'],
-          scoringPoints: [
-            'Enables efficient candidate scoring',
-            'Facilitates shortlisting based on job criteria',
-          ],
-          schedulingPoints: ['Allows for job-specific interview scheduling'],
-        },
-        {
-          id: 'candidate',
-          title: 'Add Candidate',
-          description: 'Add at least one candidate/application',
-          isCompleted: isCandidatePresent,
-          isLocalCompleted: isCandidatePresent,
-          navLink: isJobsPresent
-            ? ROUTES['/jobs/[job]']({
-                job: jobs?.[0].id ?? '',
-              }) + '?indicator=true'
-            : '',
-          isOptional: false,
-          isVisible: true,
-          isNavDisable: !isJobsPresent,
-          toolTipText: 'Please add the job first',
-          bulletPoints: ['Candidate name', 'Email', 'Applied job'],
-          scoringPoints: [
-            'Enables candidate shortlisting based on job criteria',
-          ],
-          schedulingPoints: ['Facilitates interview scheduling for candidates'],
-        },
-        {
-          id: 'interview-plan',
-          title: 'Set Interview Plan',
-          description: 'Create an interview plan for the job',
-          isCompleted: isInterviewPlanPresent,
-          isLocalCompleted: isInterviewPlanPresent,
-          navLink: isJobsPresent
-            ? ROUTES['/jobs/[job]/interview-plan']({
-                job: jobs?.[0].id ?? '',
-              }) + '?indicator=true'
-            : '',
-          isNavDisable: !isJobsPresent,
-          toolTipText: 'Please add the job first',
-          isOptional: false,
-          isVisible: true,
-          bulletPoints: ['Interview type', 'Assigned interviewers'],
-          schedulingPoints: [
-            'Enables efficient interview scheduling',
-            'Helps organize different interview types',
-          ],
-        },
+        // {
+        //   id: 'create-job',
+        //   title: 'Create Job',
+        //   description: 'At least one job must be present',
+        //   isCompleted: isJobsPresent,
+        //   isLocalCompleted: isJobsPresent,
+        //   navLink: ROUTES['/jobs/create'](),
+        //   isOptional: false,
+        //   isVisible: true,
+        //   isNavDisable: false,
+        //   bulletPoints: ['Job title', 'Description', 'Interview type'],
+        //   scoringPoints: [
+        //     'Enables efficient candidate scoring',
+        //     'Facilitates shortlisting based on job criteria',
+        //   ],
+        //   schedulingPoints: ['Allows for job-specific interview scheduling'],
+        // },
+        // {
+        //   id: 'candidate',
+        //   title: 'Add Candidate',
+        //   description: 'Add at least one candidate/application',
+        //   isCompleted: isCandidatePresent,
+        //   isLocalCompleted: isCandidatePresent,
+        //   navLink: isJobsPresent
+        //     ? ROUTES['/jobs/[job]']({
+        //         job: jobs?.[0].id ?? '',
+        //       }) + '?indicator=true'
+        //     : '',
+        //   isOptional: false,
+        //   isVisible: true,
+        //   isNavDisable: !isJobsPresent,
+        //   toolTipText: 'Please add the job first',
+        //   bulletPoints: ['Candidate name', 'Email', 'Applied job'],
+        //   scoringPoints: [
+        //     'Enables candidate shortlisting based on job criteria',
+        //   ],
+        //   schedulingPoints: ['Facilitates interview scheduling for candidates'],
+        // },
+        // {
+        //   id: 'interview-plan',
+        //   title: 'Set Interview Plan',
+        //   description: 'Create an interview plan for the job',
+        //   isCompleted: isInterviewPlanPresent,
+        //   isLocalCompleted: isInterviewPlanPresent,
+        //   navLink: isJobsPresent
+        //     ? ROUTES['/jobs/[job]/interview-plan']({
+        //         job: jobs?.[0].id ?? '',
+        //       }) + '?indicator=true'
+        //     : '',
+        //   isNavDisable: !isJobsPresent,
+        //   toolTipText: 'Please add the job first',
+        //   isOptional: false,
+        //   isVisible: true,
+        //   bulletPoints: ['Interview type', 'Assigned interviewers'],
+        //   schedulingPoints: [
+        //     'Enables efficient interview scheduling',
+        //     'Helps organize different interview types',
+        //   ],
+        // },
       ]
         .filter((step) => step.isVisible)
         .sort(
@@ -393,7 +392,7 @@ export function useCompanySetup() {
     recruiter,
     integrations,
     isMembersFetched,
-    jobs,
+    // jobs,
     allMembers,
     locations,
     interviewPools,

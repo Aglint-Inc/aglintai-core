@@ -18,11 +18,11 @@ import { Loader } from '@/components/Common/Loader';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { STATE_LEVER_DIALOG } from '@/jobs/constants';
 import {
+  useCreateLeverJobs,
   useIntegrationActions,
   useIntegrationStore,
-  useJobs,
+  useJobsContext,
 } from '@/jobs/hooks';
-import { api } from '@/trpc/client';
 import toast from '@/utils/toast';
 
 import NoAtsResult from '../NoAtsResult';
@@ -35,7 +35,7 @@ export default function LeverModalComp() {
   const { setIntegrations, resetIntegrations } = useIntegrationActions();
   const integration = useIntegrationStore((state) => state.integrations);
   const { superPush } = useRouterPro();
-  const { jobs, handleGenerateJd } = useJobs();
+  const { jobs } = useJobsContext();
   const [loading, setLoading] = useState(false);
   const [leverPostings, setLeverPostings] = useState<LeverJob[]>([]);
   const [selectedLeverPostings, setSelectedLeverPostings] =
@@ -48,17 +48,17 @@ export default function LeverModalComp() {
   const [showApiKey, setShowApiKey] = useState(false);
 
   useEffect(() => {
-    if (jobs.status === 'success' && integrations?.lever_key) {
+    if (integrations?.lever_key) {
       fetchJobs();
     }
-  }, [jobs.status, integrations?.lever_key]);
+  }, [integrations?.lever_key]);
 
   const fetchJobs = async () => {
     const allJobs = await fetchAllJobs(integrations.lever_key!);
     setLeverPostings(
       allJobs.filter((post) => {
         if (
-          jobs.data?.filter(
+          jobs.filter(
             (job) =>
               job.posted_by === POSTED_BY.LEVER && job.job_title === post.text,
           ).length == 0
@@ -72,7 +72,7 @@ export default function LeverModalComp() {
     setInitialFetch(false);
   };
 
-  const { mutateAsync } = api.ats.lever.create_job.useMutation();
+  const { mutateAsync } = useCreateLeverJobs();
 
   const importLever = async () => {
     try {
@@ -82,8 +82,6 @@ export default function LeverModalComp() {
       const response = await mutateAsync({
         leverPost: selectedLeverPostings,
       });
-      await handleGenerateJd(response.public_job_id);
-      // await handleJobsRefresh();
       setIntegrations({
         lever: { open: false, step: STATE_LEVER_DIALOG.IMPORTING },
       });

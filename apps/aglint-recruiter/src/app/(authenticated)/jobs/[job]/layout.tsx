@@ -1,14 +1,29 @@
-'use client';
-
+import { unstable_noStore as noStore } from 'next/cache';
 import { type PropsWithChildren } from 'react';
 
+import { ErrorBoundary } from '@/common/ErrorBoundary';
 import { ApplicationsStoreProvider, JobProvider } from '@/job/contexts';
+import { api, HydrateClient } from '@/trpc/server';
 
-const Layout = ({ children }: PropsWithChildren) => {
+type Props = {
+  params: {
+    job: string;
+  };
+};
+
+const Layout = async (props: PropsWithChildren<Props>) => {
+  noStore();
+  void api.jobs.job.read.prefetch({ id: props.params.job });
   return (
-    <JobProvider>
-      <ApplicationsStoreProvider>{children}</ApplicationsStoreProvider>
-    </JobProvider>
+    <HydrateClient>
+      <ErrorBoundary>
+        <JobProvider>
+          <ApplicationsStoreProvider>
+            {props.children}
+          </ApplicationsStoreProvider>
+        </JobProvider>
+      </ErrorBoundary>
+    </HydrateClient>
   );
 };
 

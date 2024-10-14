@@ -80,20 +80,20 @@ export const createTRPCRouter = t.router;
  * You can remove this if you don't like it, but it can help catch unwanted waterfalls by simulating
  * network latency that would occur in production but not in local development.
  */
-const timingMiddleware = t.middleware(async ({ next, path }) => {
-  const start = Date.now();
+const timingMiddleware = t.middleware(async ({ next, path: _path }) => {
+  const _start = Date.now();
 
-  if (t._config.isDev) {
-    const waitMs = Math.floor(Math.random() * 400) + 1000;
-    await new Promise((resolve) => setTimeout(resolve, waitMs));
-  }
+  // if (t._config.isDev) {
+  //   const waitMs = Math.floor(Math.random() * 400) + 1000;
+  //   await new Promise((resolve) => setTimeout(resolve, waitMs));
+  // }
 
   const result = await next();
 
-  const end = Date.now();
+  const _end = Date.now();
   if (process.env.NEXT_PUBLIC_HOST_NAME === 'http://localhost:3000') {
     // eslint-disable-next-line no-console
-    console.log(`[TRPC] ${path} took ${end - start}ms to execute`);
+    // console.log(`[TRPC] ${path} took ${end - start}ms to execute`);
   }
   return result;
 });
@@ -248,6 +248,9 @@ export type PublicProcedure<T = unknown> = Procedure<typeof publicProcedure, T>;
 
 export const atsProcedure = publicProcedure.use(atsMiddleware);
 export type ATSProcedure<T = unknown> = Procedure<typeof atsProcedure, T>;
+
+export const dbProcedure = publicProcedure;
+export type DBProcedure<T = unknown> = Procedure<typeof dbProcedure, T>;
 
 /**
  * Private (authenticated) procedure

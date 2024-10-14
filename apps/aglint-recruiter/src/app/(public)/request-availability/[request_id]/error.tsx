@@ -1,9 +1,5 @@
 'use client';
 
-import UIError from '@/common/UIError';
-
-const Error = () => {
-  return <UIError />;
-};
+import { Error } from '@/common/Error';
 
 export default Error;

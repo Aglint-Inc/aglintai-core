@@ -38,12 +38,13 @@ import Link from 'next/link';
 import { createContext, memo, useCallback, useContext, useState } from 'react';
 
 import { Loader } from '@/common/Loader';
-import PublishButton from '@/components/Common/PublishButton';
+import { useFlags } from '@/company/hooks/useFlags';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJob } from '@/job/hooks';
-import { useJobs } from '@/jobs/hooks';
+import { useApplicationsRescore } from '@/job/hooks/useApplicationsRescore';
+import { useJobsContext } from '@/jobs/hooks';
 import ROUTES from '@/utils/routing/routes';
 
 import { UploadApplications } from '../UploadApplications';
@@ -55,14 +56,31 @@ export const SharedActions = () => {
       <div className='flex flex-row items-center gap-2'>
         <Score />
         <Sync />
+        <Rescore />
         <Add />
-        <Publish />
         <Switcher />
         <Link href={`/jobs/${value?.job?.id}/job-details`}>
           <UIButton variant='outline'>Edit</UIButton>
         </Link>
       </div>
     </SettingsContext.Provider>
+  );
+};
+
+const Rescore = () => {
+  const { scoring } = useFlags();
+  const { isPolling } = useJob();
+  const { mutate, isPending } = useApplicationsRescore();
+  if (!scoring) return <></>;
+  return (
+    <div className='sr-only flex flex-row gap-1'>
+      <OptimisticWrapper loading={isPolling || isPending}>
+        <Button variant='outline' onClick={() => mutate()} className='w-auto'>
+          <RefreshCw className='mr-2 h-4 w-4' />
+          Rescore
+        </Button>
+      </OptimisticWrapper>
+    </div>
   );
 };
 
@@ -101,8 +119,8 @@ const Sync = () => {
 };
 
 const Score = () => {
-  const { applicationScoringPollEnabled, job, total } = useJob();
-  if (!applicationScoringPollEnabled) return null;
+  const { isApplicationsPolling, job, total } = useJob();
+  if (!isApplicationsPolling) return <></>;
   return (
     <div className='flex items-center space-x-2 rounded-md bg-blue-100 px-3 py-2 text-blue-800'>
       <Loader />
@@ -118,22 +136,10 @@ const Score = () => {
 };
 
 const Add = () => {
-  const { job, manageJob } = useJob();
+  const { manageJob } = useJobsContext();
+  const { job } = useJob();
   if (job?.status === 'closed' || !manageJob) return null;
   return <UploadApplications></UploadApplications>;
-};
-
-const Publish = () => {
-  const { handlePublish, canPublish, manageJob, job } = useJob();
-  if (job?.status === 'closed' || !manageJob) return null;
-  return (
-    <PublishButton
-      onClick={async () => {
-        await handlePublish();
-      }}
-      disabled={!canPublish}
-    />
-  );
 };
 
 const Switcher = () => {
@@ -162,7 +168,7 @@ const Switcher = () => {
 
 const useSettingsActions = () => {
   const { push, pathName: pathname } = useRouterPro();
-  const { handleJobDelete } = useJobs();
+  const { handleJobDelete } = useJobsContext();
   const { job, handleJobAsyncUpdate } = useJob();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [modal, setModal] = useState(false);
@@ -307,7 +313,7 @@ const Close = () => {
 };
 
 const Modules = () => {
-  const { manageJob } = useJob();
+  const { manageJob } = useJobsContext();
   const { currentPath } = useSettings();
   const { isScoringEnabled } = useRolesAndPermissions();
   if (!manageJob)

@@ -16,7 +16,6 @@ import {
   useState,
 } from 'react';
 
-import { Loader } from '@/components/Common/Loader';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { useJob } from '@/job/hooks';
 import {
@@ -28,33 +27,18 @@ import { SafeObject } from '@/utils/safeObject';
 import { validateString } from '@/utils/validateString';
 
 export const JobHiringTeamDashboard = () => {
-  const { jobLoad, job } = useJob();
+  const { job } = useJob();
 
-  return jobLoad ? (
-    job && job.status !== 'closed' ? (
-      <JobEdit />
-    ) : (
-      <JobNotFound />
-    )
-  ) : (
-    <div className='flex h-screen w-full items-center justify-center'>
-      <Loader />
-    </div>
-  );
+  return job && job.status !== 'closed' ? <JobEdit /> : <JobNotFound />;
 };
 
 const JobEdit = () => {
-  const { job } = useJob();
-  //TODO: HACK FOR BACKWARDS COMPATABILITY, DELETE THIS LATER
-  const { hiring_manager, recruiter, recruiting_coordinator, sourcer } = {
-    hiring_manager: job.hiring_manager,
-    recruiter: job.recruiter,
-    recruiting_coordinator: job.recruiting_coordinator,
-    sourcer: job.sourcer,
-  };
+  const {
+    job: { hiring_manager, recruiter, recruiting_coordinator, sourcer },
+  } = useJob();
   const [fields, setFields] = useState<JobHiringTeamForm>({
     hiring_manager: {
-      value: hiring_manager,
+      value: hiring_manager!,
       required: true,
       error: {
         value: validateString(hiring_manager!),
@@ -62,7 +46,7 @@ const JobEdit = () => {
       },
     },
     recruiter: {
-      value: recruiter,
+      value: recruiter!,
       required: true,
       error: {
         value: validateString(recruiter!),
@@ -121,7 +105,7 @@ const JobEdit = () => {
 const validateForms = (fields: JobHiringTeamForm) => {
   return SafeObject.entries(fields).reduce((acc, [key, value]) => {
     acc[key] = {
-      value: value.value,
+      value: value.value!,
       required: value.required,
       error: {
         value: value?.value

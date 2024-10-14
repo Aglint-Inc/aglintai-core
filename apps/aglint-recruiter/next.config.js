@@ -9,6 +9,11 @@ const nextConfig = {
     dirs: ['src'],
     ignoreDuringBuilds: true,
   },
+  // logging: {
+  //   fetches: {
+  //     fullUrl: true,
+  //   },
+  // },
 
   // typescript: {
   //   // !! WARN !!

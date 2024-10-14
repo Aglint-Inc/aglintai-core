@@ -2574,7 +2574,7 @@ export type Database = {
           created_at: string
           department_id: number | null
           description: string | null
-          draft: Json | null
+          draft_jd_json: Json | null
           hiring_manager: string | null
           id: string
           interview_coordinator: string | null
@@ -2609,7 +2609,7 @@ export type Database = {
           created_at?: string
           department_id?: number | null
           description?: string | null
-          draft?: Json | null
+          draft_jd_json?: Json | null
           hiring_manager?: string | null
           id?: string
           interview_coordinator?: string | null
@@ -2644,7 +2644,7 @@ export type Database = {
           created_at?: string
           department_id?: number | null
           description?: string | null
-          draft?: Json | null
+          draft_jd_json?: Json | null
           hiring_manager?: string | null
           id?: string
           interview_coordinator?: string | null
@@ -4644,10 +4644,11 @@ export type Database = {
           department: string | null
           department_id: number | null
           description: string | null
-          draft: Json | null
+          draft_jd_json: Json | null
           hiring_manager: string | null
           id: string | null
           interview_coordinator: string | null
+          interview_plan_count: number | null
           is_pinned: boolean | null
           jd_json: Json | null
           job_title: string | null

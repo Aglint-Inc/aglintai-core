@@ -5,9 +5,7 @@ import { api, HydrateClient } from '@/trpc/server';
 
 const Layout = async ({ children }: PropsWithChildren) => {
   noStore();
-
   void api.interview_pool.list.prefetch();
-
   return <HydrateClient>{children}</HydrateClient>;
 };
 

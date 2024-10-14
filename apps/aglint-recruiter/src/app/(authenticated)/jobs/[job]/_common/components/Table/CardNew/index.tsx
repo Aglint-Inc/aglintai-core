@@ -12,6 +12,7 @@ import {
   useJob,
 } from '@/job/hooks';
 import type { Applications } from '@/job/types';
+import { useJobsContext } from '@/jobs/hooks';
 import ROUTES from '@/utils/routing/routes';
 
 import { TableRow } from '../TableRow';
@@ -19,10 +20,9 @@ import { TableRow } from '../TableRow';
 const ApplicationCard = memo(
   ({ application }: { application: Applications<'output'>[number] }) => {
     const router = useRouterPro();
-
+    const { manageJob } = useJobsContext();
     const {
       job: { status },
-      manageJob,
     } = useJob();
 
     const { applications } = useApplications();

@@ -86,7 +86,6 @@ export const useJobForms = (
       }
       return acc;
     },
-    // eslint-disable-next-line no-unused-vars
     {} as { [_id in keyof typeof fields]: React.JSX.Element },
   );
 };
@@ -98,7 +97,7 @@ const JobTitle: FC<MetaForms> = memo(({ name, value, onChange }) => {
       name={name}
       required
       placeholder={value.placeholder}
-      value={value.value as string}
+      value={String(value.value)}
       error={value.error.value}
       helperText={value.error.helper}
       onChange={(e) => onChange(name, e.target.value)}
@@ -114,7 +113,7 @@ const JobCompany: FC<MetaForms> = memo(({ name, value, onChange }) => {
         id={name}
         name={name}
         placeholder='Ex : Google'
-        value={value.value as string}
+        value={String(value.value)}
         onChange={(e) => onChange(name, e.target.value)}
         className={cn('pl-10', value.error.value && 'border-destructive')}
       />
@@ -135,9 +134,7 @@ JobCompany.displayName = 'JobCompany';
 const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
   const { recruiter } = useTenant();
   const options = (recruiter?.office_locations ?? []).map((s) => ({
-    // @ts-ignore
     name: formatOfficeLocation(s),
-    // TODO: fix with null checks
     value: s.id,
   }));
   return (
@@ -145,9 +142,9 @@ const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
       <Label htmlFor={name}>Job Location</Label>
       <Select
         onValueChange={(value) => {
-          onChange(name, value);
+          onChange(name, Number(value));
         }}
-        value={value.value as string}
+        value={String(value.value)}
       >
         <SelectTrigger>
           <SelectValue placeholder='Select a location' />
@@ -206,7 +203,7 @@ const JobType: FC<MetaForms> = memo(({ name, value, onChange }) => {
         onValueChange={(value) => {
           onChange(name, value);
         }}
-        value={value.value as string}
+        value={String(value.value)}
       >
         <SelectTrigger>
           <SelectValue placeholder='Select a type' />
@@ -236,9 +233,9 @@ const JobDepartment: FC<MetaForms> = memo(({ name, value, onChange }) => {
       <Label htmlFor={name}>Department</Label>
       <Select
         onValueChange={(value) => {
-          onChange(name, value);
+          onChange(name, Number(value));
         }}
-        value={value.value as string}
+        value={String(value.value)}
       >
         <SelectTrigger>
           <SelectValue placeholder='Select a department' />
@@ -374,14 +371,12 @@ JobDescription.displayName = 'JobDescription';
 type MetaForms = {
   name: keyof Form;
   value: NonNullable<Form[keyof Form]>;
-  // eslint-disable-next-line no-unused-vars
-  onChange: (name: keyof Form, value: any) => void;
+  onChange: (_name: keyof Form, _value: any) => void;
 };
 
 export type JobMetaFormProps = {
   fields: Form;
-  // eslint-disable-next-line no-unused-vars
-  handleChange: (name: keyof Form, value: string | number) => void;
+  handleChange: (_name: keyof Form, _value: string | number) => void;
   handleCreate?: () => void;
   handleCancel?: () => void;
 };

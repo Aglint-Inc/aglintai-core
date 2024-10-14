@@ -43,7 +43,7 @@ const getResponse = async (req: NextApiRequest) => {
   let post = { ...job };
 
   if (req.body.preview || job.status === 'draft') {
-    post = { ...post, ...post.draft };
+    post = { ...post };
   }
   const isValid = job.status !== 'closed';
 

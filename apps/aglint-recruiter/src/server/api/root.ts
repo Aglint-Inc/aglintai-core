@@ -10,7 +10,8 @@ import { get_last_login } from './routers/get_last_login';
 import { integrations } from './routers/integrations';
 import { interview_pool } from './routers/interview_pool';
 import { interviewers } from './routers/interviewers';
-import { jobs } from './routers/jobs';
+import { interviews } from './routers/interviews';
+import { type Jobs, jobs } from './routers/jobs';
 import { requests } from './routers/requests';
 import { rolesAndPermissions } from './routers/rolesAndPermissions';
 import { scheduling } from './routers/scheduling';
@@ -44,10 +45,15 @@ export const appRouter = createTRPCRouter({
   candidate_availability,
   utility,
   email,
+  interviews,
 });
 
 export const appRouterSchema = {
   example: exampleSchema,
+};
+
+export type API = {
+  jobs: Jobs;
 };
 
 // export type definition of API

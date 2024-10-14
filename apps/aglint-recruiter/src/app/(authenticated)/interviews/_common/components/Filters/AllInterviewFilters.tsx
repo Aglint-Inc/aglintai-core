@@ -1,10 +1,10 @@
 import { type DatabaseEnums } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
+import { useInterviewsFiltersJob } from '@interviews/hooks/useInterviewsFiltersJob';
 import { useState } from 'react';
 
 import { useTenantMembers } from '@/company/hooks';
 import FilterHeader from '@/components/Common/FilterHeader';
-import { useJobs } from '@/jobs/hooks';
 
 import { useScheduleStatesContext } from '../../contexts/ScheduleStatesContext';
 
@@ -60,7 +60,7 @@ function AllInterviewFilters() {
     },
   ];
 
-  const { jobs } = useJobs();
+  const jobs = useInterviewsFiltersJob();
   return (
     <div className='flex flex-row space-x-3'>
       <FilterHeader
@@ -116,7 +116,7 @@ function AllInterviewFilters() {
             type: 'filter',
             name: 'Jobs',
             options:
-              jobs.isFetched && jobs.data
+              jobs.status === 'success' && jobs.data
                 ? jobs.data.map((ele) => ({
                     id: ele.id ?? '',
                     label: ele.job_title ?? '',

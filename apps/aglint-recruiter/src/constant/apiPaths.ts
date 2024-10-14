@@ -25,7 +25,6 @@ export const API_PATHS = [
   '/api/job/candidateUpload/manualUpload',
   '/api/job/candidateUpload/resumeReupload',
   '/api/job/candidateUpload/resumeUpload',
-  '/api/job/profileScore',
   '/api/jobpost/company',
   '/api/jobpost',
   '/api/jobpost/read',
