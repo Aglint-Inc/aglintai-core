@@ -166,9 +166,9 @@ function DefaultViewRequestCard({
                         <Tooltip>
                           <TooltipTrigger>
                             {/* {props.request_note[0]?.note} */}
-                            <span className='line-clamp-1 flex w-[200px] items-start'>
+                            <p className='line-clamp-1 max-w-[200px] items-start text-sm'>
                               {props.request_note[0]?.note}
-                            </span>
+                            </p>
                           </TooltipTrigger>
                           <TooltipContent className='max-w-xs p-2'>
                             <p className='text-sm'>

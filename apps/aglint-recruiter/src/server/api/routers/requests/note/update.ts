@@ -23,9 +23,14 @@ const query = async ({
   input,
 }: PrivateProcedure<typeof requestUpdateSchema>) => {
   const db = createPrivateClient();
-  return (
-    await db.from('request_note').upsert(input).select().single().throwOnError()
-  ).data;
+  const { data } = await db
+    .from('request_note')
+    .upsert(input)
+    .select()
+    .order('created_at', { ascending: true })
+    .throwOnError();
+
+  return data ? data[0] : null;
 };
 
 export const updateNote = privateProcedure
