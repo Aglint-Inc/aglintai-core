@@ -1,44 +1,34 @@
-import {
-  candidate_new_schedule_schema,
-  createRequestProgressLogger,
-  executeWorkflowAction,
-  type ProgressLoggerType,
-} from '@aglint/shared-utils';
+import { type ApiCancelScheduledInterview } from '@aglint/shared-types';
+import { candidate_new_schedule_schema } from '@aglint/shared-utils';
 import axios from 'axios';
-import { type z } from 'zod';
+import { z } from 'zod';
 
-import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
-
+const schema = z.object({
+  session_ids: z.array(z.string()),
+  target_api: z.string(),
+  request_id: z.string(),
+  event_run_id: z.number().optional(),
+});
 export const onCandidateScheduleCancel = async (
-  parsed_body: z.infer<typeof candidate_new_schedule_schema>,
+  parsed_body: z.infer<typeof schema>,
 ) => {
-  const supabaseAdmin = getSupabaseServer();
-
-  const reqProgressLogger: ProgressLoggerType = createRequestProgressLogger({
-    request_id: parsed_body.request_id,
-    event_run_id: parsed_body.event_run_id,
-    supabaseAdmin: supabaseAdmin,
-    event_type: 'CANCEL_INTERVIEW_MEETINGS',
-  });
-  await reqProgressLogger.resetEventProgress();
-
   const { session_ids, target_api } =
     candidate_new_schedule_schema.parse(parsed_body);
 
   if (target_api === 'onRequestCancel_agent_cancelEvents') {
-    await executeWorkflowAction(
-      cancelInterviews,
-      { session_ids },
-      reqProgressLogger,
-    );
+    await cancelInterviews({ session_ids, request_id: parsed_body.request_id });
   }
 };
 
-const cancelInterviews = async ({ session_ids }: { session_ids: string[] }) => {
+const cancelInterviews = async ({
+  session_ids,
+  request_id,
+}: ApiCancelScheduledInterview) => {
   await axios.post(
     `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/cancel_interview_scheduling`,
     {
       session_ids,
+      request_id,
     },
   );
 };

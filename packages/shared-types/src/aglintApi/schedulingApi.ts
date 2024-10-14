@@ -22,7 +22,7 @@ import {
 
 export type ApiCancelScheduledInterview = {
   session_ids: string[];
-  cand_email: string;
+  request_id: string;
 };
 
 export type APIEventAttendeeStatus = {

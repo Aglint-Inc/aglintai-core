@@ -1,5 +1,5 @@
 import { type CalendarEvent } from '@aglint/shared-types';
-import { CApiError } from '@aglint/shared-utils';
+import { CApiError, supabaseWrap } from '@aglint/shared-utils';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
 import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
@@ -26,32 +26,32 @@ const cancelCalenderEvent = async (req_body: BodyParams) => {
 const getRecruiterCredentials = async (email: string) => {
   const supabaseAdmin = getSupabaseServer();
 
-  const rec_user = (
-    await supabaseAdmin
-      .from('recruiter_user')
-      .select()
-      .eq('email', email)
-      .single()
-      .throwOnError()
-  ).data;
+  let [rec_user] = supabaseWrap(
+    await supabaseAdmin.from('recruiter_user').select().eq('email', email),
+    false,
+  );
   if (!rec_user) {
-    throw new CApiError('SERVER_ERROR', 'No recruiter user found');
+    [rec_user] = supabaseWrap(
+      await supabaseAdmin
+        .from('recruiter_user')
+        .select()
+        .eq('schedule_auth->>email', email),
+      false,
+    );
   }
-
+  if (!rec_user) {
+    throw new CApiError('CLIENT', 'organizer not found');
+  }
   const user_id = rec_user.user_id;
-  const rec = (
+  const rec = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_relation')
       .select(
         'recruiter!inner(integrations!inner(service_json)),recruiter_user!public_recruiter_relation_user_id_fkey!inner(schedule_auth)',
       )
       .eq('user_id', user_id)
-      .single()
-      .throwOnError()
-  ).data;
-  if (!rec) {
-    throw new CApiError('SERVER_ERROR', 'No recruiter found');
-  }
+      .single(),
+  );
   const r: CalEventAttendeesAuthDetails = {
     email,
     schedule_auth: rec.recruiter_user.schedule_auth as any,
