@@ -5,7 +5,8 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { useJob } from '@/job/hooks';
+import { useTenant } from '@/company/hooks';
+import { useCurrentJob } from '@/job/hooks';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
@@ -18,7 +19,8 @@ import {
 } from './types';
 
 export const useCreateInterviewPlan = () => {
-  const { job_id, recruiter_id } = useJob();
+  const { recruiter_id } = useTenant();
+  const { job_id } = useCurrentJob();
   const id = job_id;
   const mutation = useMutation({
     mutationFn: async ({ name, order }: { name: string; order?: number }) => {
@@ -191,7 +193,7 @@ export const useEditDebriefSession = () => {
 
 export const useReorderInterviewSessions = () => {
   const queryClient = useQueryClient();
-  const { job_id } = useJob();
+  const { job_id } = useCurrentJob();
   const id = job_id;
   const { queryKey } = jobQueries.interview_plans({ id });
   const mutation = useMutation({

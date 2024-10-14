@@ -50,6 +50,7 @@ import UITextField from '@/components/Common/UITextField';
 import { useOnboarding } from '@/components/Navigation/OnboardPending/context/onboarding';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { JobNotFound } from '@/job/components/JobNotFound';
+import { useJobsContext } from '@/jobs/hooks';
 import { type CompanyMember as CompanyMemberGlobal } from '@/queries/company-members';
 import { type DeleteInterviewSession } from '@/queries/interview-plans';
 import {
@@ -74,18 +75,8 @@ import InterviewDrawers from './sideDrawer';
 export type CompanyMember = CompanyMemberGlobal & { paused: boolean };
 
 export const JobNewInterviewPlanDashboard = () => {
-  const { initialLoad, job } = useJobInterviewPlan();
-  return initialLoad ? (
-    job ? (
-      <InterviewPlanPage />
-    ) : (
-      <JobNotFound />
-    )
-  ) : (
-    <div className='flex min-h-[80vh] w-full items-center'>
-      <Loader />
-    </div>
-  );
+  const { job } = useJobInterviewPlan();
+  return job ? <InterviewPlanPage /> : <JobNotFound />;
 };
 
 const InterviewPlanPage = () => {
@@ -563,13 +554,14 @@ const InterviewSession = ({
 
   const queryClient = useQueryClient();
 
+  const { manageJob } = useJobsContext();
+
   const {
     getLoadingState,
     interviewPlans: { data },
     job,
     handleReorderSessions,
     handleUpdateSession,
-    manageJob,
   } = useJobInterviewPlan();
   const members = session.interview_session_relation.reduce(
     (acc, curr) => {

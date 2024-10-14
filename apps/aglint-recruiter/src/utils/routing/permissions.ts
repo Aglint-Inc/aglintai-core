@@ -24,7 +24,6 @@ const PERMISSIONS: Permissions = {
 
   //
   '/api/job/candidateUpload/csvUpload': ['job_module', 'manage_job'],
-  '/api/job/profileScore': ['job_module', 'manage_job'],
   '/api/job/candidateUpload/manualUpload': ['job_module', 'manage_job'],
   '/api/job/candidateUpload/resumeReupload': ['job_module', 'manage_job'],
   '/api/job/candidateUpload/resumeUpload': ['job_module', 'manage_job'],

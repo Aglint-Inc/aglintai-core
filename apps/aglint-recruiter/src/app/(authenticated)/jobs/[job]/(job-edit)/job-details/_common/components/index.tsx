@@ -8,7 +8,6 @@ import {
   PageHeaderText,
   PageTitle,
 } from '@components/layouts/page-header';
-import { Skeleton } from '@components/ui/skeleton';
 import { AlertCircle } from 'lucide-react';
 import {
   type Dispatch,
@@ -26,63 +25,32 @@ import {
   type JobMetaFormProps,
   useJobForms,
 } from '@/jobs/create/components/form';
-import type { Form, Job, JobDetailsForm } from '@/jobs/types';
+import type { Form, JobDetailsForm } from '@/jobs/types';
 import { validateString } from '@/utils/validateString';
 
 export const JobDetailsDashboard = () => {
-  const { jobLoad, job } = useJob();
+  const { job } = useJob();
 
-  return jobLoad ? (
-    job && job?.status !== 'closed' ? (
-      <JobEdit />
-    ) : (
-      <JobNotFound />
-    )
-  ) : (
-    // TODO: When we move to app router, we should move to separate skeleton component
-    <div className='container mx-auto flex flex-col space-y-6 p-6'>
-      <div className='mb-6 flex items-center justify-between'>
-        <div className='space-y-2'>
-          <Skeleton className='h-8 w-64' />
-          <Skeleton className='h-4 w-32' />
-        </div>
-        <div className='flex gap-6'>
-          <div className='w-1/4'>
-            <Skeleton className='h-[calc(100vh-200px)] w-full' />
-          </div>
-          <div className='w-3/4 space-y-4'>
-            <Skeleton className='h-6 w-48' />
-            <Skeleton className='h-4 w-full' />
-            <div className='space-y-4'>
-              <Skeleton className='h-10 w-full' />
-              <Skeleton className='h-10 w-full' />
-              <Skeleton className='h-10 w-full' />
-              <Skeleton className='h-10 w-full' />
-              <Skeleton className='h-40 w-full' />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return job && job?.status !== 'closed' ? <JobEdit /> : <JobNotFound />;
 };
 
 const JobEdit = () => {
-  const { job } = useJob();
   const {
-    job_title,
-    department_id,
-    description,
-    job_type,
-    location_id,
-    workplace_type,
-  } = job.draft;
+    job: {
+      job_title,
+      department_id,
+      description,
+      job_type,
+      location_id,
+      workplace_type,
+    },
+  } = useJob();
   const [fields, setFields] = useState<JobDetailsForm>({
     job_title: {
-      value: job_title,
+      value: job_title!,
       required: true,
       error: {
-        value: validateString(job_title),
+        value: validateString(job_title!),
         helper: `Job title can't be empty`,
       },
     },
@@ -95,8 +63,8 @@ const JobEdit = () => {
       },
     },
     job_type: {
-      value: job_type,
-      required: true,
+      value: job_type!,
+      required: false,
       error: {
         value: validateString(job_type!),
         helper: `Job type can't be empty`,
@@ -111,15 +79,15 @@ const JobEdit = () => {
       },
     },
     workplace_type: {
-      value: workplace_type,
-      required: true,
+      value: workplace_type!,
+      required: false,
       error: {
         value: validateString(workplace_type!),
         helper: `Workplace type can't be empty`,
       },
     },
     description: {
-      value: description,
+      value: description!,
       required: true,
       error: {
         value: validateDescription(description!),
@@ -194,7 +162,7 @@ const JobEditForm = ({
   setSaving: Dispatch<SetStateAction<boolean>>;
 }) => {
   const initialRef = useRef(false);
-  const { job, handleJobAsyncUpdate } = useJob();
+  const { handleJobAsyncUpdate } = useJob();
 
   const newJob = Object.entries(fields).reduce((acc, [key, { value }]) => {
     //@ts-ignore
@@ -205,7 +173,7 @@ const JobEditForm = ({
   const handleSave = async () => {
     setSaving(true);
     await handleJobAsyncUpdate({
-      draft: { ...job.draft, ...newJob } as Job['draft'],
+      ...newJob,
     });
     setSaving(false);
   };

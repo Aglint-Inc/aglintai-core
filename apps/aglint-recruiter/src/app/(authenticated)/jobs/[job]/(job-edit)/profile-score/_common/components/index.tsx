@@ -8,7 +8,6 @@ import {
   PageHeaderText,
   PageTitle,
 } from '@components/layouts/page-header';
-import { Alert, AlertDescription } from '@components/ui/alert';
 import { Button } from '@components/ui/button';
 import {
   Collapsible,
@@ -18,13 +17,7 @@ import {
 import { Input } from '@components/ui/input';
 import { Skeleton } from '@components/ui/skeleton';
 import { capitalize } from 'lodash';
-import {
-  Check,
-  CircleDot,
-  Lightbulb,
-  RefreshCcw,
-  X,
-} from 'lucide-react';
+import { Check, CircleDot, Lightbulb, RefreshCcw, X } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import {
   type ChangeEventHandler,
@@ -42,61 +35,28 @@ import ScoreWheel, {
 import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { TourProvider, useTour } from '@/context/TourContext';
-import { useRouterPro } from '@/hooks/useRouterPro';
-// import { Settings } from '@/job/components/SharedTopNav/actions';
 import { useJob } from '@/job/hooks';
-import { distributeScoreWeights } from '@/job/utils';
+import { getParameterWeights } from '@/job/utils';
 import { SafeObject } from '@/utils/safeObject';
 
 type Sections = 'experience' | 'education' | 'skills';
 
 export const JobProfileScoreDashboard = () => {
   const { isScoringEnabled } = useRolesAndPermissions();
-  const { jobLoad, job } = useJob();
+  const { job } = useJob();
 
-  return jobLoad ? (
-    job && isScoringEnabled && job?.status !== 'closed' ? (
-      <TourProvider>
-        <ProfileScorePage />
-      </TourProvider>
-    ) : (
-      // TODO: When we move to app router, we should move to separate component
-      <div className='flex h-screen items-center justify-center'>
-        <div className='text-center'>
-          <h1 className='mb-4 text-2xl font-bold'>Job Not Found</h1>
-          <p className='text-gray-600'>
-            The job you&apos;re looking for doesn&apos;t exist or you don`&apost
-            have permission to view it.
-          </p>
-        </div>
-      </div>
-    )
+  return job && isScoringEnabled && job?.status !== 'closed' ? (
+    <TourProvider>
+      <ProfileScorePage />
+    </TourProvider>
   ) : (
-    // TODO: When we move to app router, we should move to separate skeleton component
-    <div className='container-lg mx-auto flex flex-col space-y-6 px-12'>
-      <div className='flex items-center justify-between'>
-        <div className='space-y-2'>
-          <Skeleton className='h-8 w-64' />
-          <Skeleton className='h-4 w-32' />
-        </div>
-        <div className='flex gap-6'>
-          <div className='w-1/4'>
-            <Skeleton className='h-[calc(100vh-200px)] w-full' />
-          </div>
-          <div className='w-3/4 space-y-4'>
-            <Skeleton className='h-6 w-48' />
-            <Skeleton className='h-4 w-full' />
-            <div className='flex gap-6'>
-              <div className='flex-1'>
-                <Skeleton className='h-64 w-full' />
-              </div>
-              <div className='w-1/3 space-y-4'>
-                <Skeleton className='h-40 w-full' />
-                <Skeleton className='h-40 w-full' />
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className='flex h-screen items-center justify-center'>
+      <div className='text-center'>
+        <h1 className='mb-4 text-2xl font-bold'>Job Not Found</h1>
+        <p className='text-gray-600'>
+          The job you&apos;re looking for doesn&apos;t exist or you don`&apost
+          have permission to view it.
+        </p>
       </div>
     </div>
   );
@@ -107,9 +67,14 @@ const ProfileScorePage = () => {
     <Page>
       <PageHeader>
         <PageHeaderText>
-          <PageTitle>Profile Scoring</PageTitle>
+          <PageTitle>
+            <div className='flex items-center gap-2'>
+              Profile Scoring <Regenerate />
+            </div>
+          </PageTitle>
           <PageDescription className='max-w-2xl'>
-          Profile scoring assigns numerical values to candidates&apos; qualifications, simplifying the hiring process.
+            Profile scoring assigns numerical values to candidates&apos;
+            qualifications, simplifying the hiring process.
           </PageDescription>
         </PageHeaderText>
         <PageActions></PageActions>
@@ -127,16 +92,32 @@ const ProfileScorePage = () => {
   );
 };
 
+const Regenerate = () => {
+  const { isScoreGenerationPolling, regenerateJd } = useJob();
+  return (
+    <UIButton
+      className='sr-only'
+      variant={'secondary'}
+      disabled={isScoreGenerationPolling}
+      onClick={() => regenerateJd()}
+    >
+      <RefreshCcw className='w-4' />
+    </UIButton>
+  );
+};
+
 const ProfileScoreControls = () => {
-  const { job, handleJobAsyncUpdate } = useJob();
+  const {
+    job: { draft_jd_json, parameter_weights },
+    isScoreGenerationPolling,
+    handleJobAsyncUpdate,
+  } = useJob();
   const initialRef = useRef(false);
   const initialSubmitRef = useRef(false);
-  const jd_json = job.draft.jd_json;
-  const parameter_weights = job.parameter_weights as ScoreWheelParams;
   const disabled = {
-    experience: (jd_json?.rolesResponsibilities ?? []).length === 0,
-    skills: (jd_json?.skills ?? []).length === 0,
-    education: (jd_json?.educations ?? []).length === 0,
+    experience: (draft_jd_json?.rolesResponsibilities ?? []).length === 0,
+    skills: (draft_jd_json?.skills ?? []).length === 0,
+    education: (draft_jd_json?.educations ?? []).length === 0,
   };
   const allDisabled =
     disabled.education && disabled.skills && disabled.experience;
@@ -178,7 +159,7 @@ const ProfileScoreControls = () => {
     else setWeight((prev) => ({ ...prev, [e.target.name]: safeEntry }));
   };
   const handleReset = () => {
-    const obj = distributeScoreWeights(job.draft.jd_json);
+    const obj = getParameterWeights(draft_jd_json);
     setWeight(obj);
   };
   const handleSubmit = async () => {
@@ -203,8 +184,8 @@ const ProfileScoreControls = () => {
   }, Object.values(safeWeights));
   return (
     <div
-      className={`sticky right-0 top-0 p-4 bg-muted rounded-md mt-2${
-        job.scoring_criteria_loading ? 'pointer-events-none opacity-40' : ''
+      className={`sticky right-0 top-0 rounded-md bg-muted p-4 mt-2${
+        isScoreGenerationPolling ? 'pointer-events-none opacity-40' : ''
       }`}
     >
       <div className='space-y-4'>
@@ -250,13 +231,12 @@ const ProfileScoreControls = () => {
 };
 
 const ProfileScore = () => {
-  const { job } = useJob();
+  const { job, isScoreGenerationPolling } = useJob();
   const parameter_weights = job.parameter_weights as ScoreWheelParams;
 
   return (
     <div className='mr-4 space-y-4'>
-      <Banners />
-      {job.scoring_criteria_loading ? (
+      {isScoreGenerationPolling ? (
         <div className='space-y-4'>
           <LoaadingSkeleton />
         </div>
@@ -320,7 +300,7 @@ const SectionHeader: FC<{ type: Sections; weight: number; color: string }> = ({
   return (
     <div className='mb-4 flex items-center space-x-2'>
       <CircleDot className='h-4 w-4' style={{ color }} />
-      <span className='font-medium text-md'>{capitalize(type)}</span>
+      <span className='text-md font-medium'>{capitalize(type)}</span>
       <span className='text-sm text-muted-foreground'>({weight}%)</span>
     </div>
   );
@@ -328,11 +308,10 @@ const SectionHeader: FC<{ type: Sections; weight: number; color: string }> = ({
 
 const SectionContent: FC<{ type: Sections }> = ({ type }) => {
   const {
-    job: { draft },
+    job: { draft_jd_json },
     handleJobUpdate,
   } = useJob();
-  const { jd_json } = draft;
-  const section: keyof typeof jd_json =
+  const section: keyof typeof draft_jd_json =
     type === 'experience'
       ? 'rolesResponsibilities'
       : type === 'education'
@@ -353,12 +332,9 @@ const SectionContent: FC<{ type: Sections }> = ({ type }) => {
         isMustHave: false,
       }));
       handleJobUpdate({
-        draft: {
-          ...draft,
-          jd_json: {
-            ...jd_json,
-            [section]: [...jd_json[section], ...newItems],
-          },
+        draft_jd_json: {
+          ...draft_jd_json,
+          [section]: [...draft_jd_json[section], ...newItems],
         },
       });
       setNewTags('');
@@ -366,42 +342,32 @@ const SectionContent: FC<{ type: Sections }> = ({ type }) => {
   };
 
   const handleTagChange = (index: number, updatedItem: any) => {
-    const newSection = jd_json[section].map((item, i) =>
+    const newSection = draft_jd_json[section].map((item, i) =>
       i === index ? updatedItem : item,
     );
     handleJobUpdate({
-      draft: {
-        ...draft,
-        jd_json: { ...jd_json, [section]: newSection },
-      },
+      draft_jd_json: { ...draft_jd_json, [section]: newSection },
     });
   };
 
   const handleTagDelete = (index: number) => {
-    const newSection = jd_json[section].filter((_, i) => i !== index);
+    const newSection = draft_jd_json[section].filter((_, i) => i !== index);
     handleJobUpdate({
-      draft: {
-        ...draft,
-        jd_json: { ...jd_json, [section]: newSection },
-      },
+      draft_jd_json: { ...draft_jd_json, [section]: newSection },
     });
   };
 
   return (
     <div className='mb-8 space-y-4'>
       <div className='flex flex-wrap gap-2'>
-      {jd_json[section].length > 0 ? (
-    jd_json[section].map((item, index) => (
-      <Tag
-        key={item.id}
-        item={item}
-        onChange={(updatedItem) => handleTagChange(index, updatedItem)}
-        onDelete={() => handleTagDelete(index)}
-      />
-    ))
-  ) : (
-    <div className='text-sm text-muted-foreground'>No {type} added</div>
-  )}
+        {draft_jd_json[section].map((item, index) => (
+          <Tag
+            key={item.id}
+            item={item}
+            onChange={(updatedItem) => handleTagChange(index, updatedItem)}
+            onDelete={() => handleTagDelete(index)}
+          />
+        ))}
       </div>
       <div className='flex items-center'>
         <Input
@@ -446,7 +412,7 @@ const Tag: FC<{
   };
 
   return (
-    <div className='group relative inline-block h-8 '>
+    <div className='group relative inline-block h-8'>
       {isEditing ? (
         <div className='flex items-center overflow-hidden rounded-md border bg-white pr-1'>
           <Input
@@ -458,90 +424,84 @@ const Tag: FC<{
           />
           <UIButton
             onClick={handleSubmit}
-            className='bg-gray-100 px-2 py-1 transition-colors '
+            className='bg-gray-100 px-2 py-1 transition-colors'
             title='Press Enter to save'
-            icon={<Check/>}
+            icon={<Check />}
             size='sm'
           />
         </div>
       ) : (
-        <div className='flex h-8 items-center gap-2 relative rounded-md bg-gray-100 pl-3 pr-1 py-1 text-sm cursor-pointer' onClick={() => setIsEditing(true)}>
+        <div
+          className='relative flex h-8 cursor-pointer items-center gap-2 rounded-md bg-gray-100 py-1 pl-3 pr-1 text-sm'
+          onClick={() => setIsEditing(true)}
+        >
           {item.field}
-          <div className='flex items-center gap-1 h-full'>
-          <button
-            onClick={onDelete}
-            className='ml-1 w-5 h-5flex items-center justify-center rounded-sm'
-          >
-            <X className='h-3 w-3' />
-          </button>
+          <div className='flex h-full items-center gap-1'>
+            <button
+              onClick={onDelete}
+              className='h-5flex ml-1 w-5 items-center justify-center rounded-sm'
+            >
+              <X className='h-3 w-3' />
+            </button>
           </div>
-          
         </div>
       )}
     </div>
   );
 };
 
-const Banners = () => {
-  const { push } = useRouterPro();
-  const { job, handleRegenerateJd, status } = useJob();
-  if (status!.loading) return <></>;
-  if (status!.description_error)
-    return (
-      <Alert variant='error'>
-        <AlertDescription>
-          <div className='flex items-center justify-between'>
-            <p className='mr-4'>Job description is unavailable</p>
-            <Button
-              size='sm'
-              variant='outline'
-              onClick={() => push(`/jobs/${job.id}/edit`)}
-            >
-              View
-            </Button>
-          </div>
-        </AlertDescription>
-      </Alert>
-    );
-  if (status!.jd_json_error)
-    return (
-      <Alert variant='warning'>
-        <AlertDescription>
-          <div className='flex items-center justify-between'>
-            <p className='mr-4'>No profile score criterias set.</p>
-            <Button
-              size='sm'
-              variant='outline'
-              onClick={() => handleRegenerateJd(job)}
-            >
-              Generate
-            </Button>
-          </div>
-        </AlertDescription>
-      </Alert>
-    );
-  if (status!.description_changed && !status!.scoring_criteria_changed)
-    return (
-      <Alert variant='warning'>
-        <AlertDescription>
-          <div className='flex items-center justify-between'>
-            <p className='mr-4'>
-              Job description has changed. Regenerate to update scoring
-              criteria.
-            </p>
-            <Button
-              size='sm'
-              variant='outline'
-              onClick={() => handleRegenerateJd(job)}
-            >
-              Regenerate
-            </Button>
-          </div>
-        </AlertDescription>
-      </Alert>
-    );
-  return <></>;
-};
+// const Banners = () => {
+//   const { push } = useRouterPro();
+//   const { job, status } = useJob();
+//   if (status!.loading) return <></>;
+//   if (status!.description_error)
+//     return (
+//       <Alert variant='error'>
+//         <AlertDescription>
+//           <div className='flex items-center justify-between'>
+//             <p className='mr-4'>Job description is unavailable</p>
+//             <Button
+//               size='sm'
+//               variant='outline'
+//               onClick={() => push(`/jobs/${job.id}/edit`)}
+//             >
+//               View
+//             </Button>
+//           </div>
+//         </AlertDescription>
+//       </Alert>
+//     );
+//   if (status!.jd_json_error)
+//     return (
+//       <Alert variant='warning'>
+//         <AlertDescription>
+//           <div className='flex items-center justify-between'>
+//             <p className='mr-4'>No profile score criterias set.</p>
+//             <Button size='sm' variant='outline'>
+//               Generate
+//             </Button>
+//           </div>
+//         </AlertDescription>
+//       </Alert>
+//     );
+//   if (status!.description_changed && !status!.scoring_criteria_changed)
+//     return (
+//       <Alert variant='warning'>
+//         <AlertDescription>
+//           <div className='flex items-center justify-between'>
+//             <p className='mr-4'>
+//               Job description has changed. Regenerate to update scoring
+//               criteria.
+//             </p>
+//             <Button size='sm' variant='outline'>
+//               Regenerate
+//             </Button>
+//           </div>
+//         </AlertDescription>
+//       </Alert>
+//     );
+//   return <></>;
+// };
 
 const Tips = () => {
   const {

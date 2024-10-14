@@ -18,6 +18,7 @@
     "paths": {
       "@/definitions/*": ["./src/definitions/*"],
       "@/api/*": ["./src/app/api/*"],
+      "@/routers/*": ["./src/server/api/routers/*"],
       "@/authenticated/*": ["./src/app/(authenticated)/_common/*"],
       "@/common/*": [
         "./src/app/_common/components/*",

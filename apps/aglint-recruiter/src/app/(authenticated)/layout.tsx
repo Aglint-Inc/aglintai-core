@@ -19,7 +19,6 @@ const Layout = async ({ children }: PropsWithChildren) => {
   void api.tenant.flags.prefetch();
   void api.tenant.all_departments.prefetch();
   void api.tenant.officeLocations.prefetch();
-
   return (
     <HydrateClient>
       <Provider>
