@@ -14,7 +14,6 @@ import {
 } from '@components/ui/tooltip';
 import { CheckCircle2, Circle } from 'lucide-react';
 
-import { setIsOnboardOpen } from '@/authenticated/store/OnboardStore';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -22,7 +21,7 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 import { useOnboarding } from './context/onboarding';
 
 export function SetupCard() {
-  const { selectedStep } = useOnboarding();
+  const { selectedStep, setIsOnboardOpen } = useOnboarding();
 
   const step = selectedStep!;
 

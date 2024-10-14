@@ -46,7 +46,6 @@ import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITextField from '@/components/Common/UITextField';
-import { useOnboarding } from '@/components/Navigation/OnboardPending/context/onboarding';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { JobNotFound } from '@/job/components/JobNotFound';
 import { useJobsContext } from '@/jobs/hooks';
@@ -176,7 +175,6 @@ const AddStageComponent = ({
   const nameField = useRef<null | HTMLInputElement>(null);
   const searchParams = useSearchParams();
   const { replace } = useRouterPro();
-  const { onboardRefetch } = useOnboarding();
 
   const isIndicatorActive =
     searchParams?.get('indicator') == 'true' ? true : false;
@@ -193,7 +191,6 @@ const AddStageComponent = ({
         nameField.current!.value,
         interviewPlans.data!.length + 1,
       );
-      onboardRefetch('interviewPlan');
       handleCreate('session', interviewPlan!.id, 1);
       setForm(false);
     }
@@ -221,7 +218,10 @@ const AddStageComponent = ({
             <UIButton
               size='sm'
               variant='default'
-              onClick={() => handleAddStage()}
+              onClick={() => {
+                handleRemoveParam();
+                handleAddStage();
+              }}
             >
               Add
             </UIButton>

@@ -28,7 +28,7 @@ export default function UITabs({
   onClick: (value: string) => void;
   defaultValue: string;
 }) {
-  const [activeTab, setActiveTab] = useState(tabs[0].id);
+  const [activeTab, setActiveTab] = useState(tabs[0]?.id || '');
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
   const [isHovering, setIsHovering] = useState(false);
   const tabRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});

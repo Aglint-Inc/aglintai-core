@@ -1,20 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
+'use client ';
 import { useEffect, useState } from 'react';
 
-import { useAllInterviewModules, useIntegrations } from '@/authenticated/hooks';
-import {
-  useTenant,
-  useTenantMembers,
-  useTenantOfficeLocations,
-} from '@/company/hooks';
 import { useFlags } from '@/company/hooks/useFlags';
 import { api } from '@/trpc/client';
 import ROUTES from '@/utils/routing/routes';
-import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
-
-import { setIsOnboardOpen } from '../store/OnboardStore';
-import { useAllDepartments } from './useAllDepartments';
 
 export type SetupStepType = {
   id:
@@ -56,82 +46,39 @@ const requestIds: SetupStepType['id'][] = [
 export function useCompanySetup() {
   //states ---
   const [steps, setSteps] = useState<SetupStepType[]>([]);
-  const [selectedStep, setSelectedStep] = useState<SetupStepType>();
-  const [selectedIndex, setSelectedIndex] = useState<number>();
-  const [isOnboardCompleteRemote, setIsOnboardCompleteRemote] = useState(true);
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [firstTimeOpened, setFirstTimeOpened] = useState(false);
-
+  const [isOnboardOpen, setIsOnboardOpen] = useState(false);
+  //-------------------- hook
+  const { data, isLoading } = api.onboarding.getOnboard.useQuery();
   const { mutateAsync, isPending } =
     api.tenant.updateTenantPreference.useMutation();
-  //Hooks ---
-  const { recruiter } = useTenant();
-  const { data: departments } = useAllDepartments();
-  const { data: locations } = useTenantOfficeLocations();
-  const { data: interviewPools } = useAllInterviewModules();
-  // const {
-  //   jobs: { data: jobs },
-  // } = useJobs();
-
-  const { data: integrations, isLoading: integrationLoading } =
-    useIntegrations();
-  const {
-    allMembers,
-    isLoading: memberLoading,
-    isFetched: isMembersFetched,
-  } = useTenantMembers();
-  const {
-    data: candidateInterviewPlan,
-    isLoading: companySettingLoading,
-    refetch: onboardCandPlanRefetch,
-  } = useFetchOnboardCandPlan();
 
   const { isShowFeature } = useFlags();
 
-  useEffect(() => {
-    if (recruiter.recruiter_preferences) {
-      setIsOnboardCompleteRemote(
-        recruiter.recruiter_preferences.onboard_complete,
-      );
-    }
-  }, [recruiter]);
+  // ----------------- drived state
 
-  useEffect(() => {
-    const firstIncompleteStep = steps.find((step) => !step.isLocalCompleted);
-    const firstIncompleteStepIndex = steps.findIndex(
-      (step) => !step.isLocalCompleted,
-    );
-    setSelectedStep(
-      firstIncompleteStep
-        ? firstIncompleteStep
-        : selectedIndex
-          ? steps[selectedIndex]
-          : undefined,
-    );
+  const {
+    firstJobId = null,
+    isDepartmentsPresent = true,
+    isIntegrationsPresent = true,
+    isInterviewPoolsPresent = true,
+    isLocationsPresent = false,
+    isOnboardCompleteRemote = true,
+    isUsersPresent = false,
+    isJobsPresent = false,
+    isCandidatesPresent = false,
+    isInterviewPlansPresent = false,
+    recruiter = { name: '', logo: '', employee_size: '', industry: '' },
+  } = data! || {};
 
-    if (firstIncompleteStepIndex) {
-      setSelectedIndex(
-        firstIncompleteStepIndex ? firstIncompleteStepIndex : selectedIndex,
-      );
-    }
-    if (
-      isCompanySetupLocalPending &&
-      !isOnboardCompleteRemote &&
-      !firstTimeOpened
-    ) {
-      // setIsOnboardOpen(true);
-      setFirstTimeOpened(true);
-    }
-  }, [steps]);
-
-  //loading ---
-  const isLoading =
-    memberLoading || integrationLoading || companySettingLoading;
+  const isCompanySetupLocalPending =
+    steps.filter((step) => (step?.isOptional ? false : !step.isLocalCompleted))
+      .length > 0
+      ? true
+      : false;
 
   //checking --- jobs
-  const isIntegrationsPresent =
-    !!integrations?.ashby_key ||
-    !!integrations?.lever_key ||
-    !!integrations?.greenhouse_key;
 
   const isCompanyDetailsCompleted =
     !!recruiter?.name &&
@@ -144,23 +91,6 @@ export function useCompanySetup() {
     ? findMissingProperties(recruiter, requiredProperties)
     : [];
 
-  const isLocationsPresent = !!locations.length;
-  const isDepartmentsPresent = !!departments.length;
-  const isMembersPresent = allMembers?.length > 1 ? true : false;
-
-  // checking --- request
-
-  const isCandidatePresent = candidateInterviewPlan?.candidateCount
-    ? candidateInterviewPlan.candidateCount > 0
-    : false;
-  const isInterviewPlanPresent = candidateInterviewPlan?.interviewPlanCount
-    ? candidateInterviewPlan.interviewPlanCount > 0
-    : false;
-  const isInterviewPoolPresent = !!interviewPools?.length;
-  // const isJobsPresent = !!jobs?.length;
-
-  //steps ------
-
   const requestSetupSteps = steps.filter((step) =>
     requestIds.includes(step.id),
   );
@@ -168,11 +98,6 @@ export function useCompanySetup() {
   const jobSetupSteps = steps.filter((step) => jobIds.includes(step.id));
 
   // total pending ------
-  const isCompanySetupLocalPending =
-    steps.filter((step) => (step?.isOptional ? false : !step.isLocalCompleted))
-      .length > 0
-      ? true
-      : false;
 
   const isCompanySetupPending =
     steps.filter((step) => (step?.isOptional ? false : !step.isCompleted))
@@ -219,36 +144,26 @@ export function useCompanySetup() {
           step.id === id ? { ...step, isLocalCompleted: true } : step,
         ),
       );
-    } else
-      setSteps((pre) =>
-        pre.map((step) =>
-          step.id === id ? { ...step, isLocalCompleted: true } : step,
-        ),
+    } else {
+      const newSteps = steps.map((step) =>
+        step.id === id ? { ...step, isLocalCompleted: true } : step,
       );
+
+      const firstIncompleteIndex = newSteps.findIndex(
+        (step) => !step.isLocalCompleted,
+      );
+
+      setSteps(newSteps);
+      setSelectedIndex(firstIncompleteIndex ? firstIncompleteIndex : 0);
+    }
   }
 
   async function finishHandler() {
     setIsOnboardOpen(false);
   }
 
-  // refetch function
-  const onboardRefetch = (type: 'candidate' | 'interviewPlan') => {
-    if (type === 'candidate' && !isCandidatePresent) {
-      onboardCandPlanRefetch();
-    }
-    if (type === 'interviewPlan' && !isInterviewPlanPresent) {
-      onboardCandPlanRefetch();
-    }
-  };
   useEffect(() => {
-    if (
-      recruiter &&
-      integrations &&
-      allMembers &&
-      candidateInterviewPlan &&
-      locations &&
-      departments
-    ) {
+    if (recruiter && data) {
       const newSteps = [
         {
           id: 'company-details',
@@ -281,8 +196,8 @@ export function useCompanySetup() {
           id: 'add-users',
           title: 'Add Users (Optional)',
           description: 'Invite team members to join and collaborate.',
-          isCompleted: isMembersPresent,
-          isLocalCompleted: isMembersPresent,
+          isCompleted: isUsersPresent,
+          isLocalCompleted: isUsersPresent,
           navLink: ROUTES['/company']() + '?tab=team&add_user=true',
           isOptional: true,
           isVisible: true,
@@ -305,8 +220,8 @@ export function useCompanySetup() {
           id: 'interview-pool',
           title: 'Set Interview Pool',
           description: 'Add at least one interviewer',
-          isCompleted: isInterviewPoolPresent,
-          isLocalCompleted: isInterviewPoolPresent,
+          isCompleted: isInterviewPoolsPresent,
+          isLocalCompleted: isInterviewPoolsPresent,
           navLink: ROUTES['/interview-pool']() + '?add_pool=true',
           isOptional: false,
           isVisible: true,
@@ -322,91 +237,107 @@ export function useCompanySetup() {
           ],
         },
 
-        // {
-        //   id: 'create-job',
-        //   title: 'Create Job',
-        //   description: 'At least one job must be present',
-        //   isCompleted: isJobsPresent,
-        //   isLocalCompleted: isJobsPresent,
-        //   navLink: ROUTES['/jobs/create'](),
-        //   isOptional: false,
-        //   isVisible: true,
-        //   isNavDisable: false,
-        //   bulletPoints: ['Job title', 'Description', 'Interview type'],
-        //   scoringPoints: [
-        //     'Enables efficient candidate scoring',
-        //     'Facilitates shortlisting based on job criteria',
-        //   ],
-        //   schedulingPoints: ['Allows for job-specific interview scheduling'],
-        // },
-        // {
-        //   id: 'candidate',
-        //   title: 'Add Candidate',
-        //   description: 'Add at least one candidate/application',
-        //   isCompleted: isCandidatePresent,
-        //   isLocalCompleted: isCandidatePresent,
-        //   navLink: isJobsPresent
-        //     ? ROUTES['/jobs/[job]']({
-        //         job: jobs?.[0].id ?? '',
-        //       }) + '?indicator=true'
-        //     : '',
-        //   isOptional: false,
-        //   isVisible: true,
-        //   isNavDisable: !isJobsPresent,
-        //   toolTipText: 'Please add the job first',
-        //   bulletPoints: ['Candidate name', 'Email', 'Applied job'],
-        //   scoringPoints: [
-        //     'Enables candidate shortlisting based on job criteria',
-        //   ],
-        //   schedulingPoints: ['Facilitates interview scheduling for candidates'],
-        // },
-        // {
-        //   id: 'interview-plan',
-        //   title: 'Set Interview Plan',
-        //   description: 'Create an interview plan for the job',
-        //   isCompleted: isInterviewPlanPresent,
-        //   isLocalCompleted: isInterviewPlanPresent,
-        //   navLink: isJobsPresent
-        //     ? ROUTES['/jobs/[job]/interview-plan']({
-        //         job: jobs?.[0].id ?? '',
-        //       }) + '?indicator=true'
-        //     : '',
-        //   isNavDisable: !isJobsPresent,
-        //   toolTipText: 'Please add the job first',
-        //   isOptional: false,
-        //   isVisible: true,
-        //   bulletPoints: ['Interview type', 'Assigned interviewers'],
-        //   schedulingPoints: [
-        //     'Enables efficient interview scheduling',
-        //     'Helps organize different interview types',
-        //   ],
-        // },
+        {
+          id: 'create-job',
+          title: 'Create Job',
+          description: 'At least one job must be present',
+          isCompleted: isJobsPresent,
+          isLocalCompleted: isJobsPresent,
+          navLink: ROUTES['/jobs/create'](),
+          isOptional: false,
+          isVisible: true,
+          isNavDisable: false,
+          bulletPoints: ['Job title', 'Description', 'Interview type'],
+          scoringPoints: [
+            'Enables efficient candidate scoring',
+            'Facilitates shortlisting based on job criteria',
+          ],
+          schedulingPoints: ['Allows for job-specific interview scheduling'],
+        },
+        {
+          id: 'candidate',
+          title: 'Add Candidate',
+          description: 'Add at least one candidate/application',
+          isCompleted: isCandidatesPresent,
+          isLocalCompleted: isCandidatesPresent,
+          navLink: isJobsPresent
+            ? ROUTES['/jobs/[job]']({
+                job: firstJobId ?? '',
+              }) + '?indicator=true'
+            : '',
+          isOptional: false,
+          isVisible: true,
+          isNavDisable: !isJobsPresent,
+          toolTipText: 'Please add the job first',
+          bulletPoints: ['Candidate name', 'Email', 'Applied job'],
+          scoringPoints: [
+            'Enables candidate shortlisting based on job criteria',
+          ],
+          schedulingPoints: ['Facilitates interview scheduling for candidates'],
+        },
+        {
+          id: 'interview-plan',
+          title: 'Set Interview Plan',
+          description: 'Create an interview plan for the job',
+          isCompleted: isInterviewPlansPresent,
+          isLocalCompleted: isInterviewPlansPresent,
+          navLink: isJobsPresent
+            ? ROUTES['/jobs/[job]/interview-plan']({
+                job: firstJobId ?? '',
+              }) + '?indicator=true'
+            : '',
+          isNavDisable: !isJobsPresent,
+          toolTipText: 'Please add the job first',
+          isOptional: false,
+          isVisible: true,
+          bulletPoints: ['Interview type', 'Assigned interviewers'],
+          schedulingPoints: [
+            'Enables efficient interview scheduling',
+            'Helps organize different interview types',
+          ],
+        },
       ]
         .filter((step) => step.isVisible)
         .sort(
           (a, b) => Number(b?.isCompleted) - Number(a?.isCompleted),
         ) as SetupStepType[];
-      setSteps(newSteps);
+
+      const firstIncompleteIndex = newSteps.findIndex(
+        (step) => !step.isLocalCompleted,
+      );
+
+      const isCompanySetupPending =
+        newSteps.filter((step) =>
+          step?.isOptional ? false : !step.isCompleted,
+        ).length > 0
+          ? true
+          : false;
+
+      if (!selectedIndex)
+        setSelectedIndex(firstIncompleteIndex ? firstIncompleteIndex : 0);
+
+      if (
+        !isOnboardCompleteRemote &&
+        isCompanySetupPending &&
+        !firstTimeOpened
+      ) {
+        setIsOnboardOpen(true);
+        setFirstTimeOpened(true);
+      }
+      if (!isOnboardCompleteRemote) {
+        setSteps(newSteps);
+      }
     }
-  }, [
-    recruiter,
-    integrations,
-    isMembersFetched,
-    // jobs,
-    allMembers,
-    locations,
-    interviewPools,
-    departments,
-    candidateInterviewPlan,
-  ]);
+  }, [data]);
 
   return {
     isLoading,
     isPending,
+    isOnboardOpen,
+    setIsOnboardOpen,
     companySetupProgress,
     requestSetupProgress,
     jobSetupProgress,
-    onboardRefetch,
     companySetupSteps: steps,
     requestSetupSteps,
     jobSetupSteps,
@@ -416,41 +347,12 @@ export function useCompanySetup() {
     isJobSetupPending,
     currentStepMarkAsComplete,
     finishHandler,
+    selectedStep: steps[selectedIndex],
     selectedIndex,
     setSelectedIndex,
-    selectedStep,
-    setSelectedStep,
     isOnboardCompleteRemote,
   };
 }
-
-export const useFetchOnboardCandPlan = () => {
-  const { recruiter_id } = useTenant();
-
-  const query = useQuery({
-    queryKey: ['company_setup', recruiter_id],
-    queryFn: () => fetchCompanySetup(recruiter_id),
-    enabled: !!recruiter_id,
-  });
-
-  return { ...query };
-};
-
-export const fetchCompanySetup = async (recruiter_id: string) => {
-  const { data } = await supabase
-    .from('recruiter')
-    .select('interview_plan(count),candidates(count)')
-    .eq('id', recruiter_id)
-    .single()
-    .throwOnError();
-
-  const candPlan = data!;
-
-  return {
-    candidateCount: candPlan.candidates[0].count,
-    interviewPlanCount: candPlan.interview_plan[0].count,
-  };
-};
 
 function findMissingProperties(obj: any, requiredProps: string[]) {
   return requiredProps.filter((prop) => obj[prop] === null || obj[prop] === '');
