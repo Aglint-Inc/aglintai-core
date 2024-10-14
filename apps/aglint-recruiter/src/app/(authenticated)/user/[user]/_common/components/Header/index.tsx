@@ -1,6 +1,5 @@
 import { getFullName } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
-import { PageActions, PageHeaderText } from '@components/layouts/page-header';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Clock, Mail, MapPin, Phone, User } from 'lucide-react';
 import { useParams } from 'next/navigation';
@@ -13,6 +12,7 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
 import { useInterviewer } from '../../hooks/useInterviewer';
+import { KeyMatrics } from '../KeyMatrix';
 import { EditUser } from './EditUser';
 
 export const Header = () => {
@@ -51,20 +51,20 @@ export const Header = () => {
   };
 
   return (
-    <>
-      <PageHeaderText>
-        <div className='flex flex-row space-x-12'>
-          <div className='flex flex-row items-center gap-2'>
-            <Avatar className='h-10 w-10 rounded-md'>
-              <AvatarImage src={avatar} alt={first_name} />
-              <AvatarFallback className='h-10 w-10 rounded-md bg-gray-200'>
-                <User
-                  className='h-6 w-6 text-muted-foreground'
-                  size={40}
-                  strokeWidth={1.5}
-                />
-              </AvatarFallback>
-            </Avatar>
+    <div className='rounded-lg bg-gray-50 p-4'>
+      <div className='flex flex-row space-x-4'>
+        <Avatar className='h-32 w-32 rounded-md'>
+          <AvatarImage src={avatar} alt={first_name} />
+          <AvatarFallback className='h-10 w-10 rounded-md bg-gray-200'>
+            <User
+              className='h-6 w-6 text-muted-foreground'
+              size={40}
+              strokeWidth={1.5}
+            />
+          </AvatarFallback>
+        </Avatar>
+        <div className='flex flex-1 flex-col'>
+          <div className='flex flex-1 gap-10'>
             <div className='flex flex-col'>
               <div className='text-lg font-medium text-gray-900'>
                 {getFullName(first_name ?? '', last_name ?? '')}
@@ -73,31 +73,30 @@ export const Header = () => {
                 {capitalizeAll(role)} - {capitalizeAll(department)}
               </p>
             </div>
+            <div className='flex flex-col gap-2'>
+              <span className='flex items-center text-sm'>
+                <MapPin className='mr-1 h-4 w-4' />
+                {location || '-'}
+              </span>
+              <span className='flex items-center text-sm'>
+                <Clock className='mr-1 h-4 w-4' />
+                {timeZone}
+              </span>
+            </div>
+            <div className='flex flex-col gap-2'>
+              <span className='flex items-center text-sm'>
+                <Mail className='mr-1 h-4 w-4' />
+                {email}
+              </span>
+              <span className='flex items-center text-sm'>
+                <Phone className='mr-1 h-4 w-4' />
+                {phone || '-'}
+              </span>
+            </div>
           </div>
-          <div className='mt-2 flex flex-col gap-2'>
-            <span className='flex items-center text-sm'>
-              <MapPin className='mr-1 h-4 w-4' />
-              {location || '-'}
-            </span>
-            <span className='flex items-center text-sm'>
-              <Clock className='mr-1 h-4 w-4' />
-              {timeZone}
-            </span>
-          </div>
-          <div className='mt-2 flex flex-col gap-2'>
-            <span className='flex items-center text-sm'>
-              <Mail className='mr-1 h-4 w-4' />
-              {email}
-            </span>
-            <span className='flex items-center text-sm'>
-              <Phone className='mr-1 h-4 w-4' />
-              {phone || '-'}
-            </span>
-          </div>
+          <KeyMatrics />
         </div>
-      </PageHeaderText>
-      <PageActions>
-        <div className='mt-4 flex gap-3'>
+        <div className='flex gap-3'>
           {recruiter_user?.user_id === user_id &&
             !recruiter_user.is_calendar_connected && (
               <UIButton onClick={getConsent}>Connect Calendar</UIButton>
@@ -111,9 +110,9 @@ export const Header = () => {
             Edit Profile
           </UIButton>
         </div>
-      </PageActions>
+      </div>
       {/* Eidt Dialog  */}
       <EditUser isOpen={isOpen} setIsOpen={setIsOpen} />
-    </>
+    </div>
   );
 };

@@ -1,22 +1,15 @@
 import type { SchedulingSettingType } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
-import {
-  Page,
-  // PageDescription,
-  // PageHeader,
-  // PageHeaderText,
-  // PageTitle,
-} from '@components/layouts/page-header';
+import { Page } from '@components/layouts/page-header';
 import cloneDeep from 'lodash/cloneDeep';
 import { useEffect, useState } from 'react';
 
+import BreakTimeCard from '@/authenticated/components/BreakTime';
+import TimeZone from '@/authenticated/components/TimeZone';
+import WorkTime from '@/authenticated/components/WorkTime';
 import { useTenant } from '@/company/hooks';
 import { api } from '@/trpc/client';
 import { type TimezoneObj } from '@/utils/timeZone';
-
-import BreakTimeCard from './BreakTime';
-import TimeZone from './TimeZone';
-import WorkTime from './WorkTime';
 
 export default function WorkingHour() {
   const { recruiter, refetch } = useTenant();
@@ -80,26 +73,19 @@ export default function WorkingHour() {
 
   return (
     <Page>
-      {/* <PageHeader>
-        <PageHeaderText>
-          <PageTitle>Working Hours</PageTitle>
-          <PageDescription>
-            {' '}
-            Update the settings here changes will be saved automatically.
-          </PageDescription>
-        </PageHeaderText>
-      </PageHeader> */}
       <div className='flex flex-col gap-8'>
         <TimeZone
           timeZone={timeZone}
           handleUpdate={handleUpdate}
           isUpdating={isUpdating}
         />
-        <WorkTime
-          workingHours={workingHours}
-          handleUpdate={handleUpdate}
-          isUpdating={isUpdating}
-        />
+        <div className='max-w-[400px]'>
+          <WorkTime
+            workingHours={workingHours}
+            handleUpdate={handleUpdate}
+            isUpdating={isUpdating}
+          />
+        </div>
         {!!selectedHourBreak && (
           <BreakTimeCard
             breakTime={selectedHourBreak}

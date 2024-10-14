@@ -9,7 +9,7 @@ import { type Dispatch, type SetStateAction } from 'react';
 
 import InterviewLimitInput from '@/authenticated/components/InterviewLoad';
 import KeywordSection from '@/authenticated/components/KeywordSection';
-import DayWithTime from '@/company/components/WorkingHours/WorkTime/WorkTimeEditDialog/ui/DayWithTime';
+import DayWithTime from '@/authenticated/components/WorkTime/WorkTimeEditDialog/ui/DayWithTime';
 import TimezonePicker from '@/components/Common/TimezonePicker';
 import type timeZone from '@/utils/timeZone';
 

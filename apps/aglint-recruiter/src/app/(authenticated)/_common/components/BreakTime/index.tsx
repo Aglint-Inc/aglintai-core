@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { type CustomSchedulingSettings } from '@aglint/shared-types/src/db/tables/common.types';
 import { dayjsLocal } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
@@ -15,11 +16,7 @@ import TimePicker from '@/common/TimePicker';
 import { UIButton } from '@/common/UIButton';
 import UISectionCard from '@/common/UISectionCard';
 
-interface BreakTime {
-  start_time: string;
-  end_time: string;
-}
-
+type BreakTime = CustomSchedulingSettings['break_hour'];
 interface BreakTimeCardProps {
   breakTime: BreakTime;
   handleUpdate: (data: { break_hour: BreakTime }) => Promise<void>;

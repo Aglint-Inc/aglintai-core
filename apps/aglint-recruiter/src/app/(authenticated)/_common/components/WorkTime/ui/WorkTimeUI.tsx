@@ -15,7 +15,7 @@ export const WorkTimeUI = ({
 }) => {
   return (
     <div className='group relative rounded-lg'>
-      <div className='max-w-[400px] overflow-hidden rounded-lg border border-border'>
+      <div className='overflow-hidden rounded-lg border border-border'>
         <Table>
           <TableHeader className='bg-gray-100'>
             <TableRow className=''>
