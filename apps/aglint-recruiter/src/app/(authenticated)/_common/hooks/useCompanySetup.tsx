@@ -1,7 +1,6 @@
 'use client ';
 import { useEffect, useState } from 'react';
 
-import { useTenant } from '@/company/hooks';
 import { useFlags } from '@/company/hooks/useFlags';
 import { api } from '@/trpc/client';
 import ROUTES from '@/utils/routing/routes';
@@ -54,7 +53,7 @@ export function useCompanySetup() {
   const { data, isLoading } = api.onboarding.getOnboard.useQuery();
   const { mutateAsync, isPending } =
     api.tenant.updateTenantPreference.useMutation();
-  const { recruiter } = useTenant();
+
   const { isShowFeature } = useFlags();
 
   // ----------------- drived state
@@ -70,6 +69,7 @@ export function useCompanySetup() {
     isJobsPresent = false,
     isCandidatesPresent = false,
     isInterviewPlansPresent = false,
+    recruiter = { name: '', logo: '', employee_size: '', industry: '' },
   } = data! || {};
 
   const isCompanySetupLocalPending =
@@ -306,16 +306,29 @@ export function useCompanySetup() {
         (step) => !step.isLocalCompleted,
       );
 
+      const isCompanySetupPending =
+        newSteps.filter((step) =>
+          step?.isOptional ? false : !step.isCompleted,
+        ).length > 0
+          ? true
+          : false;
+
       if (!selectedIndex)
         setSelectedIndex(firstIncompleteIndex ? firstIncompleteIndex : 0);
 
-      if (!isOnboardCompleteRemote && !firstTimeOpened) {
+      if (
+        !isOnboardCompleteRemote &&
+        isCompanySetupPending &&
+        !firstTimeOpened
+      ) {
         setIsOnboardOpen(true);
         setFirstTimeOpened(true);
       }
-      if (steps.length === 0) setSteps(newSteps);
+      if (!isOnboardCompleteRemote) {
+        setSteps(newSteps);
+      }
     }
-  }, [data, isLoading]);
+  }, [data]);
 
   return {
     isLoading,

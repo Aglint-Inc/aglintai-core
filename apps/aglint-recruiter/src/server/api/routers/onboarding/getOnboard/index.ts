@@ -48,7 +48,7 @@ const getOnboardingDetails = async (
 
       supabaseAdmin
         .from('public_jobs')
-        .select('*', { count: 'exact', head: true })
+        .select('*', { count: 'exact' })
         .eq('recruiter_id', recruiter_id)
         .throwOnError()
         .then((res) => res!),
@@ -84,7 +84,9 @@ const getOnboardingDetails = async (
         }),
       supabaseAdmin
         .from('recruiter')
-        .select('interview_plan(count),candidates(count)')
+        .select(
+          'name,logo,employee_size,industry,interview_plan(count),candidates(count)',
+        )
         .eq('id', recruiter_id)
         .single()
         .throwOnError()
@@ -107,6 +109,12 @@ const getOnboardingDetails = async (
       isOnboardCompleteRemote: onboard_complete,
       isInterviewPlansPresent: candPlan.interview_plan[0].count > 0,
       isCandidatesPresent: candPlan.candidates[0].count > 0,
+      recruiter: {
+        name: candPlan.name || '',
+        logo: candPlan.logo || '',
+        employee_size: candPlan.employee_size || '',
+        industry: candPlan.industry || '',
+      },
     };
   } catch (error) {
     console.error('Error fetching data:', error);

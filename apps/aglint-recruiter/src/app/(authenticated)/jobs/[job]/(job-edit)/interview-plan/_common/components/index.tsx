@@ -223,7 +223,10 @@ const AddStageComponent = ({
             <UIButton
               size='sm'
               variant='default'
-              onClick={() => handleAddStage()}
+              onClick={() => {
+                handleRemoveParam();
+                handleAddStage();
+              }}
             >
               Add
             </UIButton>
