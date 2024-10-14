@@ -26,7 +26,6 @@ import {
 } from '@components/ui/tooltip';
 import { UIAlert } from '@components/ui-alert';
 import { UIBadge } from '@components/ui-badge';
-import { useQueryClient } from '@tanstack/react-query';
 import {
   ChartNoAxesGantt,
   PauseCircle,
@@ -38,7 +37,7 @@ import {
 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { Indicator } from '@/common/Indicator';
@@ -53,11 +52,7 @@ import { JobNotFound } from '@/job/components/JobNotFound';
 import { useJobsContext } from '@/jobs/hooks';
 import { type CompanyMember as CompanyMemberGlobal } from '@/queries/company-members';
 import { type DeleteInterviewSession } from '@/queries/interview-plans';
-import {
-  type InterviewPlansType,
-  type InterviewSessionType,
-} from '@/queries/interview-plans/types';
-import { jobQueries } from '@/queries/job';
+import { type InterviewSessionType } from '@/queries/interview-plans/types';
 import { breakDurations } from '@/utils/scheduling/const';
 import { capitalizeAll, capitalizeFirstLetter } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
@@ -280,21 +275,15 @@ const InterviewPlan = ({
   handleCreate,
 }: {
   handleEdit: (
-    // eslint-disable-next-line no-unused-vars
-    key: keyof DrawerType['edit'],
-    // eslint-disable-next-line no-unused-vars
-    id: string,
-    // eslint-disable-next-line no-unused-vars
-    order: number,
+    _key: keyof DrawerType['edit'],
+    _id: string,
+    _order: number,
   ) => void;
   plan_id: string;
   handleCreate: (
-    // eslint-disable-next-line no-unused-vars
-    key: keyof DrawerType['create'],
-    // eslint-disable-next-line no-unused-vars
-    plan_id: string,
-    // eslint-disable-next-line no-unused-vars
-    order: number,
+    _key: keyof DrawerType['create'],
+    _plan_id: string,
+    _order: number,
   ) => void;
 }) => {
   const {
@@ -306,7 +295,6 @@ const InterviewPlan = ({
     handleSwapPlan,
     isPlanUpdating,
     isStageDeleting,
-    // handleUpdateSession,
   } = useJobInterviewPlan();
   const index = (interviewPlans.data ?? []).findIndex(
     (plan) => plan.id === plan_id,
@@ -548,21 +536,10 @@ const InterviewSession = ({
   handleDeletionSession,
   handleDeletionSelect,
   lastSession,
-  index,
 }: InterviewSessionProps) => {
-  const ref = useRef<any>(null);
-
-  const queryClient = useQueryClient();
-
   const { manageJob } = useJobsContext();
 
-  const {
-    getLoadingState,
-    interviewPlans: { data },
-    job,
-    handleReorderSessions,
-    handleUpdateSession,
-  } = useJobInterviewPlan();
+  const { getLoadingState, handleUpdateSession } = useJobInterviewPlan();
   const members = session.interview_session_relation.reduce(
     (acc, curr) => {
       if (session.session_type === 'debrief') {
@@ -602,68 +579,11 @@ const InterviewSession = ({
 
   const isLoading = getLoadingState(session.id);
 
-  const { queryKey } = jobQueries.interview_plans({ id: (job?.id ?? null)! });
-  const currPlan = (data ?? []).find((plan) => plan.id === plan_id)!;
-
-  const handleMoveCard = (dragIndex: number, hoverIndex: number) => {
-    const sessions = structuredClone(currPlan?.interview_session)!;
-    const temp = structuredClone(sessions[dragIndex]);
-    sessions[dragIndex] = structuredClone(sessions[hoverIndex]);
-    sessions[dragIndex]['session_order'] = dragIndex + 1;
-    sessions[hoverIndex] = temp;
-    sessions[hoverIndex]['session_order'] = hoverIndex + 1;
-    currPlan.interview_session = sessions;
-    queryClient.setQueryData<InterviewPlansType>(
-      queryKey,
-      (data ?? []).map((item) => (item.id === plan_id ? currPlan : item)),
-    );
-  };
-
-  const [{ handlerId }, drop] = useDrop({
-    accept: 'session-card',
-    collect: (monitor) => ({
-      handlerId: monitor.getHandlerId(),
-    }),
-    drop: () => {
-      handleReorderSessions({
-        interviewPlanId: currPlan.id,
-        updatedInterviewSessions: currPlan.interview_session,
-      });
-    },
-    hover: (item: any, monitor) => {
-      if (!ref.current) return;
-      const dragIndex = item.index;
-      const hoverIndex = index;
-      if (dragIndex === hoverIndex) return;
-      const hoverBoundingRect = ref.current?.getBoundingClientRect();
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-      const clientOffset = monitor.getClientOffset()!;
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
-      if (dragIndex !== undefined && hoverIndex !== undefined)
-        handleMoveCard(dragIndex, hoverIndex);
-      item.index = hoverIndex;
-    },
-  });
-  const [{ isDragging }, drag] = useDrag({
-    type: 'session-card',
-    item: { session },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-  });
-  drag(drop(ref));
-
   const [hover, setHover] = useState(false);
   const sessionEditType =
     session.session_type === 'debrief' ? 'debrief' : 'session';
   return (
     <div
-      ref={manageJob ? ref : null}
-      className={`flex flex-col ${isDragging ? 'opacity-0' : 'opacity-100'}`}
-      data-handler-id={handlerId}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
