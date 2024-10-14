@@ -4,7 +4,7 @@ import { dayjsLocal } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
 import { useMutation } from '@tanstack/react-query';
 import { type ComponentProps } from 'react';
-import { createRequest } from 'src/app/(public)/self-scheduling/[filter]/_common/utils/utils';
+import { createRequest } from 'src/app/(public)/self-scheduling/[filter]/_common/utils';
 
 import { addScheduleActivity } from '@/utils/scheduling/utils';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';

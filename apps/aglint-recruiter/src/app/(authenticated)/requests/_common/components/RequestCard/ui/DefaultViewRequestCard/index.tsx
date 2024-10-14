@@ -15,8 +15,10 @@ import {
   Calendar,
   ChevronDown,
   ChevronUp,
+  CircleDashed,
   Clock,
   StickyNote,
+  Tag,
   User,
   UserCircle,
 } from 'lucide-react';
@@ -70,6 +72,10 @@ function DefaultViewRequestCard({
             >
               {props.title}
             </Label>
+            <div className='flex items-center text-sm'>
+              <Clock strokeWidth={1.5} className='mr-1 h-4 w-4' />
+              {dayjsLocal(props.updated_at).fromNow()}{' '}
+            </div>
             {isCompactList ? (
               <Button
                 variant='ghost'
@@ -107,62 +113,86 @@ function DefaultViewRequestCard({
             )}
           >
             <div className='space-y-3'>
-              <div className='flex gap-2'>
-                <Badge
-                  className='text-xs'
-                  variant={
-                    props?.status === 'to_do'
-                      ? 'secondary'
-                      : props?.status === 'in_progress'
-                        ? 'in_progress'
-                        : props?.status === 'completed'
-                          ? 'completed'
-                          : 'destructive'
+              <div className='flex gap-8'>
+                <InfoItem
+                  icon={
+                    <CircleDashed className='h-4 w-4 text-muted-foreground' />
                   }
-                >
-                  {capitalizeFirstLetter(props.status)}
-                </Badge>
-                <Badge
-                  className='text-xs'
-                  variant={
-                    props?.type === 'decline_request'
-                      ? 'destructive'
-                      : 'secondary'
+                  label='Request Status'
+                  variant='column'
+                  value={
+                    <Badge
+                      className='text-xs'
+                      variant={
+                        props?.status === 'to_do'
+                          ? 'secondary'
+                          : props?.status === 'in_progress'
+                            ? 'in_progress'
+                            : props?.status === 'completed'
+                              ? 'completed'
+                              : 'destructive'
+                      }
+                    >
+                      {capitalizeFirstLetter(props.status)}
+                    </Badge>
                   }
-                >
-                  {capitalizeFirstLetter(props.type)}
-                </Badge>
-
-                {props?.request_note[0]?.note && (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <Badge
-                          variant='outline'
-                          className='px-3 py-0.5 text-xs capitalize'
-                        >
-                          {' '}
-                          <StickyNote className='mr-1 h-3 w-3' />
-                          Note
-                        </Badge>
-                      </TooltipTrigger>
-                      <TooltipContent className='max-w-xs p-2'>
-                        <p className='text-sm'>{props.request_note[0].note}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                />
+                <InfoItem
+                  label='Request Type'
+                  icon={<Tag className='h-4 w-4 text-muted-foreground' />}
+                  variant='column'
+                  value={
+                    <Badge
+                      className='text-xs'
+                      variant={
+                        props?.type === 'decline_request'
+                          ? 'destructive'
+                          : 'secondary'
+                      }
+                    >
+                      {capitalizeFirstLetter(props.type)}
+                    </Badge>
+                  }
+                />
+                {props.request_note[0]?.note && (
+                  <InfoItem
+                    label='Note'
+                    icon={
+                      <StickyNote className='h-4 w-4 text-muted-foreground' />
+                    }
+                    variant='column'
+                    value={
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            {/* {props.request_note[0]?.note} */}
+                            <p className='line-clamp-1 max-w-[200px] items-start text-sm'>
+                              {props.request_note[0]?.note}
+                            </p>
+                          </TooltipTrigger>
+                          <TooltipContent className='max-w-xs p-2'>
+                            <p className='text-sm'>
+                              {props.request_note[0]?.note}
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    }
+                  />
                 )}
+              </div>
+              <div className='flex gap-8'>
                 <div className='flex items-start space-y-3'>
                   <InfoItem
-                    icon={<></>}
-                    label=''
+                    icon={
+                      <UserCircle className='h-4 w-4 text-muted-foreground' />
+                    }
+                    label='Requested By'
+                    variant='column'
                     value={
                       <>
                         <div className='flex flex-row items-center gap-4'>
                           <div className='flex flex-row items-center space-x-2 text-sm'>
-                            {
-                              <UserCircle className='h-4 w-4 text-muted-foreground' />
-                            }
                             <Link
                               href={`/user/${props.assigner_id}`}
                               target='_blank'
@@ -177,9 +207,35 @@ function DefaultViewRequestCard({
                                 : ''}
                             </Link>
                           </div>
-                          <div className='flex items-center text-sm'>
-                            <Clock strokeWidth={1.5} className='mr-1 h-4 w-4' />
-                            {dayjsLocal(props.created_at).fromNow()}{' '}
+                        </div>
+                      </>
+                    }
+                  />
+                </div>
+                <div className='flex items-start space-y-3'>
+                  <InfoItem
+                    icon={
+                      <UserCircle className='h-4 w-4 text-muted-foreground' />
+                    }
+                    label='Assigned To'
+                    variant='column'
+                    value={
+                      <>
+                        <div className='flex flex-row items-center gap-4'>
+                          <div className='flex flex-row items-center space-x-2 text-sm'>
+                            <Link
+                              href={`/user/${props.assignee_id}`}
+                              target='_blank'
+                              className='hover:underline'
+                            >
+                              {getFullName(
+                                props?.assignee?.first_name ?? '',
+                                props?.assignee?.last_name ?? '',
+                              )}
+                              {props.assignee_id === currentUserId
+                                ? ' (You)'
+                                : ''}
+                            </Link>
                           </div>
                         </div>
                       </>

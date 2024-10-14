@@ -21,7 +21,7 @@ import {
 import {
   dayJS,
   getCalenderEventUrl,
-} from '../../../../../(public)/self-scheduling/[filter]/_common/utils/utils';
+} from '../../../../../(public)/self-scheduling/[filter]/_common/utils';
 import { useGetReasons } from '../hooks/useGetReasons';
 import { setIsRescheduleCancelOpen, setReason } from '../store/store';
 import RequestCancelDialog from './RequestCancelDialog';

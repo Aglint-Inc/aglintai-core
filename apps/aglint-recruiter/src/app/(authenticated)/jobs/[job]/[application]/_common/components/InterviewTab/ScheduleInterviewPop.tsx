@@ -50,7 +50,7 @@ export function ScheduleInterviewPop({
       {isRequestTypeVisible ? (
         <div className='flex flex-col gap-2'>
           <Typography variant='p' type='small'>
-            Assigned to
+            Assignee to
           </Typography>
           <div>{slotAssignedInput}</div>
         </div>

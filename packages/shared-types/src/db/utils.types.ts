@@ -133,6 +133,7 @@ export type Trigger_API_Action_Mapper<
   [Trigger in T]: {
     name: string;
     value: ValidWorkflowActionEntries<Trigger>;
+    description: string;
   }[];
 };
 

@@ -27,7 +27,8 @@ const ActionsContainer = ({
   const target_api_details = ACTION_TRIGGER_MAP[trigger].find(
     (t) => t.value.target_api === wAction.target_api,
   );
-  const copy_details = target_api_details!.name;
+  if (!target_api_details) return <></>;
+  const copy_details = target_api_details.name;
   return (
     <div className='rounded-md bg-secondary p-4'>
       <div className='mb-2 flex items-center justify-between'>
@@ -63,10 +64,20 @@ const ActionsContainer = ({
         )}
       </div>
       {wAction.action_type === 'slack' && (
-        <ActionDetailsComponent action_type='slack' />
+        <ActionDetailsComponent
+          action_type='slack'
+          props={{
+            description: target_api_details.description,
+          }}
+        />
       )}
       {wAction.action_type === 'end_point' && (
-        <ActionDetailsComponent action_type='end_point' />
+        <ActionDetailsComponent
+          action_type='end_point'
+          props={{
+            description: target_api_details.description,
+          }}
+        />
       )}
       {wAction.action_type === 'email' && (
         <ActionDetailsComponent
