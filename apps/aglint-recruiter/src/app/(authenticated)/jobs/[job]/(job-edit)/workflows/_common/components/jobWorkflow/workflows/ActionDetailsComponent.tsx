@@ -16,9 +16,11 @@ export type WActionProps =
     }
   | {
       action_type: 'slack';
+      props: { description: string };
     }
   | {
       action_type: 'end_point';
+      props: { description: string };
     };
 
 const ActionDetailsComponent = (props: WActionProps) => {
@@ -26,9 +28,9 @@ const ActionDetailsComponent = (props: WActionProps) => {
     case 'email':
       return <EmailTemplate {...props.props} />;
     case 'slack':
-      return <SlackTemplate />;
+      return <SlackTemplate description={props.props.description} />;
     case 'end_point':
-      return <EndPointTemplate />;
+      return <EndPointTemplate description={props.props.description} />;
     case 'agent_instruction':
       return <AgentInstructionTemplate {...props.props} />;
   }
@@ -97,22 +99,12 @@ const EmailTemplate = ({
   );
 };
 
-const SlackTemplate = () => {
-  return (
-    <UIAlert
-      type='info'
-      title='A Slack notification will be sent for this action.'
-    />
-  );
+const SlackTemplate = ({ description }: { description: string }) => {
+  return <UIAlert type='info' title={description} />;
 };
 
-const EndPointTemplate = () => {
-  return (
-    <UIAlert
-      type='info'
-      title='Aglint AI will automatically reassign to the best available interviewer. If none are found, it will notify the organizer.'
-    />
-  );
+const EndPointTemplate = ({ description }: { description: string }) => {
+  return <UIAlert type='info' title={description} />;
 };
 
 type AgentInstructionTemplateProps = {
