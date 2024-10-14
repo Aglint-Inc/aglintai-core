@@ -271,19 +271,6 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
   onReceivingAvailReq: [
     {
       value: {
-        target_api: 'onReceivingAvailReq_agent_suggestSlots',
-        action_type: 'agent_instruction',
-        payload: {
-          agent: {
-            instruction:
-              'Pick maximum slots of 5 without any conflicts and candidate preferred time is morning 9 to 12',
-          },
-        },
-      },
-      name: 'Pick Suitable slot/s and suggest to the Meeting Organizer in Slack',
-    },
-    {
-      value: {
         target_api: 'onReceivingAvailReq_agent_sendSelfScheduleRequest',
         action_type: 'agent_instruction',
         payload: {
@@ -294,6 +281,19 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
         },
       },
       name: 'Let Aglint AI choose time slots and send a self-schedule link to the candidate.',
+    },
+    {
+      value: {
+        target_api: 'onReceivingAvailReq_agent_suggestSlots',
+        action_type: 'agent_instruction',
+        payload: {
+          agent: {
+            instruction:
+              'Pick maximum slots of 5 without any conflicts and candidate preferred time is morning 9 to 12',
+          },
+        },
+      },
+      name: 'Pick Suitable slot/s and suggest to the Meeting Organizer in Slack',
     },
   ],
   onRequestCancel: [

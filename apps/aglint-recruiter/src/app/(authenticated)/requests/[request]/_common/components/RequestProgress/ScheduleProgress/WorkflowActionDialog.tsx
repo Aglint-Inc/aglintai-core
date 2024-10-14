@@ -21,6 +21,7 @@ import {
   availReminder,
   selfScheduleReminder,
 } from '@/services/event-triggers/trigger-funcs/onUpdateRequestProgress';
+import { getSlackWorkflowActions } from '@/utils/getSlackWorkflowActions';
 import { supabase } from '@/utils/supabase/client';
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
@@ -191,12 +192,13 @@ const WorkflowActionDialog = () => {
               handleChangeSelectedAction(value as any);
             }}
             value={selectedActionsDetails.target_api}
-            menuOptions={ACTION_TRIGGER_MAP[triggerDetails.trigger].map(
-              (action) => ({
-                name: action.name,
-                value: action.value.target_api,
-              }),
-            )}
+            menuOptions={getSlackWorkflowActions(
+              triggerDetails.trigger,
+              recruiter.recruiter_preferences.slack,
+            ).map((action) => ({
+              name: action.name,
+              value: action.value.target_api,
+            }))}
           />
           {(triggerDetails.trigger === 'sendAvailReqReminder' ||
             triggerDetails.trigger === 'selfScheduleReminder') && (

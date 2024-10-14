@@ -24,6 +24,8 @@ import {
   useJobAutomationStore,
 } from '../../../contexts/workflowsStoreContext';
 import { agentInstructionEmailTargetApi } from '../../../lib/constants';
+import { useTenant } from '@/company/hooks';
+import { getSlackWorkflowActions } from '@/utils/getSlackWorkflowActions';
 
 const AddActionMenu = ({
   wTrigger,
@@ -31,9 +33,12 @@ const AddActionMenu = ({
   wTrigger: DatabaseTable['workflow'];
 }) => {
   const [open, setOpen] = useState<boolean>(false);
-
+  const { recruiter } = useTenant();
   const { jobWorkflowActions, company_templates } = useJobAutomationStore();
-  const actions = ACTION_TRIGGER_MAP[wTrigger.trigger];
+  const actions = getSlackWorkflowActions(
+    wTrigger.trigger,
+    recruiter.recruiter_preferences.slack,
+  );
   const filteredActions = actions.filter((action) => {
     return !jobWorkflowActions.find(
       (workflowAction) => workflowAction.target_api === action.value.target_api,
@@ -44,14 +49,12 @@ const AddActionMenu = ({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <div className='mb-4'>
-          <UIButton variant='secondary' >
-            <div className='flex items-center gap-1'>
-            <PlusCircle className='h-4 w-4' />
-              <span>Add Action</span>
-             
-            </div>
-            
-          </UIButton>
+            <UIButton variant='secondary'>
+              <div className='flex items-center gap-1'>
+                <PlusCircle className='h-4 w-4' />
+                <span>Add Action</span>
+              </div>
+            </UIButton>
           </div>
         </PopoverTrigger>
         <PopoverContent
