@@ -126,9 +126,9 @@ const Score = () => {
       <Loader />
       <span className='text-sm font-medium'>
         Scoring:{' '}
-        {job?.processing_count.processed +
-          job?.processing_count.unavailable +
-          job?.processing_count.unparsable}
+        {job.processing_count.processed +
+          job.processing_count.unavailable +
+          job.processing_count.unparsable}
         /{total ?? '---'}
       </span>
     </div>
