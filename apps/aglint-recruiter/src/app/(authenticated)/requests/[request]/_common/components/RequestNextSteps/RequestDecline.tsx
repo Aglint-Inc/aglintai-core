@@ -42,6 +42,8 @@ const RequestDecline = () => {
     mutateAsync,
   } = api.scheduling.v1.findReplacementInts.useMutation();
 
+  const session_details = requestDetails.request_relation[0].interview_session;
+
   const handleGetAvailableInterviewers = async () => {
     try {
       if (isPending) return;
@@ -68,6 +70,13 @@ const RequestDecline = () => {
   const changeInterviewer = async () => {
     try {
       if (!declinedUserDetails) return;
+      if (!session_details) {
+        toast({
+          title: 'Session details not found',
+          variant: 'destructive',
+        });
+        return;
+      }
       const intSesnCancel = declinedUserDetails.interview_session_cancel;
       if (
         !intSesnCancel ||
@@ -81,11 +90,16 @@ const RequestDecline = () => {
         curr_declined_int_sesn_reln_id: intSesnCancel.session_relation_id,
         new_int_user_id: selectedMember,
         session_id: intSesnCancel.session_id,
+        request_id: requestDetails.id,
       };
       await axios.post(
         '/api/scheduling/v1/update-meeting-interviewers',
         payload,
       );
+      toast({
+        title: 'Interviewer changed successfully',
+        variant: 'default',
+      });
       setIsDialogOpen(false);
       await refetch();
     } catch (err) {
@@ -99,9 +113,14 @@ const RequestDecline = () => {
   };
   return (
     <>
-      <UIButton onClick={handleGetAvailableInterviewers} isLoading={isPending}>
-        Change Interviewer
-      </UIButton>
+      <div className='mt-4'>
+        <UIButton
+          onClick={handleGetAvailableInterviewers}
+          isLoading={isPending}
+        >
+          Change Interviewer
+        </UIButton>
+      </div>
       <UIDialog
         title='Interviewers'
         open={isDialogOpen}
