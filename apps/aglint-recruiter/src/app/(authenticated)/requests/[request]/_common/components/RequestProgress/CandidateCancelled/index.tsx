@@ -31,7 +31,6 @@ function CandidateCancelled() {
           />
         );
       })}
-      {workflowActions.length === 0 && <>No Actions Set</>}
     </>
   );
 }
