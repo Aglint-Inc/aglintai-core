@@ -305,14 +305,15 @@ export function useCompanySetup() {
       const firstIncompleteIndex = newSteps.findIndex(
         (step) => !step.isLocalCompleted,
       );
-      setSelectedIndex(firstIncompleteIndex ? firstIncompleteIndex : 0);
+
+      if (!selectedIndex)
+        setSelectedIndex(firstIncompleteIndex ? firstIncompleteIndex : 0);
 
       if (!isOnboardCompleteRemote && !firstTimeOpened) {
         setIsOnboardOpen(true);
         setFirstTimeOpened(true);
       }
-
-      setSteps(newSteps);
+      if (steps.length === 0) setSteps(newSteps);
     }
   }, [data, isLoading]);
 

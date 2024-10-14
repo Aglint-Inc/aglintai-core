@@ -42,21 +42,19 @@ export const OnboardPending = () => {
     <>
       {!isOnboardCompleteRemote && (
         <>
-          {!!companySetupSteps?.length &&
-            isCompanySetupLocalPending &&
-            !isOnboardOpen && (
-              <UIButton
-                className='fixed bottom-8 left-20 z-50 rounded-full shadow-lg'
-                onClick={toggleOpen}
-              >
-                Onboarding
-                <UIBadge
-                  color='warning'
-                  textBadge={pendingStepsCount + ' Steps Pending'}
-                  className='-mr-2 ml-2 inline-flex rounded-full'
-                />
-              </UIButton>
-            )}
+          {isCompanySetupLocalPending && !isOnboardOpen && (
+            <UIButton
+              className='fixed bottom-8 left-20 z-50 rounded-full shadow-lg'
+              onClick={toggleOpen}
+            >
+              Onboarding
+              <UIBadge
+                color='warning'
+                textBadge={pendingStepsCount + ' Steps Pending'}
+                className='-mr-2 ml-2 inline-flex rounded-full'
+              />
+            </UIButton>
+          )}
         </>
       )}
       <Dialog open={isOnboardOpen} onOpenChange={() => toggleOpen()}>
