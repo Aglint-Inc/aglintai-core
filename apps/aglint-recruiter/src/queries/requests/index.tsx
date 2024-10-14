@@ -510,11 +510,10 @@ export const getUnfilteredRequests = async ({
   if (type || order) {
     query.order(type, {
       ascending: order === 'asc',
-      nullsFirst: false,
     });
   }
 
-  query.order('id');
+  // query.order('id');
 
   return ((await query).data ?? []).filter(
     ({ applications }) => !!applications,
