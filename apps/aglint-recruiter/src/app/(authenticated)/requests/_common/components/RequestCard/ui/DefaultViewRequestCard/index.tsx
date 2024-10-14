@@ -74,7 +74,7 @@ function DefaultViewRequestCard({
             </Label>
             <div className='flex items-center text-sm'>
               <Clock strokeWidth={1.5} className='mr-1 h-4 w-4' />
-              {dayjsLocal(props.created_at).fromNow()}{' '}
+              {dayjsLocal(props.updated_at).fromNow()}{' '}
             </div>
             {isCompactList ? (
               <Button

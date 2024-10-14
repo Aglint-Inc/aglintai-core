@@ -225,7 +225,7 @@ export default function ViewRequestDetails() {
                     {selectedRequest.status === 'completed' ? (
                       <div className='flex items-center gap-1'>
                         <div className='text-sm text-muted-foreground'>
-                          Completed
+                          Completed at
                         </div>
                         <p className='text-sm text-muted-foreground'>
                           {dayjsLocal(selectedRequest?.completed_at).fromNow()}
@@ -234,10 +234,10 @@ export default function ViewRequestDetails() {
                     ) : (
                       <div className='flex items-center gap-1'>
                         <div className='text-sm text-muted-foreground'>
-                          Created
+                          Updated at
                         </div>
                         <p className='text-sm text-muted-foreground'>
-                          {dayjsLocal(selectedRequest?.created_at).fromNow()}
+                          {dayjsLocal(selectedRequest?.updated_at).fromNow()}
                         </p>
                       </div>
                     )}
