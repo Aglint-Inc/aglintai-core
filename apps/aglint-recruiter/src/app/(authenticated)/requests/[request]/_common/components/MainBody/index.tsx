@@ -32,6 +32,7 @@ import { useEffect, useState } from 'react';
 import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
 import { Loader } from '@/common/Loader';
+import { useTenant } from '@/company/hooks';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 // import { UIDivider } from '@/components/Common/UIDivider';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
@@ -93,6 +94,7 @@ export default function ViewRequestDetails() {
   const { data: sessions, status, refetch: refetchMeetings } = useMeetingList();
 
   const { data: members } = useMemberList();
+  const { recruiter_user } = useTenant();
 
   const [dateRange, setDateRange] = useState<{
     from: Date | undefined;
@@ -104,9 +106,12 @@ export default function ViewRequestDetails() {
     .find((request) => request?.id === requestId);
   const candidateDetails = selectedRequest?.applications?.candidates;
   const jobDetails = selectedRequest?.applications?.public_jobs;
-  const selectedMember =
+  const assignee =
     members &&
     members.find((member) => member.user_id === selectedRequest?.assignee_id);
+  const assigner =
+    members &&
+    members.find((member) => member.user_id === selectedRequest?.assigner_id);
 
   useEffect(() => {
     if (!isPlaceholderData && status === 'success' && selectedRequest) {
@@ -405,27 +410,30 @@ export default function ViewRequestDetails() {
                 <div className='flex flex-row items-center gap-2'>
                   <Avatar className='ml-0 h-6 w-6 rounded-sm'>
                     <AvatarImage
-                      src={selectedMember?.profile_image}
+                      src={assignee?.profile_image}
                       alt='Avatar'
                       className=''
                     />
                     <AvatarFallback className='h-6 w-6 rounded-sm bg-gray-200'>
                       <span className='text-sm'>
-                        {selectedMember?.first_name.slice(0, 1)}
+                        {assignee?.first_name.slice(0, 1)}
                       </span>
                     </AvatarFallback>
                   </Avatar>
                   <Link
                     href={ROUTES['/user/[user]']({
-                      user_id: selectedMember?.user_id ?? '',
+                      user_id: assignee?.user_id ?? '',
                     })}
                     className=''
                   >
                     <p className=''>
                       {getFullName(
-                        selectedMember?.first_name ?? '',
-                        selectedMember?.last_name ?? '',
+                        assignee?.first_name ?? '',
+                        assignee?.last_name ?? '',
                       )}
+                      {assignee?.user_id === recruiter_user.user_id
+                        ? ' (You)'
+                        : ''}
                     </p>
                   </Link>
                 </div>
@@ -483,7 +491,45 @@ export default function ViewRequestDetails() {
                   )}
                 </div>
               </div>
+              <div className='group relative space-y-2'>
+                <div className='flex items-center gap-2'>
+                  <h3 className='text-sm font-medium text-muted-foreground'>
+                    Requested by
+                  </h3>
+                </div>
+                <div className='flex flex-row items-center gap-2'>
+                  <Avatar className='ml-0 h-6 w-6 rounded-sm'>
+                    <AvatarImage
+                      src={assigner?.profile_image}
+                      alt='Avatar'
+                      className=''
+                    />
+                    <AvatarFallback className='h-6 w-6 rounded-sm bg-gray-200'>
+                      <span className='text-sm'>
+                        {assigner?.first_name.slice(0, 1)}
+                      </span>
+                    </AvatarFallback>
+                  </Avatar>
+                  <Link
+                    href={ROUTES['/user/[user]']({
+                      user_id: assigner?.user_id ?? '',
+                    })}
+                    className=''
+                  >
+                    <p className=''>
+                      {getFullName(
+                        assigner?.first_name ?? '',
+                        assigner?.last_name ?? '',
+                      )}
+                      {assigner?.user_id === recruiter_user.user_id
+                        ? ' (You)'
+                        : ''}
+                    </p>
+                  </Link>
+                </div>
+              </div>
             </div>
+
             <div className='mt-4 flex flex-col gap-8'>
               <Section>
                 <SectionHeaderText>
