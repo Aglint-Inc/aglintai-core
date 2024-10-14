@@ -21,7 +21,7 @@ export const useJobPolling = (poll = false) => {
       utils.jobs.job.read.invalidate();
     },
     enabled,
-    refetchInterval: enabled ? 10_000 : 0,
+    refetchInterval: enabled ? 30_000 : 0,
     refetchOnMount: enabled,
     refetchOnWindowFocus: false,
   });

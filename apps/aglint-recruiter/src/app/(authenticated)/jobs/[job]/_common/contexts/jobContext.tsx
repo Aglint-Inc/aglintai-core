@@ -39,15 +39,15 @@ const useJobContext = () => {
 
   const total = useMemo(
     () =>
-      Object.values(job.section_count ?? {}).reduce((acc, curr) => {
+      Object.values(job.section_count).reduce((acc, curr) => {
         acc += curr;
         return acc;
       }, 0),
     [
       job.section_count.disqualified,
-      job.section_count.disqualified,
-      job.section_count.disqualified,
-      job.section_count.disqualified,
+      job.section_count.qualified,
+      job.section_count.interview,
+      job.section_count.new,
     ],
   );
 

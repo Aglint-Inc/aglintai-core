@@ -5,9 +5,9 @@ import { createContext, memo, type ReactNode, useMemo } from 'react';
 
 import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useJobs } from '@/jobs/hooks/useJobs';
+import { useJobsPolling } from '@/jobs/hooks/useJobsPolling';
 import { useJobDelete, useJobsSync, useJobUpdate } from '@/queries/jobs';
-
-import { useJobs } from '../hooks/useJobs';
 
 const useJobContext = () => {
   const { recruiter_id } = useTenant();
@@ -21,6 +21,10 @@ const useJobContext = () => {
   );
 
   const jobs = useJobs();
+
+  if (!jobs) throw new Error('No jobs found');
+
+  const { isPolling } = useJobsPolling();
 
   const { mutateAsync: handleSync } = useJobsSync();
 
@@ -61,6 +65,7 @@ const useJobContext = () => {
     handleJobPin,
     manageJob,
     devlinkProps,
+    isPolling,
   };
 
   return value;
