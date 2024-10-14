@@ -62,7 +62,7 @@ function RequestCancelDialog({
             onClick={async () =>
               await mutate({
                 reason: reason,
-                type: 'candidate_request_reschedule',
+                type: 'candidate_request_decline',
                 other_details,
               })
             }
