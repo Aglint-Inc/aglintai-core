@@ -2936,7 +2936,6 @@ export type Database = {
           roles: boolean | null
           scheduling: boolean
           scoring: boolean
-          slack: boolean
           themes: boolean
           workflow: boolean
         }
@@ -2957,7 +2956,6 @@ export type Database = {
           roles?: boolean | null
           scheduling?: boolean
           scoring?: boolean
-          slack?: boolean
           themes?: boolean
           workflow?: boolean
         }
@@ -2978,7 +2976,6 @@ export type Database = {
           roles?: boolean | null
           scheduling?: boolean
           scoring?: boolean
-          slack?: boolean
           themes?: boolean
           workflow?: boolean
         }
