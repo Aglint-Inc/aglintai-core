@@ -27,27 +27,6 @@ const getQueryClient = (
   return (clientQueryClientSingleton ??= createQueryClient(logout));
 };
 
-// export const api = createTRPCClient<AppRouter>({
-// links: [
-// splitLink({
-//   condition: (op) => op.context.disableBatch === true,
-//   true: httpLink({
-//     url: `${getBaseUrl()}/api/trpc`,
-//     transformer: superjson as any,
-//   }),
-//   false: httpBatchLink({
-//     url: `${getBaseUrl()}/api/trpc`,
-//     transformer: superjson as any,
-//   }),
-// }),
-// loggerLink({
-//   enabled: (opts) =>
-//     process.env.NODE_ENV === 'development' ||
-//     (opts.direction === 'down' && opts.result instanceof Error),
-// }),
-// ],
-// });
-
 /**
  * Inference helper for inputs.
  *

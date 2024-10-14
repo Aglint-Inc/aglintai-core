@@ -13,6 +13,7 @@ export const useLogout = () => {
     });
     if (!error) {
       router.push('/login');
+      router.refresh();
       queryClient.clear();
     } else {
       toast({
