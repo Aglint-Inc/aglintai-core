@@ -119,7 +119,7 @@ export function useCompanySetup() {
       !isOnboardCompleteRemote &&
       !firstTimeOpened
     ) {
-      setIsOnboardOpen(true);
+      // setIsOnboardOpen(true);
       setFirstTimeOpened(true);
     }
   }, [steps]);
