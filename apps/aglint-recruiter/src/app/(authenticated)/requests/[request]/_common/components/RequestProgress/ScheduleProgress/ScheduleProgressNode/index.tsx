@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { useTenant } from '@/company/hooks';
+
 import { RequestProgressTracker } from '../../RequestProgressTracker';
 import { type ProgressNodeParams } from '../../types';
 import { bannerMap } from '../../utils/bannerMap';
@@ -14,6 +16,9 @@ const ScheduleProgressNode = ({
   workflows,
   grouped_progress,
 }: ProgressNodeParams) => {
+  const { recruiter } = useTenant();
+  const isWorkflowEnabled = recruiter.recruiter_preferences.workflow;
+  const isSlackEnabled = recruiter.recruiter_preferences.slack;
   return (
     <div>
       <RequestProgressTracker
@@ -26,26 +31,32 @@ const ScheduleProgressNode = ({
                 <EventNode {...{ groupProgress: group }} key={group.group_id} />
               );
             })}
-            {workflows.map((workflow) => {
-              return workflow.actions.map((action) => {
-                return (
-                  <ActionNode
-                    key={action.id}
-                    eventTrigger={workflow.trigger_details.trigger}
-                    triggerAction={action}
-                  />
-                );
-              });
-            })}
+            {isWorkflowEnabled &&
+              workflows.map((workflow) => {
+                return workflow.actions.map((action) => {
+                  return (
+                    <ActionNode
+                      key={action.id}
+                      eventTrigger={workflow.trigger_details.trigger}
+                      triggerAction={action}
+                    />
+                  );
+                });
+              })}
 
-            {banners.map((bannerKey) => {
-              const Banner = bannerMap[bannerKey];
-              return (
-                <div key={bannerKey}>
-                  <Banner />
-                </div>
-              );
-            })}
+            {isWorkflowEnabled &&
+              banners
+                .filter(
+                  (banner) => isSlackEnabled || banner !== 'SLACK_CONFIRMATION',
+                )
+                .map((bannerKey) => {
+                  const Banner = bannerMap[bannerKey];
+                  return (
+                    <div key={bannerKey}>
+                      <Banner />
+                    </div>
+                  );
+                })}
             {/* <ShowCode.When isTrue={scheduleFlow === null}>
               <ChooseScheduleMode />
             </ShowCode.When> */}

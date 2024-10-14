@@ -1,8 +1,4 @@
 export const PATHS = [
-  '/api/agent-workflow/cancel-schedule',
-  '/api/agent-workflow/cand-avail-recieved',
-  '/api/agent-workflow/interviewer-decline',
-  '/api/agent-workflow/new-schedule',
   '/api/ashby/batchsave',
   '/api/ashby/createapplication',
   '/api/ashby/cron',
