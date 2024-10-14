@@ -8,7 +8,7 @@ import {
   setSelectedDay,
   useCandidateInviteSelfScheduleStore,
 } from '../../../store';
-import { getDurationText } from '../../../utils/utils';
+import { getDurationText } from '../../../utils';
 import { SessionCard } from '../../ui/SessionCard';
 
 function Rounds() {

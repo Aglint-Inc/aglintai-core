@@ -2,10 +2,12 @@ import {
   type APICreateCandidateRequest,
   type DatabaseTable,
 } from '@aglint/shared-types';
-import { dayjsLocal } from '@aglint/shared-utils';
+import { dayjsLocal, SINGLE_DAY_TIME } from '@aglint/shared-utils';
 import axios from 'axios';
 
 import timeZones, { type TimezoneObj } from '@/utils/timeZone';
+
+import { type ScheduleCardProps } from '../types/types';
 
 export const getDurationText = (duration: number) => {
   const hours = Math.trunc(duration / 60);
@@ -74,4 +76,27 @@ export const createRequest = async ({
     reason,
   };
   await axios.post('/api/request/candidate-request', createReqPayload);
+};
+
+export const getRounds = (meetings: ScheduleCardProps['round']['sessions']) => {
+  const { rounds } = (meetings || []).reduce(
+    (acc, curr) => {
+      const count = acc.rounds.length;
+      if (
+        count === 0 ||
+        acc.rounds[count - 1].sessions[
+          acc.rounds[count - 1].sessions.length - 1
+        ].interview_session.break_duration >= SINGLE_DAY_TIME
+      )
+        acc.rounds.push({
+          title: `Day ${acc.rounds.length + 1}`,
+          sessions: [curr],
+        });
+      else acc.rounds[count - 1].sessions.push(curr);
+      return acc;
+    },
+    { rounds: [] as ScheduleCardProps['round'][] },
+  );
+
+  return rounds;
 };
