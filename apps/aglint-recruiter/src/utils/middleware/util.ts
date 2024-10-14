@@ -1,38 +1,35 @@
-import { type DatabaseTable, type DB } from '@aglint/shared-types';
-import { createClient } from '@supabase/supabase-js';
-import { jwtVerify } from 'jose';
+import { type DatabaseTable } from '@aglint/shared-types';
 
-import { type EventSessionType } from './type';
-
-const supabase = createClient<DB>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY,
-);
+import { createClient } from '../supabase/server';
 
 export const server_check_permissions = async ({
-  getVal,
   permissions,
 }: {
-  getVal: (_name: string) => string;
   permissions: DatabaseTable['permissions']['name'][];
 }) => {
   try {
     if (!permissions?.length) throw new Error('Permission not provided.');
-    // @ts-expect-error
-    const jsonDetail = getToken(supabase.storageKey, getVal);
+    const supabase = createClient();
+    const { data } = await supabase.auth.getSession();
+    const user_id = data?.session?.user.id;
+    if (!user_id) throw new Error('User unauthenticated');
 
-    const user_id = jsonDetail.user.id;
-    const token = jsonDetail.access_token;
+    const { data: rel } = await supabase
+      .from('recruiter_relation')
+      .select(
+        'recruiter_id, roles!inner(name, role_permissions!inner(permissions!inner(name, is_enable)))',
+      )
+      .eq('user_id', user_id)
+      .single()
+      .throwOnError();
+    if (!rel) throw new Error('User not found');
 
-    const { payload } = await jwtVerify(
-      token,
-      new TextEncoder().encode(process.env.SUPABASE_JWT_SECRET),
+    const rec_id = rel.recruiter_id;
+    const role = rel.roles.name;
+    const userPermissions = rel?.roles.role_permissions.map(
+      (role) => role.permissions.name,
     );
 
-    const tokenData = payload as unknown as EventSessionType;
-    const userPermissions = tokenData.app_metadata.role_permissions.permissions;
-    const role = tokenData.app_metadata.role_permissions.role;
-    const rec_id = tokenData.app_metadata.role_permissions.recruiter_id;
     let is_allowed = permissions.includes('authorized');
 
     if (!is_allowed) {
@@ -43,6 +40,7 @@ export const server_check_permissions = async ({
         }
       }
     }
+
     return {
       isAllowed: is_allowed,
       id: user_id,
@@ -55,41 +53,3 @@ export const server_check_permissions = async ({
     return { isAllowed: false, id: null, rec_id: null, role: null };
   }
 };
-
-function getToken(base: string, func: any) {
-  const tryNext = true;
-  let count = 0;
-  let jsonData: {
-    access_token: string;
-    token_type: string;
-    expires_in: number;
-    expires_at: number;
-    refresh_token: string;
-    user: { id: string };
-  } | null = null;
-  let tempData: string[] = [func(base)];
-  while (tryNext) {
-    const temp = func(`${base}.${count}`);
-    if (!temp) {
-      break;
-    }
-    tempData.push(temp);
-    count++;
-  }
-  tempData = tempData.filter((item) => Boolean(item));
-  try {
-    jsonData = JSON.parse(atob(tempData.join('').replace('base64-', ''))) as {
-      access_token: string;
-      token_type: string;
-      expires_in: number;
-      expires_at: number;
-      refresh_token: string;
-      user: { id: string };
-    };
-  } catch (error) {
-    console.error(error);
-    throw new Error('failed to load session');
-  }
-  // (new Date(1721397061*1000) - new Date())/(1000*60) < .3 && throw new Error('Access token Expired') //  reject
-  return jsonData;
-}
