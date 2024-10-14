@@ -14,7 +14,6 @@ export const useJobPolling = (poll = false) => {
   useQuery({
     queryKey: ['job-polling', { id: job.id }],
     queryFn: () => {
-      utils.jobs.read.invalidate();
       utils.jobs.job.applications.invalidate();
       utils.jobs.job.filters.invalidate();
       utils.jobs.job.metrics.invalidate();
