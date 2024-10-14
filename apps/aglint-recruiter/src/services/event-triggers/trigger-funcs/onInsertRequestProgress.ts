@@ -13,9 +13,17 @@ export const onInsertRequestProgress = async ({
     supabaseWrap(
       await supabaseAdmin
         .from('request')
-        .update({ status: 'in_progress' })
+        .update({
+          status: 'in_progress',
+        })
         .eq('id', new_data.request_id)
         .eq('status', 'to_do'),
+    );
+    supabaseWrap(
+      await supabaseAdmin
+        .from('request')
+        .update({ updated_at: dayjsLocal().format() })
+        .eq('id', new_data.request_id),
     );
   } catch (err: any) {
     console.error('Failed onInsertRequestProgress', err.message);
