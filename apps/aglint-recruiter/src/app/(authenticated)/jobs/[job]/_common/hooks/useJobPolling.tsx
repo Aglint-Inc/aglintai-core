@@ -14,14 +14,13 @@ export const useJobPolling = (poll = false) => {
   useQuery({
     queryKey: ['job-polling', { id: job.id }],
     queryFn: () => {
-      utils.jobs.read.invalidate();
       utils.jobs.job.applications.invalidate();
       utils.jobs.job.filters.invalidate();
       utils.jobs.job.metrics.invalidate();
       utils.jobs.job.read.invalidate();
     },
     enabled,
-    refetchInterval: enabled ? 10_000 : 0,
+    refetchInterval: enabled ? 30_000 : 0,
     refetchOnMount: enabled,
     refetchOnWindowFocus: false,
   });
