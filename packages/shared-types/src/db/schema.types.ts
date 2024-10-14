@@ -4383,6 +4383,7 @@ export type Database = {
           processing_status:
             | Database["public"]["Enums"]["application_processing_status"]
             | null
+          recruiter_id: string | null
           resume_processing_state:
             | Database["public"]["Enums"]["resume_processing_state"]
             | null
@@ -4425,6 +4426,13 @@ export type Database = {
             referencedRelation: "job_view"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "applications_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
+            referencedColumns: ["id"]
+          },
         ]
       }
       application_view: {
@@ -4456,6 +4464,7 @@ export type Database = {
           processing_status:
             | Database["public"]["Enums"]["application_processing_status"]
             | null
+          recruiter_id: string | null
           resume_processing_state:
             | Database["public"]["Enums"]["resume_processing_state"]
             | null
@@ -4500,6 +4509,13 @@ export type Database = {
             columns: ["job_id"]
             isOneToOne: false
             referencedRelation: "job_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "applications_recruiter_id_fkey"
+            columns: ["recruiter_id"]
+            isOneToOne: false
+            referencedRelation: "recruiter"
             referencedColumns: ["id"]
           },
         ]

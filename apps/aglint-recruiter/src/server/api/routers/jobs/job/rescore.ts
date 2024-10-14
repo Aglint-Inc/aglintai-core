@@ -8,12 +8,13 @@ const schema = z.object({
   id: z.string().uuid(),
 });
 
-const mutation = async ({ input }: PrivateProcedure<typeof schema>) => {
+const mutation = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
   const db = createPrivateClient();
   const response = (
     await db
       .from('public_jobs')
       .select('draft_jd_json, scoring_criteria_loading')
+      .eq('recruiter_id', ctx.recruiter_id)
       .eq('id', input.id)
       .single()
       .throwOnError()
@@ -30,7 +31,9 @@ const mutation = async ({ input }: PrivateProcedure<typeof schema>) => {
     });
   return await db
     .from('public_jobs')
-    .update({ jd_json: response.draft_jd_json });
+    .update({ jd_json: response.draft_jd_json })
+    .eq('recruiter_id', ctx.recruiter_id)
+    .eq('id', input.id);
 };
 
 export const rescore = privateProcedure.input(schema).mutation(mutation);

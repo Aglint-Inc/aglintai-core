@@ -259,7 +259,7 @@ const getTimestamp = (job: Job) => {
 
 const Banners = ({ job }: { job: Job }) => {
   return (
-    <div className='sr-only'>
+    <div>
       <Banner {...errorCount(job)} />
       <Banner {...warningCount(job)} />
       <Banner

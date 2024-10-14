@@ -69,7 +69,7 @@ export const JobCreate = () => {
   const initialTitle = recruiter?.name ? `${initialCompany}'s first job` : '';
   const [fields, setFields] = useState<Form>({
     job_title: {
-      value: null!,
+      value: '',
       required: true,
       placeholder: initialTitle,
       error: { value: false, helper: `Job title can't be empty` },
@@ -142,7 +142,7 @@ export const JobCreate = () => {
     .join(', ');
 
   return (
-    <div className='px-4 flex w-full max-w-3xl flex-col space-y-4'>
+    <div className='flex w-full max-w-3xl flex-col space-y-4 px-4'>
       {isJobSetupPending && (
         <Alert variant='warning'>
           <AlertTitle>Company setup is pending </AlertTitle>
@@ -284,7 +284,7 @@ const JobForms = ({
   const forms = (
     <div className='space-y-4'>
       <div className='max-w-3xl'>{job_title}</div>
-      <div className='grid grid-cols-2 gap-4 max-w-3xl'>
+      <div className='grid max-w-3xl grid-cols-2 gap-4'>
         <div>{job_type}</div>
         <div>{workplace_type}</div>
         <div>{department_id}</div>
