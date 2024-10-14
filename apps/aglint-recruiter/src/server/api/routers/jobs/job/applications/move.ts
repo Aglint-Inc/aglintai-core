@@ -70,24 +70,26 @@ const moveToInterview = async ({
     db
       .from('application_view')
       .select('id, name')
+      .eq('recruiter_id', ctx.recruiter_id)
       .in('id', input.applications)
       .throwOnError(),
     db
       .from('interview_session')
       .select('name')
+      .eq('recruiter_id', ctx.recruiter_id)
       .in('id', body.sessions)
       .throwOnError(),
   ]);
 
   if (!session_names || session_names.length === 0)
     throw new TRPCError({
-      code: 'UNPROCESSABLE_CONTENT',
+      code: 'NOT_FOUND',
       message: 'No sessions found',
     });
 
   if (!data || data.length === 0)
     throw new TRPCError({
-      code: 'UNPROCESSABLE_CONTENT',
+      code: 'NOT_FOUND',
       message: 'No applications found',
     });
 

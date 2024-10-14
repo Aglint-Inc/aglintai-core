@@ -27,7 +27,7 @@ const query = async ({
   ).data;
   if (!job)
     throw new TRPCError({
-      code: 'FORBIDDEN',
+      code: 'NOT_FOUND',
       message: 'Job not found',
     });
   const banner = getBanners(job);
