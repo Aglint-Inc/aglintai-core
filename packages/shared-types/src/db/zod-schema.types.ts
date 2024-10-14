@@ -3032,6 +3032,7 @@ export const recruiterPreferencesRowSchema = z.object({
   roles: z.boolean().nullable(),
   scheduling: z.boolean(),
   scoring: z.boolean(),
+  slack: z.boolean(),
   themes: z.boolean(),
   workflow: z.boolean(),
 });
@@ -3053,6 +3054,7 @@ export const recruiterPreferencesInsertSchema = z.object({
   roles: z.boolean().optional().nullable(),
   scheduling: z.boolean().optional(),
   scoring: z.boolean().optional(),
+  slack: z.boolean().optional(),
   themes: z.boolean().optional(),
   workflow: z.boolean().optional(),
 });
@@ -3074,6 +3076,7 @@ export const recruiterPreferencesUpdateSchema = z.object({
   roles: z.boolean().optional().nullable(),
   scheduling: z.boolean().optional(),
   scoring: z.boolean().optional(),
+  slack: z.boolean().optional(),
   themes: z.boolean().optional(),
   workflow: z.boolean().optional(),
 });

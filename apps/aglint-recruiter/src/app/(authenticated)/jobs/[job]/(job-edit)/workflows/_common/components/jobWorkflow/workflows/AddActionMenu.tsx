@@ -16,8 +16,9 @@ import { PlusCircle } from 'lucide-react';
 import { useState } from 'react';
 import { v4 } from 'uuid';
 
+import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
-import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
+import { getSlackWorkflowActions } from '@/utils/getSlackWorkflowActions';
 
 import {
   addWaction,
@@ -31,9 +32,12 @@ const AddActionMenu = ({
   wTrigger: DatabaseTable['workflow'];
 }) => {
   const [open, setOpen] = useState<boolean>(false);
-
+  const { recruiter } = useTenant();
   const { jobWorkflowActions, company_templates } = useJobAutomationStore();
-  const actions = ACTION_TRIGGER_MAP[wTrigger.trigger];
+  const actions = getSlackWorkflowActions(
+    wTrigger.trigger,
+    recruiter.recruiter_preferences.slack,
+  );
   const filteredActions = actions.filter((action) => {
     return !jobWorkflowActions.find(
       (workflowAction) => workflowAction.target_api === action.value.target_api,
@@ -44,14 +48,12 @@ const AddActionMenu = ({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <div className='mb-4'>
-          <UIButton variant='secondary' >
-            <div className='flex items-center gap-1'>
-            <PlusCircle className='h-4 w-4' />
-              <span>Add Action</span>
-             
-            </div>
-            
-          </UIButton>
+            <UIButton variant='secondary'>
+              <div className='flex items-center gap-1'>
+                <PlusCircle className='h-4 w-4' />
+                <span>Add Action</span>
+              </div>
+            </UIButton>
           </div>
         </PopoverTrigger>
         <PopoverContent
