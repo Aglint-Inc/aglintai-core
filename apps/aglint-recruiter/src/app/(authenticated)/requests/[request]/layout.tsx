@@ -1,4 +1,5 @@
 import { RequestProvider } from '@request/contexts';
+import { unstable_noStore as noStore } from 'next/cache';
 import React from 'react';
 
 import { api } from '@/trpc/server';
@@ -10,6 +11,7 @@ async function Layout({
   children: React.ReactNode;
   params: { request: string };
 }) {
+  noStore();
   void api.requests.utils.requestSessions.prefetch({
     request_id: params.request,
   });
