@@ -6150,13 +6150,6 @@ export type Database = {
           interviewers_count: number
         }[]
       }
-      reorder_sessions: {
-        Args: {
-          sessions: Json
-          interview_plan_id: string
-        }
-        Returns: undefined
-      }
       reports_request_metrics: {
         Args: {
           recruiter_id: string
