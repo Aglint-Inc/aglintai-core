@@ -1,4 +1,5 @@
 import { AppLayout } from '@components/layouts/app-layout';
+import { unstable_noStore as noStore } from 'next/cache';
 import dynamic from 'next/dynamic';
 import { type PropsWithChildren } from 'react';
 
@@ -13,6 +14,7 @@ const TopBar = dynamic(() => import('@/components/Navigation/TopBar'), {
 });
 
 const Layout = async ({ children }: PropsWithChildren) => {
+  noStore();
   void api.tenant.read.prefetch();
   void api.tenant.flags.prefetch();
   void api.tenant.all_departments.prefetch();
