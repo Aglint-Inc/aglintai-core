@@ -36,9 +36,7 @@ function ApplicationDetailComp() {
 
   return (
     <div className='space-y-4'>
-      <ScrollArea >
-        {renderTabContent()}
-      </ScrollArea>
+      <ScrollArea>{renderTabContent()}</ScrollArea>
     </div>
   );
 }
