@@ -45,8 +45,8 @@ const mutation = async ({
   return await db
     .from('public_jobs')
     .update(payload)
-    .eq('id', id)
     .eq('recruiter_id', ctx.recruiter_id)
+    .eq('id', id)
     .throwOnError();
 };
 

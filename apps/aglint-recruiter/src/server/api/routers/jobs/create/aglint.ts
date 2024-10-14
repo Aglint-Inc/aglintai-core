@@ -60,8 +60,8 @@ const mutation = async ({
   ).data;
   if (!job)
     throw new TRPCError({
-      code: 'FORBIDDEN',
-      message: 'Unable to create job',
+      code: 'NOT_FOUND',
+      message: 'Job not found',
     });
   await safeGenerateJd({ ctx, input: { id: job.id, type: 'generate' } });
   return job.id;

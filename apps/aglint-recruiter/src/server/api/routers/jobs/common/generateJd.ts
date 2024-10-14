@@ -87,7 +87,7 @@ const getScoringFlag = async ({ ctx }: Params) => {
   ).data;
   if (!data)
     throw new TRPCError({
-      code: 'FORBIDDEN',
+      code: 'NOT_FOUND',
       message: 'Missing preference',
     });
   if (!data.scoring)
@@ -97,19 +97,20 @@ const getScoringFlag = async ({ ctx }: Params) => {
     });
 };
 
-const getJobDetails = async ({ input }: Params) => {
+const getJobDetails = async ({ ctx, input }: Params) => {
   const db = createPublicClient();
   const job = (
     await db
       .from('public_jobs')
       .select('job_title, description')
+      .eq('recruiter_id', ctx.recruiter_id)
       .eq('id', input.id)
       .single()
       .throwOnError()
   ).data;
   if (!job)
     throw new TRPCError({
-      code: 'UNPROCESSABLE_CONTENT',
+      code: 'NOT_FOUND',
       message: 'Job not found',
     });
   return {
@@ -118,25 +119,28 @@ const getJobDetails = async ({ input }: Params) => {
   };
 };
 
-const startScoreLoading = async ({ input }: Params) => {
+const startScoreLoading = async ({ ctx, input }: Params) => {
   const db = createPublicClient();
   return await db
     .from('public_jobs')
     .update({ scoring_criteria_loading: true })
+    .eq('recruiter_id', ctx.recruiter_id)
     .eq('id', input.id)
     .throwOnError();
 };
 
-const stopScoreLoading = async ({ input }: Params) => {
+const stopScoreLoading = async ({ ctx, input }: Params) => {
   const db = createPublicClient();
   return await db
     .from('public_jobs')
     .update({ scoring_criteria_loading: false })
+    .eq('recruiter_id', ctx.recruiter_id)
     .eq('id', input.id)
     .throwOnError();
 };
 
 const finishScoreLoading = async ({
+  ctx,
   input,
   draft_jd_json,
   parameter_weights,
@@ -155,6 +159,7 @@ const finishScoreLoading = async ({
   return await db
     .from('public_jobs')
     .update(payload)
+    .eq('recruiter_id', ctx.recruiter_id)
     .eq('id', input.id)
     .throwOnError();
 };
