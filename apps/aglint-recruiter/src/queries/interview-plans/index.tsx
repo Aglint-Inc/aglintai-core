@@ -1,19 +1,13 @@
 import { type DB } from '@aglint/shared-types';
-import {
-  useMutation,
-  useMutationState,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useMutation, useMutationState } from '@tanstack/react-query';
 
 import { useTenant } from '@/company/hooks';
 import { useCurrentJob } from '@/job/hooks';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import { jobQueries } from '../job';
 import { interviewSessionMutationKeys } from './keys';
 import {
-  type InterviewPlansType,
   type InterviewSessionRelationType,
   type InterviewSessionUpdate,
 } from './types';
@@ -191,49 +185,6 @@ export const useEditDebriefSession = () => {
   return mutation;
 };
 
-export const useReorderInterviewSessions = () => {
-  const queryClient = useQueryClient();
-  const { job_id } = useCurrentJob();
-  const id = job_id;
-  const { queryKey } = jobQueries.interview_plans({ id });
-  const mutation = useMutation({
-    mutationFn: async (args: {
-      updatedInterviewSessions: InterviewPlansType[number]['interview_session'];
-      interviewPlanId: string;
-    }) => {
-      const sessions = args.updatedInterviewSessions.map(
-        ({ id, session_order }) => ({ id, session_order }),
-      );
-      await reorderSessions({
-        sessions,
-        interview_plan_id: args.interviewPlanId,
-      });
-    },
-    onMutate: async (payload) => {
-      await queryClient.cancelQueries({ queryKey });
-      const oldInterviewPlan =
-        queryClient.getQueryData<InterviewPlansType>(queryKey);
-      queryClient.setQueryData<InterviewPlansType>(
-        queryKey,
-        (oldInterviewPlan ?? []).map((item) =>
-          item.id === payload.interviewPlanId
-            ? { ...item, interview_session: payload.updatedInterviewSessions }
-            : item,
-        ),
-      );
-      return { oldInterviewPlan };
-    },
-    onError: (_error, _variables, context) => {
-      toast.error('Unable to reorder sessions');
-      queryClient.setQueryData<InterviewPlansType>(
-        queryKey,
-        context!.oldInterviewPlan!,
-      );
-    },
-  });
-  return mutation;
-};
-
 export type DeleteInterviewSession = Parameters<
   typeof deleteInterviewSession
 >[0];
@@ -348,17 +299,5 @@ export type UpdateDebriefSession =
 
 export const updateDebriefSession = async (args: UpdateDebriefSession) => {
   const { error } = await supabase.rpc('update_debrief_session', args);
-  if (error) throw new Error(error.message);
-};
-
-type ReorderSessions = Omit<
-  DB['public']['Functions']['reorder_sessions']['Args'],
-  'sessions'
-> & {
-  sessions: { id: string; session_order: number }[];
-};
-
-const reorderSessions = async (args: ReorderSessions) => {
-  const { error } = await supabase.rpc('reorder_sessions', args);
   if (error) throw new Error(error.message);
 };
