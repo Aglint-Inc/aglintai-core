@@ -1,4 +1,5 @@
 import { type DatabaseTable } from '@aglint/shared-types';
+import { supabaseWrap } from '@aglint/shared-utils';
 
 import { cloneCompWorkflowsForJob } from '@/utils/clone/cloneCompWorkflowsForJob';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
@@ -13,6 +14,15 @@ export const onInsertPublicJobs = async ({
 
 const cloneWorkflows = async (job_id: string, company_id: string) => {
   try {
+    const supabaseAdmin = getSupabaseServer();
+    const recruiter = supabaseWrap(
+      await supabaseAdmin
+        .from('recruiter')
+        .select('*, recruiter_preferences!inner(*)')
+        .eq('id', company_id)
+        .single(),
+    );
+    if (!recruiter.recruiter_preferences.workflow) return;
     await cloneCompWorkflowsForJob({
       company_id,
       job_id,

@@ -195,7 +195,7 @@ function CandidateAvailability({
             is_preview: false,
           };
 
-        mailSender({
+        await mailSender({
           target_api: 'sendAvailabilityRequest_email_applicant',
           payload,
         });

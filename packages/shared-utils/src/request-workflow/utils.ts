@@ -35,6 +35,11 @@ export const createRequestProgressLogger = ({
     if (payload?.id) {
       progress_id = payload.id;
     }
+    supabaseWrap(
+      await supabaseAdmin.from('request').update({
+        updated_at: dayjsLocal().toISOString(),
+      })
+    );
     const rec = await supabaseWrap(
       await supabaseAdmin
         .from('request_progress')

@@ -310,10 +310,10 @@ export const ACTION_TRIGGER_MAP: Trigger_API_Action_Mapper = {
     {
       name: 'Inform interviewers and Slack regarding interview cancellation through Slack',
       value: {
-        action_type: 'end_point',
+        action_type: 'slack',
         target_api: 'onRequestCancel_slack_interviewersOrganizer',
         payload: {
-          end_point: null!,
+          slack: null!,
         },
       },
     },
