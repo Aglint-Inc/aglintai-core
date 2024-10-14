@@ -14,7 +14,6 @@ import { FileUploader } from 'react-drag-drop-files';
 
 import { Loader } from '@/components/Common/Loader';
 import { UIButton } from '@/components/Common/UIButton';
-import { useOnboarding } from '@/components/Navigation/OnboardPending/context/onboarding';
 import { useApplicationsActions, useJob } from '@/job/hooks';
 
 type Candidate = {
@@ -34,7 +33,6 @@ export const ImportCsv: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
-  const { onboardRefetch } = useOnboarding();
 
   const handleFileUpload = (file: File) => {
     if (!file) return;
@@ -89,7 +87,6 @@ export const ImportCsv: React.FC = () => {
           };
         });
         await handleUploadCsv({ candidates: formattedCandidates });
-        onboardRefetch('candidate');
         setImportPopup(false);
       } catch {
         //

@@ -14,10 +14,6 @@ import { Progress } from '@components/ui/progress';
 import { ScrollArea } from '@components/ui/scroll-area';
 import { AlertCircle, ArrowLeft, ArrowRight, Check } from 'lucide-react';
 
-import {
-  setIsOnboardOpen,
-  useOnboard,
-} from '@/authenticated/store/OnboardStore';
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import UITabs from '@/components/Common/UITabs';
@@ -30,12 +26,12 @@ export const OnboardPending = () => {
     isCompanySetupLocalPending,
     companySetupSteps,
     isOnboardCompleteRemote,
+    isOnboardOpen,
+    setIsOnboardOpen,
   } = useOnboarding();
 
-  const { isOpen } = useOnboard();
-
   const toggleOpen = () => {
-    setIsOnboardOpen(!isOpen);
+    setIsOnboardOpen(!isOnboardOpen);
   };
 
   const pendingStepsCount = companySetupSteps.filter(
@@ -44,13 +40,11 @@ export const OnboardPending = () => {
 
   return (
     <>
-      {isOnboardCompleteRemote ? (
-        <> </>
-      ) : (
+      {!isOnboardCompleteRemote && (
         <>
           {!!companySetupSteps?.length &&
             isCompanySetupLocalPending &&
-            !isOpen && (
+            !isOnboardOpen && (
               <UIButton
                 className='fixed bottom-8 left-20 z-50 rounded-full shadow-lg'
                 onClick={toggleOpen}
@@ -65,7 +59,7 @@ export const OnboardPending = () => {
             )}
         </>
       )}
-      <Dialog open={isOpen} onOpenChange={() => toggleOpen()}>
+      <Dialog open={isOnboardOpen} onOpenChange={() => toggleOpen()}>
         <DialogContent className='mb-0 min-w-[900px] max-w-[900px] p-0'>
           <MainContent />
         </DialogContent>
@@ -80,7 +74,6 @@ const MainContent = () => {
     companySetupProgress,
     setSelectedIndex,
     selectedStep,
-    setSelectedStep,
   } = useOnboarding();
 
   const tabs =
@@ -126,14 +119,10 @@ const MainContent = () => {
             defaultValue={selectedStep?.id ?? ''}
             vertical
             onClick={(value) => {
-              const step = companySetupSteps.find(
-                (compStep) => compStep.id === value,
-              );
               const stepIndex = companySetupSteps.findIndex(
                 (compStep) => compStep.id === value,
               );
               setSelectedIndex(stepIndex);
-              setSelectedStep(step);
             }}
           />
         </div>
@@ -155,21 +144,19 @@ const Footer = () => {
     currentStepMarkAsComplete,
     finishHandler,
     isCompanySetupLocalPending,
-    selectedStep,
     selectedIndex,
+    selectedStep,
     companySetupSteps,
     setSelectedIndex,
-    setSelectedStep,
     isPending,
   } = useOnboarding();
 
   const goToNextStep = () => {
     const currentIndex = companySetupSteps.findIndex(
-      (step) => step.id === selectedStep?.id,
+      (step) => step.id === selectedStep.id,
     );
     setSelectedIndex(currentIndex);
     if (currentIndex < companySetupSteps.length - 1) {
-      setSelectedStep(companySetupSteps[currentIndex + 1]);
       setSelectedIndex(currentIndex + 1);
     }
   };
@@ -180,7 +167,6 @@ const Footer = () => {
     );
     if (currentIndex > 0) {
       setSelectedIndex(currentIndex - 1);
-      setSelectedStep(companySetupSteps[currentIndex - 1]);
     }
   };
 

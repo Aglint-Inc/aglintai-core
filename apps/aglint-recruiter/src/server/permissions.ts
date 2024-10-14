@@ -59,4 +59,5 @@ export const API_PERMISSIONS: ApiPermissions = {
   },
   utility: [],
   email: [],
+  onboarding: [],
 };

@@ -6,6 +6,7 @@ import {
 } from '@trpc/server/unstable-core-do-not-import';
 
 import type { AppRouter } from './api/root';
+// eslint-disable-next-line import/no-cycle
 import { API_PERMISSIONS } from './permissions';
 
 type Procedures = AppRouter['_def']['procedures'];

@@ -4,7 +4,6 @@ import { File, FileText, Plus, Upload, X } from 'lucide-react';
 import { useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 
-import { useOnboarding } from '@/components/Navigation/OnboardPending/context/onboarding';
 import { useApplicationsActions, useJob } from '@/job/hooks';
 import toast from '@/utils/toast';
 
@@ -16,7 +15,6 @@ export const ImportResume = () => {
   const { handleUploadResume } = useJob();
   const { setImportPopup } = useApplicationsActions();
   const [loading, setLoading] = useState(false);
-  const { onboardRefetch } = useOnboarding();
 
   const handleInputChange = (files: FileList) => {
     const newFiles = Array.from(files).filter((file: File) => {
@@ -43,7 +41,6 @@ export const ImportResume = () => {
       try {
         setLoading(true);
         await handleUploadResume({ files: selectedFiles });
-        onboardRefetch('candidate');
         setImportPopup(false);
       } catch {
         //
