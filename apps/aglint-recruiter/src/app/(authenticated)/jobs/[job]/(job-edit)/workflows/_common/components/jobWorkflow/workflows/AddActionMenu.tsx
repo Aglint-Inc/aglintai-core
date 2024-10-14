@@ -58,8 +58,8 @@ const AddActionMenu = ({
         </PopoverTrigger>
         <PopoverContent
           className='min-w-450 flex flex-col gap-4 p-2'
-          align='end'
-          side='right'
+          align='start'
+          side='bottom'
         >
           <Command>
             <CommandList>
