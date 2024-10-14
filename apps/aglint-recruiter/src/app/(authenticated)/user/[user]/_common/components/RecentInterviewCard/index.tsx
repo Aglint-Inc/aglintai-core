@@ -46,9 +46,11 @@ export const RecentInterviews = () => {
         {isExpanded && (
           <ScrollArea className='flex h-[300px]'>
             {interviews?.length > 0 ? (
-              interviews.map((interview) => (
-                <List key={interview.id} interview={interview} />
-              ))
+              interviews
+                .slice(0, 3)
+                .map((interview) => (
+                  <List key={interview.id} interview={interview} />
+                ))
             ) : (
               <EmptyState
                 variant='inline'

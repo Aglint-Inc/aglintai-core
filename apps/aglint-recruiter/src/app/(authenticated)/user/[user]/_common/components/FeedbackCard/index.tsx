@@ -39,9 +39,11 @@ export const Feedback = () => {
         {isExpanded && (
           <ScrollArea className='flex h-[300px]'>
             {data.feedbacks?.length ? (
-              feedbacks.map((feedback) => (
-                <List key={feedback.session_name} feedback={feedback} />
-              ))
+              feedbacks
+                .slice(0, 3)
+                .map((feedback) => (
+                  <List key={feedback.session_name} feedback={feedback} />
+                ))
             ) : (
               <EmptyState
                 variant='inline'

@@ -17,7 +17,7 @@ export const Qualifications = ({
       {interview_types?.length ? (
         <ScrollArea className='h-[310px]'>
           <div className='flex max-h-full flex-col gap-4'>
-            {[...interview_types, ...interview_types]?.map((interview_type) => (
+            {interview_types?.map((interview_type) => (
               <List
                 interviewType={interview_type}
                 key={interview_type.module_name}
