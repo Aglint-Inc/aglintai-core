@@ -114,8 +114,11 @@
 }
 
 .fc-event:hover {
-  opacity: 0.8;
   box-shadow: none;
   background-color: transparent;
   cursor: pointer;
+}
+
+.fc-timegrid-event {
+  box-shadow: none !important;
 }

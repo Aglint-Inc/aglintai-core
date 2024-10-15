@@ -179,7 +179,7 @@ function renderEventContent(eventInfo: EventContentArg) {
   const { data, color } = eventInfo.event.extendedProps;
   return (
     <div
-      className={`text-${color.pri} w-full cursor-pointer rounded-md p-[5px_10px] ${color.bg} border-l-[3px] border-${color.pri}`}
+      className={`text-${color.pri} w-full cursor-pointer rounded-md p-[5px_10px] ${color.bg} border-l-[3px] hover:${color.hoverBg} border-${color.pri}`}
       onClick={() => {
         // Create a custom tooltip element
         const tooltip = document.createElement('div');
@@ -222,12 +222,16 @@ function renderEventContent(eventInfo: EventContentArg) {
 const colorPick = (status: NonNullable<SchedulesSupabase>[0]['status']) => {
   switch (status) {
     case 'confirmed':
-      return { bg: 'bg-blue-200', pri: 'blue-700' };
+      return {
+        hoverBg: 'bg-blue-300',
+        bg: 'bg-blue-200',
+        pri: 'blue-700',
+      };
     case 'completed':
-      return { bg: 'bg-green-200', pri: 'green-700' };
+      return { hoverBg: 'bg-green-300', bg: 'bg-green-200', pri: 'green-700' };
     case 'cancelled':
-      return { bg: 'bg-red-200', pri: 'red-700' };
+      return { hoverBg: 'bg-red-300', bg: 'bg-red-200', pri: 'red-700' };
     default:
-      return { bg: 'bg-gray-300', pri: 'gray-700' };
+      return { hoverBg: 'bg-gray-300', bg: 'bg-gray-200', pri: 'gray-700' };
   }
 };
