@@ -1,11 +1,12 @@
 import { toast } from '@components/hooks/use-toast';
 import { useParams } from 'next/navigation';
 
+import type { GetCandidateAvailabilityData } from '@/routers/candidate_availability/getCandidateAvailabilityData';
+import type { Update } from '@/routers/candidate_availability/update';
 import { api } from '@/trpc/client';
-import { Update } from '@/routers/candidate_availability/update';
 
 export const useCandidateAvailabilityMeetings = () => {
-  const { data: candidateRequestAvailability } = useCandidateAvailabilityData();
+  const candidateRequestAvailability = useCandidateAvailabilityData();
   const interview_sessions =
     candidateRequestAvailability?.request_session_relation
       ? candidateRequestAvailability?.request_session_relation.map(
@@ -19,15 +20,16 @@ export const useCandidateAvailabilityMeetings = () => {
   });
 };
 
-export const useCandidateAvailabilityData = () => {
-  const params = useParams();
-  const candidate_request_availability_id = params?.request_id as string;
-  return api.candidate_availability.getCandidateAvailabilityData.useSuspenseQuery(
-    {
-      candidate_request_availability_id: candidate_request_availability_id,
-    },
-  )[1];
-};
+export const useCandidateAvailabilityData =
+  (): GetCandidateAvailabilityData['output'] => {
+    const params = useParams();
+    const candidate_request_availability_id = params?.request_id as string;
+    return api.candidate_availability.getCandidateAvailabilityData.useSuspenseQuery(
+      {
+        candidate_request_availability_id: candidate_request_availability_id,
+      },
+    )[0];
+  };
 
 export const useUpdateCandidateAvailability = () => {
   const utils = api.useUtils();
@@ -49,7 +51,7 @@ export const useUpdateCandidateAvailability = () => {
   return { ...updateMutation, updateRequestAvailability };
 };
 export const useCandidateAvailabilityScheduleDMeetings = () => {
-  const { data: candidateRequestAvailability } = useCandidateAvailabilityData();
+  const candidateRequestAvailability = useCandidateAvailabilityData();
   const application_id = candidateRequestAvailability
     ? candidateRequestAvailability.application_id
     : '';

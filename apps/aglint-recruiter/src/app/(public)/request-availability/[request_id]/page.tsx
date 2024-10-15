@@ -12,7 +12,7 @@ import { useRequestAvailabilityContext } from './_common/contexts/RequestAvailab
 import { useCandidateAvailabilityData } from './_common/hooks/useRequestAvailability';
 function RequestAvailability() {
   const { isSubmitted, meetingsAndRounds } = useRequestAvailabilityContext();
-  const { data: candidateRequestAvailability } = useCandidateAvailabilityData();
+  const candidateRequestAvailability = useCandidateAvailabilityData();
   const location =
     (candidateRequestAvailability?.applications.public_jobs.office_locations
       ?.city || '') +
