@@ -31,7 +31,7 @@ type Checklist = string[];
 type ActionPopup = DatabaseView['application_view']['status'];
 
 type States = Pick<
-  Applications<'input'>,
+  Applications['input'],
   | 'application_match'
   | 'badges'
   | 'bookmarked'

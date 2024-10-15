@@ -4,7 +4,6 @@ import { getCityStateCountry } from '@/job/utils/getCityStateCountry';
 import { getSessionNames } from '@/job/utils/getSessionNames';
 import { api } from '@/trpc/client';
 
-import type { Applications } from '../types';
 import { useApplicationsStore } from './useApplicationsStore';
 import { useCurrentJob } from './useCurrentJob';
 
@@ -28,24 +27,25 @@ export const useApplications = () => {
 
   const session_names = getSessionNames({ stages });
 
-  const payload: Applications<'input'> = {
-    job_id,
-    status,
-    bookmarked,
-    search,
-    badges,
-    application_match,
-    city,
-    state,
-    country,
-    session_names,
-    type,
-    order,
-  };
-
-  const query = api.jobs.job.applications.read.useInfiniteQuery(payload, {
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-  });
+  const query = api.jobs.job.applications.read.useInfiniteQuery(
+    {
+      job_id,
+      status,
+      bookmarked,
+      search,
+      badges,
+      application_match,
+      city,
+      state,
+      country,
+      session_names,
+      type,
+      order,
+    },
+    {
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+    },
+  );
 
   const applications = useMemo(
     () => (query.data?.pages ?? []).flatMap(({ items }) => items),
