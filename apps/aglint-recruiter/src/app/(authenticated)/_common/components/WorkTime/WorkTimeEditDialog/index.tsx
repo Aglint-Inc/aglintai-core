@@ -1,4 +1,4 @@
-import { dayjsLocal } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils/src/scheduling';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 import { UIButton } from '@/common/UIButton';
