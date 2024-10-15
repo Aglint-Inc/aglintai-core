@@ -149,9 +149,7 @@ function PauseDialog() {
               }}
             >
               <Checkbox checked={selectedType === option.type} />
-              <Typography type='small' className=''>
-                {option.label}
-              </Typography>
+              <Typography type='small'>{option.label}</Typography>
               {option.description && (
                 <Typography type='small'>{option.description}</Typography>
               )}

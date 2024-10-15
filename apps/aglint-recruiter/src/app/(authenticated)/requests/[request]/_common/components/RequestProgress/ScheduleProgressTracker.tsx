@@ -69,7 +69,7 @@ function ScheduleProgressTracker({
             </p>
           </div>
         </div>
-        <div className=''>{slotRightIcon}</div>
+        <div>{slotRightIcon}</div>
         {isAiTextVisible && slotAiText && (
           <div className='mt-2'>{slotAiText}</div>
         )}

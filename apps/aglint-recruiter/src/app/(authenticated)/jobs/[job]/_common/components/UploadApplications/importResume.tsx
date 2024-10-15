@@ -146,7 +146,7 @@ export const ImportResume = () => {
       <div className='mb-4 h-full flex-grow overflow-auto'>
         {selectedFiles.length === 0 ? renderFileUploader() : renderFileList()}
       </div>
-      <div className=''>
+      <div>
         <Button
           onClick={handleFileUpload}
           disabled={selectedFiles.length === 0 || loading}

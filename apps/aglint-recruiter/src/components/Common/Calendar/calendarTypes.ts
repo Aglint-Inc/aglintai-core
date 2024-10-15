@@ -8,6 +8,13 @@ export type EventFullCalender = {
   start: string;
   end: string;
   backgroundColor: string;
+  status:
+    | 'completed'
+    | 'cancelled'
+    | 'waiting'
+    | 'reschedule'
+    | 'confirmed'
+    | 'not_scheduled';
   borderColor: string;
   extendedProps: {
     data: SchedulesSupabase[number];

@@ -258,7 +258,7 @@ function TimeSlotsWrapper() {
   } = useRequestAvailabilityContext();
 
   return (
-    <div className=''>
+    <div>
       <div className='flex flex-col gap-3'>
         {selectedDateSlots
           .find((ele) => ele.round === day)

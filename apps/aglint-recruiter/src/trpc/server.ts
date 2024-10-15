@@ -13,7 +13,6 @@ import { createQueryClient } from './query-client';
 const createContext = cache(() => {
   const heads = new Headers(headers());
   heads.set('x-trpc-source', 'rsc');
-  heads.set('Cache-Control', 'no-store');
   return createTRPCContext({
     headers: heads,
   });

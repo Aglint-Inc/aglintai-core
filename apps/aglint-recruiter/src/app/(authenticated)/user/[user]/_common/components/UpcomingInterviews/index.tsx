@@ -7,9 +7,7 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
-import { ScrollArea } from '@components/ui/scroll-area';
-import { Calendar, ChevronDown, ChevronUp } from 'lucide-react';
-import { useState } from 'react';
+import { Calendar } from 'lucide-react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -25,39 +23,46 @@ export const UpcomingInterview = () => {
   } = useInterviewer();
 
   const interviews = all_meetings?.length
-    ? all_meetings.filter((meeting) => meeting.status === 'confirmed')
+    ? all_meetings
+        .filter((meeting) => meeting.status === 'confirmed')
+        .sort((a, b) => {
+          const aa = dayjsLocal(a.start_time!).valueOf();
+          const bb = dayjsLocal(b.start_time!).valueOf();
+          return aa - bb;
+        })
     : [];
-  const [isExpanded, setIsExpanded] = useState(true);
+  const router = useRouterPro();
+
   return (
     <>
       <Section>
         <SectionHeader>
           <SectionHeaderText>
-            <SectionTitle>Upcoming Interviews</SectionTitle>
+            <SectionTitle>Upcoming Interviews </SectionTitle>
           </SectionHeaderText>
           <SectionActions>
-            {isExpanded ? (
-              <ChevronUp size={20} onClick={() => setIsExpanded(false)} />
-            ) : (
-              <ChevronDown size={20} onClick={() => setIsExpanded(true)} />
-            )}
+            <UIButton size={'sm'} onClick={() => router.push('/interviews')}>
+              View All
+            </UIButton>
           </SectionActions>
         </SectionHeader>
-        {isExpanded && (
-          <ScrollArea className='h-[300px] gap-4'>
-            {interviews?.length > 0 ? (
-              interviews.map((interview) => (
+        <div className='min-h-[300px]'>
+          {interviews?.length > 0 ? (
+            interviews
+              .slice(0, 3)
+              .map((interview) => (
                 <List key={interview.id} interview={interview} />
               ))
-            ) : (
+          ) : (
+            <div className='flex min-h-[300px] w-full items-center justify-center'>
               <EmptyState
                 variant='inline'
                 icon={Calendar}
                 description='No upcoming interviews found'
               />
-            )}
-          </ScrollArea>
-        )}
+            </div>
+          )}
+        </div>
       </Section>
     </>
   );
@@ -70,7 +75,7 @@ const List = ({
 }) => {
   const router = useRouterPro();
   return (
-    <div className='grid grid-cols-[max-content_1fr] gap-4 rounded-lg mb-2'>
+    <div className='mb-2 grid grid-cols-[max-content_1fr] gap-4 rounded-lg'>
       <div className='flex h-[94px] w-[90px] flex-col items-center justify-center rounded-sm bg-gray-50'>
         <div className='text-sm'>
           {dayjsLocal(interview.start_time).format('MMMM')}
@@ -83,7 +88,7 @@ const List = ({
         </div>
       </div>
       <div className='flex flex-col items-start gap-2'>
-        <h3 className='text-md font-medium line-clamp-1'>
+        <h3 className='text-md line-clamp-1 font-medium'>
           {getFullName(
             interview?.candidate?.first_name || '',
             interview?.candidate?.last_name || '',

@@ -1,4 +1,4 @@
-import { unstable_noStore } from 'next/cache';
+import { unstable_noStore as noStore } from 'next/cache';
 
 import { api, HydrateClient } from '@/trpc/server';
 
@@ -11,7 +11,7 @@ const Layout = ({
     pool: string;
   };
 }) => {
-  unstable_noStore();
+  noStore();
   void api.interview_pool.module_and_users.prefetch({
     module_id: params.pool,
   });

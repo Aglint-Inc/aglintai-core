@@ -131,7 +131,7 @@ const SchedulingReasons = () => {
             value={tab}
             onValueChange={(value) => setTab(value as typeof tab)}
           >
-            <TabsList className=''>
+            <TabsList>
               {(
                 Object.keys(
                   reason,

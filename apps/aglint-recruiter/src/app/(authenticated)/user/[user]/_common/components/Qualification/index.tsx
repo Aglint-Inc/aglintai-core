@@ -1,11 +1,8 @@
 import { EmptyState } from '@components/empty-state';
-import {
-  Section,
-  SectionHeader,
-  SectionTitle,
-} from '@components/layouts/sections-header';
 import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
 import { LibraryBig } from 'lucide-react';
+
+import UISectionCard from '@/common/UISectionCard';
 
 import { type InterviewerDetailType } from '../../hooks/useInterviewer';
 import { List } from './ui/List';
@@ -16,13 +13,10 @@ export const Qualifications = ({
   interview_types: NonNullable<InterviewerDetailType>['interview_type'];
 }) => {
   return (
-    <Section>
-      <SectionHeader>
-        <SectionTitle>Interview Pools</SectionTitle>
-      </SectionHeader>
+    <UISectionCard title='Interview Pool'>
       {interview_types?.length ? (
-        <ScrollArea className='h-[180px] w-[calc(100vw-530px)] whitespace-nowrap'>
-          <div className='flex w-max space-x-4'>
+        <ScrollArea className='h-[310px]'>
+          <div className='flex max-h-full flex-col gap-4'>
             {interview_types?.map((interview_type) => (
               <List
                 interviewType={interview_type}
@@ -30,7 +24,7 @@ export const Qualifications = ({
               />
             ))}
           </div>
-          <ScrollBar orientation='horizontal' />
+          <ScrollBar orientation='vertical' />
         </ScrollArea>
       ) : (
         <div className='col-span-3'>
@@ -41,6 +35,6 @@ export const Qualifications = ({
           />
         </div>
       )}
-    </Section>
+    </UISectionCard>
   );
 };

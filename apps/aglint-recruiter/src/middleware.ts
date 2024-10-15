@@ -42,7 +42,7 @@ export async function middleware(req: NextRequest) {
 
   const supabase = createPrivateClient();
   const { data, error } = await supabase.auth.getSession();
-  if (error) NextResponse.redirect(new URL('/', req.nextUrl));
+  if (error) return NextResponse.redirect(new URL('/login', req.nextUrl));
 
   if (isPublicRoute) {
     if (data.session && path === '/login')
@@ -81,8 +81,6 @@ const middlewareV1 = async (request: NextRequest) => {
   }
 
   const { isAllowed, id, rec_id, role } = await server_check_permissions({
-    getVal: (name) => request.cookies.get(name)?.value ?? null!,
-    // eslint-disable-next-line security/detect-object-injection
     permissions: PERMISSIONS[requestUrl as keyof typeof PERMISSIONS],
   });
 

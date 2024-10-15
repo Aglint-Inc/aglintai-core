@@ -76,7 +76,7 @@ const EventNode = ({
           slotAiText={
             <>
               {eventSubProgress.length > 0 && (
-                <div className=''>
+                <div>
                   {eventSubProgress.map((prg) => {
                     if (
                       !prg.log &&
