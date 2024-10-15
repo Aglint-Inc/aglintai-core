@@ -114,8 +114,12 @@ const getProgressMeta = ({
       !p.is_progress_step && p.event_type === 'REPLACE_ALTERNATIVE_INTERVIEWER',
   );
   if (heading) {
-    meta.isInterviewerChangeFailed = heading.status === 'failed';
-    nextStep = 'MANUAL';
+    if (heading.status === 'completed') {
+      nextStep = null;
+    } else if (heading.status === 'failed') {
+      nextStep = 'MANUAL';
+      meta.isInterviewerChangeFailed = heading.status === 'failed';
+    }
   }
   return { meta, nextStep };
 };

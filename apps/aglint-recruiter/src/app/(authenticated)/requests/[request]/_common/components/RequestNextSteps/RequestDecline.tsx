@@ -35,6 +35,7 @@ const RequestDecline = () => {
   if (!declineProgressMeta || declineProgressMeta.nextStep == null) {
     return <></>;
   }
+  console.log('debug', declineProgressMeta);
   const declinedUserDetails = (meetingTime ?? [])
     .flat()
     .map((item) => item.cancel_reasons)

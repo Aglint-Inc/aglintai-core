@@ -19,6 +19,9 @@ const RequestNextSteps = () => {
   } else if (declineProgressMeta) {
     nextStep = declineProgressMeta.nextStep;
   }
+  if (nextStep === null) {
+    return <></>;
+  }
   return (
     <div>
       <Alert>
