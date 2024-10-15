@@ -1,3 +1,4 @@
+'use server';
 import {
   type APIRespFindReplaceMentInts,
   type SessionCombinationRespType,
@@ -6,7 +7,7 @@ import { CApiError, dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { type z } from 'zod';
 
 import { type schemaFindAlternativeSlots } from '@/routers/scheduling/v1/findReplacementInts/schema';
-import { createPrivateClient } from '@/server/db';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { CandidatesScheduling } from '../../CandidatesScheduling';
 
@@ -115,7 +116,7 @@ const filter_slots = (
 const fetchDetails = async (
   parsed_body: z.output<typeof schemaFindAlternativeSlots>,
 ) => {
-  const db = createPrivateClient();
+  const db = getSupabaseServer();
   const meeting_detail = supabaseWrap(
     await db
       .from('meeting_details')

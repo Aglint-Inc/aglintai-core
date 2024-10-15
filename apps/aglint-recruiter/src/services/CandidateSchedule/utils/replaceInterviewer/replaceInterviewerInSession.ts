@@ -5,6 +5,7 @@ import {
 } from '@aglint/shared-types';
 import {
   CApiError,
+  type ProgressLoggerType,
   type schema_update_meeting_ints,
   supabaseWrap,
 } from '@aglint/shared-utils';
@@ -15,7 +16,9 @@ import type { CalEventAttendeesAuthDetails } from '@/utils/event_book/types';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export const replaceInterviewerInSession = async (
-  parsed_body: z.infer<typeof schema_update_meeting_ints>,
+  parsed_body: z.infer<typeof schema_update_meeting_ints> & {
+    reqProgLogger: ProgressLoggerType;
+  },
 ) => {
   const supabaseAdmin = getSupabaseServer();
   const {
@@ -84,6 +87,12 @@ export const replaceInterviewerInSession = async (
       })
       .eq('session_relation_id', parsed_body.curr_declined_int_sesn_reln_id),
   );
+
+  await parsed_body.reqProgLogger({
+    is_progress_step: true,
+    status: 'completed',
+    log: `Replaced interviewer`,
+  });
 };
 
 const syncIntInSession = async ({

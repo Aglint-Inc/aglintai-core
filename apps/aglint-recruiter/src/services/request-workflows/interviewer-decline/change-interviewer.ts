@@ -1,17 +1,13 @@
-import {
-  type APIRespFindReplaceMentInts,
-  type APIUpdateMeetingInterviewers,
-} from '@aglint/shared-types';
-import { CApiError, getFullName, supabaseWrap } from '@aglint/shared-utils';
-import { type ProgressLoggerType } from '@aglint/shared-utils/src/request-workflow/utils';
-import axios from 'axios';
+import { type APIRespFindReplaceMentInts } from '@aglint/shared-types';
+import { CApiError } from '@aglint/shared-utils';
 
 import { findReplacementIntsUtil } from '@/services/CandidateSchedule/utils/replaceInterviewer/findReplacementInt';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
+
+import { updateMeetingInterviewers } from './updateMeetingInterviewers';
 type FuncParams = {
   request_id: string;
   session_id: string;
-  reqProgress: ProgressLoggerType;
 };
 export const changeInterviewer = async (payload: FuncParams) => {
   const supabaseAdmin = getSupabaseServer();
@@ -48,30 +44,10 @@ export const changeInterviewer = async (payload: FuncParams) => {
     // });
   }
 
-  const api_payload2: APIUpdateMeetingInterviewers = {
+  await updateMeetingInterviewers({
     session_id: payload.session_id,
     curr_declined_int_sesn_reln_id: cancel_rec.session_relation_id,
     new_int_user_id: alternate_slots[0].replacement_int.user_id,
     request_id: payload.request_id,
-  };
-  await axios.post(
-    `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/update-meeting-interviewers`,
-    api_payload2,
-  );
-
-  await supabaseWrap(
-    await supabaseAdmin
-      .from('request')
-      .update({ status: 'completed' })
-      .eq('id', payload.request_id),
-  );
-  await payload.reqProgress({
-    is_progress_step: true,
-    status: 'completed',
-    log: `Replaced ${getFullName(alternate_slots[0].replacement_int.first_name, alternate_slots[0].replacement_int.last_name)} for the interview`,
-  });
-  await payload.reqProgress({
-    is_progress_step: false,
-    status: 'completed',
   });
 };
