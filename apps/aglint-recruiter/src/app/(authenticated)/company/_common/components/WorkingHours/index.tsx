@@ -8,11 +8,13 @@ import BreakTimeCard from '@/authenticated/components/BreakTime';
 import TimeZone from '@/authenticated/components/TimeZone';
 import WorkTime from '@/authenticated/components/WorkTime';
 import { useTenant } from '@/company/hooks';
+import { useTenantRefetch } from '@/company/hooks/useTenantRefetch';
 import { api } from '@/trpc/client';
 import { type TimezoneObj } from '@/utils/timeZone';
 
 export default function WorkingHour() {
-  const { recruiter, refetch } = useTenant();
+  const { recruiter } = useTenant();
+  const { refetch } = useTenantRefetch();
   const initialData = recruiter.scheduling_settings;
   const [workingHours, setWorkingHours] = useState<
     SchedulingSettingType['workingHours']
