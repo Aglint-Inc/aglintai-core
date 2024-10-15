@@ -131,7 +131,7 @@ export const DashboardBarChart: FC<{
 const Content: FC<{
   option: Option;
 }> = ({ option }) => {
-  const [skillPool] = useMetricsSkillPool();
+  const skillPool = useMetricsSkillPool();
   const skills = (skillPool?.[option] ?? null)!;
   const total = skills
     ? SafeObject.values(skills).reduce((acc, curr) => {
