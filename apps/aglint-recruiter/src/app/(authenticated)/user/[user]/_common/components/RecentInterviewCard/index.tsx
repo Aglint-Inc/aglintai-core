@@ -36,7 +36,6 @@ export const RecentInterviews = () => {
             <SectionTitle>Recent Interviews</SectionTitle>
           </SectionHeaderText>
           <SectionActions>
-            {' '}
             <UIButton size={'sm'} onClick={() => router.push('/interviews')}>
               View All
             </UIButton>
@@ -47,20 +46,25 @@ export const RecentInterviews = () => {
             )}
           </SectionActions>
         </SectionHeader>
-        {isExpanded &&
-          (interviews?.length > 0 ? (
-            interviews
-              .slice(0, 3)
-              .map((interview) => (
-                <List key={interview.id} interview={interview} />
-              ))
-          ) : (
-            <EmptyState
-              variant='inline'
-              icon={Calendar}
-              description='No upcoming interviews found'
-            />
-          ))}
+        {isExpanded && (
+          <div className='min-h-[300px]'>
+            {interviews?.length > 0 ? (
+              interviews
+                .slice(0, 3)
+                .map((interview) => (
+                  <List key={interview.id} interview={interview} />
+                ))
+            ) : (
+              <div className='flex min-h-[300px] w-full items-center justify-center'>
+                <EmptyState
+                  variant='inline'
+                  icon={Calendar}
+                  description='No upcoming interviews found'
+                />
+              </div>
+            )}
+          </div>
+        )}
       </Section>
     </>
   );

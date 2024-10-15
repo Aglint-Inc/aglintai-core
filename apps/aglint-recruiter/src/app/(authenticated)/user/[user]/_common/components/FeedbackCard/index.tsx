@@ -34,20 +34,25 @@ export const Feedback = () => {
             )}
           </SectionActions>
         </SectionHeader>
-        {isExpanded &&
-          (data.feedbacks?.length ? (
-            feedbacks
-              .slice(0, 3)
-              .map((feedback) => (
-                <List key={feedback.session_name} feedback={feedback} />
-              ))
-          ) : (
-            <EmptyState
-              variant='inline'
-              icon={MessageSquareOff}
-              description='No feedback given yet'
-            />
-          ))}
+        {isExpanded && (
+          <div className='min-h-[300px]'>
+            {data.feedbacks?.length ? (
+              feedbacks
+                .slice(0, 3)
+                .map((feedback) => (
+                  <List key={feedback.session_name} feedback={feedback} />
+                ))
+            ) : (
+              <div className='flex min-h-[300px] w-full items-center justify-center'>
+                <EmptyState
+                  variant='inline'
+                  icon={MessageSquareOff}
+                  description='No feedback given yet'
+                />
+              </div>
+            )}
+          </div>
+        )}
       </Section>
     </>
   );

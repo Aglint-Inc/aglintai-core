@@ -48,7 +48,7 @@ export const UpcomingInterview = () => {
           </SectionActions>
         </SectionHeader>
         {isExpanded && (
-          <>
+          <div className='min-h-[300px]'>
             {interviews?.length > 0 ? (
               interviews
                 .slice(0, 3)
@@ -56,13 +56,15 @@ export const UpcomingInterview = () => {
                   <List key={interview.id} interview={interview} />
                 ))
             ) : (
-              <EmptyState
-                variant='inline'
-                icon={Calendar}
-                description='No upcoming interviews found'
-              />
+              <div className='flex min-h-[300px] w-full items-center justify-center'>
+                <EmptyState
+                  variant='inline'
+                  icon={Calendar}
+                  description='No upcoming interviews found'
+                />
+              </div>
             )}
-          </>
+          </div>
         )}
       </Section>
     </>
