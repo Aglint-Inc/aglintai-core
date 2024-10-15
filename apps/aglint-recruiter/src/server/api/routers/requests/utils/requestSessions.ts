@@ -1,7 +1,11 @@
 import { type SupabaseType } from '@aglint/shared-types';
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 import { interviewCancelReasons, userDetails } from '@/utils/scheduling/const';
 
@@ -16,6 +20,8 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
 };
 
 export const requestSessions = privateProcedure.input(schema).query(query);
+
+export type RequestSessions = ProcedureDefinition<typeof requestSessions>;
 
 const fetchDetails = async (request_id: string) => {
   const db = createPrivateClient();

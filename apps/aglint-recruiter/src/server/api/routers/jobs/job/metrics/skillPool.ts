@@ -16,7 +16,7 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
       .rpc('getskillpools', { jobid: input.job_id })
       .single()
       .throwOnError()
-  ).data;
+  ).data!;
 };
 
 export const skillPool = privateProcedure.input(schema).query(query);

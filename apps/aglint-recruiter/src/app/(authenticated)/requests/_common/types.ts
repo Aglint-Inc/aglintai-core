@@ -2,8 +2,9 @@ import { type DateRangePlansType } from '@aglint/shared-types';
 
 import type { RequestResponse } from '@/queries/requests/types';
 import type { Request as RequestType } from '@/queries/requests/types';
-import { type CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
-import { type RouterOutputs } from '@/trpc/client';
+import type { ApplicantRequest as ApplicantRequestAPI } from '@/routers/requests/read/applicantRequest';
+import type { RequestSessions } from '@/routers/requests/utils/requestSessions';
+import type { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 
 export type barChartDataType = {
   name: string;
@@ -47,8 +48,6 @@ export type ApiResponseFindAvailability = {
   availabilities: CandidatesScheduling['calendar_events'];
 };
 
-export type ApplicantRequest =
-  RouterOutputs['requests']['read']['applicantRequest'][number];
+export type ApplicantRequest = ApplicantRequestAPI['output'][number];
 
-export type MeetingSessions =
-  RouterOutputs['requests']['utils']['requestSessions'];
+export type MeetingSessions = RequestSessions['output'];

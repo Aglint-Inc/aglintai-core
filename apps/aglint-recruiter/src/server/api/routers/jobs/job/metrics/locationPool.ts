@@ -16,7 +16,7 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
       .rpc('getlocationspool', { jobid: input.job_id })
       .single()
       .throwOnError()
-  ).data;
+  ).data!;
 };
 
 export const locationPool = privateProcedure.input(schema).query(query);

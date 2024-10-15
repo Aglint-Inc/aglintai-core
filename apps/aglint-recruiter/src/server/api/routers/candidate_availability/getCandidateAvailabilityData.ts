@@ -2,7 +2,11 @@ import { z } from 'zod';
 
 import { createPublicClient } from '@/server/db';
 
-import { type PublicProcedure, publicProcedure } from '../../trpc';
+import {
+  type ProcedureDefinition,
+  type PublicProcedure,
+  publicProcedure,
+} from '../../trpc';
 
 const schema = z.object({
   candidate_request_availability_id: z.string().uuid(),
@@ -27,3 +31,7 @@ const query = async ({ input }: PublicProcedure<typeof schema>) => {
 export const getCandidateAvailabilityData = publicProcedure
   .input(schema)
   .query(query);
+
+export type GetCandidateAvailabilityData = ProcedureDefinition<
+  typeof getCandidateAvailabilityData
+>;

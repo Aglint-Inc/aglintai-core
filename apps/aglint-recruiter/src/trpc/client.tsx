@@ -6,7 +6,6 @@ import {
   createTRPCReact,
   unstable_httpBatchStreamLink,
 } from '@trpc/react-query';
-import { type inferRouterInputs, type inferRouterOutputs } from '@trpc/server';
 import { useState } from 'react';
 import superjson from 'superjson';
 
@@ -39,9 +38,7 @@ const getQueryClient = (
  *
  * @example type HelloOutput = RouterOutputs['example']['hello']
  */
-export type RouterOutputs = inferRouterOutputs<AppRouter>;
-
-export type Unvoid<T> = T extends void ? never : T;
+// export type RouterOutputs = inferRouterOutputs<AppRouter>;
 
 export function TRPCReactProvider(props: { children: React.ReactNode }) {
   const { logout } = useLogout();
