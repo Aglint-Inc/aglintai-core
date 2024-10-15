@@ -118,7 +118,7 @@ export default function Heatmap({
                 <div className='flex flex-row items-center gap-2'>
                   <p className='text-sm'>
                     Activity on{' '}
-                    <span className=''>
+                    <span>
                       {startDateUI} - {endDateUI}
                     </span>
                   </p>

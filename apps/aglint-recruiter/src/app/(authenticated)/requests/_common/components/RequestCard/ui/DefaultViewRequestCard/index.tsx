@@ -322,7 +322,7 @@ const InfoItem = ({
     return (
       <div className='flex flex-col items-start space-x-2'>
         <div className='mt-1 flex flex-row items-center gap-1'>
-          <div className=''>
+          <div>
             {React.cloneElement(icon as React.ReactElement, {
               className: 'w-4 h-4',
             })}

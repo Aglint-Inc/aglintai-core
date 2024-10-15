@@ -96,15 +96,15 @@ function CalendarComp({
   };
 
   return (
-    <div className='space-y-2'>
+    <div>
       {isLoading ? (
         <div className='flex w-[900px] items-center justify-center'>
           <Loader />
         </div>
       ) : (
         <>
-          <div className='flex flex-col'>
-            <div className='rounded-t-lg border border-b-0 border-border px-2 py-2'>
+          <div className='flex flex-col gap-4'>
+            <div className='rounded-t-lg'>
               <CalendarHeader
                 filter={filter}
                 setFilter={setFilter}
@@ -148,6 +148,7 @@ function CalendarComp({
                 resources={events}
                 datesSet={handleDatesSet}
                 height='auto'
+                dayMaxEvents={2}
                 views={{
                   dayGridMonth: {
                     dayMaxEventRows: 2,
@@ -178,7 +179,7 @@ function renderEventContent(eventInfo: EventContentArg) {
   const { data, color } = eventInfo.event.extendedProps;
   return (
     <div
-      className={`w-full cursor-pointer rounded-md p-[5px_10px] ${color.bg} border-l-[3px] ${color.pri}`}
+      className={`text-${color.pri} w-full cursor-pointer rounded-md p-[5px_10px] ${color.bg} border-l-[3px] border-${color.pri}`}
       onClick={() => {
         // Create a custom tooltip element
         const tooltip = document.createElement('div');
@@ -221,12 +222,12 @@ function renderEventContent(eventInfo: EventContentArg) {
 const colorPick = (status: NonNullable<SchedulesSupabase>[0]['status']) => {
   switch (status) {
     case 'confirmed':
-      return { bg: 'bg-blue-200', pri: 'border-blue-700' };
+      return { bg: 'bg-blue-200', pri: 'blue-700' };
     case 'completed':
-      return { bg: 'bg-green-200', pri: 'border-green-700' };
+      return { bg: 'bg-green-200', pri: 'green-700' };
     case 'cancelled':
-      return { bg: 'bg-red-200', pri: 'border-red-700' };
+      return { bg: 'bg-red-200', pri: 'red-700' };
     default:
-      return { bg: 'bg-grey-200', pri: 'border-grey-700' };
+      return { bg: 'bg-gray-300', pri: 'gray-700' };
   }
 };

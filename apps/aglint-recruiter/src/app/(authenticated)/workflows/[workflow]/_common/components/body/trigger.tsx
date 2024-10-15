@@ -43,7 +43,7 @@ const TriggerForm = () => {
   } = useWorkflow();
   const payload = { trigger, phase };
   return (
-    <div className=''>
+    <div>
       <UISelect
         label='When will the event trigger?'
         disabled={!manageWorkflow}

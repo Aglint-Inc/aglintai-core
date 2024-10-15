@@ -34,7 +34,7 @@ function ScrollableSection({
         <Skeleton className='mb-2 h-6 w-40' />
       )}
       <div className='mb-10 flex w-full items-start'>
-        <ScrollArea style={{ width: 'calc(100vw - 65px)' }} className=''>
+        <ScrollArea style={{ width: 'calc(100vw - 65px)' }}>
           <div className='px-4'>
             <div className='container-lg'>
               <div className='flex'>

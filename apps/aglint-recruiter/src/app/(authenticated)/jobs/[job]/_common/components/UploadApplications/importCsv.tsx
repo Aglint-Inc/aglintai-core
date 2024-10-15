@@ -161,7 +161,7 @@ export const ImportCsv: React.FC = () => {
           </div>
         )}
       </div>
-      <div className=''>
+      <div>
         <UIButton
           onClick={handleImport}
           disabled={candidates.length === 0 || loading}

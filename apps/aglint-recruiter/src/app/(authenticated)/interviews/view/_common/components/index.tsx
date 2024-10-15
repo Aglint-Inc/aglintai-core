@@ -73,7 +73,7 @@ function SchedulingViewComp() {
           </BreadcrumbList>
         </Breadcrumb>
         <div className='flex items-start justify-between pt-4'>
-          <div className=''>
+          <div>
             <h1 className='text-2xl font-medium text-gray-900'>
               {schedule?.interview_session.name}
             </h1>
@@ -103,27 +103,27 @@ function SchedulingViewComp() {
                 </div>
               </Link>
               {schedule?.candidates?.current_job_title && (
-                 <Link
-                 href={`/jobs/${schedule.job.id}/${schedule.application_id}?tab=scoring`}
-                 className='text-md hover:underline'
-               >
-                <div className='flex items-center gap-0.5'>
-                  <BriefcaseBusiness className='h-4 w-4 text-muted-foreground' />
-                  <span className='ml-2'>
-                    {schedule?.candidates?.current_job_title}
-                  </span>
-                </div>
+                <Link
+                  href={`/jobs/${schedule.job.id}/${schedule.application_id}?tab=scoring`}
+                  className='text-md hover:underline'
+                >
+                  <div className='flex items-center gap-0.5'>
+                    <BriefcaseBusiness className='h-4 w-4 text-muted-foreground' />
+                    <span className='ml-2'>
+                      {schedule?.candidates?.current_job_title}
+                    </span>
+                  </div>
                 </Link>
               )}
               {schedule?.candidates?.city && (
                 <Link
-                href={`/jobs/${schedule.job.id}/${schedule.application_id}?tab=scoring`}
-                className='text-md hover:underline'
-              >
-                <div className='flex items-center gap-0.5'>
-                  <MapPin className='h-4 w-4' />
-                  <span className='ml-2'>{schedule?.candidates.city}</span>
-                </div>
+                  href={`/jobs/${schedule.job.id}/${schedule.application_id}?tab=scoring`}
+                  className='text-md hover:underline'
+                >
+                  <div className='flex items-center gap-0.5'>
+                    <MapPin className='h-4 w-4' />
+                    <span className='ml-2'>{schedule?.candidates.city}</span>
+                  </div>
                 </Link>
               )}
             </div>

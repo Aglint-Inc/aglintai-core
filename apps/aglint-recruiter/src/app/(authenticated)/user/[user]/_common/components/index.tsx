@@ -18,6 +18,7 @@ import { AlertTriangle } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import CalendarComp from '@/components/Common/Calendar/Calendar';
 import Heatmap from '@/components/Common/Heatmap/HeatmapUser';
 import { Loader } from '@/components/Common/Loader';
@@ -41,7 +42,9 @@ type TabType = 'overview' | 'calendar';
 
 export default function InterviewerDetailsPage() {
   const { data: interviewerDetails, isLoading, error } = useInterviewer();
-
+  const {
+    recruiter_user: { user_id: logged_user_id },
+  } = useTenant();
   //------------------------ calendar data
   const param = useParams() as { user: string };
   const user_id = param.user as string;
@@ -50,7 +53,11 @@ export default function InterviewerDetailsPage() {
   const [filter, setFilter] = useState<
     DatabaseTable['interview_meeting']['status'][]
   >([]);
-  const { data, isLoading: iscalendarLoading } = useInterviewsByUserId({
+  const {
+    data,
+    isLoading: iscalendarLoading,
+    isFetching,
+  } = useInterviewsByUserId({
     filter: filter.length === 0 ? null : filter,
     member_id: user_id,
   });
@@ -150,11 +157,11 @@ export default function InterviewerDetailsPage() {
             </div>
           </div>
         ) : (
-          <div className='px-4'>
+          <div>
             {interviewerDetails.is_calendar_connected ? (
               <CalendarComp
                 allSchedules={allSchedules ?? []}
-                isLoading={iscalendarLoading}
+                isLoading={iscalendarLoading || isFetching}
                 filter={filter}
                 setFilter={setFilter}
               />
@@ -166,8 +173,9 @@ export default function InterviewerDetailsPage() {
                   <AlertDescription>
                     <div className='flex flex-row items-center'>
                       <p>
-                        Your calendar is not connected. Please connect calendar
-                        from your
+                        {logged_user_id === user_id
+                          ? 'Your calendar is not connected. Please connect calendar from your'
+                          : 'User calendar is not connected'}
                       </p>
                     </div>
                   </AlertDescription>

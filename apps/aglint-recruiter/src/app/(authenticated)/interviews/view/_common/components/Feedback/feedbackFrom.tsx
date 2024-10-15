@@ -69,7 +69,7 @@ export const FeedbackForm = ({
                 );
               })}
           </div>
-          <Typography type='small' variant='p' className=''>
+          <Typography type='small' variant='p'>
             {re_mapper[interviewer.feedback?.recommendation || 0]}
           </Typography>
         </div>
