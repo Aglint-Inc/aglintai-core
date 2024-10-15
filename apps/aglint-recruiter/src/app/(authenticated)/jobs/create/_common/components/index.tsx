@@ -36,7 +36,7 @@ import { useOnboarding } from '@/components/Navigation/OnboardPending/context/on
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useCreateAglintJobs } from '@/jobs/hooks';
 import type { Form } from '@/jobs/types';
-import type { RouterInputs } from '@/trpc/client';
+import type { Aglint } from '@/routers/jobs/create/aglint';
 import ROUTES from '@/utils/routing/routes';
 
 import { type JobMetaFormProps, useJobForms } from './form';
@@ -183,8 +183,6 @@ const enableCreation = (fields: Form) => {
   );
 };
 
-type Payload = RouterInputs['jobs']['create']['aglint'];
-
 const JobCreateForm = ({
   fields,
   setFields,
@@ -200,11 +198,14 @@ const JobCreateForm = ({
     const newFields = validateForms(fields);
     if (enableCreation(newFields)) {
       setModal(true);
-      const newJob = Object.entries(fields).reduce((acc, [key, { value }]) => {
-        //@ts-ignore
-        acc[key] = value;
-        return acc;
-      }, {} as Payload);
+      const newJob = Object.entries(fields).reduce(
+        (acc, [key, { value }]) => {
+          //@ts-ignore
+          acc[key] = value;
+          return acc;
+        },
+        {} as Aglint['input'],
+      );
 
       try {
         const id = await mutateAsync({

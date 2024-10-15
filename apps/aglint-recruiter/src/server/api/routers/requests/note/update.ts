@@ -1,7 +1,11 @@
 import { type DatabaseTableUpdate } from '@aglint/shared-types';
 import { z, type ZodSchema } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 type Input = ZodSchema<
@@ -36,3 +40,5 @@ const query = async ({
 export const updateNote = privateProcedure
   .input(requestUpdateSchema)
   .mutation(query);
+
+export type UpdateNote = ProcedureDefinition<typeof updateNote>;

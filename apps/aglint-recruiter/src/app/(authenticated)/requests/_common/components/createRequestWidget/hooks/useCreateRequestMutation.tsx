@@ -1,6 +1,7 @@
 import { toast } from '@components/hooks/use-toast';
 
-import { api, type RouterInputs, type Unvoid } from '@/trpc/client';
+import type { CreateRequest } from '@/routers/requests/create/create_request';
+import { api } from '@/trpc/client';
 
 import { useCreateRequest } from './useCreateRequest';
 import { useCreateRequestActions } from './useCreateRequestActions';
@@ -13,7 +14,7 @@ export const useCreateRequestMutation = () => {
   const { onOpenChange, setError, resetError } = useCreateRequestActions();
   const mutation = api.requests.create.create_request.useMutation({
     onError: (e) => {
-      setError(e.shape?.message||null);
+      setError(e.shape?.message || null);
     },
     onSuccess: () => {
       toast({ title: 'Successfully created request' });
@@ -22,9 +23,7 @@ export const useCreateRequestMutation = () => {
   });
   const application = selections.candidate.id;
   const sessions = selections.schedules.map(({ id }) => id);
-  const request: Unvoid<
-    RouterInputs['requests']['create']['create_request']
-  >['request'] = {
+  const request: CreateRequest['input']['request'] = {
     assignee_id: selections.assignees.id,
     note,
     priority,
@@ -32,12 +31,11 @@ export const useCreateRequestMutation = () => {
     schedule_start_date: dates.start_date,
     type: selections.requestType.id,
   };
-  const payload: Unvoid<RouterInputs['requests']['create']['create_request']> =
-    {
-      application,
-      sessions,
-      request,
-    };
+  const payload: CreateRequest['input'] = {
+    application,
+    sessions,
+    request,
+  };
   const mutate = () => {
     resetError();
     mutation.mutate(payload);
