@@ -1,7 +1,11 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 import { emailTemplateCopy } from '@/types/companyEmailTypes';
 
@@ -22,3 +26,5 @@ const query = async ({ ctx }: PrivateProcedure) => {
 };
 
 export const read = privateProcedure.query(query);
+
+export type Read = ProcedureDefinition<typeof read>;

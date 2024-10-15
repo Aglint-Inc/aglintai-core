@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-import { type ATSProcedure, atsProcedure } from '@/server/api/trpc';
+import {
+  type ATSProcedure,
+  atsProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 
 const schema = z.object({
   recruiter_id: z.string().uuid(),
@@ -20,3 +24,5 @@ export const leverJobmutation = ({ input }: ATSProcedure<typeof schema>) => {
 };
 
 export const job = atsProcedure.input(schema).mutation(leverJobmutation);
+
+export type Job = ProcedureDefinition<typeof job>;

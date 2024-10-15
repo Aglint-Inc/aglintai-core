@@ -3,7 +3,7 @@ import { dateSlotsTypeSchema } from '@aglint/shared-types/src/db/tables/candidat
 import { z, type ZodSchema } from 'zod';
 
 import {
-  ProcedureDefinition,
+  type ProcedureDefinition,
   type PublicProcedure,
   publicProcedure,
 } from '@/server/api/trpc';

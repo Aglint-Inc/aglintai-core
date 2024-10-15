@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 import { interviewCancelReasons, userDetails } from '@/utils/scheduling/const';
 
@@ -85,3 +89,5 @@ const query = async ({
 export const scheduleDetails = privateProcedure
   .input(scheduleDetailsSchema)
   .query(query);
+
+export type ScheduleDetails = ProcedureDefinition<typeof scheduleDetails>;

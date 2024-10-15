@@ -6,7 +6,11 @@ import {
 import { z } from 'zod';
 
 import { type StatusTraining } from '@/interview-pool/details/types/pool';
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 const UserSchema = z.object({
@@ -62,6 +66,8 @@ const mutation = async ({
 };
 
 export const addUsers = privateProcedure.input(schema).mutation(mutation);
+
+export type AddUsers = ProcedureDefinition<typeof addUsers>;
 
 export const updateRelations = async (
   archivedRelations: z.infer<typeof schema>['relations'],

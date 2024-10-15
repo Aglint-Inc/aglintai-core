@@ -5,7 +5,11 @@ import {
 } from '@aglint/shared-types';
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 const schema = z.object({
   workflows: z.array(workflowUpdateSchema),
@@ -41,3 +45,7 @@ const mutation = async ({ input }: PrivateProcedure<typeof schema>) => {
 export const updateJobWorkflowsActions = privateProcedure
   .input(schema)
   .mutation(mutation);
+
+export type UpdateJobWorkflowsActions = ProcedureDefinition<
+  typeof updateJobWorkflowsActions
+>;

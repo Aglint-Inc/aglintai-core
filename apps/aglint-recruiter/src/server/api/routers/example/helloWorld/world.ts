@@ -1,7 +1,11 @@
 /* eslint-disable no-console */
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 export const worldSchema = z.object({ worldId: z.string().uuid() });
@@ -18,3 +22,5 @@ const mutation = ({
 };
 
 export const world = privateProcedure.input(worldSchema).mutation(mutation);
+
+export type World = ProcedureDefinition<typeof world>;

@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { createPublicClient } from '@/server/db';
 
-import { privateProcedure } from '../../trpc';
+import { privateProcedure, type ProcedureDefinition } from '../../trpc';
 
 const body = z.object({
   ids: z.array(z.string()),
@@ -29,3 +29,5 @@ export const get_last_login = privateProcedure
     }, {});
     return last_login_data;
   });
+
+export type GetLastLogin = ProcedureDefinition<typeof get_last_login>;

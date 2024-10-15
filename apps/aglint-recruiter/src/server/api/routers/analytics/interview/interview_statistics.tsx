@@ -1,8 +1,7 @@
 import { z } from 'zod';
 
+import { privateProcedure, type ProcedureDefinition } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
-
-import { privateProcedure } from '../../../trpc';
 
 const body = z.object({
   module_id: z.string().uuid(),
@@ -22,3 +21,7 @@ export const interview_statistics = privateProcedure
     ).data!;
     return data[0];
   });
+
+export type InterviewStatistics = ProcedureDefinition<
+  typeof interview_statistics
+>;

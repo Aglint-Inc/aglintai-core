@@ -7,10 +7,21 @@
  * need to use are documented accordingly near the end.
  */
 import type { DatabaseTable } from '@aglint/shared-types';
+import type { TRPCClientErrorLike } from '@trpc/client';
+import type { UseTRPCQueryResult } from '@trpc/react-query/dist/shared';
 import { initTRPC, TRPCError } from '@trpc/server';
-import type { ProcedureBuilder } from '@trpc/server/unstable-core-do-not-import';
+import type {
+  ProcedureBuilder,
+  TRPC_ERROR_CODE_KEY,
+  TRPC_ERROR_CODE_NUMBER,
+} from '@trpc/server/unstable-core-do-not-import';
 import superjson from 'superjson';
-import { type TypeOf, ZodError, type ZodSchema } from 'zod';
+import {
+  type TypeOf,
+  type typeToFlattenedError,
+  ZodError,
+  type ZodSchema,
+} from 'zod';
 
 import { createPrivateClient, createPublicClient } from '../db';
 import { authorize } from '../utils';
@@ -266,8 +277,30 @@ export type PrivateProcedure<T = unknown> = Procedure<
   T
 >;
 
-export type ProcedureDefinition<T extends { _def: { $types: any } }> =
-  T['_def']['$types'];
+type Definition = { _def: { $types: any } };
+
+export type ProcedureDefinition<T extends Definition> = Pick<
+  T['_def']['$types'],
+  'input' | 'output'
+>;
+
+export type ProcedureQuery<T extends ProcedureDefinition<Definition>> =
+  UseTRPCQueryResult<T['output'], TRPCClientErrorLike<T & Meta>>;
+
+type Meta = {
+  transformer: true;
+  errorShape: {
+    data: {
+      zodError: typeToFlattenedError<any, string> | null;
+      code: TRPC_ERROR_CODE_KEY;
+      httpStatus: number;
+      path?: string;
+      stack?: string;
+    };
+    message: string;
+    code: TRPC_ERROR_CODE_NUMBER;
+  };
+};
 
 type Procedure<
   U extends ProcedureBuilder<any, any, any, any, any, any, any, any>,

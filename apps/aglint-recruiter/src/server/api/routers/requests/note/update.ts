@@ -4,7 +4,7 @@ import { z, type ZodSchema } from 'zod';
 import {
   type PrivateProcedure,
   privateProcedure,
-  ProcedureDefinition,
+  type ProcedureDefinition,
 } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 

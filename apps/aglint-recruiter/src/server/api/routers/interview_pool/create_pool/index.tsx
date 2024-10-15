@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 const schema = z.object({
@@ -40,3 +44,7 @@ const mutation = async ({
 export const createInterviewPool = privateProcedure
   .input(schema)
   .mutation(mutation);
+
+export type CreateInterviewPool = ProcedureDefinition<
+  typeof createInterviewPool
+>;

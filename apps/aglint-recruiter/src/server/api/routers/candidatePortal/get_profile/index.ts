@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-import { type PublicProcedure, publicProcedure } from '@/server/api/trpc';
+import {
+  type ProcedureDefinition,
+  type PublicProcedure,
+  publicProcedure,
+} from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
 const schema = z.object({
@@ -32,3 +36,5 @@ const query = async ({ input }: PublicProcedure<typeof schema>) => {
 };
 
 export const getProfile = publicProcedure.input(schema).query(query);
+
+export type GetProfile = ProcedureDefinition<typeof getProfile>;

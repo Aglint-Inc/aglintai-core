@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { createPublicClient } from '@/server/db';
 
-import { privateProcedure } from '../../../trpc';
+import { privateProcedure, type ProcedureDefinition } from '../../../trpc';
 
 const body = z.object({
   recruiter_id: z.string().uuid(),
@@ -38,3 +38,5 @@ export const candidates_exp = privateProcedure
     ).data;
     return data;
   });
+
+export type CandidatesExp = ProcedureDefinition<typeof candidates_exp>;
