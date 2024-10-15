@@ -10,10 +10,22 @@ import RequestDecline from './RequestDecline';
 import ScheduleOptions from './ScheduleOptions';
 
 const RequestNextSteps = () => {
-  const { progressMetaInfo, requestDetails } = useRequest();
+  const { progressMetaInfo, declineProgressMeta, requestDetails } =
+    useRequest();
 
-  const nextStep = progressMetaInfo?.nextStep;
-  if (!nextStep) {
+  let nextStep: any = null;
+  if (progressMetaInfo) {
+    nextStep = progressMetaInfo.nextStep;
+  } else if (declineProgressMeta) {
+    nextStep = declineProgressMeta.nextStep;
+  }
+  if (requestDetails.type !== 'cancel_schedule_request' && nextStep === null) {
+    return <></>;
+  }
+  if (
+    requestDetails.type === 'cancel_schedule_request' &&
+    requestDetails.status === 'completed'
+  ) {
     return <></>;
   }
   return (

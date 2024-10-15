@@ -75,6 +75,7 @@ const schema_update_meeting_ints = z.object({
   session_id: z.string(),
   curr_declined_int_sesn_reln_id: z.string(),
   new_int_user_id: z.string(),
+  request_id: z.string(),
 });
 
 const schema_troubleshoot = z.object({

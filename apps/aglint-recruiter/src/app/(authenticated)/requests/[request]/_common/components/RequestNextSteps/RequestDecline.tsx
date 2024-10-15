@@ -11,6 +11,7 @@ import axios from 'axios';
 import { ArrowDownUp } from 'lucide-react';
 import React from 'react';
 
+import { ShowCode } from '@/common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { api } from '@/trpc/client';
@@ -23,11 +24,17 @@ const RequestDecline = () => {
   const [selectedMember, setSelectedMember] = React.useState<string | null>(
     null,
   );
+  const [isProceeding, setIsProceeding] = React.useState(false);
+
   const [isInterviewerChanging, setIsInterviewerChanging] =
     React.useState(false);
 
-  const { requestDetails } = useRequest();
+  const { requestDetails, declineProgressMeta } = useRequest();
   const { data: meetingTime, refetch } = useMeetingList();
+
+  if (!declineProgressMeta || declineProgressMeta.nextStep == null) {
+    return <></>;
+  }
   const declinedUserDetails = (meetingTime ?? [])
     .flat()
     .map((item) => item.cancel_reasons)
@@ -41,6 +48,8 @@ const RequestDecline = () => {
     isSuccess: isAlternativeIntsSuccess,
     mutateAsync,
   } = api.scheduling.v1.findReplacementInts.useMutation();
+
+  const session_details = requestDetails.request_relation[0].interview_session;
 
   const handleGetAvailableInterviewers = async () => {
     try {
@@ -68,6 +77,13 @@ const RequestDecline = () => {
   const changeInterviewer = async () => {
     try {
       if (!declinedUserDetails) return;
+      if (!session_details) {
+        toast({
+          title: 'Session details not found',
+          variant: 'destructive',
+        });
+        return;
+      }
       const intSesnCancel = declinedUserDetails.interview_session_cancel;
       if (
         !intSesnCancel ||
@@ -81,11 +97,16 @@ const RequestDecline = () => {
         curr_declined_int_sesn_reln_id: intSesnCancel.session_relation_id,
         new_int_user_id: selectedMember,
         session_id: intSesnCancel.session_id,
+        request_id: requestDetails.id,
       };
       await axios.post(
         '/api/scheduling/v1/update-meeting-interviewers',
         payload,
       );
+      toast({
+        title: 'Interviewer changed successfully',
+        variant: 'default',
+      });
       setIsDialogOpen(false);
       await refetch();
     } catch (err) {
@@ -99,9 +120,34 @@ const RequestDecline = () => {
   };
   return (
     <>
-      <UIButton onClick={handleGetAvailableInterviewers} isLoading={isPending}>
-        Change Interviewer
-      </UIButton>
+      <div className='mt-4'>
+        <ShowCode.When isTrue={declineProgressMeta.nextStep === 'MANUAL'}>
+          <UIButton
+            onClick={handleGetAvailableInterviewers}
+            isLoading={isPending}
+          >
+            Change Interviewer
+          </UIButton>
+        </ShowCode.When>
+        <ShowCode.When
+          isTrue={declineProgressMeta.nextStep === 'REQUEST_PROCEED'}
+        >
+          <UIButton
+            disabled={isProceeding}
+            onClick={async () => {
+              setIsProceeding(true);
+              await axios.post('/api/request/execute-workflow', {
+                request_id: requestDetails.id,
+              });
+              setTimeout(async () => {
+                setIsProceeding(false);
+              }, 2000);
+            }}
+          >
+            {isProceeding ? 'Proceeding...' : 'Proceed with AI'}
+          </UIButton>
+        </ShowCode.When>
+      </div>
       <UIDialog
         title='Interviewers'
         open={isDialogOpen}

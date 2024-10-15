@@ -2,7 +2,7 @@
 import { useRequest } from '@request/hooks';
 import React from 'react';
 
-import ScheduleProgressNode from './ScheduleProgressNode';
+import ProgressNode from '../ProgressNode';
 
 const ScheduleProgress = () => {
   const { progressMetaInfo } = useRequest();
@@ -14,7 +14,12 @@ const ScheduleProgress = () => {
       {progressMetaInfo.scheduleProgressNodes.map((node) => {
         return (
           <div key={node.type}>
-            <ScheduleProgressNode {...node} />
+            <ProgressNode
+              {...{
+                ...node,
+                isLastNode: node.type === 'INTERVIEW_SCHEDULED',
+              }}
+            />
           </div>
         );
       })}

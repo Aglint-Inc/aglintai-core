@@ -31,13 +31,15 @@ export type ProgressTenseType = 'past' | 'present' | 'future' | 'error';
 export type ProgressNodeType =
   | 'SELECT_SCHEDULE'
   | 'CAND_AVAIL_REC'
-  | 'INTERVIEW_SCHEDULED';
+  | 'INTERVIEW_SCHEDULED'
+  | 'INTERVIEWER_DECLINE';
 
 export type NextStepEventType =
   | 'CHOOSE_SCHEDULE_MODE'
   | 'CAND_AVAIL_RECIEVED'
   | 'SCHEDULE_DEBRIEF'
   | 'REQUEST_PROCEED';
+
 export type GroupReqProgress = {
   group_id: string;
   heading_progress: DatabaseTable['request_progress'];
@@ -61,4 +63,12 @@ export type RequesProgressMetaType = {
   };
   scheduleProgressNodes: ProgressNodeParams[];
   nextStep: NextStepEventType | null;
+};
+
+export type RequestDeclineProgressMetaType = {
+  meta: {
+    isInterviewerChangeFailed: boolean;
+  };
+  progressNodes: ProgressNodeParams[];
+  nextStep: 'MANUAL' | 'REQUEST_PROCEED' | null;
 };
