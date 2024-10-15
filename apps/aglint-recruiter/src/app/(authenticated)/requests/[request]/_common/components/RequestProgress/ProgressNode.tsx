@@ -2,20 +2,21 @@ import React from 'react';
 
 import { useTenant } from '@/company/hooks';
 
-import { RequestProgressTracker } from '../../RequestProgressTracker';
-import { type ProgressNodeParams } from '../../types';
-import { bannerMap } from '../../utils/bannerMap';
-import { progressNodeCopy } from '../../utils/progressNodeCopy';
-import ActionNode from './ActionNode';
-import EventNode from './EventNode';
+import { RequestProgressTracker } from './RequestProgressTracker';
+import ActionNode from './ScheduleProgress/ScheduleProgressNode/ActionNode';
+import EventNode from './ScheduleProgress/ScheduleProgressNode/EventNode';
+import { type ProgressNodeParams } from './types';
+import { bannerMap } from './utils/bannerMap';
+import { progressNodeCopy } from './utils/progressNodeCopy';
 
-const ScheduleProgressNode = ({
+const ProgressNode = ({
   banners,
   status,
   type,
   workflows,
   grouped_progress,
-}: ProgressNodeParams) => {
+  isLastNode,
+}: ProgressNodeParams & { isLastNode: boolean }) => {
   const { recruiter } = useTenant();
   const isWorkflowEnabled = recruiter.recruiter_preferences.workflow;
   const isSlackEnabled = recruiter.recruiter_preferences.slack;
@@ -57,29 +58,12 @@ const ScheduleProgressNode = ({
                     </div>
                   );
                 })}
-            {/* <ShowCode.When isTrue={scheduleFlow === null}>
-              <ChooseScheduleMode />
-            </ShowCode.When> */}
-            {/* <ShowCode.When isTrue={scheduleFlow === 'selfSchedule'}> */}
-            {/* <SelfScheduleFlowMenus
-                isManualSchedule={isManualSchedule}
-                isSelectScheduleFlowComplete={isSelectScheduleFlowComplete}
-              />
-            </ShowCode.When>
-            <ShowCode.When isTrue={scheduleFlow === 'availability'}>
-              <div>
-                <AvailabilityFlowMenus
-                  isManualSchedule={isManualSchedule}
-                  isSelectScheduleFlowComplete={isSelectScheduleFlowComplete}
-                />
-              </div>
-            </ShowCode.When> */}
           </>
         }
-        isLastNode={type === 'INTERVIEW_SCHEDULED'}
+        isLastNode={isLastNode}
       />
     </div>
   );
 };
 
-export default ScheduleProgressNode;
+export default ProgressNode;

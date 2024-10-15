@@ -11,6 +11,7 @@ import axios from 'axios';
 import { ArrowDownUp } from 'lucide-react';
 import React from 'react';
 
+import { ShowCode } from '@/common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import { api } from '@/trpc/client';
@@ -23,11 +24,17 @@ const RequestDecline = () => {
   const [selectedMember, setSelectedMember] = React.useState<string | null>(
     null,
   );
+  const [isProceeding, setIsProceeding] = React.useState(false);
+
   const [isInterviewerChanging, setIsInterviewerChanging] =
     React.useState(false);
 
-  const { requestDetails } = useRequest();
+  const { requestDetails, declineProgressMeta } = useRequest();
   const { data: meetingTime, refetch } = useMeetingList();
+
+  if (!declineProgressMeta || declineProgressMeta.nextStep == null) {
+    return <></>;
+  }
   const declinedUserDetails = (meetingTime ?? [])
     .flat()
     .map((item) => item.cancel_reasons)
@@ -114,12 +121,32 @@ const RequestDecline = () => {
   return (
     <>
       <div className='mt-4'>
-        <UIButton
-          onClick={handleGetAvailableInterviewers}
-          isLoading={isPending}
+        <ShowCode.When isTrue={declineProgressMeta.nextStep === 'MANUAL'}>
+          <UIButton
+            onClick={handleGetAvailableInterviewers}
+            isLoading={isPending}
+          >
+            Change Interviewer
+          </UIButton>
+        </ShowCode.When>
+        <ShowCode.When
+          isTrue={declineProgressMeta.nextStep === 'REQUEST_PROCEED'}
         >
-          Change Interviewer
-        </UIButton>
+          <UIButton
+            disabled={isProceeding}
+            onClick={async () => {
+              setIsProceeding(true);
+              await axios.post('/api/request/execute-workflow', {
+                request_id: requestDetails.id,
+              });
+              setTimeout(async () => {
+                setIsProceeding(false);
+              }, 2000);
+            }}
+          >
+            {isProceeding ? 'Proceeding...' : 'Proceed with AI'}
+          </UIButton>
+        </ShowCode.When>
       </div>
       <UIDialog
         title='Interviewers'

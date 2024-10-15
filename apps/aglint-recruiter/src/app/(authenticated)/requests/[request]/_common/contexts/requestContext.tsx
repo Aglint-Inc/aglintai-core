@@ -1,6 +1,11 @@
 'use client';
 
-import { getRequestFormattedDetails } from '@request/utils/getRequestFormattedDetails';
+import {
+  type RequesProgressMetaType,
+  type RequestDeclineProgressMetaType,
+} from '@request/components/RequestProgress/types';
+import { getDeclineRequestFormattedDetails } from '@request/utils/formattedProg/decline';
+import { getScheduleRequestFormattedDetails } from '@request/utils/formattedProg/schedule';
 import { useRequests } from '@requests/hooks/useRequests';
 import { useQuery } from '@tanstack/react-query';
 import { createContext, type PropsWithChildren } from 'react';
@@ -90,19 +95,37 @@ const useRequestContext = ({ request_id }: RequestParams) => {
   );
 
   const getSimpReqStatus = useCallback(() => {
-    if (!requestDetails || !request_progress.data || !request_workflow.data)
+    if (!requestDetails || !request_progress.data || !request_workflow.data) {
       return null;
-    return getRequestFormattedDetails({
-      request_progress: request_progress.data,
-      request_workflow: request_workflow.data,
-      is_slack_enabled: false,
-      is_workflow_enabled: true,
-      requestDetails: requestDetails,
-    });
+    }
+    let progressMetaInfo: RequesProgressMetaType | null = null;
+    let declineProgressMeta: RequestDeclineProgressMetaType | null = null;
+    if (
+      requestDetails.type === 'schedule_request' ||
+      requestDetails.type === 'reschedule_request'
+    ) {
+      progressMetaInfo = getScheduleRequestFormattedDetails({
+        request_progress: request_progress.data,
+        request_workflow: request_workflow.data,
+
+        requestDetails: requestDetails,
+      });
+    }
+    if (requestDetails.type === 'decline_request') {
+      declineProgressMeta = getDeclineRequestFormattedDetails({
+        request_progress: request_progress.data,
+        request_workflow: request_workflow.data,
+        requestDetails: requestDetails,
+      });
+    }
+    return {
+      progressMetaInfo,
+      declineProgressMeta,
+    };
   }, [requestDetails, request_progress.data, request_workflow.data]);
 
   return {
-    progressMetaInfo: getSimpReqStatus(),
+    ...getSimpReqStatus(),
     request_progress: {
       ...request_progress,
       data: request_progress.data ?? [],
