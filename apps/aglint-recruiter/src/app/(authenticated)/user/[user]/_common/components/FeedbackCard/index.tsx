@@ -6,13 +6,11 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
-import { ScrollArea } from '@components/ui/scroll-area';
 import { ChevronDown, ChevronUp, MessageSquareOff } from 'lucide-react';
 import { useState } from 'react';
 
 import { useInterviewer } from '../../hooks/useInterviewer';
 import { List } from './ui/List';
-
 export const Feedback = () => {
   const [isExpanded, setIsExpanded] = useState(true);
   const { data } = useInterviewer();
@@ -36,23 +34,20 @@ export const Feedback = () => {
             )}
           </SectionActions>
         </SectionHeader>
-        {isExpanded && (
-          <ScrollArea className='flex h-[300px]'>
-            {data.feedbacks?.length ? (
-              feedbacks
-                .slice(0, 3)
-                .map((feedback) => (
-                  <List key={feedback.session_name} feedback={feedback} />
-                ))
-            ) : (
-              <EmptyState
-                variant='inline'
-                icon={MessageSquareOff}
-                description='No feedback given yet'
-              />
-            )}
-          </ScrollArea>
-        )}
+        {isExpanded &&
+          (data.feedbacks?.length ? (
+            feedbacks
+              .slice(0, 3)
+              .map((feedback) => (
+                <List key={feedback.session_name} feedback={feedback} />
+              ))
+          ) : (
+            <EmptyState
+              variant='inline'
+              icon={MessageSquareOff}
+              description='No feedback given yet'
+            />
+          ))}
       </Section>
     </>
   );

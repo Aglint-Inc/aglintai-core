@@ -7,7 +7,6 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
-import { ScrollArea } from '@components/ui/scroll-area';
 import { Calendar, ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
 
@@ -28,6 +27,7 @@ export const RecentInterviews = () => {
     ? all_meetings.filter((meeting) => meeting.status === 'completed')
     : [];
   const [isExpanded, setIsExpanded] = useState(true);
+  const router = useRouterPro();
   return (
     <>
       <Section>
@@ -36,6 +36,10 @@ export const RecentInterviews = () => {
             <SectionTitle>Recent Interviews</SectionTitle>
           </SectionHeaderText>
           <SectionActions>
+            {' '}
+            <UIButton size={'sm'} onClick={() => router.push('/interviews')}>
+              View All
+            </UIButton>
             {isExpanded ? (
               <ChevronUp size={20} onClick={() => setIsExpanded(false)} />
             ) : (
@@ -43,23 +47,20 @@ export const RecentInterviews = () => {
             )}
           </SectionActions>
         </SectionHeader>
-        {isExpanded && (
-          <ScrollArea className='flex h-[300px]'>
-            {interviews?.length > 0 ? (
-              interviews
-                .slice(0, 3)
-                .map((interview) => (
-                  <List key={interview.id} interview={interview} />
-                ))
-            ) : (
-              <EmptyState
-                variant='inline'
-                icon={Calendar}
-                description='No upcoming interviews found'
-              />
-            )}
-          </ScrollArea>
-        )}
+        {isExpanded &&
+          (interviews?.length > 0 ? (
+            interviews
+              .slice(0, 3)
+              .map((interview) => (
+                <List key={interview.id} interview={interview} />
+              ))
+          ) : (
+            <EmptyState
+              variant='inline'
+              icon={Calendar}
+              description='No upcoming interviews found'
+            />
+          ))}
       </Section>
     </>
   );

@@ -7,7 +7,6 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
-import { ScrollArea } from '@components/ui/scroll-area';
 import { Calendar, ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
 
@@ -28,14 +27,19 @@ export const UpcomingInterview = () => {
     ? all_meetings.filter((meeting) => meeting.status === 'confirmed')
     : [];
   const [isExpanded, setIsExpanded] = useState(true);
+  const router = useRouterPro();
+
   return (
     <>
       <Section>
         <SectionHeader>
           <SectionHeaderText>
-            <SectionTitle>Upcoming Interviews</SectionTitle>
+            <SectionTitle>Upcoming Interviews </SectionTitle>
           </SectionHeaderText>
           <SectionActions>
+            <UIButton size={'sm'} onClick={() => router.push('/interviews')}>
+              View All
+            </UIButton>
             {isExpanded ? (
               <ChevronUp size={20} onClick={() => setIsExpanded(false)} />
             ) : (
@@ -44,7 +48,7 @@ export const UpcomingInterview = () => {
           </SectionActions>
         </SectionHeader>
         {isExpanded && (
-          <ScrollArea className='h-[300px] gap-4'>
+          <>
             {interviews?.length > 0 ? (
               interviews
                 .slice(0, 3)
@@ -58,7 +62,7 @@ export const UpcomingInterview = () => {
                 description='No upcoming interviews found'
               />
             )}
-          </ScrollArea>
+          </>
         )}
       </Section>
     </>
