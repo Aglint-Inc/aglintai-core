@@ -143,7 +143,7 @@ export const DashboardLineChart: FC<{
 const Content: FC<{
   option: Option;
 }> = ({ option }) => {
-  const [dataSet] = useMetricsExperienceAndTenure();
+  const dataSet = useMetricsExperienceAndTenure();
   const experience = (dataSet?.[option] ?? null)!;
   const total = experience
     ? Object.values(experience).reduce((acc, curr) => {
