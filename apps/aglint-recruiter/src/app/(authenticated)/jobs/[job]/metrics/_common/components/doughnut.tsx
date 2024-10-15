@@ -138,7 +138,7 @@ const Content: FC<{
   const {
     job: { processing_count },
   } = useJob();
-  const [locationPool] = useMetricsLocationPool();
+  const locationPool = useMetricsLocationPool();
   const locations = locationPool?.[option] ?? null;
   if (!locations) return <NoDataAvailable />;
   const totalCount = Object.values(processing_count).reduce((acc, curr) => {
