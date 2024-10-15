@@ -7,8 +7,7 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
-import { Calendar, ChevronDown, ChevronUp } from 'lucide-react';
-import { useState } from 'react';
+import { Calendar } from 'lucide-react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -24,9 +23,14 @@ export const RecentInterviews = () => {
   } = useInterviewer();
 
   const interviews = all_meetings?.length
-    ? all_meetings.filter((meeting) => meeting.status === 'completed')
+    ? all_meetings
+        .filter((meeting) => meeting.status === 'completed')
+        .sort((a, b) => {
+          const aa = dayjsLocal(a.start_time!).valueOf();
+          const bb = dayjsLocal(b.start_time!).valueOf();
+          return bb - aa;
+        })
     : [];
-  const [isExpanded, setIsExpanded] = useState(true);
   const router = useRouterPro();
   return (
     <>
@@ -39,32 +43,25 @@ export const RecentInterviews = () => {
             <UIButton size={'sm'} onClick={() => router.push('/interviews')}>
               View All
             </UIButton>
-            {isExpanded ? (
-              <ChevronUp size={20} onClick={() => setIsExpanded(false)} />
-            ) : (
-              <ChevronDown size={20} onClick={() => setIsExpanded(true)} />
-            )}
           </SectionActions>
         </SectionHeader>
-        {isExpanded && (
-          <div className='min-h-[300px]'>
-            {interviews?.length > 0 ? (
-              interviews
-                .slice(0, 3)
-                .map((interview) => (
-                  <List key={interview.id} interview={interview} />
-                ))
-            ) : (
-              <div className='flex min-h-[300px] w-full items-center justify-center'>
-                <EmptyState
-                  variant='inline'
-                  icon={Calendar}
-                  description='No upcoming interviews found'
-                />
-              </div>
-            )}
-          </div>
-        )}
+        <div className='min-h-[300px]'>
+          {interviews?.length > 0 ? (
+            interviews
+              .slice(0, 3)
+              .map((interview) => (
+                <List key={interview.id} interview={interview} />
+              ))
+          ) : (
+            <div className='flex min-h-[300px] w-full items-center justify-center'>
+              <EmptyState
+                variant='inline'
+                icon={Calendar}
+                description='No upcoming interviews found'
+              />
+            </div>
+          )}
+        </div>
       </Section>
     </>
   );
@@ -79,7 +76,7 @@ const List = ({
   return (
     <>
       {/* Alternate card */}
-      <div className='flex items-center gap-4 rounded-lg'>
+      <div className='mb-2 flex items-center gap-4 rounded-lg'>
         <div className='flex h-[94px] w-[90px] flex-col items-center justify-center rounded-sm bg-gray-50'>
           <div className='text-sm'>
             {dayjsLocal(interview.start_time).format('MMMM')}
@@ -92,7 +89,7 @@ const List = ({
           </div>
         </div>
         <div className='flex flex-col items-start gap-2'>
-          <h3 className='text-md font-medium'>
+          <h3 className='text-md line-clamp-1 font-medium'>
             {getFullName(
               interview?.candidate?.first_name || '',
               interview?.candidate?.last_name || '',

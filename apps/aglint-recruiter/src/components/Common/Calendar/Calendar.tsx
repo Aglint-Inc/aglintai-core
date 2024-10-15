@@ -49,17 +49,31 @@ function CalendarComp({
   const calendarRef = useRef(null);
 
   useEffect(() => {
-    const event: EventFullCalender[] = allSchedules.map((sch) => ({
-      title: sch.session_name ?? '',
-      start: sch.start_time ?? '',
-      end: sch.end_time ?? '',
-      backgroundColor: 'transparent',
-      borderColor: 'transparent',
-      extendedProps: {
-        data: sch,
-        color: colorPick(sch.status),
-      },
-    }));
+    const event: EventFullCalender[] = allSchedules
+      .map((sch) => ({
+        title: sch.session_name ?? '',
+        start: sch.start_time ?? '',
+        end: sch.end_time ?? '',
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
+        status: sch.status,
+        extendedProps: {
+          data: sch,
+          color: colorPick(sch.status),
+        },
+      }))
+      .sort((a, b) => {
+        const order = {
+          confirmed: 1,
+          completed: 2,
+          waiting: 3,
+          cancelled: 4,
+          reschedule: 5,
+          not_scheduled: 6,
+        };
+
+        return order[a.status] - order[b.status];
+      });
     setEvents(event);
   }, [allSchedules]);
 

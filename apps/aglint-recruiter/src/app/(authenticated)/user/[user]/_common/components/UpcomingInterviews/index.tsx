@@ -7,8 +7,7 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
-import { Calendar, ChevronDown, ChevronUp } from 'lucide-react';
-import { useState } from 'react';
+import { Calendar } from 'lucide-react';
 
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -24,9 +23,14 @@ export const UpcomingInterview = () => {
   } = useInterviewer();
 
   const interviews = all_meetings?.length
-    ? all_meetings.filter((meeting) => meeting.status === 'confirmed')
+    ? all_meetings
+        .filter((meeting) => meeting.status === 'confirmed')
+        .sort((a, b) => {
+          const aa = dayjsLocal(a.start_time!).valueOf();
+          const bb = dayjsLocal(b.start_time!).valueOf();
+          return aa - bb;
+        })
     : [];
-  const [isExpanded, setIsExpanded] = useState(true);
   const router = useRouterPro();
 
   return (
@@ -40,32 +44,25 @@ export const UpcomingInterview = () => {
             <UIButton size={'sm'} onClick={() => router.push('/interviews')}>
               View All
             </UIButton>
-            {isExpanded ? (
-              <ChevronUp size={20} onClick={() => setIsExpanded(false)} />
-            ) : (
-              <ChevronDown size={20} onClick={() => setIsExpanded(true)} />
-            )}
           </SectionActions>
         </SectionHeader>
-        {isExpanded && (
-          <div className='min-h-[300px]'>
-            {interviews?.length > 0 ? (
-              interviews
-                .slice(0, 3)
-                .map((interview) => (
-                  <List key={interview.id} interview={interview} />
-                ))
-            ) : (
-              <div className='flex min-h-[300px] w-full items-center justify-center'>
-                <EmptyState
-                  variant='inline'
-                  icon={Calendar}
-                  description='No upcoming interviews found'
-                />
-              </div>
-            )}
-          </div>
-        )}
+        <div className='min-h-[300px]'>
+          {interviews?.length > 0 ? (
+            interviews
+              .slice(0, 3)
+              .map((interview) => (
+                <List key={interview.id} interview={interview} />
+              ))
+          ) : (
+            <div className='flex min-h-[300px] w-full items-center justify-center'>
+              <EmptyState
+                variant='inline'
+                icon={Calendar}
+                description='No upcoming interviews found'
+              />
+            </div>
+          )}
+        </div>
       </Section>
     </>
   );
