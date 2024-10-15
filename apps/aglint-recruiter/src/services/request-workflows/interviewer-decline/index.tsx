@@ -1,4 +1,3 @@
-'use server';
 import { type DatabaseEnums } from '@aglint/shared-types';
 import {
   CApiError,

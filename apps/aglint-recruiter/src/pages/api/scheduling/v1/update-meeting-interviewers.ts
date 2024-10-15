@@ -7,7 +7,7 @@ import { supabaseWrap } from '@aglint/shared-utils/src/supabaseWrap';
 import { type z } from 'zod';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
-import { replaceInterviewerInSession } from '@/services/CandidateSchedule/utils/replaceInterviewer';
+import { replaceInterviewerInSession } from '@/services/CandidateSchedule/utils/replaceInterviewer/replaceInterviewerInSession';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const updateMeetingInterviewers = async (
