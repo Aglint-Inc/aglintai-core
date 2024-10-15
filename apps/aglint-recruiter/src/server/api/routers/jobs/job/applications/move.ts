@@ -9,7 +9,7 @@ import { z } from 'zod';
 import {
   type PrivateProcedure,
   privateProcedure,
-  type RequiredPayload,
+  type ProcedureDefinition,
 } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 import { formatSessions } from '@/utils/formatSessions';
@@ -60,10 +60,7 @@ const moveToInterview = async ({
       recruiter_id: ctx.recruiter_id,
       ...rest,
     }));
-    return await db
-      .from('applications')
-      .upsert(payload as RequiredPayload<(typeof payload)[number]>[])
-      .throwOnError();
+    return await db.from('applications').upsert(payload).throwOnError();
   }
 
   const [{ data }, { data: session_names }] = await Promise.all([
@@ -123,10 +120,7 @@ const moveToNonInterview = async ({
     recruiter_id: ctx.recruiter_id,
     ...rest,
   }));
-  return await db
-    .from('applications')
-    .upsert(payload as RequiredPayload<typeof payload>)
-    .throwOnError();
+  return await db.from('applications').upsert(payload).throwOnError();
 };
 
 const mutation = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
@@ -136,3 +130,5 @@ const mutation = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
 };
 
 export const move = privateProcedure.input(schema).mutation(mutation);
+
+export type Move = ProcedureDefinition<typeof move>;

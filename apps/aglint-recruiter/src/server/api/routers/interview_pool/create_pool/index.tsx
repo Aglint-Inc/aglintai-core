@@ -1,10 +1,6 @@
 import { z } from 'zod';
 
-import {
-  type PrivateProcedure,
-  privateProcedure,
-  type RequiredPayload,
-} from '@/server/api/trpc';
+import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 const schema = z.object({
@@ -34,7 +30,7 @@ const mutation = async ({
   return (
     await db
       .from('interview_module')
-      .insert(payload as RequiredPayload<typeof payload>)
+      .insert(payload)
       .select('id')
       .single()
       .throwOnError()

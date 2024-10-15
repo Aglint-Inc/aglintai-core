@@ -1,8 +1,9 @@
-import type { API } from '@/server/api/root';
+import type { Aglint } from '@/routers/jobs/create/aglint';
+import type { Read } from '@/routers/jobs/job/read';
 
-export type Job = API['jobs']['job']['read']['output'];
+export type Job = Read['output'];
 
-export type JobCreate = Omit<API['jobs']['create']['aglint']['input'], 'id'>;
+export type JobCreate = Omit<Aglint['input'], 'id'>;
 
 export type Form = Partial<{
   [id in keyof JobCreate]: {

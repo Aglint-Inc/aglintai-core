@@ -5,8 +5,25 @@ import type {
 } from '@aglint/shared-types';
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
+
+const BADGE_CONSTANTS: {
+  // eslint-disable-next-line no-unused-vars
+  [_id in Params['badges'][number]]: number;
+} = {
+  careerGrowth: 89,
+  jobStability: 89,
+  leadership: 69,
+  jobHopping: 0,
+  positions: 0,
+  schools: 0,
+  skills: 0,
+};
 
 type Application = DatabaseView['application_view'];
 
@@ -169,15 +186,4 @@ const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
 
 export const read = privateProcedure.input(schema).query(query);
 
-const BADGE_CONSTANTS: {
-  // eslint-disable-next-line no-unused-vars
-  [_id in Params['badges'][number]]: number;
-} = {
-  careerGrowth: 89,
-  jobStability: 89,
-  leadership: 69,
-  jobHopping: 0,
-  positions: 0,
-  schools: 0,
-  skills: 0,
-};
+export type Read = ProcedureDefinition<typeof read>;
