@@ -1,7 +1,4 @@
-/* eslint-disable no-unused-vars */
 import { createContext, type ReactNode, useContext } from 'react';
-
-import { useTenant } from '@/company/hooks';
 
 import { api } from './client';
 
@@ -32,7 +29,6 @@ const _A = () => {
 const B = () => {
   const { data } = useHello();
   const { handleWorld } = useWorld();
-  // eslint-disable-next-line jsx-a11y/no-static-element-interactions
   return <div onClick={() => handleWorld()}>{JSON.stringify(data)}</div>;
 };
 
