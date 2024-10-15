@@ -98,7 +98,7 @@ function CalendarComp({
   return (
     <div>
       {isLoading ? (
-        <div className='flex w-[900px] items-center justify-center'>
+        <div className='flex min-h-[700px] w-full items-center justify-center'>
           <Loader />
         </div>
       ) : (
@@ -120,8 +120,8 @@ function CalendarComp({
               <div className='flex min-h-[500px] w-full items-center justify-center'>
                 <EmptyState
                   icon={Calendar}
-                  header={'There are no schedules available at the moment.'}
-                  description='Create a new interview pool to get started.'
+                  header={'No schedules'}
+                  description='There are no schedules available at the moment.'
                 />
               </div>
             ) : (
