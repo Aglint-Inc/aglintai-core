@@ -19,7 +19,6 @@ const RequestNextSteps = () => {
   } else if (declineProgressMeta) {
     nextStep = declineProgressMeta.nextStep;
   }
-  console.log('debug 1');
   if (requestDetails.type !== 'cancel_schedule_request' && nextStep === null) {
     return <></>;
   }
