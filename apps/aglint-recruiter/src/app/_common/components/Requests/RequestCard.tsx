@@ -15,14 +15,14 @@ function RequestCard({ request }: { request: ApplicantRequest }) {
         request: request.id,
       })}
       target='_blank'
-      className='hover:no-underline p-3 bg-primary-foreground rounded-md hover:bg-gray-100'
+      className='rounded-md bg-primary-foreground p-3 hover:bg-gray-100 hover:no-underline'
     >
       <div className='mb-2 flex justify-between gap-1'>
         <p className='text-sm font-medium'>{request.title}</p>
       </div>
       <div className='flex items-center justify-between'>
         <div className='flex items-center gap-1'>
-        <UIBadge
+          <UIBadge
             size='default'
             className='min-w-[70px] justify-center text-center'
             textBadge={capitalizeFirstLetter(request.status)}
@@ -39,16 +39,15 @@ function RequestCard({ request }: { request: ApplicantRequest }) {
             }
           />
           <div className='flex items-center gap-1'>
-            <Avatar className='h-6 w-6 rounded-sm overflow-hidden'>
+            <Avatar className='h-6 w-6 overflow-hidden rounded-sm'>
               <AvatarImage
-              className=''
                 src={request?.assignee_details?.profile_image ?? ''}
                 alt={getFullName(
                   request?.assignee_details?.first_name ?? '',
                   request?.assignee_details?.last_name ?? '',
                 )}
               />
-              <AvatarFallback className=''>
+              <AvatarFallback>
                 {getFullName(
                   request?.assignee_details?.first_name ?? '',
                   request?.assignee_details?.last_name ?? '',

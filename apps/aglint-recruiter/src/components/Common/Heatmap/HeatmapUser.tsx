@@ -31,7 +31,7 @@ export default function Heatmap({
   const [arrayDates, setArrayDates] = useState<string[]>([]);
   const [dayCount, setDayCount] = useState<{ start: number; end: number }>({
     start: -7,
-    end: 29,
+    end: 27,
   });
   const [maxCount, setMaxCountInterviews] = useState(
     loadSetting.dailyLimit.value,
@@ -44,7 +44,8 @@ export default function Heatmap({
 
   useEffect(() => {
     setMaxCountInterviews(
-      Math.max(loadSetting?.dailyLimit.value, data?.maxInterviewsCount ?? 0),
+      Math.max(loadSetting?.dailyLimit.value, 7),
+      // Math.max(loadSetting?.dailyLimit.value, data?.maxInterviewsCount ?? 0),
     );
   }, [data]);
 
@@ -117,7 +118,7 @@ export default function Heatmap({
                 <div className='flex flex-row items-center gap-2'>
                   <p className='text-sm'>
                     Activity on{' '}
-                    <span className=''>
+                    <span>
                       {startDateUI} - {endDateUI}
                     </span>
                   </p>
@@ -153,7 +154,7 @@ export default function Heatmap({
               xLabels={xLabel}
               yLabels={yLabel}
               square
-              cellHeight='16px'
+              cellHeight='18.7px'
               xLabelsPos='bottom'
               onClick={(x, y) => {
                 if (heatMapData[x][y]?.meeting_id)
@@ -172,7 +173,7 @@ export default function Heatmap({
                   height: '2px ',
                   padding: 0,
                   marginTop: '2px',
-                  width: '20.25px',
+                  width: '18.6px',
                 };
               }}
               yLabelsStyle={(index) => ({

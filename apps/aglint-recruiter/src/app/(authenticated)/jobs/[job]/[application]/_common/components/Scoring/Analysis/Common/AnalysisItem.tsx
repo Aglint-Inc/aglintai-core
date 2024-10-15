@@ -37,24 +37,22 @@ export const AnalysisItem = ({
   const tier = getScoreTier(scores[type]);
 
   return (
-    <div className=''>
-      <div className='flex flex-row gap-2 items-center mb-2'>
-      <h3 className='text-sm font-medium'>
-        {capitalizeAll(String(type))}
-      </h3>
+    <div>
+      <div className='mb-2 flex flex-row items-center gap-2'>
+        <h3 className='text-sm font-medium'>{capitalizeAll(String(type))}</h3>
         <Badge
-  className={`rounded-sm border text-xs font-medium pointer-events-none ${
-    tier === 'High' 
-      ? 'bg-green-100 text-green-800' 
-      : tier === 'Medium' 
-      ? 'bg-yellow-100 text-yellow-800' 
-      : 'bg-red-100 text-red-800' 
-  }`}
->
-  {`${tier} - ${scores[type]}`}
-</Badge>
+          className={`pointer-events-none rounded-sm border text-xs font-medium ${
+            tier === 'High'
+              ? 'bg-green-100 text-green-800'
+              : tier === 'Medium'
+                ? 'bg-yellow-100 text-yellow-800'
+                : 'bg-red-100 text-red-800'
+          }`}
+        >
+          {`${tier} - ${scores[type]}`}
+        </Badge>
       </div>
-      <p className='text-sm text-gray-700 mb-1'>{reasoning[reasoningType]}</p>
+      <p className='mb-1 text-sm text-gray-700'>{reasoning[reasoningType]}</p>
     </div>
   );
 };

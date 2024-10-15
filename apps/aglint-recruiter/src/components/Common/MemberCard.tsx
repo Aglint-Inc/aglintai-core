@@ -32,7 +32,7 @@ function MemberCard({
 
       <div>
         {selectedMember?.first_name ? (
-          <p className=''>
+          <p>
             {getFullName(
               selectedMember?.first_name,
               selectedMember?.last_name ?? '',

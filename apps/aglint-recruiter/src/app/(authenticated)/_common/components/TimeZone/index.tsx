@@ -68,7 +68,6 @@ const TimeZone: FC<TimeZoneProps> = ({
             <Button
               variant='outline'
               size='sm'
-              className=''
               onClick={() => {
                 if (!isUpdating) setIsPopoverOpen(true);
               }}

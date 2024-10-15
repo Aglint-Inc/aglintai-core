@@ -409,11 +409,7 @@ export default function ViewRequestDetails() {
                 </div>
                 <div className='flex flex-row items-center gap-2'>
                   <Avatar className='ml-0 h-6 w-6 rounded-sm'>
-                    <AvatarImage
-                      src={assignee?.profile_image}
-                      alt='Avatar'
-                      className=''
-                    />
+                    <AvatarImage src={assignee?.profile_image} alt='Avatar' />
                     <AvatarFallback className='h-6 w-6 rounded-sm bg-gray-200'>
                       <span className='text-sm'>
                         {assignee?.first_name.slice(0, 1)}
@@ -424,9 +420,8 @@ export default function ViewRequestDetails() {
                     href={ROUTES['/user/[user]']({
                       user_id: assignee?.user_id ?? '',
                     })}
-                    className=''
                   >
-                    <p className=''>
+                    <p>
                       {getFullName(
                         assignee?.first_name ?? '',
                         assignee?.last_name ?? '',
@@ -499,11 +494,7 @@ export default function ViewRequestDetails() {
                 </div>
                 <div className='flex flex-row items-center gap-2'>
                   <Avatar className='ml-0 h-6 w-6 rounded-sm'>
-                    <AvatarImage
-                      src={assigner?.profile_image}
-                      alt='Avatar'
-                      className=''
-                    />
+                    <AvatarImage src={assigner?.profile_image} alt='Avatar' />
                     <AvatarFallback className='h-6 w-6 rounded-sm bg-gray-200'>
                       <span className='text-sm'>
                         {assigner?.first_name.slice(0, 1)}
@@ -514,9 +505,8 @@ export default function ViewRequestDetails() {
                     href={ROUTES['/user/[user]']({
                       user_id: assigner?.user_id ?? '',
                     })}
-                    className=''
                   >
-                    <p className=''>
+                    <p>
                       {getFullName(
                         assigner?.first_name ?? '',
                         assigner?.last_name ?? '',

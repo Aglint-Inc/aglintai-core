@@ -63,11 +63,15 @@ export default function Main() {
   };
 
   return (
-    <div className=''>
-      {isStateUpdating && <Loader/>}
+    <div>
+      {isStateUpdating && <Loader />}
       {!isStateUpdating && (
         <>
-          <Accordion type='single' collapsible className='w-full flex flex-col gap-3'>
+          <Accordion
+            type='single'
+            collapsible
+            className='flex w-full flex-col gap-3'
+          >
             {allCategories.map((categ, idx) => {
               const currentTriggers = jobWorkflowTriggers.filter(
                 (trig) => trig.category === categ,
@@ -83,7 +87,7 @@ export default function Main() {
             })}
           </Accordion>
           <div className='mt-3 flex flex-row justify-start gap-2'>
-          <UIButton onClick={handleSave} isLoading={isPending}>
+            <UIButton onClick={handleSave} isLoading={isPending}>
               Save Changes
             </UIButton>
             <UIButton
@@ -93,7 +97,6 @@ export default function Main() {
             >
               Reset
             </UIButton>
-            
           </div>
         </>
       )}

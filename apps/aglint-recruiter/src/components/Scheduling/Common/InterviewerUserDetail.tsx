@@ -126,7 +126,7 @@ function InterviewerUserDetail({
           <div className='flex flex-row items-center gap-4 text-sm text-gray-500'>
             <div className='flex flex-row items-center gap-1'>
               <Globe className='h-3 w-3' />
-              <p className=''>
+              <p>
                 {interview_meeting?.start_time
                   ? formatTimeWithTimeZone({
                       start_time: interview_meeting.start_time,
