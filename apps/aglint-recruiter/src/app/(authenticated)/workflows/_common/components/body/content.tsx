@@ -26,13 +26,10 @@ import { getTriggerOption } from '@/workflows/utils';
 import { getFilteredWorkflows } from './filters';
 
 const Content = memo(() => {
-  const {
-    workflows: { data, status },
-  } = useWorkflows();
-  if (status === 'error') return <>Error</>;
+  const { workflows } = useWorkflows();
   return (
     <div className='flex flex-col gap-4'>
-      <Cards data={data} />
+      <Cards data={workflows} />
     </div>
   );
 });
@@ -41,7 +38,7 @@ Content.displayName = 'Content';
 export default Content;
 
 const Cards = (props: {
-  data: ReturnType<typeof useWorkflows>['workflows']['data'];
+  data: ReturnType<typeof useWorkflows>['workflows'];
 }) => {
   const filters = useWorkflowsFilters();
   const { workflowMutations: mutations } = useWorkflows();

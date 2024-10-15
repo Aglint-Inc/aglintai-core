@@ -1,4 +1,4 @@
-import { createContext, memo, useCallback, useMemo } from 'react';
+import { createContext, memo, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -16,7 +16,7 @@ const useWorkflowContext = () => {
     params: { workflow: id },
   } = useRouterPro();
   const {
-    workflows: { data, status },
+    workflows,
     workflowUpdate: {
       mutate: updateWorkflowMuation,
       mutateAsync: updateWorkflowAsyncMuation,
@@ -25,13 +25,9 @@ const useWorkflowContext = () => {
     manageWorkflow,
   } = useWorkflows();
 
-  const workflow = useMemo(
-    () =>
-      status === 'success'
-        ? (data ?? []).find((workflow) => workflow.id === id)
-        : null,
-    [status, data],
-  )!;
+  const workflow = (workflows ?? []).find((workflow) => workflow.id === id);
+
+  if (!workflow) throw new Error('Workflow not found');
 
   const handleUpdateWorkflow = useCallback(
     (payload: Parameters<typeof updateWorkflowMuation>[0]['payload']) =>
