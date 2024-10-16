@@ -24,6 +24,7 @@ const query = async ({ input }: PublicProcedure<typeof schema>) => {
   ).data!;
 
   const candidates = company.candidates;
+
   return {
     candidate: {
       first_name: candidates.first_name,

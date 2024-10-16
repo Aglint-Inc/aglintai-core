@@ -16,9 +16,7 @@ const InterviewProgressCard: React.FC<InterviewProgressCardProps> = ({
 }) => {
   const { description, name, is_completed, update_at } = interview;
 
-  const isActive =
-    status === 'Scheduled' || status === 'Completed' || status === 'Upcoming';
-  const cardClasses = `w-full mb-3 ${isActive ? '' : 'cursor-not-allowed'}`;
+  const cardClasses = `w-full mb-3 ${is_completed ? '' : 'cursor-not-allowed'}`;
 
   return (
     <div className='flex flex-row gap-2'>
@@ -27,9 +25,9 @@ const InterviewProgressCard: React.FC<InterviewProgressCardProps> = ({
         style={{ gridTemplateRows: 'max-content 1fr' }}
       >
         <div
-          className='mt-2 block overflow-hidden'
+          className='block overflow-hidden'
           style={{
-            backgroundColor: isActive ? 'bg-blue-500' : 'bg-blue-500',
+            backgroundColor: is_completed ? 'green' : 'gray',
             borderRadius: '100px',
             height: '10px',
             width: '10px',
@@ -38,8 +36,8 @@ const InterviewProgressCard: React.FC<InterviewProgressCardProps> = ({
         {!isLast && (
           <div
             style={{
-              backgroundColor: 'bg-blue-500',
-              height: '100%',
+              backgroundColor: is_completed ? '#a7baa2' : 'lightgray',
+              height: '95%',
               width: '1px',
             }}
             className='mx-auto'

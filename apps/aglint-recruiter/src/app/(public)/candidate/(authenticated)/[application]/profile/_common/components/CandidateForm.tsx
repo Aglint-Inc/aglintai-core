@@ -1,4 +1,5 @@
 'use client';
+import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Input } from '@components/ui/input';
@@ -12,10 +13,7 @@ import {
 } from '@components/ui/select';
 import { useRef, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
-import {
-  useCandidatePortal,
-  useCandidatePortalNavbar,
-} from 'src/app/(public)/candidate/(authenticated)/[application]/_common/hooks';
+import { useCandidatePortal } from 'src/app/(public)/candidate/(authenticated)/[application]/_common/hooks';
 
 import { supabase } from '@/utils/supabase/client';
 import timeZone from '@/utils/timeZone';
@@ -43,9 +41,8 @@ export default function CandidateForm({
   closeDialog: () => void;
 }) {
   const { application_id } = useCandidatePortal();
-  const { data, refetch: profileRefetch } = useCandidatePortalProfile();
-  const { refetch: navRefetch } = useCandidatePortalNavbar();
-  const { mutateAsync, status } = useCandidatePortalProfileUpdate();
+  const { data } = useCandidatePortalProfile();
+  const { mutateAsync } = useCandidatePortalProfileUpdate();
   // const [form, setForm] = useState(data);
   const [loading, setLoading] = useState(false);
   const [isImageChanged, setIsImageChanged] = useState(false);
@@ -69,21 +66,33 @@ export default function CandidateForm({
     },
   });
 
+  const removeImage = async (imageUrl: string) => {
+    const path = 'profile/' + extractPath(imageUrl);
+    if (path.length === 0) throw new Error('wrong image');
+    await supabase.storage.from('candidate-files').remove([path]);
+  };
+
   const handleUpdateProfile: SubmitHandler<LoginFormInputs> = async (form) => {
     try {
       setLoading(true);
 
       let profile_image: string | null = form.avatar;
-      if (isImageChanged && imageFile.current) {
-        const { data } = await supabase.storage
-          .from('candidate-files')
-          .upload(`profile/${form.id}`, imageFile.current, {
-            cacheControl: '3600',
-            upsert: true,
-          });
 
-        if (data?.path && imageFile?.current?.size) {
-          profile_image = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/candidate-files/${data?.path}?t=${new Date().toISOString()}`;
+      if (data?.avatar) await removeImage(data.avatar);
+
+      if (isImageChanged) {
+        if (imageFile.current) {
+          const { data } = await supabase.storage
+            .from('candidate-files')
+            .upload(`profile/${form.id}`, imageFile.current, {
+              cacheControl: '3600',
+              upsert: true,
+            });
+          if (data?.path) {
+            profile_image = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/candidate-files/${data?.path}?t=${new Date().toISOString()}`;
+          } else {
+            profile_image = null;
+          }
         } else {
           profile_image = null;
         }
@@ -103,15 +112,13 @@ export default function CandidateForm({
 
       await mutateAsync({ ...payload });
 
-      if (status !== 'success') {
-        throw new Error('Profile update failed');
-      }
-      await navRefetch();
-      await profileRefetch();
+      // if (status !== 'success') {
+      //   toast({ title: 'Profile update failed', variant: 'destructive' });
+      // }
       closeDialog();
     } catch (e) {
-      if (e instanceof Error) console.error(e.message);
-      //
+      // if (e instanceof Error)
+      toast({ title: 'Profile update failed', variant: 'destructive' });
     } finally {
       setLoading(false);
     }
@@ -258,4 +265,13 @@ export default function CandidateForm({
       </Card>
     </div>
   );
+}
+
+function extractPath(url: string) {
+  const parts = url.split('candidate-files/profile/');
+  if (parts.length > 1) {
+    const uuid = parts[1].split('/')[0].split('?')[0];
+    return uuid;
+  }
+  return '';
 }

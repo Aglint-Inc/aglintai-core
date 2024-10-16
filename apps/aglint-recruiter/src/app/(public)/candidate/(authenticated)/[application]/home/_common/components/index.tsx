@@ -47,7 +47,7 @@ export default function Home() {
     schedule?.length === 0;
 
   return (
-    <div className='flex min-h-screen flex-col'>
+    <div className='flex flex-col'>
       <main className='mx-auto flex-1 px-4 py-8'>
         <div className='grid grid-cols-3 gap-8'>
           <div className='col-span-2'>

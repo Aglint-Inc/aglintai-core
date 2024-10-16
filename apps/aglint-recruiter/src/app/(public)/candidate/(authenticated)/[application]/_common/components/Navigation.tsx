@@ -16,26 +16,22 @@ import { supabase } from '@/utils/supabase/client';
 
 import CandidatePortalLoader from './CandidatePortalLoader';
 import NavProfile from './NavProfile';
-// import { ThemeSwitcher } from '../components/ThemeSwitcher';
-// import NavProfile from './NavProfile';
-
-// type tabs = 'home' | 'interviews' | 'messages';
 
 export default function Navigation() {
-  // const pathname = usePathname();
+  const { data, isLoading } = useCandidatePortalNavbar();
 
-  // const currentTab = pathname.split('/').filter((a) => a)[2] as tabs;
-
-  const { data, isPending } = useCandidatePortalNavbar();
-  const { data: messages, isPending: messagePending } =
+  const { data: messages, isLoading: messageLoading } =
     useCandidatePortalMessages();
+
   const { application_id } = useCandidatePortal();
+
   const [signingOut, setSigningOut] = useState(false);
 
   const router = useRouterPro();
 
-  if (isPending || messagePending)
+  if (isLoading || messageLoading)
     return <CandidatePortalLoader loadingText='Loading Candidate Portal..' />;
+
   const messageNewCount = messages?.filter((mes) => mes.isNew).length || 0;
 
   const company = data?.company;
@@ -116,15 +112,16 @@ export default function Navigation() {
               }}
             >
               {signingOut ? 'Signing out...' : 'Logout'}
-              {data?.candidate && (
-                <Link href={`/candidate/${application_id}/profile`}>
-                  <NavProfile
-                    application_id={application_id}
-                    candidate={data.candidate}
-                  />
-                </Link>
-              )}
             </Button>
+
+            {data?.candidate && (
+              <Link href={`/candidate/${application_id}/profile`}>
+                <NavProfile
+                  application_id={application_id}
+                  candidate={data.candidate}
+                />
+              </Link>
+            )}
           </div>
         </div>
       </header>

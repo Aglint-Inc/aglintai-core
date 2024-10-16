@@ -184,6 +184,7 @@ export const usePortalSettings = () => {
     try {
       setLoading((pre) => ({ ...pre, isCoverRemoving: true }));
       const path = extractPath(imageUrl);
+
       if (path.length === 0) throw new Error('wrong image');
 
       const { data, error } = await supabase.storage

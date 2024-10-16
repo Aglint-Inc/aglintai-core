@@ -15,7 +15,7 @@ function InterviewProgress({
       <CardHeader>
         <CardTitle className='text-lg font-medium'>Interview Plan</CardTitle>
       </CardHeader>
-      <CardContent className='space-y-4'>
+      <CardContent>
         {interviews.map((interview, index) => (
           <InterviewProgressCard
             key={index}

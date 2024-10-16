@@ -8,14 +8,9 @@ import { CandidatePortalProvider } from './_common/context';
 const Layout = ({ children }: PropsWithChildren) => {
   return (
     <CandidatePortalProvider>
-      <div>
+      <div className='flex min-h-screen w-[1280px] flex-col'>
         <Navigation />
-        <div
-          className='container mx-auto mt-5 w-full max-w-screen-xl'
-          style={{ minHeight: 'calc(100vh - 260px)' }}
-        >
-          {children}
-        </div>
+        <div className='flex-1'>{children}</div>
         <Footer />
       </div>
     </CandidatePortalProvider>

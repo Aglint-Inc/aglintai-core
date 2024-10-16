@@ -35,7 +35,7 @@ function ImageUploadManual({
   }
 
   return (
-    <div className='relative mb-2 flex items-end gap-4 rounded-lg border border-gray-200'>
+    <div className='relative mb-2 flex items-end gap-4 rounded-lg'>
       <div className='relative'>
         <Avatar className={`w-${size} h-${size} overflow-hidden rounded-lg`}>
           <AvatarImage

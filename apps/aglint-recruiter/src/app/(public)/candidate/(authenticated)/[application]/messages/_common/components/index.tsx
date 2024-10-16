@@ -7,21 +7,20 @@ import MessageCard from './MessageCard';
 import MessageCardSkeleton from './MessageCardSkeleton';
 
 export default function MessagesPage() {
-  const { data, isPending, status } = useCandidatePortalMessages();
+  const { data, isPending } = useCandidatePortalMessages();
   if (isPending)
     return (
-      <div className='mx-auto mt-8 max-w-screen-sm'>
+      <div className='mx-auto mt-8 min-h-screen max-w-screen-sm'>
         <MessageCardSkeleton />
         <MessageCardSkeleton />
         <MessageCardSkeleton />
       </div>
     );
-  if (status === 'error') return <>Error</>;
   if (data === undefined || data?.length === 0)
-    return <EmptyState icon={Mail} header='No Past interviews' />;
+    return <EmptyState icon={Mail} header='No Messages' />;
 
   return (
-    <div className='mx-auto mt-8 flex max-w-screen-sm flex-col'>
+    <div className='mx-auto mt-8 flex min-h-screen max-w-screen-sm flex-col'>
       {data.map((message, index) => (
         <MessageCard key={message.id} index={index} />
       ))}
