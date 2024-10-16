@@ -1,7 +1,11 @@
 import type { DatabaseFunctions } from '@aglint/shared-types';
 import { z } from 'zod';
 
-import { createTRPCRouter, privateProcedure } from '@/server/api/trpc';
+import {
+  createTRPCRouter,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
 import type { SchedulingAnalyticsFunctions } from './types';
@@ -26,10 +30,10 @@ const leaderboard_type = z.object({
 const reasons_type = z.object({
   type: z
     .enum([
-      'interviewer_request_decline' ,
-        'candidate_request_decline' ,
-        'admin_cancel' ,
-        'candidate_request_reschedule',
+      'interviewer_request_decline',
+      'candidate_request_decline',
+      'admin_cancel',
+      'candidate_request_reschedule',
     ])
     .optional(),
 });
@@ -81,171 +85,210 @@ const schedulingAnalyticsSchema: AnalysisProcedures = {
   },
 };
 
+const filters = privateProcedure
+  .input(schedulingAnalyticsSchema.filters.schema)
+  .mutation(async ({ input: { recruiter_id } }) => {
+    const db = createPublicClient();
+    return (
+      await db
+        .rpc(schedulingAnalyticsSchema.filters.rpc, {
+          recruiter_id: recruiter_id!,
+        })
+        .single()
+        .throwOnError()
+    ).data!;
+  });
+
+export type Filters = ProcedureDefinition<typeof filters>;
+
+const completed_interviews = privateProcedure
+  .input(schedulingAnalyticsSchema.completed_interviews.schema)
+  .mutation(
+    async ({ ctx: { recruiter_id }, input: { departments, jobs, type } }) => {
+      const db = createPublicClient();
+      return (
+        await db
+          .rpc(schedulingAnalyticsSchema.completed_interviews.rpc, {
+            recruiter_id,
+            departments,
+            jobs,
+            type,
+          })
+          .throwOnError()
+      ).data!;
+    },
+  );
+
+export type CompletedInterviews = ProcedureDefinition<
+  typeof completed_interviews
+>;
+
+const decline_requests = privateProcedure
+  .input(schedulingAnalyticsSchema.decline_requests.schema)
+  .mutation(async ({ ctx: { recruiter_id }, input: { departments, jobs } }) => {
+    const db = createPublicClient();
+    return (
+      await db
+        .rpc(schedulingAnalyticsSchema.decline_requests.rpc, {
+          recruiter_id,
+          departments,
+          jobs,
+        })
+        .throwOnError()
+    ).data!;
+  });
+
+export type DeclineRequests = ProcedureDefinition<typeof decline_requests>;
+
+const interview_types = privateProcedure
+  .input(schedulingAnalyticsSchema.interview_types.schema)
+  .query(async ({ ctx: { recruiter_id }, input: { departments, jobs } }) => {
+    const db = createPublicClient();
+    return (
+      await db
+        .rpc(schedulingAnalyticsSchema.interview_types.rpc, {
+          recruiter_id,
+          departments,
+          jobs,
+        })
+        .throwOnError()
+    ).data!;
+  });
+
+export type InterviewTypes = ProcedureDefinition<typeof interview_types>;
+
+const interviewers = privateProcedure
+  .input(schedulingAnalyticsSchema.interviewers.schema)
+  .mutation(
+    async ({ ctx: { recruiter_id }, input: { departments, jobs, type } }) => {
+      const db = createPublicClient();
+      return (
+        await db
+          .rpc(schedulingAnalyticsSchema.interviewers.rpc, {
+            recruiter_id,
+            departments,
+            jobs,
+            type,
+          })
+          .throwOnError()
+      ).data!;
+    },
+  );
+
+export type Interviewers = ProcedureDefinition<typeof interviewers>;
+
+const leaderboard = privateProcedure
+  .input(schedulingAnalyticsSchema.leaderboard.schema)
+  .mutation(
+    async ({ ctx: { recruiter_id }, input: { departments, jobs, type } }) => {
+      const db = createPublicClient();
+      return (
+        await db
+          .rpc(schedulingAnalyticsSchema.leaderboard.rpc, {
+            recruiter_id,
+            departments,
+            jobs,
+            type,
+          })
+          .throwOnError()
+      ).data!;
+    },
+  );
+
+export type Leaderboard = ProcedureDefinition<typeof leaderboard>;
+
+const reasons = privateProcedure
+  .input(schedulingAnalyticsSchema.reasons.schema)
+  .query(
+    async ({ ctx: { recruiter_id }, input: { departments, jobs, type } }) => {
+      const db = createPublicClient();
+      return (
+        await db
+          .rpc(schedulingAnalyticsSchema.reasons.rpc, {
+            recruiter_id,
+            departments,
+            jobs,
+            type,
+          })
+          .throwOnError()
+      ).data!;
+    },
+  );
+
+export type Reasons = ProcedureDefinition<typeof reasons>;
+
+const recent_decline_reschedule = privateProcedure
+  .input(schedulingAnalyticsSchema.recent_decline_reschedule.schema)
+  .query(async ({ ctx: { recruiter_id }, input: { departments, jobs } }) => {
+    const db = createPublicClient();
+    return (
+      await db
+        .rpc(schedulingAnalyticsSchema.recent_decline_reschedule.rpc, {
+          recruiter_id,
+          departments,
+          jobs,
+        })
+        .throwOnError()
+    ).data!;
+  });
+
+export type RecentDeclineReschedule = ProcedureDefinition<
+  typeof recent_decline_reschedule
+>;
+
+const tabs = privateProcedure
+  .input(schedulingAnalyticsSchema.tabs.schema)
+  .mutation(async ({ ctx: { recruiter_id }, input: { departments, jobs } }) => {
+    const db = createPublicClient();
+    return (
+      await db
+        .rpc(schedulingAnalyticsSchema.tabs.rpc, {
+          recruiter_id,
+          departments,
+          jobs,
+        })
+        .single()
+        .throwOnError()
+    ).data!;
+  });
+
+export type Tabs = ProcedureDefinition<typeof tabs>;
+
+const training_progress = privateProcedure
+  .input(schedulingAnalyticsSchema.training_progress.schema)
+  .query(
+    async ({
+      ctx: { recruiter_id },
+      input: { departments, jobs, locations },
+    }) => {
+      const db = createPublicClient();
+      return (
+        await db
+          .rpc(schedulingAnalyticsSchema.training_progress.rpc, {
+            recruiter_id,
+            departments,
+            jobs,
+            locations,
+          })
+          .throwOnError()
+      ).data!;
+    },
+  );
+
+export type TrainingProgress = ProcedureDefinition<typeof training_progress>;
+
 export const schedulingAnalyticsRouter = createTRPCRouter({
-  filters: privateProcedure
-    .input(schedulingAnalyticsSchema.filters.schema)
-    .mutation(async ({ input: { recruiter_id } }) => {
-      const db = createPublicClient();
-      return (
-        await db
-          .rpc(schedulingAnalyticsSchema.filters.rpc, {
-            recruiter_id: recruiter_id!,
-          })
-          .single()
-          .throwOnError()
-      ).data!;
-    }),
-  completed_interviews: privateProcedure
-    .input(schedulingAnalyticsSchema.completed_interviews.schema)
-    .mutation(
-      async ({ ctx: { recruiter_id }, input: { departments, jobs, type } }) => {
-        const db = createPublicClient();
-        return (
-          await db
-            .rpc(schedulingAnalyticsSchema.completed_interviews.rpc, {
-              recruiter_id,
-              departments,
-              jobs,
-              type,
-            })
-            .throwOnError()
-        ).data!;
-      },
-    ),
-  decline_requests: privateProcedure
-    .input(schedulingAnalyticsSchema.decline_requests.schema)
-    .mutation(
-      async ({ ctx: { recruiter_id }, input: { departments, jobs } }) => {
-        const db = createPublicClient();
-        return (
-          await db
-            .rpc(schedulingAnalyticsSchema.decline_requests.rpc, {
-              recruiter_id,
-              departments,
-              jobs,
-            })
-            .throwOnError()
-        ).data!;
-      },
-    ),
-  interview_types: privateProcedure
-    .input(schedulingAnalyticsSchema.interview_types.schema)
-    .query(async ({ ctx: { recruiter_id }, input: { departments, jobs } }) => {
-      const db = createPublicClient();
-      return (
-        await db
-          .rpc(schedulingAnalyticsSchema.interview_types.rpc, {
-            recruiter_id,
-            departments,
-            jobs,
-          })
-          .throwOnError()
-      ).data!;
-    }),
-  interviewers: privateProcedure
-    .input(schedulingAnalyticsSchema.interviewers.schema)
-    .mutation(
-      async ({ ctx: { recruiter_id }, input: { departments, jobs, type } }) => {
-        const db = createPublicClient();
-        return (
-          await db
-            .rpc(schedulingAnalyticsSchema.interviewers.rpc, {
-              recruiter_id,
-              departments,
-              jobs,
-              type,
-            })
-            .throwOnError()
-        ).data!;
-      },
-    ),
-  leaderboard: privateProcedure
-    .input(schedulingAnalyticsSchema.leaderboard.schema)
-    .mutation(
-      async ({ ctx: { recruiter_id }, input: { departments, jobs, type } }) => {
-        const db = createPublicClient();
-        return (
-          await db
-            .rpc(schedulingAnalyticsSchema.leaderboard.rpc, {
-              recruiter_id,
-              departments,
-              jobs,
-              type,
-            })
-            .throwOnError()
-        ).data!;
-      },
-    ),
-  reasons: privateProcedure
-    .input(schedulingAnalyticsSchema.reasons.schema)
-    .query(
-      async ({ ctx: { recruiter_id }, input: { departments, jobs, type } }) => {
-        const db = createPublicClient();
-        return (
-          await db
-            .rpc(schedulingAnalyticsSchema.reasons.rpc, {
-              recruiter_id,
-              departments,
-              jobs,
-              type,
-            })
-            .throwOnError()
-        ).data!;
-      },
-    ),
-  recent_decline_reschedule: privateProcedure
-    .input(schedulingAnalyticsSchema.recent_decline_reschedule.schema)
-    .query(async ({ ctx: { recruiter_id }, input: { departments, jobs } }) => {
-      const db = createPublicClient();
-      return (
-        await db
-          .rpc(schedulingAnalyticsSchema.recent_decline_reschedule.rpc, {
-            recruiter_id,
-            departments,
-            jobs,
-          })
-          .throwOnError()
-      ).data!;
-    }),
-  tabs: privateProcedure
-    .input(schedulingAnalyticsSchema.tabs.schema)
-    .mutation(
-      async ({ ctx: { recruiter_id }, input: { departments, jobs } }) => {
-        const db = createPublicClient();
-        return (
-          await db
-            .rpc(schedulingAnalyticsSchema.tabs.rpc, {
-              recruiter_id,
-              departments,
-              jobs,
-            })
-            .single()
-            .throwOnError()
-        ).data!;
-      },
-    ),
-  training_progress: privateProcedure
-    .input(schedulingAnalyticsSchema.training_progress.schema)
-    .query(
-      async ({
-        ctx: { recruiter_id },
-        input: { departments, jobs, locations },
-      }) => {
-        const db = createPublicClient();
-        return (
-          await db
-            .rpc(schedulingAnalyticsSchema.training_progress.rpc, {
-              recruiter_id,
-              departments,
-              jobs,
-              locations,
-            })
-            .throwOnError()
-        ).data!;
-      },
-    ),
-  // eslint-disable-next-line no-unused-vars
-} satisfies { [id in SchedulingAnalyticsFunctions]: any });
+  filters,
+  completed_interviews,
+  decline_requests,
+  interview_types,
+  interviewers,
+  leaderboard,
+  reasons,
+  recent_decline_reschedule,
+  tabs,
+  training_progress,
+} satisfies { [_id in SchedulingAnalyticsFunctions]: any });
 
 type AnalysisProcedures<
   T extends SchedulingAnalyticsFunctions = SchedulingAnalyticsFunctions,

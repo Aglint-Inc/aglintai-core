@@ -3,9 +3,11 @@ import { useToast } from '@components/hooks/use-toast';
 import { api } from '@/trpc/client';
 
 import { useTenant } from './useTenant';
+import { useTenantRefetch } from './useTenantRefetch';
 
 export const useDeleteHoliday = () => {
-  const { recruiter, refetch } = useTenant();
+  const { recruiter } = useTenant();
+  const { refetch } = useTenantRefetch();
   const { toast } = useToast();
   const mutation = api.tenant.updateTenant.useMutation({
     onError: () =>

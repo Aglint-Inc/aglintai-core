@@ -5,7 +5,11 @@ import { z } from 'zod';
 import { createPublicClient } from '@/server/db';
 import type { SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
-import { type PrivateProcedure, privateProcedure } from '../../trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '../../trpc';
 
 const schema = customRecruiterUserUpdateSchema.extend({
   user_id: z.string().uuid(),
@@ -51,6 +55,8 @@ const query = async ({
 };
 
 export const updateWithRole = privateProcedure.input(schema).mutation(query);
+
+export type UpdateWithRole = ProcedureDefinition<typeof updateWithRole>;
 
 async function setMembers(
   supabaseAdmin: SupabaseClientType,

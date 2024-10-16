@@ -1,7 +1,11 @@
 import { getFullName } from '@aglint/shared-utils';
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 const feedbackPoolSchema = z.object({
@@ -49,3 +53,5 @@ const query = async ({
 export const feedbackPool = privateProcedure
   .input(feedbackPoolSchema)
   .query(query);
+
+export type FeedbackPool = ProcedureDefinition<typeof feedbackPool>;

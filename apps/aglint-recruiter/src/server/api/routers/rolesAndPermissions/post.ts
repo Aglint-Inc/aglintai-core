@@ -1,7 +1,7 @@
 import type { DatabaseTable } from '@aglint/shared-types';
 import { z } from 'zod';
 
-import { privateProcedure } from '@/server/api/trpc';
+import { privateProcedure, type ProcedureDefinition } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 import type { SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
@@ -67,6 +67,8 @@ export const post = privateProcedure
     }
     return { success: true, addedPermissions: temp_added! };
   });
+
+export type Post = ProcedureDefinition<typeof post>;
 
 const checkRole = async (supabase: SupabaseClientType, role_id: string) => {
   const data = (

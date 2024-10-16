@@ -10,7 +10,11 @@ import {
   splitFullName,
 } from '@/jobs/components/AddJobWithIntegrations/utils';
 import { decrypt } from '@/pages/api/decryptApiKey';
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { processEmailsInBatches } from '@/utils/processEmailsInBatches';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
@@ -72,6 +76,8 @@ const mutation = async ({
 };
 
 export const lever = privateProcedure.input(schema).mutation(mutation);
+
+export type Lever = ProcedureDefinition<typeof lever>;
 
 const fetchAllCandidates = async (ats_job_id: string, apiKey: string) => {
   let allCandidates: LeverApplication[] = [];

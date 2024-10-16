@@ -11,7 +11,7 @@ import { integrations } from './routers/integrations';
 import { interview_pool } from './routers/interview_pool';
 import { interviewers } from './routers/interviewers';
 import { interviews } from './routers/interviews';
-import { type Jobs, jobs } from './routers/jobs';
+import { jobs } from './routers/jobs';
 import { onboarding } from './routers/onboarding';
 import { requests } from './routers/requests';
 import { rolesAndPermissions } from './routers/rolesAndPermissions';
@@ -52,10 +52,6 @@ export const appRouter = createTRPCRouter({
 
 export const appRouterSchema = {
   example: exampleSchema,
-};
-
-export type API = {
-  jobs: Jobs;
 };
 
 // export type definition of API

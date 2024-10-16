@@ -2,7 +2,11 @@ import { TRPCError } from '@trpc/server';
 
 import { createPrivateClient } from '@/server/db';
 
-import { type PrivateProcedure, privateProcedure } from '../../trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '../../trpc';
 
 const query = async ({ ctx }: PrivateProcedure) => {
   const db = createPrivateClient();
@@ -56,7 +60,7 @@ const query = async ({ ctx }: PrivateProcedure) => {
   if (recruiter_user.status === 'invited') {
     db.from('recruiter_user').update({ status: 'active' });
   }
-  recruiter_user.user_id
+  recruiter_user.user_id;
   return {
     recruiter_user,
     recruiter_id: data.recruiter_id!,
@@ -66,3 +70,5 @@ const query = async ({ ctx }: PrivateProcedure) => {
 };
 
 export const read = privateProcedure.query(query);
+
+export type Read = ProcedureDefinition<typeof read>;

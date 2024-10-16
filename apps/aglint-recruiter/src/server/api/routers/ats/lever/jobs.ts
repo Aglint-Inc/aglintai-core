@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-import { type ATSProcedure, atsProcedure } from '@/server/api/trpc';
+import {
+  type ATSProcedure,
+  atsProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
 const schema = z.object({
@@ -36,3 +40,5 @@ export const leverJobsMutation = async ({
 };
 
 export const jobs = atsProcedure.input(schema).mutation(leverJobsMutation);
+
+export type Jobs = ProcedureDefinition<typeof jobs>;

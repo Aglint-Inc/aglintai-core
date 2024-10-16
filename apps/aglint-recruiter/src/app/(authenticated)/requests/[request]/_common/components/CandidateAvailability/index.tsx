@@ -75,12 +75,9 @@ function CandidateAvailability({
   const [submitting, setSubmitting] = useState(false);
   const { data: sessions } = useMeetingList();
 
-  const { data: candidateAvailability, isFetching } = useCandidateAvailability(
-    {
-      candidate_availability_id: candidateAvailabilityIdForReRequest,
-    },
-    { enabled: !!candidateAvailabilityIdForReRequest },
-  );
+  const { data: candidateAvailability, isFetching } = useCandidateAvailability({
+    candidate_availability_id: candidateAvailabilityIdForReRequest,
+  });
   const { createRequestAvailability } = useCreateCandidateAvailability();
 
   useEffect(() => {

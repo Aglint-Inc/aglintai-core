@@ -1,7 +1,11 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 import { interviewCancelReasons, userDetails } from '@/utils/scheduling/const';
 
@@ -14,6 +18,8 @@ const query = async (ctx: PrivateProcedure<typeof interviewStagesSchema>) => {
 export const interviewStages = privateProcedure
   .input(interviewStagesSchema)
   .query(query);
+
+export type InterviewStages = ProcedureDefinition<typeof interviewStages>;
 
 const fetchDetails = async (
   ctx: PrivateProcedure<typeof interviewStagesSchema>,

@@ -37,7 +37,7 @@ function CandidateAvailability() {
   } = useRequestAvailabilityContext();
   const { isFetched: isMeetingFetched } = useCandidateAvailabilityMeetings();
 
-  const { data: candidateRequestAvailability } = useCandidateAvailabilityData();
+  const candidateRequestAvailability = useCandidateAvailabilityData();
 
   const NoOfSlotsNeeds = candidateRequestAvailability?.number_of_slots || 2;
   const NoOfDaysNeeds = candidateRequestAvailability?.number_of_days || 2;

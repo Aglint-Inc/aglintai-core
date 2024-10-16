@@ -2,7 +2,11 @@ import { OAuth2Client } from 'google-auth-library';
 import { google } from 'googleapis';
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 
 const oAuth2Client = new OAuth2Client(
   process.env.GOOGLE_CLIENT_ID,
@@ -40,3 +44,5 @@ const mutation = async ({ input }: PrivateProcedure<typeof schema>) => {
 };
 
 export const getOauthEmail = privateProcedure.input(schema).mutation(mutation);
+
+export type GetOauthEmail = ProcedureDefinition<typeof getOauthEmail>;

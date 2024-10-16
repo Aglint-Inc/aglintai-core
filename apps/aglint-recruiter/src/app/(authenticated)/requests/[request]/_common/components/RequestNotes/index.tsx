@@ -15,14 +15,9 @@ function RequestNotes() {
   const params = useParams();
   const requestId = params?.request as string;
   api.requests.note.read;
-  const { data: notes, isFetched } = useReadNotes(
-    {
-      request_id: requestId,
-    },
-    {
-      enabled: !!requestId,
-    },
-  );
+  const { data: notes, isFetched } = useReadNotes({
+    request_id: requestId,
+  });
   const [note, setNote] = useState<string | null>('');
   const [editorEnabled, setEditorEnabled] = useState(false);
   const requestNotes = notes;
@@ -53,7 +48,7 @@ function RequestNotes() {
     <div className='mt-2'>
       <Card
         className={cn(
-          'p-0 border-none shadow-none mt-2',
+          'mt-2 border-none p-0 shadow-none',
           requestNotes?.note && !editorEnabled ? '' : 'bg-white',
         )}
       >

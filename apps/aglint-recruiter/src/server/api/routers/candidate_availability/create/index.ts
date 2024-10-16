@@ -2,7 +2,11 @@ import { type DatabaseTableInsert } from '@aglint/shared-types';
 import { availabilityTypeSchema } from '@aglint/shared-types/src/db/tables/candidate_request_availability.type';
 import { z, type ZodSchema } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 type Input = ZodSchema<
@@ -44,3 +48,5 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
 };
 
 export const create = privateProcedure.input(schema).mutation(query);
+
+export type Create = ProcedureDefinition<typeof create>;

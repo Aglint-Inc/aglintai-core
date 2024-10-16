@@ -1,12 +1,15 @@
 import { TRPCError } from '@trpc/server';
 
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
-import { type PrivateProcedure, privateProcedure } from '../../trpc';
 import { getBanners } from './common/getBanners';
-import type { Read } from './job/read';
 
-const query = async ({ ctx }: PrivateProcedure): Promise<Read['output'][]> => {
+const query = async ({ ctx }: PrivateProcedure) => {
   const db = createPrivateClient();
   const jobs = (
     await db
@@ -24,3 +27,5 @@ const query = async ({ ctx }: PrivateProcedure): Promise<Read['output'][]> => {
 };
 
 export const read = privateProcedure.query(query);
+
+export type Read = ProcedureDefinition<typeof read>;

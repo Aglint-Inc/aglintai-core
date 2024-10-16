@@ -2,7 +2,11 @@ import type { DatabaseTableInsert } from '@aglint/shared-types';
 import { TRPCError } from '@trpc/server';
 import { z, type ZodSchema } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 import { safeGenerateJd } from '../common/generateJd';
@@ -45,10 +49,7 @@ const schema = z.object({
   >
 >;
 
-const mutation = async ({
-  ctx,
-  input,
-}: PrivateProcedure<typeof schema>): Promise<Aglint['output']> => {
+const mutation = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
   const db = createPrivateClient();
   const job = (
     await db
@@ -69,7 +70,4 @@ const mutation = async ({
 
 export const aglint = privateProcedure.input(schema).mutation(mutation);
 
-export type Aglint = {
-  input: z.infer<typeof schema>;
-  output: string;
-};
+export type Aglint = ProcedureDefinition<typeof aglint>;

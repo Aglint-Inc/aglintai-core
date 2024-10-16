@@ -13,8 +13,8 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 import { Loader } from '@/components/Common/Loader';
 import { useMetricsExperienceAndTenure } from '@/job/hooks';
+import type { ExperienceAndTenure } from '@/routers/jobs/job/metrics/experienceAndTenure';
 
-import type { MetricsOptions } from '../types';
 import { NoDataAvailable } from './nodata';
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
@@ -123,11 +123,13 @@ const LineChart: React.FC<{
   );
 };
 
+type Option = keyof Pick<
+  ExperienceAndTenure['output'],
+  'experience' | 'tenure'
+>;
+
 export const DashboardLineChart: FC<{
-  option: keyof Pick<
-    MetricsOptions<'experienceAndTenure'>,
-    'experience' | 'tenure'
-  >;
+  option: Option;
 }> = ({ option }) => {
   return (
     <ErrorBoundary fallback={<>Error</>}>
@@ -139,12 +141,9 @@ export const DashboardLineChart: FC<{
 };
 
 const Content: FC<{
-  option: keyof Pick<
-    MetricsOptions<'experienceAndTenure'>,
-    'experience' | 'tenure'
-  >;
+  option: Option;
 }> = ({ option }) => {
-  const [dataSet] = useMetricsExperienceAndTenure();
+  const dataSet = useMetricsExperienceAndTenure();
   const experience = (dataSet?.[option] ?? null)!;
   const total = experience
     ? Object.values(experience).reduce((acc, curr) => {

@@ -45,7 +45,7 @@ const Loader = () => (
 );
 
 const Content = () => {
-  const [data] = useMetricsExperienceAndTenure();
+  const data = useMetricsExperienceAndTenure();
   if (!data) {
     return (
       <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>

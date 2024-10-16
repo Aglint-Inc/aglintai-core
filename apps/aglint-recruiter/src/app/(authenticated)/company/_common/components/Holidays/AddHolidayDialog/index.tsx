@@ -16,6 +16,7 @@ import UIDialog from '@/common/UIDialog';
 import UISelectDropDown from '@/common/UISelectDropDown';
 import UITextField from '@/common/UITextField';
 import { useTenant } from '@/company/hooks';
+import { useTenantRefetch } from '@/company/hooks/useTenantRefetch';
 import { api } from '@/trpc/client';
 
 type SpecificLocationType = 'all_locations' | 'specific_locations';
@@ -25,7 +26,8 @@ type Props = {
   setDaysOffOpen: Dispatch<SetStateAction<boolean>>;
 };
 export const AddHolidayDialog = ({ addDayOffOpen, setDaysOffOpen }: Props) => {
-  const { recruiter, refetch } = useTenant();
+  const { recruiter } = useTenant();
+  const { refetch } = useTenantRefetch();
   const [selectedDate, setSelectedDate] = useState<string | null>(
     dayjsLocal().format('DD MMM YYYY'),
   );

@@ -2,7 +2,11 @@ import type { DatabaseFunctions, ZodTypeToSchema } from '@aglint/shared-types';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 import { formatSessions } from '@/utils/formatSessions';
 
@@ -103,3 +107,5 @@ const mutation = async ({
 export const create_request = privateProcedure
   .input(createRequestSchema)
   .mutation(mutation);
+
+export type CreateRequest = ProcedureDefinition<typeof create_request>;

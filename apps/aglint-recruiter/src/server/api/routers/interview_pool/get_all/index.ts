@@ -1,5 +1,9 @@
 import { interviewPlanRecruiterUserQuery } from '@/constant/interviewPlanRecruiterUserQuery';
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
 const query = async ({ ctx: { recruiter_id } }: PrivateProcedure) => {
@@ -7,6 +11,10 @@ const query = async ({ ctx: { recruiter_id } }: PrivateProcedure) => {
 };
 
 export const getAllInterviewPool = privateProcedure.query(query);
+
+export type GetAllInterviewPool = ProcedureDefinition<
+  typeof getAllInterviewPool
+>;
 
 const getInterviewModules = async ({
   recruiter_id,

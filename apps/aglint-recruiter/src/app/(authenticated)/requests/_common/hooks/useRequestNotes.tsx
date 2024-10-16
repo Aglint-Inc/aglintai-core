@@ -1,7 +1,11 @@
 import { toast } from '@components/hooks/use-toast';
 
-import { api, type RouterInputs, type Unvoid } from '@/trpc/client';
-export const useReadNotes = api.requests.note.read.useQuery;
+import { type Read } from '@/routers/requests/note/read';
+import type { UpdateNote } from '@/routers/requests/note/update';
+import { type ProcedureQuery } from '@/server/api/trpc';
+import { api } from '@/trpc/client';
+export const useReadNotes = (input: Read['input']): ProcedureQuery<Read> =>
+  api.requests.note.read.useQuery(input, { enabled: !!input.request_id });
 
 export const useUpdateRequestNote = () => {
   const utils = api.useUtils();
@@ -14,9 +18,7 @@ export const useUpdateRequestNote = () => {
     },
   });
 
-  const updateRequestNote = (
-    payload: Unvoid<RouterInputs['requests']['note']['updateNote']>,
-  ) => {
+  const updateRequestNote = (payload: UpdateNote['input']) => {
     mutation.mutate({
       ...payload,
     });

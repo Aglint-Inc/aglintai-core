@@ -45,14 +45,14 @@ const useWorkflowsContext = () => {
         payload,
       });
     },
-    [workflows.data],
+    [workflows],
   );
 
   const handleDeleteWorkflow = useCallback(
     (payload: Parameters<typeof deleteWorkflowMutation>[0]) => {
       deleteWorkflowMutation(payload);
     },
-    [workflows.data],
+    [workflows],
   );
 
   const { devlinkProps: getDevlinkProps, checkPermissions } =

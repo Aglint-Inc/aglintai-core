@@ -3,7 +3,7 @@ import { z } from 'zod';
 import {
   type PrivateProcedure,
   privateProcedure,
-  type RequiredPayload,
+  type ProcedureDefinition,
 } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
@@ -34,7 +34,7 @@ const mutation = async ({
   return (
     await db
       .from('interview_module')
-      .insert(payload as RequiredPayload<typeof payload>)
+      .insert(payload)
       .select('id')
       .single()
       .throwOnError()
@@ -44,3 +44,7 @@ const mutation = async ({
 export const createInterviewPool = privateProcedure
   .input(schema)
   .mutation(mutation);
+
+export type CreateInterviewPool = ProcedureDefinition<
+  typeof createInterviewPool
+>;

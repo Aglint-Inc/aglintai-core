@@ -47,15 +47,10 @@ function ConfirmAvailability() {
     data: availableSlots,
     isFetched,
     isLoading,
-  } = useRequestAvailabilityDetails(
-    {
-      availability_id: candidateAvailabilityId,
-      user_tz: dayjsLocal.tz.guess(),
-    },
-    {
-      enabled: !!candidateAvailabilityId,
-    },
-  );
+  } = useRequestAvailabilityDetails({
+    availability_id: candidateAvailabilityId,
+    user_tz: dayjsLocal.tz.guess(),
+  });
 
   function closeDrawer() {
     setCandidateAvailabilityId('');

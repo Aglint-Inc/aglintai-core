@@ -11,14 +11,14 @@ import {
   useApplicationsStore,
   useJob,
 } from '@/job/hooks';
-import type { Applications } from '@/job/types';
+import type { Application } from '@/job/types';
 import { useJobsContext } from '@/jobs/hooks';
 import ROUTES from '@/utils/routing/routes';
 
 import { TableRow } from '../TableRow';
 
 const ApplicationCard = memo(
-  ({ application }: { application: Applications<'output'>[number] }) => {
+  ({ application }: { application: Application }) => {
     const router = useRouterPro();
     const { manageJob } = useJobsContext();
     const {

@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
 const body = z.object({
@@ -19,3 +23,5 @@ const query = async ({ input: { user_id } }: PrivateProcedure<typeof body>) => {
 };
 
 export const cancel_invite = privateProcedure.input(body).mutation(query);
+
+export type CancelInvite = ProcedureDefinition<typeof cancel_invite>;

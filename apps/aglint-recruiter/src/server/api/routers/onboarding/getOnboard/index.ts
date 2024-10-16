@@ -1,4 +1,8 @@
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 import type { SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
@@ -9,6 +13,8 @@ const query = async ({ ctx: { recruiter_id } }: PrivateProcedure) => {
 };
 
 export const getOnboard = privateProcedure.query(query);
+
+export type GetOnboard = ProcedureDefinition<typeof getOnboard>;
 
 const getOnboardingDetails = async (
   supabaseAdmin: SupabaseClientType,

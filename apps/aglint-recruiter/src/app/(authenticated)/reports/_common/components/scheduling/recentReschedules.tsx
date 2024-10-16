@@ -10,7 +10,7 @@ function RecentReschedules() {
     { key: 'note', label: 'Descriptions' },
   ];
   const { data, isPending } = useSchedulingAnalytics();
-  const recentReschedulesData = data.filter(
+  const recentReschedulesData = (data ?? []).filter(
     ({ type }) => type === 'candidate_request_decline',
   );
   return (

@@ -1,7 +1,11 @@
 /* eslint-disable no-console */
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 const schema = z.object({ id: z.string() });
@@ -46,3 +50,5 @@ const query = async ({ input: { id } }: PrivateProcedure<typeof schema>) => {
 };
 
 export const archiveGetSessions = privateProcedure.input(schema).query(query);
+
+export type ArchiveGetSessions = ProcedureDefinition<typeof archiveGetSessions>;

@@ -22,15 +22,10 @@ const CandAvailRecived = () => {
   const { requestDetails } = useRequest();
   const { candidateAvailabilityId } =
     useConfirmAvailabilitySchedulingFlowStore();
-  const { isFetching } = useRequestAvailabilityDetails(
-    {
-      availability_id: candidateAvailabilityId,
-      user_tz: dayjsLocal.tz.guess(),
-    },
-    {
-      enabled: !!candidateAvailabilityId,
-    },
-  );
+  const { isFetching } = useRequestAvailabilityDetails({
+    availability_id: candidateAvailabilityId,
+    user_tz: dayjsLocal.tz.guess(),
+  });
   const handleConfirmSlot = async (request_id: string) => {
     try {
       const [candReq] = supabaseWrap(
