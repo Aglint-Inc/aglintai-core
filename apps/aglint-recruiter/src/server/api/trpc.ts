@@ -7,21 +7,11 @@
  * need to use are documented accordingly near the end.
  */
 import type { DatabaseTable } from '@aglint/shared-types';
-import type { TRPCClientErrorLike } from '@trpc/client';
 import type { UseTRPCQueryResult } from '@trpc/react-query/dist/shared';
 import { initTRPC, TRPCError } from '@trpc/server';
-import type {
-  ProcedureBuilder,
-  TRPC_ERROR_CODE_KEY,
-  TRPC_ERROR_CODE_NUMBER,
-} from '@trpc/server/unstable-core-do-not-import';
+import type { ProcedureBuilder } from '@trpc/server/unstable-core-do-not-import';
 import superjson from 'superjson';
-import {
-  type TypeOf,
-  type typeToFlattenedError,
-  ZodError,
-  type ZodSchema,
-} from 'zod';
+import { type TypeOf, ZodError, type ZodSchema } from 'zod';
 
 import { createPrivateClient, createPublicClient } from '../db';
 import { authorize } from '../utils';
@@ -285,57 +275,32 @@ export type ProcedureDefinition<T extends Definition> = Pick<
 >;
 
 export type ProcedureQuery<T extends ProcedureDefinition<Definition>> =
-  UseTRPCQueryResult<T['output'], TRPCQueryError<T>>;
+  UseTRPCQueryResult<T['output'], any>;
 
-type TRPCQueryError<T extends ProcedureDefinition<Definition>> =
-  TRPCClientErrorLike<T & Meta>;
-
-type Meta = {
-  transformer: true;
-  errorShape: {
-    data: {
-      zodError: typeToFlattenedError<any, string> | null;
-      code: TRPC_ERROR_CODE_KEY;
-      httpStatus: number;
-      path?: string;
-      stack?: string;
-    };
-    message: string;
-    code: TRPC_ERROR_CODE_NUMBER;
-  };
-};
-
-type Procedure<
-  U extends ProcedureBuilder<any, any, any, any, any, any, any, any>,
-  T = unknown,
-> = T extends ZodSchema
-  ? U extends ProcedureBuilder<
-      infer TContext,
-      any,
-      infer TContextOverrides,
-      any,
-      any,
-      any,
-      any,
-      any
-    >
+type Procedure<U extends ProcedureBuilderInput, T = unknown> =
+  U extends ProcedureBuilder<
+    infer TContext,
+    any,
+    infer TContextOverrides,
+    any,
+    any,
+    any,
+    any,
+    any
+  >
     ? {
         ctx: TContext & TContextOverrides;
-        input: TypeOf<T>;
-      }
-    : never
-  : U extends ProcedureBuilder<
-        infer TContext,
-        any,
-        infer TContextOverrides,
-        any,
-        any,
-        any,
-        any,
-        any
-      >
-    ? {
-        ctx: TContext & TContextOverrides;
-        input: undefined;
+        input: T extends ZodSchema ? TypeOf<T> : undefined;
       }
     : never;
+
+type ProcedureBuilderInput = ProcedureBuilder<
+  any,
+  any,
+  any,
+  any,
+  any,
+  any,
+  any,
+  any
+>;
