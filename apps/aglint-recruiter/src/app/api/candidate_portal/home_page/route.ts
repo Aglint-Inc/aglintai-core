@@ -1,4 +1,5 @@
 import { type SocialsType } from '@aglint/shared-types';
+import { type Database } from '@aglint/shared-types/src/db/schema.types';
 import { NextResponse } from 'next/server';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
@@ -10,6 +11,9 @@ type meetings = {
   session_duration: number;
   schedule_type: 'in_person_meeting' | 'google_meet' | 'phone_call' | 'zoom';
   meeting_link: string | null;
+  meeting_detail_link: string;
+  meeting_flow: string;
+  schedule_request_id: string;
   status:
     | 'completed'
     | 'cancelled'
@@ -285,8 +289,13 @@ const getMeetings = async (application_id: string) => {
     const data = await Promise.all(
       interviews.map(async (interview) => {
         const interviewers = await getInterviewers(interview?.session_id || '');
+        const meetingLink = await getMeetingLink(
+          interview.meeting_flow,
+          interview?.schedule_request_id || '',
+        );
         return {
           ...interview,
+          meeting_detail_link: meetingLink,
           interviewers: interviewers,
         };
       }),
@@ -295,13 +304,43 @@ const getMeetings = async (application_id: string) => {
   }
 };
 
+const getMeetingLink = async (
+  type: Database['public']['Views']['meeting_details']['Row']['meeting_flow'],
+  request_id: string,
+) => {
+  const supabaseAdmin = getSupabaseServer();
+
+  if (type === 'candidate_request') {
+    const { data } = await supabaseAdmin
+      .from('candidate_request_availability')
+      .select('id')
+      .eq('request_id', request_id)
+      .single()
+      .throwOnError();
+    return data
+      ? `${process.env.NEXT_PUBLIC_HOST_NAME}/request-availability/${data.id}`
+      : '';
+  }
+  if (type === 'self_scheduling') {
+    const { data } = await supabaseAdmin
+      .from('interview_filter_json')
+      .select('id')
+      .eq('request_id', request_id)
+      .single()
+      .throwOnError();
+
+    return data
+      ? `${process.env.NEXT_PUBLIC_HOST_NAME}/self-scheduling/${data.id}`
+      : '';
+  }
+};
 const getInterviews = async (application_id: string) => {
   const supabaseAdmin = getSupabaseServer();
 
   const { data: interviews } = await supabaseAdmin
     .from('meeting_details')
     .select(
-      'start_time,end_time,session_name,session_duration,schedule_type,meeting_link,status,session_id',
+      'start_time,end_time,session_name,session_duration,schedule_type,meeting_link,status,session_id,meeting_flow,schedule_request_id',
     )
     .eq('application_id', application_id)
     .eq('status', 'confirmed')

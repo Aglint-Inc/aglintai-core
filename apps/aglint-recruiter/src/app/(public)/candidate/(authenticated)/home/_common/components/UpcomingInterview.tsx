@@ -76,7 +76,7 @@ const UpcomingCard = ({
         <Button
           className='mt-4 w-full'
           onClick={() => {
-            window.open('schedule', '_blank');
+            window.open(latestUpcoming.meeting_detail_link, '_blank');
           }}
         >
           Schedule Info
