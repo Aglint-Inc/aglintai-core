@@ -46,6 +46,6 @@ const query = async ({ input }: PublicProcedure<typeof schema>) => {
   return [];
 };
 
-export const getInterviews = publicProcedure.input(schema).query(query);
+export const get_interviews = publicProcedure.input(schema).query(query);
 
-export type GetInterviews = ProcedureDefinition<typeof getInterviews>;
+export type GetInterviews = ProcedureDefinition<typeof get_interviews>;

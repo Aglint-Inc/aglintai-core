@@ -4,8 +4,8 @@ import type { Dispatch, SetStateAction } from 'react';
 import { UIButton } from '@/common/UIButton';
 import UIDialog from '@/common/UIDialog';
 import { UITextArea } from '@/common/UITextArea';
+import { usePortalSettings } from '@/company/context/PortalsettingsContext';
 import { useFlags } from '@/company/hooks/useFlags';
-import { usePortalSettings } from '@/company/hooks/usePortalSettings';
 
 export const GreetingEditDialog = ({
   setIsDialogOpen,

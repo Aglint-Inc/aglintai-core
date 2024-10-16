@@ -39,6 +39,6 @@ const query = async ({ input }: PublicProcedure<typeof schema>) => {
   };
 };
 
-export const getNav = publicProcedure.input(schema).query(query);
+export const get_navbar = publicProcedure.input(schema).query(query);
 
-export type GetNav = ProcedureDefinition<typeof getNav>;
+export type GetNav = ProcedureDefinition<typeof get_navbar>;

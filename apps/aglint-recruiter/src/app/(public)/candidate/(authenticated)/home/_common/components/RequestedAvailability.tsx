@@ -4,17 +4,14 @@ import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { BriefcaseBusinessIcon } from 'lucide-react';
 import React from 'react';
 
-import {
-  type apiHomepageResponse,
-  type availability,
-} from '@/api/candidate_portal/home_page/route';
+import { type getHomePage } from '@/routers/candidatePortal/get_home_page';
 
 function RequestedAvailability({
   availabilityData,
   job,
 }: {
-  availabilityData: availability;
-  job: apiHomepageResponse['job'];
+  availabilityData: getHomePage['output']['availability'];
+  job: getHomePage['output']['job'];
 }) {
   const latestAvailability = availabilityData
     .filter((item) => item.sessions?.[0]?.start_time) // Ensure sessions and start_time exist
@@ -56,8 +53,8 @@ const AvailabilityCard = ({
   latestavailability,
   job,
 }: {
-  latestavailability: availability[number];
-  job: apiHomepageResponse['job'];
+  latestavailability: getHomePage['output']['availability'][number];
+  job: getHomePage['output']['job'];
 }) => {
   return (
     <>

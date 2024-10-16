@@ -7,7 +7,7 @@ import { supabase } from '@/utils/supabase/client';
 
 import { useFlags } from './useFlags';
 
-export const usePortalSettings = () => {
+export const usePortalSettingsDetails = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<
     'greetings' | 'about' | 'images' | null
   >(null);

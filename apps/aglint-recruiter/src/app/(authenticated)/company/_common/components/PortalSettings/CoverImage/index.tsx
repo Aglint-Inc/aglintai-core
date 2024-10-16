@@ -6,7 +6,7 @@ import { type ChangeEvent, type DragEvent, useRef, useState } from 'react';
 
 import { Loader } from '@/common/Loader';
 import UISectionCard from '@/common/UISectionCard';
-import { usePortalSettings } from '@/company/hooks/usePortalSettings';
+import { usePortalSettings } from '@/company/context/PortalsettingsContext';
 export function CoverImage() {
   const {
     removeCover,

@@ -67,6 +67,6 @@ const query = async ({ input }: PublicProcedure<typeof schema>) => {
   return enrichedMessages!;
 };
 
-export const getMessages = publicProcedure.input(schema).query(query);
+export const get_messages = publicProcedure.input(schema).query(query);
 
-export type GetMessages = ProcedureDefinition<typeof getMessages>;
+export type GetMessages = ProcedureDefinition<typeof get_messages>;

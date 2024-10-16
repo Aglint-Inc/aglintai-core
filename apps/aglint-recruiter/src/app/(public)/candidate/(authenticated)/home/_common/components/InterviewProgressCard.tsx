@@ -3,10 +3,10 @@ import { Badge } from '@components/ui/badge';
 import { Card, CardContent } from '@components/ui/card';
 import React from 'react';
 
-import type { apiHomepageResponse } from '@/api/candidate_portal/home_page/route';
+import { type getHomePage } from '@/routers/candidatePortal/get_home_page';
 
 interface InterviewProgressCardProps {
-  interview: apiHomepageResponse['interviewPlan'][number];
+  interview: getHomePage['output']['interviewPlan'][number];
   isLast: boolean;
 }
 

@@ -3,7 +3,7 @@ import { type Dispatch, type SetStateAction, useState } from 'react';
 
 import { UIButton } from '@/common/UIButton';
 import UIDialog from '@/common/UIDialog';
-import { usePortalSettings } from '@/company/hooks/usePortalSettings';
+import { usePortalSettings } from '@/company/context/PortalsettingsContext';
 
 import ImagesUpload from './ImagesUpload';
 

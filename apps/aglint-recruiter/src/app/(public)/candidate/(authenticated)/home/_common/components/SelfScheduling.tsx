@@ -1,12 +1,15 @@
 import { dayjsLocal } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
-import React from 'react';
 
-import { type schedule } from '@/api/candidate_portal/home_page/route';
+import { type getHomePage } from '@/routers/candidatePortal/get_home_page';
 import { formatSessions } from '@/utils/formatSessions';
 
-function SelfScheduling({ scheduleData }: { scheduleData: schedule }) {
+function SelfScheduling({
+  scheduleData,
+}: {
+  scheduleData: getHomePage['output']['schedule'];
+}) {
   const latestSchedule = scheduleData
     .filter((item) => item.sessions?.[0]?.start_time)
     .sort((a, b) =>
@@ -41,7 +44,11 @@ const SelfSchedulingEmpty = () => {
     </CardContent>
   );
 };
-const SelfSchedulingComp = ({ schedule }: { schedule: schedule[number] }) => {
+const SelfSchedulingComp = ({
+  schedule,
+}: {
+  schedule: getHomePage['output']['schedule'][number];
+}) => {
   return (
     <>
       <CardHeader>

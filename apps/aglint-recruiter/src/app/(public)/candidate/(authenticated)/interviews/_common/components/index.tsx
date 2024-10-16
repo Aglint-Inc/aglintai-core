@@ -113,7 +113,7 @@ function InterviewCard({
           </div>
         ))}
         <div className='mt-4 flex space-x-2'>
-          <Button
+          {/* <Button
             variant='link'
             size='sm'
             className='p-0 text-xs'
@@ -123,7 +123,7 @@ function InterviewCard({
             }}
           >
             Open Coding link
-          </Button>
+          </Button> */}
           <Button
             variant='link'
             size='sm'

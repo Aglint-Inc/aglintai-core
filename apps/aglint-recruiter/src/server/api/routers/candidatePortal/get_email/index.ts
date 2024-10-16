@@ -28,6 +28,6 @@ const query = async ({ input }: PublicProcedure<typeof schema>) => {
   return { email: data.candidates.email, application_id: data.id }!;
 };
 
-export const getEmail = publicProcedure.input(schema).query(query);
+export const get_email = publicProcedure.input(schema).query(query);
 
-export type GetEmail = ProcedureDefinition<typeof getEmail>;
+export type GetEmail = ProcedureDefinition<typeof get_email>;

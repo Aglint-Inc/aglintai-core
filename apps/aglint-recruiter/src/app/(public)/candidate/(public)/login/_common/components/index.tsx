@@ -64,8 +64,10 @@ const LoginPage = () => {
   if (isLoading) return <Loader />;
 
   if (status === 'send')
-    return (
+    return email ? (
       <Send email={email} isSending={isSending} handleSendLink={sendLink} />
+    ) : (
+      <></>
     );
 
   if (status === 'sent') return <Sent email={email} setStatus={setStatus} />;

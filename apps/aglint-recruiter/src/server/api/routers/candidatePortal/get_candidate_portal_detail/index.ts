@@ -1,4 +1,8 @@
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
 const query = async ({ ctx: { recruiter_id } }: PrivateProcedure) => {
@@ -16,4 +20,7 @@ const query = async ({ ctx: { recruiter_id } }: PrivateProcedure) => {
   return data!;
 };
 
-export const getCandidatePortalDetails = privateProcedure.query(query);
+export const get_candidate_portal_detail = privateProcedure.query(query);
+export type getCandidatePortalDetails = ProcedureDefinition<
+  typeof get_candidate_portal_detail
+>;

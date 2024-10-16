@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import { UIButton } from '@/common/UIButton';
 import UISectionCard from '@/common/UISectionCard';
-import { usePortalSettings } from '@/company/hooks/usePortalSettings';
+import { usePortalSettings } from '@/company/context/PortalsettingsContext';
 
 import { AboutCompanyDialog } from './AboutCompanyDialog';
 

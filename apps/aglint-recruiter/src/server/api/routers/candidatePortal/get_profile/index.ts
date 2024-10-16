@@ -35,6 +35,6 @@ const query = async ({ input }: PublicProcedure<typeof schema>) => {
   };
 };
 
-export const getProfile = publicProcedure.input(schema).query(query);
+export const get_profile = publicProcedure.input(schema).query(query);
 
-export type GetProfile = ProcedureDefinition<typeof getProfile>;
+export type GetProfile = ProcedureDefinition<typeof get_profile>;

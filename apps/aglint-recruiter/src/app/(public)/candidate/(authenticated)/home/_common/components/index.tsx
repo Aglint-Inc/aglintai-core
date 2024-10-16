@@ -43,9 +43,9 @@ export default function Home() {
   const isPorfileInComplete = hasEmptyValue(profileData);
   const isAllSet =
     !isPorfileInComplete &&
-    upcoming?.length === 0 &&
-    availability?.length === 0 &&
-    schedule?.length === 0;
+    upcoming.length === 0 &&
+    availability.length === 0 &&
+    schedule.length === 0;
 
   return (
     <div className='flex flex-col'>
@@ -78,13 +78,13 @@ export default function Home() {
           <div className='flex flex-col gap-4'>
             {isAllSet && <AllSet />}
             {isPorfileInComplete && <IncompleteProfile />}
-            {upcoming?.length > 0 ? (
+            {upcoming.length > 0 ? (
               <UpcomingInterview upcomingData={upcoming} />
             ) : (
               <></>
             )}
 
-            {availability?.length ? (
+            {availability.length ? (
               <RequestedAvailability
                 availabilityData={availability}
                 job={job}
@@ -92,7 +92,7 @@ export default function Home() {
             ) : (
               <></>
             )}
-            {schedule?.length > 0 ? (
+            {schedule.length > 0 ? (
               <SelfScheduling scheduleData={schedule} />
             ) : (
               <></>

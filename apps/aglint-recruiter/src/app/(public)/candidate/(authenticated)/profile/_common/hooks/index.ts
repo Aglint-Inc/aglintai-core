@@ -7,8 +7,7 @@ import { api } from '@/trpc/client';
 export const useCandidatePortalProfile = () => {
   const { application_id } = useCandidatePortal();
   const response = useGetProfileProcedure({ application_id });
-  const invalidate = api.useUtils().candidatePortal.get_profile.invalidate;
-  return { ...response, data: response.data!, invalidate };
+  return { ...response, data: response.data! };
 };
 
 const useGetProfileProcedure = (
@@ -17,8 +16,5 @@ const useGetProfileProcedure = (
   api.candidatePortal.get_profile.useQuery(input);
 
 export const useCandidatePortalProfileUpdate = () => {
-  const { invalidate } = useCandidatePortalProfile();
-  return api.candidatePortal.update_profile.useMutation({
-    onSettled: () => invalidate(),
-  });
+  return api.candidatePortal.update_profile.useMutation({});
 };

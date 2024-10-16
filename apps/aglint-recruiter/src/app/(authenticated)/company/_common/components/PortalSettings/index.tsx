@@ -1,5 +1,5 @@
 import { Loader } from '@/common/Loader';
-import { usePortalSettings } from '@/company/hooks/usePortalSettings';
+import { usePortalSettings } from '@/company/context/PortalsettingsContext';
 
 import CandidatePortalSettings from './CandidatePortalSettings';
 
