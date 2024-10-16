@@ -66,22 +66,23 @@ function ImageUploadManual({
               Upload Image
             </Button>
           </FileUploader>
-
-          <Button
-            variant='outline'
-            size='sm'
-            className='px-4 py-2 text-xs'
-            disabled={loading}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setInitImage(null);
-              imageFile.current = null;
-              if (setChanges) setChanges();
-            }}
-          >
-            Remove
-          </Button>
+          {initImage && (
+            <Button
+              variant='outline'
+              size='sm'
+              className='px-4 py-2 text-xs'
+              disabled={loading}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setInitImage(null);
+                imageFile.current = null;
+                if (setChanges) setChanges();
+              }}
+            >
+              Remove
+            </Button>
+          )}
         </div>
       </div>
     </div>
