@@ -1,6 +1,22 @@
 import { type InterviewSessionApiRespType } from '@aglint/shared-types';
 import { CApiError } from '@aglint/shared-utils';
 
+export const calcIntsCombsForEachSessionRound = (
+  session_rounds: InterviewSessionApiRespType[][],
+  is_training_optional: boolean,
+) => {
+  const ints_combs_for_each_round: InterviewSessionApiRespType[][][] = [];
+
+  for (const curr_round of session_rounds) {
+    const ints_cmobs_for_curr_round = calcInterversCombsForSesson(
+      curr_round,
+      is_training_optional,
+    );
+    ints_combs_for_each_round.push(ints_cmobs_for_curr_round);
+  }
+  return ints_combs_for_each_round;
+};
+
 const calcInterversCombsForSesson = (
   sessions: InterviewSessionApiRespType[],
   is_training_optional: boolean,
@@ -98,19 +114,4 @@ const calcInterversCombsForSesson = (
   }
 
   return total_combs;
-};
-export const calcIntsCombsForEachSessionRound = (
-  session_rounds: InterviewSessionApiRespType[][],
-  is_training_optional: boolean,
-) => {
-  const ints_combs_for_each_round: InterviewSessionApiRespType[][][] = [];
-
-  for (const curr_round of session_rounds) {
-    const ints_cmobs_for_curr_round = calcInterversCombsForSesson(
-      curr_round,
-      is_training_optional,
-    );
-    ints_combs_for_each_round.push(ints_cmobs_for_curr_round);
-  }
-  return ints_combs_for_each_round;
 };
