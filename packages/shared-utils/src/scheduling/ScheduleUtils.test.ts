@@ -1,6 +1,8 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { ScheduleUtils } from './ScheduleUtils';
 import { InterviewSessionTypeDB } from '@aglint/shared-types';
+import { dayjsLocal } from './dayjsLocal';
+import { Dayjs } from 'dayjs';
 
 describe('Test Schedule Util class convertDateFormatToDayjs function', () => {
   it('should convert DD/MM/YYYY date to dayjs object with correct start date and timezone', () => {
@@ -78,5 +80,48 @@ describe('Test Schedule Util class getSessionRounds function', () => {
     expect(roundedSessions[0].length).toBe(2);
     expect(roundedSessions[1].length).toBe(1);
     expect(roundedSessions[2].length).toBe(1);
+  });
+});
+
+describe('Test Schedule Util class getNearestCurrTime function', () => {
+  it('should return correct nearest current time', () => {
+    const times: {
+      current_time: Dayjs;
+      expected_time: Dayjs;
+      timezone: string;
+    }[] = [
+      {
+        current_time: dayjsLocal('2024-06-24T08:00:00Z').tz(
+          'America/Los_Angeles'
+        ),
+        expected_time: dayjsLocal('2024-06-24T10:00:00Z').tz(
+          'America/Los_Angeles'
+        ),
+        timezone: 'America/Los_Angeles',
+      },
+      {
+        current_time: dayjsLocal('2024-06-24T23:30:00Z').tz('Asia/Tokyo'),
+        expected_time: dayjsLocal('2024-06-25T01:00:00Z').tz('Asia/Tokyo'),
+        timezone: 'Asia/Tokyo',
+      },
+      {
+        current_time: dayjsLocal('2024-06-24T14:45:00Z').tz('Europe/London'),
+        expected_time: dayjsLocal('2024-06-24T16:00:00Z').tz('Europe/London'),
+        timezone: 'Europe/London',
+      },
+      {
+        current_time: dayjsLocal('2024-06-24T01:15:00Z').tz('Australia/Sydney'),
+        expected_time: dayjsLocal('2024-06-24T03:00:00Z').tz(
+          'Australia/Sydney'
+        ),
+        timezone: 'Australia/Sydney',
+      },
+    ];
+
+    times.forEach((time) => {
+      vi.setSystemTime(time.current_time.toDate());
+      const nearesTime = ScheduleUtils.getNearestCurrTime(time.timezone);
+      expect(nearesTime.isSame(time.expected_time)).toBe(true);
+    });
   });
 });
