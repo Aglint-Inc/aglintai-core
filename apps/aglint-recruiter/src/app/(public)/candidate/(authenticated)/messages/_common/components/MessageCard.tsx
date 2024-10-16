@@ -15,7 +15,9 @@ const MessageCard = ({ index }: { index: number }) => {
     'sendAvailabilityRequest_email_applicant',
     'selfScheduleReminder_email_applicant',
     'sendAvailReqReminder_email_applicant',
-  ].includes(message.type);
+    'rescheduleSelfSchedule_email_applicant',
+    'availabilityReqResend_email_candidate',
+  ].includes(message.type || '');
 
   return (
     <Card className='mx-auto mb-4 overflow-hidden rounded-lg border shadow-none'>
