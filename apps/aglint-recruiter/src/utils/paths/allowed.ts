@@ -13,6 +13,7 @@ export const allowedPaths = new Set<t>([
   '/api/testx',
   '/login',
   '/signup',
+  '/candidate/[application]/login',
   '/api/signup',
   '/forgot-password',
   '/api/auth/send-reset-email',

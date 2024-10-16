@@ -32,7 +32,7 @@ export default function Navigation() {
   if (isLoading || messageLoading)
     return <CandidatePortalLoader loadingText='Loading Candidate Portal..' />;
 
-  const messageNewCount = messages?.filter((mes) => mes.isNew).length || 0;
+  const messageCount = messages?.length || 0;
 
   const company = data?.company;
 
@@ -82,18 +82,11 @@ export default function Navigation() {
               </Button>
             </Link>
             <Link href={`/candidate/${application_id}/messages`}>
-              <Button
-                variant='ghost'
-                // className={
-                //   currentTab === 'messages'
-                //     ? 'text-primary'
-                //     : 'text-muted-foreground'
-                // }
-              >
+              <Button variant='ghost'>
                 Messages
-                {messageNewCount > 0 && (
-                  <Badge className='ml-2 bg-red-500 px-2 py-0.5 text-xs'>
-                    {messageNewCount}
+                {messageCount > 0 && (
+                  <Badge className='ml-2 bg-gray-500 px-2 py-0.5 text-xs'>
+                    {messageCount}
                   </Badge>
                 )}
               </Button>
