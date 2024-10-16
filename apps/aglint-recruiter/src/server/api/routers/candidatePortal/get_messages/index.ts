@@ -16,7 +16,7 @@ const query = async ({ input }: PublicProcedure<typeof schema>) => {
     await db
       .from('candidate_portal_message')
       .select(
-        'id,message,created_at,title,availability_id,filter_id,applications(recruiter(name,logo)),interview_filter_json(id,viewed_on,confirmed_on),candidate_request_availability(id,slots,visited)',
+        'id,message,created_at,title,availability_id,filter_id,applications(recruiter(name,logo)),interview_filter_json(id,viewed_on,confirmed_on),candidate_request_availability(id,slots,visited),type',
       )
       .eq('application_id', application_id)
       .order('created_at', { ascending: false })
@@ -50,7 +50,7 @@ const query = async ({ input }: PublicProcedure<typeof schema>) => {
         ...messageWithCompany,
         isNew: !interview_filter_json?.viewed_on,
         isSubmitted: Boolean(interview_filter_json?.confirmed_on),
-        link: `/scheduling/invite/${application_id}?filter_id=${message.filter_id}`,
+        link: `/self-scheduling/${message.filter_id}`,
       };
     return {
       ...messageWithCompany,
