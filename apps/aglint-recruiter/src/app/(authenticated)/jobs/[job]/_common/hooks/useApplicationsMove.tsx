@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { useCallback } from 'react';
 
-import { api, type Unvoid } from '@/trpc/client';
+import { api } from '@/trpc/client';
 import ROUTES from '@/utils/routing/routes';
 import toast from '@/utils/toast';
 
@@ -25,7 +25,7 @@ export const useApplicationsMove = () => {
     onError: () => toast.error('Unable to move application/s'),
   });
   const mutate = useCallback(
-    (args: Partial<Unvoid<Parameters<(typeof mutation)['mutate']>[0]>>) =>
+    (args: Partial<Parameters<(typeof mutation)['mutate']>[0]>) =>
       mutation.mutate({
         ...args,
         job_id,
@@ -34,9 +34,7 @@ export const useApplicationsMove = () => {
     [checklist],
   );
   const mutateAsync = useCallback(
-    async (
-      args: Partial<Unvoid<Parameters<(typeof mutation)['mutateAsync']>[0]>>,
-    ) => {
+    async (args: Partial<Parameters<(typeof mutation)['mutateAsync']>[0]>) => {
       try {
         await mutation.mutate({
           ...args,

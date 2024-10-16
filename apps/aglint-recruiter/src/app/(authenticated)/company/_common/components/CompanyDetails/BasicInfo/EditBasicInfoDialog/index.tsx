@@ -19,6 +19,7 @@ import UIDialog from '@/common/UIDialog';
 // import ImageUpload from '@/common/ImageUpload';
 import UISelectDropDown from '@/common/UISelectDropDown';
 import { useTenant } from '@/company/hooks';
+import { useTenantRefetch } from '@/company/hooks/useTenantRefetch';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
@@ -45,7 +46,8 @@ const EditBasicInfoDialog = ({
   handleRemoveEditParam: () => void;
   setEditDialog: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { recruiter, refetch } = useTenant();
+  const { recruiter } = useTenant();
+  const { refetch } = useTenantRefetch();
   const [isError, setError] = useState(false);
   const [logo, setLogo] = useState<string | null>(null);
   const [nameError, setNameError] = useState(false);

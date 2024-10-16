@@ -1,6 +1,10 @@
 import { createPublicClient } from '@/server/db';
 
-import { type PrivateProcedure, privateProcedure } from '../../trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '../../trpc';
 
 const query = async ({ ctx }: PrivateProcedure) => {
   const db = createPublicClient();
@@ -27,3 +31,5 @@ const query = async ({ ctx }: PrivateProcedure) => {
 };
 
 export const members = privateProcedure.query(query);
+
+export type Members = ProcedureDefinition<typeof members>;

@@ -12,10 +12,17 @@ import {
 } from '@components/ui/alert-dialog';
 import { AlertCircle } from 'lucide-react';
 
+import type { ArchiveGetSessions } from '@/routers/interview_pool/archive_get_sessions';
+import type { ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 
 import { useModuleAndUsers } from '../../hooks/useModuleAndUsers';
 import { setIsArchiveDialogOpen, useModulesStore } from '../../stores/store';
+
+const useArchiveGetSessions = (
+  input: ArchiveGetSessions['input'],
+): ProcedureQuery<ArchiveGetSessions> =>
+  api.interview_pool.archive_get_sessions.useQuery(input);
 
 function ArchiveModuleDialog() {
   const { toast } = useToast();
@@ -23,9 +30,7 @@ function ArchiveModuleDialog() {
     (state) => state.isArchiveDialogOpen,
   );
   const { data: editModule } = useModuleAndUsers();
-  const { isLoading, data } = api.interview_pool.archive_get_sessions.useQuery({
-    id: editModule.id,
-  });
+  const { isLoading, data } = useArchiveGetSessions({ id: editModule.id });
   const { mutate, isPending } = api.interview_pool.update.useMutation();
 
   const errors = data?.errors ?? [];

@@ -7,6 +7,7 @@
  * need to use are documented accordingly near the end.
  */
 import type { DatabaseTable } from '@aglint/shared-types';
+import type { UseTRPCQueryResult } from '@trpc/react-query/dist/shared';
 import { initTRPC, TRPCError } from '@trpc/server';
 import type { ProcedureBuilder } from '@trpc/server/unstable-core-do-not-import';
 import superjson from 'superjson';
@@ -266,40 +267,40 @@ export type PrivateProcedure<T = unknown> = Procedure<
   T
 >;
 
-type Procedure<
-  U extends ProcedureBuilder<any, any, any, any, any, any, any, any>,
-  T = unknown,
-> = T extends ZodSchema
-  ? U extends ProcedureBuilder<
-      infer TContext,
-      any,
-      infer TContextOverrides,
-      any,
-      any,
-      any,
-      any,
-      any
-    >
+type Definition = { _def: { $types: any } };
+
+export type ProcedureDefinition<T extends Definition> = Pick<
+  T['_def']['$types'],
+  'input' | 'output'
+>;
+
+export type ProcedureQuery<T extends ProcedureDefinition<Definition>> =
+  UseTRPCQueryResult<T['output'], any>;
+
+type Procedure<U extends ProcedureBuilderInput, T = unknown> =
+  U extends ProcedureBuilder<
+    infer TContext,
+    any,
+    infer TContextOverrides,
+    any,
+    any,
+    any,
+    any,
+    any
+  >
     ? {
         ctx: TContext & TContextOverrides;
-        input: TypeOf<T>;
-      }
-    : never
-  : U extends ProcedureBuilder<
-        infer TContext,
-        any,
-        infer TContextOverrides,
-        any,
-        any,
-        any,
-        any,
-        any
-      >
-    ? {
-        ctx: TContext & TContextOverrides;
-        input: undefined;
+        input: T extends ZodSchema ? TypeOf<T> : undefined;
       }
     : never;
 
-export type RequiredPayload<T extends Record<any, any>[] | Record<any, any>> =
-  T extends Record<any, any>[] ? Required<T[number]>[] : Required<T>;
+type ProcedureBuilderInput = ProcedureBuilder<
+  any,
+  any,
+  any,
+  any,
+  any,
+  any,
+  any,
+  any
+>;

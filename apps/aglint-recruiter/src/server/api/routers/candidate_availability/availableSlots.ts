@@ -3,7 +3,11 @@ import { z } from 'zod';
 import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 import { fetchCandidateAvailability } from '@/services/CandidateSchedule/utils/fetchCandidateAvailability';
 
-import { type PrivateProcedure, privateProcedure } from '../../trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '../../trpc';
 
 const schema = z.object({
   availability_id: z.string().uuid(),
@@ -42,3 +46,5 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
 };
 
 export const availableSlots = privateProcedure.input(schema).query(query);
+
+export type AvailableSlots = ProcedureDefinition<typeof availableSlots>;

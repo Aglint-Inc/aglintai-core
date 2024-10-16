@@ -4,7 +4,11 @@ import {
   type SectionRequests,
 } from '@requests/types';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 const query = async ({ ctx: { user_id } }: PrivateProcedure) => {
@@ -85,3 +89,5 @@ const query = async ({ ctx: { user_id } }: PrivateProcedure) => {
 };
 
 export const requestCount = privateProcedure.query(query);
+
+export type RequestCount = ProcedureDefinition<typeof requestCount>;

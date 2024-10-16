@@ -1,6 +1,8 @@
 import { toast } from '@components/hooks/use-toast';
 
-import { api, type RouterInputs, type Unvoid } from '@/trpc/client';
+import type { Create } from '@/routers/candidate_availability/create';
+import type { Update } from '@/routers/candidate_availability/update';
+import { api } from '@/trpc/client';
 
 export const useRequestAvailabilityDetails =
   api.candidate_availability.availableSlots.useQuery;
@@ -13,9 +15,7 @@ export const useCreateCandidateAvailability = () => {
       });
     },
   });
-  const createRequestAvailability = async (
-    payload: Unvoid<RouterInputs['candidate_availability']['create']>,
-  ) => {
+  const createRequestAvailability = async (payload: Create['input']) => {
     try {
       return await createMutation.mutateAsync(payload);
     } catch (error) {
@@ -34,9 +34,7 @@ export const useUpdateCandidateAvailability = () => {
       });
     },
   });
-  const updateRequestAvailability = (
-    payload: Unvoid<RouterInputs['candidate_availability']['update']>,
-  ) => {
+  const updateRequestAvailability = (payload: Update['input']) => {
     if (payload.id) {
       updateMutation.mutate({
         ...payload,

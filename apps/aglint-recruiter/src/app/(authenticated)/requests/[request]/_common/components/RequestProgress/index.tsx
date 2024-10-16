@@ -5,6 +5,8 @@ import { useRequest } from '@request/hooks';
 import React, { useEffect, useMemo } from 'react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
+import type { Read } from '@/routers/tenant/templates/read';
+import type { ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 import { type emailTemplateCopy } from '@/types/companyEmailTypes';
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
@@ -35,7 +37,7 @@ function RequestProgress() {
 
   useEffect(() => {
     if (status === 'success') {
-      setCompanyEmailTemplates(fetchedTemps as EmailTemplate[]);
+      setCompanyEmailTemplates(fetchedTemps);
     }
   }, [status, fetchedTemps]);
 
@@ -208,10 +210,5 @@ const getInitialActionDetails = ({
   }
 };
 
-const useCompanyTemplates = () => {
-  const query = api.tenant.templates.read.useQuery();
-  return {
-    ...query,
-    data: query.data ?? [],
-  };
-};
+const useCompanyTemplates = (): ProcedureQuery<Read> =>
+  api.tenant.templates.read.useQuery();

@@ -1,7 +1,11 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
-import { type ATSProcedure, atsProcedure } from '@/server/api/trpc';
+import {
+  type ATSProcedure,
+  atsProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
 import { greenhouseJobMutation } from '../greenhouse/applications';
@@ -38,3 +42,5 @@ export const mutation = async (payload: ATSProcedure<typeof schema>) => {
 };
 
 export const job = atsProcedure.input(schema).mutation(leverJobmutation);
+
+export type Job = ProcedureDefinition<typeof job>;

@@ -193,7 +193,7 @@ export const Filters = () => {
   );
 };
 
-const badgesTypes: Applications<'input'>['badges'] = [
+const badgesTypes: Applications['input']['badges'] = [
   'careerGrowth',
   'jobStability',
   'leadership',
@@ -222,7 +222,7 @@ function badgeLabel(key: (typeof badgesTypes)[number]) {
   }
 }
 
-const applicationMatchTypes: Applications<'input'>['application_match'] = [
+const applicationMatchTypes: Applications['input']['application_match'] = [
   'top_match',
   'good_match',
   'average_match',
@@ -231,7 +231,7 @@ const applicationMatchTypes: Applications<'input'>['application_match'] = [
   'unknown_match',
 ];
 
-// const scheduleStatus: Applications<'input'>['schedule_status'] = [
+// const scheduleStatus: Applications['input']['schedule_status'] = [
 //   'cancelled',
 //   'completed',
 //   'confirmed',
@@ -240,7 +240,7 @@ const applicationMatchTypes: Applications<'input'>['application_match'] = [
 //   'waiting',
 // ];
 
-const sortTypes: Applications<'input'>['type'][] = [
+const sortTypes: Applications['input']['type'][] = [
   'latest_activity',
   'application_match',
   'applied_at',

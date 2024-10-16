@@ -2,7 +2,11 @@ import { type DatabaseTableUpdate } from '@aglint/shared-types';
 import { dateSlotsTypeSchema } from '@aglint/shared-types/src/db/tables/candidate_request_availability.type';
 import { z, type ZodSchema } from 'zod';
 
-import { type PublicProcedure, publicProcedure } from '@/server/api/trpc';
+import {
+  type ProcedureDefinition,
+  type PublicProcedure,
+  publicProcedure,
+} from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
 // eslint-disable-next-line no-unused-vars
@@ -50,3 +54,5 @@ const query = async ({ input }: PublicProcedure<typeof updateSchema>) => {
 };
 
 export const update = publicProcedure.input(updateSchema).mutation(query);
+
+export type Update = ProcedureDefinition<typeof update>;

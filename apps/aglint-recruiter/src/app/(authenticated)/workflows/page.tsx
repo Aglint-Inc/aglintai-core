@@ -17,14 +17,12 @@ import { EmptyWorkflow } from './_common/components/EmptyWorkflow';
 import { useWorkflows } from './_common/hooks';
 
 const Page = () => {
-  const {
-    workflows: { data },
-  } = useWorkflows();
+  const { workflows } = useWorkflows();
   return (
     <>
       <OneColumnPageLayout
         header={
-          data?.length !== 0 && (
+          (workflows ?? []).length !== 0 && (
             <PageHeader>
               <PageHeaderText>
                 <PageTitle>Automations</PageTitle>
@@ -38,7 +36,7 @@ const Page = () => {
           )
         }
       >
-        {(data ?? []).length > 0 ? (
+        {(workflows ?? []).length > 0 ? (
           <div className='space-y-4 px-4'>
             <Filters />
             <ScrollArea className='h-[calc(100vh-220px)]'>

@@ -1,7 +1,11 @@
 import type { ZodTypeToSchema } from '@aglint/shared-types';
 import { z } from 'zod';
 
-import { type ATSProcedure, atsProcedure } from '@/server/api/trpc';
+import {
+  type ATSProcedure,
+  atsProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
 import { syncUsers } from './process';
@@ -23,3 +27,5 @@ const mutation = async ({ ctx, input }: ATSProcedure<typeof schema>) => {
 };
 
 export const users = atsProcedure.input(schema).mutation(mutation);
+
+export type Users = ProcedureDefinition<typeof users>;

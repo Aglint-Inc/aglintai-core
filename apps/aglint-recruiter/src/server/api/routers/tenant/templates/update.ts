@@ -2,7 +2,7 @@ import { companyEmailTemplateUpdateSchema } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { z } from 'zod';
 
-import { privateProcedure } from '@/server/api/trpc';
+import { privateProcedure, type ProcedureDefinition } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 const schema = z.object({
@@ -23,3 +23,5 @@ export const update = privateProcedure
     );
     return template;
   });
+
+export type Update = ProcedureDefinition<typeof update>;

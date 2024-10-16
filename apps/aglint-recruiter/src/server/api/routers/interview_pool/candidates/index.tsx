@@ -1,7 +1,11 @@
 import { getFullName } from '@aglint/shared-utils';
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 export const candidatesModuleSchema = z.object({
@@ -75,3 +79,5 @@ const query = async ({
 export const candidatesModule = privateProcedure
   .input(candidatesModuleSchema)
   .query(query);
+
+export type CandidatesModule = ProcedureDefinition<typeof candidatesModule>;

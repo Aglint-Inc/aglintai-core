@@ -8,26 +8,31 @@ import {
 } from 'date-fns';
 
 import { useTenant } from '@/company/hooks';
+import type { InterviewCount } from '@/routers/analytics/interview_count';
+import { type InterviewDecline } from '@/routers/analytics/interview_decline';
+import type { ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { useAnalyticsContext } from '../../context/AnalyticsContext/AnalyticsContextProvider';
 
+const useInterviewCountProcedure = (
+  input: InterviewCount['input'],
+): ProcedureQuery<InterviewCount> =>
+  api.analytics.interview_count.useQuery(input, {
+    enabled: !!input.recruiter_id,
+  });
+
 export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
   const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
-  const { data, isFetching, isError } = api.analytics.interview_count.useQuery(
-    {
-      recruiter_id: recruiter.id,
-      job_id: filters.job,
-      location_id: filters.location,
-      department_id: filters.department,
-      data_range: filters.dateRange,
-    },
-    {
-      enabled: !!recruiter.id,
-    },
-  );
+  const { data, isFetching, isError } = useInterviewCountProcedure({
+    recruiter_id: recruiter.id,
+    job_id: filters.job,
+    location_id: filters.location,
+    department_id: filters.department,
+    data_range: filters.dateRange,
+  });
 
   const groupedData = data
     ? groupByDate(data, unit, filters.dateRange, {
@@ -70,22 +75,24 @@ export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
     isError,
   };
 }
+
+const useInterviewDecline = (
+  input: InterviewDecline['input'],
+): ProcedureQuery<InterviewDecline> =>
+  api.analytics.interview_decline.useQuery(input, {
+    enabled: !!input.recruiter_id,
+  });
+
 export function useDeclineCount() {
   const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
-  const { data, isFetching, isError } =
-    api.analytics.interview_decline.useQuery(
-      {
-        recruiter_id: recruiter.id,
-        job_id: filters.job,
-        location_id: filters.location,
-        department_id: filters.department,
-        data_range: filters.dateRange,
-      },
-      {
-        enabled: !!recruiter.id,
-      },
-    );
+  const { data, isFetching, isError } = useInterviewDecline({
+    recruiter_id: recruiter.id,
+    job_id: filters.job,
+    location_id: filters.location,
+    department_id: filters.department,
+    data_range: filters.dateRange,
+  });
   const groupedData = data
     ? //@ts-ignore
       groupByDate(data, 'day', filters.dateRange, { cancelled: 0 })

@@ -2,27 +2,32 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
+import { type CandidatesExp } from '@/routers/analytics/candidate/candidates_exp';
+import { type CandidatesSkills } from '@/routers/analytics/candidate/candidates_skills';
+import type { LocationCount } from '@/routers/analytics/job/locations_count';
+import type { ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 
 import { useAnalyticsContext } from '../../context/AnalyticsContext/AnalyticsContextProvider';
 
+const useJobLocationCountProcedure = (
+  input: LocationCount['input'],
+): ProcedureQuery<LocationCount> =>
+  api.analytics.job.location_count.useQuery(input, {
+    enabled: !!input.recruiter_id,
+  });
+
 export function useJobLocations() {
   const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
   const [view, setView] = useState<'city' | 'state' | 'country'>('city');
-  const { data, isFetching, isError } =
-    api.analytics.job.location_count.useQuery(
-      {
-        recruiter_id: recruiter.id,
-        locations: filters.location ? [filters.location] : undefined,
-        departments: filters.department ? [filters.department] : undefined,
-        data_range: filters.dateRange,
-      },
-      {
-        enabled: !!recruiter.id,
-      },
-    );
+  const { data, isFetching, isError } = useJobLocationCountProcedure({
+    recruiter_id: recruiter.id,
+    locations: filters.location ? [filters.location] : undefined,
+    departments: filters.department ? [filters.department] : undefined,
+    data_range: filters.dateRange,
+  });
   const filterData = (data || []).reduce(
     (acc, curr) => {
       const tempKey = curr[view] || 'Not Provided';
@@ -64,22 +69,23 @@ export function useJobLocations() {
   };
 }
 
+const useCandidateExpProcedure = (
+  input: CandidatesExp['input'],
+): ProcedureQuery<CandidatesExp> =>
+  api.analytics.candidate.candidates_exp.useQuery(input, {
+    enabled: !!input.recruiter_id,
+  });
+
 export function useCandidateExp() {
   const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
 
-  const { data, isFetching, isError } =
-    api.analytics.candidate.candidates_exp.useQuery(
-      {
-        recruiter_id: recruiter.id,
-        locations: filters.location ? [filters.location] : undefined,
-        departments: filters.department ? [filters.department] : undefined,
-        data_range: filters.dateRange,
-      },
-      {
-        enabled: !!recruiter.id,
-      },
-    );
+  const { data, isFetching, isError } = useCandidateExpProcedure({
+    recruiter_id: recruiter.id,
+    locations: filters.location ? [filters.location] : undefined,
+    departments: filters.department ? [filters.department] : undefined,
+    data_range: filters.dateRange,
+  });
 
   const processData = (data || []).map((item) => ({
     ...item,
@@ -125,6 +131,13 @@ export function useCandidateExp() {
   };
 }
 
+const useCandidateSkillsProcedure = (
+  input: CandidatesSkills['input'],
+): ProcedureQuery<CandidatesSkills> =>
+  api.analytics.candidate.candidates_skills.useQuery(input, {
+    enabled: !!input.recruiter_id,
+  });
+
 export function useCandidateSkills() {
   const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
@@ -142,18 +155,12 @@ export function useCandidateSkills() {
       )?.data?.skills || []) as string[],
     enabled: !!filters.job,
   });
-  const { data, isFetching, isError } =
-    api.analytics.candidate.candidates_skills.useQuery(
-      {
-        recruiter_id: recruiter.id,
-        locations: filters.location ? [filters.location] : undefined,
-        departments: filters.department ? [filters.department] : undefined,
-        data_range: filters.dateRange,
-      },
-      {
-        enabled: !!recruiter.id,
-      },
-    );
+  const { data, isFetching, isError } = useCandidateSkillsProcedure({
+    recruiter_id: recruiter.id,
+    locations: filters.location ? [filters.location] : undefined,
+    departments: filters.department ? [filters.department] : undefined,
+    data_range: filters.dateRange,
+  });
   const mappedData =
     (view === 'JD Skills'
       ? data?.filter((item) => skills?.includes(item.skill))

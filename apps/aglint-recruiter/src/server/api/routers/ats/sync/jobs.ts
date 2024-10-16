@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-import { type ATSProcedure, atsProcedure } from '@/server/api/trpc';
+import {
+  type ATSProcedure,
+  atsProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 
 import { greenhouseJobsMutation } from '../greenhouse/jobs/jobs';
 import { leverJobsMutation } from '../lever/jobs';
@@ -21,3 +25,5 @@ export const mutation = async (payload: ATSProcedure<typeof schema>) => {
 };
 
 export const jobs = atsProcedure.input(schema).mutation(mutation);
+
+export type Jobs = ProcedureDefinition<typeof jobs>;

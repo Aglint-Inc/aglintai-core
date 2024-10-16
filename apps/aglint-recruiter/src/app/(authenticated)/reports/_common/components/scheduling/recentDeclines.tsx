@@ -16,7 +16,7 @@ function RecentDeclines() {
   //  id: string;
   //  type:
   const { data, isPending } = useSchedulingAnalytics();
-  const recentDeclinesData = data.filter(
+  const recentDeclinesData = (data ?? []).filter(
     ({ type }) => type === 'candidate_request_decline',
   );
   return (

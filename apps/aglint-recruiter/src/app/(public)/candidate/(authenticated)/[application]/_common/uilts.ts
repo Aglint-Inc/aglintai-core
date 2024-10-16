@@ -1,3 +1,5 @@
+import type { GetEmail } from '@/routers/candidatePortal/get_email';
+import type { ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 
@@ -6,8 +8,7 @@ export const getCandidateEmailByApplicationId = async (
 ) => {
   const { data } = api.candidatePortal.get_email.useQuery({
     application_id,
-  });
-
+  }) as ProcedureQuery<GetEmail>;
   return data!;
 };
 

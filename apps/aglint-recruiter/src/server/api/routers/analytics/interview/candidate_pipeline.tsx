@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { createPublicClient } from '@/server/db';
 
-import { privateProcedure } from '../../../trpc';
+import { privateProcedure, type ProcedureDefinition } from '../../../trpc';
 
 const body = z.object({
   module_id: z.string().uuid(),
@@ -22,3 +22,5 @@ export const candidate_pipeline = privateProcedure
     ).data!;
     return data[0];
   });
+
+export type CandidatePipeline = ProcedureDefinition<typeof candidate_pipeline>;

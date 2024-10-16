@@ -2,7 +2,11 @@ import { dayjsLocal } from '@aglint/shared-utils';
 import { z } from 'zod';
 
 import { REQUEST_SELECT } from '@/queries/requests';
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
 const schema = z.object({
@@ -82,3 +86,5 @@ const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
 };
 
 export const completedRequest = privateProcedure.input(schema).query(query);
+
+export type CompletedRequest = ProcedureDefinition<typeof completedRequest>;

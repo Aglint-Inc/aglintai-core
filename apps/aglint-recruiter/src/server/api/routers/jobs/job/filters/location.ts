@@ -4,7 +4,7 @@ import { z } from 'zod';
 import {
   type PrivateProcedure,
   privateProcedure,
-  type RequiredPayload,
+  type ProcedureDefinition,
 } from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
@@ -17,12 +17,11 @@ const schema = z.object({
 const query = async ({ input }: PrivateProcedure<typeof schema>) => {
   const db = createPrivateClient();
   return (
-    (
-      await db
-        .rpc('get_applicant_locations', input as RequiredPayload<typeof input>)
-        .single()
-    ).data?.locations ?? null
+    (await db.rpc('get_applicant_locations', input).single()).data?.locations ??
+    null
   );
 };
 
 export const locations = privateProcedure.input(schema).query(query);
+
+export type Locations = ProcedureDefinition<typeof locations>;

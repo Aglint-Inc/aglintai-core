@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react';
 
 import { useFlags } from '@/company/hooks/useFlags';
+import { type GetOnboard } from '@/routers/onboarding/getOnboard';
+import { type ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeAll } from '@/utils/text/textUtils';
@@ -43,6 +45,9 @@ const requestIds: SetupStepType['id'][] = [
   'interview-plan',
 ];
 
+const useGetOnboard = (): ProcedureQuery<GetOnboard> =>
+  api.onboarding.getOnboard.useQuery();
+
 export function useCompanySetup() {
   //states ---
   const [steps, setSteps] = useState<SetupStepType[]>([]);
@@ -50,7 +55,8 @@ export function useCompanySetup() {
   const [firstTimeOpened, setFirstTimeOpened] = useState(false);
   const [isOnboardOpen, setIsOnboardOpen] = useState(false);
   //-------------------- hook
-  const { data, isLoading } = api.onboarding.getOnboard.useQuery();
+  const { data, isLoading } = useGetOnboard();
+
   const { mutateAsync, isPending } =
     api.tenant.updateTenantPreference.useMutation();
 

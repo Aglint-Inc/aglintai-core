@@ -1,20 +1,20 @@
-import type { DatabaseView } from '@aglint/shared-types';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
-import { type PrivateProcedure, privateProcedure } from '../../../trpc';
-import { type Banner, getBanners } from '../common/getBanners';
+import { getBanners } from '../common/getBanners';
 
 const schema = z.object({
   id: z.string().uuid(),
 });
 
-const query = async ({
-  ctx,
-  input,
-}: PrivateProcedure<typeof schema>): Promise<Read['output']> => {
+const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
   const db = createPrivateClient();
   const job = (
     await db
@@ -39,11 +39,4 @@ const query = async ({
 
 export const read = privateProcedure.input(schema).query(query);
 
-type Meta = {
-  banner: Banner;
-};
-
-export type Read = {
-  input: z.infer<typeof schema>;
-  output: DatabaseView['job_view'] & Meta;
-};
+export type Read = ProcedureDefinition<typeof read>;

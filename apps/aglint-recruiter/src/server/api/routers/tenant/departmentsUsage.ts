@@ -3,7 +3,11 @@ import { z } from 'zod';
 
 import { createPrivateClient } from '@/server/db';
 
-import { type PrivateProcedure, privateProcedure } from '../../trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '../../trpc';
 
 const schema = z.object({
   id: z.number(),
@@ -42,3 +46,5 @@ const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
 };
 
 export const departmentsUsage = privateProcedure.input(schema).query(query);
+
+export type DepartmentsUsage = ProcedureDefinition<typeof departmentsUsage>;
