@@ -143,8 +143,7 @@ function RequestAvailabilityProvider({
 }) {
   const params = useParams();
   const request_id = params?.request_id;
-  const { data: requestAvailability, isFetched } =
-    useCandidateAvailabilityData();
+  const requestAvailability = useCandidateAvailabilityData();
   const { updateRequestAvailability } = useUpdateCandidateAvailability();
   const { data: meetings } = useCandidateAvailabilityMeetings();
   const { data: scheduledMeetings } =
@@ -248,10 +247,10 @@ function RequestAvailabilityProvider({
   }
 
   useEffect(() => {
-    if (isFetched && requestAvailability) {
+    if (requestAvailability) {
       defaultValues({ requestAvailability });
     }
-  }, [isFetched]);
+  }, []);
 
   // handle Click on DateCard
 

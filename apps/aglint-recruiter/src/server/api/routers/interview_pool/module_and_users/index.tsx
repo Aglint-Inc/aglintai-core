@@ -2,7 +2,11 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 export const interviewPoolUsersSchema = z.object({
@@ -97,3 +101,5 @@ const query = async ({
 export const interviewPoolUsers = privateProcedure
   .input(interviewPoolUsersSchema)
   .query(query);
+
+export type InterviewPoolUsers = ProcedureDefinition<typeof interviewPoolUsers>;

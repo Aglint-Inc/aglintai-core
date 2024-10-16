@@ -1,6 +1,10 @@
 import { CustomRecruiterPreferencesUpdateSchema } from '@aglint/shared-types/src/db/tables/recruiter_preferences.types';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 const mutation = async ({
@@ -18,3 +22,7 @@ const mutation = async ({
 export const updateTenantPreference = privateProcedure
   .input(CustomRecruiterPreferencesUpdateSchema)
   .mutation(mutation);
+
+export type UpdateTenantPreference = ProcedureDefinition<
+  typeof updateTenantPreference
+>;

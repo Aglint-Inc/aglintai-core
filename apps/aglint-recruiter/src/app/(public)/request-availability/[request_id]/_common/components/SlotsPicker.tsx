@@ -26,7 +26,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
     handleClickDate,
     multiDaySessions,
   } = useRequestAvailabilityContext();
-  const { data: candidateRequestAvailability } = useCandidateAvailabilityData();
+  const candidateRequestAvailability = useCandidateAvailabilityData();
   const NoOfSlotsNeeds = candidateRequestAvailability?.number_of_slots || 2;
   const NoOfDaysNeeds = candidateRequestAvailability?.number_of_days || 2;
   useEffect(() => {

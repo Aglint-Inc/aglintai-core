@@ -2,7 +2,11 @@
 import { supabaseWrap } from '@aglint/shared-utils';
 import { z } from 'zod';
 
-import { type PublicProcedure, publicProcedure } from '@/server/api/trpc';
+import {
+  type ProcedureDefinition,
+  type PublicProcedure,
+  publicProcedure,
+} from '@/server/api/trpc';
 import { verifyRecruiterSelectedSlots } from '@/services/CandidateSchedule/utils/bookingUtils/candidateSelfSchedule/verifyRecruiterSelctedOptions';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
@@ -34,3 +38,7 @@ const query = async ({
 };
 
 export const slotsCandidateInvite = publicProcedure.input(schema).query(query);
+
+export type SlotsCandidateInvite = ProcedureDefinition<
+  typeof slotsCandidateInvite
+>;

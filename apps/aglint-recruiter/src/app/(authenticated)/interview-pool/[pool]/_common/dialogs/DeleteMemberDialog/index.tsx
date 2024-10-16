@@ -12,15 +12,30 @@ import {
 import { Skeleton } from '@components/ui/skeleton';
 import { UIAlert } from '@components/ui-alert';
 
+import type { FetchRelations } from '@/routers/interview_pool/delete_user/fetch_relations';
+import type { ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 import toast from '@/utils/toast';
 
-import { type useModuleAndUsers } from '../../hooks/useModuleAndUsers';
+import type { useModuleAndUsers } from '../../hooks/useModuleAndUsers';
 import {
   setIsDeleteMemberDialogOpen,
   setSelUser,
   useModulesStore,
 } from '../../stores/store';
+
+const useFetchRelations = (): ProcedureQuery<FetchRelations> => {
+  const selUser = useModulesStore((state) => state.selUser);
+  return api.interview_pool.delete_user.fetch_relations.useQuery(
+    {
+      module_id: selUser?.module_id ?? '',
+      selected_user_id: selUser?.user_id ?? '',
+    },
+    {
+      enabled: !!selUser?.module_id && !!selUser?.user_id,
+    },
+  );
+};
 
 function DeleteMemberDialog() {
   const isDeleteMemberDialogOpen = useModulesStore(
@@ -28,16 +43,7 @@ function DeleteMemberDialog() {
   );
   const selUser = useModulesStore((state) => state.selUser);
 
-  const { data, isLoading, isError } =
-    api.interview_pool.delete_user.fetch_relations.useQuery(
-      {
-        module_id: selUser?.module_id ?? '',
-        selected_user_id: selUser?.user_id ?? '',
-      },
-      {
-        enabled: !!selUser?.module_id && !!selUser?.user_id,
-      },
-    );
+  const { data, isLoading, isError } = useFetchRelations();
 
   const { mutateAsync, isPending } =
     api.interview_pool.delete_user.delete_relation.useMutation();

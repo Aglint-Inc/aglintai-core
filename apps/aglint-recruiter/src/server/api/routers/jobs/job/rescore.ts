@@ -1,7 +1,11 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 const schema = z.object({
@@ -37,3 +41,5 @@ const mutation = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
 };
 
 export const rescore = privateProcedure.input(schema).mutation(mutation);
+
+export type Rescore = ProcedureDefinition<typeof rescore>;

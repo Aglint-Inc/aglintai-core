@@ -3,8 +3,13 @@ import { useEffect, useState } from 'react';
 
 import { app_modules } from '@/constant/role_and_permissions';
 import { useSearchQuery } from '@/hooks/useSearchQuery';
+import { type Get } from '@/routers/rolesAndPermissions/get';
+import { type ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 import toast from '@/utils/toast';
+
+const useGetRoleAndPermissions = (): ProcedureQuery<Get> =>
+  api.rolesAndPermissions.get.useQuery();
 
 export function useRoleData() {
   const [selectRole, setSelectRole] = useState<string | null>(null);
@@ -12,7 +17,7 @@ export function useRoleData() {
     role: string;
     add: boolean;
   }>();
-  const query = api.rolesAndPermissions.get.useQuery(undefined, {});
+  const query = useGetRoleAndPermissions();
   useEffect(() => {
     if (
       query.isFetched &&

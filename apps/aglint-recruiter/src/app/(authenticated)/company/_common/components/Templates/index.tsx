@@ -34,6 +34,8 @@ import { UIButton } from '@/common/UIButton';
 import { useTenant } from '@/company/hooks';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { useRouterPro } from '@/hooks/useRouterPro';
+import { type Read } from '@/routers/tenant/templates/read';
+import { type ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 import { emailTemplateCopy } from '@/types/companyEmailTypes';
 import { capitalizeAll } from '@/utils/text/textUtils';
@@ -506,6 +508,5 @@ function SchedulerEmailTemps() {
 
 export default SchedulerEmailTemps;
 
-const useCompanyTemplates = () => {
-  return api.tenant.templates.read.useQuery();
-};
+const useCompanyTemplates = (): ProcedureQuery<Read> =>
+  api.tenant.templates.read.useQuery();

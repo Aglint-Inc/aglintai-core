@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { createPublicClient } from '@/server/db';
 
-import { privateProcedure } from '../../trpc';
+import { privateProcedure, type ProcedureDefinition } from '../../trpc';
 
 const body = z.object({
   recruiter_id: z.string().uuid(),
@@ -37,3 +37,5 @@ export const request_metrics = privateProcedure
         .throwOnError()
     ).data;
   });
+
+export type RequestMetrics = ProcedureDefinition<typeof request_metrics>;

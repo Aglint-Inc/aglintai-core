@@ -1,7 +1,11 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 export const trainingProgressSchema = z.object({
@@ -15,6 +19,8 @@ const query = (p: PrivateProcedure<typeof trainingProgressSchema>) => {
 export const trainingProgress = privateProcedure
   .input(trainingProgressSchema)
   .query(query);
+
+export type TrainingProgress = ProcedureDefinition<typeof trainingProgress>;
 
 export const fetchProgress = async (
   props: PrivateProcedure<typeof trainingProgressSchema>,

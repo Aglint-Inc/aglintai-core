@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-import { type PublicProcedure, publicProcedure } from '@/server/api/trpc';
+import {
+  type ProcedureDefinition,
+  type PublicProcedure,
+  publicProcedure,
+} from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
 const schema = z.object({
@@ -26,6 +30,10 @@ const query = async ({
 export const getSchedulingReasonsCandidateInvite = publicProcedure
   .input(schema)
   .query(query);
+
+export type GetSchedulingReasonsCandidateInvite = ProcedureDefinition<
+  typeof getSchedulingReasonsCandidateInvite
+>;
 
 const getSchedulingReason = async (id: string) => {
   const db = createPublicClient();

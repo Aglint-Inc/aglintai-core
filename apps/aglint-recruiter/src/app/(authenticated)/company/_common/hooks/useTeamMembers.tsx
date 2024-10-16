@@ -1,11 +1,22 @@
 import { useTenant, useTenantMembers } from '@/company/hooks';
+import { type GetLastLogin } from '@/routers/get_last_login';
+import type { ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 import toast from '@/utils/toast';
 
 export const useTeamMembersLastLogin = () => {
+  const query = useGetLastLogin();
+  return {
+    ...query,
+    data: query.data || {},
+    isPending: query.isPending,
+  };
+};
+
+const useGetLastLogin = (): ProcedureQuery<GetLastLogin> => {
   const { allMembers } = useTenantMembers();
   const ids = allMembers.map((item) => item.user_id);
-  const query = api.get_last_login.useQuery(
+  return api.get_last_login.useQuery(
     { ids },
     {
       enabled: Boolean(allMembers?.length),
@@ -13,11 +24,6 @@ export const useTeamMembersLastLogin = () => {
       refetchOnMount: false,
     },
   );
-  return {
-    ...query,
-    data: query.data || {},
-    isPending: query.isPending,
-  };
 };
 
 export function useUserSync() {

@@ -20,15 +20,10 @@ function Calendar() {
     useConfirmAvailabilitySchedulingFlowStore();
   const { selectedDateSlots, selectedDayAvailableBlocks } =
     useAvailabilityContext();
-  const { data: availableSlots, isFetched } = useRequestAvailabilityDetails(
-    {
-      availability_id: candidateAvailabilityId,
-      user_tz: dayjsLocal.tz.guess(),
-    },
-    {
-      enabled: !!candidateAvailabilityId,
-    },
-  );
+  const { data: availableSlots, isFetched } = useRequestAvailabilityDetails({
+    availability_id: candidateAvailabilityId,
+    user_tz: dayjsLocal.tz.guess(),
+  });
 
   const availabilities =
     isFetched &&

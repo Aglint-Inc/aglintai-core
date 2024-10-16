@@ -14,7 +14,7 @@ function TrainingProgress() {
     { key: 'trainingHistory', label: 'Training History' },
   ];
   const { data, isPending } = useTrainingProgress();
-  const recentReschedulesData = data.map((item) => {
+  const recentReschedulesData = (data ?? []).map((item) => {
     const {
       number_of_shadow,
       noshadow: noShadow,

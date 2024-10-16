@@ -1,7 +1,6 @@
-import { type RouterOutputs } from '@/trpc/client';
+import type { GetCandidateAvailabilityData } from '@/routers/candidate_availability/getCandidateAvailabilityData';
+import type { GetMeetings } from '@/routers/candidate_availability/getMeetings';
 
-export type CandidateMeetingsType =
-  RouterOutputs['candidate_availability']['getMeetings'];
+export type CandidateMeetingsType = GetMeetings['output'];
 
-export type CandidateAvailabilityType =
-  RouterOutputs['candidate_availability']['getCandidateAvailabilityData'];
+export type CandidateAvailabilityType = GetCandidateAvailabilityData['output'];

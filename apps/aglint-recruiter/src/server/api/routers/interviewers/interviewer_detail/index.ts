@@ -1,7 +1,11 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
-import { type PublicProcedure, publicProcedure } from '@/server/api/trpc';
+import {
+  type ProcedureDefinition,
+  type PublicProcedure,
+  publicProcedure,
+} from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
 const userSchema = z.object({ user_id: z.string().uuid() });
@@ -168,3 +172,7 @@ const query = async ({
 export const getInterviewerDetails = publicProcedure
   .input(userSchema)
   .query(query);
+
+export type GetInterviewerDetails = ProcedureDefinition<
+  typeof getInterviewerDetails
+>;

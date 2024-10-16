@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 const schema = z.object({ job_id: z.string().uuid() });
@@ -12,7 +16,9 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
       .rpc('getskillpools', { jobid: input.job_id })
       .single()
       .throwOnError()
-  ).data;
+  ).data!;
 };
 
 export const skillPool = privateProcedure.input(schema).query(query);
+
+export type SkillPool = ProcedureDefinition<typeof skillPool>;

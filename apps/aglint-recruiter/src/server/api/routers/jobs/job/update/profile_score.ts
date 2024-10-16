@@ -1,7 +1,8 @@
-import type { PostgrestSingleResponse } from '@supabase/supabase-js';
-import { type z } from 'zod';
-
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 import { profileScoreSchema } from '../../common/schema';
@@ -11,7 +12,7 @@ const schema = profileScoreSchema;
 const mutation = async ({
   input: { id, ...payload },
   ctx,
-}: PrivateProcedure<typeof schema>): Promise<ProfileScore['output']> => {
+}: PrivateProcedure<typeof schema>) => {
   const db = createPrivateClient();
   return await db
     .from('public_jobs')
@@ -23,7 +24,4 @@ const mutation = async ({
 
 export const profile_score = privateProcedure.input(schema).mutation(mutation);
 
-export type ProfileScore = {
-  input: z.infer<typeof schema>;
-  output: PostgrestSingleResponse<null>;
-};
+export type ProfileScore = ProcedureDefinition<typeof profile_score>;

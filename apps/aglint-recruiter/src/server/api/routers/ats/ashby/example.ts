@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-import { type ATSProcedure, atsProcedure } from '@/server/api/trpc';
+import {
+  type ATSProcedure,
+  atsProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 
 const schema = z.object({ recruiter_id: z.string().uuid() });
 
@@ -9,3 +13,5 @@ const mutation = ({ input }: ATSProcedure<typeof schema>) => {
 };
 
 export const example = atsProcedure.input(schema).mutation(mutation);
+
+export type Example = ProcedureDefinition<typeof example>;
