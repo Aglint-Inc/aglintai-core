@@ -17,7 +17,6 @@ import {
   useApplicationDetailStore,
 } from '../stores/applicationDetail';
 import { type Interviewer } from '../types/types';
-import { useApplicationMeta } from './useApplicationMeta';
 import { useApplicationRequests } from './useApplicationRequests';
 import { useInterviewStages } from './useInterviewStages';
 
@@ -36,7 +35,7 @@ export const useScheduleRequest = () => {
   const [isSaving, setIsSaving] = useState(false);
   const { data: members, status: membersStatus } = useMemberList();
   const { recruiter_user } = useTenant();
-  const { application_id } = useApplicationMeta();
+  const application_id = router.params.application;
   const { data: stages } = useInterviewStages();
   const { data: requests } = useApplicationRequests();
   const selectedStageId = router.queryParams.stage as string;

@@ -2,23 +2,27 @@ import { toast } from '@components/hooks/use-toast';
 import { useParams } from 'next/navigation';
 
 import type { GetCandidateAvailabilityData } from '@/routers/candidate_availability/getCandidateAvailabilityData';
+import type { GetMeetings } from '@/routers/candidate_availability/getMeetings';
+import type { GetScheduledMeetings } from '@/routers/candidate_availability/getScheduledMeetings';
 import type { Update } from '@/routers/candidate_availability/update';
+import type { ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 
-export const useCandidateAvailabilityMeetings = () => {
-  const candidateRequestAvailability = useCandidateAvailabilityData();
-  const interview_sessions =
-    candidateRequestAvailability?.request_session_relation
-      ? candidateRequestAvailability?.request_session_relation.map(
-          (ele) => ele.interview_session,
-        )
-      : [];
-  const sessions_ids = interview_sessions.map((ele) => ele?.id ?? '');
+export const useCandidateAvailabilityMeetings =
+  (): ProcedureQuery<GetMeetings> => {
+    const candidateRequestAvailability = useCandidateAvailabilityData();
+    const interview_sessions =
+      candidateRequestAvailability?.request_session_relation
+        ? candidateRequestAvailability?.request_session_relation.map(
+            (ele) => ele.interview_session,
+          )
+        : [];
+    const sessions_ids = interview_sessions.map((ele) => ele?.id ?? '');
 
-  return api.candidate_availability.getMeetings.useQuery({
-    sessions_ids: sessions_ids,
-  });
-};
+    return api.candidate_availability.getMeetings.useQuery({
+      sessions_ids: sessions_ids,
+    });
+  };
 
 export const useCandidateAvailabilityData =
   (): GetCandidateAvailabilityData['output'] => {
@@ -50,17 +54,18 @@ export const useUpdateCandidateAvailability = () => {
   };
   return { ...updateMutation, updateRequestAvailability };
 };
-export const useCandidateAvailabilityScheduleDMeetings = () => {
-  const candidateRequestAvailability = useCandidateAvailabilityData();
-  const application_id = candidateRequestAvailability
-    ? candidateRequestAvailability.application_id
-    : '';
-  return api.candidate_availability.getScheduledMeetings.useQuery(
-    {
-      application_id: application_id,
-    },
-    {
-      enabled: !!application_id,
-    },
-  );
-};
+export const useCandidateAvailabilityScheduleDMeetings =
+  (): ProcedureQuery<GetScheduledMeetings> => {
+    const candidateRequestAvailability = useCandidateAvailabilityData();
+    const application_id = candidateRequestAvailability
+      ? candidateRequestAvailability.application_id
+      : '';
+    return api.candidate_availability.getScheduledMeetings.useQuery(
+      {
+        application_id: application_id,
+      },
+      {
+        enabled: !!application_id,
+      },
+    );
+  };

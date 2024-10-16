@@ -2,47 +2,46 @@ import type { DatabaseEnums } from '@aglint/shared-types';
 import { useState } from 'react';
 
 import { useAnalyticsContext } from '@/context/AnalyticsContext/AnalyticsContextProvider';
+import type {
+  InterviewTypes,
+  Reasons,
+  RecentDeclineReschedule,
+  TrainingProgress,
+} from '@/routers/scheduling/v1/analytics';
+import { type ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 
-export function useInterviewTypes() {
+export function useInterviewTypes(): ProcedureQuery<InterviewTypes> {
   const { filters } = useAnalyticsContext();
-  const { data, isPending } = api.scheduling.analytics.interview_types.useQuery(
-    {
-      departments: filters.department ? [filters.department] : [],
-      jobs: filters.job ? [filters.job] : [],
-    },
-  );
-  return { data: data || [], isPending };
+  return api.scheduling.analytics.interview_types.useQuery({
+    departments: filters.department ? [filters.department] : [],
+    jobs: filters.job ? [filters.job] : [],
+  });
 }
-export function useSchedulingAnalytics() {
+export function useSchedulingAnalytics(): ProcedureQuery<RecentDeclineReschedule> {
   const { filters } = useAnalyticsContext();
-  const { data, isPending } =
-    api.scheduling.analytics.recent_decline_reschedule.useQuery({
-      departments: filters.department ? [filters.department] : [],
-      jobs: filters.job ? [filters.job] : [],
-    });
-  return { data: data || [], isPending };
+  return api.scheduling.analytics.recent_decline_reschedule.useQuery({
+    departments: filters.department ? [filters.department] : [],
+    jobs: filters.job ? [filters.job] : [],
+  });
 }
-export function useTrainingProgress() {
+export function useTrainingProgress(): ProcedureQuery<TrainingProgress> {
   const { filters } = useAnalyticsContext();
-  const { data, isPending } =
-    api.scheduling.analytics.training_progress.useQuery({
-      departments: filters.department ? [filters.department] : [],
-      jobs: filters.job ? [filters.job] : [],
-    });
-  return { data: data || [], isPending };
+  return api.scheduling.analytics.training_progress.useQuery({
+    departments: filters.department ? [filters.department] : [],
+    jobs: filters.job ? [filters.job] : [],
+  });
 }
 export function useReasons() {
   const [view, setView] = useState<DatabaseEnums['cancel_type']>(
     'candidate_request_reschedule',
   );
   const { filters } = useAnalyticsContext();
-  const { data, isPending, isError } =
-    api.scheduling.analytics.reasons.useQuery({
-      departments: filters.department ? [filters.department] : [],
-      jobs: filters.job ? [filters.job] : [],
-      type: view,
-    });
+  const { data, isPending, isError } = useReasonsProcedure({
+    departments: filters.department ? [filters.department] : [],
+    jobs: filters.job ? [filters.job] : [],
+    type: view,
+  });
   return {
     data: data?.map((item) => ({ name: item.reason, value: item.count })) || [],
     isPending,
@@ -51,3 +50,7 @@ export function useReasons() {
     setView,
   };
 }
+
+const useReasonsProcedure = (
+  input: Reasons['input'],
+): ProcedureQuery<Reasons> => api.scheduling.analytics.reasons.useQuery(input);

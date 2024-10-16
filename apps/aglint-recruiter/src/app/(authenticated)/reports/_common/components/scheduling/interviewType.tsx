@@ -16,7 +16,7 @@ function InterviewType() {
     <GenericTable
       title='Interview Type'
       headers={headers}
-      data={data}
+      data={data!}
       isLoading={isPending}
       emptyStateMessage='No interview data available'
     />

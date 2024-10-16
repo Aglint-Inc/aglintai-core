@@ -4,15 +4,20 @@ import UITabs, { type UITabType } from '@/common/UITabs';
 import { useFlags } from '@/company/hooks/useFlags';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
+import { type Get } from '@/routers/email/template/get';
+import { type ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 import ROUTES from '@/utils/routing/routes';
+
+const useGetEmailTemplate = (): ProcedureQuery<Get> =>
+  api.email.template.get.useQuery();
 
 function VerticalNav() {
   const router = useRouterPro<{
     email: NonNullable<(typeof emailTemplates)['data']>[number]['type'];
     tab: string;
   }>();
-  const emailTemplates = api.email.template.get.useQuery();
+  const emailTemplates = useGetEmailTemplate();
   const [firstTemplate, setFirstTemplate] = useState<
     NonNullable<(typeof emailTemplates)['data']>[number]['type'] | null
   >(null);

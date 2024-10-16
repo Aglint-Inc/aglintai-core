@@ -285,7 +285,10 @@ export type ProcedureDefinition<T extends Definition> = Pick<
 >;
 
 export type ProcedureQuery<T extends ProcedureDefinition<Definition>> =
-  UseTRPCQueryResult<T['output'], TRPCClientErrorLike<T & Meta>>;
+  UseTRPCQueryResult<T['output'], TRPCQueryError<T>>;
+
+type TRPCQueryError<T extends ProcedureDefinition<Definition>> =
+  TRPCClientErrorLike<T & Meta>;
 
 type Meta = {
   transformer: true;

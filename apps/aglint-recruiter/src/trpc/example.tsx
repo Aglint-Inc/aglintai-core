@@ -1,8 +1,11 @@
 import { createContext, type ReactNode, useContext } from 'react';
 
+import type { Hello } from '@/routers/example/helloWorld/hello';
+import type { ProcedureQuery } from '@/server/api/trpc';
+
 import { api } from './client';
 
-export const useHello = () => {
+export const useHello = (): ProcedureQuery<Hello> => {
   return api.example.helloWorld.hello.useQuery({
     helloId: 'abc',
   });
@@ -33,12 +36,11 @@ const B = () => {
 };
 
 const useFooBarContext = () => {
-  const foo = api.example.fooBar.foo.useQuery();
   const { mutate } = api.example.fooBar.bar.useMutation();
   const handleBar = () => {
     mutate({ barId: 'def' });
   };
-  return { foo, handleBar };
+  return { handleBar };
 };
 
 const FooBarContext = createContext<
