@@ -105,7 +105,6 @@ export async function POST(req: Request) {
         .is('slots', null)
         .throwOnError()
     ).data;
-
     const filterJsonPromise = (
       await supabaseAdmin
         .from('interview_filter_json')
@@ -317,10 +316,12 @@ const getMeetingLink = async (
       .eq('request_id', request_id)
       .single()
       .throwOnError();
+
     return data
       ? `${process.env.NEXT_PUBLIC_HOST_NAME}/request-availability/${data.id}`
       : '';
   }
+
   if (type === 'self_scheduling') {
     const { data } = await supabaseAdmin
       .from('interview_filter_json')
