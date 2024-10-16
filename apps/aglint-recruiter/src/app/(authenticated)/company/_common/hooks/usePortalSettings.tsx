@@ -15,8 +15,14 @@ export const usePortalSettings = () => {
     recruiter: { name },
   } = useTenant();
   const { banner_image, company_images: tempCompany_images } = useFlags();
+
+  const { data, isLoading: isPortalLoading } =
+    api.candidatePortal.get_candidate_portal_detail.useQuery();
+
   const company_images = tempCompany_images || [];
+
   const { mutateAsync } = api.tenant.updateTenantPreference.useMutation();
+
   const [loading, setLoading] = useState<{
     isCoverUploading: boolean;
     isCoverRemoving: boolean;
@@ -62,7 +68,6 @@ export const usePortalSettings = () => {
       await mutateAsync({ company_images: new_company_images });
       setSelectedImages([]);
     } catch (err) {
-      // @ts-ignore //check here
       toast({ title: 'Images upload failed', description: err?.message });
     } finally {
       setLoading((pre) => ({ ...pre, isImageUploading: false }));
@@ -143,7 +148,7 @@ export const usePortalSettings = () => {
     }
   };
 
-  const updateCover = async (image: File, oldCover: string) => {
+  const updateCover = async (image: File, oldCover: string | null) => {
     try {
       setLoading((pre) => ({ ...pre, isCoverUploading: true }));
 
@@ -218,6 +223,8 @@ export const usePortalSettings = () => {
     setIsDialogOpen,
     isDialogOpen,
     loading,
+    portalDetails: data!,
+    isPortalLoading,
   };
 };
 

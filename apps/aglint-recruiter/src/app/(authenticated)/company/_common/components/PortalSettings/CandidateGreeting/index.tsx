@@ -5,12 +5,14 @@ import { useState } from 'react';
 
 import { UIButton } from '@/common/UIButton';
 import UISectionCard from '@/common/UISectionCard';
-import { useFlags } from '@/company/hooks/useFlags';
+import { usePortalSettings } from '@/company/hooks/usePortalSettings';
 
 import { GreetingEditDialog } from './GreetingEditDialog';
 
 export default function CandidateGreeting() {
-  const { greetings } = useFlags();
+  const {
+    portalDetails: { greetings },
+  } = usePortalSettings();
   const [text, setText] = useState<string>(greetings || '');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 

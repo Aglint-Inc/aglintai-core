@@ -4,15 +4,17 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 import UISectionCard from '@/common/UISectionCard';
-import { useFlags } from '@/company/hooks/useFlags';
 import { usePortalSettings } from '@/company/hooks/usePortalSettings';
 
 import { SliderImageUploadDialog } from './SliderImageUploadDialog';
 
 export function SliderImages() {
-  const { deleteImages, loading } = usePortalSettings();
+  const {
+    deleteImages,
+    loading,
+    portalDetails: { company_images },
+  } = usePortalSettings();
 
-  const { company_images } = useFlags();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (

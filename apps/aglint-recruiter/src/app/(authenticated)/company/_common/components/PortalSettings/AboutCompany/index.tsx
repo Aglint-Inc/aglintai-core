@@ -6,13 +6,14 @@ import { useState } from 'react';
 
 import { UIButton } from '@/common/UIButton';
 import UISectionCard from '@/common/UISectionCard';
-import { useFlags } from '@/company/hooks/useFlags';
+import { usePortalSettings } from '@/company/hooks/usePortalSettings';
 
 import { AboutCompanyDialog } from './AboutCompanyDialog';
 
 export default function AboutCompany() {
-  const { about } = useFlags();
-
+  const {
+    portalDetails: { about },
+  } = usePortalSettings();
   const htmlParser = Parser();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   return (

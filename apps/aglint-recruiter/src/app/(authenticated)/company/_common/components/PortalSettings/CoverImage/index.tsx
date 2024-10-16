@@ -1,3 +1,4 @@
+import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { ImagePlus } from 'lucide-react';
 import Image from 'next/image';
@@ -5,21 +6,29 @@ import { type ChangeEvent, type DragEvent, useRef, useState } from 'react';
 
 import { Loader } from '@/common/Loader';
 import UISectionCard from '@/common/UISectionCard';
-import { useFlags } from '@/company/hooks/useFlags';
 import { usePortalSettings } from '@/company/hooks/usePortalSettings';
-
 export function CoverImage() {
-  const { banner_image } = useFlags();
-  const { removeCover, updateCover, loading } = usePortalSettings();
+  const {
+    removeCover,
+    updateCover,
+    loading,
+    portalDetails: { banner_image },
+  } = usePortalSettings();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef2 = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const newFile = Array.from(event.target.files)[0];
-      if (newFile.size < 5 * 1000000 && banner_image) {
-        updateCover(newFile, banner_image);
+
+      if (newFile.size > 5 * 1000000) {
+        toast({
+          title: 'Please use a file less than 5mb',
+          variant: 'destructive',
+        });
+        return;
       }
+      await updateCover(newFile, banner_image);
     }
   };
 

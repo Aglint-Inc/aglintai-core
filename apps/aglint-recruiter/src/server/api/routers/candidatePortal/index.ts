@@ -1,4 +1,5 @@
 import { createTRPCRouter } from '../../trpc';
+import { getCandidatePortalDetails } from './get_candidate_portal_details';
 import { getEmail } from './get_email';
 import { getInterviews } from './get_interviews';
 import { getMessages } from './get_messages';
@@ -13,4 +14,5 @@ export const candidatePortal = createTRPCRouter({
   get_navbar: getNav,
   get_profile: getProfile,
   update_profile: updateProfile,
+  get_candidate_portal_detail: getCandidatePortalDetails,
 });
