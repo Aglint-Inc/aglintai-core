@@ -271,7 +271,6 @@ export class CandidatesScheduling {
         }),
     );
   }
-
   // single round slots with suggesting slots
   public candavailabilityWithSuggestion() {
     if (!this.db_details) {
