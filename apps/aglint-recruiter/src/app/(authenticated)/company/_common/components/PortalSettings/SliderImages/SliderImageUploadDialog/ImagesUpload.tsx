@@ -1,3 +1,4 @@
+import { toast } from '@components/hooks/use-toast';
 import { Card, CardContent } from '@components/ui/card';
 import { Upload, X } from 'lucide-react';
 import Image from 'next/image';
@@ -24,7 +25,8 @@ export default function ImagesUpload({
       const newFiles = Array.from(event.target.files);
 
       const files = newFiles.filter((file) => file.size < 5 * 1000000);
-      // if (newFiles.length !== files.length)
+      if (newFiles.length !== files.length)
+        toast({ title: 'Image must be less than 5mb', variant: 'destructive' });
       //chandruAddToast
       setSelectedImages((prevFiles) => [...prevFiles, ...files]);
     }
@@ -47,7 +49,8 @@ export default function ImagesUpload({
       const newFiles = Array.from(event.dataTransfer.files);
 
       const files = newFiles.filter((file) => file.size < 5 * 1000000);
-      // if (newFiles.length !== files.length)
+      if (newFiles.length !== files.length)
+        toast({ title: 'Image must be less than 5mb', variant: 'destructive' });
       //chandruAddToast
 
       setSelectedImages((prevFiles) => [...prevFiles, ...files]);
