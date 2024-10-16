@@ -1,8 +1,8 @@
 import { toast } from '@components/hooks/use-toast';
 
+import type { Create } from '@/routers/candidate_availability/create';
+import type { Update } from '@/routers/candidate_availability/update';
 import { api } from '@/trpc/client';
-import { Create } from '@/routers/candidate_availability/create';
-import { Update } from '@/routers/candidate_availability/update';
 
 export const useRequestAvailabilityDetails =
   api.candidate_availability.availableSlots.useQuery;

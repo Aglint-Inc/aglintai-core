@@ -1,7 +1,7 @@
 import { toast } from '@components/hooks/use-toast';
 
+import type { UpdateNote } from '@/routers/requests/note/update';
 import { api } from '@/trpc/client';
-import { UpdateNote } from '@/routers/requests/note/update';
 export const useReadNotes = api.requests.note.read.useQuery;
 
 export const useUpdateRequestNote = () => {
