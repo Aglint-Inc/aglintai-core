@@ -1,4 +1,5 @@
 import { defineWorkspace } from 'vitest/config';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineWorkspace([
   {
@@ -16,5 +17,6 @@ export default defineWorkspace([
       name: 'aglint-web',
       environment: 'node',
     },
+    plugins: [tsconfigPaths()],
   },
 ]);
