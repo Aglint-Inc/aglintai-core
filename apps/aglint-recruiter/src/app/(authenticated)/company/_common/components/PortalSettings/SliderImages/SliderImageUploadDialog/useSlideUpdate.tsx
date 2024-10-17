@@ -26,9 +26,5 @@ export const useSlideRemove = () => {
 };
 
 const removeImage = async (arg: { imageUrl: string }) => {
-  await axios.post('/api/candidate_portal/portal_slide_remove', arg, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+  await axios.post('/api/candidate_portal/portal_slide_remove', arg, {});
 };

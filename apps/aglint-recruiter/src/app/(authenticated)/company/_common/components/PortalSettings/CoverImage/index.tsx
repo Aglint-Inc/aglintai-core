@@ -14,8 +14,9 @@ export function CoverImage() {
   const {
     recruiter: { name },
   } = useTenant();
+
   const {
-    portalDetails: { banner_image },
+    data: { banner_image },
   } = usePortalSettings();
 
   const { mutateAsync, isPending } = useCoverUpdate();

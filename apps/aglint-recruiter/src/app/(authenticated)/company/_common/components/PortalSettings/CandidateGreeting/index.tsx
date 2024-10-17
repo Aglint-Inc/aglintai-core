@@ -11,7 +11,7 @@ import { GreetingEditDialog } from './GreetingEditDialog';
 
 export default function CandidateGreeting() {
   const {
-    portalDetails: { greetings },
+    data: { greetings },
   } = usePortalSettings();
   const [text, setText] = useState<string>(greetings || '');
   const [isDialogOpen, setIsDialogOpen] = useState(false);

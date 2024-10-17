@@ -11,9 +11,7 @@ import { useSlideRemove } from './SliderImageUploadDialog/useSlideUpdate';
 
 export function SliderImages() {
   const {
-    // deleteImages,
-
-    portalDetails: { company_images },
+    data: { company_images },
   } = usePortalSettings();
 
   const [loadingImages, setLoadingImages] = useState<string[]>([]);

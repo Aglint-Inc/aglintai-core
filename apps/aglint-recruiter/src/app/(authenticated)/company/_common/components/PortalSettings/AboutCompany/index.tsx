@@ -12,7 +12,7 @@ import { AboutCompanyDialog } from './AboutCompanyDialog';
 
 export default function AboutCompany() {
   const {
-    portalDetails: { about },
+    data: { about },
   } = usePortalSettings();
   const htmlParser = Parser();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
