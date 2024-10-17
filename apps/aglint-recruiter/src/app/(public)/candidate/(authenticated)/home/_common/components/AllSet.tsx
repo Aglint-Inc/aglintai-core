@@ -6,7 +6,7 @@ import React from 'react';
 import { useCandidatePortal } from '../../../_common/hooks';
 
 function AllSet() {
-  const { application_id } = useCandidatePortal();
+  const { application_id, isPreview } = useCandidatePortal();
   return (
     <div>
       <Card className='border border-border bg-background/80 shadow-sm backdrop-blur-sm'>
@@ -24,7 +24,13 @@ function AllSet() {
           </div>
         </CardHeader>
         <CardContent className='p-0 pb-4 pl-4 pr-4'>
-          <Link href={`/candidate/profile?application_id=${application_id}`}>
+          <Link
+            href={
+              isPreview
+                ? ''
+                : `/candidate/profile?application_id=${application_id}`
+            }
+          >
             <Button variant='outline' className='w-full'>
               View my profile
             </Button>

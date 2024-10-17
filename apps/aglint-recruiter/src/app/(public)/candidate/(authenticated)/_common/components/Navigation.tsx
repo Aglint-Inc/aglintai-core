@@ -23,6 +23,7 @@ export default function Navigation() {
   const router = useRouterPro();
   const { queryParams } = router;
   const application_id = queryParams.application_id as string;
+  const isPreview = !!queryParams.isPreview;
 
   const [signingOut, setSigningOut] = useState(false);
 
@@ -54,20 +55,21 @@ export default function Navigation() {
           </div>
 
           <nav className='flex space-x-4'>
-            <Link href={`/candidate/home?application_id=${application_id}`}>
-              <Button
-                variant='ghost'
-                // className={
-                //   currentTab === 'home'
-                //     ? 'text-primary'
-                //     : 'text-muted-foreground'
-                // }
-              >
-                Home
-              </Button>
+            <Link
+              href={
+                isPreview
+                  ? ''
+                  : `/candidate/home?application_id=${application_id}`
+              }
+            >
+              <Button variant='ghost'>Home</Button>
             </Link>
             <Link
-              href={`/candidate/interviews?application_id=${application_id}`}
+              href={
+                isPreview
+                  ? ''
+                  : `/candidate/interviews?application_id=${application_id}`
+              }
             >
               <Button
                 variant='ghost'
@@ -80,7 +82,13 @@ export default function Navigation() {
                 Interviews
               </Button>
             </Link>
-            <Link href={`/candidate/messages?application_id=${application_id}`}>
+            <Link
+              href={
+                isPreview
+                  ? ''
+                  : `/candidate/messages?application_id=${application_id}`
+              }
+            >
               <Button variant='ghost'>
                 Messages
                 {messageCount > 0 && (
@@ -96,6 +104,7 @@ export default function Navigation() {
             {/* <ThemeSwitcher />  */}
             <Button
               size='sm'
+              disabled={isPreview}
               onClick={async () => {
                 setSigningOut(true);
                 await supabase.auth.signOut();
@@ -110,7 +119,11 @@ export default function Navigation() {
 
             {data?.candidate && (
               <Link
-                href={`/candidate/profile?application_id=${application_id}`}
+                href={
+                  isPreview
+                    ? ''
+                    : `/candidate/profile?application_id=${application_id}`
+                }
               >
                 <NavProfile candidate={data.candidate} />
               </Link>

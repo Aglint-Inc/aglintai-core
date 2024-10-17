@@ -2,9 +2,10 @@ import { dayjsLocal } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-import { type usePortalHomePage } from '../hooks';
+import { type usePortalHomePage } from '../hooks/usePortalHomePage';
 
 function UpcomingInterview({
   upcomingData,
@@ -46,6 +47,8 @@ const UpcomingCard = ({
     typeof usePortalHomePage
   >['data']['upcoming'][number];
 }) => {
+  const { queryParams } = useRouterPro();
+  const isPreview = !!queryParams?.isPreview;
   return (
     <>
       <div className='flex items-center gap-3'>
@@ -75,6 +78,7 @@ const UpcomingCard = ({
       <div className='flex w-full gap-2'>
         <Button
           className='mt-4 w-full'
+          disabled={isPreview}
           onClick={() => {
             window.open(latestUpcoming.meeting_detail_link, '_blank');
           }}
@@ -84,6 +88,7 @@ const UpcomingCard = ({
         <Button
           className='mt-4 w-full'
           variant='outline'
+          disabled={isPreview}
           onClick={() => {
             latestUpcoming.meeting_link &&
               window.open(latestUpcoming.meeting_link, '_blank');

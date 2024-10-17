@@ -78,7 +78,6 @@ export const PATHS = [
   '/api/scheduling/v1/find_slots_date_range',
   '/api/scheduling/v1/update-calender-event-status',
   '/api/scheduling/v1/update-meeting-interviewers',
-  '/api/candidate_portal/candidate_pic_update',
   '/api/seed_calender',
   '/api/signup',
   '/api/workflow-cron/execute',
@@ -190,5 +189,5 @@ export const PATHS = [
   '/api/emails/slack/onQualified_slack_trainee',
   '/api/emails/slack/onReceivingAvailReq_slack_suggestSlots',
   '/api/emails/slack/onRequestCancel_slack_interviewersOrganizer',
-  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification',
-] as const;
+  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification'
+] as const
