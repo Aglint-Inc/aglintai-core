@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable security/detect-object-injection */
 import {
-  type CompServiceKeyCred,
   type InterviewModuleType,
   type NewCalenderEvent,
   type SchedulingSettingType,
