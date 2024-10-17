@@ -1,10 +1,10 @@
-import type { GetEmail } from '@/routers/candidatePortal/get_email';
+// import type { GetEmail } from '@/routers/candidatePortal/get_email';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 
-type Output = (_input: GetEmail['input']) => Promise<GetEmail['output']>;
+// type Output = (_input: GetEmail['input']) => Promise<GetEmail['output']>;
 
-export const useGetCandidateEmailByApplicationId = (): Output => {
+export const useGetCandidateEmailByApplicationId = () => {
   const utils = api.useUtils();
   return utils.candidatePortal.get_email.fetch;
 };

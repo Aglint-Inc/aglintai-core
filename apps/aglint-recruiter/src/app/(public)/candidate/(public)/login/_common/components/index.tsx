@@ -67,7 +67,7 @@ const LoginPage = () => {
     return email ? (
       <Send email={email} isSending={isSending} handleSendLink={sendLink} />
     ) : (
-      <></>
+      <>Invalidate Candidate</>
     );
 
   if (status === 'sent') return <Sent email={email} setStatus={setStatus} />;

@@ -11,6 +11,8 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 
+import { useGetCandidateEmailByApplicationId } from './uilts';
+
 const useCandidatePortalContext = () => {
   const { queryParams } = useRouterPro();
   const application_id = queryParams?.application_id as string;
@@ -29,6 +31,7 @@ export const CandidatePortalProvider = async ({
   const { queryParams } = useRouterPro();
   const application_id = queryParams?.application_id as string;
 
+  const fetcher = useGetCandidateEmailByApplicationId();
   const router = useRouterPro();
 
   useEffect(() => {
@@ -50,7 +53,19 @@ export const CandidatePortalProvider = async ({
       }
     };
 
-    getSession();
+    const checkIsExist = async () => {
+      try {
+        const { application_id: app_id } = await fetcher({ application_id });
+        if (app_id) await getSession();
+      } catch (e) {
+        router.push(
+          `${process.env.NEXT_PUBLIC_HOST_NAME}/candidate/login?application_id=${application_id}`,
+        );
+      }
+    };
+
+    checkIsExist();
+    // getSession();
   }, []);
 
   if (isLoading) return <Loader />;
