@@ -33,9 +33,6 @@ describe('identifies correct calender event type', () => {
   it('should identify recruiting block', () => {
     //
   });
-  it('should identify as free Time', () => {
-    //
-  });
 });
 
 describe('given  a list pf interviewer details events and scheduling settings', () => {

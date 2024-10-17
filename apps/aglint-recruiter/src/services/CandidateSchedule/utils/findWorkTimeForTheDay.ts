@@ -20,8 +20,11 @@ import {
 // one interview free time
 export const findInterviewerWorkHrFreeTime = (
   interviewer: InterDetailsType,
-  api_details: ScheduleApiDetails,
-  api_options: APIOptions,
+  api_details: Pick<
+    ScheduleApiDetails,
+    'req_user_tz' | 'comp_schedule_setting' | 'schedule_dates'
+  >,
+  api_options: Pick<APIOptions, 'cand_start_time' | 'cand_end_time'>,
 ) => {
   const start_date: Dayjs = api_details.schedule_dates.user_start_date_js;
   const end_date: Dayjs = api_details.schedule_dates.user_end_date_js;
@@ -62,7 +65,10 @@ export const findInterviewerWorkHrFreeTime = (
 const getCurrDayWorkingHours = (
   current_day: Dayjs,
   interv: InterDetailsType,
-  api_details: ScheduleApiDetails,
+  api_details: Pick<
+    ScheduleApiDetails,
+    'req_user_tz' | 'comp_schedule_setting'
+  >,
 ) => {
   const { int_schedule_setting } = interv;
   const work_day = int_schedule_setting.workingHours.find(
@@ -127,8 +133,11 @@ const getCurrDayWorkingHours = (
 const findWorkTimeForTheDay = (
   interviewer: InterDetailsType,
   current_day: Dayjs,
-  api_details: ScheduleApiDetails,
-  api_options: APIOptions,
+  api_details: Pick<
+    ScheduleApiDetails,
+    'req_user_tz' | 'comp_schedule_setting'
+  >,
+  api_options: Pick<APIOptions, 'cand_start_time' | 'cand_end_time'>,
 ) => {
   const int_timezone = interviewer.int_schedule_setting.timeZone.tzCode;
   const cand_time: TimeDurationDayjsType = {
