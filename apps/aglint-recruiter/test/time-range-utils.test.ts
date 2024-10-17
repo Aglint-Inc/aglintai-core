@@ -3,18 +3,10 @@ import { dayjsLocal } from '@aglint/shared-utils';
 import { describe, expect, it } from 'vitest';
 
 import {
-  compareTimesByMinutesPrec,
-  compareTimesHours,
-  convertTimeDurStrToDayjsChunk,
-  dayjsMax,
-  dayjsMin,
   isTimeChunksEnclosed,
   isTimeChunksLeftOverlapped,
-  isTimeChunksOverLapps,
   isTimeChunksRightOverlapped,
-  isTimeChunksSame,
   isTimeChunksUnEnclosed,
-  mergeOverlappingRanges,
 } from '@/services/CandidateSchedule/utils/time_range_utils';
 
 // TODO: include all utility function

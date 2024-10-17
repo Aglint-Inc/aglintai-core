@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 import { getCalEventType } from '@/services/CandidateSchedule/utils/getCalEventType';
 
-import { sample_scheduling_setting } from './constant/companyScheduleSettings';
+import { test_company_schedule_setting } from './constant/companyScheduleSettings';
 
 describe('identifies correct calender event type', () => {
   const summaries: { summary: string; expected_type: CalConflictType }[] = [
@@ -49,7 +49,10 @@ describe('identifies correct calender event type', () => {
 
   summaries.forEach(({ summary, expected_type }) => {
     it(`Event : ${summary} should be of type ${expected_type}`, () => {
-      const type = getCalEventType(summary, sample_scheduling_setting);
+      const type = getCalEventType(
+        summary,
+        test_company_schedule_setting.default,
+      );
       expect(type).toEqual(expected_type);
     });
   });

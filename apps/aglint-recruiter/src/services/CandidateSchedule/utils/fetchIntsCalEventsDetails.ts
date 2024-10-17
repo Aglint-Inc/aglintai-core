@@ -52,8 +52,7 @@ export const fetchIntsCalEventsDetails = async (
         cal_event_map[cal_event_date].push({
           id: cal_event.id,
           summary: cal_event.summary,
-          attendees: cal_event.attendees ?? [],
-          organizer: cal_event.organizer,
+
           end: {
             ...cal_event.end,
           },

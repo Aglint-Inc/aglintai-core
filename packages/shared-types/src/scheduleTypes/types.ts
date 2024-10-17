@@ -93,7 +93,7 @@ export type InterviewerMeetingScheduled = {
 };
 export type MinCalEventDetailTypes = Pick<
   CalendarEvent,
-  'id' | 'start' | 'end' | 'organizer' | 'attendees' | 'summary'
+  'id' | 'start' | 'end' | 'summary'
 > & {
   cal_type: CalConflictType;
 };
@@ -102,7 +102,10 @@ export type InterDetailsType = {
   tokens: ScheduleAuthType | null;
   interviewer_id: string;
   email: string;
-  all_events: CalendarEvent[];
+  all_events: (Pick<CalendarEvent, 'end' | 'id' | 'start' | 'summary'> & {
+    conferenceData?: CalendarEvent['conferenceData'];
+    attendees?: CalendarEvent['attendees'];
+  })[];
   cal_date_events: {
     [cal_date_str: string]: MinCalEventDetailTypes[];
   };
