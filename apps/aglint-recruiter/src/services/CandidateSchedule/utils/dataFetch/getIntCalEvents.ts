@@ -1,4 +1,7 @@
-import { type ScheduleAuthType } from '@aglint/shared-types';
+import {
+  type InterDetailsType,
+  type ScheduleAuthType,
+} from '@aglint/shared-types';
 
 import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
 
@@ -16,7 +19,7 @@ export const getIntCalEvents = async ({
   };
   start_time: string;
   end_time: string;
-}) => {
+}): Promise<InterDetailsType['all_events']> => {
   const google_cal = new GoogleCalender(company_cred_hash_str, {
     email: int.email,
     schedule_auth: int.tokens,
@@ -27,5 +30,13 @@ export const getIntCalEvents = async ({
     start_time,
     end_time,
   );
-  return fetched_events;
+
+  const mapped_events = fetched_events.map((e) => ({
+    end: e.end,
+    id: e.id,
+    start: e.start,
+    summary: e.summary,
+  }));
+
+  return mapped_events;
 };
