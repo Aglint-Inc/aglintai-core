@@ -46,6 +46,10 @@ export const dbFetchScheduleApiDetails = async ({
       false,
     ),
   };
+  const fetched_details = await fetchAndVerifyDb(
+    params,
+    is_fetch_meeting_data ? schedule_dates : null,
+  );
   const {
     comp_schedule_setting,
     int_meetings,
@@ -53,18 +57,21 @@ export const dbFetchScheduleApiDetails = async ({
     inter_data,
     interview_sessions,
     company_cred_hash_str,
-  } = await fetchAndVerifyDb(
-    params,
-    is_fetch_meeting_data ? schedule_dates : null,
-  );
+  } = fetched_details;
 
   let interviewers: SessionInterviewerType[] = [];
   if (include_all_module_ints) {
     interviewers = await geAllIntsFromModules(params.session_ids);
   } else {
-    interviewers = inter_data.filter(Boolean).reduce((tot, curr) => {
-      return [...tot, ...curr];
-    }, []);
+    interviewers = inter_data
+      .filter(Boolean)
+      .reduce((tot, curr) => {
+        return [...tot, ...curr];
+      }, [])
+      .map((int) => ({
+        ...int,
+        int_tz: int.scheduling_settings.timeZone.tzCode, // add tz
+      }));
   }
 
   const int_modules: InterviewModuleType[] = int_modules_data

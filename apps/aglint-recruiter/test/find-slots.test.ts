@@ -1,26 +1,44 @@
 // quote.service.mock.test.ts
+import { v4 } from 'uuid';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { fetchAndVerifyDb } from '@/services/CandidateSchedule/utils/dataFetch/fetchAndVerifyDb';
 
+import {
+  intervier_scheduling_settings,
+  test_company_schedule_setting,
+  test_interviewer,
+  test_sessions,
+} from './constant/companyScheduleSettings';
+
 vi.mock('@/services/CandidateSchedule/utils/dataFetch/fetchAndVerifyDb');
 
 describe('mock fetchAndVerifyDb', () => {
-  const mockData = {
-    comp_schedule_setting: null,
-    company_cred_hash_str: '',
+  const singleSesnSingInt: Awaited<ReturnType<typeof fetchAndVerifyDb>> = {
+    comp_schedule_setting: test_company_schedule_setting.default,
     int_meetings: [],
-    int_modules_data: [],
-    inter_data: [],
-    interview_sessions: [],
+    int_modules_data: [[test_sessions[0].module]],
+    interview_sessions: [test_sessions[0].session],
+    inter_data: [
+      [
+        {
+          ...test_interviewer.dileep.details,
+          scheduling_settings: intervier_scheduling_settings.asia,
+          interview_module_relation_id: v4(), // doesn'matter
+          session_id: test_sessions[0].session.id,
+          pause_json: null,
+          schedule_auth: null,
+        },
+      ],
+    ],
+    company_cred_hash_str: '',
   };
   beforeEach(() => {
-    vi.mocked(fetchAndVerifyDb).mockResolvedValue(mockData);
+    vi.mocked(fetchAndVerifyDb).mockResolvedValue(singleSesnSingInt);
   });
   it('should return mock data', async () => {
     const data = await fetchAndVerifyDb(
       {
-        company_cred_hash_str: '',
         company_id: '',
         end_date_str: '',
         req_user_tz: '',
@@ -29,7 +47,7 @@ describe('mock fetchAndVerifyDb', () => {
       },
       null,
     );
-    expect(data).toEqual(mockData);
+    expect(data).toEqual(singleSesnSingInt);
   });
 });
 
