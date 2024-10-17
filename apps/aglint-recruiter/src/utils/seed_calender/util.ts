@@ -1,13 +1,12 @@
 /* eslint-disable no-console */
 /* eslint-disable security/detect-object-injection */
 import {
-  type CompServiceKeyCred,
   type InterviewModuleType,
   type NewCalenderEvent,
   type SchedulingSettingType,
 } from '@aglint/shared-types';
 import { type CustomSchedulingSettingsUser } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
-import { dayjsLocal } from '@aglint/shared-utils';
+import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 
 import { type GoogleCalender } from '@/services/GoogleCalender/google-calender';
 
@@ -30,19 +29,19 @@ import {
 //
 const max_occurence: Record<MeetingTypeEnum, MeetingLimit> = {
   [MeetingTypeEnum.OtherMeetings]: {
-    maxOccurrences: 3,
+    maxOccurrences: 2,
     period: 'day',
   },
   [MeetingTypeEnum.Interview]: {
-    maxOccurrences: 3,
+    maxOccurrences: 2,
     period: 'day',
   },
   [MeetingTypeEnum.OOO]: {
-    maxOccurrences: 8,
+    maxOccurrences: 5,
     period: 'month',
   },
   [MeetingTypeEnum.FreeTime]: {
-    maxOccurrences: 8,
+    maxOccurrences: 5,
     period: 'month',
   },
   [MeetingTypeEnum.SoftConflicts]: {
@@ -66,36 +65,24 @@ export const seedCalendersUtil = (
 ) => {
   const supabaseAdmin = getSupabaseServer();
 
-  let comp_details: {
-    comp_schedule_setting: SchedulingSettingType;
-    companyCred: CompServiceKeyCred;
-  };
   let interview_modules: InterviewModuleType[] | null;
   const fetchDetails = async (company_id: string) => {
-    const rec_details = (
+    const rec_details = supabaseWrap(
       await supabaseAdmin
         .from('recruiter')
         .select('scheduling_settings,integrations(*)')
         .eq('id', company_id)
-        .single()
-        .throwOnError()
-    ).data;
-    if (!rec_details) {
-      throw new Error('No company found');
-    }
-    const { scheduling_settings: comp_schedule_setting } = rec_details;
+        .single(),
+    );
 
-    interview_modules = (
+    interview_modules = supabaseWrap(
       await supabaseAdmin
         .from('interview_module')
         .select()
-        .eq('recruiter_id', company_id)
-        .throwOnError()
-    ).data;
-    if (!interview_modules) {
-      throw new Error('No modules found');
-    }
-    const interviewers = (
+        .eq('recruiter_id', company_id),
+    );
+
+    const interviewers = supabaseWrap(
       await supabaseAdmin
         .from('interview_module_relation')
         .select(
@@ -104,12 +91,8 @@ export const seedCalendersUtil = (
         .in(
           'module_id',
           interview_modules.map((i) => i.id),
-        )
-        .throwOnError()
-    ).data;
-    if (!interviewers) {
-      throw new Error('No interviewers found');
-    }
+        ),
+    );
 
     const uniq_inters = Array.from(new Set(interviewers.map((i) => i.user_id)));
 
@@ -117,7 +100,7 @@ export const seedCalendersUtil = (
       company_cred_hash_str: rec_details.integrations
         ? rec_details.integrations.service_json
         : null,
-      comp_schedule_setting,
+      companyScheduleSettings: rec_details.scheduling_settings,
       interview_type_details: interviewers,
       uniq_inters,
     };
@@ -127,10 +110,14 @@ export const seedCalendersUtil = (
       dayjsLocal(cal_start_date).toISOString(),
       dayjsLocal(cal_end_date).toISOString(),
     );
+    console.log('found', cal_events.length);
 
     for (const evt of cal_events) {
+      console.log('deleting', evt.summary);
       await google_cal.updateEventStatus(evt.id, 'cancelled');
     }
+    // Add a 100ms delay to simulate processing time
+    await new Promise((resolve) => setTimeout(resolve, 50));
     console.log(cal_events.length, 'deleted');
   };
   const getRandMeetingType = (): RandMeetingType => {
@@ -195,7 +182,10 @@ export const seedCalendersUtil = (
     throw new Error('Invalid random number');
   };
 
-  const getSeedEvent = (meeting_type: MeetingTypeEnum) => {
+  const getSeedEvent = (
+    meeting_type: MeetingTypeEnum,
+    companyScheduleSettings: SchedulingSettingType,
+  ) => {
     if (!interview_modules) {
       throw new Error('No interview modules found');
     }
@@ -219,7 +209,7 @@ export const seedCalendersUtil = (
       location: null,
     };
 
-    const key_words = comp_details.comp_schedule_setting.schedulingKeyWords;
+    const key_words = companyScheduleSettings.schedulingKeyWords;
     if (meeting_type === MeetingTypeEnum.FreeTime) {
       new_cal_event.summary =
         key_words.free[getRandomArrayIdx(key_words.free.length)];
@@ -251,6 +241,7 @@ export const seedCalendersUtil = (
     google_cal: GoogleCalender,
     int_schd_sett: CustomSchedulingSettingsUser,
     monthly_interviewer_config: MeetingLimitsConfig,
+    companyScheduleSettings: SchedulingSettingType,
   ) => {
     const day_interviewer_config: MeetingLimitsConfig = {
       [MeetingTypeEnum.OtherMeetings]: { occ_cnt: 0 },
@@ -279,7 +270,7 @@ export const seedCalendersUtil = (
     while (curr_time.isBefore(work_end_time, 'minutes')) {
       const { type, duration } = getRandMeetingType();
       // console.log(type, duration);
-      const seed_cal_event = getSeedEvent(type);
+      const seed_cal_event = getSeedEvent(type, companyScheduleSettings);
       if (seed_cal_event) {
         seed_cal_event.start.dateTime = curr_time.format();
         seed_cal_event.end.dateTime = curr_time

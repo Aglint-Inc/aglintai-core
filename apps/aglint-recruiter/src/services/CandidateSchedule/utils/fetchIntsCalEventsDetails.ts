@@ -1,13 +1,10 @@
 /* eslint-disable security/detect-object-injection */
-import {
-  type CalConflictType,
-  type InterDetailsType,
-  type SchedulingSettingType,
-} from '@aglint/shared-types';
+import { type InterDetailsType } from '@aglint/shared-types';
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 
-import { GoogleCalender } from '../../GoogleCalender/google-calender';
 import { type ScheduleApiDetails } from '../types';
+import { getIntCalEvents } from './dataFetch/getIntCalEvents';
+import { getCalEventType } from './getCalEventType';
 
 export const fetchIntsCalEventsDetails = async (
   db_details: ScheduleApiDetails,
@@ -40,7 +37,6 @@ export const fetchIntsCalEventsDetails = async (
         tokens: i.schedule_auth,
         work_hours: {},
         cal_date_events: {},
-        freeTimes: {},
         day_off: {},
         holiday: {},
       };
@@ -56,8 +52,7 @@ export const fetchIntsCalEventsDetails = async (
         cal_event_map[cal_event_date].push({
           id: cal_event.id,
           summary: cal_event.summary,
-          attendees: cal_event.attendees ?? [],
-          organizer: cal_event.organizer,
+
           end: {
             ...cal_event.end,
           },
@@ -96,17 +91,17 @@ const fetchIntsCalEvents = async (params: FetchCalEventsParams) => {
   const promisedInts = params.inter_details.map(async (int) => {
     const updated_int_details = { ...int };
     try {
-      const google_cal = new GoogleCalender(params.company_cred_hash_str, {
-        email: int.email,
-        schedule_auth: int.tokens,
-        user_id: int.interviewer_id,
+      updated_int_details.all_events = await getIntCalEvents({
+        company_cred_hash_str: params.company_cred_hash_str,
+        int: {
+          email: int.email,
+          tokens: int.tokens,
+          user_id: int.interviewer_id,
+        },
+        start_time: params.start_time,
+        end_time: params.end_time,
       });
-      await google_cal.authorizeUser();
-      const fetched_events = await google_cal.getAllCalenderEvents(
-        params.start_time,
-        params.end_time,
-      );
-      updated_int_details.all_events = fetched_events;
+
       updated_int_details.isCalenderConnected = true;
     } catch (err) {
       updated_int_details.isCalenderConnected = false;
@@ -134,34 +129,4 @@ const fetchIntsCalEvents = async (params: FetchCalEventsParams) => {
     };
   });
   return ints_events_map;
-};
-
-export const getCalEventType = (
-  cal_event_summary: string,
-  comp_schedule_setting: SchedulingSettingType,
-): CalConflictType => {
-  if (!cal_event_summary) {
-    return 'cal_event';
-  }
-  const scheduling_keywords = comp_schedule_setting.schedulingKeyWords;
-  const is_soft_conflict = scheduling_keywords.SoftConflicts.some((key_word) =>
-    cal_event_summary.toLowerCase().includes(key_word.toLowerCase()),
-  );
-  if (is_soft_conflict) return 'soft';
-  const is_ooo_conflict = scheduling_keywords.outOfOffice.some((key_word) =>
-    cal_event_summary.toLowerCase().includes(key_word.toLocaleLowerCase()),
-  );
-  if (is_ooo_conflict) return 'ooo';
-
-  const is_recruiting_block = scheduling_keywords.recruitingBlocks.some(
-    (key_word) =>
-      cal_event_summary.toLowerCase().includes(key_word.toLocaleLowerCase()),
-  );
-  if (is_recruiting_block) return 'recruiting_blocks';
-  const is_free_block = scheduling_keywords.free.some((key_word) =>
-    cal_event_summary.toLowerCase().includes(key_word.toLocaleLowerCase()),
-  );
-  if (is_free_block) return 'free_time';
-
-  return 'cal_event';
 };

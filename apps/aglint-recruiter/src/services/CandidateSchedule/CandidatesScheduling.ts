@@ -107,7 +107,6 @@ export class CandidatesScheduling {
     for (const inter of inter_details) {
       const details: IntervsWorkHrsEventType = {
         email: inter.email,
-        freeTimes: inter.freeTimes,
         work_hours: inter.work_hours,
         day_off: inter.day_off,
         holiday: inter.holiday,
@@ -1383,6 +1382,7 @@ export class CandidatesScheduling {
       if (slot_comb_conflicts.length === 0) {
         return false;
       }
+
       for (let sesn_idx = 0; sesn_idx < slot.length; ++sesn_idx) {
         if (
           !isEqual(
