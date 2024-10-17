@@ -30,19 +30,19 @@ import {
 //
 const max_occurence: Record<MeetingTypeEnum, MeetingLimit> = {
   [MeetingTypeEnum.OtherMeetings]: {
-    maxOccurrences: 3,
+    maxOccurrences: 2,
     period: 'day',
   },
   [MeetingTypeEnum.Interview]: {
-    maxOccurrences: 3,
+    maxOccurrences: 2,
     period: 'day',
   },
   [MeetingTypeEnum.OOO]: {
-    maxOccurrences: 8,
+    maxOccurrences: 5,
     period: 'month',
   },
   [MeetingTypeEnum.FreeTime]: {
-    maxOccurrences: 8,
+    maxOccurrences: 5,
     period: 'month',
   },
   [MeetingTypeEnum.SoftConflicts]: {

@@ -12,8 +12,8 @@ import {
 import { seedCalendersUtil } from '@/utils/seed_calender/util';
 // Define an enumeration for meeting types
 
-const cal_start_date = dayjsLocal('2024/06/14').startOf('day').format();
-const cal_end_date = dayjsLocal('2024/08/01').startOf('day').format();
+const cal_start_date = dayjsLocal('2024/10/15').startOf('day').format();
+const cal_end_date = dayjsLocal('2024/12/30').startOf('day').format();
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

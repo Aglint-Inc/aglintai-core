@@ -1382,6 +1382,7 @@ export class CandidatesScheduling {
       if (slot_comb_conflicts.length === 0) {
         return false;
       }
+
       for (let sesn_idx = 0; sesn_idx < slot.length; ++sesn_idx) {
         if (
           !isEqual(

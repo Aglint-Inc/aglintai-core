@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 import { calcInterversCombsForSesson } from '@/services/CandidateSchedule/utils/interviewersCombsForSession';
 
-import { sample_interviewer, sample_session } from './constant/session';
+import { sample_interviewer, sample_session } from './constant/session_data';
 
 describe('Individual Session', () => {
   describe('given a session with interviewer count verify the number of session combinations that can be made', () => {
