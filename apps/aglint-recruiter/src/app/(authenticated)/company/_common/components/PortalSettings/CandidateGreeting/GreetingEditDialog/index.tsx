@@ -4,8 +4,8 @@ import type { Dispatch, SetStateAction } from 'react';
 import { UIButton } from '@/common/UIButton';
 import UIDialog from '@/common/UIDialog';
 import { UITextArea } from '@/common/UITextArea';
-import { usePortalSettings } from '@/company/context/PortalsettingsContext';
 import { useFlags } from '@/company/hooks/useFlags';
+import { api } from '@/trpc/client';
 
 export const GreetingEditDialog = ({
   setIsDialogOpen,
@@ -18,7 +18,8 @@ export const GreetingEditDialog = ({
   setText: Dispatch<SetStateAction<string>>;
   text: string;
 }) => {
-  const { updateGreetings, loading } = usePortalSettings();
+  const { mutateAsync, isPending } =
+    api.candidatePortal.update_portal_detail.useMutation();
   const { greetings } = useFlags();
 
   const handleTextChange = (
@@ -47,10 +48,10 @@ export const GreetingEditDialog = ({
           <UIButton
             type='submit'
             className='w-full'
-            isLoading={loading.isGreetingUpdating}
-            disabled={loading.isGreetingUpdating}
+            isLoading={isPending}
+            disabled={isPending}
             onClick={async () => {
-              await updateGreetings(text);
+              await mutateAsync({ greetings: text });
               setIsDialogOpen(false);
             }}
           >

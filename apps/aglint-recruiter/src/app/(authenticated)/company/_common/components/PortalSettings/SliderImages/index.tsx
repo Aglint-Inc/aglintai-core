@@ -7,14 +7,17 @@ import UISectionCard from '@/common/UISectionCard';
 import { usePortalSettings } from '@/company/context/PortalsettingsContext';
 
 import { SliderImageUploadDialog } from './SliderImageUploadDialog';
+import { useSlideRemove } from './SliderImageUploadDialog/useSlideUpdate';
 
 export function SliderImages() {
   const {
-    deleteImages,
-    loading,
+    // deleteImages,
+
     portalDetails: { company_images },
   } = usePortalSettings();
 
+  const [loadingImages, setLoadingImages] = useState<string[]>([]);
+  const { mutateAsync, isPending } = useSlideRemove();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   return (
@@ -32,7 +35,11 @@ export function SliderImages() {
           >
             {/* Show delete button on hover */}
             <button
-              onClick={() => deleteImages(image)}
+              onClick={async () => {
+                setLoadingImages((pre) => [...pre, image]);
+                await mutateAsync({ imageUrl: image });
+                setLoadingImages((pre) => pre.filter((img) => img !== image));
+              }}
               className='absolute right-2 top-2 z-20 flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm border border-border bg-white opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100'
               aria-label='Delete image' // Added for accessibility
             >
@@ -46,7 +53,7 @@ export function SliderImages() {
               height={150}
               className='relative z-10 h-full w-full object-cover'
             />
-            {(loading.isImageRemoving || []).includes(image) && (
+            {loadingImages.includes(image) && isPending && (
               <div className='absolute left-0 top-0 z-[21] flex h-[150px] w-[150px] items-center justify-center bg-white'>
                 Removing ...
               </div>

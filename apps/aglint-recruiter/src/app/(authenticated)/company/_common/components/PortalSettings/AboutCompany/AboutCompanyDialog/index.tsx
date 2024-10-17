@@ -4,9 +4,8 @@ import { useState } from 'react';
 import TipTapAIEditor from '@/common/TipTapAIEditor';
 import { UIButton } from '@/common/UIButton';
 import UIDialog from '@/common/UIDialog';
-import { usePortalSettings } from '@/company/context/PortalsettingsContext';
 import { useFlags } from '@/company/hooks/useFlags';
-
+import { api } from '@/trpc/client';
 export const AboutCompanyDialog = ({
   isDialogOpen,
   setIsDialogOpen,
@@ -15,7 +14,10 @@ export const AboutCompanyDialog = ({
   // eslint-disable-next-line no-unused-vars
   setIsDialogOpen: (x: boolean) => void;
 }) => {
-  const { updateAbout, loading } = usePortalSettings();
+  // const { updateAbout, loading } = usePortalSettings();
+  const { mutateAsync, isPending } =
+    api.candidatePortal.update_portal_detail.useMutation();
+
   const { about } = useFlags();
   const [text, setText] = useState(about || '');
   const handleTextChange = (value: string) => {
@@ -41,10 +43,10 @@ export const AboutCompanyDialog = ({
           <UIButton
             type='submit'
             className='w-full'
-            isLoading={loading.isAboutUpdating}
-            disabled={loading.isAboutUpdating}
+            isLoading={isPending}
+            disabled={isPending}
             onClick={async () => {
-              await updateAbout(text);
+              await mutateAsync({ about: text });
               setIsDialogOpen(false);
             }}
           >

@@ -202,7 +202,6 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
     .eq('user_id', user_id)
     .single()
     .throwOnError();
-  data?.recruiter?.primary_admin;
 
   if (!data || !data?.roles?.role_permissions)
     throw new TRPCError({

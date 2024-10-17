@@ -27,7 +27,6 @@ export default function ImagesUpload({
       const files = newFiles.filter((file) => file.size < 5 * 1000000);
       if (newFiles.length !== files.length)
         toast({ title: 'Image must be less than 5mb', variant: 'destructive' });
-      //chandruAddToast
       setSelectedImages((prevFiles) => [...prevFiles, ...files]);
     }
   };
@@ -51,7 +50,6 @@ export default function ImagesUpload({
       const files = newFiles.filter((file) => file.size < 5 * 1000000);
       if (newFiles.length !== files.length)
         toast({ title: 'Image must be less than 5mb', variant: 'destructive' });
-      //chandruAddToast
 
       setSelectedImages((prevFiles) => [...prevFiles, ...files]);
     }
