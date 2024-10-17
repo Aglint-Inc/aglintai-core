@@ -15,7 +15,7 @@ import {
   type DbFetchScheduleApiDetailsParams,
   type ScheduleApiDetails,
 } from '../types';
-import { fetchAndVerifyDb } from './dbFetches/fetchAndVerifyDb';
+import { fetchAndVerifyDb } from './dataFetch/fetchAndVerifyDb';
 
 export type UserMeetingDetails = {
   [user_id: string]: {

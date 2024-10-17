@@ -6,8 +6,8 @@ import {
 } from '@aglint/shared-types';
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 
-import { GoogleCalender } from '../../GoogleCalender/google-calender';
 import { type ScheduleApiDetails } from '../types';
+import { getIntCalEvents } from './dataFetch/getIntCalEvents';
 
 export const fetchIntsCalEventsDetails = async (
   db_details: ScheduleApiDetails,
@@ -96,17 +96,17 @@ const fetchIntsCalEvents = async (params: FetchCalEventsParams) => {
   const promisedInts = params.inter_details.map(async (int) => {
     const updated_int_details = { ...int };
     try {
-      const google_cal = new GoogleCalender(params.company_cred_hash_str, {
-        email: int.email,
-        schedule_auth: int.tokens,
-        user_id: int.interviewer_id,
+      updated_int_details.all_events = await getIntCalEvents({
+        company_cred_hash_str: params.company_cred_hash_str,
+        int: {
+          email: int.email,
+          tokens: int.tokens,
+          user_id: int.interviewer_id,
+        },
+        start_time: params.start_time,
+        end_time: params.end_time,
       });
-      await google_cal.authorizeUser();
-      const fetched_events = await google_cal.getAllCalenderEvents(
-        params.start_time,
-        params.end_time,
-      );
-      updated_int_details.all_events = fetched_events;
+
       updated_int_details.isCalenderConnected = true;
     } catch (err) {
       updated_int_details.isCalenderConnected = false;

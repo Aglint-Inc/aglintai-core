@@ -22,3 +22,33 @@ describe('fetchQuote', () => {
     //
   });
 });
+
+describe('identifies correct calender event type', () => {
+  it('should identify soft conflict', () => {
+    //
+  });
+  it('should identify ooo conflict', () => {
+    //
+  });
+  it('should identify recruiting block', () => {
+    //
+  });
+  it('should identify as free Time', () => {
+    //
+  });
+});
+
+describe('given  a list pf interviewer details events and scheduling settings', () => {
+  it('should return correct free time', () => {
+    //
+  });
+  it('should return correct working hours', () => {
+    //
+  });
+  it('should return correct holidays', () => {
+    //
+  });
+  it('should return correct dayoff', () => {
+    //
+  });
+});
