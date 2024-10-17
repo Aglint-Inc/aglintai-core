@@ -3,9 +3,10 @@ import { type Dispatch, type SetStateAction, useState } from 'react';
 
 import { UIButton } from '@/common/UIButton';
 import UIDialog from '@/common/UIDialog';
-import { usePortalSettings } from '@/company/hooks/usePortalSettings';
+import { useTenant } from '@/company/hooks';
 
 import ImagesUpload from './ImagesUpload';
+import { useSlideUpdate } from './useSlideUpdate';
 
 export const SliderImageUploadDialog = ({
   isDialogOpen,
@@ -14,7 +15,10 @@ export const SliderImageUploadDialog = ({
   isDialogOpen: boolean;
   setIsDialogOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { updateImages, loading } = usePortalSettings();
+  const { mutateAsync, isPending } = useSlideUpdate();
+  const {
+    recruiter: { name },
+  } = useTenant();
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   return (
     <UIDialog
@@ -35,11 +39,17 @@ export const SliderImageUploadDialog = ({
           <UIButton
             type='submit'
             className='w-full'
-            disabled={loading.isImageUploading}
-            isLoading={loading.isImageUploading}
+            disabled={isPending}
+            isLoading={isPending}
             onClick={async () => {
-              await updateImages(selectedImages, setSelectedImages);
+              const formData = new FormData();
+              selectedImages.forEach((selectedFile) =>
+                formData.append('slideImages', selectedFile),
+              );
+              formData.append('recruiterName', name);
+              await mutateAsync(formData);
               setIsDialogOpen(false);
+              setSelectedImages([]);
             }}
           >
             Save Changes

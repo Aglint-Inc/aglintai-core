@@ -31,10 +31,17 @@ const query = async ({ input }: PublicProcedure<typeof schema>) => {
 
   return {
     resume_url: data?.candidate_files?.file_url || '',
-    ...candidates,
+    id: candidates.id,
+    first_name: candidates.first_name,
+    last_name: candidates.last_name || '',
+    linkedin: candidates.linkedin || '',
+    phone: candidates.phone || '',
+    avatar: candidates.avatar || '',
+    timezone: candidates.timezone || '',
+    email: candidates.email,
   };
 };
 
-export const getProfile = publicProcedure.input(schema).query(query);
+export const get_profile = publicProcedure.input(schema).query(query);
 
-export type GetProfile = ProcedureDefinition<typeof getProfile>;
+export type GetProfile = ProcedureDefinition<typeof get_profile>;

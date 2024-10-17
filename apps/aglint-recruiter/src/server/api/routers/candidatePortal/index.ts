@@ -1,16 +1,22 @@
 import { createTRPCRouter } from '../../trpc';
-import { getEmail } from './get_email';
-import { getInterviews } from './get_interviews';
-import { getMessages } from './get_messages';
-import { getNav } from './get_nav';
-import { getProfile } from './get_profile';
-import { updateProfile } from './update_profile';
+import { get_candidate_portal_detail } from './get_candidate_portal_detail';
+import { get_email } from './get_email';
+import { get_home_page } from './get_home_page';
+import { get_interviews } from './get_interviews';
+import { get_messages } from './get_messages';
+import { get_navbar } from './get_navbar';
+import { get_profile } from './get_profile';
+import { update_portal_detail } from './update_portal_detail';
+import { update_profile } from './update_profile';
 
 export const candidatePortal = createTRPCRouter({
-  get_email: getEmail,
-  get_interviews: getInterviews,
-  get_messages: getMessages,
-  get_navbar: getNav,
-  get_profile: getProfile,
-  update_profile: updateProfile,
+  get_email,
+  get_interviews,
+  get_messages,
+  get_navbar,
+  get_profile,
+  update_profile,
+  update_portal_detail,
+  get_candidate_portal_detail,
+  get_home_page,
 });

@@ -40,8 +40,8 @@ const query = async ({
     .throwOnError();
 };
 
-export const updateProfile = publicProcedure
+export const update_profile = publicProcedure
   .input(updateProfileSchema)
   .mutation(query);
 
-export type UpdateProfile = ProcedureDefinition<typeof updateProfile>;
+export type UpdateProfile = ProcedureDefinition<typeof update_profile>;

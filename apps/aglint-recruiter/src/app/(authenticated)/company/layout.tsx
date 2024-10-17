@@ -10,6 +10,7 @@ import {
 import { type PropsWithChildren } from 'react';
 
 import VerticalNav from './_common/components/SideNav';
+import { PortalSettingsProvider } from './_common/context/PortalsettingsContext';
 const Layout = ({ children }: PropsWithChildren) => {
   return (
     <OneColumnPageLayout
@@ -29,7 +30,7 @@ const Layout = ({ children }: PropsWithChildren) => {
       sidebarPosition='left'
       sidebarWidth={280}
     >
-      {children}
+      <PortalSettingsProvider>{children}</PortalSettingsProvider>
     </OneColumnPageLayout>
   );
 };

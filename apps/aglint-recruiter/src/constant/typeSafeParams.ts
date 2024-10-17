@@ -46,21 +46,6 @@ export const TYPE_SAFE_PARAMS = {
     '/workflows/[workflow]': [
       'workflow'
     ],
-    '/candidate/[application]/home': [
-      'application'
-    ],
-    '/candidate/[application]/interviews': [
-      'application'
-    ],
-    '/candidate/[application]/messages': [
-      'application'
-    ],
-    '/candidate/[application]/profile': [
-      'application'
-    ],
-    '/candidate/[application]/login': [
-      'application'
-    ],
     '/company-postings/[id]': [
       'id'
     ],

@@ -13,6 +13,11 @@ export const allowedPaths = new Set<t>([
   '/api/testx',
   '/login',
   '/signup',
+  '/candidate/login',
+  '/candidate/interviews',
+  '/candidate/messages',
+  '/candidate/profile',
+  '/candidate/home',
   '/api/signup',
   '/forgot-password',
   '/api/auth/send-reset-email',
@@ -166,6 +171,7 @@ export const allowedPaths = new Set<t>([
   '/auth/redirect',
   '/api/automation/reset-job-workflows',
   '/api/scheduling/v1/booking/confirm-recruiter-selected-option',
+  '/api/candidate_portal/candidate_pic_update',
   ...cronPaths,
 ] as t[]);
 

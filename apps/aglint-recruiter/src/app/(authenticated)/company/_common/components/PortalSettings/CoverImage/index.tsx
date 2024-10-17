@@ -1,3 +1,4 @@
+import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { ImagePlus } from 'lucide-react';
 import Image from 'next/image';
@@ -5,22 +6,59 @@ import { type ChangeEvent, type DragEvent, useRef, useState } from 'react';
 
 import { Loader } from '@/common/Loader';
 import UISectionCard from '@/common/UISectionCard';
-import { useFlags } from '@/company/hooks/useFlags';
-import { usePortalSettings } from '@/company/hooks/usePortalSettings';
+import { usePortalSettings } from '@/company/context/PortalsettingsContext';
+import { useTenant } from '@/company/hooks';
 
+import { useCoverUpdate } from './useCoverUpdate';
 export function CoverImage() {
-  const { banner_image } = useFlags();
-  const { removeCover, updateCover, loading } = usePortalSettings();
+  const {
+    recruiter: { name },
+  } = useTenant();
+
+  const {
+    data: { banner_image },
+  } = usePortalSettings();
+
+  const { mutateAsync, isPending } = useCoverUpdate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef2 = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const newFile = Array.from(event.target.files)[0];
-      if (newFile.size < 5 * 1000000 && banner_image) {
-        updateCover(newFile, banner_image);
+
+      if (newFile.size > 5 * 1000000) {
+        toast({
+          title: 'Please use a file less than 5MB',
+          variant: 'destructive',
+        });
+        return;
       }
+      await imageUpdateToDb(newFile);
     }
+  };
+
+  const imageUpdateToDb = async (newFile: File) => {
+    try {
+      const formData = new FormData();
+      const fileName = `${name}-cover-${Date.now()}`.replace(/\s+/g, '');
+      formData.append('coverImage', newFile);
+      formData.append('fileName', fileName);
+      formData.append('oldCover', banner_image || '');
+      await mutateAsync(formData);
+    } catch (error) {
+      console.error('Error uploading the file:', error);
+      toast({
+        title: 'File upload failed. Please try again.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleRemoveImage = async () => {
+    const formData = new FormData();
+    formData.append('oldCover', banner_image || '');
+    await mutateAsync(formData);
   };
 
   const handleDragOver = (event: DragEvent<HTMLButtonElement>) => {
@@ -35,7 +73,7 @@ export function CoverImage() {
     event.preventDefault();
     if (event.dataTransfer.files && banner_image) {
       const newFile = Array.from(event.dataTransfer.files)[0];
-      if (newFile.size < 5 * 1000000) updateCover(newFile, banner_image);
+      if (newFile.size < 5 * 1000000) imageUpdateToDb(newFile);
     }
   };
 
@@ -47,10 +85,14 @@ export function CoverImage() {
         title='Company Cover Image'
       >
         <div className='flex flex-col'>
-          {/* if there is no image show this button */}
           {banner_image ? (
-            <div className='flex h-48 w-96 flex-col items-center justify-center gap-4 overflow-hidden rounded-md bg-muted'>
+            <div className='relative flex h-48 w-96 flex-col items-center justify-center gap-4 overflow-hidden rounded-md bg-muted'>
               <ImageWithLoading src={banner_image} />
+              {isPending && (
+                <div className='absolute flex h-full w-full items-center justify-center bg-gray-100 opacity-30'>
+                  <Loader className='' />
+                </div>
+              )}
             </div>
           ) : (
             <div className='w-fil relative w-fit'>
@@ -62,7 +104,7 @@ export function CoverImage() {
                 onDrop={handleDrop}
                 onClick={() => fileInputRef.current?.click()}
               >
-                {!loading.isCoverUploading && (
+                {!isPending && (
                   <>
                     <input
                       type='file'
@@ -79,7 +121,7 @@ export function CoverImage() {
                   </>
                 )}
               </Button>
-              {loading.isCoverUploading && (
+              {isPending && (
                 <div className='absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]'>
                   <Loader />
                 </div>
@@ -87,7 +129,7 @@ export function CoverImage() {
             </div>
           )}
           {/* Button to edit and remove the image only if there is an image */}
-          {banner_image && (
+          {banner_image && !isPending && (
             <div className='flex flex-row gap-2'>
               <Button
                 variant='outline'
@@ -107,9 +149,9 @@ export function CoverImage() {
               <Button
                 variant='outline'
                 className='mt-4'
-                onClick={() => removeCover(banner_image)}
+                onClick={handleRemoveImage}
               >
-                {loading.isCoverRemoving ? 'Remove...' : 'Remove'}
+                {isPending ? 'Remove...' : 'Remove'}
               </Button>
             </div>
           )}
@@ -143,7 +185,6 @@ const ImageWithLoading = ({ src }: { src: string }) => {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            fontSize: '1.2em',
           }}
         >
           Loading...
