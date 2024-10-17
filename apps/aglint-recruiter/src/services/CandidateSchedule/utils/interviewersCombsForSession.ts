@@ -17,7 +17,7 @@ export const calcIntsCombsForEachSessionRound = (
   return ints_combs_for_each_round;
 };
 
-const calcInterversCombsForSesson = (
+export const calcInterversCombsForSesson = (
   sessions: InterviewSessionApiRespType[],
   is_training_optional: boolean,
 ) => {
