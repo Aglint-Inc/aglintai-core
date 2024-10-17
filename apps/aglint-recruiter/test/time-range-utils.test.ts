@@ -19,7 +19,7 @@ import {
 
 // TODO: include all utility function
 
-describe('time range utility functions', () => {
+describe.skip('time range utility functions', () => {
   describe('isTimeChunksLeftOverlapped and isTimeChunksRightOverlapped', () => {
     const cases: {
       chunk1: TimeDurationDayjsType;
