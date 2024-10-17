@@ -14,6 +14,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { useLogout } from '@/authenticated/hooks/useLogout';
+import { ThemeToggle } from '@/common/themes/components/ThemeToggle';
 import { useTenant } from '@/company/hooks';
 
 const DefaultCompanyLogo = () => (
@@ -56,6 +57,7 @@ const TopBar = () => {
             Welcome to {recruiterName}!
           </p>
         </div>
+        <ThemeToggle />
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Button variant='ghost'>

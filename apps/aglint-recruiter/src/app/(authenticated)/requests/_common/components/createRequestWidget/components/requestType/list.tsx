@@ -18,8 +18,8 @@ type Options = {
 
 const requestTypes: Options = [
   {
-    id: 'cancel_schedule_request',
-    label: 'Cancel request',
+    id: 'schedule_request',
+    label: 'Schedule request',
   },
   {
     id: 'decline_request',
@@ -30,8 +30,8 @@ const requestTypes: Options = [
     label: 'Reschedule request',
   },
   {
-    id: 'schedule_request',
-    label: 'Schedule request',
+    id: 'cancel_schedule_request',
+    label: 'Cancel request',
   },
 ];
 

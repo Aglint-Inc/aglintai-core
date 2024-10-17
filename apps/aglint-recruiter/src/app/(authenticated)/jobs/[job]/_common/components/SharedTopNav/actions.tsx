@@ -44,6 +44,7 @@ import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPe
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJob } from '@/job/hooks';
 import { useApplicationsRescore } from '@/job/hooks/useApplicationsRescore';
+import { Banners } from '@/jobs/components/Banners';
 import { useJobsContext } from '@/jobs/hooks';
 import ROUTES from '@/utils/routing/routes';
 
@@ -54,6 +55,7 @@ export const SharedActions = () => {
   return (
     <SettingsContext.Provider value={value}>
       <div className='flex flex-row items-center gap-2'>
+        <JobBanners />
         <Score />
         <Sync />
         <Rescore />
@@ -65,6 +67,11 @@ export const SharedActions = () => {
       </div>
     </SettingsContext.Provider>
   );
+};
+
+const JobBanners = () => {
+  const { job } = useJob();
+  return <Banners job={job} />;
 };
 
 const Rescore = () => {

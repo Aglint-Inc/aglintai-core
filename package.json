@@ -12,16 +12,21 @@
     "lint": "turbo run lint --verbosity 1 --ui tui",
     "type-check": "turbo run type-check --verbosity 1 --ui tui",
     "test": "vitest",
+    "test:ui": "vitest --ui",
+    "tdd": "vitest watch",
     "supabase:dev": "turbo run supabase:dev",
     "supabase:local": "turbo run supabase:local",
     "pull": "git pull origin development --no-rebase",
     "prepare": "husky install"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^2.1.3",
+    "@vitest/ui": "^2.1.3",
     "eslint-plugin-vitest-globals": "^1.5.0",
     "husky": "^8.0.0",
     "prettier": "^3.3.2",
     "turbo": "^2.0.14",
+    "vite-tsconfig-paths": "^5.0.1",
     "vitest": "^2.1.2"
   },
   "packageManager": "npm@10.5.2",
