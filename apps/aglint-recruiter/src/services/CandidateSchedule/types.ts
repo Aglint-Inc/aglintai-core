@@ -39,7 +39,6 @@ export type ScheduleApiDetails = {
 export type IntervsWorkHrsEventType = Pick<
   InterDetailsType,
   | 'cal_date_events'
-  | 'freeTimes'
   | 'work_hours'
   | 'email'
   | 'isCalenderConnected'

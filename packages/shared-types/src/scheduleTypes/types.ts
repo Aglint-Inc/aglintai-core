@@ -106,16 +106,11 @@ export type InterDetailsType = {
   cal_date_events: {
     [cal_date_str: string]: MinCalEventDetailTypes[];
   };
-  freeTimes: InterDayFreeTime;
   work_hours: InterDayWorkHr;
   isCalenderConnected: boolean;
   int_schedule_setting: CustomSchedulingSettingsUser;
   day_off: InterDayHolidayOff;
   holiday: InterDayHolidayOff;
-};
-
-export type InterDayFreeTime = {
-  [curr_date: string]: TimeDurationType[];
 };
 
 export type InterDayWorkHr = {

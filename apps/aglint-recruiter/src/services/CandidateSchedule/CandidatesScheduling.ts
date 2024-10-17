@@ -107,7 +107,6 @@ export class CandidatesScheduling {
     for (const inter of inter_details) {
       const details: IntervsWorkHrsEventType = {
         email: inter.email,
-        freeTimes: inter.freeTimes,
         work_hours: inter.work_hours,
         day_off: inter.day_off,
         holiday: inter.holiday,

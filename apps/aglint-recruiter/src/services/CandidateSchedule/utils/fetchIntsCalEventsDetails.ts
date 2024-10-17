@@ -40,7 +40,6 @@ export const fetchIntsCalEventsDetails = async (
         tokens: i.schedule_auth,
         work_hours: {},
         cal_date_events: {},
-        freeTimes: {},
         day_off: {},
         holiday: {},
       };
