@@ -28,6 +28,7 @@ const PERMISSIONS: Permissions = {
   '/api/job/candidateUpload/resumeReupload': ['job_module', 'manage_job'],
   '/api/job/candidateUpload/resumeUpload': ['job_module', 'manage_job'],
   '/api/candidate_portal/portal_cover_update': ['authorized'],
+  '/api/candidate_portal/candidate_pic_update': ['authorized'],
   '/api/candidate_portal/portal_slide_update': ['authorized'],
   '/api/candidate_portal/portal_slide_remove': ['authorized'],
   '/jobs': ['job_module'],

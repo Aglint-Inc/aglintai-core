@@ -15,9 +15,9 @@ import { useRef, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
 import { useCandidatePortal } from 'src/app/(public)/candidate/(authenticated)/_common/hooks';
 
-import { supabase } from '@/utils/supabase/client';
 import timeZone from '@/utils/timeZone';
 
+import { useProfliePicUpdate } from '../../../_common/hooks/useProfilePicUpdate';
 import {
   useCandidatePortalProfile,
   useCandidatePortalProfileUpdate,
@@ -32,7 +32,6 @@ type LoginFormInputs = {
   linkedin: string;
   timezone: string;
   avatar: string;
-  id: string;
 };
 
 export default function CandidateForm({
@@ -41,9 +40,9 @@ export default function CandidateForm({
   closeDialog: () => void;
 }) {
   const { application_id } = useCandidatePortal();
-  const { data } = useCandidatePortalProfile();
-  const { mutateAsync } = useCandidatePortalProfileUpdate();
-  // const [form, setForm] = useState(data);
+  const { data, refetch } = useCandidatePortalProfile();
+  const { mutateAsync: profileMutateAsync } = useCandidatePortalProfileUpdate();
+  const { mutateAsync: picMutateAsync } = useProfliePicUpdate();
   const [loading, setLoading] = useState(false);
   const [isImageChanged, setIsImageChanged] = useState(false);
   const imageFile = useRef<File | null>(null);
@@ -55,47 +54,27 @@ export default function CandidateForm({
     setValue,
   } = useForm<LoginFormInputs>({
     defaultValues: {
-      first_name: data?.first_name || '',
-      last_name: data?.last_name || '',
-      email: data?.email || '',
-      phone: data?.phone || '',
-      linkedin: data?.linkedin || '',
-      timezone: data?.timezone || '',
-      avatar: data?.avatar || '',
-      id: data?.id || '',
+      first_name: data.first_name,
+      last_name: data.last_name,
+      email: data.email,
+      phone: data.phone,
+      linkedin: data.linkedin,
+      timezone: data?.timezone,
+      avatar: data.avatar,
     },
   });
-
-  const removeImage = async (imageUrl: string) => {
-    const path = 'profile/' + extractPath(imageUrl);
-    if (path.length === 0) throw new Error('wrong image');
-    await supabase.storage.from('candidate-files').remove([path]);
-  };
 
   const handleUpdateProfile: SubmitHandler<LoginFormInputs> = async (form) => {
     try {
       setLoading(true);
 
-      let profile_image: string | null = form.avatar;
-
-      if (data?.avatar) await removeImage(data.avatar);
-
       if (isImageChanged) {
-        if (imageFile.current) {
-          const { data } = await supabase.storage
-            .from('candidate-files')
-            .upload(`profile/${form.id}`, imageFile.current, {
-              cacheControl: '3600',
-              upsert: true,
-            });
-          if (data?.path) {
-            profile_image = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/candidate-files/${data?.path}?t=${new Date().toISOString()}`;
-          } else {
-            profile_image = null;
-          }
-        } else {
-          profile_image = null;
-        }
+        const formData = new FormData();
+        formData.append('profilePic', imageFile.current as File);
+        formData.append('oldimage', data?.avatar || '');
+        formData.append('candidate_id', data?.id || '');
+
+        await picMutateAsync(formData);
         setIsImageChanged(false);
       }
 
@@ -107,14 +86,12 @@ export default function CandidateForm({
         timezone: form.timezone,
         phone: form.phone,
         linkedin: form.linkedin,
-        avatar: profile_image,
       };
 
-      await mutateAsync({ ...payload });
+      await profileMutateAsync({ ...payload });
+      await refetch();
+      //image upload
 
-      // if (status !== 'success') {
-      //   toast({ title: 'Profile update failed', variant: 'destructive' });
-      // }
       closeDialog();
     } catch (e) {
       // if (e instanceof Error)
@@ -265,13 +242,4 @@ export default function CandidateForm({
       </Card>
     </div>
   );
-}
-
-function extractPath(url: string) {
-  const parts = url.split('candidate-files/profile/');
-  if (parts.length > 1) {
-    const uuid = parts[1].split('/')[0].split('?')[0];
-    return uuid;
-  }
-  return '';
 }

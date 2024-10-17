@@ -1,4 +1,5 @@
 'use client';
+import { toast } from '@components/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Button } from '@components/ui/button';
 import { useState } from 'react';
@@ -23,6 +24,10 @@ function ImageUploadManual({
   function onImageChange(file: File) {
     if (file.size > 5 * 1000000) {
       setLoading(false);
+      toast({
+        title: 'Please choose the a image less than 5mb',
+        variant: 'destructive',
+      });
       return;
     }
     imageFile.current = file;

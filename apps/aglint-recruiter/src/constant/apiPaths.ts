@@ -99,6 +99,7 @@ export const API_PATHS = [
   '/api/automation/update_users_name',
   '/api/automation/update_user_to_active',
   '/api/automation/workflow_connect_to_jobs',
+  '/api/candidate_portal/candidate_pic_update',
   '/api/candidate_portal/portal_cover_update',
   '/api/candidate_portal/portal_slide_remove',
   '/api/candidate_portal/portal_slide_update',
