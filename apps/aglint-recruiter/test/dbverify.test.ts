@@ -35,7 +35,7 @@ describe('identifies correct calender event type', () => {
   });
 });
 
-describe('given  a list pf interviewer details events and scheduling settings', () => {
+describe('given  a list of interviewer details events and scheduling settings', () => {
   it('should return correct free time', () => {
     //
   });
