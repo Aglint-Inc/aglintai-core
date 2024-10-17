@@ -2,6 +2,7 @@
 import { v4 } from 'uuid';
 import { beforeEach, describe, it, vi } from 'vitest';
 
+import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 import { fetchAndVerifyDb } from '@/services/CandidateSchedule/utils/dataFetch/fetchAndVerifyDb';
 import { getIntCalEvents } from '@/services/CandidateSchedule/utils/dataFetch/getIntCalEvents';
 
@@ -40,18 +41,18 @@ beforeEach(() => {
 });
 describe('mock fetchAndVerifyDb', () => {
   it('should return mock data', async () => {
-    // const cand_schedule = new CandidatesScheduling({});
-    // const data = await fetchAndVerifyDb(
-    //   {
-    //     company_id: '',
-    //     end_date_str: '',
-    //     req_user_tz: '',
-    //     session_ids: [],
-    //     start_date_str: '',
-    //   },
-    //   null,
-    // );
-    // expect(data).toEqual(singleSesnSingInt);
+    const cand_schedule = new CandidatesScheduling({});
+    await cand_schedule.fetchDetails({
+      params: {
+        company_id: '1a12a488-c3f3-462b-8b3b-ea429e4f7fdc',
+        start_date_str: '15/10/2024',
+        end_date_str: '16/10/2024',
+        req_user_tz: 'Asia/Colombo',
+        session_ids: [test_sessions[0].session.id],
+      },
+      include_all_module_ints: false,
+      is_fetch_meeting_data: false,
+    });
   });
 });
 
