@@ -37,5 +37,7 @@ namespace NodeJS {
     SUPABASE_SERVICE_ROLE_KEY: string;
     CI: boolean;
     PLAYWRIGHT_HEADLESS: boolean;
+    E2E_TEST_EMAIL: string;
+    E2E_TEST_PASSWORD: string;
   }
 }

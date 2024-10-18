@@ -42,7 +42,7 @@ export const Body = ({ jobs }: { jobs: Job[] }) => {
     <>
       <LeverModalComp />
 
-      <div className='h-[70vh] w-full'>
+      <div data-testid='jobs-list-body' className='h-[70vh] w-full'>
         {jobs.length === 0 ? (
           ifAllowed(<EmptyJob />, ['manage_job'])
         ) : (

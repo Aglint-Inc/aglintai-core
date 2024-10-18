@@ -3,6 +3,9 @@ import {
   devices,
   type PlaywrightTestConfig,
 } from '@playwright/test';
+import dotEnv from 'dotenv';
+import * as os from 'os';
+dotEnv.config({ path: '.env' });
 
 const WEBAPP_URL = process.env.NEXT_PUBLIC_HOST_NAME;
 const DEFAULT_NAVIGATION_TIMEOUT = process.env.CI ? 30000 : 120000;
@@ -44,7 +47,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: os.cpus().length,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
