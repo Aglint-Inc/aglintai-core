@@ -64,8 +64,8 @@ function ListSection({
       <AccordionItem
         value={sectionName}
         className={cn(
-          'rounded-lg border bg-white px-4',
-          isExpanded && 'bg-gray-100',
+          'rounded-lg borde border-border bg-muted/50 px-4',
+          isExpanded && 'bg-muted/50',
         )}
       >
         <AccordionTrigger
