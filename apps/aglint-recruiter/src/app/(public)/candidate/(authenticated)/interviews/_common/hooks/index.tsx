@@ -1,13 +1,22 @@
-import { useCandidatePortal } from 'src/app/(public)/candidate/(authenticated)/_common/hooks';
-
-import type { GetInterviews } from '@/routers/candidatePortal/get_interviews';
-import type { ProcedureQuery } from '@/server/api/trpc';
+import { useRouterPro } from '@/hooks/useRouterPro';
 import { api } from '@/trpc/client';
 
-export const useCandidatePortalInterviews =
-  (): ProcedureQuery<GetInterviews> => {
-    const { application_id } = useCandidatePortal();
-    return api.candidatePortal.get_interviews.useQuery({
+import { dummyDataInterviews } from '../../../_common/dummydata';
+
+export const useCandidatePortalInterviews = () => {
+  const { queryParams } = useRouterPro();
+  const application_id = queryParams.application_id as string;
+  const isPreview = !!queryParams.isPreview as boolean;
+
+  return api.candidatePortal.get_interviews.useQuery(
+    {
       application_id,
-    });
-  };
+    },
+    {
+      enabled: !isPreview,
+      initialData: isPreview ? dummyDataInterviews : undefined,
+    },
+  );
+};
+
+// : ProcedureQuery<GetInterviews>

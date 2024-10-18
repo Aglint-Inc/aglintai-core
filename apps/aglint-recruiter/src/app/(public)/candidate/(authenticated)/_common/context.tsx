@@ -16,8 +16,9 @@ import { useGetCandidateEmailByApplicationId } from './uilts';
 const useCandidatePortalContext = () => {
   const { queryParams } = useRouterPro();
   const application_id = queryParams?.application_id as string;
+  const isPreview = !!queryParams?.isPreview;
   void api.candidatePortal.get_profile.usePrefetchQuery({ application_id });
-  return { application_id };
+  return { application_id, isPreview };
 };
 
 export const CandidatePortalContext = createContext<
@@ -30,6 +31,7 @@ export const CandidatePortalProvider = async ({
   const [isLoading, setIsLoading] = useState(true);
   const { queryParams } = useRouterPro();
   const application_id = queryParams?.application_id as string;
+  const isPreview = !!queryParams?.isPreview;
 
   const fetcher = useGetCandidateEmailByApplicationId();
   const router = useRouterPro();
@@ -55,9 +57,12 @@ export const CandidatePortalProvider = async ({
 
     const checkIsExist = async () => {
       try {
-        const { application_id: app_id } = await fetcher({ application_id });
-        if (app_id) await getSession();
+        if (!isPreview) {
+          await fetcher({ application_id });
+          await getSession();
+        }
       } catch (e) {
+        await supabase.auth.signOut();
         router.push(
           `${process.env.NEXT_PUBLIC_HOST_NAME}/candidate/login?application_id=${application_id}`,
         );
@@ -65,12 +70,11 @@ export const CandidatePortalProvider = async ({
     };
 
     checkIsExist();
-    // getSession();
   }, []);
 
-  if (isLoading) return <Loader />;
+  if (isLoading && !isPreview) return <Loader />;
   return (
-    <CandidatePortalContext.Provider value={{ application_id }}>
+    <CandidatePortalContext.Provider value={{ application_id, isPreview }}>
       {children}
     </CandidatePortalContext.Provider>
   );

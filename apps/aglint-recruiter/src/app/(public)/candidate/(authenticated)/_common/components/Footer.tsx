@@ -1,5 +1,8 @@
+'use client';
 import Link from 'next/link';
 import React from 'react';
+
+import { useRouterPro } from '@/hooks/useRouterPro';
 
 const footerLinks = [
   { href: '/about', label: 'About' },
@@ -10,6 +13,8 @@ const footerLinks = [
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const { queryParams } = useRouterPro();
+  const isPreview = !!queryParams.isPreview;
   return (
     <footer className='mt-12 py-6'>
       <div className='container mx-auto px-4'>
@@ -17,7 +22,7 @@ export function Footer() {
           {footerLinks.map((link, index) => (
             <React.Fragment key={link.href}>
               <Link
-                href={link.href}
+                href={isPreview ? '' : link.href}
                 className='text-xs text-gray-700 transition-colors duration-200 hover:text-primary dark:text-gray-300'
               >
                 {link.label}

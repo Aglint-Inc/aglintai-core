@@ -67,7 +67,7 @@ function InterviewCard({
       <CardContent className='pt-4'>
         <div className='mb-4 flex items-center justify-between'>
           <div className='flex items-center'>
-            <div className='mr-3 flex h-16 w-16 flex-col justify-center rounded-md bg-primary/10 p-2 text-center text-primary'>
+            <div className='rat mr-3 flex aspect-square flex-col justify-center rounded-md bg-primary/10 p-2 text-center text-primary'>
               <span className='text-xs'>
                 {dayjsLocal(interview.start_time).format('dddd')}
               </span>
@@ -94,7 +94,8 @@ function InterviewCard({
             <Avatar className='mr-3 h-8 w-8'>
               <AvatarImage src={participant.profile_image ?? undefined} />
               <AvatarFallback>
-                {getFullName(participant.first_name, participant.last_name)}
+                {participant.first_name.charAt(0) +
+                  participant.last_name?.charAt(0)}
               </AvatarFallback>
             </Avatar>
             <div className='flex-grow'>
@@ -113,17 +114,6 @@ function InterviewCard({
           </div>
         ))}
         <div className='mt-4 flex space-x-2'>
-          {/* <Button
-            variant='link'
-            size='sm'
-            className='p-0 text-xs'
-            onClick={() => {
-              interview?.meeting_link &&
-                window.open(interview.meeting_link, '_blank');
-            }}
-          >
-            Open Coding link
-          </Button> */}
           <Button
             variant='link'
             size='sm'

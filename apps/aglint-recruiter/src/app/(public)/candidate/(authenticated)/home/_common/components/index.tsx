@@ -2,10 +2,8 @@
 
 import { getFullName } from '@aglint/shared-utils';
 
-import { useRouterPro } from '@/hooks/useRouterPro';
-
 import { useCandidatePortalProfile } from '../../../profile/_common/hooks';
-import { usePortalHomePage } from '../hooks';
+import { usePortalHomePage } from '../hooks/usePortalHomePage';
 import AllSet from './AllSet';
 import CompanyImage from './CompanyImage';
 import CompanyTabs from './CompanyTabs';
@@ -18,13 +16,11 @@ import SelfScheduling from './SelfScheduling';
 import UpcomingInterview from './UpcomingInterview';
 
 export default function Home() {
-  const { queryParams } = useRouterPro();
-  const application_id = queryParams.application_id as string;
-  const { isPending, data, error } = usePortalHomePage({ application_id });
+  const { isLoading, data, error } = usePortalHomePage();
   const { data: profileData, isPending: porfilePending } =
     useCandidatePortalProfile();
 
-  if (isPending || porfilePending) {
+  if (isLoading || porfilePending) {
     return <HomeSkeleton />;
   }
 
