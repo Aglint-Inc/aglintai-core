@@ -30,7 +30,7 @@ export const ScheduleAvailabilityUI = ({
   scheduleKeywords,
 }: Props) => {
   return (
-    <div className='flex flex-col space-y-8'>
+    <div className='flex flex-col gap-8'>
       <div className='grid grid-cols-2 gap-8'>
         <Section>
           <SectionHeader>

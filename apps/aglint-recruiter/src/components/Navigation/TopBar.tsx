@@ -67,15 +67,15 @@ const TopBar = () => {
 
   return (
     <div className='flex w-full flex-row items-center justify-between'>
-      <Button variant='link' className='mt-2 p-2' asChild>
-        <Link href='/jobs'>
+      <Button variant='link' className='mt-2 ml-2 p-2' asChild>
+        <Link href='/jobs' className='hover:no-underline'>
           <Avatar>
             <AvatarImage src={logo || ''} alt={recruiterName} />
             <AvatarFallback>
               <DefaultCompanyLogo />
             </AvatarFallback>
           </Avatar>
-          <span className='ml-1'>{recruiterName}</span>
+          <span className='ml-2 text-foreground'>{recruiterName}</span>
         </Link>
       </Button>
       <div className='mr-2 mt-2 flex flex-row items-center'>
