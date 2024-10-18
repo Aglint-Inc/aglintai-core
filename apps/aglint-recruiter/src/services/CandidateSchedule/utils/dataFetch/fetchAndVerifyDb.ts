@@ -40,8 +40,22 @@ export const fetchAndVerifyDb = async (
     int_modules_data: (r[0].interview_modules ??
       []) as unknown as InterviewModuleType[][],
     interview_sessions: (r[0].interview_sessions ?? []) as InterviewSession[],
-    inter_data: (r[0].interviewers ??
-      []) as unknown as SessionInterviewerType[][],
+    inter_data: (r[0].interviewers ?? []) as unknown as Pick<
+      SessionInterviewerType,
+      | 'email'
+      | 'first_name'
+      | 'last_name'
+      | 'profile_image'
+      | 'user_id'
+      | 'position'
+      | 'training_type'
+      | 'session_id'
+      | 'interviewer_type'
+      | 'interview_module_relation_id'
+      | 'pause_json'
+      | 'schedule_auth'
+      | 'scheduling_settings'
+    >[][],
     company_cred_hash_str: r[0].service_cred,
   };
 
