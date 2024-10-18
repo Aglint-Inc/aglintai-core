@@ -8,7 +8,10 @@ dotEnv.config({ path: '.env' });
 
 const WEBAPP_URL = process.env.NEXT_PUBLIC_HOST_NAME;
 const DEFAULT_NAVIGATION_TIMEOUT = process.env.CI ? 30000 : 120000;
-const headless = !!process.env.CI || !!process.env.PLAYWRIGHT_HEADLESS;
+const DEFAULT_EXPECT_TIMEOUT = process.env.CI ? 30000 : 120000;
+
+const headless = Boolean(process.env.PLAYWRIGHT_HEADLESS === 'true');
+const DEFAULT_TEST_TIMEOUT = process.env.CI ? 60000 : 240000;
 
 const DEFAULT_CHROMIUM: NonNullable<
   PlaywrightTestConfig['projects']
@@ -42,6 +45,7 @@ export default defineConfig({
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
+  timeout: DEFAULT_TEST_TIMEOUT,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
@@ -61,9 +65,10 @@ export default defineConfig({
       name: '@aglint/aglint-recriuter',
       testDir: './playwright',
       testMatch: /.*\.(e2e|test)\.(js|jsx|ts|tsx)$/, // Expanded test file patterns
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       use: DEFAULT_CHROMIUM,
-      timeout: 120000,
+      expect: {
+        timeout: DEFAULT_EXPECT_TIMEOUT,
+      },
     },
   ],
 });

@@ -19,30 +19,40 @@ export const createRequestDetailsFixture = (page: Page) => {
     isReady: async () => {
       return requestDetailsPage.isVisible();
     },
-    getRequestType: () => {
-      return page.getByAltText('request-details-type').textContent();
+    getRequestType: async () => {
+      return await page.getByTestId('request-details-type').textContent();
     },
     getRequestStatus: async () => {
       return await page.getByTestId('request-details-status').textContent();
     },
     openCandidateAvailabilityDailog: async () => {
       const getAvailabilityBtn = page.getByTestId('get-availability-btn');
-      expect(getAvailabilityBtn.isVisible()).toBeTruthy();
+      expect(await getAvailabilityBtn.isVisible()).toBeTruthy();
       await getAvailabilityBtn.click();
-      await page.waitForSelector(
-        '[data-testid="candidate-availability-submit-btn"]',
+      await page.waitForResponse((req) => {
+        return (
+          req
+            .url()
+            .includes('/api/mail/sendAvailabilityRequest_email_applicant') &&
+          req.status() === 200
+        );
+      });
+    },
+
+    sendCandidateAvailability: async () => {
+      const sendAvailBtn = page.getByTestId(
+        'candidate-availability-submit-btn',
       );
+      expect(await sendAvailBtn.isVisible()).toBeTruthy();
+      await sendAvailBtn.click();
+      await page.waitForResponse((req) => {
+        return (
+          req
+            .url()
+            .includes('/api/mail/sendAvailabilityRequest_email_applicant') &&
+          req.status() === 200
+        );
+      });
     },
-    assertTemplatePreview: async () => {
-      //
-    },
-    sendCandidateAvailability: async () =>
-      // start_date: string,
-      // end_date: string,
-      // min_days: number,
-      // num_slots: number,
-      {
-        //
-      },
   };
 };
