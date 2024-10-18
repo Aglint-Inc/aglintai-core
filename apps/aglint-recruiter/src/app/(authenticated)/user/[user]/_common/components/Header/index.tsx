@@ -51,7 +51,7 @@ export const Header = () => {
   };
 
   return (
-    <div className='rounded-lg bg-muted p-4'>
+    <div className='rounded-lg border border-border p-4'>
       <div className='flex flex-row space-x-4'>
         <Avatar className='h-32 w-32 rounded-md'>
           <AvatarImage src={avatar} alt={first_name} />
