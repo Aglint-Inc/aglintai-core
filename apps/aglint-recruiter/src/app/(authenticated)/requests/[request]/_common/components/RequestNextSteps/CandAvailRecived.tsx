@@ -64,6 +64,7 @@ const CandAvailRecived = () => {
         onClick={async () => {
           handleConfirmSlot(requestDetails.id);
         }}
+        data-testid='sched-cand-avail-btn'
         isLoading={isFetching}
       >
         Schedule Interview
@@ -71,6 +72,7 @@ const CandAvailRecived = () => {
       <UIButton
         variant='outline'
         size='sm'
+        data-testid='re-request-availability-btn'
         onClick={() => {
           handleReReq(requestDetails.id);
         }}

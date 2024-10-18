@@ -35,5 +35,9 @@ namespace NodeJS {
     NEXT_PUBLIC_SUPABASE_ANON_KEY: string;
     SUPABASE_JWT_SECRET: string;
     SUPABASE_SERVICE_ROLE_KEY: string;
+    CI: boolean;
+    PLAYWRIGHT_HEADLESS: boolean;
+    E2E_TEST_EMAIL: string;
+    E2E_TEST_PASSWORD: string;
   }
 }

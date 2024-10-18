@@ -19,6 +19,7 @@ const DebriefSchedule = () => {
       <UIButton
         variant='default'
         size='sm'
+        data-testid='schedule-debrief-btn'
         isLoading={fetchingPlan}
         onClick={async () => {
           if (fetchingPlan) return;
