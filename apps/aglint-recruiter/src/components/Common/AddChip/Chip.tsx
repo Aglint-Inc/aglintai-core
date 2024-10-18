@@ -35,7 +35,7 @@ function Chip({
             if (id && handleRemoveKeyword) handleRemoveKeyword({ id, name });
             else onRemove && onRemove();
           }}
-          className='ml-2 text-muted-foreground hover:text-gray-700 focus:outline-none'
+          className='ml-2 text-muted-foreground duration-200 hover:text-foreground focus:outline-none'
           aria-label={`Remove ${name}`}
         >
           <X className='h-3 w-3' />
