@@ -68,19 +68,19 @@ export default function FilterButton({
               {slotRightIcon ? slotRightIcon : false}
             </div>
             {isDotVisible && isActive && (
-              <span className='absolute right-1 top-1 block h-1.5 w-1.5 rounded-full bg-red-500 ring-2 ring-white' />
+              <span className='absolute right-1 top-1 block h-1.5 w-1.5 rounded-full bg-red-500 ring-2' />
             )}
           </Button>
         </PopoverTrigger>
         {type == 'popover' && (
-          <PopoverContent className='w-max p-0'>
+          <PopoverContent className='w-max border border-border p-0'>
             {popover}
             <Button
               variant='ghost'
-              className='w-full justify-start gap-1 hover:rounded-t-none'
+              className='w-full justify-start gap-1 border border-border hover:rounded-t-none'
               onClick={resetFilter}
             >
-              <Repeat size={15} /> <p>Reset</p>
+              <Repeat size={15} className='text-primary' /> <p>Reset</p>
             </Button>
           </PopoverContent>
         )}
