@@ -180,7 +180,11 @@ const EditInterviewLoad = ({
           <Pen className='mr-2 h-3 w-3' /> Edit
         </Button>
       </PopoverTrigger>
-      <PopoverContent className='w-full' align='start' side='left'>
+      <PopoverContent
+        className='w-full border-border'
+        align='start'
+        side='left'
+      >
         <>
           <div className='mb-4 flex flex-col gap-4'>
             <Label>Interview Load</Label>

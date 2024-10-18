@@ -63,7 +63,7 @@ function TimePicker({
       <div className='space-y-2'>
         <div
           id='time-picker'
-          className='flex items-center space-x-2 rounded-md border bg-background p-2'
+          className='flex items-center space-x-2 rounded-md border border-border bg-background p-2'
         >
           <Select
             value={displayHour}

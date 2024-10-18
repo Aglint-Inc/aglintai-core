@@ -59,7 +59,11 @@ const AddChip: React.FC<Props> = ({
       ))}
       <Popover>
         <PopoverTrigger asChild>{btn}</PopoverTrigger>
-        <PopoverContent className='p-0' side='right' align='start'>
+        <PopoverContent
+          className='border border-border p-0'
+          side='right'
+          align='start'
+        >
           <Command>
             <CommandInput
               placeholder={placeholder}
