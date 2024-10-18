@@ -36,5 +36,6 @@ namespace NodeJS {
     SUPABASE_JWT_SECRET: string;
     SUPABASE_SERVICE_ROLE_KEY: string;
     CI: boolean;
+    PLAYWRIGHT_HEADLESS: boolean;
   }
 }

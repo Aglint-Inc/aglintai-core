@@ -25,7 +25,8 @@
     "script_cleanup": "npx tsc script/cleanup.ts --skipLibCheck && node script/cleanup.js",
     "generate-zod-schemas": "supabase-to-zod --input ../../packages/shared-types/src/db/schema.types.ts --output ../../packages/shared-types/src/db/zod-schema.types.ts",
     "mac-fix-git": "cd ../.. && chown -R $USER:$(id -gn $USER) .git",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui"
   },
   "dependencies": {
     "@aglint/shared-utils": "*",

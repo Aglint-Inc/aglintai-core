@@ -4,9 +4,10 @@ import {
   type PlaywrightTestConfig,
 } from '@playwright/test';
 
-// const WEBAPP_URL = process.env.NEXT_PUBLIC_HOST_NAME;
+const WEBAPP_URL = process.env.NEXT_PUBLIC_HOST_NAME;
 const DEFAULT_NAVIGATION_TIMEOUT = process.env.CI ? 30000 : 120000;
 const DEFAULT_EXPECT_TIMEOUT = process.env.CI ? 30000 : 120000;
+const headless = !!process.env.CI || !!process.env.PLAYWRIGHT_HEADLESS;
 
 const DEFAULT_CHROMIUM: NonNullable<
   PlaywrightTestConfig['projects']
@@ -48,10 +49,10 @@ export default defineConfig({
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL: 'http://127.0.0.1:3000',
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    baseURL: WEBAPP_URL,
+    locale: 'en-US',
+    trace: 'retain-on-failure',
+    headless,
   },
   /* Configure projects for major browsers */
   projects: [
