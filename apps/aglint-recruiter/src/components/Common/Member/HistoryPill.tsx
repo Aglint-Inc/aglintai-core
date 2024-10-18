@@ -27,29 +27,31 @@ export function HistoryPillShadcn({
         {isActive ? (
           <div
             className={cn(
-              'absolute inset-0 flex items-center justify-center bg-green-400 text-green-900',
-              position === 'start' && 'rounded-l-md',
-              position === 'end' && 'rounded-r-md',
-            )}
-          >
-            {isShadow && <ShadowIcon className='h-5 w-5' />}
-            {isReverseShadow && (
-              <ReverseShadowIcon className='h-3 w-3 text-muted-foreground' />
-            )}
-          </div>
-        ) : (
-          <div
-            className={cn(
-              'flex h-[26px] w-[60px] items-center justify-center bg-neutral-200 text-foreground',
+              '00 flex h-[26px] w-[60px] items-center justify-center bg-green-500/40',
               position === 'start' && 'rounded-l-md',
               position === 'end' && 'rounded-r-md',
             )}
           >
             {isShadow && (
-              <ShadowIcon className='h-3 w-3 text-muted-foreground' />
+              <ShadowIcon className='h-4 w-4 text-green-800 dark:text-green-600' />
             )}
             {isReverseShadow && (
-              <ReverseShadowIcon className='h-3 w-3 text-muted-foreground' />
+              <ReverseShadowIcon className='h-4 w-4 text-green-800 dark:text-green-600' />
+            )}
+          </div>
+        ) : (
+          <div
+            className={cn(
+              'flex h-[26px] w-[60px] items-center justify-center bg-muted text-foreground',
+              position === 'start' && 'rounded-l-md',
+              position === 'end' && 'rounded-r-md',
+            )}
+          >
+            {isShadow && (
+              <ShadowIcon className='h-4 w-4 text-muted-foreground' />
+            )}
+            {isReverseShadow && (
+              <ReverseShadowIcon className='h-4 w-4 text-muted-foreground' />
             )}
           </div>
         )}

@@ -53,7 +53,7 @@ function ArchiveModuleDialog() {
         open={isArchiveDialogOpen}
         onOpenChange={setIsArchiveDialogOpen}
       >
-        <AlertDialogContent>
+        <AlertDialogContent className='border border-border'>
           <AlertDialogHeader>
             <AlertDialogTitle>{`Archive ${moduleName}`}</AlertDialogTitle>
             <AlertDialogDescription>

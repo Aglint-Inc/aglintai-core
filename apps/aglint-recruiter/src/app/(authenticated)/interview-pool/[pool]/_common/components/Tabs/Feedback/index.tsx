@@ -21,30 +21,48 @@ function Feedback() {
     comments: 'Comments',
   };
 
-  const filteredData =
+  let filteredData =
     data?.filter((app) =>
       app.candidate.toLowerCase().includes(search.toLowerCase()),
     ) || [];
+
+  filteredData = [
+    {
+      recommendation: 4,
+      objective:
+        "Assess candidate's technical skills for frontend development.",
+      interviewer: 'John Doe',
+      interview_date: '2024-10-18',
+      candidate: 'Jane Smith',
+    },
+    {
+      recommendation: 3,
+      objective: 'asdfasdfasdf',
+      interviewer: 'Emily Johnson',
+      interview_date: null,
+      candidate: 'Alex Turner',
+    },
+  ];
 
   return (
     <>
       <div className='mb-4 flex justify-between'>
         <UITextField
           placeholder='Search Candidates...'
-          className='w-64 bg-white'
+          className='w-64'
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
-      <Card>
+      <Card className='overflow-hidden border border-border'>
         <CardContent className='p-0'>
-          <table className='w-full overflow-hidden'>
-            <thead>
-              <tr className='border-b'>
+          <table className='w-full'>
+            <thead className='bg-muted'>
+              <tr className='border border-border'>
                 {Object.keys(headers).map((key) => (
                   <th
                     key={key}
-                    className='p-4 text-left text-sm font-medium text-gray-700'
+                    className='p-4 text-left text-sm font-medium text-muted-foreground'
                   >
                     {headers[key as keyof typeof headers]}
                   </th>
@@ -76,15 +94,11 @@ function Feedback() {
                   {filteredData.map((feedback, index) => (
                     <tr
                       key={index}
-                      className='border-b last:border-b-0 hover:bg-gray-50'
+                      className='border border-border last:border-b-0'
                     >
-                      <td className='p-4 text-gray-900'>
-                        {feedback.candidate}
-                      </td>
-                      <td className='p-4 text-gray-700'>
-                        {feedback.interviewer}
-                      </td>
-                      <td className='p-4 text-gray-700'>
+                      <td className='p-4'>{feedback.candidate}</td>
+                      <td className='p-4'>{feedback.interviewer}</td>
+                      <td className='p-4'>
                         {dayjsLocal(feedback.interview_date).format(
                           'DD MMM YYYY',
                         )}
@@ -95,9 +109,7 @@ function Feedback() {
                           {feedback.recommendation}
                         </div>
                       </td>
-                      <td className='p-4 text-gray-700'>
-                        {feedback.objective || '--'}
-                      </td>
+                      <td className='p-4'>{feedback.objective || '--'}</td>
                     </tr>
                   ))}
                 </>

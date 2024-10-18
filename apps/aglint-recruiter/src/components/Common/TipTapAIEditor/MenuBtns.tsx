@@ -36,7 +36,7 @@ function MenuBtns({
 }) {
   return (
     <div
-      className='sticky top-0 z-10 flex justify-between border-b border-neutral-200 bg-white pr-2'
+      className='sticky top-0 z-10 flex justify-between border-b border-border bg-muted pr-2'
       style={{
         borderTopLeftRadius: borderRadius,
         borderTopRightRadius: borderRadius,
@@ -80,18 +80,21 @@ const TipTapMenus = ({
     <div className='sticky top-0 z-50 flex items-center gap-1 p-1'>
       {isSize && (
         <Popover>
-          <PopoverTrigger asChild>
-            <Button variant='ghost' size='sm' className='h-8 border-none'>
+          <PopoverTrigger asChild className=''>
+            <Button
+              size='sm'
+              className='h-8 border-none bg-transparent hover:bg-muted-foreground/20 dark:text-white'
+            >
               {typography}
               <ChevronDown className='ml-2 h-4 w-4' />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className='w-40'>
+          <PopoverContent className='w-40 border border-border'>
             <div className='flex flex-col gap-1'>
               <Button
                 variant='ghost'
                 size='sm'
-                className={`justify-start ${editor.isActive('paragraph') ? 'bg-neutral-100' : ''}`}
+                className={`justify-start ${editor.isActive('paragraph') ? 'bg-muted' : ''}`}
                 onClick={() => {
                   editor.chain().focus().setParagraph().run();
                   setTypography('Paragraph');
@@ -104,7 +107,7 @@ const TipTapMenus = ({
                   key={`heading-${level}`}
                   variant='ghost'
                   size='sm'
-                  className={`justify-start ${editor.isActive('heading', { level }) ? 'bg-neutral-100' : ''}`}
+                  className={`justify-start ${editor.isActive('heading', { level }) ? 'bg-muted' : ''}`}
                   onClick={() => handleClick(level, text)}
                 >
                   {text}
@@ -122,7 +125,7 @@ const TipTapMenus = ({
             size='sm'
             onClick={() => editor.chain().focus().toggleBold().run()}
             disabled={!editor.can().chain().focus().toggleBold().run()}
-            className={`p-2 ${editor.isActive('bold') ? 'bg-neutral-100' : ''}`}
+            className={`p-2 ${editor.isActive('bold') ? 'bg-muted-foreground/50' : ''} hover:bg-muted-foreground/30`}
           >
             <Bold className='h-4 w-4' />
           </Button>
@@ -139,7 +142,7 @@ const TipTapMenus = ({
             size='sm'
             onClick={() => editor.chain().focus().toggleItalic().run()}
             disabled={!editor.can().chain().focus().toggleItalic().run()}
-            className={`p-2 ${editor.isActive('italic') ? 'bg-neutral-100' : ''}`}
+            className={`p-2 ${editor.isActive('italic') ? 'bg-muted-foreground/50' : ''} hover:bg-muted-foreground/30`}
           >
             <Italic className='h-4 w-4' />
           </Button>
@@ -156,7 +159,7 @@ const TipTapMenus = ({
             size='sm'
             onClick={() => editor.chain().focus().toggleUnderline().run()}
             disabled={!editor.can().chain().focus().toggleUnderline().run()}
-            className={`p-2 ${editor.isActive('underline') ? 'bg-neutral-100' : ''}`}
+            className={`p-2 ${editor.isActive('underline') ? 'bg-muted-foreground/50' : ''} hover:bg-muted-foreground/30`}
           >
             <Underline className='h-4 w-4' />
           </Button>
@@ -177,7 +180,7 @@ const TipTapMenus = ({
                 disabled={
                   !editor.can().chain().focus().toggleBulletList().run()
                 }
-                className={`p-2 ${editor.isActive('bulletList') ? 'bg-neutral-100' : ''}`}
+                className={`p-2 ${editor.isActive('bulletList') ? 'bg-muted-foreground/50' : ''} hover:bg-muted-foreground/30`}
               >
                 <List className='h-4 w-4' />
               </Button>
@@ -196,7 +199,7 @@ const TipTapMenus = ({
                 disabled={
                   !editor.can().chain().focus().toggleOrderedList().run()
                 }
-                className={`p-2 ${editor.isActive('orderedList') ? 'bg-neutral-100' : ''}`}
+                className={`p-2 ${editor.isActive('orderedList') ? 'bg-muted-foreground/50' : ''} hover:bg-muted-foreground/30`}
               >
                 <ListOrdered className='h-4 w-4' />
               </Button>
@@ -217,7 +220,7 @@ const TipTapMenus = ({
                 disabled={
                   !editor.can().chain().focus().setTextAlign('left').run()
                 }
-                className={`p-2 ${editor.isActive({ textAlign: 'left' }) ? 'bg-neutral-100' : ''}`}
+                className={`p-2 ${editor.isActive({ textAlign: 'left' }) ? 'bg-muted-foreground/50' : ''} hover:bg-muted-foreground/30`}
               >
                 <AlignLeft className='h-4 w-4' />
               </Button>
@@ -238,7 +241,7 @@ const TipTapMenus = ({
                 disabled={
                   !editor.can().chain().focus().setTextAlign('right').run()
                 }
-                className={`p-2 ${editor.isActive({ textAlign: 'right' }) ? 'bg-neutral-100' : ''}`}
+                className={`p-2 ${editor.isActive({ textAlign: 'right' }) ? 'bg-muted-foreground/50' : ''} hover:bg-muted-foreground/30`}
               >
                 <AlignRight className='h-4 w-4' />
               </Button>
@@ -264,7 +267,7 @@ const TipTapUndoRedo = () => {
             size='sm'
             onClick={() => editor?.chain().focus().undo().run()}
             disabled={!editor?.can().undo()}
-            className={`h-6 w-6 p-1 ${editor?.can().undo() ? 'bg-neutral-100' : ''}`}
+            className={`h-6 w-6 p-1 ${editor?.can().undo() ? 'bg-muted-foreground/50' : ''} hover:bg-muted-foreground/30`}
           >
             <Undo className='h-4 w-4' />
           </Button>
@@ -281,7 +284,7 @@ const TipTapUndoRedo = () => {
             size='sm'
             onClick={() => editor?.chain().focus().redo().run()}
             disabled={!editor?.can().redo()}
-            className={`h-6 w-6 p-1 ${editor?.can().redo() ? 'bg-neutral-100' : ''}`}
+            className={`h-6 w-6 p-1 ${editor?.can().redo() ? 'bg-muted-foreground/50' : ''} hover:bg-muted-foreground/30`}
           >
             <Redo className='h-4 w-4' />
           </Button>

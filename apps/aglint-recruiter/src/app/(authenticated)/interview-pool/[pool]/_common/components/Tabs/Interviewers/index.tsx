@@ -73,7 +73,7 @@ function Interviewers() {
       <div className='mb-4 flex justify-between'>
         <UITextField
           placeholder='Search interviewers...'
-          className='w-64 bg-white'
+          className='w-64'
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -87,17 +87,15 @@ function Interviewers() {
           Add Interviewer
         </UIButton>
       </div>
-      <Card className='border border-border shadow-none'>
-        <CardContent className='p-0'>
+      <Card className='overflow-hidden border border-border shadow-none'>
+        <CardContent className='overflow-hidden p-0'>
           <Table className='overflow-hidden'>
-            <TableHeader>
-              <TableRow className=''>
-                <TableHead className='w-4/12'>Name</TableHead>
-                <TableHead className='w-2/12'>Today</TableHead>
-                <TableHead className='w-2/12'>Week</TableHead>
-                <TableHead className='w-2/12'>Week Load</TableHead>
-                <TableHead className='w-2/12'></TableHead>
-              </TableRow>
+            <TableHeader className='overflow-hidden bg-muted'>
+              <TableHead className='w-4/12'>Name</TableHead>
+              <TableHead className='w-2/12'>Today</TableHead>
+              <TableHead className='w-2/12'>Week</TableHead>
+              <TableHead className='w-2/12'>Week Load</TableHead>
+              <TableHead className='w-2/12'></TableHead>
             </TableHeader>
             <TableBody>
               {filtererdUsers.length === 0 ? (
@@ -151,7 +149,7 @@ function Interviewers() {
                           </Avatar>
                           <div>
                             <div className='flex flex-row gap-2 font-medium'>
-                              {interviewer.name}
+                              <div> {interviewer.name}</div>
                               {interviewer.rel.pause_json && (
                                 <UIBadge
                                   size='sm'

@@ -39,7 +39,7 @@ function UIDrawer({
 
   return (
     <Sheet open={open} onOpenChange={() => onClose()}>
-      <SheetContent side='right' className={`p-0 ${widthClass}`}>
+      <SheetContent side='right' className={`p-0 ${widthClass} border-border`}>
         <div className='flex w-full flex-row'>
           {calendar}
           <div className='w-full'>
@@ -50,7 +50,7 @@ function UIDrawer({
             >
               <CloseIcon size={16} />
             </UIButton>
-            <SheetHeader className='border-b border-gray-200 p-3'>
+            <SheetHeader className='border-b border-border p-3'>
               <div className='flex flex-row'>
                 <Typography className='text-sm' fontBold='normal'>
                   {title}
@@ -59,7 +59,7 @@ function UIDrawer({
             </SheetHeader>
             <ScrollArea className='h-[calc(100vh-98px)]'>{children}</ScrollArea>
             {slotBottom && (
-              <SheetFooter className='w-full border-t border-gray-200 p-2'>
+              <SheetFooter className='w-full border-t border-border p-2'>
                 <div className='flex flex-row items-center justify-center gap-4'>
                   {slotBottom}
                 </div>

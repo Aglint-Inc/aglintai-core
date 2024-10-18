@@ -7,7 +7,7 @@ import { useInterviewStatistics } from '../../hooks/useInterviewStatics';
 function InterviewStatistics({ module_id }: { module_id: string }) {
   const { data, isFetched } = useInterviewStatistics(module_id);
   return (
-    <Card className='border border-t-4 border-border border-t-green-600 bg-muted shadow-sm'>
+    <Card className='border border-border bg-muted shadow-sm'>
       <CardHeader>
         <CardTitle className='text-lg font-medium'>
           Interview Statistics
@@ -23,7 +23,7 @@ function InterviewStatistics({ module_id }: { module_id: string }) {
           </div>
           <div className='flex justify-between'>
             <span className='text-muted-foreground'>Completion Rate</span>
-            <span className='font-bold text-green-600'>
+            <span className='font-bold text-primary'>
               {isFetched ? (
                 `${Math.round((data.completed / data.total) * 10000) / 100 || 0} %`
               ) : (

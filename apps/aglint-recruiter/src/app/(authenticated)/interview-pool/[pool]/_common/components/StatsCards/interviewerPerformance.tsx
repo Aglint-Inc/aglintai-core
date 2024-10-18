@@ -7,7 +7,7 @@ import { useInterviewerPerformance } from '../../hooks/useInterviewStatics';
 function InterviewerPerformance({ module_id }: { module_id: string }) {
   const { data, isFetched } = useInterviewerPerformance(module_id);
   return (
-    <Card className='border border-t-4 border-border border-t-amber-600 bg-muted shadow-sm'>
+    <Card className='border border-border bg-muted shadow-sm'>
       <CardHeader>
         <CardTitle className='text-lg font-medium'>
           Interviewer Performance
@@ -28,7 +28,7 @@ function InterviewerPerformance({ module_id }: { module_id: string }) {
 
           <div className='flex justify-between'>
             <span className='text-muted-foreground'>Feedback Rate</span>
-            <span className='font-bold text-amber-600'>
+            <span className='font-bold text-primary'>
               {isFetched ? (
                 `${((data.interviewer_feedback_count / data.total_interviews) * 10000) / 100 || 0} %`
               ) : (
