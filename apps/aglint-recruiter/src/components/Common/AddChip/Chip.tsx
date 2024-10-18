@@ -26,7 +26,7 @@ function Chip({
   return (
     <span
       key={index}
-      className={`flex items-center rounded-sm bg-muted px-3 py-1 text-sm ${disable ? 'opacity-[0.6]' : ''}`}
+      className={`flex items-center rounded-sm bg-muted px-3 py-1 text-sm text-foreground ${disable ? 'opacity-[0.6]' : ''}`}
     >
       {name}
       {!disable && (
@@ -35,7 +35,7 @@ function Chip({
             if (id && handleRemoveKeyword) handleRemoveKeyword({ id, name });
             else onRemove && onRemove();
           }}
-          className='ml-2 text-muted-foreground hover:text-gray-700 focus:outline-none'
+          className='ml-2 text-muted-foreground duration-200 hover:text-foreground focus:outline-none'
           aria-label={`Remove ${name}`}
         >
           <X className='h-3 w-3' />

@@ -31,7 +31,7 @@ function LocationCard({
 
   return (
     <div
-      className='relative h-full rounded-md bg-gray-100 p-4'
+      className='relative h-full rounded-md bg-muted p-4'
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -41,14 +41,14 @@ function LocationCard({
             variant='secondary'
             size='sm'
             onClick={() => onEdit(id)}
-            className='h-8 w-8 bg-white p-0 shadow-sm hover:bg-gray-200'
+            className='h-8 w-8 bg-background p-0 shadow-sm hover:bg-background/50'
           >
             <PencilIcon className='h-3 w-3' />
           </Button>
           <Button
             variant='secondary'
             size='sm'
-            className='h-8 w-8 bg-white p-0 shadow-sm hover:bg-red-500 hover:text-white'
+            className='h-8 w-8 bg-background p-0 shadow-sm hover:bg-red-500 hover:bg-background/50'
             onClick={() => onDelete(id)}
           >
             <Trash2 className='h-3 w-3' />
@@ -56,7 +56,7 @@ function LocationCard({
         </div>
       )}
       <div className='flex items-center justify-between'>
-        <h4 className='text-md font-medium'>{location}</h4>
+        <h4 className='text-sm font-medium'>{location}</h4>
       </div>
       <div className='mt-2'>
         <div className='flex items-center'>

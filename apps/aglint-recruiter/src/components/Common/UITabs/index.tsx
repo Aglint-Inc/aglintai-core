@@ -124,7 +124,7 @@ export default function UITabs({
             {isHovering && hoveredTab && (
               <motion.div
                 key='hoverIndicator'
-                className='pointer-events-none absolute rounded-md bg-gray-200'
+                className='pointer-events-none absolute rounded-md bg-muted'
                 initial={{ opacity: 0 }}
                 animate={{
                   opacity: 0.5,
