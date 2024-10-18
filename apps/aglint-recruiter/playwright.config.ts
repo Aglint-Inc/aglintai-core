@@ -62,7 +62,7 @@ export default defineConfig({
     {
       name: '@aglint/aglint-recriuter',
       testDir: './playwright',
-      testMatch: /.*\.e2e\.tsx?/,
+      testMatch: /.*\.(e2e|test)\.(js|jsx|ts|tsx)$/, // Expanded test file patterns
       expect: {
         timeout: DEFAULT_EXPECT_TIMEOUT,
       },
