@@ -31,14 +31,14 @@ function ActionsInterviewPools() {
           />
         </PopoverTrigger>
         <PopoverContent
-          align='end'
+          align='start'
           side='left'
-          sideOffset={8}
-          alignOffset={-40}
-          className='w-[150px] cursor-pointer rounded-md border border-gray-200 bg-white p-2'
+          sideOffset={20}
+          // alignOffset={-40}
+          className='w-[150px] cursor-pointer rounded-md border border-border p-2'
         >
           <div
-            className='flex items-center space-x-2 rounded-md border-none p-2 text-sm hover:bg-gray-100'
+            className='flex items-center space-x-2 rounded-md border-none p-2 text-sm hover:bg-muted'
             onClick={() => {
               setIsEditPoolDialogOpen(true);
             }}
@@ -49,7 +49,7 @@ function ActionsInterviewPools() {
             </>
           </div>
           <div
-            className='flex items-center space-x-2 rounded-md border-none p-2 text-sm hover:bg-gray-100'
+            className='flex items-center space-x-2 rounded-md border-none p-2 text-sm hover:bg-muted'
             onClick={() => {
               editModule.is_archived
                 ? mutate({

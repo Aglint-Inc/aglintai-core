@@ -7,17 +7,17 @@ import { useInterviewerPerformance } from '../../hooks/useInterviewStatics';
 function InterviewerPerformance({ module_id }: { module_id: string }) {
   const { data, isFetched } = useInterviewerPerformance(module_id);
   return (
-    <Card className='border-t-4 border-t-green-500 bg-white shadow-sm'>
+    <Card className='border border-t-4 border-border border-t-amber-600 bg-muted shadow-sm'>
       <CardHeader>
-        <CardTitle className='text-lg font-medium text-gray-800'>
+        <CardTitle className='text-lg font-medium'>
           Interviewer Performance
         </CardTitle>
       </CardHeader>
       <CardContent>
         <div className='space-y-2'>
           <div className='flex justify-between'>
-            <span className='text-gray-600'>Avg. Rating</span>
-            <span className='font-bold text-gray-900'>
+            <span className='text-muted-foreground'>Avg. Rating</span>
+            <span className='font-bold text-muted-foreground'>
               {isFetched ? (
                 `${data.candidate_feedback_avg} / 5.0`
               ) : (
@@ -27,7 +27,7 @@ function InterviewerPerformance({ module_id }: { module_id: string }) {
           </div>
 
           <div className='flex justify-between'>
-            <span className='text-gray-600'>Feedback Rate</span>
+            <span className='text-muted-foreground'>Feedback Rate</span>
             <span className='font-bold text-amber-600'>
               {isFetched ? (
                 `${((data.interviewer_feedback_count / data.total_interviews) * 10000) / 100 || 0} %`
@@ -37,8 +37,10 @@ function InterviewerPerformance({ module_id }: { module_id: string }) {
             </span>
           </div>
           <div className='flex justify-between'>
-            <span className='text-gray-600'>Hire Recommendation Accuracy</span>
-            <span className='font-bold text-gray-900'>
+            <span className='text-muted-foreground'>
+              Hire Recommendation Accuracy
+            </span>
+            <span className='font-bold text-muted-foreground'>
               {isFetched ? (
                 `${data.recommendation_success} %`
               ) : (

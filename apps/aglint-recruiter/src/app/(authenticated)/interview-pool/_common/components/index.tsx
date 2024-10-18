@@ -67,7 +67,7 @@ export default function InterviewTypesPage() {
 
   return (
     <>
-      <ScrollArea className='h-[calc(100vh-180px)] p-4'>
+      <ScrollArea className='h-[calc(100vh-180px)]'>
         <Table>
           <TableHeader className='bg-muted/50'>
             <TableRow>
