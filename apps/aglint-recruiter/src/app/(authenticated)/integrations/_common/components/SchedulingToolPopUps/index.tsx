@@ -49,7 +49,7 @@ function SchedulingPopUps({
           </DialogTitle>
         </DialogHeader>
         {popUpBody}
-        <DialogFooter className='-mx-6 -mb-6 mt-6 rounded-b-lg bg-secondary p-4'>
+        <DialogFooter className='-mx-6 -mb-6 mt-6 rounded-b-lg p-4'>
           <DialogClose asChild>
             <Button variant='outline' onClick={close}>
               Cancel

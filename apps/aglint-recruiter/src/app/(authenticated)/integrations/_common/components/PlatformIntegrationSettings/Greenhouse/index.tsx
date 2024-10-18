@@ -43,7 +43,7 @@ function GreenhouseSettings() {
       <Card>
         <CardHeader className='flex flex-row items-center justify-between space-x-4'>
           <CardTitle className='text-lg'>Sync Entities</CardTitle>
-          <Badge variant='outline' className='bg-green-50 text-green-700'>
+          <Badge variant='outline' className='bg-success/20 text-green-700'>
             Connected
           </Badge>
         </CardHeader>
@@ -86,7 +86,7 @@ function GreenhouseSettings() {
                   </div>
                 ))}
               </div>
-              <div className='mt-4 flex items-center justify-between rounded-md bg-gray-100 p-4'>
+              <div className='mt-4 flex items-center justify-between rounded-md bg-muted p-4'>
                 <p className='text-sm text-muted-foreground'>{`Last synchronized on: ${last_sync}`}</p>
                 <Button
                   size='sm'
