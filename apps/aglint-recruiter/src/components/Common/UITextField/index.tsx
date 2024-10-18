@@ -57,7 +57,7 @@ const UITextField = forwardRef<HTMLInputElement, Props>(
     const inputClasses = cn(
       'w-full border rounded px-3 transition-colors duration-200', // Smooth transition for color changes
       fullWidth && 'w-full',
-      error ? 'border-destructive focus-visible:ring-0' : 'border-gray-200',
+      error ? 'border-destructive focus-visible:ring-0' : 'border-border',
       disabled && 'bg-gray-100 text-gray-500 cursor-not-allowed',
       fieldSize === 'small'
         ? 'h-6'
