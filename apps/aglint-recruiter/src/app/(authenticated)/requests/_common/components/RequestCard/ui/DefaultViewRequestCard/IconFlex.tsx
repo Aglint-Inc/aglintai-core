@@ -1,7 +1,7 @@
 // IconFlex.tsx
-import { LucideIcon } from 'lucide-react';
+import { type LucideIcon } from 'lucide-react';
 import * as Icons from 'lucide-react';
-import { FC, ReactNode } from 'react';
+import { type FC, type ReactNode } from 'react';
 
 interface IconFlexProps {
   icon: keyof typeof Icons; // Valid Lucide icon name

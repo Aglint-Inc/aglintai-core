@@ -16,6 +16,7 @@ import Link from 'next/link';
 import React, { type Dispatch, type SetStateAction } from 'react';
 
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
+
 import IconFlex from './IconFlex';
 
 function DefaultViewRequestCard({
