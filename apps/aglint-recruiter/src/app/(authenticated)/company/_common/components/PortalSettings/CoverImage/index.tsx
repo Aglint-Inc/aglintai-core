@@ -86,7 +86,7 @@ export function CoverImage() {
       >
         <div className='flex flex-col'>
           {banner_image ? (
-            <div className='relative flex h-48 w-96 flex-col items-center justify-center gap-4 overflow-hidden rounded-md bg-muted'>
+            <div className='relative flex h-48 w-96 flex-col items-center justify-center gap-4 overflow-hidden rounded-md bg-muted border-border'>
               <ImageWithLoading src={banner_image} />
               {isPending && (
                 <div className='absolute flex h-full w-full items-center justify-center bg-gray-100 opacity-30'>
@@ -129,7 +129,7 @@ export function CoverImage() {
             </div>
           )}
           {/* Button to edit and remove the image only if there is an image */}
-          {banner_image && !isPending && (
+          {banner_image  && (
             <div className='flex flex-row gap-2'>
               <Button
                 variant='outline'
@@ -151,7 +151,7 @@ export function CoverImage() {
                 className='mt-4'
                 onClick={handleRemoveImage}
               >
-                {isPending ? 'Remove...' : 'Remove'}
+                {isPending ? 'Removing...' : 'Remove'}
               </Button>
             </div>
           )}

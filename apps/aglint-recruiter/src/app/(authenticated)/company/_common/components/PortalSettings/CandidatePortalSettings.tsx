@@ -8,7 +8,7 @@ import { SliderImages } from './SliderImages';
 
 function CandidatePortalSettings() {
   return (
-    <div className='flex w-full flex-col gap-5'>
+    <div className='flex w-full flex-col gap-8 mb-8'>
       <PortalPreview />
       <CoverImage />
       <AboutCompany />

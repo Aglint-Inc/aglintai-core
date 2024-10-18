@@ -57,7 +57,7 @@ export default function AboutCompany() {
         }
       >
         {about && (
-          <ScrollArea className='w-full rounded-md border bg-muted'>
+          <ScrollArea className='w-full rounded-md border border-border bg-muted'>
             <div className='max-h-72 w-full space-y-4 p-4'>
               {htmlParser.parse(about)}
             </div>
