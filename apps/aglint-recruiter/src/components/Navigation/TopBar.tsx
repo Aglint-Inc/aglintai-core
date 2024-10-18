@@ -12,9 +12,11 @@ import { useQueryClient } from '@tanstack/react-query';
 import { ChevronDownIcon, User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect } from 'react';
 
 import { useLogout } from '@/authenticated/hooks/useLogout';
 import { ThemeToggle } from '@/common/themes/components/ThemeToggle';
+import { useTheme } from '@/common/themes/hooks/useTheme';
 import { useTenant } from '@/company/hooks';
 
 const DefaultCompanyLogo = () => (
@@ -35,6 +37,33 @@ const TopBar = () => {
   const profileImage = recruiter_user?.profile_image;
   const userName = recruiter_user?.first_name;
   const userId = recruiter_user?.user_id;
+
+  const { setMode } = useTheme();
+
+  // sortcut for toggle a theme
+  const toggleState = () => {
+    setMode(localStorage.getItem('theme') == 'dark' ? 'light' : 'dark');
+  };
+
+  useEffect(() => {
+    const handleKeyPress = (event: any) => {
+      const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+      if (!isMac && event.ctrlKey && event.key === 'm') {
+        event.preventDefault();
+        toggleState();
+      }
+      if (isMac && event.metaKey && event.key === 'm') {
+        event.preventDefault();
+        toggleState();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, []);
 
   return (
     <div className='flex w-full flex-row items-center justify-between'>
