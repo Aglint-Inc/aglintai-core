@@ -1,6 +1,6 @@
 import { toast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
-import { ImagePlus } from 'lucide-react';
+import { ImagePlus, TriangleAlert } from 'lucide-react';
 import Image from 'next/image';
 import { type ChangeEvent, type DragEvent, useRef, useState } from 'react';
 
@@ -86,7 +86,7 @@ export function CoverImage() {
       >
         <div className='flex flex-col'>
           {banner_image ? (
-            <div className='relative flex h-48 w-96 flex-col items-center justify-center gap-4 overflow-hidden rounded-md bg-muted border-border'>
+            <div className='relative flex h-48 w-96 flex-col items-center justify-center gap-4 overflow-hidden rounded-md border-border bg-muted'>
               <ImageWithLoading src={banner_image} />
               {isPending && (
                 <div className='absolute flex h-full w-full items-center justify-center bg-gray-100 opacity-30'>
@@ -129,7 +129,7 @@ export function CoverImage() {
             </div>
           )}
           {/* Button to edit and remove the image only if there is an image */}
-          {banner_image  && (
+          {banner_image && (
             <div className='flex flex-row gap-2'>
               <Button
                 variant='outline'
@@ -201,7 +201,12 @@ const ImageWithLoading = ({ src }: { src: string }) => {
           className='h-full object-cover'
         ></Image>
       )}
-      {error && <p>Error loading image.</p>}
+      {error && (
+        <div className='flex h-full w-full flex-col items-center justify-center gap-2 p-6 bg-muted'>
+          <TriangleAlert className='text-destructive' />
+          <span>Error loading image.</span>
+        </div>
+      )}
     </div>
   );
 };
