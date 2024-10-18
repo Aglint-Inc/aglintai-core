@@ -41,13 +41,15 @@ export const UpcomingInterview = () => {
           <SectionHeaderText>
             <SectionTitle>Upcoming Interviews </SectionTitle>
           </SectionHeaderText>
-          <SectionActions>
-            <Button size={'sm'} onClick={() => router.push('/interviews')}>
-              View All
-            </Button>
-          </SectionActions>
+          {interviews.length > 3 && (
+            <SectionActions>
+              <Button size={'sm'} onClick={() => router.push('/interviews')}>
+                View All
+              </Button>
+            </SectionActions>
+          )}
         </SectionHeader>
-        <div className='min-h-[300px]'>
+        <div>
           {interviews?.length > 0 ? (
             interviews
               .slice(0, 3)

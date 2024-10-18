@@ -116,14 +116,14 @@ export default function Heatmap({
                 </div>
 
                 <div className='flex flex-row items-center gap-2'>
-                  <p className='text-sm'>
+                  <p className='text-sm text-muted-foreground'>
                     Activity on{' '}
                     <span>
                       {startDateUI} - {endDateUI}
                     </span>
                   </p>
                   <div
-                    className='flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm bg-background'
+                    className='flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm bg-muted'
                     onClick={() =>
                       setDayCount((pre) => ({
                         start: pre.start === 21 ? -7 : pre.start - 28,
@@ -134,7 +134,7 @@ export default function Heatmap({
                     <ChevronLeft className='h-3 w-3' />
                   </div>
                   <div
-                    className='flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm bg-background'
+                    className='flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm bg-muted'
                     onClick={() =>
                       setDayCount((pre) => ({
                         start: pre.start === -7 ? 21 : pre.start + 28,
