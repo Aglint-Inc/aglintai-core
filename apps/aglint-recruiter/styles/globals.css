@@ -80,7 +80,7 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --ring: 240 5.9% 10%;
-    --radius: 0.5rem;
+    /* --radius: 0.5rem; */
   }
 
   .dark .theme-zinc {
@@ -125,7 +125,7 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
+    /* --radius: 0.5rem; */
   }
 
   .dark .theme-slate {
@@ -215,7 +215,7 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 20% 98%;
     --ring: 224 71.4% 4.1%;
-    --radius: 0.35rem;
+    /* --radius: 0.35rem; */
   }
 
   .dark .theme-gray {
@@ -260,7 +260,7 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --ring: 0 0% 3.9%;
-    --radius:     
+    /* --radius:      */
   ;
   }
 
@@ -306,7 +306,7 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --ring: 0 72.2% 50.6%;
-    --radius: 0.4rem;
+    /* --radius: 0.4rem; */
   }
 
   .dark .theme-red {
@@ -351,7 +351,7 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --ring: 346.8 77.2% 49.8%;
-    --radius: 0.5rem;
+    /* --radius: 0.5rem; */
   }
 
   .dark .theme-rose {
@@ -396,7 +396,7 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 60 9.1% 97.8%;
     --ring: 24.6 95% 53.1%;
-    --radius: 0.95rem;
+    /* --radius: 0.95rem; */
   }
 
   .dark .theme-orange {
@@ -441,7 +441,7 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --ring: 142.1 76.2% 36.3%;
-    --radius:     
+    /* --radius:      */
   ;
   }
 
@@ -487,7 +487,7 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --ring: 221.2 83.2% 53.3%;
-    --radius:     
+    /* --radius:      */
   ;
   }
 
@@ -533,7 +533,7 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 60 9.1% 97.8%;
     --ring: 20 14.3% 4.1%;
-    --radius: 0.95rem;
+    /* --radius: 0.95rem; */
   }
 
   .dark .theme-yellow {
@@ -578,7 +578,7 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 20% 98%;
     --ring: 262.1 83.3% 57.8%;
-    --radius:     
+    /* --radius:      */
   ;
   }
 
