@@ -87,11 +87,11 @@ function Interviewers() {
           Add Interviewer
         </UIButton>
       </div>
-      <Card>
+      <Card className='border border-border shadow-none'>
         <CardContent className='p-0'>
           <Table className='overflow-hidden'>
             <TableHeader>
-              <TableRow className='border-b-gray-200'>
+              <TableRow className=''>
                 <TableHead className='w-4/12'>Name</TableHead>
                 <TableHead className='w-2/12'>Today</TableHead>
                 <TableHead className='w-2/12'>Week</TableHead>
@@ -150,7 +150,7 @@ function Interviewers() {
                             </AvatarFallback>
                           </Avatar>
                           <div>
-                            <div className='flex flex-row gap-2 font-medium text-gray-900'>
+                            <div className='flex flex-row gap-2 font-medium'>
                               {interviewer.name}
                               {interviewer.rel.pause_json && (
                                 <UIBadge
@@ -197,12 +197,12 @@ function Interviewers() {
                         <PopoverContent
                           align='start'
                           side='bottom'
-                          className='w-[150px] cursor-pointer rounded-md border border-gray-200 bg-white p-2'
+                          className='w-[150px] cursor-pointer rounded-md border border-border p-2'
                         >
                           <div className='flex flex-col'>
                             {interviewer.rel.pause_json ? (
                               <div
-                                className='flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100'
+                                className='flex cursor-pointer items-center rounded-sm p-2 hover:bg-muted'
                                 onClick={() => {
                                   setSelUser(interviewer.rel);
                                   setIsResumeDialogOpen(true);
@@ -213,7 +213,7 @@ function Interviewers() {
                               </div>
                             ) : (
                               <div
-                                className='flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100'
+                                className='flex cursor-pointer items-center rounded-sm p-2 hover:bg-muted'
                                 onClick={() => {
                                   setSelUser(interviewer.rel);
                                   setIsPauseDialogOpen(true);
@@ -224,7 +224,7 @@ function Interviewers() {
                               </div>
                             )}
                             <div
-                              className='flex cursor-pointer items-center rounded-sm p-2 hover:bg-gray-100'
+                              className='flex cursor-pointer items-center rounded-sm p-2 hover:bg-muted'
                               onClick={() => {
                                 setSelUser(interviewer.rel);
                                 setIsDeleteMemberDialogOpen(true);
