@@ -51,6 +51,7 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
             <Button
               variant='outline'
               size='sm'
+              className='hover:bg-background/50'
               onClick={() => {
                 if (!isUpdating) setIsPopoverOpen(true);
               }}
