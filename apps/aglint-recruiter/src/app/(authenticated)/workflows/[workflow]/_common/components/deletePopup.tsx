@@ -38,7 +38,7 @@ export const DeletePopup = () => {
   };
   return (
     <Dialog open={deletion.open} onOpenChange={() => handleClose()}>
-      <DialogContent>
+      <DialogContent className='border-border'>
         <DialogHeader>
           <DialogTitle>Delete workflow</DialogTitle>
         </DialogHeader>

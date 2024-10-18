@@ -24,8 +24,8 @@ export function WorkflowItem({
   onClickDelete,
 }: WorkflowItemProps) {
   return (
-    <Card className='w-full'>
-      <CardHeader className='flex flex-row justify-between border-b p-4'>
+    <Card className='w-full border-border'>
+      <CardHeader className='flex flex-row justify-between border-b border-border p-4'>
         <div className='flex flex-col gap-1'>
           <div className='flex items-center gap-2'>
             <div className='flex h-6 w-6 items-center justify-center rounded bg-accent text-accent-foreground'>

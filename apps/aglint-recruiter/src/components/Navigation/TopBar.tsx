@@ -67,7 +67,7 @@ const TopBar = () => {
 
   return (
     <div className='flex w-full flex-row items-center justify-between'>
-      <Button variant='link' className='mt-2 ml-2 p-2' asChild>
+      <Button variant='link' className='ml-2 mt-2 p-2' asChild>
         <Link href='/jobs' className='hover:no-underline'>
           <Avatar>
             <AvatarImage src={logo || ''} alt={recruiterName} />
@@ -99,7 +99,12 @@ const TopBar = () => {
               <ChevronDownIcon className='ml-1 h-4 w-4' />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent side='bottom' align='end' alignOffset={20}>
+          <DropdownMenuContent
+            side='bottom'
+            align='end'
+            alignOffset={20}
+            className='border border-border'
+          >
             <DropdownMenuItem className='cursor-pointer'>
               <Link
                 href={`/user/${userId}?profile=true`}

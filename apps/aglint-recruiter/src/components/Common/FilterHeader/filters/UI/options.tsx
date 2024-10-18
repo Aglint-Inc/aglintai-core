@@ -106,7 +106,7 @@ export function FilterOptions({
       : [];
   return (
     <div
-      className={`flex max-h-[280px] min-w-56 flex-col gap-1 ${separator && 'border-l'} border-b`}
+      className={`flex max-h-[280px] min-w-56 flex-col gap-1 ${separator && 'border-l'} border border-border`}
     >
       {sectionHeading && (
         <div className='flex flex-row items-center justify-between border-b px-2 py-1'>

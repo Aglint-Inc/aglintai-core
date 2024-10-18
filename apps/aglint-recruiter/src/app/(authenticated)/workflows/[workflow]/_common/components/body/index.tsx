@@ -20,7 +20,7 @@ import { useState } from 'react';
 
 import { NotFound } from '@/components/Common/404';
 import { Loader } from '@/components/Common/Loader';
-import { UIBadge } from '@/components/Common/UIBadge';
+// import { UIBadge } from '@/components/Common/UIBadge';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import {
@@ -38,6 +38,7 @@ import { WorkflowConnectedCard } from '../WorkflowConnectedCard';
 import Actions from './action';
 import { ActionsProvider } from './context';
 import Trigger from './trigger';
+import { UIBadge } from '@components/ui-badge';
 
 const Body = () => {
   const { workflow } = useWorkflow();
@@ -120,11 +121,11 @@ const WorkflowJob = ({
           slotBadges={
             status && (
               <UIBadge
-                color={
+                variant={
                   status === 'published'
                     ? 'success'
                     : status === 'closed'
-                      ? 'error'
+                      ? 'destructive'
                       : 'warning'
                 }
                 textBadge={capitalizeAll(status)}
@@ -140,7 +141,7 @@ const WorkflowJob = ({
         />
       </OptimisticWrapper>
       <AlertDialog open={open} onOpenChange={setOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent className='border border-border'>
           <AlertDialogHeader>
             <AlertDialogTitle>Unlink confirmation</AlertDialogTitle>
             <AlertDialogDescription>

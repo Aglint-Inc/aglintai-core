@@ -75,6 +75,7 @@ export default function FilterButton({
         {type == 'popover' && (
           <PopoverContent className='w-max border border-border p-0'>
             {popover}
+
             <Button
               variant='ghost'
               className='w-full justify-start gap-1 border border-border hover:rounded-t-none'
