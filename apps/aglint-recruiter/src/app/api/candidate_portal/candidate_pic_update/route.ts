@@ -36,10 +36,7 @@ export async function POST(req: Request) {
 
   // update db ---------------
 
-  await db
-    .from('candidates')
-    .update({ avatar })
-    .eq('id', 'af308b18-b730-4532-a7c5-9263a2f665a7');
+  await db.from('candidates').update({ avatar }).eq('id', candidate_id);
 
   try {
     return NextResponse.json(

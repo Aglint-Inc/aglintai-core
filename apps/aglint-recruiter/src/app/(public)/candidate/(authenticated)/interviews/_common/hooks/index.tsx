@@ -12,7 +12,10 @@ export const useCandidatePortalInterviews = () => {
     {
       application_id,
     },
-    { enabled: !isPreview, initialData: dummyDataInterviews },
+    {
+      enabled: !isPreview,
+      initialData: isPreview ? dummyDataInterviews : undefined,
+    },
   );
 };
 
