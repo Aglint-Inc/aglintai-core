@@ -22,7 +22,7 @@ const useGetMessageProcedure = (
   const isPreview = !!queryParams.isPreview as boolean;
   const query = api.candidatePortal.get_messages.useQuery(input, {
     enabled: !isPreview,
-    initialData: dummyDataMessage,
+    initialData: isPreview ? dummyDataMessage : undefined,
   });
 
   return { ...query };

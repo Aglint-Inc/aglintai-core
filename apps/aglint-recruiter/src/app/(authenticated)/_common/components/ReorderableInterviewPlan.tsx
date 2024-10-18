@@ -42,6 +42,7 @@ import {
   useState,
 } from 'react';
 
+import { PortalPreview } from '@/company/components/PortalSettings/Preview';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { supabase } from '@/utils/supabase/client';
@@ -182,7 +183,10 @@ export default function ReorderableInterviewPlan({
   };
 
   return (
-    <div className='max-w-2xl'>
+    <div className='m-4 max-w-2xl'>
+      <div className='mb-2 flex w-full justify-between'>
+        <PortalPreview application_id={applicationId || ''} />
+      </div>
       <div
         className={`relative ${isOrderChanging ? 'opacity-25' : ''} `}
         ref={timelineRef}

@@ -17,7 +17,7 @@ const useGetProfileProcedure = (input: GetProfile['input']) => {
   const isPreview = !!queryParams.isPreview;
   const query = api.candidatePortal.get_profile.useQuery(input, {
     enabled: !isPreview,
-    initialData: dummyDataProfile,
+    initialData: isPreview ? dummyDataProfile : undefined,
   });
   return query;
 };

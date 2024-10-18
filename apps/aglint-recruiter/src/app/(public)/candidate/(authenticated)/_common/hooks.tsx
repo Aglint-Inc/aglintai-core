@@ -1,13 +1,9 @@
 import { useContext } from 'react';
 
-import { useTenant } from '@/company/hooks';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { type GetNav } from '@/routers/candidatePortal/get_navbar';
 import { api } from '@/trpc/client';
 
 import { CandidatePortalContext } from './context';
-import { dummyDataNavbar } from './dummydata';
-
 export const useCandidatePortal = () => {
   const value = useContext(CandidatePortalContext);
   if (!value)
@@ -24,23 +20,29 @@ export const useCandidatePortalNavbar = () => {
 };
 
 const useGetNavbarProcedure = () => {
-  const { recruiter } = useTenant();
   const { queryParams } = useRouterPro();
   const application_id = queryParams?.application_id as string;
-  const isPreview = queryParams?.isPreview as string;
+  const recruiter_id = queryParams?.recruiter_id as string;
+  const isPreview = !!queryParams?.isPreview as boolean;
 
-  const initData: GetNav['output'] = {
-    ...dummyDataNavbar,
-    company: { logo: recruiter.logo, name: recruiter.name },
-  };
   const query = api.candidatePortal.get_navbar.useQuery(
     {
       application_id,
     },
     {
       enabled: !isPreview,
-      initialData: initData,
     },
   );
-  return { ...query, data: query.data! };
+  const queryPreview = api.candidatePortal.get_navbar_preview.useQuery(
+    {
+      recruiter_id,
+    },
+    {
+      enabled: isPreview,
+    },
+  );
+
+  return isPreview
+    ? { ...queryPreview, data: queryPreview.data! }
+    : { ...query, data: query.data! };
 };
