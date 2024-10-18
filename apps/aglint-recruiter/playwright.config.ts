@@ -1,16 +1,39 @@
-import { defineConfig, devices } from '@playwright/test';
+import {
+  defineConfig,
+  devices,
+  type PlaywrightTestConfig,
+} from '@playwright/test';
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// import dotenv from 'dotenv';
-// import path from 'path';
-// dotenv.config({ path: path.resolve(__dirname, '.env') });
+// const WEBAPP_URL = process.env.NEXT_PUBLIC_HOST_NAME;
+const DEFAULT_NAVIGATION_TIMEOUT = process.env.CI ? 30000 : 120000;
+const DEFAULT_EXPECT_TIMEOUT = process.env.CI ? 30000 : 120000;
 
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
+const DEFAULT_CHROMIUM: NonNullable<
+  PlaywrightTestConfig['projects']
+>[number]['use'] = {
+  ...devices['Desktop Chrome'],
+  // timezoneId: 'Europe/London',
+  // storageState: {
+  //   cookies: [
+  //     {
+  //       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //       // @ts-ignore TS definitions for USE are wrong.
+  //       url: WEBAPP_URL,
+  //       name: 'calcom-timezone-dialog',
+  //       expires: -1,
+  //       value: '1',
+  //     },
+  //   ],
+  // },
+  locale: 'en-US',
+  /** If navigation takes more than this, then something's wrong, let's fail fast. */
+  navigationTimeout: DEFAULT_NAVIGATION_TIMEOUT,
+  // chromium-specific permissions - Chromium seems to be the only browser type that requires perms
+  contextOptions: {
+    permissions: ['clipboard-read', 'clipboard-write'],
+  },
+};
+
 export default defineConfig({
   testDir: './playwright',
   /* Run tests in files in parallel */
@@ -27,53 +50,20 @@ export default defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://127.0.0.1:3000',
-
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
-
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: '@aglint/aglint-recriuter',
+      testDir: './playwright',
+      testMatch: /.*\.e2e\.tsx?/,
+      expect: {
+        timeout: DEFAULT_EXPECT_TIMEOUT,
+      },
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      use: DEFAULT_CHROMIUM,
     },
-
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
   ],
-
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
 });
