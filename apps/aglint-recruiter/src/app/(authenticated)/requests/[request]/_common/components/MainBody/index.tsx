@@ -132,7 +132,7 @@ export default function ViewRequestDetails() {
     return <Loader />;
   } else
     return (
-      <div className='w-full'>
+      <div className='w-full' data-testid='request-details-page'>
         {selectedRequest && (
           <CandidateAvailability selectedRequest={selectedRequest} />
         )}
@@ -291,6 +291,7 @@ export default function ViewRequestDetails() {
                   </div>
                 </div>
                 <UIBadge
+                  data-testid='request-details-status'
                   variant={
                     selectedRequest?.status === 'to_do'
                       ? 'neutral'
@@ -462,6 +463,7 @@ export default function ViewRequestDetails() {
                 </div>
                 <div className='flex items-center space-x-2'>
                   <UIBadge
+                    data-testid='request-details-type'
                     variant={
                       selectedRequest?.type === 'decline_request'
                         ? 'destructive'

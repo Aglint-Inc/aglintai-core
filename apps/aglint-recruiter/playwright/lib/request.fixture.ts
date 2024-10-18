@@ -1,28 +1,48 @@
-// import { expect, type Page } from '@playwright/test';
+import { expect, type Page } from '@playwright/test';
 
-// export const createLoginFixture = (page: Page) => {
-//   const app_url = process.env.NEXT_PUBLIC_HOST_NAME;
-//   return {
-//     goto: async (req) => {
-//       await page.goto(app_url + '/login', {
-//         timeout: 5000, // Increase timeout to 30 seconds
-//         waitUntil: 'networkidle', // Wait until network is idle
-//       });
-//     },
-//     login: async (email: string, password: string) => {
-//       await page.fill('input#email', email);
-//       await page.fill('input#password', password);
-
-//       await expect(async () => {
-//         await page.click('button[type="submit"]');
-//         await page.waitForSelector('div[data-testid="jobs-list-body"]', {
-//           state: 'visible',
-//           timeout: 20000,
-//         });
-//       }).toPass({
-//         intervals: [1_000, 2_000, 10_000],
-//         timeout: 60_000,
-//       });
-//     },
-//   };
-// };
+export const createRequestDetailsFixture = (page: Page) => {
+  const requestDetailsPage = page.getByTestId('request-details-page');
+  return {
+    goto: async (url: string) => {
+      expect(async () => {
+        await page.goto(url, {
+          timeout: 10000, // Increase timeout to 30 seconds
+          waitUntil: 'networkidle', // Wait until network is idle
+        });
+        expect(
+          page.getByTestId('request-details-status').isVisible(),
+        ).toBeTruthy();
+      }).toPass({
+        timeout: 20000,
+      });
+    },
+    isReady: async () => {
+      return requestDetailsPage.isVisible();
+    },
+    getRequestType: () => {
+      return page.getByAltText('request-details-type').textContent();
+    },
+    getRequestStatus: async () => {
+      return await page.getByTestId('request-details-status').textContent();
+    },
+    openCandidateAvailabilityDailog: async () => {
+      const getAvailabilityBtn = page.getByTestId('get-availability-btn');
+      expect(getAvailabilityBtn.isVisible()).toBeTruthy();
+      await getAvailabilityBtn.click();
+      await page.waitForSelector(
+        '[data-testid="candidate-availability-submit-btn"]',
+      );
+    },
+    assertTemplatePreview: async () => {
+      //
+    },
+    sendCandidateAvailability: async () =>
+      // start_date: string,
+      // end_date: string,
+      // min_days: number,
+      // num_slots: number,
+      {
+        //
+      },
+  };
+};

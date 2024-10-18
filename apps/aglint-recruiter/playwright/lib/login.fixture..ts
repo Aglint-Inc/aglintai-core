@@ -14,13 +14,9 @@ export const createLoginFixture = (page: Page) => {
 
       await expect(async () => {
         await page.click('button[type="submit"]');
-        await page.waitForSelector('div[data-testid="jobs-list-body"]', {
-          state: 'visible',
-          timeout: 20000,
-        });
+        expect(page.getByTestId('jobs-list-body').isVisible()).toBeTruthy();
       }).toPass({
-        intervals: [1_000, 2_000, 10_000],
-        timeout: 60_000,
+        timeout: 20000,
       });
     },
   };

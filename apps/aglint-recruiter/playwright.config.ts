@@ -4,12 +4,10 @@ import {
   type PlaywrightTestConfig,
 } from '@playwright/test';
 import dotEnv from 'dotenv';
-import * as os from 'os';
 dotEnv.config({ path: '.env' });
 
 const WEBAPP_URL = process.env.NEXT_PUBLIC_HOST_NAME;
 const DEFAULT_NAVIGATION_TIMEOUT = process.env.CI ? 30000 : 120000;
-const DEFAULT_EXPECT_TIMEOUT = process.env.CI ? 30000 : 120000;
 const headless = !!process.env.CI || !!process.env.PLAYWRIGHT_HEADLESS;
 
 const DEFAULT_CHROMIUM: NonNullable<
@@ -47,7 +45,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: os.cpus().length,
+  workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -63,11 +61,9 @@ export default defineConfig({
       name: '@aglint/aglint-recriuter',
       testDir: './playwright',
       testMatch: /.*\.(e2e|test)\.(js|jsx|ts|tsx)$/, // Expanded test file patterns
-      expect: {
-        timeout: DEFAULT_EXPECT_TIMEOUT,
-      },
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       use: DEFAULT_CHROMIUM,
+      timeout: 120000,
     },
   ],
 });

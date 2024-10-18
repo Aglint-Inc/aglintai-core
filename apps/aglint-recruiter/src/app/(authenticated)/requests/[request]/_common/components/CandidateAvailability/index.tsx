@@ -241,6 +241,7 @@ function CandidateAvailability({
   return (
     <>
       <UIDrawer
+        data-testid='candidate-availability-drawer'
         title={
           reRequestAvailability
             ? 'Re-request Availability'
@@ -260,6 +261,7 @@ function CandidateAvailability({
               Close
             </UIButton>
             <UIButton
+              data-testid='candidate-availability-submit-btn'
               variant='default'
               disabled={submitting}
               onClick={() => {
