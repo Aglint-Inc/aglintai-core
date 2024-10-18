@@ -20,7 +20,7 @@ export function ModeToggle() {
   useEffect(() => {
     const handleShortcut = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
-        e.preventDefault(); // Prevents the default browser behavior (e.g., focusing address bar)
+        e.preventDefault();
         setMode(mode === 'light' ? 'dark' : 'light');
       }
     };
