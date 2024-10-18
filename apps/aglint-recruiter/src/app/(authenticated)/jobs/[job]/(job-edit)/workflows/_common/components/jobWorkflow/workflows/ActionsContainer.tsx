@@ -30,7 +30,7 @@ const ActionsContainer = ({
   if (!target_api_details) return <></>;
   const copy_details = target_api_details.name;
   return (
-    <div className='rounded-md bg-secondary p-4'>
+    <div className='rounded-md bg-muted/50 p-4'>
       <div className='mb-2 flex items-center justify-between'>
         <h3 className='text-sm font-semibold'>{copy_details}</h3>
         <Button

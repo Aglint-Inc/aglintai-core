@@ -83,7 +83,7 @@ const TipTapMenus = ({
           <PopoverTrigger asChild className=''>
             <Button
               size='sm'
-              className='h-8 border-none bg-transparent hover:bg-muted-foreground/20 dark:text-white'
+              className='h-8 border-none bg-transparent text-gray-800 hover:bg-muted-foreground/20 dark:text-white'
             >
               {typography}
               <ChevronDown className='ml-2 h-4 w-4' />

@@ -62,11 +62,10 @@ export const AboutCompanyDialog = ({
         Edit the about section of your company.
       </DialogDescription>
 
-      <div className='mt-4 rounded-md border border-muted-foreground bg-background'>
+      <div className='mt-4 rounded-md'>
         <TipTapAIEditor
           enablAI={false}
           placeholder={''}
-          minHeight='360px'
           height='330px'
           padding={'10px'}
           editor_type='email'

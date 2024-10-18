@@ -138,7 +138,7 @@ const TipTapAIEditor = ({
         enablAI,
       }}
     >
-      <div className='overflow-hidden rounded-md border border-border'>
+      <div className='overflow-hidden rounded-md border border-border bg-muted/70'>
         <div>
           {editor && toolbar && (
             <div
@@ -159,7 +159,7 @@ const TipTapAIEditor = ({
             }} 
           >*/}
           <ScrollArea
-            className={`flex flex-col overflow-y-auto h-[${height}] max-h-[${maxHeight}] min-h-[${minHeight}]`}
+            className={`flex flex-col overflow-y-auto h-[${height}] max-h-[${maxHeight}] min-h-[${minHeight}] `}
           >
             <div
               className={cn(
