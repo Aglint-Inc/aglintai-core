@@ -34,7 +34,7 @@ function SchedulingPopUps({
 
   return (
     <Dialog open={isOpen} onOpenChange={close}>
-      <DialogContent className='sm:max-w-[425px]'>
+      <DialogContent className='border border-border sm:max-w-[425px]'>
         <DialogHeader>
           <DialogTitle>
             {reason === 'connect_google_workSpace'

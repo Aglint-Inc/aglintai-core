@@ -28,7 +28,7 @@ import { getFilteredWorkflows } from './filters';
 const Content = memo(() => {
   const { workflows } = useWorkflows();
   return (
-    <div className='flex flex-col gap-4'>
+    <div className='flex flex-col'>
       <Cards data={workflows} />
     </div>
   );
@@ -53,16 +53,16 @@ const Cards = (props: {
             legacyBehavior
             passHref
           >
-            <a className='block space-y-2 border-b border-gray-200 py-4 hover:no-underline'>
+            <a className='block space-y-2 border-b border-border py-4 pl-4 hover:bg-muted hover:no-underline'>
               <div className='flex items-center justify-between'>
                 {capitalizeSentence(title ?? '---')}
               </div>
               <div className='flex flex-row gap-2'>
                 <WorkflowTags tags={tags} />
-                <p className='text-sm text-gray-600'>
+                <p className='text-sm text-muted-foreground'>
                   {getTriggerOption(trigger, phase)}
                 </p>
-                <p className='text-sm text-gray-600'>{`Used in ${jobCount} job${
+                <p className='text-sm text-muted-foreground/40'>{`Used in ${jobCount} job${
                   jobCount === 1 ? '' : 's'
                 }`}</p>
               </div>
