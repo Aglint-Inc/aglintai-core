@@ -60,7 +60,11 @@ const BreakTimeCard: FC<BreakTimeCardProps> = ({
               <span className='sr-only'>Edit Break Time</span>
             </Button>
           </PopoverTrigger>
-          <PopoverContent className='w-full' align='start' side='left'>
+          <PopoverContent
+            className='w-full border-border'
+            align='start'
+            side='left'
+          >
             <EditBreakTime
               breakTime={breakTime}
               isUpdating={isUpdating}
@@ -115,7 +119,7 @@ const EditBreakTime = ({
   }, []);
 
   return (
-    <div className='w-[300 px] flex flex-col gap-4'>
+    <div className='w-[300 px] flex flex-col gap-1 gap-4'>
       <div>
         <Label>Break Start Time</Label>
         <TimePicker
