@@ -51,11 +51,11 @@ export const Header = () => {
   };
 
   return (
-    <div className='rounded-lg bg-gray-50 p-4'>
+    <div className='rounded-lg bg-muted p-4'>
       <div className='flex flex-row space-x-4'>
         <Avatar className='h-32 w-32 rounded-md'>
           <AvatarImage src={avatar} alt={first_name} />
-          <AvatarFallback className='h-10 w-10 rounded-md bg-gray-200'>
+          <AvatarFallback className='h-10 w-10 rounded-md bg-muted'>
             <User
               className='h-6 w-6 text-muted-foreground'
               size={40}
@@ -66,11 +66,12 @@ export const Header = () => {
         <div className='flex flex-1 flex-col'>
           <div className='flex flex-1 gap-10'>
             <div className='flex flex-col'>
-              <div className='text-lg font-medium text-gray-900'>
+              <div className='text-lg font-medium'>
                 {getFullName(first_name ?? '', last_name ?? '')}
               </div>
-              <p className='line-clamp-1 text-sm text-gray-600'>
-                {capitalizeAll(role)} - {capitalizeAll(department)}
+              <p className='line-clamp-1 text-sm text-muted-foreground'>
+                {capitalizeAll(role)}{' '}
+                {department ? ' - ' + capitalizeAll(department) : ''}
               </p>
             </div>
             <div className='flex flex-col gap-2'>

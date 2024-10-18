@@ -77,14 +77,14 @@ const List = ({
     <>
       {/* Alternate card */}
       <div className='mb-2 flex items-center gap-4 rounded-lg'>
-        <div className='flex h-[94px] w-[90px] flex-col items-center justify-center rounded-sm bg-gray-50'>
-          <div className='text-sm'>
+        <div className='flex h-[94px] w-[90px] flex-col items-center justify-center rounded-sm bg-muted'>
+          <div className='text-sm text-muted-foreground'>
             {dayjsLocal(interview.start_time).format('MMMM')}
           </div>
-          <div className='text-2xl font-semibold text-black'>
+          <div className='text-2xl font-semibold'>
             {dayjsLocal(interview.start_time).format('DD')}
           </div>
-          <div className='text-sm'>
+          <div className='text-sm text-muted-foreground'>
             {dayjsLocal(interview.start_time).format('dddd')}
           </div>
         </div>

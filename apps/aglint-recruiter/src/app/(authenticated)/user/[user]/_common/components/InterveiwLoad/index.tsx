@@ -231,7 +231,7 @@ const LoadCard = ({
   };
 }) => {
   return (
-    <div className='h-fit min-w-[150px] rounded-sm bg-white'>
+    <div className='h-fit min-w-[150px] rounded-sm bg-muted'>
       <Typography className='px-4 pt-2 text-sm'>{load.title}</Typography>
       <div className='flex flex-col gap-1 px-4 py-2'>
         <Typography className='text-xl font-medium'>{load.count}</Typography>
