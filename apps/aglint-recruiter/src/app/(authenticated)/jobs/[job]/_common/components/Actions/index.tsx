@@ -271,7 +271,7 @@ const Popup = ({
   return (
     <div className='mx-autojustify-center mx-auto flex w-[500px] items-center'>
       <div className='w-full max-w-lg'>
-        <div className='flex items-center justify-between border-b border-gray-200 p-4'>
+        <div className='flex items-center justify-between border-b border-border p-4'>
           <h2 className='font-semibold'>{title}</h2>
           <UIButton
             onClick={() => resetActionPopup()}
