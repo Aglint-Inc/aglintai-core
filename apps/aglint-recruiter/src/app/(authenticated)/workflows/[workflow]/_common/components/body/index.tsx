@@ -15,6 +15,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@components/ui/alert-dialog';
+import { UIBadge } from '@components/ui-badge';
 import { BriefcaseBusiness } from 'lucide-react';
 import { useState } from 'react';
 
@@ -38,7 +39,6 @@ import { WorkflowConnectedCard } from '../WorkflowConnectedCard';
 import Actions from './action';
 import { ActionsProvider } from './context';
 import Trigger from './trigger';
-import { UIBadge } from '@components/ui-badge';
 
 const Body = () => {
   const { workflow } = useWorkflow();

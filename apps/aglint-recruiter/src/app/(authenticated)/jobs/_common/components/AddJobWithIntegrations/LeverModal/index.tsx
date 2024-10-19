@@ -187,7 +187,7 @@ export default function LeverModalComp() {
                   Please enter your API key to connect to Lever.
                 </p>
               ) : integration.lever.step === STATE_LEVER_DIALOG.LISTJOBS ? (
-                <p className='text-sm text-muted-foreground mb-2'>
+                <p className='mb-2 text-sm text-muted-foreground'>
                   Select a job to import. You can import only one job at a time.
                 </p>
               ) : null}
@@ -266,7 +266,7 @@ export default function LeverModalComp() {
                             <Card
                               key={post.id}
                               onClick={() => setSelectedLeverPostings(post)}
-                              className='my-2 cursor-pointer hover:bg-gray-50'
+                              className='my-2 cursor-pointer border border-border hover:bg-muted'
                             >
                               <CardContent className='flex items-center justify-between p-4'>
                                 <div>

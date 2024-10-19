@@ -22,7 +22,9 @@ export function ColorToggle() {
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       const isMac = navigator.platform.toUpperCase().includes('MAC');
-      const isOptionOrAlt = isMac ? event.metaKey || event.altKey : event.altKey;
+      const isOptionOrAlt = isMac
+        ? event.metaKey || event.altKey
+        : event.altKey;
       if (isOptionOrAlt && event.key.toLowerCase() === 'k') {
         event.preventDefault(); // Prevent default behavior
         const nextIndex = (currentIndex + 1) % COLORS.length;
@@ -30,7 +32,7 @@ export function ColorToggle() {
         setColor(COLORS[nextIndex]);
       }
     },
-    [currentIndex, setColor]
+    [currentIndex, setColor],
   );
 
   useEffect(() => {
@@ -43,12 +45,12 @@ export function ColorToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">
-          <Palette className="h-[1.2rem] w-[1.2rem] rotate-90 scale-100 transition-all" />
-          <span className="sr-only">Toggle color</span>
+        <Button variant='outline'>
+          <Palette className='h-[1.2rem] w-[1.2rem] rotate-90 scale-100 transition-all' />
+          <span className='sr-only'>Toggle color</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align='end' className='border border-border'>
         <Colors />
       </DropdownMenuContent>
     </DropdownMenu>
@@ -58,10 +60,15 @@ export function ColorToggle() {
 const Colors = () => COLORS.map((color) => <Color key={color} color={color} />);
 
 const Color = ({ color }: { color: (typeof COLORS)[number] }) => {
-  const { setColor } = useTheme();
+  const { color: currentColor, setColor } = useTheme();
   const label = getLabel(color);
   return (
-    <DropdownMenuItem onClick={() => setColor(color)}>{label}</DropdownMenuItem>
+    <DropdownMenuItem
+      onClick={() => setColor(color)}
+      className={`${color === currentColor ? 'bg-muted' : ''} cursor-pointer`}
+    >
+      {label}
+    </DropdownMenuItem>
   );
 };
 

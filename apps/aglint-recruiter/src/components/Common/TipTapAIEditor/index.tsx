@@ -1,4 +1,5 @@
 import { type DatabaseEnums } from '@aglint/shared-types';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 import { cn } from '@lib/utils';
 import { type Editor, EditorContent, useEditor } from '@tiptap/react';
@@ -14,7 +15,6 @@ import {
   getRegularEditorNoHeadingsConfigs,
 } from './customExtns/extns/getRegularEditorConfigs';
 import MenuBtns from './MenuBtns';
-import { ScrollArea } from '@components/ui/scroll-area';
 
 type TipTapAIEditorParams = {
   placeholder?: string;

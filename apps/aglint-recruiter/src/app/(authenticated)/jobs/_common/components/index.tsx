@@ -83,7 +83,7 @@ export function AddJob() {
             <span className='sr-only'>Open menu</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align='end' className='w-56'>
+        <DropdownMenuContent align='end' className='w-56 border border-border'>
           <DropdownMenuItem
             onSelect={() => router.push(ROUTES['/jobs/create']())}
             className='cursor-pointer'
