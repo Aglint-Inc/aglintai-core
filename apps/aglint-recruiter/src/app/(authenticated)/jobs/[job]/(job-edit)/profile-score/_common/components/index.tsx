@@ -200,7 +200,7 @@ const ProfileScoreControls = () => {
             value={weights.experience}
             onChange={(e) => handleChange(e)}
             disabled={disabled.experience}
-            className='w-20 bg-white'
+            className='w-20 bg-white dark:bg-muted-foreground/50'
           />
           <Input
             type='number'
@@ -208,7 +208,7 @@ const ProfileScoreControls = () => {
             value={weights.skills}
             onChange={(e) => handleChange(e)}
             disabled={disabled.skills}
-            className='w-20 bg-white'
+            className='w-20 bg-white dark:bg-muted-foreground/50'
           />
           <Input
             type='number'
@@ -216,7 +216,7 @@ const ProfileScoreControls = () => {
             value={weights.education}
             onChange={(e) => handleChange(e)}
             disabled={disabled.education}
-            className='w-20 bg-white'
+            className='w-20 bg-white dark:bg-muted-foreground/50'
           />
         </div>
         <div className='flex justify-center'>
@@ -413,7 +413,7 @@ const Tag: FC<{
   return (
     <div className='group relative inline-block h-8'>
       {isEditing ? (
-        <div className='flex items-center overflow-hidden rounded-md border bg-white pr-1'>
+        <div className='flex items-center overflow-hidden rounded-md border bg-muted pr-1'>
           <Input
             value={value}
             onChange={(e) => setValue(e.target.value)}
@@ -431,7 +431,7 @@ const Tag: FC<{
         </div>
       ) : (
         <div
-          className='relative flex h-8 cursor-pointer items-center gap-2 rounded-md bg-gray-100 py-1 pl-3 pr-1 text-sm'
+          className='relative flex h-8 cursor-pointer items-center gap-2 rounded-md bg-muted py-1 pl-3 pr-1 text-sm'
           onClick={() => setIsEditing(true)}
         >
           {item.field}
