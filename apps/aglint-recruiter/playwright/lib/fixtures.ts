@@ -1,7 +1,7 @@
 import { test as base } from '@playwright/test';
 
 import { createJobsListPageFixture } from './jobsListPage.fixture';
-import { createLoginFixture } from './login.fixture.';
+import { createLoginFixture } from './login.fixture';
 import { createRequestDetailsFixture } from './request.fixture';
 
 type Fixtures = {

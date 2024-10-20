@@ -17,6 +17,7 @@ enum ScheduleRequestStatusEnum {
 test('Candidate Availability Request', async ({
   loginPage,
   requestDetailsPage,
+  page,
 }) => {
   await loginPage.goto();
   await loginPage.login(
@@ -24,10 +25,21 @@ test('Candidate Availability Request', async ({
     process.env.E2E_TEST_PASSWORD,
   );
   await requestDetailsPage.goto(
-    'http://localhost:3000/requests/bb7bcbb5-8331-4853-9f8e-15f1760142ab',
+    'http://localhost:3000/requests/475e38ea-1f5d-4a08-acad-9fbfa847dc65',
   );
-  const requestType = await requestDetailsPage.getRequestStatus();
-  if (requestType?.toLocaleLowerCase() === ScheduleRequestStatusEnum.TO_DO) {
+  const requestType = await requestDetailsPage.getRequestType();
+  if (!requestType) {
+    throw new Error('Request type is not found');
+  }
+  if (
+    requestType.toLowerCase() ===
+      ScheduleRequestTypeEnum.SCHEDULE_REQUEST.toLowerCase() ||
+    requestType.toLowerCase() ===
+      ScheduleRequestTypeEnum.RESCHEDULE_REQUEST.toLowerCase()
+  ) {
     await requestDetailsPage.openCandidateAvailabilityDailog();
+    await requestDetailsPage.sendCandidateAvailability();
+  } else {
+    throw new Error(`Request type ${requestType} is invalid`);
   }
 });

@@ -71,7 +71,11 @@ export const SharedActions = () => {
 
 const JobBanners = () => {
   const { job } = useJob();
-  return <Banners job={job} />;
+  return (
+    <div className='mr-4 flex flex-row gap-2'>
+      <Banners job={job} />
+    </div>
+  );
 };
 
 const Rescore = () => {

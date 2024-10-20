@@ -1,3 +1,10 @@
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@components/ui/tooltip';
+import { AlertTriangle, Ban, CircleDashed, Loader2 } from 'lucide-react';
+
 import { SafeObject } from '@/utils/safeObject';
 
 import type { Job } from '../types';
@@ -73,11 +80,19 @@ type ProcessingBanner = {
 
 const Banner = (props: BannerProps) => {
   if (props.type === 'generating')
-    return props.state ? <div>⚙️ Generating criteria</div> : <></>;
+    return props.state ? (
+      <div className='flex items-center space-x-2'>
+        <Loader2 className='infinite text-warning h-8 w-8 animate-spin' />
+        Generating criteria
+      </div>
+    ) : (
+      <></>
+    );
   if (props.type === 'processing')
     return props.processed !== props.total ? (
-      <div>
-        ⏳ {props.processed}/{props.total} Applications processed{' '}
+      <div className='flex items-center space-x-2'>
+        <CircleDashed className='infinite text-warning h-8 w-8 animate-spin' />
+        {props.processed}/{props.total} Applications processing
       </div>
     ) : (
       <></>
@@ -85,8 +100,26 @@ const Banner = (props: BannerProps) => {
   if (props.count === 0) return <></>;
   switch (props.type) {
     case 'error':
-      return <div>🚫 {props.count} Errors</div>;
+      return (
+        <Tooltip>
+          <TooltipTrigger asChild className='text-destructive'>
+            <Ban className='h-4 w-4' />
+          </TooltipTrigger>
+          <TooltipContent className='text-destructive'>
+            {props.count} Errors
+          </TooltipContent>
+        </Tooltip>
+      );
     case 'warning':
-      return <div>⚠️ {props.count} Warnings</div>;
+      return (
+        <Tooltip>
+          <TooltipTrigger asChild className='text-warning'>
+            <AlertTriangle className='h-4 w-4' />
+          </TooltipTrigger>
+          <TooltipContent className='text-warning'>
+            {props.count} Warnings
+          </TooltipContent>
+        </Tooltip>
+      );
   }
 };
