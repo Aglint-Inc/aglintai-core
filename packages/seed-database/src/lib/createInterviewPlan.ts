@@ -71,7 +71,6 @@ export const createInterviewPlan = async ({
         const int_reln = int_modules_relations
           .filter((int_reln) => int_reln.module_id === int_module?.id)
           .slice(0, session.interviewer_cnt);
-        console.error('int_reln size', int_reln.length);
         session_relns = int_reln.map((reln) => ({
           interview_module_relation_id:
             session.session_type === 'debrief' ? null : reln.id,

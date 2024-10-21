@@ -20,7 +20,6 @@ export type SeedJobType = Pick<
       name: InterviewModuleName | 'Debrief';
     })[];
   }[];
-  stage_break_duration?: number; // Added correct property name
 };
 
 export const seedJobs: SeedJobType[] = [
@@ -123,7 +122,6 @@ export const seedJobs: SeedJobType[] = [
         ],
       },
     ],
-    stage_break_duration: 0, // Corrected property name
   },
   {
     slug: 'devops-engineer',
@@ -187,7 +185,6 @@ export const seedJobs: SeedJobType[] = [
         ],
       },
     ],
-    stage_break_duration: 2880, // Corrected property name (24 * 60 * 2)
   },
   {
     slug: 'data-scientist',
@@ -230,6 +227,5 @@ export const seedJobs: SeedJobType[] = [
         ],
       },
     ],
-    stage_break_duration: 0, // Corrected property name
   },
 ];

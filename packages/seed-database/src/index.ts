@@ -18,14 +18,17 @@ const main = async () => {
   await createPermissions();
   const { recruiter_user, recruiter, departments, locations } =
     await createCompanyAndAdmin();
-  const {} = await addCandidatesToCompany({
+  const company_candidates = await addCandidatesToCompany({
     companyDetails: recruiter,
   });
+
   const { company_roles } = await fetchCompanyRoles(recruiter.id);
+
   await updateCompanyPref(recruiter.id, {
     scheduling: true,
     slack: true,
   });
+
   const team = await createCompanyTeam({
     company_roles,
     recruiter_user,
@@ -47,6 +50,7 @@ const main = async () => {
     int_modules,
     int_modules_relations,
     team,
+    company_candidates,
   });
 };
 
