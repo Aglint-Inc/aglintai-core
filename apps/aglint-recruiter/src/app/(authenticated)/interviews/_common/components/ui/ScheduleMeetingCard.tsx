@@ -40,7 +40,7 @@ function ScheduleMeetingCard({
         }}
       >
         <MyScheduleSubCard
-        isSmall={isSmall}
+          isSmall={isSmall}
           onClickDropdownIcon={(e: any) => {
             setCollapseOpen((pre) => !pre);
             e.stopPropagation();
@@ -52,7 +52,11 @@ function ScheduleMeetingCard({
               <div className={`${collapseOpen ? 'block' : 'hidden'}`}>
                 <div className='flex flex-col space-y-2'>
                   <MembersList
-                    slotImage={<div className='w-10 h-10 bg-gray-500 text-white flex items-center justify-center'><User size={24} strokeWidth={1.5} /></div>}
+                    slotImage={
+                      <div className='flex h-10 w-10 items-center justify-center bg-gray-500 text-white'>
+                        <User size={24} strokeWidth={1.5} />
+                      </div>
+                    }
                     textName={getFullName(
                       meetingDetails?.applications?.candidates?.first_name ??
                         '',

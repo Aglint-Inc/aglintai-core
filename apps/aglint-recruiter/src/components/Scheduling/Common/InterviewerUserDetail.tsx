@@ -56,7 +56,7 @@ function InterviewerUserDetail({
               src={userDetails.profile_image ?? ''}
               alt={getFullName(userDetails.first_name, userDetails.last_name)}
             />
-            <AvatarFallback className='h-12 w-12 rounded-md bg-gray-200'>
+            <AvatarFallback className='h-12 w-12 rounded-md bg-muted-foreground/50'>
               {getFullName(
                 userDetails.first_name,
                 userDetails.last_name,
@@ -123,7 +123,7 @@ function InterviewerUserDetail({
             </div>
           </div>
 
-          <div className='flex flex-row items-center gap-4 text-sm text-gray-500'>
+          <div className='flex flex-row items-center gap-4 text-sm text-muted-foreground'>
             <div className='flex flex-row items-center gap-1'>
               <Globe className='h-3 w-3' />
               <p>

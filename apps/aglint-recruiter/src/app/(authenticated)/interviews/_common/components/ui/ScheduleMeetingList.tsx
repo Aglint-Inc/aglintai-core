@@ -32,12 +32,17 @@ function ScheduleMeetingList({
             }
             slotMyScheduleSubCard={schedules.map((meetingDetails, i) => {
               return (
-                <ScheduleMeetingCard key={i} meetingDetails={meetingDetails} />
+                <>
+                  <ScheduleMeetingCard
+                    key={i}
+                    meetingDetails={meetingDetails}
+                  />
+                </>
               );
             })}
           />
         );
-      })} 
+      })}
     </div>
   );
 }

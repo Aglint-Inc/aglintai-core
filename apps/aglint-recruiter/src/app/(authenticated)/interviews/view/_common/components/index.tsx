@@ -74,10 +74,10 @@ function SchedulingViewComp() {
         </Breadcrumb>
         <div className='flex items-start justify-between pt-4'>
           <div>
-            <h1 className='text-2xl font-medium text-gray-900'>
+            <h1 className='text-2xl font-medium'>
               {schedule?.interview_session.name}
             </h1>
-            <p className='text-md mt-2 pb-2 text-gray-600'>
+            <p className='text-md mt-2 pb-2 text-muted-foreground'>
               Interview for{' '}
               <a
                 href={`/jobs/${job?.id}`}
