@@ -51,7 +51,7 @@ function ATSPopUps({
 
   return (
     <AlertDialog open={isOpen} onOpenChange={close}>
-      <AlertDialogContent>
+      <AlertDialogContent className='border border-border'>
         <ShowCode>
           <ShowCode.When isTrue={isLoading}>
             <div className='flex flex-col items-center justify-center space-y-2'>
@@ -105,7 +105,7 @@ function ATSPopUps({
                 </ShowCode.Else>
               </div>
             </AlertDialogDescription>
-            <AlertDialogFooter className='-mx-6 -mb-6 mt-6 rounded-b-lg bg-secondary p-4'>
+            <AlertDialogFooter className='-mx-6 -mb-6 mt-6 rounded-b-lg p-4'>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction onClick={handleAction}>
                 {reason?.startsWith('connect') ? 'Connect' : 'Update'}

@@ -92,7 +92,7 @@ function CancelScheduleDialog({
         }
       }}
     >
-      <DialogContent className='sm:max-w-[500px]'>
+      <DialogContent className='border-border sm:max-w-[500px]'>
         <DialogHeader>
           <DialogTitle>Cancel Schedule</DialogTitle>
           <DialogDescription>

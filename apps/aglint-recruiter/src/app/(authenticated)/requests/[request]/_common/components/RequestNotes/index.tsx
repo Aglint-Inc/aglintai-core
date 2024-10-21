@@ -48,8 +48,8 @@ function RequestNotes() {
     <div className='mt-2'>
       <Card
         className={cn(
-          'mt-2 border-none p-0 shadow-none',
-          requestNotes?.note && !editorEnabled ? '' : 'bg-white',
+          'mt-2 border-none p-2 shadow-none',
+          requestNotes?.note && !editorEnabled ? '' : 'bg-muted/50',
         )}
       >
         <ShowCode>

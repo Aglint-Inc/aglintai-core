@@ -107,10 +107,12 @@ const JobsSideNavV2 = () => {
       </nav>
 
       {manageJob && (
-        <div className='absolute bottom-2 left-2 right-2 items-start gap-2 bg-red-50 p-3 rounded-md'>
-          <h4 className='mb-1 text-sm font-semibold text-destructive'>Danger Zone</h4>
+        <div className='absolute bottom-2 left-2 right-2 items-start gap-2 rounded-md bg-red-50 p-3 dark:bg-red-500/20'>
+          <h4 className='mb-1 text-sm font-semibold text-red-500'>
+            Danger Zone
+          </h4>
           <div className='flex flex-row items-end gap-4'>
-            <p className='mb-2 text-sm text-muted-foreground'>
+            <p className='mb-2 text-sm dark:text-white'>
               {job?.status !== 'published'
                 ? 'Permanently remove this job and all related data.'
                 : 'Stop all activities and remove the job from the company page.'}
@@ -132,7 +134,7 @@ const JobsSideNavV2 = () => {
         open={isCloseJobDialogOpen}
         onOpenChange={setIsCloseJobDialogOpen}
       >
-        <DialogContent>
+        <DialogContent className='border border-border'>
           <DialogHeader>
             <DialogTitle>
               {job?.status !== 'published' ? 'Delete' : 'Close'} This Job
@@ -145,7 +147,7 @@ const JobsSideNavV2 = () => {
           </DialogHeader>
           <p className='text-sm text-muted-foreground'>
             Confirm by typing the job title{' '}
-            <span className='font-semibold text-destructive'>
+            <span className='font-semibold text-destructive dark:text-red-500'>
               {job?.job_title}
             </span>{' '}
             below.

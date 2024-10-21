@@ -98,7 +98,7 @@ function CreateModuleDialog() {
         handleRemoveEditParam();
       }}
     >
-      <DialogContent>
+      <DialogContent className='border border-border'>
         <DialogHeader>
           <DialogTitle>Create Interview Pool</DialogTitle>
           <DialogDescription>

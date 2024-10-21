@@ -30,7 +30,7 @@ const RequestNextSteps = () => {
   }
   return (
     <div>
-      <Alert>
+      <Alert className='border border-border'>
         <AlertTitle>Next Step</AlertTitle>
         <AlertDescription>
           Here is your next step on the request.

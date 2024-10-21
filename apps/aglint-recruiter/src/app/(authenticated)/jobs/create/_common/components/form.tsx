@@ -149,7 +149,7 @@ const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
         <SelectTrigger>
           <SelectValue placeholder='Select a location' />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className='border border-border'>
           {options.map((option) => (
             <SelectItem key={option.value} value={String(option.value)}>
               {option.name}
@@ -208,7 +208,7 @@ const JobType: FC<MetaForms> = memo(({ name, value, onChange }) => {
         <SelectTrigger>
           <SelectValue placeholder='Select a type' />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className='border border-border'>
           {options.map((option) => (
             <SelectItem key={option.value} value={String(option.value)}>
               {option.name}
@@ -240,7 +240,7 @@ const JobDepartment: FC<MetaForms> = memo(({ name, value, onChange }) => {
         <SelectTrigger>
           <SelectValue placeholder='Select a department' />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className='border border-border'>
           {options.map((option) => (
             <SelectItem key={option.value} value={String(option.value)}>
               {option.name}
@@ -328,7 +328,7 @@ const JobWorkPlace: FC<MetaForms> = memo(({ name, value, onChange }) => {
   const options = getOptions('workplace_type');
   return (
     <div>
-      <Label htmlFor={name}>Workplace Type</Label>
+      <Label htmlFor={name}>Workplace Type d</Label>
       <Select
         onValueChange={(value) => {
           onChange(name, value);
@@ -338,7 +338,7 @@ const JobWorkPlace: FC<MetaForms> = memo(({ name, value, onChange }) => {
         <SelectTrigger>
           <SelectValue placeholder='Select a type' />
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className='border border-border'>
           {options.map((option) => (
             <SelectItem key={option.value} value={String(option.value)}>
               {option.name}

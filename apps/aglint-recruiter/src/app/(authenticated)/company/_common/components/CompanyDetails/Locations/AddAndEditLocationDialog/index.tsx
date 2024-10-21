@@ -141,7 +141,7 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className='sm:max-w-[500px]'>
+      <DialogContent className='border border-border sm:max-w-[500px]'>
         <DialogHeader>
           <DialogTitle>
             {edit === -1 ? 'Add Location' : 'Edit Location'}

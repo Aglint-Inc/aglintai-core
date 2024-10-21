@@ -20,12 +20,14 @@ import { Cell, Pie, PieChart } from 'recharts';
 import { useInterviewCount } from 'src/app/(authenticated)/reports/_common/hook/interview/interview.hook';
 
 import { Loader } from '@/common/Loader';
+// import { useTheme } from '@/common/themes/hooks/useTheme';
 
 export default function InterviewCountByTimeFrame() {
   const [timeFrame, setTimeFrame] = useState<
     'today' | 'day' | 'week' | 'month'
   >('day');
   const { average, isError, isFetching } = useInterviewCount(timeFrame);
+  // const { mode } = useTheme();
   return (
     <Section>
       <SectionHeader>
@@ -92,16 +94,23 @@ export default function InterviewCountByTimeFrame() {
                     // fill={`red`}
                   >
                     <Cell fill={`hsl(var(--chart-${(index + 1) % 5}))`} />
-                    <Cell fill='#f3f4f6' />
+                    <Cell fill={'#f3f4f6'} />
                   </Pie>
+
                   <text
                     x='50%'
                     y='50%'
                     textAnchor='middle'
                     dominantBaseline='middle'
-                    className='text-2xl font-bold'
+                    className='text-re text-2xl font-light'
                   >
-                    {data.value}
+                    <tspan
+                      x={'50%'}
+                      y={'50%'}
+                      className='fill-muted-foreground text-3xl font-bold'
+                    >
+                      {data.value}
+                    </tspan>
                   </text>
                   <text
                     x='50%'
@@ -110,7 +119,9 @@ export default function InterviewCountByTimeFrame() {
                     dominantBaseline='middle'
                     className='text-sm'
                   >
-                    {data.name}
+                    <tspan x='50%' y='65%' className='fill-muted-foreground'>
+                      {data.name}
+                    </tspan>
                   </text>
                 </PieChart>
               </ChartContainer>

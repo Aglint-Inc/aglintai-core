@@ -77,7 +77,7 @@ export function InterviewPlanDetail({
       <div
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
-        className='relative flex flex-col gap-2 rounded-lg border border-neutral-200 bg-white p-4'
+        className='relative flex flex-col gap-2 rounded-lg border border-border bg-white p-4 dark:bg-background'
       >
         <div className='flex h-[30px] items-center justify-between gap-1'>
           <div>

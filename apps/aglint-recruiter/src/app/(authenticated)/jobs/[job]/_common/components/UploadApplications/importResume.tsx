@@ -74,10 +74,10 @@ export const ImportResume = () => {
       name='file'
       types={FILE_TYPES}
     >
-      <div className='flex h-full items-center justify-center rounded-lg border-2 border-dashed border-border bg-slate-50'>
+      <div className='flex h-full items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted'>
         <div className='text-center'>
           <Upload strokeWidth={1.5} className='mx-auto h-12 w-12' />
-          <h3 className='mt-2 text-sm font-semibold text-gray-900'>
+          <h3 className='mt-2 text-sm font-semibold text-muted-foreground'>
             Import Resume
           </h3>
           <p className='mt-1 text-sm text-muted-foreground'>
@@ -94,7 +94,7 @@ export const ImportResume = () => {
         {selectedFiles.map((file, index) => (
           <div
             key={index}
-            className='mb-2 flex items-center justify-between rounded-md bg-gray-50 p-2'
+            className='mb-2 flex items-center justify-between rounded-md bg-muted p-2'
           >
             {file.type.includes('pdf') ? (
               <FileText className='h-5 w-5 text-blue-500' />

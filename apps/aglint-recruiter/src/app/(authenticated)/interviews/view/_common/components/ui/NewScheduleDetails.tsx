@@ -60,11 +60,11 @@ export function NewScheduleDetail({
   textInterviewer = 'Interviewers',
 }: MeetingDetails) {
   return (
-    <div className='flex w-full flex-col gap-6 rounded-lg border-none bg-white'>
+    <div className='flex w-full flex-col gap-6 rounded-lg border-none'>
       <div className='flex items-start justify-between'>
         <div className='flex items-start gap-4'>
           {isDateCardVisible && (
-            <div className='rounded-md bg-muted flex h-20 w-20 flex-col items-center justify-center'>
+            <div className='flex h-20 w-20 flex-col items-center justify-center rounded-md bg-muted'>
               <Typography
                 variant='p'
                 type='small'

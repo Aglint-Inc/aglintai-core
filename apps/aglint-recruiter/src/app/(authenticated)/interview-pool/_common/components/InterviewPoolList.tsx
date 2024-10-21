@@ -36,7 +36,7 @@ export const InterviewPoolList = ({
   return (
     <TableRow
       key={interviewType.id}
-      className='cursor-pointer hover:bg-gray-50'
+      className='cursor-pointer hover:bg-muted/20'
       onClick={() => {
         superPush('/interview-pool/[pool]', {
           params: {
@@ -61,7 +61,7 @@ export const InterviewPoolList = ({
                   icon={CheckCircle}
                 />
               </TooltipTrigger>
-              <TooltipContent>
+              <TooltipContent className='border border-border'>
                 <p>Completed Interviews (This Month)</p>
               </TooltipContent>
             </Tooltip>
@@ -78,7 +78,7 @@ export const InterviewPoolList = ({
                   icon={Calendar}
                 />
               </TooltipTrigger>
-              <TooltipContent>
+              <TooltipContent className='border border-border'>
                 <p>Scheduled Interviews (This Month)</p>
               </TooltipContent>
             </Tooltip>
@@ -95,7 +95,7 @@ export const InterviewPoolList = ({
                   }
                 />
               </TooltipTrigger>
-              <TooltipContent>
+              <TooltipContent className='border border-border'>
                 <p>Cancelled Interviews (This Month)</p>
               </TooltipContent>
             </Tooltip>
@@ -108,12 +108,12 @@ export const InterviewPoolList = ({
             <TooltipTrigger>
               <UIBadge
                 variant='purple'
-                className='felx w-[80px] justify-center rounded-full'
+                className='felx min-w-[80px] justify-center rounded-full'
                 textBadge={interviewType.avg_meeting_duration + ' min'}
                 icon={Clock}
               />
             </TooltipTrigger>
-            <TooltipContent>
+            <TooltipContent className='border border-border'>
               <p>Average Interview Duration</p>
             </TooltipContent>
           </Tooltip>
@@ -127,7 +127,7 @@ export const InterviewPoolList = ({
               {(interviewType?.job_names || [])?.length > 0 ? (
                 <Badge
                   variant='outline'
-                  className='border-indigo-200 bg-indigo-50 text-indigo-800'
+                  className='border-border bg-muted text-muted-foreground'
                 >
                   <BriefcaseBusiness className='mr-1 h-3 w-3 text-muted-foreground' />{' '}
                   {` - `}
@@ -143,7 +143,7 @@ export const InterviewPoolList = ({
                 '--'
               )}
             </TooltipTrigger>
-            <TooltipContent>
+            <TooltipContent className='border border-border'>
               <p>Number of Open Positions</p>
             </TooltipContent>
           </Tooltip>

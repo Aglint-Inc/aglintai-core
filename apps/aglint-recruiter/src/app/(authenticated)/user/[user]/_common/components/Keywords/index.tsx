@@ -61,6 +61,7 @@ export const Keywords = () => {
         <Button
           variant='outline'
           size='sm'
+          className='hover:bg-background/50'
           onClick={() => {
             if (!isUpdating) setIsEdit(true);
           }}
@@ -115,7 +116,7 @@ const KeywordViewSection = ({
         {keywords?.length > 0 ? (
           keywords.map((keyword, i) => {
             return (
-              <div key={i} className='w-fit rounded-sm bg-gray-200 px-4 py-1'>
+              <div key={i} className='w-fit rounded-sm bg-muted px-4 py-1'>
                 <Typography type='small' variant='p'>
                   {keyword}
                 </Typography>

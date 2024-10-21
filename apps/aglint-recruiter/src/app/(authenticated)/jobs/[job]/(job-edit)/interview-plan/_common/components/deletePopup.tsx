@@ -44,7 +44,7 @@ const InterviewDeletePopup = ({
     <>
       {popup && (
         <AlertDialog open={open} onOpenChange={handleClose}>
-          <AlertDialogContent>
+          <AlertDialogContent className='border border-border'>
             <AlertDialogHeader>
               <AlertDialogTitle>{`Delete ${popup.break ? 'Break for' : ''} ${popup.name}`}</AlertDialogTitle>
               <AlertDialogDescription>

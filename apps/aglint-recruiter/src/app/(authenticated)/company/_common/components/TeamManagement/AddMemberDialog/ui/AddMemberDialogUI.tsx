@@ -125,7 +125,7 @@ export const AddMemberDialogUI = ({
                 >
                   <SelectValue placeholder='Select Employment Type' />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className='border border-border'>
                   {['contractor', 'fulltime', 'parttime'].map((option) => (
                     <SelectItem key={option} value={option}>
                       {capitalizeFirstLetter(option)}
@@ -146,7 +146,7 @@ export const AddMemberDialogUI = ({
                 >
                   <SelectValue placeholder='Choose Location' />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className='border border-border'>
                   {locations.map((loc) => (
                     <SelectItem key={loc.id} value={loc.id.toString()}>
                       {capitalizeFirstLetter(
@@ -167,7 +167,7 @@ export const AddMemberDialogUI = ({
                 >
                   <SelectValue placeholder='Select Department' />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className='border border-border'>
                   {departments.map((dep) => (
                     <SelectItem key={dep.id} value={dep.id.toString()}>
                       {capitalizeFirstLetter(dep.name)}
@@ -195,7 +195,7 @@ export const AddMemberDialogUI = ({
                 >
                   <SelectValue placeholder='Choose Role' />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className='border border-border'>
                   {(roleOptions || []).map((op) => (
                     <SelectItem key={op.id} value={op.id.toString()}>
                       {capitalizeFirstLetter(op.name)}
@@ -215,7 +215,7 @@ export const AddMemberDialogUI = ({
                   >
                     <SelectValue placeholder='Select Manager' />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className='border border-border'>
                     {memberList.length ? (
                       memberList.map((member) => (
                         <SelectItem key={member.id} value={member.id}>

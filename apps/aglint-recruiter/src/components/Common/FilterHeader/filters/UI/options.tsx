@@ -106,10 +106,10 @@ export function FilterOptions({
       : [];
   return (
     <div
-      className={`flex max-h-[280px] min-w-56 flex-col gap-1 ${separator && 'border-l'} border-b`}
+      className={`flex max-h-[280px] min-w-56 flex-col gap-1 ${separator && 'border-l'} border border-border`}
     >
       {sectionHeading && (
-        <div className='flex flex-row items-center justify-between border-b px-2 py-1'>
+        <div className='flex flex-row items-center justify-between border-b border-border px-2 py-1'>
           <Label className='text-base font-bold'>{sectionHeading}</Label>
           <div className='row flex items-center'>
             <Button
@@ -129,7 +129,7 @@ export function FilterOptions({
       {Boolean(filterSearch) && (
         <div className='w-full p-1'>
           <Input
-            className='w-full rounded border p-1 pl-2 transition-colors duration-200'
+            className='w-full rounded border border-border p-1 pl-2 transition-colors duration-200'
             type='text'
             value={search}
             onChange={(e) => setSearch(e.target.value)}

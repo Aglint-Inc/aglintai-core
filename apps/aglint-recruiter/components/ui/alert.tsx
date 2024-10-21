@@ -10,12 +10,16 @@ export const alertVariants = cva(
       variant: {
         default: 'bg-background text-foreground',
         error:
-          'border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive',
-        info: 'bg-sky-50 border border-sky-500 text-sky-800',
-        success: 'bg-green-50 border border-green-500 text-green-800',
-        warning: 'bg-yellow-50 border border-yellow-500 text-yellow-800',
-        neutral: 'bg-neutral-50 border border-neutral-300 text-neutral-500',
-        purple: 'bg-purple-50 border border-purple-500 text-purple-800',
+          'border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive dark:bg-red-700/10 dark:text-red-300',
+        info: 'bg-sky-50 border border-sky-500 dark:text-sky-200 text-sky-800 dark:bg-sky-600/20',
+        success:
+          'bg-green-50 border border-green-500 text-green-800 dark:text-green-200 dark:bg-green-600/20',
+        warning:
+          'bg-yellow-50 border border-yellow-500 text-yellow-800 dark:text-yellow-200 dark:bg-yellow-600/20',
+        neutral:
+          'bg-neutral-50 border border-neutral-500 text-neutral-500 dark:text-neutral-200 dark:bg-neutral-600/20',
+        purple:
+          'bg-purple-50 border border-purple-500 text-purple-800 dark:text-purple-200 dark:bg-purple-700/20',
       },
     },
     defaultVariants: {

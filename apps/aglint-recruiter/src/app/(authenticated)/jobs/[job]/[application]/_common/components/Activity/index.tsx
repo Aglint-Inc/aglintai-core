@@ -64,7 +64,7 @@ export const Activity = () => {
               </div>
               <div className='flex w-full min-w-0 flex-1 justify-between gap-1'>
                 <div className='w-full'>
-                  <p className='text-sm font-normal text-gray-900'>
+                  <p className='text-sm font-normal text-muted-foreground'>
                     {activity.title || '---'}
                   </p>
                   {activity.description && (
@@ -87,7 +87,7 @@ export const Activity = () => {
                       }}
                     />
                   )}
-                  <div className='pt-1 text-left text-xs text-muted-foreground'>
+                  <div className='pt-1 text-left text-xs text-muted-foreground/50'>
                     <time dateTime={activity.created_at}>
                       {dayjs(activity.created_at).fromNow()}
                     </time>

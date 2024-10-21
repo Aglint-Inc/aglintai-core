@@ -16,7 +16,7 @@ export const UIDivider: React.FC<DividerProps> = ({
   flexItem = false,
   light = false,
 }) => {
-  const baseClasses = 'bg-gray-200 dark:bg-gray-700';
+  const baseClasses = 'bg-muted';
   const orientationClasses =
     orientation === 'vertical' ? 'h-auto w-px' : 'h-px w-full';
   const variantClasses = {

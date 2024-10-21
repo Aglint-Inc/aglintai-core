@@ -25,7 +25,7 @@ import { useReasons } from '../../hook/scheduling';
 function Reasons() {
   const { data, isPending, view, isError, setView } = useReasons();
   return (
-    <Section className='rounded-md border'>
+    <Section className='rounded-md border border-border'>
       <SectionHeader className='m-2'>
         <SectionHeaderText>
           <SectionTitle>Reasons</SectionTitle>

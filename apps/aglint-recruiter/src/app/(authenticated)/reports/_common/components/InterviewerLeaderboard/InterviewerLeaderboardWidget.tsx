@@ -62,7 +62,7 @@ export default function InterviewerLeaderboardWidget() {
               <SelectTrigger className='w-[140px]'>
                 <SelectValue placeholder='Sort by' />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className='border border-border'>
                 <SelectItem value='rank'>Rank</SelectItem>
                 <SelectItem value='hours'>Hours</SelectItem>
                 <SelectItem value='interviews'>Interviews</SelectItem>

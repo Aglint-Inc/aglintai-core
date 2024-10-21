@@ -100,6 +100,7 @@ const ScoreWheel = ({
             paddingAngle={5}
             dataKey='value'
             onMouseEnter={onPieEnter}
+            stroke='#00000000'
             onMouseLeave={() => setActiveIndex(undefined)}
           >
             {data.map((_entry, index) => (

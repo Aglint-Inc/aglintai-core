@@ -58,7 +58,7 @@ function SortComponent({ selected, setOrder, sortOptions }: sortComponentType) {
             <ChevronDown className='h-4 w-4 opacity-50' />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className='w-[176px] p-1'>
+        <PopoverContent className='w-[176px] border border-border p-1'>
           <div className='flex flex-col gap-1'>
             <SortOptionsDropDown
               itemList={sortOptionList}
@@ -104,7 +104,7 @@ const SortOptionsDropDown = ({
       <SelectTrigger className='w-full'>
         <SelectValue>{icon}</SelectValue>
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className='border border-border'>
         {itemList.map((item, i) => (
           <SelectItem key={i} value={item.id}>
             {capitalizeFirstLetter(item.label)}

@@ -110,7 +110,7 @@ export default function UITabs({
   return (
     <div className={`w-full ${vertical ? 'flex' : ''}`}>
       <div
-        className={`w-full ${vertical ? 'border-none' : 'border-b'} border-gray-200 ${
+        className={`w-full ${vertical ? 'border-none' : 'border-b'} border-border ${
           vertical ? 'pr-2' : 'pb-2'
         }`}
       >
@@ -124,7 +124,7 @@ export default function UITabs({
             {isHovering && hoveredTab && (
               <motion.div
                 key='hoverIndicator'
-                className='pointer-events-none absolute rounded-md bg-gray-200'
+                className='pointer-events-none absolute rounded-md bg-muted'
                 initial={{ opacity: 0 }}
                 animate={{
                   opacity: 0.5,

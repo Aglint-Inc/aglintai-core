@@ -61,7 +61,7 @@ export const Edit = () => {
   return (
     <>
       <Dialog open={open} onOpenChange={handleClose}>
-        <DialogContent className='sm:max-w-[425px]'>
+        <DialogContent className='border border-border sm:max-w-[425px]'>
           <DialogHeader>
             <DialogTitle>Edit Automation Details</DialogTitle>
           </DialogHeader>

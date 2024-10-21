@@ -60,7 +60,7 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
 
   return (
     <Dialog open={isOpen} onOpenChange={close}>
-      <DialogContent className='sm:max-w-[425px]'>
+      <DialogContent className='border border-border sm:max-w-[425px]'>
         {showThanks ? (
           <div className='flex flex-col items-center justify-center p-6 text-center'>
             <div className='mb-4 text-green-500'>
@@ -107,7 +107,7 @@ function RequestNew({ isOpen, close }: { isOpen: boolean; close: () => void }) {
                 />
               </div>
             </div>
-            <DialogFooter className='-mx-6 -mb-6 mt-6 rounded-b-lg bg-secondary p-4'>
+            <DialogFooter className='-mx-6 -mb-6 mt-6 rounded-b-lg p-4'>
               <Button
                 variant='outline'
                 onClick={() => {

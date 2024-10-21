@@ -60,7 +60,7 @@ export default function CandidateGreeting() {
         }
       >
         {greetings?.length && (
-          <ScrollArea className='max-h-40 w-full rounded-md border bg-muted'>
+          <ScrollArea className='max-h-40 w-full rounded-md border border-border bg-muted'>
             <div className='w-full space-y-4 p-4'>{greetings}</div>
           </ScrollArea>
         )}

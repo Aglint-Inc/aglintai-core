@@ -48,7 +48,7 @@ const SearchField: React.FC<SearchFieldProps> = ({
             <X className='h-4 w-4' />
           </Button>
         ) : (
-          <Search className='h-4 w-4 text-gray-400' />
+          <Search className='h-4 w-4 text-muted-foreground' />
         )}
       </div>
     </div>

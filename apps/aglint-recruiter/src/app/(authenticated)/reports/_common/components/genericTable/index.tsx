@@ -70,16 +70,19 @@ export default function GenericTable({
   };
 
   return (
-    <div className='rounded-lg border shadow-sm'>
-      <div className='flex flex-row justify-between border-b bg-gray-50 px-4 py-3'>
-        <h2 className='text-lg font-semibold text-gray-900'>{title}</h2>
+    <div className='overflow-hidden rounded-lg border border-border shadow-sm'>
+      <div className='flex flex-row justify-between border-b border-border bg-muted px-4 py-3'>
+        <h2 className='text-lg font-semibold text-muted-foreground'>{title}</h2>
         {Boolean(headerOption) && headerOption}
       </div>
       <Table>
         <TableHeader>
           <TableRow>
             {headers.map((header) => (
-              <TableHead key={header.key} className={'font-bold'}>
+              <TableHead
+                key={header.key}
+                className={'bg-muted/60 font-bold hover:bg-muted/60'}
+              >
                 {header.label}
               </TableHead>
             ))}

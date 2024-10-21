@@ -87,7 +87,7 @@ const AddSocialLinkButton = ({
         <PopoverTrigger asChild>
           <Button variant='outline'>Add Social Link</Button>
         </PopoverTrigger>
-        <PopoverContent className='w-80' align='start' side='top'>
+        <PopoverContent className='w-80 border-border' align='start' side='top'>
           <h3 className='mb-2 font-medium'>Add Social Link</h3>
           <div className='space-y-4'>
             <div className='space-y-2'>

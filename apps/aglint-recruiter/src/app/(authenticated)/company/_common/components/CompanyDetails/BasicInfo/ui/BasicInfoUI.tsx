@@ -14,9 +14,9 @@ export const BasicInfoUI = ({
     <>
       <div className='flex items-center justify-between'>
         <div className='mb-2 flex items-center space-x-4'>
-          <Avatar className='h-[80px] w-[80px] rounded-md'>
+          <Avatar className='h-[80px] w-[80px] rounded-md border border-border'>
             <AvatarImage src={recruiter.logo || ''} alt={recruiter.name} />
-            <AvatarFallback className='h-[80px] w-[80px] rounded-md bg-gray-200'>
+            <AvatarFallback className='h-[80px] w-[80px] rounded-md bg-muted'>
               <Building2
                 className='h-6 w-6 text-muted-foreground'
                 size={40}
@@ -29,7 +29,10 @@ export const BasicInfoUI = ({
             <div className='flex flex-row gap-4'>
               <div className='flex items-center space-x-2'>
                 <Globe className='h-4 w-4 text-muted-foreground' />
+               
+                <span className='text-sm text-muted-foreground'>
                 {recruiter.company_website}
+                </span>
               </div>
               <div className='flex items-center space-x-2'>
                 <Building className='h-4 w-4 text-muted-foreground' />
@@ -50,7 +53,7 @@ export const BasicInfoUI = ({
                     key={key}
                     href={val as string}
                     target='_blank'
-                    className='inline-flex items-center rounded-md bg-gray-100 px-3 py-1 transition-colors hover:bg-gray-200 hover:no-underline'
+                    className='inline-flex items-center rounded-md bg-muted px-3 py-1 transition-colors hover:bg-muted/80 hover:no-underline'
                     onClick={(e) => e.stopPropagation()}
                   >
                     <Image

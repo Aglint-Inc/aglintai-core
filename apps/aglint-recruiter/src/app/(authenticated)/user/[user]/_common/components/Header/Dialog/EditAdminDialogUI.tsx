@@ -70,7 +70,9 @@ export const Form = ({
 
         <div>
           <p className='text-sm font-medium'>
-            <span className='text-destructive'>Change profile photo</span>{' '}
+            <span className='text-destructive dark:text-red-600'>
+              Change profile photo
+            </span>{' '}
             (optional)
           </p>
           <p className='text-sm text-muted-foreground'>
@@ -141,7 +143,7 @@ export const Form = ({
             <SelectTrigger>
               <SelectValue placeholder='Select employment type' />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className='border border-border'>
               {['contractor', 'fulltime', 'parttime'].map((type) => (
                 <SelectItem key={type} value={type}>
                   {capitalizeFirstLetter(type)}
@@ -171,7 +173,7 @@ export const Form = ({
             <SelectTrigger>
               <SelectValue placeholder='Choose Location' />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className='border border-border'>
               {officeLocations?.length ? (
                 officeLocations.map((location) => (
                   <SelectItem key={location.id} value={location.id.toString()}>
@@ -200,7 +202,7 @@ export const Form = ({
             <SelectTrigger>
               <SelectValue placeholder='Select Department' />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className='border border-border'>
               {departments?.length ? (
                 departments.map((department) => (
                   <SelectItem
@@ -241,7 +243,7 @@ export const Form = ({
                 <SelectTrigger>
                   <SelectValue placeholder='Choose Role' />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className='border border-border'>
                   {roleOptions?.length ? (
                     roleOptions.map((role) => (
                       <SelectItem key={role.id} value={role.id}>
@@ -268,7 +270,7 @@ export const Form = ({
                   <SelectTrigger>
                     <SelectValue placeholder='Select Manager' />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className='border border-border'>
                     {memberList.map((member) => (
                       <SelectItem key={member.id} value={member.id}>
                         {capitalizeFirstLetter(member.name)}

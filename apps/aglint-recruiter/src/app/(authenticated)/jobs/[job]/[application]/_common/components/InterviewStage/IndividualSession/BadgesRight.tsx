@@ -106,7 +106,7 @@ function BadgesRight({
                   </TooltipTrigger>
                   <TooltipContent
                     side='left'
-                    className='border border-neutral-300 bg-white p-2 text-xs font-normal text-muted-foreground'
+                    className='border border-border bg-muted p-2 text-xs font-normal text-muted-foreground'
                   >
                     No interviewers assigned
                   </TooltipContent>

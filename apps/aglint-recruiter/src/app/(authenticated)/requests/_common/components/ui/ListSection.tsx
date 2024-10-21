@@ -64,13 +64,13 @@ function ListSection({
       <AccordionItem
         value={sectionName}
         className={cn(
-          'rounded-lg border bg-white px-4',
-          isExpanded && 'bg-gray-100',
+          'rounded-lg borde border-border bg-muted/30 px-4',
+          isExpanded && 'bg-muted/30',
         )}
       >
         <AccordionTrigger
           className={cn(
-            'text-md font-semibold hover:no-underline',
+            'text-md font-medium hover:no-underline',
             requests.length === 0 && 'cursor-default',
           )}
           disabled={requests.length === 0}
@@ -78,12 +78,12 @@ function ListSection({
           <div className='mr-2 flex w-full items-center justify-between'>
             <div className='flex items-center'>
               {capitalizeFirstLetter(sectionName)}
-              <Badge variant='outline' className='ml-2'>
+              <Badge className='ml-2  rounded-md bg-muted text-sm font-normal text-muted-foreground'>
                 {requests.length}
               </Badge>
             </div>
             {requests.length === 0 && (
-              <Badge variant='outline' className='ml-2'>
+              <Badge className='ml-2  rounded-md bg-muted text-sm font-normal text-muted-foreground'>
                 No {sectionName.replaceAll('_', ' ')} found
               </Badge>
             )}

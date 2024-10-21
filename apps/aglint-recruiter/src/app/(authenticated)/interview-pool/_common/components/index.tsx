@@ -69,7 +69,7 @@ export default function InterviewTypesPage() {
     <>
       <ScrollArea className='h-[calc(100vh-180px)]'>
         <Table>
-          <TableHeader className='bg-gray-100'>
+          <TableHeader className='bg-muted/50'>
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Department</TableHead>
@@ -81,7 +81,11 @@ export default function InterviewTypesPage() {
           </TableHeader>
           <TableBody>
             {filteredInterviewModules?.length > 0 ? (
-              filteredInterviewModules.map((type, i) => (
+              [
+                ...filteredInterviewModules,
+                ...filteredInterviewModules,
+                ...filteredInterviewModules,
+              ].map((type, i) => (
                 <InterviewPoolList interviewType={type} key={i} />
               ))
             ) : (
