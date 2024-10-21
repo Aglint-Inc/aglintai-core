@@ -27,7 +27,7 @@ export const createCompanyAndAdmin = async () => {
     },
     supabaseAdmin
   );
-  console.log('Created tested user', recruiter_user.email);
+  console.log('Created Test Company', recruiter_user.email);
   const departments = await addDepartments(recruiter.id);
   console.log('Added departments');
   const locations = await addLocations(recruiter.id);

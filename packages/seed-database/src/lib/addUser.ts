@@ -63,7 +63,7 @@ export async function addTeamMember({
         department_id: user.department_id,
         office_location_id: user.office_location_id,
         employment: user.employment,
-        status: 'invited',
+        status: 'active',
       })
       .select()
       .single()

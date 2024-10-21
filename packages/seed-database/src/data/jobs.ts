@@ -1,4 +1,10 @@
-export const jobs = [
+import { DatabaseTable } from '@aglint/shared-types';
+
+export type SeedJobType = Pick<
+  DatabaseTable['public_jobs'],
+  'slug' | 'job_title' | 'description'
+>;
+export const seedJobs: SeedJobType[] = [
   {
     slug: 'senior-software-engineer-full-stack',
     job_title: 'Senior Software Engineer - Full Stack',

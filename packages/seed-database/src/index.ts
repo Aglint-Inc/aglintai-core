@@ -7,6 +7,7 @@ import {
 import dotenv from 'dotenv';
 import { fetchCompanyRoles } from './lib/fetchRoles';
 import { createPermissions } from './lib/createPermissions';
+import { addJobs } from './lib/addJobs';
 dotenv.config();
 const main = async () => {
   await deleteAllCompanyData();
@@ -27,6 +28,12 @@ const main = async () => {
         role_id: role_info.id,
       },
     });
+  });
+
+  await addJobs({
+    companyDetails: recruiter,
+    department_id: departments[0].id,
+    location_id: locations[0].id,
   });
   await Promise.all(addedUsers);
   console.log('All team members added');
