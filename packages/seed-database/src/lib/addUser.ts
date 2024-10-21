@@ -7,7 +7,13 @@ export type UserInsertType = {
   last_name: string;
   email: string;
   title: string;
-  role: 'coordinator' | 'admin' | 'recruiter' | 'interviewer';
+  role:
+    | 'admin'
+    | 'hiring manager'
+    | 'recruiting coordinator'
+    | 'sourcer'
+    | 'recruiter'
+    | 'interviewer';
   position: string;
   employment: DatabaseTable['recruiter_user']['employment'];
 };

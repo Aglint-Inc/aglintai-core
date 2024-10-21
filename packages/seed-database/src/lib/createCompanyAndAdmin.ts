@@ -12,6 +12,7 @@ export const createCompanyAndAdmin = async () => {
   const { data: adminUser, error } = await supabaseAdmin.auth.admin.createUser({
     email: testUser.email,
     password: testUser.password,
+    email_confirm: true,
   });
   if (!adminUser || error) {
     throw new Error(error?.message || 'Failed to create admin user');
