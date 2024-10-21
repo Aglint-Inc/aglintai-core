@@ -2,6 +2,7 @@ import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
 import { seedJobs } from '../data/jobs';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { getSupabaseServer } from '../supabaseAdmin';
+import { seed_candidates } from '../data/candidates';
 
 export const addJobs = async ({
   companyDetails,
@@ -44,4 +45,13 @@ export const addJobs = async ({
   );
   supabaseWrap(await supabaseAdmin.from('public_jobs').insert(jobsToAdd));
   console.log('Jobs added');
+};
+
+const addCandidateToJob = async ({
+  companyDetails,
+}: {
+  companyDetails: DatabaseTable['recruiter'];
+  pu;
+}) => {
+  //
 };
