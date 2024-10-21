@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-namespace NodeJS {
+declare namespace NodeJS {
   interface ProcessEnv {
     WF_SITE: string;
     WF_AUTH: string;

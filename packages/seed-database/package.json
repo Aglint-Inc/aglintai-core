@@ -9,17 +9,20 @@
   "version": "0.0.1",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "devDependencies": {
-    "@supabase/supabase-js": "^2.44.0",
-    "@aglint/typescript-config": "*",
-    "@types/html-to-text": "^9.0.4",
+  "dependencies": {
     "@aglint/shared-utils": "*",
-    "rimraf": "^6.0.1",
-    "typescript": "latest",
-    "@types/node": "^20.11.24",
+    "@aglint/typescript-config": "*",
+    "@supabase/supabase-js": "^2.44.0",
+    "@types/html-to-text": "^9.0.4",
     "dayjs": "^1.11.11",
+    "dotenv": "^16.4.5",
     "html-to-text": "^9.0.5",
     "tsup": "^8.0.2",
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "rimraf": "^6.0.1",
+    "typescript": "latest"
   }
 }
