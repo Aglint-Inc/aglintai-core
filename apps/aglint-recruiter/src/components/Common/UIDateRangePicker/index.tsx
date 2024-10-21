@@ -63,7 +63,7 @@ export function UIDateRangePicker({
         </PopoverTrigger>
         <PopoverContent
           side={customButton ? 'left' : 'bottom'}
-          className='w-auto p-0'
+          className='w-auto border border-border p-0'
           align={'start'}
         >
           <Calendar

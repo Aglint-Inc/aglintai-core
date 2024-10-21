@@ -23,7 +23,7 @@ const alertVariants = cva(
         banner: 'bg-secondary',
         announcement:
           'bg-blue-50 text-blue-500 dark:bg-blue-900 dark:text-blue-200 [&>svg]:text-blue-500 dark:[&>svg]:text-blue-200',
-        tip: 'bg-purple-50 text-purple-500 dark:bg-purple-900 dark:text-purple-200 [&>svg]:text-purple-500 dark:[&>svg]:text-purple-200',
+        tip: 'border-purple-200 bg-purple-200 p-3 dark:border-purple-200/50 dark:bg-purple-600/10 text-purple-500  dark:text-purple-200 [&>svg]:text-purple-500 dark:[&>svg]:text-purple-200',
       },
       type: {
         info: 'bg-blue-50 text-blue-500 dark:bg-blue-900 dark:text-blue-200 [&>svg]:text-blue-500 dark:[&>svg]:text-blue-200',
