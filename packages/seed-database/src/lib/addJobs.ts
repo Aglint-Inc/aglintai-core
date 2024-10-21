@@ -5,6 +5,8 @@ import { getSupabaseServer } from '../supabaseAdmin';
 
 export const addJobs = async ({
   companyDetails,
+  department_id,
+  location_id,
 }: {
   companyDetails: DatabaseTable['recruiter'];
   department_id: number;
@@ -14,13 +16,15 @@ export const addJobs = async ({
   const jobsToAdd: DatabaseTableInsert['public_jobs'][] = seedJobs.map(
     (job) => {
       return {
-        ...job,
+        job_title: job.job_title,
+        slug: job.slug,
+        description: job.description,
         recruiter_id: companyDetails.id,
         status: 'published',
         job_type: 'full time',
         workplace_type: 'on site',
-        department_id: 0,
-        location_id: 1,
+        department_id: department_id,
+        location_id: location_id,
         jd_json: {
           level: 'Senior-level',
           title: job.job_title,
@@ -28,22 +32,16 @@ export const addJobs = async ({
           educations: [],
           rolesResponsibilities: [],
         },
-        draft: {
-          jd_json: {
-            level: 'Senior-level',
-            title: job.job_title,
-            skills: [],
-            educations: [],
-            rolesResponsibilities: [],
-          },
-          job_type: 'full time',
-          job_title: job.job_title,
-          description: job.description,
-          workplace_type: 'on site',
+        draft_jd_json: {
+          skills: [],
+          educations: [],
+          rolesResponsibilities: [],
+          level: 'Senior-level',
+          title: job.job_title,
         },
       };
     }
   );
-
   supabaseWrap(await supabaseAdmin.from('public_jobs').insert(jobsToAdd));
+  console.log('Jobs added');
 };

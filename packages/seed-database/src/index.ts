@@ -29,14 +29,14 @@ const main = async () => {
       },
     });
   });
+  await Promise.all(addedUsers);
+  console.log('All team members added');
 
   await addJobs({
     companyDetails: recruiter,
     department_id: departments[0].id,
     location_id: locations[0].id,
   });
-  await Promise.all(addedUsers);
-  console.log('All team members added');
 };
 
 main();
