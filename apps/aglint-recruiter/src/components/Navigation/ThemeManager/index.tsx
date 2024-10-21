@@ -1,10 +1,7 @@
 import { Button } from '@components/ui/button';
-import { Separator } from '@components/ui/separator';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useThemeConfig } from 'src/app/(public)/theme/_common/hook/use-themeConfig';
-
-import UISectionCard from '@/common/UISectionCard';
 
 export const colors = [
   { name: 'Zinc', value: 'bg-zinc-950' },

@@ -17,8 +17,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { useThemeConfig } from 'src/app/(public)/theme/_common/hook/use-themeConfig';
 
 import { useLogout } from '@/authenticated/hooks/useLogout';
-import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/common/UIButton';
+import { useTenant } from '@/company/hooks';
+
 import ThemeManager, { colors } from './ThemeManager';
 
 const DefaultCompanyLogo = () => (
