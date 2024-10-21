@@ -46,12 +46,3 @@ export const addJobs = async ({
   supabaseWrap(await supabaseAdmin.from('public_jobs').insert(jobsToAdd));
   console.log('Jobs added');
 };
-
-const addCandidateToJob = async ({
-  companyDetails,
-}: {
-  companyDetails: DatabaseTable['recruiter'];
-  pu;
-}) => {
-  //
-};

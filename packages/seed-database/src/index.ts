@@ -8,12 +8,16 @@ import dotenv from 'dotenv';
 import { fetchCompanyRoles } from './lib/fetchRoles';
 import { createPermissions } from './lib/createPermissions';
 import { addJobs } from './lib/addJobs';
+import { addCandidatesToCompany } from './lib/addCandidatesToCompany';
 dotenv.config();
 const main = async () => {
   await deleteAllCompanyData();
   await createPermissions();
   const { recruiter_user, recruiter, departments, locations } =
     await createCompanyAndAdmin();
+  const { candidate_file, candidate_detail } = await addCandidatesToCompany({
+    companyDetails: recruiter,
+  });
   const { company_roles } = await fetchCompanyRoles(recruiter.id);
   const addedUsers = testUsers.map(async (testUser) => {
     const role_info = company_roles.find((r) => r.name === testUser.role);

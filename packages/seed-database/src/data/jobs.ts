@@ -7,7 +7,7 @@ export type SeedJobType = Pick<
 export const seedJobs: SeedJobType[] = [
   {
     slug: 'senior-software-engineer-full-stack',
-    job_title: 'Senior Software Engineer - Full Stack',
+    job_title: 'Senior Software Engineer - Full Stack ',
     description:
       'As a Senior Software Engineer - Full Stack, you will be responsible for designing, developing, and maintaining scalable web applications. You will work closely with our product team to implement new features and improve existing systems. The ideal candidate has extensive experience in both frontend and backend development, with a deep understanding of cloud technologies.',
   },
