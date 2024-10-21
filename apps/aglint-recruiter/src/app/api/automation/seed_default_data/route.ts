@@ -1,12 +1,14 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import {
+  modified_seed_workflow_actions,
+  supabaseWrap,
+} from '@aglint/shared-utils';
+import { seed_email_templates } from '@aglint/shared-utils/src/signup/seed_email_templates';
 import { NextResponse } from 'next/server';
 
-import { seed_email_templates } from '@/utils/seedCompanyData/seed_email_templates';
-import { modified_seed_workflow_actions } from '@/utils/seedCompanyData/seed_workflow';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-export async function POST(req) {
+export async function POST(req: Request) {
   try {
     const { recruiter_id, type } = (await req.json()) as {
       recruiter_id: string;
@@ -30,7 +32,7 @@ export async function POST(req) {
         throw new Error('invalid type');
     }
     return NextResponse.json({ message: 'success' }, { status: 200 });
-  } catch (err) {
+  } catch (err: any) {
     return NextResponse.json({ message: err.message }, { status: 400 });
   }
 }
@@ -56,7 +58,7 @@ const removeAllWorkflow = async (recruiter_id: string) => {
   );
 };
 
-const seedCompTemplate = async (recruiter_id) => {
+const seedCompTemplate = async (recruiter_id: string) => {
   const supabaseAdmin = getSupabaseServer();
   supabaseWrap(
     await supabaseAdmin
@@ -70,7 +72,7 @@ const seedCompTemplate = async (recruiter_id) => {
       .select(),
   );
 };
-const getAlltemps = async (recruiter_id) => {
+const getAlltemps = async (recruiter_id: string) => {
   const supabaseAdmin = getSupabaseServer();
   const allTemplates = supabaseWrap(
     await supabaseAdmin

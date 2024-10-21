@@ -1,7 +1,7 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
 import { numberToOrdinal } from '../../utils/email/common/functions';
-import { FetchUtilType } from '../../types/emailfetchUtil';
+import type { FetchUtilType } from '../../types/emailfetchUtil';
 
 export const fetchUtil: FetchUtilType<
   'interviewEnd_email_shadowTraineeForMeetingAttendence'
@@ -43,7 +43,7 @@ export const fetchUtil: FetchUtilType<
   const organizer = session_detail.interview_meeting.recruiter_user;
 
   const job = session_detail.interview_meeting.applications.public_jobs;
-  const meeting_details_link = `${process.env.NEXT_PUBLIC_APP_URL}/interviews/view?meeting_id=${session_detail.interview_meeting.id}&tab=candidate_details`;
+  const meeting_details_link = `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/interviews/view?meeting_id=${session_detail.interview_meeting.id}&tab=candidate_details`;
 
   const mail_details = training_ints.map((trainee) => {
     const trainee_data = module_relations.find(

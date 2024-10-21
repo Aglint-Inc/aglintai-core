@@ -5,21 +5,19 @@ import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
 export const onClickCopyLink = async ({
-  application_id,
   filter_id,
   request_id,
 }: {
-  application_id: string;
   filter_id: string | null;
   request_id: string | null;
 }) => {
   if (filter_id) {
     navigator.clipboard.writeText(
-      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/invite/${application_id}?filter_id=${filter_id}`,
+      `${process.env.NEXT_PUBLIC_HOST_NAME}/self-scheduling/${filter_id}`,
     );
   } else if (request_id) {
     navigator.clipboard.writeText(
-      `${process.env.NEXT_PUBLIC_HOST_NAME}/scheduling/request-availability/${request_id}`,
+      `${process.env.NEXT_PUBLIC_HOST_NAME}/request-availability/${request_id}`,
     );
   }
 };

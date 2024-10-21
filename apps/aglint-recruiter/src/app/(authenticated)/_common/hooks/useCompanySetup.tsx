@@ -1,25 +1,13 @@
-import { useQuery } from '@tanstack/react-query';
+'use client ';
 import { useEffect, useState } from 'react';
 
-import { useAllIntegrations } from '@/authenticated/hooks';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useAllMembers } from '@/queries/members';
+import { useFlags } from '@/company/hooks/useFlags';
+import { type GetOnboard } from '@/routers/onboarding/getOnboard';
+import { type ProcedureQuery } from '@/server/api/trpc';
+import { api } from '@/trpc/client';
 import ROUTES from '@/utils/routing/routes';
-import { supabase } from '@/utils/supabase/client';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
-type SetupType = {
-  id: string;
-  title: string;
-  description: string;
-  isCompleted: boolean;
-  navLink: string;
-  isOptional: boolean;
-  isVisiable: boolean;
-  bulletPoints?: string[]; // Optional to accommodate all cases
-  schedulingPoints?: string[]; // Optional, as present in only one case
-  scoringPoints?: string[]; // Optional, as present in only one case
-};
 export type SetupStepType = {
   id:
     | 'company-details'
@@ -29,14 +17,19 @@ export type SetupStepType = {
     | 'interview-pool'
     | 'create-job'
     | 'candidate'
-    | 'interview-plan'
-    | string;
+    | 'interview-plan';
   title: string;
   description: string;
   isCompleted: boolean;
+  isLocalCompleted: boolean;
   navLink: string;
+  isNavDisable: boolean;
+  toolTipText: string;
   isOptional: boolean;
-  isVisiable: boolean;
+  isVisible: boolean;
+  bulletPoints?: string[];
+  scoringPoints?: string[];
+  schedulingPoints?: string[];
 };
 
 const jobIds: SetupStepType['id'][] = [
@@ -52,31 +45,46 @@ const requestIds: SetupStepType['id'][] = [
   'interview-plan',
 ];
 
+const useGetOnboard = (): ProcedureQuery<GetOnboard> =>
+  api.onboarding.getOnboard.useQuery();
+
 export function useCompanySetup() {
   //states ---
   const [steps, setSteps] = useState<SetupStepType[]>([]);
-  //Hooks ---
-  const { recruiter, loading: recruiterLoading } = useAuthDetails();
-  const { data: integrations, isLoading: integrationLoading } =
-    useAllIntegrations();
-  const { allMembers, isLoading: memberLoading } = useAllMembers();
-  const { data: compandDetails, isLoading: companySettingLoading } =
-    useFetchcompanySetup();
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  const [firstTimeOpened, setFirstTimeOpened] = useState(false);
+  const [isOnboardOpen, setIsOnboardOpen] = useState(false);
+  //-------------------- hook
+  const { data, isLoading } = useGetOnboard();
 
-  const { isShowFeature } = useAuthDetails();
+  const { mutateAsync, isPending } =
+    api.tenant.updateTenantPreference.useMutation();
 
-  //loading ---
-  const isLoading =
-    recruiterLoading ||
-    memberLoading ||
-    integrationLoading ||
-    companySettingLoading;
+  const { isShowFeature } = useFlags();
+
+  // ----------------- drived state
+
+  const {
+    firstJobId = null,
+    isDepartmentsPresent = true,
+    isIntegrationsPresent = true,
+    isInterviewPoolsPresent = true,
+    isLocationsPresent = false,
+    isOnboardCompleteRemote = true,
+    isUsersPresent = false,
+    isJobsPresent = false,
+    isCandidatesPresent = false,
+    isInterviewPlansPresent = false,
+    recruiter = { name: '', logo: '', employee_size: '', industry: '' },
+  } = data! || {};
+
+  const isCompanySetupLocalPending =
+    steps.filter((step) => (step?.isOptional ? false : !step.isLocalCompleted))
+      .length > 0
+      ? true
+      : false;
 
   //checking --- jobs
-  const isIntegrationsPresent =
-    !!integrations?.ashby_key ||
-    !!integrations?.lever_key ||
-    !!integrations?.greenhouse_key;
 
   const isCompanyDetailsCompleted =
     !!recruiter?.name &&
@@ -89,22 +97,6 @@ export function useCompanySetup() {
     ? findMissingProperties(recruiter, requiredProperties)
     : [];
 
-  const isLocationsPresent = !!recruiter?.office_locations.length;
-  const isDepartmentsPresent = !!recruiter?.departments.length;
-
-  const isMembersPresent = allMembers?.length > 1 ? true : false;
-
-  // checking --- request
-
-  const isCandidatePresent = !!compandDetails?.candidates.length;
-  const isInterviewPoolPresent = !!compandDetails?.interview_module.length;
-  const isInterviewPlanPresent = !!compandDetails?.interview_plan.length;
-  const isJobsPresent = !!compandDetails?.public_jobs.length;
-
-  //steps ------
-
-  const companySetupSteps = steps;
-
   const requestSetupSteps = steps.filter((step) =>
     requestIds.includes(step.id),
   );
@@ -112,6 +104,7 @@ export function useCompanySetup() {
   const jobSetupSteps = steps.filter((step) => jobIds.includes(step.id));
 
   // total pending ------
+
   const isCompanySetupPending =
     steps.filter((step) => (step?.isOptional ? false : !step.isCompleted))
       .length > 0
@@ -135,7 +128,8 @@ export function useCompanySetup() {
   // progress ----------------
 
   const companySetupProgress =
-    (steps?.filter((step) => step.isCompleted).length / steps.length) * 100;
+    (steps?.filter((step) => step.isLocalCompleted).length / steps.length) *
+    100;
 
   const requestSetupProgress =
     (requestSetupSteps?.filter((step) => step.isCompleted).length /
@@ -147,18 +141,47 @@ export function useCompanySetup() {
       jobSetupSteps.length) *
     100;
 
+  //complelet functions ------------------------
+  async function currentStepMarkAsComplete(id: string) {
+    if (steps.filter((step) => !step.isLocalCompleted).length === 1) {
+      await mutateAsync({ onboard_complete: true });
+      setSteps((pre) =>
+        pre.map((step) =>
+          step.id === id ? { ...step, isLocalCompleted: true } : step,
+        ),
+      );
+    } else {
+      const newSteps = steps.map((step) =>
+        step.id === id ? { ...step, isLocalCompleted: true } : step,
+      );
+
+      const firstIncompleteIndex = newSteps.findIndex(
+        (step) => !step.isLocalCompleted,
+      );
+
+      setSteps(newSteps);
+      setSelectedIndex(firstIncompleteIndex ? firstIncompleteIndex : 0);
+    }
+  }
+
+  async function finishHandler() {
+    setIsOnboardOpen(false);
+  }
+
   useEffect(() => {
-    if (recruiter && integrations && allMembers && compandDetails) {
-      const newSteps: SetupType[] = [
+    if (recruiter && data) {
+      const newSteps = [
         {
           id: 'company-details',
           title: 'Company Details',
           description: `Update basic information details.`,
 
           isCompleted: isCompanyDetailsCompleted,
-          navLink: ROUTES['/company']() + '?tab=company-info',
+          isLocalCompleted: isCompanyDetailsCompleted,
+          navLink: ROUTES['/company']() + '?tab=company-info&edit=true',
           isOptional: false,
-          isVisiable: true,
+          isVisible: true,
+          isNavDisable: false,
           bulletPoints: missingCompanyProperties?.map((pro) =>
             capitalizeAll(pro),
           ),
@@ -168,19 +191,23 @@ export function useCompanySetup() {
           title: 'Departments and Locations',
           description: "Add your company's departments and office locations. ",
           isCompleted: isLocationsPresent && isDepartmentsPresent,
-          navLink: ROUTES['/company']() + '?tab=company-info',
+          isLocalCompleted: isLocationsPresent && isDepartmentsPresent,
+          navLink: ROUTES['/company']() + '?tab=company-info&indicator=true',
           isOptional: false,
-          isVisiable: true,
+          isVisible: true,
+          isNavDisable: false,
           bulletPoints: ['List of departments', 'Office locations'],
         },
         {
           id: 'add-users',
           title: 'Add Users (Optional)',
           description: 'Invite team members to join and collaborate.',
-          isCompleted: isMembersPresent,
-          navLink: ROUTES['/company']() + '?tab=team',
+          isCompleted: isUsersPresent,
+          isLocalCompleted: isUsersPresent,
+          navLink: ROUTES['/company']() + '?tab=team&add_user=true',
           isOptional: true,
-          isVisiable: true,
+          isVisible: true,
+          isNavDisable: false,
           bulletPoints: ['User email', 'User role'],
         },
         {
@@ -189,18 +216,22 @@ export function useCompanySetup() {
           description:
             'Connect your ATS or Google Workspace for seamless integration.',
           isCompleted: isIntegrationsPresent,
+          isLocalCompleted: isIntegrationsPresent,
           navLink: ROUTES['/integrations'](),
           isOptional: true,
-          isVisiable: isShowFeature('INTEGRATIONS'),
+          isNavDisable: false,
+          isVisible: isShowFeature('INTEGRATIONS'),
         },
         {
           id: 'interview-pool',
           title: 'Set Interview Pool',
           description: 'Add at least one interviewer',
-          isCompleted: isInterviewPoolPresent,
-          navLink: ROUTES['/interview-pool'](),
+          isCompleted: isInterviewPoolsPresent,
+          isLocalCompleted: isInterviewPoolsPresent,
+          navLink: ROUTES['/interview-pool']() + '?add_pool=true',
           isOptional: false,
-          isVisiable: true,
+          isVisible: true,
+          isNavDisable: false,
           bulletPoints: [
             'Interview pool name',
             'Description',
@@ -217,11 +248,11 @@ export function useCompanySetup() {
           title: 'Create Job',
           description: 'At least one job must be present',
           isCompleted: isJobsPresent,
-          navLink: isJobSetupPending
-            ? ROUTES['/jobs']()
-            : ROUTES['/jobs/create'](),
+          isLocalCompleted: isJobsPresent,
+          navLink: ROUTES['/jobs/create'](),
           isOptional: false,
-          isVisiable: true,
+          isVisible: true,
+          isNavDisable: false,
           bulletPoints: ['Job title', 'Description', 'Interview type'],
           scoringPoints: [
             'Enables efficient candidate scoring',
@@ -233,10 +264,17 @@ export function useCompanySetup() {
           id: 'candidate',
           title: 'Add Candidate',
           description: 'Add at least one candidate/application',
-          isCompleted: isCandidatePresent,
-          navLink: ROUTES['/jobs'](),
+          isCompleted: isCandidatesPresent,
+          isLocalCompleted: isCandidatesPresent,
+          navLink: isJobsPresent
+            ? ROUTES['/jobs/[job]']({
+                job: firstJobId ?? '',
+              }) + '?indicator=true'
+            : '',
           isOptional: false,
-          isVisiable: true,
+          isVisible: true,
+          isNavDisable: !isJobsPresent,
+          toolTipText: 'Please add the job first',
           bulletPoints: ['Candidate name', 'Email', 'Applied job'],
           scoringPoints: [
             'Enables candidate shortlisting based on job criteria',
@@ -247,10 +285,17 @@ export function useCompanySetup() {
           id: 'interview-plan',
           title: 'Set Interview Plan',
           description: 'Create an interview plan for the job',
-          isCompleted: isInterviewPlanPresent,
-          navLink: ROUTES['/jobs'](),
+          isCompleted: isInterviewPlansPresent,
+          isLocalCompleted: isInterviewPlansPresent,
+          navLink: isJobsPresent
+            ? ROUTES['/jobs/[job]/interview-plan']({
+                job: firstJobId ?? '',
+              }) + '?indicator=true'
+            : '',
+          isNavDisable: !isJobsPresent,
+          toolTipText: 'Please add the job first',
           isOptional: false,
-          isVisiable: true,
+          isVisible: true,
           bulletPoints: ['Interview type', 'Assigned interviewers'],
           schedulingPoints: [
             'Enables efficient interview scheduling',
@@ -258,47 +303,62 @@ export function useCompanySetup() {
           ],
         },
       ]
-        .filter((step) => step.isVisiable)
-        .sort((a, b) => Number(b?.isCompleted) - Number(a?.isCompleted));
-      setSteps(newSteps);
+        .filter((step) => step.isVisible)
+        .sort(
+          (a, b) => Number(b?.isCompleted) - Number(a?.isCompleted),
+        ) as SetupStepType[];
+
+      const firstIncompleteIndex = newSteps.findIndex(
+        (step) => !step.isLocalCompleted,
+      );
+
+      const isCompanySetupPending =
+        newSteps.filter((step) =>
+          step?.isOptional ? false : !step.isCompleted,
+        ).length > 0
+          ? true
+          : false;
+
+      if (!selectedIndex)
+        setSelectedIndex(firstIncompleteIndex ? firstIncompleteIndex : 0);
+
+      if (
+        !isOnboardCompleteRemote &&
+        isCompanySetupPending &&
+        !firstTimeOpened
+      ) {
+        setIsOnboardOpen(true);
+        setFirstTimeOpened(true);
+      }
+      if (!isOnboardCompleteRemote) {
+        setSteps(newSteps);
+      }
     }
-  }, [recruiter, integrations, allMembers]);
+  }, [data]);
 
   return {
     isLoading,
+    isPending,
+    isOnboardOpen,
+    setIsOnboardOpen,
     companySetupProgress,
     requestSetupProgress,
     jobSetupProgress,
-    companySetupSteps,
+    companySetupSteps: steps,
     requestSetupSteps,
     jobSetupSteps,
+    isCompanySetupLocalPending,
     isCompanySetupPending,
     isRequestSetupPending,
     isJobSetupPending,
+    currentStepMarkAsComplete,
+    finishHandler,
+    selectedStep: steps[selectedIndex],
+    selectedIndex,
+    setSelectedIndex,
+    isOnboardCompleteRemote,
   };
 }
-
-const useFetchcompanySetup = () => {
-  const { recruiter_id } = useAuthDetails();
-  return useQuery({
-    queryKey: ['company_setup'],
-    queryFn: () => fetchCompanySetup(recruiter_id ? recruiter_id : ''),
-    enabled: !!recruiter_id,
-  });
-};
-
-const fetchCompanySetup = async (recruiter_id: string) => {
-  return (
-    await supabase
-      .from('recruiter')
-      .select(
-        'public_jobs(*),interview_plan(*),candidates(*),interview_module(*)',
-      )
-      .eq('id', recruiter_id)
-      .single()
-      .throwOnError()
-  ).data;
-};
 
 function findMissingProperties(obj: any, requiredProps: string[]) {
   return requiredProps.filter((prop) => obj[prop] === null || obj[prop] === '');

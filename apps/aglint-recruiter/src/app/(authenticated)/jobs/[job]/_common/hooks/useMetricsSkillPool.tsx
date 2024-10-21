@@ -1,10 +1,9 @@
+import type { SkillPool } from '@/routers/jobs/job/metrics/skillPool';
 import { api } from '@/trpc/client';
 
 import { useCurrentJob } from './useCurrentJob';
-import { useJobPolling } from './useJobPolling';
 
-export const useMetricsSkillPool = () => {
+export const useMetricsSkillPool = (): SkillPool['output'] => {
   const { job_id } = useCurrentJob();
-  const { opts } = useJobPolling();
-  return api.jobs.job.metrics.skillPool.useSuspenseQuery({ job_id }, opts);
+  return api.jobs.job.metrics.skillPool.useSuspenseQuery({ job_id })[0];
 };

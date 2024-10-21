@@ -1,10 +1,10 @@
 import { type DatabaseEnums } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
+import { useInterviewsFiltersJob } from '@interviews/hooks/useInterviewsFiltersJob';
 import { useState } from 'react';
 
+import { useTenantMembers } from '@/company/hooks';
 import FilterHeader from '@/components/Common/FilterHeader';
-import { useJobs } from '@/jobs/hooks';
-import { useAllMembers } from '@/queries/members';
 
 import { useScheduleStatesContext } from '../../contexts/ScheduleStatesContext';
 
@@ -13,7 +13,7 @@ function AllInterviewFilters() {
 
   const [searchText, setSearchText] = useState<string>('');
 
-  const { members } = useAllMembers();
+  const { members } = useTenantMembers();
   // eslint-disable-next-line no-unused-vars
   const ScheduleTypes = [
     {
@@ -60,7 +60,7 @@ function AllInterviewFilters() {
     },
   ];
 
-  const { jobs } = useJobs();
+  const jobs = useInterviewsFiltersJob();
   return (
     <div className='flex flex-row space-x-3'>
       <FilterHeader
@@ -79,7 +79,7 @@ function AllInterviewFilters() {
             name: 'Status',
             options: [
               { id: 'completed', label: 'Completed' },
-              { id: 'cancelled', label: 'Cancelled' },
+              { id: 'cancelled', label: 'Canceled' },
               { id: 'confirmed', label: 'Confirmed' },
               { id: 'waiting', label: 'Waiting' },
             ],
@@ -116,7 +116,7 @@ function AllInterviewFilters() {
             type: 'filter',
             name: 'Jobs',
             options:
-              jobs.isFetched && jobs.data
+              jobs.status === 'success' && jobs.data
                 ? jobs.data.map((ele) => ({
                     id: ele.id ?? '',
                     label: ele.job_title ?? '',

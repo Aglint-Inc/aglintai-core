@@ -1,66 +1,29 @@
 /* eslint-disable security/detect-object-injection */
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@components/ui/accordion'; // Import shadcn Collapsible
-import { Skeleton } from '@components/ui/skeleton'; // shadcn Skeleton
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@components/ui/table'; // shadcn Table components
+import { Skeleton } from '@components/ui/skeleton';
 import { GraduationCap, School } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
+import { EmptyState } from '@/common/EmptyState';
+
 import { useApplicationDetails } from '../../hooks/useApplicationDetails';
+import ApplicationDetailAccordion from '../ui/ApplicationDetailAccordian';
 
 const Education = () => {
-  const { data } = useApplicationDetails();
-
-  const schoolLogos = getSchoolLogos(data);
-
   return (
-    <Accordion type='single' collapsible>
-      <AccordionItem value='education'>
-        <AccordionTrigger>
-          <div className='flex w-full items-center justify-between'>
-            <div className='flex items-center space-x-2'>
-              <GraduationCap size={16} />
-              <span className='font-medium'>Education</span>
-            </div>
-            {schoolLogos.length > 0 && (
-              <div className='flex space-x-1'>{schoolLogos} </div>
-            )}
-          </div>
-        </AccordionTrigger>
-        <AccordionContent>
-          <Content />
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+    <>
+      <ApplicationDetailAccordion
+        title='Education'
+        Icon={GraduationCap}
+        headerSlot={<></>}
+      >
+        <Content />
+      </ApplicationDetailAccordion>
+    </>
   );
 };
 
 export { Education };
-
-const getSchoolLogos = (data) => {
-  if (!data?.resume_json?.schools) return [];
-  const schools = data.resume_json.schools.slice(0, 3); // Get top 3 schools
-  return schools.map((school, i) => (
-    <ImageWithFallback
-      key={i}
-      src={`https://logo.clearbit.com/${school.institution?.toLowerCase().replace(/\s+/g, '')}.com`}
-      alt={`${school?.institution || 'Institution'} logo`}
-      fallbackSrc={'/images/scoring/education.svg'}
-    />
-  ));
-};
 
 const Content = () => {
   const { data, status } = useApplicationDetails();
@@ -86,10 +49,11 @@ const Content = () => {
     )
   )
     return (
-      <div className='flex flex-col items-center justify-center p-4'>
-        <School className='mb-2 h-12 w-12 text-gray-500' />
-        <p className='text-sm text-gray-600'>No education found</p>
-      </div>
+      <EmptyState
+        header='No education found'
+        description="No education was identified from the candidate's resume."
+        icon={School}
+      />
     );
 
   return <Schools />;
@@ -132,7 +96,7 @@ const Schools = () => {
   ];
 
   // State to control the collapsible
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded] = useState(false);
 
   // Determine the items to display
   const itemsToShow = isExpanded
@@ -141,54 +105,42 @@ const Schools = () => {
 
   return (
     <>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className='w-1/4'>Institution</TableHead>
-            <TableHead className='w-1/2'>Degree</TableHead>
-            <TableHead className='w-1/4'>Duration</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {itemsToShow.map(({ institution, degree, start, end }, i) => (
-            <TableRow key={i}>
-              <TableCell className='flex w-1/4 items-center space-x-2'>
-                <ImageWithFallback
-                  src={`https://logo.clearbit.com/${institution.toLowerCase().replace(/\s+/g, '')}.com`}
-                  alt={`${institution} logo`}
-                  fallbackSrc={'/images/de/education.png'}
-                />
-                <span>{capitalize(institution, conjunctions)}</span>
-              </TableCell>
-              <TableCell className='w-1/2'>
-                {capitalize(degree, conjunctions)}
-              </TableCell>
-              <TableCell className='w-1/4'>
-                {calculateDuration(start, end)} (
-                {start.year && start.month && end.year && end.month
-                  ? timeRange(
-                      String(
-                        timeFormat({ year: start.year, month: start.month }),
-                      ),
-                      String(timeFormat({ year: end.year, month: end.month })),
-                    )
-                  : ''}
-                )
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      {schoolsWithRelevance.length > 3 && (
-        <div className='mt-2'>
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className='text-blue-500 hover:underline'
-          >
-            {isExpanded ? 'Show Less' : 'Show More'}
-          </button>
+      {itemsToShow.map(({ institution, degree, start, end }, i) => (
+        <div key={i} className='flex items-center gap-3'>
+          <div className='flex h-12 w-12 items-center justify-center rounded-md border bg-white'>
+            <ImageWithFallback
+              src={`https://logo.clearbit.com/${institution.toLowerCase().replace(/\s+/g, '')}.com`}
+              alt={`${institution} logo`}
+              fallbackSrc={'/images/default/education.svg'}
+              height={30}
+              width={30}
+            />
+          </div>
+          <div className='flex w-full flex-row items-center justify-between gap-1'>
+            <div className='flex flex-col gap-1'>
+              <span className='text-sm font-medium'>
+                {' '}
+                {capitalize(degree, conjunctions)}{' '}
+              </span>
+              <span className='text-sm text-muted-foreground'>
+                {capitalize(institution, conjunctions)}
+              </span>
+            </div>
+            <div className='text-sm text-muted-foreground'>
+              {calculateDuration(start, end)} (
+              {start.year && start.month && end.year && end.month
+                ? timeRange(
+                    String(
+                      timeFormat({ year: start.year, month: start.month }),
+                    ),
+                    String(timeFormat({ year: end.year, month: end.month })),
+                  )
+                : ''}
+              )
+            </div>
+          </div>
         </div>
-      )}
+      ))}
     </>
   );
 };
@@ -229,7 +181,10 @@ const timeFormat = (
 };
 
 // New function to calculate duration
-const calculateDuration = (start, end) => {
+const calculateDuration = (
+  start: Record<string, any>,
+  end: Record<string, any>,
+) => {
   if (!start) return '';
 
   const startDate = new Date(start.year || 0, (start.month || 1) - 1);
@@ -258,17 +213,28 @@ const calculateDuration = (start, end) => {
   return duration || 'Less than a month';
 };
 
-const ImageWithFallback = ({ src, alt, fallbackSrc }) => {
+const ImageWithFallback = ({
+  src,
+  alt,
+  fallbackSrc,
+  width,
+  height,
+}: {
+  src: string;
+  alt: string;
+  fallbackSrc: string;
+  width: number;
+  height: number;
+}) => {
   const [imgSrc, setImgSrc] = useState(src);
 
   return (
     <Image
       src={imgSrc}
       alt={alt}
-      width={24}
-      height={24}
+      width={width}
+      height={height}
       onError={() => setImgSrc(fallbackSrc)}
-      className='rounded-full'
     />
   );
 };

@@ -1,16 +1,19 @@
 import { useRouterPro } from '@/hooks/useRouterPro';
+import type { ApplicationDetails as ApplicationDetailsAPI } from '@/routers/application/details';
+import type { ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 
 export const useApplicationDetails = () => {
   const router = useRouterPro();
-  const utils = api.useUtils();
   const application_id = router.params.application;
-  const query = api.application.applicationDetails.useQuery({ application_id });
-  const data = query.data!;
-  const refetch = () =>
-    utils.application.applicationDetails.invalidate({ application_id });
-  return { ...query, data, refetch, application_id };
+  const query = useApplicationDetailsProcedure({ application_id });
+  return { ...query, data: query.data!, application_id };
 };
+
+const useApplicationDetailsProcedure = (
+  input: ApplicationDetailsAPI['input'],
+): ProcedureQuery<ApplicationDetailsAPI> =>
+  api.application.application_activity.useQuery(input);
 
 export type ApplicationDetails = ReturnType<
   typeof useApplicationDetails

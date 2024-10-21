@@ -1,46 +1,53 @@
-import type { CandReqSlotsType } from '@aglint/shared-types';
-import { type ApiResponseFindAvailability } from '@requests/types';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { toast } from '@components/hooks/use-toast';
 
-import axios from '@/client/axios';
-import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
+import { type AvailableSlots } from '@/routers/candidate_availability/availableSlots';
+import type { Create } from '@/routers/candidate_availability/create';
+import type { Update } from '@/routers/candidate_availability/update';
+import { type ProcedureQuery } from '@/server/api/trpc';
+import { api } from '@/trpc/client';
 
-export const useRequestAvailabilityDetails = ({
-  availability_id,
-}: {
-  availability_id: string;
-}) => {
-  const queryClient = useQueryClient();
-  const query = useQuery({
-    queryKey: ['get_request_availability_details', { availability_id }],
-    queryFn: () => getRequestAvailabilityDetails(availability_id),
-    // refetchInterval: 2000,
-    enabled: !!availability_id,
+export const useRequestAvailabilityDetails = (
+  input: AvailableSlots['input'],
+): ProcedureQuery<AvailableSlots> =>
+  api.candidate_availability.availableSlots.useQuery(input, {
+    enabled: !!input.availability_id,
   });
-  const refetch = () =>
-    queryClient.invalidateQueries({
-      queryKey: ['get_request_availability_details', { availability_id }],
-    });
-  return { ...query, refetch };
+
+export const useCreateCandidateAvailability = () => {
+  const createMutation = api.candidate_availability.create.useMutation({
+    onError: (e) => {
+      toast({
+        title: e.shape?.message,
+      });
+    },
+  });
+  const createRequestAvailability = async (payload: Create['input']) => {
+    try {
+      return await createMutation.mutateAsync(payload);
+    } catch (error) {
+      //
+    }
+  };
+
+  return { ...createMutation, createRequestAvailability };
 };
 
-async function getRequestAvailabilityDetails(availability_id: string) {
-  if (availability_id) {
-    // eslint-disable-next-line no-useless-catch
-    try {
-      const { data } = await axios.post(
-        '/api/scheduling/v1/get-candidate-selected-slots',
-        {
-          cand_availability_id: availability_id,
-          user_tz: userTzDayjs.tz.guess(),
-        },
-      );
-      return data as {
-        slots: CandReqSlotsType[];
-        availabilities: ApiResponseFindAvailability['availabilities'];
-      };
-    } catch (error) {
-      throw error;
+export const useUpdateCandidateAvailability = () => {
+  const updateMutation = api.candidate_availability.update.useMutation({
+    onError: (e) => {
+      toast({
+        title: e.shape?.message,
+      });
+    },
+  });
+  const updateRequestAvailability = (payload: Update['input']) => {
+    if (payload.id) {
+      updateMutation.mutate({
+        ...payload,
+      });
+    } else {
+      () => {};
     }
-  }
-}
+  };
+  return { ...updateMutation, updateRequestAvailability };
+};

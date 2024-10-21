@@ -1,10 +1,10 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
+import { useRequests } from '@requests/hooks';
 import { Send } from 'lucide-react';
 import React, { useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useRequests } from '@/context/RequestsContext';
 
 import { type selectedItemsType } from '../utils';
 import SelectScheduleDate from './SelectScheduleDate';
@@ -14,12 +14,13 @@ function CreateSchedulePopUp({
   setSelectedItems,
   setText,
 }: {
-  selectedItems: selectedItemsType;
-  setSelectedItems: React.Dispatch<React.SetStateAction<selectedItemsType>>;
+  selectedItems: selectedItemsType | null;
+  // eslint-disable-next-line no-unused-vars
+  setSelectedItems: (x: selectedItemsType | null) => void;
   setText: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const { handleAsyncCreateRequests } = useRequests();
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
   const [loading, setLoading] = useState(false);
   const [selectedDateRange, setSelectedDateRange] = useState({
     start_date: dayjsLocal().toString(),
@@ -28,7 +29,7 @@ function CreateSchedulePopUp({
   const assigner = 'user';
   const assignerText =
     assigner === 'user'
-      ? `assign to ${getFullName(recruiterUser.first_name, recruiterUser.last_name)}`
+      ? `assign to ${getFullName(recruiter_user.first_name, recruiter_user.last_name)}`
       : assigner === 'email'
         ? 'send an email'
         : assigner === 'phone'
@@ -45,23 +46,23 @@ function CreateSchedulePopUp({
     : '{{interviews}}';
   async function createNewRequest() {
     const selectedSession = selectedItems?.interview_name;
-    if (selectedSession.length && selectedItems.applicant_name.length) {
+    if (selectedSession?.length && selectedItems?.applicant_name.length) {
       setLoading(true);
       await handleAsyncCreateRequests({
         payload: {
           request: {
             priority: 'standard',
-            assigner_id: recruiterUser.user_id,
-            assignee_id: recruiterUser.user_id,
-            title: `${getFullName(recruiterUser.first_name, recruiterUser.last_name)} requested to schedule a ${selectedSession.map((ele) => ele.name).join(' ,')} for ${selectedItems.applicant_name[0].name}`,
+            assigner_id: recruiter_user.user_id,
+            assignee_id: recruiter_user.user_id,
+            title: `${getFullName(recruiter_user.first_name, recruiter_user.last_name)} requested to schedule a ${selectedSession.map((ele) => ele.name).join(' ,')} for ${selectedItems.applicant_name[0].name}`,
             status: 'in_progress',
             type: 'schedule_request',
             schedule_start_date: selectedDateRange.start_date,
             schedule_end_date: selectedDateRange.end_date,
             note: null,
           },
-          application: selectedItems.applicant_name[0].id,
-          sessions: selectedItems.interview_name.map((ele) => ele.id),
+          application: selectedItems?.applicant_name[0].id,
+          sessions: selectedItems?.interview_name.map((ele) => ele.id),
         },
       });
       setLoading(false);
@@ -95,7 +96,7 @@ function CreateSchedulePopUp({
                 } else {
                   setSelectedDateRange({
                     start_date: e[0],
-                    end_date: null,
+                    end_date: '',
                   });
                 }
               }}

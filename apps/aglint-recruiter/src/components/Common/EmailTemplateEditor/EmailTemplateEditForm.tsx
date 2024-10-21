@@ -1,4 +1,5 @@
 import { type DatabaseTableInsert } from '@aglint/shared-types';
+import Typography from '@components/typography';
 import {
   Select,
   SelectContent,
@@ -9,7 +10,6 @@ import {
 import React from 'react';
 
 import TipTapAIEditor from '../TipTapAIEditor';
-import UITypography from '../UITypography';
 
 interface Props {
   senderNameChange: any;
@@ -46,16 +46,16 @@ export default function EmailTemplateEditForm({
     <div className='space-y-5'>
       {showSender && (
         <div className='space-y-2'>
-          <UITypography type='small' fontBold='normal'>
+          <Typography type='small' fontBold='normal'>
             From
-          </UITypography>
+          </Typography>
           <p className='text-sm text-gray-600'>
             This name appears as the &quot;From&quot; name in emails to
             candidates. Choose a representative name for your company or
             recruiter.
           </p>
           <Select
-            defaultValue={selectedTemplate?.from_name}
+            defaultValue={selectedTemplate?.from_name ?? undefined}
             disabled={disabled}
             onValueChange={senderNameChange}
           >
@@ -64,13 +64,13 @@ export default function EmailTemplateEditForm({
             </SelectTrigger>
             <SelectContent>
               {options.length === 0 ? (
-                <div className='cursor-default px-2 py-1 italic text-neutral-500'>
+                <div className='cursor-default px-2 py-2 italic text-muted-foreground'>
                   No options available
                 </div>
               ) : (
                 options.map((value, idx) => (
                   <SelectItem key={idx} value={value}>
-                    <span className='rounded-sm bg-[#f7ebfc] px-1 pb-[3px] text-[#B552E2]'>
+                    <span className='flex rounded-sm bg-purple-200/50 px-1 pb-[3px] text-purple-500'>
                       {value}
                     </span>
                   </SelectItem>
@@ -83,10 +83,10 @@ export default function EmailTemplateEditForm({
 
       {showSubject && (
         <div className='space-y-2'>
-          <UITypography type='small' fontBold='normal'>
+          <Typography type='small' fontBold='normal'>
             Subject
-          </UITypography>
-          <div className='mt-2 rounded-md border border-neutral-300'>
+          </Typography>
+          <div className='mt-2 rounded-md'>
             <TipTapAIEditor
               enablAI={false}
               toolbar={false}
@@ -99,29 +99,28 @@ export default function EmailTemplateEditForm({
               editor_type='email'
               template_type={selectedTemplate.type}
               handleChange={emailSubjectChange}
-              initialValue={selectedTemplate?.subject}
+              initialValue={selectedTemplate?.subject ?? undefined}
             />
           </div>
         </div>
       )}
 
       <div className='space-y-2'>
-        <UITypography type='small' fontBold='normal'>
+        <Typography type='small' fontBold='normal'>
           Message
-        </UITypography>
-        <div className='mt-2 rounded-md border border-neutral-300'>
+        </Typography>
+        <div className='mt-2'>
           <TipTapAIEditor
             enablAI={false}
             placeholder={''}
             onfocus={onFocus}
             onblur={onBlur}
-            minHeight='360px'
-            height='330px'
             padding={'10px'}
             editor_type='email'
             template_type={selectedTemplate.type}
             handleChange={emailBodyChange}
-            initialValue={selectedTemplate.body}
+            initialValue={selectedTemplate?.body ?? undefined}
+            height='calc(100vh - 450px)'
           />
         </div>
       </div>

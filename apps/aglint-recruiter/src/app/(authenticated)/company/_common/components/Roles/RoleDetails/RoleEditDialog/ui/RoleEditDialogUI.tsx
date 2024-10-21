@@ -5,18 +5,20 @@ import { ScrollArea } from '@components/ui/scroll-area';
 import { AlertCircle, ChevronDown } from 'lucide-react';
 import { type Dispatch, type SetStateAction } from 'react';
 
-import UITextField from '@/components/Common/UITextField';
-import { type useAllMembers } from '@/queries/members';
+import UITextField from '@/common/UITextField';
+import type { useTenantMembers } from '@/company/hooks';
 
 type props = {
-  selectedMember: ReturnType<typeof useAllMembers>['members'][number];
+  selectedMember: ReturnType<typeof useTenantMembers>['members'][number];
   search: string;
   setSearch: Dispatch<SetStateAction<string>>;
-  filteredMember: ReturnType<typeof useAllMembers>['members'];
+  filteredMember: ReturnType<typeof useTenantMembers>['members'];
   setSelectedMember: Dispatch<
-    SetStateAction<ReturnType<typeof useAllMembers>['members'][number]>
+    SetStateAction<
+      ReturnType<typeof useTenantMembers>['members'][number] | null
+    >
   >;
-  role;
+  role: string;
 };
 export const RoleEditDialogUI = ({
   selectedMember,
@@ -43,7 +45,7 @@ export const RoleEditDialogUI = ({
             <Card className='flex items-center p-4'>
               <Avatar className='mr-4 h-12 w-12'>
                 <AvatarImage
-                  src={selectedMember.profile_image}
+                  src={selectedMember.profile_image || ''}
                   alt={`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}
                 />
                 <AvatarFallback>
@@ -63,7 +65,7 @@ export const RoleEditDialogUI = ({
             <Card className='flex items-center border border-dashed p-4'>
               <Avatar className='mr-4 h-12 w-12'>
                 <AvatarImage
-                  src={selectedMember.profile_image}
+                  src={selectedMember.profile_image || ''}
                   alt={`${selectedMember.first_name || ''} ${selectedMember.last_name || ''}`.trim()}
                 />
                 <AvatarFallback>
@@ -92,12 +94,12 @@ export const RoleEditDialogUI = ({
             {filteredMember.map((member) => (
               <Card
                 key={member.user_id}
-                className='flex cursor-pointer items-center p-4 hover:bg-accent'
+                className='m-1 flex cursor-pointer items-center p-4 hover:bg-accent'
                 onClick={() => setSelectedMember(member)}
               >
                 <Avatar className='mr-4 h-10 w-10'>
                   <AvatarImage
-                    src={member.profile_image}
+                    src={member.profile_image || ''}
                     alt={`${member.first_name || ''} ${member.last_name || ''}`.trim()}
                   />
                   <AvatarFallback>

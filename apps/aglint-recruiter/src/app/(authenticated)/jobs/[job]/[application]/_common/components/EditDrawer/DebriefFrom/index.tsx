@@ -1,27 +1,21 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
 import MembersAutoComplete, {
   type MemberTypeAutoComplete,
 } from 'src/app/_common/components/MembersTextField';
+import { ScheduleTypeField } from 'src/app/(authenticated)/jobs/[job]/(job-edit)/interview-plan/_common/components/sessionForms';
 
+import { useTenantMembers } from '@/company/hooks';
 import UITextField from '@/components/Common/UITextField';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { ScheduleTypeField } from '@/job/interview-plan/components/sessionForms';
-import {
-  type BodyParamsFetchUserDetails,
-  type CompanyMembersAPI,
-} from '@/pages/api/scheduling/fetchUserDetails';
 
 import {
   setDebriefMembers,
   setEditSession,
+  setErrorValidation,
   useEditSessionDrawerStore,
 } from '../../../stores/editSessionDrawer';
 import SessionDuration from '../DurationDropdown';
 
 function DebriedForm() {
-  const { recruiter } = useAuthDetails();
-  const [members, setMembers] = useState<CompanyMembersAPI>([]);
+  const { members } = useTenantMembers();
   const { editSession, debriefMembers, errorValidation } =
     useEditSessionDrawerStore((state) => ({
       editSession: state.editSession,
@@ -30,33 +24,13 @@ function DebriedForm() {
     }));
 
   const optionMembers: MemberTypeAutoComplete[] = members.map((member) => ({
-    email: member?.email || '',
-    user_id: member?.user_id || '',
+    email: member.email,
+    user_id: member.user_id,
     profile_image: member?.profile_image || '',
     position: member?.position || '',
-    first_name: member?.first_name || '',
+    first_name: member.first_name || '',
     last_name: member?.last_name || '',
   }));
-
-  useEffect(() => {
-    fetchAllMembers();
-  }, []);
-
-  const fetchAllMembers = async () => {
-    const bodyParams: BodyParamsFetchUserDetails = {
-      recruiter_id: recruiter?.id || '',
-      includeSupended: false,
-      isCalendar: true,
-    };
-    const resMem = await axios.post(
-      '/api/scheduling/fetchUserDetails',
-      bodyParams,
-    );
-
-    if (resMem?.data?.length > 0) {
-      setMembers(resMem.data as CompanyMembersAPI);
-    }
-  };
 
   const selectedUserIds = debriefMembers.map((member) => member.user_id);
 
@@ -71,11 +45,11 @@ function DebriedForm() {
           <UITextField
             name={'name'}
             placeholder={'Session name'}
-            value={editSession.interview_session.name}
+            value={editSession!.interview_session.name}
             onChange={(e) =>
               setEditSession({
                 interview_session: {
-                  ...editSession.interview_session,
+                  ...editSession!.interview_session,
                   name: e.target.value,
                 },
               })
@@ -87,11 +61,11 @@ function DebriedForm() {
         </div>
         <div>
           <ScheduleTypeField
-            value={editSession.interview_session.schedule_type}
+            value={editSession!.interview_session.schedule_type}
             handleTypeChange={(value) => {
               setEditSession({
                 interview_session: {
-                  ...editSession.interview_session,
+                  ...editSession!.interview_session,
                   schedule_type: value,
                 },
               });
@@ -116,6 +90,15 @@ function DebriedForm() {
                 (err) => err.field === 'qualified_interviewers',
               )?.message
             }
+            onUserSelect={() => {
+              setErrorValidation(
+                errorValidation.map((err) =>
+                  err.field === 'qualified_interviewers'
+                    ? { ...err, error: false }
+                    : err,
+                ),
+              );
+            }}
           />
         </div>
       </div>

@@ -1,7 +1,7 @@
 // import OptimisticWrapper from '@components/loadingWapper';
 import { memo, useCallback, useMemo } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useFlags } from '@/company/hooks/useFlags';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useKeyPress } from '@/hooks/useKeyPress';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -11,18 +11,18 @@ import {
   useApplicationsStore,
   useJob,
 } from '@/job/hooks';
-import type { Applications } from '@/job/types';
+import type { Application } from '@/job/types';
+import { useJobsContext } from '@/jobs/hooks';
 import ROUTES from '@/utils/routing/routes';
 
 import { TableRow } from '../TableRow';
 
 const ApplicationCard = memo(
-  ({ application }: { application: Applications<'output'>[number] }) => {
+  ({ application }: { application: Application }) => {
     const router = useRouterPro();
-
+    const { manageJob } = useJobsContext();
     const {
       job: { status },
-      manageJob,
     } = useJob();
 
     const { applications } = useApplications();
@@ -33,9 +33,9 @@ const ApplicationCard = memo(
     const { setChecklist } = useApplicationsActions();
     const { isScoringEnabled } = useRolesAndPermissions();
     const { pressed: shift } = useKeyPress('Shift');
-    const { isShowFeature } = useAuthDetails();
+    const { isShowFeature } = useFlags();
     const isChecked = useMemo(
-      () => checklist.includes(application.id),
+      () => checklist.includes(application.id!),
       [application, checklist],
     );
 
@@ -50,7 +50,8 @@ const ApplicationCard = memo(
           ];
           for (let i = 0; i < applications.length && indexes.length !== 2; i++)
             // eslint-disable-next-line security/detect-object-injection
-            if (checklist.includes(applications[i].id)) indexes.push(i);
+            if (checklist.includes((applications[i]?.id ?? null)!))
+              indexes.push(i);
           indexes.sort((a, b) => a - b);
           setChecklist(
             Array.from(
@@ -60,9 +61,9 @@ const ApplicationCard = memo(
                   .slice(indexes[0], indexes[1] + 1)
                   .map(({ id }) => id),
               ]),
-            ),
+            ) as typeof checklist,
           );
-        } else setChecklist([...checklist, application.id]);
+        } else setChecklist([...checklist!, application.id!]);
       }
     }, [checklist, isChecked, application, shift, applications, setChecklist]);
 
@@ -77,8 +78,8 @@ const ApplicationCard = memo(
     const handleClickCandidate = () => {
       router.push(
         `${ROUTES['/jobs/[job]/[application]']({
-          application_id: application.id,
-          job: application.job_id,
+          application_id: application.id!,
+          job: application.job_id!,
         })}${
           application.status === 'interview' && isShowFeature('SCHEDULING')
             ? `?tab=interview`
@@ -97,7 +98,7 @@ const ApplicationCard = memo(
         isResumeMatchVisible={isScoringEnabled}
         isInterviewVisible={cascadeVisibilites.interview}
         checkEnabled={checkEnabled}
-        status={status}
+        status={status!}
       />
       // </OptimisticWrapper>
     );

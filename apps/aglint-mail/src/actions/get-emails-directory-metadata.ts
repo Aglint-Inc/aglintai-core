@@ -43,7 +43,8 @@ const mergeDirectoriesWithSubDirectories = (
     currentResultingMergedDirectory.emailFilenames.length === 0 &&
     currentResultingMergedDirectory.subDirectories.length === 1
   ) {
-    const onlySubDirectory = currentResultingMergedDirectory.subDirectories[0];
+    const onlySubDirectory = currentResultingMergedDirectory
+      .subDirectories[0] as any;
     currentResultingMergedDirectory = {
       subDirectories: onlySubDirectory.subDirectories,
       emailFilenames: onlySubDirectory.emailFilenames,
@@ -90,8 +91,8 @@ export const getEmailsDirectoryMetadata = async (
 
   return mergeDirectoriesWithSubDirectories({
     absolutePath: absolutePathToEmailsDirectory,
-    directoryName: absolutePathToEmailsDirectory.split(path.sep).pop(),
+    directoryName: absolutePathToEmailsDirectory.split(path.sep).pop() as any,
     emailFilenames,
-    subDirectories,
+    subDirectories: subDirectories as any,
   });
 };

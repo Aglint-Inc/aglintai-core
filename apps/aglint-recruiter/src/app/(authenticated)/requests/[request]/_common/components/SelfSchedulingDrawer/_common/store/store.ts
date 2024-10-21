@@ -9,7 +9,7 @@ import {
 } from '@/components/Common/CalendarResourceView/types';
 import type { ApiResponseSelfSchedule } from '@/pages/api/scheduling/application/sendselfschedule';
 
-import { type filterSchedulingOptionsArray } from '../components/BodyDrawer/ScheduleFilter/utils';
+import type { filterSchedulingOptionsArray } from '../utils/filterSchedulingOptionsArray';
 
 type PrefferedInterviewer = {
   user_id: string;
@@ -72,7 +72,6 @@ export interface SelfSchedulingFlow {
     };
   };
   filterLoading: boolean;
-  anchorEl: null | HTMLButtonElement;
   calendarDate: string;
 }
 
@@ -104,7 +103,10 @@ const initialState: SelfSchedulingFlow = {
   resSendToCandidate: null, //used only in self scheduling flow last step copy link which contains ids
   noSlotReasons: [],
   errorNoSlotFilter: false,
-  availabilities: null,
+  availabilities: {
+    events: [],
+    resources: [],
+  },
   localFilters: {
     ...initialFilters,
     dateRange: {
@@ -113,7 +115,6 @@ const initialState: SelfSchedulingFlow = {
     },
   },
   filterLoading: false,
-  anchorEl: null,
   calendarDate: dayjsLocal().toISOString(),
 };
 
@@ -127,9 +128,6 @@ export const setEmailData = (emailData: SelfSchedulingFlow['emailData']) =>
 export const setCalendarDate = (
   calendarDate: SelfSchedulingFlow['calendarDate'],
 ) => useSelfSchedulingFlowStore.setState({ calendarDate });
-
-export const setAnchorEl = (anchorEl: SelfSchedulingFlow['anchorEl']) =>
-  useSelfSchedulingFlowStore.setState({ anchorEl });
 
 export const setFilterLoading = (filterLoading: boolean) =>
   useSelfSchedulingFlowStore.setState({ filterLoading });

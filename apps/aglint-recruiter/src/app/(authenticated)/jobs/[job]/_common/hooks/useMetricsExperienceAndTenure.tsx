@@ -1,13 +1,12 @@
+import type { ExperienceAndTenure } from '@/routers/jobs/job/metrics/experienceAndTenure';
 import { api } from '@/trpc/client';
 
 import { useCurrentJob } from './useCurrentJob';
-import { useJobPolling } from './useJobPolling';
 
-export const useMetricsExperienceAndTenure = () => {
-  const { job_id } = useCurrentJob();
-  const { opts } = useJobPolling();
-  return api.jobs.job.metrics.experienceAndTenure.useSuspenseQuery(
-    { job_id },
-    opts,
-  );
-};
+export const useMetricsExperienceAndTenure =
+  (): ExperienceAndTenure['output'] => {
+    const { job_id } = useCurrentJob();
+    return api.jobs.job.metrics.experienceAndTenure.useSuspenseQuery({
+      job_id,
+    })[0];
+  };

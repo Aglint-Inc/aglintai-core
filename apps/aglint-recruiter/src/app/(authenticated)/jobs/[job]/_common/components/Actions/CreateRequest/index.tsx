@@ -1,15 +1,16 @@
-import type { DatabaseTableInsert } from '@aglint/shared-types';
+import type { DatabaseTable } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 import { Textarea } from '@components/ui/textarea';
-import dayjs from 'dayjs';
-import { Edit2 } from 'lucide-react';
+import { Edit2, X } from 'lucide-react';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 import { type MemberType } from 'src/app/_common/types/memberType';
 
+import { UIButton } from '@/common/UIButton';
+import { useTenant } from '@/company/hooks';
 import MemberCard from '@/components/Common/MemberCard';
 import { UIDateRangePicker } from '@/components/Common/UIDateRangePicker';
 import UpdateMembers from '@/components/Common/UpdateMembers';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useMemberList } from '@/hooks/useMemberList';
 import { useJob } from '@/job/hooks';
 import { ScheduleInterviewPop } from '@/jobs/job/application/components/InterviewTab/ScheduleInterviewPop';
 import { RequestOption } from '@/jobs/job/application/components/ScheduleDialog';
@@ -24,7 +25,7 @@ function CreateRequest({
   setSelectedSession,
   selectedSession,
 }: {
-  setRequest: Dispatch<SetStateAction<DatabaseTableInsert['request']>>;
+  setRequest: Dispatch<SetStateAction<DatabaseTable['request'] | null>>;
   priority: 'urgent' | 'standard';
   setPriority: Dispatch<SetStateAction<'urgent' | 'standard'>>;
   note: string;
@@ -36,22 +37,24 @@ function CreateRequest({
   const {
     job: { hiring_manager, recruiting_coordinator, sourcer, recruiter },
   } = useJob();
-  const { recruiterUser } = useAuthDetails();
-  const selectedMember =
-    membersStatus === 'success' &&
-    members.find(
-      (member) =>
-        member.user_id === recruiting_coordinator ||
-        hiring_manager ||
-        sourcer ||
-        recruiter,
-    );
+  const { recruiter_user } = useTenant();
+  const selectedMember = (
+    membersStatus === 'success'
+      ? members.find(
+          (member) =>
+            member.user_id === recruiting_coordinator ||
+            hiring_manager ||
+            sourcer ||
+            recruiter,
+        )
+      : null
+  )!;
   const [selectedInterviewer, setSelectedInterviewer] =
     useState<MemberType>(selectedMember);
 
   const [dateRange, setDateRange] = useState({
-    start: dayjs().toString(),
-    end: dayjs().add(14, 'day').toString(),
+    start: dayjsLocal().toISOString(),
+    end: dayjsLocal().add(14, 'day').toISOString(),
   });
   const {
     interviewPlans: { data, status },
@@ -68,6 +71,7 @@ function CreateRequest({
       const interview_session = data?.flatMap((item) => item.interview_session);
       setSelectedSession(
         interview_session
+          .filter((ele) => ele.session_type !== 'debrief')
           .slice(0, 2)
           .map((ele) => ({ id: ele.id, name: ele.name }) as SessionType),
       );
@@ -84,10 +88,10 @@ function CreateRequest({
             sourcer ||
             recruiter,
 
-          assigner_id: recruiterUser.user_id,
+          assigner_id: recruiter_user.user_id,
           type: 'schedule_request',
           status: 'to_do',
-        };
+        } as typeof pre;
       });
     }
   }, [status]);
@@ -95,7 +99,7 @@ function CreateRequest({
   useEffect(() => {
     if (priority) {
       setRequest((pre) => {
-        const preData = { ...pre };
+        const preData = { ...pre! };
         return {
           ...preData,
           priority: priority,
@@ -110,26 +114,48 @@ function CreateRequest({
         <ScheduleInterviewPop
           isCandidateVisible={false}
           slotStagePill={
-            <>
-              <SessionList
-                selectedSession={selectedSession}
-                setSelectedSession={setSelectedSession}
-                onChange={({ sessions }) => {
-                  setSelectedSession([...sessions]);
-                }}
-                sessionList={
-                  data?.flatMap((item) =>
-                    item.interview_session
-                      .filter((ele) => ele.session_type !== 'debrief')
-                      .flatMap((ele) => ({
-                        id: ele.id,
-                        name: ele.name,
-                        type: ele.session_type,
-                      })),
-                  ) as SessionType[]
-                }
-              />
-            </>
+            <div className='flex w-full flex-wrap items-center gap-2'>
+              {selectedSession.map((ele, i) => (
+                <UIButton
+                  className='relative'
+                  key={i}
+                  variant='secondary'
+                  size='sm'
+                >
+                  {ele.name}
+                  {i > 0 && (
+                    <X
+                      onClick={() =>
+                        setSelectedSession((pre) => {
+                          return pre.filter((item) => item.id !== ele.id);
+                        })
+                      }
+                      className='ml-1 h-4 w-4 text-gray-700'
+                    />
+                  )}
+                </UIButton>
+              ))}
+              <div>
+                <SessionList
+                  selectedSession={selectedSession}
+                  setSelectedSession={setSelectedSession}
+                  onChange={({ sessions }) => {
+                    setSelectedSession([...sessions]);
+                  }}
+                  sessionList={
+                    data?.flatMap((item) =>
+                      item.interview_session
+                        .filter((ele) => ele.session_type !== 'debrief')
+                        .flatMap((ele) => ({
+                          id: ele.id,
+                          name: ele.name,
+                          type: ele.session_type,
+                        })),
+                    ) as SessionType[]
+                  }
+                />
+              </div>
+            </div>
           }
           slotAssignedInput={
             membersStatus === 'pending' ? (
@@ -143,7 +169,7 @@ function CreateRequest({
                   handleChange={(member) => {
                     setSelectedInterviewer(member);
                     setRequest((pre) => {
-                      const preData = { ...pre };
+                      const preData = { ...pre! };
                       return {
                         ...preData,
                         assignee_id: member.user_id,
@@ -153,7 +179,7 @@ function CreateRequest({
                   updateButton={
                     <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
                   }
-                  members={members}
+                  members={members!}
                 />
               </div>
             )
@@ -174,8 +200,16 @@ function CreateRequest({
               }}
               onAccept={(date) => {
                 setDateRange({
-                  start: dayjs(date.from).toISOString(),
-                  end: dayjs(date.to).toISOString(),
+                  start: dayjsLocal(date.from).toISOString(),
+                  end: dayjsLocal(date.to).toISOString(),
+                });
+                setRequest((pre) => {
+                  const preData = { ...pre! };
+                  return {
+                    ...preData,
+                    schedule_start_date: dayjsLocal(date.from).toISOString(),
+                    schedule_end_date: dayjsLocal(date.to).toISOString(),
+                  };
                 });
               }}
             />

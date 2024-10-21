@@ -1,3 +1,4 @@
+'use client';
 /**
  *
  * React Context + Zustand Store for performant and non-re-rendering store
@@ -9,6 +10,7 @@ import type { DatabaseView } from '@aglint/shared-types';
 import { createContext, memo, type PropsWithChildren, useState } from 'react';
 import { createStore } from 'zustand';
 
+import { SafeObject } from '@/utils/safeObject';
 import { INITIAL_FORM } from '@/workflows/constants';
 
 type Filters = {
@@ -75,7 +77,7 @@ type States = {
 const getForms = (inputs: Inputs) => {
   return Object.assign(
     {},
-    ...Object.entries(inputs).map(([key, value]) => ({
+    ...SafeObject.entries(inputs).map(([key, value]) => ({
       [key]: { ...INITIAL_FORM[key], value },
     })),
   );
@@ -97,7 +99,7 @@ const useWorkflowsStoreContext = () => {
         actionsLoad: false,
         deletion: {
           open: false,
-          workflow: null,
+          workflow: null!,
         },
       }),
       filters: {
@@ -112,7 +114,7 @@ const useWorkflowsStoreContext = () => {
       actionsLoad: false,
       deletion: {
         open: false,
-        workflow: null,
+        workflow: null!,
       },
       actions: {
         setFilters: (filters) =>
@@ -164,7 +166,7 @@ const useWorkflowsStoreContext = () => {
           setTimeout(
             () =>
               set((state) => ({
-                deletion: { ...state.deletion, workflow: null },
+                deletion: { ...state.deletion, workflow: null! },
               })),
             400,
           );
@@ -175,8 +177,9 @@ const useWorkflowsStoreContext = () => {
   return store;
 };
 
-export const WorkflowsStoreContext =
-  createContext<ReturnType<typeof useWorkflowsStoreContext>>(undefined);
+export const WorkflowsStoreContext = createContext<
+  ReturnType<typeof useWorkflowsStoreContext> | undefined
+>(undefined);
 
 export const WorkflowsStoreProvider = memo(
   ({ children }: PropsWithChildren) => {

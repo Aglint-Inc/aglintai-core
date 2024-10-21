@@ -43,7 +43,7 @@ function JobPost({ params: { id } }: { params: { id: string } }) {
         <div className='flex h-screen items-center justify-center'>
           <Loader />
         </div>
-      ) : valid ? (
+      ) : valid && recruiter ? (
         <CompanyJobPost recruiter={recruiter} jobs={jobs} />
       ) : (
         <div className='flex h-screen items-center justify-center'>

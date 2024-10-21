@@ -1,8 +1,11 @@
-'use client';
-import { type ReactNode } from 'react';
+import { type PropsWithChildren } from 'react';
 
-import { PublicProviders } from '@/context/Providers';
+const Layout = ({ children }: PropsWithChildren) => {
+  return (
+    <div className='flex min-h-screen w-full items-center justify-center'>
+      {children}
+    </div>
+  );
+};
 
-export default function RootLayout({ children }: { children: ReactNode }) {
-  return <PublicProviders>{children}</PublicProviders>;
-}
+export default Layout;

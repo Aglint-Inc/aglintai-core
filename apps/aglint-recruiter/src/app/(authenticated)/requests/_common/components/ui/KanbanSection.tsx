@@ -1,6 +1,7 @@
+import { EmptyState } from '@components/empty-state';
 import { Badge } from '@components/ui/badge';
+import { Archive } from 'lucide-react';
 
-import { RequestProvider } from '@/context/RequestContext';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { RequestCard } from '../RequestCard';
@@ -14,27 +15,27 @@ function KanbanSection({
 }) {
   return (
     <>
-      <div className='text-md mb-2 font-semibold'>
+      <div className='text-md bg-muted p-2 font-semibold'>
         {capitalizeFirstLetter(sectionName)}
         <Badge variant='outline' className='ml-2'>
           {requests.length}
         </Badge>
       </div>
       {requests.length > 0 ? (
-        <div className='flex flex-col gap-4'>
+        <div className='flex h-full flex-col gap-4 p-2'>
           {requests.map((props, i) => (
-            <RequestProvider key={props.id ?? i} request_id={props.id}>
-              <RequestCard
-                {...{ ...props, isExpanded: false }}
-                mode='column-view'
-              />
-            </RequestProvider>
+            <RequestCard
+              key={props.id ?? i}
+              {...{ ...props, isExpanded: false }}
+              mode='column-view'
+            />
           ))}
         </div>
       ) : (
-        <div className='rounded-md border p-4 text-center text-muted-foreground'>
-          No requests in this section
-        </div>
+        <EmptyState
+          icon={Archive}
+          description={`No ${capitalizeFirstLetter(sectionName)}`}
+        />
       )}
     </>
   );

@@ -1,10 +1,10 @@
 'use client';
-import UITabs from '@/components/Common/UITabs';
+import UITabs, { type UITabType } from '@/common/UITabs';
 import { useRouterPro } from '@/hooks/useRouterPro';
 
 export default function Component() {
   const { queryParams, setQueryParams } = useRouterPro<{ tab: string }>();
-  const navItems = [
+  const navItems: UITabType[] = [
     {
       name: 'Interview Metrics',
       icon: 'ChartPie',
@@ -41,6 +41,11 @@ export default function Component() {
     //   icon: ClipboardCheck,
     //   id: "interviewConsistency"
     // },
+    {
+      name: 'Scheduling Reports',
+      icon: 'UserCheckIcon',
+      id: 'schedulingReports',
+    },
   ];
   return (
     <div className='space-y-1'>

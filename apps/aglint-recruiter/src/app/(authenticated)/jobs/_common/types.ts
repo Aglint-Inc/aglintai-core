@@ -1,12 +1,12 @@
-import type { Job, JobCreate } from '@/queries/jobs/types';
+import type { Aglint } from '@/routers/jobs/create/aglint';
+import type { Read } from '@/routers/jobs/job/read';
 
-export type JobHiringTeamForm = Pick<
-  Required<Form>,
-  'hiring_manager' | 'recruiter' | 'recruiting_coordinator' | 'sourcer'
->;
+export type Job = Read['output'];
+
+export type JobCreate = Omit<Aglint['input'], 'id'>;
 
 export type Form = Partial<{
-  [id in keyof Omit<JobCreate, 'jd_json' | 'description_hash'>]: {
+  [id in keyof JobCreate]: {
     value: JobCreate[id];
     required: boolean;
     placeholder?: string;
@@ -17,15 +17,9 @@ export type Form = Partial<{
   };
 }>;
 
+export type JobHiringTeamForm = Pick<
+  Required<Form>,
+  'hiring_manager' | 'recruiter' | 'recruiting_coordinator' | 'sourcer'
+>;
+
 export type JobDetailsForm = Required<Omit<Form, keyof JobHiringTeamForm>>;
-
-export type HiringTeamValidity = {
-  validity: boolean;
-  invalidFields: (keyof Pick<
-    JobHiringTeamForm,
-    'hiring_manager' | 'recruiter'
-  >)[];
-  message: string;
-};
-
-export type { Job };

@@ -2,6 +2,7 @@
 // pages/api/sendgridWebhook.js
 
 import axios from 'axios';
+//@ts-ignore
 import formidable from 'formidable';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
@@ -21,11 +22,11 @@ export default async function handler(
   const form = formidable({});
   try {
     const [fields] = await form.parse(req);
-    const candidate_email = getEmail(fields.from[0]);
-    const agent_email = getEmail(fields.to[0]);
+    const candidate_email = getEmail(fields.from ? fields.from[0] : '');
+    const agent_email = getEmail(fields.to ? fields.to[0] : '');
     console.log(agent_email);
-    const raw_email_body: string = fields.text[0];
-    const raw_headers = fields.headers[0];
+    const raw_email_body: string = fields['text'] ? fields.text[0] : '';
+    const raw_headers = fields.headers ? fields.headers[0] : '';
 
     const curr_email_body = EmailWebHook.parseEmailBody(raw_email_body);
     const curr_email_headers = EmailWebHook.parseMailHeaders(raw_headers);

@@ -1,8 +1,20 @@
 import React from 'react';
 
-import { SeoPro } from '@/components/Common/SeoPro';
+import { SeoPro } from '@/common/SeoPro';
 
-export default function SeoProSetting({ tab }) {
+export default function SeoProSetting({
+  tab,
+}: {
+  tab:
+    | 'company-info'
+    | 'workingHours'
+    | 'holidays'
+    | 'team'
+    | 'roles'
+    | 'emailTemplate'
+    | 'scheduling'
+    | 'schedulingReasons';
+}) {
   return (
     <>
       {tab === 'company-info' && (

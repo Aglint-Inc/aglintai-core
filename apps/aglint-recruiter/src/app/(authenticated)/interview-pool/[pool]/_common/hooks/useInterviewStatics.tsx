@@ -1,17 +1,12 @@
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
+import { type CandidatePipeline } from '@/routers/analytics/interview/candidate_pipeline';
+import type { InterviewStatistics } from '@/routers/analytics/interview/interview_statistics';
+import { type InterviewerPerformance } from '@/routers/analytics/interview/interviewer_performance';
+import type { ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 
 export function useInterviewStatistics(module_id: string) {
-  const { recruiter } = useAuthDetails();
-  const { data, isFetched } =
-    api.analytics.interview.interview_statistics.useQuery(
-      {
-        module_id,
-      },
-      {
-        enabled: !!recruiter.id,
-      },
-    );
+  const { data, isFetched } = useInterviewStatisticsProcedure({ module_id });
   return {
     data: {
       duration: data?.duration || 0,
@@ -25,6 +20,16 @@ export function useInterviewStatistics(module_id: string) {
     isFetched,
   };
 }
+
+const useInterviewStatisticsProcedure = (
+  input: InterviewStatistics['input'],
+): ProcedureQuery<InterviewStatistics> => {
+  const { recruiter } = useTenant();
+  return api.analytics.interview.interview_statistics.useQuery(input, {
+    enabled: !!recruiter.id,
+    staleTime: Infinity,
+  });
+};
 
 function getInterval(interval: {
   days: number;
@@ -40,31 +45,23 @@ function getInterval(interval: {
   return res;
 }
 
-export function useCandidatePipeline(module_id: string) {
-  const { recruiter } = useAuthDetails();
-  const { data, isFetched } =
-    api.analytics.interview.candidate_pipeline.useQuery(
-      {
-        module_id,
-      },
-      {
-        enabled: !!recruiter.id,
-      },
-    );
-  return { data, isFetched };
+export function useCandidatePipeline(
+  module_id: string,
+): ProcedureQuery<CandidatePipeline> {
+  const { recruiter } = useTenant();
+  return api.analytics.interview.candidate_pipeline.useQuery(
+    {
+      module_id,
+    },
+    {
+      enabled: !!recruiter?.id,
+      staleTime: Infinity,
+    },
+  );
 }
 
 export function useInterviewerPerformance(module_id: string) {
-  const { recruiter } = useAuthDetails();
-  const { data, isFetched } =
-    api.analytics.interview.interviewer_performance.useQuery(
-      {
-        module_id,
-      },
-      {
-        enabled: !!recruiter.id,
-      },
-    );
+  const { data, isFetched } = useInterviewerPerformanceProcedure({ module_id });
   return {
     data: {
       candidate_feedback_avg: data?.candidate_feedback_avg || 0,
@@ -76,3 +73,13 @@ export function useInterviewerPerformance(module_id: string) {
     isFetched,
   };
 }
+
+const useInterviewerPerformanceProcedure = (
+  input: InterviewerPerformance['input'],
+): ProcedureQuery<InterviewerPerformance> => {
+  const { recruiter } = useTenant();
+  return api.analytics.interview.interviewer_performance.useQuery(input, {
+    enabled: !!recruiter?.id,
+    staleTime: Infinity,
+  });
+};

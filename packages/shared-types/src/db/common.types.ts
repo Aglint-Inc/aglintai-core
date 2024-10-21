@@ -1,13 +1,12 @@
-import type { Database, Tables } from "./schema.types";
+import type { Database } from "./schema.types";
 import type { Custom, Type } from "./utils.types";
 
 export type CustomMembersMeta = {
-  [id in
-    | keyof Pick<
-        Tables<"public_jobs">,
-        "hiring_manager" | "recruiter" | "recruiting_coordinator" | "sourcer"
-      >
-    | "previous_interviewers"]: boolean;
+  recruiter: boolean;
+  hiring_manager: boolean;
+  recruiting_coordinator: boolean;
+  sourcer: boolean;
+  previous_interviewers: boolean;
 };
 
 export type CustomApplicationBadges = {
@@ -20,16 +19,25 @@ export type CustomApplicationBadges = {
   jobHopping: number;
 };
 
+export type CustomSchedulingReason = {
+  internal: {
+    rescheduling: string[];
+    cancellation: string[];
+    decline: string[];
+  };
+  candidate: { rescheduling: string[]; cancellation: string[] };
+};
+
 export type CustomJobParamters = Custom<
   Pick<
     Database["public"]["Tables"]["public_jobs"]["Row"],
-    "parameter_weights" | "jd_json" | "draft" | "posted_by"
+    "parameter_weights" | "jd_json" | "posted_by" | "draft_jd_json"
   >,
   {
     parameter_weights: CustomParameterWeights;
     jd_json: CustomJdJson;
-    draft: CustomDraft;
     posted_by: ATSIntegrations;
+    draft_jd_json: CustomJdJson;
   }
 >;
 
@@ -51,7 +59,7 @@ type CustomJdJson = {
     | "Executive-level";
   rolesResponsibilities: jsonItemType[];
   skills: jsonItemType[];
-  educations: jsonItemType[]; // Adjust this line based on the structure of the "education" property
+  educations: jsonItemType[];
 };
 
 type jsonItemType = {

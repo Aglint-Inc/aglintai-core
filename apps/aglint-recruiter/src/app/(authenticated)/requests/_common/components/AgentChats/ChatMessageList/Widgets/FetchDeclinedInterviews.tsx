@@ -11,26 +11,34 @@ import { type ChatType } from '../hooks/fetch';
 
 function FetchDeclinedInterviews({ chat }: { chat: ChatType }) {
   const meta = chat.metadata;
-  const selPayload = (meta?.findLast(
-    (ele) => ele.function_name === 'fetch_candidate_declined_interviews',
-  )?.payload ?? []) as any;
+  const selPayload =
+    meta?.findLast(
+      (ele) => ele.function_name === 'fetch_candidate_declined_interviews',
+    )?.payload ?? [];
 
-  const uiSchedules: ScheduleListProps[] = selPayload?.map((session) => {
-    return {
-      title: session.interview_session.name,
-      type: getScheduleType(session.interview_session.schedule_type),
-      date: dayjsLocal(
-        session.interview_session.interview_meeting.start_time,
-      ).format('DD MMM YYYY'),
-      link:
-        ROUTES['/interviews/view']() +
-        `?meeting_id=${session.interview_session.interview_meeting.id}&tab=candidate_details`,
-      time: formatTimeWithTimeZone({
-        start_time: session.interview_session.interview_meeting.start_time,
-        end_time: session.interview_session.interview_meeting.end_time,
-      }),
-    };
-  });
+  const uiSchedules: ScheduleListProps[] = selPayload
+    ?.map((session) => {
+      if (
+        !session.interview_session ||
+        !session.interview_session?.interview_meeting?.start_time
+      )
+        return;
+      return {
+        title: session.interview_session.name,
+        type: getScheduleType(session.interview_session.schedule_type),
+        date: dayjsLocal(
+          session.interview_session.interview_meeting.start_time,
+        ).format('DD MMM YYYY'),
+        link:
+          ROUTES['/interviews/view']() +
+          `?meeting_id=${session.interview_session.interview_meeting.id}&tab=candidate_details`,
+        time: formatTimeWithTimeZone({
+          start_time: session.interview_session.interview_meeting.start_time,
+          end_time: session.interview_session.interview_meeting.end_time,
+        }),
+      };
+    })
+    .filter((ele) => ele !== undefined);
 
   return (
     <div className='w-full space-y-2'>

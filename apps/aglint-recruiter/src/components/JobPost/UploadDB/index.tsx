@@ -7,12 +7,13 @@ import { Button } from '@components/ui/button';
 import { Checkbox } from '@components/ui/checkbox';
 import { Input } from '@components/ui/input';
 import axios from 'axios';
-import { CloudUpload, Loader2, Trash } from 'lucide-react';
+import { CloudUpload, Trash } from 'lucide-react';
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import { errorMessages } from 'src/app/_common/utils/errorMessages';
 import { v4 as uuidv4 } from 'uuid';
 
+import { Loader } from '@/common/Loader';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type PublicJobAPI } from '@/pages/api/jobpost/read';
 import { supabase } from '@/utils/supabase/client';
@@ -104,7 +105,7 @@ function UploadDB({
     }
   }, [router.queryParams.college_name]);
 
-  const uploadFile = (file) => {
+  const uploadFile = (file: File) => {
     setFile(file);
   };
 
@@ -215,11 +216,11 @@ function UploadDB({
   }, [profile]);
 
   return (
-    <div className='rounded-lg bg-neutral-100 p-4 sm:p-8'>
+    <div className='rounded-lgbg-muted p-4 sm:p-8'>
       <div className='mb-6 flex items-center justify-between'>
         <h2 className='text-2xl font-bold'>Apply for this job.</h2>
         <p className='text-sm'>
-          <span className='text-red-500'>*</span> Required
+          <span className='text-destructive'>*</span> Required
         </p>
       </div>
       <div className='grid grid-cols-1 gap-6 sm:grid-cols-2'>
@@ -298,7 +299,9 @@ function UploadDB({
               </Button>
             )}
             {error.file.error && (
-              <p className='ml-1 mt-1 text-sm text-red-500'>{error.file.msg}</p>
+              <p className='ml-1 mt-1 text-sm text-destructive'>
+                {error.file.msg}
+              </p>
             )}
           </div>
         </div>
@@ -309,11 +312,11 @@ function UploadDB({
               onCheckedChange={() => setChecked(!checked)}
             />
             <div className='flex flex-wrap items-center space-x-1'>
-              <p className={`text-sm ${!checked ? 'text-red-500' : ''}`}>
+              <p className={`text-sm ${!checked ? 'text-destructive' : ''}`}>
                 By applying, you are agreeing to the
               </p>
               <button
-                className={`text-sm underline ${!checked ? 'text-red-500' : ''}`}
+                className={`text-sm underline ${!checked ? 'text-destructive' : ''}`}
                 onClick={() =>
                   window.open('https://www.aglinthq.com/terms', '_blank')
                 }
@@ -330,9 +333,7 @@ function UploadDB({
               if (!isDisabled) submitHandler();
             }}
           >
-            {isDisabled ? (
-              <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-            ) : null}
+            {isDisabled ? <Loader /> : null}
             Apply Now
           </Button>
         </div>

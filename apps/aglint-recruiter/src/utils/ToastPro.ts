@@ -14,28 +14,28 @@ const toastOptions: ToastOptions = {
 };
 class Toast {
   static asyncToast: { [key: string]: Toaster } = {};
-  error(message) {
+  error(message: string) {
     createToast(message, {
       ...toastOptions,
       type: 'error',
     });
   }
 
-  success(message) {
+  success(message: string) {
     createToast(message, {
       ...toastOptions,
       type: 'success',
     });
   }
 
-  warning(message) {
+  warning(message: string) {
     createToast(message, {
       ...toastOptions,
       type: 'warning',
     });
   }
 
-  action(message, onUndo) {
+  action(message: string, onUndo: () => void) {
     createToast(message, {
       ...toastOptions,
       type: 'dark',
@@ -51,7 +51,7 @@ class Toast {
     });
   }
 
-  message(message) {
+  message(message: string) {
     createToast(message, toastOptions);
   }
 
@@ -127,7 +127,7 @@ class Toast {
         this.promise(debounce_id, fun(...x), messages);
       }, delay);
       return (...x: Parameters<T>) => {
-        if (!Toast.asyncToast[debounce_id]) {
+        if (!Toast.asyncToast[debounce_id] && messages?.onPending) {
           Toast.asyncToast[debounce_id] = createToast(messages.onPending, {
             ...toastOptions,
             timeout: undefined,

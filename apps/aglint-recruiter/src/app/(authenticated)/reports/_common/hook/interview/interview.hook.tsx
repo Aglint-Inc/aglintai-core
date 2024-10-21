@@ -7,28 +7,32 @@ import {
   startOfWeek,
 } from 'date-fns';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { api, TRPC_CLIENT_CONTEXT } from '@/trpc/client';
+import { useTenant } from '@/company/hooks';
+import type { InterviewCount } from '@/routers/analytics/interview_count';
+import { type InterviewDecline } from '@/routers/analytics/interview_decline';
+import type { ProcedureQuery } from '@/server/api/trpc';
+import { api } from '@/trpc/client';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { useAnalyticsContext } from '../../context/AnalyticsContext/AnalyticsContextProvider';
 
+const useInterviewCountProcedure = (
+  input: InterviewCount['input'],
+): ProcedureQuery<InterviewCount> =>
+  api.analytics.interview_count.useQuery(input, {
+    enabled: !!input.recruiter_id,
+  });
+
 export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
-  const { data, isFetching, isError } = api.analytics.interview_count.useQuery(
-    {
-      recruiter_id: recruiter.id,
-      job_id: filters.job,
-      location_id: filters.location,
-      department_id: filters.department,
-      data_range: filters.dateRange,
-    },
-    {
-      enabled: !!recruiter.id,
-      trpc: TRPC_CLIENT_CONTEXT,
-    },
-  );
+  const { data, isFetching, isError } = useInterviewCountProcedure({
+    recruiter_id: recruiter.id,
+    job_id: filters.job,
+    location_id: filters.location,
+    department_id: filters.department,
+    data_range: filters.dateRange,
+  });
 
   const groupedData = data
     ? groupByDate(data, unit, filters.dateRange, {
@@ -44,14 +48,15 @@ export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
     Object.entries(groupedData).reduce(
       (acc, curr) => {
         Object.entries(curr[1]).forEach(([key, value]) => {
-          acc[key] = (acc[key] || 0) + value;
+          const tempKey = key as unknown as keyof typeof acc;
+          acc[tempKey] = (acc[tempKey] || 0) + value;
         });
         return acc;
       },
 
       {} as {
         // eslint-disable-next-line no-unused-vars
-        [key in (typeof data)[number]['status']]?: number;
+        [key in NonNullable<typeof data>[number]['status']]?: number;
       },
     ) || {},
   ).map(([name, value]) => ({
@@ -70,23 +75,24 @@ export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
     isError,
   };
 }
+
+const useInterviewDecline = (
+  input: InterviewDecline['input'],
+): ProcedureQuery<InterviewDecline> =>
+  api.analytics.interview_decline.useQuery(input, {
+    enabled: !!input.recruiter_id,
+  });
+
 export function useDeclineCount() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
-  const { data, isFetching, isError } =
-    api.analytics.interview_decline.useQuery(
-      {
-        recruiter_id: recruiter.id,
-        job_id: filters.job,
-        location_id: filters.location,
-        department_id: filters.department,
-        data_range: filters.dateRange,
-      },
-      {
-        enabled: !!recruiter.id,
-        trpc: TRPC_CLIENT_CONTEXT,
-      },
-    );
+  const { data, isFetching, isError } = useInterviewDecline({
+    recruiter_id: recruiter.id,
+    job_id: filters.job,
+    location_id: filters.location,
+    department_id: filters.department,
+    data_range: filters.dateRange,
+  });
   const groupedData = data
     ? //@ts-ignore
       groupByDate(data, 'day', filters.dateRange, { cancelled: 0 })
@@ -140,14 +146,17 @@ function groupByDate<T extends { [key: string]: number }>(
       const createdAtDate = new Date(curr.created_at || '');
       dateKey = getGroupKey(dateKey, createdAtDate);
       acc[dateKey] = (acc[dateKey] || { ...baseData }) as (typeof acc)[string];
-      acc[dateKey][curr.status] = acc[dateKey][curr.status] + 1;
+
+      if (curr.status) {
+        acc[dateKey][curr.status] = (acc[dateKey][curr.status] || 0) + 1;
+      }
       return acc;
     },
     {} as Record<
       string,
       {
         // eslint-disable-next-line no-unused-vars
-        [key in (typeof data)[number]['status']]?: number;
+        [key in NonNullable<(typeof data)[number]['status']>]?: number;
       }
     >,
   );

@@ -1,23 +1,17 @@
+import { EmptyState } from '@components/empty-state';
 import { Card, CardContent } from '@components/ui/card';
 import { User } from 'lucide-react';
 import { useState } from 'react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import MoveToQualifiedDialog from '@/interview-pool/details/dialogs/MoveToQualified';
-import { api } from '@/trpc/client';
 
-import AddMemberDialog from '../../../dialogs/AddMemberDialog';
-import DeleteMemberDialog from '../../../dialogs/DeleteMemberDialog';
-import PauseDialog from '../../../dialogs/PauseDialog';
-import ResumeMemberDialog from '../../../dialogs/ResumeMemberDialog';
 import { useModuleAndUsers } from '../../../hooks/useModuleAndUsers';
 import { useProgressModuleUsers } from '../../../hooks/useProgressModuleUsers';
 import {
   setIsAddMemberDialogOpen,
   setTrainingStatus,
-  useModulesStore,
 } from '../../../stores/store';
 import EnableDisable from './EnableDisable';
 import IndividualRow from './IndividualRow';
@@ -44,22 +38,9 @@ function Training() {
     actions: '',
   };
 
-  const utils = api.useUtils();
-  const selUser = useModulesStore((state) => state.selUser);
-
   return (
-    <>
-      <DeleteMemberDialog />
-      <AddMemberDialog />
-      <PauseDialog />
-      <ResumeMemberDialog />
-      <MoveToQualifiedDialog
-        refetch={async () => {
-          await utils.interview_pool.module_and_users.invalidate({
-            module_id: selUser.module_id,
-          });
-        }}
-      />
+    <div className='flex-col space-y-2'>
+      <MoveToQualifiedDialog />
       <EnableDisable />
 
       {editModule?.settings?.require_training && (
@@ -91,7 +72,7 @@ function Training() {
                         key={key}
                         className='p-4 text-left text-sm font-medium text-gray-700'
                       >
-                        {headers[key]}
+                        {headers[key as keyof typeof headers]}
                       </th>
                     ))}
                   </tr>
@@ -100,7 +81,11 @@ function Training() {
                   {trainingUsers.length === 0 && (
                     <tr>
                       <td colSpan={5} className='p-4'>
-                        <GlobalEmpty iconSlot={<User strokeWidth={1.5} className='mb-2 h-10 w-10 text-muted-foreground'/>} text={'No trainee found'} height='250px'/>
+                        <EmptyState
+                          icon={User}
+                          header={'No trainee found'}
+                          description='Create a new interview pool to get started.'
+                        />
                       </td>
                     </tr>
                   )}
@@ -125,7 +110,7 @@ function Training() {
           </Card>
         </>
       )}
-    </>
+    </div>
   );
 }
 

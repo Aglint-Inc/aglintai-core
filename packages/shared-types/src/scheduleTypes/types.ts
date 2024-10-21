@@ -3,7 +3,7 @@
  *@author Dileep BC
  */
 
-import { Dayjs } from 'dayjs';
+import { type Dayjs } from 'dayjs';
 
 import { CalendarEvent, ScheduleAuthType } from './calEvent.types';
 import {
@@ -13,8 +13,9 @@ import {
   InterviewModuleType,
   InterviewMeetingTypeDb,
 } from '../data.types';
-import { schedulingSettingType } from './scheduleSetting';
+import { SchedulingSettingType } from './scheduleSetting';
 import { CalConflictType, ConflictReason } from './apiResp.types';
+import { CustomSchedulingSettingsUser } from '../db/tables/recruiter_user.types';
 
 export type PauseJson = {
   start_date: string;
@@ -22,33 +23,27 @@ export type PauseJson = {
   isManual: boolean;
 };
 
-export type SessionInterviewerType = Pick<
-  RecruiterUserType,
-  | 'first_name'
-  | 'last_name'
-  | 'email'
-  | 'profile_image'
-  | 'schedule_auth'
-  | 'scheduling_settings'
-  | 'user_id'
-  | 'position'
-> &
-  Pick<
-    InterviewerSessionRelation,
-    | 'training_type'
-    | 'session_id'
-    | 'interviewer_type'
-    | 'interview_module_relation_id'
-  > & {
-    pause_json: PauseJson;
-  } & {
-    int_tz: string;
-  };
+export type SessionInterviewerType = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  profile_image: string | null;
+  schedule_auth: ScheduleAuthType | null;
+  scheduling_settings: CustomSchedulingSettingsUser;
+  user_id: string;
+  position: string;
+  training_type: InterviewerSessionRelation['training_type'];
+  session_id: string;
+  interviewer_type: InterviewerSessionRelation['interviewer_type'];
+  interview_module_relation_id: string;
+  pause_json: PauseJson | null;
+  int_tz: string;
+};
 
 export type InterviewSessionApiType = {
   session_id: InterviewSession['id'];
-  meeting_id: InterviewSession['meeting_id'];
-  module_id: InterviewSession['module_id'];
+  meeting_id: NonNullable<InterviewSession['meeting_id']>;
+  module_id: InterviewSession['module_id'] | null;
   session_name: InterviewSession['name'];
   duration: InterviewSession['session_duration'];
   location: InterviewSession['location'];
@@ -56,10 +51,10 @@ export type InterviewSessionApiType = {
   session_type: InterviewSession['session_type'];
   qualifiedIntervs: SessionInterviewerType[];
   trainingIntervs: SessionInterviewerType[];
-  break_duration: InterviewSession['break_duration'];
+  break_duration: NonNullable<InterviewSession['break_duration']>;
   session_order: InterviewSession['session_order'];
   interviewer_cnt: InterviewSession['interviewer_cnt'];
-  module_name: InterviewModuleType['name'];
+  module_name: InterviewModuleType['name'] | null;
 };
 
 export type SessionsCombType = {
@@ -98,7 +93,7 @@ export type InterviewerMeetingScheduled = {
 };
 export type MinCalEventDetailTypes = Pick<
   CalendarEvent,
-  'id' | 'start' | 'end' | 'organizer' | 'attendees' | 'summary'
+  'id' | 'start' | 'end' | 'summary'
 > & {
   cal_type: CalConflictType;
 };
@@ -107,20 +102,18 @@ export type InterDetailsType = {
   tokens: ScheduleAuthType | null;
   interviewer_id: string;
   email: string;
-  all_events: CalendarEvent[];
+  all_events: (Pick<CalendarEvent, 'end' | 'id' | 'start' | 'summary'> & {
+    conferenceData?: CalendarEvent['conferenceData'];
+    attendees?: CalendarEvent['attendees'];
+  })[];
   cal_date_events: {
     [cal_date_str: string]: MinCalEventDetailTypes[];
   };
-  freeTimes: InterDayFreeTime;
   work_hours: InterDayWorkHr;
   isCalenderConnected: boolean;
-  int_schedule_setting: schedulingSettingType;
+  int_schedule_setting: CustomSchedulingSettingsUser;
   day_off: InterDayHolidayOff;
   holiday: InterDayHolidayOff;
-};
-
-export type InterDayFreeTime = {
-  [curr_date: string]: TimeDurationType[];
 };
 
 export type InterDayWorkHr = {
@@ -166,7 +159,7 @@ export type AllSessionIntDetails = {
 export type SessionIntDetails = {
   session_id: InterviewSession['id'];
   meeting_id: InterviewSession['meeting_id'];
-  module_id: InterviewSession['module_id'];
+  module_id: InterviewSession['module_id'] | null;
   session_name: InterviewSession['name'];
   duration: InterviewSession['session_duration'];
   location: InterviewSession['location'];
@@ -175,7 +168,7 @@ export type SessionIntDetails = {
   break_duration: InterviewSession['break_duration'];
   session_order: InterviewSession['session_order'];
   interviewer_cnt: InterviewSession['interviewer_cnt'];
-  module_name: InterviewModuleType['name'];
+  module_name: InterviewModuleType['name'] | null;
   interviewers: {
     [user_id: string]: SessionInterviewerType;
   };

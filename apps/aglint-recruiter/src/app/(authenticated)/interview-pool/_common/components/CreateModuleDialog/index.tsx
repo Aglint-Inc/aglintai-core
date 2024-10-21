@@ -1,46 +1,45 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { Button } from '@components/ui/button';
-import { Checkbox as ShadcnCheckbox } from '@components/ui/checkbox';
+import { Checkbox } from '@components/ui/checkbox';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog';
 import { Label } from '@components/ui/label';
-import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
+import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
+import { UIButton } from '@/components/Common/UIButton';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
 import UITextField from '@/components/Common/UITextField';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import {
   setIsCreateDialogOpen,
   setSelectedUsers,
   useModulesStore,
 } from '@/interview-pool/details/stores/store';
-import { createModule } from '@/interview-pool/utils/createModule';
-import { useAllDepartments } from '@/queries/departments';
-import ROUTES from '@/utils/routing/routes';
+import { useCreateInterviewPool } from '@/interview-pool/hooks/useCreateInterviewPool';
 import { capitalize } from '@/utils/text/textUtils';
 import toast from '@/utils/toast';
 
 function CreateModuleDialog() {
-  const router = useRouterPro();
-  const { recruiter_id } = useAuthDetails();
   const { isCreateDialogOpen } = useModulesStore();
-  const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
   const [objective, setObjective] = useState('');
-  const [selDepartment, setSelDepartment] =
-    useState<DatabaseTable['departments']>(null);
+  const [selDepartment, setSelDepartment] = useState<
+    DatabaseTable['departments'] | null
+  >(null);
   const [isTraining, setIsTraining] = useState(false);
   const [nameError, setNameError] = useState(false);
   const [departmentError, setDepartmentError] = useState(false);
-
   const { data: departments } = useAllDepartments();
+  const searchParams = useSearchParams();
+  const { replace } = useRouterPro();
 
   const validate = () => {
     let error = true;
@@ -56,29 +55,37 @@ function CreateModuleDialog() {
     return error;
   };
 
+  const { isPending, mutateAsync } = useCreateInterviewPool();
+
+  useEffect(() => {
+    const isEditOpen = searchParams?.get('add_pool') == 'true' ? true : false;
+    if (isEditOpen) {
+      setIsCreateDialogOpen(true);
+    }
+  }, [searchParams]);
+
+  const handleRemoveEditParam = () => {
+    const params = new URLSearchParams(searchParams!);
+    params.delete('add_pool');
+    replace(`?${params.toString()}`);
+  };
+
   const createModuleHandler = async () => {
-    if (!validate() && !loading) {
+    if (!validate() && !isPending) {
       try {
-        setLoading(true);
-        const res = await createModule({
-          name: name,
-          description: objective,
-          isTraining: isTraining,
-          recruiter_id,
-          department_id: selDepartment.id,
-        });
-        await router.push(
-          ROUTES['/interview-pool/[pool]']({
-            type_id: res.id,
-          }),
-        );
-        setIsCreateDialogOpen(null);
+        if (selDepartment?.id) {
+          await mutateAsync({
+            name: name,
+            description: objective,
+            isTraining: isTraining,
+            department_id: selDepartment?.id,
+          });
+        }
+        setIsCreateDialogOpen(false);
         setSelectedUsers([]);
       } catch (e) {
-        toast.error(e.message);
-        setIsCreateDialogOpen(null);
-      } finally {
-        setLoading(true);
+        toast.error((e as Error).message);
+        setIsCreateDialogOpen(false);
       }
     }
   };
@@ -86,19 +93,23 @@ function CreateModuleDialog() {
   return (
     <Dialog
       open={isCreateDialogOpen}
-      onOpenChange={(open) => setIsCreateDialogOpen(open)}
+      onOpenChange={(open) => {
+        setIsCreateDialogOpen(open);
+        handleRemoveEditParam();
+      }}
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create Interview Type</DialogTitle>
+          <DialogTitle>Create Interview Pool</DialogTitle>
+          <DialogDescription>
+            Create a new interview pool by specifying the name, department, and
+            objective, and indicate if training is required.
+          </DialogDescription>
         </DialogHeader>
         <div className='space-y-4'>
-          <p className='mb-2 text-sm text-gray-600'>
-            Create a new interview type by specifying the name, department, and
-            objective, and indicate if training is required.
-          </p>
           <div className='w-full space-y-4'>
             <UITextField
+              label='Name'
               id='name'
               placeholder='Ex: Initial Screening'
               value={name}
@@ -121,12 +132,12 @@ function CreateModuleDialog() {
               label='Department'
               value={selDepartment?.id.toString() || ''}
               onValueChange={(value) => {
-                const department = departments.find(
+                const department = (departments || []).find(
                   (d) => d.id.toString() === value,
                 );
                 setSelDepartment(department || null);
               }}
-              menuOptions={departments.map((department) => ({
+              menuOptions={(departments || []).map((department) => ({
                 name: capitalize(department.name),
                 value: department.id.toString(),
               }))}
@@ -150,8 +161,9 @@ function CreateModuleDialog() {
             />
 
             {/* Checkbox */}
-            <div className='flex items-center space-x-2'>
-              <ShadcnCheckbox
+            <div className='flex items-start space-x-2'>
+              <Checkbox
+                className='mt-1'
                 id='training'
                 checked={isTraining}
                 onCheckedChange={(checked) => {
@@ -160,24 +172,27 @@ function CreateModuleDialog() {
               />
               <Label htmlFor='training' className='text-sm font-normal'>
                 Requires Training
+                <p className='text-sm text-muted-foreground'>
+                  Select if the interviewer requires training before conducting
+                  this interview
+                </p>
               </Label>
             </div>
-            <p className='ml-6 text-sm text-gray-500'>
-              Select if the interviewer requires training before conducting this
-              interview
-            </p>
           </div>
         </div>
         <DialogFooter>
-          <Button
+          <UIButton
             variant='outline'
             onClick={() => {
               setIsCreateDialogOpen(false);
+              handleRemoveEditParam();
             }}
           >
             Cancel
-          </Button>
-          <Button onClick={createModuleHandler}>Create</Button>
+          </UIButton>
+          <UIButton isLoading={isPending} onClick={createModuleHandler}>
+            Create
+          </UIButton>
         </DialogFooter>
       </DialogContent>
     </Dialog>

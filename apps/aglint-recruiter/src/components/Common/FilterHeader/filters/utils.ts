@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { type nestedType } from './sharedTypes';
 
 type nestedOptionMapperType = nestedType<
@@ -36,7 +37,7 @@ export function nestedOptionMapper<
   ][] = [];
 
   function mapOption({
-    header = null,
+    header = undefined,
     optionList,
     selectedOptions,
     isArray = false,
@@ -216,9 +217,11 @@ export function nestedObjectToArray(
           id = item.id;
           // label = item.label;
         }
-        const status = (selectedOptions as string[]).includes(id)
-          ? 'active'
-          : 'inactive';
+        let temp_options: string[] = [...selectedOptions];
+        if (typeof temp_options[0] !== 'string') {
+          temp_options = temp_options.map((item) => item.id);
+        }
+        const status = temp_options.includes(id) ? 'active' : 'inactive';
         return {
           id,
           status,
@@ -267,7 +270,6 @@ export function nestedObjectToArray(
       // label: header,
     };
   }
-
   mapOption({
     optionList: options,
     index: 0,

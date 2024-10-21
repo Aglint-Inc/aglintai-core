@@ -13,6 +13,7 @@ import { format } from 'date-fns';
 import { CalendarIcon, Edit2, FileBadge2 } from 'lucide-react';
 import React, { useEffect } from 'react';
 import type { DateRange } from 'react-day-picker';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
 import IconSessionType from '@/components/Common/Icons/IconSessionType';
 import MemberCard from '@/components/Common/MemberCard';
@@ -20,7 +21,6 @@ import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
 import UITextField from '@/components/Common/UITextField';
 import UpdateMembers from '@/components/Common/UpdateMembers';
-import { useMemberList } from '@/hooks/useMemberList';
 
 import { useApplicationMeta } from '../../hooks/useApplicationMeta';
 import { useScheduleRequest } from '../../hooks/useScheduleRequest';
@@ -30,7 +30,6 @@ import {
   setNote,
   setRequestType,
   setSelectedAssignee,
-  setSelectedSessionIds,
   useApplicationDetailStore,
 } from '../../stores/applicationDetail';
 import { ScheduleInterviewPop } from '../InterviewTab/ScheduleInterviewPop';
@@ -43,7 +42,6 @@ function DialogSchedule() {
     sessionHasRequest,
     selectedStage,
     sessions,
-    setIsSaving,
     handleCreateRequest,
   } = useScheduleRequest();
   const { data: members } = useMemberList();
@@ -51,18 +49,11 @@ function DialogSchedule() {
 
   const candidate = meta;
 
-  const onClickSubmit = async () => {
-    setIsSaving(true);
-    await handleCreateRequest();
-    setIsSaving(false);
-    setSelectedSessionIds([]);
-    setIsScheduleOpen(false);
-  };
-
   const onClose = () => {
     if (isSaving) return;
     setIsScheduleOpen(false);
   };
+  const isRequestExists = sessionHasRequest.length > 0;
 
   return (
     <>
@@ -71,32 +62,34 @@ function DialogSchedule() {
         onClose={onClose}
         title='Schedule Interviews'
         slotButtons={
-          <>
-            <UIButton
-              variant='secondary'
-              size='md'
-              color='neutral'
-              onClick={() => {
-                setIsScheduleOpen(false);
-              }}
-            >
-              Cancel
-            </UIButton>
-            <UIButton
-              size='md'
-              isLoading={isSaving}
-              onClick={async () => {
-                if (isSaving) return;
-                onClickSubmit();
-              }}
-            >
-              Proceed
-            </UIButton>
-          </>
+          !isRequestExists && (
+            <>
+              <UIButton
+                variant='secondary'
+                size='md'
+                color='neutral'
+                onClick={() => {
+                  setIsScheduleOpen(false);
+                }}
+              >
+                Cancel
+              </UIButton>
+              <UIButton
+                size='md'
+                isLoading={isSaving}
+                onClick={async () => {
+                  if (isSaving) return;
+                  await handleCreateRequest();
+                }}
+              >
+                Proceed
+              </UIButton>
+            </>
+          )
         }
       >
         <>
-          {sessionHasRequest.length > 0 && (
+          {isRequestExists ? (
             <Alert variant='warning'>
               <AlertTitle>
                 {`${sessionHasRequest
@@ -108,73 +101,76 @@ function DialogSchedule() {
                 creating a new request.
               </AlertDescription>
             </Alert>
-          )}
-
-          <ScheduleInterviewPop
-            textName={candidate?.name ?? ''}
-            slotStagePill={
-              <>
-                {sessions.map((session) => {
-                  return (
-                    <UIButton
-                      key={session.interview_session.id}
-                      variant='secondary'
-                      leftIcon={
-                        <IconSessionType
-                          type={session.interview_session.session_type}
-                        />
-                      }
-                    >
-                      {session.interview_session.name}
-                    </UIButton>
-                  );
-                })}
-              </>
-            }
-            slotNotes={
-              <UITextField
-                value={note || ''}
-                onChange={(e) => {
-                  setNote(e.target.value);
-                }}
-                placeholder='Add note'
-              />
-            }
-            slotAssignedInput={
-              <div className='flex items-center justify-between pr-2'>
-                {selectedAssignee && (
-                  <MemberCard
-                    selectedMember={{
-                      first_name: selectedAssignee?.first_name,
-                      last_name: selectedAssignee?.last_name,
-                      profile_image: selectedAssignee?.profile_image,
-                      role: selectedAssignee?.role,
-                    }}
-                  />
-                )}
-                <UpdateMembers
-                  handleChange={(assignee) => {
-                    setSelectedAssignee(assignee);
+          ) : (
+            <ScheduleInterviewPop
+              textName={candidate?.name ?? ''}
+              slotStagePill={
+                <>
+                  {sessions.map((session) => {
+                    return (
+                      <UIButton
+                        key={session.interview_session.id}
+                        variant='secondary'
+                        leftIcon={
+                          <IconSessionType
+                            type={session.interview_session.session_type}
+                          />
+                        }
+                      >
+                        {session.interview_session.name}
+                      </UIButton>
+                    );
+                  })}
+                </>
+              }
+              slotNotes={
+                <UITextField
+                  value={note || ''}
+                  onChange={(e) => {
+                    setNote(e.target.value);
                   }}
-                  updateButton={
-                    <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
-                  }
-                  members={members || []}
+                  placeholder='Add note'
                 />
-              </div>
-            }
-            slotRequestOption={
-              <RequestOption
-                requestType={requestType}
-                setRequestType={setRequestType}
-              />
-            }
-            isRequestTypeVisible={true}
-            textSelectedSchedule={`Selected Schedules from stage ${selectedStage?.interview_plan.name} `}
-            slotPickDateInput={
-              <RangePicker dateRange={dateRange} setDateRange={setDateRange} />
-            }
-          />
+              }
+              slotAssignedInput={
+                <div className='flex items-center justify-between pr-2'>
+                  {selectedAssignee && (
+                    <MemberCard
+                      selectedMember={{
+                        first_name: selectedAssignee?.first_name,
+                        last_name: selectedAssignee?.last_name,
+                        profile_image: selectedAssignee?.profile_image,
+                        role: selectedAssignee?.role,
+                      }}
+                    />
+                  )}
+                  <UpdateMembers
+                    handleChange={(assignee) => {
+                      setSelectedAssignee(assignee);
+                    }}
+                    updateButton={
+                      <Edit2 className='h-4 w-4 cursor-pointer text-gray-400' />
+                    }
+                    members={members || []}
+                  />
+                </div>
+              }
+              slotRequestOption={
+                <RequestOption
+                  requestType={requestType}
+                  setRequestType={setRequestType}
+                />
+              }
+              isRequestTypeVisible={true}
+              textSelectedSchedule={`Selected Schedules from stage ${selectedStage?.interview_plan.name} `}
+              slotPickDateInput={
+                <RangePicker
+                  dateRange={dateRange}
+                  setDateRange={setDateRange}
+                />
+              }
+            />
+          )}
         </>
       </UIDialog>
     </>
@@ -248,9 +244,7 @@ export const RequestOption = ({
   setRequestType,
 }: {
   requestType: DatabaseTable['request']['priority'];
-  setRequestType: React.Dispatch<
-    React.SetStateAction<DatabaseTable['request']['priority']>
-  >;
+  setRequestType: (_: DatabaseTable['request']['priority']) => void;
 }) => {
   return (
     <div className='flex w-full flex-row space-x-2'>

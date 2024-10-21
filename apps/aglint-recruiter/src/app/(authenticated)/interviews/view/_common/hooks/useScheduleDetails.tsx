@@ -1,19 +1,20 @@
 import { useRouterPro } from '@/hooks/useRouterPro';
+import type { ScheduleDetails } from '@/routers/scheduling/details';
+import type { ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 
 export const useScheduleDetails = () => {
-  const utils = api.useUtils();
+  const query = useScheduleDetailsProcedure();
+
+  return { ...query, data: query.data! };
+};
+
+const useScheduleDetailsProcedure = (): ProcedureQuery<ScheduleDetails> => {
   const router = useRouterPro();
   const meeting_id = router.queryParams.meeting_id as string;
-  const { data, ...query } = api.scheduling.details.useQuery({
+  return api.scheduling.details.useQuery({
     meeting_id,
   });
-  const refetch = () => {
-    utils.scheduling.details.invalidate({
-      meeting_id,
-    });
-  };
-  return { data: data!, ...query, refetch };
 };
 
 export type ScheduleDetailsType = Awaited<

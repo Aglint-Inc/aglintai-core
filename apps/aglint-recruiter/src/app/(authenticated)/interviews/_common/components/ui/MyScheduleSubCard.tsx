@@ -1,6 +1,5 @@
-import { Briefcase, ChevronDown, MapPin } from 'lucide-react';
-
-import UITypography from '@/components/Common/UITypography';
+import Typography from '@components/typography';
+import { BriefcaseBusiness, ChevronDown, MapPin } from 'lucide-react';
 
 type MeetingSlotProps = {
   slotStatus: string | React.ReactNode;
@@ -21,11 +20,12 @@ type MeetingSlotProps = {
   bgColorProps?: React.CSSProperties;
   textJob?: string | React.ReactNode;
   slotMembersList?: React.ReactNode;
-  onClickDropdownIocn?: any;
+  onClickDropdownIcon?: any;
   isMembersListVisible?: boolean;
   isDropdownIconVisible?: boolean;
   slotAvatarWithName?: React.ReactNode;
   isAvatarWithNameVisible?: boolean;
+  isSmall?:boolean;
 };
 
 export function MyScheduleSubCard({
@@ -47,24 +47,26 @@ export function MyScheduleSubCard({
   // bgColorProps,
   textJob,
   slotMembersList,
-  onClickDropdownIocn,
+  onClickDropdownIcon,
   isMembersListVisible,
   isDropdownIconVisible,
   slotAvatarWithName,
   isAvatarWithNameVisible,
+  isSmall,
 }: MeetingSlotProps) {
   return (
-    <div className='relative h-full w-full rounded-lg'>
+    
+    <div className='relative w-full'>
       {/* style={bgColorProps} */}
-      <div className='flex h-full w-full flex-col items-stretch justify-start rounded-lg border-[1px] bg-white p-4'>
+      <div className='flex h-full w-full flex-col items-stretch justify-start rounded-lg border-[1px] bg-white hover:bg-gray-50 duration-200 p-4'>
         <div className='z-1 relative flex items-start justify-between gap-2'>
-          <div className='flex items-start justify-start gap-5'>
-            <div className='flex min-w-[148px] flex-col gap-2'>
+          <div className={`flex ${isSmall ? 'flex-col items-start gap-2' : 'flex-row  gap-6'} items-start justify-start`}>
+            <div className={`flex ${isSmall ? 'flex-row items-center' : 'flex-col items-start'}   min-w-[148px]  gap-2`}>
               {isTimeVisible && (
                 <div>
-                  <UITypography variant='p' type='small'>
+                  <Typography variant='p' type='small'>
                     {textTime}
-                  </UITypography>
+                  </Typography>
                 </div>
               )}
               <div>{slotStatus}</div>
@@ -86,9 +88,9 @@ export function MyScheduleSubCard({
                     {/* Add your SVG or icon here */}
                   </div>
                 )}
-                <UITypography variant='p' type='small'>
+                <Typography variant='p' type='small' fontBold='normal'>
                   {textMeetingTitle}
-                </UITypography>
+                </Typography>
               </div>
               {isPhoneCallVisible && (
                 <div className='flex items-center gap-1'>
@@ -102,9 +104,9 @@ export function MyScheduleSubCard({
                 {isMeetingPlatformVisible && (
                   <div className='flex items-center gap-1'>
                     <div>{slotMeetingIcon}</div>
-                    <UITypography variant='p' type='small'>
+                    <Typography variant='p' type='small'>
                       {textMeetingPlatform}
-                    </UITypography>
+                    </Typography>
                   </div>
                 )}
                 {isDurationVisible && (
@@ -112,9 +114,9 @@ export function MyScheduleSubCard({
                     <div className='flex items-center justify-center'>
                       {/* Add your SVG or icon here */}
                     </div>
-                    <UITypography variant='p' type='small'>
+                    <Typography variant='p' type='small'>
                       {textDuration}
-                    </UITypography>
+                    </Typography>
                   </div>
                 )}
               </div>
@@ -129,11 +131,11 @@ export function MyScheduleSubCard({
               <div className='flex items-center gap-3'>
                 <div className='flex items-center gap-1'>
                   <div className='flex items-center justify-center'>
-                    <Briefcase size={14} />
+                    <BriefcaseBusiness size={14} className='text-muted-foreground'/>
                   </div>
-                  <UITypography variant='p' type='small'>
+                  <Typography variant='p' type='small'>
                     {textJob}
-                  </UITypography>
+                  </Typography>
                 </div>
                 {isAvatarWithNameVisible && <div>{slotAvatarWithName}</div>}
               </div>
@@ -142,7 +144,7 @@ export function MyScheduleSubCard({
           {isDropdownIconVisible && (
             <div
               className='flex h-6 w-6 cursor-pointer items-center justify-center rounded hover:bg-neutral-300'
-              onClick={onClickDropdownIocn}
+              onClick={onClickDropdownIcon}
             >
               <ChevronDown size={14} />
             </div>

@@ -13,7 +13,7 @@ type Permissions = {
 
 const DEFAULT: Permissions = Object.assign(
   {},
-  ...PATHS.map((route) => ({ [route]: null }) as Permissions),
+  ...PATHS.map((route) => ({ [route]: null }) as unknown as Permissions),
 );
 
 const PERMISSIONS: Permissions = {
@@ -23,12 +23,14 @@ const PERMISSIONS: Permissions = {
    */
 
   //
-  '/supervisor': ['authorized'],
   '/api/job/candidateUpload/csvUpload': ['job_module', 'manage_job'],
-  '/api/job/profileScore': ['job_module', 'manage_job'],
   '/api/job/candidateUpload/manualUpload': ['job_module', 'manage_job'],
   '/api/job/candidateUpload/resumeReupload': ['job_module', 'manage_job'],
   '/api/job/candidateUpload/resumeUpload': ['job_module', 'manage_job'],
+  '/api/candidate_portal/portal_cover_update': ['authorized'],
+  '/api/candidate_portal/candidate_pic_update': ['authorized'],
+  '/api/candidate_portal/portal_slide_update': ['authorized'],
+  '/api/candidate_portal/portal_slide_remove': ['authorized'],
   '/jobs': ['job_module'],
   '/jobs/create': ['job_module', 'manage_job'],
   '/jobs/[job]': ['job_module'],
@@ -55,6 +57,7 @@ const PERMISSIONS: Permissions = {
   '/integrations/[platform]': ['integrations_module'],
   '/company': ['company_settings_module'],
   '/user/[user]': ['authorized'],
+  '/reports': ['view_scheduling_reports'],
 
   //  For candidateDB module
   '/interviewers': ['authorized'],
@@ -62,19 +65,16 @@ const PERMISSIONS: Permissions = {
   /** Any one of the permission is required to access this apis
    * permission will reduced  using 'or'
    */
-  '/api/scheduling/application/fetchInterviewSessionByRequest': ['authorized'],
   '/api/scheduling/get_interview_plans': ['scheduling_module'],
   '/api/greenhouse/getPostings': ['manage_job'],
-  '/api/lever/createjob': ['manage_job'],
   '/api/greenhouse/saveApiKey': ['manage_company'],
-  '/api/lever/getPostings': ['manage_job'],
+  '/api/lever/getPostings': ['manage_job', 'authorized'],
   '/api/lever/saveApiKey': ['manage_job'],
   '/api/lever/getCandidates': ['manage_job'],
   '/api/ashby/getPostings': ['manage_job'],
   '/api/ashby/saveApiKey': ['manage_company'],
   '/api/scheduling/fetchUserDetails': ['scheduling_module'],
   '/api/scheduling/fetch_activities': ['authorized'],
-  '/api/scheduling/get_interview_modules': ['scheduling_module'],
   // scheduling application apis
   '/api/scheduling/application/cancelschedule': ['scheduling_module'],
   '/api/scheduling/application/schedulewithagentwithouttaskid': [
@@ -82,23 +82,18 @@ const PERMISSIONS: Permissions = {
   ],
   '/api/request/schedule-request': ['scheduling_actions'],
   '/api/scheduling/get-accesstoken': ['scheduling_module'],
-  '/api/scheduling/application/schedulewithagent': ['scheduling_module'],
   //v1 apis
-  '/api/scheduling/v1/get-candidate-selected-slots': ['scheduling_module'],
   '/api/scheduling/v1/event_attendee_status': ['scheduling_module'],
   // request availability apis
   '/api/scheduling/request_availability/getCandidateRequestData': [
     'scheduling_module',
   ],
-  '/api/scheduling/request_availability/updateRequestAvailability': [
-    'scheduling_module',
-  ], //
+
   '/api/scheduling/request_availability/candidateAvailability/getMeetings': [
     'scheduling_module',
   ],
   '/api/scheduling/request_availability/candidateAvailability/getScheduleMeetings':
     ['scheduling_module'],
-  '/api/scheduling/get_interview_training_progress': ['scheduling_module'],
   // request availability mail apis
   // '/api/scheduling/v1/find-alternative-time-slots': ['scheduler_update'], //
   // '/api/scheduling/v1/update_meeting_interviewers': ['scheduler_update'], //
@@ -112,16 +107,9 @@ const PERMISSIONS: Permissions = {
     'scheduling_module',
   ],
   '/api/emails/preview': ['scheduling_module'],
-  '/api/setMembersWithRole': ['manage_users'],
-  '/api/getRoleAndPermissions': ['view_roles'],
-  '/api/setRoleAndPermission': ['manage_roles'],
-  '/api/getUserDetails': ['authorized'],
-  '/api/invite_user': ['view_users'],
-  '/api/invite_user/resend': ['view_users'],
   '/api/decryptApiKey': ['manage_company'],
   '/api/request_feedback': ['scheduling_module'],
   '/api/workflow-cron/execute': ['workflow_module'],
-  '/api/agent-workflow/interviewer-decline': ['authorized'],
   '/api/google-calender/watch-changes': ['authorized'],
   '/api/google-calender/webhook': ['authorized'],
   '/api/scheduling/application/sendselfschedule': ['scheduling_actions'],

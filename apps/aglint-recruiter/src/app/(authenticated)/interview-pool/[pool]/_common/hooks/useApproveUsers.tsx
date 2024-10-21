@@ -1,13 +1,13 @@
 import { toast } from '@components/hooks/use-toast';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 
 import { useModuleAndUsers } from './useModuleAndUsers';
 
 export const useApproveUsers = () => {
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
   const utils = api.useUtils();
 
   const { data: editModule } = useModuleAndUsers();
@@ -22,7 +22,7 @@ export const useApproveUsers = () => {
       .from('interview_training_progress')
       .update({
         is_approved: true,
-        approved_user_id: recruiterUser.user_id,
+        approved_user_id: recruiter_user.user_id,
       })
       .eq('id', id);
     utils.interview_pool.training_progress.invalidate({

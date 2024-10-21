@@ -2,7 +2,11 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 export const interviewPoolUsersSchema = z.object({
@@ -16,11 +20,15 @@ const query = async ({
   const { data: dataModule } = await db
     .from('interview_module')
     .select(
-      '*,departments(*),interview_module_approve_users(*),interview_module_relation(*,all_interviewers(user_id,first_name,last_name,scheduling_settings,total_hours_this_week,total_interviews_this_week,total_hours_today,total_interviews_today, profile_image,position,email))',
+      '*,departments(*),interview_module_approve_users(*),interview_module_relation(*,all_interviewers!inner(user_id,first_name,last_name,scheduling_settings,total_hours_this_week,total_interviews_this_week,total_hours_today,total_interviews_today, profile_image,position,email))',
     )
     .eq('id', module_id)
     .throwOnError()
     .single();
+
+  if (!dataModule) {
+    return null;
+  }
 
   const mod: DatabaseTable['interview_module'] = {
     id: dataModule.id,
@@ -51,12 +59,16 @@ const query = async ({
 
     const week_load =
       userSettings.interviewLoad.dailyLimit.type === 'Hours'
-        ? (member.total_hours_this_week /
-            userSettings.interviewLoad.dailyLimit.value) *
-          100
-        : (member.total_interviews_this_week /
-            userSettings.interviewLoad.dailyLimit.value) *
-          100;
+        ? member.total_hours_this_week
+          ? (member.total_hours_this_week /
+              userSettings.interviewLoad.dailyLimit.value) *
+            100
+          : 0
+        : member.total_interviews_this_week
+          ? (member.total_interviews_this_week /
+              userSettings.interviewLoad.dailyLimit.value) *
+            100
+          : 0;
 
     return {
       ...rel,
@@ -89,3 +101,5 @@ const query = async ({
 export const interviewPoolUsers = privateProcedure
   .input(interviewPoolUsersSchema)
   .query(query);
+
+export type InterviewPoolUsers = ProcedureDefinition<typeof interviewPoolUsers>;

@@ -1,12 +1,8 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable security/detect-object-injection */
+import { useRequests } from '@requests/hooks';
+import { useEffect, useState } from 'react';
 
-import { useEffect, useMemo, useState } from 'react';
-
+import { useTenant } from '@/company/hooks';
 import FilterHeader from '@/components/Common/FilterHeader';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useRequests } from '@/context/RequestsContext';
-import { type GetRequestParams } from '@/queries/requests';
 import { supabase } from '@/utils/supabase/client';
 
 function RequestListFilter() {
@@ -19,14 +15,13 @@ function RequestListFilter() {
       is_new: _i,
       title,
       jobs,
-      applications,
-      assigneeList,
       assignerList,
-      ...filters
+      type,
+      status,
     },
     setFilters,
   } = useRequests();
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
 
   async function getCandidateList() {
     const { data } = await supabase
@@ -42,105 +37,83 @@ function RequestListFilter() {
     getCandidateList();
   }, []);
 
-  const options: Partial<GetRequestParams['filters']> = {
-    status: ['blocked', 'completed', 'in_progress', 'to_do'],
-    type: [
-      'schedule_request',
-      'cancel_schedule_request',
-      'decline_request',
-      'reschedule_request',
-    ],
-  };
-
-  const safeOptions = useMemo(
-    () =>
-      Object.keys(filters).reduce(
-        (acc, curr) => {
-          const safeKey = curr as keyof typeof filters;
-          let value;
-          switch (safeKey) {
-            case 'status':
-              value = options.status;
-              break;
-            case 'type':
-              value = options.type;
-              break;
-          }
-          acc[safeKey] = value;
-          return acc;
-        },
-        {} as typeof filters,
-      ),
-    [options, filters],
-  );
-
-  const safeFilters: Parameters<typeof FilterHeader>[0]['filters'] =
-    Object.entries(filters).map(([key, value]) => ({
-      name: key,
-      value: value ?? [],
-      type: 'filter',
-      icon: <></>,
-      setValue: (newValue: typeof value) =>
-        setFilters((prev) => ({ ...prev, [key]: newValue })),
-      options: safeOptions[key] ?? [],
-    }));
-
-  const jobFilter = {
-    filterSearch: true,
-    searchPlaceholder: 'Search Jobs',
-    active: jobs.length,
-    name: 'Jobs',
-    value: jobs ?? [],
-    type: 'filter',
-    iconname: '',
-    icon: <></>,
-    setValue: (newValue) => {
-      setFilters((prev) => ({ ...prev, jobs: newValue }));
-    },
-    options: candidateAndJobs
-      ? candidateAndJobs.jobs.map(
-          (ele: { job_id: string; job_title: string }) => {
-            return {
-              id: ele.job_id,
-              label: ele.job_title,
-            };
-          },
-        )
-      : [],
-  } as (typeof safeFilters)[number];
-
-  const assignerFilter = {
-    filterSearch: true,
-    searchPlaceholder: 'Search created by',
-    active: assignerList?.length,
-    name: 'Created by',
-    value: assignerList ?? [],
-    type: 'filter',
-    iconname: '',
-    icon: <></>,
-    setValue: (newValue) => {
-      setFilters((prev) => ({ ...prev, assignerList: newValue }));
-    },
-    options: candidateAndJobs
-      ? candidateAndJobs?.assignerlist.map(
-          (ele: { name: string; id: string }) => {
-            return {
-              id: ele.id,
-              label: ele.name,
-            };
-          },
-        )
-      : [],
-  } as (typeof safeFilters)[number];
-
+  // const options: string[] | Partial<GetRequestParams['filters']> = {
+  //   status: ['blocked', 'completed', 'in_progress', 'to_do'],
+  //   type: [
+  //     'schedule_request',
+  //     'cancel_schedule_request',
+  //     'decline_request',
+  //     'reschedule_request',
+  //   ],
+  // };
   return (
     <FilterHeader
       filters={[
-        ...safeFilters,
-        // assigneeFilter,
-        assignerFilter,
-        jobFilter,
-        // candidateFilter,
+        {
+          name: 'Status',
+          type: 'filter',
+          icon: <></>,
+          setValue: (newValue) => {
+            setFilters((prev) => ({ ...prev, status: newValue }));
+          },
+          options: ['blocked', 'completed', 'in_progress', 'to_do'],
+          value: status ?? [],
+        },
+        {
+          name: 'Type',
+          type: 'filter',
+          icon: <></>,
+          setValue: (newValue) => {
+            setFilters((prev) => ({ ...prev, type: newValue }));
+          },
+          options: [
+            'schedule_request',
+            'cancel_schedule_request',
+            'decline_request',
+            'reschedule_request',
+          ],
+          value: type ?? [],
+        },
+        {
+          filterSearch: true,
+          searchPlaceholder: 'Search created by',
+          name: 'Created by',
+          value: assignerList ?? [],
+          type: 'filter',
+          setValue: (newValue) => {
+            setFilters((prev) => ({ ...prev, assignerList: newValue }));
+          },
+          options: candidateAndJobs
+            ? candidateAndJobs?.assignerlist.map(
+                (ele: { name: string; id: string }) => {
+                  return {
+                    id: ele.id,
+                    label: ele.name,
+                  };
+                },
+              )
+            : [],
+        },
+        {
+          filterSearch: true,
+          searchPlaceholder: 'Search Jobs',
+          name: 'Jobs',
+          value: jobs ?? [],
+          type: 'filter',
+          setValue: (newValue) => {
+            setFilters((prev) => ({ ...prev, jobs: newValue }));
+          },
+          options: candidateAndJobs
+            ? candidateAndJobs.jobs.map(
+                (ele: { job_id: string; job_title: string }) => {
+                  return {
+                    id: ele.job_id,
+                    label: ele.job_title,
+                  };
+                },
+              )
+            : [],
+        },
       ]}
       search={{
         value: title ?? '',

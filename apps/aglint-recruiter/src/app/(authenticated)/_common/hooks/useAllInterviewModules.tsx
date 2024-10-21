@@ -1,9 +1,11 @@
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import type { InterviewPools } from '@/routers/interview_pool/interview_types';
+import { type ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 
 export const useAllInterviewModules = () => {
-  const { recruiter } = useAuthDetails();
-  return api.interview_pool.interview_pool.useQuery({
-    recruiter_id: recruiter.id,
-  });
+  const query = useProcedure();
+  return { ...query, data: query.data! };
 };
+
+const useProcedure = (): ProcedureQuery<InterviewPools> =>
+  api.interview_pool.list.useQuery();

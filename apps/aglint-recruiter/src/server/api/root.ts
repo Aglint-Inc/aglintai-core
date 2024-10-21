@@ -1,18 +1,24 @@
 import { analytics } from './routers/analytics';
 import { application } from './routers/application';
 import { ats } from './routers/ats';
+import { candidate_availability } from './routers/candidate_availability';
 import { candidatePortal } from './routers/candidatePortal';
+import { email } from './routers/email';
 import { example, exampleSchema } from './routers/example';
+import { utility } from './routers/external';
 import { get_last_login } from './routers/get_last_login';
-import { get_members_with_role } from './routers/get_members_with_role';
 import { integrations } from './routers/integrations';
 import { interview_pool } from './routers/interview_pool';
 import { interviewers } from './routers/interviewers';
+import { interviews } from './routers/interviews';
 import { jobs } from './routers/jobs';
+import { onboarding } from './routers/onboarding';
 import { requests } from './routers/requests';
 import { rolesAndPermissions } from './routers/rolesAndPermissions';
 import { scheduling } from './routers/scheduling';
+import { tenant } from './routers/tenant';
 import { user } from './routers/user';
+import { workflows } from './routers/workflows';
 import { createCallerFactory, createTRPCRouter } from './trpc';
 
 /**
@@ -22,6 +28,7 @@ import { createCallerFactory, createTRPCRouter } from './trpc';
  */
 export const appRouter = createTRPCRouter({
   ats,
+  tenant,
   analytics,
   candidatePortal,
   example,
@@ -32,10 +39,15 @@ export const appRouter = createTRPCRouter({
   requests,
   scheduling,
   application,
+  workflows,
   get_last_login,
-  get_members_with_role,
   user,
   rolesAndPermissions,
+  candidate_availability,
+  utility,
+  email,
+  onboarding,
+  interviews,
 });
 
 export const appRouterSchema = {

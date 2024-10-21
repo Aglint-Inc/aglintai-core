@@ -39,5 +39,9 @@
     "retool.config.json": true
   },
   "typescript.tsdk": "./node_modules/typescript/lib",
-  "typescript.preferences.autoImportSpecifierExcludeRegexes": ["@radix-ui/*"]
+  "typescript.preferences.autoImportSpecifierExcludeRegexes": [
+    "@radix-ui/*",
+    "node:test"
+  ],
+  "typescript.tsserver.maxTsServerMemory": 4000
 }

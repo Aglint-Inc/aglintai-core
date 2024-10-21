@@ -18,6 +18,14 @@ export async function GET(request: Request) {
 
   if (user_id && data?.session) {
     const relations = await getRecruiterUser(user_id, supabase);
+
+    if (relations && relations[0].recruiter_user?.status === 'invited') {
+      await supabase
+        .from('recruiter_user')
+        .update({ status: 'active' })
+        .eq('user_id', user_id);
+    }
+
     if (relations) {
       const url = await handleRedirect({
         relations,

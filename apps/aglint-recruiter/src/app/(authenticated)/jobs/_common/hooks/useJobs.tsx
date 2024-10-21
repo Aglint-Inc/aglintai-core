@@ -1,9 +1,7 @@
-import { useContext } from 'react';
+import { api } from '@/trpc/client';
 
-import { JobsContext } from '@/jobs/contexts';
+import type { Job } from '../types';
 
-export const useJobs = () => {
-  const value = useContext(JobsContext);
-  if (!value) throw new Error('JobsContext not found as a provider');
-  return value;
+export const useJobs = (): Job[] => {
+  return api.jobs.read.useSuspenseQuery()[0];
 };

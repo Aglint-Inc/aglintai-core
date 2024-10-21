@@ -1,4 +1,11 @@
-import { Card, CardContent } from '@components/ui/card';
+import {
+  Section,
+  SectionActions,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import React from 'react';
 
 import ReverseShadowIcon from '@/authenticated/components/ReverseShadowIcon';
@@ -26,42 +33,43 @@ export function TrainingSetting({
   isApprovalVisible = true,
 }: TrainingSettingProps) {
   return (
-    <Card className='flex flex-col p-4 w-full'>
-      <div className='flex items-center w-full justify-between p-0'>
-        <div className='flex flex-col gap-1'>
-          <p>{textHeading}</p>
-          {isDisable && (
-            <p>
-              Enable training from settings to add trainee interviewers and
-              track their training progress
-            </p>
-          )}
-        </div>
-        <div>{slotButton}</div>
-      </div>
+    <Section>
+      <SectionHeader>
+        <SectionHeaderText>
+          <SectionTitle>Training Settings</SectionTitle>
+          <SectionDescription>
+            <p>{textHeading}</p>
+            {isDisable && (
+              <p className='text-sm text-muted-foreground'>
+                Enable training from settings to add trainee interviewers and
+                track their training progress
+              </p>
+            )}
+          </SectionDescription>
+        </SectionHeaderText>
+        <SectionActions>{slotButton}</SectionActions>
+      </SectionHeader>
       {isEnable && (
-        <CardContent className='mt-4 flex flex-col gap-4 p-0'>
-          <div className='flex flex-col gap-2'>
-            <div className='flex items-center gap-2'>
-              <ShadowIcon className="w-5 h-5"/>
-              <p>{textShadow}</p>
-            </div>
-            <div className='flex items-center gap-2'>
-              <ReverseShadowIcon className="w-5 h-5"/>
-              <p>{textReverseShadow}</p>
-            </div>
+        <div className='flex flex-col gap-2'>
+          <div className='flex items-center gap-2'>
+            <ShadowIcon className='h-5 w-5 text-muted-foreground' />
+            <p className='text-sm'>{textShadow}</p>
+          </div>
+          <div className='flex items-center gap-2'>
+            <ReverseShadowIcon className='h-5 w-5 text-muted-foreground' />
+            <p className='text-sm'>{textReverseShadow}</p>
           </div>
           {isApprovalVisible && (
             <div className='flex flex-col gap-1'>
-              <p className='text-sm text-muted-foreground mb-2'>
+              <p className='mb-2 text-sm text-muted-foreground'>
                 Following persons approval is required before moving to
                 qualified state:
               </p>
               <div className='flex items-center gap-2'>{slotApproval}</div>
             </div>
           )}
-        </CardContent>
+        </div>
       )}
-    </Card>
+    </Section>
   );
 }

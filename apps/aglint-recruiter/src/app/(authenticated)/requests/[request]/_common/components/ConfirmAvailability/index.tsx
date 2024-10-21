@@ -3,22 +3,23 @@ import {
   type CandReqSlotsType,
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
-import { updateCandidateRequestAvailability } from '@requests/functions';
 import { useRequestAvailabilityDetails } from '@requests/hooks';
+import { useUpdateCandidateAvailability } from '@requests/hooks/useRequestAvailabilityDetails';
 import axios from 'axios';
-import { Check, Loader2 } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { nanoid } from 'nanoid';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { Loader } from '@/common/Loader';
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDrawer from '@/components/Common/UIDrawer';
-import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 
-import DayCardWrapper from '../SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
+import DayCardWrapper from '../SelfSchedulingDrawer/_common/components/StepSlotOptions/DayCardWrapper';
 import Calendar from './_common/components/Calender';
 import SelectAvailableOption from './_common/components/SelectAvailableOption';
 import {
@@ -31,7 +32,7 @@ import { useAvailabilityContext } from './_common/contexts/RequestAvailabilityCo
 function ConfirmAvailability() {
   const params = useParams();
   const requestId = params?.request as string;
-
+  const { updateRequestAvailability } = useUpdateCandidateAvailability();
   const {
     setSelectedDayAvailableBlocks,
     selectedDateSlots,
@@ -48,6 +49,7 @@ function ConfirmAvailability() {
     isLoading,
   } = useRequestAvailabilityDetails({
     availability_id: candidateAvailabilityId,
+    user_tz: dayjsLocal.tz.guess(),
   });
 
   function closeDrawer() {
@@ -60,11 +62,16 @@ function ConfirmAvailability() {
   }
 
   useEffect(() => {
-    if (availableSlots && selectedIndex !== availableSlots.slots.length) {
-      handleClick(availableSlots.slots[Number(selectedIndex)]?.selected_dates);
+    if (
+      availableSlots &&
+      selectedIndex !== availableSlots.slots.length &&
+      availableSlots.slots[Number(selectedIndex)]
+    ) {
+      const selectedDate = availableSlots.slots[Number(selectedIndex)]
+        .selected_dates as CandReqSlotsType['selected_dates'];
+      handleClick(selectedDate);
     }
   }, [availableSlots, selectedIndex]);
-
   async function handleContinue() {
     if (selectedIndex !== availableSlots?.slots.length) {
       setSelectedIndex((pre) => pre + 1);
@@ -88,7 +95,7 @@ function ConfirmAvailability() {
           sessions: allSessions, // sessions
           no_slot_reasons: [],
         },
-        user_tz: userTzDayjs.tz.guess(),
+        user_tz: dayjsLocal.tz.guess(),
         request_id: requestId,
       };
 
@@ -99,16 +106,14 @@ function ConfirmAvailability() {
         );
 
         if (res.status === 200) {
-          await updateCandidateRequestAvailability({
+          updateRequestAvailability({
             id: candidateAvailabilityId,
-            data: {
-              booking_confirmed: true,
-            },
+            booking_confirmed: true,
           });
         } else {
           throw new Error('Booking failed');
         }
-      } catch (error) {
+      } catch (error: any) {
         toast({ variant: 'destructive', title: error.message });
       }
       setLoading(false);
@@ -208,12 +213,12 @@ function ConfirmAvailability() {
           </div>
         </ShowCode.When>
         <ShowCode.When isTrue={isLoading && !isFetched}>
-          <div className='h-[calc(100vh - 96px)] flex items-center justify-center'>
-            <Loader2 className='h-6 w-6 animate-spin text-primary' />
-          </div>
+          <Loader />
         </ShowCode.When>
         <ShowCode.Else>
-          <SelectAvailableOption availableSlots={availableSlots?.slots || []} />
+          <SelectAvailableOption
+            availableSlots={(availableSlots?.slots || []) as CandReqSlotsType[]}
+          />
         </ShowCode.Else>
       </ShowCode>
     </UIDrawer>

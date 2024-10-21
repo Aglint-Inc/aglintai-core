@@ -1,10 +1,9 @@
+import type { LocationPool } from '@/routers/jobs/job/metrics/locationPool';
 import { api } from '@/trpc/client';
 
 import { useCurrentJob } from './useCurrentJob';
-import { useJobPolling } from './useJobPolling';
 
-export const useMetricsLocationPool = () => {
+export const useMetricsLocationPool = (): LocationPool['output'] => {
   const { job_id } = useCurrentJob();
-  const { opts } = useJobPolling();
-  return api.jobs.job.metrics.locationPool.useSuspenseQuery({ job_id }, opts);
+  return api.jobs.job.metrics.locationPool.useSuspenseQuery({ job_id })[0];
 };

@@ -1,17 +1,10 @@
-import { getFullName } from '@aglint/shared-utils';
-import { Progress } from '@components/ui/progress';
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { Columns, LayoutList } from 'lucide-react';
 
-import { formatRequestHeadingText } from '../../utils';
 import { CreateRequestWidget } from '../createRequestWidget';
 import RequestListFilter from '../RequestListFilter';
 
 function Header({
-  recruiterUser,
-  requestCount,
-  open_request,
-  completed_percentage,
   view,
   setView,
 }: {
@@ -24,31 +17,10 @@ function Header({
   setView: (value: 'list' | 'kanban') => void;
 }) {
   return (
-    <div className='container-lg mx-auto w-full px-12'>
-      <div className='flex items-end justify-between'>
-        <div className='flex flex-col gap-1'>
-          <h1 className='text-lg font-semibold'>
-            👋 Hey,{' '}
-            {getFullName(recruiterUser.first_name, recruiterUser.last_name)}!
-          </h1>
-          <p className='text-sm text-muted-foreground'>
-            {formatRequestHeadingText(
-              requestCount?.card.urgent_request ?? 0,
-              requestCount?.card.standard_request ?? 0,
-              'today',
-            )}
-          </p>
-        </div>
-        <div className='flex flex-col gap-1'>
-          <h3 className='text-sm font-semibold text-muted-foreground'>
-            {open_request} Open Requests ({completed_percentage}% complete)
-          </h3>
-          <Progress value={completed_percentage} className='w-full' />
-        </div>
-      </div>
-      <div className='mt-4 flex items-center justify-end gap-2'>
-        <RequestListFilter />
-        <CreateRequestWidget />
+    <div className='flex items-center justify-end gap-2 px-4'>
+      <RequestListFilter />
+      <CreateRequestWidget />
+      <div className='sr-only hidden'>
         <Tabs
           value={view}
           onValueChange={(value) => setView(value as 'list' | 'kanban')}
@@ -64,6 +36,32 @@ function Header({
         </Tabs>
       </div>
     </div>
+    // <div className='container-lg mx-auto w-full px-4'>
+    //   <div className='flex items-end justify-between'>
+    //     <div className='flex flex-col gap-1'>
+    //       <h1 className='text-lg font-semibold'>
+    //         👋 Hey,{' '}
+    //         {getFullName(recruiterUser.first_name, recruiterUser.last_name)}!
+    //       </h1>
+    //       <p className='text-sm text-muted-foreground'>
+    //         {formatRequestHeadingText(
+    //           requestCount?.card.urgent_request ?? 0,
+    //           requestCount?.card.standard_request ?? 0,
+    //           'today',
+    //         )}
+    //       </p>
+    //     </div>
+    //     <div className='flex flex-col gap-1'>
+    //       <h3 className='text-sm font-semibold text-muted-foreground'>
+    //         {open_request} Open Requests ({completed_percentage}% complete)
+    //       </h3>
+    //       <Progress value={completed_percentage} className='w-full' />
+    //     </div>
+    //   </div>
+    //   <div className='mt-4 flex items-center justify-end gap-2'>
+
+    //   </div>
+    // </div>
   );
 }
 

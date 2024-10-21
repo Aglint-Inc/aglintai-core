@@ -1,4 +1,4 @@
-import { Badge } from '@components/ui/badge';
+import { EmptyState } from '@components/empty-state';
 import { Button } from '@components/ui/button';
 import {
   Table,
@@ -14,37 +14,77 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { AlertCircle, Briefcase, Clock, MapPin, Pin } from 'lucide-react';
+import { UIBadge } from '@components/ui-badge';
+import {
+  AlertCircle,
+  BriefcaseBusiness,
+  Clock,
+  MapPin,
+  Pin,
+  Search,
+} from 'lucide-react';
 import Image from 'next/image';
 import React from 'react';
 
-import EmptyState from '@/components/Common/EmptyStates/EmptyStates';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { useJobs } from '@/jobs/hooks';
+import { useJobsContext } from '@/jobs/hooks';
+import type { Job } from '@/jobs/types';
 import { calculateTimeDifference } from '@/jobs/utils/calculateTimeDifference';
-import { type Job } from '@/queries/jobs/types';
 import { formatOfficeLocation } from '@/utils/formatOfficeLocation';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeSentence } from '@/utils/text/textUtils';
 
 import { POSTED_BY } from '../AddJobWithIntegrations/utils';
-
+import { Banners } from '../Banners';
 interface JobsListProps {
   jobs: Job[];
 }
 
 const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
-  const { handleJobPin } = useJobs();
+  const { handleJobPin } = useJobsContext();
   const router = useRouterPro();
-
+  const stages = [
+    {
+      name: 'New',
+      color: 'bg-blue-300/20',
+      borderColor: 'border-blue-300',
+      arrowColor: 'text-blue-100',
+      textColor: 'text-blue-800',
+    },
+    {
+      name: 'Interview',
+      color: 'bg-purple-300/20',
+      borderColor: 'border-purple-300',
+      arrowColor: 'text-purple-100',
+      textColor: 'text-purple-800',
+    },
+    {
+      name: 'Qualified',
+      color: 'bg-green-300/20',
+      borderColor: 'border-green-300',
+      arrowColor: 'text-green-100',
+      textColor: 'text-green-800',
+    },
+    {
+      name: 'Disqualified',
+      color: 'bg-red-200/20',
+      arrowColor: 'text-red-100',
+      textColor: 'text-red-800',
+    },
+  ];
   if (jobs?.length === 0) {
-    return <EmptyState type={'job-jobList'} />;
+    return (
+      <EmptyState
+        icon={Search}
+        description='No matching jobs found for this search query.'
+      />
+    );
   }
 
   return (
     <Table>
-      <TableHeader>
-        <TableRow className='border-b border-gray-200'>
+      <TableHeader className='bg-gray-100'>
+        <TableRow>
           <TableHead className='py-3 font-semibold text-gray-600'>
             Job Title
           </TableHead>
@@ -68,22 +108,19 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
           <TableRow
             key={job.id}
             className='cursor-pointer hover:bg-gray-50'
-            onClick={() => router.push(ROUTES['/jobs/[job]']({ job: job.id }))}
+            onClick={() =>
+              router.push(ROUTES['/jobs/[job]']({ job: job?.id ?? null! }))
+            }
           >
             <TableCell className='font-medium'>
               <div className='flex flex-col'>
                 <div className='flex items-center space-x-2'>
                   {getAtsBadge(job.posted_by) || (
-                    <Briefcase className='h-5 w-5 px-1 text-gray-400' />
+                    <BriefcaseBusiness className='h-5 w-5 px-1 text-gray-400' />
                   )}
                   <span>{capitalizeSentence(job?.job_title ?? '---')}</span>
+                  <Banners job={job} />
                 </div>
-                {/* <div className='flex items-center space-x-2 mt-1'>
-                  <Building2 className='h-4 w-4 text-gray-400' />
-                  <span className='text-sm text-gray-600'>
-                    {job?.department ?? '---'}
-                  </span>
-                </div> */}
               </div>
             </TableCell>
             <TableCell>
@@ -93,47 +130,76 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
               </div>
             </TableCell>
             <TableCell>
-              <div className='flex flex-wrap gap-1'>
-                <Badge variant='outline' className='text-xs'>
-                  New: {job?.section_count?.new ?? 0}
-                </Badge>
-                <Badge variant='outline' className='text-xs'>
-                  Interview: {job?.section_count?.interview ?? 0}
-                </Badge>
-                <Badge variant='outline' className='text-xs'>
-                  Qualified: {job?.section_count?.qualified ?? 0}
-                </Badge>
-                <Badge variant='outline' className='text-xs'>
-                  Disqualified: {job?.section_count?.disqualified ?? 0}
-                </Badge>
+              <div className='flex flex-row'>
+                {stages.map((stage, index) => (
+                  <div
+                    key={stage.name}
+                    className={`${stage.color} relative cursor-pointer px-4 py-1 ${
+                      index === stages.length - 1
+                        ? 'rounded-r-md'
+                        : 'border-r-0'
+                    } ${index === 0 ? 'rounded-l-md' : ''}`}
+                  >
+                    <div
+                      className={`flex items-center space-x-1 ${index < stages.length - 2 ? 'pr-4' : ''}`}
+                    >
+                      <div
+                        className={`text-sm font-semibold ${stage.textColor}`}
+                      >
+                        {stage.name === 'New'
+                          ? (job?.section_count?.new ?? 0)
+                          : stage.name === 'Interview'
+                            ? (job?.section_count?.interview ?? 0)
+                            : stage.name === 'Qualified'
+                              ? (job?.section_count?.qualified ?? 0)
+                              : (job?.section_count?.disqualified ?? 0)}
+                      </div>
+                      <div className={`text-sm ${stage.textColor}`}>
+                        {stage.name}
+                      </div>
+                    </div>
+                    {/* {index < stages.length - 2 && (
+                      <div className='absolute right-0 top-0 h-full w-4 overflow-hidden'>
+                        <div
+                          className={`absolute inset-0 bg-gradient-to-br ${stages[index + 1].color}`}
+                        ></div>
+                        <svg
+                          className={`absolute inset-0 ${stage.arrowColor}`}
+                          width='16'
+                          height='100%'
+                          viewBox='0 0 16 100'
+                          preserveAspectRatio='none'
+                        >
+                          <path d='M0 0L16 50L0 100Z' fill='currentColor' />
+                        </svg>
+                      </div>
+                    )} */}
+                  </div>
+                ))}
               </div>
             </TableCell>
             <TableCell>
               <div className='flex items-center space-x-2'>
                 <Clock className='h-4 w-4 text-gray-400' />
-                <span className='text-sm text-gray-500'>
+                <span className='text-sm text-muted-foreground'>
                   {getTimestamp(job)}
                 </span>
               </div>
             </TableCell>
             <TableCell>
               <div className='flex items-center space-x-2'>
-                <Badge
-                  variant={job.status === 'published' ? 'default' : 'outline'}
-                  className={`${
-                    job.status === 'published'
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-gray-100 text-gray-800'
-                  }`}
-                >
-                  {job.status.charAt(0).toUpperCase() + job.status.slice(1)}
-                </Badge>
+                <UIBadge
+                  variant={job.status === 'published' ? 'success' : 'neutral'}
+                  textBadge={
+                    job.status!.charAt(0).toUpperCase() + job.status!.slice(1)
+                  }
+                />
                 {job.status === 'published' &&
                   (!job.jd_json || !job.description) && (
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger>
-                          <AlertCircle className='h-4 w-4 text-red-500' />
+                          <AlertCircle className='h-4 w-4 text-destructive' />
                         </TooltipTrigger>
                         <TooltipContent>
                           <p>Missing Job Description</p>
@@ -173,7 +239,7 @@ const getAtsBadge = (postedBy: string) => {
     [POSTED_BY.ASHBY]: '/images/ats/ashby-job-badge.svg',
   };
 
-  const src = badgeMap[postedBy];
+  const src = badgeMap[postedBy as keyof typeof badgeMap];
   return src ? (
     <Image
       src={src}

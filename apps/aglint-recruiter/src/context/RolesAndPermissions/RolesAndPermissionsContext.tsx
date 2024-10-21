@@ -4,14 +4,14 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { createContext, type ReactNode, useContext } from 'react';
 
-import { useAuthDetails } from '../AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 
 /* eslint-disable no-unused-vars */
 type RolesAndPermissionsContextType = {
-  checkPermissions?: (x: DatabaseTable['permissions']['name'][]) => boolean;
-  devlinkProps?: (
+  checkPermissions: (x: DatabaseTable['permissions']['name'][]) => boolean;
+  devlinkProps: (
     x: DatabaseTable['permissions']['name'][],
-  ) => { onClick: null; style: { display: 'none' } } | object;
+  ) => { onClick: () => {}; style: { display: 'none' } } | object;
   ifAllowed: <T extends ((...args: unknown[]) => unknown) | ReactNode>(
     func: T,
     permission: DatabaseTable['permissions']['name'][],
@@ -21,6 +21,7 @@ type RolesAndPermissionsContextType = {
 
 const initialValue: RolesAndPermissionsContextType = {
   checkPermissions: () => false,
+  devlinkProps: () => ({ onClick: () => {}, style: { display: 'none' } }),
   ifAllowed: <T extends ((...args: unknown[]) => unknown) | ReactNode>(
     func: T,
     _: DatabaseTable['permissions']['name'][],
@@ -37,7 +38,8 @@ export const RolesAndPermissionsProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const { userPermissions, recruiter } = useAuthDetails();
+  const { userPermissions, recruiter } = useTenant();
+
   const checkPermissions: RolesAndPermissionsContextType['checkPermissions'] = (
     permissions,
   ) => {
@@ -47,7 +49,7 @@ export const RolesAndPermissionsProvider = ({
         (prev, curr) =>
           prev &&
           Boolean(
-            userPermissions['permissions'][curr] || curr === 'authorized',
+            userPermissions.permissions.includes(curr) || curr === 'authorized',
           ),
         true,
       )
@@ -76,7 +78,10 @@ export const RolesAndPermissionsProvider = ({
     const allow =
       Boolean(permissions.length) &&
       permissions.reduce(
-        (prev, curr) => prev && Boolean(userPermissions['permissions'][curr]),
+        (prev, curr) =>
+          prev &&
+          (Boolean(userPermissions['permissions'].includes(curr)) ||
+            curr === 'authorized'),
         true,
       );
     if (allow) {

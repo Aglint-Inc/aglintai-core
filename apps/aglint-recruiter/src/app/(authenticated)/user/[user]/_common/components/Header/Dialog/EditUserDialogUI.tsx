@@ -8,7 +8,6 @@ import type {
 } from 'src/app/_common/components/Profile/uitls';
 
 import { ShadcnPhoneInput } from '@/components/Common/UIPhoneInput/PhoneInput';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 export const ProfileForms = ({
   profile,
@@ -51,9 +50,8 @@ const ProfileForm = ({
   // eslint-disable-next-line no-unused-vars
   onChange: (e: any, key: keyof FormFields, phoneFormat?: any) => void;
 }) => {
-  const { userCountry } = useAuthDetails();
   const defaultCountry =
-    value.validation === 'phone' && !value.value ? userCountry : '+1';
+    value.validation === 'phone' && !value.value ? 'us' : '+1';
 
   switch (value.validation) {
     case 'phone': {
@@ -71,7 +69,7 @@ const ProfileForm = ({
             }}
           />
           {value.error && (
-            <p className='text-sm text-red-500'>{`Please enter a valid ${capitalize(id)}`}</p>
+            <p className='text-sm text-destructive'>{`Please enter a valid ${capitalize(id)}`}</p>
           )}
         </div>
       );
@@ -88,10 +86,10 @@ const ProfileForm = ({
             value={value.value}
             disabled={value.blocked}
             onChange={(e) => onChange(e, id)}
-            className={value.error ? 'border-red-500' : ''}
+            className={value.error ? 'border-destructive' : ''}
           />
           {value.error && (
-            <p className='text-sm text-red-500'>
+            <p className='text-sm text-destructive'>
               {value.helperText ?? `Please enter a valid ${capitalize(id)}`}
             </p>
           )}
@@ -109,10 +107,10 @@ const ProfileForm = ({
             value={value.value}
             disabled={value.blocked}
             onChange={(e) => onChange(e, id)}
-            className={value.error ? 'border-red-500' : ''}
+            className={value.error ? 'border-destructive' : ''}
           />
           {value.error && (
-            <p className='text-sm text-red-500'>
+            <p className='text-sm text-destructive'>
               {value.helperText ?? `Please enter a valid ${capitalize(id)}`}
             </p>
           )}

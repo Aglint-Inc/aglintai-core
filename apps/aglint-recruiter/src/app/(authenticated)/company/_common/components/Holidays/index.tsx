@@ -1,109 +1,83 @@
-import type { holidayType, schedulingSettingType } from '@aglint/shared-types';
-import { dayjsLocal } from '@aglint/shared-utils';
-import cloneDeep from 'lodash/cloneDeep';
-import { useEffect, useRef, useState } from 'react';
+import {
+  Page,
+  PageDescription,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
+import { useState } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
+import { useDeleteHoliday } from '@/company/hooks/useDeleteHoliday';
 
-import { useCompanyDetailComp } from '../../hooks/hook';
 import { AddHolidayDialog } from './AddHolidayDialog';
-import { HolidaysUI } from './ui/HolidaysUI';
-
-export const LoadMax = {
-  dailyHours: 8,
-  dailyInterviews: 10,
-  weeklyHours: 40,
-  weeklyInterviews: 50,
-};
-
-type specificLocationType = 'all_locations' | 'specific_locations';
-
+import { HolidayActions } from './ui/HolidayActions';
+import { HolidayRow } from './ui/HolidayRow';
+import { HolidayTable } from './ui/HolidayTable';
 function Holidays() {
-  const { recruiter } = useAuthDetails();
-  const { isSaving, updateSettings } = useCompanyDetailComp();
-  const [isRemoving, setIsRemoving] = useState<string>(null);
-  const eventRef = useRef<HTMLInputElement>(null);
-  const [daysOff, setDaysOff] = useState<holidayType[]>([]);
-  const [selectedDate, setSelectedDate] = useState('');
+  return (
+    <Page>
+      <PageHeader>
+        <PageHeaderText>
+          <PageTitle>Holidays</PageTitle>
+          <PageDescription>
+            List company holidays to exclude them from scheduling.
+          </PageDescription>
+        </PageHeaderText>
+        <Actions />
+      </PageHeader>
+      <div className='flex flex-col gap-4'>
+        <HolidayTable>
+          <List />
+        </HolidayTable>
+      </div>
+    </Page>
+  );
+}
 
-  const [selectedLocations, setSelectedLocations] = useState([]);
-  const [specificLocationOn, setSpecificLocationOn] =
-    useState<specificLocationType>('all_locations');
+export default Holidays;
 
-  function getDate(e: any) {
-    setSelectedDate(dayjsLocal(e).format('DD MMM YYYY'));
-    // dateRef.current.value = String(new Date(e.$d));
-  }
-
-  function initialLoad() {
-    if (recruiter.scheduling_settings) {
-      const schedulingSettingData = cloneDeep(
-        recruiter.scheduling_settings,
-      ) as schedulingSettingType;
-      setDaysOff([...schedulingSettingData.totalDaysOff] as holidayType[]);
-    }
-  }
-
-  useEffect(() => {
-    initialLoad();
-  }, []);
-
-  const compareDates = (a: holidayType, b: holidayType) => {
-    const dateA = new Date(a.date);
-    const dateB = new Date(b.date);
-    return Number(dateA) - Number(dateB);
-  };
-
-  ///////////// DayOff Popup //////////////
+const Actions = () => {
   const [addDayOffOpen, setDaysOffOpen] = useState(false);
-
-  const handleAddDayOff = async (newDayoff: holidayType) => {
-    await updateSettings({
-      ...recruiter.scheduling_settings,
-      totalDaysOff: [...daysOff, newDayoff],
-    });
-    setDaysOff([...daysOff, newDayoff]);
-    setDaysOffOpen(false);
-  };
-  const handleDeleteDayOff = async (date: string) => {
-    setIsRemoving(date);
-    const afterDeleteDayOff = daysOff.filter((dayoff) => dayoff.date !== date);
-    await updateSettings({
-      ...recruiter.scheduling_settings,
-      totalDaysOff: afterDeleteDayOff,
-    });
-    setDaysOff(afterDeleteDayOff);
-    setDaysOffOpen(false);
-    setIsRemoving(null);
-  };
-
   return (
     <>
       <AddHolidayDialog
         addDayOffOpen={addDayOffOpen}
         setDaysOffOpen={setDaysOffOpen}
-        eventRef={eventRef}
-        selectedDate={selectedDate}
-        daysOff={daysOff}
-        setSpecificLocationOn={setSpecificLocationOn}
-        specificLocationOn={specificLocationOn}
-        recruiter={recruiter}
-        getDate={getDate}
-        selectedLocations={selectedLocations}
-        setSelectedLocations={setSelectedLocations}
-        handleAddDayOff={handleAddDayOff}
-        setSelectedDate={setSelectedDate}
-        isSaving={isSaving}
       />
-      <HolidaysUI
-        compareDates={compareDates}
-        daysOff={daysOff}
-        handleDeleteDayOff={handleDeleteDayOff}
-        isRemoving={isRemoving}
-        setDaysOffOpen={setDaysOffOpen}
-      />
+      <HolidayActions onClick={() => setDaysOffOpen(true)} />
     </>
   );
-}
+};
 
-export default Holidays;
+const List = () => {
+  const { recruiter } = useTenant();
+  return (
+    <>
+      {recruiter.scheduling_settings.totalDaysOff
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+        .map((day) => {
+          return <Row key={day.date} day={day} />;
+        })}
+    </>
+  );
+};
+
+const Row = ({
+  day,
+}: {
+  day: ReturnType<
+    typeof useTenant
+  >['recruiter']['scheduling_settings']['totalDaysOff'][number];
+}) => {
+  const { mutate, isPending } = useDeleteHoliday();
+  return (
+    <HolidayRow
+      date={day.date}
+      locations={day.locations}
+      name={day.event_name}
+      isLoading={isPending}
+      onDelete={() => mutate(day.date)}
+    />
+  );
+};

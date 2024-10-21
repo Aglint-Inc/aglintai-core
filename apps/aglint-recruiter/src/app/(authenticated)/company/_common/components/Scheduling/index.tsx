@@ -1,24 +1,32 @@
-import dayjs from 'dayjs';
-import timezone from 'dayjs/plugin/timezone';
-import utc from 'dayjs/plugin/utc';
+import { type SchedulingSettingType } from '@aglint/shared-types';
+import {
+  Page,
+  // PageDescription,
+  PageHeader,
+  // PageHeaderText,
+  // PageTitle,
+} from '@components/layouts/page-header';
+import {
+  Section,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import { cloneDeep, debounce } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
-
-import { type schedulingSettingType } from '@aglint/shared-types';
+import { LoadMax } from 'src/app/(authenticated)/user/[user]/_common/components/ScheduleAvailability/Edit/EditAvailabiity';
 
 import InterviewLimitInput from '@/authenticated/components/InterviewLoad';
-import UISectionCard from '@/components/Common/UISectionCard';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import UISectionCard from '@/common/UISectionCard';
+import { useTenant } from '@/company/hooks';
+import { api } from '@/trpc/client';
 
 import KeywordSection from '../../../../_common/components/KeywordSection';
-import { LoadMax } from '../Holidays';
 import DebriefDefaults from './DebriefDefaults';
 
 let schedulingSettingObj = {};
-let changeValue = null;
+let changeValue: 'updating' | null = null;
 
 type interviewLoadType = {
   type: 'Hours' | 'Interviews';
@@ -26,12 +34,14 @@ type interviewLoadType = {
   max: number;
 };
 
-function SchedulingSettings({ updateSettings }) {
-  const { recruiter } = useAuthDetails();
+function SchedulingSettings() {
+  const { recruiter } = useTenant();
 
-  const [workingHours, setWorkingHours] = useState([]);
+  const [workingHours, setWorkingHours] = useState<
+    (typeof recruiter)['scheduling_settings']['workingHours']
+  >([]);
   const [debriefDefaults, setDebriefDefaults] = useState<
-    schedulingSettingType['debrief_defaults']
+    SchedulingSettingType['debrief_defaults']
   >({
     hiring_manager: false,
     recruiter: false,
@@ -39,18 +49,22 @@ function SchedulingSettings({ updateSettings }) {
     sourcer: false,
     previous_interviewers: false,
   });
-  const [freeKeyWords, setFreeKeywords] = useState([]);
-  const [softConflictsKeyWords, setSoftConflictsKeyWords] = useState([]);
+  const [freeKeyWords, setFreeKeywords] = useState<
+    (typeof recruiter)['scheduling_settings']['schedulingKeyWords']['free']
+  >([]);
+  const [softConflictsKeyWords, setSoftConflictsKeyWords] = useState<
+    (typeof recruiter)['scheduling_settings']['schedulingKeyWords']['SoftConflicts']
+  >([]);
   const [outOfOffice, setOutOfOffice] = useState<string[]>([]);
   const [recruitingBlocks, setRecruitingBlocks] = useState<string[]>([]);
 
-  const [dailyLmit, setDailyLimit] = useState<interviewLoadType>({
-    type: null,
+  const [dailyLimit, setDailyLimit] = useState<interviewLoadType>({
+    type: 'Hours',
     value: 20,
     max: LoadMax.dailyHours,
   });
-  const [weeklyLmit, setWeeklyLimit] = useState<interviewLoadType>({
-    type: null,
+  const [weeklyLimit, setWeeklyLimit] = useState<interviewLoadType>({
+    type: 'Hours',
     value: 10,
     max: LoadMax.weeklyHours,
   });
@@ -91,14 +105,14 @@ function SchedulingSettings({ updateSettings }) {
         ...pre,
         type,
       }));
-      handleDailyValue(dailyLmit.value);
+      handleDailyValue(dailyLimit.value);
     }
     if (mode === 'week') {
       setWeeklyLimit((pre) => ({
         ...pre,
         type,
       }));
-      handleWeeklyValue(weeklyLmit.value);
+      handleWeeklyValue(weeklyLimit.value);
     }
   };
 
@@ -108,7 +122,7 @@ function SchedulingSettings({ updateSettings }) {
     if (recruiter.scheduling_settings) {
       const schedulingSettingData = cloneDeep(
         recruiter.scheduling_settings,
-      ) as schedulingSettingType;
+      ) as SchedulingSettingType;
 
       const workingHoursCopy = cloneDeep(schedulingSettingData.workingHours);
 
@@ -154,9 +168,13 @@ function SchedulingSettings({ updateSettings }) {
     }
   }
 
+  const { mutate } = api.tenant.updateTenant.useMutation();
+
   const debouncedUpsertRequestNotes = useCallback(
     debounce(async (settings) => {
-      await updateSettings(settings);
+      mutate({
+        scheduling_settings: settings,
+      });
     }, 500),
     [],
   );
@@ -167,12 +185,12 @@ function SchedulingSettings({ updateSettings }) {
         ...recruiter.scheduling_settings,
         interviewLoad: {
           dailyLimit: {
-            type: dailyLmit.type,
-            value: dailyLmit.value,
+            type: dailyLimit.type,
+            value: dailyLimit.value,
           },
           weeklyLimit: {
-            type: weeklyLmit.type,
-            value: weeklyLmit.value,
+            type: weeklyLimit.type,
+            value: weeklyLimit.value,
           },
         },
         workingHours: workingHours,
@@ -183,7 +201,7 @@ function SchedulingSettings({ updateSettings }) {
           recruitingBlocks: recruitingBlocks,
         },
         debrief_defaults: debriefDefaults,
-      } as schedulingSettingType;
+      } as SchedulingSettingType;
 
       if (changeValue === 'updating') {
         debouncedUpsertRequestNotes(schedulingSettingObj);
@@ -192,8 +210,8 @@ function SchedulingSettings({ updateSettings }) {
       changeValue = 'updating';
     }
   }, [
-    dailyLmit,
-    weeklyLmit,
+    dailyLimit,
+    weeklyLimit,
     workingHours,
     freeKeyWords,
     softConflictsKeyWords,
@@ -241,33 +259,36 @@ function SchedulingSettings({ updateSettings }) {
     },
   ];
   return (
-    <div>
-      <div className='flex flex-col'>
-        <div className='mb-6'>
-          <h2 className='mb-1 text-xl font-semibold'>Scheduling Information</h2>
-          <p className='text-gray-600'>
+    <Page>
+      <PageHeader>
+        {/* <PageHeaderText>
+          <PageTitle>Scheduling</PageTitle>
+          <PageDescription>
+            {' '}
             Update the settings here changes will be saved automatically.
-          </p>
-        </div>
+          </PageDescription>
+        </PageHeaderText> */}
+      </PageHeader>
+      <div className='flex max-w-xl flex-col gap-4'>
         <div className='flex flex-col gap-5'>
-          {dailyLmit.type && weeklyLmit.type && (
+          {dailyLimit.type && weeklyLimit.type && (
             <UISectionCard
               title=' Interview Load'
               description='Setup maximum interviews per day and week.'
             >
-              <div className='space-y-2'>
+              <div className='flex flex-row space-x-16'>
                 <InterviewLimitInput
-                  value={dailyLmit.value}
-                  max={dailyLmit.max}
-                  type={dailyLmit.type}
+                  value={dailyLimit.value}
+                  max={dailyLimit.max}
+                  type={dailyLimit.type}
                   onValueChange={handleDailyValue}
                   onTypeChange={handleType}
                   mode='day'
                 />
                 <InterviewLimitInput
-                  value={weeklyLmit.value}
-                  max={weeklyLmit.max}
-                  type={weeklyLmit.type}
+                  value={weeklyLimit.value}
+                  max={weeklyLimit.max}
+                  type={weeklyLimit.type}
                   onValueChange={handleWeeklyValue}
                   onTypeChange={handleType}
                   mode='week'
@@ -275,6 +296,26 @@ function SchedulingSettings({ updateSettings }) {
               </div>
             </UISectionCard>
           )}
+
+          {keywords.map((keyword) => {
+            return (
+              <Section key={keyword.title}>
+                <SectionHeader>
+                  <SectionHeaderText>
+                    <SectionTitle>{keyword.title}</SectionTitle>
+                    <SectionDescription>
+                      {keyword.description}
+                    </SectionDescription>
+                  </SectionHeaderText>
+                </SectionHeader>
+                <KeywordSection
+                  keywords={keyword.value}
+                  setKeywords={keyword.handleChange}
+                />
+              </Section>
+            );
+          })}
+
           <UISectionCard
             title='Debrief Defaults'
             description='Setup a default company wide setting for scheduling debrief sessions.'
@@ -284,26 +325,9 @@ function SchedulingSettings({ updateSettings }) {
               setValue={setDebriefDefaults}
             />
           </UISectionCard>
-
-          {keywords.map((keyword) => {
-            return (
-              <>
-                <UISectionCard
-                  key={keyword.title}
-                  title={keyword.title}
-                  description={keyword.description}
-                >
-                  <KeywordSection
-                    keywords={keyword.value}
-                    setKeywords={keyword.handleChange}
-                  />
-                </UISectionCard>
-              </>
-            );
-          })}
         </div>{' '}
       </div>
-    </div>
+    </Page>
   );
 }
 

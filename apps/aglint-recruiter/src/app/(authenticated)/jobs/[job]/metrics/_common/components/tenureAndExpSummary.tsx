@@ -1,3 +1,10 @@
+import {
+  Section,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Skeleton } from '@components/ui/skeleton';
 import { type FC, Suspense } from 'react';
@@ -19,12 +26,12 @@ const Error = () => (
   <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
     <Card>
       <CardContent className='pt-6'>
-        <p className='text-center text-red-500'>Error loading data</p>
+        <p className='text-center text-destructive'>Error loading data</p>
       </CardContent>
     </Card>
     <Card>
       <CardContent className='pt-6'>
-        <p className='text-center text-red-500'>Error loading data</p>
+        <p className='text-center text-destructive'>Error loading data</p>
       </CardContent>
     </Card>
   </div>
@@ -38,7 +45,7 @@ const Loader = () => (
 );
 
 const Content = () => {
-  const [data] = useMetricsExperienceAndTenure();
+  const data = useMetricsExperienceAndTenure();
   if (!data) {
     return (
       <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
@@ -59,12 +66,18 @@ const Content = () => {
 const Tenure: FC<{ average_tenure: number }> = ({ average_tenure }) => {
   const years = (average_tenure / 12).toFixed(1);
   return (
-    <MetricCard
-      title='Average Tenure'
-      value={years}
-      unit='Years'
-      description='Average time before switching companies.'
-    />
+    <Section className='rounded-lg bg-muted p-4'>
+      <SectionHeader>
+        <SectionHeaderText>
+          <SectionTitle>Average Tenure</SectionTitle>
+          <SectionDescription>Applicants by location.</SectionDescription>
+        </SectionHeaderText>
+      </SectionHeader>
+      <div className='text-2xl font-bold'>Years {years}</div>
+      <p className='text-xs text-muted-foreground'>
+        Average time before switching companies.
+      </p>
+    </Section>
   );
 };
 
@@ -73,33 +86,20 @@ const Experience: FC<{ average_experience: number }> = ({
 }) => {
   const years = (average_experience / 12).toFixed(1);
   return (
-    <MetricCard
-      title='Average Experience'
-      value={years}
-      unit='Years'
-      description='Average of total full time experience of the candidates'
-    />
+    <Section className='rounded-lg bg-muted p-4'>
+      <SectionHeader>
+        <SectionHeaderText>
+          <SectionTitle>Average Experience</SectionTitle>
+          <SectionDescription>Applicants by location.</SectionDescription>
+        </SectionHeaderText>
+      </SectionHeader>
+      <div className='text-2xl font-bold'>Years {years}</div>
+      <p className='text-xs text-muted-foreground'>
+        Average of total full time experience of the candidates.
+      </p>
+    </Section>
   );
 };
-
-const MetricCard: FC<{
-  title: string;
-  value: string;
-  unit: string;
-  description: string;
-}> = ({ title, value, unit, description }) => (
-  <Card>
-    <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-      <CardTitle className='text-sm font-medium'>{title}</CardTitle>
-    </CardHeader>
-    <CardContent>
-      <div className='text-2xl font-bold'>
-        {value} {unit}
-      </div>
-      <p className='text-xs text-muted-foreground'>{description}</p>
-    </CardContent>
-  </Card>
-);
 
 const NoDataCard: FC<{ title: string }> = ({ title }) => (
   <Card>

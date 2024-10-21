@@ -4,7 +4,3 @@ export type Meeting = {
   endTime: string;
   meeting_id: string;
 };
-
-export type Meetings = {
-  [date: string]: Meeting[];
-};

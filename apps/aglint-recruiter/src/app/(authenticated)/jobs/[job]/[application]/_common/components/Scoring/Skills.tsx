@@ -1,69 +1,29 @@
 /* eslint-disable security/detect-object-injection */
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@components/ui/accordion'; // Import shadcn accordion components
+
+import { Button } from '@components/ui/button';
 import { Skeleton } from '@components/ui/skeleton';
-import { Lightbulb, Medal } from 'lucide-react';
+import { Medal, Star } from 'lucide-react';
 import { useState } from 'react';
 
-import { UIBadge } from '@/components/Common/UIBadge';
+import { EmptyState } from '@/common/EmptyState';
 
 import { useApplicationDetails } from '../../hooks/useApplicationDetails';
+import ApplicationDetailAccordion from '../ui/ApplicationDetailAccordian';
 import { Loader } from './Analysis/Common/Loader';
 
 const Skills = () => {
-  const { data } = useApplicationDetails();
-
-  const highRelevanceSkills = getHighRelevanceSkills(data);
-
   return (
-    <Accordion type='single' collapsible>
-      <AccordionItem value='skills'>
-        <AccordionTrigger>
-          <div className='flex w-full items-center justify-between'>
-            <div className='flex items-center space-x-2'>
-              <Lightbulb size={16} />
-              <span className='font-medium'>Skills</span>
-            </div>
-            {highRelevanceSkills.length > 0 && (
-              <div className='flex space-x-1'>
-                {highRelevanceSkills.map((skill, index) => (
-                  <UIBadge
-                    key={index}
-                    className='rounded-full bg-purple-200 px-2 py-1 text-xs font-medium text-purple-600'
-                    textBadge={skill}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        </AccordionTrigger>
-        <AccordionContent>
-          <div className='flex w-full flex-row flex-wrap gap-1'>
-            <Content />
-          </div>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+    <>
+      <ApplicationDetailAccordion title='Skills' Icon={Star} headerSlot={<></>}>
+        <div className='flex w-full flex-row flex-wrap gap-2'>
+          <Content />
+        </div>
+      </ApplicationDetailAccordion>
+    </>
   );
 };
 
 export { Skills };
-
-const getHighRelevanceSkills = (
-  data: ReturnType<typeof useApplicationDetails>['data'],
-) => {
-  if (!data?.resume_json?.skills || !data?.score_json?.relevance?.skills)
-    return [];
-  const relevance = data.score_json.relevance.skills;
-  const highSkills = data.resume_json.skills.filter(
-    (skill) => relevance[skill] === 'high',
-  );
-  return highSkills.slice(0, 3); // Get top 3 high relevance skills
-};
 
 const Content = () => {
   const { data, status } = useApplicationDetails();
@@ -82,10 +42,11 @@ const Content = () => {
     )
   )
     return (
-      <div className='mx-auto flex flex-col items-center justify-center p-4'>
-        <Medal className='mb-2 h-12 w-12 text-gray-500' />
-        <p className='text-sm text-gray-600'>No skills found</p>
-      </div>
+      <EmptyState
+        header='No skills found'
+        description='No skills were identified for this candidate based on the resume.'
+        icon={Medal}
+      />
     );
   return <Skill />;
 };
@@ -121,29 +82,36 @@ const Skill = () => {
   // Determine the skills to display
   const itemsToShow = isExpanded
     ? skillsWithRelevance
-    : skillsWithRelevance.slice(0, 10);
+    : skillsWithRelevance.slice(0, 20);
 
   return (
     <>
       {itemsToShow.map(({ skill, relevance }, i) => (
-        <UIBadge
-          key={i}
-          textBadge={
-            conjunctions.includes(skill.toLowerCase())
+        <>
+          <div
+            key={i}
+            className={`rounded-sm px-3 py-1 text-sm ${
+              relevance === 'high'
+                ? 'bg-purple-100 text-purple-800'
+                : 'bg-gray-100 text-gray-600'
+            }`}
+          >
+            {conjunctions.includes(skill.toLowerCase())
               ? skill.toLowerCase()
-              : skill.charAt(0).toUpperCase() + skill.slice(1)
-          }
-          color={relevance === 'high' ? 'purple' : 'neutral'}
-        />
+              : skill.charAt(0).toUpperCase() + skill.slice(1)}
+          </div>
+        </>
       ))}
-      {skillsWithRelevance.length > 10 && (
+      {skillsWithRelevance.length > 20 && (
         <div className='mt-2 w-full'>
-          <button
+          <Button
             onClick={() => setIsExpanded(!isExpanded)}
-            className='text-blue-500 hover:underline'
+            className='text-blue-500'
+            size={'sm'}
+            variant={'ghost'}
           >
             {isExpanded ? 'Show Less' : 'Show More'}
-          </button>
+          </Button>
         </div>
       )}
     </>

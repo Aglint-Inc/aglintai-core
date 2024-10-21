@@ -18,7 +18,13 @@ const StageProgress = forwardRef(
         key={index}
         pillProps={pillProps}
         isLast={index === count - 1}
-        isActive={index + 1 === currentStep}
+        color={
+          currentStep === index
+            ? 'info'
+            : currentStep < index
+              ? 'neutral'
+              : 'success'
+        }
       />
     ));
 
@@ -29,7 +35,7 @@ const StageProgress = forwardRef(
             pills
           ) : (
             <div className='flex w-full items-center'>
-              <div className='mx-auto p-2 px-10'>-</div>
+              <div className='p-2'>---</div>
             </div>
           )}
         </div>

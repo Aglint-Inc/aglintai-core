@@ -1,5 +1,5 @@
 /* eslint-disable security/detect-object-injection */
-export function numberToOrdinalText(number) {
+export function numberToOrdinalText(number: number) {
   const ordinals = [
     '',
     'first',

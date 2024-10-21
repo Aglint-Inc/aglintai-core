@@ -1,7 +1,16 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
+import {
+  Section,
+  SectionActions,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
+import { ScrollArea } from '@components/ui/scroll-area';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import { useState } from 'react';
 
 import { UIButton } from '@/components/Common/UIButton';
-import UITypography from '@/components/Common/UITypography';
 
 export function InterviewMemberSide({
   isUpcomingActive = true,
@@ -11,21 +20,42 @@ export function InterviewMemberSide({
   onClickCompleted = {},
   onClickCancelled = {},
   isCancelActive = false,
-  propsGrids = {},
   slotInterview,
   textUpcomingCount,
   textCancelledCount,
   textPastCount,
   isMenuTabVisible = true,
+}: {
+  isUpcomingActive?: boolean;
+  isCompletedActive?: boolean;
+  slotInterviewCard: React.ReactNode;
+  onClickUpcoming?: any;
+  onClickCompleted?: any;
+  onClickCancelled?: any;
+  isCancelActive?: boolean;
+  slotInterview: React.ReactNode;
+  textUpcomingCount?: number;
+  textCancelledCount?: number;
+  textPastCount?: number;
+  isMenuTabVisible?: boolean;
 }) {
+  const [isExpanded, setIsExpanded] = useState(true);
   return (
     <>
-      <Card className='mb-6'>
-        <CardHeader>
-          <div className='flex items-center justify-between'>
-            <CardTitle className='text-lg font-semibold'>
-              My Interviews
-            </CardTitle>
+      <Section>
+        <SectionHeader onClick={() => setIsExpanded(!isExpanded)}>
+          <SectionHeaderText>
+            <SectionTitle>My Interviews</SectionTitle>
+            <SectionDescription>
+              View your upcoming, past, and canceled interviews.
+            </SectionDescription>
+          </SectionHeaderText>
+          <SectionActions>
+            {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+          </SectionActions>
+        </SectionHeader>
+        {isExpanded && (
+          <>
             <Tabs
               isUpcomingActive={isUpcomingActive}
               onClickUpcoming={onClickUpcoming}
@@ -39,19 +69,13 @@ export function InterviewMemberSide({
               textPastCount={textPastCount}
               isMenuTabVisible={isMenuTabVisible}
             />
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className='flex h-full flex-col'>
-            <div
-              className='max-w-900px flex h-full flex-col gap-2.5 overflow-auto'
-              {...propsGrids}
-            >
-              {slotInterviewCard}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+
+            <ScrollArea className='h-[340px] gap-4'>
+              <div className='space-y-4'>{slotInterviewCard}</div>
+            </ScrollArea>
+          </>
+        )}
+      </Section>
     </>
   );
 }
@@ -68,13 +92,25 @@ const Tabs = ({
   textCancelledCount,
   textPastCount,
   isMenuTabVisible = true,
+}: {
+  isUpcomingActive?: boolean;
+  isCompletedActive?: boolean;
+  onClickUpcoming?: any;
+  onClickCompleted?: any;
+  onClickCancelled?: any;
+  isCancelActive?: boolean;
+  slotInterview: React.ReactNode;
+  textUpcomingCount?: number;
+  textCancelledCount?: number;
+  textPastCount?: number;
+  isMenuTabVisible?: boolean;
 }) => {
   return (
     <>
       {isMenuTabVisible && (
         <div className='flex h-12 items-center justify-between'>
           <div className='flex items-center gap-2.5'>
-            <div className='flex flex-col gap-2.5'>{slotInterview}</div>
+            <div className='hidden'>{slotInterview}</div>
             <div className='relative'>
               <UIButton
                 variant={isUpcomingActive ? 'default' : 'secondary'}
@@ -82,10 +118,10 @@ const Tabs = ({
                 {...onClickUpcoming}
               >
                 <div>Upcoming</div>
-                <div className='flex h-5 min-w-5 items-center justify-center rounded bg-neutral-300 px-1 text-neutral-700'>
-                  <UITypography variant='p' type='small'>
-                    {textUpcomingCount}
-                  </UITypography>
+                <div
+                  className={`i flex h-4 min-w-4 items-center justify-center rounded-sm px-1 text-xs ${isUpcomingActive ? 'bg-white text-black' : 'bg-gray-300 text-muted-foreground'}`}
+                >
+                  {textUpcomingCount}
                 </div>
               </UIButton>
             </div>
@@ -96,10 +132,10 @@ const Tabs = ({
                 {...onClickCancelled}
               >
                 <div>Canceled</div>
-                <div className='flex h-5 min-w-5 items-center justify-center rounded bg-neutral-300 px-1 text-neutral-700'>
-                  <UITypography variant='p' type='small'>
-                    {textCancelledCount}
-                  </UITypography>
+                <div
+                  className={`i flex h-4 min-w-4 items-center justify-center rounded-sm px-1 text-xs ${isCancelActive ? 'bg-white text-black' : 'bg-gray-300 text-muted-foreground'}`}
+                >
+                  {textCancelledCount}
                 </div>
               </UIButton>
             </div>
@@ -110,10 +146,10 @@ const Tabs = ({
                 {...onClickCompleted}
               >
                 <div>Past</div>
-                <div className='flex h-5 min-w-5 items-center justify-center rounded bg-neutral-300 px-1 text-neutral-700'>
-                  <UITypography variant='p' type='small'>
-                    {textPastCount}
-                  </UITypography>
+                <div
+                  className={`i flex h-4 min-w-4 items-center justify-center rounded-sm px-1 text-xs ${isCompletedActive ? 'bg-white text-black' : 'bg-gray-300 text-muted-foreground'}`}
+                >
+                  {textPastCount}
                 </div>
               </UIButton>
             </div>

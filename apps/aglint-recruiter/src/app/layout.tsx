@@ -1,9 +1,11 @@
-import '@styles/globals.css';
 import 'regenerator-runtime/runtime';
 
-import { ThemeProvider } from '@components/theme-provider';
+import RootLayout from '@components/layouts/root-layout';
 import { Toaster } from '@components/ui/toaster';
-import React from 'react';
+import { type PropsWithChildren } from 'react';
+
+import { ThemeProvider } from '@/common/themes/context/themeProvider';
+import { TRPCReactProvider } from '@/trpc/client';
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -15,24 +17,15 @@ export const metadata = {
   description: 'AI Recruiter for your company.',
 };
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const Layout = ({ children }: PropsWithChildren) => {
   return (
-    <html lang='en' suppressHydrationWarning>
-      <body>
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='system'
-          enableSystem={false}
-          disableTransitionOnChange
-        >
-          <main>{children}</main>
-          <Toaster />
-        </ThemeProvider>
-      </body>
-    </html>
+    <RootLayout>
+      <ThemeProvider>
+        <TRPCReactProvider>{children}</TRPCReactProvider>
+        <Toaster />
+      </ThemeProvider>
+    </RootLayout>
   );
-}
+};
+
+export default Layout;

@@ -1,19 +1,63 @@
+import 'server-only';
+
 import type { ApiPermissions } from './utils';
 
 export const API_PERMISSIONS: ApiPermissions = {
   ats: [],
+  tenant: [],
+  workflows: [],
   jobs: ['job_module'],
-  scheduling: ['scheduling_module'],
+  scheduling: {
+    candidate_invite: [],
+    details: ['scheduling_module'],
+    v1: [],
+    analytics: ['job_module'],
+  },
   integrations: ['integrations_module'],
   interviewers: ['job_module'],
-  interview_pool: ['view_interview_types'],
+  interviews: [],
+  interview_pool: {
+    add_users: ['update_interview_types'],
+    candidates: ['view_interview_types'],
+    create_pool: ['create_interview_types'],
+    delete_user: ['delete_interview_types'],
+    feedbacks: ['view_interview_types'],
+    list: ['view_interview_types'],
+    module_and_users: ['view_interview_types'],
+    schedules: ['view_interview_types'],
+    training_progress: ['view_interview_types'],
+    update: ['update_interview_types'],
+    archive_get_sessions: ['update_interview_types'],
+    get_all: [],
+    update_pool_relation: ['update_interview_types'],
+  },
   analytics: ['job_module'],
-  example: [],
+  example: {
+    fooBar: {
+      bar: [],
+      foo: ['public'],
+    },
+    helloWorld: [],
+  },
   candidatePortal: [],
   requests: [],
   application: ['job_module'],
   get_last_login: ['view_users'],
-  get_members_with_role: ['view_users'],
+  user: {
+    update_current_user: [],
+    get_oauth_user: [],
+  },
   rolesAndPermissions: [],
-  user: [],
+  candidate_availability: {
+    availableSlots: ['request_candidate_availability'],
+    create: ['request_candidate_availability'],
+    readCandidateAvailability: ['request_candidate_availability'],
+    update: ['public'],
+    getMeetings: ['public'],
+    getCandidateAvailabilityData: ['public'],
+    getScheduledMeetings: ['public'],
+  },
+  utility: [],
+  email: [],
+  onboarding: [],
 };

@@ -1,22 +1,20 @@
-/* eslint-disable no-unused-vars */
 import { createContext, type ReactNode, useContext } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import type { Hello } from '@/routers/example/helloWorld/hello';
+import type { ProcedureQuery } from '@/server/api/trpc';
 
 import { api } from './client';
 
-export const useHello = () => {
-  const { recruiter_id } = useAuthDetails();
+export const useHello = (): ProcedureQuery<Hello> => {
   return api.example.helloWorld.hello.useQuery({
-    helloId: recruiter_id,
+    helloId: 'abc',
   });
 };
 
 export const useWorld = () => {
-  const { recruiter_id } = useAuthDetails();
   const { mutate } = api.example.helloWorld.world.useMutation();
   const handleWorld = () => {
-    mutate({ worldId: recruiter_id });
+    mutate({ worldId: 'def' });
   };
   return { handleWorld };
 };
@@ -34,24 +32,20 @@ const _A = () => {
 const B = () => {
   const { data } = useHello();
   const { handleWorld } = useWorld();
-  // eslint-disable-next-line jsx-a11y/no-static-element-interactions
   return <div onClick={() => handleWorld()}>{JSON.stringify(data)}</div>;
 };
 
 const useFooBarContext = () => {
-  const { recruiter_id } = useAuthDetails();
-  const foo = api.example.fooBar.foo.useQuery({
-    fooId: recruiter_id,
-  });
   const { mutate } = api.example.fooBar.bar.useMutation();
   const handleBar = () => {
-    mutate({ barId: recruiter_id });
+    mutate({ barId: 'def' });
   };
-  return { foo, handleBar };
+  return { handleBar };
 };
 
-const FooBarContext =
-  createContext<ReturnType<typeof useFooBarContext>>(undefined);
+const FooBarContext = createContext<
+  ReturnType<typeof useFooBarContext> | undefined
+>(undefined);
 
 const _FooBarProvider = ({ children }: { children: ReactNode }) => {
   const value = useFooBarContext();

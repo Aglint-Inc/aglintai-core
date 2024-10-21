@@ -1,3 +1,9 @@
+import {
+  PageActions,
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
 import OptimisticWrapper from '@components/loadingWapper';
 import { Button } from '@components/ui/button';
 import {
@@ -6,124 +12,69 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
-import { Skeleton } from '@components/ui/skeleton';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { MoreHorizontal, PlusCircle, RefreshCw } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
-import { useAllIntegrations } from '@/authenticated/hooks';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useIntegrations } from '@/authenticated/hooks';
+import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import {
   useIntegrationActions,
   useIntegrationStore,
-  useJobs,
+  useJobsContext,
 } from '@/jobs/hooks';
 import ROUTES from '@/utils/routing/routes';
 
 import { STATE_LEVER_DIALOG } from '../constants';
-import EmptyJobDashboard from './AddJobWithIntegrations/EmptyJobDashboard';
+import type { Job } from '../types';
+import { EmptyJob } from './AddJobWithIntegrations/EmptyJob';
 import LeverModalComp from './AddJobWithIntegrations/LeverModal';
-import FilterJobDashboard, { useJobFilterAndSort } from './Filters';
+import FilterJobDashboard, { type useJobFilterAndSort } from './Filters';
 import JobsList from './JobsList';
 
-const DashboardComp = () => {
-  const router = useRouterPro();
-  const {
-    manageJob,
-    jobs: { data },
-    initialLoad,
-  } = useJobs();
+export const Body = ({ jobs }: { jobs: Job[] }) => {
   const { ifAllowed } = useRolesAndPermissions();
-  const {
-    jobs,
-    filterOptions,
-    filterValues,
-    setFilterValues,
-    setSort,
-    sortOptions,
-    sortValue,
-    searchText,
-    setSearchText,
-  } = useJobFilterAndSort(data ?? []);
 
   return (
-    <div className='h-full w-full'>
-      {!initialLoad ? (
-        <div className='min-h-screen'>
-          <div className='container-lg mx-auto w-full space-y-4 px-12'>
-            <div className='flex items-center justify-between'>
-              <div className='space-y-2'>
-                <Skeleton className='h-8 w-[200px]' />
-                <Skeleton className='h-4 w-[300px]' />
-              </div>
-              <Skeleton className='h-10 w-[100px]' />
-            </div>
-            <div className='space-y-2'>
-              <Skeleton className='h-10 w-full' />
-              <Skeleton className='h-10 w-full' />
-              <Skeleton className='h-10 w-full' />
-              <Skeleton className='h-10 w-full' />
-              <Skeleton className='h-10 w-full' />
-            </div>
-          </div>
-        </div>
-      ) : (
-        <>
-          {data?.length === 0 ? (
-            ifAllowed(
-              <EmptyJobDashboard
-                handleClickAddJob={() => router.push(ROUTES['/jobs/create']())}
-                heading={'Jobs'}
-              />,
-              ['manage_job'],
-            )
-          ) : (
-            <div className='container-lg mx-auto w-full px-12'>
-              <div className='flex flex-row justify-between'>
-                <h1 className='mb-4 text-2xl font-bold'>Jobs</h1>
-                <div className='ml-4'>{manageJob && <AddJob />}</div>
-              </div>
-              <div className='mb-4 flex flex-col gap-4'>
-                <div className='flex items-center justify-between'>
-                  <div className='flex-grow'>
-                    <FilterJobDashboard
-                      filterOptions={filterOptions}
-                      filterValues={filterValues}
-                      setFilterValues={setFilterValues}
-                      setSort={setSort}
-                      sortOptions={sortOptions}
-                      sortValue={sortValue}
-                      searchText={searchText}
-                      handlerFilter={setSearchText}
-                    />
-                  </div>
-                  {/* <div className='ml-4'>{manageJob && <AddJob />}</div> */}
-                </div>
-                <div className='overflow-x-auto rounded-lg bg-white shadow'>
-                  <JobsList jobs={jobs} />
-                </div>
-              </div>
-            </div>
-          )}
-        </>
-      )}
-    </div>
+    <>
+      <LeverModalComp />
+
+      <div data-testid='jobs-list-body' className='h-[70vh] w-full'>
+        {jobs.length === 0 ? (
+          ifAllowed(<EmptyJob />, ['manage_job'])
+        ) : (
+          <ScrollArea>
+            <JobsList jobs={jobs} />
+          </ScrollArea>
+        )}
+      </div>
+    </>
   );
 };
 
-export default DashboardComp;
+export const Header = () => {
+  const { manageJob } = useJobsContext();
+  return (
+    <PageHeader>
+      <PageHeaderText>
+        <PageTitle>Jobs</PageTitle>
+      </PageHeaderText>
+      <PageActions>{manageJob && <AddJob />}</PageActions>
+    </PageHeader>
+  );
+};
 
 export function AddJob() {
   const router = useRouterPro();
   const integration = useIntegrationStore((state) => state.integrations);
   const { setIntegrations } = useIntegrationActions();
-  const { data: integrations } = useAllIntegrations();
+  const { data: integrations } = useIntegrations();
 
   return (
     <div className='flex flex-row items-center gap-1'>
-      <LeverModalComp />
       <Sync />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -142,7 +93,7 @@ export function AddJob() {
           </DropdownMenuItem>
           <DropdownMenuItem
             onSelect={() => {
-              if (!integrations.lever_key) {
+              if (!integrations?.lever_key) {
                 setIntegrations({
                   ...integration,
                   lever: { open: true, step: STATE_LEVER_DIALOG.API },
@@ -171,9 +122,33 @@ export function AddJob() {
   );
 }
 
+export const Filter = ({
+  filterOptions,
+  filterValues,
+  setFilterValues,
+  setSort,
+  sortOptions,
+  sortValue,
+  searchText,
+  setSearchText,
+}: ReturnType<typeof useJobFilterAndSort>) => {
+  return (
+    <FilterJobDashboard
+      filterOptions={filterOptions}
+      filterValues={filterValues}
+      setFilterValues={setFilterValues}
+      setSort={setSort}
+      sortOptions={sortOptions}
+      sortValue={sortValue}
+      searchText={searchText}
+      handlerFilter={setSearchText}
+    />
+  );
+};
+
 const Sync = () => {
-  const { recruiter } = useAuthDetails();
-  const { handleJobsSync } = useJobs();
+  const { recruiter } = useTenant();
+  const { handleJobsSync } = useJobsContext();
   const [load, setLoad] = useState(false);
 
   if (recruiter.recruiter_preferences.ats === 'Aglint') return null;

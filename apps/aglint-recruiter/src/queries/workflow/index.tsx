@@ -5,48 +5,17 @@ import {
 import {
   useMutation,
   useMutationState,
-  useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
+import { getQueryKey } from '@trpc/react-query';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { api } from '@/trpc/client';
 import { type Workflow, type WorkflowAction } from '@/types/workflow.types';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
 import { workflowActionQueryKeys } from '../workflow-action/keys';
-import { workflowMutationKeys, workflowQueryKeys } from './keys';
-
-export const useWorkflowQuery = () => {
-  const { recruiter_id } = useAuthDetails();
-  const { queryKey } = workflowQueryKeys.workflows();
-  return useQuery({
-    queryKey,
-    queryFn: () => getWorkflows({ recruiter_id }),
-  });
-};
-type GetWorkflows = WorkflowKeys;
-
-const getWorkflows = async ({ recruiter_id }: GetWorkflows) => {
-  const { data, error } = await supabase
-    .from('workflow_view')
-    .select()
-    .order('created_at')
-    .eq('recruiter_id', recruiter_id);
-  if (error) throw new Error(error.message);
-  return data;
-};
-
-export const useWorkflowJobFilter = () => {
-  const { recruiter_id } = useAuthDetails();
-  const { queryKey } = workflowQueryKeys.workflow_job_filter();
-  return useQuery({
-    queryKey,
-    queryFn: async () =>
-      (await supabase.rpc('get_job_workflows', { recruiter_id }).throwOnError())
-        .data,
-  });
-};
+import { workflowMutationKeys } from './keys';
 
 export const useWorkflowMutations = () => {
   const { mutationKey: createMutationKey } =
@@ -67,36 +36,14 @@ export const useWorkflowMutations = () => {
     filters: { mutationKey: deleteMutationKey, status: 'pending' },
     select: (mutation) => mutation.state.variables as DeleteWorkflow,
   });
-  const { mutationKey: refreshMutationKey } =
-    workflowMutationKeys.workflows('REFRESH');
-  const refresh = useMutationState({
-    filters: { mutationKey: refreshMutationKey, status: 'pending' },
-    select: (mutation) => mutation.state.variables as RefreshWorkflow,
-  });
-  return { create, update, remove, refresh };
+  return { create, update, remove };
 };
 
-type WorkflowKeys = {
-  recruiter_id: string;
-};
 export const useWorkflowDelete = () => {
   const { mutationKey } = workflowMutationKeys.workflows('DELETE');
-  const { queryKey } = workflowQueryKeys.workflows();
-  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deleteWorkflow,
     mutationKey,
-    onSuccess: (_data, variables) => {
-      const prevWorkflows = queryClient.getQueryData<Workflow[]>(queryKey);
-      const newWorkflows = structuredClone(prevWorkflows).reduce(
-        (acc, curr) => {
-          if (curr.id !== variables.id) acc.push(curr);
-          return acc;
-        },
-        [] as Workflow[],
-      );
-      queryClient.setQueryData<Workflow[]>(queryKey, newWorkflows);
-    },
   });
 };
 
@@ -110,9 +57,8 @@ const deleteWorkflow = async ({ id }: DeleteWorkflow) => {
 
 export const useWorkflowUpdate = () => {
   const { mutationKey } = workflowMutationKeys.workflows('UPDATE');
-  const { queryKey } = workflowQueryKeys.workflows();
+  const queryKey = getQueryKey(api.workflows.read, undefined, 'query');
   const queryClient = useQueryClient();
-  const refresh = useWorkflowRefresh();
   return useMutation({
     mutationFn: updateWorkflow,
     mutationKey,
@@ -121,8 +67,8 @@ export const useWorkflowUpdate = () => {
       const { queryKey: actionQueryKey } =
         workflowActionQueryKeys.workflowAction({ workflow_id: variables.id });
       const previousWorkflows = queryClient.getQueryData<Workflow[]>(queryKey);
-      let previousWorkflow: Workflow = null;
-      const newWorkflows = structuredClone(previousWorkflows).reduce(
+      let previousWorkflow: Workflow | null = null;
+      const newWorkflows = structuredClone(previousWorkflows!).reduce(
         (acc, curr) => {
           if (curr.id === variables.id) {
             previousWorkflow = structuredClone(curr);
@@ -137,7 +83,7 @@ export const useWorkflowUpdate = () => {
       queryClient.setQueryData<Workflow[]>(queryKey, newWorkflows);
       if (
         variables.payload.trigger &&
-        previousWorkflow.trigger !== variables.payload.trigger
+        previousWorkflow!.trigger !== variables.payload.trigger
       ) {
         triggerChange = true;
         queryClient.setQueryData<WorkflowAction[]>(actionQueryKey, []);
@@ -152,7 +98,7 @@ export const useWorkflowUpdate = () => {
     onError: (_error, variables, context) => {
       toast.error('Unable to update workflow');
       const previousWorkflows = queryClient.getQueryData<Workflow[]>(queryKey);
-      const newWorkflows = structuredClone(previousWorkflows).reduce(
+      const newWorkflows = structuredClone(previousWorkflows!).reduce(
         (acc, curr) => {
           if (curr.id !== variables.id) acc.push(curr);
           return acc;
@@ -160,14 +106,13 @@ export const useWorkflowUpdate = () => {
         [] as Workflow[],
       );
       queryClient.setQueryData<Workflow[]>(queryKey, newWorkflows);
-      if (context.triggerChange) {
+      if (context!.triggerChange) {
         queryClient.setQueryData<WorkflowAction[]>(
-          context.actionQueryKey,
-          context.previousWorkflowActions,
+          context!.actionQueryKey,
+          context!.previousWorkflowActions,
         );
       }
     },
-    onSuccess: (data) => refresh({ id: data.id }),
   });
 };
 type UpdateWorkflow = {
@@ -187,7 +132,7 @@ const updateWorkflow = async ({ id, payload }: UpdateWorkflow) => {
 
 export const useWorkflowCreate = () => {
   const { mutationKey } = workflowMutationKeys.workflows('CREATE');
-  const { queryKey } = workflowQueryKeys.workflows();
+  const queryKey = getQueryKey(api.workflows.read, undefined, 'query');
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: createWorkflow,
@@ -195,7 +140,7 @@ export const useWorkflowCreate = () => {
     onMutate: ({ id, payload }) => {
       const previousWorkflows = queryClient.getQueryData<Workflow[]>(queryKey);
       const newWorkflows = structuredClone(previousWorkflows);
-      newWorkflows.push({
+      newWorkflows!.push({
         ...(payload as Workflow),
         id,
       });
@@ -204,7 +149,7 @@ export const useWorkflowCreate = () => {
     onError: (_error, variables) => {
       toast.error('Unable to create workflow');
       const previousWorkflows = queryClient.getQueryData<Workflow[]>(queryKey);
-      const newWorkflows = structuredClone(previousWorkflows).reduce(
+      const newWorkflows = structuredClone(previousWorkflows!).reduce(
         (acc, curr) => {
           if (curr.id !== variables.id) acc.push(curr);
           return acc;
@@ -212,9 +157,6 @@ export const useWorkflowCreate = () => {
         [] as Workflow[],
       );
       queryClient.setQueryData<Workflow[]>(queryKey, newWorkflows);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey });
     },
   });
 };
@@ -232,36 +174,4 @@ const createWorkflow = async ({
     .from('workflow')
     .insert({ ...payload, id, recruiter_id });
   if (error) throw new Error(error.message);
-};
-
-type RefreshWorkflow = {
-  id: string;
-};
-export const useWorkflowRefresh = () => {
-  const { mutationKey } = workflowMutationKeys.workflows('REFRESH');
-  const { queryKey } = workflowQueryKeys.workflows();
-  const queryClient = useQueryClient();
-  const { mutate } = useMutation({
-    mutationKey,
-    mutationFn: async ({ id }: RefreshWorkflow) =>
-      (
-        await supabase
-          .from('workflow_view')
-          .select()
-          .eq('id', id)
-          .single()
-          .throwOnError()
-      ).data,
-    onError: () => toast.error('Unable to refresh workflow'),
-    onSuccess: (data) => {
-      const prevCache = queryClient.getQueryData<Workflow[]>(queryKey);
-      const newCache = prevCache.reduce((acc, curr) => {
-        if (curr.id === data.id) acc.push(data);
-        else acc.push(curr);
-        return acc;
-      }, [] as Workflow[]);
-      queryClient.setQueryData<Workflow[]>(queryKey, newCache);
-    },
-  });
-  return mutate;
 };

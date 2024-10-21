@@ -43,7 +43,7 @@ const getResponse = async (req: NextApiRequest) => {
   let post = { ...job };
 
   if (req.body.preview || job.status === 'draft') {
-    post = { ...post, ...post.draft };
+    post = { ...post };
   }
   const isValid = job.status !== 'closed';
 
@@ -61,6 +61,6 @@ const getJob = async (query: string) =>
       .or(query)
       .single()
       .throwOnError()
-  ).data;
+  ).data!;
 
 export type PublicJobAPI = Awaited<ReturnType<typeof getResponse>>;

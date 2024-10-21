@@ -1,5 +1,6 @@
 import { Skeleton } from '@components/ui/skeleton';
 import { type REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
+import { useRequests } from '@requests/hooks';
 import { useState } from 'react';
 
 import KanbanSection from './ui/KanbanSection';
@@ -16,7 +17,7 @@ function RequestListContent({
   isFetched: boolean;
 }) {
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
-
+  const { filters } = useRequests();
   const urgentRequests = defaults.find(
     ({ sectionName }) => sectionName === 'urgent_request',
   );
@@ -35,9 +36,9 @@ function RequestListContent({
         <ScrollableSection section={urgentRequests} isFetched={isFetched} />
       )}
 
-      <div className='container-lg mx-auto w-full px-12'>
+      <div className='container-lg mx-auto w-full px-4'>
         <div
-          className={`${view === 'kanban' ? 'grid grid-cols-4 gap-4' : 'space-y-4'}`}
+          className={`${view === 'kanban' ? 'grid grid-cols-4 rounded-lg border' : 'space-y-4'}`}
         >
           {otherSections.map(({ requests, sectionName }) => (
             <div
@@ -47,13 +48,23 @@ function RequestListContent({
               {isFetched ? (
                 view === 'list' ? (
                   <ListSection
-                    collapseScheduleRequestSections={
-                      urgentRequests && !urgentRequests.requests.length
-                    }
+                    collapseScheduleRequestSections={Boolean(
+                      sectionName === 'schedule_request' &&
+                        urgentRequests &&
+                        urgentRequests.requests.length === 0,
+                    )}
                     sectionName={sectionName}
                     requests={requests}
                     expandedSections={expandedSections}
                     setExpandedSections={setExpandedSections}
+                    hideSection={
+                      Boolean(
+                        filters?.type.length &&
+                          filters?.type.every((t) => t !== sectionName),
+                      ) ||
+                      (filters?.status.length === 1 &&
+                        filters?.status[0] === 'completed')
+                    }
                   />
                 ) : (
                   <KanbanSection

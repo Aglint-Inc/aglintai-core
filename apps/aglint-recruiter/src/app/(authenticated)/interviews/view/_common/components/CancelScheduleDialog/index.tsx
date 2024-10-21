@@ -9,15 +9,14 @@ import {
 import { Label } from '@components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import axios from 'axios';
-import { Loader2 } from 'lucide-react';
-import React, { type Dispatch, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { Loader } from '@/common/Loader';
+import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
 import { UITextArea } from '@/components/Common/UITextArea';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { type ApiBodyParamsCancelSchedule } from '@/pages/api/scheduling/application/cancelschedule';
 import toast from '@/utils/toast';
-
 function CancelScheduleDialog({
   isDeclineOpen,
   setIsDeclineOpen,
@@ -27,7 +26,7 @@ function CancelScheduleDialog({
   application_log_id,
 }: {
   isDeclineOpen: boolean;
-  setIsDeclineOpen: Dispatch<React.SetStateAction<boolean>>;
+  setIsDeclineOpen: (_open: boolean) => void;
   refetch: () => void;
   metaDetails: {
     meeting_id: string;
@@ -38,7 +37,7 @@ function CancelScheduleDialog({
   application_log_id: string | null; // used for removing cancel button from activities after cancelling
   closeDialog: () => void;
 }) {
-  const { recruiter, recruiterUser } = useAuthDetails();
+  const { recruiter, recruiter_user } = useTenant();
 
   const [reason, setReason] = useState('');
   const [notes, setNotes] = useState('');
@@ -59,7 +58,7 @@ function CancelScheduleDialog({
       setIsSaving(true);
       const promises = metaDetails.map(async (meta) => {
         const req_body: ApiBodyParamsCancelSchedule = {
-          cancel_user_id: recruiterUser?.user_id ?? '',
+          cancel_user_id: recruiter_user?.user_id ?? '',
           meeting_id: meta.meeting_id,
           session_id: meta.session_id,
           notes,
@@ -95,7 +94,7 @@ function CancelScheduleDialog({
     >
       <DialogContent className='sm:max-w-[500px]'>
         <DialogHeader>
-          <DialogTitle>Cancel Schedule Initial Screening</DialogTitle>
+          <DialogTitle>Cancel Schedule</DialogTitle>
           <DialogDescription>
             Please provide a reason for canceling and any additional notes.
           </DialogDescription>
@@ -138,9 +137,7 @@ function CancelScheduleDialog({
             disabled={isSaving || !reason}
             onClick={onClickConfirm}
           >
-            {isSaving ? (
-              <Loader2 className='mr-2 h-4 w-4 animate-spin' />
-            ) : null}
+            {isSaving ? <Loader /> : null}
             Cancel Schedule
           </UIButton>
         </DialogFooter>

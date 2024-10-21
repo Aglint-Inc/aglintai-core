@@ -5,8 +5,25 @@ import type {
 } from '@aglint/shared-types';
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
+
+const BADGE_CONSTANTS: {
+  // eslint-disable-next-line no-unused-vars
+  [_id in Params['badges'][number]]: number;
+} = {
+  careerGrowth: 89,
+  jobStability: 89,
+  leadership: 69,
+  jobHopping: 0,
+  positions: 0,
+  schools: 0,
+  skills: 0,
+};
 
 type Application = DatabaseView['application_view'];
 
@@ -72,13 +89,14 @@ export const schema = z.object({
 
 const pageSize = 29;
 
-const query = async ({ input }: PrivateProcedure<typeof schema>) => {
+const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
   const db = createPrivateClient();
   const cursor = input?.cursor ?? 0;
   const query = db
     .from('application_view')
     .select('*', { count: 'exact' })
     .range(cursor, cursor + pageSize)
+    .eq('recruiter_id', ctx.recruiter_id)
     .eq('job_id', input.job_id)
     .eq('status', input.status);
 
@@ -86,7 +104,7 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
     query.eq('bookmarked', true);
   }
 
-  if (input.search.length) {
+  if (input.search!.length) {
     query.ilike('name', `%${input.search}%`);
   }
 
@@ -150,13 +168,13 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
 
   const { data, count } = await query.throwOnError();
 
-  const safeData = data.map((data, i) => ({
+  const safeData = (data ?? []).map((data, i) => ({
     ...data,
     cursor: cursor + i,
   }));
 
   const nextCursor =
-    cursor < count && safeData[safeData.length - 1]
+    cursor < (count ?? 0) && safeData[safeData.length - 1]
       ? safeData[safeData.length - 1].cursor + 1
       : null;
 
@@ -168,15 +186,4 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
 
 export const read = privateProcedure.input(schema).query(query);
 
-const BADGE_CONSTANTS: {
-  // eslint-disable-next-line no-unused-vars
-  [_id in Params['badges'][number]]: number;
-} = {
-  careerGrowth: 89,
-  jobStability: 89,
-  leadership: 69,
-  jobHopping: 0,
-  positions: 0,
-  schools: 0,
-  skills: 0,
-};
+export type Read = ProcedureDefinition<typeof read>;

@@ -1,6 +1,6 @@
 import type { EmailTemplateAPi } from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
-import { FetchUtilType } from '../../types/emailfetchUtil';
+import type { FetchUtilType } from '../../types/emailfetchUtil';
 
 export const fetchUtil: FetchUtilType<
   'interviewEnd_email_interviewerForFeedback'
@@ -54,7 +54,7 @@ export const fetchUtil: FetchUtilType<
     };
 
   const feedLink = recruiter_user.interview_meeting.id
-    ? `${process.env.NEXT_PUBLIC_APP_URL}/interviews/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=feedback`
+    ? `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/interviews/view?meeting_id=${recruiter_user.interview_meeting.id}&tab=feedback`
     : '';
 
   const react_email_placeholders: EmailTemplateAPi<'interviewEnd_email_interviewerForFeedback'>['react_email_placeholders'] =

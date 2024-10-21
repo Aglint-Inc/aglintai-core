@@ -3,11 +3,18 @@ import { type SchedulesSupabase } from '../../../app/_common/utils/schedules-que
 export type Modes = 'list' | 'calendar';
 export type Types = 'day' | 'week' | 'month';
 type colorType = { bg: string; pri: string } | null;
-export type event = {
+export type EventFullCalender = {
   title: string;
   start: string;
   end: string;
   backgroundColor: string;
+  status:
+    | 'completed'
+    | 'cancelled'
+    | 'waiting'
+    | 'reschedule'
+    | 'confirmed'
+    | 'not_scheduled';
   borderColor: string;
   extendedProps: {
     data: SchedulesSupabase[number];

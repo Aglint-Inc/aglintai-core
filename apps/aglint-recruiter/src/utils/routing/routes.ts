@@ -2,33 +2,6 @@ const pageRouteBuilder = (routes: string[]): string => {
   return routes.join('/');
 };
 
-const agentJobs = {
-  '/agent/jobs': () => pageRouteBuilder([agent['/agent'](), 'jobs']),
-  '/agent/jobs/[job]': ({ id }: { id: string }) =>
-    pageRouteBuilder([agentJobs['agent/jobs'](), id]),
-} as const;
-const agent = {
-  '/agent': () => pageRouteBuilder([ROUTES.app(), 'agent']),
-  '/agent/scheduler': () => pageRouteBuilder([agent['/agent'](), 'scheduler']),
-  '/agent/sourcing': () => pageRouteBuilder([agent['/agent'](), 'sourcing']),
-  ...agentJobs,
-} as const;
-const assementNew = {
-  '/assessment-new': () => pageRouteBuilder([ROUTES.app(), 'assessment-new']),
-  '/assessment-new/[id]': ({ id }: { id: string }) =>
-    pageRouteBuilder([assementNew['/assessment-new'](), id]),
-} as const;
-const assessmentThanks = {
-  '/assessment-thanks': () =>
-    pageRouteBuilder([ROUTES.app(), 'assessment-thanks']),
-  '/assessment-thanks/[assessment_id]': ({
-    assessment_id,
-  }: {
-    assessment_id: string;
-  }) =>
-    pageRouteBuilder([assessmentThanks['/assessment-thanks'](), assessment_id]),
-} as const;
-
 const assistant = {
   '/assistant': () => pageRouteBuilder([ROUTES.app(), 'assistant']),
 };
@@ -44,26 +17,7 @@ const authEmail = {
   '/auth-email/google': () => () =>
     pageRouteBuilder([ROUTES.app(), 'auth-email/google']),
 } as const;
-const candidateAssessment = {
-  '/candidate-assessment': () =>
-    pageRouteBuilder([ROUTES.app(), 'candidate-assessment']),
-  '/candidate-assessment/[application_id]/[assessment_id]': ({
-    application_id,
-    assessment_id,
-  }: {
-    application_id: string;
-    assessment_id: string;
-  }) =>
-    pageRouteBuilder([
-      candidateAssessment['candidate-assessment'](),
-      application_id,
-      assessment_id,
-    ]),
-} as const;
-const candidatePhoneScreening = {
-  '/candidate-phone-screening': () =>
-    pageRouteBuilder([ROUTES.app(), 'candidate-phone-screening']),
-} as const;
+
 const candidates = {
   '/candidates': () => pageRouteBuilder([ROUTES.app(), 'candidates']),
   '/candidates/aglintdb': () =>
@@ -90,10 +44,7 @@ const interview = {
   '/interview/feedback': () =>
     pageRouteBuilder([ROUTES.app(), 'interview/feedback']),
 };
-const jobAssistant = {
-  '/job-assistant/[id]': ({ id }: { id: string }) =>
-    pageRouteBuilder([ROUTES.app(), 'job-assistant', id]),
-} as const;
+
 const jobPost = {
   '/job-post/[id]': ({ id }: { id: string }) =>
     pageRouteBuilder([ROUTES.app(), 'job-post', id]),
@@ -156,22 +107,6 @@ const login = {
 const notifications = {
   '/notifications': () => pageRouteBuilder([ROUTES.app(), 'notifications']),
 } as const;
-const previewAssessment = {
-  '/preview-assessment': () =>
-    pageRouteBuilder([ROUTES.app(), 'preview-assessment']),
-  '/preview-assessment/[job_id]/[assessment_id]': ({
-    job_id,
-    assessment_id,
-  }: {
-    job_id: string;
-    assessment_id: string;
-  }) =>
-    pageRouteBuilder([
-      previewAssessment['preview-assessment'](),
-      job_id,
-      assessment_id,
-    ]),
-} as const;
 
 const user = {
   '/user/[user]': ({ user_id }: { user_id: string }) =>
@@ -202,10 +137,6 @@ const interviews = {
     pageRouteBuilder([interviews['/interviews'](), 'view']),
 } as const;
 
-const scheduling = {
-  '/scheduling/invite/[id]': ({ id }: { id: string }) =>
-    pageRouteBuilder([scheduling['/scheduling'](), 'invite', id]),
-} as const;
 const screening = {
   '/screening': () => pageRouteBuilder([ROUTES.app(), 'screening']),
   '/screening/[id]': ({ id }: { id: string }) =>
@@ -256,33 +187,25 @@ const reports = {
 
 const ROUTES = {
   app: () => '',
-  ...agent,
-  ...assementNew,
-  ...assessmentThanks,
   ...assistant,
   ...auth,
   ...authCal,
   ...authEmail,
-  ...candidateAssessment,
-  ...candidatePhoneScreening,
   ...candidates,
   ...company,
   ...companyPostings,
   ...forgotPassword,
   ...integrations,
   ...interview,
-  ...jobAssistant,
   ...jobPost,
   ...jobPostAssistant,
   ...jobs,
   ...login,
   ...notifications,
-  ...previewAssessment,
   ...profile,
   ...profileLink,
   ...resetPassword,
   ...interviews,
-  ...scheduling,
   ...screening,
   ...screeningDashboard,
   ...signup,

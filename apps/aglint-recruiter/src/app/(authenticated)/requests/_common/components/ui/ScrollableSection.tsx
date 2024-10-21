@@ -1,9 +1,9 @@
 import { Button } from '@components/ui/button';
 import { ScrollArea, ScrollBar } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
+import { type REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
 import Link from 'next/link';
 
-import { RequestProvider } from '@/context/RequestContext';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { RequestCard } from '../RequestCard';
@@ -12,13 +12,13 @@ function ScrollableSection({
   section,
   isFetched,
 }: {
-  section: any;
+  section: (typeof REQUEST_SESSIONS_DEFAULT_DATA)[number];
   isFetched: boolean;
 }) {
   return (
     <div key={section.sectionName}>
       {isFetched ? (
-        <div style={{ paddingLeft: '3rem', paddingRight: '3rem' }}>
+        <div className='px-4'>
           <div className='container-lg mx-auto w-full'>
             <div className='flex-center text-md mb-2 flex w-full items-center justify-between font-semibold'>
               <p>{capitalizeFirstLetter(section.sectionName)}</p>
@@ -34,8 +34,8 @@ function ScrollableSection({
         <Skeleton className='mb-2 h-6 w-40' />
       )}
       <div className='mb-10 flex w-full items-start'>
-        <ScrollArea style={{ width: 'calc(100vw - 65px)' }} className=''>
-          <div style={{ paddingLeft: '3rem', paddingRight: '3rem' }}>
+        <ScrollArea style={{ width: 'calc(100vw - 65px)' }}>
+          <div className='px-4'>
             <div className='container-lg'>
               <div className='flex'>
                 {isFetched ? (
@@ -47,9 +47,10 @@ function ScrollableSection({
                           key={props.id ?? i}
                           className={`flex-shrink-0 ${i === section.requests.length - 1 ? 'mr-8' : ''}`}
                         >
-                          <RequestProvider request_id={props.id}>
-                            <RequestCard {...{ ...props, isExpanded: false }} />
-                          </RequestProvider>
+                          <RequestCard
+                            key={props.id ?? i}
+                            {...{ ...props, isExpanded: false }}
+                          />
                         </div>
                       </div>
                     ))

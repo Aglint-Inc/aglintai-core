@@ -28,7 +28,6 @@ import {
   Calendar,
   Clock,
   FileText,
-  Loader2,
   MoreHorizontal,
   RefreshCw,
   UserPlus,
@@ -38,12 +37,15 @@ import {
 import Link from 'next/link';
 import { createContext, memo, useCallback, useContext, useState } from 'react';
 
-import PublishButton from '@/components/Common/PublishButton';
+import { Loader } from '@/common/Loader';
+import { useFlags } from '@/company/hooks/useFlags';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { useJob } from '@/job/hooks';
-import { useJobs } from '@/jobs/hooks';
+import { useApplicationsRescore } from '@/job/hooks/useApplicationsRescore';
+import { Banners } from '@/jobs/components/Banners';
+import { useJobsContext } from '@/jobs/hooks';
 import ROUTES from '@/utils/routing/routes';
 
 import { UploadApplications } from '../UploadApplications';
@@ -53,13 +55,13 @@ export const SharedActions = () => {
   return (
     <SettingsContext.Provider value={value}>
       <div className='flex flex-row items-center gap-2'>
+        <JobBanners />
         <Score />
         <Sync />
+        <Rescore />
         <Add />
-        <Publish />
         <Switcher />
-        {/* <Dropdown /> */}
-        <Link href={`/jobs/${value.job.id}/job-details`}>
+        <Link href={`/jobs/${value?.job?.id}/job-details`}>
           <UIButton variant='outline'>Edit</UIButton>
         </Link>
       </div>
@@ -67,10 +69,36 @@ export const SharedActions = () => {
   );
 };
 
+const JobBanners = () => {
+  const { job } = useJob();
+  return (
+    <div className='mr-4 flex flex-row gap-2'>
+      <Banners job={job} />
+    </div>
+  );
+};
+
+const Rescore = () => {
+  const { scoring } = useFlags();
+  const { isPolling } = useJob();
+  const { mutate, isPending } = useApplicationsRescore();
+  if (!scoring) return <></>;
+  return (
+    <div className='flex flex-row gap-1'>
+      <OptimisticWrapper loading={isPolling || isPending}>
+        <Button variant='outline' onClick={() => mutate()} className='w-auto'>
+          <RefreshCw className='mr-2 h-4 w-4' />
+          Rescore
+        </Button>
+      </OptimisticWrapper>
+    </div>
+  );
+};
+
 const Sync = () => {
   const { job, handleJobSync } = useJob();
   const [load, setLoad] = useState(false);
-  if (!job.syncable) return <></>;
+  if (!job?.syncable) return <></>;
   const handleSync = async () => {
     if (load) return;
     setLoad(true);
@@ -83,7 +111,7 @@ const Sync = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <div className='flex flex-shrink-0 items-center'>
-            <Clock className='mr-1 h-4 w-4 text-neutral-500' />
+            <Clock className='mr-1 h-4 w-4 text-muted-foreground' />
           </div>
         </TooltipTrigger>
         <TooltipContent>
@@ -102,16 +130,16 @@ const Sync = () => {
 };
 
 const Score = () => {
-  const { applicationScoringPollEnabled, job, total } = useJob();
-  if (!applicationScoringPollEnabled) return null;
+  const { isApplicationsPolling, job, total } = useJob();
+  if (!isApplicationsPolling) return <></>;
   return (
     <div className='flex items-center space-x-2 rounded-md bg-blue-100 px-3 py-2 text-blue-800'>
-      <Loader2 className='h-4 w-4 animate-spin' />
+      <Loader />
       <span className='text-sm font-medium'>
-        Application scoring in progress:{' '}
-        {job?.processing_count.processed +
-          job?.processing_count.unavailable +
-          job?.processing_count.unparsable}
+        Scoring:{' '}
+        {job.processing_count.processed +
+          job.processing_count.unavailable +
+          job.processing_count.unparsable}
         /{total ?? '---'}
       </span>
     </div>
@@ -119,22 +147,10 @@ const Score = () => {
 };
 
 const Add = () => {
-  const { job, manageJob } = useJob();
+  const { manageJob } = useJobsContext();
+  const { job } = useJob();
   if (job?.status === 'closed' || !manageJob) return null;
   return <UploadApplications></UploadApplications>;
-};
-
-const Publish = () => {
-  const { handlePublish, canPublish, manageJob, job } = useJob();
-  if (job?.status === 'closed' || !manageJob) return null;
-  return (
-    <PublishButton
-      onClick={async () => {
-        await handlePublish();
-      }}
-      disabled={!canPublish}
-    />
-  );
 };
 
 const Switcher = () => {
@@ -163,7 +179,7 @@ const Switcher = () => {
 
 const useSettingsActions = () => {
   const { push, pathName: pathname } = useRouterPro();
-  const { handleJobDelete } = useJobs();
+  const { handleJobDelete } = useJobsContext();
   const { job, handleJobAsyncUpdate } = useJob();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [modal, setModal] = useState(false);
@@ -172,7 +188,7 @@ const useSettingsActions = () => {
 
   const handleDeleteJob = useCallback(() => {
     push(`${ROUTES['/jobs']()}?status=${job?.status ?? 'all'}`);
-    handleJobDelete(job.id);
+    handleJobDelete(job?.id ?? null!);
   }, [job?.id]);
 
   const handleCloseModal = useCallback(() => {
@@ -219,10 +235,15 @@ const useSettingsActions = () => {
   };
 };
 
-const SettingsContext =
-  createContext<ReturnType<typeof useSettingsActions>>(undefined);
+const SettingsContext = createContext<
+  ReturnType<typeof useSettingsActions> | undefined
+>(undefined);
 
-const useSettings = () => useContext(SettingsContext);
+const useSettings = () => {
+  const value = useContext(SettingsContext);
+  if (!value) throw new Error('SettingsContext not found as a provider');
+  return value;
+};
 
 export const Settings = memo(() => {
   const value = useSettingsActions();
@@ -272,9 +293,12 @@ const Close = () => {
           </DialogDescription>
         </DialogHeader>
         <div className='py-4'>
-          <p className='mb-2'>
+          <p className='text-sm text-muted-foreground'>
             Confirm by typing the job title{' '}
-            <span className='text-red-500'>{job_title.trim()}</span> below.
+            <span className='font-semibold text-destructive'>
+              {job_title.trim()}
+            </span>{' '}
+            below.
           </p>
           <Input
             placeholder={job_title.trim()}
@@ -300,7 +324,7 @@ const Close = () => {
 };
 
 const Modules = () => {
-  const { manageJob } = useJob();
+  const { manageJob } = useJobsContext();
   const { currentPath } = useSettings();
   const { isScoringEnabled } = useRolesAndPermissions();
   if (!manageJob)
@@ -337,7 +361,7 @@ const HiringTeamModule = () => {
   const { handlePush } = useSettings();
   return (
     <DropdownMenuItem onSelect={() => handlePush('/jobs/[job]/hiring-team')}>
-      <UserPlus className='mr-2 h-4 w-4' />
+      <UserPlus className='mr-2 h-4 w-4 text-muted-foreground' />
       <span>Hiring Team</span>
     </DropdownMenuItem>
   );
@@ -347,7 +371,7 @@ const ProfileScoreModule = () => {
   const { handlePush } = useSettings();
   return (
     <DropdownMenuItem onSelect={() => handlePush('/jobs/[job]/profile-score')}>
-      <BarChart className='mr-2 h-4 w-4' />
+      <BarChart className='mr-2 h-4 w-4 text-muted-foreground' />
       <span>Profile Score</span>
     </DropdownMenuItem>
   );
@@ -357,7 +381,7 @@ const JobDetailsModule = () => {
   const { handlePush } = useSettings();
   return (
     <DropdownMenuItem onSelect={() => handlePush('/jobs/[job]/job-details')}>
-      <FileText className='mr-2 h-4 w-4' />
+      <FileText className='mr-2 h-4 w-4 text-muted-foreground' />
       <span>Job Details</span>
     </DropdownMenuItem>
   );
@@ -384,7 +408,7 @@ const CloseJob = () => {
         setAnchorEl(null);
       }}
     >
-      <XCircle className='mr-2 h-4 w-4' />
+      <XCircle className='mr-2 h-4 w-4 text-muted-foreground' />
       <span>{isDelete ? 'Delete' : 'Close'} Job</span>
     </DropdownMenuItem>
   );

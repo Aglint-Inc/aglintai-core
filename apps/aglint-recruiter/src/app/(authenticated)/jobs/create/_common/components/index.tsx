@@ -1,5 +1,18 @@
 /* eslint-disable security/detect-object-injection */
 import {
+  PageHeader,
+  PageHeaderText,
+  PageTitle,
+} from '@components/layouts/page-header';
+import {
+  Section,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
+import { Alert, AlertDescription, AlertTitle } from '@components/ui/alert';
+import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
@@ -7,9 +20,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@components/ui/breadcrumb';
-import { Button } from '@components/ui/button';
 import { Dialog, DialogContent } from '@components/ui/dialog';
-import { AlertTriangle, Loader2 } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import {
   type Dispatch,
   type SetStateAction,
@@ -17,43 +29,47 @@ import {
   useState,
 } from 'react';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
+import { Loader } from '@/components/Common/Loader';
+import { UIButton } from '@/components/Common/UIButton';
+import { useOnboarding } from '@/components/Navigation/OnboardPending/context/onboarding';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { useJobs } from '@/jobs/hooks';
+import { useCreateAglintJobs } from '@/jobs/hooks';
 import type { Form } from '@/jobs/types';
-import { useCompanyMembers } from '@/queries/company-members';
+import type { Aglint } from '@/routers/jobs/create/aglint';
 import ROUTES from '@/utils/routing/routes';
 
 import { type JobMetaFormProps, useJobForms } from './form';
 
-const JobCreateComponent = () => {
-  const { status } = useCompanyMembers();
-  if (status === 'error')
-    return (
-      <div className='flex h-full w-full items-center justify-center'>
-        <div>Error</div>
-      </div>
-    );
-  if (status === 'pending')
-    return (
-      <div className='flex h-full w-full items-center justify-center'>
-        <Loader2 className='animate-spin' />
-      </div>
-    );
+export const JobCreateHeader = () => {
   return (
-    <div className='container'>
-      <JobCreate />;
-    </div>
+    <PageHeader>
+      <PageHeaderText>
+        <PageTitle>Create Job</PageTitle>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href='/jobs'>Jobs</BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Create</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </PageHeaderText>
+    </PageHeader>
   );
 };
 
-const JobCreate = () => {
-  const { recruiter } = useAuthDetails();
+export const JobCreate = () => {
+  const { recruiter } = useTenant();
+  const { isJobSetupPending, jobSetupSteps } = useOnboarding();
   const initialCompany = recruiter?.name ?? '';
   const initialTitle = recruiter?.name ? `${initialCompany}'s first job` : '';
   const [fields, setFields] = useState<Form>({
     job_title: {
-      value: null,
+      value: '',
       required: true,
       placeholder: initialTitle,
       error: { value: false, helper: `Job title can't be empty` },
@@ -65,21 +81,21 @@ const JobCreate = () => {
     },
     job_type: {
       value: null,
-      required: true,
+      required: false,
       error: { value: false, helper: `Job type can't be empty` },
     },
     location_id: {
-      value: 0,
+      value: null,
       required: false,
       error: { value: false, helper: `Job location can't be empty` },
     },
     workplace_type: {
       value: null,
-      required: true,
+      required: false,
       error: { value: false, helper: `Workplace type can't be empty` },
     },
     description: {
-      value: '',
+      value: null!,
       required: true,
       error: {
         value: false,
@@ -87,7 +103,7 @@ const JobCreate = () => {
       },
     },
     hiring_manager: {
-      value: null,
+      value: null!,
       required: true,
       error: {
         value: false,
@@ -95,7 +111,7 @@ const JobCreate = () => {
       },
     },
     recruiter: {
-      value: null,
+      value: null!,
       required: true,
       error: {
         value: false,
@@ -120,27 +136,22 @@ const JobCreate = () => {
     },
   });
 
+  const pendingCompanySettingforJob = jobSetupSteps
+    .filter((job) => !job.isCompleted)
+    .map((set) => set.title)
+    .join(', ');
+
   return (
-    <div className='mx-auto max-w-2xl p-4'>
-      <div className='mb-4 flex items-center'>
-        {/* <Button variant='outline' onClick={() => push(ROUTES['/jobs']())}>
-          Back
-          </Button> */}
-        <div className='flex flex-col items-center space-x-2'>
-          <Breadcrumb>
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href='/jobs'>Jobs</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Create</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-          <h1 className='ml-4 mt-4 text-2xl font-bold'>Create Job</h1>
-        </div>
-      </div>
+    <div className='flex w-full max-w-3xl flex-col space-y-4 px-4'>
+      {isJobSetupPending && (
+        <Alert variant='warning'>
+          <AlertTitle>Company setup is pending </AlertTitle>
+          <AlertDescription>
+            First complete the onboarding progress then only you can create a
+            job. {pendingCompanySettingforJob}
+          </AlertDescription>
+        </Alert>
+      )}
       <JobCreateForm fields={fields} setFields={setFields} />
     </div>
   );
@@ -148,6 +159,7 @@ const JobCreate = () => {
 
 const validateForms = (fields: Form) => {
   return Object.entries(fields).reduce((acc, [key, value]) => {
+    //@ts-ignore
     acc[key] = {
       value: value.value,
       required: value.required,
@@ -171,8 +183,6 @@ const enableCreation = (fields: Form) => {
   );
 };
 
-type Payload = Parameters<ReturnType<typeof useJobs>['handleJobCreate']>[0];
-
 const JobCreateForm = ({
   fields,
   setFields,
@@ -181,24 +191,32 @@ const JobCreateForm = ({
   setFields: Dispatch<SetStateAction<Form>>;
 }) => {
   const [modal, setModal] = useState(false);
-  const { handleJobCreate } = useJobs();
+  const { mutateAsync } = useCreateAglintJobs();
   const { push } = useRouterPro();
 
   const handleCreate = async () => {
     const newFields = validateForms(fields);
     if (enableCreation(newFields)) {
       setModal(true);
-      const newJob = Object.entries(fields).reduce((acc, [key, { value }]) => {
-        acc[key] = value;
-        return acc;
-      }, {} as Payload);
+      const newJob = Object.entries(fields).reduce(
+        (acc, [key, { value }]) => {
+          //@ts-ignore
+          acc[key] = value;
+          return acc;
+        },
+        {} as Aglint['input'],
+      );
 
-      const { id } = await handleJobCreate({
-        ...newJob,
-      });
+      try {
+        const id = await mutateAsync({
+          ...newJob,
+        });
 
-      setModal(false);
-      push(ROUTES['/jobs/[job]']({ job: id }));
+        setModal(false);
+        push(ROUTES['/jobs/[job]']({ job: id! }));
+      } catch {
+        //
+      }
     } else {
       setFields(newFields);
     }
@@ -212,7 +230,7 @@ const JobCreateForm = ({
           ...prev[name],
           value: value,
           error: {
-            ...prev[name].error,
+            ...prev[name]!.error,
             value: false,
           },
         },
@@ -236,7 +254,7 @@ const JobCreateForm = ({
       <Dialog open={modal} onOpenChange={setModal}>
         <DialogContent>
           <div className='flex min-h-[200px] items-center justify-center'>
-            <Loader2 className='animate-spin' />
+            <Loader />
             <span className='ml-2'>Please wait job is creating...</span>
           </div>
         </DialogContent>
@@ -266,8 +284,8 @@ const JobForms = ({
 
   const forms = (
     <div className='space-y-4'>
-      {job_title}
-      <div className='grid grid-cols-2 gap-4'>
+      <div className='max-w-3xl'>{job_title}</div>
+      <div className='grid max-w-3xl grid-cols-2 gap-4'>
         <div>{job_type}</div>
         <div>{workplace_type}</div>
         <div>{department_id}</div>
@@ -287,42 +305,41 @@ const JobForms = ({
 
   return (
     <div className='space-y-6'>
-      <div className='rounded-md border bg-white p-4'>
-        <h2 className='mb-4 text-lg font-semibold'>Job Details</h2>
-        <div className='text-sm text-gray-500'>
-          Add job details to help candidates understand the role and apply.
-        </div>
+      <Section>
+        <SectionHeader>
+          <SectionHeaderText>
+            <SectionTitle>Job Details</SectionTitle>
+            <SectionDescription>
+              Add job details to help candidates understand the role and apply.
+            </SectionDescription>
+          </SectionHeaderText>
+        </SectionHeader>
         {forms}
-      </div>
-      <div className='rounded-md border bg-white p-4'>
-        <h2 className='mb-4 text-lg font-semibold'>Hiring Team</h2>
-        <div className='text-sm text-gray-500'>
-          Add the hiring team so they can manage the job.
-        </div>
-        {roleForms}
-      </div>
-      <div className='rounded-md border bg-white p-4'>
-        <h2 className='mb-4 text-lg font-semibold'>Job Description</h2>
-        <div className='text-sm text-gray-500'>
-          Add a detailed job description to help candidates understand the role
-          and apply.
-        </div>
         <div className='mt-4'>{description}</div>
-        {fields.description.error.value && (
-          <div className='mt-2 flex items-center text-red-500'>
-            <AlertTriangle className='mr-2' />
-            <span>{fields.description.error.helper}</span>
+        {fields.description!.error.value && (
+          <div className='mt-2 flex items-center text-sm text-destructive'>
+            <AlertCircle className='mr-2 h-4 w-4' />
+            <span>{fields.description!.error.helper}</span>
           </div>
         )}
-      </div>
+      </Section>
+      <Section>
+        <SectionHeader>
+          <SectionHeaderText>
+            <SectionTitle>Hiring Team</SectionTitle>
+            <SectionDescription>
+              Add the hiring team so they can manage the job.
+            </SectionDescription>
+          </SectionHeaderText>
+        </SectionHeader>
+        {roleForms}
+      </Section>
       <div className='flex justify-end space-x-4'>
-        <Button variant='outline' onClick={handleCancel}>
+        <UIButton variant='outline' onClick={handleCancel}>
           Cancel
-        </Button>
-        <Button onClick={handleCreate}>Create Job</Button>
+        </UIButton>
+        <UIButton onClick={handleCreate}>Create Job</UIButton>
       </div>
     </div>
   );
 };
-
-export default JobCreateComponent;

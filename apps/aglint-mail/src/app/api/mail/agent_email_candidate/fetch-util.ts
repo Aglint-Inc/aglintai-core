@@ -1,6 +1,5 @@
 import type {
   EmailTemplateAPi,
-  SupabaseType,
   TargetApiPayloadType,
 } from '@aglint/shared-types';
 import {
@@ -11,29 +10,32 @@ import {
   supabaseWrap,
 } from '@aglint/shared-utils';
 import { fetchCompEmailTemp } from '../../../../utils/apiUtils/fetchCompEmailTemp';
+import type { SupabaseClientType } from '../../../../supabase/supabaseAdmin';
 
 export async function fetchUtil(
-  supabaseAdmin: SupabaseType,
+  supabaseAdmin: SupabaseClientType,
   req_body: TargetApiPayloadType<'agent_email_candidate'>,
 ) {
-  const [filterJson] = supabaseWrap(
+  const filterJson = supabaseWrap(
     await supabaseAdmin
       .from('interview_filter_json')
       .select(
-        '*,applications(public_jobs(job_title),candidates(first_name,last_name,email,recruiter_id,recruiter(logo,name,id)))',
+        '*,applications(public_jobs!inner(job_title),candidates!inner(first_name,last_name,email,recruiter_id,recruiter!inner(logo,name,id)))',
       )
-      .eq('id', req_body.filter_id),
+      .eq('id', req_body.filter_id)
+      .single(),
   );
 
-  const [recr] = supabaseWrap(
+  const recr = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
       .select('first_name, last_name, scheduling_settings')
-      .eq('user_id', req_body.recruiter_user_id),
+      .eq('user_id', req_body.recruiter_user_id)
+      .single(),
   );
   const recruiter_tz = recr.scheduling_settings.timeZone.tzCode;
-
   const { end_date, start_date } = filterJson.filter_json;
+
   const {
     applications: {
       candidates: {
@@ -53,7 +55,7 @@ export async function fetchUtil(
     'agent_email_candidate',
   );
 
-  const scheduleLink = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${filterJson.application_id}?filter_id=${req_body.filter_id}`;
+  const scheduleLink = `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/self-scheduling/${req_body.filter_id}`;
 
   const comp_email_placeholder: EmailTemplateAPi<'agent_email_candidate'>['comp_email_placeholders'] =
     {

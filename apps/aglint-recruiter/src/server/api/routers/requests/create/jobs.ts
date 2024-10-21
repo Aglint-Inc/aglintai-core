@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 export const schema = z.object({
@@ -23,13 +27,13 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
   if (input.search) query.ilike('job_title', `%${input.search}%`);
   query.order('id');
   const { data, count } = await query.throwOnError();
-  const safeData = data.map(({ id, job_title }, i) => ({
+  const safeData = (data ?? []).map(({ id, job_title }, i) => ({
     id,
     label: job_title,
     cursor: cursor + i,
   }));
   const nextCursor =
-    cursor < count && safeData[safeData.length - 1]
+    cursor < (count ?? 0) && safeData[safeData.length - 1]
       ? safeData[safeData.length - 1].cursor + 1
       : null;
   return {
@@ -39,3 +43,5 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
 };
 
 export const jobs = privateProcedure.input(schema).query(query);
+
+export type Jobs = ProcedureDefinition<typeof jobs>;

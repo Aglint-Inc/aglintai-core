@@ -21,16 +21,16 @@ export const TYPE_SAFE_PARAMS = {
     '/jobs/[job]/job-details': [
       'job'
     ],
-    '/jobs/[job]/metrics': [
-      'job'
-    ],
-    '/jobs/[job]': [
-      'job'
-    ],
     '/jobs/[job]/profile-score': [
       'job'
     ],
     '/jobs/[job]/workflows': [
+      'job'
+    ],
+    '/jobs/[job]/metrics': [
+      'job'
+    ],
+    '/jobs/[job]': [
       'job'
     ],
     '/jobs/[job]/[application]': [
@@ -46,32 +46,17 @@ export const TYPE_SAFE_PARAMS = {
     '/workflows/[workflow]': [
       'workflow'
     ],
-    '/candidate/[application_id]/home': [
-      'application_id'
-    ],
-    '/candidate/[application_id]/interviews': [
-      'application_id'
-    ],
-    '/candidate/[application_id]/messages': [
-      'application_id'
-    ],
-    '/candidate/[application_id]/profile': [
-      'application_id'
-    ],
-    '/candidate/[application_id]/login': [
-      'application_id'
-    ],
     '/company-postings/[id]': [
       'id'
     ],
     '/job-post/[id]': [
       'id'
     ],
-    '/scheduling/invite/[id]': [
-      'id'
-    ],
-    '/scheduling/request-availability/[request_id]': [
+    '/request-availability/[request_id]': [
       'request_id'
+    ],
+    '/self-scheduling/[filter]': [
+      'filter'
     ]
   },
   'api': {}

@@ -4,7 +4,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { CircleCheck, CircleDashed, XCircle } from 'lucide-react';
+import { CircleCheck, XCircle } from 'lucide-react';
 import React from 'react';
 
 import { UIBadge } from '../UIBadge';
@@ -33,9 +33,9 @@ function InterviewerAcceptDeclineIcon({
         </Tooltip>
       )}
 
-      {type == 'waiting' && <CircleDashed />}
-      {type == 'accepted' && <CircleCheck />}
-      {type == 'declined' && <XCircle />}
+      {type == 'waiting' && <CircleCheck className='h-4 w-4 text-gray-300' />}
+      {type == 'accepted' && <CircleCheck className='h-4 w-4 text-green-600' />}
+      {type == 'declined' && <XCircle className='h-4 w-4 text-green-600' />}
     </>
   );
 }

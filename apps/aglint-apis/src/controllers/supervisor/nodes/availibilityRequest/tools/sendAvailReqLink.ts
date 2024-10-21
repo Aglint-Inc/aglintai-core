@@ -1,6 +1,4 @@
-import {EmailTemplateAPi} from '@aglint/shared-types';
 import {supabaseWrap} from '@aglint/shared-utils';
-import axios from 'axios';
 import {DynamicStructuredTool} from 'langchain/tools';
 import {supabaseAdmin} from 'src/services/supabase/SupabaseAdmin';
 import {dayjsLocal} from 'src/utils/dayjsLocal/dayjsLocal';
@@ -123,7 +121,6 @@ export const candidateAvailRequest = async ({
   start_date,
   end_date,
   session_details,
-  api_options,
 }: ReqAvai) => {
   const allSessions = await Promise.all(
     session_details.map(name =>
@@ -194,18 +191,18 @@ export const candidateAvailRequest = async ({
       }))
     )
   );
-  const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
-    {
-      organizer_user_id: allSessions[0].organizer_id,
-      avail_req_id: avail_req.id,
-    };
+  // const payload: EmailTemplateAPi<'sendAvailabilityRequest_email_applicant'>['api_payload'] =
+  //   {
+  //     organizer_user_id: allSessions[0].organizer_id,
+  //     avail_req_id: avail_req.id,
+  //   };
 
-  await axios.post(
-    `${process.env.CLIENT_APP_URL}/api/sendAvailabilityRequest_email_applicant`,
-    {
-      ...payload,
-    }
-  );
+  // await axios.post(
+  //   `${process.env.CLIENT_APP_URL}/api/sendAvailabilityRequest_email_applicant`,
+  //   {
+  //     ...payload,
+  //   }
+  // );
 
   return 'Availability Request sent successfully';
 };

@@ -1,25 +1,43 @@
-import { PencilIcon } from 'lucide-react';
-import { useState } from 'react';
+import { Pen } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UISectionCard from '@/components/Common/UISectionCard';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { UIButton } from '@/common/UIButton';
+import UISectionCard from '@/common/UISectionCard';
+import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
+import { useRouterPro } from '@/hooks/useRouterPro';
 
 import EditBasicInfoDialog from './EditBasicInfoDialog';
 import { BasicInfoUI } from './ui/BasicInfoUI';
 
 export const BasicInfo = () => {
   const [editDrawer, setEditDrawer] = useState(false);
+  const { recruiter } = useTenant();
   const { checkPermissions } = useRolesAndPermissions();
-  const { recruiter } = useAuthDetails();
   const isFormDisabled = !checkPermissions(['manage_company']);
+
+  const searchParams = useSearchParams();
+  const { replace } = useRouterPro();
+  useEffect(() => {
+    const isEditOpen = searchParams?.get('edit') == 'true' ? true : false;
+    if (isEditOpen) {
+      setEditDrawer(true);
+    }
+  }, [searchParams]);
+
+  const handleRemoveEditParam = () => {
+    const params = new URLSearchParams(searchParams!);
+    params.delete('edit');
+    replace(`?${params.toString()}`);
+  };
 
   return (
     <>
       <EditBasicInfoDialog
         editDialog={editDrawer}
         setEditDialog={setEditDrawer}
+        handleRemoveEditParam={handleRemoveEditParam}
       />
 
       <UISectionCard
@@ -31,8 +49,10 @@ export const BasicInfo = () => {
               variant='outline'
               size='sm'
               onClick={() => setEditDrawer(true)}
-              icon={<PencilIcon className='mr-2 h-3 w-3' />}
-            />
+              leftIcon={<Pen className='mr-2 h-3 w-3' />}
+            >
+              Edit
+            </UIButton>
           )
         }
       >

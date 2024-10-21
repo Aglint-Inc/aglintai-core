@@ -1,27 +1,23 @@
 /* eslint-disable security/detect-object-injection */
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 
-import axios from '@/client/axios';
 import { app_modules } from '@/constant/role_and_permissions';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useSearchQuery } from '@/hooks/useSearchQuery';
-import { type GetRoleAndPermissionsAPI } from '@/pages/api/getRoleAndPermissions/type';
-import { type SetRoleAndPermissionAPI } from '@/pages/api/setRoleAndPermission/type';
+import { type Get } from '@/routers/rolesAndPermissions/get';
+import { type ProcedureQuery } from '@/server/api/trpc';
+import { api } from '@/trpc/client';
 import toast from '@/utils/toast';
 
-export const useRoleAndPermissionsHook = () => {
+const useGetRoleAndPermissions = (): ProcedureQuery<Get> =>
+  api.rolesAndPermissions.get.useQuery();
+
+export function useRoleData() {
+  const [selectRole, setSelectRole] = useState<string | null>(null);
   const { queryParams, setQueryParams } = useSearchQuery<{
     role: string;
     add: boolean;
   }>();
-  const { recruiter } = useAuthDetails();
-  const queryClient = useQueryClient();
-  const query = useQuery({
-    queryKey: ['app', recruiter?.id, 'role-and-permissions'],
-    queryFn: getRoleAndPermissionsWithUserCount,
-    enabled: Boolean(recruiter?.id),
-  });
+  const query = useGetRoleAndPermissions();
   useEffect(() => {
     if (
       query.isFetched &&
@@ -34,9 +30,13 @@ export const useRoleAndPermissionsHook = () => {
       role_id && setSelectRole(role_id);
     }
   }, [query.isFetched]);
-
-  const [selectRole, setSelectRole] = useState<string | null>(null);
-
+  const handelSelectRole = (role_id: string | null, addMode?: boolean) => {
+    setSelectRole(role_id);
+    const role =
+      (role_id ? query.data?.rolesAndPermissions[role_id]?.name : undefined) ||
+      undefined;
+    setQueryParams({ role, add: addMode });
+  };
   const role =
     (selectRole ? query.data?.rolesAndPermissions?.[selectRole] : null) || null;
   const roleDetails = app_modules.reduce(
@@ -63,121 +63,57 @@ export const useRoleAndPermissionsHook = () => {
       };
     },
   );
-
-  const handelUpdateRole = async (data: Parameters<typeof updateRole>['0']) => {
-    return mutateAsync(data);
-  };
-  const [lastState, setLastState] = useState<{
-    index: number;
-    permission: NonNullable<typeof role>['permissions'][number];
-  } | null>(null);
-  const { mutate: mutateAsync } = useMutation({
-    mutationFn: updateRole,
-    onMutate({ add, delete: toDelete, role_id }) {
-      queryClient.setQueryData(
-        ['app', recruiter?.id, 'role-and-permissions'],
-        (
-          prevData: Awaited<
-            ReturnType<typeof getRoleAndPermissionsWithUserCount>
-          >,
-        ) => {
-          const tempData = structuredClone(prevData);
-          tempData.rolesAndPermissions[role_id].permissions =
-            tempData.rolesAndPermissions[role_id].permissions.map(
-              (item, index) => {
-                if (add === item.id) {
-                  setLastState({ index, permission: item });
-                  return { ...item, isActive: true };
-                }
-                if (toDelete && toDelete === item.relation_id) {
-                  setLastState({ index, permission: item });
-                  return { ...item, relation_id: null, isActive: false };
-                }
-                return item;
-              },
-            );
-          return tempData;
-        },
-      );
-    },
-    onSuccess(resData, { add, delete: toDelete, role_id }) {
-      add;
-      queryClient.setQueryData(
-        ['app', recruiter?.id, 'role-and-permissions'],
-        (
-          prevData: Awaited<
-            ReturnType<typeof getRoleAndPermissionsWithUserCount>
-          >,
-        ) => {
-          const tempData = structuredClone(prevData);
-          tempData.rolesAndPermissions[role_id].permissions =
-            tempData.rolesAndPermissions[role_id].permissions.map((item) => {
-              if (resData.addedPermissions?.length) {
-                const temp = resData.addedPermissions.find(
-                  (added) => added.id == item.id,
-                );
-                if (temp) {
-                  item = { ...item, ...temp, isActive: true };
-                }
-              }
-              if (toDelete === item.relation_id) {
-                item = { ...item, relation_id: null, isActive: false };
-              }
-              return item;
-            });
-          toast.success('Role updated successfully');
-          setLastState(null);
-          return tempData;
-        },
-      );
-    },
-    onError(error, { role_id }) {
-      toast.error(String(error));
-      if (lastState)
-        queryClient.setQueryData(
-          ['app', recruiter?.id, 'role-and-permissions'],
-          (
-            prevData: Awaited<
-              ReturnType<typeof getRoleAndPermissionsWithUserCount>
-            >,
-          ) => {
-            const tempData = structuredClone(prevData);
-            tempData.rolesAndPermissions[role_id].permissions[lastState.index] =
-              lastState.permission;
-            setLastState(null);
-            return tempData;
-          },
-        );
-    },
-  });
-
-  const handelSelectRole = (role_id: string, addMode?: boolean) => {
-    setSelectRole(role_id);
-    const role = query.data?.rolesAndPermissions[role_id]?.name || undefined;
-    setQueryParams({ role, add: addMode });
-  };
   return {
     role,
     roleDetails,
     selectRole,
     setSelectRole: handelSelectRole,
-    handelUpdateRole,
     ...query,
+    data: query.data || { rolesAndPermissions: {}, all_permission: {} },
   };
-};
+}
 
-export const getRoleAndPermissionsWithUserCount = async () => {
-  return axios.call<GetRoleAndPermissionsAPI>(
-    'POST',
-    '/api/getRoleAndPermissions',
-    {},
-  );
-};
+export function useRoleDataSetter() {
+  const apiUtils = api.useUtils();
+  const { mutate: mutateAsync } = api.rolesAndPermissions.post.useMutation({
+    async onMutate(input) {
+      // @ts-ignore
+      const { add, delete: toDelete, role_id } = input;
+      await apiUtils.rolesAndPermissions.get.cancel();
+      const prevData = apiUtils.rolesAndPermissions.get.getData();
+      apiUtils.rolesAndPermissions.get.setData(undefined, (prevData) => {
+        const tempData = structuredClone(
+          prevData || { rolesAndPermissions: {}, all_permission: {} },
+        );
+        tempData.rolesAndPermissions[role_id].permissions =
+          tempData.rolesAndPermissions[role_id].permissions.map((item) => {
+            if (add === item.id) {
+              // setLastState({ index, permission: item });
+              return { ...item, isActive: true };
+            }
+            if (toDelete && toDelete === item.relation_id) {
+              // setLastState({ index, permission: item });
+              return { ...item, relation_id: null, isActive: false };
+            }
+            return item;
+          });
+        return tempData;
+      });
+      return { prevData };
+    },
+    onSuccess() {
+      toast.success('Role updated successfully');
+    },
+    onError(error, _data, context) {
+      toast.error(String(error));
+      apiUtils.rolesAndPermissions.get.setData(undefined, context?.prevData);
+    },
+    onSettled: () => {
+      void apiUtils.rolesAndPermissions.get.invalidate();
+    },
+  });
 
-const updateRole = (data: SetRoleAndPermissionAPI['request']) => {
-  return axios.call<SetRoleAndPermissionAPI>(
-    'POST',
-    '/api/setRoleAndPermission',
-    data,
-  );
-};
+  return {
+    handelUpdateRole: mutateAsync,
+  };
+}

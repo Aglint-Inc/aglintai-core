@@ -12,7 +12,6 @@ import { type REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
 
-import { RequestProvider } from '@/context/RequestContext';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
 import { RequestCard } from '../RequestCard';
@@ -23,26 +22,28 @@ function ListSection({
   expandedSections,
   setExpandedSections,
   collapseScheduleRequestSections,
+  hideSection,
 }: {
   sectionName: (typeof REQUEST_SESSIONS_DEFAULT_DATA)[number]['sectionName'];
   requests: any[];
   expandedSections: string[];
   setExpandedSections: React.Dispatch<React.SetStateAction<string[]>>;
   collapseScheduleRequestSections: boolean;
+  hideSection: boolean;
 }) {
   const isExpanded =
-    expandedSections.includes(sectionName) ||
-    (sectionName === 'schedule_request' && collapseScheduleRequestSections);
-  const [slicedRequests, setSlicedRequests] = useState<any[]>(
-    requests.slice(0, 5),
-  );
+    expandedSections.includes(sectionName) || collapseScheduleRequestSections;
+
+  const [slice, setSlice] = useState(5);
+  const slicedRequests = requests.slice(0, slice);
   const viewMore = () => {
     if (slicedRequests.length === requests.length) {
       if (isExpanded) {
         setExpandedSections(expandedSections.filter((s) => s !== sectionName));
       }
-    } else setSlicedRequests(requests.slice(0, slicedRequests.length + 5));
+    } else setSlice((prev) => prev + 5);
   };
+  if (hideSection) return null;
   return (
     <Accordion
       type='single'
@@ -92,21 +93,20 @@ function ListSection({
           {requests.length > 0 ? (
             <div className='flex flex-col gap-4'>
               {slicedRequests.map((props, i) => (
-                <RequestProvider key={props.id ?? i} request_id={props.id}>
-                  <RequestCard {...{ ...props, isExpanded: false }} />
-                </RequestProvider>
+                <RequestCard
+                  key={props.id ?? i}
+                  {...{ ...props, isExpanded: false }}
+                />
               ))}
               {requests.length > 5 && (
                 <Collapsible>
                   <CollapsibleContent>
                     <div className='flex flex-col gap-4'>
                       {requests.slice(5).map((props, i) => (
-                        <RequestProvider
+                        <RequestCard
                           key={props.id ?? i}
-                          request_id={props.id}
-                        >
-                          <RequestCard {...{ ...props, isExpanded: false }} />
-                        </RequestProvider>
+                          {...{ ...props, isExpanded: false }}
+                        />
                       ))}
                     </div>
                   </CollapsibleContent>

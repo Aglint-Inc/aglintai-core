@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 export const schema = z.object({
@@ -19,18 +23,18 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
     .from('application_view')
     .select('id, name', { count: 'exact' })
     .range(cursor, cursor + pageSize)
-    .eq('status', 'interview')
-    .eq('job_id', input.job_id);
+    .eq('job_id', input.job_id)
+    .neq('status', 'disqualified');
   if (input.search) query.ilike('name', `%${input.search}%`);
   query.order('id');
   const { data, count } = await query.throwOnError();
-  const safeData = data.map(({ id, name }, i) => ({
+  const safeData = (data ?? []).map(({ id, name }, i) => ({
     id,
     label: name,
     cursor: cursor + i,
   }));
   const nextCursor =
-    cursor < count && safeData[safeData.length - 1]
+    cursor < (count ?? 0) && safeData[safeData.length - 1]
       ? safeData[safeData.length - 1].cursor + 1
       : null;
   return {
@@ -40,3 +44,5 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
 };
 
 export const candidates = privateProcedure.input(schema).query(query);
+
+export type Candidates = ProcedureDefinition<typeof candidates>;

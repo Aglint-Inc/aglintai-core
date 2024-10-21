@@ -1,86 +1,67 @@
 /* eslint-disable security/detect-object-injection */
 import {
-  type CandidateDirectBookingType,
   type PlanCombinationRespType,
   type SessionCombinationRespType,
 } from '@aglint/shared-types';
 import { SchemaCandidateDirectBooking } from '@aglint/shared-types/src/aglintApi/zodSchemas/candidate-self-schedule';
-import { ScheduleUtils, scheduling_options_schema } from '@aglint/shared-utils';
+import { ScheduleUtils } from '@aglint/shared-utils';
+import { CApiError } from '@aglint/shared-utils/src/customApiError';
 import { type z } from 'zod';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
-import { CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
-import { bookCandidateSelectedOption } from '@/services/CandidateScheduleV2/utils/bookingUtils/bookCandidateSelectedOption';
-import { fetchDBScheduleDetails } from '@/services/CandidateScheduleV2/utils/bookingUtils/dbFetch/fetchDBScheduleDetails';
-import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
+import { bookCandidateSelectedOption } from '@/services/CandidateSchedule/utils/bookingUtils/candidateSelfSchedule/bookCandidateSelectedOption';
+import { verifyRecruiterSelectedSlots } from '@/services/CandidateSchedule/utils/bookingUtils/candidateSelfSchedule/verifyRecruiterSelctedOptions';
+import { fetchDBScheduleDetails } from '@/services/CandidateSchedule/utils/bookingUtils/dbFetch/fetchDBScheduleDetails';
+import { compareTimesByMinutesPrec } from '@/services/CandidateSchedule/utils/time_range_utils';
 
 const candidateSelfSchedule = async (
   parsed: z.infer<typeof SchemaCandidateDirectBooking>,
 ) => {
-  const schedule_db_details = await fetchDBScheduleDetails(parsed);
-
-  const { filered_selected_options, company } = schedule_db_details;
-  const interviewer_selected_options = filered_selected_options;
-
-  const cand_filtered_plans: PlanCombinationRespType[] = getCandFilteredSlots(
-    interviewer_selected_options,
-    parsed,
-  );
-
-  const zod_options = scheduling_options_schema.parse({
-    include_conflicting_slots: {},
+  const fetchedDetails = await fetchDBScheduleDetails(parsed.filter_id);
+  const { verified_slots, cand_schedule } = await verifyRecruiterSelectedSlots({
+    candidate_tz: parsed.cand_tz,
+    company_id: fetchedDetails.company.id,
+    selected_options: fetchedDetails.selected_plans,
+    session_ids: fetchedDetails.session_ids,
   });
 
-  zod_options.include_conflicting_slots.show_conflicts_events = true;
-  zod_options.include_conflicting_slots.show_soft_conflicts = true;
-  zod_options.include_conflicting_slots.out_of_working_hrs = true;
-
-  const cand_schedule = new CandidatesSchedulingV2(zod_options);
-
-  await cand_schedule.fetchDetails({
-    params: {
-      req_user_tz: parsed.cand_tz,
-      start_date_str: schedule_db_details.start_date_str,
-      end_date_str: schedule_db_details.end_date_str,
-      company_id: company.id,
-      session_ids: interviewer_selected_options[0].sessions.map(
-        (s) => s.session_id,
-      ),
-    },
-  });
-
-  const verified_plans =
-    cand_schedule.verifyIntSelectedSlots(cand_filtered_plans);
-  if (verified_plans.length === 0) {
-    throw new Error('Requested plan does not exist');
+  if (!cand_schedule.db_details) {
+    throw new CApiError('SERVER_ERROR', 'No db details found');
   }
-
+  const filtered_plans = filterCandidateSelectedSlotFomVerifiedPlans({
+    cand_selected_plan: parsed.selected_plan,
+    verified_plans: verified_slots,
+    candidate_tz: parsed.cand_tz,
+  });
+  if (filtered_plans.length === 0) {
+    throw new CApiError('CLIENT', 'Invalid Slot');
+  }
   await bookCandidateSelectedOption(
     parsed,
-    cand_schedule,
-    verified_plans[0],
-    schedule_db_details,
+    cand_schedule.db_details,
+    filtered_plans[0],
+    fetchedDetails,
   );
 };
 
-const getCandFilteredSlots = (
-  interviewer_selected_options: PlanCombinationRespType[],
-  parsed_body: CandidateDirectBookingType,
-) => {
-  const int_rounds_length = ScheduleUtils.getSessionRounds(
-    interviewer_selected_options[0].sessions.map((s) => ({
-      break_duration: s.break_duration,
-      session_duration: s.duration,
-      session_order: s.session_order,
-    })),
-  ).length;
-  if (parsed_body.selected_plan.length !== int_rounds_length) {
-    throw new Error('invalid plan');
-  }
-  const cand_filtered_plans: PlanCombinationRespType[] = [];
+export default createPageApiPostRoute(
+  SchemaCandidateDirectBooking,
+  candidateSelfSchedule,
+);
 
-  interviewer_selected_options.forEach((plan) => {
-    const session_rounds = ScheduleUtils.getSessionRounds(
+const filterCandidateSelectedSlotFomVerifiedPlans = ({
+  cand_selected_plan,
+  candidate_tz,
+  verified_plans,
+}: {
+  cand_selected_plan: z.infer<
+    typeof SchemaCandidateDirectBooking
+  >['selected_plan'];
+  verified_plans: PlanCombinationRespType[]; // flatterned multipday plans
+  candidate_tz: string;
+}) => {
+  const filtered_plans = verified_plans.filter((plan) => {
+    const rounds = ScheduleUtils.getSessionRounds(
       plan.sessions.map((s) => ({
         ...s,
         break_duration: s.break_duration,
@@ -88,37 +69,22 @@ const getCandFilteredSlots = (
         session_order: s.session_order,
       })),
     ) as unknown as SessionCombinationRespType[][];
-    let is_valid = true;
-    for (
-      let curr_round_idx = 0;
-      curr_round_idx < session_rounds.length;
-      ++curr_round_idx
-    ) {
-      if (
-        userTzDayjs(session_rounds[curr_round_idx][0].start_time)
-          .tz(parsed_body.cand_tz)
-          .format() !== parsed_body.selected_plan[curr_round_idx].start_time &&
-        userTzDayjs(
-          session_rounds[curr_round_idx][
-            session_rounds[curr_round_idx].length - 1
-          ].end_time,
-        )
-          .tz(parsed_body.cand_tz)
-          .format() !== parsed_body.selected_plan[curr_round_idx].end_time
-      ) {
-        is_valid = false;
-        break;
-      }
-    }
-    if (is_valid) {
-      cand_filtered_plans.push({ ...plan });
-    }
+    const are_all_rounds_same = rounds.every((round, idx) => {
+      const start_time_diff = compareTimesByMinutesPrec(
+        round[0].start_time,
+        cand_selected_plan[idx].start_time,
+        candidate_tz,
+      );
+      const end_time_diff = compareTimesByMinutesPrec(
+        round[round.length - 1].end_time,
+        cand_selected_plan[idx].end_time,
+        candidate_tz,
+      );
+      return start_time_diff === 0 && end_time_diff === 0;
+    });
+
+    return are_all_rounds_same;
   });
 
-  return cand_filtered_plans;
+  return filtered_plans;
 };
-
-export default createPageApiPostRoute(
-  SchemaCandidateDirectBooking,
-  candidateSelfSchedule,
-);

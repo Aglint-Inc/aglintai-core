@@ -1,11 +1,12 @@
+import { type SchedulingSettingType } from '@aglint/shared-types';
 import { getFullName } from '@aglint/shared-utils';
 import { useMemo } from 'react';
 import { getStringColor } from 'src/app/_common/utils/getColorForText';
 
 import { transformWorkHours } from '@/authenticated/utils/transformWorkHours';
+import { useTenant } from '@/company/hooks';
 import CalendarResourceView from '@/components/Common/CalendarResourceView';
 import { type EventCalendar } from '@/components/Common/CalendarResourceView/types';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 
 import { setCalendarDate, useSelfSchedulingFlowStore } from '../store/store';
 
@@ -26,7 +27,7 @@ function Calendar() {
     calendarDate: state.calendarDate,
   }));
 
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
 
   const memoizedSelectedEvents = useMemo(() => {
     const selectedSessions = filteredSchedulingOptions
@@ -82,9 +83,10 @@ function Calendar() {
           setCurrentDate={setCalendarDate}
           isLoading={fetchingPlan}
           businessHours={
-            recruiter?.scheduling_settings &&
+            recruiter?.scheduling_settings?.workingHours &&
             transformWorkHours(
-              recruiter.scheduling_settings.workingHours,
+              recruiter.scheduling_settings
+                .workingHours as SchedulingSettingType['workingHours'],
               recruiter.scheduling_settings.timeZone.tzCode,
             )
           }

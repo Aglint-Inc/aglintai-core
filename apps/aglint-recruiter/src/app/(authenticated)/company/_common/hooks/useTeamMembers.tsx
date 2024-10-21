@@ -1,24 +1,22 @@
-import { useMemo } from 'react';
-
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useGreenhouseDetails } from '@/queries/greenhouse';
-import { useAllMembers } from '@/queries/members';
+import { useTenant, useTenantMembers } from '@/company/hooks';
+import { type GetLastLogin } from '@/routers/get_last_login';
+import type { ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
+import toast from '@/utils/toast';
 
-export const useTeamMembers = () => {
-  const { recruiter: tempRecruiter } = useAuthDetails();
-  const recruiter = tempRecruiter!;
+export const useTeamMembersLastLogin = () => {
+  const query = useGetLastLogin();
+  return {
+    ...query,
+    data: query.data || {},
+    isPending: query.isPending,
+  };
+};
 
-  const { allMembers, members, refetchMembers } = useAllMembers();
-  const {
-    data: syncData,
-    isPending,
-    refetch: refetchLastSync,
-  } = useGreenhouseDetails();
-
-  const activeMembers = members;
+const useGetLastLogin = (): ProcedureQuery<GetLastLogin> => {
+  const { allMembers } = useTenantMembers();
   const ids = allMembers.map((item) => item.user_id);
-  const query = api.get_last_login.useQuery(
+  return api.get_last_login.useQuery(
     { ids },
     {
       enabled: Boolean(allMembers?.length),
@@ -26,35 +24,45 @@ export const useTeamMembers = () => {
       refetchOnMount: false,
     },
   );
+};
+
+export function useUserSync() {
+  const apiUtils = api.useUtils();
+  const { recruiter: tempRecruiter } = useTenant();
+  const recruiter = tempRecruiter!;
   const { mutateAsync: syncUsers } = api.ats.greenhouse.users.useMutation();
   async function sync_users() {
     syncUsers({ recruiter_id: recruiter.id }).then(() => {
-      refetchMembers();
-      refetchLastSync();
+      apiUtils.tenant.members.invalidate();
+      apiUtils.get_last_login.invalidate();
     });
   }
+  return { sync_users };
+}
 
-  const data = useMemo(() => {
-    if (query.data) {
-      return allMembers.map((member) => {
-        return {
-          ...member,
-          last_login: (query.data || {})[member.user_id],
-        };
-      });
-    }
-    return [];
-  }, [query.data]);
-  return {
-    activeMembers,
-    ...query,
-    data,
-    isPending: query.isPending || isPending,
-    remote_sync: {
-      lastSync: syncData?.last_sync['users'],
-      isEnabled: Boolean(syncData?.key),
-      sync: sync_users,
+export function useCancelInvite() {
+  const apiUtils = api.useUtils();
+  const { mutateAsync: cancelInvite } = api.tenant['cancel-invite'].useMutation(
+    {
+      onMutate: async (input) => {
+        await apiUtils.tenant.members.cancel();
+        const prevData = apiUtils.tenant.members.getData();
+        apiUtils.tenant.members.setQueriesData(undefined, {}, (pre) => {
+          return (pre || []).filter((item) => {
+            return item.user_id !== input.user_id;
+          });
+        });
+        return { prevData };
+      },
+      onSuccess() {
+        apiUtils.tenant.members.invalidate();
+        toast.success('Updated successfully');
+      },
+      onError: (error, _data, context) => {
+        toast.error(String(error));
+        apiUtils.tenant.members.setData(undefined, context?.prevData);
+      },
     },
-    refetchMembers, // Add this line
-  };
-};
+  );
+  return { cancelInvite };
+}

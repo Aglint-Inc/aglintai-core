@@ -1,7 +1,5 @@
-import { onInsertInterviewSessionCancel } from './trigger-funcs/onInsertInterviewSessionCancel';
-import { onInsertRequest } from './trigger-funcs/onInsertRequest';
+import { onInsertPublicJobs } from './trigger-funcs/onInsertPublicJobs';
 import { onInsertRequestProgress } from './trigger-funcs/onInsertRequestProgress';
-import { onInsertWorkflowActionLogs } from './trigger-funcs/onInsertWorkflowActionLogs';
 import { onUpdateCandidateRequestAvailability } from './trigger-funcs/onUpdateCandidateRequestAvailability';
 import { onUpdateInterviewFilterJson } from './trigger-funcs/onUpdateInterviewFilterJson';
 import { onUpdateInterviewMeeting } from './trigger-funcs/onUpdateInterviewMeeting';
@@ -18,9 +16,8 @@ export const db_event_triggers: Record<`${DBEvents}_${string}`, any> = {
   UPDATE_candidate_request_availability: onUpdateCandidateRequestAvailability,
   UPDATE_interview_module_relation: onUpdateInterviewModuleRelation,
   UPDATE_interview_training_progress: onUpdateInterviewTrainingProgress,
-  INSERT_workflow_action_logs: onInsertWorkflowActionLogs,
-  INSERT_interview_session_cancel: onInsertInterviewSessionCancel,
-  INSERT_request: onInsertRequest,
   UPDATE_interview_session_cancel: onUpdateIntSesnCancel,
+  //insert
   INSERT_request_progress: onInsertRequestProgress,
+  INSERT_public_jobs: onInsertPublicJobs,
 };

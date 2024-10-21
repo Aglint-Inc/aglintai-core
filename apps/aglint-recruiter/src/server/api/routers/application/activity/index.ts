@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 const applicationActivitySchema = z.object({
@@ -33,3 +37,7 @@ const getApplicationActivity = async (
       .throwOnError()
   ).data;
 };
+
+export type ApplicationActivity = ProcedureDefinition<
+  typeof applicationActivity
+>;

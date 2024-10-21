@@ -10,7 +10,7 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../../utils/email/common/functions';
-import { FetchUtilType } from '../../types/emailfetchUtil';
+import type { FetchUtilType } from '../../types/emailfetchUtil';
 
 export const fetchUtil: FetchUtilType<
   'interviewCancel_email_applicant'
@@ -90,6 +90,10 @@ export const fetchUtil: FetchUtilType<
       company_id: candidateJob.candidates.recruiter_id,
       react_email_placeholders,
       recipient_email: candidates.email,
+    },
+    candidate_portal_payload: {
+      application_id: req_body.application_id,
+      type: 'interviewCancel_email_applicant',
     },
   };
 };

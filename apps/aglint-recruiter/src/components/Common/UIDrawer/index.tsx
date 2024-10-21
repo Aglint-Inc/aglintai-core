@@ -1,3 +1,4 @@
+import Typography from '@components/typography';
 import { ScrollArea } from '@components/ui/scroll-area';
 import {
   Sheet,
@@ -9,7 +10,6 @@ import { X as CloseIcon } from 'lucide-react';
 import React from 'react';
 
 import { UIButton } from '../UIButton';
-import UITypography from '../UITypography';
 
 function UIDrawer({
   children,
@@ -26,7 +26,7 @@ function UIDrawer({
   slotBottom?: React.ReactNode;
   title: string;
   size?: 'sm' | 'md' | 'lg' | 'full' | 'half';
-  calendar?: React.ReactNode;// New prop for adjustable height
+  calendar?: React.ReactNode; // New prop for adjustable height
 }) {
   // Determine width based on size variant
   const widthClass = {
@@ -42,7 +42,7 @@ function UIDrawer({
       <SheetContent side='right' className={`p-0 ${widthClass}`}>
         <div className='flex w-full flex-row'>
           {calendar}
-          <div className='w-full border-l border-gray-200'>
+          <div className='w-full'>
             <UIButton
               onClick={onClose}
               className='absolute right-2 top-2 h-8 w-8 p-2 text-gray-600 hover:text-gray-800'
@@ -52,15 +52,15 @@ function UIDrawer({
             </UIButton>
             <SheetHeader className='border-b border-gray-200 p-3'>
               <div className='flex flex-row'>
-                <UITypography className='text-sm' fontBold='normal'>
+                <Typography className='text-sm' fontBold='normal'>
                   {title}
-                </UITypography>
+                </Typography>
               </div>
             </SheetHeader>
             <ScrollArea className='h-[calc(100vh-98px)]'>{children}</ScrollArea>
             {slotBottom && (
               <SheetFooter className='w-full border-t border-gray-200 p-2'>
-                <div className='flex h-full w-full flex-row items-center justify-center gap-4'>
+                <div className='flex flex-row items-center justify-center gap-4'>
                   {slotBottom}
                 </div>
               </SheetFooter>

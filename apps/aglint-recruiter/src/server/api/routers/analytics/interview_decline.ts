@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { createPublicClient } from '@/server/db';
 
-import { privateProcedure } from '../../trpc';
+import { privateProcedure, type ProcedureDefinition } from '../../trpc';
 
 const body = z.object({
   recruiter_id: z.string().uuid(),
@@ -60,9 +60,12 @@ export const interview_decline = privateProcedure
         location_id,
       );
     }
-    const result = (await query.throwOnError()).data.map((item) => ({
-      created_at: item.created_at,
-      status: 'cancelled',
-    }));
+    const result =
+      (await query.throwOnError()).data?.map((item) => ({
+        created_at: item.created_at,
+        status: 'cancelled',
+      })) || [];
     return result;
   });
+
+export type InterviewDecline = ProcedureDefinition<typeof interview_decline>;

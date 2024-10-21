@@ -1,32 +1,24 @@
 import { type DB } from '@aglint/shared-types';
-import {
-  useMutation,
-  useMutationState,
-  useQueryClient,
-} from '@tanstack/react-query';
+import { useMutation, useMutationState } from '@tanstack/react-query';
 
-import { useJob } from '@/job/hooks';
+import { useTenant } from '@/company/hooks';
+import { useCurrentJob } from '@/job/hooks';
 import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import { jobQueries } from '../job';
 import { interviewSessionMutationKeys } from './keys';
 import {
-  type InterviewPlansType,
   type InterviewSessionRelationType,
   type InterviewSessionUpdate,
 } from './types';
 
 export const useCreateInterviewPlan = () => {
-  const queryClient = useQueryClient();
-  const { job_id, recruiter_id } = useJob();
+  const { recruiter_id } = useTenant();
+  const { job_id } = useCurrentJob();
   const id = job_id;
-  const { queryKey } = jobQueries.interview_plans({ id });
   const mutation = useMutation({
     mutationFn: async ({ name, order }: { name: string; order?: number }) => {
-      const data = await createInterviewPlan(name, id, recruiter_id, order);
-      await queryClient.invalidateQueries({ queryKey });
-      return data;
+      return await createInterviewPlan(name, id, recruiter_id, order);
     },
     onError: () => {
       toast.error('Unable to create interview plan.');
@@ -65,15 +57,10 @@ type UpdatePayload = {
 };
 
 export const useUpdateInterviewPlan = () => {
-  const queryClient = useQueryClient();
-  const { job_id } = useJob();
-  const id = job_id;
-  const { queryKey } = jobQueries.interview_plans({ id });
   const mutation = useMutation({
     mutationKey: mutationKeyUpdate,
     mutationFn: async ({ id, data }: UpdatePayload) => {
-      await updateInterviewPlan(id, data);
-      await queryClient.invalidateQueries({ queryKey });
+      return await updateInterviewPlan(id, data);
     },
     onError: () => {
       toast.error('Unable to create interview plan.');
@@ -88,16 +75,12 @@ type SwapPayload = {
 };
 
 export const useSwapInterviewPlan = () => {
-  const queryClient = useQueryClient();
-  const { job_id } = useJob();
-  const { queryKey } = jobQueries.interview_plans({ id: job_id });
   const mutation = useMutation({
     mutationKey: mutationKeySwap,
     mutationFn: async ({ plan_id_1, plan_id_2 }: SwapPayload) => {
       await supabase
         .rpc('swap_stage_order', { plan_id_1, plan_id_2 })
         .throwOnError();
-      await queryClient.invalidateQueries({ queryKey });
     },
     onError: () => {
       toast.error('Unable to move interview stage.');
@@ -111,15 +94,10 @@ type DeletePayload = {
 };
 
 export const useDeleteInterviewPlan = () => {
-  const queryClient = useQueryClient();
-  const { job_id } = useJob();
-  const id = job_id;
-  const { queryKey } = jobQueries.interview_plans({ id });
   const mutation = useMutation({
     mutationKey: mutationKeyDelete,
     mutationFn: async ({ id }: DeletePayload) => {
       await deleteInterviewPlan(id);
-      await queryClient.invalidateQueries({ queryKey });
     },
     onError: () => {
       toast.error('Unable to create interview plan.');
@@ -129,14 +107,9 @@ export const useDeleteInterviewPlan = () => {
 };
 
 export const useAddInterviewSession = () => {
-  const queryClient = useQueryClient();
-  const { job_id } = useJob();
-  const id = job_id;
-  const { queryKey } = jobQueries.interview_plans({ id });
   const mutation = useMutation({
     mutationFn: async (args: CreateInterviewSession) => {
-      await createInterviewSession(args);
-      await Promise.allSettled([queryClient.invalidateQueries({ queryKey })]);
+      return await createInterviewSession(args);
     },
     onError: () => {
       toast.error('Unable to create interview session.');
@@ -146,16 +119,11 @@ export const useAddInterviewSession = () => {
 };
 
 export const useUpdateInterviewSession = () => {
-  const queryClient = useQueryClient();
-  const { job_id } = useJob();
-  const id = job_id;
-  const { queryKey } = jobQueries.interview_plans({ id });
   const { mutationKey } = interviewSessionMutationKeys.update();
   const mutation = useMutation({
     mutationKey,
     mutationFn: async (args: UpdateInterviewSession) => {
-      await updateInterviewSession(args);
-      await queryClient.invalidateQueries({ queryKey });
+      return await updateInterviewSession(args);
     },
     onError: () => {
       toast.error('Unable to update interview session.');
@@ -165,20 +133,10 @@ export const useUpdateInterviewSession = () => {
 };
 
 export const useDeleteInterviewSession = () => {
-  const queryClient = useQueryClient();
-  const { job_id, revalidateJobQueries } = useJob();
-  const id = job_id;
-  const { queryKey } = jobQueries.interview_plans({ id });
-  const { mutationKey } = interviewSessionMutationKeys.delete();
-
   const mutation = useMutation({
     mutationKey,
     mutationFn: async (args: DeleteInterviewSession) => {
-      await deleteInterviewSession(args);
-      await Promise.allSettled([
-        queryClient.invalidateQueries({ queryKey }),
-        revalidateJobQueries(),
-      ]);
+      return await deleteInterviewSession(args);
     },
     onError: () => {
       toast.error('Unable to delete interview session.');
@@ -188,16 +146,11 @@ export const useDeleteInterviewSession = () => {
 };
 
 export const useEditInterviewSession = () => {
-  const queryClient = useQueryClient();
-  const { job_id } = useJob();
-  const id = job_id;
-  const { queryKey } = jobQueries.interview_plans({ id });
   const { mutationKey } = interviewSessionMutationKeys.update();
   const mutation = useMutation({
     mutationKey,
     mutationFn: async (args: EditInterviewSession) => {
-      await editInterviewSession(args);
-      await queryClient.invalidateQueries({ queryKey });
+      return await editInterviewSession(args);
     },
     onError: () => {
       toast.error('Unable to update interview session.');
@@ -207,15 +160,9 @@ export const useEditInterviewSession = () => {
 };
 
 export const useAddDebriefSession = () => {
-  const queryClient = useQueryClient();
-  const { job_id } = useJob();
-  const id = job_id;
-  const { queryKey } = jobQueries.interview_plans({ id });
-
   const mutation = useMutation({
     mutationFn: async (args: CreateDebriefSession) => {
-      await createDebriefSession(args);
-      await Promise.allSettled([queryClient.invalidateQueries({ queryKey })]);
+      return await createDebriefSession(args);
     },
     onError: () => {
       toast.error('Unable to create debrief session.');
@@ -225,63 +172,14 @@ export const useAddDebriefSession = () => {
 };
 
 export const useEditDebriefSession = () => {
-  const queryClient = useQueryClient();
-  const { job_id } = useJob();
-  const id = job_id;
-  const { queryKey } = jobQueries.interview_plans({ id });
   const { mutationKey } = interviewSessionMutationKeys.update();
   const mutation = useMutation({
     mutationKey,
     mutationFn: async (args: UpdateDebriefSession) => {
       await updateDebriefSession(args);
-      await queryClient.invalidateQueries({ queryKey });
     },
     onError: () => {
       toast.error('Unable to update debrief session.');
-    },
-  });
-  return mutation;
-};
-
-export const useReorderInterviewSessions = () => {
-  const queryClient = useQueryClient();
-  const { job_id } = useJob();
-  const id = job_id;
-  const { queryKey } = jobQueries.interview_plans({ id });
-  const mutation = useMutation({
-    mutationFn: async (args: {
-      updatedInterviewSessions: InterviewPlansType[number]['interview_session'];
-      interviewPlanId: string;
-    }) => {
-      const sessions = args.updatedInterviewSessions.map(
-        ({ id, session_order }) => ({ id, session_order }),
-      );
-      await reorderSessions({
-        sessions,
-        interview_plan_id: args.interviewPlanId,
-      });
-      await queryClient.invalidateQueries({ queryKey });
-    },
-    onMutate: async (payload) => {
-      await queryClient.cancelQueries({ queryKey });
-      const oldInterviewPlan =
-        queryClient.getQueryData<InterviewPlansType>(queryKey);
-      queryClient.setQueryData<InterviewPlansType>(
-        queryKey,
-        oldInterviewPlan.map((item) =>
-          item.id === payload.interviewPlanId
-            ? { ...item, interview_session: payload.updatedInterviewSessions }
-            : item,
-        ),
-      );
-      return { oldInterviewPlan };
-    },
-    onError: (_error, _variables, context) => {
-      toast.error('Unable to reorder sessions');
-      queryClient.setQueryData<InterviewPlansType>(
-        queryKey,
-        context.oldInterviewPlan,
-      );
     },
   });
   return mutation;
@@ -401,17 +299,5 @@ export type UpdateDebriefSession =
 
 export const updateDebriefSession = async (args: UpdateDebriefSession) => {
   const { error } = await supabase.rpc('update_debrief_session', args);
-  if (error) throw new Error(error.message);
-};
-
-type ReorderSessions = Omit<
-  DB['public']['Functions']['reorder_sessions']['Args'],
-  'sessions'
-> & {
-  sessions: { id: string; session_order: number }[];
-};
-
-const reorderSessions = async (args: ReorderSessions) => {
-  const { error } = await supabase.rpc('reorder_sessions', args);
   if (error) throw new Error(error.message);
 };

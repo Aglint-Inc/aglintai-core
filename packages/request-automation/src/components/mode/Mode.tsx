@@ -33,6 +33,7 @@ function Mode() {
     agent: false,
     reports: false,
     themes: false,
+    onboard_complete: false,
   });
 
   const supabase = window.supabase;
@@ -47,7 +48,7 @@ function Mode() {
     const { data: iniFlags, error } = await supabase
       .from("recruiter_preferences")
       .select(
-        "scoring, integrations, request, roles, scheduling, workflow, analytics, candidate_portal, agent, reports, themes"
+        "scoring, integrations, request, roles, scheduling, workflow, analytics, candidate_portal, agent, reports, themes, onboard_complete"
       )
       .eq("recruiter_id", recruiterId)
       .single();
@@ -181,6 +182,13 @@ function Mode() {
             >
               <input type="checkbox" checked={flags.themes} />
               <p>Theme</p>
+            </div>
+            <div
+              className="themes"
+              onClick={() => handleFeatureChange("onboard_complete")}
+            >
+              <input type="checkbox" checked={flags.onboard_complete} />
+              <p>Onboard complete</p>
             </div>
           </div>
         )}

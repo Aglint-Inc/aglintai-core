@@ -1,14 +1,11 @@
-import {
-  type CandReqSlotsType,
-  type PlanCombinationRespType,
-} from '@aglint/shared-types';
+import { type CandReqSlotsType } from '@aglint/shared-types';
 import { cn } from '@lib/utils';
 import { Check } from 'lucide-react';
 
 import { ShowCode } from '@/components/Common/ShowCode';
 import { UIDivider } from '@/components/Common/UIDivider';
 
-import DayCardWrapper from '../../../../SelfSchedulingDrawer/_common/components/BodyDrawer/StepSlotOptions/DayCardWrapper';
+import DayCardWrapper from '../../../../SelfSchedulingDrawer/_common/components/StepSlotOptions/DayCardWrapper';
 import { setCalendarDate } from '../../contexts/AvailabilitySchedulingStore';
 import { useAvailabilityContext } from '../../contexts/RequestAvailabilityContext';
 import FinalScreen from '../FinalScreen';
@@ -79,28 +76,25 @@ function RequestAvailabilityBody({
     <div className='flex w-[500px] flex-col gap-2 p-4'>
       <div className='mb-2 flex w-full'>
         {availableSlots &&
-          [...availableSlots, [{}]]?.map(
-            (_ele: PlanCombinationRespType[][], i) => {
-              const firstIndex = 0;
-              const lastIndex = [...availableSlots, {}].length - 1;
-
-              return (
-                <Stepper
-                  key={i}
-                  isLeftLine={i !== firstIndex}
-                  isRightLine={i !== lastIndex}
-                  textStepName={i === lastIndex ? 'Final' : `Day ${i + 1}`}
-                  isCurrent={selectedIndex === i}
-                  isCompleted={i < selectedIndex}
-                  onClickCompleted={() => {
-                    if (i < lastIndex) {
-                      setSelectedIndex(i);
-                    }
-                  }}
-                />
-              );
-            },
-          )}
+          [...availableSlots, {}].map((_, i) => {
+            const firstIndex = 0;
+            const lastIndex = [...availableSlots, {}].length - 1;
+            return (
+              <Stepper
+                key={i}
+                isLeftLine={i !== firstIndex}
+                isRightLine={i !== lastIndex}
+                textStepName={i === lastIndex ? 'Final' : `Day ${i + 1}`}
+                isCurrent={selectedIndex === i}
+                isCompleted={i < selectedIndex}
+                onClickCompleted={() => {
+                  if (i < lastIndex) {
+                    setSelectedIndex(i);
+                  }
+                }}
+              />
+            );
+          })}
       </div>
       <UIDivider />
       <div className='h-[calc(100vh - 123px)] flex flex-col gap-2 overflow-auto'>
@@ -180,7 +174,7 @@ export function Stepper({
               ? 'border-blue-500 bg-blue-500 text-white'
               : isCurrent
                 ? 'border-blue-500 text-blue-500'
-                : 'border-gray-300 text-gray-300',
+                : 'border-border text-gray-300',
           )}
           onClick={isCompleted ? onClickCompleted : undefined}
         >
@@ -206,7 +200,7 @@ export function Stepper({
             ? 'text-blue-500'
             : isCompleted
               ? 'text-blue-500'
-              : 'text-gray-500',
+              : 'text-muted-foreground',
         )}
       >
         {textStepName}

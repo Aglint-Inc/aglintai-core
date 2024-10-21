@@ -1,3 +1,5 @@
+'use client';
+
 import {
   createContext,
   memo,
@@ -7,23 +9,24 @@ import {
 } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
 import {
   useWorkflowCreate,
   useWorkflowDelete,
-  useWorkflowJobFilter,
   useWorkflowMutations,
-  useWorkflowQuery,
   useWorkflowUpdate,
 } from '@/queries/workflow';
 import { SafeObject } from '@/utils/safeObject';
 
+import { useWorkflowsJobFilter } from '../hooks/useWorkflowsJobFilter';
+import { useWorkflowsRead } from '../hooks/useWorkflowsRead';
+
 const useWorkflowsContext = () => {
-  const { recruiter_id } = useAuthDetails();
-  const workflows = useWorkflowQuery();
+  const { recruiter_id } = useTenant();
+  const workflows = useWorkflowsRead();
   const { mutate: createWorkflowMutation } = useWorkflowCreate();
-  const workflowJobFilter = useWorkflowJobFilter();
+  const workflowJobFilter = useWorkflowsJobFilter();
   const { mutate: deleteWorkflowMutation } = useWorkflowDelete();
   const workflowUpdate = useWorkflowUpdate();
   const workflowMutations = useWorkflowMutations();
@@ -42,14 +45,14 @@ const useWorkflowsContext = () => {
         payload,
       });
     },
-    [workflows.data],
+    [workflows],
   );
 
   const handleDeleteWorkflow = useCallback(
     (payload: Parameters<typeof deleteWorkflowMutation>[0]) => {
       deleteWorkflowMutation(payload);
     },
-    [workflows.data],
+    [workflows],
   );
 
   const { devlinkProps: getDevlinkProps, checkPermissions } =
@@ -81,8 +84,9 @@ const useWorkflowsContext = () => {
   };
 };
 
-export const WorkflowsContext =
-  createContext<ReturnType<typeof useWorkflowsContext>>(undefined);
+export const WorkflowsContext = createContext<
+  ReturnType<typeof useWorkflowsContext> | undefined
+>(undefined);
 
 export const WorkflowsProvider = memo((props: PropsWithChildren) => {
   const value = useWorkflowsContext();

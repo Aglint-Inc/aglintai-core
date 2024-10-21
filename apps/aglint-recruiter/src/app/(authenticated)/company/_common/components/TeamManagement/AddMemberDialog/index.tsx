@@ -1,35 +1,38 @@
 import {
   type employmentTypeEnum,
   type RecruiterUserType,
-  type schedulingSettingType,
 } from '@aglint/shared-types';
 import { useToast } from '@components/hooks/use-toast';
 import { useState } from 'react';
 
-import { useRolesOptions } from '@/authenticated/hooks/useRolesOptions';
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useAllDepartments } from '@/queries/departments';
-import { useAllMembers } from '@/queries/members';
-import { useAllOfficeLocations } from '@/queries/officeLocations';
+import { useIntegrations } from '@/authenticated/hooks';
+import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
+import { UIButton } from '@/common/UIButton';
+import UIDialog from '@/common/UIDialog';
+import {
+  useTenant,
+  useTenantMembers,
+  useTenantOfficeLocations,
+  useTenantRoles,
+} from '@/company/hooks';
+import { api } from '@/trpc/client';
 import timeZone from '@/utils/timeZone';
 
-import { inviteUserApi } from '../utils';
+import { defaultSchedulingSettings } from './contants';
 import { AddMemberDialogUI } from './ui/AddMemberDialogUI';
 
 export type InviteUserFormType = {
-  first_name: string;
-  last_name: string;
-  email: string;
-  linked_in: string;
-  employment: employmentTypeEnum;
-  position: string;
-  location_id: number;
-  department_id: number;
-  role: string;
-  role_id: string;
-  manager_id: string;
+  first_name: string | null;
+  last_name: string | null;
+  email: string | null;
+  linked_in: string | null;
+  employment: employmentTypeEnum | null;
+  position: string | null;
+  location_id: number | null;
+  department_id: number | null;
+  role: string | null;
+  role_id: string | null;
+  manager_id: string | null;
 };
 export type InviteUserFormErrorType = {
   first_name: boolean;
@@ -62,11 +65,12 @@ const AddMember = ({
   };
 }) => {
   const { toast } = useToast();
-  const { recruiter, recruiterUser } = useAuthDetails();
-  const { data: locations } = useAllOfficeLocations();
+  const { mutateAsync: inviteUserApi } = api.tenant.invite.useMutation();
+  const { recruiter_user } = useTenant();
+  const { data: locations } = useTenantOfficeLocations();
   const { data: departments } = useAllDepartments();
-  const { refetchMembers } = useAllMembers();
-  const initform = {
+  const { refetch: refetchMembers } = useTenantMembers();
+  const initForm: InviteUserFormType = {
     first_name: null,
     last_name: null,
     email: null,
@@ -79,7 +83,8 @@ const AddMember = ({
     role: defaultRole?.role ? defaultRole.role : null,
     manager_id: null,
   };
-  const [form, setForm] = useState<InviteUserFormType>(initform);
+  const { data: integrations } = useIntegrations();
+  const [form, setForm] = useState<InviteUserFormType>(initForm);
 
   const [formError, setFormError] = useState<InviteUserFormErrorType>({
     first_name: false,
@@ -93,8 +98,8 @@ const AddMember = ({
     manager: false,
   });
   const [isDisable, setIsDisable] = useState(false);
-  const [isResendDisable, setResendDisable] = useState<string>(null);
-  const { data: roleOptions } = useRolesOptions();
+  const [isResendDisable, setResendDisable] = useState<string | null>(null);
+  const { data: roleOptions } = useTenantRoles();
 
   const checkValidation = () => {
     let flag = false;
@@ -103,13 +108,14 @@ const AddMember = ({
       temp = { ...temp, first_name: true };
       flag = true;
     }
+
     if (!form?.email?.trim().length) {
       temp = { ...temp, email: true };
       flag = true;
     } else if (
       !(
-        form?.email?.split('@')[1] === recruiter?.email?.split('@')[1] ||
-        recruiterUser.primary
+        form?.email?.split('@')[1] ===
+        integrations?.google_workspace_domain?.split('//')[1]
       )
     ) {
       toast({
@@ -120,13 +126,12 @@ const AddMember = ({
       temp = { ...temp, email: true };
       flag = true;
     }
-
-    if (form.linked_in?.length) {
-      const linkedInURLPattern =
-        // eslint-disable-next-line security/detect-unsafe-regex
-        /^(https?:\/\/)?((www|in)\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
-      temp = { ...temp, linked_in: !linkedInURLPattern.test(form.linked_in) };
-      flag = !linkedInURLPattern.test(form.linked_in);
+    const linkedInURLPattern =
+      // eslint-disable-next-line security/detect-unsafe-regex
+      /^(https?:\/\/)?((www|in)\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$/;
+    if (form.linked_in?.length && !linkedInURLPattern.test(form.linked_in)) {
+      temp = { ...temp, linked_in: true };
+      flag = true;
     }
 
     if (!form.department_id) {
@@ -159,34 +164,37 @@ const AddMember = ({
     }
     return true;
   };
-
   const inviteUser = async () => {
     try {
-      const resData = await inviteUserApi(
+      const resData = await inviteUserApi([
         {
-          ...form,
-          department_id: form.department_id,
-          office_location_id: form.location_id,
+          email: form.email!,
+          first_name: form.first_name!,
+          last_name: form.last_name || undefined,
+          position: form.position!,
+          role_id: form.role_id!,
+          manager_id: form.manager_id || undefined,
+          employment: form.employment!,
+          department_id: form.department_id!,
+          office_location_id: form.location_id!,
           scheduling_settings: {
-            ...recruiter.scheduling_settings,
+            ...defaultSchedulingSettings,
             timeZone: timeZone.find(
               (item) =>
                 item.tzCode ===
-                locations.find((loc) => loc.id === form.location_id).timezone,
-            ),
-          } as schedulingSettingType,
+                locations.find((loc) => loc.id === form.location_id)?.timezone,
+            )!,
+          },
         },
-        recruiter.id,
-      );
+      ]);
 
-      const { created } = resData;
+      const { created } = resData!;
       if (created) {
         refetchMembers();
         toast({
           variant: 'default',
           title: 'Invite sent successfully.',
         });
-        setIsDisable(false);
         setForm({
           first_name: null,
           last_name: null,
@@ -209,6 +217,7 @@ const AddMember = ({
       });
     } finally {
       setIsDisable(false);
+      onClose();
     }
   };
 
@@ -219,15 +228,14 @@ const AddMember = ({
     form.position &&
     form.department_id &&
     form.location_id &&
-    (form.role === 'admin' ? !!form.role : !!form.role && !!form.manager_id)
+    (form.role === 'admin' ? form.role_id : form.role_id && form.manager_id)
   );
-
   return (
     <UIDialog
       open={open}
       onClose={() => {
         onClose();
-        setForm(initform);
+        setForm(initForm);
       }}
       title={menu === 'addMember' ? 'Add Member' : 'Pending Invites'}
       size='lg'
@@ -262,10 +270,10 @@ const AddMember = ({
         departments={departments}
         roleOptions={roleOptions}
         memberList={memberList}
-        pendingList={pendingList}
+        pendingList={pendingList || []}
         isResendDisable={isResendDisable}
         setResendDisable={setResendDisable}
-        recruiterUser={recruiterUser}
+        recruiterUser={recruiter_user}
       />
     </UIDialog>
   );

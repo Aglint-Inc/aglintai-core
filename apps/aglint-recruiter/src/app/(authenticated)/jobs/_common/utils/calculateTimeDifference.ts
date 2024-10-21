@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-export function calculateTimeDifference(postedDate) {
+export function calculateTimeDifference(postedDate: string) {
   const now = dayjs();
   const posted = dayjs(postedDate);
   const diff = now.diff(posted, 'second'); // Calculate the difference in seconds

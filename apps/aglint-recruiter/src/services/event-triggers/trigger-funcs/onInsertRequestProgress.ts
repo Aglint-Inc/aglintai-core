@@ -1,5 +1,5 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
@@ -13,11 +13,19 @@ export const onInsertRequestProgress = async ({
     supabaseWrap(
       await supabaseAdmin
         .from('request')
-        .update({ status: 'in_progress' })
+        .update({
+          status: 'in_progress',
+        })
         .eq('id', new_data.request_id)
         .eq('status', 'to_do'),
     );
-  } catch (err) {
+    supabaseWrap(
+      await supabaseAdmin
+        .from('request')
+        .update({ updated_at: dayjsLocal().format() })
+        .eq('id', new_data.request_id),
+    );
+  } catch (err: any) {
     console.error('Failed onInsertRequestProgress', err.message);
   }
 };

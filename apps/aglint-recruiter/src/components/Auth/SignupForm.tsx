@@ -12,11 +12,12 @@ import { Input } from '@components/ui/input';
 import { Label } from '@components/ui/label';
 import { Skeleton } from '@components/ui/skeleton';
 import axios from 'axios';
-import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { Loader } from '@/common/Loader';
 import { type ApiBodyParamsSignup } from '@/pages/api/signup';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
@@ -92,9 +93,18 @@ export default function SignUpForm() {
           });
         }
       } else {
+        if (!authData?.user?.id) {
+          toast({
+            variant: 'destructive',
+            title: 'Error',
+            description: 'Something went wrong. Please try again.',
+          });
+          setIsLoading(false);
+          return;
+        }
         const bodyParams: ApiBodyParamsSignup = {
           email: data.email,
-          user_id: authData.user.id,
+          user_id: authData.user?.id ?? '',
           first_name: data.first_name,
           last_name: data.last_name,
         };
@@ -120,11 +130,13 @@ export default function SignUpForm() {
         }
       }
     } catch (err) {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: err.message,
-      });
+      if (err instanceof Error) {
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: err.message,
+        });
+      }
     }
     setIsLoading(false);
   };
@@ -149,7 +161,7 @@ export default function SignUpForm() {
               })}
             />
             {errors.first_name && (
-              <p className='text-sm text-red-500'>
+              <p className='text-sm text-destructive'>
                 {errors.first_name.message}
               </p>
             )}
@@ -170,7 +182,7 @@ export default function SignUpForm() {
               })}
             />
             {errors.email && (
-              <p className='text-sm text-red-500'>{errors.email.message}</p>
+              <p className='text-sm text-destructive'>{errors.email.message}</p>
             )}
           </div>
           <div className='space-y-2'>
@@ -196,7 +208,9 @@ export default function SignUpForm() {
               </Button>
             </div>
             {errors.password && (
-              <p className='text-sm text-red-500'>{errors.password.message}</p>
+              <p className='text-sm text-destructive'>
+                {errors.password.message}
+              </p>
             )}
           </div>
           <div className='flex items-center space-x-2'>
@@ -219,7 +233,7 @@ export default function SignUpForm() {
             type='submit'
             disabled={isLoading || !termsAccepted}
           >
-            {isLoading && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+            {isLoading && <Loader />}
             Sign Up
           </Button>
         </form>

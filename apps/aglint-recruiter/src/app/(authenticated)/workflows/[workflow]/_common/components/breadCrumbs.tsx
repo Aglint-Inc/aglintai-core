@@ -21,13 +21,13 @@ export const BreadCrumbs = () => {
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink href='#' onClick={() => push(ROUTES['/workflows']())}>
-            Workflows
+            Automations
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
           <BreadcrumbPage>
-            {workflow ? capitalizeSentence(workflow.title) : '---'}
+            {workflow ? capitalizeSentence(workflow.title!) : '---'}
           </BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>

@@ -1,5 +1,6 @@
+import { useInterviewPools } from 'src/app/_common/hooks/useInterviewPools';
+
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
-import { useInterviewModules } from '@/queries/interview-modules';
 
 import {
   setEditSession,
@@ -10,7 +11,7 @@ import {
 } from '../../stores/editSessionDrawer';
 
 function ModuleDropdown() {
-  const interviewModules = useInterviewModules();
+  const interviewModules = useInterviewPools();
 
   const { editSession } = useEditSessionDrawerStore((state) => ({
     editSession: state.editSession,
@@ -27,7 +28,7 @@ function ModuleDropdown() {
       <UISelectDropDown
         label='Interview Pool'
         fullWidth
-        value={editSession.interview_session.module_id}
+        value={editSession?.interview_session.module_id ?? null!}
         menuOptions={filterArchivedModules.map((module) => ({
           value: module.id,
           name: module.name,
@@ -35,7 +36,7 @@ function ModuleDropdown() {
         onValueChange={(value) => {
           setEditSession({
             interview_session: {
-              ...editSession.interview_session,
+              ...editSession!.interview_session,
               module_id: value,
             },
           });

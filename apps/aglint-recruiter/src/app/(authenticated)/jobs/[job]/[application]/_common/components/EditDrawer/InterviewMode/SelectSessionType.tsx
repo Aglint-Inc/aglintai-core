@@ -1,9 +1,8 @@
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
-
 import {
   IndividualIcon,
   PanelIcon,
-} from '@/job/interview-plan/components/sessionForms';
+} from 'src/app/(authenticated)/jobs/[job]/(job-edit)/interview-plan/_common/components/sessionForms';
 
 import {
   setEditSession,
@@ -19,7 +18,7 @@ function SelectSessionType() {
     <>
       <Tabs
         value={
-          editSession.interview_session.session_type === 'individual'
+          editSession!.interview_session.session_type === 'individual'
             ? 'individual'
             : 'panel'
         }
@@ -30,14 +29,15 @@ function SelectSessionType() {
             onClick={() => {
               setEditSession({
                 interview_session: {
-                  ...editSession.interview_session,
+                  ...editSession!.interview_session,
                   session_type: 'individual',
                 },
               });
             }}
           >
             <div className='flex flex-row justify-center gap-1'>
-              <IndividualIcon /> Individual
+              <IndividualIcon size={16} />
+              Individual
             </div>
           </TabsTrigger>
           <TabsTrigger
@@ -45,14 +45,15 @@ function SelectSessionType() {
             onClick={() => {
               setEditSession({
                 interview_session: {
-                  ...editSession.interview_session,
+                  ...editSession!.interview_session,
                   session_type: 'panel',
                 },
               });
             }}
           >
             <div className='flex flex-row justify-center gap-1'>
-              <PanelIcon /> Panel
+              <PanelIcon size={16} />
+              Panel
             </div>
           </TabsTrigger>
         </TabsList>

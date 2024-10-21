@@ -4,7 +4,10 @@ import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { getResponseFactory } from '@/utils/apiUtils/responseFactory';
+import { candAvailRecieved } from '@/services/request-workflows/avail-recieved';
+import { onCandidateScheduleCancel } from '@/services/request-workflows/candidate-schedule-cancel';
+import { oninterviewerDecline } from '@/services/request-workflows/interviewer-decline';
+import { newScheduleRequest } from '@/services/request-workflows/new-schedule';
 import { mailSender } from '@/utils/mailSender';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
@@ -41,37 +44,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       meta.target_api.startsWith('onRequestSchedule') ||
       meta.target_api.startsWith('onRequestReschedule')
     ) {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/new-schedule`,
-        {
-          ...meta,
-          event_run_id: id,
-        },
-      );
+      await newScheduleRequest({
+        ...meta,
+        event_run_id: id,
+      });
     } else if (meta.target_api.startsWith('onReceivingAvailReq')) {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/cand-avail-recieved`,
-        {
-          ...meta,
-          event_run_id: id,
-        },
-      );
+      await candAvailRecieved({
+        ...meta,
+        event_run_id: id,
+      } as any);
     } else if (meta.target_api.startsWith('onRequestCancel')) {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/cancel-schedule`,
-        {
-          ...meta,
-          event_run_id: id,
-        },
-      );
+      await onCandidateScheduleCancel({
+        ...meta,
+        event_run_id: id,
+      } as any);
     } else if (meta.target_api.startsWith('onRequestInterviewerDecline')) {
-      await axios.post(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/api/agent-workflow/interviewer-decline`,
-        {
-          ...meta,
-          event_run_id: id,
-        },
-      );
+      await oninterviewerDecline({
+        ...meta,
+        event_run_id: id,
+      } as any);
     }
     await supabaseAdmin
       .from('workflow_action_logs')
@@ -79,7 +70,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .eq('id', id)
       .throwOnError();
     return res.status(200).send('OK');
-  } catch (error) {
+  } catch (error: any) {
     console.error(error.message);
     console.error('Error stack', error.stack);
     await supabaseAdmin
@@ -92,3 +83,29 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
+
+export const getResponseFactory = <T>(res: NextApiResponse) => {
+  /**
+   * Sends a response with the given data and error, or an error message if the status is 500.
+   *
+   * @param {Object} options - An object containing optional data and error properties.
+   * @param {T} [options.data] - The data to be sent in the response.
+   * @param {string} [options.error] - The error message to be sent in the response.
+   * @param {number} [status] - The status code of the response. Defaults to 200 if no error, 500 otherwise.
+   * @return {Promise<Response>} A Promise that resolves to the response object.
+   */
+  function getResponse(
+    {
+      data,
+      error,
+    }: {
+      data?: T;
+      error?: string;
+    },
+    status?: number,
+  ) {
+    status = status || (error ? 500 : 200);
+    return res.status(status).send(status === 200 ? data : { error });
+  }
+  return getResponse;
+};

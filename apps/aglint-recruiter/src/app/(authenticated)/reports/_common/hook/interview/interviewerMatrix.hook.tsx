@@ -1,23 +1,33 @@
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
+import type { InterviewerAnalytics } from '@/routers/analytics/interviewer_analytics';
+import type { InterviewerLeaderboard } from '@/routers/analytics/interviewer_leaderboard';
+import type { InterviewerRejections } from '@/routers/analytics/interviewer_reject';
+import type { ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 
 import { useAnalyticsContext } from '../../context/AnalyticsContext/AnalyticsContextProvider';
 
+const useInterviewerLeaderBoardProcedure = (
+  input: InterviewerLeaderboard['input'],
+): ProcedureQuery<InterviewerLeaderboard> =>
+  api.analytics.interviewer_leaderboard.useQuery(input, {
+    enabled: !!input.recruiter_id,
+  });
+
 export function useInterviewerLeaderboard() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
-  const { data, isFetching } = api.analytics.interviewer_leaderboard.useQuery(
-    {
-      recruiter_id: recruiter.id,
-      job_id: filters.job,
-      locations: filters.location && [filters.location],
-      departments: filters.department && [filters.department],
-      data_range: filters.dateRange,
-    },
-    {
-      enabled: !!recruiter.id,
-    },
-  );
+  const { data, isFetching } = useInterviewerLeaderBoardProcedure({
+    recruiter_id: recruiter.id,
+    job_id: filters.job,
+    locations: Number.isInteger(filters.location)
+      ? [filters.location!]
+      : undefined,
+    departments: Number.isInteger(filters.department)
+      ? [filters.department!]
+      : undefined,
+    data_range: filters.dateRange,
+  });
   return {
     data: (data || [])
       .sort((a, b) => b.total_hours - a.total_hours)
@@ -31,27 +41,36 @@ export function useInterviewerLeaderboard() {
     isFetching: isFetching,
   };
 }
+
+const useInterviewerAnalytics = (
+  input: InterviewerAnalytics['input'],
+): ProcedureQuery<InterviewerAnalytics> => {
+  const { isFetching: iFInterviewers } = useInterviewerLeaderboard();
+  return api.analytics.interviewer_analytics.useQuery(input, {
+    enabled: !(!input.recruiter_id && iFInterviewers),
+  });
+};
+
 export function useInterviewer_upcoming() {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
   const { data: interviewers, isFetching: iFInterviewers } =
     useInterviewerLeaderboard();
-  const { data, isFetching } = api.analytics.interviewer_analytics.useQuery(
-    {
-      recruiter_id: recruiter.id,
-      job_id: filters.job,
-      locations: filters.location && [filters.location],
-      departments: filters.department && [filters.department],
-      data_range: filters.dateRange,
-    },
-    {
-      enabled: !(!recruiter.id && iFInterviewers),
-    },
-  );
+  const { data, isFetching } = useInterviewerAnalytics({
+    recruiter_id: recruiter.id,
+    job_id: filters.job,
+    locations: Number.isInteger(filters.location)
+      ? [filters.location!]
+      : undefined,
+    departments: Number.isInteger(filters.department)
+      ? [filters.department!]
+      : undefined,
+    data_range: filters.dateRange,
+  });
   const temp = [...(interviewers || []), ...(data || [])].reduce(
     (acc, curr) => {
       const temp = acc[curr.user_id] || ({} as (typeof acc)[string]);
-      acc[curr.user_id] = {
+      const base = {
         accepted: 0,
         feedback: 0,
         rejected: 0,
@@ -63,13 +82,17 @@ export function useInterviewer_upcoming() {
         average_weekly_count: 0,
         average_weekly_duration: 0,
         duration: 0,
+      };
+      acc[curr.user_id] = {
+        ...base,
         ...temp,
         ...curr,
       };
       return acc;
     },
     {} as {
-      [key: string]: (typeof interviewers)[number] & (typeof data)[number];
+      [key: string]: (typeof interviewers)[number] &
+        NonNullable<typeof data>[number];
     },
   );
   return {
@@ -79,24 +102,23 @@ export function useInterviewer_upcoming() {
   };
 }
 
-export function useInterviewerDeclines() {
-  const { recruiter } = useAuthDetails();
+export function useInterviewerDeclines(): ProcedureQuery<InterviewerRejections> {
+  const { recruiter } = useTenant();
   const { filters } = useAnalyticsContext();
-  const { data, isFetching, isError } = api.analytics.interviewer_rejections.useQuery(
+  return api.analytics.interviewer_rejections.useQuery(
     {
       recruiter_id: recruiter.id,
       job_id: filters.job,
-      locations: filters.location && [filters.location],
-      departments: filters.department && [filters.department],
+      locations: Number.isInteger(filters.location)
+        ? [filters.location!]
+        : undefined,
+      departments: Number.isInteger(filters.department)
+        ? [filters.department!]
+        : undefined,
       data_range: filters.dateRange,
     },
     {
       enabled: !!recruiter.id,
     },
   );
-  return {
-    data,
-    isFetching: isFetching,
-    isError
-  };
 }

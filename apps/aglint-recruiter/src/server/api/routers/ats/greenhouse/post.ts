@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { privateProcedure } from '@/server/api/trpc';
+import { privateProcedure, type ProcedureDefinition } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 import { type SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
@@ -31,6 +31,8 @@ export const post = privateProcedure
     const temp = await setGreenhouseMeta(db, recruiter_id, input);
     return { options: temp.options || {}, last_sync: temp.last_sync || {} };
   });
+
+export type Post = ProcedureDefinition<typeof post>;
 
 export async function setGreenhouseMeta(
   supabaseAdmin: SupabaseClientType,

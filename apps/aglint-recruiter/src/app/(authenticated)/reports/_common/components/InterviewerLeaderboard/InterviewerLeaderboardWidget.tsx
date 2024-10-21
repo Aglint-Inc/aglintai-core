@@ -1,3 +1,12 @@
+import { EmptyState } from '@components/empty-state';
+import {
+  Section,
+  SectionActions,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import {
   Select,
@@ -13,12 +22,19 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { BarChart, Clock, ThumbsUp, Users, Zap } from 'lucide-react';
+import {
+  BarChart,
+  ChartNoAxesColumn,
+  Clock,
+  ThumbsUp,
+  Users,
+  Zap,
+} from 'lucide-react';
 import { useState } from 'react';
-import { useMemberList } from 'src/app/_common/hooks/members';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 import { useInterviewerLeaderboard } from 'src/app/(authenticated)/reports/_common/hook/interview/interviewerMatrix.hook';
 
-import ReportCard from '@/components/Common/ReportBlocks/ReportCard';
+import { Loader } from '@/common/Loader';
 
 export default function InterviewerLeaderboardWidget() {
   const { data, isFetching } = useInterviewerLeaderboard();
@@ -34,12 +50,13 @@ export default function InterviewerLeaderboardWidget() {
     return 0;
   });
   return (
-    <>
-      <ReportCard
-        title={'Interviewer Leaderboard'}
-        isEmpty={!sortedData?.length}
-        isLoading={isFetchingMem || isFetching}
-        headerSlot={
+    <Section>
+      <SectionHeader>
+        <SectionHeaderText>
+          <SectionTitle>Interviewer Leaderboard</SectionTitle>
+          <SectionDescription></SectionDescription>
+        </SectionHeaderText>
+        <SectionActions>
           <div className='flex items-center space-x-2'>
             <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className='w-[140px]'>
@@ -57,14 +74,23 @@ export default function InterviewerLeaderboardWidget() {
               </SelectContent>
             </Select>
           </div>
-        }
-      >
+        </SectionActions>
+      </SectionHeader>
+      {isFetching || isFetchingMem ? (
+        <Loader />
+      ) : !sortedData?.length ? (
+        <EmptyState
+          icon={ChartNoAxesColumn}
+          header='No data available'
+          description='No data available for the selected time frame.'
+        />
+      ) : (
         <div className='space-y-6'>
           {sortedData.map((interviewer) => {
             const tempMem =
               (members || []).find(
                 (member) => member.user_id === interviewer.user_id,
-              ) || ({} as (typeof members)[number]);
+              ) || ({} as NonNullable<typeof members>[number]);
             const mem = {
               ...tempMem,
               topSkills: [],
@@ -91,8 +117,8 @@ export default function InterviewerLeaderboardWidget() {
             );
           })}
         </div>
-      </ReportCard>
-    </>
+      )}
+    </Section>
   );
 }
 

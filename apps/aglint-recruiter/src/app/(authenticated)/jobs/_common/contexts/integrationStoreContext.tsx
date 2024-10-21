@@ -1,3 +1,4 @@
+'use client';
 /**
  *
  * React Context + Zustand Store for performant and non-re-rendering store
@@ -45,8 +46,9 @@ const useIntegrationStoreContext = () => {
   return store;
 };
 
-export const IntegrationStoreContext =
-  createContext<ReturnType<typeof useIntegrationStoreContext>>(undefined);
+export const IntegrationStoreContext = createContext<
+  ReturnType<typeof useIntegrationStoreContext> | undefined
+>(undefined);
 
 export const IntegrationStoreProvider = memo(
   ({ children }: PropsWithChildren) => {

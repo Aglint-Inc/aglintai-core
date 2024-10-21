@@ -29,23 +29,24 @@ function SlotContent({ act }: { act: DatabaseTable['application_logs'] }) {
     ).isBefore(dayjsLocal().add(-1, 'day'));
 
     return (
-      <Card className='mt-4'>
-        <CardContent className='space-y-4 p-4'>
+      <Card className='mt-2'>
+        <CardContent className='space-y-2 p-3'>
           <div className='flex items-center space-x-2'>
             <CalendarIcon className='h-5 w-5 text-muted-foreground' />
             <span className='text-sm'>
               {`${dayjsLocal(rescheduleDetails.other_details?.dateRange?.start).format('DD MMMM, YYYY')} - ${dayjsLocal(rescheduleDetails.other_details?.dateRange?.end).format('DD MMMM, YYYY')}`}
             </span>
           </div>
-          {rescheduleDetails.other_details.note && (
-            <p className='text-sm'>{rescheduleDetails.other_details.note}</p>
-          )}
+          {rescheduleDetails.other_details &&
+            rescheduleDetails.other_details.note && (
+              <p className='text-sm'>{rescheduleDetails.other_details.note}</p>
+            )}
           <p className='text-sm font-medium'>
             Reason: {rescheduleDetails.reason}
           </p>
           {checkDate && (
             <Alert variant='error'>
-              <AlertTriangle className='h-4 w-4' />
+              <AlertTriangle className='h-4 w-4'/>
               <AlertDescription>Proposed date is expired</AlertDescription>
             </Alert>
           )}

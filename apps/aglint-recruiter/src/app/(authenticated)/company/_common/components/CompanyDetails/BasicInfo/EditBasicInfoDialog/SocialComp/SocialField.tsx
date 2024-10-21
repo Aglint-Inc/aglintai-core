@@ -13,7 +13,7 @@ import React from 'react';
 import { socialPlaceholder } from './utils';
 
 interface SocialFieldProps {
-  socialName: string;
+  socialName: keyof typeof socialPlaceholder;
   value: string;
   disabled: boolean;
   error: { error: boolean; msg: string };
@@ -51,7 +51,7 @@ const SocialField: React.FC<SocialFieldProps> = ({
     <div className='flex w-full items-start justify-start'>
       <div className='w-full'>
         <div className='flex'>
-          <span className='inline-flex items-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500'>
+          <span className='inline-flex items-center rounded-l-md border border-r-0 border-border bg-gray-50 px-3 text-sm text-muted-foreground'>
             {getSocialIcon(socialName) || <Globe />}
           </span>
           <Input

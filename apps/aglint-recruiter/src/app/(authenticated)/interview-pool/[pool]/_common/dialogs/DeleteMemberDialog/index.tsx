@@ -1,198 +1,182 @@
+import Typography from '@components/typography';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog';
 import { Skeleton } from '@components/ui/skeleton';
-import { useEffect, useState } from 'react';
+import { UIAlert } from '@components/ui-alert';
 
-import { UIAlert } from '@/components/Common/UIAlert';
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
-import UITypography from '@/components/Common/UITypography';
+import type { FetchRelations } from '@/routers/interview_pool/delete_user/fetch_relations';
+import type { ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
-import { supabase } from '@/utils/supabase/client';
 import toast from '@/utils/toast';
 
-import { useDeleteRelationHandler } from '../../hooks/useDeleteRelationHandler';
-import { type useModuleAndUsers } from '../../hooks/useModuleAndUsers';
+import type { useModuleAndUsers } from '../../hooks/useModuleAndUsers';
 import {
   setIsDeleteMemberDialogOpen,
   setSelUser,
   useModulesStore,
 } from '../../stores/store';
 
+const useFetchRelations = (): ProcedureQuery<FetchRelations> => {
+  const selUser = useModulesStore((state) => state.selUser);
+  return api.interview_pool.delete_user.fetch_relations.useQuery(
+    {
+      module_id: selUser?.module_id ?? '',
+      selected_user_id: selUser?.user_id ?? '',
+    },
+    {
+      enabled: !!selUser?.module_id && !!selUser?.user_id,
+    },
+  );
+};
+
 function DeleteMemberDialog() {
   const isDeleteMemberDialogOpen = useModulesStore(
     (state) => state.isDeleteMemberDialogOpen,
   );
-  const utils = api.useUtils();
   const selUser = useModulesStore((state) => state.selUser);
-  const [connectedJobs, setConnectedJobs] = useState<
-    {
-      id: string;
-      job_title: string;
-    }[]
-  >([]);
-  const [isOngoingSchedules, setIsOngoingSchedules] = useState(false);
-  const [isFetching, setIsFetching] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
 
-  const { deleteRelationByUserId } = useDeleteRelationHandler();
+  const { data, isLoading, isError } = useFetchRelations();
 
-  useEffect(() => {
-    if (selUser?.user_id && isDeleteMemberDialogOpen) {
-      fetchSessionDetails();
-    }
-  }, [selUser?.user_id]);
+  const { mutateAsync, isPending } =
+    api.interview_pool.delete_user.delete_relation.useMutation();
 
-  const fetchSessionDetails = async () => {
-    try {
-      const { data: meetDet } = await supabase
-        .from('meeting_details')
-        .select('*')
-        .contains('confirmed_user_ids', [selUser.user_id])
-        .eq('module_id', selUser.module_id)
-        .eq('status', 'confirmed')
-        .throwOnError();
-
-      if (meetDet.length > 0) {
-        setIsOngoingSchedules(true);
-      } else {
-        setIsOngoingSchedules(false);
-      }
-
-      const { data: meetInt } = await supabase
-        .from('meeting_interviewers')
-        .select('*')
-        .eq('interview_module_relation_id', selUser.id)
-        .is('meeting_id', null)
-        .throwOnError();
-
-      const { data: jobs } = await supabase
-        .from('public_jobs')
-        .select('id,job_title')
-        .in(
-          'id',
-          meetInt.flatMap((meet) => meet.job_id),
-        )
-        .throwOnError();
-
-      setConnectedJobs(jobs);
-    } catch (e) {
-      //
-    } finally {
-      setIsFetching(false);
-    }
-  };
+  const connectedJobs = data?.connectedJobs ?? [];
+  const isOngoingSchedules = data?.isOngoingSchedules ?? false;
 
   const resetState = () => {
-    if (isSaving) return;
-    setIsFetching(true);
+    if (isPending) return;
     setSelUser(null);
-    setConnectedJobs([]);
     setIsDeleteMemberDialogOpen(false);
-    setIsOngoingSchedules(false);
-    setIsSaving(false);
   };
 
   const onClickRemove = async (
-    selUser: ReturnType<typeof useModuleAndUsers>['data']['relations'][0],
+    selUser: NonNullable<
+      ReturnType<typeof useModuleAndUsers>['data']
+    >['relations'][0],
   ) => {
     try {
       if (selUser.id && !isOngoingSchedules) {
-        setIsSaving(true);
-        await deleteRelationByUserId({
-          module_relation_id: selUser.id,
+        await mutateAsync({
+          relation_id: selUser.id,
         });
-        setIsDeleteMemberDialogOpen(false);
-        await utils.interview_pool.module_and_users.invalidate({
-          module_id: selUser.module_id,
-        });
+        resetState();
       }
     } catch (e) {
       toast.error('Failed to remove member.Please contact support');
-    } finally {
-      setIsSaving(false);
     }
   };
 
   return (
-    <UIDialog
-      open={isDeleteMemberDialogOpen}
-      title='Remove member'
-      onClose={resetState}
-      slotButtons={
-        <>
-          <UIButton variant='secondary' onClick={resetState}>
-            Cancel
-          </UIButton>
-          <UIButton
-            isLoading={isSaving}
-            disabled={isOngoingSchedules || isFetching}
-            variant='destructive'
+    <AlertDialog open={isDeleteMemberDialogOpen} onOpenChange={resetState}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Remove member</AlertDialogTitle>
+          <AlertDialogDescription>
+            Are you sure you want to remove this member? This action cannot be
+            undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <div className='flex flex-col gap-2'>
+          <Typography type='small' color='neutral'>
+            By clicking remove, the member will be permanently removed from this
+            interview type.
+          </Typography>
+
+          {isLoading ? (
+            <div className='flex flex-col gap-2'>
+              <Skeleton className='h-4 w-[250px]' />
+              <Skeleton className='h-4 w-[250px]' />
+            </div>
+          ) : (
+            <>
+              {isOngoingSchedules ? (
+                <UIAlert type='error' title='User cannot be removed'>
+                  <div className='mt-2 flex flex-col space-y-2'>
+                    <Typography
+                      variant='small'
+                      className='text-muted-foreground'
+                    >
+                      There are ongoing schedules for this user. Once the
+                      schedules are completed, you can remove the user.
+                    </Typography>
+                  </div>
+                </UIAlert>
+              ) : (
+                <>
+                  {isError ? (
+                    <UIAlert type='error' title='Error'>
+                      <div className='mt-2 flex flex-col space-y-2'>
+                        <Typography
+                          variant='small'
+                          className='text-muted-foreground'
+                        >
+                          Failed to fetch data. Please contact support.
+                        </Typography>
+                      </div>
+                    </UIAlert>
+                  ) : (
+                    <>
+                      {' '}
+                      {connectedJobs.length > 0 ? (
+                        <UIAlert
+                          type='warning'
+                          title="Here is a list of job's interview plan that will be impacted:"
+                        >
+                          <div className='mt-2 flex flex-col space-y-2'>
+                            <Typography
+                              variant='small'
+                              className='text-muted-foreground'
+                            >
+                              {connectedJobs
+                                .map((job) => job.job_title)
+                                .join(', ')}
+                            </Typography>
+                            <Typography
+                              variant='small'
+                              className='text-muted-foreground'
+                            >
+                              If the user exists in previously scheduled
+                              interviews, the user will be removed from those
+                              schedules.
+                            </Typography>
+                          </div>
+                        </UIAlert>
+                      ) : (
+                        <UIAlert type='warning' title='Note :'>
+                          User is not connected to any interview plan. If user
+                          exists in previous scheduled interviews, the user will
+                          be removed from those schedules.
+                        </UIAlert>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
+            </>
+          )}
+        </div>
+        <AlertDialogFooter>
+          <AlertDialogCancel onClick={resetState}>Cancel</AlertDialogCancel>
+          <AlertDialogAction
             onClick={async () => {
-              if (isSaving) return;
+              if (isPending || !selUser) return;
               onClickRemove(selUser);
             }}
+            disabled={isOngoingSchedules || isLoading || isError}
           >
-            Remove
-          </UIButton>
-        </>
-      }
-    >
-      <div className='flex flex-col gap-2'>
-        <UITypography type='small' color='neutral'>
-          By clicking remove, the member will be permanently removed from this
-          interview type.
-        </UITypography>
-
-        {isFetching ? (
-          <div className='flex flex-col gap-2'>
-            <Skeleton className='h-4 w-[250px]' />
-            <Skeleton className='h-4 w-[250px]' />
-          </div>
-        ) : (
-          <>
-            {isOngoingSchedules ? (
-              <UIAlert
-                type='small'
-                color={'error'}
-                iconName={'CircleAlert'}
-                title={'User cannot be removed'}
-                description={`There are ongoing schedules for this user. Once the schedules are completed, you can remove the user.`}
-              />
-            ) : (
-              <>
-                {connectedJobs.length > 0 ? (
-                  <UIAlert
-                    color={'warning'}
-                    iconName={'TriangleAlert'}
-                    title={`Here is a list of job's interview plan that will be impacted:`}
-                    actions={
-                      <div className='flex flex-col space-y-2'>
-                        <UITypography type='small' color='neutral'>
-                          {connectedJobs
-                            .flatMap((job) => job.job_title)
-                            .join(', ')}
-                        </UITypography>
-                        <UITypography type='small' color='neutral'>
-                          If the user exists in previously scheduled interviews,
-                          the user will be removed from those schedules.
-                        </UITypography>
-                      </div>
-                    }
-                  />
-                ) : (
-                  <UIAlert
-                    type={'small'}
-                    color={'warning'}
-                    iconName={'TriangleAlert'}
-                    title={`Note :`}
-                    description='User is not connected to any interview plan. If user exist in previous scheduled interviews, the user will be removed from those schedules.'
-                  />
-                )}
-              </>
-            )}
-          </>
-        )}
-      </div>
-    </UIDialog>
+            {isPending ? 'Removing...' : 'Remove'}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 

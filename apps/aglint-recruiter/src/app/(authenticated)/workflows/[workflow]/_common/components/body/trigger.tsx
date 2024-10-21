@@ -43,21 +43,21 @@ const TriggerForm = () => {
   } = useWorkflow();
   const payload = { trigger, phase };
   return (
-    <div className="">
-    <UISelect
-      label='When will the event trigger?'
-      disabled={!manageWorkflow}
-      value={JSON.stringify(payload)}
-      menuOptions={TRIGGER_OPTIONS}
-      onValueChange={(value) => {
-        const { phase, trigger } = JSON.parse(value) as typeof payload;
-        handleUpdateWorkflow({
-          phase,
-          trigger,
-          interval: phase === 'now' ? 0 : interval === 0 ? 30 : interval,
-        });
-      }}
-    />
+    <div>
+      <UISelect
+        label='When will the event trigger?'
+        disabled={!manageWorkflow}
+        value={JSON.stringify(payload)}
+        menuOptions={TRIGGER_OPTIONS}
+        onValueChange={(value) => {
+          const { phase, trigger } = JSON.parse(value) as typeof payload;
+          handleUpdateWorkflow({
+            phase: phase!,
+            trigger: trigger!,
+            interval: (phase === 'now' ? 0 : interval === 0 ? 30 : interval)!,
+          });
+        }}
+      />
     </div>
   );
 };
@@ -69,19 +69,19 @@ const DurationForm = () => {
     handleUpdateWorkflow,
   } = useWorkflow();
   return (
-    <div className="mt-4">
-    <UISelect
-      label='Interval between the trigger and action'
-      disabled={!manageWorkflow}
-      value={String(interval)}
-      menuOptions={DURATION_OPTIONS.map(({ name, value }) => ({
-        name,
-        value: value + '', // value should be in string type
-      }))}
-      onValueChange={(value) =>
-        handleUpdateWorkflow({ interval: Number(value) })
-      }
-    />
+    <div className='mt-4'>
+      <UISelect
+        label='Interval between the trigger and action'
+        disabled={!manageWorkflow}
+        value={String(interval)}
+        menuOptions={DURATION_OPTIONS.map(({ name, value }) => ({
+          name,
+          value: value + '', // value should be in string type
+        }))}
+        onValueChange={(value) =>
+          handleUpdateWorkflow({ interval: Number(value) })
+        }
+      />
     </div>
   );
 };
@@ -90,7 +90,7 @@ const TriggerInfo = () => {
   const {
     workflow: { interval, trigger, phase },
   } = useWorkflow();
-  const option = DURATION_OPTIONS.find(({ value }) => value === interval);
+  const option = DURATION_OPTIONS.find(({ value }) => value === interval)!;
   return (
     <Alert variant='default' className='mt-2'>
       <AlertDescription>

@@ -1,4 +1,4 @@
-import { getFullName } from '@aglint/shared-utils';
+import { getBreakLabel, getFullName } from '@aglint/shared-utils';
 import { type getAllInterviews } from '@interviews/hooks/useAllInterviews';
 import dayjs from 'dayjs';
 import { User } from 'lucide-react';
@@ -8,7 +8,6 @@ import { MeetingStatusBadge } from 'src/app/_common/components/MeetingStatusBadg
 import { MembersList } from 'src/app/_common/components/MembersList';
 
 import IconScheduleType from '@/components/Common/Icons/IconScheduleType';
-import { getBreakLabel } from '@/utils/getBreakLabel';
 
 import {
   getScheduleBgcolor,
@@ -26,7 +25,7 @@ function ScheduleMeetingCard({
 }) {
   const [collapseOpen, setCollapseOpen] = useState(false);
   const router = useRouter();
-  const interviewers = meetingDetails.meeting_interviewers as any; // TODO: fix
+  const interviewers = meetingDetails.meeting_interviewers;
 
   return (
     <>
@@ -39,7 +38,7 @@ function ScheduleMeetingCard({
         }}
       >
         <MyScheduleSubCard
-          onClickDropdownIocn={(e) => {
+          onClickDropdownIcon={(e) => {
             setCollapseOpen((pre) => !pre);
             e.stopPropagation();
           }}
@@ -50,14 +49,16 @@ function ScheduleMeetingCard({
               <div className={`${collapseOpen ? 'block' : 'hidden'}`}>
                 <div className='flex flex-col space-y-2'>
                   <MembersList
-                    slotImage={<User size={40} />}
+                    slotImage={
+                      <User size={40} className='text-muted-foreground' />
+                    }
                     textName={getFullName(
                       meetingDetails.applications.candidates.first_name,
                       meetingDetails.applications.candidates.last_name,
                     )}
                     isDesignationVisible={true}
                     textDesignation={'Candidate'}
-                    textTime={null}
+                    textTime={''}
                   />
                   {interviewers.map((user) => {
                     return (
@@ -70,11 +71,13 @@ function ScheduleMeetingCard({
                             status: meetingDetails.status,
                           }}
                           accepted_status={user.accepted_status}
-                          cancelReason={user.cancel_reasons?.find(
-                            (can) =>
-                              can.session_relation_id ===
-                              user.session_relation_id,
-                          )}
+                          cancelReason={
+                            user.cancel_reasons?.find(
+                              (can) =>
+                                can.session_relation_id ===
+                                user.session_relation_id,
+                            ) ?? null
+                          }
                           userDetails={{
                             first_name: user.first_name,
                             last_name: user.last_name,
@@ -114,7 +117,7 @@ function ScheduleMeetingCard({
           textDuration={getBreakLabel(meetingDetails.session_duration)}
           slotAvatarWithName={
             <div className='flex items-center space-x-2'>
-              <User className='h-4 w-4' />
+              <User className='h-4 w-4 text-muted-foreground' />
               <span className='text-sm font-medium'>
                 {getFullName(
                   meetingDetails.applications.candidates.first_name,

@@ -1,17 +1,18 @@
+'use client';
+import { EmptyState } from '@components/empty-state';
 import { Button } from '@components/ui/button';
-import AgentChats from '@requests/components/AgentChats';
-import { AgentIEditorProvider } from '@requests/components/AgentChats/AgentEditorContext';
 import { REQUEST_SESSIONS_DEFAULT_DATA } from '@requests/constant';
-import { useRequestCount } from '@requests/hooks';
+import { useRequestCount, useRequests } from '@requests/hooks';
 import { checkFiltersApplied } from '@requests/utils/checkFiltersApplied';
-import { Info, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { LayoutList, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useRequests } from '@/context/RequestsContext';
+import { useTenant } from '@/company/hooks';
+import { useFlags } from '@/company/hooks/useFlags';
+import { useOnboarding } from '@/components/Navigation/OnboardPending/context/onboarding';
 import { SafeObject } from '@/utils/safeObject';
 
+import { CreateRequestWidget } from './createRequestWidget';
 import RequestListContent from './RequestListContent';
 import Header from './ui/Header';
 
@@ -20,21 +21,20 @@ const MainBody = () => {
     requests: { data: requestList, isPlaceholderData, isFetched },
     filters,
   } = useRequests();
-  const { recruiterUser, isShowFeature } = useAuthDetails();
-  const [openChat, setOpenChat] = useState(
-    localStorage.getItem('openChat') === 'true' && isShowFeature('AGENT')
-      ? true
-      : false,
-  );
+  const { isRequestSetupPending } = useOnboarding();
+  const { recruiter_user } = useTenant();
+  const { isShowFeature } = useFlags();
+  const [openChat, setOpenChat] = useState(false);
   const [view, setView] = useState<'list' | 'kanban'>('list');
 
   const { data: requestCount } = useRequestCount();
 
   const defaults = REQUEST_SESSIONS_DEFAULT_DATA.map(
-    ({ sectionName, ...rest }) => ({
-      ...rest,
+    ({ sectionName, color, sectionIconName }) => ({
       sectionName,
-      requests: requestList?.[sectionName],
+      color,
+      sectionIconName,
+      requests: requestList?.[sectionName] ?? [],
     }),
   );
 
@@ -60,17 +60,37 @@ const MainBody = () => {
     ) || 0;
 
   useEffect(() => {
-    setOpenChat(
-      localStorage.getItem('openChat') === 'true' && isShowFeature('AGENT')
-        ? true
-        : false,
-    );
-  }, [localStorage.getItem('openChat')]);
+    if (isShowFeature) {
+      setOpenChat(
+        localStorage.getItem('openChat') === 'true' && isShowFeature('AGENT')
+          ? true
+          : false,
+      );
+    }
+  }, [isShowFeature]);
 
+  // if (isLoading || !isFetched || isLoadingCompanySetup)
+  //   return (
+  //     <div className='flex min-h-[80vh] w-full items-center justify-center'>
+  //       <Loader />
+  //     </div>
+  //   );
+
+  if (showEmptyPage)
+    return (
+      <div className='mt-40'>
+        <EmptyState
+          header={'No requests found'}
+          description='Requests are created when a interview process starts for candidates.'
+          icon={LayoutList}
+          primarySlot={!isRequestSetupPending && <CreateRequestWidget />}
+        />
+      </div>
+    );
   return (
     <div className='flex w-full overflow-hidden'>
       {/* Dock to Right Button */}
-      {isShowFeature('AGENT') ? (
+      {localStorage.getItem('openChat') === 'true' && isShowFeature('AGENT') ? (
         <div className='fixed left-[20] top-4 z-50'>
           <Button
             variant='link'
@@ -82,9 +102,9 @@ const MainBody = () => {
             }}
           >
             {openChat ? (
-              <PanelLeftClose className='h-6 w-6 text-gray-500' />
+              <PanelLeftClose className='h-6 w-6 text-muted-foreground' />
             ) : (
-              <PanelLeftOpen className='h-6 w-6 text-gray-500' />
+              <PanelLeftOpen className='h-6 w-6 text-muted-foreground' />
             )}
           </Button>
         </div>
@@ -92,49 +112,32 @@ const MainBody = () => {
         <></>
       )}
 
-      {/* AgentIEditorProvider Section */}
-      <AgentIEditorProvider>
-        <div
-          className={`transition-all duration-300 ease-in-out ${openChat ? 'w-[450px]' : 'w-0'} sticky left-0 top-0 h-screen overflow-hidden`}
-        >
-          <div className='h-full'>
-            <AgentChats />
-          </div>
-        </div>
-      </AgentIEditorProvider>
-
       {/* Main Content */}
-      <div
-        className={`z-10 flex-1 overflow-x-hidden pt-0 ${
-          openChat ? 'w-[calc(100%-450px)]' : ''
-        }`}
-      >
-        <div>
-          <Header
-            completed_percentage={completed_percentage}
-            open_request={open_request}
-            recruiterUser={recruiterUser}
-            requestCount={requestCount}
-            setView={setView}
-            view={view}
-          />
 
-          {isRequestListEmpty || showEmptyPage ? (
-            <div className='container-lg mx-auto w-full px-12 py-8'>
-              <GlobalEmpty
-                height='300px'
-                text={'No requests found'}
-                iconSlot={<Info className='text-gray-500' />}
-              />
-            </div>
-          ) : (
-            <RequestListContent
-              view={view}
-              defaults={defaults}
-              isFetched={isFetched}
+      <div className='w-full'>
+        <Header
+          completed_percentage={completed_percentage}
+          open_request={open_request}
+          recruiterUser={recruiter_user}
+          requestCount={requestCount}
+          setView={setView}
+          view={view}
+        />
+        {!isRequestListEmpty ? (
+          <RequestListContent
+            view={view}
+            defaults={[...defaults]}
+            isFetched={isFetched}
+          />
+        ) : (
+          <div className='mt-40 w-full'>
+            <EmptyState
+              header={'No requests found'}
+              description='Requests are created when a interview process starts for candidates.'
+              icon={LayoutList}
             />
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

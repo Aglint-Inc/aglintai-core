@@ -1,7 +1,11 @@
 import type { DatabaseTable } from '@aglint/shared-types';
 
 import { allPermissions } from '@/constant/role_and_permissions';
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 import type { SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
@@ -16,6 +20,8 @@ const query = async ({ ctx: { user_id, recruiter_id } }: PrivateProcedure) => {
 };
 
 export const get = privateProcedure.query(query);
+
+export type Get = ProcedureDefinition<typeof get>;
 
 type rolesAndPermissions = {
   [roles: string]: {

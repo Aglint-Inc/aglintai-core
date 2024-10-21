@@ -1,17 +1,31 @@
 import { DialogDescription } from '@components/ui/dialog';
 import { useState } from 'react';
 
-import { usePortalSettings } from '@/company/hooks/hook';
-import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
+import TipTapAIEditor from '@/common/TipTapAIEditor';
+import { UIButton } from '@/common/UIButton';
+import UIDialog from '@/common/UIDialog';
+import { usePortalSettings } from '@/company/context/PortalsettingsContext';
+import { api } from '@/trpc/client';
+export const AboutCompanyDialog = ({
+  isDialogOpen,
+  setIsDialogOpen,
+}: {
+  isDialogOpen: boolean;
+  // eslint-disable-next-line no-unused-vars
+  setIsDialogOpen: (x: boolean) => void;
+}) => {
+  // const { updateAbout, loading } = usePortalSettings();
+  const { mutateAsync, isPending } =
+    api.candidatePortal.update_portal_detail.useMutation();
 
-export const AboutCompanyDialog = ({ isDialogOpen, setIsDialogOpen }) => {
-  const { data, updateAbout, isPortalUpdating } = usePortalSettings();
-  const [text, setText] = useState(data?.about || '');
-  const handleTextChange = (value) => {
+  const {
+    data: { about },
+  } = usePortalSettings();
+  const [text, setText] = useState(about || '');
+  const handleTextChange = (value: string) => {
     setText(value);
   };
+
   return (
     <UIDialog
       open={isDialogOpen}
@@ -23,8 +37,8 @@ export const AboutCompanyDialog = ({ isDialogOpen, setIsDialogOpen }) => {
             variant='secondary'
             className='w-full'
             onClick={() => {
-              setText(data?.about || '');
-              setIsDialogOpen(null); // Updated to close the dialog
+              setText(about || '');
+              setIsDialogOpen(false); // Updated to close the dialog
             }}
           >
             Cancel
@@ -32,10 +46,10 @@ export const AboutCompanyDialog = ({ isDialogOpen, setIsDialogOpen }) => {
           <UIButton
             type='submit'
             className='w-full'
-            isLoading={isPortalUpdating}
-            disabled={isPortalUpdating}
+            isLoading={isPending}
+            disabled={isPending}
             onClick={async () => {
-              await updateAbout(text);
+              await mutateAsync({ about: text });
               setIsDialogOpen(false);
             }}
           >
@@ -58,7 +72,7 @@ export const AboutCompanyDialog = ({ isDialogOpen, setIsDialogOpen }) => {
           editor_type='email'
           isSize
           handleChange={handleTextChange}
-          initialValue={data?.about}
+          initialValue={about || undefined}
         />
       </div>
     </UIDialog>

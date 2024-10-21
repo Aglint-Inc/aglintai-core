@@ -7,6 +7,7 @@ import { dayjsLocal } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
+import { interviewerDeclineRequest } from '@/services/requests/interviewerDeclineRequest';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -23,18 +24,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const dbuser = await getUser(user_id);
     const google_cal = new GoogleCalender(null, null, user_id);
     await google_cal.authorizeUser();
+
     const results = await google_cal.fullCalendarSync(
-      dbuser.calendar_sync_token,
+      dbuser?.calendar_sync_token,
     );
     if (!results || results.events?.length === 0) {
       return res.status(200).send('No events found');
     }
 
     const meetings = await fetchMeetings(user_id);
-    const calendarIds = [...new Set(meetings.map((meet) => meet.cal_event_id))];
+    const calendarIds = [
+      ...new Set((meetings || []).map((meet) => meet.cal_event_id)),
+    ];
     const calendarEvents = results.events?.filter((event) =>
       calendarIds.includes(event.id),
     );
+    if (!results.syncToken) {
+      return res.status(200).send('No || calendarEvents.length === 0 found');
+    }
     await updateUser({
       resourceId: resource_id,
       syncToken: results.syncToken,
@@ -42,7 +49,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       channelId: channel_id,
     });
 
-    const updateRelations = meetings
+    const updateRelations = (meetings || [])
       .map((meet) => {
         const event = calendarEvents?.find((e) => e.id === meet.cal_event_id);
         if (!event) return null;
@@ -63,7 +70,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
             const cancelReasons =
               interviewer.cancel_reasons?.filter(
-                (reason) => !reason.is_resolved && reason.type === 'declined',
+                (reason) =>
+                  !reason.is_resolved &&
+                  reason.type === 'interviewer_request_decline',
               ) || [];
 
             return {
@@ -86,20 +95,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .flatMap((interviewers) => interviewers)
       .filter(
         (interviewer) =>
-          interviewer.status === 'declined' ||
-          interviewer.status === 'accepted',
+          interviewer &&
+          (interviewer.status === 'declined' ||
+            interviewer.status === 'accepted'),
       );
 
     // update interview session relation accepted status
-    const dbSessionRelations = updateRelations.map((interviewer) => {
-      const session_relation: DatabaseTableInsert['interview_session_relation'] =
-        {
-          id: interviewer.session_relation_id,
-          accepted_status: interviewer.status,
-          session_id: interviewer.session_id,
-        };
-      return session_relation;
-    });
+    const dbSessionRelations: DatabaseTableInsert['interview_session_relation'][] =
+      (updateRelations || [])
+        .filter((interviewer) => interviewer !== null)
+        .map((interviewer) => {
+          const session_relation: DatabaseTableInsert['interview_session_relation'] =
+            {
+              id: interviewer.session_relation_id!,
+              accepted_status: interviewer.status,
+              session_id: interviewer.session_id,
+            };
+          return { ...session_relation };
+        });
 
     await supabaseAdmin
       .from('interview_session_relation')
@@ -111,16 +124,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const dbRequests = updateRelations
       .filter(
         (ses) =>
+          ses &&
           ses.cancel_reasons?.filter(
-            (reason) => !reason.is_resolved && reason.type === 'declined',
+            (reason) =>
+              !reason.is_resolved &&
+              reason.type === 'interviewer_request_decline',
           ).length > 0,
       )
-      .flatMap((ses) => ses.cancel_reasons);
+      .flatMap((ses) => ses?.cancel_reasons);
 
     await Promise.all(
       dbRequests
-        .filter((req) => req.id)
+        .filter((req) => req?.id)
         .map(async (request) => {
+          if (!request) return;
           await supabaseAdmin
             .from('request')
             .update({ status: 'completed' })
@@ -133,14 +150,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // update interview session cancel if he first declined and then accepted
     const dbInterviewSessionCancel = updateRelations
       ?.filter(
-        (ses) => ses.status === 'accepted' && ses.cancel_reasons.length > 0,
+        (ses) => ses?.status === 'accepted' && ses.cancel_reasons.length > 0,
       )
-      .flatMap((ses) => ses.cancel_reasons);
+      .flatMap((ses) => ses?.cancel_reasons);
 
     await Promise.all(
       dbInterviewSessionCancel
-        .filter((can) => can.id)
+        .filter((can) => can?.id)
         .map(async (can) => {
+          if (!can) return;
           await supabaseAdmin
             .from('interview_session_cancel')
             .update({ is_resolved: true })
@@ -153,25 +171,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     //creating new request for the declined interview
     const cancelSessions: DatabaseTableInsert['interview_session_cancel'][] =
       updateRelations
-        .filter((interviewer) => interviewer.status === 'declined')
-        .map((interviewer) => ({
-          reason: 'Declined in google calendar',
-          session_id: interviewer.session_id,
-          session_relation_id: interviewer.session_relation_id,
-          type: 'declined',
-        }));
+        .filter(
+          (interviewer) => interviewer && interviewer.status === 'declined',
+        )
+        .map(async (interviewer) => {
+          if (!interviewer) return;
+          await interviewerDeclineRequest({
+            declined_place: 'calender',
+            session_relation_id: interviewer.session_relation_id,
+            session_id: interviewer.session_id,
+          });
+        });
 
-    await supabaseAdmin
-      .from('interview_session_cancel')
-      .upsert(cancelSessions)
-      .throwOnError();
-    //creating new request for the declined interview
+    await Promise.all(cancelSessions);
 
     return res.status(200).send(cancelSessions);
   } catch (err) {
     // eslint-disable-next-line no-console
-    console.log(JSON.stringify(err.message));
-    return res.status(500).json(err.message);
+    console.log(JSON.stringify((err as Error).message));
+    return res.status(500).json((err as Error).message);
   }
 };
 

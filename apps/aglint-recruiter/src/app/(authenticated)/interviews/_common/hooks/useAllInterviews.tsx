@@ -2,7 +2,7 @@ import { dayjsLocal } from '@aglint/shared-utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { schedulesSupabase } from 'src/app/_common/utils/schedules-query';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 
 import { type ScheduleFilerType } from '../types';
 
@@ -16,7 +16,7 @@ export const useAllInterviews = (filters: ScheduleFilerType) => {
     searchText,
     session_types,
   } = filters;
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   const queryClient = useQueryClient();
   const query = useQuery({
     queryKey: [

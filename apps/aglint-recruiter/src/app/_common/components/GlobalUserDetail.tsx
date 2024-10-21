@@ -1,10 +1,9 @@
 'use client';
 
+import Typography from '@components/typography';
 import { cn } from '@lib/utils';
-import { Briefcase, Globe, User } from 'lucide-react';
+import { BriefcaseBusiness, Globe, User } from 'lucide-react';
 import React from 'react';
-
-import UITypography from '@/components/Common/UITypography';
 
 interface GlobalUserDetailProps {
   className?: string;
@@ -34,21 +33,21 @@ export function GlobalUserDetail({
   return (
     <div className={cn('flex items-center space-x-2', className)}>
       {isCandidateAvatarVisible && (
-        <User className='h-8 w-8 text-neutral-500' />
+        <User className='h-8 w-8 text-muted-foreground' />
       )}
       {isSlotImageVisible && <div className='h-8 w-8'>{slotImage}</div>}
       <div className='flex w-full items-center justify-between space-x-2'>
         <div className='flex items-center space-x-1'>
           <div>
-            <UITypography type='small'>{textName}</UITypography>
+            <Typography type='small'>{textName}</Typography>
             {isRoleVisible && (
-              <div className='text-neutral-500'>
+              <div className='text-muted-foreground'>
                 {slotRole ?? (
                   <div className='flex items-center space-x-1'>
-                    <Briefcase className='h-4 w-4' />
-                    <UITypography type='small' className='text-neutral-500'>
+                    <BriefcaseBusiness className='h-4 w-4 text-muted-foreground' />
+                    <Typography type='small' className='text-muted-foreground'>
                       {textRole}
-                    </UITypography>
+                    </Typography>
                   </div>
                 )}
               </div>
@@ -59,10 +58,10 @@ export function GlobalUserDetail({
           </div>
         </div>
         <div className='flex items-center space-x-2'>
-          <Globe className='h-3 w-3 text-neutral-500' />
-          <UITypography type='extraSmall' className='text-neutral-500'>
+          <Globe className='h-3 w-3 text-muted-foreground' />
+          <Typography type='extraSmall' className='text-muted-foreground'>
             {textTimeZone}
-          </UITypography>
+          </Typography>
         </div>
       </div>
     </div>

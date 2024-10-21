@@ -1,10 +1,10 @@
+import { EmptyState } from '@components/empty-state';
 import { Card, CardContent } from '@components/ui/card';
+import { UIBadge } from '@components/ui-badge';
 import { ArrowRight, User } from 'lucide-react';
 import { useState } from 'react';
 
-import GlobalEmpty from '@/components/Common/GlobalEmpty';
 import { Loader } from '@/components/Common/Loader';
-import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -50,7 +50,7 @@ function Candidates() {
                     key={key}
                     className='p-4 text-left text-sm font-medium text-gray-700'
                   >
-                    {headers[key]}
+                    {headers[key as keyof typeof headers]}
                   </th>
                 ))}
               </tr>
@@ -69,15 +69,10 @@ function Candidates() {
                     <tr>
                       <td colSpan={6} className='p-4'>
                         <div>
-                          <GlobalEmpty
-                            text={'No candidates found'}
-                            iconSlot={
-                              <User
-                                strokeWidth={1.5}
-                                className='mb-2 h-10 w-10 text-muted-foreground'
-                              />
-                            }
-                            height={'250px'}
+                          <EmptyState
+                            header={'No candidates found'}
+                            description='This section lists all candidates across all jobs taken this interview.'
+                            icon={User}
                           />
                         </div>
                       </td>
@@ -98,7 +93,7 @@ function Candidates() {
                       <td className='p-4 text-gray-700'>{app.nextInterview}</td>
                       <td className='p-4'>
                         <UIBadge
-                          color={
+                          variant={
                             app.score >= 9
                               ? 'success'
                               : app.score >= 7
@@ -108,7 +103,6 @@ function Candidates() {
                           textBadge={app.score}
                         />
                       </td>
-
                       <td className='p-4'>
                         <UIButton
                           variant='outline'

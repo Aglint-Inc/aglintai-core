@@ -13,11 +13,11 @@ function InstructionsComp() {
   const utils = api.useUtils();
 
   async function updateInstruction() {
-    if (textValue) {
+    if (textValue && editModule?.id) {
       const { data } = await supabase
         .from('interview_module')
         .update({ instructions: textValue })
-        .eq('id', editModule?.id)
+        .eq('id', editModule.id)
         .select();
       if (data) {
         toast({
@@ -32,12 +32,14 @@ function InstructionsComp() {
 
   return (
     <div className='max-w-4xl'>
-      <Instructions
-        instruction={editModule?.instructions}
-        setTextValue={setTextValue}
-        showEditButton={true}
-        updateInstruction={updateInstruction}
-      />
+      {editModule && (
+        <Instructions
+          instruction={editModule.instructions}
+          setTextValue={setTextValue}
+          showEditButton={true}
+          updateInstruction={updateInstruction}
+        />
+      )}
     </div>
   );
 }

@@ -1,30 +1,25 @@
 import { dayjsLocal } from '@aglint/shared-utils';
 
-import UISectionCard from '@/components/Common/UISectionCard';
+import { useInterviewer } from '../../hooks/useInterviewer';
 
-export const KeyMatrics = ({
-  totalHour,
-  completedCount,
-  declineCount,
-}: {
-  totalHour: string | number;
-  completedCount: string | number;
-  declineCount: string | number;
-}) => {
-  const completedHour = dayjsLocal.duration(+totalHour, 'minutes').asHours();
+export const KeyMatrics = () => {
+  const { data } = useInterviewer();
+
+  const {
+    meeting_count: { completed_hour, completed, cancelled },
+  } = data;
+
+  const completedHour = dayjsLocal
+    .duration(+completed_hour, 'minutes')
+    .asHours();
+
   return (
     <>
-      <UISectionCard title='Key Metrics'>
-        <div className='grid grid-cols-2 gap-4 sm:grid-cols-4'>
-          <Card color='green' title='Interview Hours' value={completedHour} />
-          <Card
-            color='green'
-            title='Interviews Completed'
-            value={completedCount}
-          />
-          <Card color='red' title='Declines' value={declineCount} />
-        </div>
-      </UISectionCard>
+      <div className='mt-3 grid max-w-[500px] grid-cols-3 gap-2'>
+        <Card color='green' title='Interview Hours' value={completedHour} />
+        <Card color='green' title='Interviews Completed' value={completed} />
+        <Card color='red' title='Declines' value={cancelled} />
+      </div>
     </>
   );
 };
@@ -39,9 +34,9 @@ const Card = ({
   color: 'green' | 'red' | 'blue';
 }) => {
   return (
-    <div className='text-center'>
-      <p className={`text-xl font-bold text-${color}-600`}>{value}</p>
-      <div className='text-sm text-gray-500'>{title}</div>
+    <div className='rounded-md border border-dotted border-gray-300 bg-transparent px-2 py-1 text-left'>
+      <p className={`text-2xl font-medium text-${color}-600`}>{value}</p>
+      <div className='text-sm text-muted-foreground'>{title}</div>
     </div>
   );
 };

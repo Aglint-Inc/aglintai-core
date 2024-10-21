@@ -5,17 +5,13 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
+import { type EventContentArg } from '@fullcalendar/core';
 
 import InterviewerAcceptDeclineIcon from '../Icons/InterviewerAcceptDeclineIcon';
 import { type EventCalendar } from './types';
 
-function RenderEventContent(eventInfo) {
-  const { title, start, end } = eventInfo.event as {
-    title: string;
-    start: string;
-    end: string;
-    id: string;
-  };
+function RenderEventContent(eventInfo: EventContentArg) {
+  const { title, start, end } = eventInfo.event;
 
   const {
     color,
@@ -57,15 +53,14 @@ function RenderEventContent(eventInfo) {
           <TooltipContent>
             {title && (
               <div className='space-y-1 p-1'>
-                <p className='text-neutral-12 text-base font-semibold'>
+                <p className='text-base font-semibold text-muted-foreground'>
                   {title}
                 </p>
                 <div className='flex flex-row space-x-1'>
                   <p className='text-xs'>
-                    {dayjsLocal(new Date(start)).format('dddd MMMM')}
-                    {' , '}
-                    {dayjsLocal(new Date(start)).format('hh:mm A')} -{' '}
-                    {dayjsLocal(new Date(end)).format('hh:mm A')}
+                    {start && end
+                      ? `${dayjsLocal(new Date(start)).format('dddd MMMM, hh:mm A')} - ${dayjsLocal(new Date(end)).format('hh:mm A')}`
+                      : ''}
                   </p>
                 </div>
 

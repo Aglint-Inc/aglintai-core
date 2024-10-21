@@ -1,9 +1,8 @@
 import { toast } from '@components/hooks/use-toast';
 import React, { useEffect, useState } from 'react';
 import { type MemberTypeAutoComplete } from 'src/app/_common/components/MembersTextField';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
-import { useSchedulingContext } from '@/context/SchedulingMain/SchedulingMainProvider';
-import { api } from '@/trpc/client';
 import { supabase } from '@/utils/supabase/client';
 
 import {
@@ -16,8 +15,7 @@ import { useModuleAndUsers } from './useModuleAndUsers';
 export const useEnableDisableTraining = () => {
   const { localModule } = useModulesStore();
   const { data: editModule } = useModuleAndUsers();
-  const utils = api.useUtils();
-  const { members } = useSchedulingContext();
+  const { data: members, isFetched } = useMemberList(false, true);
   const [isBannerLoading, setBannerLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [errorApproval, setErrorApproval] = useState(false);
@@ -35,11 +33,13 @@ export const useEnableDisableTraining = () => {
     }, 5000);
   };
 
-  const approvers = members.filter((member) =>
-    editModule.settings.approve_users.includes(member.user_id),
+  const approvers = members.filter(
+    (member) =>
+      editModule && editModule.settings.approve_users.includes(member.user_id),
   );
 
   const updateModule = async () => {
+    if (!localModule) return;
     if (localModule.settings.reqruire_approval) {
       if (selectedUsers.length === 0) {
         setErrorApproval(true);
@@ -55,7 +55,6 @@ export const useEnableDisableTraining = () => {
         setErrorApproval(true);
         return;
       }
-
       await supabase
         .from('interview_module')
         .update({
@@ -76,9 +75,6 @@ export const useEnableDisableTraining = () => {
         editModule.id,
       );
 
-      utils.interview_pool.module_and_users.invalidate({
-        module_id: editModule.id,
-      });
       setIsModuleSettingsDialogOpen(false);
     } catch (e) {
       toast({
@@ -94,7 +90,7 @@ export const useEnableDisableTraining = () => {
   };
 
   useEffect(() => {
-    if (editModule?.id) {
+    if (editModule?.id && isFetched) {
       setLocalModule(editModule);
       setSelectedUsers(
         members.filter((member) =>
@@ -102,13 +98,14 @@ export const useEnableDisableTraining = () => {
         ),
       );
     }
-  }, [editModule?.id, members]);
+  }, [editModule?.id, isFetched]);
 
   const enableDiabaleTraining = async ({
     type,
   }: {
     type: 'enable' | 'disable';
   }) => {
+    if (!localModule) return;
     try {
       setBannerLoading(true);
       await supabase
@@ -130,10 +127,6 @@ export const useEnableDisableTraining = () => {
         selectedUsers.map((sel) => sel.user_id),
         editModule.id,
       );
-
-      utils.interview_pool.module_and_users.invalidate({
-        module_id: editModule.id,
-      });
       setIsModuleSettingsDialogOpen(false);
     } catch (e) {
       toast({

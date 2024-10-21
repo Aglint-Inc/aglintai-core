@@ -23,32 +23,34 @@ const InterviewLimitInput: React.FC<InterviewLimitInputProps> = ({
 }) => {
   const tabs = ['Interviews', 'Hours'];
   return (
-    <div className='flex flex-row items-center gap-4'>
-      <p className='w-[150px] text-base leading-5 tracking-tight'>
+    <div className='flex flex-col space-y-1'>
+      <p className='w-[150px] text-sm text-muted-foreground'>
         {mode === 'day' ? 'Daily' : 'Weekly'} {type}
       </p>
-      <Input
-        type='number'
-        value={value}
-        onChange={(e) => onValueChange(+e.target.value)}
-        max={max}
-        className='h-9 w-[70px]'
-      />
-      <Tabs
-        defaultValue={type}
-        value={type}
-        onValueChange={(value: 'Hours' | 'Interviews') => {
-          onTypeChange(value, mode);
-        }}
-      >
-        <TabsList>
-          {tabs.map((ele) => (
-            <TabsTrigger key={ele} value={ele}>
-              {capitalize(ele.replaceAll('_', ' '))}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
+      <div className='flex flex-row items-center gap-2'>
+        <Input
+          type='number'
+          value={value}
+          onChange={(e) => onValueChange(+e.target.value)}
+          max={max}
+          className='h-9 w-[70px]'
+        />
+        <Tabs
+          defaultValue={type}
+          value={type}
+          onValueChange={(value: string) => {
+            onTypeChange(value as 'Hours' | 'Interviews', mode);
+          }}
+        >
+          <TabsList>
+            {tabs.map((ele) => (
+              <TabsTrigger key={ele} value={ele}>
+                {capitalize(ele.replaceAll('_', ' '))}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+      </div>
     </div>
   );
 };

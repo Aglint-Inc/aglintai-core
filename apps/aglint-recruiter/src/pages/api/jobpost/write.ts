@@ -2,11 +2,8 @@
 /* eslint-disable no-console */
 import { type DB } from '@aglint/shared-types';
 import { createClient } from '@supabase/supabase-js';
-import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 import { v4 as uuidv4 } from 'uuid';
-
-import { fillEmailTemplate } from '@/utils/support/supportUtils';
 
 const supabase = createClient<DB>(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -53,15 +50,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(400).send('No uploadUrl provided');
   }
 
-  const { data: checkCand, error: errorCheck } = await supabase
-    .from('candidates')
-    .select('*')
-    .match({ email: profile.email, recruiter_id: recruiter.id });
+  const checkCand = (
+    await supabase
+      .from('candidates')
+      .select('*')
+      .match({ email: profile.email, recruiter_id: recruiter.id })
+      .throwOnError()
+  ).data!;
 
   let candidateId;
   let application;
 
-  if (!errorCheck && checkCand.length == 0) {
+  if (checkCand.length == 0) {
     candidateId = uuidv4();
 
     const response = await insertCandidate(
@@ -73,7 +73,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       profile,
     );
 
-    await mailHandler(response.application.id, profile, post);
+    if (!response?.application?.id) {
+      return res.status(400).send('Error inserting candidate');
+    }
+
     return res.status(200).send({
       application: response.application,
       candidate: response.candidate,
@@ -108,8 +111,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           })
           .select();
 
-        application = newApplication[0];
-        await mailHandler(newApplication[0].id, profile, post);
+        application = newApplication ? newApplication[0] : null;
+
         return res
           .status(200)
           .send({ application: application, candidate: checkCand[0] });
@@ -166,46 +169,11 @@ const insertCandidate = async (
       })
       .select();
 
-    return { application: newApplication[0], candidate: candidate };
+    return {
+      application: newApplication ? newApplication[0] : null,
+      candidate: candidate!,
+    };
   } else {
     console.log(errorCandidate);
-  }
-};
-
-const mailHandler = async (application_id: string, profile, post) => {
-  try {
-    const email = {
-      first_name: profile.firstName,
-      last_name: profile.lastName,
-      job_title: post.job_title,
-      company_name: post.company,
-      support_link: `${process.env.NEXT_PUBLIC_HOST_NAME}/support/create?id=${application_id}`,
-    };
-    console.log(email, 'email');
-
-    await axios
-      .post(`${process.env.NEXT_PUBLIC_HOST_NAME}/api/sendgrid`, {
-        fromEmail: `messenger@aglinthq.com`,
-        fromName:
-          post.email_template.application_received.fromName || post.company,
-        email: profile?.email,
-        subject: fillEmailTemplate(
-          post.email_template.application_received.subject,
-          email,
-        ),
-        text: fillEmailTemplate(
-          post.email_template.application_received.body,
-          email,
-        ),
-      })
-      .then((res) => {
-        console.log(res, 'res');
-
-        if (res.status === 200 && res.data.data === 'Email sent') {
-          return true;
-        }
-      });
-  } catch (err) {
-    //}
   }
 };

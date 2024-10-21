@@ -34,9 +34,9 @@ export const fetchUtil: FetchUtilType<
   const meeting_organizer = int_sessions[0].interview_meeting.recruiter_user;
   let cand_link = '';
   if (req_body.availability_req_id) {
-    cand_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/request-availability/${req_body.availability_req_id}`;
+    cand_link = `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/request-availability/${req_body.availability_req_id}`;
   } else if (req_body.filter_id) {
-    cand_link = `${process.env.NEXT_PUBLIC_APP_URL}/scheduling/invite/${req_body.application_id}?filter_id=${req_body.filter_id}`;
+    cand_link = `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/scheduling/invite/${req_body.application_id}?filter_id=${req_body.filter_id}`;
   }
 
   const recruiter_tz = meeting_organizer.scheduling_settings.timeZone.tzCode;
@@ -132,6 +132,12 @@ export const fetchUtil: FetchUtilType<
       react_email_placeholders,
       recipient_email: cand_email,
       mail_attachments,
+    },
+    candidate_portal_payload: {
+      application_id: req_body.application_id,
+      availability_id: req_body.availability_req_id,
+      filter_id: req_body.filter_id,
+      type: 'confirmInterview_email_applicant',
     },
   };
 };

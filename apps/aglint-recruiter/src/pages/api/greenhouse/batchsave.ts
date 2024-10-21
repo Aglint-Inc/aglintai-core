@@ -38,8 +38,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         })
         .limit(50)
         .throwOnError()
-    ).data;
-    if (applications.length) {
+    ).data!;
+    if (applications?.length) {
       await Promise.all(
         applications.map(async (ref) => {
           try {
@@ -48,7 +48,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               const bodyParams: SaveResumeAPI['request'] = {
                 application_id: ref.application_id,
                 resume: resume,
-                candidate_id: ref.candidate_id,
+                candidate_id: ref.candidate_id ?? '',
               };
               await axios.post(`${url}`, bodyParams);
               console.log(
@@ -82,7 +82,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).send(error.message);
+    return res.status(500).send((error as Error).message);
   }
 };
 

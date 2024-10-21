@@ -1,14 +1,13 @@
 /* eslint-disable no-console */
 /* eslint-disable security/detect-object-injection */
 import {
-  type CompServiceKeyCred,
   type InterviewModuleType,
   type NewCalenderEvent,
-  type schedulingSettingType,
+  type SchedulingSettingType,
 } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { type CustomSchedulingSettingsUser } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
+import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 
-import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 import { type GoogleCalender } from '@/services/GoogleCalender/google-calender';
 
 import { getSupabaseServer } from '../supabase/supabaseAdmin';
@@ -30,19 +29,19 @@ import {
 //
 const max_occurence: Record<MeetingTypeEnum, MeetingLimit> = {
   [MeetingTypeEnum.OtherMeetings]: {
-    maxOccurrences: 3,
+    maxOccurrences: 2,
     period: 'day',
   },
   [MeetingTypeEnum.Interview]: {
-    maxOccurrences: 3,
+    maxOccurrences: 2,
     period: 'day',
   },
   [MeetingTypeEnum.OOO]: {
-    maxOccurrences: 8,
+    maxOccurrences: 5,
     period: 'month',
   },
   [MeetingTypeEnum.FreeTime]: {
-    maxOccurrences: 8,
+    maxOccurrences: 5,
     period: 'month',
   },
   [MeetingTypeEnum.SoftConflicts]: {
@@ -66,19 +65,15 @@ export const seedCalendersUtil = (
 ) => {
   const supabaseAdmin = getSupabaseServer();
 
-  let comp_details: {
-    comp_schedule_setting: schedulingSettingType;
-    companyCred: CompServiceKeyCred;
-  };
-  let interview_modules: InterviewModuleType[];
+  let interview_modules: InterviewModuleType[] | null;
   const fetchDetails = async (company_id: string) => {
-    const [rec_details] = supabaseWrap(
+    const rec_details = supabaseWrap(
       await supabaseAdmin
         .from('recruiter')
         .select('scheduling_settings,integrations(*)')
-        .eq('id', company_id),
+        .eq('id', company_id)
+        .single(),
     );
-    const { scheduling_settings: comp_schedule_setting } = rec_details;
 
     interview_modules = supabaseWrap(
       await supabaseAdmin
@@ -86,6 +81,7 @@ export const seedCalendersUtil = (
         .select()
         .eq('recruiter_id', company_id),
     );
+
     const interviewers = supabaseWrap(
       await supabaseAdmin
         .from('interview_module_relation')
@@ -101,21 +97,27 @@ export const seedCalendersUtil = (
     const uniq_inters = Array.from(new Set(interviewers.map((i) => i.user_id)));
 
     return {
-      company_cred_hash_str: rec_details.integrations.service_json,
-      comp_schedule_setting,
+      company_cred_hash_str: rec_details.integrations
+        ? rec_details.integrations.service_json
+        : null,
+      companyScheduleSettings: rec_details.scheduling_settings,
       interview_type_details: interviewers,
       uniq_inters,
     };
   };
   const deleteAllMeetings = async (google_cal: GoogleCalender) => {
     const cal_events = await google_cal.getAllCalenderEvents(
-      userTzDayjs(cal_start_date).toISOString(),
-      userTzDayjs(cal_end_date).toISOString(),
+      dayjsLocal(cal_start_date).toISOString(),
+      dayjsLocal(cal_end_date).toISOString(),
     );
+    console.log('found', cal_events.length);
 
     for (const evt of cal_events) {
+      console.log('deleting', evt.summary);
       await google_cal.updateEventStatus(evt.id, 'cancelled');
     }
+    // Add a 100ms delay to simulate processing time
+    await new Promise((resolve) => setTimeout(resolve, 50));
     console.log(cal_events.length, 'deleted');
   };
   const getRandMeetingType = (): RandMeetingType => {
@@ -177,10 +179,17 @@ export const seedCalendersUtil = (
         duration: generateMeetingDuration(),
       };
     }
+    throw new Error('Invalid random number');
   };
 
-  const getSeedEvent = (meeting_type: MeetingTypeEnum) => {
-    const getRandomArrayIdx = (arr_length): number => {
+  const getSeedEvent = (
+    meeting_type: MeetingTypeEnum,
+    companyScheduleSettings: SchedulingSettingType,
+  ) => {
+    if (!interview_modules) {
+      throw new Error('No interview modules found');
+    }
+    const getRandomArrayIdx = (arr_length: number): number => {
       return Math.floor(Math.random() * arr_length);
     };
     const new_cal_event: NewCalenderEvent = {
@@ -200,7 +209,7 @@ export const seedCalendersUtil = (
       location: null,
     };
 
-    const key_words = comp_details.comp_schedule_setting.schedulingKeyWords;
+    const key_words = companyScheduleSettings.schedulingKeyWords;
     if (meeting_type === MeetingTypeEnum.FreeTime) {
       new_cal_event.summary =
         key_words.free[getRandomArrayIdx(key_words.free.length)];
@@ -230,8 +239,9 @@ export const seedCalendersUtil = (
   const fillEventsForTheDay = async (
     curr_day: string,
     google_cal: GoogleCalender,
-    int_schd_sett: schedulingSettingType,
+    int_schd_sett: CustomSchedulingSettingsUser,
     monthly_interviewer_config: MeetingLimitsConfig,
+    companyScheduleSettings: SchedulingSettingType,
   ) => {
     const day_interviewer_config: MeetingLimitsConfig = {
       [MeetingTypeEnum.OtherMeetings]: { occ_cnt: 0 },
@@ -242,7 +252,7 @@ export const seedCalendersUtil = (
       [MeetingTypeEnum.RecruiterBlock]: { occ_cnt: 0 },
       [MeetingTypeEnum.NOMeeting]: { occ_cnt: 0 },
     };
-    let curr_time = userTzDayjs(curr_day)
+    let curr_time = dayjsLocal(curr_day)
       .tz(int_schd_sett.timeZone.tzCode)
       .startOf('day')
       .set('hours', 9);
@@ -253,14 +263,14 @@ export const seedCalendersUtil = (
     ) {
       return;
     }
-    const work_end_time = userTzDayjs(curr_day)
+    const work_end_time = dayjsLocal(curr_day)
       .tz(int_schd_sett.timeZone.tzCode)
       .startOf('day')
       .set('hours', 17);
     while (curr_time.isBefore(work_end_time, 'minutes')) {
       const { type, duration } = getRandMeetingType();
       // console.log(type, duration);
-      const seed_cal_event = getSeedEvent(type);
+      const seed_cal_event = getSeedEvent(type, companyScheduleSettings);
       if (seed_cal_event) {
         seed_cal_event.start.dateTime = curr_time.format();
         seed_cal_event.end.dateTime = curr_time

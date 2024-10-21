@@ -13,7 +13,7 @@ export const dummy: EmailType = {
   companyLogo: companyLogoDummy,
   subject: '',
   availabilityReqLink:
-    'process.env.NEXT_PUBLIC_APP_URL/scheduling/request-availability/avail_req_id',
+    'process.env.NEXT_PUBLIC_CLIENT_APP_URL/request-availability/avail_req_id',
 };
 
 // export get subject

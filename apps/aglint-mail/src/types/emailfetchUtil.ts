@@ -1,10 +1,11 @@
-import {
+import type {
   DatabaseEnums,
   EmailTemplateAPi,
   MailAttachment,
   SupabaseType,
   TargetApiPayloadType,
 } from '@aglint/shared-types';
+import type { PortalPayload } from '../utils/types/portalMessage';
 
 export interface FetchUtilResp<T extends DatabaseEnums['email_slack_types']> {
   company_id: string;
@@ -20,4 +21,5 @@ export type FetchUtilType<T extends DatabaseEnums['email_slack_types']> = (
   req_body: TargetApiPayloadType<T>,
 ) => Promise<{
   mail_data: FetchUtilResp<T> | FetchUtilResp<T>[];
+  candidate_portal_payload?: PortalPayload;
 }>;

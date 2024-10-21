@@ -6,11 +6,11 @@ export const List = ({
   interviewType: InterviewerDetailType['interview_type'][number];
 }) => {
   return (
-    <div className='rounded-lg bg-gray-50 p-4'>
-      <h3 className='mb-2 text-base font-medium'>
+    <div className='rounded-lg bg-white p-4'>
+      <div className='mb-2 text-sm font-medium'>
         {interviewType.module_name}
-      </h3>
-      <div className='grid grid-cols-2 gap-4 sm:grid-cols-4'>
+      </div>
+      <div className='flex gap-2'>
         <Card
           title='Duration'
           value={interviewType.completed_meeting_duration || 0}
@@ -24,7 +24,7 @@ export const List = ({
           value={interviewType.confirmed_meeting_count || 0}
         />
         <Card
-          title='Cancalled Slots'
+          title='Canceled Slots'
           value={interviewType.cancelled_meeting_count || 0}
         />
       </div>
@@ -33,9 +33,9 @@ export const List = ({
 };
 const Card = ({ title, value }: { title: string; value: string | number }) => {
   return (
-    <div>
-      <p className='text-sm text-gray-500'>{title}</p>
-      <p className='text-base font-bold'>{value} min</p>
+    <div className='flex-1'>
+      <p className='text-sm font-medium'>{value} min</p>
+      <p className='text-sm text-muted-foreground'>{title}</p>
     </div>
   );
 };

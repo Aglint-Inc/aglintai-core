@@ -3,9 +3,14 @@ import type {
   DatabaseTable,
   ZodTypeToSchema,
 } from '@aglint/shared-types';
+import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 import { formatSessions } from '@/utils/formatSessions';
 
@@ -47,7 +52,8 @@ const moveToInterview = async ({
   input,
 }: PrivateProcedure<typeof interviewSchema>) => {
   const db = createPrivateClient();
-  if (!input.body) {
+  const body = input.body;
+  if (!body) {
     const { body: _body, applications, ...rest } = input;
     const payload = applications.map((id) => ({
       id,
@@ -56,30 +62,49 @@ const moveToInterview = async ({
     }));
     return await db.from('applications').upsert(payload).throwOnError();
   }
+
   const [{ data }, { data: session_names }] = await Promise.all([
     db
       .from('application_view')
       .select('id, name')
+      .eq('recruiter_id', ctx.recruiter_id)
       .in('id', input.applications)
       .throwOnError(),
     db
       .from('interview_session')
       .select('name')
-      .in('id', input.body.sessions)
+      .eq('recruiter_id', ctx.recruiter_id)
+      .in('id', body.sessions)
       .throwOnError(),
   ]);
-  const sessions = formatSessions(session_names.map(({ name }) => name));
+
+  if (!session_names || session_names.length === 0)
+    throw new TRPCError({
+      code: 'NOT_FOUND',
+      message: 'No sessions found',
+    });
+
+  if (!data || data.length === 0)
+    throw new TRPCError({
+      code: 'NOT_FOUND',
+      message: 'No applications found',
+    });
+
+  const sessions = formatSessions(
+    session_names.map((session, i) => session.name ?? `Session ${i + 1}`),
+  );
   const requests: DatabaseFunctions['move_to_interview']['Args']['requests'] =
     data.map(({ id: application_id, name }) => ({
-      application_id,
+      application_id: application_id!,
       title: `Schedule ${sessions} for ${name}`,
       status: 'to_do',
       assigner_id: ctx.user_id,
-      ...input.body.request,
+      ...body.request,
     }));
+
   return await db.rpc('move_to_interview', {
     applications: input.applications,
-    sessions: input.body.sessions,
+    sessions: body.sessions,
     requests,
   });
 };
@@ -105,3 +130,5 @@ const mutation = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
 };
 
 export const move = privateProcedure.input(schema).mutation(mutation);
+
+export type Move = ProcedureDefinition<typeof move>;

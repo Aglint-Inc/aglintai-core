@@ -3,11 +3,23 @@ import { type PATHS } from '@/constant/allPaths';
 import { cronPaths } from './cron';
 type t = (typeof PATHS)[number];
 export const allowedPaths = new Set<t>([
+  '/dashboards',
+  '/dashboards/interviewer',
+  '/forgot-password',
+  '/login',
+  '/portal',
+  '/reset-password',
+  '/signup',
   '/api/testx',
   '/login',
   '/signup',
+  '/candidate/login',
+  '/candidate/interviews',
+  '/candidate/messages',
+  '/candidate/profile',
+  '/candidate/home',
   '/api/signup',
-  '/forgot-passwor',
+  '/forgot-password',
   '/api/auth/send-reset-email',
   '/api/pre-seed',
   '/api/unauthorized',
@@ -54,7 +66,6 @@ export const allowedPaths = new Set<t>([
   '/api/scheduling/list-events',
   '/api/scheduling/list-availability',
   '/api/supabase/getCandidate-files',
-  '/api/scheduling/invite',
   `/api/candidate-assessment/assessment-details`,
   `/api/candidate-assessment/assessment-answers`,
   '/api/candidate-assessment/assessment-result-create',
@@ -89,7 +100,6 @@ export const allowedPaths = new Set<t>([
   '/api/scheduling/request_availability/getCandidateRequestData',
   '/api/scheduling/request_availability/insertTaskProgress',
   '/api/scheduling/request_availability/getTaskIdDetailsByRequestId',
-  '/api/scheduling/request_availability/updateRequestAvailability',
   '/api/scheduling/request_availability/insertScheduleActivities',
   '/api/scheduling/request_availability/candidateAvailability/getMeetings',
   '/api/scheduling/request_availability/candidateAvailability/getScheduleMeetings',
@@ -155,11 +165,29 @@ export const allowedPaths = new Set<t>([
   '/api/candidate_portal/get_message',
   '/api/candidate_portal/get_profile',
   '/api/candidate_portal/home_page',
-  '/api/candidate_portal/update_profile',
   '/api/candidate_portal/get_navbar',
-  '/api/candidate_portal/get_email',
   '/api/request/execute-workflow',
   '/auth/callback',
   '/auth/redirect',
+  '/api/automation/reset-job-workflows',
+  '/api/scheduling/v1/booking/confirm-recruiter-selected-option',
+  '/api/candidate_portal/candidate_pic_update',
   ...cronPaths,
 ] as t[]);
+
+// Define route prefixes that expect a UUID at the end
+const dynamicPublicRoutePrefixes = [
+  '/self-scheduling',
+  '/request-availability',
+  '/company-postings',
+  '/job-post',
+];
+
+const uuidPattern =
+  '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}';
+
+// Build regex patterns dynamically for each route prefix
+export const dynamicPublicRoutes = dynamicPublicRoutePrefixes.map(
+  // eslint-disable-next-line security/detect-non-literal-regexp
+  (prefix) => new RegExp(`^${prefix}/${uuidPattern}$`),
+);

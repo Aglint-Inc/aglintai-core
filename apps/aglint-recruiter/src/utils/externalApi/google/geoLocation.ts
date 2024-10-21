@@ -1,7 +1,18 @@
+import 'server-only';
+
 import axios from 'axios';
 
+import type { GoogleLocationAPI, GoogleTimeZoneAPI } from './types';
+
+const getMapKey = () => {
+  if (!process.env.GOOGLE_MAP_API_KEY) {
+    throw new Error('No GOOGLE_MAP_API_KEY Key Found!');
+  }
+
+  return process.env.GOOGLE_MAP_API_KEY;
+};
 async function searchLocation(address: string) {
-  const apiKey = 'AIzaSyDO-310g2JDNPmN3miVdhXl2gJtsBRYUrI';
+  const apiKey = getMapKey();
   const res = await axios.get<GoogleLocationAPI>(
     `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${apiKey}`,
   );
@@ -17,7 +28,7 @@ export async function searchExactLocation(
     timeZone?: boolean;
   },
 ) {
-  const apiKey = 'AIzaSyDO-310g2JDNPmN3miVdhXl2gJtsBRYUrI';
+  const apiKey = getMapKey();
   const temp_res = await searchLocation(address);
   if (!temp_res.length) {
     throw new Error('no Match found!');
@@ -77,45 +88,40 @@ const getTimeZoneOfGeo = async (
   return data;
 };
 
-type GoogleTimeZoneAPI = {
-  dstOffset: number;
-  rawOffset: number;
-  status: string;
-  timeZoneId: string;
-  timeZoneName: string;
-};
+export const geoCodeLocation = async (address: string) => {
+  const apiKey = getMapKey();
+  if (address.length > 3) {
+    const locationData = await searchLocation(address);
+    const result = locationData[0];
 
-type GoogleLocationAPI = {
-  results: {
-    address_components: AddressComponent[];
-    formatted_address: string;
-    geometry: Geometry;
-    partial_match: boolean;
-    place_id: string;
-    types: string[];
-  }[];
-  status: string;
-};
+    let add: { region: string; country: string };
+    if (result.address_components[4]) {
+      add = {
+        region: result.address_components[3].long_name ?? '',
+        country: result.address_components[4].long_name ?? '',
+      };
+    } else if (result.address_components[3]) {
+      add = {
+        region: result.address_components[2].long_name ?? '',
+        country: result.address_components[3].long_name ?? '',
+      };
+    } else {
+      add = {
+        region: result.address_components[1]?.long_name ?? '',
+        country: result.address_components[2]?.long_name ?? '',
+      };
+    }
 
-type AddressComponent = {
-  long_name: string;
-  short_name: string;
-  types: string[];
-};
+    const geo = {
+      lat: result.geometry.location.lat ?? -1,
+      lang: result.geometry.location.lng ?? -1,
+    };
+    const timezone = await getTimeZoneOfGeo(
+      { lat: geo.lat, lang: geo.lang },
+      apiKey,
+    );
 
-type Geometry = {
-  bounds: Bounds;
-  location: Location;
-  location_type: string;
-  viewport: Bounds;
-};
-
-type Bounds = {
-  northeast: Location;
-  southwest: Location;
-};
-
-type Location = {
-  lat: number;
-  lng: number;
+    const timeZoneId = timezone && timezone.timeZoneId;
+    return { add, timeZoneId };
+  }
 };

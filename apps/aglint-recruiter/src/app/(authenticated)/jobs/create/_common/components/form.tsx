@@ -12,10 +12,10 @@ import { cn } from '@lib/utils';
 import { UserX } from 'lucide-react';
 import React, { type FC, memo } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import TipTapAIEditor from '@/components/Common/TipTapAIEditor';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import UITextField from '@/components/Common/UITextField';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import type { Form } from '@/jobs/types';
 import { useCompanyMembers } from '@/queries/company-members';
 import { formatOfficeLocation } from '@/utils/formatOfficeLocation';
@@ -86,7 +86,6 @@ export const useJobForms = (
       }
       return acc;
     },
-    // eslint-disable-next-line no-unused-vars
     {} as { [_id in keyof typeof fields]: React.JSX.Element },
   );
 };
@@ -98,7 +97,7 @@ const JobTitle: FC<MetaForms> = memo(({ name, value, onChange }) => {
       name={name}
       required
       placeholder={value.placeholder}
-      value={value.value as string}
+      value={String(value.value)}
       error={value.error.value}
       helperText={value.error.helper}
       onChange={(e) => onChange(name, e.target.value)}
@@ -114,7 +113,7 @@ const JobCompany: FC<MetaForms> = memo(({ name, value, onChange }) => {
         id={name}
         name={name}
         placeholder='Ex : Google'
-        value={value.value as string}
+        value={String(value.value)}
         onChange={(e) => onChange(name, e.target.value)}
         className={cn('pl-10', value.error.value && 'border-destructive')}
       />
@@ -133,7 +132,7 @@ const JobCompany: FC<MetaForms> = memo(({ name, value, onChange }) => {
 JobCompany.displayName = 'JobCompany';
 
 const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const options = (recruiter?.office_locations ?? []).map((s) => ({
     name: formatOfficeLocation(s),
     value: s.id,
@@ -143,9 +142,9 @@ const JobLocation: FC<MetaForms> = memo(({ name, value, onChange }) => {
       <Label htmlFor={name}>Job Location</Label>
       <Select
         onValueChange={(value) => {
-          onChange(name, value);
+          onChange(name, Number(value));
         }}
-        value={value.value as string}
+        value={String(value.value)}
       >
         <SelectTrigger>
           <SelectValue placeholder='Select a location' />
@@ -165,7 +164,7 @@ JobLocation.displayName = 'JobLocation';
 
 type Defaults = {
   [id in keyof Pick<Form, 'workplace_type' | 'job_type'>]: {
-    value: Form[id]['value'];
+    value: NonNullable<Form[id]>['value'];
     label: string;
   }[];
 };
@@ -186,9 +185,9 @@ const defaults: Defaults = {
   ],
 };
 const getOptions = (type: keyof Defaults) => {
-  return defaults[type].reduce(
+  return defaults[type]!.reduce(
     (acc, { label, value }) => {
-      acc.push({ name: label, value });
+      acc.push({ name: label, value: value! });
       return acc;
     },
     [] as { name: string; value: string }[],
@@ -204,7 +203,7 @@ const JobType: FC<MetaForms> = memo(({ name, value, onChange }) => {
         onValueChange={(value) => {
           onChange(name, value);
         }}
-        value={value.value as string}
+        value={String(value.value)}
       >
         <SelectTrigger>
           <SelectValue placeholder='Select a type' />
@@ -223,7 +222,7 @@ const JobType: FC<MetaForms> = memo(({ name, value, onChange }) => {
 JobType.displayName = 'JobType';
 
 const JobDepartment: FC<MetaForms> = memo(({ name, value, onChange }) => {
-  const { recruiter } = useAuthDetails();
+  const { recruiter } = useTenant();
   const options = recruiter.departments.map((department) => ({
     name: department.name,
     value: department.id,
@@ -234,9 +233,9 @@ const JobDepartment: FC<MetaForms> = memo(({ name, value, onChange }) => {
       <Label htmlFor={name}>Department</Label>
       <Select
         onValueChange={(value) => {
-          onChange(name, value);
+          onChange(name, Number(value));
         }}
-        value={value.value as string}
+        value={String(value.value)}
       >
         <SelectTrigger>
           <SelectValue placeholder='Select a department' />
@@ -254,7 +253,9 @@ const JobDepartment: FC<MetaForms> = memo(({ name, value, onChange }) => {
 });
 JobDepartment.displayName = 'JobDepartment';
 
-type Roles = ReturnType<typeof useCompanyMembers>['data'][number]['role'];
+type Roles = NonNullable<
+  ReturnType<typeof useCompanyMembers>['data']
+>[number]['role'];
 
 const roles = {
   'hiring manager': () => [...new Set<Roles>(['admin', 'hiring manager'])],
@@ -308,10 +309,10 @@ export const JobCoordinator: FC<MetaForms & { label?: boolean }> = memo(
       <UISelectDropDown
         onValueChange={(value) => {
           if (value === '_') onChange(name, null);
-          const coordinator = data.find((c) => c.user_id === value);
+          const coordinator = (data ?? []).find((c) => c.user_id === value);
           if (coordinator) onChange(name, coordinator.user_id);
         }}
-        label={label && capitalizeAll(name)}
+        label={label ? capitalizeAll(name) : undefined}
         menuOptions={options}
         required={value.required}
         value={safeValue.toString()}
@@ -352,13 +353,14 @@ JobWorkPlace.displayName = 'JobWorkPlace';
 
 const JobDescription: FC<MetaForms> = memo(({ name, value, onChange }) => {
   return (
-    <div className='w-full'>
+    <div className='max-w-3xl'>
       <div className={cn('w-full')}>
         <TipTapAIEditor
           initialValue={value.value as string}
           handleChange={(e) => onChange(name, e)}
           placeholder='Enter job description'
           disabled={false}
+          height='calc(100vh - 480px)'
         />
       </div>
     </div>
@@ -368,15 +370,13 @@ JobDescription.displayName = 'JobDescription';
 
 type MetaForms = {
   name: keyof Form;
-  value: Form[keyof Form];
-  // eslint-disable-next-line no-unused-vars
-  onChange: (name: keyof Form, value: any) => void;
+  value: NonNullable<Form[keyof Form]>;
+  onChange: (_name: keyof Form, _value: any) => void;
 };
 
 export type JobMetaFormProps = {
   fields: Form;
-  // eslint-disable-next-line no-unused-vars
-  handleChange: (name: keyof Form, value: string | number) => void;
+  handleChange: (_name: keyof Form, _value: string | number) => void;
   handleCreate?: () => void;
   handleCancel?: () => void;
 };

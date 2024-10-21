@@ -4,7 +4,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { AlertCircle, AlertTriangle } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 
 import { Loader } from '@/components/Common/Loader';
 import { type Application } from '@/types/applications.types';
@@ -25,9 +25,9 @@ export const ResumeScore = ({
       case 'unparsable':
         return <WarningIcon />;
       case 'processed':
-        return <ScoreTag score={resume_score} />;
+        return <ScoreTag score={resume_score!} />;
       case 'unscorable':
-        return <span className='text-gray-500'>---</span>;
+        return <span className='text-muted-foreground'>---</span>;
       default:
         return null;
     }
@@ -47,9 +47,17 @@ export const ResumeScore = ({
         <TooltipTrigger asChild>
           <div className='inline-flex items-center'>{renderContent()}</div>
         </TooltipTrigger>
-        {tooltipContent[resume_processing_state] && (
+        {tooltipContent[
+          resume_processing_state as keyof typeof tooltipContent
+        ] && (
           <TooltipContent side='right' className='max-w-xs'>
-            <p>{tooltipContent[resume_processing_state]}</p>
+            <p>
+              {
+                tooltipContent[
+                  resume_processing_state as keyof typeof tooltipContent
+                ]
+              }
+            </p>
           </TooltipContent>
         )}
       </Tooltip>
@@ -58,14 +66,14 @@ export const ResumeScore = ({
 };
 
 const ErrorIcon = () => (
-  <div className='flex items-center space-x-1 text-red-500'>
-    <AlertCircle size={16} />
+  <div className='flex items-center space-x-1 text-destructive'>
+    <AlertTriangle size={16} />
     <span>Resume not found</span>
   </div>
 );
 
 const WarningIcon = () => (
-  <div className='flex items-center space-x-1 text-yellow-500'>
+  <div className='flex items-center space-x-1 text-destructive'>
     <AlertTriangle size={16} />
     <span>Resume not parsable</span>
   </div>

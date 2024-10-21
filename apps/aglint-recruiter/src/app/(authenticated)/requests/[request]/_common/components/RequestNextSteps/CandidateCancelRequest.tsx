@@ -1,38 +1,42 @@
 import { type DatabaseTableInsert } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
-import { createRequestWorkflowAction } from '@requests/components/RequestProgress/utils';
+import { createRequestWorkflowAction } from '@request/components/RequestProgress/utils';
+import { useRequest } from '@request/hooks';
+import axios from 'axios';
 import React from 'react';
 
+import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useRequest } from '@/context/RequestContext';
-import { useRequestsActions } from '@/context/RequestsContext/hooks';
 import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
 
 const CandidateCancelRequest = () => {
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter } = useTenant();
   const { requestDetails, request_workflow } = useRequest();
-  const { handleAsyncUpdateRequest } = useRequestsActions();
 
   const handleAddWorkflows = async () => {
     try {
-      const cancelReqActions = ACTION_TRIGGER_MAP.onRequestCancel.map(
-        (trigger, idx) => ({ ...trigger.value, order: idx }),
+      let cancelReqActions = ACTION_TRIGGER_MAP.onRequestCancel.map(
+        (trigger, idx) => ({
+          ...trigger.value,
+          order: idx,
+          action_type: trigger.value.action_type,
+        }),
       ) as unknown as DatabaseTableInsert['workflow_action'][];
-
+      if (!recruiter.recruiter_preferences.slack) {
+        cancelReqActions = cancelReqActions.filter(
+          (action) => action.action_type !== 'slack',
+        );
+      }
       await createRequestWorkflowAction({
         wActions: cancelReqActions,
         request_id: requestDetails.id,
-        recruiter_id: recruiter_id,
+        recruiter_id: recruiter.id,
         interval: 0,
-        workflow_id: null,
+        workflow_id: '',
       });
       await request_workflow.refetch();
-      await handleAsyncUpdateRequest({
-        payload: {
-          requestId: requestDetails.id,
-          requestPayload: { status: 'in_progress' },
-        },
+      await axios.post('/api/request/execute-workflow', {
+        request_id: requestDetails.id,
       });
     } catch (e) {
       toast({
@@ -43,11 +47,9 @@ const CandidateCancelRequest = () => {
   };
 
   return (
-    <>
-      <UIButton onClick={handleAddWorkflows}>
-        Cancel Meeting and Notify Interviewers
-      </UIButton>
-    </>
+    <div className='mt-4'>
+      <UIButton onClick={handleAddWorkflows}>Cancel Meetings</UIButton>
+    </div>
   );
 };
 

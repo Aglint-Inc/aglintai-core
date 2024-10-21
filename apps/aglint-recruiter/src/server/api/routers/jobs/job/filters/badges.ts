@@ -1,7 +1,11 @@
 import type { DatabaseFunctions, ZodTypeToSchema } from '@aglint/shared-types';
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 type Params = DatabaseFunctions['get_applicant_badges']['Args'];
@@ -16,3 +20,5 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
 };
 
 export const badges = privateProcedure.input(schema).query(query);
+
+export type Badges = ProcedureDefinition<typeof badges>;

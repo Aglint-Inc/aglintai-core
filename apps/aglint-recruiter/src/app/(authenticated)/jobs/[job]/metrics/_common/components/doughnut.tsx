@@ -15,8 +15,8 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { Loader } from '@/components/Common/Loader';
 import { useJob, useMetricsLocationPool } from '@/job/hooks';
 import { getOrderedGraphValues } from '@/job/metrics/utils';
+import type { LocationPool } from '@/routers/jobs/job/metrics/locationPool';
 
-import type { MetricsOptions } from '../types';
 import { NoDataAvailable } from './nodata';
 
 ChartJs.register(BarElement, Tooltip, CategoryScale, LinearScale);
@@ -32,7 +32,11 @@ export const DoughnutChart: React.FC<{
       acc.colors.push(color);
       return acc;
     },
-    { names: [], counts: [], colors: [] },
+    { names: [], counts: [], colors: [] } as {
+      names: string[];
+      counts: number[];
+      colors: string[];
+    },
   );
   const dataBar = {
     labels: names,
@@ -114,8 +118,10 @@ export const DoughnutChart: React.FC<{
   );
 };
 
+type Option = keyof LocationPool['output'];
+
 export const DashboardDoughnutChart: FC<{
-  option: keyof MetricsOptions<'locationPool'>;
+  option: Option;
 }> = ({ option }) => {
   return (
     <ErrorBoundary fallback={<>Error</>}>
@@ -127,12 +133,12 @@ export const DashboardDoughnutChart: FC<{
 };
 
 const Content: FC<{
-  option: keyof MetricsOptions<'locationPool'>;
+  option: Option;
 }> = ({ option }) => {
   const {
     job: { processing_count },
   } = useJob();
-  const [locationPool] = useMetricsLocationPool();
+  const locationPool = useMetricsLocationPool();
   const locations = locationPool?.[option] ?? null;
   if (!locations) return <NoDataAvailable />;
   const totalCount = Object.values(processing_count).reduce((acc, curr) => {

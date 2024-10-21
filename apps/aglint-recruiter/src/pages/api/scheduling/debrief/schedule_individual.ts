@@ -1,13 +1,14 @@
 /* eslint-disable no-console */
 /* eslint-disable security/detect-object-injection */
 import {
-  type APIFindAvailability,
   type APIScheduleDebreif,
   type PlanCombinationRespType,
 } from '@aglint/shared-types';
+import { type schema_find_availability_payload } from '@aglint/shared-utils';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { type NextApiRequest, type NextApiResponse } from 'next';
+import { type z } from 'zod';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
@@ -25,7 +26,7 @@ export type ApiBodyParamScheduleIndividual = {
   recruiter_user_name: string;
   rec_user_id: string;
   user_tz: string;
-  filter_id: string;
+  request_id: string;
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -39,7 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       recruiter_user_name,
       task_id,
       user_tz,
-      filter_id,
+      request_id,
     } = req.body as ApiBodyParamScheduleIndividual;
 
     console.log(application_id, 'application_id');
@@ -51,7 +52,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       !session_id ||
       !task_id ||
       !user_tz ||
-      !filter_id
+      !request_id
     ) {
       return res.status(400).send('Missing required parameters');
     }
@@ -62,16 +63,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       dateRange,
     });
 
-    const firstSlot = availabilities.slots
+    const firstSlot = availabilities?.slots
       ?.flatMap((item) => item?.interview_rounds)
       ?.flatMap((item) => item?.plans);
 
-    if (availabilities.slots?.length > 0 && firstSlot?.length > 0) {
+    if (
+      firstSlot &&
+      availabilities &&
+      availabilities?.slots?.length > 0 &&
+      firstSlot?.length > 0
+    ) {
       await confirmSlot({
         task_id,
         user_tz,
         selectedDebrief: firstSlot[0],
-        filter_id,
+        request_id,
       });
       return res.status(200).send('success');
     } else {
@@ -85,8 +91,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).send('no availibity found');
     }
   } catch (error) {
-    console.log(error.message);
-    return res.status(500).send(error.message);
+    if (error instanceof Error) {
+      console.log(error.message);
+      return res.status(500).send(error.message);
+    }
   }
 };
 
@@ -95,31 +103,26 @@ export default handler;
 const confirmSlot = async ({
   user_tz,
   selectedDebrief,
-  filter_id,
+  request_id,
 }: {
   task_id: string;
   user_tz: string;
   selectedDebrief: PlanCombinationRespType;
-  filter_id: string;
+  request_id: string;
 }) => {
   const bodyParams: APIScheduleDebreif = {
     session_id: selectedDebrief.sessions[0].session_id,
     user_tz,
     selectedOption: selectedDebrief,
-    filter_id,
+    request_id,
   };
 
-  const resConfirmSlot = await axios.post(
+  await axios.post(
     `${process.env.NEXT_PUBLIC_HOST_NAME}/api/scheduling/v1/booking/schedule-debreif`,
     bodyParams,
   );
 
-  if (resConfirmSlot.status === 200) {
-    console.log(`confirmed slot`);
-    return true;
-  } else {
-    throw new Error('error in confirm_interview_slot api');
-  }
+  return true;
 };
 
 const findAvailibilityNoConflictOnly = async ({
@@ -134,7 +137,7 @@ const findAvailibilityNoConflictOnly = async ({
     end_date: string;
   };
 }) => {
-  const bodyParams: APIFindAvailability = {
+  const bodyParams: z.input<typeof schema_find_availability_payload> = {
     session_ids: [session_id],
     recruiter_id: recruiter_id,
     start_date_str: dayjs(dateRange.start_date).format('DD/MM/YYYY'),

@@ -1,6 +1,16 @@
-import { Card, CardContent, CardHeader } from '@components/ui/card';
-import { Loader2 } from 'lucide-react';
+import { EmptyState } from '@components/empty-state';
+import {
+  Section,
+  SectionActions,
+  SectionDescription,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
+import { type LucideIcon } from 'lucide-react';
 import React, { useState } from 'react';
+
+import { Loader } from '../Loader';
 
 interface InfoCardProps {
   title: string;
@@ -10,10 +20,11 @@ interface InfoCardProps {
   action?: React.ReactNode;
   children: React.ReactNode;
   isLoading?: boolean;
-  emptyStateIcon?: React.ReactNode;
+  emptyStateIcon?: React.ReactNode | LucideIcon;
   emptyStateHeading?: string;
-  emptyStateMessage?: string;
-  type?: 'graph' | 'info';
+  isHoverEffect?: boolean;
+  emptyStateMessage?: string | React.ReactNode;
+  type?: 'graph' | 'info' | 'compact';
 }
 
 export default function UISectionCard({
@@ -23,6 +34,7 @@ export default function UISectionCard({
   descriptionAddon,
   action,
   children,
+  isHoverEffect = true,
   isLoading = false,
   emptyStateIcon,
   emptyStateHeading,
@@ -31,57 +43,53 @@ export default function UISectionCard({
 }: InfoCardProps) {
   const [isHover, setIsHover] = useState(false);
   return (
-    <Card
-      className={`w-full ${type === 'graph' ? 'bg-background' : ''}`}
+    <Section
+      className={`w-full ${type === 'graph' ? 'bg-background' : ''} ${type === 'compact' ? 'border-0 shadow-none' : ''}`}
       onMouseEnter={() => setIsHover(true)}
       onFocus={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
       onBlur={() => setIsHover(false)}
     >
-      <CardHeader>
-        <div className='flex items-start justify-between'>
-          <div className='flex-1'>
-            <div className='flex items-center space-x-2'>
-              <h3 className='text-lg font-semibold'>{title}</h3>
-              {titleAddon && <span>{titleAddon}</span>}
-            </div>
-            <div className='mt-1 flex items-center space-x-2'>
-              <p className='text-sm text-muted-foreground'>{description}</p>
-              {descriptionAddon && <span>{descriptionAddon}</span>}
-            </div>
-          </div>
-          {action && (
-            <div
-              className={`ml-4 flex-shrink-0 ${isHover ? 'opacity-100' : 'opacity-0'} transition`}
-            >
-              {action}
-            </div>
-          )}
-        </div>
-      </CardHeader>
-      <CardContent>
+      <SectionHeader className={`${type === 'compact' ? 'p-0' : ''}`}>
+        <SectionHeaderText>
+          <SectionTitle
+            className={`mb-1 flex items-center ${type === 'compact' ? 'text-md font-medium' : 'text-lg font-medium'}`}
+          >
+            {title} {titleAddon && <span>{titleAddon}</span>}
+            <SectionActions>
+              {action && (
+                <div
+                  className={`ml-4 flex-shrink-0 ${isHover || !isHoverEffect ? 'opacity-100' : 'opacity-0'} transition`}
+                >
+                  {action}
+                </div>
+              )}
+            </SectionActions>
+          </SectionTitle>
+          <SectionDescription>
+            <p className='max-w-4xl text-sm text-muted-foreground'>
+              {description}
+            </p>
+            {descriptionAddon && (
+              <span className='max-w-4xl'>{descriptionAddon}</span>
+            )}
+          </SectionDescription>
+        </SectionHeaderText>
+      </SectionHeader>
+
+      <div className={`${type === 'compact' ? 'mt-2 p-0' : ''}`}>
         {isLoading ? (
-          <div className='flex h-32 items-center justify-center'>
-            <Loader2 className='h-8 w-8 animate-spin text-muted-foreground' />
-          </div>
+          <Loader />
         ) : emptyStateHeading || emptyStateMessage ? (
-          <div className='flex h-32 flex-col items-center justify-center text-center'>
-            {emptyStateIcon && <div className='mb-2'>{emptyStateIcon}</div>}
-            {emptyStateHeading && (
-              <h4 className='mb-1 text-lg font-semibold'>
-                {emptyStateHeading}
-              </h4>
-            )}
-            {emptyStateMessage && (
-              <p className='text-sm text-muted-foreground'>
-                {emptyStateMessage}
-              </p>
-            )}
-          </div>
+          <EmptyState
+            icon={emptyStateIcon as LucideIcon}
+            header={emptyStateHeading}
+            description={emptyStateMessage}
+          />
         ) : (
           children
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </Section>
   );
 }

@@ -1,8 +1,6 @@
 import { type DatabaseTableInsert } from '@aglint/shared-types';
 import axios from 'axios';
 
-import { type JobInsert } from '@/queries/jobs/types';
-
 import { POSTED_BY } from '../utils';
 import {
   type AshbyApplication,
@@ -13,13 +11,13 @@ import {
 export const fetchAllCandidates = async (
   apiKey: string,
 ): Promise<AshbyApplication[]> => {
-  let allCandidates = [];
+  let allCandidates: AshbyApplication[] = [];
   let hasMore = true;
   let page;
 
   while (hasMore) {
     try {
-      const response = await axios.post('/api/ashby/getCandidates', {
+      const response: any = await axios.post('/api/ashby/getCandidates', {
         page: page,
         apiKey: apiKey,
       });
@@ -45,7 +43,7 @@ export const fetchAllCandidates = async (
 
 export const fetchAllJobs = async (apiKey: string): Promise<JobAshby[]> => {
   //pagination need to done
-  let allJobs = [];
+  let allJobs: JobAshby[] = [];
 
   try {
     const response = await axios.post('/api/ashby/getPostings', {
@@ -80,7 +78,6 @@ export const createJobObject = async (
         job_title: post.title,
         recruiter_id: recruiter_id,
         posted_by: POSTED_BY.ASHBY,
-        status: 'draft',
         id: post.public_job_id,
         description: post.description,
         job_type: post.employmentType == 'Contract' ? 'contract' : 'full time',
@@ -91,7 +88,7 @@ export const createJobObject = async (
           education: 0,
           experience: 0,
         },
-      } as JobInsert;
+      } as DatabaseTableInsert['public_jobs'];
     },
   );
   return dbJobs;

@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 const applicationDetailsSchema = z.object({
@@ -16,6 +20,8 @@ const query = async (
 export const applicationDetails = privateProcedure
   .input(applicationDetailsSchema)
   .query(query);
+
+export type ApplicationDetails = ProcedureDefinition<typeof applicationDetails>;
 
 const getApplicationDetails = async (
   ctx: PrivateProcedure<typeof applicationDetailsSchema>,

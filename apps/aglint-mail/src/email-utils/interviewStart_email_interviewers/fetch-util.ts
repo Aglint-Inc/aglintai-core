@@ -7,7 +7,7 @@ import {
   scheduleTypeIcon,
   sessionTypeIcon,
 } from '../../utils/email/common/functions';
-import { FetchUtilType } from '../../types/emailfetchUtil';
+import type { FetchUtilType } from '../../types/emailfetchUtil';
 
 export const fetchUtil: FetchUtilType<
   'interviewStart_email_interviewers'
@@ -94,7 +94,7 @@ export const fetchUtil: FetchUtilType<
     };
 
   const candLink = req_body.meeting_id
-    ? `${process.env.NEXT_PUBLIC_APP_URL}/interviews/view?meeting_id=${req_body.meeting_id}&tab=candidate_details`
+    ? `${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/interviews/view?meeting_id=${req_body.meeting_id}&tab=candidate_details`
     : '';
 
   const react_email_placeholders: EmailTemplateAPi<'interviewStart_email_interviewers'>['react_email_placeholders'] =

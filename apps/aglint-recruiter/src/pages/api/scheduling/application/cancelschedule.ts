@@ -4,10 +4,8 @@ import axios from 'axios';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { cancelMailHandler } from '@/utils/scheduling/mailUtils';
-import { removeSessionsFromFilterJson } from '@/utils/scheduling/removeSessionsFromFilterJson';
-import { removeSessionsFromRequestAvailability } from '@/utils/scheduling/removeSessionsFromRequestAvailability';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
-import { createClient } from '@/utils/supabase/server';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export interface ApiBodyParamsCancelSchedule {
   meeting_id: string;
@@ -23,7 +21,7 @@ export type ApiResponseCancelSchedule = 'cancelled';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const supabase = createClient();
+    const supabase = getSupabaseServer();
 
     const {
       meeting_id,
@@ -76,10 +74,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .from('interview_session_cancel')
         .insert({
           reason,
-          type: 'declined',
+          type: 'admin_cancel',
           session_id,
           other_details: {
-            dateRange: null,
+            dateRange: undefined,
             note: notes,
           },
           cancel_user_id: cancel_user_id,
@@ -87,20 +85,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         });
       if (errIntSesCancel) throw new Error(errIntSesCancel.message);
 
-      const meeting_flow = meetSession[0].meeting_flow;
       const session_name = meetSession[0].interview_session[0].name;
-
-      if (meeting_flow !== 'candidate_request') {
-        await removeSessionsFromFilterJson({
-          session_ids: [session_id],
-          supabase,
-        });
-      } else if (meeting_flow === 'candidate_request') {
-        await removeSessionsFromRequestAvailability({
-          session_ids: [session_id],
-          supabase,
-        });
-      }
 
       cancelMailHandler({
         application_id,
@@ -130,8 +115,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(400).send('Invalid meeting_id or session_id');
     }
   } catch (error) {
-    // console.log('error', error);
-    res.status(400).send(error.message);
+    if (error instanceof Error) {
+      return res.status(400).send(error.message);
+    }
   }
 };
 

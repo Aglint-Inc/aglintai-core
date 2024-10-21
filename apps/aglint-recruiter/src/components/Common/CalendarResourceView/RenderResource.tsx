@@ -4,10 +4,11 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@components/ui/tooltip';
+import { type ResourceLabelContentArg } from '@fullcalendar/resource';
 
 import { type Resource } from './types';
 
-function RenderResourceContent(resourceInfo) {
+function RenderResourceContent(resourceInfo: ResourceLabelContentArg) {
   const { data } = resourceInfo.resource
     .extendedProps as Resource['extendedProps'];
 
@@ -16,12 +17,12 @@ function RenderResourceContent(resourceInfo) {
       <TooltipTrigger asChild>
         <div className='flex gap-2 p-2'>
           <Avatar className='h-8 w-8'>
-            <AvatarImage src={data.profile_pic} alt={data.name} />
+            <AvatarImage src={data.profile_pic ?? ''} alt={data.name} />
             <AvatarFallback>{data.name.charAt(0)}</AvatarFallback>
           </Avatar>
           <div className='flex flex-col'>
             <p className='text-xs'>{data.name}</p>
-            <p className='text-xs text-neutral-400'>{data.position}</p>
+            <p className='text-xs text-muted-foreground'>{data.position}</p>
           </div>
         </div>
       </TooltipTrigger>

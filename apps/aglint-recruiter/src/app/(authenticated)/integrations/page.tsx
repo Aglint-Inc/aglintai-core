@@ -1,14 +1,14 @@
-import Seo from '@/components/Common/Seo';
-import Integrations from '@/components/Integrations';
+'use client';
+import { OneColumnPageLayout } from '@components/layouts/one-column-page-layout';
+
+import { Integrations, IntegrationsHeader } from './_common/components';
 
 function IntegrationsPage() {
   return (
     <>
-      <Seo
-        title={`Integrations | Aglint AI`}
-        description='AI for People Products'
-      />
-      <Integrations />
+      <OneColumnPageLayout header={<IntegrationsHeader />}>
+        <Integrations />
+      </OneColumnPageLayout>
     </>
   );
 }

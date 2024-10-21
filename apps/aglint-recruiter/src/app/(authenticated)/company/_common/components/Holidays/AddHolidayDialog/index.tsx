@@ -1,4 +1,4 @@
-import { type holidayType } from '@aglint/shared-types';
+import { dayjsLocal } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { Calendar } from '@components/ui/calendar';
 import { Label } from '@components/ui/label';
@@ -9,54 +9,86 @@ import {
 } from '@components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
 import { CalendarIcon } from 'lucide-react';
-import {
-  type Dispatch,
-  type MutableRefObject,
-  type SetStateAction,
-} from 'react';
+import { type Dispatch, type SetStateAction, useState } from 'react';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
-import UISelectDropDown from '@/components/Common/UISelectDropDown';
-import UITextField from '@/components/Common/UITextField';
-import { type useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { UIButton } from '@/common/UIButton';
+import UIDialog from '@/common/UIDialog';
+import UISelectDropDown from '@/common/UISelectDropDown';
+import UITextField from '@/common/UITextField';
+import { useTenant } from '@/company/hooks';
+import { useTenantRefetch } from '@/company/hooks/useTenantRefetch';
+import { api } from '@/trpc/client';
 
-type specificLocationType = 'all_locations' | 'specific_locations';
+type SpecificLocationType = 'all_locations' | 'specific_locations';
 
 type Props = {
   addDayOffOpen: boolean;
   setDaysOffOpen: Dispatch<SetStateAction<boolean>>;
-  eventRef: MutableRefObject<HTMLInputElement>;
-  selectedDate: string;
-  daysOff: holidayType[];
-  setSpecificLocationOn: Dispatch<SetStateAction<specificLocationType>>;
-  specificLocationOn: specificLocationType;
-  recruiter: ReturnType<typeof useAuthDetails>['recruiter'];
-  selectedLocations: any[];
-  setSelectedLocations: Dispatch<SetStateAction<any[]>>;
-  // eslint-disable-next-line no-unused-vars
-  handleAddDayOff: (newDayoff: holidayType) => Promise<void>;
-  setSelectedDate: Dispatch<SetStateAction<string>>;
-  isSaving: 'saving' | 'saved';
-  // eslint-disable-next-line no-unused-vars
-  getDate: (e: any) => void;
 };
-export const AddHolidayDialog = ({
-  addDayOffOpen,
-  setDaysOffOpen,
-  eventRef,
-  selectedDate,
-  daysOff,
-  setSpecificLocationOn,
-  specificLocationOn,
-  recruiter,
-  selectedLocations,
-  setSelectedLocations,
-  handleAddDayOff,
-  setSelectedDate,
-  isSaving,
-  getDate,
-}: Props) => {
+export const AddHolidayDialog = ({ addDayOffOpen, setDaysOffOpen }: Props) => {
+  const { recruiter } = useTenant();
+  const { refetch } = useTenantRefetch();
+  const [selectedDate, setSelectedDate] = useState<string | null>(
+    dayjsLocal().format('DD MMM YYYY'),
+  );
+  const [name, setName] = useState('');
+  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+  const [specificLocationOn, setSpecificLocationOn] =
+    useState<SpecificLocationType>('all_locations');
+
+  const { mutateAsync, isPending } = api.tenant.updateTenant.useMutation({
+    onSuccess: () => {
+      refetch();
+    },
+    onError: () =>
+      toast({
+        title: 'Unable to update holiday',
+        variant: 'destructive',
+      }),
+  });
+
+  const addHoliday = async () => {
+    if (!name) {
+      toast({ title: 'Please enter event name.' });
+      return;
+    }
+    if (!selectedDate) {
+      toast({ title: 'Please select a date.' });
+      return;
+    }
+    if (
+      specificLocationOn === 'specific_locations' &&
+      selectedLocations.length === 0
+    ) {
+      toast({ title: 'Please select a locations.' });
+      return;
+    }
+    try {
+      await mutateAsync({
+        scheduling_settings: {
+          ...recruiter.scheduling_settings,
+          totalDaysOff: [
+            ...recruiter.scheduling_settings.totalDaysOff,
+            {
+              date: selectedDate,
+              event_name: name,
+              locations:
+                specificLocationOn === 'specific_locations'
+                  ? selectedLocations
+                  : recruiter?.office_locations.map(
+                      (item) => `${item.city}, ${item.region}, ${item.country}`,
+                    ),
+            },
+          ],
+        },
+      });
+      setSelectedDate(null);
+      setDaysOffOpen(false);
+    } catch {
+      //
+    }
+  };
+
   return (
     <UIDialog
       title='Add Holiday'
@@ -74,41 +106,11 @@ export const AddHolidayDialog = ({
           </UIButton>
           <UIButton
             onClick={() => {
-              if (!eventRef.current.value) {
-                toast({ title: 'Please enter event name.' });
-                return;
-              }
-              if (!selectedDate) {
-                toast({ title: 'Please select a date.' });
-                return;
-              }
-              if (
-                specificLocationOn === 'specific_locations' &&
-                selectedLocations.length === 0
-              ) {
-                toast({ title: 'Please select a locations.' });
-                return;
-              }
-
-              const newDayoff = {
-                date: selectedDate,
-                event_name: eventRef.current.value,
-                locations:
-                  specificLocationOn === 'specific_locations'
-                    ? selectedLocations
-                    : recruiter?.office_locations.map(
-                        (item) =>
-                          `${item.city}, ${item.region}, ${item.country}`,
-                      ),
-              } as holidayType;
-
-              handleAddDayOff(newDayoff);
-
-              setSelectedDate(null);
+              addHoliday();
             }}
-            isLoading={isSaving === 'saving'}
+            isLoading={isPending}
           >
-            {isSaving === 'saving' ? 'Adding...' : 'Add'}
+            Add
           </UIButton>
         </>
       }
@@ -116,17 +118,20 @@ export const AddHolidayDialog = ({
       <div className='space-y-4'>
         <div className='space-y-2'>
           <Label htmlFor='event'>
-            Day off <span className='text-red-500'>*</span>
+            Day off <span className='text-destructive'>*</span>
           </Label>
           <UITextField
             id='event'
             placeholder='Enter the name of the holiday'
-            ref={eventRef}
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
           />
         </div>
         <div className='space-y-2'>
           <Label htmlFor='date'>
-            Date <span className='text-red-500'>*</span>
+            Date <span className='text-destructive'>*</span>
           </Label>
           <Popover>
             <PopoverTrigger asChild>
@@ -142,9 +147,12 @@ export const AddHolidayDialog = ({
               <Calendar
                 mode='single'
                 selected={selectedDate ? new Date(selectedDate) : undefined}
-                onSelect={(date) => date && getDate(date)}
+                onSelect={(date) =>
+                  date &&
+                  setSelectedDate(dayjsLocal(date).format('DD MMM YYYY'))
+                }
                 disabled={(date) =>
-                  daysOff.some(
+                  recruiter.scheduling_settings.totalDaysOff.some(
                     (day) =>
                       new Date(day.date).toDateString() === date.toDateString(),
                   )
@@ -158,9 +166,7 @@ export const AddHolidayDialog = ({
           <RadioGroup
             value={specificLocationOn}
             onValueChange={(value) =>
-              setSpecificLocationOn(
-                value as 'all_locations' | 'specific_locations',
-              )
+              setSpecificLocationOn(value as SpecificLocationType)
             }
             className='flex space-x-4'
           >
@@ -179,7 +185,6 @@ export const AddHolidayDialog = ({
         </div>
         {recruiter && specificLocationOn === 'specific_locations' && (
           <div>
-            <Label>Pick locations</Label>
             <UISelectDropDown
               menuOptions={
                 recruiter
@@ -194,7 +199,7 @@ export const AddHolidayDialog = ({
               value={selectedLocations[0]}
               onValueChange={(value) => setSelectedLocations([value])}
               placeholder='Select a Location'
-              label='Locations'
+              label='Pick Locations'
             />
           </div>
         )}

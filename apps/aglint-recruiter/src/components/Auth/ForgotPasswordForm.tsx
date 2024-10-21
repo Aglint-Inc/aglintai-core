@@ -29,10 +29,9 @@ export default function ForgotPasswordForm() {
     setIsLoading(true);
     try {
       // eslint-disable-next-line no-unused-vars
-      const { error } =
-        await supabase.auth.resetPasswordForEmail(data.email, {
-          redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`,
-        });
+      const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
+        redirectTo: `${process.env.NEXT_PUBLIC_HOST_NAME}/reset-password`,
+      });
 
       if (error) throw error;
 
@@ -77,7 +76,7 @@ export default function ForgotPasswordForm() {
               })}
             />
             {errors.email && (
-              <p className='text-sm text-red-500'>{errors.email.message}</p>
+              <p className='text-sm text-destructive'>{errors.email.message}</p>
             )}
           </div>
           <Button className='w-full' type='submit' disabled={isLoading}>

@@ -1,7 +1,11 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 import { z } from 'zod';
 
-import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '@/server/api/trpc';
 import { createPrivateClient } from '@/server/db';
 
 export const trainingProgressSchema = z.object({
@@ -16,6 +20,8 @@ export const trainingProgress = privateProcedure
   .input(trainingProgressSchema)
   .query(query);
 
+export type TrainingProgress = ProcedureDefinition<typeof trainingProgress>;
+
 export const fetchProgress = async (
   props: PrivateProcedure<typeof trainingProgressSchema>,
 ) => {
@@ -26,14 +32,14 @@ export const fetchProgress = async (
   const { data } = await db
     .from('interview_training_progress')
     .select(
-      '*,interview_session_relation(*,interview_session(id,name,session_type,interview_meeting(id,status)),interview_module_relation(id)),recruiter_user(first_name,last_name)',
+      '*,interview_session_relation!inner(*,interview_session!inner(id,name,session_type,interview_meeting!inner(id,status)),interview_module_relation!inner(id)),recruiter_user!inner(first_name,last_name)',
     )
     .in('interview_session_relation.interview_module_relation_id', trainer_ids)
     .eq('interview_session_relation.is_confirmed', true)
     .order('created_at', { ascending: false })
     .not('interview_session_relation', 'is', null)
     .throwOnError();
-  const resRel = data
+  const resRel = (data || [])
     .filter(
       (ses) =>
         ses.interview_session_relation.interview_session.interview_meeting

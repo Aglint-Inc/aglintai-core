@@ -1,11 +1,19 @@
 import { getFullName } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@components/ui/alert-dialog';
 import { useState } from 'react';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
-import { UIButton } from '@/components/Common/UIButton';
-import UIDialog from '@/components/Common/UIDialog';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useMemberList } from '@/hooks/useMemberList';
+import { useTenant } from '@/company/hooks';
 import { supabase } from '@/utils/supabase/client';
 
 import {
@@ -13,11 +21,10 @@ import {
   useModulesStore,
 } from '../../stores/store';
 
-function MoveToQualifiedDialog({ refetch }: { refetch: () => void }) {
+function MoveToQualifiedDialog() {
   const { toast } = useToast();
-  const { recruiterUser } = useAuthDetails();
-  // const { members } = useSchedulingContext();
-  const { data: members } = useMemberList();
+  const { recruiter_user } = useTenant();
+  const { data: members } = useMemberList(false, true);
   const isMovedToQualifiedDialogOpen = useModulesStore(
     (state) => state.isMovedToQualifiedDialogOpen,
   );
@@ -25,22 +32,22 @@ function MoveToQualifiedDialog({ refetch }: { refetch: () => void }) {
   const [isSaving, setIsSaving] = useState(false);
 
   const moveToQualified = async () => {
+    if (!selUser) return null;
     try {
       setIsSaving(true);
       await supabase
         .from('interview_module_relation')
         .update({
           training_status: 'qualified',
-          training_approver: recruiterUser.user_id,
+          training_approver: recruiter_user.user_id,
         })
         .eq('id', selUser.id)
         .throwOnError();
-      refetch();
     } catch (error) {
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: error.message,
+        description: (error as Error).message,
       });
     } finally {
       setIsSaving(false);
@@ -51,34 +58,31 @@ function MoveToQualifiedDialog({ refetch }: { refetch: () => void }) {
   const user = members?.find((user) => user?.user_id == selUser?.user_id);
 
   return (
-    <UIDialog
+    <AlertDialog
       open={isMovedToQualifiedDialogOpen}
-      onClose={() => {
-        setIsMovedToQualifiedDialogOpen(false);
-      }}
-      title={'Move to Qualified'}
-      slotButtons={
-        <>
-          <UIButton
-            variant='secondary'
-            onClick={() => {
-              setIsMovedToQualifiedDialogOpen(false);
-            }}
+      onOpenChange={setIsMovedToQualifiedDialogOpen}
+    >
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Move to Qualified</AlertDialogTitle>
+          <AlertDialogDescription>
+            Are you sure you want to move{' '}
+            {getFullName(user?.first_name ?? '', user?.last_name ?? '')} to
+            qualified?
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel
+            onClick={() => setIsMovedToQualifiedDialogOpen(false)}
           >
             Cancel
-          </UIButton>
-          <UIButton
-            variant='default'
-            isLoading={isSaving}
-            onClick={moveToQualified}
-          >
-            Move
-          </UIButton>
-        </>
-      }
-    >
-      {`Are you sure you want to move ${getFullName(user?.first_name, user?.last_name)} to qualified?`}
-    </UIDialog>
+          </AlertDialogCancel>
+          <AlertDialogAction onClick={moveToQualified} disabled={isSaving}>
+            {isSaving ? 'Moving...' : 'Move'}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 

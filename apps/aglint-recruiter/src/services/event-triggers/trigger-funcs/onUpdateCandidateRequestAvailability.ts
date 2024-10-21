@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { type DatabaseEnums, type DatabaseTable } from '@aglint/shared-types';
 import {
+  CApiError,
   createRequestProgressLogger,
   type ProgressLoggerType,
   supabaseWrap,
@@ -19,7 +20,6 @@ export const onUpdateCandidateRequestAvailability = async ({
   new_data: DatabaseTable['candidate_request_availability'];
   old_data: DatabaseTable['candidate_request_availability'];
 }) => {
-  const supabaseAdmin = getSupabaseServer();
   // candidate availability recieved
   if (
     old_data.slots === null &&
@@ -30,35 +30,15 @@ export const onUpdateCandidateRequestAvailability = async ({
     await pauseCandAvailabilityReminder(new_data.id);
     await triggerActions(new_data);
   }
-  //
-  if (
-    old_data.booking_confirmed === false &&
-    new_data.booking_confirmed === true
-  ) {
-    supabaseWrap(
-      await supabaseAdmin.from('request_progress').insert({
-        event_type: 'CAND_CONFIRM_SLOT',
-        request_id: new_data.request_id,
-        status: 'completed',
-        is_progress_step: false,
-      }),
-    );
-    supabaseWrap(
-      await supabaseAdmin
-        .from('request')
-        .update({
-          status: 'completed',
-        })
-        .eq('id', new_data.request_id),
-    );
-  }
+
   if (
     old_data.visited &&
     !new_data.visited &&
-    old_data?.slots.length > 0 &&
+    old_data.slots &&
+    old_data.slots.length > 0 &&
     new_data.slots === null
   ) {
-    reRequestingAvailability(new_data);
+    await reRequestingAvailability(new_data);
   }
 };
 
@@ -69,19 +49,23 @@ const triggerActions = async (
 
   try {
     const allowed_end_points: DatabaseEnums['email_slack_types'][] = [
-      'onReceivingAvailReq_agent_confirmSlot',
+      'onReceivingAvailReq_agent_suggestSlots',
       'onReceivingAvailReq_agent_sendSelfScheduleRequest',
     ];
 
-    const [applications] = supabaseWrap(
+    const application = (
       await supabaseAdmin
         .from('applications')
         .select('*,public_jobs(*)')
-        .eq('id', new_data.application_id),
-    );
-
+        .eq('id', new_data.application_id)
+        .single()
+        .throwOnError()
+    ).data;
+    if (!application || !application.public_jobs) {
+      throw new CApiError('SERVER_ERROR', 'Application not found');
+    }
     const { request_workflows } = await getWActions({
-      company_id: applications.public_jobs.recruiter_id,
+      company_id: application.public_jobs.recruiter_id,
       request_id: new_data.request_id,
     });
 
@@ -109,7 +93,7 @@ const triggerActions = async (
         );
       });
     await Promise.allSettled(promises);
-  } catch (err) {
+  } catch (err: any) {
     console.error(err.message);
   }
 };

@@ -129,7 +129,7 @@ export const server_checkUserRolePermissions = async ({
       if (data.user.id) {
         return supabase
           .from('recruiter_relation')
-          .select('id,roles(name)')
+          .select('id,roles!inner(name)')
           .eq('user_id', data.user.id)
           .eq('is_active', true)
           .then(({ data, error }) => {
@@ -140,7 +140,7 @@ export const server_checkUserRolePermissions = async ({
       throw new Error('Failed to load auth user.');
     });
   } catch (error) {
-    throw new Error(error);
+    if (error instanceof Error) throw new Error(error.message);
   }
 };
 
@@ -208,7 +208,7 @@ export const server_getUserRoleAndId = async () => {
       if (data.user.id) {
         return supabase
           .from('recruiter_relation')
-          .select('id,roles(name)')
+          .select('id,roles!inner(name)')
           .eq('user_id', data.user.id)
           .eq('is_active', true)
           .then(({ data: dataR, error }) => {
@@ -219,6 +219,6 @@ export const server_getUserRoleAndId = async () => {
       throw new Error('Failed to load auth user.');
     });
   } catch (error) {
-    throw new Error(error);
+    if (error instanceof Error) throw new Error(error.message);
   }
 };

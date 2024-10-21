@@ -1,14 +1,14 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
+import { useTenant } from '@/company/hooks';
 import { type CompanyMembersAPI } from '@/pages/api/scheduling/fetchUserDetails';
 
 import { companyMembersKeys } from './keys';
 
 export const useCompanyMembers = () => {
   const queryClient = useQueryClient();
-  const { recruiter_id } = useAuthDetails();
+  const { recruiter_id } = useTenant();
   const { queryKey } = companyMembersKeys.companyMembers();
   const response = useQuery({
     queryKey,

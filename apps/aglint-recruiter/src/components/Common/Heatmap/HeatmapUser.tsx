@@ -1,16 +1,24 @@
-import { type schedulingSettingType } from '@aglint/shared-types';
+import { type SchedulingSettingType } from '@aglint/shared-types';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
+import {
+  Section,
+  SectionActions,
+  SectionHeader,
+  SectionHeaderText,
+  SectionTitle,
+} from '@components/layouts/sections-header';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { HeatMapGrid } from 'react-grid-heatmap';
 
-import { UIButton } from '../UIButton';
 import { type Meeting } from './type';
 import {
   filling2dArray,
   getDatesArray,
+  type GroupedEvents,
   transposeArray,
   useUserSchedules,
 } from './utils';
@@ -18,24 +26,26 @@ import {
 export default function Heatmap({
   loadSetting,
 }: {
-  loadSetting: schedulingSettingType['interviewLoad'];
+  loadSetting: SchedulingSettingType['interviewLoad'];
 }) {
-  const [arrayDates, setArrayDates] = useState([]);
+  const [arrayDates, setArrayDates] = useState<string[]>([]);
   const [dayCount, setDayCount] = useState<{ start: number; end: number }>({
     start: -7,
-    end: 24,
+    end: 27,
   });
   const [maxCount, setMaxCountInterviews] = useState(
     loadSetting.dailyLimit.value,
   );
-  const user_id = useParams().user as string;
+  const params = useParams();
+  const user_id = params?.user ? (params.user as string) : '';
   const router = useRouter();
 
   const { data, isLoading } = useUserSchedules(user_id);
 
   useEffect(() => {
     setMaxCountInterviews(
-      Math.max(loadSetting?.dailyLimit.value, data?.maxInterviewsCount),
+      Math.max(loadSetting?.dailyLimit.value, 7),
+      // Math.max(loadSetting?.dailyLimit.value, data?.maxInterviewsCount ?? 0),
     );
   }, [data]);
 
@@ -83,119 +93,128 @@ export default function Heatmap({
   return (
     <>
       {isLoading ? (
-        <Skeleton className='h-[150] w-[1000px]' />
+        <Skeleton className='h-[150] w-[400px]' />
       ) : (
-        <div className='m-2'>
-          <div className='mb-4 flex max-w-[1000px] items-center justify-between'>
-            <div className='flex items-center space-x-1'>
-              <p className='min-w-[280px]'>
-                Activity on{' '}
-                <span className='font-medium'>
-                  {startDateUI} - {endDateUI}
-                </span>
-              </p>
-              <UIButton
-                size='sm'
-                variant='secondary'
-                onClick={() =>
-                  setDayCount((pre) => ({
-                    start: pre.start === 21 ? -7 : pre.start - 28,
-                    end: pre.end - 28,
-                  }))
-                }
-                icon={<ChevronLeft className='h-4 w-4' />}
-              />
-              <UIButton
-                size='sm'
-                variant='secondary'
-                onClick={() =>
-                  setDayCount((pre) => ({
-                    start: pre.start === -7 ? 21 : pre.start + 28,
-                    end: pre.end + 28,
-                  }))
-                }
-                icon={<ChevronRight className='h-4 w-4' />}
-              />
-            </div>
+        <Section>
+          <SectionHeader>
+            <SectionHeaderText>
+              <SectionTitle>Meetings overview</SectionTitle>
+            </SectionHeaderText>
+            <SectionActions>
+              <div className='mt-1 flex items-center justify-between gap-2'>
+                <div className='hidden gap-4'>
+                  <div className='flex gap-1'>
+                    <p className='text-sm'>Daily :</p>
+                    <p className='text-sm'>{loadSetting?.dailyLimit.value}</p>
+                    <p className='text-sm'>{todayTypeText}</p>
+                  </div>
+                  <div className='flex gap-1'>
+                    <p className='text-sm'> Weekly : </p>
+                    <p className='text-sm'>{loadSetting?.weeklyLimit.value}</p>
+                    <p className='text-sm'>{weeklyTypeText}</p>
+                  </div>
+                </div>
 
-            <div className='flex space-x-1'>
-              <div className='flex space-x-1'>
-                <p className='font-medium'>Daily :</p>
-                <p>{loadSetting?.dailyLimit.value}</p>
-                <p>{todayTypeText}</p>
-                <p className='font-medium'> Weekly : </p>
-                <p>{loadSetting?.weeklyLimit.value}</p>
-                <p>{weeklyTypeText}</p>
+                <div className='flex flex-row items-center gap-2'>
+                  <p className='text-sm'>
+                    Activity on{' '}
+                    <span>
+                      {startDateUI} - {endDateUI}
+                    </span>
+                  </p>
+                  <div
+                    className='flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm bg-gray-100'
+                    onClick={() =>
+                      setDayCount((pre) => ({
+                        start: pre.start === 21 ? -7 : pre.start - 28,
+                        end: pre.end - 28,
+                      }))
+                    }
+                  >
+                    <ChevronLeft className='h-3 w-3' />
+                  </div>
+                  <div
+                    className='flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm bg-gray-100'
+                    onClick={() =>
+                      setDayCount((pre) => ({
+                        start: pre.start === -7 ? 21 : pre.start + 28,
+                        end: pre.end + 28,
+                      }))
+                    }
+                  >
+                    <ChevronRight className='h-3 w-3' />
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <HeatMapGrid
-            data={mapDatas}
-            xLabels={xLabel}
-            yLabels={yLabel}
-            square
-            cellHeight='30.5px'
-            xLabelsPos='bottom'
-            onClick={(x, y) => {
-              if (heatMapData[x][y].meeting_id)
-                router.push(
-                  `/interviews/view?meeting_id=${heatMapData[x][y].meeting_id}&tab=candidate_details`,
-                );
-            }}
-            yLabelsPos='left'
-            xLabelsStyle={(index) => {
-              const isToday = dayjsLocal(arrayDates[index]).isToday();
-              return {
-                visibility: isToday ? 'visible' : 'hidden',
-                backgroundColor: isToday
-                  ? 'hsl(var(--chart-5))'
-                  : 'transparent',
-                borderRadius: '20px',
-                height: '2px ',
-                padding: 0,
-                marginTop: '2px',
-                width: '30.5px',
-              };
-            }}
-            yLabelsStyle={(index) => ({
-              color: index % 1 === 0 ? '#777' : 'transparent',
-              fontSize: '10px',
-            })}
-            cellStyle={(x: number, y: number) => {
-              const value = heatMapData[x][y];
+            </SectionActions>
+          </SectionHeader>
+          <ScrollArea className='w-full'>
+            <HeatMapGrid
+              data={mapDatas}
+              xLabels={xLabel}
+              yLabels={yLabel}
+              square
+              cellHeight='18.7px'
+              xLabelsPos='bottom'
+              onClick={(x, y) => {
+                if (heatMapData[x][y]?.meeting_id)
+                  router.push(
+                    `/interviews/view?meeting_id=${heatMapData[x][y].meeting_id}&tab=candidate_details`,
+                  );
+              }}
+              yLabelsPos='left'
+              xLabelsStyle={(index) => {
+                const isToday = dayjsLocal(arrayDates[index]).isToday();
+                return {
+                  visibility: isToday ? 'visible' : 'hidden',
+                  backgroundColor: isToday
+                    ? 'hsl(var(--chart-5))'
+                    : 'transparent',
+                  height: '2px ',
+                  padding: 0,
+                  marginTop: '2px',
+                  width: '18.6px',
+                };
+              }}
+              yLabelsStyle={(index) => ({
+                color: index % 1 === 0 ? '#777' : 'transparent',
+                fontSize: '10px',
+              })}
+              cellStyle={(x: number, y: number) => {
+                const value = heatMapData[x][y];
 
-              return {
-                background:
-                  value?.status === 'completed'
-                    ? `hsl(var(--chart-1))`
-                    : value?.status === 'confirmed'
-                      ? `hsl(var(--chart-4))` // need confirm color
-                      : value?.status === 'cancelled'
-                        ? `hsl(var(--chart-2))`
-                        : '#ebebeb',
-                // background:
-                //   value?.status === 'completed'
-                //     ? `bg-green-${900 - x * 100}`
-                //     : value?.status === 'confirmed'
-                //       ? `bg-blue-${900 - x * 100}`
-                //       : value?.status === 'cancelled'
-                //         ? `bg-red-${900 - x * 100}`
-                //         : 'grey',
-                fontSize: '4px',
-                borderRadius: '3px',
-                width: '29px',
-                height: '29px',
-                color: 'white',
-              };
-            }}
-          />
-        </div>
+                return {
+                  background:
+                    value?.status === 'completed'
+                      ? `hsl(var(--chart-1))`
+                      : value?.status === 'confirmed'
+                        ? `hsl(var(--chart-4))` // need confirm color
+                        : value?.status === 'cancelled'
+                          ? `hsl(var(--chart-2))`
+                          : '#ebebeb',
+
+                  fontSize: '4px',
+                  borderRadius: '3px',
+                  color: 'white',
+                };
+              }}
+            />
+          </ScrollArea>
+        </Section>
       )}
     </>
   );
 }
 
-const arrayStructure = ({ datesArray, gridData, maxCount }): Meeting[][] => {
+const arrayStructure = ({
+  datesArray,
+  gridData,
+  maxCount,
+}: {
+  datesArray: any[];
+  gridData: GroupedEvents;
+  maxCount: number;
+}): Meeting[][] => {
   if (gridData) {
     Object.keys(gridData).forEach((date) => {
       if (datesArray.includes(date)) {

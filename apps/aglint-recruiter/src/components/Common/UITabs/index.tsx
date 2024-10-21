@@ -1,25 +1,17 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import type * as Icons from 'lucide-react';
-import { icons } from 'lucide-react';
+import * as Icons from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 
 export type UITabType = {
-  vertical: {
-    id: string;
-    name: string;
-    content?: JSX.Element;
-
-    icon?: IconName;
-    iconComp?: JSX.Element;
-  };
-  horizontal: {
-    id: string;
-    name: string;
-    content?: JSX.Element;
-  };
+  id: string;
+  name: string;
+  content?: JSX.Element;
+  icon?: IconName;
+  iconComp?: JSX.Element;
 };
+
 type IconName = keyof typeof Icons;
 
 export default function UITabs({
@@ -27,14 +19,16 @@ export default function UITabs({
   tabs,
   onClick,
   defaultValue,
+  isKeyDisable = false,
 }: {
+  isKeyDisable?: boolean;
   vertical?: boolean;
-  tabs: UITabType['horizontal'][] | UITabType['vertical'][];
+  tabs: UITabType[];
   // eslint-disable-next-line no-unused-vars
   onClick: (value: string) => void;
   defaultValue: string;
 }) {
-  const [activeTab, setActiveTab] = useState(tabs[0].id);
+  const [activeTab, setActiveTab] = useState(tabs[0]?.id || '');
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
   const [isHovering, setIsHovering] = useState(false);
   const tabRefs = useRef<{ [key: string]: HTMLButtonElement | null }>({});
@@ -87,20 +81,21 @@ export default function UITabs({
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (
-        event.key === (vertical ? 'ArrowDown' : 'ArrowRight') ||
-        event.key === (vertical ? 'ArrowUp' : 'ArrowLeft')
-      ) {
-        const currentIndex = tabs.findIndex((tab) => tab.id === activeTab);
-        let newIndex = currentIndex;
-        if (event.key === (vertical ? 'ArrowDown' : 'ArrowRight')) {
-          newIndex = (currentIndex + 1) % tabs.length;
-        } else {
-          newIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+      if (!isKeyDisable)
+        if (
+          event.key === (vertical ? 'ArrowDown' : 'ArrowRight') ||
+          event.key === (vertical ? 'ArrowUp' : 'ArrowLeft')
+        ) {
+          const currentIndex = tabs.findIndex((tab) => tab.id === activeTab);
+          let newIndex = currentIndex;
+          if (event.key === (vertical ? 'ArrowDown' : 'ArrowRight')) {
+            newIndex = (currentIndex + 1) % tabs.length;
+          } else {
+            newIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+          }
+          onClick(tabs[newIndex].id);
+          setActiveTab(tabs[newIndex].id);
         }
-        onClick(tabs[newIndex].id);
-        setActiveTab(tabs[newIndex].id);
-      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
@@ -145,7 +140,9 @@ export default function UITabs({
             )}
           </AnimatePresence>
           {tabs.map((tab) => {
-            const Icon = icons[tab?.icon];
+            const Icon = (
+              tab?.icon ? Icons[tab?.icon] : <></>
+            ) as React.ElementType;
             return (
               <button
                 key={tab.id}
@@ -158,7 +155,7 @@ export default function UITabs({
                 className={`relative z-20 px-4 py-2 text-sm font-medium outline-none transition-colors ${
                   activeTab === tab.id
                     ? 'text-primary'
-                    : 'text-gray-500 hover:text-primary'
+                    : 'text-muted-foreground hover:text-primary'
                 } ${vertical ? 'flex items-center gap-3 text-left' : ''}`}
                 role='tab'
                 aria-selected={activeTab === tab.id}

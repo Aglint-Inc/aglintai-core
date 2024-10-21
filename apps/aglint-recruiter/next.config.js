@@ -9,11 +9,12 @@ const nextConfig = {
     dirs: ['src'],
     ignoreDuringBuilds: true,
   },
-  logging: {
-    fetches: {
-      fullUrl: true,
-    },
-  },
+  // logging: {
+  //   fetches: {
+  //     fullUrl: true,
+  //   },
+  // },
+
   // typescript: {
   //   // !! WARN !!
   //   // Dangerously allow production builds to successfully complete even if
@@ -75,7 +76,16 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'yxsppaxhvgxwfrpnpuik.supabase.co',
+      },
+      {
+        protocol: 'https',
         hostname: 'gwlinbuxtrnvwvyyhaht.supabase.co',
+      },
+      {
+        protocol: 'http',
+        hostname: '127.0.0.1',
+        port: '64321',
       },
       {
         protocol: 'https',
@@ -97,6 +107,7 @@ const nextConfig = {
       },
     },
   },
+  transpilePackages: ['@aglint-recruiter/shared-utils'],
 };
 
 module.exports = withBundleAnalyzer(nextConfig);

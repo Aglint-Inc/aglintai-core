@@ -2,26 +2,25 @@ import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { useUpdateRequestNote } from '@requests/hooks/useRequestNotes';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
-import { useMemberList } from '@/hooks/useMemberList';
+import { useTenant } from '@/company/hooks';
 import { useRouterPro } from '@/hooks/useRouterPro';
 import { type APICreateScheduleRequest } from '@/pages/api/request/schedule-request';
-import { api } from '@/trpc/client';
 import ROUTES from '@/utils/routing/routes';
 import toast from '@/utils/toast';
 
 import {
+  setIsScheduleOpen,
   setSelectedAssignee,
+  setSelectedSessionIds,
   useApplicationDetailStore,
 } from '../stores/applicationDetail';
 import { type Interviewer } from '../types/types';
-import { useApplicationMeta } from './useApplicationMeta';
 import { useApplicationRequests } from './useApplicationRequests';
 import { useInterviewStages } from './useInterviewStages';
 
 export const useScheduleRequest = () => {
-  const utils = api.useUtils();
   const router = useRouterPro();
   const {
     isScheduleOpen,
@@ -35,8 +34,8 @@ export const useScheduleRequest = () => {
 
   const [isSaving, setIsSaving] = useState(false);
   const { data: members, status: membersStatus } = useMemberList();
-  const { recruiterUser } = useAuthDetails();
-  const { application_id } = useApplicationMeta();
+  const { recruiter_user } = useTenant();
+  const application_id = router.params.application;
   const { data: stages } = useInterviewStages();
   const { data: requests } = useApplicationRequests();
   const selectedStageId = router.queryParams.stage as string;
@@ -85,9 +84,11 @@ export const useScheduleRequest = () => {
   }, [optionsAssignees?.length, membersStatus]);
 
   const handleCreateRequest = async () => {
-    if (!selectedAssignee || !recruiterUser) return;
+    setIsSaving(true);
+
+    if (!selectedAssignee) return;
+
     const sel_user_id = selectedAssignee.user_id;
-    const assigned_user_id = recruiterUser.user_id;
 
     const sessionNames: string[] = sessions
       .map((session) => session?.interview_session?.name)
@@ -105,7 +106,7 @@ export const useScheduleRequest = () => {
         },
         assignee_id: sel_user_id,
         priority: requestType,
-        assigner_id: assigned_user_id,
+        assigner_id: recruiter_user.user_id,
         session_names: sessionNames,
       };
 
@@ -115,38 +116,32 @@ export const useScheduleRequest = () => {
       );
       const request_id = res.data;
 
-      if (note && (res.status === 201 || res.status === 200)) {
-        const payload = {
-          note,
-          request_id,
-          updated_at: dayjsLocal().toISOString(),
-        };
-        updateRequestNote(payload);
-        if (assigned_user_id !== recruiterUser.user_id) {
+      if (res.status === 201 || res.status === 200) {
+        if (note) {
+          const payload = {
+            note,
+            request_id,
+            updated_at: dayjsLocal().toISOString(),
+          };
+          updateRequestNote(payload);
+        }
+        if (sel_user_id === recruiter_user.user_id) {
           router.push(
             ROUTES['/requests/[request]']({
               request: res.data,
             }),
           );
         }
-        utils.application.applicationRequest.invalidate({
-          application_id,
-        });
-      } else if (res.status === 201 || res.status === 200) {
-        router.push(
-          ROUTES['/requests/[request]']({
-            request: res.data,
-          }),
-        );
-        utils.application.applicationRequest.invalidate({
-          application_id,
-        });
       } else {
-        toast.error('Failed to create request');
+        throw new Error();
       }
     } catch (e) {
       console.error(e);
       toast.error('Failed to create request');
+    } finally {
+      setIsSaving(false);
+      setSelectedSessionIds([]);
+      setIsScheduleOpen(false);
     }
   };
 

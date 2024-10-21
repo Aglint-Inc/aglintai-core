@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@components/ui/dialog';
-import { Briefcase } from 'lucide-react';
+import { BriefcaseBusiness } from 'lucide-react';
 import { useState } from 'react';
 
 import UITextField from '@/components/Common/UITextField';
@@ -58,9 +58,9 @@ export const DeletePopup = () => {
               <ul className='space-y-2'>
                 {(deletion?.workflow?.jobs ?? []).map(({ job_title }) => (
                   <li key={job_title} className='flex items-center space-x-2'>
-                    <Briefcase className='h-4 w-4 text-muted-foreground' />
+                    <BriefcaseBusiness className='h-4 w-4 text-muted-foreground' />
                     <span className='text-sm font-normal'>
-                      {capitalizeAll(job_title)}
+                      {capitalizeAll(job_title!)}
                     </span>
                   </li>
                 ))}
@@ -90,7 +90,7 @@ export const DeletePopup = () => {
             onClick={() => {
               if (enabled) {
                 push(ROUTES['/workflows']());
-                handleDeleteWorkflow({ id: deletion.workflow?.id });
+                handleDeleteWorkflow({ id: deletion.workflow?.id ?? null! });
                 handleClose();
               }
             }}

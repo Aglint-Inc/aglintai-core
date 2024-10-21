@@ -3,6 +3,7 @@ import './MentionList.scss';
 
 import React, {
   forwardRef,
+  type ReactNode,
   useEffect,
   useImperativeHandle,
   useState,
@@ -11,7 +12,7 @@ import React, {
 export default forwardRef(function DropDown(props: any, ref) {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const selectItem = (index) => {
+  const selectItem = (index: number) => {
     const item: string = props.items[index];
     if (item) {
       props.command({ id: item });
@@ -35,7 +36,7 @@ export default forwardRef(function DropDown(props: any, ref) {
   useEffect(() => setSelectedIndex(0), [props.items]);
 
   useImperativeHandle(ref, () => ({
-    onKeyDown: ({ event }) => {
+    onKeyDown: ({ event }: { event: { key: string } }) => {
       if (event.key === 'ArrowUp') {
         upHandler();
         return true;
@@ -58,7 +59,7 @@ export default forwardRef(function DropDown(props: any, ref) {
   return (
     <div className='dropdown-menu'>
       {props.items.length ? (
-        props.items.map((item, index) => (
+        props.items.map((item: ReactNode, index: number) => (
           <button
             className={index === selectedIndex ? 'is-selected' : ''}
             key={index}

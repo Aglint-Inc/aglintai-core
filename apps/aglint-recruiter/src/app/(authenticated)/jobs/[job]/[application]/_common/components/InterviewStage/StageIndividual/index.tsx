@@ -1,16 +1,14 @@
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
-import { supabase } from '@/utils/supabase/client';
+import { api } from '@/trpc/client';
 
 import { useApplicationDetails } from '../../../hooks/useApplicationDetails';
 import { useApplicationMeta } from '../../../hooks/useApplicationMeta';
 import {
-  type StageWithSessions,
-  useInterviewStages,
+  type StageWithSessions
 } from '../../../hooks/useInterviewStages';
 import {
   setIsScheduleOpen,
-  setSelectedSessionIds,
   useApplicationDetailStore,
 } from '../../../stores/applicationDetail';
 import { ApplicantDetailStage } from '../../ui/ApplicationDetailStage';
@@ -27,7 +25,6 @@ function StageIndividual({
   const { selectedSessionIds } = useApplicationDetailStore((state) => ({
     selectedSessionIds: state.selectedSessionIds,
   }));
-  const { refetch } = useInterviewStages();
   const { data: meta } = useApplicationMeta();
   const { data } = useApplicationDetails();
 
@@ -37,22 +34,20 @@ function StageIndividual({
     selectedSessionIds.includes(session.interview_session.id),
   );
 
-  const onClickCheckBox = ({ session_id }: { session_id: string }) => {
-    if (selectedSessionIds.includes(session_id)) {
-      return setSelectedSessionIds(
-        selectedSessionIds.filter((id) => id !== session_id),
-      );
-    }
-    return setSelectedSessionIds([...selectedSessionIds, session_id]);
-  };
+  const { mutate } = api.application.update_break.useMutation();
 
   const onChangeBreak = async (session_id: string, break_duration: string) => {
-    await supabase
-      .from('interview_session')
-      .update({ break_duration: Number(break_duration) })
-      .eq('id', session_id);
-    refetch();
+    mutate({
+      session_id,
+      break_duration: Number(break_duration),
+    });
   };
+
+  const selectedSessionType = sessions.find(
+    (session) =>
+      selectedSessionIds.length > 0 &&
+      selectedSessionIds[0] === session.interview_session.id,
+  )?.interview_session.session_type;
 
   return (
     <>
@@ -68,13 +63,10 @@ function StageIndividual({
                   <ScheduleIndividualCard
                     session={session}
                     key={session.interview_session.id}
-                    selectedSessionIds={selectedSessionIds}
-                    onClickCheckBox={onClickCheckBox}
                     isCheckboxVisible={
                       data?.job_status === 'published' &&
                       data?.status === 'interview' &&
-                      (!interview_meeting ||
-                        interview_meeting.status === 'not_scheduled' ||
+                      (interview_meeting.status === 'not_scheduled' ||
                         interview_meeting.status === 'cancelled' ||
                         interview_meeting.status === 'reschedule')
                     }
@@ -83,8 +75,16 @@ function StageIndividual({
                       current_job_title: meta?.current_job_title ?? '',
                       timezone: meta?.timezone ?? '',
                     }}
-                    isEditIconVisible={true}
-                    isViewDetailVisible={true}
+                    isCheckboxDisabled={
+                      selectedSessionType !== undefined &&
+                      ((selectedSessionType !== 'debrief' &&
+                        !['individual', 'panel'].includes(
+                          session.interview_session.session_type,
+                        )) ||
+                        (selectedSessionType === 'debrief' &&
+                          selectedSessionIds[0] !==
+                            session.interview_session.id))
+                    }
                   />
                   {session.interview_session.break_duration !== 0 && (
                     <BreakCard session={session} onChange={onChangeBreak} />

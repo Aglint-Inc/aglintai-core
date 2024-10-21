@@ -1,6 +1,10 @@
 import { createPrivateClient } from '@/server/db';
 
-import { type PrivateProcedure, privateProcedure } from '../../trpc';
+import {
+  type PrivateProcedure,
+  privateProcedure,
+  type ProcedureDefinition,
+} from '../../trpc';
 
 const query = async ({ ctx }: PrivateProcedure) => {
   const db = createPrivateClient();
@@ -15,3 +19,5 @@ const query = async ({ ctx }: PrivateProcedure) => {
 };
 
 export const read = privateProcedure.query(query);
+
+export type Read = ProcedureDefinition<typeof read>;

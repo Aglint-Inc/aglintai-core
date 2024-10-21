@@ -44,7 +44,7 @@ const Page = () => {
           <Card x-chunk='dashboard-04-chunk-2'>
             <CardHeader>
               <CardTitle>Preferences</CardTitle>
-              <CardDescription>Customise your preferences</CardDescription>
+              <CardDescription>Customize your preferences</CardDescription>
             </CardHeader>
             <CardContent>
               <form className='flex flex-col gap-4'>

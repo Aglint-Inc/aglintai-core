@@ -1,7 +1,5 @@
-import type { RouterInputs, RouterOutputs, Unvoid } from '@/trpc/client';
+import type { Read } from '@/routers/jobs/job/applications/read';
 
-export type Applications<T extends 'input' | 'output'> = T extends 'input'
-  ? Unvoid<RouterInputs['jobs']['job']['applications']['read']>
-  : RouterOutputs['jobs']['job']['applications']['read']['items'];
+export type Applications = Read;
 
-export type Application = Applications<'output'>[number];
+export type Application = Applications['output']['items'][number];

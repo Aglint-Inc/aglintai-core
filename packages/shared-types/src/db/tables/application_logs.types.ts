@@ -32,7 +32,7 @@ export type CandidateResponseSelfSchedule = {
   action: "waiting" | "canceled" | "rescheduled";
   type: "candidate_response_self_schedule";
   reason: string;
-  response_type: "reschedule" | "cancel";
+  response_type: DatabaseTable["interview_session_cancel"]["type"];
   other_details: DatabaseTable["interview_session_cancel"]["other_details"];
   filter_id: string;
   session_ids: string[];

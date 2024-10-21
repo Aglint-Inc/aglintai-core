@@ -1,9 +1,10 @@
 import { type DateRangePlansType } from '@aglint/shared-types';
 
-import { type fetchSessionDetails } from '@/pages/api/scheduling/application/mailthankyou';
 import type { RequestResponse } from '@/queries/requests/types';
 import type { Request as RequestType } from '@/queries/requests/types';
-import { type CandidatesSchedulingV2 } from '@/services/CandidateScheduleV2/CandidatesSchedulingV2';
+import type { ApplicantRequest as ApplicantRequestAPI } from '@/routers/requests/read/applicantRequest';
+import type { RequestSessions } from '@/routers/requests/utils/requestSessions';
+import type { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 
 export type barChartDataType = {
   name: string;
@@ -42,17 +43,11 @@ export type SectionRequests = {
   [_id in keyof RequestResponse | 'standard_request']: number;
 };
 
-export type ApiInterviewSessionRequest = {
-  request: {
-    request_id: string;
-  };
-  response: {
-    success: boolean;
-    sessions: Awaited<ReturnType<typeof fetchSessionDetails>>;
-  };
-};
-
 export type ApiResponseFindAvailability = {
   slots: DateRangePlansType[];
-  availabilities: CandidatesSchedulingV2['calendar_events'];
+  availabilities: CandidatesScheduling['calendar_events'];
 };
+
+export type ApplicantRequest = ApplicantRequestAPI['output'][number];
+
+export type MeetingSessions = RequestSessions['output'];

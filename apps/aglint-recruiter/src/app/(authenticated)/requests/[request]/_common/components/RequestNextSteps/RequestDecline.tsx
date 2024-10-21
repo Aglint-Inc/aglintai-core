@@ -5,14 +5,15 @@ import {
 import { getFullName } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { useRequest } from '@request/hooks';
 import { useMeetingList } from '@requests/hooks';
 import axios from 'axios';
 import { ArrowDownUp } from 'lucide-react';
 import React from 'react';
 
+import { ShowCode } from '@/common/ShowCode';
 import { UIButton } from '@/components/Common/UIButton';
 import UIDialog from '@/components/Common/UIDialog';
-import { useRequest } from '@/context/RequestContext';
 import { api } from '@/trpc/client';
 
 import ConflictWithHover from '../SelfSchedulingDrawer/_common/components/ui/ConflictWithHover';
@@ -23,11 +24,17 @@ const RequestDecline = () => {
   const [selectedMember, setSelectedMember] = React.useState<string | null>(
     null,
   );
+  const [isProceeding, setIsProceeding] = React.useState(false);
+
   const [isInterviewerChanging, setIsInterviewerChanging] =
     React.useState(false);
 
-  const { requestDetails } = useRequest();
+  const { requestDetails, declineProgressMeta } = useRequest();
   const { data: meetingTime, refetch } = useMeetingList();
+
+  if (!declineProgressMeta || declineProgressMeta.nextStep == null) {
+    return <></>;
+  }
   const declinedUserDetails = (meetingTime ?? [])
     .flat()
     .map((item) => item.cancel_reasons)
@@ -42,13 +49,22 @@ const RequestDecline = () => {
     mutateAsync,
   } = api.scheduling.v1.findReplacementInts.useMutation();
 
+  const session_details = requestDetails.request_relation[0].interview_session;
+
   const handleGetAvailableInterviewers = async () => {
     try {
       if (isPending) return;
+      if (!declinedUserDetails) return;
+      const intSesnCancel = declinedUserDetails.interview_session_cancel;
+      if (
+        !intSesnCancel ||
+        !intSesnCancel.session_relation_id ||
+        !intSesnCancel.session_id
+      )
+        return;
       await mutateAsync({
-        declined_int_sesn_reln_id:
-          declinedUserDetails.interview_session_cancel.session_relation_id,
-        session_id: declinedUserDetails.interview_session_cancel.session_id,
+        declined_int_sesn_reln_id: intSesnCancel.session_relation_id,
+        session_id: intSesnCancel.session_id,
       });
       setIsDialogOpen(true);
     } catch (e) {
@@ -60,17 +76,37 @@ const RequestDecline = () => {
   };
   const changeInterviewer = async () => {
     try {
+      if (!declinedUserDetails) return;
+      if (!session_details) {
+        toast({
+          title: 'Session details not found',
+          variant: 'destructive',
+        });
+        return;
+      }
+      const intSesnCancel = declinedUserDetails.interview_session_cancel;
+      if (
+        !intSesnCancel ||
+        !intSesnCancel.session_relation_id ||
+        !intSesnCancel.session_id ||
+        !selectedMember
+      )
+        return;
       setIsInterviewerChanging(true);
       const payload: APIUpdateMeetingInterviewers = {
-        curr_declined_int_sesn_reln_id:
-          declinedUserDetails.interview_session_cancel.session_relation_id,
+        curr_declined_int_sesn_reln_id: intSesnCancel.session_relation_id,
         new_int_user_id: selectedMember,
-        session_id: declinedUserDetails.interview_session_cancel.session_id,
+        session_id: intSesnCancel.session_id,
+        request_id: requestDetails.id,
       };
       await axios.post(
         '/api/scheduling/v1/update-meeting-interviewers',
         payload,
       );
+      toast({
+        title: 'Interviewer changed successfully',
+        variant: 'default',
+      });
       setIsDialogOpen(false);
       await refetch();
     } catch (err) {
@@ -84,9 +120,34 @@ const RequestDecline = () => {
   };
   return (
     <>
-      <UIButton onClick={handleGetAvailableInterviewers} isLoading={isPending}>
-        Change Interviewer
-      </UIButton>
+      <div className='mt-4'>
+        <ShowCode.When isTrue={declineProgressMeta.nextStep === 'MANUAL'}>
+          <UIButton
+            onClick={handleGetAvailableInterviewers}
+            isLoading={isPending}
+          >
+            Change Interviewer
+          </UIButton>
+        </ShowCode.When>
+        <ShowCode.When
+          isTrue={declineProgressMeta.nextStep === 'REQUEST_PROCEED'}
+        >
+          <UIButton
+            disabled={isProceeding}
+            onClick={async () => {
+              setIsProceeding(true);
+              await axios.post('/api/request/execute-workflow', {
+                request_id: requestDetails.id,
+              });
+              setTimeout(async () => {
+                setIsProceeding(false);
+              }, 2000);
+            }}
+          >
+            {isProceeding ? 'Proceeding...' : 'Proceed with AI'}
+          </UIButton>
+        </ShowCode.When>
+      </div>
       <UIDialog
         title='Interviewers'
         open={isDialogOpen}
@@ -102,13 +163,15 @@ const RequestDecline = () => {
       >
         <div className='flex flex-col gap-2'>
           {declinedUserDetails && (
-            <div className='rounded-md bg-neutral-100 p-2'>
+            <div className='rounded-mdbg-muted p-2'>
               <MemberRow
                 slotConflicts={<></>}
                 slotInterviewerImage={
                   <Avatar className='h-8 w-8'>
                     <AvatarImage
-                      src={declinedUserDetails.recruiter_user.profile_image}
+                      src={
+                        declinedUserDetails.recruiter_user.profile_image ?? '#'
+                      }
                       alt={declinedUserDetails.recruiter_user.first_name}
                     />
                     <AvatarFallback>
@@ -121,7 +184,7 @@ const RequestDecline = () => {
                   declinedUserDetails.recruiter_user.first_name,
                   declinedUserDetails.recruiter_user.last_name,
                 )}
-                textRole={declinedUserDetails.recruiter_user.position}
+                textRole={declinedUserDetails.recruiter_user.position ?? ''}
               />
             </div>
           )}
@@ -136,7 +199,7 @@ const RequestDecline = () => {
                 return (
                   <div
                     key={item.replacement_int.user_id}
-                    className={`rounded-md bg-neutral-100 p-2 ${
+                    className={`rounded-mdbg-muted p-2 ${
                       isSelected ? 'border-gray-100 outline' : ''
                     }`}
                     onClick={() => {
@@ -154,7 +217,7 @@ const RequestDecline = () => {
                       slotInterviewerImage={
                         <Avatar className='h-8 w-8'>
                           <AvatarImage
-                            src={item.replacement_int.profile_image}
+                            src={item.replacement_int.profile_image ?? '#'}
                             alt={item.replacement_int.first_name}
                           />
                           <AvatarFallback>

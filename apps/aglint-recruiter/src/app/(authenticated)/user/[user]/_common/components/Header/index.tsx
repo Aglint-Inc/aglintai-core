@@ -1,45 +1,42 @@
+import { getFullName } from '@aglint/shared-utils';
 import { toast } from '@components/hooks/use-toast';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
-import { Card, CardContent } from '@components/ui/card';
-import axios from 'axios';
 import { Clock, Mail, MapPin, Phone, User } from 'lucide-react';
 import { useParams } from 'next/navigation';
-import { type RefObject, useState } from 'react';
+import { useState } from 'react';
 
+import axios from '@/client/axios';
+import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
-import { useAuthDetails } from '@/context/AuthContext/AuthContext';
 import { useRouterPro } from '@/hooks/useRouterPro';
+import { capitalizeAll } from '@/utils/text/textUtils';
 
+import { useInterviewer } from '../../hooks/useInterviewer';
+import { KeyMatrics } from '../KeyMatrix';
 import { EditUser } from './EditUser';
 
-export const Header = ({
-  avatar,
-  name,
-  role,
-  department,
-  location,
-  timeZone,
-  email,
-  phone,
-  userCardRef,
-}: {
-  avatar: string;
-  name: string;
-  role: string;
-  department: string;
-  location: string;
-  timeZone: string;
-  email: string;
-  phone: string;
-  userCardRef: RefObject<HTMLDivElement>;
-}) => {
+export const Header = () => {
   const router = useRouterPro();
   const isInitalOpen = router.queryParams.edit_enable as unknown as boolean;
   const [isOpen, setIsOpen] = useState<boolean>(isInitalOpen || false);
 
-  const { recruiterUser } = useAuthDetails();
+  const { recruiter_user } = useTenant();
   const param = useParams() as { user: string };
   const user_id = param.user as string;
+  const { data: interviewerDetails } = useInterviewer();
+
+  const {
+    avatar,
+    first_name,
+    last_name,
+    role,
+    department,
+    location,
+    timeZone,
+    email,
+    phone,
+  } = interviewerDetails;
+
   const getConsent = async () => {
     try {
       localStorage.setItem(
@@ -54,64 +51,68 @@ export const Header = ({
   };
 
   return (
-    <>
-      {/* Eidt Dialog  */}
-      <EditUser isOpen={isOpen} setIsOpen={setIsOpen} />
-      <Card className='mb-8' ref={userCardRef}>
-        <CardContent className='p-6'>
-          <div className='flex justify-between'>
-            <div className='flex items-center space-x-4'>
-              <Avatar className='h-24 w-24'>
-                <AvatarImage src={avatar} alt={name} />
-                <AvatarFallback>
-                  <User className='text-gray-700' size={40} strokeWidth={1} />
-                </AvatarFallback>
-              </Avatar>
-
-              <div>
-                <h2 className='text-2xl font-bold text-gray-900'>{name}</h2>
-                <p className='text-gray-600'>
-                  {role} - {department}
-                </p>
-                <div className='mt-2 flex items-center space-x-4'>
-                  <span className='flex items-center text-sm text-gray-500'>
-                    <MapPin className='mr-1 h-4 w-4' />
-                    {location}
-                  </span>
-                  <span className='flex items-center text-sm text-gray-500'>
-                    <Clock className='mr-1 h-4 w-4' />
-                    {timeZone}
-                  </span>
-                </div>
-                <div className='mt-2 flex items-center space-x-4'>
-                  <span className='flex items-center text-sm text-gray-500'>
-                    <Mail className='mr-1 h-4 w-4' />
-                    {email}
-                  </span>
-                  <span className='flex items-center text-sm text-gray-500'>
-                    <Phone className='mr-1 h-4 w-4' />
-                    {phone}
-                  </span>
-                </div>
+    <div className='rounded-lg bg-gray-50 p-4'>
+      <div className='flex flex-row space-x-4'>
+        <Avatar className='h-32 w-32 rounded-md'>
+          <AvatarImage src={avatar} alt={first_name} />
+          <AvatarFallback className='h-10 w-10 rounded-md bg-gray-200'>
+            <User
+              className='h-6 w-6 text-muted-foreground'
+              size={40}
+              strokeWidth={1.5}
+            />
+          </AvatarFallback>
+        </Avatar>
+        <div className='flex flex-1 flex-col'>
+          <div className='flex flex-1 gap-10'>
+            <div className='flex flex-col'>
+              <div className='text-lg font-medium text-gray-900'>
+                {getFullName(first_name ?? '', last_name ?? '')}
               </div>
+              <p className='line-clamp-1 text-sm text-gray-600'>
+                {capitalizeAll(role)} - {capitalizeAll(department)}
+              </p>
             </div>
-            <div className='flex gap-3'>
-              {recruiterUser?.user_id === user_id &&
-                !recruiterUser.is_calendar_connected && (
-                  <UIButton onClick={getConsent}>Connect Calendar</UIButton>
-                )}
-              <UIButton
-                variant='outline'
-                onClick={() => {
-                  setIsOpen(true);
-                }}
-              >
-                Edit Profile
-              </UIButton>
+            <div className='flex flex-col gap-2'>
+              <span className='flex items-center text-sm'>
+                <MapPin className='mr-1 h-4 w-4' />
+                {location || '-'}
+              </span>
+              <span className='flex items-center text-sm'>
+                <Clock className='mr-1 h-4 w-4' />
+                {timeZone}
+              </span>
+            </div>
+            <div className='flex flex-col gap-2'>
+              <span className='flex items-center text-sm'>
+                <Mail className='mr-1 h-4 w-4' />
+                {email}
+              </span>
+              <span className='flex items-center text-sm'>
+                <Phone className='mr-1 h-4 w-4' />
+                {phone || '-'}
+              </span>
             </div>
           </div>
-        </CardContent>
-      </Card>
-    </>
+          <KeyMatrics />
+        </div>
+        <div className='flex gap-3'>
+          {recruiter_user?.user_id === user_id &&
+            !recruiter_user.is_calendar_connected && (
+              <UIButton onClick={getConsent}>Connect Calendar</UIButton>
+            )}
+          <UIButton
+            variant='outline'
+            onClick={() => {
+              setIsOpen(true);
+            }}
+          >
+            Edit Profile
+          </UIButton>
+        </div>
+      </div>
+      {/* Eidt Dialog  */}
+      <EditUser isOpen={isOpen} setIsOpen={setIsOpen} />
+    </div>
   );
 };

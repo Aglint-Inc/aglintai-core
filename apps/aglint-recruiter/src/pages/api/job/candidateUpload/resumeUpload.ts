@@ -69,7 +69,7 @@ const handler = async (
             )
               .then((): ResumeUploadApi['response'][number] => ({
                 confirmation: true,
-                error: null as string,
+                error: null!,
               }))
               .catch(
                 (e: PostgrestError): ResumeUploadApi['response'][number] => {

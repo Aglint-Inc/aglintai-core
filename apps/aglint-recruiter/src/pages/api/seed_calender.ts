@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-object-injection */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
+import { dayjsLocal } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { userTzDayjs } from '@/services/CandidateScheduleV2/utils/userTzDayjs';
 import { GoogleCalender } from '@/services/GoogleCalender/google-calender';
 import {
   type MeetingLimitsConfig,
@@ -12,22 +12,32 @@ import {
 import { seedCalendersUtil } from '@/utils/seed_calender/util';
 // Define an enumeration for meeting types
 
-const cal_start_date = userTzDayjs('2024/06/14').startOf('day').format();
-const cal_end_date = userTzDayjs('2024/08/01').startOf('day').format();
+const cal_start_date = dayjsLocal('2024/10/01').startOf('day').format();
+const cal_end_date = dayjsLocal('2024/11/30').startOf('day').format();
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { company_id } = req.body;
     const { deleteAllMeetings, fetchDetails, fillEventsForTheDay } =
       seedCalendersUtil(cal_start_date, cal_end_date);
-    const { company_cred_hash_str, uniq_inters, interview_type_details } =
-      await fetchDetails(company_id);
+    const {
+      company_cred_hash_str,
+      uniq_inters,
+      interview_type_details,
+      companyScheduleSettings,
+    } = await fetchDetails(company_id);
 
+    console.log('uniq_inters', uniq_inters.length);
     for (const inter of uniq_inters) {
       const interviewer_info = interview_type_details.find(
         (i) => i.user_id === inter,
       )?.recruiter_user;
-      if (interviewer_info.email !== 'dileep@aglinthq.com') continue;
+      if (!interviewer_info) continue;
+      if (
+        interviewer_info.email !== 'dileep@aglinthq.com' &&
+        interviewer_info.email !== 'chandra@aglinthq.com'
+      )
+        continue;
       const int_meeting_cnt: MeetingLimitsConfig = {
         [MeetingTypeEnum.OtherMeetings]: {
           occ_cnt: 0,
@@ -68,7 +78,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await deleteAllMeetings(google_cal);
       console.log('deleting completed');
 
-      let cal_day = userTzDayjs(cal_start_date)
+      let cal_day = dayjsLocal(cal_start_date)
         .tz(int_schd_sett.timeZone.tzCode)
         .startOf('day');
       while (cal_day.isSameOrBefore(cal_end_date, 'day')) {
@@ -78,6 +88,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           google_cal,
           int_schd_sett,
           int_meeting_cnt,
+          companyScheduleSettings,
         );
         console.log(cal_day.format());
       }
@@ -85,7 +96,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     return res.status(200).send('ok');
-  } catch (error) {
+  } catch (error: any) {
     console.log('error', error);
     res.status(400).send(error.message);
   }

@@ -1,6 +1,6 @@
 import type { DatabaseTable, EmailTemplateAPi } from '@aglint/shared-types';
 import { getFullName, supabaseWrap } from '@aglint/shared-utils';
-import { FetchUtilType } from '../../types/emailfetchUtil';
+import type { FetchUtilType } from '../../types/emailfetchUtil';
 
 export const fetchUtil: FetchUtilType<
   'interviewerResumed_email_admin'
@@ -58,7 +58,7 @@ export const fetchUtil: FetchUtilType<
         interviewer.last_name,
       ),
       interviewTypes: `<ul>${interviewtypes.join('')}</ul>`,
-      interviewerPauseLink: `<a href="${process.env.NEXT_PUBLIC_APP_URL}/scheduling/interviewer/${interview_module.user_id}?tab=interviewtypes" target="_blank">here</a>`,
+      interviewerPauseLink: `<a href="${process.env.NEXT_PUBLIC_CLIENT_APP_URL}/scheduling/interviewer/${interview_module.user_id}?tab=interviewtypes" target="_blank">here</a>`,
     };
 
   const react_email_placeholders: EmailTemplateAPi<'interviewerResumed_email_admin'>['react_email_placeholders'] =

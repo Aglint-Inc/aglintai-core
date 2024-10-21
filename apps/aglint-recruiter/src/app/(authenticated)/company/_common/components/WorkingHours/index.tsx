@@ -1,23 +1,25 @@
-import type { schedulingSettingType } from '@aglint/shared-types';
+import type { SchedulingSettingType } from '@aglint/shared-types';
 import { toast } from '@components/hooks/use-toast';
+import { Page } from '@components/layouts/page-header';
 import cloneDeep from 'lodash/cloneDeep';
 import { useEffect, useState } from 'react';
 
+import BreakTimeCard from '@/authenticated/components/BreakTime';
+import TimeZone from '@/authenticated/components/TimeZone';
+import WorkTime from '@/authenticated/components/WorkTime';
+import { useTenant } from '@/company/hooks';
+import { useTenantRefetch } from '@/company/hooks/useTenantRefetch';
+import { api } from '@/trpc/client';
 import { type TimezoneObj } from '@/utils/timeZone';
 
-import BreakTimeCard from './BreakTime';
-import TimeZone from './TimeZone';
-import WorkTime from './WorkTime';
-
-export default function WorkingHour({
-  updateSettings,
-  initialData,
-}: {
-  updateSettings: any;
-  initialData: schedulingSettingType;
-}) {
-  const [workingHours, setWorkingHours] = useState([]);
-  const [selectedTimeZone, setSelectedTimeZone] = useState<TimezoneObj>(null);
+export default function WorkingHour() {
+  const { recruiter } = useTenant();
+  const { refetch } = useTenantRefetch();
+  const initialData = recruiter.scheduling_settings;
+  const [workingHours, setWorkingHours] = useState<
+    SchedulingSettingType['workingHours']
+  >([]);
+  const [timeZone, setTimeZone] = useState<TimezoneObj | null>(null);
   const [selectedHourBreak, setSelectedHourBreak] = useState<{
     start_time: string;
     end_time: string;
@@ -25,14 +27,14 @@ export default function WorkingHour({
 
   useEffect(() => {
     initialLoad();
-  }, []);
+  }, [recruiter.scheduling_settings]);
 
   function initialLoad() {
     if (initialData) {
       const schedulingSettingData = cloneDeep(
         initialData,
-      ) as schedulingSettingType;
-      setSelectedTimeZone({ ...schedulingSettingData.timeZone } as TimezoneObj);
+      ) as SchedulingSettingType;
+      setTimeZone({ ...schedulingSettingData.timeZone } as TimezoneObj);
       setSelectedHourBreak({
         start_time: schedulingSettingData.break_hour?.start_time,
         end_time: schedulingSettingData.break_hour?.end_time,
@@ -41,13 +43,28 @@ export default function WorkingHour({
     }
   }
 
-  const handleUpdate = async (updatedData) => {
+  const { mutateAsync, isPending: isUpdating } =
+    api.tenant.updateTenant.useMutation({
+      onSuccess: () => {
+        refetch();
+      },
+      onError: () => {
+        toast({
+          title: 'Unable to update working hours',
+          variant: 'destructive',
+        });
+      },
+    });
+
+  const handleUpdate = async (updatedData: Partial<SchedulingSettingType>) => {
     try {
       const schedulingSettingObj = {
         ...initialData,
         ...updatedData,
-      } as schedulingSettingType;
-      await updateSettings(schedulingSettingObj);
+      } as SchedulingSettingType;
+      await mutateAsync({
+        scheduling_settings: schedulingSettingObj,
+      });
     } catch (error) {
       toast({
         title: 'Error',
@@ -55,32 +72,30 @@ export default function WorkingHour({
       });
     }
   };
+
   return (
-    <div className='mb-8 flex flex-col gap-4'>
-      <div className='flex flex-col'>
-        <h2 className='mb-1 text-xl font-semibold'>Working Hours</h2>
-        <p className='text-gray-600'>
-          List company holidays to exclude them from scheduling.
-        </p>
-      </div>
-      <div className='flex flex-col gap-5'>
+    <Page>
+      <div className='flex flex-col gap-8'>
         <TimeZone
-          timeZone={initialData?.timeZone?.label}
-          selectedTimeZone={selectedTimeZone}
-          setSelectedTimeZone={setSelectedTimeZone}
+          timeZone={timeZone}
           handleUpdate={handleUpdate}
+          isUpdating={isUpdating}
         />
-        <WorkTime
-          workingHours={workingHours}
-          setWorkingHours={setWorkingHours}
-          handleUpdate={handleUpdate}
-        />
-        <BreakTimeCard
-          breaktime={selectedHourBreak}
-          setSelectedHourBreak={setSelectedHourBreak}
-          handleUpdate={handleUpdate}
-        />
+        <div className='max-w-[400px]'>
+          <WorkTime
+            workingHours={workingHours}
+            handleUpdate={handleUpdate}
+            isUpdating={isUpdating}
+          />
+        </div>
+        {!!selectedHourBreak && (
+          <BreakTimeCard
+            breakTime={selectedHourBreak}
+            handleUpdate={handleUpdate}
+            isUpdating={isUpdating}
+          />
+        )}
       </div>
-    </div>
+    </Page>
   );
 }

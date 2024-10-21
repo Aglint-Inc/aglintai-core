@@ -5,3 +5,5 @@ export * from './apiSchemas';
 export * from './getShortTimeZone';
 export * from './requestsSchema';
 export * from './dayjsLocal';
+export * from './getBreakLabel';
+export * from './scheduleType';

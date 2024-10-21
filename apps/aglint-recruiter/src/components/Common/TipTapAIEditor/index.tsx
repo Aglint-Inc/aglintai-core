@@ -1,5 +1,6 @@
 import { type DatabaseEnums } from '@aglint/shared-types';
 import { Skeleton } from '@components/ui/skeleton';
+import { cn } from '@lib/utils';
 import { type Editor, EditorContent, useEditor } from '@tiptap/react';
 import React, { useState } from 'react';
 
@@ -16,10 +17,9 @@ import MenuBtns from './MenuBtns';
 
 type TipTapAIEditorParams = {
   placeholder?: string;
-  initialValue?: string | undefined;
+  initialValue?: string;
   enablAI?: boolean;
-  // eslint-disable-next-line no-unused-vars
-  handleChange?: (s: string) => void;
+  handleChange?: (_s: string) => void;
   showWarnOnEdit?: () => void;
   toolbar?: boolean;
   defaultJson?: any;
@@ -71,7 +71,6 @@ const TipTapAIEditor = ({
 
   const [selectedText, setSelectedText] =
     useState<TipTapAIEditorCtxType['selectedText']>('');
-
   const editor = useEditor({
     extensions:
       editor_type === 'regular'
@@ -79,8 +78,14 @@ const TipTapAIEditor = ({
           ? getRegularEditorConfigs({ placeholder })
           : getRegularEditorNoHeadingsConfigs({ placeholder })
         : isSize
-          ? getEmailTemplateExtns({ placeholder, template_type })
-          : getEmailTemplateExtnsNoHeading({ placeholder, template_type }),
+          ? getEmailTemplateExtns({
+              placeholder,
+              template_type,
+            })
+          : getEmailTemplateExtnsNoHeading({
+              placeholder,
+              template_type,
+            }),
     editable: !disabled,
     content: initialValue || '',
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -98,6 +103,7 @@ const TipTapAIEditor = ({
       setSelectedText(text);
     },
     onUpdate({ editor }) {
+      if (!editor || !handleChange) return;
       if (editor.isEmpty) {
         handleChange('');
       } else {
@@ -120,7 +126,6 @@ const TipTapAIEditor = ({
       },
     },
   }) as Editor;
-
   return (
     <TipTapCtx.Provider
       value={{
@@ -130,7 +135,7 @@ const TipTapAIEditor = ({
         enablAI,
       }}
     >
-      <div className='overflow-hidden rounded-md border'>
+      <div className='overflow-hidden rounded-md border border-border'>
         <div>
           {editor && toolbar && (
             <div
@@ -151,7 +156,17 @@ const TipTapAIEditor = ({
             }}
           >
             <div
-              className={`[&_.ProseMirror]:w-full [&_.ProseMirror]:break-words [&_.ProseMirror]:${disabled ? 'text-neutral-3 cursor-default' : 'text-neutral-12 cursor-auto'} [&_.ProseMirror_*::selection]:bg-accent-4 [&_.tiptap_p.is-editor-empty:first-child::before]:text-neutral-9 [&_.ProseMirror-focused]:outline-none [&_.ProseMirror_.temp-variable]:rounded-[2px] [&_.ProseMirror_.temp-variable]:bg-[#f7ebfc] [&_.ProseMirror_.temp-variable]:px-[3px] [&_.ProseMirror_.temp-variable]:pb-[3px] [&_.ProseMirror_.temp-variable]:text-[#B552E2] [&_.tiptap_p.is-editor-empty:first-child::before]:pointer-events-none [&_.tiptap_p.is-editor-empty:first-child::before]:float-left [&_.tiptap_p.is-editor-empty:first-child::before]:h-0 [&_.tiptap_p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)]`}
+              className={cn(
+                '[&_.ProseMirror]:w-full [&_.ProseMirror]:break-words',
+                disabled
+                  ? '[&_.ProseMirror]:cursor-not-allowed [&_.ProseMirror]:text-muted-foreground'
+                  : '[&_.ProseMirror]:cursor-text [&_.ProseMirror]:text-foreground',
+                // '[&_.ProseMirror_*::selection]:bg-red-300',
+                '[&_.tiptap_p.is-editor-empty:first-child::before]:text-muted-foreground/60',
+                '[&_.ProseMirror-focused]:outline-none',
+                '[&_.ProseMirror_.temp-variable]:rounded-[2px] [&_.ProseMirror_.temp-variable]:bg-purple-200/50 [&_.ProseMirror_.temp-variable]:px-[3px] [&_.ProseMirror_.temp-variable]:pb-[3px] [&_.ProseMirror_.temp-variable]:text-purple-500',
+                '[&_.tiptap_p.is-editor-empty:first-child::before]:pointer-events-none [&_.tiptap_p.is-editor-empty:first-child::before]:float-left [&_.tiptap_p.is-editor-empty:first-child::before]:h-0 [&_.tiptap_p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)]',
+              )}
               style={{
                 height: height !== 'auto' ? height : 'auto',
               }}

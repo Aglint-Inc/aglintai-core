@@ -5,19 +5,19 @@ import {
   executeWorkflowAction,
   getFullName,
   type ProgressLoggerType,
+  supabaseWrap,
 } from '@aglint/shared-utils';
 import dayjs from 'dayjs';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
+import { type fetchSessionDetails } from '@/server/api/routers/requests/utils/requestSessions';
 import { selfScheduleMailToCandidate } from '@/utils/scheduling/mailUtils';
-import { handleMeetingsOrganizerResetRelations } from '@/utils/scheduling/upsertMeetingsWithOrganizerId';
+import { updateMeetingStatus } from '@/utils/scheduling/updateMeetingStatus';
 import { addScheduleActivity } from '@/utils/scheduling/utils';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-import { type ApiInterviewSessionRequest } from './fetchInterviewSessionByRequest';
-
 export interface ApiBodyParamsSelfSchedule {
-  allSessions: ApiInterviewSessionRequest['response']['sessions'];
+  allSessions: Awaited<ReturnType<typeof fetchSessionDetails>>;
   application_id: string;
   dateRange: {
     start_date: string;
@@ -57,7 +57,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   } catch (error) {
     const resErr: ApiResponseSelfSchedule = {
       data: null,
-      error: error?.message || ' Something went wrong',
+      error: (error as Error)?.message || ' Something went wrong',
     };
     return res.status(500).send(resErr);
   }
@@ -78,18 +78,26 @@ const sendToCandidate = async ({
 }) => {
   const supabaseAdmin = getSupabaseServer();
 
+  const assignee_id =
+    (
+      await supabaseAdmin
+        .from('request')
+        .select('assignee_id')
+        .eq('id', request_id)
+        .single()
+    ).data?.assignee_id ?? '';
+
   const selectedSessionIds = allSessions
     .map((ses) => ses?.interview_session?.id)
     .filter((id) => id !== undefined);
 
-  const schedule = (
+  const schedule = supabaseWrap(
     await supabaseAdmin
       .from('applications')
       .select('id,job_id,recruiter_id,candidates(*)')
       .eq('id', application_id)
-      .single()
-      .throwOnError()
-  ).data;
+      .single(),
+  );
 
   if (!schedule) throw new Error('Application not found');
 
@@ -97,7 +105,7 @@ const sendToCandidate = async ({
 
   if (!candidate) throw new Error('Candidate not found');
 
-  const { organizer_id } = await handleMeetingsOrganizerResetRelations({
+  await updateMeetingStatus({
     application_id,
     selectedSessions: allSessions.map((ses) => ({
       interview_session_id: ses.interview_session.id,
@@ -126,8 +134,6 @@ const sendToCandidate = async ({
 
   if (errorFilterJson) throw new Error(errorFilterJson.message);
 
-  // filter_id = filterJson[0].id;
-
   await addScheduleActivity({
     title: `Sent self scheduling link to ${getFullName(candidate?.first_name, candidate?.last_name)} for ${allSessions
       .filter((ses) => selectedSessionIds.includes(ses.interview_session.id))
@@ -141,8 +147,9 @@ const sendToCandidate = async ({
 
   selfScheduleMailToCandidate({
     filter_id: filterJson[0].id,
-    organizer_id,
+    organizer_id: assignee_id,
   });
+
   await reqProgressLogger({
     status: 'completed',
     is_progress_step: true,
