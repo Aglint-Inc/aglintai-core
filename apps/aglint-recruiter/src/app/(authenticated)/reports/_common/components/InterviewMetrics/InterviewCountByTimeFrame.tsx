@@ -20,14 +20,14 @@ import { Cell, Pie, PieChart } from 'recharts';
 import { useInterviewCount } from 'src/app/(authenticated)/reports/_common/hook/interview/interview.hook';
 
 import { Loader } from '@/common/Loader';
-import { useTheme } from '@/common/themes/hooks/useTheme';
+// import { useTheme } from '@/common/themes/hooks/useTheme';
 
 export default function InterviewCountByTimeFrame() {
   const [timeFrame, setTimeFrame] = useState<
     'today' | 'day' | 'week' | 'month'
   >('day');
   const { average, isError, isFetching } = useInterviewCount(timeFrame);
-  const { mode } = useTheme();
+  // const { mode } = useTheme();
   return (
     <Section>
       <SectionHeader>
@@ -94,7 +94,7 @@ export default function InterviewCountByTimeFrame() {
                     // fill={`red`}
                   >
                     <Cell fill={`hsl(var(--chart-${(index + 1) % 5}))`} />
-                    <Cell fill={mode === 'light' ? '#f3f4f6' : '#f3f4f640'} />
+                    <Cell fill={'#f3f4f6'} />
                   </Pie>
 
                   <text

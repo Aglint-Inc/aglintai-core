@@ -12,11 +12,12 @@ import { useQueryClient } from '@tanstack/react-query';
 import { ChevronDownIcon, User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useTheme } from 'next-themes';
+import { useCallback, useEffect, useState } from 'react';
+import { useThemeConfig } from 'src/app/(public)/theme/_common/hook/use-themeConfig';
 
 import { useLogout } from '@/authenticated/hooks/useLogout';
-import { ThemeToggle } from '@/common/themes/components/ThemeToggle';
-import { useTheme } from '@/common/themes/hooks/useTheme';
+import { colors } from '@/company/components/CompanyDetails/ThemeManager/ThemeManager';
 import { useTenant } from '@/company/hooks';
 
 const DefaultCompanyLogo = () => (
@@ -38,32 +39,66 @@ const TopBar = () => {
   const userName = recruiter_user?.first_name;
   const userId = recruiter_user?.user_id;
 
-  const { setMode } = useTheme();
+  const { theme } = useTheme();
+  const { setTheme } = useTheme();
+  const [themeConfig, setThemeConfig] = useThemeConfig();
 
   // sortcut for toggle a theme
   const toggleState = () => {
-    setMode(localStorage.getItem('theme') == 'dark' ? 'light' : 'dark');
+    const mode = localStorage.getItem('theme') === 'light' ? 'dark' : 'light';
+    setTheme(mode);
+    setThemeConfig((old) => ({ ...old, baseMode: mode }));
   };
 
+  const handleKeyPress = (event: any) => {
+    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+    if (!isMac && event.ctrlKey && event.key === 'm') {
+      event.preventDefault();
+      toggleState();
+    }
+    if (isMac && event.metaKey && event.key === 'm') {
+      event.preventDefault();
+      toggleState();
+    }
+  };
   useEffect(() => {
-    const handleKeyPress = (event: any) => {
-      const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-      if (!isMac && event.ctrlKey && event.key === 'm') {
-        event.preventDefault();
-        toggleState();
-      }
-      if (isMac && event.metaKey && event.key === 'm') {
-        event.preventDefault();
-        toggleState();
-      }
-    };
-
     window.addEventListener('keydown', handleKeyPress);
 
     return () => {
       window.removeEventListener('keydown', handleKeyPress);
     };
-  }, []);
+  }, [theme]);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Cycle through colors on Option+K (macOS) or Alt+K (Windows/Linux)
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      const isMac = navigator.platform.toUpperCase().includes('MAC');
+      const isOptionOrAlt = isMac
+        ? event.metaKey || event.altKey
+        : event.altKey;
+      if (isOptionOrAlt && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        const nextIndex = (currentIndex + 1) % colors.length;
+        setCurrentIndex(nextIndex);
+        setThemeConfig((old) => ({
+          ...old,
+          baseColor: colors[
+            nextIndex
+          ].name.toLowerCase() as typeof themeConfig.baseColor,
+        }));
+      }
+    },
+    [currentIndex],
+  );
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown]);
 
   return (
     <div className='flex w-full flex-row items-center justify-between'>
@@ -86,7 +121,7 @@ const TopBar = () => {
             Welcome to {recruiterName}!
           </p>
         </div>
-        <ThemeToggle />
+        {/* <ThemeToggle /> */}
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Button variant='ghost'>

@@ -15,8 +15,7 @@ type ThemeConfig = {
     | 'green'
     | 'blue'
     | 'yellow'
-    | 'violet'
-    | 'lemon-blue';
+    | 'violet';
   baseRadius: number;
 };
 

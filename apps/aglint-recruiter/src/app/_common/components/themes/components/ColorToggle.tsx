@@ -26,7 +26,7 @@ export function ColorToggle() {
         ? event.metaKey || event.altKey
         : event.altKey;
       if (isOptionOrAlt && event.key.toLowerCase() === 'k') {
-        event.preventDefault(); // Prevent default behavior
+        event.preventDefault();
         const nextIndex = (currentIndex + 1) % COLORS.length;
         setCurrentIndex(nextIndex);
         setColor(COLORS[nextIndex]);
