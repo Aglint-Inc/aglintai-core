@@ -10,6 +10,8 @@ import { createPermissions } from './lib/createPermissions';
 import { addJobs } from './lib/addJobs';
 import { addCandidatesToCompany } from './lib/addCandidatesToCompany';
 import { addInterviewTypes } from './lib/addInterviewTypes';
+import { updateCompanyPref } from './lib/updateCompanyPref';
+import { createCompanyTeam } from './lib/createCompanyTeam';
 dotenv.config();
 const main = async () => {
   await deleteAllCompanyData();
@@ -20,23 +22,17 @@ const main = async () => {
     companyDetails: recruiter,
   });
   const { company_roles } = await fetchCompanyRoles(recruiter.id);
-  const addedUsers = testUsers.map(async (testUser) => {
-    const role_info = company_roles.find((r) => r.name === testUser.role);
-    if (!role_info) throw new Error('Role not found');
-    const { teamMember, teamMemberRelation } = await addTeamMember({
-      adminUser: recruiter_user,
-      company_data: recruiter,
-      user: {
-        ...testUser,
-        department_id: departments[0].id,
-        office_location_id: locations[0].id,
-        role_id: role_info.id,
-      },
-    });
-    return teamMember;
+  await updateCompanyPref(recruiter.id, {
+    scheduling: true,
+    slack: true,
   });
-  const team = await Promise.all(addedUsers);
-  console.log('All team members added');
+  const team = await createCompanyTeam({
+    company_roles,
+    recruiter_user,
+    recruiter,
+    departments,
+    locations,
+  });
 
   const { int_modules, int_modules_relations } = await addInterviewTypes({
     admin: recruiter_user,
