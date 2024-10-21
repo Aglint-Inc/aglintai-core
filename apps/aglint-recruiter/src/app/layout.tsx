@@ -1,10 +1,10 @@
 import 'regenerator-runtime/runtime';
 
 import RootLayout from '@components/layouts/root-layout';
+import { ThemeProvider } from '@components/theme-provider';
 import { Toaster } from '@components/ui/toaster';
 import { type PropsWithChildren } from 'react';
 
-import { ThemeProvider } from '@/common/themes/context/themeProvider';
 import { TRPCReactProvider } from '@/trpc/client';
 
 const defaultUrl = process.env.VERCEL_URL
@@ -20,7 +20,13 @@ export const metadata = {
 const Layout = ({ children }: PropsWithChildren) => {
   return (
     <RootLayout>
-      <ThemeProvider>
+      <ThemeProvider
+        attribute='class'
+        defaultTheme='light'
+        enableSystem
+        disableTransitionOnChange
+        themes={['light', 'dark']}
+      >
         <TRPCReactProvider>{children}</TRPCReactProvider>
         <Toaster />
       </ThemeProvider>
