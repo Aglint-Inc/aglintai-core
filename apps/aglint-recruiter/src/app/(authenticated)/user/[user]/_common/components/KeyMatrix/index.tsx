@@ -34,7 +34,7 @@ const Card = ({
   color: 'green' | 'red' | 'blue';
 }) => {
   return (
-    <div className='rounded-md border border-dotted border-gray-300 bg-transparent px-2 py-1 text-left'>
+    <div className='rounded-md border border-dotted border-border bg-muted px-2 py-1 text-left'>
       <p className={`text-2xl font-medium text-${color}-600`}>{value}</p>
       <div className='text-sm text-muted-foreground'>{title}</div>
     </div>

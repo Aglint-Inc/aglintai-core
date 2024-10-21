@@ -39,7 +39,7 @@ const LayoutBody = React.forwardRef<HTMLDivElement, LayoutBodyProps>(
     <div
       ref={ref}
       className={cn(
-        'w-full gap-[1px] overflow-hidden rounded-lg border border-border bg-gray-200 shadow-sm',
+        'w-full gap-[1px] overflow-hidden rounded-lg border border-border bg-muted shadow-sm',
         {
           'grid grid-cols-[max-content_1fr]': sidebarPosition === 'left',
           'grid grid-cols-[1fr_max-content]': sidebarPosition === 'right',
@@ -66,7 +66,7 @@ const LayoutSidebar = React.forwardRef<HTMLDivElement, LayoutSidebarProps>(
         className={cn('border-border', className)}
         style={{ width: widthStyle }}
       >
-        <ScrollArea className='h-[calc(100vh-68px)] bg-white'>
+        <ScrollArea className='h-[calc(100vh-68px)] bg-background'>
           <div className='p-4' {...props} />
         </ScrollArea>
       </div>
@@ -79,7 +79,7 @@ const LayoutContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <ScrollArea className='h-[calc(100vh-68px)] bg-white'>
+  <ScrollArea className='h-[calc(100vh-68px)] bg-background'>
     <div
       ref={ref}
       className={cn('flex h-full w-full flex-grow flex-col py-4', className)}

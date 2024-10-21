@@ -90,7 +90,7 @@ export default function InterviewerDetailsPage() {
     <TwoColumnPageLayout
       sidebarWidth={'400px'}
       sidebar={
-        <div className='col-span-4 flex flex-col gap-4 bg-white'>
+        <div className='col-span-4 flex flex-col gap-4 bg-background'>
           <UpcomingInterview />
           <RecentInterviews />
           <Feedback />
@@ -126,30 +126,30 @@ export default function InterviewerDetailsPage() {
             <div className='col-span-8 grid space-y-12'>
               <div className='grid grid-cols-6 gap-4'>
                 <div className='col-span-3 flex h-full flex-col gap-4'>
-                  <div className='flex-1 rounded-lg bg-gray-50 p-4'>
+                  <div className='flex-1 rounded-lg border border-border bg-transparent p-4'>
                     <Heatmap loadSetting={interviewLoad} />
                   </div>
                   <div className='flex flex-1 gap-4'>
-                    <div className='flex-1 rounded-lg bg-gray-50 p-4'>
+                    <div className='flex-1 rounded-lg border border-border bg-transparent p-4'>
                       <TimeZoneUser />
                     </div>
-                    <div className='flex-1 rounded-lg bg-gray-50 p-4'>
+                    <div className='flex-1 rounded-lg border border-border bg-transparent p-4'>
                       <InterviewLoads />
                     </div>
                   </div>
                 </div>
-                <div className='col-span-3 rounded-lg bg-gray-50 p-4'>
+                <div className='bg-transprent col-span-3 rounded-lg border border-border p-4'>
                   <Qualifications interview_types={interviewType} />
                 </div>
 
-                <div className='col-span-4 rounded-lg bg-gray-50 p-4'>
+                <div className='col-span-4 rounded-lg border border-border bg-transparent p-4'>
                   <Keywords />
                 </div>
                 <div className='col-span-2 flex flex-col gap-4'>
-                  <div className='rounded-lg bg-gray-50 p-4'>
+                  <div className='rounded-lg border border-border bg-transparent p-4'>
                     <BreakTime />
                   </div>
-                  <div className='flex-1 rounded-lg bg-gray-50 p-4'>
+                  <div className='bg-transp1rent flex-1 rounded-lg border border-border p-4'>
                     <WorkingHours />
                   </div>
                 </div>

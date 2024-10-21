@@ -72,9 +72,9 @@ const UISelectDropDown = ({
   );
 
   const inputClasses = cn(
-    'w-full border rounded px-3 py-2 transition-colors duration-200', // Smooth transition for color changes
+    'w-full border rounded px-3 py-2 transition-colors duration-200 ', // Smooth transition for color changes
     fullWidth && 'w-full',
-    error ? 'border-destructive focus:ring-0' : 'border-neutral-300',
+    error ? 'border-destructive focus:ring-0' : 'border-border',
     disabled && 'bg-neutral-100 text-muted-foreground cursor-not-allowed',
     fieldSize === 'small'
       ? 'h-6'
@@ -89,7 +89,7 @@ const UISelectDropDown = ({
               : fieldSize === 'xxxLarge'
                 ? 'h-16'
                 : 'h-10',
-    className,
+    // className,
   );
 
   return (
@@ -110,7 +110,7 @@ const UISelectDropDown = ({
           {startIcon && <span className='mr-2'>{startIcon}</span>}
           <SelectValue placeholder={placeholder} id={id} className='text-sm' />
         </SelectTrigger>
-        <SelectContent className='z-[2000]'>
+        <SelectContent className='z-[2000] border border-border'>
           <SelectGroup>
             {children ? (
               children

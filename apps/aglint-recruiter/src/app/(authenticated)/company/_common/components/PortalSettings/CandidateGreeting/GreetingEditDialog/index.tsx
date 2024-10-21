@@ -68,7 +68,7 @@ export const GreetingEditDialog = ({
         value={text}
         onChange={handleTextChange}
         placeholder='Start typing here...'
-        className='mt-4 min-h-[200px] rounded-md border border-muted-foreground bg-background p-4'
+        className='mt-4 min-h-[200px] rounded-md border border-muted bg-background p-4'
       />
     </UIDialog>
   );

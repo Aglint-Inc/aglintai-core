@@ -53,7 +53,7 @@ export default function InterviewersTable() {
         />
       ) : (
         <Table>
-          <TableHeader className='bg-gray-100'>
+          <TableHeader className='bg-muted'>
             <TableRow>
               <TableHead className='w-[250px]'>
                 Interviewer Name{' '}

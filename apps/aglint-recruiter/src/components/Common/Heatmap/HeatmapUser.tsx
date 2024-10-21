@@ -31,7 +31,7 @@ export default function Heatmap({
   const [arrayDates, setArrayDates] = useState<string[]>([]);
   const [dayCount, setDayCount] = useState<{ start: number; end: number }>({
     start: -7,
-    end: 27,
+    end: 26,
   });
   const [maxCount, setMaxCountInterviews] = useState(
     loadSetting.dailyLimit.value,
@@ -116,14 +116,14 @@ export default function Heatmap({
                 </div>
 
                 <div className='flex flex-row items-center gap-2'>
-                  <p className='text-sm'>
+                  <p className='text-sm text-muted-foreground'>
                     Activity on{' '}
                     <span>
                       {startDateUI} - {endDateUI}
                     </span>
                   </p>
                   <div
-                    className='flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm bg-gray-100'
+                    className='flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm bg-muted'
                     onClick={() =>
                       setDayCount((pre) => ({
                         start: pre.start === 21 ? -7 : pre.start - 28,
@@ -134,7 +134,7 @@ export default function Heatmap({
                     <ChevronLeft className='h-3 w-3' />
                   </div>
                   <div
-                    className='flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm bg-gray-100'
+                    className='flex h-5 w-5 cursor-pointer items-center justify-center rounded-sm bg-muted'
                     onClick={() =>
                       setDayCount((pre) => ({
                         start: pre.start === -7 ? 21 : pre.start + 28,
@@ -154,7 +154,7 @@ export default function Heatmap({
               xLabels={xLabel}
               yLabels={yLabel}
               square
-              cellHeight='18.7px'
+              cellHeight='17.3px'
               xLabelsPos='bottom'
               onClick={(x, y) => {
                 if (heatMapData[x][y]?.meeting_id)
@@ -173,7 +173,8 @@ export default function Heatmap({
                   height: '2px ',
                   padding: 0,
                   marginTop: '2px',
-                  width: '18.6px',
+                  marginInline: '1px',
+                  width: '17.3px',
                 };
               }}
               yLabelsStyle={(index) => ({
@@ -191,11 +192,14 @@ export default function Heatmap({
                         ? `hsl(var(--chart-4))` // need confirm color
                         : value?.status === 'cancelled'
                           ? `hsl(var(--chart-2))`
-                          : '#ebebeb',
+                          : '#87878750',
 
                   fontSize: '4px',
                   borderRadius: '3px',
                   color: 'white',
+                  border: 'none',
+                  boxShadow: 'none',
+                  margin: `1px`,
                 };
               }}
             />

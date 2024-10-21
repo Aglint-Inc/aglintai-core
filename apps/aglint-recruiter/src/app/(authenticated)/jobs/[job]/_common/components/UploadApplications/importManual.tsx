@@ -225,11 +225,11 @@ const ResumeUploadComp = ({ value, handleChange, error }: any) => (
     </Label>
     <FileUploader handleChange={handleChange} types={fileTypes}>
       <div
-        className={`flex h-[100px] cursor-pointer items-center justify-center space-x-2 rounded-md border-2 border-dashed p-8 ${error ? 'border-destructive' : 'border-border'} bg-gray-50`}
+        className={`flex h-[100px] cursor-pointer items-center justify-center space-x-2 rounded-md border-2 border-dashed p-8 ${error ? 'border-destructive' : 'border-border'} bg-muted`}
       >
         {value ? <FileIcon size={20} /> : <UploadCloud size={24} />}
         <span
-          className={`text-sm ${error ? 'text-destructive' : 'text-gray-600'} ${value ? 'font-medium' : ''}`}
+          className={`text-sm ${error ? 'text-destructive' : 'text-muted-foreground'} ${value ? 'font-medium' : ''}`}
         >
           {value ? value.name : 'Upload candidate resume [PDF/DOCX]'}
         </span>

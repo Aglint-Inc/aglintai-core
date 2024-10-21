@@ -16,7 +16,7 @@ const SuggestionCard: FC<SuggestionAlertProps> = ({
   return (
     <Alert
       variant='default'
-      className='mb-4 border-purple-200 bg-purple-100 p-3'
+      className='mb-4 border-purple-200 bg-purple-200 p-3 dark:border-purple-200/50 dark:bg-purple-600/10'
     >
       <div className='mb-2 flex flex-row items-center gap-1 text-purple-600'>
         <Lightbulb className='h-4 w-4' />

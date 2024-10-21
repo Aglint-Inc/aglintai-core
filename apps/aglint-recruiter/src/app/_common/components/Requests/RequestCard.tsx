@@ -1,9 +1,9 @@
 import { dayjsLocal, getFullName } from '@aglint/shared-utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
+import { UIBadge } from '@components/ui-badge';
 import { type ApplicantRequest } from '@requests/types';
 import Link from 'next/link';
 
-import { UIBadge } from '@/components/Common/UIBadge';
 import ROUTES from '@/utils/routing/routes';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
 
@@ -15,7 +15,7 @@ function RequestCard({ request }: { request: ApplicantRequest }) {
         request: request.id,
       })}
       target='_blank'
-      className='rounded-md bg-primary-foreground p-3 hover:bg-gray-100 hover:no-underline'
+      className='rounded-md bg-muted/50 p-3 hover:bg-muted/70 hover:no-underline'
     >
       <div className='mb-2 flex justify-between gap-1'>
         <p className='text-sm font-medium'>{request.title}</p>
@@ -26,13 +26,13 @@ function RequestCard({ request }: { request: ApplicantRequest }) {
             size='default'
             className='min-w-[70px] justify-center text-center'
             textBadge={capitalizeFirstLetter(request.status)}
-            color={
+            variant={
               request.status === 'to_do'
                 ? 'purple'
                 : request.status === 'in_progress'
                   ? 'info'
                   : request.status === 'blocked'
-                    ? 'error'
+                    ? 'destructive'
                     : request.status === 'completed'
                       ? 'success'
                       : 'neutral'

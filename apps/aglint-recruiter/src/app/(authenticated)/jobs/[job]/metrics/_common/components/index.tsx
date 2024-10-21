@@ -165,7 +165,7 @@ const StatItem = ({
   color: string;
 }) => (
   <div className='mx-auto w-full max-w-4xl p-4'>
-    <div className='flex cursor-pointer flex-col rounded-lg transition-colors duration-200 hover:bg-gray-100 sm:flex-row'>
+    <div className='flex cursor-pointer flex-col rounded-lg transition-colors duration-200 hover:bg-muted-foreground/20 sm:flex-row'>
       <div className='flex-1 p-2'>
         <div className='mb-1 text-sm font-medium' style={{ color: color }}>
           {label}

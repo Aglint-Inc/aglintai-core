@@ -56,34 +56,6 @@ import RequestNotes from '../RequestNotes';
 import RequestProgress from '../RequestProgress';
 import UpdateDetails from '../UpdateDetails';
 
-type InterviewStatus =
-  | 'completed'
-  | 'cancelled'
-  | 'waiting'
-  | 'reschedule'
-  | 'confirmed'
-  | 'not_scheduled'
-  | '';
-
-const getStatusStyles = (status: InterviewStatus) => {
-  switch (status) {
-    case 'completed':
-      return 'bg-green-200  text-green-800';
-    case 'cancelled':
-      return 'bg-red-200  text-red-800';
-    case 'waiting':
-      return 'bg-yellow-200  text-yellow-800';
-    case 'reschedule':
-      return 'bg-orange-200  text-orange-800';
-    case 'confirmed':
-      return 'bg-blue-200  text-blue-800';
-    case 'not_scheduled':
-      return 'bg-gray-200  text-gray-800';
-    default:
-      return 'bg-gray-100  text-gray-600';
-  }
-};
-
 export default function ViewRequestDetails() {
   const params = useParams();
   const requestId = params?.request as string;
@@ -167,9 +139,9 @@ export default function ViewRequestDetails() {
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb> */}
-              <div className='relative flex flex-row items-start border-b border-gray-200 p-4'>
+              <div className='relative flex flex-row items-start border-b border-muted p-4'>
                 <div>
-                  <h1 className='mb-2 text-2xl text-gray-900'>
+                  <h1 className='mb-2 text-2xl'>
                     {capitalizeFirstLetter(selectedRequest?.title ?? '')}
                   </h1>
                   <div className='flex items-center space-x-4 text-sm text-muted-foreground'>
@@ -202,7 +174,7 @@ export default function ViewRequestDetails() {
                           job: jobDetails?.id ?? '',
                         })}
                       >
-                        <span className='duration-300 hover:text-black hover:underline'>
+                        <span className='duration-300 hover:text-muted hover:underline'>
                           {jobDetails?.job_title}
                         </span>
                       </Link>
@@ -262,7 +234,7 @@ export default function ViewRequestDetails() {
           sidebarPosition='right'
         >
           <div className='flex w-full flex-col space-y-4 px-4'>
-            <div className='grid grid-cols-3 grid-rows-2 gap-4 rounded-md bg-gray-50 p-4'>
+            <div className='grid grid-cols-3 grid-rows-2 gap-4 rounded-md bg-muted/50 p-4'>
               <div className='group relative space-y-2'>
                 <div className='flex items-center gap-2'>
                   <span className='text-sm font-medium text-muted-foreground'>
@@ -301,7 +273,7 @@ export default function ViewRequestDetails() {
                           ? 'success'
                           : 'destructive'
                   }
-                  className={`rounded-sm ${selectedRequest?.status === 'to_do' ? 'bg-gray-100' : ''}`}
+                  className={`rounded-sm`}
                   textBadge={capitalizeFirstLetter(selectedRequest?.status)}
                 />
               </div>
@@ -479,7 +451,7 @@ export default function ViewRequestDetails() {
                   Candidate
                 </div>
                 <div className='flex gap-2 duration-300'>
-                  <div className='flex h-6 w-6 items-center justify-center rounded-sm bg-gray-200'>
+                  <div className='flex h-6 w-6 items-center justify-center rounded-sm bg-muted'>
                     <User className='h-4 w-4' />
                   </div>
                   {getFullName(
@@ -497,7 +469,7 @@ export default function ViewRequestDetails() {
                 <div className='flex flex-row items-center gap-2'>
                   <Avatar className='ml-0 h-6 w-6 rounded-sm'>
                     <AvatarImage src={assigner?.profile_image} alt='Avatar' />
-                    <AvatarFallback className='h-6 w-6 rounded-sm bg-gray-200'>
+                    <AvatarFallback className='h-6 w-6 rounded-sm bg-muted'>
                       <span className='text-sm'>
                         {assigner?.first_name.slice(0, 1)}
                       </span>
@@ -580,13 +552,34 @@ function SessionCards({
 }) {
   const [expandedCard, setExpandedCard] = useState<number | null>(null);
   const { onClickEdit } = useEditSession();
+
+  const getVariant = (
+    status: Awaited<
+      ReturnType<typeof fetchSessionDetails>
+    >[number]['interview_meeting']['status'],
+  ) => {
+    // "default" | "secondary" | "accent" | "info" | "success" | "warning" | "destructive" | "purple" | "neutral" | null | undefined
+    return status === 'cancelled'
+      ? 'destructive'
+      : status === 'completed'
+        ? 'success'
+        : status === 'confirmed'
+          ? 'info'
+          : status === 'not_scheduled'
+            ? 'neutral'
+            : status === 'reschedule'
+              ? 'warning'
+              : status === 'waiting'
+                ? 'warning'
+                : 'default';
+  };
   return (
     <div className='mt-2 flex flex-col gap-1'>
       {sessions.map((session, index) => (
         <>
           <Card
             key={index}
-            className='group rounded-md border-none bg-gray-50 shadow-none'
+            className='group rounded-md border-none bg-muted/50 shadow-none'
           >
             <CardHeader
               className='cursor-pointer px-4 py-2'
@@ -632,14 +625,13 @@ function SessionCards({
                   </Button>
 
                   <UIBadge
-                    className={`h-[28px] rounded-md border-none font-normal ${getStatusStyles(
-                      session?.interview_meeting?.status ?? '',
-                    )}`}
+                    className={`h-[28px] rounded-md border-none font-normal`}
                     textBadge={capitalizeFirstLetter(
                       session?.interview_meeting?.status ?? '',
                     )}
+                    variant={getVariant(session?.interview_meeting?.status)}
                   />
-                  <div className='flex h-[26px] w-[26px] items-center justify-center rounded-md border border-gray-200 bg-gray-100'>
+                  <div className='flex h-[26px] w-[26px] items-center justify-center rounded-md border bg-muted'>
                     <ChevronDown
                       className={`h-4 w-4 transition-transform ${
                         expandedCard === index ? 'rotate-180 transform' : ''
@@ -660,7 +652,7 @@ function SessionCards({
             index < sessions.length - 1 &&
             session?.interview_session?.break_duration ? (
               <div>
-                <Card className='flex justify-between rounded-md border-2 border-dashed px-[15px] py-2 shadow-none'>
+                <Card className='flex justify-between rounded-md border-2 border-dashed border-border bg-muted/30 px-[15px] py-2 shadow-none'>
                   <div className='flex items-center'>
                     <p className='text-sm font-medium'>Break</p>
                   </div>
@@ -682,7 +674,7 @@ function SessionCards({
                       }}
                       disabled={!editable}
                     />
-                    <div className='flex h-[26px] w-[26px] items-center justify-center rounded-md border border-gray-200 bg-gray-100'>
+                    <div className='flex h-[26px] w-[26px] items-center justify-center rounded-md border border-border bg-muted'>
                       <Coffee className='h-3 w-3' />
                     </div>
                   </div>

@@ -25,7 +25,7 @@ type MeetingSlotProps = {
   isDropdownIconVisible?: boolean;
   slotAvatarWithName?: React.ReactNode;
   isAvatarWithNameVisible?: boolean;
-  isSmall?:boolean;
+  isSmall?: boolean;
 };
 
 export function MyScheduleSubCard({
@@ -55,13 +55,16 @@ export function MyScheduleSubCard({
   isSmall,
 }: MeetingSlotProps) {
   return (
-    
     <div className='relative w-full'>
       {/* style={bgColorProps} */}
-      <div className='flex h-full w-full flex-col items-stretch justify-start rounded-lg border-[1px] bg-white hover:bg-gray-50 duration-200 p-4'>
+      <div className='flex h-full w-full flex-col items-stretch justify-start rounded-lg border-[1px] border-border bg-white p-4 duration-200 hover:bg-muted-foreground/10 dark:bg-muted/50'>
         <div className='z-1 relative flex items-start justify-between gap-2'>
-          <div className={`flex ${isSmall ? 'flex-col items-start gap-2' : 'flex-row  gap-6'} items-start justify-start`}>
-            <div className={`flex ${isSmall ? 'flex-row items-center' : 'flex-col items-start'}   min-w-[148px]  gap-2`}>
+          <div
+            className={`flex ${isSmall ? 'flex-col items-start gap-2' : 'flex-row gap-6'} items-start justify-start`}
+          >
+            <div
+              className={`flex ${isSmall ? 'flex-row items-center' : 'flex-col items-start'} min-w-[148px] gap-2`}
+            >
               {isTimeVisible && (
                 <div>
                   <Typography variant='p' type='small'>
@@ -131,7 +134,10 @@ export function MyScheduleSubCard({
               <div className='flex items-center gap-3'>
                 <div className='flex items-center gap-1'>
                   <div className='flex items-center justify-center'>
-                    <BriefcaseBusiness size={14} className='text-muted-foreground'/>
+                    <BriefcaseBusiness
+                      size={14}
+                      className='text-muted-foreground'
+                    />
                   </div>
                   <Typography variant='p' type='small'>
                     {textJob}

@@ -16,7 +16,7 @@ export function TableHeader() {
     section === 'disqualified';
 
   return (
-    <div className='flex w-full items-center bg-gray-100 px-4 py-3 text-sm font-medium text-gray-700'>
+    <div className='flex w-full items-center bg-muted px-4 py-3 text-sm font-medium text-muted-foreground'>
       <div className='mr-4 w-[70px] flex-shrink-0'></div>
       <div className='mr-4 w-[200px] flex-1'>Candidate</div>
       {isResumeMatchVisible && (

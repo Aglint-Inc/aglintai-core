@@ -1,4 +1,3 @@
-import { DialogDescription } from '@components/ui/dialog';
 import { type Dispatch, type SetStateAction, useState } from 'react';
 
 import { UIButton } from '@/common/UIButton';
@@ -57,11 +56,10 @@ export const SliderImageUploadDialog = ({
         </>
       }
     >
-      <DialogDescription>
+      <p className='mb-2 text-sm text-muted-foreground'>
         Upload images for the slider on the candidate portal. You can upload up
         to 5 images, each less than 5MB. Landscape orientation is preferred.
-      </DialogDescription>
-
+      </p>
       <ImagesUpload
         setSelectedImages={setSelectedImages}
         selectedImages={selectedImages}

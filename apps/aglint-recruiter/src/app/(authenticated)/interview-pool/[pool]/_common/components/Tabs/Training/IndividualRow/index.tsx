@@ -68,7 +68,7 @@ function IndividualRow({
     <>
       <tr
         key={relation.id}
-        className='border-b last:border-b-0 hover:bg-gray-50'
+        className='border-b last:border-b-0 hover:bg-muted/50'
       >
         <td className='p-4'>
           <Link
@@ -87,7 +87,7 @@ function IndividualRow({
                 </AvatarFallback>
               </Avatar>
               <div>
-                <div className='flex flex-row gap-2 font-medium text-gray-900'>
+                <div className='flex flex-row gap-2 font-medium'>
                   {relation.full_name}
                   {relation.pause_json && (
                     <UIBadge
@@ -106,8 +106,8 @@ function IndividualRow({
             </div>
           </Link>
         </td>
-        <td className='p-4 text-gray-700'>{relation.textTodayInterview}</td>
-        <td className='p-4 text-gray-700'>{relation.textWeekInterview}</td>
+        <td className='p-4'>{relation.textTodayInterview}</td>
+        <td className='p-4'>{relation.textWeekInterview}</td>
         <td className='p-4'>
           <UIBadge
             variant={
@@ -144,7 +144,10 @@ function IndividualRow({
                   icon={<ChevronDown />}
                 />
               </PopoverTrigger>
-              <PopoverContent side='top' className='w-auto rounded-sm p-0'>
+              <PopoverContent
+                side='top'
+                className='w-auto rounded-sm border border-border p-0'
+              >
                 <CollapseTrainingProgress
                   reverse_shadow_to_complete={relation.number_of_reverse_shadow}
                   shadow_to_complete={relation.number_of_shadow}
@@ -181,7 +184,10 @@ const ThreeDot = ({
       <PopoverTrigger asChild>
         <UIButton variant='secondary' size='sm' icon={<MoreVertical />} />
       </PopoverTrigger>
-      <PopoverContent className='w-auto rounded-sm p-0' side='left'>
+      <PopoverContent
+        className='w-auto rounded-sm border border-border p-0'
+        side='left'
+      >
         <MemberListCardOption
           isMoveToQualifierVisible={isMoveToQualifierVisible}
           isRemoveVisible={true}

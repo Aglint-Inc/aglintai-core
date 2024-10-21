@@ -98,17 +98,11 @@ export const InterviewPoolHeader = () => {
               )}
               {archivedLength > 0 && (
                 <Tabs value={activeTab} onValueChange={handleTabChange}>
-                  <TabsList className='rounded-lg bg-gray-100 p-1'>
-                    <TabsTrigger
-                      value='active'
-                      className='data-[state=active]:bg-white data-[state=active]:shadow'
-                    >
+                  <TabsList className='rounded-lg p-1'>
+                    <TabsTrigger value='active' className=''>
                       Active
                     </TabsTrigger>
-                    <TabsTrigger
-                      value='archived'
-                      className='data-[state=active]:bg-white data-[state=active]:shadow'
-                    >
+                    <TabsTrigger value='archived' className=''>
                       Archived
                     </TabsTrigger>
                   </TabsList>

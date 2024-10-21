@@ -3,7 +3,6 @@ import { Minus, Plus } from 'lucide-react';
 
 import { SessionIcon } from '@/common/ScheduleProgressPillComp';
 import { UIButton } from '@/components/Common/UIButton';
-import { UIDivider } from '@/components/Common/UIDivider';
 import UITextField from '@/components/Common/UITextField';
 import { useAlterCount } from '@/interview-pool/details/hooks/useAlterCount';
 import { useApproveUsers } from '@/interview-pool/details/hooks/useApproveUsers';
@@ -190,10 +189,8 @@ function CollapseTrainingProgress({
             <div className='hidden flex-row gap-5 pt-4'></div>
           </div>
         </div>
-        <div className='mb-4'>
-          <UIDivider />
-        </div>
-        <div className='flex flex-row space-x-3 px-4 pb-4'>
+
+        <div className='flex flex-row space-x-3 border-t border-border px-4 pb-4 pt-4'>
           <div className='flex items-center space-x-1'>
             <span>Shadow</span>
             <UIButton

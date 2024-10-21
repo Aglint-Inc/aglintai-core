@@ -98,7 +98,7 @@ export const InterviewerList = ({
                 <Badge
                   key={qua.id}
                   variant='outline'
-                  className='border-indigo-200 bg-indigo-50 text-indigo-800'
+                  className='border-border bg-muted text-muted-foreground'
                 >
                   <Layers className='mr-1 h-3 w-3' />
                   {qua.name}
@@ -107,7 +107,7 @@ export const InterviewerList = ({
               {qualified_second?.length ? (
                 <Badge
                   variant='outline'
-                  className='border-indigo-200 bg-indigo-50 text-indigo-800'
+                  className='border-border bg-muted text-muted-foreground'
                 >
                   +{qualified_second.length}
                 </Badge>

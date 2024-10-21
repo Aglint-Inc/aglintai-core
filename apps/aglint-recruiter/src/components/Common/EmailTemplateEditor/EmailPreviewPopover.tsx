@@ -34,7 +34,7 @@ export default function EmailPreviewPopover({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className='w-full max-w-[700px]'>
+      <DialogContent className='w-full max-w-[700px] border border-border'>
         <DialogHeader>
           <DialogTitle>Email Preview</DialogTitle>
         </DialogHeader>

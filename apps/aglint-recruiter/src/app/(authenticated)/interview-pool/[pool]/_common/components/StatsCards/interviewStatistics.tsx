@@ -7,23 +7,23 @@ import { useInterviewStatistics } from '../../hooks/useInterviewStatics';
 function InterviewStatistics({ module_id }: { module_id: string }) {
   const { data, isFetched } = useInterviewStatistics(module_id);
   return (
-    <Card className='border-t-4 border-t-blue-500 bg-white shadow-sm'>
+    <Card className='border border-border bg-muted shadow-sm'>
       <CardHeader>
-        <CardTitle className='text-lg font-medium text-gray-800'>
+        <CardTitle className='text-lg font-medium'>
           Interview Statistics
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className=''>
         <div className='space-y-2'>
           <div className='flex justify-between'>
-            <span className='text-gray-600'>Total Interviews</span>
-            <span className='font-bold text-gray-900'>
+            <span className='text-muted-foreground'>Total Interviews</span>
+            <span className='font-bold text-muted-foreground'>
               {isFetched ? data.total : <Skeleton className='h-6 w-10' />}
             </span>
           </div>
           <div className='flex justify-between'>
-            <span className='text-gray-600'>Completion Rate</span>
-            <span className='font-bold text-green-600'>
+            <span className='text-muted-foreground'>Completion Rate</span>
+            <span className='font-bold text-primary'>
               {isFetched ? (
                 `${Math.round((data.completed / data.total) * 10000) / 100 || 0} %`
               ) : (
@@ -32,8 +32,8 @@ function InterviewStatistics({ module_id }: { module_id: string }) {
             </span>
           </div>
           <div className='flex justify-between'>
-            <span className='text-gray-600'>Avg. Duration</span>
-            <span className='font-bold text-gray-900'>
+            <span className='text-muted-foreground'>Avg. Duration</span>
+            <span className='font-bold text-muted-foreground'>
               {isFetched ? (
                 `${data.duration} min`
               ) : (
@@ -42,8 +42,8 @@ function InterviewStatistics({ module_id }: { module_id: string }) {
             </span>
           </div>
           <div className='flex justify-between'>
-            <span className='text-gray-600'>Avg. Time to Schedule</span>
-            <span className='font-bold text-gray-900'>
+            <span className='text-muted-foreground'>Avg. Time to Schedule</span>
+            <span className='font-bold text-muted-foreground'>
               {isFetched ? data.interval : <Skeleton className='h-6 w-10' />}
             </span>
           </div>

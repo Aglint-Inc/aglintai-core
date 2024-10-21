@@ -4,9 +4,7 @@ import { api } from '@/trpc/client';
 
 import { useApplicationDetails } from '../../../hooks/useApplicationDetails';
 import { useApplicationMeta } from '../../../hooks/useApplicationMeta';
-import {
-  type StageWithSessions
-} from '../../../hooks/useInterviewStages';
+import { type StageWithSessions } from '../../../hooks/useInterviewStages';
 import {
   setIsScheduleOpen,
   useApplicationDetailStore,
@@ -52,7 +50,7 @@ function StageIndividual({
   return (
     <>
       <ApplicantDetailStage
-        textName={`Stage ${stage.interview_plan.plan_order} ${stage.interview_plan.name}`}
+        textName={`Stage  ${stage.interview_plan.plan_order} ${stage.interview_plan.name}`}
         textInterviewCount={`${sessions.length} Interview${sessions.length > 1 ? 's' : ''}`}
         slotInterviewStageDetail={
           <div className='flex flex-col gap-2'>

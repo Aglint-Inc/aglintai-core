@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { EmptyState } from '@components/empty-state';
+import { Button } from '@components/ui/button';
 import { NotebookPen, Pen, Plus } from 'lucide-react';
 import {
   type Dispatch,
@@ -56,14 +57,15 @@ const WorkTime: FC<WorkTimeProps> = ({
         description="Set your company's operational hours for each day of the week."
         action={
           currentWorkingDays?.length > 0 && (
-            <UIButton
+            <Button
               variant='outline'
+              className='bg-background/50'
               size='sm'
               onClick={() => !isUpdating && setIsOpen(true)}
             >
               <Pen className='mr-2 h-3 w-3' /> Edit
               <span className='sr-only'>Edit Working Hours</span>
-            </UIButton>
+            </Button>
           )
         }
       >

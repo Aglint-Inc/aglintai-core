@@ -48,7 +48,7 @@ function Training() {
           <div className='flex justify-between'>
             <UITextField
               placeholder='Search trainee...'
-              className='w-64 bg-white'
+              className='w-64'
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -62,15 +62,15 @@ function Training() {
               Add Trainee
             </UIButton>
           </div>
-          <Card>
+          <Card className='border border-border'>
             <CardContent className='p-0'>
               <table className='w-full overflow-hidden'>
-                <thead className='border-b'>
+                <thead className='border-b border-border bg-muted'>
                   <tr>
                     {Object.keys(headers).map((key) => (
                       <th
                         key={key}
-                        className='p-4 text-left text-sm font-medium text-gray-700'
+                        className='p-4 text-left text-sm font-medium text-muted-foreground'
                       >
                         {headers[key as keyof typeof headers]}
                       </th>

@@ -251,7 +251,7 @@ const SlackTemplate = ({ action: { action_type } }: ActionProps) => {
   if (action_type !== 'slack') return <></>;
 
   return (
-    <Alert>
+    <Alert variant='default'>
       <AlertDescription>
         A Slack notification will be sent for this action.
       </AlertDescription>

@@ -3,13 +3,6 @@ import { Button } from '@components/ui/button';
 import { Calendar } from '@components/ui/calendar';
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import { Input } from '@components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@components/ui/select';
 import { BarChart, LineChart } from 'lucide-react';
 
 export default function SampleShowcase() {
@@ -177,5 +170,3 @@ export default function SampleShowcase() {
     </div>
   );
 }
-
-

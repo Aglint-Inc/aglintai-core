@@ -1,7 +1,6 @@
 'use client';
 
 import { cn } from '@lib/utils';
-import { useEffect } from 'react';
 
 import { useThemeConfig } from '../../hook/use-themeConfig';
 

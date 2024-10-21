@@ -63,9 +63,8 @@ function MembersAutoComplete({
           return (
             <div
               key={user.user_id}
-              className={`flex items-center gap-2 rounded-full py-1 pr-2 text-sm capitalize ${
-                pillColor ? `${pillColor}` : 'bg-muted'
-              }`}
+              className={`flex items-center gap-2 rounded-full bg-muted px-2 py-1 text-sm capitalize`}
+              // ${pillColor ? `${pillColor}` : 'bg-muted'}
             >
               <Avatar className='h-6 w-6 rounded-full'>
                 <AvatarImage src={user.profile_image} alt={userName} />
@@ -81,7 +80,7 @@ function MembersAutoComplete({
                     selectedUsers.filter((us) => us.user_id !== user.user_id),
                   );
                 }}
-                className='ml-1 h-6 w-6 rounded-full p-0 text-muted-foreground hover:text-gray-700'
+                className='ml-1 h-6 w-6 rounded-full p-0 text-muted-foreground'
               >
                 <X size={16} />
               </Button>
@@ -99,7 +98,7 @@ function MembersAutoComplete({
         </PopoverTrigger>
         <PopoverContent
           align='start'
-          className='z-[2000] w-full min-w-full p-0'
+          className='z-[2000] w-full min-w-full border border-border p-0'
           style={{
             width: maxWidth,
             maxHeight: '30vh',
@@ -119,7 +118,7 @@ function MembersAutoComplete({
               return (
                 <div
                   key={ind}
-                  className={`flex cursor-pointer items-center justify-between border-b p-2`}
+                  className={`flex cursor-pointer items-center justify-between border-b border-border p-2`}
                   onClick={(e) => {
                     e.stopPropagation();
                     if (

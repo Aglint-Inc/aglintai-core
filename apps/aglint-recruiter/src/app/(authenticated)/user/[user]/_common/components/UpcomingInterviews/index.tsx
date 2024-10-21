@@ -7,6 +7,7 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
+import { Button } from '@components/ui/button';
 import { Calendar } from 'lucide-react';
 
 import { UIButton } from '@/components/Common/UIButton';
@@ -40,13 +41,15 @@ export const UpcomingInterview = () => {
           <SectionHeaderText>
             <SectionTitle>Upcoming Interviews </SectionTitle>
           </SectionHeaderText>
-          <SectionActions>
-            <UIButton size={'sm'} onClick={() => router.push('/interviews')}>
-              View All
-            </UIButton>
-          </SectionActions>
+          {interviews.length > 3 && (
+            <SectionActions>
+              <Button size={'sm'} onClick={() => router.push('/interviews')}>
+                View All
+              </Button>
+            </SectionActions>
+          )}
         </SectionHeader>
-        <div className='min-h-[300px]'>
+        <div>
           {interviews?.length > 0 ? (
             interviews
               .slice(0, 3)
@@ -76,14 +79,14 @@ const List = ({
   const router = useRouterPro();
   return (
     <div className='mb-2 grid grid-cols-[max-content_1fr] gap-4 rounded-lg'>
-      <div className='flex h-[94px] w-[90px] flex-col items-center justify-center rounded-sm bg-gray-50'>
-        <div className='text-sm'>
+      <div className='flex h-[94px] w-[90px] flex-col items-center justify-center rounded-sm bg-muted'>
+        <div className='text-sm text-muted-foreground'>
           {dayjsLocal(interview.start_time).format('MMMM')}
         </div>
-        <div className='text-2xl font-semibold text-black'>
+        <div className='text-2xl font-semibold'>
           {dayjsLocal(interview.start_time).format('DD')}
         </div>
-        <div className='text-sm'>
+        <div className='text-sm text-muted-foreground'>
           {dayjsLocal(interview.start_time).format('dddd')}
         </div>
       </div>

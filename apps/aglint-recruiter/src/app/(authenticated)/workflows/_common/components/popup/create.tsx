@@ -67,7 +67,7 @@ const Create = () => {
         Create
       </UIButton>
       <Dialog open={open} onOpenChange={handleClose}>
-        <DialogContent>
+        <DialogContent className='border border-border'>
           <AlertDialogHeader>
             <DialogTitle>Create Automation</DialogTitle>
             <DialogDescription>

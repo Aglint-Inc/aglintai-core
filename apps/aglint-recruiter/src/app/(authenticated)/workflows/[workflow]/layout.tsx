@@ -33,6 +33,7 @@ const Layout = ({ children }: PropsWithChildren) => {
           header={
             <div className='flex flex-row items-center justify-between'>
               <BreadCrumbs />
+
               <div className='flex flex-row gap-2'>
                 <Edit />
                 <DeletePopup />
@@ -73,7 +74,7 @@ const Edit = () => {
                 <MoreHorizontal className='h-4 w-4' />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align='end'>
+            <DropdownMenuContent align='end' className='border border-border'>
               <DropdownMenuItem onClick={handleDelete}>Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

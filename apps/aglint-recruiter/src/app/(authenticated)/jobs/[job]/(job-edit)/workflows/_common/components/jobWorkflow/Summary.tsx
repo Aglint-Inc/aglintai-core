@@ -62,7 +62,7 @@ export const Summary = () => {
                   return (
                     <li
                       key={wTrigger.id}
-                      className='rounded-md bg-gray-100 p-3 last:border-b-0'
+                      className='rounded-md bg-muted p-3 last:border-b-0'
                     >
                       <h4 className='mb-2 text-sm font-medium'>
                         {
@@ -105,24 +105,24 @@ const renderAIAutomationCTA = () => {
   return (
     <Alert
       variant='default'
-      className='mb-4 border-purple-200 bg-purple-100 p-3'
+      className='mb-4 border-purple-200 bg-purple-100 p-3 dark:border-purple-500 dark:bg-purple-500/50'
     >
-      <div className='mb-2 flex flex-row items-center gap-1 text-purple-600'>
+      <div className='mb-2 flex flex-row items-center gap-1 text-purple-600 dark:text-purple-300'>
         <Lightbulb className='h-4 w-4' />
         <div className='text-sm'>Supercharge Your Hiring</div>
       </div>
       <AlertDescription className='flex flex-col items-start'>
         Unlock the power of AI automation
       </AlertDescription>
-      <div className='mt-2 space-y-2 text-sm text-gray-600'>
-        <p className='font-medium'>Key Benefits:</p>
+      <div className='mt-2 space-y-2 text-sm text-gray-600 dark:text-gray-300'>
+        <p className='font-medium text-white'>Key Benefits:</p>
         <ul className='list-inside list-disc space-y-2'>
           <li>Reduce time-to-hire by up to 40%</li>
           <li>Improve candidate satisfaction by 35%</li>
           <li>Save hours on manual tasks daily</li>
         </ul>
         <div>
-          <p className='mb-2 font-medium'>Get Started:</p>
+          <p className='mb-2 font-medium text-white'>Get Started:</p>
           <ol className='list-inside list-decimal space-y-1'>
             <li>Enable an automation in the left panel</li>
             <li>Add an AI action to automate responses</li>

@@ -73,12 +73,12 @@ const LinkIcon = ({
   const baseClasses =
     'flex flex-col items-center space-y-2 p-2 rounded-md transition-colors duration-200';
   const activeClasses = active
-    ? 'bg-gray-200 text-black'
+    ? 'bg-muted-foreground/20 text-foreground'
     : 'text-muted-foreground';
-  const hoverClasses = 'hover:bg-gray-200';
+  const hoverClasses = 'hover:bg-muted-foreground/30';
 
   const iconMap = {
-    Requests: <LayoutList className='h-6 w-6' strokeWidth={1.5} />,
+    Requests: <LayoutList className='h-6 w-6 ' strokeWidth={1.5} />,
     Jobs: <BriefcaseBusiness className='h-6 w-6' strokeWidth={1.5} />,
     Interviews: <Calendar className='h-6 w-6' strokeWidth={1.5} />,
     'Interview Pools': <LibraryBig className='h-6 w-6' strokeWidth={1.5} />,

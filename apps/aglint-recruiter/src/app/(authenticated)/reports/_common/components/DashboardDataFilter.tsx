@@ -118,7 +118,7 @@ export default function Component() {
                 />
               </div>
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className='border border-border'>
               {options.map((option) => (
                 // @ts-ignore
                 <SelectItem key={option.id} value={option.id}>
@@ -182,13 +182,16 @@ export default function Component() {
                 : 'Date Range'}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className='w-auto p-4' align='start'>
+          <PopoverContent
+            className='w-auto border border-border p-4'
+            align='start'
+          >
             <div className='space-y-4'>
               <Select value={dateOption} onValueChange={handleDateOptionChange}>
                 <SelectTrigger className='w-full'>
                   <SelectValue placeholder='Select date range' />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className='border border-border'>
                   {dateOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}
