@@ -5,8 +5,8 @@ import ProfileSkeleton from './ProfileSkeleton';
 import ProfileView from './ProfileView';
 
 export default function ProfilePage() {
-  const { status } = useCandidatePortalProfile();
-  if (status === 'pending')
+  const { isLoading } = useCandidatePortalProfile();
+  if (isLoading)
     return (
       <div className='mt-12'>
         <ProfileSkeleton />

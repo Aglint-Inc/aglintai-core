@@ -4,7 +4,7 @@ import { useState } from 'react';
 import TipTapAIEditor from '@/common/TipTapAIEditor';
 import { UIButton } from '@/common/UIButton';
 import UIDialog from '@/common/UIDialog';
-import { useFlags } from '@/company/hooks/useFlags';
+import { usePortalSettings } from '@/company/context/PortalsettingsContext';
 import { api } from '@/trpc/client';
 export const AboutCompanyDialog = ({
   isDialogOpen,
@@ -18,11 +18,14 @@ export const AboutCompanyDialog = ({
   const { mutateAsync, isPending } =
     api.candidatePortal.update_portal_detail.useMutation();
 
-  const { about } = useFlags();
+  const {
+    data: { about },
+  } = usePortalSettings();
   const [text, setText] = useState(about || '');
   const handleTextChange = (value: string) => {
     setText(value);
   };
+
   return (
     <UIDialog
       open={isDialogOpen}

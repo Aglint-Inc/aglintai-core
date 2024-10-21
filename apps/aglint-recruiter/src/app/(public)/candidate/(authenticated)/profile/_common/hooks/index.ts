@@ -1,8 +1,10 @@
 import { useCandidatePortal } from 'src/app/(public)/candidate/(authenticated)/_common/hooks';
 
+import { useRouterPro } from '@/hooks/useRouterPro';
 import type { GetProfile } from '@/routers/candidatePortal/get_profile';
-import type { ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
+
+import { dummyDataProfile } from '../../../_common/dummydata';
 
 export const useCandidatePortalProfile = () => {
   const { application_id } = useCandidatePortal();
@@ -10,11 +12,17 @@ export const useCandidatePortalProfile = () => {
   return { ...response, data: response.data! };
 };
 
-const useGetProfileProcedure = (
-  input: GetProfile['input'],
-): ProcedureQuery<GetProfile> =>
-  api.candidatePortal.get_profile.useQuery(input);
+const useGetProfileProcedure = (input: GetProfile['input']) => {
+  const { queryParams } = useRouterPro();
+  const isPreview = !!queryParams.isPreview;
+  const query = api.candidatePortal.get_profile.useQuery(input, {
+    enabled: !isPreview,
+    initialData: isPreview ? dummyDataProfile : undefined,
+  });
+  return query;
+};
 
+// ProcedureQuery<GetProfile>
 export const useCandidatePortalProfileUpdate = () => {
   return api.candidatePortal.update_profile.useMutation({});
 };

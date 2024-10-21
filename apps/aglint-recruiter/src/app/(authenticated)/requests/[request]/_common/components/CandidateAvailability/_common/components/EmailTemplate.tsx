@@ -99,6 +99,7 @@ function EmailTemplate({ application_id }: { application_id: string }) {
             <ShowCode.Else>
               <ScrollArea className='h-[calc(100vh-320px)] w-full'>
                 <iframe
+                  data-testid='email-preview'
                   srcDoc={emailData?.html}
                   width='100%'
                   height='672px'

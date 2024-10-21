@@ -7,7 +7,13 @@ function PortalSettings() {
   const { isLoading } = usePortalSettings();
   return (
     <div className='max-w-[70%]'>
-      {isLoading ? <Loader /> : <CandidatePortalSettings />}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <CandidatePortalSettings />
+        </>
+      )}
     </div>
   );
 }

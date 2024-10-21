@@ -13,6 +13,7 @@ const RequestProceed = () => {
   return (
     <div>
       <UIButton
+        data-testid='request-proceed-btn'
         disabled={isProceeding}
         onClick={async () => {
           setIsProceeding(true);

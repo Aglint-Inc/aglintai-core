@@ -40,6 +40,7 @@ const SelectScheduleFlow = () => {
         }}
         variant='outline'
         size='sm'
+        data-testid='get-availability-btn'
       >
         Get Availability
       </UIButton>
@@ -47,6 +48,7 @@ const SelectScheduleFlow = () => {
       <UIButton
         isLoading={fetchingPlan}
         size='sm'
+        data-testid='self-schedule-btn'
         onClick={async () => {
           if (fetchingPlan) return;
           if (scheduleWorkflowAction) {

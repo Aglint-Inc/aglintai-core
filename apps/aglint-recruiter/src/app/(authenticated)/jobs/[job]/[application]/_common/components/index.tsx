@@ -12,7 +12,7 @@ import { type TabsType } from './TabPills';
 function ApplicationDetailComp() {
   const router = useRouterPro();
   const tab = router.queryParams.tab as TabsType;
-  const application_id = router.params.application;
+  const application_id = router.params.application as string;
 
   const renderTabContent = () => {
     switch (tab) {

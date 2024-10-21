@@ -3,11 +3,13 @@ import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { TriangleAlert } from 'lucide-react';
 import Link from 'next/link';
-import React from 'react';
-import { useCandidatePortal } from 'src/app/(public)/candidate/(authenticated)/_common/hooks';
+
+import { useRouterPro } from '@/hooks/useRouterPro';
 
 function IncompleteProfile() {
-  const { application_id } = useCandidatePortal();
+  const { queryParams } = useRouterPro();
+  const application_id = queryParams?.application_id as string;
+  const isPreview = queryParams?.isPreview as string;
   return (
     <div>
       <Card className='border border-border bg-background/80 shadow-sm backdrop-blur-sm'>
@@ -27,7 +29,11 @@ function IncompleteProfile() {
         </CardHeader>
         <CardContent className='p-0 pb-4 pl-4 pr-4'>
           <Link
-            href={`/candidate/profile?application_id=${application_id}&dialog=edit`}
+            href={
+              isPreview
+                ? ''
+                : `/candidate/profile?application_id=${application_id}&dialog=edit`
+            }
           >
             <Button className='w-full'>Update profile</Button>
           </Link>
