@@ -1,0 +1,25 @@
+{
+  "name": "@aglint/seed-database",
+  "scripts": {
+    "build": "rimraf dist && tsup",
+    "lint": "rimraf dist && tsup && tsc",
+    "type-check": "tsc --noEmit",
+    "dev": "tsup --watch --onSuccess \"node dist/index.js\" && console-ninja"
+  },
+  "version": "0.0.1",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "devDependencies": {
+    "@supabase/supabase-js": "^2.44.0",
+    "@aglint/typescript-config": "*",
+    "@types/html-to-text": "^9.0.4",
+    "@aglint/shared-utils": "*",
+    "rimraf": "^6.0.1",
+    "typescript": "latest",
+    "@types/node": "^20.11.24",
+    "dayjs": "^1.11.11",
+    "html-to-text": "^9.0.5",
+    "tsup": "^8.0.2",
+    "zod": "^3.23.8"
+  }
+}
