@@ -12,12 +12,15 @@ import { addCandidatesToCompany } from './lib/addCandidatesToCompany';
 import { addInterviewTypes } from './lib/addInterviewTypes';
 import { updateCompanyPref } from './lib/updateCompanyPref';
 import { createCompanyTeam } from './lib/createCompanyTeam';
+import { createIntegrations } from './lib/integrations';
 dotenv.config();
+
 const main = async () => {
   await deleteAllCompanyData();
   await createPermissions();
   const { recruiter_user, recruiter, departments, locations } =
     await createCompanyAndAdmin();
+  await createIntegrations({ recruiter_id: recruiter.id });
   const company_candidates = await addCandidatesToCompany({
     companyDetails: recruiter,
   });
