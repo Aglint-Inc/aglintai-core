@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import { useQueryClient } from '@tanstack/react-query';
-import { ChevronDownIcon, User } from 'lucide-react';
+import { ChevronDownIcon, Palette, User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useTheme } from 'next-themes';
@@ -17,8 +17,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { useThemeConfig } from 'src/app/(public)/theme/_common/hook/use-themeConfig';
 
 import { useLogout } from '@/authenticated/hooks/useLogout';
-import { colors } from '@/company/components/CompanyDetails/ThemeManager/ThemeManager';
 import { useTenant } from '@/company/hooks';
+import { UIButton } from '@/common/UIButton';
+import ThemeManager, { colors } from './ThemeManager';
 
 const DefaultCompanyLogo = () => (
   <Image
@@ -38,7 +39,7 @@ const TopBar = () => {
   const profileImage = recruiter_user?.profile_image;
   const userName = recruiter_user?.first_name;
   const userId = recruiter_user?.user_id;
-
+  const isThemeActive = recruiter.recruiter_preferences.themes;
   const { theme } = useTheme();
   const { setTheme } = useTheme();
   const [themeConfig, setThemeConfig] = useThemeConfig();
@@ -121,7 +122,22 @@ const TopBar = () => {
             Welcome to {recruiterName}!
           </p>
         </div>
-        {/* <ThemeToggle /> */}
+
+        <DropdownMenu>
+          {isThemeActive && (
+            <DropdownMenuTrigger>
+              <UIButton icon={<Palette />} size={'md'} variant={'ghost'} />
+            </DropdownMenuTrigger>
+          )}
+          <DropdownMenuContent
+            side='bottom'
+            align='end'
+            alignOffset={20}
+            className='rounded-lg border border-border'
+          >
+            <ThemeManager />
+          </DropdownMenuContent>
+        </DropdownMenu>
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Button variant='ghost'>

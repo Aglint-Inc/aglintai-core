@@ -9,7 +9,6 @@ import {
 import { BasicInfo } from './BasicInfo';
 import Departments from './Departments';
 import { Location } from './Locations';
-import ThemeManager from './ThemeManager/ThemeManager';
 
 const CompanyInfoComp = () => {
   return (
@@ -28,7 +27,6 @@ const CompanyInfoComp = () => {
           <BasicInfo />
           <Location />
           <Departments />
-          <ThemeManager />
         </div>
       </Page>
     </>
