@@ -439,7 +439,7 @@ const Block = ({
   };
   return (
     <div
-      className='relative mb-8 flex flex-grow space-y-2 rounded-sm border px-2'
+      className='relative mb-8 flex flex-grow space-y-2 rounded-sm border border-border px-2'
       onMouseEnter={() => setIsHover(true)}
       onFocus={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
@@ -484,7 +484,7 @@ const Block = ({
             <SelectTrigger className='w-full'>
               <SelectValue placeholder='Select an icon' />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className='border border-border'>
               {Object.keys(iconOptions).map((iconName) => (
                 <SelectItem key={iconName} value={iconName}>
                   {iconName}

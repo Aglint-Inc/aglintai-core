@@ -538,7 +538,7 @@ const Tips = () => {
           </Button>
         </div>
       )}
-      <div className='flex flex-col gap-1 rounded-md border p-4'>
+      <div className='flex flex-col gap-1 rounded-md border border-border p-4'>
         <p className='text-sm font-semibold text-info'>How It Works</p>
         <p className='text-sm text-muted-foreground'>
           Adjust the weightage for Experience, Skills, and Education to
