@@ -1,16 +1,16 @@
-import { z } from "zod";
-import { interviewModuleUpdateSchema } from "../zod-schema.types";
-import type { TableType } from "./index.types";
+import { z } from 'zod';
+import { interviewModuleUpdateSchema } from '../zod-schema.types';
+import type { TableType } from './index.types';
 
 export type CustomModule = TableType<
-  "interview_module",
+  'interview_module',
   {
     settings: {
       require_training: boolean;
       noShadow: number;
       noReverseShadow: number;
       reqruire_approval: boolean;
-    };
+    } | null;
   }
 >;
 
