@@ -127,6 +127,7 @@ export const PATHS = [
   '/reset-password',
   '/self-scheduling/[filter]',
   '/signup',
+  '/theme',
   '/api/auth/send-reset-email',
   '/api/automation/add_users',
   '/api/automation/booking_self_schedule',
