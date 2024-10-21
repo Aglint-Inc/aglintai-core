@@ -16,7 +16,7 @@ export function InterviewStage({
       <div className='relative z-[1] flex flex-col gap-2.5'>
         {slotPipelineTab}
       </div>
-      <div className='rounded-md p-0 '>{slotInterviewStage}</div>
+      <div className='rounded-md p-0'>{slotInterviewStage}</div>
     </div>
   );
 }

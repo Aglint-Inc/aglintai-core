@@ -580,7 +580,7 @@ const Block = ({
                 size={'sm'}
               />
             </AlertDialogTrigger>
-            <AlertDialogContent>
+            <AlertDialogContent className='border border-border'>
               <AlertDialogHeader>
                 <AlertDialogTitle>
                   Are you sure to delete this Stage ?

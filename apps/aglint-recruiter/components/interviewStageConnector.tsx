@@ -57,8 +57,8 @@ const InterviewStageConnector: React.FC<InterviewStageConnectorProps> = ({
                 : `${statusColors[status].bg} ${statusColors[status].border}`
               : position === 'top'
                 ? isActive
-                  ? `bg-white ${statusColors[status].activeBorder}`
-                  : `bg-white ${statusColors[status].border}`
+                  ? `bg-white dark:bg-background ${statusColors[status].activeBorder}`
+                  : `bg-white dark:bg-background ${statusColors[status].border}`
                 : ''
           }`}
           style={{ width: `${innerSize}px`, height: `${innerSize}px` }}
