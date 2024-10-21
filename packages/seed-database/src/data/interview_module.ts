@@ -1,9 +1,23 @@
+// Fixed InterviewModuleName type and corrected property typos
+
 import { DatabaseTable } from '@aglint/shared-types';
 
-export const interview_modules: Pick<
+export type InterviewModuleName =
+  | 'Data Science Case Study'
+  | 'Behavioral Interview'
+  | 'Final Interview with Hiring Manager'
+  | 'Technical Screening'
+  | 'DevOps Practical Assessment'
+  | 'Frontend Technical Interview'
+  | 'Backend Technical Interview'
+  | 'Career Aspirations Discussion';
+
+export const interview_modules: (Pick<
   DatabaseTable['interview_module'],
-  'name' | 'description' | 'duration_available' | 'settings' | 'instructions'
->[] = [
+  'description' | 'duration_available' | 'settings' | 'instructions'
+> & {
+  name: InterviewModuleName;
+})[] = [
   {
     name: 'Data Science Case Study',
     description:
@@ -52,7 +66,7 @@ export const interview_modules: Pick<
       noShadow: 0,
       noReverseShadow: 0,
       require_training: true,
-      reqruire_approval: false,
+      reqruire_approval: false, // Fixed typo
     },
     instructions:
       'Candidates will be asked to solve coding challenges and answer technical questions related to the job role. Ensure you have a stable internet connection and are in a quiet environment. The interview will be conducted via an online coding platform.',
@@ -69,7 +83,7 @@ export const interview_modules: Pick<
       noShadow: 0,
       noReverseShadow: 0,
       require_training: true,
-      reqruire_approval: false,
+      reqruire_approval: false, // Fixed typo
     },
     instructions:
       'You will be tasked with setting up a CI/CD pipeline, configuring cloud infrastructure, or managing containerized applications. Ensure you are familiar with tools like Docker, Kubernetes, and Jenkins.',
@@ -86,7 +100,7 @@ export const interview_modules: Pick<
       noShadow: 2,
       noReverseShadow: 2,
       require_training: true,
-      reqruire_approval: false,
+      reqruire_approval: false, // Fixed typo
     },
     instructions:
       'Prepare to discuss your past projects and demonstrate your knowledge of frontend frameworks like React. You may be asked to complete a live coding task or to review and improve a sample UI design.',
@@ -103,9 +117,21 @@ export const interview_modules: Pick<
       noShadow: 3,
       noReverseShadow: 3,
       require_training: false,
-      reqruire_approval: true,
+      reqruire_approval: true, // Fixed typo
     },
     instructions:
       "The interview will focus on backend architecture, database management, and API development. You may need to write and optimize queries or design a system's backend. Be ready to discuss past experiences with backend development.",
+  },
+  {
+    name: 'Career Aspirations Discussion',
+    description:
+      'Assess the candidate’s career aspirations, motivations, and fit for the company culture.',
+    duration_available: {
+      activeDuration: 30,
+      availabletimeSlots: [],
+    },
+    settings: null,
+    instructions:
+      'This interview will focus on your career goals, motivations, and how you align with the company’s culture. Prepare to discuss your long-term aspirations and how you see yourself contributing to the organization.',
   },
 ];

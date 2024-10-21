@@ -16,7 +16,7 @@ const main = async () => {
   await createPermissions();
   const { recruiter_user, recruiter, departments, locations } =
     await createCompanyAndAdmin();
-  const { candidate_file, candidate_detail } = await addCandidatesToCompany({
+  const {} = await addCandidatesToCompany({
     companyDetails: recruiter,
   });
   const { company_roles } = await fetchCompanyRoles(recruiter.id);
@@ -37,17 +37,20 @@ const main = async () => {
   });
   const team = await Promise.all(addedUsers);
   console.log('All team members added');
-  await addJobs({
-    companyDetails: recruiter,
-    department_id: departments[0].id,
-    location_id: locations[0].id,
-  });
 
-  await addInterviewTypes({
+  const { int_modules, int_modules_relations } = await addInterviewTypes({
     admin: recruiter_user,
     company_detail: recruiter,
     departments,
     companyTeam: team,
+  });
+  await addJobs({
+    companyDetails: recruiter,
+    department_id: departments[0].id,
+    location_id: locations[0].id,
+    int_modules,
+    int_modules_relations,
+    team,
   });
 };
 

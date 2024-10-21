@@ -72,10 +72,11 @@ export const addInterviewTypes = async ({
     );
   });
 
-  await Promise.all(reln_promises);
+  const reln_details = await Promise.all(reln_promises);
 
   console.log('All interview types added');
   return {
     int_modules,
+    int_modules_relations: reln_details.flat(),
   };
 };
