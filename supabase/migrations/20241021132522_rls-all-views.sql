@@ -521,7 +521,7 @@ from
   left join applications_all_meeting_cte on applications_all_meeting_cte.application_id = application_candidate_cte.id;
 
 
-create or replace
+create or replace view
   public.candidate_applications_view with (security_invoker=true) as
 select
   concat(candidates.first_name, ' ', candidates.last_name) as candidate_name,
