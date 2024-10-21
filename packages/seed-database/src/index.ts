@@ -51,7 +51,10 @@ const main = async () => {
     int_modules_relations,
     team,
     company_candidates,
+    companyAdmin: recruiter_user,
   });
+
+  console.log('-----Seed Finished-----');
 };
 
 main();
