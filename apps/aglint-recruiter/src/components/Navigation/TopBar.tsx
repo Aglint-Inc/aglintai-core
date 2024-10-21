@@ -110,7 +110,7 @@ const TopBar = () => {
                 href={`/user/${userId}?profile=true`}
                 className='hover:no-underline'
               >
-                <span>Your Profile</span>
+                <span>Profile</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem className='cursor-pointer'>
