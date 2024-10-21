@@ -57,7 +57,9 @@ const TopBar = () => {
             Welcome to {recruiterName}!
           </p>
         </div>
-        <ThemeToggle />
+        <div className='sr-only'>
+          <ThemeToggle />
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Button variant='ghost'>
