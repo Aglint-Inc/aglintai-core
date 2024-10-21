@@ -57,9 +57,7 @@ const TopBar = () => {
             Welcome to {recruiterName}!
           </p>
         </div>
-        <div className='sr-only'>
-          <ThemeToggle />
-        </div>
+        <ThemeToggle />
         <DropdownMenu>
           <DropdownMenuTrigger>
             <Button variant='ghost'>
@@ -78,7 +76,7 @@ const TopBar = () => {
                 href={`/user/${userId}?profile=true`}
                 className='hover:no-underline'
               >
-                <span>Your Profile</span>
+                <span>Profile</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem className='cursor-pointer'>
