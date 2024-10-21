@@ -34,11 +34,11 @@ export const createJobApplications = async ({
         score_json: scoreJson,
       };
     });
-  supabaseWrap(
+  const applications = supabaseWrap(
     await supabaseAdmin.from('applications').insert(application).select()
   );
-
   console.log('Job applications are created for job', job_details.job_title);
+  return applications;
 };
 
 const scoreJson: DatabaseTable['applications']['score_json'] = {

@@ -27,6 +27,7 @@ const main = async () => {
   await updateCompanyPref(recruiter.id, {
     scheduling: true,
     slack: true,
+    workflow: true,
   });
 
   const team = await createCompanyTeam({

@@ -4,6 +4,7 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import { getSupabaseServer } from '../supabaseAdmin';
 import { createInterviewPlan } from './createInterviewPlan';
 import { createJobApplications } from './createJobApplications';
+import { createRequests } from './createRequests';
 
 export const addJobs = async ({
   companyDetails,
@@ -67,21 +68,29 @@ export const addJobs = async ({
         .select()
         .single()
     );
-    await createInterviewPlan({
+
+    const interviewStages = await createInterviewPlan({
       job_details: inserted_job,
       job_plan: job.int_stages,
       int_modules,
       int_modules_relations,
       team: team,
     });
-    await createJobApplications({
+
+    const applications = await createJobApplications({
       company_candidates,
       job_details: inserted_job,
+    });
+
+    await createRequests({
+      job_details: inserted_job,
+      applications,
+      interview_stages: interviewStages,
+      job,
     });
 
     return { inserted_job };
   });
   await Promise.all(jobs_promises);
-
   console.log('Jobs data and interview plan are created');
 };

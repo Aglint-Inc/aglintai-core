@@ -4,7 +4,10 @@ import { getSupabaseServer } from '../supabaseAdmin';
 
 export const updateCompanyPref = async (
   company_id: string,
-  pref: Pick<DatabaseTable['recruiter_preferences'], 'scheduling' | 'slack'>
+  pref: Pick<
+    DatabaseTable['recruiter_preferences'],
+    'scheduling' | 'slack' | 'workflow'
+  >
 ) => {
   const supabaseAdmin = getSupabaseServer();
   supabaseWrap(

@@ -20,6 +20,12 @@ export type SeedJobType = Pick<
       name: InterviewModuleName | 'Debrief';
     })[];
   }[];
+  create_req_params: {
+    //seed create request params
+    type: DatabaseTable['request']['type'];
+    sessions: (InterviewModuleName | 'Debrief')[];
+    req_application_cnt: number; // number of applications which request will be created for
+  };
 };
 
 export const seedJobs: SeedJobType[] = [
@@ -80,6 +86,11 @@ export const seedJobs: SeedJobType[] = [
         ],
       },
     ],
+    create_req_params: {
+      type: 'schedule_request',
+      sessions: ['Backend Technical Interview', 'Frontend Technical Interview'],
+      req_application_cnt: 10,
+    },
   },
   {
     slug: 'backend-engineer',
@@ -122,7 +133,13 @@ export const seedJobs: SeedJobType[] = [
         ],
       },
     ],
+    create_req_params: {
+      type: 'reschedule_request',
+      req_application_cnt: 10,
+      sessions: ['Data Science Case Study', 'Backend Technical Interview'],
+    },
   },
+
   {
     slug: 'devops-engineer',
     job_title: 'DevOps Engineer - Multi Day Plan',
@@ -185,6 +202,11 @@ export const seedJobs: SeedJobType[] = [
         ],
       },
     ],
+    create_req_params: {
+      type: 'schedule_request',
+      sessions: ['Frontend Technical Interview'],
+      req_application_cnt: 10,
+    },
   },
   {
     slug: 'data-scientist',
@@ -227,5 +249,10 @@ export const seedJobs: SeedJobType[] = [
         ],
       },
     ],
+    create_req_params: {
+      type: 'schedule_request',
+      sessions: ['Backend Technical Interview'],
+      req_application_cnt: 10,
+    },
   },
 ];
