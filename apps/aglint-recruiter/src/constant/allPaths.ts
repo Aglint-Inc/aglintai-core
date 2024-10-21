@@ -101,8 +101,6 @@ export const PATHS = [
   '/jobs/[job]/job-details',
   '/jobs/[job]/profile-score',
   '/jobs/[job]/workflows',
-  '/jobs/[job]/metrics',
-  '/jobs/[job]',
   '/jobs/[job]/[application]',
   '/jobs/[job]/metrics',
   '/jobs/[job]',
@@ -129,6 +127,7 @@ export const PATHS = [
   '/reset-password',
   '/self-scheduling/[filter]',
   '/signup',
+  '/theme',
   '/api/auth/send-reset-email',
   '/api/automation/add_users',
   '/api/automation/booking_self_schedule',
@@ -191,5 +190,5 @@ export const PATHS = [
   '/api/emails/slack/onQualified_slack_trainee',
   '/api/emails/slack/onReceivingAvailReq_slack_suggestSlots',
   '/api/emails/slack/onRequestCancel_slack_interviewersOrganizer',
-  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification',
-] as const;
+  '/api/emails/slack/onTrainingComplete_slack_approverForTraineeMeetingQualification'
+] as const
