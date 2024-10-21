@@ -4,7 +4,7 @@ import { office_locations } from '../data/locations';
 import { getSupabaseServer } from '../supabaseAdmin';
 import { testUsers } from '../data/users';
 const testUser = {
-  email: 'test@aglinthq.com',
+  email: 'dileep@aglinthq.com',
   password: 'Welcome@123',
 };
 export const createCompanyAndAdmin = async () => {
@@ -20,7 +20,7 @@ export const createCompanyAndAdmin = async () => {
 
   const { recruiter_user, recruiter } = await signupCompanyAdmin(
     {
-      email: 'test@aglinthq.com',
+      email: testUser.email,
       user_id: adminUser.user.id,
       first_name: 'Test',
       last_name: 'User',

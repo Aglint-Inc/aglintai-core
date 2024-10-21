@@ -42,18 +42,25 @@ export const createInterviewPlan = async ({
         }
       }
 
+      const module_relations = int_modules_relations.filter(
+        (int_reln) => int_reln.module_id === int_module?.id
+      );
+
       const int_sesn: DatabaseTableInsert['interview_session'] = {
         interview_plan_id: plan.id,
-        session_type: 'individual',
+        session_type: session.session_type,
         break_duration: session.break_duration,
         location: '',
         schedule_type: session.schedule_type,
-        interviewer_cnt: session.interviewer_cnt,
         recruiter_id: job_details.recruiter_id,
         session_duration: session.session_duration,
         name: session.name,
         module_id: int_module?.id ?? null,
         session_order: index,
+        interviewer_cnt:
+          session.session_type !== 'debrief'
+            ? module_relations.slice(0, session.interviewer_cnt).length
+            : 0,
       };
       const session_details = supabaseWrap(
         await supabaseAdmin
@@ -68,9 +75,7 @@ export const createInterviewPlan = async ({
         [];
 
       if (session.session_type !== 'debrief') {
-        const int_reln = int_modules_relations
-          .filter((int_reln) => int_reln.module_id === int_module?.id)
-          .slice(0, session.interviewer_cnt);
+        const int_reln = module_relations.slice(0, session.interviewer_cnt);
         session_relns = int_reln.map((reln) => ({
           interview_module_relation_id:
             session.session_type === 'debrief' ? null : reln.id,

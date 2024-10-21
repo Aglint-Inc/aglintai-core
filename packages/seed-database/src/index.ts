@@ -31,6 +31,7 @@ const main = async () => {
     scheduling: true,
     slack: true,
     workflow: true,
+    onboard_complete: true,
   });
 
   const team = await createCompanyTeam({
