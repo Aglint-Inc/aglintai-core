@@ -1,9 +1,11 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import {
+  modified_seed_workflow_actions,
+  supabaseWrap,
+} from '@aglint/shared-utils';
+import { seed_email_templates } from '@aglint/shared-utils/src/signup/seed_email_templates';
 import { NextResponse } from 'next/server';
 
-import { seed_email_templates } from '@aglint/shared-utils/src/signup/seed_email_templates';
-import { modified_seed_workflow_actions } from '@/utils/seedCompanyData/seed_workflow';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export async function POST(req: Request) {
