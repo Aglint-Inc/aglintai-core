@@ -125,7 +125,7 @@ function Interviewers() {
                 filtererdUsers.map((interviewer) => (
                   <TableRow
                     key={interviewer.rel.recruiter_user.user_id}
-                    className='group'
+                    className='group bg-background'
                   >
                     <TableCell className='w-4/12'>
                       <Link

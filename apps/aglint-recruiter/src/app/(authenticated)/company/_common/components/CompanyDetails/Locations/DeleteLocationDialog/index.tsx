@@ -39,7 +39,7 @@ function DeleteLocationDialog({
       open={dialog.open}
       onOpenChange={(open) => setDialog({ open, id: open ? dialog.id : null })}
     >
-      <AlertDialogContent>
+      <AlertDialogContent className='border border-border'>
         <AlertDialogHeader>
           <AlertDialogTitle>Delete Office Location</AlertDialogTitle>
           <AlertDialogDescription>
