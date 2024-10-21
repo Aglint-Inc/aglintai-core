@@ -91,8 +91,14 @@ const Banner = (props: BannerProps) => {
   if (props.type === 'processing')
     return props.processed !== props.total ? (
       <div className='flex items-center space-x-2'>
-        <CircleDashed className='infinite text-warning h-8 w-8 animate-spin' />
-        {props.processed}/{props.total} Applications processing
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <CircleDashed className='infinite text-warning h-4 w-4 animate-spin text-yellow-600' />
+          </TooltipTrigger>
+          <TooltipContent>
+            {props.processed}/{props.total} Applications processing
+          </TooltipContent>
+        </Tooltip>
       </div>
     ) : (
       <></>

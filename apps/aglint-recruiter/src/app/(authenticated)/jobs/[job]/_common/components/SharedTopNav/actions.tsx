@@ -37,7 +37,6 @@ import {
 import Link from 'next/link';
 import { createContext, memo, useCallback, useContext, useState } from 'react';
 
-import { Loader } from '@/common/Loader';
 import { useFlags } from '@/company/hooks/useFlags';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRolesAndPermissions } from '@/context/RolesAndPermissions/RolesAndPermissionsContext';
@@ -56,7 +55,7 @@ export const SharedActions = () => {
     <SettingsContext.Provider value={value}>
       <div className='flex flex-row items-center gap-2'>
         <JobBanners />
-        <Score />
+        {/* <Score /> */}
         <Sync />
         <Rescore />
         <Add />
@@ -129,22 +128,22 @@ const Sync = () => {
   );
 };
 
-const Score = () => {
-  const { isApplicationsPolling, job, total } = useJob();
-  if (!isApplicationsPolling) return <></>;
-  return (
-    <div className='flex items-center space-x-2 rounded-md bg-blue-100 px-3 py-2 text-blue-800'>
-      <Loader />
-      <span className='text-sm font-medium'>
-        Scoring:{' '}
-        {job.processing_count.processed +
-          job.processing_count.unavailable +
-          job.processing_count.unparsable}
-        /{total ?? '---'}
-      </span>
-    </div>
-  );
-};
+// const Score = () => {
+//   const { isApplicationsPolling, job, total } = useJob();
+//   if (!isApplicationsPolling) return <></>;
+//   return (
+//     <div className='flex items-center space-x-2 rounded-md bg-blue-100 px-3 py-2 text-blue-800'>
+//       <Loader />
+//       <span className='text-sm font-medium'>
+//         Scoring:{' '}
+//         {job.processing_count.processed +
+//           job.processing_count.unavailable +
+//           job.processing_count.unparsable}
+//         /{total ?? '---'}
+//       </span>
+//     </div>
+//   );
+// };
 
 const Add = () => {
   const { manageJob } = useJobsContext();
