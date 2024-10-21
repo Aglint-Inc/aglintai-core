@@ -1,4 +1,4 @@
-import { ModeToggle } from '@components/mode-toggle';
+// import { ModeToggle } from '@components/mode-toggle';
 import { Button } from '@components/ui/button';
 import {
   DropdownMenu,
@@ -13,7 +13,6 @@ import { Sheet, SheetContent, SheetTrigger } from '@components/ui/sheet';
 import { CircleUser, Menu, Package2, Search } from 'lucide-react';
 import Link from 'next/link';
 import { type PropsWithChildren } from 'react';
-// import { ModeToggle } from '@/components/mode-toggle';
 
 const Layout = ({ children }: PropsWithChildren) => {
   return (
