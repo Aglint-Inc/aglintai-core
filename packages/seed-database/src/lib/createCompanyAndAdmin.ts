@@ -80,6 +80,7 @@ export const deleteAllCompanyData = async () => {
     );
     if (error) {
       console.log(error);
+      throw new Error(error.message);
     }
   });
   await Promise.all(deleteTeamMems);

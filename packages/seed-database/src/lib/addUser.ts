@@ -11,6 +11,7 @@ export type UserInsertType = {
   position: string;
   employment: DatabaseTable['recruiter_user']['employment'];
 };
+
 export async function addTeamMember({
   company_data,
   adminUser,
@@ -57,7 +58,6 @@ export async function addTeamMember({
         office_location_id: user.office_location_id,
         employment: user.employment,
         status: 'invited',
-        scheduling_settings: company_data.scheduling_settings,
       })
       .select()
       .single()
