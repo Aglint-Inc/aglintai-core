@@ -49,7 +49,7 @@ export default function EmailTemplateEditForm({
           <Typography type='small' fontBold='normal'>
             From
           </Typography>
-          <p className='text-sm text-gray-600'>
+          <p className='text-sm text-muted-foreground'>
             This name appears as the &quot;From&quot; name in emails to
             candidates. Choose a representative name for your company or
             recruiter.
@@ -59,10 +59,10 @@ export default function EmailTemplateEditForm({
             disabled={disabled}
             onValueChange={senderNameChange}
           >
-            <SelectTrigger className='w-full border-[#DAD9D6]'>
+            <SelectTrigger className='w-full border border-border text-primary'>
               <SelectValue placeholder='Select sender name' />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className='border border-border text-primary'>
               {options.length === 0 ? (
                 <div className='cursor-default px-2 py-2 italic text-muted-foreground'>
                   No options available
@@ -70,7 +70,7 @@ export default function EmailTemplateEditForm({
               ) : (
                 options.map((value, idx) => (
                   <SelectItem key={idx} value={value}>
-                    <span className='flex rounded-sm bg-purple-200/50 px-1 pb-[3px] text-purple-500'>
+                    <span className='flex rounded-sm bg-primary/20 px-1 pb-[3px] text-primary'>
                       {value}
                     </span>
                   </SelectItem>
@@ -90,6 +90,8 @@ export default function EmailTemplateEditForm({
             <TipTapAIEditor
               enablAI={false}
               toolbar={false}
+              height='47px'
+              // maxHeight='46px'
               onfocus={onFocus}
               onblur={onBlur}
               placeholder={'subject'}
@@ -120,7 +122,8 @@ export default function EmailTemplateEditForm({
             template_type={selectedTemplate.type}
             handleChange={emailBodyChange}
             initialValue={selectedTemplate?.body ?? undefined}
-            height='calc(100vh - 450px)'
+            height='450px'
+            maxHeight='450px'
           />
         </div>
       </div>

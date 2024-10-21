@@ -6,6 +6,7 @@ import {
   DropdownMenuTrigger,
 } from '@components/ui/dropdown-menu';
 import { Moon, Sun } from 'lucide-react';
+import { useEffect } from 'react';
 
 import { capitalize } from '@/utils/text/textUtils';
 
@@ -13,6 +14,23 @@ import { MODES } from '../constants/modes';
 import { useTheme } from '../hooks/useTheme';
 
 export function ModeToggle() {
+  const { mode, setMode } = useTheme();
+
+  // Toggle mode with Cmd+L / Ctrl+L
+  useEffect(() => {
+    const handleShortcut = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
+        e.preventDefault();
+        setMode(mode === 'light' ? 'dark' : 'light');
+      }
+    };
+
+    window.addEventListener('keydown', handleShortcut);
+    return () => {
+      window.removeEventListener('keydown', handleShortcut);
+    };
+  }, [mode, setMode]);
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -22,7 +40,7 @@ export function ModeToggle() {
           <span className='sr-only'>Toggle mode</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align='end'>
+      <DropdownMenuContent align='end' className='border border-border'>
         <Modes />
       </DropdownMenuContent>
     </DropdownMenu>

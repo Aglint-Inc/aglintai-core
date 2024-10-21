@@ -106,7 +106,7 @@ export const ImportCsv: React.FC = () => {
             <ScrollArea className='h-[450px]'>
               <CandidatesListTable candidates={candidates} />
             </ScrollArea>
-            <div className='flex items-center justify-between overflow-hidden bg-white py-5'>
+            <div className='flex items-center justify-between overflow-hidden py-5'>
               <label
                 htmlFor='file-upload'
                 className='flex cursor-pointer items-center justify-center rounded-md border border-border bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50'
@@ -144,12 +144,12 @@ export const ImportCsv: React.FC = () => {
                   handleFileUpload(file);
                 }}
               >
-                <div className='flex h-full flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-slate-50 text-center'>
+                <div className='flex h-full flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted text-center'>
                   <FileText
                     className='mx-auto mb-4 h-12 w-12'
                     strokeWidth={1.5}
                   />
-                  <h3 className='mt-2 text-sm font-semibold text-gray-900'>
+                  <h3 className='mt-2 text-sm font-semibold text-muted-foreground'>
                     Import CSV
                   </h3>
                   <p className='mt-1 text-sm text-muted-foreground'>

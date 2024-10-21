@@ -34,7 +34,7 @@ export const RoleList = ({
   return (
     <TableRow
       key={role.id}
-      className='cursor-pointer hover:bg-gray-100'
+      className='cursor-pointer hover:bg-muted/50'
       onClick={onClickRow}
     >
       <TableCell className='font-medium'>
@@ -60,7 +60,7 @@ export const RoleList = ({
                       src={user.profile_image || undefined}
                       alt={user.first_name}
                     />
-                    <AvatarFallback className='m-0 h-8 w-8 rounded-sm bg-gray-200'>
+                    <AvatarFallback className='m-0 h-8 w-8 rounded-sm bg-muted text-muted-foreground'>
                       {user.first_name[0]}
                     </AvatarFallback>
                   </Avatar>

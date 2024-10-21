@@ -1,4 +1,5 @@
 import { type DatabaseEnums } from '@aglint/shared-types';
+import { ScrollArea } from '@components/ui/scroll-area';
 import { Skeleton } from '@components/ui/skeleton';
 import { cn } from '@lib/utils';
 import { type Editor, EditorContent, useEditor } from '@tiptap/react';
@@ -34,6 +35,7 @@ type TipTapAIEditorParams = {
   singleLine?: boolean;
   height?: string;
   minHeight?: string;
+  maxHeight?: string;
   border?: boolean;
   borderRadius?: React.CSSProperties['borderRadius'];
   editor_type?: 'email' | 'regular';
@@ -52,8 +54,9 @@ const TipTapAIEditor = ({
     count: 1,
   },
   singleLine = false,
-  height = 'auto',
-  minHeight = 'auto',
+  height = '100px',
+  minHeight = '100px',
+  maxHeight = '400px',
   disabled = false,
   border = false,
   borderRadius,
@@ -135,11 +138,11 @@ const TipTapAIEditor = ({
         enablAI,
       }}
     >
-      <div className='overflow-hidden rounded-md border border-border'>
+      <div className='overflow-hidden rounded-md border border-border bg-muted/70'>
         <div>
           {editor && toolbar && (
             <div
-              className={`${disabled ? 'pointer-events-none opacity-50' : ''}`}
+              className={`${disabled ? 'pointer-events-none opacity-50' : ''} `}
             >
               <MenuBtns
                 borderRadius={(border && borderRadius) || 'rounded-md'}
@@ -148,12 +151,15 @@ const TipTapAIEditor = ({
               />
             </div>
           )}
-          <div
+          {/* <div
             className={`relative ${disabled ? 'pointer-events-none opacity-50' : ''} overflow-auto rounded-md bg-white`}
             style={{
               minHeight: minHeight,
               height: height,
-            }}
+            }} 
+          >*/}
+          <ScrollArea
+            className={`flex flex-col overflow-y-auto h-[${height}] max-h-[${maxHeight}] min-h-[${minHeight}] `}
           >
             <div
               className={cn(
@@ -161,15 +167,13 @@ const TipTapAIEditor = ({
                 disabled
                   ? '[&_.ProseMirror]:cursor-not-allowed [&_.ProseMirror]:text-muted-foreground'
                   : '[&_.ProseMirror]:cursor-text [&_.ProseMirror]:text-foreground',
-                // '[&_.ProseMirror_*::selection]:bg-red-300',
+                // '[&_.ProseMirror_*::selection]:bg-primary/30',
                 '[&_.tiptap_p.is-editor-empty:first-child::before]:text-muted-foreground/60',
                 '[&_.ProseMirror-focused]:outline-none',
-                '[&_.ProseMirror_.temp-variable]:rounded-[2px] [&_.ProseMirror_.temp-variable]:bg-purple-200/50 [&_.ProseMirror_.temp-variable]:px-[3px] [&_.ProseMirror_.temp-variable]:pb-[3px] [&_.ProseMirror_.temp-variable]:text-purple-500',
+                '[&_.ProseMirror_.temp-variable]:rounded-[2px] [&_.ProseMirror_.temp-variable]:bg-primary/20 [&_.ProseMirror_.temp-variable]:px-[3px] [&_.ProseMirror_.temp-variable]:pb-[3px] [&_.ProseMirror_.temp-variable]:text-primary',
                 '[&_.tiptap_p.is-editor-empty:first-child::before]:pointer-events-none [&_.tiptap_p.is-editor-empty:first-child::before]:float-left [&_.tiptap_p.is-editor-empty:first-child::before]:h-0 [&_.tiptap_p.is-editor-empty:first-child::before]:content-[attr(data-placeholder)]',
+                // 'bg-red-100',
               )}
-              style={{
-                height: height !== 'auto' ? height : 'auto',
-              }}
             >
               <div className={`${singleLine ? 'px-4 py-2' : 'p-4'}`}>
                 {loader.isLoading ? (
@@ -187,7 +191,8 @@ const TipTapAIEditor = ({
                 )}
               </div>
             </div>
-          </div>
+          </ScrollArea>
+          {/* </div> */}
         </div>
       </div>
     </TipTapCtx.Provider>

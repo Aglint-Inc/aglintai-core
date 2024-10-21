@@ -76,7 +76,11 @@ const TimeZone: FC<TimeZoneProps> = ({
               <span className='sr-only'>Edit Time Zone</span>
             </Button>
           </PopoverTrigger>
-          <PopoverContent className='w-full' align='start' side='left'>
+          <PopoverContent
+            className='w-full border border-border'
+            align='start'
+            side='left'
+          >
             <div className='flex w-[300px] flex-col gap-4'>
               <Label>Time Zone</Label>
               <TimezonePicker

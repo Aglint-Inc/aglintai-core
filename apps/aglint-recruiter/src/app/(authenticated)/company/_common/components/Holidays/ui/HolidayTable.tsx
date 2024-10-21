@@ -12,9 +12,9 @@ export const HolidayTable = (
 ) => {
   const { children } = props;
   return (
-    <div className='mt-2 overflow-hidden rounded-lg border'>
+    <div className='mt-2 overflow-hidden rounded-lg border border-border '>
       <Table className='flex flex-col'>
-        <TableHeader className='w-full bg-gray-100'>
+        <TableHeader className='w-full bg-muted '>
           <TableRow className='grid grid-cols-[250px_200px_1fr_100px] items-center'>
             <TableHead className='flex items-center'>Day Off</TableHead>
             <TableHead className='flex items-center'>Date</TableHead>

@@ -52,7 +52,7 @@ export function InterviewPlanWrap({
         onFocus={() => setHover(true)}
         onBlur={() => setHover(false)}
       >
-        <div className='relative rounded-md bg-muted p-2 px-4'>
+        <div className='relative rounded-md bg-muted/50 p-2 px-4'>
           <Section>
             {isInputVisible ? (
               slotInputButton

@@ -7,13 +7,13 @@ import {
 } from '@components/layouts/sections-header';
 import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { Separator } from '@components/ui/separator';
+import { UIBadge } from '@components/ui-badge';
 import { useQuery } from '@tanstack/react-query';
 import { LayoutList } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
 import { Loader } from '@/components/Common/Loader';
-import { UIBadge } from '@/components/Common/UIBadge';
 import { WithPermission } from '@/components/withPermission';
 import ROUTES from '@/utils/routing/routes';
 import { supabase } from '@/utils/supabase/client';
@@ -47,7 +47,7 @@ function Component() {
           <ul className='flex flex-col gap-3'>
             {requests?.map((request, index) => (
               <React.Fragment key={request.id}>
-                <li className='rounded-md bg-gray-50 p-3 text-lg duration-300 hover:bg-gray-100 hover:no-underline'>
+                <li className='rounded-md bg-muted p-3 text-lg duration-300 hover:bg-muted/60 hover:no-underline'>
                   <Link
                     href={ROUTES['/requests/[request]']({
                       request: request.id,
@@ -75,7 +75,7 @@ function Component() {
                             ).charAt(0)}
                           </AvatarFallback>
                         </Avatar>
-                        <span className='text-sm text-gray-600'>
+                        <span className='text-sm text-muted-foreground'>
                           {getFullName(
                             request?.assignee_details?.first_name ?? '',
                             request?.assignee_details?.last_name ?? '',
@@ -85,13 +85,13 @@ function Component() {
                       <UIBadge
                         size={'default'}
                         textBadge={capitalizeFirstLetter(request.status)}
-                        color={
+                        variant={
                           request.status === 'to_do'
                             ? 'purple'
                             : request.status === 'in_progress'
                               ? 'info'
                               : request.status === 'blocked'
-                                ? 'error'
+                                ? 'destructive'
                                 : request.status === 'completed'
                                   ? 'success'
                                   : 'neutral'

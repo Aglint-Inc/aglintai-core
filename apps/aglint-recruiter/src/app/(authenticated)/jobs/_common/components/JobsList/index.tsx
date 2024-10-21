@@ -46,30 +46,30 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
   const stages = [
     {
       name: 'New',
-      color: 'bg-blue-300/20',
+      color: 'bg-blue-300/20 dark:bg-blue-500/20',
       borderColor: 'border-blue-300',
       arrowColor: 'text-blue-100',
-      textColor: 'text-blue-800',
+      textColor: 'text-blue-800 dark:text-blue-400/80',
     },
     {
       name: 'Interview',
-      color: 'bg-purple-300/20',
+      color: 'bg-purple-300/20 dark:bg-purple-500/20',
       borderColor: 'border-purple-300',
       arrowColor: 'text-purple-100',
-      textColor: 'text-purple-800',
+      textColor: 'text-purple-800 dark:text-purple-400/80',
     },
     {
       name: 'Qualified',
-      color: 'bg-green-300/20',
+      color: 'bg-green-300/20 dark:bg-green-500/20',
       borderColor: 'border-green-300',
       arrowColor: 'text-green-100',
-      textColor: 'text-green-800',
+      textColor: 'text-green-800 dark:text-green-400/70',
     },
     {
       name: 'Disqualified',
-      color: 'bg-red-200/20',
+      color: 'bg-red-200/20 dark:bg-red-500/20',
       arrowColor: 'text-red-100',
-      textColor: 'text-red-800',
+      textColor: 'text-red-800 dark:text-red-300/80',
     },
   ];
   if (jobs?.length === 0) {
@@ -83,31 +83,19 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
 
   return (
     <Table>
-      <TableHeader className='bg-gray-100'>
-        <TableRow>
-          <TableHead className='py-3 font-semibold text-gray-600'>
-            Job Title
-          </TableHead>
-          <TableHead className='py-3 font-semibold text-gray-600'>
-            Location
-          </TableHead>
-          <TableHead className='py-3 font-semibold text-gray-600'>
-            Candidates
-          </TableHead>
-          <TableHead className='py-3 font-semibold text-gray-600'>
-            Posted
-          </TableHead>
-          <TableHead className='py-3 font-semibold text-gray-600'>
-            Status
-          </TableHead>
-          <TableHead className='w-[80px] text-right'>Actions</TableHead>
-        </TableRow>
+      <TableHeader className='bg-muted'>
+        <TableHead className='py-3 font-semibold'>Job Title</TableHead>
+        <TableHead className='py-3 font-semibold'>Location</TableHead>
+        <TableHead className='py-3 font-semibold'>Candidates</TableHead>
+        <TableHead className='py-3 font-semibold'>Posted</TableHead>
+        <TableHead className='py-3 font-semibold'>Status</TableHead>
+        <TableHead className='w-[80px] text-right'>Actions</TableHead>
       </TableHeader>
       <TableBody>
         {jobs?.map((job) => (
           <TableRow
             key={job.id}
-            className='cursor-pointer hover:bg-gray-50'
+            className='cursor-pointer hover:bg-muted/50'
             onClick={() =>
               router.push(ROUTES['/jobs/[job]']({ job: job?.id ?? null! }))
             }

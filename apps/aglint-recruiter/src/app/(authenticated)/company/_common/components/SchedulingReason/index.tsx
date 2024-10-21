@@ -2,7 +2,6 @@ import { type DatabaseTable } from '@aglint/shared-types';
 import { useToast } from '@components/hooks/use-toast';
 import {
   Page,
-  PageActions,
   PageDescription,
   PageHeader,
   PageHeaderText,
@@ -119,14 +118,13 @@ const SchedulingReasons = () => {
     <Page>
       <PageHeader>
         <PageHeaderText>
-          <PageTitle>Scheduling Reasons</PageTitle>
+          <PageTitle className='text-lg'>Scheduling Reasons</PageTitle>
           <PageDescription>
             {' '}
             Configure default reasons for candidates and interviewers to cancel
             or reschedule their interviews.
           </PageDescription>
-        </PageHeaderText>
-        <PageActions>
+          <div className='mt-4'>
           <Tabs
             value={tab}
             onValueChange={(value) => setTab(value as typeof tab)}
@@ -143,7 +141,9 @@ const SchedulingReasons = () => {
               ))}
             </TabsList>
           </Tabs>
-        </PageActions>
+          </div>
+          
+        </PageHeaderText>
       </PageHeader>
 
       <div className='mt-0'>

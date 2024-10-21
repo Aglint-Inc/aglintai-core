@@ -4,7 +4,6 @@ import React from 'react';
 import InterviewStageConnector from './interviewStageConnector';
 import { statusColors } from './statusColors';
 
-
 type StageStatus = 'completed' | 'confirmed' | 'not_scheduled';
 
 export interface StageProps {
@@ -47,8 +46,12 @@ export default function InterviewStages({
           <div
             className={cn(
               'h-full rounded-md border p-4',
-              stage.isActive ? statusColors[stage.status].activeBg : statusColors[stage.status].bg,
-              stage.isActive ? statusColors[stage.status].activeBorder : statusColors[stage.status].border,
+              stage.isActive
+                ? statusColors[stage.status].activeBg
+                : statusColors[stage.status].bg,
+              stage.isActive
+                ? statusColors[stage.status].activeBorder
+                : statusColors[stage.status].border,
               statusColors[stage.status].text,
             )}
           >
@@ -65,7 +68,7 @@ export default function InterviewStages({
               isActive={stage.isActive}
             />
           )}
-          {(index > 0) && (
+          {index > 0 && (
             <InterviewStageConnector
               position='top'
               size={30}

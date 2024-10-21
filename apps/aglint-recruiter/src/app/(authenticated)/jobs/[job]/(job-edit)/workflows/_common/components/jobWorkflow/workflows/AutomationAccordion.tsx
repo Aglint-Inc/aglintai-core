@@ -32,16 +32,16 @@ export const AutomationAccordion = ({
     <AccordionItem
       key={category}
       value={category}
-      className='overflow-hidden rounded-md border'
+      className='overflow-hidden rounded-md border border-border'
     >
-      <AccordionTrigger className='h-12 bg-gray-50 px-2 hover:no-underline'>
+      <AccordionTrigger className='h-12 bg-muted px-2 hover:no-underline'>
         <div className='flex w-full items-center justify-between'>
           <div className='flex items-center space-x-2'>
             <div className='hidden'>{categoryToIcon[category]}</div>
             <div className='text-sm font-medium'>{category}</div>
           </div>
           <div
-            className={`mr-2 rounded-sm px-3 py-1 text-xs font-normal ${currentTriggers.some((s) => s.is_active) ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-600'}`}
+            className={`mr-2 rounded-sm px-3 py-1 text-xs font-normal ${currentTriggers.some((s) => s.is_active) ? 'bg-green-500 text-white dark:bg-green-500/30 dark:text-green-400' : 'bg-background text-muted-foreground'}`}
           >
             {currentTriggers.filter((a) => a.is_active).length} /{' '}
             {currentTriggers.length} enabled

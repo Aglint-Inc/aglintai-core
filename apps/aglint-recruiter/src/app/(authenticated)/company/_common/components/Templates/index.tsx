@@ -381,7 +381,7 @@ function SchedulerEmailTemps() {
                                 ? 'default'
                                 : 'outline'
                             }
-                            className={`my-1 h-16 w-[330px] justify-start text-left ${emailPath.type === temp_email ? 'border bg-gray-100 text-foreground hover:bg-gray-50' : 'bg-white text-foreground hover:bg-gray-50'}`}
+                            className={`my-1 h-16 w-[330px] justify-start text-left ${emailPath.type === temp_email ? 'bg-muted text-foreground hover:bg-muted/80' : 'bg-background text-foreground hover:bg-muted/30'}`}
                             onClick={() => {
                               if (temp_email !== emailPath.type) {
                                 setTipTapLoder(true);
@@ -446,7 +446,6 @@ function SchedulerEmailTemps() {
                     </Button>
                   </SectionActions>
                 </SectionHeader>
-
                 {tiptapLoader || !selectedTemplate ? (
                   <div className='flex h-[calc(100vh-300px)] items-center justify-center'>
                     <div className='space-y-2'>

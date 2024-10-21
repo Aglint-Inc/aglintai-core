@@ -1,3 +1,4 @@
+import { Button } from '@components/ui/button';
 import { Input } from '@components/ui/input';
 import { Plus } from 'lucide-react';
 import { type Dispatch, type SetStateAction } from 'react';
@@ -40,67 +41,63 @@ export const ReasonCardUI = ({
 
   return (
     <>
-      <ul className='max-w-2xl'>
+      <ul className='flex max-w-2xl flex-col gap-2'>
         {reasons.map((reason, reasonIndex) => (
           <li
             key={reasonIndex}
-            className='group flex items-center justify-between py-2'
+            className='group flex items-center justify-between rounded-md bg-muted/50 p-4 py-2'
           >
             {editingIndex === reasonIndex ? (
               <Input
                 value={editingReason}
                 onChange={(e) => setEditingReason(e.target.value)}
-                className='mr-2 w-full flex-1'
+                className='mr-2 w-full flex-1 h-[36px]'
                 // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={true}
               />
             ) : (
               <span className='text-sm font-normal'>{reason}</span>
             )}
-            <div className='opacity-0 transition-opacity group-hover:opacity-100'>
+            <div>
               {editingIndex === reasonIndex ? (
                 <>
                   <div className='flex flex-row items-center space-x-2'>
-                    <UIButton
+                    <Button
                       variant='outline'
                       onClick={() => setEditingIndex(null)}
-                      className='hover:bg-red-50'
+                      className='h-9'
                     >
                       Cancel
-                    </UIButton>
-                    <UIButton
-                      onClick={handleUpdate}
-                      className='mr-1 hover:bg-green-50'
-                    >
+                    </Button>
+                    <Button onClick={handleUpdate} className='mr-1'>
                       Save
-                    </UIButton>
+                    </Button>
                   </div>
                 </>
               ) : (
-                <div>
-                  <UIButton
+                <div className='opacity-0 transition-opacity group-hover:opacity-100'>
+                  <Button
                     variant='outline'
                     size='sm'
                     onClick={() => handleEdit(reasonIndex)}
                     className='mr-1'
                   >
                     Edit
-                  </UIButton>
-                  <UIButton
-                    variant='outline'
+                  </Button>
+                  <Button
+                    variant='destructive'
                     size='sm'
                     onClick={() => handleDelete(reasonIndex)}
-                    className='text-destructive hover:text-red-600'
                   >
                     Delete
-                  </UIButton>
+                  </Button>
                 </div>
               )}
             </div>
           </li>
         ))}
         {isAddingNew && (
-          <li className='flex items-center justify-between rounded-md bg-gray-100 px-3 py-2'>
+          <li className='flex items-center justify-between rounded-md bg-muted/50 px-3 py-2'>
             <Input
               value={newReason}
               onChange={(e) => setNewReason(e.target.value)}
@@ -108,22 +105,21 @@ export const ReasonCardUI = ({
               className='h-8.5 mr-2 flex-grow'
             />
             <div className='flex flex-row items-center space-x-2'>
-              <UIButton
-                variant='outline'
-                size='sm'
-                onClick={handleAdd}
-                className='mr-1 hover:bg-green-50'
-              >
-                Save
-              </UIButton>
-              <UIButton
-                variant='outline'
-                size='sm'
-                onClick={() => setIsAddingNew(false)}
-                className='hover:bg-red-50'
+              <Button
+              variant='outline'
+              className='h-9'
+              onClick={() => setIsAddingNew(false)}
               >
                 Cancel
-              </UIButton>
+              </Button>
+              <Button
+               variant='default'
+               onClick={handleAdd}
+               className='mr-1'
+              >
+                Add
+              </Button>
+             
             </div>
           </li>
         )}
@@ -135,7 +131,8 @@ export const ReasonCardUI = ({
             size='sm'
             onClick={() => setIsAddingNew(true)}
           >
-            <Plus className='mr-2 h-4 w-4' /> Add
+            <Plus className='mr-2 h-4 w-4' /> 
+            Add
           </UIButton>
         </div>
       )}

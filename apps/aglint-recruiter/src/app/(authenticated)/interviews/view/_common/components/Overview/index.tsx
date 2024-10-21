@@ -162,7 +162,7 @@ function Overview() {
                   schedule?.candidates.last_name,
                 )}
               </p>
-              <div className='flex items-center gap-1 text-sm text-gray-500'>
+              <div className='flex items-center gap-1 text-sm text-muted-foreground'>
                 <Globe className='h-3 w-3' />
                 <span>
                   {formatTimeWithTimeZone({

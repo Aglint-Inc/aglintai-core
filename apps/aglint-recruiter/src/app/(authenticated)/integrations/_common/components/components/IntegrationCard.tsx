@@ -36,11 +36,11 @@ export function IntegrationCard({
   learnHowLink,
 }: IntegrationCardProps) {
   return (
-    <Component className='w-full'>
+    <Component className='w-full border-border'>
       <CardContent className='p-3'>
         <div className='flex items-center space-x-4'>
           {slotLogo || (
-            <div className='flex h-8 w-8 items-center justify-center rounded-full bg-gray-100'>
+            <div className='flex h-8 w-8 items-center justify-center rounded-full bg-muted'>
               <span className='text-lg font-bold text-muted-foreground'>
                 {(textName as string).charAt(0)}
               </span>

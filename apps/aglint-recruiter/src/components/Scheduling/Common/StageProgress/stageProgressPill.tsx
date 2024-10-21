@@ -10,19 +10,19 @@ type StageProgressPillProps = {
 
 const statusColors = {
   neutral: {
-    bg: 'bg-gray-100',
-    text: 'text-gray-600',
-    border: 'border-l-gray-100',
+    bg: 'bg-gray-100 dark:bg-[#32373F]',
+    text: 'text-gray-700 dark:text-gray-300',
+    border: 'border-l-gray-100 dark:border-l-[#32373F]',
   },
   info: {
-    bg: 'bg-blue-100',
-    text: 'text-blue-700',
-    border: 'border-l-blue-100',
+    bg: 'bg-blue-100 dark:bg-[#1D2D50]  ',
+    text: 'text-blue-700 dark:text-blue-300',
+    border: 'border-l-blue-100 dark:border-l-[#1D2D50]',
   },
   success: {
-    bg: 'bg-green-100',
-    text: 'text-green-700',
-    border: 'border-l-green-100',
+    bg: 'bg-green-100 dark:bg-[#1A2E1E]',
+    text: 'text-green-700 dark:text-green-300',
+    border: 'border-l-green-100 dark:border-l-[#1A2E1E]',
   },
 };
 

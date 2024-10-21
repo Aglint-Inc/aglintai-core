@@ -6,7 +6,7 @@ export const List = ({
   interviewType: InterviewerDetailType['interview_type'][number];
 }) => {
   return (
-    <div className='rounded-lg bg-white p-4'>
+    <div className='rounded-lg bg-muted p-4'>
       <div className='mb-2 text-sm font-medium'>
         {interviewType.module_name}
       </div>

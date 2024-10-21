@@ -8,10 +8,10 @@ function SchedulingReports() {
   return (
     <div className='flex flex-col gap-2'>
       <div className='flex flex-row gap-2'>
-        <div className='w-[30%]'>
+        <div className='w-[40%]'>
           <Reasons />
         </div>
-        <div className='w-[70%]'>
+        <div className='w-[60%]'>
           <InterviewType />
         </div>
       </div>

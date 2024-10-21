@@ -43,7 +43,7 @@ function UIDialog({
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent
         onOpenAutoFocus={(e) => e.preventDefault()}
-        className={`${sizeClasses[size]} w-full p-4`}
+        className={`${sizeClasses[size]} w-full border border-border p-4`}
       >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>

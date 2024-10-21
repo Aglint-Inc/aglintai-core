@@ -7,6 +7,7 @@ import { OnboardPending } from '@/components/Navigation/OnboardPending';
 import SideNavbar from '@/components/Navigation/SideNavbar';
 import { api, HydrateClient } from '@/trpc/server';
 
+import { ThemeWrapper } from '../(public)/theme/_common/components/ThemeWrapper';
 import { Provider } from './providers';
 
 const TopBar = dynamic(() => import('@/components/Navigation/TopBar'), {
@@ -20,14 +21,16 @@ const Layout = async ({ children }: PropsWithChildren) => {
   void api.tenant.all_departments.prefetch();
   void api.tenant.officeLocations.prefetch();
   return (
-    <HydrateClient>
-      <Provider>
-        <AppLayout topbar={<TopBar />} sidebar={<SideNavbar />}>
-          {children}
-          <OnboardPending />
-        </AppLayout>
-      </Provider>
-    </HydrateClient>
+    <ThemeWrapper>
+      <HydrateClient>
+        <Provider>
+          <AppLayout topbar={<TopBar />} sidebar={<SideNavbar />}>
+            {children}
+            <OnboardPending />
+          </AppLayout>
+        </Provider>
+      </HydrateClient>
+    </ThemeWrapper>
   );
 };
 

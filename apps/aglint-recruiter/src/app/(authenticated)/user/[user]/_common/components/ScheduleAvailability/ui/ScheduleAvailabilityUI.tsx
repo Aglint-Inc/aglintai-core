@@ -30,7 +30,7 @@ export const ScheduleAvailabilityUI = ({
   scheduleKeywords,
 }: Props) => {
   return (
-    <div className='flex flex-col space-y-8'>
+    <div className='flex flex-col gap-8'>
       <div className='grid grid-cols-2 gap-8'>
         <Section>
           <SectionHeader>
@@ -128,7 +128,7 @@ const WorkHourList = ({
 
 const LoadCard = ({ load }: { load: InterviewLoadItemType }) => {
   return (
-    <div className='h-fit min-w-[150px] rounded-sm bg-gray-50'>
+    <div className='h-fit min-w-[150px] rounded-sm bg-muted'>
       <Typography className='px-4 pt-2 text-sm'>{load.title}</Typography>
       <div className='flex flex-col gap-1 px-4 py-2'>
         <Typography className='text-xl font-medium'>{load.count}</Typography>
@@ -165,7 +165,7 @@ const KeywordViewSection = ({
         {keywords?.length > 0 ? (
           keywords.map((keyword, i) => {
             return (
-              <div key={i} className='w-fit rounded-sm bg-gray-100 px-4 py-1'>
+              <div key={i} className='w-fit rounded-sm bg-muted px-4 py-1'>
                 <Typography type='small' variant='p'>
                   {keyword}
                 </Typography>

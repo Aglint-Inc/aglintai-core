@@ -8,7 +8,7 @@ export const List = ({
   feedback: InterviewerDetailType['feedbacks'][number];
 }) => {
   return (
-    <div className='rounded-lg bg-gray-50 p-4'>
+    <div className='rounded-lg bg-muted p-4'>
       <div className='flex items-start justify-between'>
         <div>
           <h3 className='text-base font-medium'>from</h3>

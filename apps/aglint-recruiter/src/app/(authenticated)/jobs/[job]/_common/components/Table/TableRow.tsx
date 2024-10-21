@@ -46,8 +46,8 @@ export function TableRow({
   return (
     <div
       className={cn(
-        'group flex w-full cursor-pointer items-center border-b border-gray-200 px-4 py-3 text-sm hover:bg-gray-50',
-        isChecked && 'bg-blue-50',
+        'group flex w-full cursor-pointer items-center border-b border-border px-4 py-3 text-sm hover:bg-muted/50',
+        isChecked && 'bg-muted/80 hover:bg-muted/80',
       )}
       onClick={onClickCandidate}
     >
@@ -55,9 +55,7 @@ export function TableRow({
         className='mr-2 w-4 flex-shrink-0 opacity-0 transition-opacity group-hover:opacity-100'
         aria-hidden='true'
       >
-        <GripVertical
-          className={cn('h-4 w-4 text-gray-400', isChecked && 'opacity-100')}
-        />
+        <GripVertical className={cn('h-4 w-4', isChecked && 'opacity-100')} />
       </div>
       <div
         className='mr-4 w-10 flex-shrink-0'

@@ -45,7 +45,7 @@ function CollapseContent({
     <Collapsible open={collapsed}>
       <CollapsibleContent>
         {!!currentSession && (
-          <div className='space-y-4 p-4 pt-0'>
+          <div className='space-y-4 rounded-sm bg-background p-4 pt-0'>
             <>
               {candidate &&
                 candidate.timezone &&

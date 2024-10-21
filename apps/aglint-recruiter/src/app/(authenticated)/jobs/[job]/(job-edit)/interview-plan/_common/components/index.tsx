@@ -124,12 +124,14 @@ const InterviewPlanPage = () => {
         <div className='mb-10 max-w-3xl space-y-4'>
           {data?.length ? (
             data.map((plan) => (
-              <InterviewPlan
-                key={plan.id}
-                plan_id={plan.id}
-                handleCreate={handleCreate}
-                handleEdit={handleEdit}
-              />
+              <>
+                <InterviewPlan
+                  key={plan.id}
+                  plan_id={plan.id}
+                  handleCreate={handleCreate}
+                  handleEdit={handleEdit}
+                />
+              </>
             ))
           ) : (
             <div className='pr-20'>
@@ -202,7 +204,7 @@ const AddStageComponent = ({
   return (
     <>
       {form && (
-        <div className='flex w-[688px] flex-row items-center justify-between gap-2 rounded-md border bg-white p-4'>
+        <div className='flex w-[688px] flex-row items-center justify-between gap-2 rounded-md border border-border bg-muted p-4'>
           <div className='flex flex-1'>
             <UITextField
               placeholder='Stage Name'
@@ -433,7 +435,7 @@ const InterviewPlan = ({
               open={deleteOpen}
               onOpenChange={setDeleteOpen}
             >
-              <AlertDialogContent>
+              <AlertDialogContent className='border border-border'>
                 <AlertDialogHeader>
                   <AlertDialogTitle>Delete Confirmation</AlertDialogTitle>
                   <AlertDialogDescription>
@@ -474,8 +476,8 @@ const InterviewPlan = ({
               {sessionsCount ? (
                 <DndProvider backend={HTML5Backend}>{sessions}</DndProvider>
               ) : (
-                <div className='flex h-48 flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-white'>
-                  <ChartNoAxesGantt className='mb-4 h-8 w-8 text-gray-400' />
+                <div className='flex h-48 flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted'>
+                  <ChartNoAxesGantt className='mb-4 h-8 w-8 text-muted-foreground' />
                   <p className='mb-4 text-sm text-muted-foreground'>
                     No interview found
                   </p>

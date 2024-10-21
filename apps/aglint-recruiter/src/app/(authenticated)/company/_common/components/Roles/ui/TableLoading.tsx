@@ -11,7 +11,7 @@ import {
 export const TableLoading = () => {
   return (
     <Table>
-      <TableHeader className='bg-gray-100'>
+      <TableHeader className='bg-muted'>
         <TableRow>
           <TableHead>
             <Skeleton className='h-6 w-24' />

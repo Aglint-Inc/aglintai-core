@@ -26,27 +26,17 @@ export function WorkflowConnectedCard({
   onClickJob,
 }: WorkflowConnectedCardProps) {
   return (
-    <Card className='group flex cursor-pointer flex-row items-center gap-4 border-none bg-gray-50 shadow-none'>
+    <Card className='group mb-1 flex cursor-pointer flex-row items-center justify-between border-none bg-muted p-2 shadow-none'>
       <CardHeader className='flex flex-row items-center gap-2 p-0'>
         <p className='font-regular text-sm'>{role}</p>
         {slotBadges}
       </CardHeader>
       <CardContent className='relative p-0'>
-        {/* <div className='flex flex-col gap-1'>
-          <div className='flex items-center gap-2'>
-            <Building size={14} />
-            <p>{textRoleCategory}</p>
-          </div>
-          <div className='flex items-center gap-2'>
-            <MapPin size={14} />
-            <p>{textLocation}</p>
-          </div>
-        </div> */}
         <div className='hidden items-center gap-2 group-hover:flex'>
           <Link
             href={jobLink.href}
             target='_blank'
-            className='rounded-sm bg-white shadow-sm'
+            className='rounded-sm shadow-sm'
           >
             <UIButton
               variant='ghost'
@@ -56,7 +46,7 @@ export function WorkflowConnectedCard({
             />
           </Link>
           {isLinkOffVisible && (
-            <div className='rounded-sm bg-white shadow-sm'>
+            <div className='rounded-sm shadow-sm'>
               <UIButton
                 variant='ghost'
                 size='sm'

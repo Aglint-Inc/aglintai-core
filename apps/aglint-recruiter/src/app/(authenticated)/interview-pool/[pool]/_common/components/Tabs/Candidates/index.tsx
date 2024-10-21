@@ -35,20 +35,20 @@ function Candidates() {
       <div className='mb-4 flex justify-between'>
         <UITextField
           placeholder='Search Candidates...'
-          className='w-64 bg-white'
+          className='w-64'
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
-      <Card>
-        <CardContent className='p-0'>
-          <table className='w-full overflow-hidden'>
-            <thead>
-              <tr className='border-b'>
+      <Card className='overflow-hidden border border-border'>
+        <CardContent className='overflow-hidden p-0'>
+          <table className='w-full'>
+            <thead className='bg-muted'>
+              <tr className='border-b border-border'>
                 {Object.keys(headers).map((key) => (
                   <th
                     key={key}
-                    className='p-4 text-left text-sm font-medium text-gray-700'
+                    className='p-4 text-left text-sm font-medium text-muted-foreground'
                   >
                     {headers[key as keyof typeof headers]}
                   </th>
@@ -81,16 +81,14 @@ function Candidates() {
                   {filteredData.map((app, index) => (
                     <tr
                       key={index}
-                      className='border-b last:border-b-0 hover:bg-gray-50'
+                      className='border border-border last:border-b-0 hover:bg-muted/50'
                     >
                       <td className='p-4'>
-                        <div className='font-medium text-gray-900'>
-                          {app.name}
-                        </div>
+                        <div className='font-medium'>{app.name}</div>
                       </td>
-                      <td className='p-4 text-gray-700'>{app.job_title}</td>
+                      <td className='p-4'>{app.job_title}</td>
                       <td className='p-4'>{app.stage}</td>
-                      <td className='p-4 text-gray-700'>{app.nextInterview}</td>
+                      <td className='p-4'>{app.nextInterview}</td>
                       <td className='p-4'>
                         <UIBadge
                           variant={

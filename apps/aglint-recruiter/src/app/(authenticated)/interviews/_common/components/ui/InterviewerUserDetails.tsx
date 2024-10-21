@@ -133,7 +133,7 @@ function InterviewerUserDetail({
           </div>
 
           <div className='flex items-center gap-3'>
-            <div className='flex items-center text-xs text-gray-600'>
+            <div className='flex items-center text-xs text-muted-foreground'>
               <Globe className='mr-1 h-3 w-3' />
               <span>
                 {interview_meeting?.start_time
@@ -146,7 +146,7 @@ function InterviewerUserDetail({
               </span>
             </div>
             {userDetails?.position && (
-              <div className='flex items-center text-xs text-gray-600'>
+              <div className='flex items-center text-xs text-muted-foreground'>
                 <BriefcaseBusiness className='mr-1 h-3 w-3' />
                 <span>{userDetails.position}</span>
               </div>
