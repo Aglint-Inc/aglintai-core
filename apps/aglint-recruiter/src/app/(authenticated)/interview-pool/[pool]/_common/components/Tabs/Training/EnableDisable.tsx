@@ -76,7 +76,10 @@ function EnableDisable() {
                         <Avatar className='h-[20px] w-[20px]'>
                           <AvatarImage src={user.profile_image} alt='@shadcn' />
                           <AvatarFallback>
-                            {getFullName(user?.first_name, user?.last_name)}
+                            {getFullName(
+                              user?.first_name,
+                              user?.last_name,
+                            ).charAt(0)}
                           </AvatarFallback>
                         </Avatar>
                       }
