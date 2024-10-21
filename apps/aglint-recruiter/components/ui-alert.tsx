@@ -19,7 +19,7 @@ const alertVariants = cva(
       variant: {
         default: 'bg-background text-foreground',
         alert:
-          'bg-red-50 text-red-500 dark:bg-red-900 dark:text-red-200 [&>svg]:text-red-500 dark:[&>svg]:text-red-200',
+          'bg-red-50 text-red-600 dark:bg-red-900/30 border border-red-700/50 dark:text-red-200 [&>svg]:text-red-500 dark:[&>svg]:text-red-200',
         banner: 'bg-secondary',
         announcement:
           'bg-blue-50 text-blue-500 dark:bg-blue-900 dark:text-blue-200 [&>svg]:text-blue-500 dark:[&>svg]:text-blue-200',

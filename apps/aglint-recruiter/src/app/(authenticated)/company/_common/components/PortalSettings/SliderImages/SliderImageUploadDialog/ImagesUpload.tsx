@@ -92,7 +92,7 @@ export default function ImagesUpload({
           {selectedImages.map((file, index) => (
             <Card
               key={index}
-              className='relative flex h-14 flex-row items-center shadow-none'
+              className='relative flex h-14 flex-row items-center border border-border shadow-none'
             >
               <CardContent className='flex flex-row items-center gap-2 p-2'>
                 <Image

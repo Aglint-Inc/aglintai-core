@@ -158,7 +158,7 @@ function RoleDetails({
           </div>
         </div>
         <div className='w-1/3'>
-          <Card>
+          <Card className='border border-border'>
             <CardHeader>
               <CardTitle className='flex items-center justify-between text-lg'>
                 Users ({userLength || 0})
