@@ -33,7 +33,7 @@ export default function InterviewersDeclineTable() {
     <Section>
       <SectionHeader>
         <SectionHeaderText>
-          <SectionTitle></SectionTitle>
+          <SectionTitle>Interviewers Decline</SectionTitle>
           <SectionDescription></SectionDescription>
         </SectionHeaderText>
         <SectionActions>
@@ -64,7 +64,7 @@ export default function InterviewersDeclineTable() {
         </UIAlert>
       ) : (
         <Table>
-          <TableHeader className='bg-gray-100'>
+          <TableHeader className='bg-muted'>
             <TableRow>
               <TableHead className='w-[200px]'>Name</TableHead>
               <TableHead>Declines</TableHead>
