@@ -1,14 +1,16 @@
+import { preSeedCompanyDetails } from '@aglint/shared-utils';
 import { z } from 'zod';
 
 import { createPageApiPostRoute } from '@/apiUtils/createPageApiPostRoute';
-import { preSeedCompanyDetails } from '@/services/signup/pre-seed';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 const schema = z.object({
   recruiter_id: z.string(),
 });
 
 async function preSeedHandler({ recruiter_id }: z.output<typeof schema>) {
-  await preSeedCompanyDetails(recruiter_id);
+  const supabase = getSupabaseServer();
+  await preSeedCompanyDetails(recruiter_id, supabase);
   return { success: true };
 }
 

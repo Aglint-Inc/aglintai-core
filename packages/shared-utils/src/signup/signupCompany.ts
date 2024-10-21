@@ -1,13 +1,20 @@
 import { v4 } from 'uuid';
 
-import { type ApiBodyParamsSignup } from '@/pages/api/signup';
-import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
-
 import { preSeedCompanyDetails } from './pre-seed';
+import { SupabaseType } from '@aglint/shared-types';
 
-export const signupCompanyAdmin = async (parsed_body: ApiBodyParamsSignup) => {
+export type ApiBodyParamsSignup = {
+  email: string;
+  user_id: string;
+  first_name: string;
+  last_name: string;
+};
+
+export const signupCompanyAdmin = async (
+  parsed_body: ApiBodyParamsSignup,
+  supabase: SupabaseType
+) => {
   const { email, user_id, first_name, last_name } = parsed_body;
-  const supabase = getSupabaseServer();
   const recUser = (
     await supabase
       .from('recruiter_user')
@@ -36,7 +43,7 @@ export const signupCompanyAdmin = async (parsed_body: ApiBodyParamsSignup) => {
       .throwOnError()
   ).data!;
 
-  await preSeedCompanyDetails(rec.id);
+  await preSeedCompanyDetails(rec.id, supabase);
 
   const rol = (
     await supabase

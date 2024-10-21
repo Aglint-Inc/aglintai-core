@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
+import { signupCompanyAdmin } from '@aglint/shared-utils';
 import { type NextApiRequest, type NextApiResponse } from 'next';
 
-import { signupCompanyAdmin } from '@/services/signup/signupCompany';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export type ApiBodyParamsSignup = {
   email: string;
@@ -14,13 +15,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { email, user_id, first_name, last_name } =
       req.body as ApiBodyParamsSignup;
-
-    const { recruiter_user, recruiter } = await signupCompanyAdmin({
-      email,
-      user_id,
-      first_name,
-      last_name,
-    });
+    const supabase = getSupabaseServer();
+    const { recruiter_user, recruiter } = await signupCompanyAdmin(
+      {
+        email,
+        user_id,
+        first_name,
+        last_name,
+      },
+      supabase,
+    );
 
     return res.status(200).json({
       recruiter_user,
