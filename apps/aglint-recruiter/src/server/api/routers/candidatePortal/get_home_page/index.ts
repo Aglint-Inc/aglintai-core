@@ -161,7 +161,7 @@ const query = async ({ ctx: { application_id } }: CandidatePortalProcedure) => {
   const interviewPlanPromise = (
     await db
       .from('interview_progress')
-      .select('name,description,order,update_at,is_completed')
+      .select('name,description,order,update_at,is_completed,created_at')
       .eq('application_id', application_id)
       .order('order', { ascending: true })
   ).data;
