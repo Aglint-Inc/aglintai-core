@@ -38,6 +38,7 @@ export const dummyDataHomePage: getHomePage['output'] = {
       description: 'Introduction',
       order: 1,
       update_at: '2024-10-16T10:50:11.424',
+      created_at: '2024-10-16T10:50:11.424',
       is_completed: true,
     },
     {
@@ -45,6 +46,7 @@ export const dummyDataHomePage: getHomePage['output'] = {
       description: 'C++ and Basic Dsa',
       order: 2,
       update_at: '2024-10-16T10:12:21.94731',
+      created_at: '2024-10-16T10:12:21.94731',
       is_completed: null,
     },
     {
@@ -52,6 +54,7 @@ export const dummyDataHomePage: getHomePage['output'] = {
       description: 'C++ and DSA',
       order: 3,
       update_at: null,
+      created_at: '2024-10-16T10:12:21.94731',
       is_completed: null,
     },
   ],

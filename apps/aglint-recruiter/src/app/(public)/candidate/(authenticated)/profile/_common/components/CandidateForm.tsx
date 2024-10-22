@@ -175,10 +175,10 @@ export default function CandidateForm({
                   type='tel'
                   {...register('phone', {
                     required: 'Phone number is required',
-                    pattern: {
-                      value: /^\+?[1-9]\d{1,14}$/,
-                      message: 'Enter a valid phone number',
-                    },
+                    // pattern: {
+                    //   value: /^\+?[1-9]\d{1,14}$/,
+                    //   message: 'Enter a valid phone number',
+                    // },
                   })}
                   placeholder='Enter your phone number'
                 />
