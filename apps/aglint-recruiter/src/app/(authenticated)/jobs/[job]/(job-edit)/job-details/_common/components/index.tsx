@@ -30,7 +30,6 @@ import { validateString } from '@/utils/validateString';
 
 export const JobDetailsDashboard = () => {
   const { job } = useJob();
-  e;
   return job && job?.status !== 'closed' ? <JobEdit /> : <JobNotFound />;
 };
 
