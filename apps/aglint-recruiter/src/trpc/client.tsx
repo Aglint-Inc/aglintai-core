@@ -4,7 +4,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { loggerLink } from '@trpc/client/links/loggerLink';
 import {
   createTRPCReact,
-  unstable_httpBatchStreamLink,
+  httpLink
 } from '@trpc/react-query';
 import { useState } from 'react';
 import superjson from 'superjson';
@@ -53,15 +53,10 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
             process.env.NODE_ENV === 'development' ||
             (opts.direction === 'down' && opts.result instanceof Error),
         }),
-        unstable_httpBatchStreamLink({
+        httpLink({
           url: `${url}/api/trpc`,
           transformer: superjson,
           methodOverride: 'POST',
-          headers: () => {
-            const headers = new Headers();
-            headers.set('x-trpc-source', 'nextjs-react');
-            return headers;
-          },
         }),
       ],
     }),
