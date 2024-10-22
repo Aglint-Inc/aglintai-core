@@ -1,12 +1,11 @@
 import type { DatabaseTable } from '@aglint/shared-types';
+import { TRPCError } from '@trpc/server';
 import {
   type MutationProcedure,
   type QueryProcedure,
-  TRPCError,
 } from '@trpc/server/unstable-core-do-not-import';
 
 import type { AppRouter } from './api/root';
-// eslint-disable-next-line import/no-cycle
 import { API_PERMISSIONS } from './permissions';
 
 type Procedures = AppRouter['_def']['procedures'];
@@ -25,15 +24,13 @@ const getPermissions = (
   input: string[],
   permission: ApiPermissions = API_PERMISSIONS,
 ) => {
+  if (Array.isArray(permission)) return permission;
   if (input.length === 0) return null;
-  const route = input[0] as keyof ApiPermissions;
-  const level = permission[route];
-  if (!level) return null;
-  if (Array.isArray(level)) {
-    return level;
-  }
+  const level = input[0];
+  const subPermissions = permission[level as keyof typeof permission];
+  if (!subPermissions) return null;
   input.shift();
-  return getPermissions(input, level as unknown as ApiPermissions);
+  return getPermissions(input, subPermissions as any as ApiPermissions);
 };
 
 export const authorize = (path: string, permissions: Permissions = []) => {
