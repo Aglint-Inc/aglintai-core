@@ -235,6 +235,53 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
   });
 });
 
+const candidatePortalMiddleware = t.middleware(async ({ next, ctx }) => {
+  const db = createPrivateClient();
+
+  let email: string | null = null;
+
+  if (process.env.NODE_ENV === 'development')
+    email = (await db.auth.getSession())?.data?.session?.user?.email ?? null;
+  else email = (await db.auth.getUser()).data.user?.email ?? null;
+
+  if (!email)
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'User unauthenticated',
+    });
+
+  const { data } = await db
+    .from('applications')
+    .select('id,candidates!inner(id,email)')
+    .eq('candidates.email', email);
+
+  if (data?.length === 0)
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+      message: 'candidate unauthenticated',
+    });
+
+  const candidate = data!;
+
+  // enable when to production
+  // if (candidate[0].candidates.email !== email)
+  //   throw new TRPCError({
+  //     code: 'UNAUTHORIZED',
+  //     message: 'candidate unauthenticated',
+  //   });
+
+  const application_id = candidate[0].id;
+  const candidate_id = candidate[0].candidates.id;
+
+  return await next({
+    ctx: {
+      ...ctx,
+      application_id,
+      candidate_id,
+    },
+  });
+});
+
 /**
  * Public (unauthenticated) procedure
  *
@@ -263,6 +310,14 @@ export type DBProcedure<T = unknown> = Procedure<typeof dbProcedure, T>;
 export const privateProcedure = publicProcedure.use(authMiddleware);
 export type PrivateProcedure<T = unknown> = Procedure<
   typeof privateProcedure,
+  T
+>;
+
+export const candidatePortalProcedure = publicProcedure.use(
+  candidatePortalMiddleware,
+);
+export type CandidatePortalProcedure<T = unknown> = Procedure<
+  typeof candidatePortalProcedure,
   T
 >;
 

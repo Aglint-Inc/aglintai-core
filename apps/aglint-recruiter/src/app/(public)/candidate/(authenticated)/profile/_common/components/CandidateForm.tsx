@@ -13,7 +13,6 @@ import {
 } from '@components/ui/select';
 import { useRef, useState } from 'react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
-import { useCandidatePortal } from 'src/app/(public)/candidate/(authenticated)/_common/hooks';
 
 import timeZone from '@/utils/timeZone';
 
@@ -23,7 +22,6 @@ import {
   useCandidatePortalProfileUpdate,
 } from '../hooks';
 import ImageUploadManual from './ImageUpload';
-
 type LoginFormInputs = {
   first_name: string;
   last_name: string;
@@ -39,7 +37,6 @@ export default function CandidateForm({
 }: {
   closeDialog: () => void;
 }) {
-  const { application_id } = useCandidatePortal();
   const { data, refetch } = useCandidatePortalProfile();
   const { mutateAsync: profileMutateAsync } = useCandidatePortalProfileUpdate();
   const { mutateAsync: picMutateAsync } = useProfliePicUpdate();
@@ -79,7 +76,6 @@ export default function CandidateForm({
       }
 
       const payload = {
-        application_id,
         first_name: form.first_name,
         last_name: form.last_name,
         email: form.email,

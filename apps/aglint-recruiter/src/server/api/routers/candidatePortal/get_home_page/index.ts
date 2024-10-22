@@ -1,22 +1,14 @@
 import { type Database } from '@aglint/shared-types/src/db/schema.types';
-import { z } from 'zod';
 
 import {
+  type CandidatePortalProcedure,
+  candidatePortalProcedure,
   type ProcedureDefinition,
-  type PublicProcedure,
-  publicProcedure,
 } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
-const schema = z.object({
-  application_id: z.string().uuid(),
-});
-
-const query = async ({ input }: PublicProcedure<typeof schema>) => {
-  const { application_id } = input;
-
+const query = async ({ ctx: { application_id } }: CandidatePortalProcedure) => {
   const db = createPublicClient();
-
   // utils functions ----------------------------------------------
 
   const getScheudleSessionDetails = async (session_ids: string[]) => {
@@ -274,6 +266,6 @@ const query = async ({ input }: PublicProcedure<typeof schema>) => {
   };
 };
 
-export const get_home_page = publicProcedure.input(schema).query(query);
+export const get_home_page = candidatePortalProcedure.query(query);
 
 export type getHomePage = ProcedureDefinition<typeof get_home_page>;

@@ -1,14 +1,13 @@
 import { z } from 'zod';
 
 import {
-  type ProcedureDefinition,
-  type PublicProcedure,
-  publicProcedure,
+  type CandidatePortalProcedure,
+  candidatePortalProcedure,
+  type ProcedureDefinition
 } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
 const updateProfileSchema = z.object({
-  application_id: z.string(),
   avatar: z.string().optional().nullable(),
   first_name: z.string(),
   last_name: z.string().optional(),
@@ -17,10 +16,12 @@ const updateProfileSchema = z.object({
   linkedin: z.string().optional(),
   timezone: z.string(),
 });
+
 const query = async ({
   input,
-}: PublicProcedure<typeof updateProfileSchema>) => {
-  const { application_id, ...payload } = input;
+  ctx: { application_id },
+}: CandidatePortalProcedure<typeof updateProfileSchema>) => {
+  const { ...payload } = input;
 
   const db = createPublicClient();
 
@@ -40,7 +41,7 @@ const query = async ({
     .throwOnError();
 };
 
-export const update_profile = publicProcedure
+export const update_profile = candidatePortalProcedure
   .input(updateProfileSchema)
   .mutation(query);
 

@@ -16,7 +16,7 @@ export const sendMagicLink = async ({
   email: string;
   application_id: string;
 }) => {
-  email = 'mailcatcher.aglintai@gmail.com';
+  // email = 'mailcatcher.aglintai@gmail.com';
   return await supabase.auth.signInWithOtp({
     email: email,
     options: {

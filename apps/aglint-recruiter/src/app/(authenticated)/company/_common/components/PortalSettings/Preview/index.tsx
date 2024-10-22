@@ -16,14 +16,14 @@ export const PortalPreview = ({
         <DrawerTrigger asChild>
           <Button variant='outline'>Preview</Button>
         </DrawerTrigger>
-        <DrawerContent className='overflow-hidden border-border bg-muted'>
-          <div className='mx-auto h-[700px] bg-muted'>
+        <DrawerContent className='h-[calc(100vh-100px)] w-full overflow-hidden border-border bg-muted'>
+          <div className='mx-auto h-full w-full bg-muted'>
             <iframe
               src={`/candidate/home?recruiter_id=${recruiter_id}&isPreview=true${application_id ? '&application_id=' + application_id : ''}`}
               title='Example Website'
-              width='1200'
-              height='700'
-              style={{ border: 'none' }}
+              // width='1200'
+              // height='700'
+              style={{ border: 'none', height: '100%', width: '100%' }}
             />
           </div>
         </DrawerContent>

@@ -11,7 +11,7 @@ function InterviewProgress({
   interviews: getHomePage['output']['interviewPlan'];
 }) {
   return (
-    <Card className='mx-auto w-full max-w-3xl'>
+    <Card className='mx-auto w-full max-w-3xl border-border'>
       <CardHeader>
         <CardTitle className='text-lg font-medium'>Interview Plan</CardTitle>
       </CardHeader>

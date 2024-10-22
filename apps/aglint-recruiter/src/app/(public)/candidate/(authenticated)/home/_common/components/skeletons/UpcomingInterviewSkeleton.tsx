@@ -10,7 +10,7 @@ export default function UpcomingInterviewSkeleton() {
         </CardHeader>
         <CardContent className='p-4 pt-0'>
           <div className='flex items-center gap-3'>
-            <div className='flex w-24 flex-col items-center justify-center rounded-lg bg-gray-100 py-2'>
+            <div className='flex w-24 flex-col items-center justify-center rounded-lg bg-muted py-2'>
               <Skeleton className='mb-1 h-4 w-12' />
               <Skeleton className='mb-1 h-8 w-10' />
               <Skeleton className='h-4 w-14' />

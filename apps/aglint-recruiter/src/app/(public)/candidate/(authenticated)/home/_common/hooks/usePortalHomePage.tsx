@@ -7,12 +7,9 @@ export const usePortalHomePage = () => {
   const recruiter_id = queryParams.recruiter_id as string;
   const isPreview = !!queryParams.isPreview as boolean;
 
-  const query = api.candidatePortal.get_home_page.useQuery(
-    {
-      application_id,
-    },
-    { enabled: !isPreview },
-  );
+  const query = api.candidatePortal.get_home_page.useQuery(undefined, {
+    enabled: !isPreview,
+  });
 
   const previewQuery = api.candidatePortal.get_home_page_preview.useQuery(
     {
