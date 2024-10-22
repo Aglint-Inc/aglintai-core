@@ -51,6 +51,7 @@ import { UploadApplications } from '../UploadApplications';
 
 export const SharedActions = () => {
   const value = useSettingsActions();
+  const { job } = useJob();
   return (
     <SettingsContext.Provider value={value}>
       <div className='flex flex-row items-center gap-2'>
@@ -60,9 +61,11 @@ export const SharedActions = () => {
         <Rescore />
         <Add />
         <Switcher />
-        <Link href={`/jobs/${value?.job?.id}/job-details`}>
-          <UIButton variant='outline'>Edit</UIButton>
-        </Link>
+        {job && job.status !== 'closed' && (
+          <Link href={`/jobs/${value?.job?.id}/job-details`}>
+            <UIButton variant='outline'>Edit</UIButton>
+          </Link>
+        )}
       </div>
     </SettingsContext.Provider>
   );

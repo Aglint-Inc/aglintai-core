@@ -4,9 +4,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, CircleDashed } from 'lucide-react';
 
-import { Loader } from '@/components/Common/Loader';
 import { type Application } from '@/types/applications.types';
 
 import { ScoreTag } from './ScoreTag';
@@ -81,7 +80,7 @@ const WarningIcon = () => (
 
 const Calculating = () => (
   <div className='flex items-center space-x-1 text-blue-500'>
-    <Loader size={16} className='animate-spin' />
+    <CircleDashed className='infinite text-warning h-4 w-4 animate-spin' />
     <span>Calculating</span>
   </div>
 );
