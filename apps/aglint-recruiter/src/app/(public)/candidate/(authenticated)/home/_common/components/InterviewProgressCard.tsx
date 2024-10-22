@@ -14,7 +14,7 @@ const InterviewProgressCard: React.FC<InterviewProgressCardProps> = ({
   interview,
   isLast,
 }) => {
-  const { description, name, is_completed, update_at } = interview;
+  const { description, name, is_completed, update_at, created_at } = interview;
 
   const cardClasses = `w-full mb-3 ${is_completed ? '' : 'cursor-not-allowed'} border border-border`;
 
@@ -56,7 +56,9 @@ const InterviewProgressCard: React.FC<InterviewProgressCardProps> = ({
                 className='rounded-sm'
               />
               <span className='text-sm text-muted-foreground'>
-                {dayjsLocal(update_at).format('MMM DD	YYYY hh:mm A ')}
+                {dayjsLocal(update_at || created_at).format(
+                  'MMM DD	YYYY hh:mm A ',
+                )}
               </span>
             </div>
           </div>
