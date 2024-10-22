@@ -10,6 +10,7 @@ import { BriefcaseBusiness, Calendar, Home, MapPin, User } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect } from 'react';
 
+import UIError from '@/common/UIError';
 import { useTenant } from '@/company/hooks';
 import { Loader } from '@/components/Common/Loader';
 import { capitalizeFirstLetter } from '@/utils/text/textUtils';
@@ -23,7 +24,7 @@ import ScheduleDetailsTabs from './Tabs';
 function SchedulingViewComp() {
   const { recruiter_user } = useTenant();
 
-  const { data, isLoading } = useScheduleDetails();
+  const { data, isLoading, isError } = useScheduleDetails();
 
   const schedule = data?.schedule_data;
   const job = schedule?.job;
@@ -49,6 +50,10 @@ function SchedulingViewComp() {
         <Loader />
       </div>
     );
+
+  if (isError) return <UIError />;
+
+  if (!schedule) return null;
 
   return (
     <>
