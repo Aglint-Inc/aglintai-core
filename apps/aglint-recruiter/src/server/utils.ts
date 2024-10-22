@@ -1,5 +1,4 @@
 import type { DatabaseTable } from '@aglint/shared-types';
-import { TRPCError } from '@trpc/server';
 import {
   type MutationProcedure,
   type QueryProcedure,
