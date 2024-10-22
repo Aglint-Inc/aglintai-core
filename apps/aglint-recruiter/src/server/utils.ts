@@ -36,11 +36,7 @@ const getPermissions = (
 export const authorize = (path: string, permissions: Permissions = []) => {
   const input = path.split('.');
   const apiPermission = getPermissions(input);
-  if (!apiPermission)
-    throw new TRPCError({
-      code: 'BAD_REQUEST',
-      message: `Path does not exist`,
-    });
+  if (!apiPermission) return null;
   return (
     apiPermission.includes('public') ||
     apiPermission.every((permission) => permissions.includes(permission))
