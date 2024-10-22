@@ -52,7 +52,7 @@ const UpcomingCard = ({
   return (
     <>
       <div className='flex items-center gap-3'>
-        <div className='flex w-24 flex-col items-center justify-center rounded-lg bg-gray-100 py-2'>
+        <div className='flex w-24 flex-col items-center justify-center rounded-lg bg-muted py-2'>
           <span className='text-sm font-normal text-muted-foreground'>
             {dayjsLocal(latestUpcoming.start_time).format('MMMM')}
           </span>

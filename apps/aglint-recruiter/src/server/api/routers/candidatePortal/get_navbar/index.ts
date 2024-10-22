@@ -1,19 +1,11 @@
-import { z } from 'zod';
-
 import {
+  type CandidatePortalProcedure,
+  candidatePortalProcedure,
   type ProcedureDefinition,
-  type PublicProcedure,
-  publicProcedure,
 } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
-const schema = z.object({
-  application_id: z.string().uuid(),
-});
-
-const query = async ({ input }: PublicProcedure<typeof schema>) => {
-  const { application_id } = input;
-
+const query = async ({ ctx: { application_id } }: CandidatePortalProcedure) => {
   const db = createPublicClient();
 
   const company = (
@@ -39,6 +31,6 @@ const query = async ({ input }: PublicProcedure<typeof schema>) => {
   };
 };
 
-export const get_navbar = publicProcedure.input(schema).query(query);
+export const get_navbar = candidatePortalProcedure.query(query);
 
 export type GetNav = ProcedureDefinition<typeof get_navbar>;

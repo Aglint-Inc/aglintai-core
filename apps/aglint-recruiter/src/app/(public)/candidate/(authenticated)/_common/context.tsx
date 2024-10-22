@@ -17,7 +17,7 @@ const useCandidatePortalContext = () => {
   const { queryParams } = useRouterPro();
   const application_id = queryParams?.application_id as string;
   const isPreview = !!queryParams?.isPreview;
-  void api.candidatePortal.get_profile.usePrefetchQuery({ application_id });
+  void api.candidatePortal.get_profile.usePrefetchQuery();
   return { application_id, isPreview };
 };
 

@@ -263,6 +263,13 @@ const candidatePortalMiddleware = t.middleware(async ({ next, ctx }) => {
 
   const candidate = data!;
 
+  // enable when to production
+  // if (candidate[0].candidates.email !== email)
+  //   throw new TRPCError({
+  //     code: 'UNAUTHORIZED',
+  //     message: 'candidate unauthenticated',
+  //   });
+
   const application_id = candidate[0].id;
   const candidate_id = candidate[0].candidates.id;
 

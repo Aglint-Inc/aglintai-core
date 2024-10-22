@@ -1,4 +1,3 @@
-import { useCandidatePortal } from 'src/app/(public)/candidate/(authenticated)/_common/hooks';
 
 import { useRouterPro } from '@/hooks/useRouterPro';
 import type { GetMessages } from '@/routers/candidatePortal/get_messages';
@@ -8,19 +7,14 @@ import { api } from '@/trpc/client';
 import { dummyDataMessage } from '../../../_common/dummydata';
 
 export const useCandidatePortalMessages = () => {
-  const { application_id } = useCandidatePortal();
-  const query = useGetMessageProcedure({
-    application_id,
-  });
+  const query = useGetMessageProcedure();
   return { ...query, data: query.data || [] };
 };
 
-const useGetMessageProcedure = (
-  input: GetMessages['input'],
-): ProcedureQuery<GetMessages> => {
+const useGetMessageProcedure = (): ProcedureQuery<GetMessages> => {
   const { queryParams } = useRouterPro();
   const isPreview = !!queryParams.isPreview as boolean;
-  const query = api.candidatePortal.get_messages.useQuery(input, {
+  const query = api.candidatePortal.get_messages.useQuery(undefined, {
     enabled: !isPreview,
     initialData: isPreview ? dummyDataMessage : undefined,
   });

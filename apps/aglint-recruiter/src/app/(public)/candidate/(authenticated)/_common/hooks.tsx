@@ -21,18 +21,12 @@ export const useCandidatePortalNavbar = () => {
 
 const useGetNavbarProcedure = () => {
   const { queryParams } = useRouterPro();
-  const application_id = queryParams?.application_id as string;
   const recruiter_id = queryParams?.recruiter_id as string;
   const isPreview = !!queryParams?.isPreview as boolean;
 
-  const query = api.candidatePortal.get_navbar.useQuery(
-    {
-      application_id,
-    },
-    {
-      enabled: !isPreview,
-    },
-  );
+  const query = api.candidatePortal.get_navbar.useQuery(undefined, {
+    enabled: !isPreview,
+  });
   const queryPreview = api.candidatePortal.get_navbar_preview.useQuery(
     {
       recruiter_id,

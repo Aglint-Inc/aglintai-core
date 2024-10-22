@@ -1,19 +1,11 @@
-import { z } from 'zod';
-
 import {
+  type CandidatePortalProcedure,
+  candidatePortalProcedure,
   type ProcedureDefinition,
-  type PublicProcedure,
-  publicProcedure,
 } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
-const schema = z.object({
-  application_id: z.string().uuid(),
-});
-
-const query = async ({ input }: PublicProcedure<typeof schema>) => {
-  const { application_id } = input;
-
+const query = async ({ ctx: { application_id } }: CandidatePortalProcedure) => {
   const db = createPublicClient();
 
   const data = (
@@ -42,6 +34,6 @@ const query = async ({ input }: PublicProcedure<typeof schema>) => {
   };
 };
 
-export const get_profile = publicProcedure.input(schema).query(query);
+export const get_profile = candidatePortalProcedure.query(query);
 
 export type GetProfile = ProcedureDefinition<typeof get_profile>;

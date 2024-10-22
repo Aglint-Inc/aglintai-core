@@ -1,6 +1,6 @@
 import { dayjsLocal } from '@aglint/shared-utils';
-import { Badge } from '@components/ui/badge';
 import { Card, CardContent } from '@components/ui/card';
+import { UIBadge } from '@components/ui-badge';
 import React from 'react';
 
 import { type getHomePage } from '@/routers/candidatePortal/get_home_page';
@@ -16,7 +16,7 @@ const InterviewProgressCard: React.FC<InterviewProgressCardProps> = ({
 }) => {
   const { description, name, is_completed, update_at } = interview;
 
-  const cardClasses = `w-full mb-3 ${is_completed ? '' : 'cursor-not-allowed'}`;
+  const cardClasses = `w-full mb-3 ${is_completed ? '' : 'cursor-not-allowed'} border border-border`;
 
   return (
     <div className='flex flex-row gap-2'>
@@ -50,9 +50,11 @@ const InterviewProgressCard: React.FC<InterviewProgressCardProps> = ({
             <h2 className='text-sm font-semibold text-primary'>{name}</h2>
             <p className='text-sm'>{description}</p>
             <div className='flex items-center space-x-2'>
-              <Badge variant='outline' className='rounded-sm'>
-                {is_completed ? 'Completed' : 'Not Scheduled'}
-              </Badge>
+              <UIBadge
+                variant={is_completed ? 'success' : 'neutral'}
+                textBadge={is_completed ? 'Completed' : 'Not Scheduled'}
+                className='rounded-sm'
+              />
               <span className='text-sm text-muted-foreground'>
                 {dayjsLocal(update_at).format('MMM DD	YYYY hh:mm A ')}
               </span>
