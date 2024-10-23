@@ -22,9 +22,7 @@ export const generateReportForJob = async (job_id: string) => {
     allRequests: to_do_requests,
     company_id: job_details.recruiter_id,
   });
-  const application_ids = allRequests
-    .filter((req) => req.status !== 'to_do')
-    .map((app) => app.application_id);
+  const application_ids = to_do_requests.map((app) => app.application_id);
 
   const meeting_details = await getAllMeetingDetails(application_ids);
 
