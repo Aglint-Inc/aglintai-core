@@ -26,7 +26,7 @@ const query = async ({ input }: PublicProcedure<typeof schema>) => {
     const data = (
       await db
         .from('interview_progress')
-        .select('name,description,order,update_at,is_completed')
+        .select('name,description,order,update_at,is_completed,created_at')
         .eq('application_id', application_id)
         .order('order', { ascending: true })
         .throwOnError()

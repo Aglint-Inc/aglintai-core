@@ -16,7 +16,8 @@ export const sendMagicLink = async ({
   email: string;
   application_id: string;
 }) => {
-  // email = 'mailcatcher.aglintai@gmail.com';
+  // change is condidation when move to production
+  email = isCompanyEmail(email) ? email : 'mailcatcher.aglintai@gmail.com';
   return await supabase.auth.signInWithOtp({
     email: email,
     options: {
@@ -24,3 +25,8 @@ export const sendMagicLink = async ({
     },
   });
 };
+
+function isCompanyEmail(email: string) {
+  const domain = '@aglinthq.com';
+  return email.toLowerCase().endsWith(domain);
+}
