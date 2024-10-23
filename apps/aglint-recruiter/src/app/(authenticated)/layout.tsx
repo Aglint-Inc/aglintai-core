@@ -1,4 +1,5 @@
 import { AppLayout } from '@components/layouts/app-layout';
+import { unstable_noStore } from 'next/cache';
 import { type PropsWithChildren } from 'react';
 
 import { OnboardPending } from '@/components/Navigation/OnboardPending';
@@ -10,6 +11,7 @@ import { ThemeWrapper } from '../(public)/theme/_common/components/ThemeWrapper'
 import { Provider } from './providers';
 
 const Layout = async ({ children }: PropsWithChildren) => {
+  unstable_noStore();
   void api.tenant.read.prefetch();
   void api.tenant.flags.prefetch();
   void api.tenant.all_departments.prefetch();

@@ -4,6 +4,7 @@ const nextConfig = {
     dirs: ['src'],
     ignoreDuringBuilds: true,
   },
+  transpilePackages: ['@aglint-recruiter/shared-utils'],
   async rewrites() {
     return [
       {
