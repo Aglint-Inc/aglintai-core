@@ -29,17 +29,7 @@ const main = async () => {
 
   const { company_roles } = await fetchCompanyRoles(recruiter.id);
 
-  await updateCompanyPref(recruiter.id, {
-    scheduling: true,
-    slack: true,
-    workflow: true,
-    onboard_complete: true,
-    request: true,
-    reports: true,
-    integrations: true,
-    scoring: true,
-    roles: true,
-  });
+  await updateCompanyPref(recruiter.id);
 
   const team = await createCompanyTeam({
     company_roles,
