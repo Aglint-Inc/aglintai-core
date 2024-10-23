@@ -47,9 +47,9 @@ const PageDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <p
+  <div
     ref={ref}
-    className={cn('max-w-3xl text-sm text-muted-foreground mt-1', className)}
+    className={cn('mt-1 max-w-3xl text-sm text-muted-foreground', className)}
     {...props}
   />
 ));

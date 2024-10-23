@@ -119,7 +119,7 @@ const EditBreakTime = ({
   }, []);
 
   return (
-    <div className='w-[300 px] flex flex-col gap-1 gap-4'>
+    <div className='w-[300 px] flex flex-col gap-4'>
       <div>
         <Label>Break Start Time</Label>
         <TimePicker

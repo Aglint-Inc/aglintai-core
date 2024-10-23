@@ -57,10 +57,9 @@ function StageIndividual({
             {sessions.map((session) => {
               const interview_meeting = session.interview_meeting;
               return (
-                <>
+                <div key={session.interview_session.id}>
                   <ScheduleIndividualCard
                     session={session}
-                    key={session.interview_session.id}
                     isCheckboxVisible={
                       data?.job_status === 'published' &&
                       data?.status === 'interview' &&
@@ -87,7 +86,7 @@ function StageIndividual({
                   {session.interview_session.break_duration !== 0 && (
                     <BreakCard session={session} onChange={onChangeBreak} />
                   )}
-                </>
+                </div>
               );
             })}
           </div>

@@ -7,14 +7,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@components/ui/popover';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@components/ui/table';
+import { Table, TableBody, TableCell, TableRow } from '@components/ui/table';
 import { UIBadge } from '@components/ui-badge';
 import { MoreVertical, Pause, Play, Plus, Trash2, User } from 'lucide-react';
 import Link from 'next/link';
@@ -90,14 +83,14 @@ function Interviewers() {
       <Card className='overflow-hidden border border-border shadow-none'>
         <CardContent className='overflow-hidden p-0'>
           <Table className='overflow-hidden'>
-            <TableHeader className='overflow-hidden bg-muted'>
-              <TableHead className='w-4/12'>Name</TableHead>
-              <TableHead className='w-2/12'>Today</TableHead>
-              <TableHead className='w-2/12'>Week</TableHead>
-              <TableHead className='w-2/12'>Week Load</TableHead>
-              <TableHead className='w-2/12'></TableHead>
-            </TableHeader>
             <TableBody>
+              <TableRow className='overflow-hidden bg-muted'>
+                <TableCell className='w-4/12'>Name</TableCell>
+                <TableCell className='w-2/12'>Today</TableCell>
+                <TableCell className='w-2/12'>Week</TableCell>
+                <TableCell className='w-2/12'>Week Load</TableCell>
+                <TableCell className='w-2/12'></TableCell>
+              </TableRow>
               {filtererdUsers.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={5} className='text-center'>

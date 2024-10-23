@@ -1,6 +1,7 @@
 import { type DatabaseTable } from '@aglint/shared-types';
 
 import { createClient } from '../supabase/server';
+import { verifyToken } from '../supabase/verifyToken';
 
 export const server_check_permissions = async ({
   permissions,
@@ -10,8 +11,9 @@ export const server_check_permissions = async ({
   try {
     if (!permissions?.length) throw new Error('Permission not provided.');
     const supabase = await createClient();
-    const { data } = await supabase.auth.getSession();
-    const user_id = data?.session?.user.id;
+    const jsonDetail = await verifyToken(supabase);
+    const user_id = jsonDetail.user.id;
+
     if (!user_id) throw new Error('User unauthenticated');
 
     const { data: rel } = await supabase
