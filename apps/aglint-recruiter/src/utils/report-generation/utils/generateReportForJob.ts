@@ -20,18 +20,22 @@ const scheduleRequests = async ({
   >['allRequests'];
   company_id: string;
 }) => {
-  const promises = allRequests.slice(0, 1).map(async (req) => {
+  for (const req of allRequests) {
     const random_num = Math.floor(Math.random() * 7);
-    await scheduleSingleRequest({
-      request: req,
-      dateRange: {
-        start_date: dayjsLocal(req.schedule_start_date).format('DD/MM/YYYY'),
-        end_date: dayjsLocal(req.schedule_start_date)
-          .add(random_num, 'day')
-          .format('DD/MM/YYYY'),
-      },
-      company_id,
-    });
-  });
-  await Promise.all(promises);
+    try {
+      await scheduleSingleRequest({
+        request: req,
+        dateRange: {
+          start_date: dayjsLocal(req.schedule_start_date).format('DD/MM/YYYY'),
+          end_date: dayjsLocal(req.schedule_start_date)
+            .add(random_num, 'day')
+            .format('DD/MM/YYYY'),
+        },
+        company_id,
+      });
+    } catch (error) {
+      console.error(req.title);
+      console.error('Failed to schedule request', req.id);
+    }
+  }
 };

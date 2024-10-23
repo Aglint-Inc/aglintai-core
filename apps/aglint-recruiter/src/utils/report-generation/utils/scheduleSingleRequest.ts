@@ -37,21 +37,12 @@ export const scheduleSingleRequest = async ({
   });
   const fetchedDetails = await fetchDBScheduleDetails(filter_json.id);
 
-  const cand_schedule = new CandidatesScheduling({
-    include_conflicting_slots: {
-      out_of_office: true,
-      out_of_working_hrs: true,
-      show_soft_conflicts: true,
-      day_passed: true,
-    },
-    cand_start_time: 0,
-    cand_end_time: 24,
-  });
   const reqProgressLogger = createRequestProgressLogger({
     supabaseAdmin,
     request_id: request.id,
     event_type: 'SELF_SCHEDULE_LINK',
   });
+
   await reqProgressLogger({
     status: 'completed',
     is_progress_step: false,
@@ -63,7 +54,16 @@ export const scheduleSingleRequest = async ({
       filter_json_id: filter_json.id,
     },
   });
-
+  const cand_schedule = new CandidatesScheduling({
+    include_conflicting_slots: {
+      out_of_office: true,
+      out_of_working_hrs: true,
+      show_soft_conflicts: true,
+      day_passed: true,
+    },
+    cand_start_time: 0,
+    cand_end_time: 24,
+  });
   await cand_schedule.fetchDetails({
     params: {
       req_user_tz: candidate_tz,
