@@ -64,7 +64,6 @@ function Candidates() {
                 </tr>
               ) : (
                 <>
-                  {' '}
                   {filteredData.length === 0 && (
                     <tr>
                       <td colSpan={6} className='p-4'>

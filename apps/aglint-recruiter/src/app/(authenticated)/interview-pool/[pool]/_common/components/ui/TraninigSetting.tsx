@@ -38,12 +38,12 @@ export function TrainingSetting({
         <SectionHeaderText>
           <SectionTitle>Training Settings</SectionTitle>
           <SectionDescription>
-            <p>{textHeading}</p>
+            <div>{textHeading}</div>
             {isDisable && (
-              <p className='text-sm text-muted-foreground'>
+              <div className='text-sm text-muted-foreground'>
                 Enable training from settings to add trainee interviewers and
                 track their training progress
-              </p>
+              </div>
             )}
           </SectionDescription>
         </SectionHeaderText>

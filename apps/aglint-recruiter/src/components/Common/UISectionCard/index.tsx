@@ -67,9 +67,9 @@ export default function UISectionCard({
             </SectionActions>
           </SectionTitle>
           <SectionDescription>
-            <p className='max-w-4xl text-sm text-muted-foreground'>
+            <div className='max-w-4xl text-sm text-muted-foreground'>
               {description}
-            </p>
+            </div>
             {descriptionAddon && (
               <span className='max-w-4xl'>{descriptionAddon}</span>
             )}

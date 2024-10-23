@@ -21,7 +21,7 @@ const TrainingSettingItem = React.forwardRef<
       {...props}
     >
       {image && <div className='h-5 w-5 rounded'>{image}</div>}
-      <p className='text-sm font-normal'>{text}</p>
+      <div className='text-sm font-normal'>{text}</div>
     </div>
   );
 });
