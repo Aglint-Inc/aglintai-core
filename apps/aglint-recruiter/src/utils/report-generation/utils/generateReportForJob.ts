@@ -11,6 +11,7 @@ import {
 } from './candidate-requests';
 import { getJobScheduleRequests } from './getJobScheduleRequests';
 import { createInterviewDeclineRequest } from './interviewer-decline';
+import { scheduleRequests } from './scheduleRequests';
 
 export const generateReportForJob = async (job_id: string) => {
   const { allRequests, job_details } = await getJobScheduleRequests(job_id);
