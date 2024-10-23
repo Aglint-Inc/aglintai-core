@@ -33,7 +33,7 @@ function CreateRequest({
   setSelectedSession: Dispatch<SetStateAction<SessionType[]>>;
   selectedSession: SessionType[];
 }) {
-  const { data: members, status: membersStatus } = useMemberList();
+  const { data: members, status: membersStatus } = useMemberList(false, true);
   const {
     job: { hiring_manager, recruiting_coordinator, sourcer, recruiter },
   } = useJob();
