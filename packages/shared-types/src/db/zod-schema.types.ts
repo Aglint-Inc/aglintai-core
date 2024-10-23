@@ -2704,7 +2704,6 @@ export const publicJobsInsertSchema = z.object({
   created_at: z.string().optional(),
   department_id: z.number().optional().nullable(),
   description: z.string().optional().nullable(),
-  draft: jsonSchema.optional().nullable(),
   draft_jd_json: jsonSchema.optional().nullable(),
   hiring_manager: z.string().optional().nullable(),
   id: z.string().optional(),
@@ -2739,7 +2738,6 @@ export const publicJobsUpdateSchema = z.object({
   created_at: z.string().optional(),
   department_id: z.number().optional().nullable(),
   description: z.string().optional().nullable(),
-  draft: jsonSchema.optional().nullable(),
   draft_jd_json: jsonSchema.optional().nullable(),
   hiring_manager: z.string().optional().nullable(),
   id: z.string().optional(),
@@ -3286,7 +3284,7 @@ export const requestRowSchema = z.object({
 });
 
 export const requestInsertSchema = z.object({
-  application_id: z.string().optional(),
+  application_id: z.string(),
   assignee_id: z.string().optional(),
   assigner_id: z.string().optional(),
   completed_at: z.string().optional().nullable(),
@@ -3559,21 +3557,21 @@ export const requestRelationRowSchema = z.object({
   cancel_id: z.string().nullable(),
   id: z.string(),
   request_id: z.string(),
-  session_id: z.string().nullable(),
+  session_id: z.string(),
 });
 
 export const requestRelationInsertSchema = z.object({
   cancel_id: z.string().optional().nullable(),
   id: z.string().optional(),
   request_id: z.string(),
-  session_id: z.string().optional().nullable(),
+  session_id: z.string(),
 });
 
 export const requestRelationUpdateSchema = z.object({
   cancel_id: z.string().optional().nullable(),
   id: z.string().optional(),
   request_id: z.string().optional(),
-  session_id: z.string().optional().nullable(),
+  session_id: z.string().optional(),
 });
 
 export const requestRelationRelationshipsSchema = z.tuple([
@@ -4586,6 +4584,13 @@ export const applicationStatusViewRelationshipsSchema = z.tuple([
     referencedRelation: z.literal("job_view"),
     referencedColumns: z.tuple([z.literal("id")]),
   }),
+  z.object({
+    foreignKeyName: z.literal("applications_recruiter_id_fkey"),
+    columns: z.tuple([z.literal("recruiter_id")]),
+    isOneToOne: z.literal(false),
+    referencedRelation: z.literal("recruiter"),
+    referencedColumns: z.tuple([z.literal("id")]),
+  }),
 ]);
 
 export const applicationViewRowSchema = z.object({
@@ -4612,6 +4617,7 @@ export const applicationViewRowSchema = z.object({
   name: z.string().nullable(),
   phone: z.string().nullable(),
   processing_status: applicationProcessingStatusSchema.nullable(),
+  recruiter_id: z.string().nullable(),
   resume_processing_state: resumeProcessingStateSchema.nullable(),
   resume_score: z.number().nullable(),
   session_names: z.array(z.string()).nullable(),
@@ -4655,6 +4661,13 @@ export const applicationViewRelationshipsSchema = z.tuple([
     columns: z.tuple([z.literal("job_id")]),
     isOneToOne: z.literal(false),
     referencedRelation: z.literal("job_view"),
+    referencedColumns: z.tuple([z.literal("id")]),
+  }),
+  z.object({
+    foreignKeyName: z.literal("applications_recruiter_id_fkey"),
+    columns: z.tuple([z.literal("recruiter_id")]),
+    isOneToOne: z.literal(false),
+    referencedRelation: z.literal("recruiter"),
     referencedColumns: z.tuple([z.literal("id")]),
   }),
 ]);
@@ -4796,7 +4809,6 @@ export const jobViewRowSchema = z.object({
   department: z.string().nullable(),
   department_id: z.number().nullable(),
   description: z.string().nullable(),
-  draft: jsonSchema.nullable(),
   draft_jd_json: jsonSchema.nullable(),
   hiring_manager: z.string().nullable(),
   id: z.string().nullable(),
@@ -5788,7 +5800,6 @@ export const publicJobsRowSchema = z.object({
   created_at: z.string(),
   department_id: z.number().nullable(),
   description: z.string().nullable(),
-  draft: jsonSchema.nullable(),
   draft_jd_json: jsonSchema.nullable(),
   hiring_manager: z.string().nullable(),
   id: z.string(),
@@ -5898,6 +5909,7 @@ export const applicationStatusViewRowSchema = z.object({
   is_new: z.boolean().nullable(),
   job_id: z.string().nullable(),
   processing_status: applicationProcessingStatusSchema.nullable(),
+  recruiter_id: z.string().nullable(),
   resume_processing_state: resumeProcessingStateSchema.nullable(),
   resume_score: z.number().nullable(),
   status: z.string().nullable(),

@@ -9,6 +9,7 @@ export const PATHS = [
   '/api/ashby/syncapplications',
   '/api/db-events',
   '/api/decryptApiKey',
+  '/api/dev/generate-reports',
   '/api/encryptData',
   '/api/google/overview-handler',
   '/api/google/overview',

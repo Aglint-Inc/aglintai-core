@@ -39,5 +39,6 @@ declare namespace NodeJS {
     PLAYWRIGHT_HEADLESS: string;
     E2E_TEST_EMAIL: string;
     E2E_TEST_PASSWORD: string;
+    SEED_DATABASE_APP_URL: string;
   }
 }

@@ -3198,7 +3198,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
-          application_id?: string
+          application_id: string
           assignee_id?: string
           assigner_id?: string
           completed_at?: string | null
@@ -3462,19 +3462,19 @@ export type Database = {
           cancel_id: string | null
           id: string
           request_id: string
-          session_id: string | null
+          session_id: string
         }
         Insert: {
           cancel_id?: string | null
           id?: string
           request_id: string
-          session_id?: string | null
+          session_id: string
         }
         Update: {
           cancel_id?: string | null
           id?: string
           request_id?: string
-          session_id?: string | null
+          session_id?: string
         }
         Relationships: [
           {
@@ -5237,6 +5237,13 @@ export type Database = {
       }
     }
     Functions: {
+      add_vault_secrets: {
+        Args: {
+          name: string
+          value: string
+        }
+        Returns: boolean
+      }
       ashbyapplicationsync: {
         Args: {}
         Returns: Json
@@ -5563,6 +5570,10 @@ export type Database = {
           locations: Json
         }[]
       }
+      get_auth_users: {
+        Args: {}
+        Returns: unknown[]
+      }
       get_candidate_info: {
         Args: {
           rec_id: string
@@ -5767,6 +5778,12 @@ export type Database = {
       get_present_scheduled_jobs: {
         Args: {}
         Returns: Json[]
+      }
+      get_recruiter_id_by_user: {
+        Args: {
+          user_id: string
+        }
+        Returns: string
       }
       get_recruiter_name_id: {
         Args: {

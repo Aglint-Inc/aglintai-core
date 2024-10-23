@@ -1,6 +1,7 @@
 import { testUsers } from './data/users';
 import { addTeamMember } from './lib/addUser';
 import {
+  addVaultSecrets,
   createCompanyAndAdmin,
   deleteAllCompanyData,
 } from './lib/createCompanyAndAdmin';
@@ -18,6 +19,7 @@ dotenv.config();
 const main = async () => {
   await deleteAllCompanyData();
   await createPermissions();
+  await addVaultSecrets();
   const { recruiter_user, recruiter, departments, locations } =
     await createCompanyAndAdmin();
   await createIntegrations({ recruiter_id: recruiter.id });
@@ -27,12 +29,7 @@ const main = async () => {
 
   const { company_roles } = await fetchCompanyRoles(recruiter.id);
 
-  await updateCompanyPref(recruiter.id, {
-    scheduling: true,
-    slack: true,
-    workflow: true,
-    onboard_complete: true,
-  });
+  await updateCompanyPref(recruiter.id);
 
   const team = await createCompanyTeam({
     company_roles,

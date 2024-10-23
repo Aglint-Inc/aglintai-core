@@ -10,7 +10,7 @@ export const createPageApiPostRoute = (
   return async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method Not Allowed' });
+        return void res.status(405).json({ error: 'Method Not Allowed' });
       }
       let parsed_body;
       if (schema) {
@@ -20,9 +20,9 @@ export const createPageApiPostRoute = (
       }
       const resp = await call_back_handler(parsed_body);
       if (!resp) {
-        return res.status(204).end();
+        return void res.status(204).end();
       }
-      return res.status(200).json(resp);
+      return void res.status(200).json(resp);
     } catch (error: any) {
       console.error('ERROR TYPE : \n', error.type);
       console.error('ERROR STACK : \n', error.stack);
@@ -32,21 +32,23 @@ export const createPageApiPostRoute = (
       }
       if (error instanceof CApiError) {
         if (error.type === 'CLIENT') {
-          return res
+          return void res
             .status(400)
             .json({ type: error.type, error: error.message });
         } else {
-          return res
+          return void res
             .status(500)
             .json({ type: error.type, error: error.message });
         }
       }
       if (error instanceof AxiosError) {
-        return res
+        return void res
           .status(500)
           .json({ type: 'AXIOS_ERROR', error: error.response?.data });
       }
-      return res.status(500).json({ type: 'UNKNOWN', error: error.message });
+      return void res
+        .status(500)
+        .json({ type: 'UNKNOWN', error: error.message });
     }
   };
 };
