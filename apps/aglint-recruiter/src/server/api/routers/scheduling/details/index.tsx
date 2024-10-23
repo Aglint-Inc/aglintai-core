@@ -15,7 +15,7 @@ export const scheduleDetailsSchema = z.object({
 const query = async ({
   input: { meeting_id },
 }: PrivateProcedure<typeof scheduleDetailsSchema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const { data: res } = await db
     .from('interview_meeting')
     .select(

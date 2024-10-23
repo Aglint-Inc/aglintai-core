@@ -13,7 +13,7 @@ const schema = z.object({
 });
 
 const mutation = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const response = (
     await db
       .from('public_jobs')

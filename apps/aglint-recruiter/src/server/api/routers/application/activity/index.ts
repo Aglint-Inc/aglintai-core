@@ -24,7 +24,7 @@ export const applicationActivity = privateProcedure
 const getApplicationActivity = async (
   ctx: PrivateProcedure<typeof applicationActivitySchema>,
 ) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const {
     input: { application_id },
   } = ctx;

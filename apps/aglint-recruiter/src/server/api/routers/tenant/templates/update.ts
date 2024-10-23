@@ -12,7 +12,7 @@ const schema = z.object({
 export const update = privateProcedure
   .input(schema)
   .mutation(async ({ ctx, input }) => {
-    const db = createPrivateClient();
+    const db = await createPrivateClient();
     const template = supabaseWrap(
       await db
         .from('company_email_template')

@@ -12,18 +12,17 @@ async function Layout({
   params: { request: string };
 }) {
   noStore();
+  const { request } = await params;
   void api.requests.utils.requestSessions.prefetch({
-    request_id: params.request,
+    request_id: request,
   });
   void api.requests.note.read.prefetch({
-    request_id: params.request,
+    request_id: request,
   });
   void api.requests.read.applicantRequest.prefetch({
-    request_id: params.request,
+    request_id: request,
   });
-  return (
-    <RequestProvider request_id={params.request}>{children}</RequestProvider>
-  );
+  return <RequestProvider request_id={request}>{children}</RequestProvider>;
 }
 
 export default Layout;

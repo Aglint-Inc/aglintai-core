@@ -1,28 +1,10 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-});
-
 const nextConfig = {
   reactStrictMode: false,
   eslint: {
     dirs: ['src'],
     ignoreDuringBuilds: true,
   },
-  // logging: {
-  //   fetches: {
-  //     fullUrl: true,
-  //   },
-  // },
-
-  // typescript: {
-  //   // !! WARN !!
-  //   // Dangerously allow production builds to successfully complete even if
-  //   // your project has type errors.
-  //   // !! WARN !!
-  //   ignoreBuildErrors: true,
-  // },
-
+  transpilePackages: ['@aglint-recruiter/shared-utils'],
   async rewrites() {
     return [
       {
@@ -94,7 +76,6 @@ const nextConfig = {
     ],
   },
   experimental: {
-    instrumentationHook: false,
     turbo: {
       rules: {
         '*.svg': {
@@ -102,12 +83,8 @@ const nextConfig = {
           as: '*.js',
         },
       },
-      loaders: {
-        // ... any custom loaders you want to use with Turbopack
-      },
     },
   },
-  transpilePackages: ['@aglint-recruiter/shared-utils'],
 };
 
-module.exports = withBundleAnalyzer(nextConfig);
+export default nextConfig;

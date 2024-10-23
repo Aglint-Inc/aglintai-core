@@ -7,7 +7,7 @@ import { Activity } from './_common/components/Activity';
 import CandidateInfo from './_common/components/CandidateInfo';
 import Requests from './_common/components/Requests';
 
-const Layout = ({
+const Layout = async ({
   children,
   params,
 }: {
@@ -17,20 +17,21 @@ const Layout = ({
   };
 }) => {
   noStore();
+  const { application } = await params;
   void api.application.application_details.prefetch({
-    application_id: params.application,
+    application_id: application,
   });
   void api.application.application_meta.prefetch({
-    application_id: params.application,
+    application_id: application,
   });
   void api.application.application_activity.prefetch({
-    application_id: params.application,
+    application_id: application,
   });
   void api.application.application_request.prefetch({
-    application_id: params.application,
+    application_id: application,
   });
   void api.application.interview_stages.prefetch({
-    application_id: params.application,
+    application_id: application,
   });
   void api.interview_pool.get_all.prefetch();
   return (

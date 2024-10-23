@@ -14,7 +14,7 @@ const schema = z.object({
 const mutation = async ({
   input: { relation_id },
 }: PrivateProcedure<typeof schema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   await db
     .from('interview_module_relation')
     .delete()

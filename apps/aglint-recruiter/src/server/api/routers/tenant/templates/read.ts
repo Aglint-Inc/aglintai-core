@@ -13,7 +13,7 @@ type EmailTemplate = DatabaseTable['company_email_template'] & {
   type: keyof typeof emailTemplateCopy;
 };
 const query = async ({ ctx }: PrivateProcedure) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const templates = supabaseWrap(
     await db
       .from('company_email_template')

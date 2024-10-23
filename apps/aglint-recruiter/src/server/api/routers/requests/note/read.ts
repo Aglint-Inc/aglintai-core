@@ -10,7 +10,7 @@ import { createPrivateClient } from '@/server/db';
 const schema = z.object({ request_id: z.string().uuid() });
 
 const query = async ({ input }: PrivateProcedure<typeof schema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
 
   const { data } = await db
     .from('request_note')

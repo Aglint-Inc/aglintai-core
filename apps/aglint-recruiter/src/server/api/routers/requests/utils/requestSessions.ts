@@ -24,7 +24,7 @@ export const requestSessions = privateProcedure.input(schema).query(query);
 export type RequestSessions = ProcedureDefinition<typeof requestSessions>;
 
 const fetchDetails = async (request_id: string) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
 
   const [resSessions] = await Promise.all([
     fetchSessionDetails({

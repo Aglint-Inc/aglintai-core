@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { createContext, type ReactNode, useContext } from 'react';
 
 import type { Hello } from '@/routers/example/helloWorld/hello';
@@ -19,7 +20,7 @@ export const useWorld = () => {
   return { handleWorld };
 };
 
-const _A = () => {
+const A = () => {
   const { data } = useHello();
   return (
     <>
@@ -47,14 +48,14 @@ const FooBarContext = createContext<
   ReturnType<typeof useFooBarContext> | undefined
 >(undefined);
 
-const _FooBarProvider = ({ children }: { children: ReactNode }) => {
+const FooBarProvider = ({ children }: { children: ReactNode }) => {
   const value = useFooBarContext();
   return (
     <FooBarContext.Provider value={value}>{children}</FooBarContext.Provider>
   );
 };
 
-const _useFooBar = () => {
+const useFooBar = () => {
   const value = useContext(FooBarContext);
   if (!value) throw new Error('useFooBar must be used within a FooBarProvider');
   return value;

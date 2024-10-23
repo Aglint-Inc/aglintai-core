@@ -51,7 +51,7 @@ const moveToInterview = async ({
   ctx,
   input,
 }: PrivateProcedure<typeof interviewSchema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const body = input.body;
   if (!body) {
     const { body: _body, applications, ...rest } = input;
@@ -113,7 +113,7 @@ const moveToNonInterview = async ({
   ctx,
   input,
 }: PrivateProcedure<typeof nonInterviewSchema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const { applications, ...rest } = input;
   const payload = applications.map((id) => ({
     id,

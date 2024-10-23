@@ -10,10 +10,10 @@ import { createPrivateClient } from '@/server/db';
 
 export const worldSchema = z.object({ worldId: z.string().uuid() });
 
-const mutation = ({
+const mutation = async ({
   input: { worldId },
 }: PrivateProcedure<typeof worldSchema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   if (db) {
     console.log(`World from the db: ${worldId}`);
   }

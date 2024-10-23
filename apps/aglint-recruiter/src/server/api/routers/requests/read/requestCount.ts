@@ -13,7 +13,7 @@ import { createPrivateClient } from '@/server/db';
 
 const query = async ({ ctx: { user_id } }: PrivateProcedure) => {
   const assigner_id = user_id;
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const [createdCompletedRequestCount, allRequestCount] =
     await Promise.allSettled([
       db.rpc('get_request_stats', {

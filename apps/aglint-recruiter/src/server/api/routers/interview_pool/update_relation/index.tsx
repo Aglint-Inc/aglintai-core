@@ -16,7 +16,7 @@ const mutation = async ({
   input,
   ctx: { recruiter_id },
 }: PrivateProcedure<typeof schema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
 
   await db
     .from('interview_module_relation')

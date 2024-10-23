@@ -15,7 +15,7 @@ const feedbackPoolSchema = z.object({
 const query = async ({
   input: { module_id },
 }: PrivateProcedure<typeof feedbackPoolSchema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const response = (
     (
       await db

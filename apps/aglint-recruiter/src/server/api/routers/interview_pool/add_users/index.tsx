@@ -73,7 +73,7 @@ export const updateRelations = async (
   archivedRelations: z.infer<typeof schema>['relations'],
   training_status: DatabaseTable['interview_module_relation']['training_status'],
 ) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const upsertRelations: DatabaseTableInsert['interview_module_relation'][] =
     archivedRelations.map((user) => ({
       id: user.id,
@@ -102,7 +102,7 @@ export const addMemberbyUserIds = async ({
   number_of_reverse_shadow: number;
   number_of_shadow: number;
 }) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const interviewModRelations: DatabaseTableInsert['interview_module_relation'][] =
     user_ids.map((user_id) => ({
       user_id: user_id,

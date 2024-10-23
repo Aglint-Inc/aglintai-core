@@ -15,7 +15,7 @@ const schema = z.object({
 });
 
 const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const job = (
     await db
       .from('job_view')

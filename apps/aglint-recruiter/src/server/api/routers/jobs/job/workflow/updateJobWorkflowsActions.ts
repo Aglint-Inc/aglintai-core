@@ -17,7 +17,7 @@ const schema = z.object({
   deleted_actions: z.array(z.string()),
 });
 const mutation = async ({ input }: PrivateProcedure<typeof schema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
 
   const updated_workflows: DatabaseTableUpdate['workflow'][] = input.workflows;
   const updated_workflow_actions: DatabaseTableUpdate['workflow_action'][] =

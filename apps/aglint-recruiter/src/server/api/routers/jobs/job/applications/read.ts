@@ -90,7 +90,7 @@ export const schema = z.object({
 const pageSize = 29;
 
 const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const cursor = input?.cursor ?? 0;
   const query = db
     .from('application_view')

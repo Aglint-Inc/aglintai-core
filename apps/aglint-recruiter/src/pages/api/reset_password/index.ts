@@ -101,7 +101,7 @@ export const server_checkUserRolePermissions = async ({
 }: {
   roles: DatabaseEnums['user_roles'][];
 }) => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   try {
     const supabase = createServerClient<DB>(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -178,7 +178,7 @@ export const server_checkUserRolePermissions = async ({
  * - Handle any errors thrown by the function or returned from the asynchronous operations.
  */
 export const server_getUserRoleAndId = async () => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   try {
     const supabase = createServerClient<DB>(
       process.env.NEXT_PUBLIC_SUPABASE_URL,

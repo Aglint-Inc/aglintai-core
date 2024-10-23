@@ -16,7 +16,7 @@ const schedulesPoolSchema = z.object({
 const query = async ({
   input: { module_id, filter },
 }: PrivateProcedure<typeof schedulesPoolSchema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const query = schedulesSupabase(db)
     .eq('module_id', module_id)
     .eq('meeting_interviewers.is_confirmed', true);

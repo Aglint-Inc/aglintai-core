@@ -10,7 +10,7 @@ import { createPrivateClient } from '@/server/db';
 const schema = z.object({ job_id: z.string().uuid() });
 
 const query = async ({ input }: PrivateProcedure<typeof schema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   return (
     await db
       .rpc('getlocationspool', { jobid: input.job_id })

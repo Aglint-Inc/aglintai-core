@@ -26,7 +26,7 @@ export type ApplicationDetails = ProcedureDefinition<typeof applicationDetails>;
 const getApplicationDetails = async (
   ctx: PrivateProcedure<typeof applicationDetailsSchema>,
 ) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const {
     input: { application_id },
   } = ctx;

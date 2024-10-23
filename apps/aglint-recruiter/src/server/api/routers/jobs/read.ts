@@ -10,7 +10,7 @@ import { createPrivateClient } from '@/server/db';
 import { getBanners } from './common/getBanners';
 
 const query = async ({ ctx }: PrivateProcedure) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const jobs = (
     await db
       .from('job_view')

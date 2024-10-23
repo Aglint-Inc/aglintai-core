@@ -7,7 +7,7 @@ import {
 } from '../../trpc';
 
 const query = async ({ ctx: { recruiter_id } }: PrivateProcedure) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   return (
     await db
       .from('departments')

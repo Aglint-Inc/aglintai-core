@@ -15,7 +15,7 @@ const schema = z.object({
 const query = async ({
   input: { module_id, selected_user_id },
 }: PrivateProcedure<typeof schema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const [meetDet, meetInt] = await Promise.all([
     db
       .from('meeting_details')
