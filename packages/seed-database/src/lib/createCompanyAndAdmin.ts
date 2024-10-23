@@ -3,6 +3,7 @@ import { departments } from '../data/departments';
 import { office_locations } from '../data/locations';
 import { getSupabaseServer } from '../supabaseAdmin';
 import dotenv from 'dotenv';
+import { test_company } from '../data/test_company';
 dotenv.config();
 const supabaseAdmin = getSupabaseServer();
 
@@ -30,6 +31,7 @@ export const createCompanyAndAdmin = async () => {
     supabaseAdmin
   );
   console.log('Created Test Company', recruiter_user.email);
+  await updateCompanyDetails(recruiter.id);
   const departments = await addDepartments(recruiter.id);
   const locations = await addLocations(recruiter.id);
   return { recruiter_user, recruiter, departments, locations };
@@ -55,6 +57,16 @@ const addLocations = async (recruiter_id: string) => {
   );
   console.log('Added locations');
   return locations;
+};
+
+const updateCompanyDetails = async (recruiter_id: string) => {
+  supabaseWrap(
+    await supabaseAdmin
+      .from('recruiter')
+      .update(test_company)
+      .eq('id', recruiter_id)
+  );
+  console.log('Updated company details');
 };
 
 export const addVaultSecrets = async () => {
