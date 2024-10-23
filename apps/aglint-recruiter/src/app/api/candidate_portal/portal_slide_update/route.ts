@@ -10,7 +10,7 @@ export async function POST(req: Request) {
   if (!permissions.find((p) => p === 'company_settings_module'))
     throw new Error('Permission denied!');
 
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
 
   const formData = await req.formData();
 
@@ -62,7 +62,7 @@ export async function POST(req: Request) {
 }
 
 const authorize = async () => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
 
   let user_id: string | null = null;
 

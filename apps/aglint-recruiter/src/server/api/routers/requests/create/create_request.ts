@@ -36,7 +36,7 @@ const mutation = async ({
   ctx,
   input,
 }: PrivateProcedure<typeof createRequestSchema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const data =
     (
       await db

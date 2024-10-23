@@ -5,7 +5,7 @@ import type {
   EmailTemplateAPi,
 } from '@aglint/shared-types';
 import { replaceAll } from '../replaceAll';
-import { convert } from 'html-to-text';
+import { parse } from 'node-html-parser';
 
 export const fillCompEmailTemplate = <
   T extends DatabaseEnums['email_slack_types'],
@@ -28,7 +28,7 @@ export const fillCompEmailTemplate = <
       dynamic_fields[String(key)]
     );
 
-    updated_template.subject = convert(updated_template.subject);
+    updated_template.subject = htmlToText(updated_template.subject);
     updated_template.subject = replaceAll(
       updated_template.subject,
       `{{${key}}}`,
@@ -42,4 +42,9 @@ export const fillCompEmailTemplate = <
   }
 
   return updated_template;
+};
+
+const htmlToText = (html: string) => {
+  const text = parse(html).text;
+  return text;
 };

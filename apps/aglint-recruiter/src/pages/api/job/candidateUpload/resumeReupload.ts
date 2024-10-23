@@ -33,7 +33,7 @@ const handler = async (
       [key]: decodeURIComponent(value as string),
     })),
   ) as ResumeReuploadApi['request']['params'];
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const result = await uploadResume(supabase, readStream, contentType)
     .then(({ file_url, candidate_file_id }) =>

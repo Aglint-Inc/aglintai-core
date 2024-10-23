@@ -16,7 +16,7 @@ export const interviewPoolUsersSchema = z.object({
 const query = async ({
   input: { module_id },
 }: PrivateProcedure<typeof interviewPoolUsersSchema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const { data: dataModule } = await db
     .from('interview_module')
     .select(

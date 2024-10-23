@@ -36,7 +36,7 @@ const schema = z.object({
 }) satisfies Input;
 
 const query = async ({ input }: PrivateProcedure<typeof schema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   return (
     await db
       .from('candidate_request_availability')

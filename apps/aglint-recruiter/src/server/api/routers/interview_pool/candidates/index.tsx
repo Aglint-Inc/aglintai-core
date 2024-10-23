@@ -15,7 +15,7 @@ export const candidatesModuleSchema = z.object({
 const query = async ({
   input: { module_id },
 }: PrivateProcedure<typeof candidatesModuleSchema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const response = (
     (
       await db

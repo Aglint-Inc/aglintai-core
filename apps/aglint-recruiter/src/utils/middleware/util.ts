@@ -9,7 +9,7 @@ export const server_check_permissions = async ({
 }) => {
   try {
     if (!permissions?.length) throw new Error('Permission not provided.');
-    const supabase = createClient();
+    const supabase = await createClient();
     const { data } = await supabase.auth.getSession();
     const user_id = data?.session?.user.id;
     if (!user_id) throw new Error('User unauthenticated');

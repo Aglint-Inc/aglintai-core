@@ -12,7 +12,7 @@ export const interviewerSchema = z.object({ recruiter_id: z.string().uuid() });
 const query = async ({
   input: { recruiter_id },
 }: PrivateProcedure<typeof interviewerSchema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const data = (
     await db
       .from('all_interviewers')

@@ -13,7 +13,7 @@ const mutation = async ({
   input: { id, ...payload },
   ctx,
 }: PrivateProcedure<typeof schema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   return await db
     .from('public_jobs')
     .update(payload)

@@ -25,9 +25,7 @@ export const CandidatePortalContext = createContext<
   ReturnType<typeof useCandidatePortalContext> | undefined
 >(undefined);
 
-export const CandidatePortalProvider = async ({
-  children,
-}: PropsWithChildren) => {
+export const CandidatePortalProvider = ({ children }: PropsWithChildren) => {
   const [isLoading, setIsLoading] = useState(true);
   const { queryParams } = useRouterPro();
   const application_id = queryParams?.application_id as string;

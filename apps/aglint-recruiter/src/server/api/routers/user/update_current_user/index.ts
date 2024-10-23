@@ -11,7 +11,7 @@ const mutation = async ({
   input,
   ctx,
 }: PrivateProcedure<typeof customRecruiterUserUpdateSchema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   await db
     .from('recruiter_user')
     .update({ ...input })
