@@ -1,8 +1,7 @@
-'use client';
-
 import InterviewTypeDetail from './_common/components';
 
-function Page({ params: { pool } }: { params: { pool: string } }) {
+async function Page({ params }: { params: { pool: string } }) {
+  const { pool } = await params;
   return <InterviewTypeDetail module_id={pool} />;
 }
 

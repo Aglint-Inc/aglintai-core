@@ -55,7 +55,7 @@ function InterviewTabContent() {
   }
   if (isLoading || isLoadingDetails)
     return (
-      <div className='flex flex-row gap-4'>
+      <div className='grid grid-cols-[0.4fr_1fr] gap-4 px-4 pt-2'>
         <div className='flex min-w-[320px] flex-col space-y-4'>
           {Array.from({ length: 3 }).map((_, index) => (
             <Skeleton key={index} className='h-[70px] w-full' />

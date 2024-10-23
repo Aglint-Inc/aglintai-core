@@ -44,7 +44,7 @@ function DialogSchedule() {
     sessions,
     handleCreateRequest,
   } = useScheduleRequest();
-  const { data: members } = useMemberList();
+  const { data: members } = useMemberList(false, true);
   const { data: meta } = useApplicationMeta();
 
   const candidate = meta;

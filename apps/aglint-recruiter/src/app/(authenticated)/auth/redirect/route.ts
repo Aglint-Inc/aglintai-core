@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { getRecruiterUser, handleRedirect } from 'src/app/_common/utils/auth';
 
 import { createClient } from '@/utils/supabase/server';
+import { verifyToken } from '@/utils/supabase/verifyToken';
 
 export const dynamic = 'force-dynamic';
 
@@ -9,14 +10,10 @@ export async function GET(request: Request) {
   const { origin } = new URL(request.url);
 
   const supabase = await createClient();
-  const { error, data } = await supabase.auth.getSession();
-  const user_id = data?.session?.user.id;
+  const json = await verifyToken(supabase);
+  const user_id = json?.user.id;
 
-  if (error) {
-    return NextResponse.redirect(`${origin}/login`);
-  }
-
-  if (user_id && data?.session) {
+  if (user_id) {
     const relations = await getRecruiterUser(user_id, supabase);
 
     if (relations && relations[0].recruiter_user?.status === 'invited') {
@@ -29,7 +26,7 @@ export async function GET(request: Request) {
     if (relations) {
       const url = await handleRedirect({
         relations,
-        session: data.session,
+        session: json,
         supabase,
         origin,
       });

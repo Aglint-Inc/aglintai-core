@@ -13,6 +13,8 @@ import type { ProcedureBuilder } from '@trpc/server/unstable-core-do-not-import'
 import superjson from 'superjson';
 import { type TypeOf, ZodError, type ZodSchema } from 'zod';
 
+import { verifyToken } from '@/utils/supabase/verifyToken';
+
 import { createPrivateClient, createPublicClient } from '../db';
 import { authorize } from '../utils';
 import { getDecryptKey } from './routers/ats/greenhouse/util';
@@ -179,14 +181,16 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
 /**
  *  @see https://stackoverflow.com/questions/3297048/403-forbidden-vs-401-unauthorized-http-responses
  */
+
 const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
   const db = await createPrivateClient();
 
   let user_id: string | null = null;
 
-  if (process.env.NODE_ENV === 'development')
-    user_id = (await db.auth.getSession())?.data?.session?.user?.id ?? null;
-  else user_id = (await db.auth.getUser()).data.user?.id ?? null;
+  if (process.env.NODE_ENV === 'development') {
+    const jsonData = await verifyToken(db);
+    user_id = jsonData?.user?.id ?? null;
+  } else user_id = (await db.auth.getUser()).data.user?.id ?? null;
 
   if (!user_id)
     throw new TRPCError({

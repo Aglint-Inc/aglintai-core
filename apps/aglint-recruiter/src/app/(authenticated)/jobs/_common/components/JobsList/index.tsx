@@ -1,13 +1,6 @@
 import { EmptyState } from '@components/empty-state';
 import { Button } from '@components/ui/button';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@components/ui/table';
+import { Table, TableBody, TableCell, TableRow } from '@components/ui/table';
 import {
   Tooltip,
   TooltipContent,
@@ -83,15 +76,15 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
 
   return (
     <Table>
-      <TableHeader className='bg-muted'>
-        <TableHead className='py-3 font-semibold'>Job Title</TableHead>
-        <TableHead className='py-3 font-semibold'>Location</TableHead>
-        <TableHead className='py-3 font-semibold'>Candidates</TableHead>
-        <TableHead className='py-3 font-semibold'>Posted</TableHead>
-        <TableHead className='py-3 font-semibold'>Status</TableHead>
-        <TableHead className='w-[80px] text-right'>Actions</TableHead>
-      </TableHeader>
       <TableBody>
+        <TableRow className='bg-muted'>
+          <TableCell className='py-3 font-semibold'>Job Title</TableCell>
+          <TableCell className='py-3 font-semibold'>Location</TableCell>
+          <TableCell className='py-3 font-semibold'>Candidates</TableCell>
+          <TableCell className='py-3 font-semibold'>Posted</TableCell>
+          <TableCell className='py-3 font-semibold'>Status</TableCell>
+          <TableCell className='w-[80px] text-right'>Actions</TableCell>
+        </TableRow>
         {jobs?.map((job) => (
           <TableRow
             key={job.id}
