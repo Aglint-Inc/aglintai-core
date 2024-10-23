@@ -42,6 +42,7 @@ export const scheduleSingleRequest = async ({
       out_of_office: true,
       out_of_working_hrs: true,
       show_soft_conflicts: true,
+      day_passed: true,
     },
     cand_start_time: 0,
     cand_end_time: 24,
@@ -54,6 +55,13 @@ export const scheduleSingleRequest = async ({
   await reqProgressLogger({
     status: 'completed',
     is_progress_step: false,
+  });
+  await reqProgressLogger({
+    status: 'completed',
+    is_progress_step: true,
+    meta: {
+      filter_json_id: filter_json.id,
+    },
   });
 
   await cand_schedule.fetchDetails({
@@ -70,6 +78,7 @@ export const scheduleSingleRequest = async ({
   }
 
   const multiday_plans = cand_schedule.findCandSlotForTheDay();
+  // TODO: do this for multiple days
   if (multiday_plans[0].plans.length === 0) {
     throw new Error('No plans found');
   }

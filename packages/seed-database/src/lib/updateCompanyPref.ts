@@ -6,7 +6,15 @@ export const updateCompanyPref = async (
   company_id: string,
   pref: Pick<
     DatabaseTable['recruiter_preferences'],
-    'scheduling' | 'slack' | 'workflow' | 'onboard_complete'
+    | 'scheduling'
+    | 'slack'
+    | 'workflow'
+    | 'onboard_complete'
+    | 'request'
+    | 'reports'
+    | 'integrations'
+    | 'scoring'
+    | 'roles'
   >
 ) => {
   const supabaseAdmin = getSupabaseServer();

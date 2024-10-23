@@ -34,6 +34,11 @@ const main = async () => {
     slack: true,
     workflow: true,
     onboard_complete: true,
+    request: true,
+    reports: true,
+    integrations: true,
+    scoring: true,
+    roles: true,
   });
 
   const team = await createCompanyTeam({
