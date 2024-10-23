@@ -93,7 +93,7 @@ function MyInterviews() {
                       (meetingDetails, i) => {
                         return (
                           <ScheduleMeetingCard
-                          isSmall={true}
+                            isSmall={true}
                             key={i}
                             meetingDetails={meetingDetails}
                           />

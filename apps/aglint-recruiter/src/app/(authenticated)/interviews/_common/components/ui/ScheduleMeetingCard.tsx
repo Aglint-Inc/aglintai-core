@@ -68,41 +68,37 @@ function ScheduleMeetingCard({
                   />
                   {interviewers.map((user) => {
                     return (
-                      <>
-                        <InterviewerUserDetail
-                          key={user.email}
-                          interview_meeting={{
-                            end_time: meetingDetails.end_time,
-                            start_time: meetingDetails.start_time,
-                            status: meetingDetails?.status ?? 'not_scheduled',
-                          }}
-                          accepted_status={
-                            user?.accepted_status ?? 'request_reschedule'
-                          }
-                          cancelReason={
-                            user.cancel_reasons?.find(
-                              (can) =>
-                                can.session_relation_id ===
-                                user.session_relation_id,
-                            ) ?? null
-                          }
-                          userDetails={{
-                            first_name: user?.first_name ?? '',
-                            last_name: user?.last_name ?? '',
-                            user_id: user?.user_id ?? '',
-                            position: user?.position ?? '',
-                            profile_image: user?.profile_image ?? '',
-                          }}
-                          interviewerTimeZone={user?.tz_code ?? ''}
-                          isCalendarConnected={true}
-                          isPaused={false}
-                          pause_json={null}
-                          trainingType={user.training_type}
-                          interviewerType={
-                            user?.interviewer_type ?? 'qualified'
-                          }
-                        />
-                      </>
+                      <InterviewerUserDetail
+                        key={user.email}
+                        interview_meeting={{
+                          end_time: meetingDetails.end_time,
+                          start_time: meetingDetails.start_time,
+                          status: meetingDetails?.status ?? 'not_scheduled',
+                        }}
+                        accepted_status={
+                          user?.accepted_status ?? 'request_reschedule'
+                        }
+                        cancelReason={
+                          user.cancel_reasons?.find(
+                            (can) =>
+                              can.session_relation_id ===
+                              user.session_relation_id,
+                          ) ?? null
+                        }
+                        userDetails={{
+                          first_name: user?.first_name ?? '',
+                          last_name: user?.last_name ?? '',
+                          user_id: user?.user_id ?? '',
+                          position: user?.position ?? '',
+                          profile_image: user?.profile_image ?? '',
+                        }}
+                        interviewerTimeZone={user?.tz_code ?? ''}
+                        isCalendarConnected={true}
+                        isPaused={false}
+                        pause_json={null}
+                        trainingType={user.training_type}
+                        interviewerType={user?.interviewer_type ?? 'qualified'}
+                      />
                     );
                   })}
                 </div>

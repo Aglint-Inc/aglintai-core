@@ -30,14 +30,12 @@ function ScheduleMeetingList({
                 <CalendarClock size={5} />
               )
             }
-            slotMyScheduleSubCard={schedules.map((meetingDetails, i) => {
+            slotMyScheduleSubCard={schedules.map((meetingDetails, ind) => {
               return (
-                <>
-                  <ScheduleMeetingCard
-                    key={i}
-                    meetingDetails={meetingDetails}
-                  />
-                </>
+                <ScheduleMeetingCard
+                  key={meetingDetails.id + ind}
+                  meetingDetails={meetingDetails}
+                />
               );
             })}
           />

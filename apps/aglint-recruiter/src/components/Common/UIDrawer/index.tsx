@@ -5,6 +5,7 @@ import {
   SheetContent,
   SheetFooter,
   SheetHeader,
+  SheetTitle,
 } from '@components/ui/sheet';
 import { X as CloseIcon } from 'lucide-react';
 import React from 'react';
@@ -39,6 +40,7 @@ function UIDrawer({
 
   return (
     <Sheet open={open} onOpenChange={() => onClose()}>
+      <SheetTitle className='hidden'></SheetTitle>
       <SheetContent side='right' className={`p-0 ${widthClass} border-border`}>
         <div className='flex w-full flex-row'>
           {calendar}
