@@ -13,10 +13,11 @@ export const scheduleRequests = async ({
   >['allRequests'];
   company_id: string;
 }) => {
-  for (const req of allRequests) {
+  for (let idx = 0; idx < allRequests.length; idx++) {
+    const req = allRequests[idx];
     const random_num = Math.floor(Math.random() * 7);
     try {
-      console.log('scheduling request', req.title);
+      console.log('scheduling request', `${(idx + 1) / allRequests.length}`);
       await scheduleSingleRequest({
         request: req,
         dateRange: {
