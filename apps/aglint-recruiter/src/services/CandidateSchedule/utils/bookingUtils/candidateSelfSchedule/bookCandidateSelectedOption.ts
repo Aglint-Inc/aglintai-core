@@ -21,7 +21,7 @@ import { updateMeetingEventDetails } from '../updateMeetingInfo';
 import { updateTrainingStatus } from '../updateTrainingStatus';
 
 export const bookCandidateSelectedOption = async (
-  parsed_body: CandidateDirectBookingType,
+  parsed_body: Pick<CandidateDirectBookingType, 'cand_tz' | 'filter_id'>,
   cand_schedule_db_details: ScheduleApiDetails,
   verified_slot: PlanCombinationRespType,
   fetched_cand_details: FetchDBScheduleDetails,

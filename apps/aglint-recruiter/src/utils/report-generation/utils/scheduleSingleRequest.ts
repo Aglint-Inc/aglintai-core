@@ -6,16 +6,26 @@ import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { type getJobScheduleRequests } from './getJobScheduleRequests';
 const supabaseAdmin = getSupabaseServer();
-
-export const scheduleSingleRequest = async (
-  request: Awaited<ReturnType<typeof getJobScheduleRequests>>['allRequests'][0],
-) => {
+const candidate_tz = 'Asia/Kolkata';
+export const scheduleSingleRequest = async ({
+  request,
+  dateRange,
+  company_id,
+}: {
+  request: Awaited<ReturnType<typeof getJobScheduleRequests>>['allRequests'][0];
+  dateRange: {
+    start_date: string;
+    end_date: string;
+  };
+  company_id: string;
+}) => {
+  const session_ids = request.request_relation.map((reln) => reln.session_id!);
   const filter_json = await createFilterJson({
     application_id: request.application_id,
     supabase: supabaseAdmin,
     dateRange: {
-      start_date: '',
-      end_date: '',
+      start_date: dateRange.start_date,
+      end_date: dateRange.end_date,
     },
     organizer_name: '',
     sessions_ids: request.request_relation.map((reln) => reln.session_id!),
@@ -36,21 +46,28 @@ export const scheduleSingleRequest = async (
   await cand_schedule.fetchDetails({
     params: {
       req_user_tz: candidate_tz,
-      end_date_str: end_date_str,
+      end_date_str: dateRange.end_date,
       company_id: company_id,
       session_ids: session_ids,
-      start_date_str: start_date_str,
+      start_date_str: dateRange.start_date,
     },
   });
+  if (!cand_schedule.db_details) {
+    throw new Error('No db details found');
+  }
 
+  const multiday_plans = cand_schedule.findCandSlotForTheDay();
+  if (multiday_plans[0].plans.length === 0) {
+    throw new Error('No plans found');
+  }
   await bookCandidateSelectedOption(
     {
-      cand_tz: request.applications.candidate_tz,
+      cand_tz: candidate_tz,
       filter_id: filter_json.id,
-      selected_plan: [],
     },
     cand_schedule.db_details,
-    [],
+    multiday_plans[0].plans[0],
     fetchedDetails,
   );
+  console.info('booked request', request.title);
 };
