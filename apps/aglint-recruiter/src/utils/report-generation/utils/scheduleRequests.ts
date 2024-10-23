@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { dayjsLocal } from '@aglint/shared-utils';
 
 import { type getJobScheduleRequests } from './getJobScheduleRequests';
@@ -15,6 +16,7 @@ export const scheduleRequests = async ({
   for (const req of allRequests) {
     const random_num = Math.floor(Math.random() * 7);
     try {
+      console.log('scheduling request', req.title);
       await scheduleSingleRequest({
         request: req,
         dateRange: {
@@ -25,6 +27,7 @@ export const scheduleRequests = async ({
         },
         company_id,
       });
+      console.log('scheduled');
     } catch (error) {
       console.error(req.title);
       console.error('Failed to schedule request', req.id);

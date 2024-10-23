@@ -68,6 +68,7 @@ const fetchMeetingInts = async (session_ids: string[]) => {
       .select()
       .in('session_id', session_ids)
       .eq('is_confirmed', true),
+    false,
   );
   return meetings;
 };
