@@ -1,4 +1,6 @@
+'use client';
 import { ScrollArea } from '@components/ui/scroll-area';
+import { useSearchParams } from 'next/navigation';
 
 import CandidateDropoutFunnelReport from './_common/components/CandidateMetrics';
 import Checklist from './_common/components/InterviewerChecklist/Checklist';
@@ -7,12 +9,12 @@ import InterviewCount from './_common/components/InterviewMetrics';
 import JobMetrics from './_common/components/jobMetrics';
 import SchedulingReports from './_common/components/scheduling';
 
-const Analytics = async ({
-  searchParams,
-}: {
-  searchParams: { tab: string };
-}) => {
-  const { tab: activeTab } = await searchParams;
+const Analytics = () => {
+  const searchParams = useSearchParams();
+  const activeTab = searchParams
+    ? searchParams.get('tab') || 'interviewMetrics'
+    : 'interviewMetrics';
+
   return (
     <ScrollArea className='h-[calc(100vh-180px)] px-4'>
       {activeTab === 'interviewMetrics' && <InterviewCount />}
