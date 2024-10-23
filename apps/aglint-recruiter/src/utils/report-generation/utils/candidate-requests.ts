@@ -7,8 +7,7 @@ import {
   seed_candidate_interview_cancel_reason,
   seed_candidate_interview_reschedule_reason,
 } from '../constant';
-
-type MeetingDetail = {
+export type MeetingDetail = {
   session_id: string;
   application_id: string;
   meeting_schedule_start_time: string;

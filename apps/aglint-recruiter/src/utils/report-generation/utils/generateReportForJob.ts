@@ -1,3 +1,4 @@
+import { type DatabaseView } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
@@ -6,17 +7,18 @@ import { report_gen_Params } from '../constant';
 import {
   createCandidateInterviewCancelReq,
   createCandidateInterviewRescheduleRequest,
+  type MeetingDetail,
 } from './candidate-requests';
 import { getJobScheduleRequests } from './getJobScheduleRequests';
-import { scheduleRequests } from './scheduleRequests';
+import { createInterviewDeclineRequest } from './interviewer-decline';
 
 export const generateReportForJob = async (job_id: string) => {
   const { allRequests, job_details } = await getJobScheduleRequests(job_id);
-  // const to_do_requests = allRequests.filter((app) => app.status === 'to_do');
-  // await scheduleRequests({
-  //   allRequests: to_do_requests,
-  //   company_id: job_details.recruiter_id,
-  // });
+  const to_do_requests = allRequests.filter((app) => app.status === 'to_do');
+  await scheduleRequests({
+    allRequests: to_do_requests,
+    company_id: job_details.recruiter_id,
+  });
   const application_ids = allRequests
     .filter((req) => req.status !== 'to_do')
     .map((app) => app.application_id);
@@ -37,12 +39,9 @@ export const generateReportForJob = async (job_id: string) => {
   );
 
   await createCandidateInterviewCancelReq(
-    meeting_details.slice(0, candidate_cancel_meetings_cnt).map((m) => ({
-      session_id: m.session_id,
-      application_id: m.application_id,
-      meeting_schedule_start_time: m.start_time!,
-      meeting_schedule_end_time: m.end_time!,
-    })),
+    meeting_details
+      .slice(0, candidate_cancel_meetings_cnt)
+      .map(mapMeetingDetailsToMeetingDetail),
   );
   await createCandidateInterviewRescheduleRequest(
     meeting_details
@@ -50,12 +49,17 @@ export const generateReportForJob = async (job_id: string) => {
         candidate_cancel_meetings_cnt,
         candidate_cancel_meetings_cnt + candidate_reschedule_meetings_cnt,
       )
-      .map((m) => ({
-        session_id: m.session_id,
-        application_id: m.application_id,
-        meeting_schedule_start_time: m.start_time!,
-        meeting_schedule_end_time: m.end_time!,
-      })),
+      .map(mapMeetingDetailsToMeetingDetail),
+  );
+  await createInterviewDeclineRequest(
+    meeting_details
+      .slice(
+        candidate_cancel_meetings_cnt + candidate_reschedule_meetings_cnt,
+        candidate_cancel_meetings_cnt +
+          candidate_reschedule_meetings_cnt +
+          interviewer_decline_meetings_cnt,
+      )
+      .map(mapMeetingDetailsToMeetingDetail),
   );
 };
 
@@ -70,4 +74,16 @@ const getAllMeetingDetails = async (application_ids: string[]) => {
     false,
   );
   return meeting_details;
+};
+
+const mapMeetingDetailsToMeetingDetail = (
+  meeting_detail: DatabaseView['meeting_details'],
+) => {
+  const meeting_detail_map: MeetingDetail = {
+    session_id: meeting_detail.session_id,
+    application_id: meeting_detail.application_id,
+    meeting_schedule_start_time: meeting_detail.start_time!,
+    meeting_schedule_end_time: meeting_detail.end_time!,
+  };
+  return meeting_detail_map;
 };
