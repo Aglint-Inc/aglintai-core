@@ -18,7 +18,7 @@ const scheduleRequests = async ({
   >['allRequests'];
   company_id: string;
 }) => {
-  const promises = allRequests.map(
+  const promises = allRequests.slice(0, 1).map(
     async (req) =>
       await scheduleSingleRequest({
         request: req,

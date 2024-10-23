@@ -23,7 +23,9 @@ export const getJobScheduleRequests = async (job_id: string) => {
     await supabaseAdmin
       .from('request')
       .select('*,applications(*, public_jobs(*)),request_relation(*)')
-      .eq('applications.job_id', job_id),
+      .eq('applications.job_id', job_id)
+      .eq('status', 'to_do')
+      .or(`type.eq.${'schedule_request'},type.eq.${'reschedule_request'}`),
   );
   return { job_details, recruiter_details, allRequests };
 };

@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+import { createRequestProgressLogger } from '@aglint/shared-utils';
+
 import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 import { bookCandidateSelectedOption } from '@/services/CandidateSchedule/utils/bookingUtils/candidateSelfSchedule/bookCandidateSelectedOption';
 import { fetchDBScheduleDetails } from '@/services/CandidateSchedule/utils/bookingUtils/dbFetch/fetchDBScheduleDetails';
@@ -43,6 +46,16 @@ export const scheduleSingleRequest = async ({
     cand_start_time: 0,
     cand_end_time: 24,
   });
+  const reqProgressLogger = createRequestProgressLogger({
+    supabaseAdmin,
+    request_id: request.id,
+    event_type: 'SELF_SCHEDULE_LINK',
+  });
+  await reqProgressLogger({
+    status: 'completed',
+    is_progress_step: false,
+  });
+
   await cand_schedule.fetchDetails({
     params: {
       req_user_tz: candidate_tz,
@@ -69,5 +82,5 @@ export const scheduleSingleRequest = async ({
     multiday_plans[0].plans[0],
     fetchedDetails,
   );
-  console.info('booked request', request.title);
+  console.log('booked request', request.title);
 };
