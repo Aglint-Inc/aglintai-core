@@ -12,7 +12,7 @@ export const server_check_permissions = async ({
     if (!permissions?.length) throw new Error('Permission not provided.');
     const supabase = await createClient();
     const jsonDetail = await verifyToken(supabase);
-    const user_id = jsonDetail.user.id;
+    const user_id = jsonDetail?.user?.id;
 
     if (!user_id) throw new Error('User unauthenticated');
 

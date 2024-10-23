@@ -5,6 +5,7 @@ import { trpcPublicRoutes } from './server/utils';
 import { server_check_permissions } from './utils/middleware/util';
 import { allowedPaths, dynamicPublicRoutes } from './utils/paths/allowed';
 import PERMISSIONS from './utils/routing/permissions';
+import { verifyToken } from './utils/supabase/verifyToken';
 
 const corsOptions = {
   'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
@@ -41,14 +42,13 @@ export async function middleware(req: NextRequest) {
     dynamicPublicRoutes.some((regex) => regex.test(path));
 
   const supabase = await createPrivateClient();
-  const { data, error } = await supabase.auth.getSession();
-  if (error) return NextResponse.redirect(new URL('/login', req.nextUrl));
+  const session = await verifyToken(supabase);
 
   if (isPublicRoute) {
-    if (data.session && path === '/login')
+    if (session?.user && path === '/login')
       return NextResponse.redirect(new URL('/jobs', req.nextUrl));
   } else {
-    if (!data.session)
+    if (!session?.user)
       return NextResponse.redirect(new URL('/login', req.nextUrl));
   }
   const response = NextResponse.next();
