@@ -5,8 +5,20 @@ import { generateReportForJob } from './utils/generateReportForJob';
 
 const supabaseAdmin = getSupabaseServer();
 export const reportGenerate = async () => {
-  const { allJobs } = await getAllJobs('acbfe870-64bc-4dcd-9671-0ae240daffb2');
+  const company = await getTestCompanyDetails();
+  const { allJobs } = await getAllJobs(company.id);
   await generateReportForJob(allJobs[0].id);
+};
+
+const getTestCompanyDetails = async () => {
+  const company = supabaseWrap(
+    await supabaseAdmin
+      .from('recruiter')
+      .select('*,primary_admin!inner(*)')
+      .eq('primary_admin.email', 'dileep@aglinthq.com')
+      .single(),
+  );
+  return company;
 };
 
 const getAllJobs = async (recruiter_id: string) => {

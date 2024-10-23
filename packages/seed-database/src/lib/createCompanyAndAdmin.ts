@@ -2,13 +2,15 @@ import { signupCompanyAdmin, supabaseWrap } from '@aglint/shared-utils';
 import { departments } from '../data/departments';
 import { office_locations } from '../data/locations';
 import { getSupabaseServer } from '../supabaseAdmin';
-import { testUsers } from '../data/users';
+import dotenv from 'dotenv';
+dotenv.config();
+const supabaseAdmin = getSupabaseServer();
+
 const testUser = {
   email: 'dileep@aglinthq.com',
   password: 'Welcome@123',
 };
 export const createCompanyAndAdmin = async () => {
-  const supabaseAdmin = getSupabaseServer();
   const { data: adminUser, error } = await supabaseAdmin.auth.admin.createUser({
     email: testUser.email,
     password: testUser.password,
@@ -36,8 +38,6 @@ export const createCompanyAndAdmin = async () => {
 };
 
 const addDepartments = async (recruiter_id: string) => {
-  const supabaseAdmin = getSupabaseServer();
-
   const deps = supabaseWrap(
     await supabaseAdmin
       .from('departments')
@@ -48,8 +48,6 @@ const addDepartments = async (recruiter_id: string) => {
 };
 
 const addLocations = async (recruiter_id: string) => {
-  const supabaseAdmin = getSupabaseServer();
-
   const locations = supabaseWrap(
     await supabaseAdmin
       .from('office_locations')
@@ -59,59 +57,52 @@ const addLocations = async (recruiter_id: string) => {
   return locations;
 };
 
-// Delete all company data
-
-export const deleteAllCompanyData = async () => {
-  const supabaseAdmin = getSupabaseServer();
-
-  const deleteTeamMems = testUsers.map(async (user) => {
-    const [membDetails] = supabaseWrap(
-      await supabaseAdmin
-        .from('recruiter_user')
-        .select()
-        .eq('email', user.email),
-      false
-    );
-    if (!membDetails) {
-      console.log(`${user.email} not found`);
-      return;
-    }
-    const { data, error } = await supabaseAdmin.auth.admin.deleteUser(
-      membDetails.user_id
-    );
-    if (error) {
-      console.log(error);
-      throw new Error(error.message);
-    }
+export const addVaultSecrets = async () => {
+  await supabaseAdmin.rpc('add_vault_secrets', {
+    name: 'APP_URL',
+    value: process.env.SEED_DATABASE_APP_URL!,
   });
-  await Promise.all(deleteTeamMems);
+  console.log('Added APP_URL to vault');
+};
 
-  const [admin_user] = supabaseWrap(
+// Delete all company data
+// Dangerous function
+export const deleteAllCompanyData = async () => {
+  const admin_user = supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
       .select()
-      .eq('email', testUser.email),
-    false
+      .eq('email', testUser.email)
+      .single()
   );
-  if (!admin_user) return;
-  await supabaseWrap(
+  supabaseWrap(
     await supabaseAdmin
       .from('recruiter')
       .delete()
       .eq('primary_admin', admin_user.user_id)
   );
-  await supabaseWrap(
+  supabaseWrap(
     await supabaseAdmin
       .from('recruiter_user')
       .delete()
       .eq('email', admin_user.email)
   );
-  const { error, data } = await supabaseAdmin.auth.admin.deleteUser(
+  const { error } = await supabaseAdmin.auth.admin.deleteUser(
     admin_user.user_id
   );
-
   if (error) {
     console.error('Error deleting admin user', error);
   }
-  console.log('Deleted existing admin user and company data', admin_user.email);
+  const authUsers = supabaseWrap(await supabaseAdmin.rpc('get_auth_users')) as {
+    id: string;
+  }[];
+  const deleteAuthUsers = authUsers.map(async (user) => {
+    const { error } = await supabaseAdmin.auth.admin.deleteUser(user.id);
+
+    if (error) {
+      console.log('error deleting user', error);
+    }
+  });
+  await Promise.all(deleteAuthUsers);
+  console.log('Deleted all auth users and company data');
 };
