@@ -576,11 +576,8 @@ function SessionCards({
   return (
     <div className='mt-2 flex flex-col gap-1'>
       {sessions.map((session, index) => (
-        <>
-          <Card
-            key={index}
-            className='group rounded-md border-none bg-muted/50 shadow-none'
-          >
+        <div key={index}>
+          <Card className='group rounded-md border-none bg-muted/50 shadow-none'>
             <CardHeader
               className='cursor-pointer px-4 py-2'
               onClick={() => {
@@ -683,7 +680,7 @@ function SessionCards({
               </div>
             ) : null}
           </div>
-        </>
+        </div>
       ))}
     </div>
   );

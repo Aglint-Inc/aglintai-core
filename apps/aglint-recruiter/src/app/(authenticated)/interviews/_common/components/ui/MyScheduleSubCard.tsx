@@ -139,7 +139,7 @@ export function MyScheduleSubCard({
                       className='text-muted-foreground'
                     />
                   </div>
-                  <Typography variant='p' type='small'>
+                  <Typography variant='div' type='small'>
                     {textJob}
                   </Typography>
                 </div>

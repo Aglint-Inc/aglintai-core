@@ -3,7 +3,10 @@ import { type NextApiRequest, type NextApiResponse } from 'next';
 
 import { decrypt } from '../decryptApiKey';
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse,
+) {
   try {
     const apiKey = req.body.apiKey;
 
@@ -22,7 +25,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       decryptedApiKey = decrypt(apiKey, process.env.ENCRYPTION_KEY);
     }
 
-    axios
+    await axios
       .get(url, {
         auth: {
           username: !req.body.isInitial ? decryptedApiKey : apiKey,
