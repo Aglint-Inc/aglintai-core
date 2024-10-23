@@ -91,10 +91,10 @@ function MembersAutoComplete({
 
       <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
         <PopoverTrigger onClick={() => setIsPopoverOpen(true)}>
-          <Button variant='outline' className='text-left text-sm'>
+          <div className='flex flex-row items-center gap-1 rounded-md border border-input bg-background p-2 text-left text-sm'>
             <PlusCircle size={16} className='mr-2' />
             {placeholder}
-          </Button>
+          </div>
         </PopoverTrigger>
         <PopoverContent
           align='start'

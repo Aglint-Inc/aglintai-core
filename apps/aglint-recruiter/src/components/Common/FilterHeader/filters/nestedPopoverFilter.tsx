@@ -71,38 +71,37 @@ export function NestedPopoverFilter({
             {sectionsArray?.map(([section, optionList], i) => {
               const searchEnabled = search.includes(i);
               return (
-                <>
-                  <FilterOptions
-                    optionList={optionList}
-                    // @ts-ignore can't give a type to this
-                    selectedItems={selectedItems?.[String(section)] || []}
-                    filterSearch={searchEnabled}
-                    searchPlaceholder={section}
-                    setSearchOp={() => {
-                      if (searchEnabled) {
-                        setSearch(search.filter((item) => item !== i));
-                      } else setSearch([...search, i]);
-                    }}
-                    setSelectedItems={(val, path) => {
-                      const temp = setValueInNestedObject(
-                        structuredClone(selectedItems),
-                        path,
-                        val,
-                        nestedItems,
-                      );
-                      setSelectedItems(temp);
-                    }}
-                    sectionHeading={capitalizeFirstLetter(section)}
-                    sectionReset={() => {
-                      setSelectedItems({
-                        ...selectedItems,
-                        [section]: [],
-                      });
-                    }}
-                    separator={i !== 0}
-                    nested={true}
-                  />
-                </>
+                <FilterOptions
+                  key={i}
+                  optionList={optionList}
+                  // @ts-ignore can't give a type to this
+                  selectedItems={selectedItems?.[String(section)] || []}
+                  filterSearch={searchEnabled}
+                  searchPlaceholder={section}
+                  setSearchOp={() => {
+                    if (searchEnabled) {
+                      setSearch(search.filter((item) => item !== i));
+                    } else setSearch([...search, i]);
+                  }}
+                  setSelectedItems={(val, path) => {
+                    const temp = setValueInNestedObject(
+                      structuredClone(selectedItems),
+                      path,
+                      val,
+                      nestedItems,
+                    );
+                    setSelectedItems(temp);
+                  }}
+                  sectionHeading={capitalizeFirstLetter(section)}
+                  sectionReset={() => {
+                    setSelectedItems({
+                      ...selectedItems,
+                      [section]: [],
+                    });
+                  }}
+                  separator={i !== 0}
+                  nested={true}
+                />
               );
             })}
           </div>

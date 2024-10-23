@@ -16,8 +16,8 @@ function PreferedInterviewers() {
   const uniqueInterviewers: MemberTypeAutoComplete[] = [];
 
   schedulingOptions
-    .flatMap((option) => option.interview_rounds)
-    .flatMap((option) => option.plans)
+    .flatMap((option) => option?.interview_rounds)
+    .flatMap((option) => option?.plans)
     .forEach((option) => {
       option.sessions.forEach((session) => {
         //quilifed interviewers

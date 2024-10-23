@@ -72,7 +72,7 @@ export function filterSchedulingOptionsArray({
     schedulingOptions || []
   ).map((option) => ({
     ...option,
-    interview_rounds: option.interview_rounds.map((items) => {
+    interview_rounds: option?.interview_rounds?.map((items) => {
       let allOptions = items;
 
       if (filters.preferredTimeRanges.length > 0) {

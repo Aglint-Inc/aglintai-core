@@ -18,7 +18,7 @@ const query = async ({ input }: PrivateProcedure<typeof schema>) => {
     .eq('request_id', input.request_id)
     .order('created_at', { ascending: true })
     .throwOnError();
-  return data ? data[0] : null;
+  return data ? (data[0] ?? null) : null;
 };
 
 export const read = privateProcedure.input(schema).query(query);

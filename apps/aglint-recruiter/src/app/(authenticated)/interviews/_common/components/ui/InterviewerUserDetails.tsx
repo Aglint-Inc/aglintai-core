@@ -75,9 +75,9 @@ function InterviewerUserDetail({
         </div>
         <div className='flex flex-col gap-1'>
           <div className='flex items-center gap-3'>
-            <p className='text-sm font-semibold'>
+            <div className='text-sm font-semibold'>
               {getFullName(userDetails.first_name, userDetails.last_name)}
-            </p>
+            </div>
             <div className='flex items-center space-x-2'>
               {trainingType ? (
                 <InterviewerTrainingTypeIcon type={trainingType} />
@@ -154,22 +154,6 @@ function InterviewerUserDetail({
           </div>
         </div>
       </div>
-      {/* <div className='flex items-center space-x-4'>
-        <div className='text-right'>
-          <p className='text-sm font-medium'>
-            {interview_meeting?.start_time
-              ? formatTimeWithTimeZone({
-                  start_time: interview_meeting.start_time,
-                  end_time: interview_meeting.end_time ?? '',
-                  timeZone: interviewerTimeZone,
-                })
-              : 'Time not set'}
-          </p>
-          <p className='text-xs text-muted-foreground'>
-            {getShortTimeZone(interviewerTimeZone)}
-          </p>
-        </div>
-      </div> */}
     </div>
   );
 }
