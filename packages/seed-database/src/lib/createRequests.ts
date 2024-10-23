@@ -4,6 +4,7 @@ import { createInterviewPlan } from './createInterviewPlan';
 import { InterviewModuleName } from '../data/interview_module';
 import { getSupabaseServer } from '../supabaseAdmin';
 import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
+import { getRequestScheduleDateRange } from '../seedScheduleRequestParams';
 
 export const createRequests = async ({
   job_details,
@@ -37,18 +38,24 @@ export const createRequests = async ({
     req_sessions.map((session, i) => session.name ?? `Session ${i + 1}`)
   );
   const requests: DatabaseFunctions['move_to_interview']['Args']['requests'] =
-    req_applications.map(({ id: application_id }) => ({
-      application_id: application_id!,
-      title: `Schedule ${sessions} for candidate`,
-      status: 'to_do',
-      assigner_id: assignee_id,
-      assignee_id: assignee_id,
-      note: '',
-      priority: 'standard',
-      schedule_start_date: dayjsLocal().toISOString(),
-      schedule_end_date: dayjsLocal().add(1, 'week').toISOString(),
-      type: job.create_req_params.type,
-    }));
+    req_applications.map(({ id: application_id }, idx) => {
+      const { start_date, end_date } = getRequestScheduleDateRange(
+        idx,
+        req_applications.length
+      );
+      return {
+        application_id: application_id!,
+        title: `Schedule ${sessions} for candidate`,
+        status: 'to_do',
+        assigner_id: assignee_id,
+        assignee_id: assignee_id,
+        note: '',
+        priority: 'standard',
+        schedule_start_date: start_date,
+        schedule_end_date: end_date,
+        type: job.create_req_params.type,
+      };
+    });
 
   supabaseWrap(
     await supabaseAdmin.rpc('move_to_interview', {

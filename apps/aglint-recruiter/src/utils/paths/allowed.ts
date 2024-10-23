@@ -173,6 +173,7 @@ export const allowedPaths = new Set<t>([
   '/api/automation/reset-job-workflows',
   '/api/scheduling/v1/booking/confirm-recruiter-selected-option',
   '/api/candidate_portal/candidate_pic_update',
+  '/api/dev/generate-reports',
   ...cronPaths,
 ] as t[]);
 

@@ -42,9 +42,14 @@ export const createInterviewPlan = async ({
         }
       }
 
-      const module_relations = int_modules_relations.filter(
-        (int_reln) => int_reln.module_id === int_module?.id
-      );
+      const qualified_module_relations = int_modules_relations
+        .filter((int_reln) => int_reln.module_id === int_module?.id)
+        .filter((int_reln) => int_reln.training_status === 'qualified')
+        .slice(0, session.interviewer_cnt);
+
+      const training_module_relations = int_modules_relations
+        .filter((int_reln) => int_reln.module_id === int_module?.id)
+        .filter((int_reln) => int_reln.training_status === 'training');
 
       const int_sesn: DatabaseTableInsert['interview_session'] = {
         interview_plan_id: plan.id,
@@ -59,7 +64,7 @@ export const createInterviewPlan = async ({
         session_order: index,
         interviewer_cnt:
           session.session_type !== 'debrief'
-            ? module_relations.slice(0, session.interviewer_cnt).length
+            ? qualified_module_relations.length
             : 0,
       };
       const session_details = supabaseWrap(
@@ -75,17 +80,26 @@ export const createInterviewPlan = async ({
         [];
 
       if (session.session_type !== 'debrief') {
-        const int_reln = module_relations.slice(0, session.interviewer_cnt);
-        session_relns = int_reln.map((reln) => ({
-          interview_module_relation_id:
-            session.session_type === 'debrief' ? null : reln.id,
-          user_id: session.session_type === 'debrief' ? reln.user_id : null,
-          session_id: session_details.id,
-          training_type:
-            reln.training_status === 'training' ? 'shadow' : 'qualified',
-          interviewer_type:
-            reln.training_status === 'training' ? 'training' : 'qualified',
-        }));
+        const qualified_session_relns: DatabaseTableInsert['interview_session_relation'][] =
+          qualified_module_relations.map((reln) => ({
+            interview_module_relation_id:
+              session.session_type === 'debrief' ? null : reln.id,
+            user_id: session.session_type === 'debrief' ? reln.user_id : null,
+            session_id: session_details.id,
+            training_type: 'qualified',
+            interviewer_type: 'qualified',
+          }));
+        const training_session_relns: DatabaseTableInsert['interview_session_relation'][] =
+          training_module_relations.map((reln) => ({
+            interview_module_relation_id: reln.id,
+            user_id: null,
+            session_id: session_details.id,
+            training_type:
+              reln.training_status === 'training' ? 'shadow' : 'qualified',
+            interviewer_type: 'training',
+          }));
+
+        session_relns = [...qualified_session_relns, ...training_session_relns];
       } else {
         session_relns = team.slice(0, session.interviewer_cnt).map((user) => ({
           interview_module_relation_id: null,

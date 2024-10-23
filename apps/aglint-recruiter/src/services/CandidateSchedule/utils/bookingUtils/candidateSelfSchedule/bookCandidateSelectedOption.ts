@@ -21,7 +21,7 @@ import { updateMeetingEventDetails } from '../updateMeetingInfo';
 import { updateTrainingStatus } from '../updateTrainingStatus';
 
 export const bookCandidateSelectedOption = async (
-  parsed_body: CandidateDirectBookingType,
+  parsed_body: Pick<CandidateDirectBookingType, 'cand_tz' | 'filter_id'>,
   cand_schedule_db_details: ScheduleApiDetails,
   verified_slot: PlanCombinationRespType,
   fetched_cand_details: FetchDBScheduleDetails,
@@ -29,6 +29,7 @@ export const bookCandidateSelectedOption = async (
   if (fetched_cand_details.request_id === null) {
     throw new CApiError('CLIENT', 'Request ID not found');
   }
+
   const db_details: ScheduleDBDetails = {
     application: {
       id: fetched_cand_details.application_id,
@@ -59,7 +60,7 @@ export const bookCandidateSelectedOption = async (
     parsed_body.cand_tz,
     fetched_cand_details.request_id,
   );
-  const postScheduleActions = async () => {
+  const postCandidateScheduleActions = async () => {
     const supabaseAdmin = getSupabaseServer();
     const payload: APICandScheduleMailThankYou = {
       cand_tz: parsed_body.cand_tz,
@@ -92,7 +93,7 @@ export const bookCandidateSelectedOption = async (
   await Promise.all([
     sendMailsToOrganizer(db_details, booked_meeting_details),
     updateTrainingStatus(booked_meeting_details),
-    postScheduleActions(),
+    postCandidateScheduleActions(),
   ]);
 
   return booked_meeting_details;
