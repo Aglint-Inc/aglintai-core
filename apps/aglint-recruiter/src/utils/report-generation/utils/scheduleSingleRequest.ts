@@ -7,9 +7,9 @@ import { fetchDBScheduleDetails } from '@/services/CandidateSchedule/utils/booki
 import { createFilterJson } from '@/utils/scheduling/createFilterJson';
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
+import { report_seed_candidate_tz } from '../constant';
 import { type getJobScheduleRequests } from './getJobScheduleRequests';
 const supabaseAdmin = getSupabaseServer();
-const candidate_tz = 'Asia/Kolkata';
 export const scheduleSingleRequest = async ({
   request,
   dateRange,
@@ -69,7 +69,7 @@ export const scheduleSingleRequest = async ({
   });
   await cand_schedule.fetchDetails({
     params: {
-      req_user_tz: candidate_tz,
+      req_user_tz: report_seed_candidate_tz,
       end_date_str: dateRange.end_date,
       company_id: company_id,
       session_ids: session_ids,
@@ -90,7 +90,7 @@ export const scheduleSingleRequest = async ({
   }
   await bookCandidateSelectedOption(
     {
-      cand_tz: candidate_tz,
+      cand_tz: report_seed_candidate_tz,
       filter_id: filter_json.id,
     },
     cand_schedule.db_details,

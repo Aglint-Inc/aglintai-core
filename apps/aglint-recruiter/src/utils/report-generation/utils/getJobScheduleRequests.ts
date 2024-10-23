@@ -24,8 +24,8 @@ export const getJobScheduleRequests = async (job_id: string) => {
       .from('request')
       .select('*,applications(*, public_jobs(*)),request_relation(*)')
       .eq('applications.job_id', job_id)
-      .eq('status', 'to_do')
       .or(`type.eq.${'schedule_request'},type.eq.${'reschedule_request'}`),
+    false,
   );
   return { job_details, recruiter_details, allRequests };
 };
