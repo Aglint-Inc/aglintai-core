@@ -13,7 +13,7 @@ const schema = z.object({
 
 const query = async ({ input }: PrivateProcedure<typeof schema>) => {
   const { candidate_availability_id } = input;
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   return (
     await db
       .from('candidate_request_availability')

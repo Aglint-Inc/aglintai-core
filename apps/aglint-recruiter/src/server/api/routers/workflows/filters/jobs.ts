@@ -6,7 +6,7 @@ import {
 import { createPrivateClient } from '@/server/db';
 
 const query = async ({ ctx: { recruiter_id } }: PrivateProcedure) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   return (
     await db
       .rpc('get_job_workflows', {

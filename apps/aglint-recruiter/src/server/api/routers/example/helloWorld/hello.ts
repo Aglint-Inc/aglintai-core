@@ -9,10 +9,10 @@ import { createPrivateClient } from '@/server/db';
 
 export const helloSchema = z.object({ helloId: z.string().uuid() });
 
-const query = ({
+const query = async ({
   input: { helloId },
 }: PrivateProcedure<typeof helloSchema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   if (db) {
     return `Hello from the db: ${helloId}`;
   }

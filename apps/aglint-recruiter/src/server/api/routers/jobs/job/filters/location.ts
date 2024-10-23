@@ -15,7 +15,7 @@ const schema = z.object({
 }) satisfies ZodTypeToSchema<Params>;
 
 const query = async ({ input }: PrivateProcedure<typeof schema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   return (
     (await db.rpc('get_applicant_locations', input).single()).data?.locations ??
     null

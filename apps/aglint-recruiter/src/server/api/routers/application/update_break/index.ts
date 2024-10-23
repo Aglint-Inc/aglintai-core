@@ -16,7 +16,7 @@ export const schema = z.object({
 const mutation = async ({
   input: { break_duration, session_id },
 }: PrivateProcedure<typeof schema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   await db
     .from('interview_session')
     .update({ break_duration: Number(break_duration) })

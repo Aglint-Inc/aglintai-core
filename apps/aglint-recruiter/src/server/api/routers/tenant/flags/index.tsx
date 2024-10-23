@@ -6,7 +6,7 @@ import {
 import { createPrivateClient } from '@/server/db';
 
 const query = async ({ ctx }: PrivateProcedure) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   return (
     await db
       .from('recruiter_preferences')

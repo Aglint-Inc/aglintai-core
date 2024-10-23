@@ -7,7 +7,7 @@ import {
 } from '../../trpc';
 
 const query = async ({ ctx }: PrivateProcedure) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   return (
     await db
       .from('integrations')

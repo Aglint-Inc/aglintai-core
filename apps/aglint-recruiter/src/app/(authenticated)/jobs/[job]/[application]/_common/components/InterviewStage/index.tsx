@@ -44,9 +44,12 @@ function StageSessions() {
   return (
     <>
       <>
-        {filteredStages.map((stage) => {
+        {filteredStages.map((stage, ind) => {
           return (
-            <StageIndividual key={stage.interview_plan.id} stage={stage} />
+            <StageIndividual
+              key={stage.interview_plan.id + ind}
+              stage={stage}
+            />
           );
         })}
       </>

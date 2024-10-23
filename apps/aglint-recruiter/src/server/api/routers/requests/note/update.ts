@@ -26,7 +26,7 @@ const requestUpdateSchema = z.object({
 const query = async ({
   input,
 }: PrivateProcedure<typeof requestUpdateSchema>) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const { data } = await db
     .from('request_note')
     .upsert(input)

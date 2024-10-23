@@ -25,7 +25,7 @@ export type TrainingProgress = ProcedureDefinition<typeof trainingProgress>;
 export const fetchProgress = async (
   props: PrivateProcedure<typeof trainingProgressSchema>,
 ) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const {
     input: { trainer_ids },
   } = props;

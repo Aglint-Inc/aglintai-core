@@ -6,8 +6,8 @@ import { createClient } from '@supabase/supabase-js';
 import type { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import { cookies } from 'next/headers';
 
-export function createPrivateClient() {
-  const cookieStore = cookies();
+export async function createPrivateClient() {
+  const cookieStore = await cookies();
   return createServerClient<DB>(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,

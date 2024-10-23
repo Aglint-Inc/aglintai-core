@@ -17,7 +17,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useThemeConfig } from 'src/app/(public)/theme/_common/hook/use-themeConfig';
 
 import { useLogout } from '@/authenticated/hooks/useLogout';
-import { UIButton } from '@/common/UIButton';
 import { useTenant } from '@/company/hooks';
 
 import ThemeManager, { colors } from './ThemeManager';
@@ -123,55 +122,56 @@ const TopBar = () => {
             Welcome to {recruiterName}!
           </p>
         </div>
-
-        <DropdownMenu>
-          {isThemeActive && (
+        <div className='flex flex-row items-center gap-6 pr-2'>
+          <DropdownMenu>
+            {isThemeActive && (
+              <DropdownMenuTrigger>
+                <Palette />
+              </DropdownMenuTrigger>
+            )}
+            <DropdownMenuContent
+              side='bottom'
+              align='end'
+              alignOffset={20}
+              className='rounded-lg border border-border'
+            >
+              <ThemeManager />
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <DropdownMenu>
             <DropdownMenuTrigger>
-              <UIButton icon={<Palette />} size={'md'} variant={'ghost'} />
-            </DropdownMenuTrigger>
-          )}
-          <DropdownMenuContent
-            side='bottom'
-            align='end'
-            alignOffset={20}
-            className='rounded-lg border border-border'
-          >
-            <ThemeManager />
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Button variant='ghost'>
-              <Avatar className='h-7 w-7 cursor-pointer rounded-sm'>
-                <AvatarImage src={profileImage || ''} alt={userName} />
-                <AvatarFallback className='rounded-sm bg-gray-500'>
-                  <User className='h-4 w-4' />
-                </AvatarFallback>
-              </Avatar>
-              <ChevronDownIcon className='ml-1 h-4 w-4' />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            side='bottom'
-            align='end'
-            alignOffset={20}
-            className='border border-border'
-          >
-            <DropdownMenuItem className='cursor-pointer'>
-              <Link
-                href={`/user/${userId}?profile=true`}
-                className='hover:no-underline'
-              >
-                <span>Profile</span>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem className='cursor-pointer'>
-              <div onClick={() => logout(queryClient)}>
-                <span className='cursor-pointer'>Logout</span>
+              <div className='flex flex-row items-center gap-1'>
+                <Avatar className='h-7 w-7 cursor-pointer rounded-sm'>
+                  <AvatarImage src={profileImage || ''} alt={userName} />
+                  <AvatarFallback className='rounded-sm bg-gray-500'>
+                    <User className='h-4 w-4' />
+                  </AvatarFallback>
+                </Avatar>
+                <ChevronDownIcon className='ml-1 h-4 w-4' />
               </div>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              side='bottom'
+              align='end'
+              alignOffset={20}
+              className='border border-border'
+            >
+              <DropdownMenuItem className='cursor-pointer'>
+                <Link
+                  href={`/user/${userId}?profile=true`}
+                  className='hover:no-underline'
+                >
+                  <span>Profile</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className='cursor-pointer'>
+                <div onClick={() => logout(queryClient)}>
+                  <span className='cursor-pointer'>Logout</span>
+                </div>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </div>
   );

@@ -22,7 +22,7 @@ export type ApplicationMeta = ProcedureDefinition<typeof applicationMeta>;
 const getApplicationMeta = async (
   ctx: PrivateProcedure<typeof applicationMetaSchema>,
 ) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const {
     input: { application_id },
   } = ctx;

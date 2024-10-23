@@ -39,7 +39,7 @@ const fetchDetails = async (
 const fetchSessionDetails = async (
   ctx: PrivateProcedure<typeof interviewStagesSchema>,
 ) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const {
     input: { application_id },
   } = ctx;

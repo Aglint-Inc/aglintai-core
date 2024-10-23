@@ -40,7 +40,7 @@ export async function middleware(req: NextRequest) {
     publicRoutes.includes(path as (typeof publicRoutes)[number]) ||
     dynamicPublicRoutes.some((regex) => regex.test(path));
 
-  const supabase = createPrivateClient();
+  const supabase = await createPrivateClient();
   const { data, error } = await supabase.auth.getSession();
   if (error) return NextResponse.redirect(new URL('/login', req.nextUrl));
 

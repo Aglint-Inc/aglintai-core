@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic';
 export async function GET(request: Request) {
   const { origin } = new URL(request.url);
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error, data } = await supabase.auth.getSession();
   const user_id = data?.session?.user.id;
 

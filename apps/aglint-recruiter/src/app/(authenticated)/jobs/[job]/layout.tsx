@@ -13,7 +13,8 @@ type Props = {
 
 const Layout = async (props: PropsWithChildren<Props>) => {
   noStore();
-  void api.jobs.job.read.prefetch({ id: props.params.job });
+  const { job } = await props.params;
+  void api.jobs.job.read.prefetch({ id: job });
   return (
     <HydrateClient>
       <ErrorBoundary>

@@ -8,7 +8,7 @@ import {
 import { createPrivateClient } from '@/server/db';
 
 const query = async ({ ctx }: PrivateProcedure) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
   const jobs = (
     await db
       .from('public_jobs')

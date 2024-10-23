@@ -180,7 +180,7 @@ const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
  *  @see https://stackoverflow.com/questions/3297048/403-forbidden-vs-401-unauthorized-http-responses
  */
 const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
 
   let user_id: string | null = null;
 
@@ -236,7 +236,7 @@ const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
 });
 
 const candidatePortalMiddleware = t.middleware(async ({ next, ctx }) => {
-  const db = createPrivateClient();
+  const db = await createPrivateClient();
 
   let email: string | null = null;
 
