@@ -84,7 +84,6 @@ export const scheduleSingleRequest = async ({
   if (multiday_plans.length === 0) {
     console.error('No Slots Found for scheduling');
   }
-  let;
   // TODO: do this for multiple days
   if (multiday_plans[0].plans.length === 0) {
     throw new Error('No plans found');
