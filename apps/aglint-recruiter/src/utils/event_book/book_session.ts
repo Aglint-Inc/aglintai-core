@@ -23,14 +23,26 @@ export const bookSession = async ({
   meeting_id,
   session,
 }: {
-  session: SessionCombinationRespType;
+  session: Pick<
+    SessionCombinationRespType,
+    | 'module_name'
+    | 'start_time'
+    | 'end_time'
+    | 'break_duration'
+    | 'schedule_type'
+    | 'session_name'
+    | 'session_type'
+    | 'session_id'
+    | 'meeting_id'
+    | 'duration'
+  >;
   company_id: string;
   meeting_id: string;
   candidate_name: string;
   job_title: string;
   cal_event_organizer: CalEventOrganizerAuthDetails;
   cal_event_attendees: CalEventAttendeesAuthDetails[];
-  company_cred_hash_str: string;
+  company_cred_hash_str: string | null;
 }) => {
   const event_name = `${session.module_name} : ${candidate_name} for ${job_title}`;
   const event_description = getCalEventDescription(meeting_id);
