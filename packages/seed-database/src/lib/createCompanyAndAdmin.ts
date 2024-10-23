@@ -31,9 +31,7 @@ export const createCompanyAndAdmin = async () => {
   );
   console.log('Created Test Company', recruiter_user.email);
   const departments = await addDepartments(recruiter.id);
-  console.log('Added departments');
   const locations = await addLocations(recruiter.id);
-  console.log('Added locations');
   return { recruiter_user, recruiter, departments, locations };
 };
 
@@ -44,6 +42,7 @@ const addDepartments = async (recruiter_id: string) => {
       .insert(departments.map((dept) => ({ ...dept, recruiter_id })))
       .select()
   );
+  console.log('Added departments');
   return deps;
 };
 
@@ -54,6 +53,7 @@ const addLocations = async (recruiter_id: string) => {
       .insert(office_locations.map((loc) => ({ ...loc, recruiter_id })))
       .select()
   );
+  console.log('Added locations');
   return locations;
 };
 
