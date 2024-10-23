@@ -1,9 +1,15 @@
 import { supabaseWrap } from '@aglint/shared-utils';
 
 import { getSupabaseServer } from '../supabase/supabaseAdmin';
+import { generateReportForJob } from './utils/generateReportForJob';
 
 const supabaseAdmin = getSupabaseServer();
-export const reportGenerate = async () => {};
+export const reportGenerate = async () => {
+  const allJobs = await getAllJobs('recruiter_id');
+  generateReportForJob(allJobs[0].id);
+
+  //
+};
 
 const getAllJobs = async (recruiter_id: string) => {
   const allJobs = supabaseWrap(
@@ -12,11 +18,5 @@ const getAllJobs = async (recruiter_id: string) => {
       .select('*')
       .eq('recruiter_id', recruiter_id),
   );
-  const allApplications = supabaseWrap(
-    await supabaseAdmin
-      .from('request')
-      .select('*,applications(*)')
-      .eq('applications.job_id', 'd'),
-  );
-  return { allJobs, allApplications };
+  return allJobs;
 };
