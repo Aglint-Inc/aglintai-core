@@ -60,6 +60,9 @@ export const scheduleSingleRequest = async ({
       out_of_working_hrs: true,
       show_soft_conflicts: true,
       day_passed: true,
+      show_conflicts_events: true,
+      day_off: true,
+      holiday: true,
     },
     cand_start_time: 0,
     cand_end_time: 24,
@@ -78,6 +81,9 @@ export const scheduleSingleRequest = async ({
   }
 
   const multiday_plans = cand_schedule.findCandSlotForTheDay();
+  if (multiday_plans.length === 0) {
+    console.error('No Slots Found for scheduling');
+  }
   // TODO: do this for multiple days
   if (multiday_plans[0].plans.length === 0) {
     throw new Error('No plans found');
