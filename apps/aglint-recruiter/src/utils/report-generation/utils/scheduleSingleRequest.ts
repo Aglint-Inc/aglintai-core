@@ -1,5 +1,9 @@
 /* eslint-disable no-console */
-import { createRequestProgressLogger } from '@aglint/shared-utils';
+import { type PlanCombinationRespType } from '@aglint/shared-types';
+import {
+  createRequestProgressLogger,
+  supabaseWrap,
+} from '@aglint/shared-utils';
 
 import { CandidatesScheduling } from '@/services/CandidateSchedule/CandidatesScheduling';
 import { bookCandidateSelectedOption } from '@/services/CandidateSchedule/utils/bookingUtils/candidateSelfSchedule/bookCandidateSelectedOption';
@@ -88,7 +92,14 @@ export const scheduleSingleRequest = async ({
   if (multiday_plans[0].plans.length === 0) {
     throw new Error('No plans found');
   }
+  if (multiday_plans.length === 1) {
+    await updatePlansInFilterJson({
+      filter_json_id: filter_json.id,
+      plans: multiday_plans[0].plans,
+    });
+  }
   console.log('booking request', request.title);
+
   await bookCandidateSelectedOption(
     {
       cand_tz: report_seed_candidate_tz,
@@ -99,4 +110,21 @@ export const scheduleSingleRequest = async ({
     fetchedDetails,
   );
   console.log('booked request', request.title);
+};
+
+const updatePlansInFilterJson = async ({
+  filter_json_id,
+  plans,
+}: {
+  filter_json_id: string;
+  plans: PlanCombinationRespType[];
+}) => {
+  supabaseWrap(
+    await supabaseAdmin
+      .from('interview_filter_json')
+      .update({
+        selected_options:
+      })
+      .eq('id', filter_json_id),
+  );
 };
