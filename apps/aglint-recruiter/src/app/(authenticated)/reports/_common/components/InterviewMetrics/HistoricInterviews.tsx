@@ -67,7 +67,7 @@ export default function HistoricInterviews() {
           config={{}}
           className='max-h-[500px] min-h-[300px] w-full'
         >
-          <BarChart data={groupedData}>
+          <BarChart width={800} height={500} data={groupedData}>
             <XAxis dataKey='date' />
             <YAxis />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
