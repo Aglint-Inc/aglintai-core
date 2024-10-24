@@ -1,6 +1,7 @@
 import { supabaseWrap } from '@aglint/shared-utils';
 
 import { getSupabaseServer } from '../supabase/supabaseAdmin';
+import { test_admin_email } from './constant';
 import { generateReportForJob } from './utils/generateReportForJob';
 
 const supabaseAdmin = getSupabaseServer();
@@ -15,7 +16,7 @@ const getTestCompanyDetails = async () => {
     await supabaseAdmin
       .from('recruiter')
       .select('*,primary_admin!inner(*)')
-      .eq('primary_admin.email', 'dileep@aglinthq.com')
+      .eq('primary_admin.email', test_admin_email)
       .single(),
   );
   return company;

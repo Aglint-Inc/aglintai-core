@@ -5,7 +5,7 @@ export const report_gen_Params = {
 } as const;
 
 export const report_seed_candidate_tz = 'Asia/Kolkata';
-
+export const test_admin_email = 'dileep@aglinthq.com';
 export const seed_candidate_interview_cancel_reason: string[] = [
   'Conflicting Schedule',
   'Health Reasons',
