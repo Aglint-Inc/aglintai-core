@@ -26,7 +26,7 @@ export default function CandidatesBySkillsChart() {
     <Section>
       <SectionHeader>
         <SectionHeaderText>
-          <SectionTitle>Candidates By</SectionTitle>
+          <SectionTitle>Candidates By Skills</SectionTitle>
         </SectionHeaderText>
         <SectionActions>
           <Tabs
@@ -59,6 +59,8 @@ export default function CandidatesBySkillsChart() {
           className='max-h-[500px] min-h-[300px] w-full'
         >
           <BarChart
+            height={400}
+            width={800}
             accessibilityLayer
             data={data}
             layout='vertical'

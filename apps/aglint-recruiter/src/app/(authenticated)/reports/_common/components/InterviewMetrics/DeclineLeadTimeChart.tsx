@@ -74,6 +74,8 @@ export default function DeclineLeadTimeChart() {
             className='max-h-[400px] min-h-[300px] w-full'
           >
             <ScatterChart
+              width={500}
+              height={300}
               margin={{
                 top: 10,
                 right: 30,

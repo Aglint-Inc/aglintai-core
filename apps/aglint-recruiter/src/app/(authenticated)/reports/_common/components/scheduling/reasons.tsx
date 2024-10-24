@@ -59,7 +59,7 @@ function Reasons() {
       ) : (
         <div className='flex justify-center'>
           <ChartContainer config={{}} className='max-h-[350px] min-h-[300px]'>
-            <PieChart>
+            <PieChart width={500} height={300}>
               <Pie
                 data={data}
                 cx='50%'
