@@ -9,6 +9,7 @@ export const testUsers: UserInsertType[] = [
     role: 'recruiting coordinator',
     position: 'CEO',
     employment: 'fulltime',
+    is_oauth_needed: false,
   },
   {
     first_name: 'Ravi',
@@ -18,6 +19,7 @@ export const testUsers: UserInsertType[] = [
     role: 'recruiting coordinator',
     position: 'CTO',
     employment: 'fulltime',
+    is_oauth_needed: false,
   },
   {
     first_name: 'Sarah',
@@ -27,6 +29,7 @@ export const testUsers: UserInsertType[] = [
     role: 'admin',
     position: 'Location Admin',
     employment: 'fulltime',
+    is_oauth_needed: false,
   },
   {
     first_name: 'Raimon',
@@ -36,16 +39,8 @@ export const testUsers: UserInsertType[] = [
     role: 'recruiting coordinator',
     position: 'Product Designer',
     employment: 'fulltime',
+    is_oauth_needed: false,
   },
-  // {
-  //   first_name: 'Dileep',
-  //   last_name: 'B C',
-  //   email: 'dileep@aglinthq.com',
-  //   title: 'SDE 2',
-  //   role: 'admin',
-  //   position: 'SDE 2',
-  //   employment: 'fulltime',
-  // },
   {
     first_name: 'Dheeraj',
     last_name: 'Kumar',
@@ -54,6 +49,7 @@ export const testUsers: UserInsertType[] = [
     role: 'admin',
     position: 'Technical Manager',
     employment: 'fulltime',
+    is_oauth_needed: false,
   },
   {
     first_name: 'Vivek',
@@ -63,6 +59,7 @@ export const testUsers: UserInsertType[] = [
     role: 'admin',
     position: 'Architect',
     employment: 'fulltime',
+    is_oauth_needed: false,
   },
   {
     first_name: 'Chandra',
@@ -72,15 +69,7 @@ export const testUsers: UserInsertType[] = [
     role: 'recruiting coordinator',
     position: 'SDE#',
     employment: 'fulltime',
-  },
-  {
-    first_name: 'Ogyen',
-    last_name: 'Thoga',
-    email: 'ogyen@aglinthq.com',
-    title: 'Frontend Developer',
-    role: 'admin',
-    position: 'Frontend Developer',
-    employment: 'fulltime',
+    is_oauth_needed: false,
   },
   {
     first_name: 'Daya',
@@ -90,6 +79,7 @@ export const testUsers: UserInsertType[] = [
     role: 'admin',
     position: 'Architect',
     employment: 'fulltime',
+    is_oauth_needed: true,
   },
   {
     first_name: 'Rajeev',
@@ -99,15 +89,7 @@ export const testUsers: UserInsertType[] = [
     role: 'admin',
     position: 'Lead Quality Analyst',
     employment: 'fulltime',
-  },
-  {
-    first_name: 'Chandan',
-    last_name: 'Koudinya',
-    email: 'chandan@aglinthq.com',
-    title: 'Frontend Developer',
-    role: 'admin',
-    position: 'Frontend Developer',
-    employment: 'fulltime',
+    is_oauth_needed: true,
   },
   {
     first_name: 'Steven',
@@ -117,6 +99,7 @@ export const testUsers: UserInsertType[] = [
     role: 'admin',
     position: 'SDR',
     employment: 'fulltime',
+    is_oauth_needed: true,
   },
   {
     first_name: 'Devanshi',
@@ -126,6 +109,7 @@ export const testUsers: UserInsertType[] = [
     role: 'admin',
     position: 'Head of HR',
     employment: 'fulltime',
+    is_oauth_needed: true,
   },
   {
     first_name: 'Ramya',
@@ -135,6 +119,7 @@ export const testUsers: UserInsertType[] = [
     role: 'recruiting coordinator',
     position: 'SDE I',
     employment: 'fulltime',
+    is_oauth_needed: true,
   },
   {
     first_name: 'Ravi',
@@ -144,6 +129,7 @@ export const testUsers: UserInsertType[] = [
     role: 'recruiter',
     position: 'Sales Manager',
     employment: 'fulltime',
+    is_oauth_needed: true,
   },
   {
     first_name: 'Priya',
@@ -153,6 +139,7 @@ export const testUsers: UserInsertType[] = [
     role: 'recruiter',
     position: 'HR Specialist',
     employment: 'fulltime',
+    is_oauth_needed: true,
   },
   {
     first_name: 'Raj',
@@ -162,6 +149,7 @@ export const testUsers: UserInsertType[] = [
     role: 'admin',
     position: 'Backend Developer',
     employment: 'fulltime',
+    is_oauth_needed: true,
   },
   {
     first_name: 'Wil',
@@ -171,6 +159,7 @@ export const testUsers: UserInsertType[] = [
     role: 'admin',
     position: 'Marketing Specialist',
     employment: 'fulltime',
+    is_oauth_needed: true,
   },
   {
     first_name: 'Alex',
@@ -180,6 +169,7 @@ export const testUsers: UserInsertType[] = [
     role: 'interviewer',
     position: 'DevOps Engineer',
     employment: 'fulltime',
+    is_oauth_needed: true,
   },
   {
     first_name: 'Zack',
@@ -189,6 +179,7 @@ export const testUsers: UserInsertType[] = [
     role: 'interviewer',
     position: 'Sales Executive',
     employment: 'fulltime',
+    is_oauth_needed: true,
   },
   {
     first_name: 'Stephanie',
@@ -198,6 +189,7 @@ export const testUsers: UserInsertType[] = [
     role: 'admin',
     position: 'Software Engineer',
     employment: 'fulltime',
+    is_oauth_needed: true,
   },
   {
     first_name: 'Sheldon',
@@ -207,5 +199,6 @@ export const testUsers: UserInsertType[] = [
     role: 'admin',
     position: 'Data Scientist',
     employment: 'fulltime',
+    is_oauth_needed: true,
   },
 ];

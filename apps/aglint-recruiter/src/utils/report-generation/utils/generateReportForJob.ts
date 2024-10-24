@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { type DatabaseView } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
@@ -10,11 +11,15 @@ import {
   type MeetingDetail,
 } from './candidate-requests';
 import { getJobScheduleRequests } from './getJobScheduleRequests';
-import { createInterviewDeclineRequest } from './interviewer-decline';
+import { processInterviewerDeclineRequests } from './interviewer-decline';
 import { scheduleRequests } from './scheduleRequests';
+import { sessnRelnAccept } from './UpdateinterAttendStatus';
 
 export const generateReportForJob = async (job_id: string) => {
-  const { allRequests, job_details } = await getJobScheduleRequests(job_id);
+  const { allRequests, job_details } = await getJobScheduleRequests(
+    job_id,
+    'schedule_request',
+  );
   const to_do_requests = allRequests
     .filter((app) => app.status === 'to_do')
     .slice(0, 5);
@@ -22,10 +27,12 @@ export const generateReportForJob = async (job_id: string) => {
     allRequests: to_do_requests,
     company_id: job_details.recruiter_id,
   });
-  const application_ids = to_do_requests.map((app) => app.application_id);
 
-  const meeting_details = await getAllMeetingDetails(application_ids);
-
+  const meeting_details = await getAllMeetingDetails(job_id);
+  if (meeting_details.length === 0) {
+    console.log(`no meeting details found for job ${job_id}`);
+    return;
+  }
   const candidate_cancel_meetings_cnt = Math.floor(
     meeting_details.length *
       report_gen_Params.candidate_cancel_request_percentage,
@@ -39,39 +46,64 @@ export const generateReportForJob = async (job_id: string) => {
       report_gen_Params.interviewer_decline_request_percentage,
   );
 
+  const cancel_meetings = meeting_details.slice(
+    0,
+    candidate_cancel_meetings_cnt,
+  );
+
+  const reschedule_meetings = meeting_details.slice(
+    candidate_cancel_meetings_cnt,
+    candidate_cancel_meetings_cnt + candidate_reschedule_meetings_cnt,
+  );
+
+  const interviewer_decline_meetings = meeting_details.slice(
+    candidate_cancel_meetings_cnt + candidate_reschedule_meetings_cnt,
+    candidate_cancel_meetings_cnt +
+      candidate_reschedule_meetings_cnt +
+      interviewer_decline_meetings_cnt,
+  );
+
+  console.log('cancel_meetings', cancel_meetings.length);
+  console.log('reschedule_meetings', reschedule_meetings.length);
+  console.log(
+    'interviewer_decline_meetings',
+    interviewer_decline_meetings.length,
+  );
+
   await createCandidateInterviewCancelReq(
-    meeting_details
-      .slice(0, candidate_cancel_meetings_cnt)
-      .map(mapMeetingDetailsToMeetingDetail),
+    cancel_meetings.map(mapMeetingDetailsToMeetingDetail),
+    job_details.recruiter_id,
   );
   await createCandidateInterviewRescheduleRequest(
-    meeting_details
-      .slice(
-        candidate_cancel_meetings_cnt,
-        candidate_cancel_meetings_cnt + candidate_reschedule_meetings_cnt,
-      )
-      .map(mapMeetingDetailsToMeetingDetail),
+    reschedule_meetings.map(mapMeetingDetailsToMeetingDetail),
   );
-  await createInterviewDeclineRequest(
-    meeting_details
-      .slice(
-        candidate_cancel_meetings_cnt + candidate_reschedule_meetings_cnt,
-        candidate_cancel_meetings_cnt +
-          candidate_reschedule_meetings_cnt +
-          interviewer_decline_meetings_cnt,
-      )
-      .map(mapMeetingDetailsToMeetingDetail),
+
+  await processInterviewerDeclineRequests(
+    interviewer_decline_meetings.map(mapMeetingDetailsToMeetingDetail),
   );
+
+  if (report_gen_Params.is_schedule_reschedule_requests) {
+    const { allRequests: reschedule_requests } = await getJobScheduleRequests(
+      job_id,
+      'reschedule_request',
+    );
+    await scheduleRequests({
+      allRequests: reschedule_requests,
+      company_id: job_details.recruiter_id,
+    });
+  }
+  await sessnRelnAccept();
+  return 'ok';
 };
 
-const getAllMeetingDetails = async (application_ids: string[]) => {
+const getAllMeetingDetails = async (job_id: string) => {
   const supabaseAdmin = getSupabaseServer();
   const meeting_details = supabaseWrap(
     await supabaseAdmin
       .from('meeting_details')
       .select()
-      .neq(`meeting_link`, null)
-      .in('application_id', application_ids),
+      .or('status.eq.confirmed,status.eq.completed')
+      .eq('job_id', job_id),
     false,
   );
   return meeting_details;

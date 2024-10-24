@@ -1,6 +1,7 @@
 import { DatabaseTable } from '@aglint/shared-types';
 import { getSupabaseServer } from '../supabaseAdmin';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { getRandomNumInRange, supabaseWrap } from '@aglint/shared-utils';
+import { schedule_oauth } from '../data/schedule_oauth';
 
 export type UserInsertType = {
   first_name: string;
@@ -16,6 +17,7 @@ export type UserInsertType = {
     | 'interviewer';
   position: string;
   employment: DatabaseTable['recruiter_user']['employment'];
+  is_oauth_needed: boolean;
 };
 
 export async function addTeamMember({
@@ -64,6 +66,9 @@ export async function addTeamMember({
         office_location_id: user.office_location_id,
         employment: user.employment,
         status: 'active',
+        schedule_auth: user.is_oauth_needed
+          ? schedule_oauth[getRandomNumInRange(0, schedule_oauth.length - 1)]
+          : null,
       })
       .select()
       .single()

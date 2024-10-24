@@ -11,6 +11,7 @@ import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { CandidatesScheduling } from '../../CandidatesScheduling';
 
+// TODO: when added more 20C4 to the it fails
 export const findReplacementIntsUtil = async (
   input: z.output<typeof schemaFindAlternativeSlots>,
 ) => {
@@ -41,7 +42,7 @@ export const findReplacementIntsUtil = async (
       out_of_working_hrs: true,
       show_soft_conflicts: true,
       show_conflicts_events: true,
-      calender_not_connected: true,
+      calender_not_connected: false,
       day_passed: true,
     },
   });
