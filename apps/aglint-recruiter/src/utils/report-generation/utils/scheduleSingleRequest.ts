@@ -123,7 +123,7 @@ const updatePlansInFilterJson = async ({
     await supabaseAdmin
       .from('interview_filter_json')
       .update({
-        selected_options:
+        selected_options: plans,
       })
       .eq('id', filter_json_id),
   );
