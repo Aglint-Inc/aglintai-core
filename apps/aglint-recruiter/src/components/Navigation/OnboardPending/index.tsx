@@ -40,22 +40,20 @@ export const OnboardPending = () => {
 
   return (
     <>
-      {!isOnboardCompleteRemote && (
-        <>
-          {isCompanySetupLocalPending && !isOnboardOpen && (
-            <UIButton
-              className='fixed bottom-8 left-20 z-50 rounded-full shadow-lg'
-              onClick={toggleOpen}
-            >
-              Onboarding
-              <UIBadge
-                color='warning'
-                textBadge={pendingStepsCount + ' Steps Pending'}
-                className='-mr-2 ml-2 inline-flex rounded-full'
-              />
-            </UIButton>
+      {!isOnboardCompleteRemote && !isOnboardOpen && (
+        <UIButton
+          className='fixed bottom-8 left-20 z-50 rounded-full shadow-lg'
+          onClick={toggleOpen}
+        >
+          {isCompanySetupLocalPending ? 'Onboarding' : 'Onboard Completed'}
+          {isCompanySetupLocalPending && (
+            <UIBadge
+              color='warning'
+              textBadge={pendingStepsCount + ' Steps Pending'}
+              className='-mr-2 ml-2 inline-flex rounded-full'
+            />
           )}
-        </>
+        </UIButton>
       )}
       <Dialog open={isOnboardOpen} onOpenChange={() => toggleOpen()}>
         <DialogContent className='mb-0 min-w-[900px] max-w-[900px] p-0'>
@@ -125,11 +123,9 @@ const MainContent = () => {
           />
         </div>
         <div className='space-y-2 md:col-span-8'>
-          {selectedStep && (
-            <ScrollArea className='min-h-[420px] w-[100%]'>
-              <SetupCard />
-            </ScrollArea>
-          )}
+          <ScrollArea className='min-h-[420px] w-[100%]'>
+            <SetupCard />
+          </ScrollArea>
         </div>
       </div>
       <Footer />

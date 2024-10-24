@@ -12,7 +12,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@components/ui/tooltip';
-import { CheckCircle2, Circle } from 'lucide-react';
+import { CheckCircle2, Circle, CircleCheckBig } from 'lucide-react';
+import { useEffect } from 'react';
 
 import { UIBadge } from '@/components/Common/UIBadge';
 import { UIButton } from '@/components/Common/UIButton';
@@ -21,10 +22,38 @@ import { useRouterPro } from '@/hooks/useRouterPro';
 import { useOnboarding } from './context/onboarding';
 
 export function SetupCard() {
-  const { selectedStep, setIsOnboardOpen } = useOnboarding();
+  const {
+    selectedStep,
+    setIsOnboardOpen,
+    companySetupSteps,
+    setSelectedIndex,
+    selectedIndex,
+  } = useOnboarding();
 
-  const step = selectedStep!;
+  useEffect(() => {
+    const firstIncompleteIndex = companySetupSteps.findIndex(
+      (step) => !step.isLocalCompleted,
+    );
+    setSelectedIndex(firstIncompleteIndex);
+  }, []);
 
+  const router = useRouterPro();
+
+  if (!(selectedIndex > -1) && !selectedStep)
+    return (
+      <div className='mt-[20%] flex w-full items-center justify-center'>
+        <div className='flex flex-col items-center'>
+          <CircleCheckBig size={40} className='mb-5 text-green-500' />
+          <p className='text-xl font-bold'>You all set</p>
+          <p className='text-md max-w-[70%] text-center text-gray-400'>
+            Please click the &apos;Finish&apos; button to complete your
+            onboarding process
+          </p>
+        </div>
+      </div>
+    );
+
+  const step = selectedStep;
   const {
     title,
     description,
@@ -36,8 +65,6 @@ export function SetupCard() {
     toolTipText,
     isNavDisable,
   } = step;
-
-  const router = useRouterPro();
 
   return (
     <Section className='min-h-[420px] rounded-lg border-none bg-muted p-4'>
