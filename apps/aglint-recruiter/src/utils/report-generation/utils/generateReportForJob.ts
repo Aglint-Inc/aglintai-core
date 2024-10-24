@@ -20,13 +20,13 @@ export const generateReportForJob = async (job_id: string) => {
     job_id,
     'schedule_request',
   );
-  // const to_do_requests = allRequests
-  //   .filter((app) => app.status === 'to_do')
-  //   .slice(0, 3);
-  // await scheduleRequests({
-  //   allRequests: to_do_requests,
-  //   company_id: job_details.recruiter_id,
-  // });
+  const to_do_requests = allRequests
+    .filter((app) => app.status === 'to_do')
+    .slice(0, 3);
+  await scheduleRequests({
+    allRequests: to_do_requests,
+    company_id: job_details.recruiter_id,
+  });
 
   const meeting_details = await getAllMeetingDetails(job_id);
   if (meeting_details.length === 0) {
