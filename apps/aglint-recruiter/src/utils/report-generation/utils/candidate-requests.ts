@@ -7,6 +7,7 @@ import {
   seed_candidate_interview_cancel_reason,
   seed_candidate_interview_reschedule_reason,
 } from '../constant';
+import { runPromisesInBatches } from './runPromisesInBatches';
 export type MeetingDetail = {
   session_id: string;
   application_id: string;
@@ -17,7 +18,7 @@ export type MeetingDetail = {
 export const createCandidateInterviewCancelReq = async (
   meeting_details: MeetingDetail[],
 ) => {
-  for (const meeting_detail of meeting_details) {
+  const promises = meeting_details.map(async (meeting_detail) => {
     const reason =
       seed_candidate_interview_cancel_reason[
         getRandomNumInRange(
@@ -41,14 +42,16 @@ export const createCandidateInterviewCancelReq = async (
           .format(),
       },
     });
-  }
+  });
+  await runPromisesInBatches(promises, 3);
+
   console.log('Candidate Interview Cancel Request Created');
 };
 
 export const createCandidateInterviewRescheduleRequest = async (
   meeting_details: MeetingDetail[],
 ) => {
-  for (const meeting_detail of meeting_details) {
+  const promises = meeting_details.map(async (meeting_detail) => {
     const reason =
       seed_candidate_interview_reschedule_reason[
         getRandomNumInRange(
@@ -72,6 +75,7 @@ export const createCandidateInterviewRescheduleRequest = async (
           .format(),
       },
     });
-  }
+  });
+  await runPromisesInBatches(promises, 3);
   console.log('Candidate Interview Reschedule Request Created');
 };

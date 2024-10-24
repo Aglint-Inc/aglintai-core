@@ -68,7 +68,7 @@ export const createCandidateRequest = async (
     details: cancels,
   });
 
-  return data;
+  return request_id;
 };
 
 const fetchDetails = async (

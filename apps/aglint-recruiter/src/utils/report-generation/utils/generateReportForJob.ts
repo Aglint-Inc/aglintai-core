@@ -14,7 +14,10 @@ import { createInterviewDeclineRequest } from './interviewer-decline';
 import { scheduleRequests } from './scheduleRequests';
 
 export const generateReportForJob = async (job_id: string) => {
-  const { allRequests, job_details } = await getJobScheduleRequests(job_id);
+  const { allRequests, job_details } = await getJobScheduleRequests(
+    job_id,
+    'schedule_request',
+  );
   const to_do_requests = allRequests
     .filter((app) => app.status === 'to_do')
     .slice(0, 5);
