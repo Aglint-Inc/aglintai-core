@@ -39,7 +39,7 @@ export default function CandidatesByExperienceChart() {
     <Section>
       <SectionHeader>
         <SectionHeaderText>
-          <SectionTitle>Candidates By</SectionTitle>
+          <SectionTitle>Candidates By Experience</SectionTitle>
         </SectionHeaderText>
         <SectionActions>
           <Tabs
@@ -69,6 +69,8 @@ export default function CandidatesByExperienceChart() {
           className='max-h-[500px] min-h-[300px] w-full'
         >
           <LineChart
+            width={500}
+            height={300}
             data={data?.[view] || []}
             margin={{
               top: 5,

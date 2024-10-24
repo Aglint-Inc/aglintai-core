@@ -27,7 +27,7 @@ export default function CandidatesByLocationChart() {
     <Section>
       <SectionHeader>
         <SectionHeaderText>
-          <SectionTitle>Candidates By</SectionTitle>
+          <SectionTitle>Candidates By Location</SectionTitle>
         </SectionHeaderText>
         <SectionActions>
           <Tabs
@@ -55,7 +55,7 @@ export default function CandidatesByLocationChart() {
       ) : (
         <div className='flex justify-center'>
           <ChartContainer config={{}} className='max-h-[350px] min-h-[300px]'>
-            <PieChart>
+            <PieChart width={400} height={350}>
               <Pie
                 data={data}
                 cx='50%'
