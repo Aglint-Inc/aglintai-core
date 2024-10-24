@@ -3,6 +3,7 @@ export const runPromisesInBatches = async (
   promises: Promise<any>[],
   concurrent_cnt: number,
 ) => {
+  concurrent_cnt = 1;
   const finished_results: PromiseSettledResult<any>[] = [];
   let idx = 0;
   for (idx = 0; idx < promises.length; idx += concurrent_cnt) {

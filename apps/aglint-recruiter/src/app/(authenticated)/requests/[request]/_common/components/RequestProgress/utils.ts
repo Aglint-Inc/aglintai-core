@@ -5,8 +5,9 @@ import {
 } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
-import { supabase } from '@/utils/supabase/client';
+import { supabase as supabaseWeb } from '@/utils/supabase/client';
 import { TRIGGER_PAYLOAD } from '@/workflows/constants';
+import { SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
 export const createRequestWorkflowAction = async ({
   wActions,
@@ -14,13 +15,18 @@ export const createRequestWorkflowAction = async ({
   recruiter_id,
   interval,
   workflow_id,
+  supabase = supabaseWeb,
 }: {
   wActions: DatabaseTableInsert['workflow_action'][];
   request_id: string;
   recruiter_id: string;
   interval: number;
   workflow_id?: string;
+  supabase?: SupabaseClientType;
 }) => {
+  if (!supabase) {
+    supabase = supabaseWeb;
+  }
   let trigger: DatabaseTable['workflow']['trigger'] | null = null;
   if (wActions.length > 0) {
     trigger = (
@@ -89,6 +95,9 @@ export const createRequestWorkflowAction = async ({
 
 export const deleteRequestWorkflowAction = async (workflowActionId: string) => {
   supabaseWrap(
-    await supabase.from('workflow_action').delete().eq('id', workflowActionId),
+    await supabaseWeb
+      .from('workflow_action')
+      .delete()
+      .eq('id', workflowActionId),
   );
 };

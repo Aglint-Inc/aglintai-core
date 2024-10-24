@@ -7,7 +7,7 @@ import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 import { getRandomNumInRange, report_gen_Params } from '../constant';
 import { type MeetingDetail } from './candidate-requests';
 
-export const createInterviewDeclineRequest = async (
+export const processInterviewerDeclineRequests = async (
   meeting_details: MeetingDetail[],
 ) => {
   const supabaseAdmin = getSupabaseServer();

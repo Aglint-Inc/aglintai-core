@@ -10,8 +10,9 @@ import {
   type MeetingDetail,
 } from './candidate-requests';
 import { getJobScheduleRequests } from './getJobScheduleRequests';
-import { createInterviewDeclineRequest } from './interviewer-decline';
+import { processInterviewerDeclineRequests } from './interviewer-decline';
 import { scheduleRequests } from './scheduleRequests';
+import { sessnRelnAccept } from './UpdateinterAttendStatus';
 
 export const generateReportForJob = async (job_id: string) => {
   const { allRequests, job_details } = await getJobScheduleRequests(
@@ -20,7 +21,7 @@ export const generateReportForJob = async (job_id: string) => {
   );
   const to_do_requests = allRequests
     .filter((app) => app.status === 'to_do')
-    .slice(0, 5);
+    .slice(0, 1);
   await scheduleRequests({
     allRequests: to_do_requests,
     company_id: job_details.recruiter_id,
@@ -46,6 +47,7 @@ export const generateReportForJob = async (job_id: string) => {
     meeting_details
       .slice(0, candidate_cancel_meetings_cnt)
       .map(mapMeetingDetailsToMeetingDetail),
+    job_details.recruiter_id,
   );
   await createCandidateInterviewRescheduleRequest(
     meeting_details
@@ -55,7 +57,8 @@ export const generateReportForJob = async (job_id: string) => {
       )
       .map(mapMeetingDetailsToMeetingDetail),
   );
-  await createInterviewDeclineRequest(
+
+  await processInterviewerDeclineRequests(
     meeting_details
       .slice(
         candidate_cancel_meetings_cnt + candidate_reschedule_meetings_cnt,
@@ -65,6 +68,18 @@ export const generateReportForJob = async (job_id: string) => {
       )
       .map(mapMeetingDetailsToMeetingDetail),
   );
+
+  if (report_gen_Params.is_schedule_reschedule_requests) {
+    const { allRequests: reschedule_requests } = await getJobScheduleRequests(
+      job_id,
+      'reschedule_request',
+    );
+    await scheduleRequests({
+      allRequests: reschedule_requests,
+      company_id: job_details.recruiter_id,
+    });
+    await sessnRelnAccept();
+  }
 };
 
 const getAllMeetingDetails = async (application_ids: string[]) => {

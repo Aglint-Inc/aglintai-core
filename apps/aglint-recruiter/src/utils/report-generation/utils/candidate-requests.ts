@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 import { dayjsLocal } from '@aglint/shared-utils';
 
+import { cancelInterviewScheduling } from '@/services/CandidateSchedule/utils/candidateCancel';
+
 import { createCandidateRequest } from '../../../services/candidate-request';
 import {
   getRandomNumInRange,
@@ -8,6 +10,10 @@ import {
   seed_candidate_interview_reschedule_reason,
 } from '../constant';
 import { runPromisesInBatches } from './runPromisesInBatches';
+import { ACTION_TRIGGER_MAP } from '@/workflows/constants';
+import { DatabaseTableInsert } from '@aglint/shared-types';
+import { createRequestWorkflowAction } from '@request/components/RequestProgress/utils';
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 export type MeetingDetail = {
   session_id: string;
   application_id: string;
@@ -17,6 +23,7 @@ export type MeetingDetail = {
 
 export const createCandidateInterviewCancelReq = async (
   meeting_details: MeetingDetail[],
+  recruiter_id: string,
 ) => {
   const promises = meeting_details.map(async (meeting_detail) => {
     const reason =
@@ -27,7 +34,7 @@ export const createCandidateInterviewCancelReq = async (
         )
       ];
     const add_date = Math.floor(Math.random() * 7) + 1;
-    await createCandidateRequest({
+    const req_id = await createCandidateRequest({
       application_id: meeting_detail.application_id,
       type: 'candidate_request_decline',
       reason: reason,
@@ -42,6 +49,11 @@ export const createCandidateInterviewCancelReq = async (
           .format(),
       },
     });
+    await cancelInterviewSchedulingWithProgress(
+      meeting_detail,
+      req_id,
+      recruiter_id,
+    );
   });
   await runPromisesInBatches(promises, 3);
 
@@ -78,4 +90,34 @@ export const createCandidateInterviewRescheduleRequest = async (
   });
   await runPromisesInBatches(promises, 3);
   console.log('Candidate Interview Reschedule Request Created');
+};
+
+const cancelInterviewSchedulingWithProgress = async (
+  meeting_detail: MeetingDetail,
+  request_id: string,
+  recruiter_id: string,
+) => {
+  const supabaseAdmin = getSupabaseServer();
+  let cancelReqActions = ACTION_TRIGGER_MAP.onRequestCancel.map(
+    (trigger, idx) => ({
+      ...trigger.value,
+      order: idx,
+      action_type: trigger.value.action_type,
+    }),
+  ) as unknown as DatabaseTableInsert['workflow_action'][];
+  cancelReqActions = cancelReqActions.filter(
+    (action) => action.action_type !== 'slack',
+  );
+  await createRequestWorkflowAction({
+    wActions: cancelReqActions,
+    request_id: request_id,
+    recruiter_id: recruiter_id,
+    interval: 0,
+    workflow_id: '',
+    supabase: supabaseAdmin,
+  });
+  await cancelInterviewScheduling({
+    session_ids: [meeting_detail.session_id],
+    request_id: request_id,
+  });
 };
