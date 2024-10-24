@@ -53,7 +53,7 @@ export const createRequests = async ({
         priority: 'standard',
         schedule_start_date: start_date,
         schedule_end_date: end_date,
-        type: job.create_req_params.type,
+        type: 'schedule_request',
       };
     });
 
