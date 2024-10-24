@@ -8,7 +8,9 @@ const supabaseAdmin = getSupabaseServer();
 export const reportGenerate = async () => {
   const company = await getTestCompanyDetails();
   const { allJobs } = await getAllJobs(company.id);
-  await generateReportForJob(allJobs[0].id);
+  for (const job of allJobs) {
+    await generateReportForJob(job.id);
+  }
 };
 
 const getTestCompanyDetails = async () => {

@@ -27,5 +27,5 @@ export const scheduleRequests = async ({
       company_id,
     });
   });
-  await runPromisesInBatches(promises, 3);
+  await runPromisesInBatches(promises, 2);
 };

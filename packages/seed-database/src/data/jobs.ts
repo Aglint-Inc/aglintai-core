@@ -51,7 +51,7 @@ export const seedJobs: SeedJobType[] = [
             session_type: 'panel',
             schedule_type: 'google_meet',
             session_duration: 30,
-            break_duration: 30,
+            break_duration: 24 * 60 * 2,
           },
           {
             name: 'Data Science Case Study',
@@ -72,7 +72,7 @@ export const seedJobs: SeedJobType[] = [
             session_type: 'panel',
             schedule_type: 'phone_call',
             session_duration: 30,
-            break_duration: 30,
+            break_duration: 24 * 60 * 1,
           },
           {
             name: 'Debrief',
@@ -152,7 +152,7 @@ export const seedJobs: SeedJobType[] = [
             session_type: 'panel',
             schedule_type: 'google_meet',
             session_duration: 40,
-            break_duration: 30,
+            break_duration: 24 * 60 * 1,
           },
           {
             name: 'Backend Technical Interview',

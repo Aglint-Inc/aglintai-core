@@ -79,7 +79,7 @@ export const scheduleSingleRequest = async ({
   if (!cand_schedule.db_details) {
     throw new Error('No db details found');
   }
-
+  console.log('finding plans for the request', request.title);
   const multiday_plans = cand_schedule.findCandSlotForTheDay();
   if (multiday_plans.length === 0) {
     console.error('No Slots Found for scheduling');
@@ -88,6 +88,7 @@ export const scheduleSingleRequest = async ({
   if (multiday_plans[0].plans.length === 0) {
     throw new Error('No plans found');
   }
+  console.log('booking request', request.title);
   await bookCandidateSelectedOption(
     {
       cand_tz: report_seed_candidate_tz,

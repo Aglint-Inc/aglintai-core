@@ -41,7 +41,7 @@ export const findReplacementIntsUtil = async (
       out_of_working_hrs: true,
       show_soft_conflicts: true,
       show_conflicts_events: true,
-      calender_not_connected: true,
+      calender_not_connected: false,
       day_passed: true,
     },
   });

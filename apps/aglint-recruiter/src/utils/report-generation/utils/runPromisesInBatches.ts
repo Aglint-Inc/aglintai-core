@@ -1,22 +1,20 @@
 /* eslint-disable no-console */
 export const runPromisesInBatches = async (
   promises: Promise<any>[],
-  concurrent_cnt: number,
+  _concurrent_cnt: number,
 ) => {
-  concurrent_cnt = 1;
+  // Since we're executing promises sequentially, concurrent_cnt is set to 1
   const finished_results: PromiseSettledResult<any>[] = [];
-  let idx = 0;
-  for (idx = 0; idx < promises.length; idx += concurrent_cnt) {
-    console.log('running batch', `${idx} - ${idx + concurrent_cnt}`);
-    const results = await Promise.allSettled(
-      promises.slice(idx, idx + concurrent_cnt),
-    );
-    finished_results.push(...results);
+
+  for (let idx = 0; idx < promises.length; idx += 1) {
+    console.log('running promise', `${idx + 1} of ${promises.length}`);
+    try {
+      const value = await promises[idx];
+      finished_results.push({ status: 'fulfilled', value });
+    } catch (reason) {
+      finished_results.push({ status: 'rejected', reason });
+    }
   }
-  if (idx < promises.length) {
-    console.log('running last batch', `${idx} - ${promises.length}`);
-    const results = await Promise.allSettled(promises.slice(idx));
-    finished_results.push(...results);
-  }
+
   console.log('finished_results', finished_results);
 };

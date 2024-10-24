@@ -43,6 +43,7 @@ export const getUserCalAuth = async ({
     }
   } catch (error) {
     console.error('Error in getting user cal auth', error);
+    console.log(recruiter?.email, error?.response?.data);
     return null;
   }
 };
