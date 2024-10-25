@@ -2,7 +2,6 @@
 import { dayjsLocal } from '@aglint/shared-utils';
 
 import { type getJobScheduleRequests } from './getJobScheduleRequests';
-import { runPromisesInBatches } from './runPromisesInBatches';
 import { scheduleSingleRequest } from './scheduleSingleRequest';
 
 export const scheduleRequests = async ({
@@ -14,7 +13,8 @@ export const scheduleRequests = async ({
   >['allRequests'];
   company_id: string;
 }) => {
-  const promises = allRequests.map(async (req) => {
+  for (let idx = 0; idx < allRequests.length; idx += 1) {
+    const req = allRequests[idx];
     const random_num = Math.floor(Math.random());
     await scheduleSingleRequest({
       request: req,
@@ -26,6 +26,5 @@ export const scheduleRequests = async ({
       },
       company_id,
     });
-  });
-  await runPromisesInBatches(promises, 2);
+  }
 };

@@ -15,18 +15,11 @@ import { processInterviewerDeclineRequests } from './interviewer-decline';
 import { scheduleRequests } from './scheduleRequests';
 import { sessnRelnAccept } from './UpdateinterAttendStatus';
 
-export const generateReportForJob = async (job_id: string) => {
-  const { allRequests, job_details } = await getJobScheduleRequests(
+export const generateReportDeclines = async (job_id: string) => {
+  const { job_details } = await getJobScheduleRequests(
     job_id,
     'schedule_request',
   );
-  const to_do_requests = allRequests
-    .filter((app) => app.status === 'to_do')
-    .slice(0, 5);
-  await scheduleRequests({
-    allRequests: to_do_requests,
-    company_id: job_details.recruiter_id,
-  });
 
   const meeting_details = await getAllMeetingDetails(job_id);
   if (meeting_details.length === 0) {

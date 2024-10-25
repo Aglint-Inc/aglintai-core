@@ -22,9 +22,9 @@ export const testUsers: UserInsertType[] = [
     is_oauth_needed: false,
   },
   {
-    first_name: 'Sarah',
-    last_name: 'Connor',
-    email: 'chinmai@aglinthq.com',
+    first_name: 'Dileep',
+    last_name: 'B C',
+    email: 'dileep@aglinthq.com',
     title: 'Location Admin',
     role: 'admin',
     position: 'Location Admin',
