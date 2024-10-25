@@ -1,6 +1,7 @@
 'use client ';
 import { useEffect, useState } from 'react';
 
+import { useTenant } from '@/company/hooks';
 import { useFlags } from '@/company/hooks/useFlags';
 import { type GetOnboard } from '@/routers/onboarding/getOnboard';
 import { type ProcedureQuery } from '@/server/api/trpc';
@@ -45,16 +46,22 @@ const requestIds: SetupStepType['id'][] = [
   'interview-plan',
 ];
 
-const useGetOnboard = (): ProcedureQuery<GetOnboard> =>
-  api.onboarding.getOnboard.useQuery();
-
 export function useCompanySetup() {
   //states ---
   const [steps, setSteps] = useState<SetupStepType[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [firstTimeOpened, setFirstTimeOpened] = useState(false);
   const [isOnboardOpen, setIsOnboardOpen] = useState(false);
+  const {
+    recruiter: {
+      recruiter_preferences: { onboard_complete },
+    },
+  } = useTenant();
   //-------------------- hook
+  const useGetOnboard = (): ProcedureQuery<GetOnboard> =>
+    api.onboarding.getOnboard.useQuery(undefined, {
+      enabled: !onboard_complete,
+    });
   const { data, isLoading } = useGetOnboard();
 
   const { mutateAsync, isPending } =
@@ -143,28 +150,20 @@ export function useCompanySetup() {
 
   //complelet functions ------------------------
   async function currentStepMarkAsComplete(id: string) {
-    if (steps.filter((step) => !step.isLocalCompleted).length === 1) {
-      await mutateAsync({ onboard_complete: true });
-      setSteps((pre) =>
-        pre.map((step) =>
-          step.id === id ? { ...step, isLocalCompleted: true } : step,
-        ),
-      );
-    } else {
-      const newSteps = steps.map((step) =>
-        step.id === id ? { ...step, isLocalCompleted: true } : step,
-      );
+    const newSteps = steps.map((step) =>
+      step.id === id ? { ...step, isLocalCompleted: true } : step,
+    );
 
-      const firstIncompleteIndex = newSteps.findIndex(
-        (step) => !step.isLocalCompleted,
-      );
+    const firstIncompleteIndex = newSteps.findIndex(
+      (step) => !step.isLocalCompleted,
+    );
 
-      setSteps(newSteps);
-      setSelectedIndex(firstIncompleteIndex ? firstIncompleteIndex : 0);
-    }
+    setSteps(newSteps);
+    setSelectedIndex(firstIncompleteIndex ? firstIncompleteIndex : 0);
   }
 
   async function finishHandler() {
+    await mutateAsync({ onboard_complete: true });
     setIsOnboardOpen(false);
   }
 
@@ -363,3 +362,13 @@ export function useCompanySetup() {
 function findMissingProperties(obj: any, requiredProps: string[]) {
   return requiredProps.filter((prop) => obj[prop] === null || obj[prop] === '');
 }
+
+// if (steps.filter((step) => !step.isLocalCompleted).length === 1) {
+// await mutateAsync({ onboard_complete: true });
+// setSteps((pre) =>
+// pre.map((step) =>
+// step.id === id ? { ...step, isLocalCompleted: true } : step,
+// ),
+// );
+// } else {
+// }
