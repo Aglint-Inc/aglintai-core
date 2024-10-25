@@ -2,7 +2,7 @@ import { dayjsLocal } from '@aglint/shared-utils';
 
 export const seedScheduleRequestParams = {
   count_prev_month: 2,
-  past_request_percentage: 1,
+  past_request_percentage: 0.7,
 } as const;
 
 export const getRequestScheduleDateRange = (
