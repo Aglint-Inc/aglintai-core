@@ -11,7 +11,7 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
+import { createPrivateClient, createPublicClient } from '@/server/db';
 import { formatSessions } from '@/utils/formatSessions';
 
 import { createRequestSchema } from '../../../requests/create/create_request';
@@ -51,7 +51,7 @@ const moveToInterview = async ({
   ctx,
   input,
 }: PrivateProcedure<typeof interviewSchema>) => {
-  const db = await createPrivateClient();
+  const db = await createPublicClient();
   const body = input.body;
   if (!body) {
     const { body: _body, applications, ...rest } = input;
@@ -102,11 +102,13 @@ const moveToInterview = async ({
       ...body.request,
     }));
 
-  return await db.rpc('move_to_interview', {
-    applications: input.applications,
-    sessions: body.sessions,
-    requests,
-  });
+  return await db
+    .rpc('move_to_interview', {
+      applications: input.applications,
+      sessions: body.sessions,
+      requests,
+    })
+    .throwOnError();
 };
 
 const moveToNonInterview = async ({
