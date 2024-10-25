@@ -2,7 +2,7 @@ export const report_gen_Params = {
   candidate_reschedule_request_percentage: 0.15,
   candidate_cancel_request_percentage: 0.2,
   interviewer_decline_request_percentage: 0.3,
-  is_schedule_reschedule_requests: false,
+  is_schedule_reschedule_requests: true,
 } as const;
 
 export const report_seed_candidate_tz = 'Asia/Kolkata';

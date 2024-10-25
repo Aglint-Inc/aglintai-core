@@ -80,6 +80,11 @@ export const generateReportDeclines = async (job_id: string) => {
       job_id,
       'reschedule_request',
     );
+    const sessions = reschedule_requests
+      .map((r) => r.request_relation)
+      .flat()
+      .map((r) => r.session_id);
+    await updateMeetingsStatus(sessions);
     await scheduleRequests({
       allRequests: reschedule_requests,
       company_id: job_details.recruiter_id,
@@ -112,4 +117,23 @@ const mapMeetingDetailsToMeetingDetail = (
     meeting_schedule_end_time: meeting_detail.end_time!,
   };
   return meeting_detail_map;
+};
+
+const updateMeetingsStatus = async (session_ids: string[]) => {
+  const supabaseAdmin = getSupabaseServer();
+  const sessions = supabaseWrap(
+    await supabaseAdmin
+      .from('interview_session')
+      .select()
+      .in('id', session_ids),
+  );
+  await supabaseWrap(
+    await supabaseAdmin
+      .from('interview_meeting')
+      .update({ status: 'waiting' })
+      .in(
+        'id',
+        sessions.map((s) => s.meeting_id),
+      ),
+  );
 };

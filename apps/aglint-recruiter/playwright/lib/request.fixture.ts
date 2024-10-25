@@ -45,14 +45,12 @@ export const createRequestDetailsFixture = (page: Page) => {
       );
       expect(await sendAvailBtn.isVisible()).toBeTruthy();
       await sendAvailBtn.click();
-      await page.waitForResponse((req) => {
-        return (
-          req
-            .url()
-            .includes('/api/mail/sendAvailabilityRequest_email_applicant') &&
-          req.status() === 200
-        );
+      const response = await page.waitForResponse((req) => {
+        return req
+          .url()
+          .includes('/api/mail/sendAvailabilityRequest_email_applicant');
       });
+      expect(response.status()).toBe(200);
     },
   };
 };
