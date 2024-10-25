@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test';
 import { test } from './lib/fixtures';
+import { getRequestForAvailabilityE2e } from './utils/getRequest';
 
 enum ScheduleRequestTypeEnum {
   'SCHEDULE_REQUEST' = 'Schedule Request',
@@ -24,8 +25,10 @@ test('Candidate Availability Request', async ({
     process.env.E2E_TEST_EMAIL,
     process.env.E2E_TEST_PASSWORD,
   );
+  const scheduleRequests = await getRequestForAvailabilityE2e();
+  console.log('scheduleRequests', scheduleRequests);
   await requestDetailsPage.goto(
-    'http://localhost:3000/requests/475e38ea-1f5d-4a08-acad-9fbfa847dc65',
+    `${process.env.NEXT_PUBLIC_HOST_NAME}/requests/${scheduleRequests[0].id}`,
   );
   const requestType = await requestDetailsPage.getRequestType();
   if (!requestType) {
