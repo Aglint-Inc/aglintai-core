@@ -29,6 +29,14 @@ export async function verifyToken(db: any) {
       tempData.push(temp);
       count++;
     }
+
+    // If no sequential keys were found, fall back to single `${base}` key
+    if (tempData.length === 0) {
+      const fallbackTemp = cook?.get(base)?.value;
+      if (!fallbackTemp) return null; // No data available
+      tempData.push(fallbackTemp);
+    }
+
     tempData = tempData.filter((item) => Boolean(item));
     jsonData = JSON.parse(atob(tempData.join('').replace('base64-', ''))) as {
       access_token: string;
