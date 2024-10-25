@@ -47,17 +47,6 @@ export const scheduleSingleRequest = async ({
     event_type: 'SELF_SCHEDULE_LINK',
   });
 
-  await reqProgressLogger({
-    status: 'completed',
-    is_progress_step: false,
-  });
-  await reqProgressLogger({
-    status: 'completed',
-    is_progress_step: true,
-    meta: {
-      filter_json_id: filter_json.id,
-    },
-  });
   const cand_schedule = new CandidatesScheduling({
     include_conflicting_slots: {
       out_of_office: true,
@@ -92,12 +81,26 @@ export const scheduleSingleRequest = async ({
   if (multiday_plans[0].plans.length === 0) {
     throw new Error('No plans found');
   }
-  if (multiday_plans.length === 1) {
-    await updatePlansInFilterJson({
-      filter_json_id: filter_json.id,
-      plans: multiday_plans[0].plans,
-    });
+  if (multiday_plans.length > 1) {
+    console.error('Multiple days found for the request', request.title);
+    return;
   }
+
+  await reqProgressLogger({
+    status: 'completed',
+    is_progress_step: false,
+  });
+  await reqProgressLogger({
+    status: 'completed',
+    is_progress_step: true,
+    meta: {
+      filter_json_id: filter_json.id,
+    },
+  });
+  await updatePlansInFilterJson({
+    filter_json_id: filter_json.id,
+    plans: multiday_plans[0].plans,
+  });
   console.log('booking request', request.title);
 
   await bookCandidateSelectedOption(

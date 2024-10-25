@@ -39,9 +39,10 @@ beforeEach(() => {
   vi.mocked(fetchAndVerifyDb).mockResolvedValue(singleSesnSingInt);
   vi.mocked(getIntCalEvents).mockResolvedValue([]);
 });
-describe('mock fetchAndVerifyDb', () => {
-  it('should return mock data', async () => {
-    const cand_schedule = new CandidatesScheduling({});
+
+describe('Test the single interviewer single session cases', () => {
+  const cand_schedule = new CandidatesScheduling({});
+  beforeEach(async () => {
     await cand_schedule.fetchDetails({
       params: {
         company_id: '1a12a488-c3f3-462b-8b3b-ea429e4f7fdc',
@@ -54,9 +55,6 @@ describe('mock fetchAndVerifyDb', () => {
       is_fetch_meeting_data: false,
     });
   });
-});
-
-describe('Test the single interviewer single session cases', () => {
   describe('on a working day', () => {
     it('total slots should be', () => {
       //
