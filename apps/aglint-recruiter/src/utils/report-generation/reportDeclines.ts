@@ -2,14 +2,14 @@ import { supabaseWrap } from '@aglint/shared-utils';
 
 import { getSupabaseServer } from '../supabase/supabaseAdmin';
 import { test_admin_email } from './constant';
-import { generateReportForJob } from './utils/generateReportForJob';
+import { generateReportDeclines } from './utils/generateReportDeclines';
 
 const supabaseAdmin = getSupabaseServer();
-export const reportGenerate = async () => {
+export const reportDeclines = async () => {
   const company = await getTestCompanyDetails();
   const { allJobs } = await getAllJobs(company.id);
   for (const job of allJobs) {
-    await generateReportForJob(job.id);
+    await generateReportDeclines(job.id);
   }
 };
 
