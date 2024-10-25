@@ -2,6 +2,7 @@
 import { type PlanCombinationRespType } from '@aglint/shared-types';
 import {
   createRequestProgressLogger,
+  getRandomNumInRange,
   supabaseWrap,
 } from '@aglint/shared-utils';
 
@@ -109,7 +110,9 @@ export const scheduleSingleRequest = async ({
       filter_id: filter_json.id,
     },
     cand_schedule.db_details,
-    multiday_plans[0].plans[0],
+    multiday_plans[0].plans[
+      getRandomNumInRange(0, multiday_plans[0].plans.length - 1)
+    ],
     fetchedDetails,
   );
   console.log('booked request', request.title);

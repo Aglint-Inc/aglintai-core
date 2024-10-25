@@ -95,5 +95,5 @@ const alternativeInt = async (meeting_detail: MeetingDetail) => {
   if (other_ints.length === 0) {
     throw new Error('no alternative user found');
   }
-  return other_ints[0].user_id;
+  return other_ints[getRandomNumInRange(0, other_ints.length - 1)].user_id;
 };
