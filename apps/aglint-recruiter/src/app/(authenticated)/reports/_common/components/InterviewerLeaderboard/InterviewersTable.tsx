@@ -1,7 +1,6 @@
 import { EmptyState } from '@components/empty-state';
 import {
   Section,
-  SectionActions,
   SectionDescription,
   SectionHeader,
   SectionHeaderText,
@@ -16,7 +15,6 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
-import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { ArrowDownIcon, ChartNoAxesColumn } from 'lucide-react';
 import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 import { useInterviewer_upcoming } from 'src/app/(authenticated)/reports/_common/hook/interview/interviewerMatrix.hook';

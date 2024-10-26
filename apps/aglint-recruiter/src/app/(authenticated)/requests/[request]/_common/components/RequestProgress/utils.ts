@@ -6,8 +6,8 @@ import {
 import { supabaseWrap } from '@aglint/shared-utils';
 
 import { supabase as supabaseWeb } from '@/utils/supabase/client';
+import { type SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 import { TRIGGER_PAYLOAD } from '@/workflows/constants';
-import { SupabaseClientType } from '@/utils/supabase/supabaseAdmin';
 
 export const createRequestWorkflowAction = async ({
   wActions,

@@ -1,7 +1,6 @@
 import { EmptyState } from '@components/empty-state';
 import {
   Section,
-  SectionActions,
   SectionDescription,
   SectionHeader,
   SectionHeaderText,
@@ -17,9 +16,8 @@ import {
   TableHeader,
   TableRow,
 } from '@components/ui/table';
-import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 import { UIAlert } from '@components/ui-alert';
-import { ChartNoAxesColumn, ClockIcon, DownloadIcon } from 'lucide-react';
+import { ChartNoAxesColumn, ClockIcon } from 'lucide-react';
 import { useMemberList } from 'src/app/_common/hooks/useMemberList';
 
 import { Loader } from '@/common/Loader';
