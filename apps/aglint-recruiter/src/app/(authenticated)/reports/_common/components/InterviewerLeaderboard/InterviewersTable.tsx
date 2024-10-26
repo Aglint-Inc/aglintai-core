@@ -32,7 +32,7 @@ export default function InterviewersTable() {
           <SectionTitle>Interviewers</SectionTitle>
           <SectionDescription></SectionDescription>
         </SectionHeaderText>
-        <SectionActions>
+        {/* <SectionActions>
           <div className='flex items-center space-x-2'>
             <Tabs defaultValue='declines'>
               <TabsList>
@@ -41,7 +41,7 @@ export default function InterviewersTable() {
               </TabsList>
             </Tabs>
           </div>
-        </SectionActions>
+        </SectionActions> */}
       </SectionHeader>
       {isFetching ? (
         <Loader />
@@ -115,6 +115,9 @@ function InterviewersRow({ interviewer }: InterviewersTableProps) {
     ({} as NonNullable<typeof members>[number]);
 
   const name = `${tempMem.first_name || ''} ${tempMem.last_name || ''}`.trim();
+  const average_weekly_duration = interviewer.average_weekly_duration
+    ? Math.round(interviewer.average_weekly_duration / 60)
+    : 0;
   return (
     <TableRow key={tempMem.email}>
       <TableCell className='font-medium'>
@@ -136,9 +139,7 @@ function InterviewersRow({ interviewer }: InterviewersTableProps) {
       <TableCell className='text-right'>
         {interviewer.average_weekly_count}
       </TableCell>
-      <TableCell className='text-right'>
-        {interviewer.average_weekly_duration}
-      </TableCell>
+      <TableCell className='text-right'>{average_weekly_duration}</TableCell>
       <TableCell className='text-right'>{interviewer.qualified}</TableCell>
       <TableCell className='text-right'>{interviewer.training}</TableCell>
     </TableRow>

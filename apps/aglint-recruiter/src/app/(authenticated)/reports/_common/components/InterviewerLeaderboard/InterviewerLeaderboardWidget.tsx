@@ -85,7 +85,7 @@ export default function InterviewerLeaderboardWidget() {
           description='No data available for the selected time frame.'
         />
       ) : (
-        <div className='space-y-6'>
+        <div className='max-h-[600] space-y-6 overflow-auto'>
           {sortedData.map((interviewer) => {
             const tempMem =
               (members || []).find(
@@ -96,10 +96,14 @@ export default function InterviewerLeaderboardWidget() {
               topSkills: [],
               name: `${tempMem.first_name || ''} ${tempMem.last_name || ''}`.trim(),
             };
-            const accept_per =
-              (interviewer.accepted / interviewer.interviews) * 100;
-            const reject_per =
-              (interviewer.rejected / interviewer.interviews) * 100;
+            const accept_per = (
+              (interviewer.accepted / interviewer.interviews) *
+              100
+            ).toFixed(1);
+            const reject_per = (
+              (interviewer.rejected / interviewer.interviews) *
+              100
+            ).toFixed(1);
             return (
               <InterviewerLeaderboardItem
                 key={interviewer.user_id}
@@ -110,7 +114,7 @@ export default function InterviewerLeaderboardWidget() {
                 topSkills={mem.topSkills}
                 totalHours={interviewer.total_hours?.toFixed(1)}
                 interviews={interviewer.interviews}
-                acceptenceRate={accept_per}
+                acceptanceRate={accept_per}
                 declineRate={reject_per}
                 averageScore={interviewer.feedback}
               />
@@ -130,7 +134,7 @@ function InterviewerLeaderboardItem({
   topSkills,
   totalHours,
   interviews,
-  acceptenceRate,
+  acceptanceRate,
   declineRate,
   averageScore,
   isLoading = false,
@@ -142,8 +146,8 @@ function InterviewerLeaderboardItem({
   topSkills: string[];
   totalHours: string;
   interviews: number;
-  acceptenceRate: number;
-  declineRate: number;
+  acceptanceRate: string;
+  declineRate: string;
   averageScore: number;
   isLoading?: boolean;
 }) {
@@ -252,7 +256,7 @@ function InterviewerLeaderboardItem({
                   <Skeleton className='h-5 w-6 bg-primary/10' />
                 ) : (
                   <span className='text-lg font-semibold'>
-                    {acceptenceRate}%
+                    {acceptanceRate}%
                   </span>
                 )}
                 <span className='text-xs text-muted-foreground'>

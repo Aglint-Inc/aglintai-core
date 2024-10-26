@@ -36,7 +36,7 @@ export default function InterviewersDeclineTable() {
           <SectionTitle>Interviewers Decline</SectionTitle>
           <SectionDescription></SectionDescription>
         </SectionHeaderText>
-        <SectionActions>
+        {/* <SectionActions>
           <div className='flex items-center space-x-2'>
             <Tabs defaultValue='declines'>
               <TabsList>
@@ -48,7 +48,7 @@ export default function InterviewersDeclineTable() {
               <DownloadIcon className='h-4 w-4' />
             </Button>
           </div>
-        </SectionActions>
+        </SectionActions> */}
       </SectionHeader>
       {isFetching ? (
         <Loader />
@@ -83,8 +83,11 @@ export default function InterviewersDeclineTable() {
                 ...tempMem,
                 name: `${tempMem.first_name || ''} ${tempMem.last_name || ''}`.trim(),
               };
+              const lead_time = interviewer.lead_time
+                ? (interviewer.lead_time / 60).toFixed(1)
+                : 0;
               return (
-                <TableRow key={mem.name}>
+                <TableRow key={interviewer.user_id}>
                   <TableCell className='font-medium'>
                     <div className='flex items-center space-x-3'>
                       <Avatar>
@@ -102,7 +105,7 @@ export default function InterviewersDeclineTable() {
                       {interviewer.decline}
                     </div>
                   </TableCell>
-                  <TableCell>{interviewer.lead_time}</TableCell>
+                  <TableCell>{lead_time}</TableCell>
                   <TableCell className='max-w-[300px] truncate'>
                     {interviewer.reason.join(', ')}
                   </TableCell>

@@ -28,7 +28,7 @@ export const interview_count = privateProcedure
 
     let query = adminDb
       .from('interview_meeting')
-      .select('created_at,status,public_jobs!inner(id)');
+      .select('created_at,status,public_jobs!inner(id),start_time');
 
     if (recruiter_id) {
       query = query.eq('recruiter_id', recruiter_id);

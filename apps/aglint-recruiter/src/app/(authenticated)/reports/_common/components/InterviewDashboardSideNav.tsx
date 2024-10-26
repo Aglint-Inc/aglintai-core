@@ -11,9 +11,9 @@ export default function Component() {
       id: 'interviewMetrics',
     },
     {
-      name: 'Interviewer Leaderboard',
+      name: 'Interviewers Metrics',
       icon: 'Trophy',
-      id: 'interviewerLeaderboard',
+      id: 'interviewersMetrics',
     },
 
     {

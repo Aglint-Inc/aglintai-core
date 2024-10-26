@@ -24,18 +24,24 @@ export const interviewer_rejections = privateProcedure
   .query(async ({ input }) => {
     const adminDb = createPublicClient();
     const { recruiter_id, data_range, departments, job_id, locations } = input;
-    return (
-      await adminDb
-        .rpc('interviewers_analytic_rejections', {
-          recruiter_id: recruiter_id,
-          jobs: job_id ? [job_id] : undefined,
-          departments: departments || undefined,
-          locations: locations || undefined,
-          start_datetime: data_range?.from.toISOString(),
-          end_datetime: data_range?.to.toISOString(),
-        })
-        .throwOnError()
-    ).data;
+    const { data, error } = await adminDb.rpc(
+      'interviewers_analytic_rejections',
+      {
+        recruiter_id: recruiter_id,
+        jobs: job_id ? [job_id] : undefined,
+        departments: departments || undefined,
+        locations: locations || undefined,
+        start_datetime: data_range?.from.toISOString(),
+        end_datetime: data_range?.to.toISOString(),
+      },
+    );
+    // .throwOnError()
+    // .data;
+    if (error) {
+      console.error(error);
+      throw new Error();
+    }
+    return data!;
   });
 
 export type InterviewerRejections = ProcedureDefinition<
