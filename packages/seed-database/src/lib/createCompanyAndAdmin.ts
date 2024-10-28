@@ -90,8 +90,22 @@ export const deleteAllCompanyData = async () => {
     false
   );
 
-  const promises = allCompanyAdmins.map(async (company) => {
-    const admin_user = company.recruiter_user;
+  const authUsers = supabaseWrap(await supabaseAdmin.rpc('get_auth_users')) as {
+    id: string;
+  }[];
+
+  for (const authUser of authUsers) {
+    const { error } = await supabaseAdmin.auth.admin.deleteUser(authUser.id);
+    if (error) {
+      console.error('error deleting user', error);
+      console.log(authUser.id);
+      // throw new Error(error.message);
+    }
+  }
+  console.log('deleted auth users');
+
+  for (let companyAdmin of allCompanyAdmins) {
+    const admin_user = companyAdmin.recruiter_user;
     supabaseWrap(
       await supabaseAdmin
         .from('recruiter')
@@ -110,21 +124,7 @@ export const deleteAllCompanyData = async () => {
     if (error) {
       console.error('Error deleting admin user', error);
     }
-    const authUsers = supabaseWrap(
-      await supabaseAdmin.rpc('get_auth_users')
-    ) as {
-      id: string;
-    }[];
-    const deleteAuthUsers = authUsers.map(async (user) => {
-      const { error } = await supabaseAdmin.auth.admin.deleteUser(user.id);
+  }
 
-      if (error) {
-        console.log('error deleting user', error);
-      }
-    });
-    await Promise.all(deleteAuthUsers);
-    console.log('Deleted all auth users and company data');
-  });
-
-  await Promise.all(promises);
+  console.log('Deleted all auth users and company data');
 };
