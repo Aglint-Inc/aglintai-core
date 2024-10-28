@@ -90,8 +90,7 @@ export const createInterviewPlan = async ({
             interview_module_relation_id: reln.id,
             user_id: null,
             session_id: session_details.id,
-            training_type:
-              reln.training_status === 'training' ? 'shadow' : 'qualified',
+            training_type: null,
             interviewer_type: 'training',
           }));
 
