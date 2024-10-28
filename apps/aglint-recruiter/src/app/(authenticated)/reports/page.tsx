@@ -18,7 +18,7 @@ const Analytics = () => {
   return (
     <ScrollArea className='h-[calc(100vh-180px)] px-4'>
       {activeTab === 'interviewMetrics' && <InterviewCount />}
-      {activeTab === 'interviewerLeaderboard' && <InterviewerLeaderboard />}
+      {activeTab === 'interviewersMetrics' && <InterviewerLeaderboard />}
       {activeTab === 'candidateMetrics' && <CandidateDropoutFunnelReport />}
       {activeTab === 'jobMetrics' && <JobMetrics />}
       {activeTab === 'requestMetrics' && <Checklist />}

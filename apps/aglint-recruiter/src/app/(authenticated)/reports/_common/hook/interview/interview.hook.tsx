@@ -35,14 +35,22 @@ export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
   });
 
   const groupedData = data
-    ? groupByDate(data, unit, filters.dateRange, {
-        cancelled: 0,
-        confirmed: 0,
-        completed: 0,
-        not_scheduled: 0,
-        reschedule: 0,
-        waiting: 0,
-      })
+    ? groupByDate(
+        data.map((data) => ({
+          ...data,
+          created_at: data.start_time || data.created_at,
+        })),
+        unit,
+        filters.dateRange,
+        {
+          cancelled: 0,
+          confirmed: 0,
+          completed: 0,
+          not_scheduled: 0,
+          reschedule: 0,
+          waiting: 0,
+        },
+      )
     : {};
   const average = Object.entries(
     Object.entries(groupedData).reduce(

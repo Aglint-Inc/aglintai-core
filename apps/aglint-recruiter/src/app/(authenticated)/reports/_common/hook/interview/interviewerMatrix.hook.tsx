@@ -12,6 +12,7 @@ const useInterviewerLeaderBoardProcedure = (
 ): ProcedureQuery<InterviewerLeaderboard> =>
   api.analytics.interviewer_leaderboard.useQuery(input, {
     enabled: !!input.recruiter_id,
+    refetchOnMount: false,
   });
 
 export function useInterviewerLeaderboard() {
@@ -119,6 +120,7 @@ export function useInterviewerDeclines(): ProcedureQuery<InterviewerRejections> 
     },
     {
       enabled: !!recruiter.id,
+      refetchOnMount: false,
     },
   );
 }

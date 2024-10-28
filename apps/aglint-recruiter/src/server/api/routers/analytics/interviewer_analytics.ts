@@ -35,7 +35,7 @@ export const interviewer_analytics = privateProcedure
           end_datetime: data_range?.to.toISOString(),
         })
         .throwOnError()
-    ).data;
+    ).data!;
   });
 
 export type InterviewerAnalytics = ProcedureDefinition<
