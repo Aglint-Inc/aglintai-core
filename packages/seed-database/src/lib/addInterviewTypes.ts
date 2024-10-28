@@ -23,6 +23,10 @@ export const addInterviewTypes = async ({
       recruiter_id: company_detail.id,
       department_id: departments[0].id,
     }));
+
+  supabaseWrap(
+    await supabaseAdmin.from('interview_module').delete().not('id', 'is', null)
+  );
   const int_modules = supabaseWrap(
     await supabaseAdmin.from('interview_module').insert(modules).select()
   );

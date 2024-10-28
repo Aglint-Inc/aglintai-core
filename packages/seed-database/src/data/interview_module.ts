@@ -26,7 +26,12 @@ export const interview_modules: (Pick<
       activeDuration: 30,
       availabletimeSlots: [],
     },
-    settings: null,
+    settings: {
+      noShadow: 1,
+      noReverseShadow: 2,
+      require_training: true,
+      reqruire_approval: false, // Fixed typo
+    },
     instructions:
       'Candidates will be given a dataset to analyze and will be asked to present their findings and recommendations. You may use Python, R, or any other tool you are comfortable with. Be prepared to explain your methodology and the rationale behind your decisions.',
   },
@@ -38,7 +43,12 @@ export const interview_modules: (Pick<
       activeDuration: 30,
       availabletimeSlots: [],
     },
-    settings: null,
+    settings: {
+      noShadow: 1,
+      noReverseShadow: 2,
+      require_training: true,
+      reqruire_approval: false, // Fixed typo
+    },
     instructions:
       'This interview will focus on your past experiences, how you handled various work situations, and how you interact with others. Prepare to discuss specific examples of how you dealt with challenges or collaborated with teammates.',
   },
@@ -50,7 +60,12 @@ export const interview_modules: (Pick<
       activeDuration: 30,
       availabletimeSlots: [],
     },
-    settings: null,
+    settings: {
+      noShadow: 1,
+      noReverseShadow: 2,
+      require_training: true,
+      reqruire_approval: false, // Fixed typo
+    },
     instructions:
       'This will be a comprehensive interview covering both technical skills and cultural fit. Be ready to discuss your overall career goals, how you can contribute to the team, and why you believe you are the right fit for the position.',
   },
@@ -130,7 +145,12 @@ export const interview_modules: (Pick<
       activeDuration: 30,
       availabletimeSlots: [],
     },
-    settings: null,
+    settings: {
+      noShadow: 1,
+      noReverseShadow: 2,
+      require_training: true,
+      reqruire_approval: false, // Fixed typo
+    },
     instructions:
       'This interview will focus on your career goals, motivations, and how you align with the company’s culture. Prepare to discuss your long-term aspirations and how you see yourself contributing to the organization.',
   },
