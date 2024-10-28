@@ -63,8 +63,8 @@ export const interview_modules: (Pick<
       availabletimeSlots: [],
     },
     settings: {
-      noShadow: 0,
-      noReverseShadow: 0,
+      noShadow: 1,
+      noReverseShadow: 2,
       require_training: true,
       reqruire_approval: false, // Fixed typo
     },
@@ -80,8 +80,8 @@ export const interview_modules: (Pick<
       availabletimeSlots: [],
     },
     settings: {
-      noShadow: 0,
-      noReverseShadow: 0,
+      noShadow: 2,
+      noReverseShadow: 1,
       require_training: true,
       reqruire_approval: false, // Fixed typo
     },

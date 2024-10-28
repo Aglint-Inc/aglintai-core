@@ -1,5 +1,5 @@
 import { DatabaseTable, DatabaseTableInsert } from '@aglint/shared-types';
-import { supabaseWrap } from '@aglint/shared-utils';
+import { getRandomNumInRange, supabaseWrap } from '@aglint/shared-utils';
 import { getSupabaseServer } from '../supabaseAdmin';
 import { interview_modules } from '../data/interview_module';
 
@@ -29,14 +29,22 @@ export const addInterviewTypes = async ({
 
   const reln_promises = int_modules.map(async (mod) => {
     let trainee_reln: DatabaseTableInsert['interview_module_relation'][] = [];
+    let qualified_reln: DatabaseTableInsert['interview_module_relation'][] =
+      companyTeam.map((qualified) => ({
+        module_id: mod.id,
+        user_id: qualified.user_id,
+        is_archived: false,
+        number_of_shadow: 0,
+        number_of_reverse_shadow: 0,
+        training_status: 'qualified',
+        training_approver: admin.user_id,
+      }));
 
     if (mod.settings && mod.settings.require_training) {
-      trainee_reln = companyTeam
-        .filter(
-          (user) =>
-            user.position && user.position.includes('Frontend Developer')
-        )
-        .map((trainee) => ({
+      for (let i = 0; i < 2; ++i) {
+        const trainee =
+          qualified_reln[getRandomNumInRange(0, qualified_reln.length - 1)];
+        trainee_reln.push({
           module_id: mod.id,
           user_id: trainee.user_id,
           is_archived: false,
@@ -44,20 +52,12 @@ export const addInterviewTypes = async ({
           number_of_reverse_shadow: 0,
           training_status: 'training',
           training_approver: admin.user_id,
-        }));
+        });
+      }
+      qualified_reln = qualified_reln.filter(
+        (q) => !trainee_reln.find((t) => t.user_id === q.user_id)
+      );
     }
-    const qualified_reln: DatabaseTableInsert['interview_module_relation'][] =
-      companyTeam
-        .filter((user) => !trainee_reln.find((t) => t.user_id === user.user_id))
-        .map((qualified) => ({
-          module_id: mod.id,
-          user_id: qualified.user_id,
-          is_archived: false,
-          number_of_shadow: 0,
-          number_of_reverse_shadow: 0,
-          training_status: 'qualified',
-          training_approver: admin.user_id,
-        }));
 
     const all_int_relns: DatabaseTableInsert['interview_module_relation'][] = [
       ...trainee_reln,

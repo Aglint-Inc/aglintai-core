@@ -2,23 +2,7 @@ import { DatabaseTable } from '@aglint/shared-types';
 import { getSupabaseServer } from '../supabaseAdmin';
 import { getRandomNumInRange, supabaseWrap } from '@aglint/shared-utils';
 import { schedule_oauth } from '../data/schedule_oauth';
-
-export type UserInsertType = {
-  first_name: string;
-  last_name: string;
-  email: string;
-  title: string;
-  role:
-    | 'admin'
-    | 'hiring manager'
-    | 'recruiting coordinator'
-    | 'sourcer'
-    | 'recruiter'
-    | 'interviewer';
-  position: string;
-  employment: DatabaseTable['recruiter_user']['employment'];
-  is_oauth_needed: boolean;
-};
+import { UserInsertType } from '../data/users';
 
 export async function addTeamMember({
   company_data,

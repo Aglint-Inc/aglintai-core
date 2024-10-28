@@ -1,5 +1,22 @@
-import { UserInsertType } from '../lib/addUser';
+import { DatabaseTable } from '@aglint/shared-types';
 
+export type UserInsertType = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  title: string;
+  role:
+    | 'admin'
+    | 'hiring manager'
+    | 'recruiting coordinator'
+    | 'sourcer'
+    | 'recruiter'
+    | 'interviewer';
+  position: string;
+  employment: DatabaseTable['recruiter_user']['employment'];
+  is_oauth_needed: boolean;
+};
+export const traine_positions: Pick<UserInsertType, 'title'>[] = [];
 export const testUsers: UserInsertType[] = [
   {
     first_name: 'Raj',
@@ -38,7 +55,7 @@ export const testUsers: UserInsertType[] = [
     title: 'Product Designer',
     role: 'recruiting coordinator',
     position: 'Product Designer',
-    employment: 'fulltime',
+    employment: 'contractor',
     is_oauth_needed: false,
   },
   {
@@ -65,9 +82,9 @@ export const testUsers: UserInsertType[] = [
     first_name: 'Chandra',
     last_name: 'Kumar',
     email: 'chandra@aglinthq.com',
-    title: 'SDE#',
+    title: 'SDE',
     role: 'recruiting coordinator',
-    position: 'SDE#',
+    position: 'SDE',
     employment: 'fulltime',
     is_oauth_needed: false,
   },
