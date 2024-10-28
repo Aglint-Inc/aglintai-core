@@ -54,8 +54,8 @@ export const addInterviewTypes = async ({
           module_id: mod.id,
           user_id: trainee.user_id,
           is_archived: false,
-          number_of_shadow: 0,
-          number_of_reverse_shadow: 0,
+          number_of_shadow: mod.settings.noShadow,
+          number_of_reverse_shadow: mod.settings.noReverseShadow,
           training_status: 'training',
           training_approver: admin.user_id,
         });
