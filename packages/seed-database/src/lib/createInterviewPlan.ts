@@ -17,7 +17,11 @@ export const createInterviewPlan = async ({
   team: DatabaseTable['recruiter_user'][];
 }) => {
   const supabaseAdmin = getSupabaseServer();
-  const stages = job_plan.map(async (stage, index) => {
+
+  const addStage = async (
+    stage: SeedJobType['int_stages'][0],
+    index: number
+  ) => {
     const plan = supabaseWrap(
       await supabaseAdmin
         .from('interview_plan')
@@ -135,10 +139,17 @@ export const createInterviewPlan = async ({
     });
     const stages_details = await Promise.all(int_sessions);
     console.log(`Stage ${stage.stage_name} created`);
-    return { stages_details };
-  });
+    return stages_details;
+  };
 
-  const stages_details = await Promise.all(stages);
-  console.log('Interview plan created');
+  let stages_details: Awaited<ReturnType<typeof addStage>>[] = [];
+
+  for (let idx = 0; idx < job_plan.length; idx++) {
+    let stage = job_plan[idx];
+    const details = await addStage(stage, idx);
+    stages_details.push(details);
+  }
+
+  console.log('Interview plan created for the job');
   return { stages_details };
 };

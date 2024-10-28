@@ -82,6 +82,7 @@ export const addVaultSecrets = async () => {
 // Delete all company data
 // Dangerous function
 export const deleteAllCompanyData = async () => {
+  console.log('debug 1');
   supabaseWrap(
     await supabaseAdmin.from('request').delete().not('assignee_id', 'is', null)
   );
@@ -89,8 +90,12 @@ export const deleteAllCompanyData = async () => {
     await supabaseAdmin.from('recruiter').select('*, recruiter_user!inner(*)'),
     false
   );
+  console.log('debug 2');
 
-  const authUsers = supabaseWrap(await supabaseAdmin.rpc('get_auth_users')) as {
+  const authUsers = supabaseWrap(
+    await supabaseAdmin.rpc('get_auth_users'),
+    false
+  ) as {
     id: string;
   }[];
 

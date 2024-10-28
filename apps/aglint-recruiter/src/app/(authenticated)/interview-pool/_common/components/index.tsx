@@ -81,11 +81,7 @@ export default function InterviewTypesPage() {
           </TableHeader>
           <TableBody>
             {filteredInterviewModules?.length > 0 ? (
-              [
-                ...filteredInterviewModules,
-                ...filteredInterviewModules,
-                ...filteredInterviewModules,
-              ].map((type, i) => (
+              [...filteredInterviewModules].map((type, i) => (
                 <InterviewPoolList interviewType={type} key={i} />
               ))
             ) : (

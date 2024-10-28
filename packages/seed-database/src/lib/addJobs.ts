@@ -29,7 +29,7 @@ export const addJobs = async ({
   companyAdmin: DatabaseTable['recruiter_user'];
 }) => {
   const supabaseAdmin = getSupabaseServer();
-  const jobs_promises = seedJobs.map(async (job) => {
+  const addJob = async (job: (typeof seedJobs)[0]) => {
     const job_details: DatabaseTableInsert['public_jobs'] = {
       job_title: job.job_title,
       slug: job.slug,
@@ -90,7 +90,9 @@ export const addJobs = async ({
     });
 
     return { inserted_job };
-  });
-  await Promise.all(jobs_promises);
+  };
+  for (const job of seedJobs) {
+    await addJob(job);
+  }
   console.log('Jobs data and interview plan are created');
 };

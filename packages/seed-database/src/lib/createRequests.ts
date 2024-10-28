@@ -23,49 +23,47 @@ export const createRequests = async ({
     throw new Error('Recruiting coordinator or recruiter id is not set');
   }
   const supabaseAdmin = getSupabaseServer();
-  const job_sessions = interview_stages.stages_details
-    .flatMap((stage) => stage.stages_details)
-    .map((session) => session.session_details);
+
   const req_applications = applications.slice(
     0,
     job.create_req_params.req_application_cnt
   );
-  const req_sessions = job_sessions.filter((session) =>
-    job.create_req_params.sessions.includes(session.name as InterviewModuleName)
-  );
 
-  const sessions = formatSessions(
-    req_sessions.map((session, i) => session.name ?? `Session ${i + 1}`)
-  );
-  const requests: DatabaseFunctions['move_to_interview']['Args']['requests'] =
-    req_applications.map(({ id: application_id }, idx) => {
-      const { start_date, end_date } = getRequestScheduleDateRange(
-        idx,
-        req_applications.length
-      );
-      return {
-        application_id: application_id!,
-        title: `Schedule ${sessions} for candidate`,
-        status: 'to_do',
-        assigner_id: assignee_id,
-        assignee_id: assignee_id,
-        note: '',
-        priority: 'standard',
-        schedule_start_date: start_date,
-        schedule_end_date: end_date,
-        type: 'schedule_request',
-      };
-    });
+  for (let idx = 0; idx < interview_stages.stages_details.length; ++idx) {
+    const stage = interview_stages.stages_details[idx];
+    const stage_sessions = stage.map((session) => session.session_details);
 
-  supabaseWrap(
-    await supabaseAdmin.rpc('move_to_interview', {
-      applications: req_applications.map(({ id }) => id),
-      sessions: req_sessions.map(({ id }) => id),
-      requests,
-    })
-  );
+    const sessions = formatSessions(
+      stage_sessions.map((session, i) => session.name ?? `Session ${i + 1}`)
+    );
+    const requests: DatabaseFunctions['move_to_interview']['Args']['requests'] =
+      req_applications.map(({ id: application_id }, idx) => {
+        const { start_date, end_date } = getRequestScheduleDateRange(
+          idx,
+          req_applications.length
+        );
+        return {
+          application_id: application_id!,
+          title: `Schedule ${sessions} for candidate`,
+          status: 'to_do',
+          assigner_id: assignee_id,
+          assignee_id: assignee_id,
+          note: '',
+          priority: 'standard',
+          schedule_start_date: start_date,
+          schedule_end_date: end_date,
+          type: 'schedule_request',
+        };
+      });
 
-  console.log(`Created ${requests.length} requests`);
+    supabaseWrap(
+      await supabaseAdmin.rpc('move_to_interview', {
+        applications: req_applications.map(({ id }) => id),
+        sessions: stage_sessions.map(({ id }) => id),
+        requests,
+      })
+    );
+  }
 };
 
 export function formatSessions(sessions: string[]) {
