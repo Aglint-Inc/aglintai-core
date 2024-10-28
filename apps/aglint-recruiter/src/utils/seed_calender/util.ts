@@ -117,7 +117,6 @@ export const seedCalendersUtil = (
       await google_cal.updateEventStatus(evt.id, 'cancelled');
     }
     // Add a 100ms delay to simulate processing time
-    await new Promise((resolve) => setTimeout(resolve, 50));
     console.log(cal_events.length, 'deleted');
   };
   const getRandMeetingType = (): RandMeetingType => {
