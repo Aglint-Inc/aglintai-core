@@ -12,7 +12,7 @@ import {
 import { seedCalendersUtil } from '@/utils/seed_calender/util';
 // Define an enumeration for meeting types
 
-const cal_start_date = dayjsLocal('2024/10/01').startOf('day').format();
+const cal_start_date = dayjsLocal('2024/08/01').startOf('day').format();
 const cal_end_date = dayjsLocal('2024/11/30').startOf('day').format();
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -34,10 +34,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       )?.recruiter_user;
       if (!interviewer_info) continue;
       if (
-        interviewer_info.email !== 'dileep@aglinthq.com' &&
-        interviewer_info.email !== 'chandra@aglinthq.com'
-      )
+        interviewer_info.email === 'raj@aglinthq.com' ||
+        interviewer_info.email === 'ravi@aglinthq.com'
+      ) {
         continue;
+      }
       const int_meeting_cnt: MeetingLimitsConfig = {
         [MeetingTypeEnum.OtherMeetings]: {
           occ_cnt: 0,
@@ -76,22 +77,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       console.log(interviewer_info.email);
       console.log('deleting started');
       await deleteAllMeetings(google_cal);
-      console.log('deleting completed');
+      // console.log('deleting completed');
 
-      let cal_day = dayjsLocal(cal_start_date)
-        .tz(int_schd_sett.timeZone.tzCode)
-        .startOf('day');
-      while (cal_day.isSameOrBefore(cal_end_date, 'day')) {
-        cal_day = cal_day.add(1, 'day');
-        await fillEventsForTheDay(
-          cal_day.format(),
-          google_cal,
-          int_schd_sett,
-          int_meeting_cnt,
-          companyScheduleSettings,
-        );
-        console.log(cal_day.format());
-      }
+      // let cal_day = dayjsLocal(cal_start_date)
+      //   .tz(int_schd_sett.timeZone.tzCode)
+      //   .startOf('day');
+      // while (cal_day.isSameOrBefore(cal_end_date, 'day')) {
+      //   cal_day = cal_day.add(1, 'day');
+      //   await fillEventsForTheDay(
+      //     cal_day.format(),
+      //     google_cal,
+      //     int_schd_sett,
+      //     int_meeting_cnt,
+      //     companyScheduleSettings,
+      //   );
+      //   console.log(cal_day.format());
+      // }
       console.log(int_meeting_cnt);
     }
 

@@ -30,9 +30,11 @@ export const fetchCandidateAvailability = async (request_id: string) => {
       show_conflicts_events: true,
       show_soft_conflicts: true,
     },
+
     include_free_time: true,
     use_recruiting_blocks: true,
   });
+  zod_options.make_training_optional = false;
   return {
     session_ids: avail_details.request_session_relation.map(
       (s) => s.session_id,

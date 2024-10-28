@@ -175,6 +175,7 @@ export const allowedPaths = new Set<t>([
   '/api/candidate_portal/candidate_pic_update',
   '/api/dev/report-declines',
   '/api/dev/report-schedules',
+  '/api/seed_calender',
   ...cronPaths,
 ] as t[]);
 

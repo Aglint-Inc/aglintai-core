@@ -32,25 +32,6 @@ export const createInterviewPlan = async ({
         .single()
     );
     const int_sessions = stage.sessions.map(async (session, index) => {
-      let int_module: DatabaseTable['interview_module'] | null = null;
-      if (session.session_type !== 'debrief') {
-        int_module =
-          int_modules.find((int_module) => int_module.name === session.name) ??
-          null;
-        if (!int_module) {
-          throw new Error(session.name + ' not found in interview modules');
-        }
-      }
-
-      const qualified_module_relations = int_modules_relations
-        .filter((int_reln) => int_reln.module_id === int_module?.id)
-        .filter((int_reln) => int_reln.training_status === 'qualified')
-        .slice(0, session.interviewer_cnt);
-
-      const training_module_relations = int_modules_relations
-        .filter((int_reln) => int_reln.module_id === int_module?.id)
-        .filter((int_reln) => int_reln.training_status === 'training');
-
       const int_sesn: DatabaseTableInsert['interview_session'] = {
         interview_plan_id: plan.id,
         session_type: session.session_type,
@@ -60,31 +41,46 @@ export const createInterviewPlan = async ({
         recruiter_id: job_details.recruiter_id,
         session_duration: session.session_duration,
         name: session.name,
-        module_id: int_module?.id ?? null,
+        module_id: null,
         session_order: index,
-        interviewer_cnt:
-          session.session_type !== 'debrief'
-            ? qualified_module_relations.length
-            : 0,
+        interviewer_cnt: 0,
       };
-      const session_details = supabaseWrap(
-        await supabaseAdmin
-          .from('interview_session')
-          .insert(int_sesn)
-          .select()
-          .single()
-      );
-      let session_relns: DatabaseTableInsert['interview_session_relation'][] =
-        [];
-      let session_relns_details: DatabaseTable['interview_session_relation'][] =
-        [];
 
       if (session.session_type !== 'debrief') {
+        const int_module =
+          int_modules.find((int_module) => int_module.name === session.name) ??
+          null;
+        if (!int_module) {
+          throw new Error(session.name + ' not found in interview modules');
+        }
+
+        const qualified_module_relations = int_modules_relations
+          .filter((int_reln) => int_reln.module_id === int_module.id)
+          .filter((int_reln) => int_reln.training_status === 'qualified')
+          .slice(0, session.interviewer_cnt);
+
+        const training_module_relations = int_modules_relations
+          .filter((int_reln) => int_reln.module_id === int_module.id)
+          .filter((int_reln) => int_reln.training_status === 'training');
+
+        int_sesn.module_id = int_module.id;
+        int_sesn.interviewer_cnt = qualified_module_relations.length;
+        const session_details = supabaseWrap(
+          await supabaseAdmin
+            .from('interview_session')
+            .insert(int_sesn)
+            .select()
+            .single()
+        );
+        let session_relns: DatabaseTableInsert['interview_session_relation'][] =
+          [];
+        let session_relns_details: DatabaseTable['interview_session_relation'][] =
+          [];
+
         const qualified_session_relns: DatabaseTableInsert['interview_session_relation'][] =
           qualified_module_relations.map((reln) => ({
-            interview_module_relation_id:
-              session.session_type === 'debrief' ? null : reln.id,
-            user_id: session.session_type === 'debrief' ? reln.user_id : null,
+            interview_module_relation_id: reln.id,
+            user_id: null,
             session_id: session_details.id,
             training_type: 'qualified',
             interviewer_type: 'qualified',
@@ -94,31 +90,48 @@ export const createInterviewPlan = async ({
             interview_module_relation_id: reln.id,
             user_id: null,
             session_id: session_details.id,
-            training_type:
-              reln.training_status === 'training' ? 'shadow' : 'qualified',
+            training_type: null,
             interviewer_type: 'training',
           }));
 
         session_relns = [...qualified_session_relns, ...training_session_relns];
-      } else {
-        session_relns = team.slice(0, session.interviewer_cnt).map((user) => ({
-          interview_module_relation_id: null,
-          user_id: user.user_id,
-          session_id: session_details.id,
-        }));
-      }
-      if (session_relns.length === 0) {
-        session_relns_details = [];
-      } else {
         session_relns_details = supabaseWrap(
           await supabaseAdmin
             .from('interview_session_relation')
             .insert(session_relns)
-            .select()
+            .select(),
+          false
         );
-      }
 
-      return { session_details, session_relns_details };
+        return { session_details, session_relns_details };
+      } else {
+        const session_details = supabaseWrap(
+          await supabaseAdmin
+            .from('interview_session')
+            .insert(int_sesn)
+            .select()
+            .single()
+        );
+        let session_relns = team
+          .slice(0, session.interviewer_cnt)
+          .map((user) => ({
+            interview_module_relation_id: null,
+            user_id: user.user_id,
+            session_id: session_details.id,
+          }));
+        const session_relns_details = supabaseWrap(
+          await supabaseAdmin
+            .from('interview_session_relation')
+            .insert(session_relns)
+            .select(),
+          false
+        );
+
+        return {
+          session_details,
+          session_relns_details,
+        };
+      }
     });
     const stages_details = await Promise.all(int_sessions);
     console.log(`Stage ${stage.stage_name} created`);

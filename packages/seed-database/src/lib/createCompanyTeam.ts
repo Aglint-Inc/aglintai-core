@@ -15,7 +15,8 @@ export const createCompanyTeam = async ({
   departments: DatabaseTable['departments'][];
   locations: DatabaseTable['office_locations'][];
 }) => {
-  const addedUsers = testUsers.map(async (testUser) => {
+  const team: Awaited<ReturnType<typeof addTeamMember>>['teamMember'][] = [];
+  for (let testUser of testUsers) {
     const role_info = company_roles.find((r) => r.name === testUser.role);
     if (!role_info) throw new Error('Role not found');
     const { teamMember, teamMemberRelation } = await addTeamMember({
@@ -28,9 +29,8 @@ export const createCompanyTeam = async ({
         role_id: role_info.id,
       },
     });
-    return teamMember;
-  });
-  const team = await Promise.all(addedUsers);
+    team.push(teamMember);
+  }
   console.log('All team members added');
   return team;
 };

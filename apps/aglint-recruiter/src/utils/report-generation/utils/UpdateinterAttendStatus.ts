@@ -22,7 +22,7 @@ export const sessnRelnAccept = async () => {
       .eq('is_confirmed', true)
       .in(
         'session_id',
-        confirmed_meetings.map((s) => s.id),
+        confirmed_meetings.map((s) => s.session_id),
       )
       .select(),
     false,

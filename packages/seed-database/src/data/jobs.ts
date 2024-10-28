@@ -30,7 +30,7 @@ export type SeedJobType = Pick<
 export const seedJobs: SeedJobType[] = [
   {
     slug: 'senior-software-engineer-full-stack',
-    job_title: 'Senior Software Engineer - Full Stack - Multi Day Plan',
+    job_title: 'Senior Software Engineer - Full Stack - Single Day Plan',
     description:
       'As a Senior Software Engineer - Full Stack, you will be responsible for designing, developing, and maintaining scalable web applications. You will work closely with our product team to implement new features and improve existing systems. The ideal candidate has extensive experience in both frontend and backend development, with a deep understanding of cloud technologies.',
     int_stages: [
@@ -51,7 +51,7 @@ export const seedJobs: SeedJobType[] = [
             session_type: 'panel',
             schedule_type: 'google_meet',
             session_duration: 30,
-            break_duration: 24 * 60 * 2,
+            break_duration: 60 * 2,
           },
           {
             name: 'Data Science Case Study',
@@ -72,7 +72,7 @@ export const seedJobs: SeedJobType[] = [
             session_type: 'panel',
             schedule_type: 'phone_call',
             session_duration: 30,
-            break_duration: 24 * 60 * 1,
+            break_duration: 60 * 1,
           },
           {
             name: 'Debrief',
@@ -139,7 +139,7 @@ export const seedJobs: SeedJobType[] = [
 
   {
     slug: 'devops-engineer',
-    job_title: 'DevOps Engineer - Multi Day Plan',
+    job_title: 'DevOps Engineer - Single Day Plan',
     description:
       'As a DevOps Engineer, you will manage the infrastructure and deployment processes to ensure high availability and scalability. Experience with CI/CD pipelines, Docker, Kubernetes, and cloud services like AWS or Azure is essential.',
     int_stages: [
@@ -152,7 +152,7 @@ export const seedJobs: SeedJobType[] = [
             session_type: 'panel',
             schedule_type: 'google_meet',
             session_duration: 40,
-            break_duration: 24 * 60 * 1,
+            break_duration: 60 * 1,
           },
           {
             name: 'Backend Technical Interview',

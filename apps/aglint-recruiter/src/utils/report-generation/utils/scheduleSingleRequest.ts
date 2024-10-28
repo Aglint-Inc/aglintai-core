@@ -55,11 +55,12 @@ export const scheduleSingleRequest = async ({
       show_soft_conflicts: true,
       day_passed: true,
       show_conflicts_events: true,
-      day_off: true,
-      holiday: true,
+      day_off: false,
+      holiday: false,
     },
-    cand_start_time: 0,
-    cand_end_time: 24,
+    cand_start_time: 8,
+    cand_end_time: 18,
+    make_training_optional: false,
   });
   await cand_schedule.fetchDetails({
     params: {
@@ -77,13 +78,16 @@ export const scheduleSingleRequest = async ({
   const multiday_plans = cand_schedule.findCandSlotForTheDay();
   if (multiday_plans.length === 0) {
     console.error('No Slots Found for scheduling');
-  }
-  // TODO: do this for multiple days
-  if (multiday_plans[0].plans.length === 0) {
-    throw new Error('No plans found');
+    return;
   }
   if (multiday_plans.length > 1) {
     console.error('Multiple days found for the request', request.title);
+    return;
+  }
+
+  const singleDayplans = multiday_plans.flatMap((mp) => mp.plans);
+  // TODO: do this for multiple days
+  if (singleDayplans.length === 0) {
     return;
   }
 
@@ -100,7 +104,7 @@ export const scheduleSingleRequest = async ({
   });
   await updatePlansInFilterJson({
     filter_json_id: filter_json.id,
-    plans: multiday_plans[0].plans,
+    plans: singleDayplans,
   });
   console.log('booking request', request.title);
 
@@ -110,9 +114,7 @@ export const scheduleSingleRequest = async ({
       filter_id: filter_json.id,
     },
     cand_schedule.db_details,
-    multiday_plans[0].plans[
-      getRandomNumInRange(0, multiday_plans[0].plans.length - 1)
-    ],
+    singleDayplans[getRandomNumInRange(0, singleDayplans.length - 1)],
     fetchedDetails,
   );
   console.log('booked request', request.title);

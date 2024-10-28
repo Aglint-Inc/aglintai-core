@@ -55,8 +55,12 @@ const main = async () => {
     company_candidates,
     companyAdmin: recruiter_user,
   });
-
-  console.log('-----Seed Finished-----');
 };
 
-main();
+main()
+  .then(() => {
+    console.log('-----Seed Finished-----');
+  })
+  .catch((err) => {
+    console.log(err);
+  });
