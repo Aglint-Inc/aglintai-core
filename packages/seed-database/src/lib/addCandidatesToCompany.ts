@@ -9,7 +9,8 @@ export const addCandidatesToCompany = async ({
   companyDetails: DatabaseTable['recruiter'];
 }) => {
   const supabaseAdmin = getSupabaseServer();
-  const candidates_promise = seed_candidates.map(async (cand) => {
+
+  const addCandidate = async (cand: (typeof seed_candidates)[0]) => {
     const candidate_detail = supabaseWrap(
       await supabaseAdmin
         .from('candidates')
@@ -43,8 +44,11 @@ export const addCandidatesToCompany = async ({
         .single()
     );
     return { candidate_file, candidate_detail };
-  });
-  const candidates = await Promise.all(candidates_promise);
-  console.log('Candidates added');
-  return candidates;
+  };
+  let cands_details: Awaited<ReturnType<typeof addCandidate>>[] = [];
+  for (const cand of seed_candidates) {
+    const cand_details = await addCandidate(cand);
+    cands_details.push(cand_details);
+  }
+  return cands_details;
 };

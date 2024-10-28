@@ -24,7 +24,7 @@ export const createRequests = async ({
   }
   const supabaseAdmin = getSupabaseServer();
   const job_sessions = interview_stages.stages_details
-    .flatMap((stage) => stage.stages_details)
+    .flatMap((stage) => stage)
     .map((session) => session.session_details);
   const req_applications = applications.slice(
     0,

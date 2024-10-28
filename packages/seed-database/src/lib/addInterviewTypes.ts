@@ -31,7 +31,9 @@ export const addInterviewTypes = async ({
     await supabaseAdmin.from('interview_module').insert(modules).select()
   );
 
-  const reln_promises = int_modules.map(async (mod) => {
+  const addInterModuleRelns = async (
+    mod: DatabaseTable['interview_module']
+  ) => {
     let trainee_reln: DatabaseTableInsert['interview_module_relation'][] = [];
     let qualified_reln: DatabaseTableInsert['interview_module_relation'][] =
       companyTeam.map((qualified) => ({
@@ -74,9 +76,12 @@ export const addInterviewTypes = async ({
         .insert(all_int_relns)
         .select()
     );
-  });
-
-  const reln_details = await Promise.all(reln_promises);
+  };
+  const reln_details: Awaited<ReturnType<typeof addInterModuleRelns>>[] = [];
+  for (let mod of int_modules) {
+    const details = await addInterModuleRelns(mod);
+    reln_details.push(details);
+  }
 
   console.log('All interview types added');
   return {

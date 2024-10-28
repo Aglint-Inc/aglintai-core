@@ -1,7 +1,7 @@
 export const report_gen_Params = {
-  candidate_reschedule_request_percentage: 0,
-  candidate_cancel_request_percentage: 0,
-  interviewer_decline_request_percentage: 0,
+  candidate_reschedule_request_percentage: 0.2,
+  candidate_cancel_request_percentage: 0.2,
+  interviewer_decline_request_percentage: 0.2,
   is_schedule_reschedule_requests: true,
   max_job_req: 10,
   max_job: 2,
