@@ -70,10 +70,12 @@ const updateCompanyDetails = async (recruiter_id: string) => {
 };
 
 export const addVaultSecrets = async () => {
-  await supabaseAdmin.rpc('add_vault_secrets', {
-    name: 'APP_URL',
-    value: process.env.SEED_DATABASE_APP_URL!,
-  });
+  supabaseWrap(
+    await supabaseAdmin.rpc('add_vault_secrets', {
+      sec_key: 'APP_URL',
+      sec_val: process.env.SEED_DATABASE_APP_URL!,
+    })
+  );
   console.log('Added APP_URL to vault');
 };
 

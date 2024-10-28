@@ -5239,8 +5239,8 @@ export type Database = {
     Functions: {
       add_vault_secrets: {
         Args: {
-          name: string
-          value: string
+          sec_key: string
+          sec_val: string
         }
         Returns: boolean
       }
