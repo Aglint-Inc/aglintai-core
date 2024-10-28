@@ -4,7 +4,7 @@ export const report_gen_Params = {
   interviewer_decline_request_percentage: 0.2,
   is_schedule_reschedule_requests: true,
   max_job_req: 10,
-  max_job: 2,
+  max_job: 4,
 } as const;
 
 export const report_seed_candidate_tz = 'Asia/Kolkata';
