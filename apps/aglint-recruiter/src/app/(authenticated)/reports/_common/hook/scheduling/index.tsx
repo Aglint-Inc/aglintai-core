@@ -1,10 +1,10 @@
 import { useAnalyticsContext } from '@/context/AnalyticsContext/AnalyticsContextProvider';
 import type { RecentDeclineType } from '@/routers/analytics/scheduling/recentDecline';
 import type { RecentRescheduleType } from '@/routers/analytics/scheduling/recentReschedule';
+import type { trainingProgressType } from '@/routers/analytics/scheduling/trainingProgress';
 import type {
   InterviewTypes,
   RecentDeclineReschedule,
-  TrainingProgress,
 } from '@/routers/scheduling/v1/analytics';
 import { type ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
@@ -33,10 +33,11 @@ export function useRecentReschedule(): ProcedureQuery<RecentRescheduleType> {
 export function useRecentDeclines(): ProcedureQuery<RecentDeclineType> {
   return api.analytics.scheduling.recentDecline.useQuery();
 }
-export function useTrainingProgress(): ProcedureQuery<TrainingProgress> {
-  const { filters } = useAnalyticsContext();
-  return api.scheduling.analytics.training_progress.useQuery({
-    departments: filters.department ? [filters.department] : [],
-    jobs: filters.job ? [filters.job] : [],
-  });
+export function useTrainingProgress(): ProcedureQuery<trainingProgressType> {
+  // const { filters } = useAnalyticsContext();
+  // return api.scheduling.analytics.training_progress.useQuery({
+  //   departments: filters.department ? [filters.department] : [],
+  //   jobs: filters.job ? [filters.job] : [],
+  // });
+  return api.analytics.scheduling.trainingProgress.useQuery();
 }

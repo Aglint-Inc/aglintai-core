@@ -29,7 +29,6 @@ export default function InterviewCountByTimeFrame() {
     'today' | 'day' | 'week' | 'month'
   >('day');
   const { average, isError, isFetching } = useInterviewCount(timeFrame);
-  // const { mode } = useTheme();
   return (
     <Section>
       <SectionHeader>
@@ -83,8 +82,8 @@ export default function InterviewCountByTimeFrame() {
                   />
                   <Pie
                     data={[
-                      data,
-                      { name: 'Remaining', value: 100 - data.value },
+                      { name: data.name, value: data.average },
+                      { name: 'Remaining', value: 100 - data.average },
                     ]}
                     cx='50%'
                     cy='50%'

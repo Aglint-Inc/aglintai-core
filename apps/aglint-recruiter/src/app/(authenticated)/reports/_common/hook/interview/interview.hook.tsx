@@ -58,16 +58,17 @@ export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
         },
       )
     : {};
+  let total = 0;
   const average = Object.entries(
     Object.entries(groupedData).reduce(
       (acc, curr) => {
         Object.entries(curr[1]).forEach(([key, value]) => {
+          total += value;
           const tempKey = key as unknown as keyof typeof acc;
           acc[tempKey] = (acc[tempKey] || 0) + value;
         });
         return acc;
       },
-
       {} as {
         // eslint-disable-next-line no-unused-vars
         [key in NonNullable<typeof data>[number]['status']]?: number;
@@ -76,6 +77,7 @@ export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
   ).map(([name, value]) => ({
     name: capitalizeFirstLetter(name),
     value,
+    average: Math.round((value / total) * 100),
   }));
   return {
     average,
