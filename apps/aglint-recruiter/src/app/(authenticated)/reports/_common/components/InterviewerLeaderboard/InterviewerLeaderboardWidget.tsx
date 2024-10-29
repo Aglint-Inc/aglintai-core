@@ -158,7 +158,7 @@ function InterviewerLeaderboardItem({
           {isLoading ? (
             <Skeleton className='h-16 w-16 rounded-full bg-primary/10' />
           ) : (
-            <Avatar className='h-16 w-16 border-2 border-primary'>
+            <Avatar className='h-16 w-16'>
               <AvatarImage
                 src={profileImage}
                 alt={name}

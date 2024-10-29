@@ -17,9 +17,9 @@ function TrainingProgress() {
   const recentReschedulesData = (data ?? []).map((item) => {
     const {
       number_of_shadow,
-      noshadow: noShadow,
+      noShadow,
       number_of_reverse_shadow,
-      noreverseshadow: noReverseShadow,
+      noReverseShadow,
     } = item;
     const trainingHistory = [
       ...[...new Array(number_of_shadow)].map(
@@ -57,14 +57,13 @@ function TrainingProgress() {
     };
   });
   return (
-    
-      <GenericTable
-        title='Training Progress'
-        headers={headers}
-        data={recentReschedulesData}
-        isLoading={isPending}
-        emptyStateMessage='No Recent Reschedules data available'
-      />
+    <GenericTable
+      title='Training Progress'
+      headers={headers}
+      data={recentReschedulesData}
+      isLoading={isPending}
+      emptyStateMessage='No Recent Reschedules data available'
+    />
   );
 }
 
