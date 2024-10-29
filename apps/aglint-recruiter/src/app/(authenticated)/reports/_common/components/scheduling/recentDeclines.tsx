@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 
-import { useSchedulingAnalytics } from '../../hook/scheduling';
+import { useRecentDeclines } from '../../hook/scheduling';
 import GenericTable from '../genericTable';
 
 function RecentDeclines() {
@@ -15,10 +15,8 @@ function RecentDeclines() {
   //  note: string;
   //  id: string;
   //  type:
-  const { data, isPending } = useSchedulingAnalytics();
-  const recentDeclinesData = (data ?? []).filter(
-    ({ type }) => type === 'candidate_request_decline',
-  );
+  const { data, isPending } = useRecentDeclines();
+  const recentDeclinesData = data ?? [];
   return (
     <GenericTable
       title='Recent Declines'

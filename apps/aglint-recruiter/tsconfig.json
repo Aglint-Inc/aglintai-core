@@ -108,7 +108,8 @@
     "**/*.js",
     "src/components/Feedback/Session/index.jsx",
     "src/pages/api/getJobsPublic.js",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "src/server/api/routers/analytics/scheduling/recentDecline.ts"
   ],
   "exclude": ["node_modules", ".next"]
 }

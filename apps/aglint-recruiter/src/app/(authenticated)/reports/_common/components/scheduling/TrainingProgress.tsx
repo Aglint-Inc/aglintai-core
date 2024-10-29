@@ -10,7 +10,7 @@ import TrainingProgressBar, {
 function TrainingProgress() {
   const headers = [
     { key: 'name', label: 'Name' },
-    { key: 'Interview Type', label: 'Interview Type' },
+    { key: 'position', label: 'Interview Type' },
     { key: 'trainingHistory', label: 'Training History' },
   ];
   const { data, isPending } = useTrainingProgress();
@@ -57,13 +57,14 @@ function TrainingProgress() {
     };
   });
   return (
-    <GenericTable
-      title='Training Progress'
-      headers={headers}
-      data={recentReschedulesData}
-      isLoading={isPending}
-      emptyStateMessage='No Recent Reschedules data available'
-    />
+    
+      <GenericTable
+        title='Training Progress'
+        headers={headers}
+        data={recentReschedulesData}
+        isLoading={isPending}
+        emptyStateMessage='No Recent Reschedules data available'
+      />
   );
 }
 
