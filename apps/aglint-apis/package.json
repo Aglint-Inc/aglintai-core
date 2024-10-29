@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@aglint/shared-utils": "*",
-    "@langchain/community": "^0.0.41",
+    "@langchain/community": "^0.3.3",
     "@langchain/core": "^0.1.63",
     "@langchain/langgraph": "^0.0.31",
     "@langchain/openai": "^0.0.29",
