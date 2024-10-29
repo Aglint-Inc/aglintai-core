@@ -96,12 +96,13 @@ export default function InterviewerLeaderboardWidget() {
               topSkills: [],
               name: `${tempMem.first_name || ''} ${tempMem.last_name || ''}`.trim(),
             };
+            const total_int = interviewer.accepted + interviewer.rejected;
             const accept_per = (
-              (interviewer.accepted / interviewer.interviews) *
+              (interviewer.accepted / total_int) *
               100
             ).toFixed(1);
             const reject_per = (
-              (interviewer.rejected / interviewer.interviews) *
+              (interviewer.rejected / total_int) *
               100
             ).toFixed(1);
             return (
