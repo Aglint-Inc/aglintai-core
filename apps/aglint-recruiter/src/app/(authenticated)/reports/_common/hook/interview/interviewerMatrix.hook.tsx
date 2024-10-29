@@ -36,7 +36,7 @@ export function useInterviewerLeaderboard() {
         return {
           rank: index + 1,
           ...item,
-          interviews: item.accepted + item.rejected,
+          interviews: item.total_hours,
         };
       }),
     isFetching: isFetching,
