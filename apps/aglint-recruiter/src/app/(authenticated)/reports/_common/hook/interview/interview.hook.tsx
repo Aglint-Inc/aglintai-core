@@ -36,10 +36,16 @@ export function useInterviewCount(unit: 'today' | 'day' | 'week' | 'month') {
 
   const groupedData = data
     ? groupByDate(
-        data.map((data) => ({
-          ...data,
-          created_at: data.start_time || data.created_at,
-        })),
+        data.map((data) => {
+          const isReschedule =
+            data.interview_session?.[0]?.interview_session_cancel?.[0]?.type ===
+            'candidate_request_reschedule';
+          return {
+            // ...data,
+            status: isReschedule ? 'reschedule' : data.status,
+            created_at: data.start_time || data.created_at,
+          };
+        }),
         unit,
         filters.dateRange,
         {

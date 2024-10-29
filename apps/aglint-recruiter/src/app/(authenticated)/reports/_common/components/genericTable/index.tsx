@@ -75,21 +75,23 @@ export default function GenericTable({
         <h2 className='text-lg font-semibold text-muted-foreground'>{title}</h2>
         {Boolean(headerOption) && headerOption}
       </div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            {headers.map((header) => (
-              <TableHead
-                key={header.key}
-                className={'bg-muted/60 font-bold hover:bg-muted/60'}
-              >
-                {header.label}
-              </TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>{renderTableBody()}</TableBody>
-      </Table>
+      <div className='max-h-[500px] overflow-y-auto'>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              {headers.map((header) => (
+                <TableHead
+                  key={header.key}
+                  className={'bg-muted/60 font-bold hover:bg-muted/60'}
+                >
+                  {header.label}
+                </TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
+          <TableBody>{renderTableBody()}</TableBody>
+        </Table>
+      </div>
     </div>
   );
 }

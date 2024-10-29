@@ -7,6 +7,7 @@ import {
   SectionHeaderText,
   SectionTitle,
 } from '@components/layouts/sections-header';
+import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
 import DashboardDataFilter from './_common/components/DashboardDataFilter';
@@ -18,6 +19,7 @@ export default function AnalyticsLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const activeTab = useSearchParams()?.get('tab');
   return (
     <AnalyticsProvider>
       <OneColumnPageLayout
@@ -34,7 +36,9 @@ export default function AnalyticsLayout({
             <InterviewDashboardSideNav />
           </Section>
         }
-        filter={<DashboardDataFilter />}
+        filter={
+          activeTab === 'schedulingReports' ? <></> : <DashboardDataFilter />
+        }
         sidebarPosition='left'
         sidebarWidth={320}
       >

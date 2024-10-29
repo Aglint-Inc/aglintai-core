@@ -1,10 +1,8 @@
-import type { DatabaseEnums } from '@aglint/shared-types';
-import { useState } from 'react';
-
 import { useAnalyticsContext } from '@/context/AnalyticsContext/AnalyticsContextProvider';
+import type { RecentDeclineType } from '@/routers/analytics/scheduling/recentDecline';
+import type { RecentRescheduleType } from '@/routers/analytics/scheduling/recentReschedule';
 import type {
   InterviewTypes,
-  Reasons,
   RecentDeclineReschedule,
   TrainingProgress,
 } from '@/routers/scheduling/v1/analytics';
@@ -25,6 +23,16 @@ export function useSchedulingAnalytics(): ProcedureQuery<RecentDeclineReschedule
     jobs: filters.job ? [filters.job] : [],
   });
 }
+
+// export function useRecentDeclinesReschedule(): ProcedureQuery<RecentDeclineReschedule> {
+//   return api.analytics.scheduling.recentDeclineReschedule.useQuery();
+// }
+export function useRecentReschedule(): ProcedureQuery<RecentRescheduleType> {
+  return api.analytics.scheduling.recentReschedule.useQuery();
+}
+export function useRecentDeclines(): ProcedureQuery<RecentDeclineType> {
+  return api.analytics.scheduling.recentDecline.useQuery();
+}
 export function useTrainingProgress(): ProcedureQuery<TrainingProgress> {
   const { filters } = useAnalyticsContext();
   return api.scheduling.analytics.training_progress.useQuery({
@@ -32,25 +40,3 @@ export function useTrainingProgress(): ProcedureQuery<TrainingProgress> {
     jobs: filters.job ? [filters.job] : [],
   });
 }
-export function useReasons() {
-  const [view, setView] = useState<DatabaseEnums['cancel_type']>(
-    'candidate_request_reschedule',
-  );
-  const { filters } = useAnalyticsContext();
-  const { data, isPending, isError } = useReasonsProcedure({
-    departments: filters.department ? [filters.department] : [],
-    jobs: filters.job ? [filters.job] : [],
-    type: view,
-  });
-  return {
-    data: data?.map((item) => ({ name: item.reason, value: item.count })) || [],
-    isPending,
-    isError,
-    view,
-    setView,
-  };
-}
-
-const useReasonsProcedure = (
-  input: Reasons['input'],
-): ProcedureQuery<Reasons> => api.scheduling.analytics.reasons.useQuery(input);

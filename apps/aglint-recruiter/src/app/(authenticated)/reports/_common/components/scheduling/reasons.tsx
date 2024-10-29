@@ -20,7 +20,7 @@ import { Cell, Legend, Pie, PieChart } from 'recharts';
 
 import { Loader } from '@/common/Loader';
 
-import { useReasons } from '../../hook/scheduling';
+import { useReasons } from '../../hook/scheduling/schedulingMatrix';
 
 function Reasons() {
   const { data, isPending, view, isError, setView } = useReasons();

@@ -8,6 +8,7 @@ import { interviewer_leaderboard } from './interviewer_leaderboard';
 import { interviewer_rejections } from './interviewer_reject';
 import { job } from './job';
 import { request_metrics } from './request_metrics';
+import { scheduling } from './scheduling';
 
 export const analytics = createTRPCRouter({
   interview_count,
@@ -18,5 +19,6 @@ export const analytics = createTRPCRouter({
   request_metrics,
   job,
   candidate,
-  interview
+  interview,
+  scheduling,
 });

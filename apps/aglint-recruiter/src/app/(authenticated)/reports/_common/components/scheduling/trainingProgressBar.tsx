@@ -20,7 +20,6 @@ export default function TrainingProgressBar({
 }: TrainingHistoryProps) {
   return (
     <div className={cn('mx-auto w-full', className)}>
-      <h2 className='mb-2 text-lg font-semibold'>Training History</h2>
       <div className='flex flex-wrap gap-1'>
         {stages.map((stage, index) => (
           <div
