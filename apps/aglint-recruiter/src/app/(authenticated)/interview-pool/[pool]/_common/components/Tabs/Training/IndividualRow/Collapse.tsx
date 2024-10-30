@@ -35,7 +35,7 @@ function CollapseTrainingProgress({
 }) {
   const { approveTrainingProgress } = useApproveUsers();
 
-  const { alterCount, isSaving } = useAlterCount();
+  const { mutate, isPending } = useAlterCount();
 
   return (
     <>
@@ -190,7 +190,9 @@ function CollapseTrainingProgress({
           </div>
         </div>
 
-        <div className='flex flex-row space-x-3 border-t border-border px-4 pb-4 pt-4'>
+        <div
+          className={`${isPending ? 'opacity-20' : 'opacity-100'} flex flex-row space-x-3 border-t border-border px-4 pb-4 pt-4`}
+        >
           <div className='flex items-center space-x-1'>
             <span>Shadow</span>
             <UIButton
@@ -200,10 +202,10 @@ function CollapseTrainingProgress({
               disabled={
                 shadowProgress.length
                   ? mutatedShadowProgress.length === 0
-                  : mutatedShadowProgress.length === 1
+                  : mutatedShadowProgress.length === 1 || isPending
               }
               onClick={async () => {
-                await alterCount({
+                mutate({
                   type: 'shadow',
                   count: shadow_to_complete - 1,
                   module_relation_id: module_realtion_id,
@@ -214,10 +216,11 @@ function CollapseTrainingProgress({
               style={{ width: '60px', height: '28px' }}
               fieldSize='small'
               type='number'
+              disabled={isPending}
               value={mutatedShadowProgress.length + shadowProgress.length}
               onChange={(e) => {
-                if (isSaving) return;
-                alterCount({
+                if (isPending) return;
+                mutate({
                   type: 'shadow',
                   count: Number(e.target.value),
                   module_relation_id: module_realtion_id,
@@ -229,9 +232,10 @@ function CollapseTrainingProgress({
               size='sm'
               icon={<Plus />}
               variant='secondary'
+              disabled={isPending}
               onClick={() => {
-                if (isSaving) return;
-                alterCount({
+                if (isPending) return;
+                mutate({
                   type: 'shadow',
                   count: shadow_to_complete + 1,
                   module_relation_id: module_realtion_id,
@@ -248,10 +252,10 @@ function CollapseTrainingProgress({
               disabled={
                 reverseShadowProgress.length
                   ? mutatedReverseShadowProgress.length === 0
-                  : mutatedReverseShadowProgress.length === 1
+                  : mutatedReverseShadowProgress.length === 1 || isPending
               }
               onClick={async () => {
-                await alterCount({
+                mutate({
                   type: 'reverse_shadow',
                   count: reverse_shadow_to_complete - 1,
                   module_relation_id: module_realtion_id,
@@ -262,13 +266,14 @@ function CollapseTrainingProgress({
               style={{ width: '60px', height: '28px' }}
               fieldSize='small'
               type='number'
+              disabled={isPending}
               value={
                 mutatedReverseShadowProgress.length +
                 reverseShadowProgress.length
               }
               onChange={(e) => {
-                if (isSaving) return;
-                alterCount({
+                if (isPending) return;
+                mutate({
                   type: 'reverse_shadow',
                   count: Number(e.target.value),
                   module_relation_id: module_realtion_id,
@@ -280,9 +285,10 @@ function CollapseTrainingProgress({
               size='sm'
               variant='secondary'
               icon={<Plus />}
+              disabled={isPending}
               onClick={() => {
-                if (isSaving) return;
-                alterCount({
+                if (isPending) return;
+                mutate({
                   type: 'reverse_shadow',
                   count: reverse_shadow_to_complete + 1,
                   module_relation_id: module_realtion_id,

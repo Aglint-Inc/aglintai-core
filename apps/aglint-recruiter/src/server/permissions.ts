@@ -30,6 +30,7 @@ export const API_PERMISSIONS: ApiPermissions = {
     archive_get_sessions: ['update_interview_types'],
     get_all: [],
     update_pool_relation: ['update_interview_types'],
+    update_pool_traning: ['update_interview_types'],
   },
   analytics: ['job_module'],
   example: {
