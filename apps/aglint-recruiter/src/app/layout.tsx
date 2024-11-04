@@ -15,6 +15,9 @@ export const metadata = {
   metadataBase: new URL(defaultUrl),
   title: 'Aglint AI',
   description: 'AI Recruiter for your company.',
+  icons: {
+    icon: '/images/favicon.ico',
+  },
 };
 
 const Layout = ({ children }: PropsWithChildren) => {
