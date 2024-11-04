@@ -73,7 +73,7 @@ export default function InterviewCountByTimeFrame() {
             <div key={data.name}>
               <ChartContainer
                 config={{}}
-                className='mx-auto min-h-[200px] w-[200px]'
+                className='min-h-[200px] max-w-[200px]'
               >
                 <PieChart width={200} height={200}>
                   <ChartTooltip
