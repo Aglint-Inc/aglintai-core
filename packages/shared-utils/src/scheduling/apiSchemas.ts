@@ -43,7 +43,7 @@ const schema_find_availability_payload = z.object({
   candidate_tz: z.string(),
   start_date_str: z.string(),
   end_date_str: z.string(),
-  selected_ints: schema_qualified_ints.array().default([]),
+  selected_ints: schema_qualified_ints.array().optional().default([]),
   options: scheduling_options_schema.optional().default({}),
 });
 
