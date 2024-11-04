@@ -10,7 +10,7 @@ export const createRequestDetailsFixture = (page: Page) => {
           waitUntil: 'networkidle', // Wait until network is idle
         });
         expect(
-          page.getByTestId('request-details-status').isVisible(),
+          await page.getByTestId('request-details-status').isVisible(),
         ).toBeTruthy();
       }).toPass({
         timeout: 20000,
@@ -26,7 +26,7 @@ export const createRequestDetailsFixture = (page: Page) => {
       return await page.getByTestId('request-details-status').textContent();
     },
     openCandidateAvailabilityDailog: async () => {
-      const getAvailabilityBtn = page.getByTestId('get-availability-btn');
+      const getAvailabilityBtn = await page.getByTestId('get-availability-btn');
       expect(await getAvailabilityBtn.isVisible()).toBeTruthy();
       await getAvailabilityBtn.click();
       await page.waitForResponse((req) => {
@@ -38,7 +38,6 @@ export const createRequestDetailsFixture = (page: Page) => {
         );
       });
     },
-
     sendCandidateAvailability: async () => {
       const sendAvailBtn = page.getByTestId(
         'candidate-availability-submit-btn',
@@ -51,6 +50,16 @@ export const createRequestDetailsFixture = (page: Page) => {
           .includes('/api/mail/sendAvailabilityRequest_email_applicant');
       });
       expect(response.status()).toBe(200);
+    },
+    openSelfSchedulingDialog: async () => {
+      const selfSchedulingBtn = await page.getByTestId('self-schedule-btn');
+      await selfSchedulingBtn.click();
+      await page.waitForResponse((req) => {
+        return (
+          req.url().includes('/api/scheduling/v1/find_availability') &&
+          req.status() === 200
+        );
+      });
     },
   };
 };
