@@ -29,41 +29,39 @@ export const createRequests = async ({
     job.create_req_params.req_application_cnt
   );
 
-  for (let idx = 0; idx < interview_stages.stages_details.length; ++idx) {
-    const stage = interview_stages.stages_details[idx];
-    const stage_sessions = stage.map((session) => session.session_details);
+  const stage = interview_stages.stages_details[0];
+  const stage_sessions = stage.map((session) => session.session_details);
 
-    const sessions = formatSessions(
-      stage_sessions.map((session, i) => session.name ?? `Session ${i + 1}`)
-    );
-    const requests: DatabaseFunctions['move_to_interview']['Args']['requests'] =
-      req_applications.map(({ id: application_id }, idx) => {
-        const { start_date, end_date } = getRequestScheduleDateRange(
-          idx,
-          req_applications.length
-        );
-        return {
-          application_id: application_id!,
-          title: `Schedule ${sessions} for candidate`,
-          status: 'to_do',
-          assigner_id: assignee_id,
-          assignee_id: assignee_id,
-          note: '',
-          priority: 'standard',
-          schedule_start_date: start_date,
-          schedule_end_date: end_date,
-          type: 'schedule_request',
-        };
-      });
+  const sessions = formatSessions(
+    stage_sessions.map((session, i) => session.name ?? `Session ${i + 1}`)
+  );
+  const requests: DatabaseFunctions['move_to_interview']['Args']['requests'] =
+    req_applications.map(({ id: application_id }, idx) => {
+      const { start_date, end_date } = getRequestScheduleDateRange(
+        idx,
+        req_applications.length
+      );
+      return {
+        application_id: application_id!,
+        title: `Schedule ${sessions} for candidate`,
+        status: 'to_do',
+        assigner_id: assignee_id,
+        assignee_id: assignee_id,
+        note: '',
+        priority: 'standard',
+        schedule_start_date: start_date,
+        schedule_end_date: end_date,
+        type: 'schedule_request',
+      };
+    });
 
-    supabaseWrap(
-      await supabaseAdmin.rpc('move_to_interview', {
-        applications: req_applications.map(({ id }) => id),
-        sessions: stage_sessions.map(({ id }) => id),
-        requests,
-      })
-    );
-  }
+  supabaseWrap(
+    await supabaseAdmin.rpc('move_to_interview', {
+      applications: req_applications.map(({ id }) => id),
+      sessions: stage_sessions.map(({ id }) => id),
+      requests,
+    })
+  );
 };
 
 export function formatSessions(sessions: string[]) {
