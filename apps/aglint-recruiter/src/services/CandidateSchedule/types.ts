@@ -70,3 +70,10 @@ export type DbFetchScheduleApiDetailsParams = {
   is_fetch_meeting_data?: boolean;
   include_all_module_ints?: boolean;
 };
+
+export type QualifiedIntervsParams = {
+  session_id: string;
+  qualified_ints: {
+    user_id: string;
+  }[];
+};
