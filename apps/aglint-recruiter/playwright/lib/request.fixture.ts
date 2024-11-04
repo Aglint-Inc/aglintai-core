@@ -1,4 +1,6 @@
-import { expect, type Page } from '@playwright/test';
+import { chromium, expect, type Page } from '@playwright/test';
+import { type Locator } from 'playwright';
+import { getCandidateAvailability } from 'playwright/utils/getCandidateAvailability';
 
 export const createRequestDetailsFixture = (page: Page) => {
   const requestDetailsPage = page.getByTestId('request-details-page');
@@ -52,5 +54,107 @@ export const createRequestDetailsFixture = (page: Page) => {
       });
       expect(response.status()).toBe(200);
     },
+
+    submitCandidateAvailability: async (request_id: string) => {
+      const browser = await chromium.launch({
+        headless: false,
+      });
+      const context = await browser.newContext();
+      const page2 = await context.newPage();
+
+      const { id: ava_id } = await getCandidateAvailability(request_id);
+
+      await page2.goto(`/request-availability/${ava_id}`, {
+        waitUntil: 'load',
+      });
+
+      const response = await page2.waitForResponse(async (response) => {
+        return (
+          response
+            .url()
+            .includes('/api/scheduling/v1/cand_req_available_slots') &&
+          response.status() === 200
+        );
+      });
+
+      expect(response.status()).toBe(200);
+
+      await page2.waitForTimeout(2000);
+
+      await pickSlots({ selector: 'button.availability-dates', page: page2 });
+      await pickSlots({ selector: 'button.time-slot', page: page2 });
+      await pickSlots({ selector: 'button.time-slot-week-end', page: page2 });
+
+      await page2.waitForTimeout(4000);
+    },
   };
 };
+
+const pickSlots = async ({
+  selector,
+  page,
+}: {
+  selector: string;
+  page: Page;
+}) => {
+  const slots = await page.locator(selector).all();
+  const selectedSlots = selectRandomElements({ array: slots });
+
+  for (let i = 1; i < selectedSlots.length; i++) {
+    await selectedSlots[i].scrollIntoViewIfNeeded();
+    await selectedSlots[i].click();
+    await page.waitForTimeout(100);
+  }
+};
+
+function selectRandomElements({ array }: { array: Locator[] }) {
+  if (array.length <= 3) return array;
+
+  const shuffledArray = array
+    .map((value) => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => value);
+
+  // const min = 3;
+  // const max = array.length;
+  // const count = Math.max(Math.floor(Math.random() * (max - min + 1)) + min, 3);
+
+  return shuffledArray.slice(0, array.length / 2);
+}
+
+// const daysPick = async () => {
+//   const days = await page2.locator('button.availability-dates').all();
+//   const selectedDays = selectRandomElements({ array: days });
+//   for (let i = 1; i <= selectedDays.length - 1; i++) {
+//     await selectedDays[i].scrollIntoViewIfNeeded();
+//     await selectedDays[i].click();
+//     await page2.waitForTimeout(100);
+//   }
+// };
+
+// const weekDayPick = async () => {
+//   const weekDaySlots = await page2.locator('button.time-slot').all();
+//   const selectedWeekDaySlots = selectRandomElements({
+//     array: weekDaySlots,
+//   });
+//   for (let i = 1; i <= selectedWeekDaySlots.length - 1; i++) {
+//     await selectedWeekDaySlots[i].scrollIntoViewIfNeeded();
+//     await selectedWeekDaySlots[i].click();
+//     await page2.waitForTimeout(100);
+//   }
+// };
+
+// const weekEndPick = async () => {
+//   const weekEndDaySlots = await page2
+//     .locator('button.time-slot-week-end')
+//     .all();
+//   const selectedWeekEndDaySlots = selectRandomElements({
+//     array: weekEndDaySlots,
+//   });
+
+//   for (let i = 1; i <= selectedWeekEndDaySlots.length - 1; i++) {
+//     await selectedWeekEndDaySlots[i].scrollIntoViewIfNeeded();
+//     await selectedWeekEndDaySlots[i].click();
+//     await page2.waitForTimeout(100);
+//   }
+// };
