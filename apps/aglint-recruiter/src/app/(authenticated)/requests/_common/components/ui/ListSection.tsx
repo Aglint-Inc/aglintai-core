@@ -60,11 +60,12 @@ function ListSection({
           );
         }
       }}
+      data-testid={`${sectionName}-list-section`}
     >
       <AccordionItem
         value={sectionName}
         className={cn(
-          'rounded-lg borde border-border bg-muted/30 px-4',
+          'borde rounded-lg border-border bg-muted/30 px-4',
           isExpanded && 'bg-muted/30',
         )}
       >
@@ -78,12 +79,12 @@ function ListSection({
           <div className='mr-2 flex w-full items-center justify-between'>
             <div className='flex items-center'>
               {capitalizeFirstLetter(sectionName)}
-              <Badge className='ml-2  rounded-md bg-muted text-sm font-normal text-muted-foreground'>
+              <Badge className='ml-2 rounded-md bg-muted text-sm font-normal text-muted-foreground'>
                 {requests.length}
               </Badge>
             </div>
             {requests.length === 0 && (
-              <Badge className='ml-2  rounded-md bg-muted text-sm font-normal text-muted-foreground'>
+              <Badge className='ml-2 rounded-md bg-muted text-sm font-normal text-muted-foreground'>
                 No {sectionName.replaceAll('_', ' ')} found
               </Badge>
             )}
