@@ -10,6 +10,7 @@ const SelfScheduleLinkSent = (args: DatabaseTable['request_progress']) => {
         <Button
           variant='outline'
           size='sm'
+          data-testid='self-scheduling-copy-link-btn'
           onClick={() => {
             setIsCopied(true);
             navigator.clipboard.writeText(

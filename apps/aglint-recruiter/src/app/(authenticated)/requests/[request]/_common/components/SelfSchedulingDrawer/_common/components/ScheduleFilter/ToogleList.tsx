@@ -122,6 +122,7 @@ function ToogleList() {
                     <UISwitch
                       size='sm'
                       checked={enabled}
+                      data-testid={`schedule-filter-${availabilityType}`}
                       onCheckedChange={() => {
                         setLocalFilters({
                           isHardConflicts:

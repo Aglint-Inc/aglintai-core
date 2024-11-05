@@ -58,5 +58,60 @@ export const createRequestDetailsFixture = (page: Page) => {
         );
       });
     },
+    selectSelfScheduleDaySlots: async () => {
+      await page.getByTestId('schedule-filter-btn').click();
+      type AvailabilityType =
+        | 'no_conflicts'
+        | 'soft_conflicts'
+        | 'hard_conflicts'
+        | 'outside_work_hours';
+      const availabilityTypes: AvailabilityType[] = [
+        'no_conflicts',
+        'outside_work_hours',
+      ];
+
+      for (const availabilityType of availabilityTypes) {
+        await page.getByTestId(`schedule-filter-${availabilityType}`).click();
+      }
+      await page.getByTestId('schedule-filter-apply-btn').click();
+      const dayCards = await page.getByTestId('day-card-checkbox');
+      for (const dayCard of (await dayCards.all()).slice(0, 3)) {
+        await dayCard.click();
+      }
+    },
+    checkSelfScheduleMailPreview: async () => {
+      const sendBtn = await page.getByTestId('self-scheduling-primary-btn');
+      await sendBtn.click();
+      const refreshBtn = await page.getByTestId(
+        'self-scheduling-refresh-email-template-btn',
+      );
+      await refreshBtn.click();
+      const response = await page.waitForResponse((req) => {
+        return req
+          .url()
+          .includes('/api/mail/sendSelfScheduleRequest_email_applicant');
+      });
+      expect(response.status()).toBe(200);
+    },
+    sendSelfSchedulingRequestLinkToCandidate: async () => {
+      const sendBtn = await page.getByTestId('self-scheduling-primary-btn');
+      await sendBtn.click();
+      const response = await page.waitForResponse((req) => {
+        return req
+          .url()
+          .includes('/api/scheduling/application/sendselfschedule');
+      });
+      expect(response.status()).toBe(200);
+    },
+    copySelfSchedulingLink: async () => {
+      await page.reload();
+      expect(async () => {
+        const copyBtn = await page.getByTestId('self-scheduling-copy-link-btn');
+        expect(await copyBtn.isVisible()).toBeTruthy();
+        await copyBtn.click();
+      }).toPass({
+        intervals: [2000, 3000, 5000],
+      });
+    },
   };
 };

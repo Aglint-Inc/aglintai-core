@@ -22,8 +22,16 @@ test.describe('Test Self Scheduling Flow', () => {
       await requestDetailsPage.openSelfSchedulingDialog();
     });
 
-    await test.step('Send Self Scheduling Link', async () => {
-      // await requestDetailsPage.s();
+    await test.step('Test Self Scheduling Mail Preview', async () => {
+      await requestDetailsPage.selectSelfScheduleDaySlots();
+      await requestDetailsPage.checkSelfScheduleMailPreview();
+    });
+    await test.step('Send Self Scheduling Link to Candidate', async () => {
+      await requestDetailsPage.sendSelfSchedulingRequestLinkToCandidate();
+      await new Promise((resolve) => setTimeout(resolve, 10000)); // Fake sleep for 2 seconds
+    });
+    await test.step('Test Copy Link', async () => {
+      await requestDetailsPage.copySelfSchedulingLink();
     });
   });
 });
