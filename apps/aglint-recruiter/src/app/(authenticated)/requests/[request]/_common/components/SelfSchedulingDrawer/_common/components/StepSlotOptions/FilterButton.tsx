@@ -23,6 +23,7 @@ function FilterButton() {
         <PopoverTrigger asChild>
           <UIButton
             size={'sm'}
+            data-testid='schedule-filter-btn'
             leftIcon={<Filter />}
             isLoading={filterLoading}
             onClick={() => setIsOpen(true)}

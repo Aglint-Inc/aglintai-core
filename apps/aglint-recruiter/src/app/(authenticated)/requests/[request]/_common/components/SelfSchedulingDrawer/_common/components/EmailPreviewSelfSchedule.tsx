@@ -128,7 +128,12 @@ function EmailPreviewSelfSchedule() {
                   >
                     Edit Email Template
                   </UIButton>
-                  <UIButton variant='secondary' size='sm' onClick={getEmail}>
+                  <UIButton
+                    variant='secondary'
+                    size='sm'
+                    data-testid='self-scheduling-refresh-email-template-btn'
+                    onClick={getEmail}
+                  >
                     <RefreshCcw size={14} />
                   </UIButton>
                 </div>

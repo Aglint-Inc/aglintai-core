@@ -30,7 +30,7 @@ function RequestListContent({
   );
 
   return (
-    <div className='mt-8 space-y-6'>
+    <div className='mt-8 space-y-6' data-testid='request-list-content'>
       {/******** Urgent sections ******* */}
       {urgentRequests && urgentRequests.requests.length > 0 && (
         <ScrollableSection section={urgentRequests} isFetched={isFetched} />

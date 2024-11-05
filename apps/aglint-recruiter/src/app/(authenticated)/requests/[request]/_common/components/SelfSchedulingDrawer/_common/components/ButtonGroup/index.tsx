@@ -58,6 +58,7 @@ function ButtonMain() {
         variant='default'
         isLoading={isSendingToCandidate}
         size={'md'}
+        data-testid='self-scheduling-primary-btn'
         onClick={async () => {
           if (isSendingToCandidate) return;
           await onClickPrimary();
