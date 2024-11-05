@@ -27,7 +27,7 @@ test('Candidate Availability Request', async ({
   );
   const scheduleRequests = await getRequestForAvailabilityE2e();
   await requestDetailsPage.goto(
-    `${process.env.NEXT_PUBLIC_HOST_NAME}/requests/${request_id}`,
+    `${process.env.NEXT_PUBLIC_HOST_NAME}/requests/${scheduleRequests[0].id}`,
   );
   const requestType = await requestDetailsPage.getRequestType();
   if (!requestType) {
