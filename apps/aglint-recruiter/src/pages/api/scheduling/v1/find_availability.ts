@@ -26,7 +26,7 @@ const findAvailability = async (
   });
 
   const availabilities = cand_schedule.calendar_events;
-  cand_schedule.setQualifiedIntervs(parsedData.selected_ints ?? []);
+
   const slots = cand_schedule.findAvailabilitySlotsDateRange();
   return { slots, availabilities };
 };
