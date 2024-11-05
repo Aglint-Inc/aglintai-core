@@ -9,9 +9,7 @@ import {
   type TimeDurationDayjsType,
   type TimeDurationType,
 } from '@aglint/shared-types';
-import { type schema_qualified_ints } from '@aglint/shared-utils';
 import { type Dayjs } from 'dayjs';
-import { type z } from 'zod';
 
 import { type UserMeetingDetails } from './utils/dbFetchScheduleApiDetails';
 
@@ -72,5 +70,3 @@ export type DbFetchScheduleApiDetailsParams = {
   is_fetch_meeting_data?: boolean;
   include_all_module_ints?: boolean;
 };
-
-export type QualifiedIntervsParams = z.output<typeof schema_qualified_ints>;

@@ -31,13 +31,12 @@ import {
   type DbFetchScheduleApiDetailsParams,
   type IntervsWorkHrsEventMapType,
   type IntervsWorkHrsEventType,
-  type QualifiedIntervsParams,
   type ScheduleApiDetails,
 } from './types';
 import { calcEachIntsAPIDetails } from './utils/calcEachIntsAPIDetails';
 import { dbFetchScheduleApiDetails } from './utils/dbFetchScheduleApiDetails';
 import { fetchIntsCalEventsDetails } from './utils/fetchIntsCalEventsDetails';
-// import { calcIntsCombsForEachSessionRound } from './utils/interviewersCombsForSession';
+import { calcIntsCombsForEachSessionRound } from './utils/interviewersCombsForSession';
 import { isIntervLoadPassed } from './utils/isInterviewerLoadPassed';
 import { planCombineSlots } from './utils/planCombine';
 import {
@@ -49,7 +48,6 @@ import {
 export class CandidatesScheduling {
   public db_details: ScheduleApiDetails | null;
   private api_options: APIOptions;
-  private selcted_qualified_intervs: QualifiedIntervsParams[];
   public intervs_details_map: IntervsWorkHrsEventMapType;
   public calendar_events:
     | Awaited<ReturnType<typeof fetchIntsCalEventsDetails>>['ints_events_map']
@@ -70,7 +68,6 @@ export class CandidatesScheduling {
     }
     this.api_options = { ...parsed_api_options };
     this.intervs_details_map = new Map();
-    this.selcted_qualified_intervs = [];
   }
 
   private setIntervsDetailsMap(
@@ -190,13 +187,10 @@ export class CandidatesScheduling {
       throw new CApiError('CLIENT', 'Invalid selected');
     }
     const session_rounds = this.getSessionRounds();
-    const ints_combs_for_each_round =
-      this.assignInterviewerToSesns(session_rounds);
-
-    // calcIntsCombsForEachSessionRound(
-    //   session_rounds,
-    //   this.api_options.make_training_optional,
-    // );
+    const ints_combs_for_each_round = calcIntsCombsForEachSessionRound(
+      session_rounds,
+      this.api_options.make_training_optional,
+    );
     const all_combs: CandReqSlotsType[] = [];
     for (
       let curr_round_idx = 0;
@@ -210,11 +204,10 @@ export class CandidatesScheduling {
           this.db_details.req_user_tz,
         );
 
-        const curr_day_slots = this.calcMeetingCombinsForPlan(
-          cand_date,
+        const curr_day_slots = this.findFixedBreakSessionCombs(
           current_round_int_combs,
-        ).generateSlotsForCurrDay();
-
+          cand_date,
+        );
         const curr_day_combs: PlanCombinationRespType[] = [];
         curr_date_slots.slots.forEach((slot_time) => {
           const comb = curr_day_slots.find(
@@ -240,37 +233,6 @@ export class CandidatesScheduling {
     return all_combs;
   };
 
-  public setQualifiedIntervs(sesn_qualified_intervs: QualifiedIntervsParams[]) {
-    if (!this.db_details) {
-      throw new CApiError('SERVER_ERROR', 'DB details not set');
-    }
-
-    for (const sesn of sesn_qualified_intervs) {
-      const sesn_details = this.db_details.ses_with_ints.find(
-        (s) => s.session_id === sesn.session_id,
-      );
-
-      if (!sesn_details) {
-        throw new CApiError('SERVER_ERROR', 'Session details not set');
-      }
-
-      if (sesn_details.interviewer_cnt !== sesn.qualified_ints.length) {
-        throw new CApiError('CLIENT', 'Invalid qualified intervs');
-      }
-
-      // Check if all qualified interviewers exist in session details
-      const allInterviewersValid = sesn.qualified_ints.every((int) =>
-        sesn_details.qualifiedIntervs.some((qi) => qi.user_id === int.user_id),
-      );
-
-      if (!allInterviewersValid) {
-        throw new CApiError('CLIENT', 'Invalid qualified intervs');
-      }
-    }
-
-    // Store the validated qualified interviewers
-    this.selcted_qualified_intervs = sesn_qualified_intervs;
-  }
   public ignoreTrainee() {
     if (!this.db_details) {
       throw new CApiError('SERVER_ERROR', 'DB details not set');
@@ -308,6 +270,7 @@ export class CandidatesScheduling {
         }),
     );
   }
+
   // single round slots with suggesting slots
   public candavailabilityWithSuggestion() {
     if (!this.db_details) {
@@ -315,9 +278,10 @@ export class CandidatesScheduling {
     }
     const session_rounds = this.getSessionRounds();
     const first_round_sessions = session_rounds[0];
-    const ints_combs_for_each_round =
-      this.assignInterviewerToSesns(session_rounds);
-
+    const ints_combs_for_each_round = calcIntsCombsForEachSessionRound(
+      session_rounds,
+      this.api_options.make_training_optional,
+    );
     const dayjs_start_date = this.db_details.schedule_dates.user_start_date_js;
     const dayjs_end_date = this.db_details.schedule_dates.user_end_date_js;
 
@@ -330,12 +294,10 @@ export class CandidatesScheduling {
       }
       const curr_day_sugg_slots: CurrRoundCandidateAvailReq['slots'] = [];
       const plans_start_times = new Set<string>();
-
-      const curr_day_plans = this.calcMeetingCombinsForPlan(
-        curr_day,
+      const curr_day_plans = this.findFixedBreakSessionCombs(
         ints_combs_for_each_round[0],
-      ).generateSlotsForCurrDay();
-
+        curr_day,
+      );
       curr_day_plans.forEach((plan) => {
         plans_start_times.add(plan.sessions[0].start_time);
       });
@@ -414,10 +376,73 @@ export class CandidatesScheduling {
     return session_rounds;
   }
 
+  /**
+  @returns combination of slots in a paricular day
+  @param interview_sessions - particualar day sessions with fixed breaks
+  @param interv_free_time - free time of interviewers of given session in a particalar day
+**/
+  private findFixedBreakSessionCombs = (
+    interviewrs_sesn_comb: InterviewSessionApiRespType[][],
+    curr_day: Dayjs, // cand time zone
+  ) => {
+    let all_schedule_combs: PlanCombinationRespType[] = [];
+    const exploreSessionCombs = (
+      current_comb: InterviewSessionApiRespType[],
+      session_idx: number,
+    ) => {
+      if (session_idx === interviewrs_sesn_comb.length) {
+        const combs = this.calcMeetingCombinsForPlan(
+          curr_day,
+          current_comb,
+        ).generateSlotsForCurrDay();
+        all_schedule_combs = [...all_schedule_combs, ...combs];
+        return;
+      }
+      for (const module_comb of interviewrs_sesn_comb[Number(session_idx)]) {
+        current_comb.push(module_comb);
+        exploreSessionCombs(current_comb, session_idx + 1);
+        current_comb.pop();
+      }
+    };
+
+    exploreSessionCombs([], 0);
+
+    if (
+      all_schedule_combs.length > 0 &&
+      all_schedule_combs.every((s) => s.no_slot_reasons.length > 0)
+    ) {
+      const single_comb_reason: PlanCombinationRespType = {
+        plan_comb_id: nanoid(),
+        sessions: [],
+        no_slot_reasons: [],
+      };
+      all_schedule_combs.forEach((plan) => {
+        single_comb_reason.no_slot_reasons = [
+          ...single_comb_reason.no_slot_reasons,
+          ...plan.no_slot_reasons,
+        ];
+      });
+      return [single_comb_reason];
+    } else {
+      return all_schedule_combs
+        .filter((comb) => {
+          return comb.sessions.length > 0;
+        })
+        .sort((slot1, slot2) => {
+          return (
+            dayjsLocal(slot1.sessions[0].start_time).unix() -
+            dayjsLocal(slot2.sessions[0].start_time).unix()
+          );
+        });
+    }
+  };
+
   private findMultiDaySlots = () => {
     const session_rounds = this.getSessionRounds();
-    const ints_combs_for_each_round =
-      this.assignInterviewerToSesns(session_rounds);
+    const ints_combs_for_each_round = calcIntsCombsForEachSessionRound(
+      session_rounds,
+      this.api_options.make_training_optional,
+    );
     const findMultiDaySlotsUtil = (
       final_combs: DateRangePlansType['interview_rounds'],
       curr_date: Dayjs,
@@ -438,11 +463,10 @@ export class CandidatesScheduling {
           'day',
         )
       ) {
-        combs = this.calcMeetingCombinsForPlan(
-          curr_date.startOf('day'),
+        combs = this.findFixedBreakSessionCombs(
           ints_combs_for_each_round[curr_round_idx],
-        ).generateSlotsForCurrDay();
-
+          curr_date.startOf('day'),
+        );
         if (combs.length === 0) {
           if (curr_round_idx === 0) {
             break;
@@ -1359,7 +1383,6 @@ export class CandidatesScheduling {
       if (slot_comb_conflicts.length === 0) {
         return false;
       }
-
       for (let sesn_idx = 0; sesn_idx < slot.length; ++sesn_idx) {
         if (
           !isEqual(
@@ -1374,36 +1397,5 @@ export class CandidatesScheduling {
       return are_conflict_same;
     };
     return { generateSlotsForCurrDay, verifyCurrDaySlot };
-  };
-  private assignInterviewerToSesns = (
-    sessionRounds: InterviewSessionApiRespType[][],
-  ) => {
-    const updated_session_rounds: InterviewSessionApiRespType[][] = [];
-    for (const sesn_round of sessionRounds) {
-      const updated_sesn_round: InterviewSessionApiRespType[] = [];
-      for (const sesn of sesn_round) {
-        const updated_sesn = { ...sesn };
-        const chosed_intervs_sesns = this.selcted_qualified_intervs.find(
-          (s) => s.session_id === updated_sesn.session_id,
-        );
-        let qualified_ints: SessionInterviewerApiRespType[] = [];
-        if (chosed_intervs_sesns) {
-          qualified_ints = updated_sesn.qualifiedIntervs.filter((int) =>
-            chosed_intervs_sesns.qualified_ints.find(
-              (qint) => qint.user_id === int.user_id,
-            ),
-          );
-        } else {
-          qualified_ints = updated_sesn.qualifiedIntervs.slice(
-            0,
-            updated_sesn.interviewer_cnt,
-          );
-        }
-        updated_sesn.qualifiedIntervs = qualified_ints;
-        updated_sesn_round.push(updated_sesn);
-      }
-      updated_session_rounds.push(updated_sesn_round);
-    }
-    return updated_session_rounds;
   };
 }
