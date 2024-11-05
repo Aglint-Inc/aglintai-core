@@ -20,6 +20,7 @@ function SelfSchedulingDrawer() {
     stepScheduling: state.stepScheduling,
     fetchingPlan: state.fetchingPlan,
     isSendingToCandidate: state.isSendingToCandidate,
+    filters: state.filters,
   }));
   const { data: allSessions } = useMeetingList();
   const { resetStateSelfScheduling } = useSelfSchedulingDrawer();

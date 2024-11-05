@@ -11,14 +11,26 @@ import type { ApiResponseSelfSchedule } from '@/pages/api/scheduling/application
 
 import type { filterSchedulingOptionsArray } from '../utils/filterSchedulingOptionsArray';
 
-type PrefferedInterviewer = {
-  user_id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  position: string;
-  profile_image: string;
+type Filters = {
+  isNoConflicts: boolean;
+  isSoftConflicts: boolean;
+  isHardConflicts: boolean;
+  isOutSideWorkHours: boolean;
+  preferredInterviewers: {
+    session_id: string;
+    user_ids: string[];
+  }[];
+  preferredTimeRanges: {
+    startTime: string;
+    endTime: string;
+  }[];
+  isWorkLoad: boolean;
+  dateRange: {
+    start: string;
+    end: string;
+  };
 };
+
 export interface SelfSchedulingFlow {
   isSelfScheduleDrawerOpen: boolean;
   dateRange: {
@@ -34,18 +46,7 @@ export interface SelfSchedulingFlow {
   isSendingToCandidate: boolean;
   fetchingPlan: boolean;
   filteredSchedulingOptions: MultiDayPlanType[];
-  filters: {
-    isNoConflicts: boolean;
-    isSoftConflicts: boolean;
-    isHardConflicts: boolean;
-    isOutSideWorkHours: boolean;
-    preferredInterviewers: PrefferedInterviewer[];
-    preferredTimeRanges: {
-      startTime: string;
-      endTime: string;
-    }[];
-    isWorkLoad: boolean;
-  };
+  filters: Filters;
   selectedCombIds: string[];
   emailData: { html: string; subject: string } | null;
   resSendToCandidate: ApiResponseSelfSchedule['data'];
@@ -55,27 +56,12 @@ export interface SelfSchedulingFlow {
     events: EventCalendar[];
     resources: Resource[];
   };
-  localFilters: {
-    isNoConflicts: boolean;
-    isSoftConflicts: boolean;
-    isHardConflicts: boolean;
-    isOutSideWorkHours: boolean;
-    preferredInterviewers: PrefferedInterviewer[];
-    preferredTimeRanges: {
-      startTime: string;
-      endTime: string;
-    }[];
-    isWorkLoad: boolean;
-    dateRange: {
-      start: string;
-      end: string;
-    };
-  };
+  localFilters: Filters;
   filterLoading: boolean;
   calendarDate: string;
 }
 
-export const initialFilters = {
+export const initialFilters: Filters = {
   isNoConflicts: true,
   isSoftConflicts: true,
   isHardConflicts: false,
@@ -83,6 +69,10 @@ export const initialFilters = {
   preferredInterviewers: [],
   preferredTimeRanges: [],
   isWorkLoad: true,
+  dateRange: {
+    start: dayjsLocal().toISOString(),
+    end: dayjsLocal().add(7, 'day').toISOString(),
+  },
 };
 
 const initialState: SelfSchedulingFlow = {
@@ -109,10 +99,6 @@ const initialState: SelfSchedulingFlow = {
   },
   localFilters: {
     ...initialFilters,
-    dateRange: {
-      start: dayjsLocal().toISOString(),
-      end: dayjsLocal().add(7, 'day').toISOString(),
-    },
   },
   filterLoading: false,
   calendarDate: dayjsLocal().toISOString(),

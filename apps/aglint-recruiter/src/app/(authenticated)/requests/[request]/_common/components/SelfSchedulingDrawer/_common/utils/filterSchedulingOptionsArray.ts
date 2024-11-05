@@ -11,15 +11,6 @@ import { compareTimesHours } from '@/services/CandidateSchedule/utils/time_range
 
 import { type SelfSchedulingFlow } from '../store/store';
 
-type PlanFilterType = Omit<
-  SelfSchedulingFlow['filters'],
-  'preferredInterviewers'
-> & {
-  preferredInterviewers: {
-    user_id: string;
-  }[];
-};
-
 export const filterByDateRanges = ({
   schedulingOptions,
   preferredTimeRanges,
@@ -65,7 +56,16 @@ export function filterSchedulingOptionsArray({
   user_tz = dayjsLocal.tz.guess(),
 }: {
   schedulingOptions: ApiResponseFindAvailability['slots'];
-  filters: PlanFilterType;
+  filters: Pick<
+    SelfSchedulingFlow['filters'],
+    | 'isHardConflicts'
+    | 'isNoConflicts'
+    | 'isOutSideWorkHours'
+    | 'isSoftConflicts'
+    | 'preferredTimeRanges'
+    | 'isWorkLoad'
+    | 'preferredInterviewers'
+  >;
   user_tz?: string;
 }) {
   const allFilteredOptions: ApiResponseFindAvailability['slots'] = (
@@ -87,9 +87,10 @@ export function filterSchedulingOptionsArray({
     }),
   }));
 
-  let allCombs: MultiDayPlanType[] = createCombsForMultiDaySlots(
-    allFilteredOptions || [],
-  );
+  let allCombs: MultiDayPlanType[] =
+    allFilteredOptions.length > 0
+      ? createCombsForMultiDaySlots(allFilteredOptions)
+      : [];
 
   // allCombs = allCombs
   //   .map(
@@ -183,28 +184,6 @@ export function filterSchedulingOptionsArray({
     } as MultiDayPlanType;
   });
 
-  if (filters.preferredInterviewers.length > 0) {
-    allCombs = allCombs.map(
-      (comb) =>
-        ({
-          ...comb,
-          plans: comb.plans.sort((a, b) => {
-            const aHasPreferred = a.sessions.some((session) =>
-              hasPreferredInterviewers({ session, filters }),
-            )
-              ? 0
-              : 1;
-            const bHasPreferred = b.sessions.some((session) =>
-              hasPreferredInterviewers({ session, filters }),
-            )
-              ? 0
-              : 1;
-            return aHasPreferred - bHasPreferred;
-          }),
-        }) as MultiDayPlanType,
-    );
-  }
-
   if (filters.isWorkLoad) {
     allCombs = allCombs.map(
       (comb) =>
@@ -242,24 +221,3 @@ export function filterSchedulingOptionsArray({
       outWorkinHrsCnt,
   };
 }
-
-export const hasPreferredInterviewers = ({
-  session,
-  filters,
-}: {
-  session: PlanCombinationRespType['sessions'][0];
-  filters: PlanFilterType;
-}) => {
-  return (
-    filters.preferredInterviewers.length === 0 ||
-    filters.preferredInterviewers.some(
-      (interviewer) =>
-        session.qualifiedIntervs.some(
-          (interv) => interv.user_id === interviewer.user_id,
-        ) ||
-        session.trainingIntervs.some(
-          (interv) => interv.user_id === interviewer.user_id,
-        ),
-    )
-  );
-};

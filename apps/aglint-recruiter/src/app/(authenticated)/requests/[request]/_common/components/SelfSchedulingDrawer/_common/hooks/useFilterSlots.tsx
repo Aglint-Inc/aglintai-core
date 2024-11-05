@@ -1,6 +1,8 @@
 import { dayjsLocal } from '@aglint/shared-utils';
+import _ from 'lodash';
 
 import {
+  type SelfSchedulingFlow,
   setDateRange,
   setErrorNoSlotFilter,
   setFilteredSchedulingOptions,
@@ -13,23 +15,17 @@ import { useFindAvailibility } from './useFindAvailibility';
 
 export const useFilterSlots = () => {
   const { findAvailibility } = useFindAvailibility();
-  const { dateRange, schedulingOptions, localFilters } =
+  const { dateRange, schedulingOptions, localFilters, filters } =
     useSelfSchedulingFlowStore((state) => ({
       dateRange: state.dateRange,
       schedulingOptions: state.schedulingOptions,
       localFilters: state.localFilters,
+      filters: state.filters,
     }));
 
   const filterSlots = async () => {
-    const newFilters = {
-      isNoConflicts: localFilters.isNoConflicts,
-      isSoftConflicts: localFilters.isSoftConflicts,
-      isHardConflicts: localFilters.isHardConflicts,
-      isOutSideWorkHours: localFilters.isOutSideWorkHours,
-      preferredInterviewers: localFilters.preferredInterviewers,
-      preferredTimeRanges: localFilters.preferredTimeRanges,
-      isWorkLoad: localFilters.isWorkLoad,
-    };
+    const newFilters: SelfSchedulingFlow['filters'] = localFilters;
+
     setFilters(newFilters);
     setDateRange({
       start_date: localFilters.dateRange.start,
@@ -43,6 +39,10 @@ export const useFilterSlots = () => {
       dayjsLocal(localFilters.dateRange.end).isSame(
         dayjsLocal(dateRange.end_date),
         'day',
+      ) &&
+      _.isEqual(
+        localFilters.preferredInterviewers,
+        filters.preferredInterviewers,
       )
     ) {
       const filterSlots = filterSchedulingOptionsArray({
@@ -60,10 +60,12 @@ export const useFilterSlots = () => {
     } else {
       setFilterLoading(true);
       await findAvailibility({
-        filters: newFilters,
-        dateRange: {
-          start_date: localFilters.dateRange.start,
-          end_date: localFilters.dateRange.end,
+        filters: {
+          ...newFilters,
+          dateRange: {
+            start: localFilters.dateRange.start,
+            end: localFilters.dateRange.end,
+          },
         },
       });
       setFilterLoading(false);

@@ -1,7 +1,5 @@
 import { type DatabaseTable } from '@aglint/shared-types';
-import { dayjsLocal } from '@aglint/shared-utils';
 import { useRequest } from '@request/hooks';
-import React from 'react';
 
 import { UIButton } from '@/common/UIButton';
 import { supabase } from '@/utils/supabase/client';
@@ -10,14 +8,13 @@ import { setCandidateAvailabilityDrawerOpen } from '../CandidateAvailability/_co
 import { deleteRequestWorkflowAction } from '../RequestProgress/utils';
 import { useFindAvailibility } from '../SelfSchedulingDrawer/_common/hooks/useFindAvailibility';
 import {
-  initialFilters,
   setIsSelfScheduleDrawerOpen,
   useSelfSchedulingFlowStore,
 } from '../SelfSchedulingDrawer/_common/store/store';
 
 const SelectScheduleFlow = () => {
   const { request_workflow, requestDetails } = useRequest();
-  const { findAvailibility } = useFindAvailibility();
+  const { onClickFindAvailability } = useFindAvailibility();
   const { fetchingPlan } = useSelfSchedulingFlowStore();
   const addedWorkflow = request_workflow.data.find(
     (w) => w.trigger === 'onRequestSchedule',
@@ -54,16 +51,9 @@ const SelectScheduleFlow = () => {
           if (scheduleWorkflowAction) {
             await deleteRequestWorkflowAction(scheduleWorkflowAction.id);
             await deleteRequestProgress(requestDetails.id);
-
             await request_workflow.refetch();
           }
-          await findAvailibility({
-            filters: initialFilters,
-            dateRange: {
-              start_date: dayjsLocal().toISOString(),
-              end_date: dayjsLocal().add(14, 'day').toISOString(),
-            },
-          });
+          await onClickFindAvailability();
           setIsSelfScheduleDrawerOpen(true);
         }}
       >

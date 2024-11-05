@@ -3,6 +3,7 @@ import {
   type schema_find_availability_payload,
 } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
+import { useRequest } from '@request/hooks';
 import { useMeetingList } from '@requests/hooks';
 import { type ApiResponseFindAvailability } from '@requests/types';
 import axios from 'axios';
@@ -11,11 +12,14 @@ import { type z } from 'zod';
 import { useTenant } from '@/company/hooks';
 
 import {
+  initialFilters,
   type SelfSchedulingFlow,
   setAvailabilities,
   setCalendarDate,
   setFetchingPlan,
   setFilteredSchedulingOptions,
+  setFilters,
+  setLocalFilters,
   setNoOptions,
   setNoSlotsReasons,
   setSchedulingOptions,
@@ -27,23 +31,32 @@ export const useFindAvailibility = () => {
   const { toast } = useToast();
   const { recruiter } = useTenant();
   const { data: allSessions } = useMeetingList();
+  const { requestDetails } = useRequest();
 
   const selectedSessionIds = allSessions?.map(
     (session) => session.interview_session.id,
   );
 
+  //it is called when filters changed
   const findAvailibility = async ({
     filters,
-    dateRange,
   }: {
     filters: SelfSchedulingFlow['filters'];
-    dateRange: SelfSchedulingFlow['dateRange'];
   }) => {
     setNoOptions(false);
     const resOptions = await findScheduleOptions({
-      dateRange: dateRange,
+      dateRange: {
+        start_date: filters.dateRange.start,
+        end_date: filters.dateRange.end,
+      },
       session_ids: selectedSessionIds,
       rec_id: recruiter?.id || '',
+      selected_ints: filters.preferredInterviewers.map((ele) => ({
+        session_id: ele.session_id,
+        qualified_ints: ele.user_ids.map((ele) => ({
+          user_id: ele,
+        })),
+      })),
     });
 
     if (!resOptions) {
@@ -59,7 +72,7 @@ export const useFindAvailibility = () => {
         events,
         resources,
       });
-      setCalendarDate(dateRange.start_date);
+      setCalendarDate(filters.dateRange.start);
     }
     //calendar resourrce view
 
@@ -97,6 +110,7 @@ export const useFindAvailibility = () => {
     rec_id,
     dateRange,
     isNoConflictsOnly = false,
+    selected_ints,
   }: {
     session_ids: string[];
     rec_id: string;
@@ -105,6 +119,9 @@ export const useFindAvailibility = () => {
       end_date: string;
     };
     isNoConflictsOnly?: boolean;
+    selected_ints?: z.input<
+      typeof schema_find_availability_payload
+    >['selected_ints'];
   }) => {
     try {
       setFetchingPlan(true);
@@ -121,6 +138,7 @@ export const useFindAvailibility = () => {
             show_conflicts_events: true,
           },
         },
+        selected_ints,
       };
       if (isNoConflictsOnly) {
         delete bodyParams.options;
@@ -145,5 +163,43 @@ export const useFindAvailibility = () => {
     }
   };
 
-  return { findAvailibility };
+  //it is called send self scheduling button clicked
+  const onClickFindAvailability = async () => {
+    const preferredInterviewers = allSessions.map((session) => ({
+      session_id: session.interview_session.id,
+      user_ids: session.users
+        .filter(
+          (user) =>
+            user.interview_session_relation.interviewer_type === 'qualified',
+        )
+        .slice(0, session.interview_session.interviewer_cnt)
+        .map((user) => user.user_details.user_id),
+    }));
+    setFilters({
+      preferredInterviewers,
+    });
+    setLocalFilters({
+      preferredInterviewers,
+    });
+    await findAvailibility({
+      filters: {
+        ...initialFilters,
+        dateRange: dayjsLocal(requestDetails.schedule_start_date).isBefore(
+          dayjsLocal(),
+          'day',
+        )
+          ? {
+              start: requestDetails.schedule_start_date,
+              end: requestDetails.schedule_end_date,
+            }
+          : {
+              start: dayjsLocal().toISOString(),
+              end: dayjsLocal().add(7, 'day').toISOString(),
+            },
+        preferredInterviewers,
+      },
+    });
+  };
+
+  return { findAvailibility, onClickFindAvailability };
 };
