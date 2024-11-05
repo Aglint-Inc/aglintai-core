@@ -3,18 +3,14 @@ import { expect, type Page } from '@playwright/test';
 export const createRequestDetailsFixture = (page: Page) => {
   const requestDetailsPage = page.getByTestId('request-details-page');
   return {
-    goto: async (url: string) => {
-      expect(async () => {
-        await page.goto(url, {
-          timeout: 10000, // Increase timeout to 30 seconds
+    goto: async (req_id: string) => {
+      await page.goto(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/requests/${req_id}`,
+        {
           waitUntil: 'networkidle', // Wait until network is idle
-        });
-        expect(
-          await page.getByTestId('request-details-status').isVisible(),
-        ).toBeTruthy();
-      }).toPass({
-        timeout: 20000,
-      });
+        },
+      );
+      await page.waitForSelector('[data-testid="request-details-page"]');
     },
     isReady: async () => {
       return requestDetailsPage.isVisible();
