@@ -35,7 +35,6 @@ test('Candidate Availability Request', async ({
   if (!requestType) {
     throw new Error('Request type is not found');
   }
-
   const request_id = scheduleRequests[2].id;
   if (
     requestType.toLowerCase() ===
@@ -50,7 +49,3 @@ test('Candidate Availability Request', async ({
     throw new Error(`Request type ${requestType} is invalid`);
   }
 });
-
-// await requestDetailsPage.submitCandidateAvailability(
-//   'f5bba9e6-d452-496a-8554-49dc58b6ff7e',
-// );
