@@ -68,7 +68,7 @@ export const createRequestDetailsFixture = (page: Page) => {
         waitUntil: 'load',
       });
 
-      const response = await page2.waitForResponse(async (response) => {
+      const slot_response = await page2.waitForResponse(async (response) => {
         return (
           response
             .url()
@@ -77,15 +77,80 @@ export const createRequestDetailsFixture = (page: Page) => {
         );
       });
 
-      expect(response.status()).toBe(200);
+      expect(slot_response.status()).toBe(200);
 
       await page2.waitForTimeout(2000);
 
-      await pickSlots({ selector: 'button.availability-dates', page: page2 });
-      await pickSlots({ selector: 'button.time-slot', page: page2 });
-      await pickSlots({ selector: 'button.time-slot-week-end', page: page2 });
+      const selectors = [
+        'button.availability-dates',
+        'button.time-slot',
+        'button.time-slot-week-end',
+      ];
 
-      await page2.waitForTimeout(4000);
+      for (const selector of selectors) {
+        await pickSlots({ selector, page: page2 });
+      }
+
+      const submitAvailBtn = page2.locator('button.submit-availability-btn');
+      expect(await submitAvailBtn.isVisible()).toBeTruthy();
+      await submitAvailBtn.click();
+
+      const submit_response = await page2.waitForResponse(async (response) => {
+        return (
+          response.url().includes('/api/trpc/candidate_availability.update') &&
+          response.status() === 200
+        );
+      });
+
+      expect(submit_response.status()).toBe(200);
+
+      await page2.close();
+    },
+    bookInterview: async () => {
+      await page.reload();
+      await page.waitForTimeout(2000);
+      const schedulInterviewBtn = page.getByTestId('sched-cand-avail-btn');
+      expect(await schedulInterviewBtn.isVisible()).toBeTruthy();
+      await schedulInterviewBtn.click();
+
+      const submit_response = await page.waitForResponse(async (response) => {
+        return (
+          response.url().includes('candidate_availability.availableSlots') &&
+          response.status() === 200
+        );
+      });
+
+      expect(submit_response.status()).toBe(200);
+
+      await page.waitForTimeout(2000);
+
+      const sendAvailBtn = await page
+        .getByTestId('comfirm-availability-radio')
+        .all();
+
+      await sendAvailBtn[0].click();
+
+      const comfirmBtn = await page.getByTestId('comfirm-availability-btn');
+      await comfirmBtn.click();
+
+      await page.waitForTimeout(2000);
+      await comfirmBtn.click();
+
+      const recruiter_confirm_response = await page.waitForResponse(
+        async (response) => {
+          return (
+            response
+              .url()
+              .includes(
+                '/api/scheduling/v1/booking/confirm-recruiter-selected-option',
+              ) && response.status() === 200
+          );
+        },
+      );
+
+      expect(recruiter_confirm_response.status()).toBe(200);
+      await page.waitForTimeout(2000);
+      page.close();
     },
   };
 };
@@ -98,63 +163,33 @@ const pickSlots = async ({
   page: Page;
 }) => {
   const slots = await page.locator(selector).all();
-  const selectedSlots = selectRandomElements({ array: slots });
+  const selectedSlots =
+    selector === 'button.availability-dates'
+      ? selectRandomElements(
+          slots,
+          selector === 'button.availability-dates' ? true : false,
+        )
+      : slots;
 
-  for (let i = 1; i < selectedSlots.length; i++) {
+  for (let i = 0; i < selectedSlots.length; i++) {
     await selectedSlots[i].scrollIntoViewIfNeeded();
     await selectedSlots[i].click();
-    await page.waitForTimeout(100);
+    await page.waitForTimeout(10);
   }
 };
 
-function selectRandomElements({ array }: { array: Locator[] }) {
+function selectRandomElements(array: Locator[], isShuffle = false) {
   if (array.length <= 3) return array;
 
-  const shuffledArray = array
-    .map((value) => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value);
+  const shuffledArray = isShuffle
+    ? array
+        .map((value) => ({ value, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ value }) => value)
+    : array;
 
-  // const min = 3;
-  // const max = array.length;
-  // const count = Math.max(Math.floor(Math.random() * (max - min + 1)) + min, 3);
-
-  return shuffledArray.slice(0, array.length / 2);
+  return shuffledArray.slice(
+    0,
+    array.length > 10 ? array.length / 2 : array.length - 1,
+  );
 }
-
-// const daysPick = async () => {
-//   const days = await page2.locator('button.availability-dates').all();
-//   const selectedDays = selectRandomElements({ array: days });
-//   for (let i = 1; i <= selectedDays.length - 1; i++) {
-//     await selectedDays[i].scrollIntoViewIfNeeded();
-//     await selectedDays[i].click();
-//     await page2.waitForTimeout(100);
-//   }
-// };
-
-// const weekDayPick = async () => {
-//   const weekDaySlots = await page2.locator('button.time-slot').all();
-//   const selectedWeekDaySlots = selectRandomElements({
-//     array: weekDaySlots,
-//   });
-//   for (let i = 1; i <= selectedWeekDaySlots.length - 1; i++) {
-//     await selectedWeekDaySlots[i].scrollIntoViewIfNeeded();
-//     await selectedWeekDaySlots[i].click();
-//     await page2.waitForTimeout(100);
-//   }
-// };
-
-// const weekEndPick = async () => {
-//   const weekEndDaySlots = await page2
-//     .locator('button.time-slot-week-end')
-//     .all();
-//   const selectedWeekEndDaySlots = selectRandomElements({
-//     array: weekEndDaySlots,
-//   });
-
-//   for (let i = 1; i <= selectedWeekEndDaySlots.length - 1; i++) {
-//     await selectedWeekEndDaySlots[i].scrollIntoViewIfNeeded();
-//     await selectedWeekEndDaySlots[i].click();
-//     await page2.waitForTimeout(100);
-//   }
-// };

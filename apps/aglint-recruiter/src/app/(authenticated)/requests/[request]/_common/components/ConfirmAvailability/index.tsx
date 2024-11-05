@@ -142,6 +142,7 @@ function ConfirmAvailability() {
               {selectedIndex === 0 ? 'Close' : 'Back'}
             </UIButton>
             <UIButton
+              data-testid='comfirm-availability-btn'
               disabled={
                 !selectedDateSlots.find(
                   (ele) => ele.current_round === selectedIndex + 1,
@@ -177,7 +178,6 @@ function ConfirmAvailability() {
                 a link to join to the interview on the specified date and time
               </p>
             </div>
-
             <div className={'flex flex-col gap-2'}>
               {selectedDateSlots &&
                 selectedDateSlots?.map((item, index) => {

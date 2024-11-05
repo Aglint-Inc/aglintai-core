@@ -237,7 +237,8 @@ function CandidateAvailability() {
             <div className='w-full'>
               <UIButton
                 size='md'
-                className='w-full'
+                id='submit-availability-btn'
+                className='submit-availability-btn w-full'
                 onClick={submitAvailability}
                 disabled={!allCriteriaMeets || submitting}
                 isLoading={submitting}

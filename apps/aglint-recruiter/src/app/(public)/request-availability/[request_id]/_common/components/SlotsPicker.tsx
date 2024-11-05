@@ -66,8 +66,7 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
                 Select available dates
               </div>
               <span className='text-sm text-muted-foreground'>
-                {' '}
-                {`Select ${NoOfDaysNeeds} or more days. Click on a date to select. Click again to deselect. `}
+                {`Select ${NoOfDaysNeeds} or more days. Click on a date to select. Click again to deselect.`}
               </span>
             </div>
           </div>

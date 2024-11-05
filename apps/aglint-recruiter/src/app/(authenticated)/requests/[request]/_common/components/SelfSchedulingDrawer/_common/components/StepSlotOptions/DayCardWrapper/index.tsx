@@ -213,6 +213,7 @@ function DayCardWrapper({
                                   {isRadioNeeded && (
                                     <RadioGroup>
                                       <RadioGroupItem
+                                        data-testid='comfirm-availability-radio'
                                         checked={selectedCombIds.includes(
                                           slot.plan_comb_id,
                                         )}
