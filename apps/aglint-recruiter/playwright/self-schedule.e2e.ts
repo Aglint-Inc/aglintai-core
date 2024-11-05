@@ -2,7 +2,11 @@ import { expect } from '@playwright/test';
 
 import { test } from './lib/fixtures';
 
-test('Test self schedule flow', async ({ loginPage, requestListPage }) => {
+test('Send Self Schedule', async ({
+  loginPage,
+  requestListPage,
+  requestDetailsPage,
+}) => {
   await loginPage.goto();
   await loginPage.login(
     process.env.E2E_TEST_EMAIL,
@@ -12,4 +16,5 @@ test('Test self schedule flow', async ({ loginPage, requestListPage }) => {
   expect(await requestListPage.isReady()).toBeTruthy();
   const scheduleRequests = await requestListPage.getScheduleRequests();
   await requestListPage.openRequestCard(scheduleRequests[0]);
+  await requestDetailsPage.openSelfSchedulingDialog();
 });

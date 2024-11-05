@@ -39,7 +39,6 @@ function DefaultViewRequestCard({
         'duration-400 group border-border transition-all hover:border-foreground/50',
         isCompactList && 'rounded-none border-none shadow-none',
       )}
-      data-testid='request-card'
     >
       <div
         className={cn(
@@ -51,6 +50,7 @@ function DefaultViewRequestCard({
           href={`/requests/${props.id}`}
           passHref
           className='flex-grow cursor-pointer'
+          data-testid='request-card'
         >
           <div className='flex cursor-pointer items-center space-x-2 hover:underline'>
             <Label
