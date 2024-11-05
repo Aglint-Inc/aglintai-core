@@ -5,27 +5,19 @@ import { getCandidateAvailability } from './utils/getCandidateAvailability';
 import { getRequestForAvailabilityE2e } from './utils/getRequest';
 
 /**
- * E2E test for login flow and create request flow from candidate list
+ * E2E test for candidate availability
  */
 test.describe('Candidate Availability', () => {
-  test('Request - Candidate Availability', async ({
+  test('case - Candidate Availability', async ({
     page,
     loginPage,
     requestDetailsPage,
   }) => {
     // Constants
-    // const WAIT_TIME = {
-    //   SHORT: 500,
-    //   MEDIUM: 2000,
-    //   LONG: 5000,
-    // };
-
-    // const CANDIDATE_INDICES = {
-    //   FIRST: 0,
-    //   SECOND: 1,
-    //   THIRD: 2,
-    // };
-    // const JOB_INDEX = 2;
+    const REQUEST_INDEX = 0; //request index
+    const SLOTS_PER_DAY = 3; //select slot per day
+    const SELECT_DATES = 3; //select date count
+    const CONFIRM_SLOT = 0; //user select radio btn
 
     // Step 1: Login
     await test.step('Authenticate user', async () => {
@@ -46,41 +38,22 @@ test.describe('Candidate Availability', () => {
     await test.step('Select job from list', async () => {
       const scheduleRequests = await getRequestForAvailabilityE2e();
 
-      request_id = scheduleRequests[0].id;
-      await requestDetailsPage.goto(
-        `${process.env.NEXT_PUBLIC_HOST_NAME}/requests/${request_id}`,
-      );
+      request_id = scheduleRequests[REQUEST_INDEX].id;
+      await requestDetailsPage.goto(request_id);
     });
 
     // Step 3: Open Candidate Availability
     await test.step('Open Candidate Availability', async () => {
       await page.waitForSelector('[data-testid="get-availability-btn"]');
-      const getAvailabilityBtn = page.getByTestId('get-availability-btn');
-      expect(await getAvailabilityBtn.isVisible()).toBeTruthy();
-      await getAvailabilityBtn.click();
-      await page.waitForResponse((req) => {
-        return (
-          req
-            .url()
-            .includes('/api/mail/sendAvailabilityRequest_email_applicant') &&
-          req.status() === 200
-        );
-      });
+      await requestDetailsPage.openCandidateAvailabilityDailog();
     });
 
     // Step 4: Send candidates Availability
     await test.step('Send candidates Availability', async () => {
-      const sendAvailBtn = page.getByTestId(
-        'candidate-availability-submit-btn',
+      await page.waitForSelector(
+        '[data-testid="candidate-availability-submit-btn"]',
       );
-      expect(await sendAvailBtn.isVisible()).toBeTruthy();
-      await sendAvailBtn.click();
-      const response = await page.waitForResponse((req) => {
-        return req
-          .url()
-          .includes('/api/mail/sendAvailabilityRequest_email_applicant');
-      });
-      expect(response.status()).toBe(200);
+      await requestDetailsPage.sendCandidateAvailability();
     });
 
     // Step 5: Open candidate availability page
@@ -116,11 +89,11 @@ test.describe('Candidate Availability', () => {
       const nextBtn = await page2.getByTestId('next-day-btn');
 
       let u = 1;
-      async function a() {
+      async function selectDateAndSlot() {
         page2.waitForSelector('[data-testid="availability-dates"]');
         const dates = await page2.getByTestId('availability-dates').all();
 
-        for (let i = 0 + u; i < 3 + u; i++) {
+        for (let i = 0 + u; i < SELECT_DATES + u; i++) {
           await dates[i].scrollIntoViewIfNeeded();
           await dates[i].click();
         }
@@ -133,7 +106,7 @@ test.describe('Candidate Availability', () => {
         for (let i = 0; i < slotsContainer.length; i++) {
           const slots = await slotsContainer[i].getByTestId('time-slot').all();
 
-          for (let i = 0; i < 2; i++) {
+          for (let i = 0; i < SLOTS_PER_DAY; i++) {
             await slots[i].scrollIntoViewIfNeeded();
             await slots[i].click();
           }
@@ -142,11 +115,11 @@ test.describe('Candidate Availability', () => {
         if (await nextBtn.isVisible()) {
           await nextBtn.click();
           u += 2;
-          a();
+          selectDateAndSlot();
         }
       }
 
-      await a();
+      await selectDateAndSlot();
     });
 
     // Step 5: Submit availability
@@ -163,7 +136,7 @@ test.describe('Candidate Availability', () => {
       });
 
       expect(submit_response.status()).toBe(200);
-      await page2.waitForTimeout(2000);
+
       await page2.close();
     });
 
@@ -177,7 +150,7 @@ test.describe('Candidate Availability', () => {
       const sendAvailBtn = await page
         .getByTestId('comfirm-availability-radio')
         .all();
-      await sendAvailBtn[0].click();
+      await sendAvailBtn[CONFIRM_SLOT].click();
 
       const comfirmBtn = await page.getByTestId('comfirm-availability-btn');
       expect(await schedulInterviewBtn.isVisible()).toBeTruthy();
@@ -194,12 +167,12 @@ test.describe('Candidate Availability', () => {
       expect(mail_response.status()).toBe(200);
       await comfirmBtn.click();
       await page.waitForSelector('[data-testid="view-schedule-btn"]');
-      await page.waitForTimeout(7000);
+
       page.close();
     });
   });
 
-  //   test.afterEach(async ({ page }) => {
-  //     await page.close();
-  //   });
+  test.afterEach(async ({ page }) => {
+    await page.close();
+  });
 });
