@@ -50,6 +50,7 @@ export const createRequestDetailsFixture = (page: Page) => {
           .includes('/api/mail/sendAvailabilityRequest_email_applicant');
       });
       expect(response.status()).toBe(200);
+      //
     },
     openSelfSchedulingDialog: async () => {
       const selfSchedulingBtn = await page.getByTestId('self-schedule-btn');

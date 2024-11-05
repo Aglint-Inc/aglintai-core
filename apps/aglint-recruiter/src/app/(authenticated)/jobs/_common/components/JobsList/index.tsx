@@ -87,6 +87,7 @@ const JobsList: React.FC<JobsListProps> = ({ jobs }) => {
         </TableRow>
         {jobs?.map((job) => (
           <TableRow
+            data-testid='job-row'
             key={job.id}
             className='cursor-pointer hover:bg-muted/50'
             onClick={() =>
