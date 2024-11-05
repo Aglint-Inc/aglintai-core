@@ -16,12 +16,7 @@ export const createJobsListPageFixture = (page: Page) => {
     getAllJobs: async () => {
       const jobs = await page.getByTestId('job-row');
       const allJobRows = await jobs.all();
-      if (allJobRows.length === 0) {
-        throw new Error('No jobs found');
-      }
-      const jobRow = allJobRows[0];
-      await jobRow.click();
-      await new Promise((resolve) => setTimeout(resolve, 10000));
+      return allJobRows;
     },
   };
 };

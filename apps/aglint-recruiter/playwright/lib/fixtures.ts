@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { test as base } from '@playwright/test';
 
 import { createJobDetailsPageFixture } from './jobDetails.fixture';
@@ -9,6 +10,7 @@ type Fixtures = {
   loginPage: ReturnType<typeof createLoginFixture>;
   jobsListPage: ReturnType<typeof createJobsListPageFixture>;
   requestDetailsPage: ReturnType<typeof createRequestDetailsFixture>;
+  jobDetailsPage: ReturnType<typeof createJobDetailsPageFixture>;
 };
 export const test = base.extend<Fixtures>({
   loginPage: async ({ page }, use) => {
