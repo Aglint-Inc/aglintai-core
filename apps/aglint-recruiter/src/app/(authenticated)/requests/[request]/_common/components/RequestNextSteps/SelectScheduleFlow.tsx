@@ -57,11 +57,18 @@ const SelectScheduleFlow = () => {
 
             await request_workflow.refetch();
           }
+          const scheduleStartDate = dayjsLocal().isAfter(
+            requestDetails.schedule_start_date,
+            'date',
+          )
+            ? dayjsLocal().toISOString()
+            : requestDetails.schedule_start_date;
+          const scheduleEndDate = dayjsLocal(scheduleStartDate).add(3, 'day');
           await findAvailibility({
             filters: initialFilters,
             dateRange: {
-              start_date: dayjsLocal().toISOString(),
-              end_date: dayjsLocal().add(14, 'day').toISOString(),
+              start_date: scheduleStartDate,
+              end_date: scheduleEndDate.toISOString(),
             },
           });
           setIsSelfScheduleDrawerOpen(true);
