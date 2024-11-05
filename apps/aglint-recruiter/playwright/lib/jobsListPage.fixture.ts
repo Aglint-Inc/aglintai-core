@@ -6,7 +6,6 @@ export const createJobsListPageFixture = (page: Page) => {
   return {
     goto: async () => {
       await page.goto(dashboard_url, {
-        timeout: 5000, // Increase timeout to 30 seconds
         waitUntil: 'networkidle', // Wait until network is idle
       });
     },
