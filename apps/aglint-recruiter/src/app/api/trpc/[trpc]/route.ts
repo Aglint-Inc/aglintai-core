@@ -1,5 +1,5 @@
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch';
-import { headers } from 'next/headers';
+import { cookies } from 'next/headers';
 
 import { appRouter } from '@/server/api/root';
 import { createTRPCContext } from '@/server/api/trpc';
@@ -9,9 +9,9 @@ import { createTRPCContext } from '@/server/api/trpc';
  * handling a HTTP request (e.g. when you make requests from Client Components).
  */
 const createContext = async () => {
-  const heads = await headers();
+  const cookieStore = await cookies();
   return createTRPCContext({
-    headers: heads,
+    cookies: cookieStore,
   });
 };
 

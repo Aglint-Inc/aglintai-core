@@ -6,7 +6,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 export const schema = z.object({
   break_duration: z.number(),
@@ -15,8 +14,9 @@ export const schema = z.object({
 
 const mutation = async ({
   input: { break_duration, session_id },
+  ctx,
 }: PrivateProcedure<typeof schema>) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   await db
     .from('interview_session')
     .update({ break_duration: Number(break_duration) })

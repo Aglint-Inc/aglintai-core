@@ -10,7 +10,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 const BADGE_CONSTANTS: {
   // eslint-disable-next-line no-unused-vars
@@ -90,7 +89,7 @@ export const schema = z.object({
 const pageSize = 29;
 
 const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   const cursor = input?.cursor ?? 0;
   const query = db
     .from('application_view')

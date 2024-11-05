@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { createPrivateClient } from './server/db';
@@ -41,7 +42,8 @@ export async function middleware(req: NextRequest) {
     publicRoutes.includes(path as (typeof publicRoutes)[number]) ||
     dynamicPublicRoutes.some((regex) => regex.test(path));
 
-  const supabase = await createPrivateClient();
+  const cookieStore = await cookies();
+  const supabase = await createPrivateClient(cookieStore);
   const session = await verifyToken(supabase);
 
   if (isPublicRoute) {

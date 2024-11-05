@@ -3,7 +3,6 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import { z } from 'zod';
 
 import { privateProcedure, type ProcedureDefinition } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 const schema = z.object({
   template_id: z.string(),
@@ -12,7 +11,7 @@ const schema = z.object({
 export const update = privateProcedure
   .input(schema)
   .mutation(async ({ ctx, input }) => {
-    const db = await createPrivateClient();
+    const db = ctx.db;
     const template = supabaseWrap(
       await db
         .from('company_email_template')

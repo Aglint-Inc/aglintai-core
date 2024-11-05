@@ -6,12 +6,14 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 const schema = z.object({ id: z.string() });
 
-const query = async ({ input: { id } }: PrivateProcedure<typeof schema>) => {
-  const db = await createPrivateClient();
+const query = async ({
+  input: { id },
+  ctx,
+}: PrivateProcedure<typeof schema>) => {
+  const db = ctx.db;
 
   const errors: string[] = [];
   const { data } = await db

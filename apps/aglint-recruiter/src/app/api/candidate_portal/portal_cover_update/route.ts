@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 import { createPrivateClient } from '@/server/db';
@@ -10,7 +11,9 @@ export async function POST(req: Request) {
   if (!permissions.find((p) => p === 'company_settings_module'))
     throw new Error('Permission denied!');
 
-  const db = await createPrivateClient();
+  const cookieStore = await cookies();
+
+  const db = await createPrivateClient(cookieStore);
 
   const formData = await req.formData();
 
@@ -64,7 +67,8 @@ function extractPath(url: string) {
 }
 
 const authorize = async () => {
-  const db = await createPrivateClient();
+  const cookieStore = await cookies();
+  const db = await createPrivateClient(cookieStore);
 
   let user_id: string | null = null;
 

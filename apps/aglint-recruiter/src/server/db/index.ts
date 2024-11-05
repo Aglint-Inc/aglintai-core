@@ -3,11 +3,12 @@ import 'server-only';
 import type { DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';
-import type { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
-import { cookies } from 'next/headers';
+import {
+  type ResponseCookie,
+  type ResponseCookies,
+} from 'next/dist/compiled/@edge-runtime/cookies';
 
-export async function createPrivateClient() {
-  const cookieStore = await cookies();
+export async function createPrivateClient(cookieStore: ResponseCookies) {
   return createServerClient<DB>(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,

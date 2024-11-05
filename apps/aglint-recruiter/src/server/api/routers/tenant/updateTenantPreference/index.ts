@@ -5,18 +5,17 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 const mutation = async ({
   input,
-  ctx: { recruiter_id },
+  ctx,
 }: PrivateProcedure<typeof CustomRecruiterPreferencesUpdateSchema>) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
 
   await db
     .from('recruiter_preferences')
     .update({ ...input })
-    .eq('recruiter_id', recruiter_id);
+    .eq('recruiter_id', ctx.recruiter_id);
 };
 
 export const updateTenantPreference = privateProcedure

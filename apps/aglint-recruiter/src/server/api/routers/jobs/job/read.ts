@@ -6,7 +6,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 import { getBanners } from '../common/getBanners';
 
@@ -15,7 +14,7 @@ const schema = z.object({
 });
 
 const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   const job = (
     await db
       .from('job_view')

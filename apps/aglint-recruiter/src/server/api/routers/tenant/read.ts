@@ -1,7 +1,5 @@
 import { TRPCError } from '@trpc/server';
 
-import { createPrivateClient } from '@/server/db';
-
 import {
   type PrivateProcedure,
   privateProcedure,
@@ -9,7 +7,7 @@ import {
 } from '../../trpc';
 
 const query = async ({ ctx }: PrivateProcedure) => {
-  const db = await await createPrivateClient();
+  const db = ctx.db;
   const data = (
     await db
       .from('recruiter_relation')

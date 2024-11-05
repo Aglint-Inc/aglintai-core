@@ -6,7 +6,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 export const trainingProgressSchema = z.object({
   trainer_ids: z.array(z.string().uuid()),
@@ -25,7 +24,7 @@ export type TrainingProgress = ProcedureDefinition<typeof trainingProgress>;
 export const fetchProgress = async (
   props: PrivateProcedure<typeof trainingProgressSchema>,
 ) => {
-  const db = await createPrivateClient();
+  const db = props.ctx.db;
   const {
     input: { trainer_ids },
   } = props;

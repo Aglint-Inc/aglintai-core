@@ -1,5 +1,3 @@
-import { createPrivateClient } from '@/server/db';
-
 import {
   type PrivateProcedure,
   privateProcedure,
@@ -7,7 +5,7 @@ import {
 } from '../../trpc';
 
 const query = async ({ ctx }: PrivateProcedure) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   return (
     await db
       .from('workflow_view')

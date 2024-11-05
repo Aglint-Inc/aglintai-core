@@ -5,12 +5,11 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 const schema = z.object({ job_id: z.string().uuid() });
 
-const query = async ({ input }: PrivateProcedure<typeof schema>) => {
-  const db = await createPrivateClient();
+const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
+  const db = ctx.db;
   return (
     await db
       .rpc('getskillpools', { jobid: input.job_id })

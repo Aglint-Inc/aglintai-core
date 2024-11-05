@@ -9,11 +9,10 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
-const query = async ({ ctx: { user_id } }: PrivateProcedure) => {
-  const assigner_id = user_id;
-  const db = await createPrivateClient();
+const query = async ({ ctx }: PrivateProcedure) => {
+  const assigner_id =  ctx.user_id;
+  const db = ctx.db;
   const [createdCompletedRequestCount, allRequestCount] =
     await Promise.allSettled([
       db.rpc('get_request_stats', {

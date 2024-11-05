@@ -6,7 +6,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 type Params = DatabaseFunctions['get_applicant_locations']['Args'];
 
@@ -14,8 +13,8 @@ const schema = z.object({
   job_id: z.string().uuid(),
 }) satisfies ZodTypeToSchema<Params>;
 
-const query = async ({ input }: PrivateProcedure<typeof schema>) => {
-  const db = await createPrivateClient();
+const query = async ({ input, ctx }: PrivateProcedure<typeof schema>) => {
+  const db = ctx.db;
   return (
     (await db.rpc('get_applicant_locations', input).single()).data?.locations ??
     null

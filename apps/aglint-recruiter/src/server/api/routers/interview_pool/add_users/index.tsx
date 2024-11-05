@@ -11,7 +11,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 const UserSchema = z.object({
   user_id: z.string(),
@@ -36,6 +35,7 @@ const schema = z.object({
 
 const mutation = async ({
   input: { relations, selectedUsers, trainingStatus, pool },
+  ctx,
 }: PrivateProcedure<typeof schema>) => {
   const seletedUserIds = selectedUsers.map((user) => user.user_id);
 
@@ -44,7 +44,7 @@ const mutation = async ({
     .filter((rel) => seletedUserIds.includes(rel.user_id));
 
   if (archivedRelations.length > 0) {
-    await updateRelations(archivedRelations, trainingStatus);
+    await updateRelations(archivedRelations, trainingStatus, ctx);
   }
 
   const newRelations = selectedUsers.filter(
@@ -59,6 +59,7 @@ const mutation = async ({
       training_status: trainingStatus,
       number_of_reverse_shadow: pool.noReverseShadow,
       number_of_shadow: pool.noShadow,
+      ctx,
     });
   }
 
@@ -69,11 +70,12 @@ export const addUsers = privateProcedure.input(schema).mutation(mutation);
 
 export type AddUsers = ProcedureDefinition<typeof addUsers>;
 
-export const updateRelations = async (
+const updateRelations = async (
   archivedRelations: z.infer<typeof schema>['relations'],
   training_status: DatabaseTable['interview_module_relation']['training_status'],
+  ctx: PrivateProcedure['ctx'],
 ) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   const upsertRelations: DatabaseTableInsert['interview_module_relation'][] =
     archivedRelations.map((user) => ({
       id: user.id,
@@ -89,20 +91,22 @@ export const updateRelations = async (
     .throwOnError();
 };
 
-export const addMemberbyUserIds = async ({
+const addMemberbyUserIds = async ({
   user_ids,
   module_id,
   training_status,
   number_of_reverse_shadow,
   number_of_shadow,
+  ctx,
 }: {
   user_ids: string[];
   module_id: string;
   training_status: StatusTraining;
   number_of_reverse_shadow: number;
   number_of_shadow: number;
+  ctx: PrivateProcedure['ctx'];
 }) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   const interviewModRelations: DatabaseTableInsert['interview_module_relation'][] =
     user_ids.map((user_id) => ({
       user_id: user_id,
