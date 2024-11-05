@@ -25,12 +25,12 @@ beforeEach(() => {
     inter_data: [
       [
         {
-                                                                                            ...test_interviewer.dileep.details,
-                                                                                            scheduling_settings: intervier_scheduling_settings.asia,
-                                                                                            interview_module_relation_id: v4(), // doesn'matter
-                                                                                            session_id: test_sessions[0].session.id,
-                                                                                            pause_json: null,
-                                                                                            schedule_auth: null,
+          ...test_interviewer.dileep.details,
+          scheduling_settings: intervier_scheduling_settings.asia,
+          interview_module_relation_id: v4(), // doesn'matter
+          session_id: test_sessions[0].session.id,
+          pause_json: null,
+          schedule_auth: null,
         },
       ],
     ],
