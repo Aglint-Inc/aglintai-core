@@ -26,10 +26,11 @@ export function UITimeRangeCard({
       <UIButton
         variant='outline'
         size='sm'
+        data-testid={'time-slot'}
         className={cn(
           'relative h-10 w-full bg-white text-center',
           isActive && 'border-blue-300 bg-blue-50',
-          isSaturdayOrSunday(startTime) ? 'time-slot-week-end' : 'time-slot',
+
           isSemiActive && 'border-dashed border-blue-300',
         )}
         onClick={onClickTime}
@@ -54,7 +55,7 @@ export function UITimeRangeCard({
   );
 }
 
-function isSaturdayOrSunday(date: string) {
-  const dayOfWeek = dayjsLocal(date).day();
-  return dayOfWeek === 0 || dayOfWeek === 6;
-}
+// function isSaturdayOrSunday(date: string) {
+//   const dayOfWeek = dayjsLocal(date).day();
+//   return dayOfWeek === 0 || dayOfWeek === 6;
+// }
