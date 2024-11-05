@@ -13,7 +13,7 @@ export const useApplicationDetails = () => {
 const useApplicationDetailsProcedure = (
   input: ApplicationDetailsAPI['input'],
 ): ProcedureQuery<ApplicationDetailsAPI> =>
-  api.application.application_activity.useQuery(input);
+  api.application.application_details.useQuery(input);
 
 export type ApplicationDetails = ReturnType<
   typeof useApplicationDetails
