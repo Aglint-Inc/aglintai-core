@@ -2,7 +2,7 @@ import { expect, type Locator, type Page } from '@playwright/test';
 
 export const createJobDetailsPageFixture = (page: Page) => {
   const dashboard_url = process.env.NEXT_PUBLIC_HOST_NAME + '/jobs';
-  const jobTableHeader = page.getByTestId('application-header');
+  const reqTableHeader = page.getByTestId('application-header');
 
   return {
     goto: async (job_id: string) => {
@@ -12,7 +12,7 @@ export const createJobDetailsPageFixture = (page: Page) => {
       });
     },
     isReady: async () => {
-      return jobTableHeader.isVisible();
+      return reqTableHeader.isVisible();
     },
     getAllApplicationRows: async () => {
       const applications = await page.getByTestId('application-checkbox');

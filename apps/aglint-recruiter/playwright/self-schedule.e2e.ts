@@ -11,5 +11,5 @@ test('Test self schedule flow', async ({ loginPage, requestListPage }) => {
   await requestListPage.goto();
   expect(await requestListPage.isReady()).toBeTruthy();
   const scheduleRequests = await requestListPage.getScheduleRequests();
-  await new Promise((resolve) => setTimeout(resolve, 10000));
+  await requestListPage.openRequestCard(scheduleRequests[0]);
 });

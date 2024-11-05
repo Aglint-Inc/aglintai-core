@@ -1,4 +1,4 @@
-import { type Locator, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 
 export const createRequestListFixture = (page: Page) => {
   const dashboard_url = process.env.NEXT_PUBLIC_HOST_NAME + '/requests';
@@ -21,6 +21,12 @@ export const createRequestListFixture = (page: Page) => {
     },
     openRequestCard: async (requestCard: Locator) => {
       await requestCard.click();
+      expect(async () => {
+        const reqTableHeader = await page.getByTestId('application-header');
+        expect(await reqTableHeader.isVisible()).toBeTruthy();
+      }).toPass({
+        intervals: [2000, 4000],
+      });
     },
   };
 };
