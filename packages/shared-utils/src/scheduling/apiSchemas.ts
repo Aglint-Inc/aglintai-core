@@ -28,12 +28,22 @@ const scheduling_options_schema = z
   .optional()
   .default({});
 
+export const schema_qualified_ints = z.object({
+  session_id: z.string(),
+  qualified_ints: z
+    .object({
+      user_id: z.string(),
+    })
+    .array(),
+});
+
 const schema_find_availability_payload = z.object({
   session_ids: z.array(z.string()),
   recruiter_id: z.string(),
   candidate_tz: z.string(),
   start_date_str: z.string(),
   end_date_str: z.string(),
+  selected_ints: schema_qualified_ints.array().optional().default([]),
   options: scheduling_options_schema.optional().default({}),
 });
 
