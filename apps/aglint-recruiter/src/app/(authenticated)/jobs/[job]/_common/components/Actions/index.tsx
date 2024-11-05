@@ -45,6 +45,7 @@ export const Actions = () => {
               <Button
                 variant='outline'
                 onClick={() => setActionPopup('interview')}
+                data-testid='interview-button'
               >
                 Interview
               </Button>
@@ -53,6 +54,7 @@ export const Actions = () => {
               <Button
                 variant='outline'
                 onClick={() => setActionPopup('qualified')}
+                data-testid='qualified-button'
               >
                 Qualified
               </Button>
@@ -61,6 +63,7 @@ export const Actions = () => {
               <Button
                 variant='outline'
                 onClick={() => setActionPopup('disqualified')}
+                data-testid='disqualified-button'
               >
                 Disqualified
               </Button>
@@ -248,6 +251,7 @@ function useMeta(
         variant='default'
         onClick={() => onSubmit()}
         disabled={isPending}
+        data-testid='move-button'
       >
         {buttonText ?? `Move to ${actionPopup}`}
       </UIButton>

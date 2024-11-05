@@ -133,6 +133,7 @@ function DayCardWrapper({
         isSelected={isSelected}
         slotCheckbox={
           <Checkbox
+            data-testid='day-card-checkbox'
             checked={
               noOfSelectedSlots > 0 && noOfSelectedSlots < noOfTotalSlots
                 ? 'indeterminate'

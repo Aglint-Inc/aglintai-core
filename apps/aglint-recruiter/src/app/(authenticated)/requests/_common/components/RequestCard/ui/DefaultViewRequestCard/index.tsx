@@ -50,6 +50,7 @@ function DefaultViewRequestCard({
           href={`/requests/${props.id}`}
           passHref
           className='flex-grow cursor-pointer'
+          data-testid='request-card'
         >
           <div className='flex cursor-pointer items-center space-x-2 hover:underline'>
             <Label
@@ -96,19 +97,13 @@ function DefaultViewRequestCard({
             <div className='flex flex-row gap-6'>
               <IconFlex icon='CircleDashed' size={16}>
                 <Badge
-                  className={`rounded-md text-sm font-normal 
-                    ${props.status === 'to_do' ? 'bg-blue-100 text-blue-600 dark:bg-blue-800 dark:text-white' : ''} 
-                    ${props.status === 'in_progress' ? 'bg-yellow-100 text-yellow-600 dark:bg-yellow-800 dark:dark:text-white' : ''} 
-                    ${props.status === 'completed' ? 'bg-green-100 text-green-600 dark:bg-green-800 dark:dark:text-white' : ''} 
-                    `}
+                  className={`rounded-md text-sm font-normal ${props.status === 'to_do' ? 'bg-blue-100 text-blue-600 dark:bg-blue-800 dark:text-white' : ''} ${props.status === 'in_progress' ? 'bg-yellow-100 text-yellow-600 dark:bg-yellow-800 dark:dark:text-white' : ''} ${props.status === 'completed' ? 'bg-green-100 text-green-600 dark:bg-green-800 dark:dark:text-white' : ''} `}
                 >
                   {capitalizeFirstLetter(props.status)}
                 </Badge>
               </IconFlex>
               <IconFlex icon='Tag' size={16}>
-                <Badge
-                  className='rounded-md text-sm font-normal bg-muted text-foreground '
-                >
+                <Badge className='rounded-md bg-muted text-sm font-normal text-foreground'>
                   {capitalizeFirstLetter(props.type)}
                 </Badge>
               </IconFlex>

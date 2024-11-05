@@ -1,4 +1,3 @@
-import { chromium, expect } from '@playwright/test';
 import { test } from './lib/fixtures';
 import { getRequestForAvailabilityE2e } from './utils/getRequest';
 import { getCandidateAvailability } from './utils/getCandidateAvailability';
@@ -27,8 +26,6 @@ test('Candidate Availability Request', async ({
     process.env.E2E_TEST_PASSWORD,
   );
   const scheduleRequests = await getRequestForAvailabilityE2e();
-  console.log('scheduleRequests', scheduleRequests);
-  const request_id = scheduleRequests[0].id;
   await requestDetailsPage.goto(
     `${process.env.NEXT_PUBLIC_HOST_NAME}/requests/${request_id}`,
   );

@@ -44,6 +44,7 @@ function ScheduleFilter({
           filterSlots();
           setIsOpen(false);
         }}
+        data-testid='schedule-filter-apply-btn'
       >
         Apply Filters
       </UIButton>
