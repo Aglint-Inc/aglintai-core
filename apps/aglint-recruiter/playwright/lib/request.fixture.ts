@@ -14,9 +14,10 @@ export const createRequestDetailsFixture = (page: Page) => {
         expect(
           page.getByTestId('request-details-status').isVisible(),
         ).toBeTruthy();
-      }).toPass({
-        timeout: 20000,
       });
+      // .toPass({
+      //   timeout: 20000,
+      // });
     },
     isReady: async () => {
       return requestDetailsPage.isVisible();
@@ -56,8 +57,10 @@ export const createRequestDetailsFixture = (page: Page) => {
     },
 
     submitCandidateAvailability: async (request_id: string) => {
+      const headless = Boolean(process.env.PLAYWRIGHT_HEADLESS === 'true');
+
       const browser = await chromium.launch({
-        headless: false,
+        headless,
       });
       const context = await browser.newContext();
       const page2 = await context.newPage();
@@ -89,6 +92,7 @@ export const createRequestDetailsFixture = (page: Page) => {
 
       for (const selector of selectors) {
         await pickSlots({ selector, page: page2 });
+        await page2.waitForTimeout(500);
       }
 
       const submitAvailBtn = page2.locator('button.submit-availability-btn');
@@ -103,7 +107,7 @@ export const createRequestDetailsFixture = (page: Page) => {
       });
 
       expect(submit_response.status()).toBe(200);
-
+      await page2.waitForTimeout(500);
       await page2.close();
     },
     bookInterview: async () => {

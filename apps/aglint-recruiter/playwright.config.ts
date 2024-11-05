@@ -11,7 +11,7 @@ const DEFAULT_NAVIGATION_TIMEOUT = process.env.CI ? 30000 : 120000;
 const DEFAULT_EXPECT_TIMEOUT = process.env.CI ? 30000 : 120000;
 
 const headless = Boolean(process.env.PLAYWRIGHT_HEADLESS === 'true');
-const DEFAULT_TEST_TIMEOUT = process.env.CI ? 1200000 : 240000;
+const DEFAULT_TEST_TIMEOUT = process.env.CI ? 60000 : 240000;
 
 const DEFAULT_CHROMIUM: NonNullable<
   PlaywrightTestConfig['projects']
