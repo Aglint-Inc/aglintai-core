@@ -36,9 +36,8 @@ test.describe('Candidate Availability', () => {
     // Step 2: Navigate to request details and pick random request
     let request_id = '';
     await test.step('Select job from list', async () => {
-      const scheduleRequests = await getRequestForAvailabilityE2e();
-
-      request_id = scheduleRequests[REQUEST_INDEX].id;
+      const { singleDayRequests } = await getRequestForAvailabilityE2e();
+      request_id = singleDayRequests[REQUEST_INDEX].id;
       await requestDetailsPage.goto(request_id);
     });
 
