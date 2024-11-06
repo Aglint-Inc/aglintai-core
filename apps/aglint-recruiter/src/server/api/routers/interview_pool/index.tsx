@@ -12,6 +12,7 @@ import { schedulesPool } from './schedules';
 import { trainingProgress } from './training_progress';
 import { updateInterviewPool } from './update';
 import { updateInterviewPoolRelation } from './update_relation';
+import { updatePoolTraning } from './update_traning';
 
 export const interview_pool = createTRPCRouter({
   module_and_users: interviewPoolUsers,
@@ -27,4 +28,5 @@ export const interview_pool = createTRPCRouter({
   archive_get_sessions: archiveGetSessions,
   get_all: getAllInterviewPool,
   update_pool_relation: updateInterviewPoolRelation,
+  update_pool_traning: updatePoolTraning,
 });
