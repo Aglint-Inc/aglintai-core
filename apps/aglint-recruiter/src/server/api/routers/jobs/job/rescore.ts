@@ -6,14 +6,13 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 const schema = z.object({
   id: z.string().uuid(),
 });
 
 const mutation = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   const response = (
     await db
       .from('public_jobs')

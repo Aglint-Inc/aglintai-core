@@ -24,7 +24,7 @@ import {
 } from '@aglint/shared-utils';
 import { type Dayjs } from 'dayjs';
 import { isEqual } from 'lodash';
-import { nanoid } from 'nanoid';
+import { v4 } from 'uuid';
 import { type z } from 'zod';
 
 import {
@@ -412,7 +412,7 @@ export class CandidatesScheduling {
       all_schedule_combs.every((s) => s.no_slot_reasons.length > 0)
     ) {
       const single_comb_reason: PlanCombinationRespType = {
-        plan_comb_id: nanoid(),
+        plan_comb_id: v4(),
         sessions: [],
         no_slot_reasons: [],
       };
@@ -1198,7 +1198,7 @@ export class CandidatesScheduling {
     const slotDayConflictsReasons = () => {
       const zerodaySlotsReasons: PlanCombinationRespType = {
         no_slot_reasons: [],
-        plan_comb_id: nanoid(),
+        plan_comb_id: '',
         sessions: [],
       };
       const ints_reasons: Record<
@@ -1354,7 +1354,7 @@ export class CandidatesScheduling {
         const slot_comb = getSessionsAvailability(0, cand_time.format());
         if (slot_comb.length > 0) {
           schedule_combs.push({
-            plan_comb_id: nanoid(),
+            plan_comb_id: '',
             sessions: [...slot_comb],
             no_slot_reasons: [],
           });

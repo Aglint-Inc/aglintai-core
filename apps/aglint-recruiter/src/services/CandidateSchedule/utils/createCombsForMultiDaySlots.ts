@@ -5,7 +5,7 @@ import {
   type PlanCombinationRespType,
 } from '@aglint/shared-types';
 import { cloneDeep } from 'lodash';
-import { nanoid } from 'nanoid';
+import { v4 } from 'uuid';
 
 export const createCombsForMultiDaySlots = (
   all_combs: DateRangePlansType[],
@@ -47,7 +47,7 @@ export const createCombsForMultiDaySlots = (
             nextdaySlot.no_slot_reasons.length > 0
           ) {
             temp_combs.push({
-              plan_comb_id: nanoid(),
+              plan_comb_id: v4(),
               no_slot_reasons: [
                 ...final_slot.no_slot_reasons,
                 ...nextdaySlot.no_slot_reasons,
@@ -58,7 +58,7 @@ export const createCombsForMultiDaySlots = (
             break;
           } else {
             temp_combs.push({
-              plan_comb_id: nanoid(),
+              plan_comb_id: v4(),
               sessions: [...final_slot.sessions, ...nextdaySlot.sessions],
               no_slot_reasons: [],
             });

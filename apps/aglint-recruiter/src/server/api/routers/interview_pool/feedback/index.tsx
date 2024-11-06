@@ -6,7 +6,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 const feedbackPoolSchema = z.object({
   module_id: z.string().uuid(),
@@ -14,8 +13,9 @@ const feedbackPoolSchema = z.object({
 
 const query = async ({
   input: { module_id },
+  ctx,
 }: PrivateProcedure<typeof feedbackPoolSchema>) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   const response = (
     (
       await db

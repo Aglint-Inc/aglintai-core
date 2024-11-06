@@ -13,7 +13,7 @@ import {
 import { CApiError } from '@aglint/shared-utils';
 import { dayjsLocal } from '@aglint/shared-utils/src/scheduling/dayjsLocal';
 import { type Dayjs } from 'dayjs';
-import { nanoid } from 'nanoid';
+import { v4 } from 'uuid';
 
 export const combineSlots = (
   plan_combs: DateRangePlansType['interview_rounds'],
@@ -51,7 +51,7 @@ export const combineSlots = (
         mp.set(slot_start_time, slot);
       } else {
         mp.set(slot_start_time, {
-          slot_comb_id: nanoid(),
+          slot_comb_id: v4(),
           sessions: plan_comb.sessions.map((s) => convertSessionCombToSlot(s)),
           slot_cnt: 1,
         });

@@ -13,7 +13,7 @@ const updateProfileSchema = z.object({
 });
 const mutate = async ({
   input,
-  ctx: { recruiter_id },
+  ctx,
 }: PrivateProcedure<typeof updateProfileSchema>) => {
   const { ...payload } = input;
 
@@ -22,7 +22,7 @@ const mutate = async ({
   await db
     .from('recruiter_preferences')
     .update({ ...payload })
-    .eq('recruiter_id', recruiter_id)
+    .eq('recruiter_id', ctx.recruiter_id)
     .throwOnError();
 };
 

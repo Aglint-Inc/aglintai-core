@@ -5,7 +5,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 const schema = z.object({
   module_id: z.string(),
@@ -14,8 +13,9 @@ const schema = z.object({
 
 const query = async ({
   input: { module_id, selected_user_id },
+  ctx,
 }: PrivateProcedure<typeof schema>) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   const [meetDet, meetInt] = await Promise.all([
     db
       .from('meeting_details')

@@ -8,7 +8,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 type Input = ZodSchema<
   Pick<
@@ -36,8 +35,8 @@ const schema = z.object({
   request_id: z.string().uuid(),
 }) satisfies Input;
 
-const query = async ({ input }: PrivateProcedure<typeof schema>) => {
-  const db = await createPrivateClient();
+const query = async ({ input, ctx }: PrivateProcedure<typeof schema>) => {
+  const db = ctx.db;
   const { data: candidate_req } = await db
     .from('candidate_request_availability')
     .select()

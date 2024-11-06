@@ -5,7 +5,7 @@ import {
   type SessionsCombType,
   type SessionSlotType,
 } from '@aglint/shared-types';
-import { nanoid } from 'nanoid';
+import { v4 } from 'uuid';
 
 export const planCombineSlots = (
   plan_combs: DateRangePlansType['interview_rounds'],
@@ -43,7 +43,7 @@ export const planCombineSlots = (
         mp.set(slot_start_time, slot);
       } else {
         mp.set(slot_start_time, {
-          slot_comb_id: nanoid(),
+          slot_comb_id: v4(),
           sessions: plan_comb.sessions.map((s) => convertSessionCombToSlot(s)),
           slot_cnt: 1,
         });

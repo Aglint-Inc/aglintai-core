@@ -5,7 +5,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 const applicationMetaSchema = z.object({ application_id: z.string().uuid() });
 
@@ -22,9 +21,9 @@ export type ApplicationMeta = ProcedureDefinition<typeof applicationMeta>;
 const getApplicationMeta = async (
   ctx: PrivateProcedure<typeof applicationMetaSchema>,
 ) => {
-  const db = await createPrivateClient();
   const {
     input: { application_id },
+    ctx: { db },
   } = ctx;
 
   return (

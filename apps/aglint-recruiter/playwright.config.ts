@@ -62,8 +62,8 @@ export default defineConfig({
   projects: [
     {
       name: '@aglint/aglint-recriuter',
-      testDir: './playwright',
-      testMatch: /.*\.(e2e|test)\.(js|jsx|ts|tsx)$/, // Expanded test file patterns
+      testDir: '.',
+      testMatch: /.*(playwright|src).*.(e2e|test)\.(js|jsx|ts|tsx)$/,
       use: DEFAULT_CHROMIUM,
       timeout: DEFAULT_TEST_TIMEOUT,
       expect: {

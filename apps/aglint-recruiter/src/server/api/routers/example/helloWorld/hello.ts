@@ -5,14 +5,14 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 export const helloSchema = z.object({ helloId: z.string().uuid() });
 
 const query = async ({
   input: { helloId },
+  ctx,
 }: PrivateProcedure<typeof helloSchema>) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   if (db) {
     return `Hello from the db: ${helloId}`;
   }

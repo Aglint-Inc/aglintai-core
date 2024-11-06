@@ -3,15 +3,14 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
-const query = async ({ ctx: { recruiter_id } }: PrivateProcedure) => {
-  const db = await createPrivateClient();
+const query = async ({ ctx }: PrivateProcedure) => {
+  const db = ctx.db;
   const interview_types = (
     await db
       .from('interview_types_view')
       .select('*')
-      .eq('recruiter_id', recruiter_id)
+      .eq('recruiter_id', ctx.recruiter_id)
       .throwOnError()
   ).data;
 

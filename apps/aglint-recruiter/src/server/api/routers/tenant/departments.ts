@@ -1,18 +1,16 @@
-import { createPrivateClient } from '@/server/db';
-
 import {
   type PrivateProcedure,
   privateProcedure,
   type ProcedureDefinition,
 } from '../../trpc';
 
-const query = async ({ ctx: { recruiter_id } }: PrivateProcedure) => {
-  const db = await createPrivateClient();
+const query = async ({ ctx }: PrivateProcedure) => {
+  const db = ctx.db;
   return (
     await db
       .from('departments')
       .select()
-      .eq('recruiter_id', recruiter_id)
+      .eq('recruiter_id', ctx.recruiter_id)
       .throwOnError()
   ).data;
 };

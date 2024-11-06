@@ -5,7 +5,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 const schema = z.object({
   isTraining: z.boolean(),
@@ -13,16 +12,13 @@ const schema = z.object({
   description: z.string(),
 });
 
-const mutation = async ({
-  input,
-  ctx: { recruiter_id },
-}: PrivateProcedure<typeof schema>) => {
-  const db = await createPrivateClient();
+const mutation = async ({ input, ctx }: PrivateProcedure<typeof schema>) => {
+  const db = ctx.db;
 
   const payload = {
     name: input.name,
     description: input.description,
-    recruiter_id,
+    recruiter_id: ctx.recruiter_id,
     settings: {
       require_training: input.isTraining,
       noShadow: 2,

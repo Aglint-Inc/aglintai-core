@@ -6,13 +6,13 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 export const interviewerSchema = z.object({ recruiter_id: z.string().uuid() });
 const query = async ({
+  ctx,
   input: { recruiter_id },
 }: PrivateProcedure<typeof interviewerSchema>) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   const data = (
     await db
       .from('all_interviewers')

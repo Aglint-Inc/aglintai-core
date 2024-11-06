@@ -6,7 +6,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 const schedulesPoolSchema = z.object({
   module_id: z.string().uuid(),
@@ -14,9 +13,10 @@ const schedulesPoolSchema = z.object({
 });
 
 const query = async ({
+  ctx,
   input: { module_id, filter },
 }: PrivateProcedure<typeof schedulesPoolSchema>) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   const query = schedulesSupabase(db)
     .eq('module_id', module_id)
     .eq('meeting_interviewers.is_confirmed', true);

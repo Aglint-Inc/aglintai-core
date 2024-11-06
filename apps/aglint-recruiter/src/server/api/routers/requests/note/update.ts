@@ -6,7 +6,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 type Input = ZodSchema<
   Pick<
@@ -25,8 +24,9 @@ const requestUpdateSchema = z.object({
 
 const query = async ({
   input,
+  ctx,
 }: PrivateProcedure<typeof requestUpdateSchema>) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   const { data } = await db
     .from('request_note')
     .upsert(input)

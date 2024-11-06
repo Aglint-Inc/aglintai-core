@@ -10,7 +10,8 @@ import {
   type TRPCError,
   type TRPCErrorShape,
 } from '@trpc/server/unstable-core-do-not-import';
-import superjson from 'superjson';
+
+import { transformer } from '@/utils/tranformer';
 
 export const GC_TIME = 5 * 60 * 1000;
 export const STALE_TIME = 5 * 1000;
@@ -63,13 +64,13 @@ export const createQueryClient = (
         retry: 2,
       },
       dehydrate: {
-        serializeData: superjson.serialize,
+        serializeData: transformer.serialize,
         shouldDehydrateQuery: (query) =>
           defaultShouldDehydrateQuery(query) ||
           query.state.status === 'pending',
       },
       hydrate: {
-        deserializeData: superjson.deserialize,
+        deserializeData: transformer.deserialize,
       },
     },
   });
