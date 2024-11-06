@@ -5,7 +5,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 const schema = z.object({
   type: z.string(),
@@ -13,8 +12,8 @@ const schema = z.object({
   module_relation_id: z.string().uuid(),
 });
 
-const mutation = async ({ input }: PrivateProcedure<typeof schema>) => {
-  const db = await createPrivateClient();
+const mutation = async ({ input, ctx }: PrivateProcedure<typeof schema>) => {
+  const db = ctx.db;
   const { count, module_relation_id, type } = input;
   if (type === 'shadow') {
     await db
