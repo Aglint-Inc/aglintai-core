@@ -101,6 +101,8 @@ const mutation = async ({
       },
     })
     .throwOnError();
+
+  return true;
 };
 
 export const create_request = privateProcedure
