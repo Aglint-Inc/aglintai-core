@@ -24,6 +24,7 @@ export const verifyRecruiterSelectedSlots = async ({
       out_of_office: true,
       out_of_working_hrs: true,
       show_soft_conflicts: true,
+      interviewers_load: true,
     },
     cand_start_time: 0,
     cand_end_time: 24,

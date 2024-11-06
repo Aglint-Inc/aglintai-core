@@ -14,7 +14,8 @@ const findAvailability = async (
   parsedData: NonNullable<z.output<typeof schema_find_availability_payload>>,
 ) => {
   parsedData.options.return_empty_slots_err = true;
-  parsedData.options.make_training_optional = false;
+  parsedData.options.include_conflicting_slots.interviewers_load = true;
+
   const cand_schedule = new CandidatesScheduling(parsedData.options);
   await cand_schedule.fetchDetails({
     params: {

@@ -60,7 +60,7 @@ const BookingPage = () => {
   if (isError) return <ErrorState />;
 
   return (
-    <div className='h-[70vh] w-full'>
+    <div className='h-[70vh] w-full' data-testid='booking-page'>
       <div className='flex h-full w-full flex-row justify-center'>
         <div className={'h-full w-8/12'}>
           <LeftPanel />
