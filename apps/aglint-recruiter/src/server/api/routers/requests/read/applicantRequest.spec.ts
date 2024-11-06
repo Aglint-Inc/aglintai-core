@@ -1,9 +1,9 @@
-import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 import { supabaseWrap } from '@aglint/shared-utils';
 import test from '@playwright/test';
 import { caller } from 'playwright/utils/createCaller';
 import { getCompanyDetails } from 'playwright/utils/dbfetch';
-import { getRequestForAvailabilityE2e } from 'playwright/utils/getRequest';
+
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 test('test case 1', async () => {
   const { recruiter_user } = await getCompanyDetails();
