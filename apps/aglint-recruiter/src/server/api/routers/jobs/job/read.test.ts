@@ -3,7 +3,7 @@
  */
 import test from '@playwright/test';
 
-import { caller } from './utils/createCaller';
+import { caller } from '../../../../../../playwright/utils/createCaller';
 
 test('add and get post', async () => {
   const caller1 = await caller();
