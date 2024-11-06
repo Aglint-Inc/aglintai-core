@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { test as base } from '@playwright/test';
 
+import { createCandidateAvailabilityFixture } from './candidateAvailability.fixture';
 import { createJobDetailsPageFixture } from './jobDetails.fixture';
 import { createJobsListPageFixture } from './jobsListPage.fixture';
 import { createLoginFixture } from './login.fixture';
@@ -11,6 +12,9 @@ type Fixtures = {
   loginPage: ReturnType<typeof createLoginFixture>;
   jobsListPage: ReturnType<typeof createJobsListPageFixture>;
   requestDetailsPage: ReturnType<typeof createRequestDetailsFixture>;
+  candidateAvailabilityPage: ReturnType<
+    typeof createCandidateAvailabilityFixture
+  >;
   jobDetailsPage: ReturnType<typeof createJobDetailsPageFixture>;
   requestListPage: ReturnType<typeof createRequestListFixture>;
 };
@@ -34,5 +38,12 @@ export const test = base.extend<Fixtures>({
   requestListPage: async ({ page }, use) => {
     const requestListPageFixture = createRequestListFixture(page);
     await use(requestListPageFixture);
+  },
+  candidateAvailabilityPage: async ({ context }, use) => {
+    const page = await context.newPage();
+
+    const candidateAvailabilityFixture =
+      createCandidateAvailabilityFixture(page);
+    await use(candidateAvailabilityFixture);
   },
 });

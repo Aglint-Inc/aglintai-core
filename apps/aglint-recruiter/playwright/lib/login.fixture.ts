@@ -4,6 +4,7 @@ export const createLoginFixture = (page: Page) => {
   const app_url = process.env.NEXT_PUBLIC_HOST_NAME;
   return {
     goto: async () => {
+      await page.bringToFront();
       await page.goto(app_url + '/login', {
         waitUntil: 'networkidle', // Wait until network is idle
       });

@@ -63,6 +63,7 @@ function RequestAvailability() {
               </h2>
               <UIBadge
                 icon={CheckCircle}
+                data-testid={isSubmitted ? 'availability-badge-submitted' : ''}
                 variant={isSubmitted ? 'success' : 'info'}
                 className='mr-2'
                 textBadge={isSubmitted ? 'Submitted' : 'Pending'}
