@@ -72,8 +72,8 @@ export default defineConfig({
     },
     {
       name: '@aglint/aglint-apis',
-      testDir: './src',
-      testMatch: /.*(src).*.(spec)\.(js|jsx|ts|tsx)$/,
+      testDir: './src/server/api/routers',
+      testMatch: /.*.(spec)\.(js|jsx|ts|tsx)$/,
       use: DEFAULT_CHROMIUM,
       timeout: DEFAULT_TEST_TIMEOUT,
       expect: {
