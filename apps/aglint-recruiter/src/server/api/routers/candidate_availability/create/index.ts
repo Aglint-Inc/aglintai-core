@@ -1,5 +1,6 @@
 import { type DatabaseTableInsert } from '@aglint/shared-types';
 import { availabilityTypeSchema } from '@aglint/shared-types/src/db/tables/candidate_request_availability.type';
+import { v4 } from 'uuid';
 import { z, type ZodSchema } from 'zod';
 
 import {
@@ -36,10 +37,23 @@ const schema = z.object({
 
 const query = async ({ input, ctx }: PrivateProcedure<typeof schema>) => {
   const db = ctx.db;
+  const { data: candidate_req } = await db
+    .from('candidate_request_availability')
+    .select()
+    .eq('request_id', input.request_id)
+    .throwOnError();
+  if (!candidate_req) {
+    throw new Error('not found');
+  }
+  const avail_request_id =
+    candidate_req.length > 0 ? candidate_req[0].id : v4();
   return (
     await db
       .from('candidate_request_availability')
-      .insert({ ...input })
+      .upsert({
+        id: avail_request_id,
+        ...input,
+      })
       .select()
       .single()
       .throwOnError()

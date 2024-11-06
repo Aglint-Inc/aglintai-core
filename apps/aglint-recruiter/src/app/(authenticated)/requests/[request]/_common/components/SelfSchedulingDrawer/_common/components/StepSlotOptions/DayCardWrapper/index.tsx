@@ -133,6 +133,7 @@ function DayCardWrapper({
         isSelected={isSelected}
         slotCheckbox={
           <Checkbox
+            data-testid='day-card-checkbox'
             checked={
               noOfSelectedSlots > 0 && noOfSelectedSlots < noOfTotalSlots
                 ? 'indeterminate'
@@ -213,6 +214,7 @@ function DayCardWrapper({
                                   {isRadioNeeded && (
                                     <RadioGroup>
                                       <RadioGroupItem
+                                        data-testid='comfirm-availability-radio'
                                         checked={selectedCombIds.includes(
                                           slot.plan_comb_id,
                                         )}

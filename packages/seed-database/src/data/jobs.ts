@@ -39,7 +39,7 @@ export const seedJobs: SeedJobType[] = [
         sessions: [
           {
             name: 'Backend Technical Interview',
-            interviewer_cnt: 5,
+            interviewer_cnt: 2,
             session_type: 'individual',
             schedule_type: 'google_meet',
             session_duration: 30,
@@ -55,7 +55,7 @@ export const seedJobs: SeedJobType[] = [
           },
           {
             name: 'Data Science Case Study',
-            interviewer_cnt: 5,
+            interviewer_cnt: 2,
             session_type: 'individual',
             schedule_type: 'google_meet',
             session_duration: 30,
@@ -68,7 +68,7 @@ export const seedJobs: SeedJobType[] = [
         sessions: [
           {
             name: 'Final Interview with Hiring Manager',
-            interviewer_cnt: 5,
+            interviewer_cnt: 2,
             session_type: 'panel',
             schedule_type: 'phone_call',
             session_duration: 30,
@@ -101,7 +101,7 @@ export const seedJobs: SeedJobType[] = [
         sessions: [
           {
             name: 'Data Science Case Study',
-            interviewer_cnt: 3,
+            interviewer_cnt: 2,
             session_type: 'individual',
             schedule_type: 'google_meet',
             session_duration: 45,
@@ -148,7 +148,7 @@ export const seedJobs: SeedJobType[] = [
         sessions: [
           {
             name: 'Frontend Technical Interview',
-            interviewer_cnt: 4,
+            interviewer_cnt: 2,
             session_type: 'panel',
             schedule_type: 'google_meet',
             session_duration: 40,
@@ -156,7 +156,7 @@ export const seedJobs: SeedJobType[] = [
           },
           {
             name: 'Backend Technical Interview',
-            interviewer_cnt: 3,
+            interviewer_cnt: 2,
             session_type: 'individual',
             schedule_type: 'google_meet',
             session_duration: 45,
@@ -215,7 +215,7 @@ export const seedJobs: SeedJobType[] = [
         sessions: [
           {
             name: 'Data Science Case Study',
-            interviewer_cnt: 3,
+            interviewer_cnt: 2,
             session_type: 'individual',
             schedule_type: 'google_meet',
             session_duration: 40,

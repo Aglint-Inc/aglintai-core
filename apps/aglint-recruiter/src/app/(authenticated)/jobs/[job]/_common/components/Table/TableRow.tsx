@@ -50,6 +50,7 @@ export function TableRow({
         isChecked && 'bg-muted/80 hover:bg-muted/80',
       )}
       onClick={onClickCandidate}
+      data-testid='application-row'
     >
       <div
         className='mr-2 w-4 flex-shrink-0 opacity-0 transition-opacity group-hover:opacity-100'
@@ -65,6 +66,7 @@ export function TableRow({
         }}
       >
         <Checkbox
+          data-testid='application-checkbox'
           checked={isChecked}
           onCheckedChange={onCheck}
           disabled={!checkEnabled}

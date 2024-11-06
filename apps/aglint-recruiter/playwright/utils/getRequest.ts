@@ -1,10 +1,13 @@
+import { type DatabaseTable } from '@aglint/shared-types';
 import { supabaseWrap } from '@aglint/shared-utils';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 import { getCompanyDetails } from './dbfetch';
 
-export const getRequestForAvailabilityE2e = async () => {
+export const getRequestForAvailabilityE2e = async (): Promise<
+  DatabaseTable['request'][]
+> => {
   const { recruiter_user } = await getCompanyDetails();
   const supabaseAdmin = await getSupabaseServer();
   const scheduleRequests = supabaseWrap(

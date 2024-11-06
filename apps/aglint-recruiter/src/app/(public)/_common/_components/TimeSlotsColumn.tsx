@@ -20,7 +20,10 @@ function TimeSlotsColumn({
   timezone?: string;
 }) {
   return (
-    <Section className='rounded-lg border-none bg-gray-100 p-4'>
+    <Section
+      className='rounded-lg border-none bg-gray-100 p-4'
+      data-testid='slots-container'
+    >
       <SectionHeader>
         <SectionHeaderText>
           <SectionTitle>

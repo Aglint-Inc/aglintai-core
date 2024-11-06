@@ -1,6 +1,6 @@
-import { expect } from '@playwright/test';
 import { test } from './lib/fixtures';
 import { getRequestForAvailabilityE2e } from './utils/getRequest';
+import { getCandidateAvailability } from './utils/getCandidateAvailability';
 
 enum ScheduleRequestTypeEnum {
   'SCHEDULE_REQUEST' = 'Schedule Request',
@@ -26,7 +26,6 @@ test('Candidate Availability Request', async ({
     process.env.E2E_TEST_PASSWORD,
   );
   const scheduleRequests = await getRequestForAvailabilityE2e();
-  console.log('scheduleRequests', scheduleRequests);
   await requestDetailsPage.goto(
     `${process.env.NEXT_PUBLIC_HOST_NAME}/requests/${scheduleRequests[0].id}`,
   );
@@ -34,15 +33,6 @@ test('Candidate Availability Request', async ({
   if (!requestType) {
     throw new Error('Request type is not found');
   }
-  if (
-    requestType.toLowerCase() ===
-      ScheduleRequestTypeEnum.SCHEDULE_REQUEST.toLowerCase() ||
-    requestType.toLowerCase() ===
-      ScheduleRequestTypeEnum.RESCHEDULE_REQUEST.toLowerCase()
-  ) {
-    await requestDetailsPage.openCandidateAvailabilityDailog();
-    await requestDetailsPage.sendCandidateAvailability();
-  } else {
-    throw new Error(`Request type ${requestType} is invalid`);
-  }
+  await requestDetailsPage.openCandidateAvailabilityDailog();
+  await requestDetailsPage.sendCandidateAvailability();
 });
