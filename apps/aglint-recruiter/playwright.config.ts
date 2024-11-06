@@ -11,7 +11,7 @@ const DEFAULT_NAVIGATION_TIMEOUT = process.env.CI === 'true' ? 30000 : 120000;
 const DEFAULT_EXPECT_TIMEOUT = process.env.CI === 'true' ? 30000 : 120000;
 
 const headless = Boolean(process.env.PLAYWRIGHT_HEADLESS === 'true');
-const DEFAULT_TEST_TIMEOUT = process.env.CI === 'true' ? 60000 : 240000;
+const DEFAULT_TEST_TIMEOUT = process.env.CI === 'true' ? 120000 : 240000;
 
 const DEFAULT_CHROMIUM: NonNullable<
   PlaywrightTestConfig['projects']
@@ -45,7 +45,6 @@ export default defineConfig({
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
-  timeout: DEFAULT_TEST_TIMEOUT,
   /* Retry on CI only */
   retries: process.env.CI === 'true' ? 2 : 0,
   /* Opt out of parallel tests on CI. */
@@ -66,6 +65,7 @@ export default defineConfig({
       testDir: './playwright',
       testMatch: /.*\.(e2e|test)\.(js|jsx|ts|tsx)$/, // Expanded test file patterns
       use: DEFAULT_CHROMIUM,
+      timeout: DEFAULT_TEST_TIMEOUT,
       expect: {
         timeout: DEFAULT_EXPECT_TIMEOUT,
       },

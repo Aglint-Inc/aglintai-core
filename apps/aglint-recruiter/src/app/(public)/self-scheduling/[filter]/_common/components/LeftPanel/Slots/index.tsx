@@ -97,13 +97,6 @@ const Success = () => {
                 date={filteredDay?.current_interview_date ?? ''}
                 timeRangeArea={filteredDay?.current_day_slots.map(
                   (slot, ind) => {
-                    const startTime = dayjsLocal(slot.start_time)
-                      .tz(timezone.tzCode)
-                      .format('hh:mm A');
-                    const endTime = dayjsLocal(slot.end_time)
-                      .tz(timezone.tzCode)
-                      .format('hh:mm A');
-
                     return (
                       <UITimeRangeCard
                         onClickTime={() => {
@@ -117,8 +110,10 @@ const Success = () => {
                             slot.end_time
                         }
                         key={ind}
-                        textTime={`${startTime} - ${endTime}`}
+                        timeZone={timezone.tzCode}
                         ShowCloseIcon={false}
+                        startTime={slot.start_time}
+                        endTime={slot.end_time}
                       />
                     );
                   },

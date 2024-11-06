@@ -66,7 +66,6 @@ export default function SlotsPicker({ singleDay }: { singleDay: boolean }) {
                 Select available dates
               </div>
               <span className='text-sm text-muted-foreground'>
-                {' '}
                 {`Select ${NoOfDaysNeeds} or more days. Click on a date to select. Click again to deselect.`}
               </span>
             </div>
@@ -311,7 +310,8 @@ function TimeSlotsWrapper() {
                       isSemiActive={slot.isSlotAvailable && !isSelected}
                       isActive={isSelected}
                       key={ind}
-                      textTime={`${dayjs(slot.startTime).format('hh:mm A')} - ${dayjs(slot.endTime).format('hh:mm A')}`}
+                      endTime={slot.endTime}
+                      startTime={slot.startTime}
                     />
                   </div>
                 );

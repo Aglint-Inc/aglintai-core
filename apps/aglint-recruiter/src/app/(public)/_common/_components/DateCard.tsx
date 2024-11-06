@@ -22,6 +22,7 @@ export function DateCard({
   return (
     <Button
       variant={isActive ? 'default' : 'outline'}
+      data-testid='availability-dates'
       className={cn(
         'relative flex h-20 w-20 flex-col items-center justify-center gap-1 rounded-lg p-2',
         isDisable && 'cursor-not-allowed opacity-60',

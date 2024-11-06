@@ -223,6 +223,7 @@ function CandidateAvailability() {
           day < multiDaySessions.length ? (
             <UIButton
               size='md'
+              data-testid='next-day-btn'
               onClick={handleSubmit}
               disabled={
                 !markAsAllSlotsSelected || !markAsAllDateSelected || submitting
@@ -237,7 +238,8 @@ function CandidateAvailability() {
             <div className='w-full'>
               <UIButton
                 size='md'
-                className='w-full'
+                id='submit-availability-btn'
+                className='submit-availability-btn w-full'
                 onClick={submitAvailability}
                 disabled={!allCriteriaMeets || submitting}
                 isLoading={submitting}

@@ -1,5 +1,6 @@
 import { test } from './lib/fixtures';
 import { getRequestForAvailabilityE2e } from './utils/getRequest';
+import { getCandidateAvailability } from './utils/getCandidateAvailability';
 
 enum ScheduleRequestTypeEnum {
   'SCHEDULE_REQUEST' = 'Schedule Request',
