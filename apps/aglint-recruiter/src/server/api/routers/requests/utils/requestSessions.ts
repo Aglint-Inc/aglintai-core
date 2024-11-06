@@ -6,16 +6,14 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 import { interviewCancelReasons, userDetails } from '@/utils/scheduling/const';
 
 const schema = z.object({
   request_id: z.string().uuid(),
 });
 
-const query = async ({ input }: PrivateProcedure<typeof schema>) => {
-  const { request_id } = input;
-  const sessions = await fetchDetails(request_id);
+const query = async (args: PrivateProcedure<typeof schema>) => {
+  const sessions = await fetchDetails(args);
   return sessions as Awaited<ReturnType<typeof fetchSessionDetails>>;
 };
 
@@ -23,8 +21,12 @@ export const requestSessions = privateProcedure.input(schema).query(query);
 
 export type RequestSessions = ProcedureDefinition<typeof requestSessions>;
 
-const fetchDetails = async (request_id: string) => {
-  const db = await createPrivateClient();
+const fetchDetails = async ({
+  ctx,
+  input,
+}: PrivateProcedure<typeof schema>) => {
+  const db = ctx.db;
+  const { request_id } = input;
 
   const [resSessions] = await Promise.all([
     fetchSessionDetails({

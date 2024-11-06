@@ -5,7 +5,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 const applicationRequestSchema = z.object({
   application_id: z.string().uuid(),
@@ -26,9 +25,9 @@ export type ApplicationRequest = ProcedureDefinition<typeof applicationRequest>;
 const getApplicationRequests = async (
   ctx: PrivateProcedure<typeof applicationRequestSchema>,
 ) => {
-  const db = await createPrivateClient();
   const {
     input: { application_id },
+    ctx: { db },
   } = ctx;
   return (
     await db

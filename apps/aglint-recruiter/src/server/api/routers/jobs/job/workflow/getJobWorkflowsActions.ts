@@ -8,7 +8,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 const schema = z.object({
   job_id: z.string().uuid(),
@@ -19,8 +18,8 @@ type QryReponse = {
   job_workflow_actions: DatabaseTable['workflow_action'][];
   company_email_templates: DatabaseTable['company_email_template'][];
 };
-const query = async ({ input }: PrivateProcedure<typeof schema>) => {
-  const db = await createPrivateClient();
+const query = async ({ input, ctx }: PrivateProcedure<typeof schema>) => {
+  const db = ctx.db;
   const fetched_workflows = supabaseWrap(
     await db
       .from('workflow_job_relation')

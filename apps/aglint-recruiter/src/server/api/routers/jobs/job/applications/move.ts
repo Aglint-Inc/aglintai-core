@@ -11,7 +11,7 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient, createPublicClient } from '@/server/db';
+import { createPublicClient } from '@/server/db';
 import { formatSessions } from '@/utils/formatSessions';
 
 import { createRequestSchema } from '../../../requests/create/create_request';
@@ -115,7 +115,7 @@ const moveToNonInterview = async ({
   ctx,
   input,
 }: PrivateProcedure<typeof nonInterviewSchema>) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   const { applications, ...rest } = input;
   const payload = applications.map((id) => ({
     id,

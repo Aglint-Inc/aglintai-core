@@ -1,5 +1,3 @@
-import 'server-only';
-
 import { type Session } from '@supabase/supabase-js';
 import { jwtVerify } from 'jose';
 import { cookies } from 'next/headers';

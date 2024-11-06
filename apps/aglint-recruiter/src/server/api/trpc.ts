@@ -10,10 +10,11 @@ import type { DatabaseTable } from '@aglint/shared-types';
 import type { UseTRPCQueryResult } from '@trpc/react-query/dist/shared';
 import { initTRPC, TRPCError } from '@trpc/server';
 import type { ProcedureBuilder } from '@trpc/server/unstable-core-do-not-import';
-import superjson from 'superjson';
+import { type ResponseCookies } from 'next/dist/compiled/@edge-runtime/cookies';
 import { type TypeOf, ZodError, type ZodSchema } from 'zod';
 
 import { verifyToken } from '@/utils/supabase/verifyToken';
+import { transformer } from '@/utils/tranformer';
 
 import { createPrivateClient, createPublicClient } from '../db';
 import { authorize } from '../utils';
@@ -31,7 +32,7 @@ import { getDecryptKey } from './routers/ats/greenhouse/util';
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: { headers: Headers }) => {
+export const createTRPCContext = async (opts: { cookies: ResponseCookies }) => {
   return opts;
 };
 
@@ -43,7 +44,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
  * errors on the backend.
  */
 const t = initTRPC.context<typeof createTRPCContext>().create({
-  transformer: superjson,
+  transformer,
   errorFormatter({ shape, error }) {
     return {
       ...shape,
@@ -77,19 +78,29 @@ export const createCallerFactory = t.createCallerFactory;
  */
 export const createTRPCRouter = t.router;
 
+const publicMiddleware = t.middleware(async ({ next, ctx }) => {
+  const adminDb = createPublicClient();
+  return await next({
+    ctx: {
+      ...ctx,
+      adminDb,
+    },
+  });
+});
+
 /**
  * Middleware for timing procedure execution and adding an artificial delay in development.
  *
  * You can remove this if you don't like it, but it can help catch unwanted waterfalls by simulating
  * network latency that would occur in production but not in local development.
  */
-const timingMiddleware = t.middleware(async ({ next, path: _path }) => {
+const timingMiddleware = t.middleware(async ({ next }) => {
   const _start = Date.now();
 
-  // if (t._config.isDev) {
-  //   const waitMs = Math.floor(Math.random() * 400) + 1000;
-  //   await new Promise((resolve) => setTimeout(resolve, waitMs));
-  // }
+  if (t._config.isDev) {
+    const waitMs = Math.floor(Math.random() * 400) + 10000;
+    await new Promise((resolve) => setTimeout(resolve, waitMs));
+  }
 
   const result = await next();
 
@@ -101,190 +112,198 @@ const timingMiddleware = t.middleware(async ({ next, path: _path }) => {
   return result;
 });
 
-const atsMiddleware = t.middleware(async ({ next, ctx, getRawInput }) => {
-  const adminDb = createPublicClient();
-  const input = await getRawInput();
-  const recruiter_id = (input as any)
-    .recruiter_id as DatabaseTable['recruiter']['id'];
-  if (!recruiter_id)
-    throw new TRPCError({
-      code: 'UNPROCESSABLE_CONTENT',
-      message: 'Invalid payload',
-    });
-  const recruiter_preferences = (
-    await adminDb
-      .from('recruiter_preferences')
-      .select('ats')
-      .eq('recruiter_id', recruiter_id)
-      .single()
-      .throwOnError()
-  ).data;
-  if (!recruiter_preferences)
-    throw new TRPCError({
-      code: 'UNPROCESSABLE_CONTENT',
-      message: 'No preference found',
-    });
-  const { ats } = recruiter_preferences;
-  if (ats === 'Aglint')
-    throw new TRPCError({
-      code: 'FORBIDDEN',
-      message: 'Not supported',
-    });
-  let decryptKey: string;
-  const integrations = (
-    await adminDb
-      .from('integrations')
-      .select('greenhouse_key, greenhouse_metadata, lever_key, ashby_key')
-      .eq('recruiter_id', recruiter_id)
-      .single()
-      .throwOnError()
-  ).data!;
-  if (!integrations)
-    throw new TRPCError({
-      code: 'UNPROCESSABLE_CONTENT',
-      message: 'No integrations found',
-    });
-  const { greenhouse_key, greenhouse_metadata, ashby_key, lever_key } =
-    integrations;
-  if (ats === 'Greenhouse') {
-    if (!greenhouse_key)
+const atsMiddleware = publicMiddleware.unstable_pipe(
+  async ({ next, ctx, getRawInput }) => {
+    const { adminDb } = ctx;
+    const input = await getRawInput();
+    const recruiter_id = (input as any)
+      .recruiter_id as DatabaseTable['recruiter']['id'];
+    if (!recruiter_id)
+      throw new TRPCError({
+        code: 'UNPROCESSABLE_CONTENT',
+        message: 'Invalid payload',
+      });
+    const recruiter_preferences = (
+      await adminDb
+        .from('recruiter_preferences')
+        .select('ats')
+        .eq('recruiter_id', recruiter_id)
+        .single()
+        .throwOnError()
+    ).data;
+    if (!recruiter_preferences)
+      throw new TRPCError({
+        code: 'UNPROCESSABLE_CONTENT',
+        message: 'No preference found',
+      });
+    const { ats } = recruiter_preferences;
+    if (ats === 'Aglint')
       throw new TRPCError({
         code: 'FORBIDDEN',
-        message: 'Missing greenhouse key',
+        message: 'Not supported',
       });
-    decryptKey = getDecryptKey(greenhouse_key);
-  } else if (ats === 'Lever') {
-    if (!lever_key)
+    let decryptKey: string;
+    const integrations = (
+      await adminDb
+        .from('integrations')
+        .select('greenhouse_key, greenhouse_metadata, lever_key, ashby_key')
+        .eq('recruiter_id', recruiter_id)
+        .single()
+        .throwOnError()
+    ).data!;
+    if (!integrations)
       throw new TRPCError({
-        code: 'FORBIDDEN',
-        message: 'Missing lever key',
+        code: 'UNPROCESSABLE_CONTENT',
+        message: 'No integrations found',
       });
-    decryptKey = getDecryptKey(lever_key);
-  } else if (ats === 'Ashby') {
-    if (!ashby_key)
-      throw new TRPCError({
-        code: 'FORBIDDEN',
-        message: 'Missing ashby key',
-      });
-    decryptKey = getDecryptKey(ashby_key);
-  }
-  return await next({
-    ctx: {
-      ...ctx,
-      ats,
-      greenhouse_metadata,
-      decryptKey: decryptKey!,
-    },
-  });
-});
+    const { greenhouse_key, greenhouse_metadata, ashby_key, lever_key } =
+      integrations;
+    if (ats === 'Greenhouse') {
+      if (!greenhouse_key)
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Missing greenhouse key',
+        });
+      decryptKey = getDecryptKey(greenhouse_key);
+    } else if (ats === 'Lever') {
+      if (!lever_key)
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Missing lever key',
+        });
+      decryptKey = getDecryptKey(lever_key);
+    } else if (ats === 'Ashby') {
+      if (!ashby_key)
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'Missing ashby key',
+        });
+      decryptKey = getDecryptKey(ashby_key);
+    }
+    return await next({
+      ctx: {
+        ...ctx,
+        ats,
+        greenhouse_metadata,
+        decryptKey: decryptKey!,
+      },
+    });
+  },
+);
 
 /**
  *  @see https://stackoverflow.com/questions/3297048/403-forbidden-vs-401-unauthorized-http-responses
  */
 
-const authMiddleware = t.middleware(async ({ next, ctx, path }) => {
-  const db = await createPrivateClient();
+const authMiddleware = publicMiddleware.unstable_pipe(
+  async ({ next, ctx, path }) => {
+    const db = await createPrivateClient(ctx.cookies);
 
-  let user_id: string | null = null;
+    let user_id: string | null = null;
 
-  if (process.env.NODE_ENV === 'development') {
-    const jsonData = await verifyToken(db);
-    user_id = jsonData?.user?.id ?? null;
-  } else user_id = (await db.auth.getUser()).data.user?.id ?? null;
+    if (process.env.NODE_ENV === 'development') {
+      const jsonData = await verifyToken(db);
+      user_id = jsonData?.user?.id ?? null;
+    } else user_id = (await db.auth.getUser()).data.user?.id ?? null;
 
-  if (!user_id)
-    throw new TRPCError({
-      code: 'UNAUTHORIZED',
-      message: 'User unauthenticated',
-    });
+    if (!user_id)
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'User unauthenticated',
+      });
 
-  const { data } = await db
-    .from('recruiter_relation')
-    .select(
-      'recruiter_id,recruiter(primary_admin), roles!inner(name, role_permissions!inner(permissions!inner(name, is_enable)))',
-    )
-    .eq('user_id', user_id)
-    .single()
-    .throwOnError();
+    const { data } = await db
+      .from('recruiter_relation')
+      .select(
+        'recruiter_id,recruiter(primary_admin), roles!inner(name, role_permissions!inner(permissions!inner(name, is_enable)))',
+      )
+      .eq('user_id', user_id)
+      .single()
+      .throwOnError();
 
-  if (!data || !data?.roles?.role_permissions)
-    throw new TRPCError({
-      code: 'UNAUTHORIZED',
-      message: 'User unauthenticated',
-    });
+    if (!data || !data?.roles?.role_permissions)
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'User unauthenticated',
+      });
 
-  const {
-    recruiter_id,
-    roles: { name: role, role_permissions },
-  } = data;
-  const permissions = role_permissions.reduce(
-    (acc, { permissions: { is_enable, name } }) => {
-      if (is_enable) acc.push(name);
-      return acc;
-    },
-    [] as (typeof role_permissions)[number]['permissions']['name'][],
-  );
-
-  if (!authorize(path, permissions))
-    throw new TRPCError({ code: 'FORBIDDEN', message: 'User unauthorized' });
-
-  return await next({
-    ctx: {
-      ...ctx,
-      user_id,
+    const {
       recruiter_id,
-      role,
-      is_primary_admin: data.recruiter?.primary_admin === user_id,
-    },
-  });
-});
+      roles: { name: role, role_permissions },
+    } = data;
+    const permissions = role_permissions.reduce(
+      (acc, { permissions: { is_enable, name } }) => {
+        if (is_enable) acc.push(name);
+        return acc;
+      },
+      [] as (typeof role_permissions)[number]['permissions']['name'][],
+    );
 
-const candidatePortalMiddleware = t.middleware(async ({ next, ctx }) => {
-  const db = await createPrivateClient();
+    if (!authorize(path, permissions))
+      throw new TRPCError({ code: 'FORBIDDEN', message: 'User unauthorized' });
 
-  let email: string | null = null;
-
-  if (process.env.NODE_ENV === 'development')
-    email = (await db.auth.getSession())?.data?.session?.user?.email ?? null;
-  else email = (await db.auth.getUser()).data.user?.email ?? null;
-
-  if (!email)
-    throw new TRPCError({
-      code: 'UNAUTHORIZED',
-      message: 'User unauthenticated',
+    return await next({
+      ctx: {
+        ...ctx,
+        db,
+        user_id,
+        recruiter_id,
+        role,
+        is_primary_admin: data.recruiter?.primary_admin === user_id,
+      },
     });
+  },
+);
 
-  const { data } = await db
-    .from('applications')
-    .select('id,candidates!inner(id,email)')
-    .eq('candidates.email', email);
+const candidatePortalMiddleware = publicMiddleware.unstable_pipe(
+  async ({ next, ctx }) => {
+    const db = await createPrivateClient(ctx.cookies);
 
-  if (data?.length === 0)
-    throw new TRPCError({
-      code: 'UNAUTHORIZED',
-      message: 'candidate unauthenticated',
+    let email: string | null = null;
+
+    if (process.env.NODE_ENV === 'development')
+      email = (await db.auth.getSession())?.data?.session?.user?.email ?? null;
+    else email = (await db.auth.getUser()).data.user?.email ?? null;
+
+    if (!email)
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'User unauthenticated',
+      });
+
+    const { data } = await db
+      .from('applications')
+      .select('id,candidates!inner(id,email)')
+      .eq('candidates.email', email);
+
+    if (data?.length === 0)
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: 'candidate unauthenticated',
+      });
+
+    const candidate = data!;
+
+    // enable when to production
+    // if (candidate[0].candidates.email !== email)
+    //   throw new TRPCError({
+    //     code: 'UNAUTHORIZED',
+    //     message: 'candidate unauthenticated',
+    //   });
+
+    const application_id = candidate[0].id;
+    const candidate_id = candidate[0].candidates.id;
+
+    return await next({
+      ctx: {
+        ...ctx,
+        db,
+        application_id,
+        candidate_id,
+      },
     });
-
-  const candidate = data!;
-
-  // enable when to production
-  // if (candidate[0].candidates.email !== email)
-  //   throw new TRPCError({
-  //     code: 'UNAUTHORIZED',
-  //     message: 'candidate unauthenticated',
-  //   });
-
-  const application_id = candidate[0].id;
-  const candidate_id = candidate[0].candidates.id;
-
-  return await next({
-    ctx: {
-      ...ctx,
-      application_id,
-      candidate_id,
-    },
-  });
-});
+  },
+);
 
 /**
  * Public (unauthenticated) procedure
@@ -294,14 +313,15 @@ const candidatePortalMiddleware = t.middleware(async ({ next, ctx }) => {
  * are logged in.
  */
 
-export const publicProcedure = t.procedure.use(timingMiddleware);
+export const publicProcedure = t.procedure
+  .use(publicMiddleware)
+  .use(timingMiddleware);
 export type PublicProcedure<T = unknown> = Procedure<typeof publicProcedure, T>;
 
-export const atsProcedure = publicProcedure.use(atsMiddleware);
+export const atsProcedure = t.procedure
+  .use(atsMiddleware)
+  .use(timingMiddleware);
 export type ATSProcedure<T = unknown> = Procedure<typeof atsProcedure, T>;
-
-export const dbProcedure = publicProcedure;
-export type DBProcedure<T = unknown> = Procedure<typeof dbProcedure, T>;
 
 /**
  * Private (authenticated) procedure
@@ -311,7 +331,7 @@ export type DBProcedure<T = unknown> = Procedure<typeof dbProcedure, T>;
  * are always accessible through the middleware chain, and you can safely assume the presence of an authenticated user.
  */
 
-export const privateProcedure = publicProcedure.use(authMiddleware);
+export const privateProcedure = t.procedure.use(authMiddleware);
 export type PrivateProcedure<T = unknown> = Procedure<
   typeof privateProcedure,
   T

@@ -18,7 +18,6 @@ import { Input } from '@components/ui/input';
 import { Skeleton } from '@components/ui/skeleton';
 import { capitalize } from 'lodash';
 import { Check, CircleDot, Lightbulb, RefreshCcw, X } from 'lucide-react';
-import { nanoid } from 'nanoid';
 import {
   type ChangeEventHandler,
   type FC,
@@ -28,6 +27,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { v4 } from 'uuid';
 
 import ScoreWheel, {
   type ScoreWheelParams,
@@ -326,7 +326,7 @@ const SectionContent: FC<{ type: Sections }> = ({ type }) => {
         .map((tag) => tag.trim())
         .filter((tag) => tag !== '');
       const newItems = tagsArray.map((tag) => ({
-        id: nanoid(),
+        id: v4(),
         field: tag,
         isMustHave: false,
       }));

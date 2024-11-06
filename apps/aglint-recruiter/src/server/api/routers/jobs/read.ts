@@ -5,12 +5,11 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 import { getBanners } from './common/getBanners';
 
 const query = async ({ ctx }: PrivateProcedure) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   const jobs = (
     await db
       .from('job_view')

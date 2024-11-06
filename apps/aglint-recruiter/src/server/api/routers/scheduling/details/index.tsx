@@ -5,7 +5,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 import { interviewCancelReasons, userDetails } from '@/utils/scheduling/const';
 
 export const scheduleDetailsSchema = z.object({
@@ -13,9 +12,10 @@ export const scheduleDetailsSchema = z.object({
 });
 
 const query = async ({
+  ctx,
   input: { meeting_id },
 }: PrivateProcedure<typeof scheduleDetailsSchema>) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   const { data: res } = await db
     .from('interview_meeting')
     .select(

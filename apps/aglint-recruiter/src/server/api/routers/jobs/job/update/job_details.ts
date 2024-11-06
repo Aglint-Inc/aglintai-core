@@ -6,7 +6,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 import { jobDescriptionSchema } from '../../common/schema';
 
@@ -44,7 +43,7 @@ const mutation = async ({
   input: { id, ...payload },
   ctx,
 }: PrivateProcedure<typeof schema>) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   return await db
     .from('public_jobs')
     .update(payload)

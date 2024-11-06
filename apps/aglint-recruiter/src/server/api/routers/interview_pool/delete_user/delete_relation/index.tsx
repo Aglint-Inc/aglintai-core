@@ -5,7 +5,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 const schema = z.object({
   relation_id: z.string(),
@@ -13,8 +12,9 @@ const schema = z.object({
 
 const mutation = async ({
   input: { relation_id },
+  ctx,
 }: PrivateProcedure<typeof schema>) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   await db
     .from('interview_module_relation')
     .delete()

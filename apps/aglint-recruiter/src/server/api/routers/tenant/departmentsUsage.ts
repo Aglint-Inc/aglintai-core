@@ -1,8 +1,6 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
-import { createPrivateClient } from '@/server/db';
-
 import {
   type PrivateProcedure,
   privateProcedure,
@@ -14,7 +12,7 @@ const schema = z.object({
 });
 
 const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   const temp_user = (
     await db
       .from('departments')

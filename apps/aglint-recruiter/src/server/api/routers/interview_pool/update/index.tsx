@@ -6,23 +6,19 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 const schema = customInterviewModuleUpdateSchema.extend({
   id: z.string().uuid(),
 });
 
-const mutation = async ({
-  input,
-  ctx: { recruiter_id },
-}: PrivateProcedure<typeof schema>) => {
-  const db = await createPrivateClient();
+const mutation = async ({ input, ctx }: PrivateProcedure<typeof schema>) => {
+  const db = ctx.db;
 
   await db
     .from('interview_module')
     .update({ ...input })
     .eq('id', input.id)
-    .eq('recruiter_id', recruiter_id);
+    .eq('recruiter_id',  ctx.recruiter_id);
 
   return true;
 };

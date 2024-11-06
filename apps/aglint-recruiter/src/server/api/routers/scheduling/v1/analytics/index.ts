@@ -256,24 +256,19 @@ export type Tabs = ProcedureDefinition<typeof tabs>;
 
 const training_progress = privateProcedure
   .input(schedulingAnalyticsSchema.training_progress.schema)
-  .query(
-    async ({
-      ctx: { recruiter_id },
-      input: { departments, jobs, locations },
-    }) => {
-      const db = createPublicClient();
-      return (
-        await db
-          .rpc(schedulingAnalyticsSchema.training_progress.rpc, {
-            recruiter_id,
-            departments,
-            jobs,
-            locations,
-          })
-          .throwOnError()
-      ).data!;
-    },
-  );
+  .query(async ({ ctx, input: { departments, jobs, locations } }) => {
+    const db = createPublicClient();
+    return (
+      await db
+        .rpc(schedulingAnalyticsSchema.training_progress.rpc, {
+          recruiter_id: ctx.recruiter_id,
+          departments,
+          jobs,
+          locations,
+        })
+        .throwOnError()
+    ).data!;
+  });
 
 export type TrainingProgress = ProcedureDefinition<typeof training_progress>;
 

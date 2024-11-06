@@ -7,7 +7,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 import { safeGenerateJd } from '../common/generateJd';
 import { jobDescriptionSchema } from '../common/schema';
@@ -50,7 +49,7 @@ const schema = z.object({
 >;
 
 const mutation = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   const job = (
     await db
       .from('public_jobs')

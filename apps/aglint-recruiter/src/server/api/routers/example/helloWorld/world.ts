@@ -6,14 +6,14 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 
 export const worldSchema = z.object({ worldId: z.string().uuid() });
 
 const mutation = async ({
   input: { worldId },
+  ctx,
 }: PrivateProcedure<typeof worldSchema>) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   if (db) {
     console.log(`World from the db: ${worldId}`);
   }

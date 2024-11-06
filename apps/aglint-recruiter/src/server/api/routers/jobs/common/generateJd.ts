@@ -1,10 +1,10 @@
 import type { DatabaseTable, DatabaseTableUpdate } from '@aglint/shared-types';
 import { TRPCError } from '@trpc/server';
-import { nanoid } from 'nanoid';
 import OpenAI from 'openai';
 import { zodResponseFormat } from 'openai/helpers/zod';
 import type { ChatCompletionMessageParam } from 'openai/resources';
 import type { ParsedChatCompletion } from 'openai/resources/beta/chat/completions';
+import { v4 } from 'uuid';
 import { z, type ZodSchema } from 'zod';
 
 import { getParameterWeights } from '@/job/utils/getParameterWeights';
@@ -248,5 +248,5 @@ const jdItemMapper = (item: TrimmedJdItem): JdItem =>
   item.map(({ field, mustHave }) => ({
     field,
     isMustHave: mustHave,
-    id: nanoid(),
+    id: v4(),
   }));

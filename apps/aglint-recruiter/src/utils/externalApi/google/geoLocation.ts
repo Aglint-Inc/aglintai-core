@@ -1,5 +1,3 @@
-import 'server-only';
-
 import axios from 'axios';
 
 import type { GoogleLocationAPI, GoogleTimeZoneAPI } from './types';

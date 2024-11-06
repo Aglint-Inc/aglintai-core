@@ -7,7 +7,6 @@ import {
   privateProcedure,
   type ProcedureDefinition,
 } from '@/server/api/trpc';
-import { createPrivateClient } from '@/server/db';
 import { formatSessions } from '@/utils/formatSessions';
 
 type SchemaType = ZodTypeToSchema<
@@ -36,7 +35,7 @@ const mutation = async ({
   ctx,
   input,
 }: PrivateProcedure<typeof createRequestSchema>) => {
-  const db = await createPrivateClient();
+  const db = ctx.db;
   const data =
     (
       await db

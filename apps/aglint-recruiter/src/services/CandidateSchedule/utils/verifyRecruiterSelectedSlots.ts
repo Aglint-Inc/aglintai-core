@@ -6,7 +6,7 @@ import {
   type SessionsCombType,
 } from '@aglint/shared-types';
 import { dayjsLocal, ScheduleUtils } from '@aglint/shared-utils';
-import { nanoid } from 'nanoid';
+import { v4 } from 'uuid';
 
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
@@ -151,7 +151,7 @@ const convertOptionsToDateRangeSlots = (
         slot_map[int_start_date][curr_round_idx] = [];
       }
       slot_map[int_start_date][curr_round_idx].push({
-        plan_comb_id: nanoid(),
+        plan_comb_id: v4(),
         sessions: [...curr_round_slots],
         no_slot_reasons: [],
       });
