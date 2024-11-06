@@ -11,10 +11,10 @@ import type { UseTRPCQueryResult } from '@trpc/react-query/dist/shared';
 import { initTRPC, TRPCError } from '@trpc/server';
 import type { ProcedureBuilder } from '@trpc/server/unstable-core-do-not-import';
 import { type ResponseCookies } from 'next/dist/compiled/@edge-runtime/cookies';
-import superjson from 'superjson';
 import { type TypeOf, ZodError, type ZodSchema } from 'zod';
 
 import { verifyToken } from '@/utils/supabase/verifyToken';
+import { transformer } from '@/utils/tranformer';
 
 import { createPrivateClient, createPublicClient } from '../db';
 import { authorize } from '../utils';
@@ -44,7 +44,7 @@ export const createTRPCContext = async (opts: { cookies: ResponseCookies }) => {
  * errors on the backend.
  */
 const t = initTRPC.context<typeof createTRPCContext>().create({
-  transformer: superjson,
+  transformer,
   errorFormatter({ shape, error }) {
     return {
       ...shape,

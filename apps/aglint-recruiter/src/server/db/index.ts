@@ -1,5 +1,3 @@
-import 'server-only';
-
 import type { DB } from '@aglint/shared-types';
 import { createServerClient } from '@supabase/ssr';
 import { createClient } from '@supabase/supabase-js';

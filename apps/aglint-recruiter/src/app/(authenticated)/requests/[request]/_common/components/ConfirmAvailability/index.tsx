@@ -9,10 +9,10 @@ import { useRequestAvailabilityDetails } from '@requests/hooks';
 import { useUpdateCandidateAvailability } from '@requests/hooks/useRequestAvailabilityDetails';
 import axios from 'axios';
 import { Check } from 'lucide-react';
-import { nanoid } from 'nanoid';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { v4 } from 'uuid';
 
 import { Loader } from '@/common/Loader';
 import { ShowCode } from '@/components/Common/ShowCode';
@@ -91,7 +91,7 @@ function ConfirmAvailability() {
       const bodyParams: APIConfirmRecruiterSelectedOption = {
         availability_req_id: candidateAvailabilityId,
         selectedOption: {
-          plan_comb_id: nanoid(),
+          plan_comb_id: v4(),
           sessions: allSessions, // sessions
           no_slot_reasons: [],
         },

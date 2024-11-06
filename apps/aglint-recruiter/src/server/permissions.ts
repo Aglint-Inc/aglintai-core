@@ -1,5 +1,3 @@
-import 'server-only';
-
 import type { ApiPermissions } from './utils';
 
 export const API_PERMISSIONS: ApiPermissions = {

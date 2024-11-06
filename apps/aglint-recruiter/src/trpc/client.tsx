@@ -7,9 +7,9 @@ import {
   unstable_httpBatchStreamLink,
 } from '@trpc/react-query';
 import { useState } from 'react';
-import superjson from 'superjson';
 
 import { useLogout } from '@/authenticated/hooks/useLogout';
+import { transformer } from '@/utils/tranformer';
 
 import type { AppRouter } from '../server/api/root';
 import { createQueryClient } from './query-client';
@@ -55,7 +55,7 @@ export function TRPCReactProvider(props: { children: React.ReactNode }) {
         }),
         unstable_httpBatchStreamLink({
           url: `${url}/api/trpc`,
-          transformer: superjson,
+          transformer,
           methodOverride: 'POST',
           headers: () => {
             const headers = new Headers();
