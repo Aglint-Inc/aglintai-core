@@ -186,6 +186,7 @@ function DayCardWrapper({
                                       checked={selectedCombIds.includes(
                                         slot.plan_comb_id,
                                       )}
+                                      data-testid='slot-checkbox'
                                       onClick={() => {
                                         onClickSelect &&
                                           onClickSelect(slot.plan_comb_id);

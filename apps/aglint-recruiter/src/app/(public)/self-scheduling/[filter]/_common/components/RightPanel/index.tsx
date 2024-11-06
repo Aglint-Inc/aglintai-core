@@ -39,6 +39,7 @@ function RightPanel() {
             }}
             isLoading={isPending}
             disabled={selectedSlots.length !== numberOfSelections}
+            data-testid={'booking-button'}
           >
             {'Submit'}
           </UIButton>
@@ -52,6 +53,7 @@ function RightPanel() {
               }
             }}
             disabled={rounds[selectedDay - 1]?.selectedSlot === null}
+            data-testid={'continue-button'}
           >
             {'Continue'}
           </UIButton>

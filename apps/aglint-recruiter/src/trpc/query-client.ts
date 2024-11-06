@@ -62,6 +62,7 @@ export const createQueryClient = (
         // above 0 to avoid refetching immediately on the client
         staleTime: 10 * 1000,
         retry: 2,
+        refetchOnWindowFocus: false,
       },
       dehydrate: {
         serializeData: transformer.serialize,
