@@ -21,6 +21,7 @@ const mutation = async ({
     .eq('id', relation_id)
     .throwOnError();
   return true;
+  
 };
 
 export const deleteModuleRelation = privateProcedure

@@ -1,7 +1,8 @@
 import test, { expect } from '@playwright/test';
 import { caller } from 'playwright/utils/createCaller';
 import { testData } from 'playwright/utils/testData/request';
-import { CreateRequest } from './create_request';
+
+import { type CreateRequest } from './create_request';
 
 // TODO: Add more test cases
 test('test case 1: Add new request', async () => {
