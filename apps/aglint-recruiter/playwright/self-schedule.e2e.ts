@@ -11,7 +11,7 @@ test.describe.parallel('Test Self Scheduling Flow ', () => {
     singleDayRequestId = singleDayRequests[0].id;
     multiDayRequestId = multiDayRequests[0].id;
   });
-  test.skip('Single Day Self Scheduling', async ({
+  test('Single Day Self Scheduling', async ({
     loginPage,
     requestDetailsPage,
     candidateSelfBookingPage,
