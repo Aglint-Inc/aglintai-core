@@ -35,7 +35,5 @@ export const getRequestForAvailabilityE2e = async () => {
     return SessionRounds.length > 1;
   });
 
-  console.log('singleDayRequests', singleDayRequests.length);
-  console.log('multiDayRequests', multiDayRequests.length);
   return { singleDayRequests, multiDayRequests };
 };

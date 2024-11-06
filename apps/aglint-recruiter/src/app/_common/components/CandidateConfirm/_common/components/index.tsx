@@ -116,6 +116,7 @@ export const ConfirmedInvitePage = (
                     <UIButton
                       size={'md'}
                       color={'neutral'}
+                      data-testid='reschedule-interview-btn'
                       onClick={() => {
                         setReason(scheduling_reason['rescheduling'][0]);
                         setIsRescheduleCancelOpen('reschedule');
@@ -127,6 +128,7 @@ export const ConfirmedInvitePage = (
                     </UIButton>
                     <UIButton
                       size={'md'}
+                      data-testid='cancel-interview-btn'
                       variant='destructive'
                       onClick={() => {
                         setReason(scheduling_reason['cancellation'][0]);
