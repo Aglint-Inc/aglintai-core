@@ -61,9 +61,19 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: '@aglint/aglint-recriuter',
-      testDir: '.',
-      testMatch: /.*(playwright|src).*.(e2e|test)\.(js|jsx|ts|tsx)$/,
+      name: '@aglint/aglint-web',
+      testDir: './playwright',
+      testMatch: /.*(playwright).*.(e2e|test)\.(js|jsx|ts|tsx)$/,
+      use: DEFAULT_CHROMIUM,
+      timeout: DEFAULT_TEST_TIMEOUT,
+      expect: {
+        timeout: DEFAULT_EXPECT_TIMEOUT,
+      },
+    },
+    {
+      name: '@aglint/aglint-apis',
+      testDir: './src',
+      testMatch: /.*(src).*.(spec)\.(js|jsx|ts|tsx)$/,
       use: DEFAULT_CHROMIUM,
       timeout: DEFAULT_TEST_TIMEOUT,
       expect: {
