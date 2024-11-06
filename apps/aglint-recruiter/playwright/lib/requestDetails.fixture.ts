@@ -81,9 +81,10 @@ export const createRequestDetailsFixture = (page: Page) => {
         await page.getByTestId(`schedule-filter-${availabilityType}`).click();
       }
       await page.getByTestId('schedule-filter-apply-btn').click();
-      const dayCards = await page.getByTestId('day-card-checkbox');
-      for (const dayCard of (await dayCards.all()).slice(0, 3)) {
-        await dayCard.click();
+      const slotCheckboxes = await page.getByTestId('slot-checkbox');
+      expect(await slotCheckboxes.count()).toBeGreaterThan(0);
+      for (const slot of (await slotCheckboxes.all()).slice(0, 10)) {
+        await slot.click();
       }
     },
     checkSelfScheduleMailPreview: async () => {

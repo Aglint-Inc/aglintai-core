@@ -14,7 +14,15 @@ const findAvailability = async (
   parsedData: NonNullable<z.output<typeof schema_find_availability_payload>>,
 ) => {
   parsedData.options.return_empty_slots_err = true;
-  parsedData.options.make_training_optional = false;
+  parsedData.options.include_conflicting_slots.out_of_office = true;
+  parsedData.options.include_conflicting_slots.out_of_working_hrs = true;
+  parsedData.options.include_conflicting_slots.show_soft_conflicts = true;
+  parsedData.options.include_conflicting_slots.interviewers_load = true;
+  parsedData.options.include_conflicting_slots.day_off = true;
+  parsedData.options.include_conflicting_slots.show_conflicts_events = true;
+  parsedData.options.include_conflicting_slots.holiday = true;
+  parsedData.options.include_conflicting_slots.interviewer_pause = true;
+
   const cand_schedule = new CandidatesScheduling(parsedData.options);
   await cand_schedule.fetchDetails({
     params: {

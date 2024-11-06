@@ -2,7 +2,11 @@ import {
   type DatabaseTable,
   type PlanCombinationRespType,
 } from '@aglint/shared-types';
-import { CApiError, dayjsLocal } from '@aglint/shared-utils';
+import {
+  CApiError,
+  dayjsLocal,
+  scheduling_options_schema,
+} from '@aglint/shared-utils';
 
 import { CandidatesScheduling } from '../../../CandidatesScheduling';
 
@@ -19,15 +23,21 @@ export const verifyRecruiterSelectedSlots = async ({
 }) => {
   const { filered_selected_options, start_date_str, end_date_str } =
     sortSelctedPlans({ selected_options, candidate_tz, session_ids });
-  const cand_schedule = new CandidatesScheduling({
-    include_conflicting_slots: {
-      out_of_office: true,
-      out_of_working_hrs: true,
-      show_soft_conflicts: true,
-    },
-    cand_start_time: 0,
-    cand_end_time: 24,
-  });
+  const default_options = scheduling_options_schema.parse({});
+  default_options.cand_end_time = 24;
+  default_options.cand_start_time = 0;
+  default_options.include_conflicting_slots = {
+    ...default_options.include_conflicting_slots,
+    out_of_working_hrs: true,
+    show_soft_conflicts: true,
+    interviewers_load: true,
+    day_off: true,
+    show_conflicts_events: true,
+    holiday: true,
+    interviewer_pause: true,
+  };
+
+  const cand_schedule = new CandidatesScheduling(default_options);
   await cand_schedule.fetchDetails({
     params: {
       req_user_tz: candidate_tz,

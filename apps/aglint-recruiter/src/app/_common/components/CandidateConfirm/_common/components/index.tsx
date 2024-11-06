@@ -61,7 +61,10 @@ export const ConfirmedInvitePage = (
   return (
     <>
       {!isLoading ? (
-        <div className='h-full w-full bg-white p-4'>
+        <div
+          className='h-full w-full bg-white p-4'
+          data-testid='self-scheduling-confirmed-page'
+        >
           <div className='mx-auto w-full max-w-[600px]'>
             {cancelData && (
               <UIAlert type='info' title={''}>
