@@ -7,8 +7,8 @@ export const caller = async () => {
   const cookies = new ResponseCookies(new Headers());
   const db = await createPrivateClient(cookies);
   await db.auth.signInWithPassword({
-    email: 'chinmai@aglinthq.com',
-    password: 'Welcome@123',
+    email: process.env.E2E_TEST_EMAIL,
+    password: process.env.E2E_TEST_PASSWORD,
   });
 
   return createCaller({ cookies });
