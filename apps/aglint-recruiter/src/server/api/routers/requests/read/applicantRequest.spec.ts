@@ -2,8 +2,10 @@ import { supabaseWrap } from '@aglint/shared-utils';
 import test from '@playwright/test';
 import { caller } from 'playwright/utils/createCaller';
 import { getCompanyDetails } from 'playwright/utils/dbfetch';
-import { getRequestId } from '../test.utils';
+
 import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
+
+import { getRequestId } from '../test.utils';
 
 test('test case 1: Select first request applicant', async () => {
   const randomRequestId = await getRequestId();
