@@ -34,7 +34,7 @@ export function DayCard({
       <div className='w-full'>
         <div
           className={cn(
-            'rounded-md bg-muted relative flex cursor-pointer justify-between px-3 py-2',
+            'relative flex cursor-pointer justify-between rounded-md bg-muted px-3 py-2',
             isDisabled && 'cursor-not-allowed',
           )}
           onClick={onClickDateOption}
@@ -63,7 +63,7 @@ export function DayCard({
             <div className='bg-accent-200 absolute inset-0 z-[1] rounded-md' />
           )}
           {isDisabled && (
-            <div className='rounded-md bg-muted absolute inset-0 z-[3] flex cursor-not-allowed justify-between p-2'>
+            <div className='absolute inset-0 z-[3] flex cursor-not-allowed justify-between rounded-md bg-muted p-2'>
               <div className='relative z-[2] flex items-center gap-2 text-foreground'>
                 <Calendar size={16} />
                 <div className='flex items-center gap-1'>
