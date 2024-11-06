@@ -139,7 +139,7 @@ export const seedJobs: SeedJobType[] = [
 
   {
     slug: 'devops-engineer',
-    job_title: 'DevOps Engineer - Single Day Plan',
+    job_title: 'DevOps Engineer - Multi Day Plan',
     description:
       'As a DevOps Engineer, you will manage the infrastructure and deployment processes to ensure high availability and scalability. Experience with CI/CD pipelines, Docker, Kubernetes, and cloud services like AWS or Azure is essential.',
     int_stages: [
@@ -152,7 +152,7 @@ export const seedJobs: SeedJobType[] = [
             session_type: 'panel',
             schedule_type: 'google_meet',
             session_duration: 40,
-            break_duration: 60 * 1,
+            break_duration: 24 * 60 * 1,
           },
           {
             name: 'Backend Technical Interview',

@@ -2,8 +2,11 @@ import { expect, type Page } from '@playwright/test';
 
 export const createRequestDetailsFixture = (page: Page) => {
   const requestDetailsPage = page.getByTestId('request-details-page');
+
+  const CONFIRM_SLOT = 0;
   return {
     goto: async (req_id: string) => {
+      await page.bringToFront();
       await page.goto(
         `${process.env.NEXT_PUBLIC_HOST_NAME}/requests/${req_id}`,
         {
@@ -22,6 +25,7 @@ export const createRequestDetailsFixture = (page: Page) => {
       return await page.getByTestId('request-details-status').textContent();
     },
     openCandidateAvailabilityDailog: async () => {
+      await page.waitForSelector('[data-testid="get-availability-btn"]');
       const getAvailabilityBtn = await page.getByTestId('get-availability-btn');
       expect(await getAvailabilityBtn.isVisible()).toBeTruthy();
       await getAvailabilityBtn.click();
@@ -35,6 +39,9 @@ export const createRequestDetailsFixture = (page: Page) => {
       });
     },
     sendCandidateAvailability: async () => {
+      await page.waitForSelector(
+        '[data-testid="candidate-availability-submit-btn"]',
+      );
       const sendAvailBtn = page.getByTestId(
         'candidate-availability-submit-btn',
       );
@@ -112,6 +119,37 @@ export const createRequestDetailsFixture = (page: Page) => {
       }).toPass({
         intervals: [2000, 3000, 5000],
       });
+    },
+    bookSchedule: async () => {
+      await page.reload();
+      await page.waitForSelector('[data-testid="sched-cand-avail-btn"]');
+      const schedulInterviewBtn = page.getByTestId('sched-cand-avail-btn');
+      expect(await schedulInterviewBtn.isVisible()).toBeTruthy();
+      await schedulInterviewBtn.click();
+
+      await page.waitForSelector('[data-testid="comfirm-availability-radio"]');
+      const sendAvailBtn = await page
+        .getByTestId('comfirm-availability-radio')
+        .all();
+      await sendAvailBtn[CONFIRM_SLOT].click();
+
+      const comfirmBtn = await page.getByTestId('comfirm-availability-btn');
+      expect(await schedulInterviewBtn.isVisible()).toBeTruthy();
+      await comfirmBtn.click();
+
+      const mail_response = await page.waitForResponse(async (response) => {
+        return (
+          response
+            .url()
+            .includes('/api/mail/confirmInterview_email_applicant') &&
+          response.status() === 200
+        );
+      });
+      expect(mail_response.status()).toBe(200);
+      await comfirmBtn.click();
+      await page.waitForSelector('[data-testid="view-schedule-btn"]');
+
+      page.close();
     },
   };
 };
