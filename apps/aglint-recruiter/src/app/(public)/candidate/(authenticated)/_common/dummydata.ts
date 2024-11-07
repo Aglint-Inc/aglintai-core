@@ -1,5 +1,5 @@
 import { type getHomePage } from '@/routers/candidatePortal/read/get_home_page';
-import { type GetInterviews } from '@/routers/candidatePortal/read/get_interviews/get_interviews';
+import { type GetInterviews } from '@/routers/candidatePortal/read/get_interviews';
 import { type GetMessages } from '@/routers/candidatePortal/read/get_messages';
 import { type GetNav } from '@/routers/candidatePortal/read/get_navbar';
 import { type GetProfile } from '@/routers/candidatePortal/read/get_profile';
