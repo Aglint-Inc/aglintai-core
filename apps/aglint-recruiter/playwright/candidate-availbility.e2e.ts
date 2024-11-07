@@ -7,136 +7,131 @@ import { getRequestForAvailabilityE2e } from './utils/getRequest';
 /**
  * E2E test for candidate availability
  */
-test.describe('Candidate Availability', () => {
-  const REQUEST_INDEX = 0; //request inde
-  test('case 1 - single day', async ({
-    loginPage,
-    requestDetailsPage,
-    candidateAvailabilityPage,
-  }) => {
-    // Constants
+const REQUEST_INDEX = 0; //request inde
 
-    // Step 1: Login
-    await test.step('Authenticate user', async () => {
-      await loginPage.goto();
+test('Single day', async ({
+  loginPage,
+  requestDetailsPage,
+  candidateAvailabilityPage,
+}) => {
+  // Constants
 
-      const email = process.env.E2E_TEST_EMAIL;
-      const password = process.env.E2E_TEST_PASSWORD;
+  // Step 1: Login
+  await test.step('Authenticate user', async () => {
+    await loginPage.goto();
 
-      if (!email || !password) {
-        throw new Error('Required environment variables are not set');
-      }
+    const email = process.env.E2E_TEST_EMAIL;
+    const password = process.env.E2E_TEST_PASSWORD;
 
-      await loginPage.login(email, password);
-    });
+    if (!email || !password) {
+      throw new Error('Required environment variables are not set');
+    }
 
-    // Step 2: Navigate to request details and pick random request
-    let request_id = '';
-    await test.step('Select job from list', async () => {
-      const { singleDayRequests } = await getRequestForAvailabilityE2e();
-      expect(singleDayRequests.length).toBeGreaterThanOrEqual(
-        REQUEST_INDEX + 1,
-      );
-      request_id = singleDayRequests[REQUEST_INDEX].id;
-
-      request_id = singleDayRequests[REQUEST_INDEX].id;
-      await requestDetailsPage.goto(request_id);
-    });
-
-    // // Step 3: Open Candidate Availability
-    await test.step('Open Candidate Availability', async () => {
-      await requestDetailsPage.openCandidateAvailabilityDailog();
-    });
-
-    // // Step 4: Send candidates Availability
-    await test.step('Send candidates Availability', async () => {
-      await requestDetailsPage.sendCandidateAvailability();
-    });
-
-    // Step 5: Open candidate availability page
-    await test.step('Open candidate availability page', async () => {
-      const { id: availability_id } =
-        await getCandidateAvailability(request_id);
-
-      await candidateAvailabilityPage.goto({ availability_id });
-    });
-
-    // Step 5: Select dates and slots
-    await test.step('Select dates and slots', async () => {
-      await candidateAvailabilityPage.selectSingleDaySlots();
-    });
-
-    // Step 5: Submit availability
-    await test.step('Submit availability', async () => {
-      await candidateAvailabilityPage.submitAvailability();
-    });
-
-    await test.step('book Interview', async () => {
-      await requestDetailsPage.bookSchedule();
-    });
+    await loginPage.login(email, password);
   });
-  test('case 2 - multi day', async ({
-    loginPage,
-    requestDetailsPage,
-    candidateAvailabilityPage,
-  }) => {
-    // Constants
 
-    // Step 1: Login
-    await test.step('Authenticate user', async () => {
-      await loginPage.goto();
+  // Step 2: Navigate to request details and pick random request
+  let request_id = '';
+  await test.step('Select job from list', async () => {
+    const { singleDayRequests } = await getRequestForAvailabilityE2e();
+    expect(singleDayRequests.length).toBeGreaterThanOrEqual(REQUEST_INDEX + 1);
+    request_id = singleDayRequests[REQUEST_INDEX].id;
 
-      const email = process.env.E2E_TEST_EMAIL;
-      const password = process.env.E2E_TEST_PASSWORD;
+    request_id = singleDayRequests[REQUEST_INDEX].id;
+    await requestDetailsPage.goto(request_id);
+  });
 
-      if (!email || !password) {
-        throw new Error('Required environment variables are not set');
-      }
+  // // Step 3: Open Candidate Availability
+  await test.step('Open Candidate Availability', async () => {
+    await requestDetailsPage.openCandidateAvailabilityDailog();
+  });
 
-      await loginPage.login(email, password);
-    });
+  // // Step 4: Send candidates Availability
+  await test.step('Send candidates Availability', async () => {
+    await requestDetailsPage.sendCandidateAvailability();
+  });
 
-    // Step 2: Navigate to request details and pick random request
-    let request_id = '';
-    await test.step('Select job from list', async () => {
-      const { multiDayRequests } = await getRequestForAvailabilityE2e();
-      expect(multiDayRequests.length).toBeGreaterThanOrEqual(REQUEST_INDEX + 1);
-      request_id = multiDayRequests[REQUEST_INDEX].id;
+  // Step 5: Open candidate availability page
+  await test.step('Open candidate availability page', async () => {
+    const { id: availability_id } = await getCandidateAvailability(request_id);
 
-      request_id = multiDayRequests[REQUEST_INDEX].id;
-      await requestDetailsPage.goto(request_id);
-    });
+    await candidateAvailabilityPage.goto({ availability_id });
+  });
 
-    // // Step 3: Open Candidate Availability
-    await test.step('Open Candidate Availability', async () => {
-      await requestDetailsPage.openCandidateAvailabilityDailog();
-    });
+  // Step 5: Select dates and slots
+  await test.step('Select dates and slots', async () => {
+    await candidateAvailabilityPage.selectSingleDaySlots();
+  });
 
-    // // Step 4: Send candidates Availability
-    await test.step('Send candidates Availability', async () => {
-      await requestDetailsPage.sendCandidateAvailability();
-    });
+  // Step 5: Submit availability
+  await test.step('Submit availability', async () => {
+    await candidateAvailabilityPage.submitAvailability();
+  });
 
-    // Step 5: Open candidate availability page
-    await test.step('Open candidate availability page', async () => {
-      const { id: availability_id } =
-        await getCandidateAvailability(request_id);
+  await test.step('book Interview', async () => {
+    await requestDetailsPage.bookSchedule();
+  });
+});
+test('Multi day', async ({
+  loginPage,
+  requestDetailsPage,
+  candidateAvailabilityPage,
+}) => {
+  // Constants
 
-      await candidateAvailabilityPage.goto({ availability_id });
-    });
+  // Step 1: Login
+  await test.step('Authenticate user', async () => {
+    await loginPage.goto();
 
-    // Step 5: Select dates and slots
-    await test.step('Select dates and slots', async () => {
-      await candidateAvailabilityPage.selectSingleDaySlots();
-    });
+    const email = process.env.E2E_TEST_EMAIL;
+    const password = process.env.E2E_TEST_PASSWORD;
 
-    // Step 5: Submit availability
-    await test.step('Submit availability', async () => {
-      await candidateAvailabilityPage.submitAvailability();
-    });
+    if (!email || !password) {
+      throw new Error('Required environment variables are not set');
+    }
 
-    await test.step('book Interview', async () => {
-      await requestDetailsPage.bookSchedule();
-    });
+    await loginPage.login(email, password);
+  });
+
+  // Step 2: Navigate to request details and pick random request
+  let request_id = '';
+  await test.step('Select job from list', async () => {
+    const { multiDayRequests } = await getRequestForAvailabilityE2e();
+    expect(multiDayRequests.length).toBeGreaterThanOrEqual(REQUEST_INDEX + 1);
+    request_id = multiDayRequests[REQUEST_INDEX].id;
+
+    request_id = multiDayRequests[REQUEST_INDEX].id;
+    await requestDetailsPage.goto(request_id);
+  });
+
+  // // Step 3: Open Candidate Availability
+  await test.step('Open Candidate Availability', async () => {
+    await requestDetailsPage.openCandidateAvailabilityDailog();
+  });
+
+  // // Step 4: Send candidates Availability
+  await test.step('Send candidates Availability', async () => {
+    await requestDetailsPage.sendCandidateAvailability();
+  });
+
+  // Step 5: Open candidate availability page
+  await test.step('Open candidate availability page', async () => {
+    const { id: availability_id } = await getCandidateAvailability(request_id);
+
+    await candidateAvailabilityPage.goto({ availability_id });
+  });
+
+  // Step 5: Select dates and slots
+  await test.step('Select dates and slots', async () => {
+    await candidateAvailabilityPage.selectMultiDaySlots();
+  });
+
+  // Step 5: Submit availability
+  await test.step('Submit availability', async () => {
+    await candidateAvailabilityPage.submitAvailability();
+  });
+
+  await test.step('book Interview', async () => {
+    await requestDetailsPage.bookSchedule();
   });
 });
