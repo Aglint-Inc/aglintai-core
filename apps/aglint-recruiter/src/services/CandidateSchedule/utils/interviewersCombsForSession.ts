@@ -110,7 +110,7 @@ export const calcInterversCombsForSesson = (
       session,
       required_interviewer_cnt,
     );
-    total_combs.push(combs);
+    total_combs.push(combs.slice(0, 10)); // NOTE: for testing
   }
 
   return total_combs;

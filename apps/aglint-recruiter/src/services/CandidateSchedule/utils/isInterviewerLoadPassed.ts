@@ -1,12 +1,10 @@
 /* eslint-disable security/detect-object-injection */
-import {
-  type CalConflictType,
-  type InterviewSessionApiRespType,
-} from '@aglint/shared-types';
+import { type CalConflictType } from '@aglint/shared-types';
 import { type CustomSchedulingSettingsUser } from '@aglint/shared-types/src/db/tables/recruiter_user.types';
 import { type Dayjs } from 'dayjs';
 
 import { type ScheduleApiDetails } from '../types';
+import { type InterviewSessionApiRespTypeFullInts } from './cacheCurrPlanCalc';
 
 type LoadType = {
   total_interview: number;
@@ -18,7 +16,7 @@ export const isIntervLoadPassed = (
   db_details: ScheduleApiDetails,
   inter_id: string,
   int_schedule_setting: CustomSchedulingSettingsUser,
-  plan_comb: InterviewSessionApiRespType[],
+  plan_comb: InterviewSessionApiRespTypeFullInts[],
 ): {
   type: CalConflictType;
   is_passed: boolean;
@@ -52,7 +50,7 @@ export const isIntervLoadPassed = (
     }
   }
   const slot_int_sessions = plan_comb.filter((sess) =>
-    sess.qualifiedIntervs.find((int) => int.user_id === inter_id),
+    sess.all_qualified_ints.find((int) => int.user_id === inter_id),
   );
   const curr_slot_load = {
     total_interview: slot_int_sessions.length,

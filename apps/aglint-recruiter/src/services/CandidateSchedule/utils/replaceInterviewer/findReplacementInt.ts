@@ -1,8 +1,4 @@
 'use server';
-import {
-  type APIRespFindReplaceMentInts,
-  type SessionCombinationRespType,
-} from '@aglint/shared-types';
 import { CApiError, dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
 import { type z } from 'zod';
 
@@ -64,54 +60,21 @@ export const findReplacementIntsUtil = async (
   });
 
   cand_schedule.ignoreTrainee();
-
-  cand_schedule.ignoreInterviewers([
-    {
-      sesn_id: input.session_id,
-      user_id: declined_int.user_id as string,
+  const replacement_ints = cand_schedule.findSlotAlternativeInts({
+    slot_details: {
+      start_time: meeting_detail.start_time as string,
+      end_time: meeting_detail.end_time as string,
     },
-  ]);
+    curr_day_js: dayjsLocal(meeting_detail.start_time).tz(candidate_tz),
+    curr_day_str: dayjsLocal(meeting_detail.start_time)
+      .tz(candidate_tz)
+      .startOf('day')
+      .format(),
+    declined_int_user_id: declined_int.user_id as string,
+    confirmed_int_user_ids: current_confirmed_ints,
+  });
 
-  const [single_day_slots] = cand_schedule.findCandSlotForTheDay();
-  if (!single_day_slots) {
-    return [] as APIRespFindReplaceMentInts;
-  }
-
-  const slot_combs = single_day_slots.plans.map((comb) => comb.sessions[0]);
-  const time_filtered_slots = slot_combs.filter((comb) =>
-    filter_slots(comb, meeting_detail.start_time as string, candidate_tz),
-  );
-  //NOTE: explain
-  const replacement_ints: APIRespFindReplaceMentInts = time_filtered_slots
-    .filter(
-      (slot) =>
-        slot.qualifiedIntervs.filter(
-          (int) => !current_confirmed_ints.includes(int.user_id),
-        ).length > 0,
-    )
-    .map((slot) => {
-      const replacement_int = slot.qualifiedIntervs.filter(
-        (int) => !current_confirmed_ints.includes(int.user_id),
-      )[0];
-      const int_conflict = slot.ints_conflicts.find(
-        (int) => int.interviewer.user_id === replacement_int.user_id,
-      );
-
-      return {
-        replacement_int,
-        conflicts: int_conflict?.conflict_reasons ?? [],
-      };
-    });
   return replacement_ints;
-};
-
-const filter_slots = (
-  sess_comb: SessionCombinationRespType,
-  slot_time: string,
-  tz: string,
-) => {
-  const slot_time_user_time = dayjsLocal(slot_time).tz(tz).format();
-  return slot_time_user_time === sess_comb.start_time;
 };
 
 const fetchDetails = async (
