@@ -1198,7 +1198,7 @@ export class CandidatesScheduling {
     const slotDayConflictsReasons = () => {
       const zerodaySlotsReasons: PlanCombinationRespType = {
         no_slot_reasons: [],
-        plan_comb_id: '',
+        plan_comb_id: v4(),
         sessions: [],
       };
       const ints_reasons: Record<
@@ -1354,7 +1354,7 @@ export class CandidatesScheduling {
         const slot_comb = getSessionsAvailability(0, cand_time.format());
         if (slot_comb.length > 0) {
           schedule_combs.push({
-            plan_comb_id: '',
+            plan_comb_id: v4(),
             sessions: [...slot_comb],
             no_slot_reasons: [],
           });
