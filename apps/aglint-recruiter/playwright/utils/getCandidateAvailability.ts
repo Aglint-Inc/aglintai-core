@@ -21,30 +21,30 @@ export const getCandidateAvailability = async (request_id: string) => {
 export const getBookedAvailability = async () => {
   const supabaseAdmin = await getSupabaseServer();
 
-  const cancelAndReschedule = supabaseWrap(
-    await supabaseAdmin
-      .from('interview_session_cancel')
-      .select('application_id')
-      // .eq('type', 'candidate_request_reschedule')
-      .eq('type', 'candidate_request_decline'),
-    false,
-  );
-
-  const application_ids = [
-    ...new Set(cancelAndReschedule.map((req) => req.application_id || '')),
-  ];
-
   const availability = supabaseWrap(
     await supabaseAdmin
       .from('candidate_request_availability')
-      .select()
-      .eq('booking_confirmed', true)
-      .not('application_id', 'in', `(${application_ids.join(',')})`),
+      .select(
+        '*, request_session_relation!inner(*, interview_session!inner(*, interview_session_cancel(*)))',
+      )
+      .eq('booking_confirmed', true),
     false,
   );
 
-  if (!availability) {
+  const candidateSubmittedRequests = availability.filter((s) =>
+    s.request_session_relation.some(
+      (r) =>
+        !r.interview_session.interview_session_cancel.some(
+          (c) =>
+            c.type === 'candidate_request_decline' ||
+            c.type === 'candidate_request_reschedule',
+        ),
+    ),
+  );
+
+  if (!candidateSubmittedRequests) {
     throw new Error('No availability requests found');
   }
-  return availability;
+
+  return candidateSubmittedRequests.map((s) => s.id);
 };

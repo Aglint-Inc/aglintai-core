@@ -158,5 +158,30 @@ export const createCandidateAvailabilityFixture = (page: Page) => {
 
       await page.waitForTimeout(2000);
     },
+    requestCancel: async () => {
+      const reasonBtns = await page.getByTestId('cancel-reason-radio').all();
+
+      expect((await reasonBtns).length).toBeGreaterThanOrEqual(
+        RESCHEDULE_REASONS + 1,
+      );
+
+      await reasonBtns[RESCHEDULE_REASONS].click();
+
+      await page.getByTestId('cancel-reason-text').fill('Cancel reason');
+
+      const requestRescheduleBtn = await page.getByTestId('request-cancel-btn');
+      await requestRescheduleBtn.click();
+
+      const slot_response = await page.waitForResponse(async (response) => {
+        return (
+          response.url().includes('/api/request/candidate-request') &&
+          response.status() === 200
+        );
+      });
+
+      expect(slot_response.status()).toBe(200);
+
+      await page.waitForTimeout(2000);
+    },
   };
 };
