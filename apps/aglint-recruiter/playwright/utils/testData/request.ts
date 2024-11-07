@@ -1,29 +1,29 @@
-import { dayjsLocal, supabaseWrap } from '@aglint/shared-utils';
+import { dayjsLocal } from '@aglint/shared-utils';
 
 import type { CreateRequest } from '@/routers/requests/create/create_request';
-import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
-import { getCompanyDetails } from '../dbfetch';
+import { type PrivateTestProcedure } from '../trpc';
 
-export const testData = async () => {
-  const { id: recruiter_id } = await getCompanyDetails();
-  const supabaseAdmin = await getSupabaseServer();
-
-  const jobs = supabaseWrap(
-    await supabaseAdmin
-      .from('public_jobs')
-      .select(
-        '*, applications!inner(*), interview_plan!inner(*, interview_session!inner(*))',
-      )
-      .eq('recruiter_id', recruiter_id),
-    false,
-  );
-
+export const testData = async ({
+  db,
+  recruiter_id,
+}: Pick<PrivateTestProcedure, 'recruiter_id' | 'db'>) => {
+  const { data: jobs } = await db
+    .from('public_jobs')
+    .select(
+      '*, applications!inner(*), interview_plan!inner(*, interview_session!inner(*))',
+    )
+    .eq('recruiter_id', recruiter_id);
+  if (!jobs) {
+    // eslint-disable-next-line no-console
+    console.info('Not able to fetch jobs');
+  }
   //   console.log(jobs[0], '✅');
-  const randomJobId = jobs[Math.floor(Math.random() * jobs.length)]
-    .id as string;
+  const randomJobId = jobs
+    ? jobs[Math.floor(Math.random() * jobs.length)].id
+    : '';
 
-  const job = jobs.find((job) => job.id === randomJobId);
+  const job = jobs?.find((job) => job.id === randomJobId);
   const applications = job && job.applications;
 
   const randomApplicationId =
@@ -36,18 +36,20 @@ export const testData = async () => {
       .filter((ele) => ele.session_type !== 'debrief')
       .map((session) => session.id);
 
-  const assignees = supabaseWrap(
-    await supabaseAdmin
-      .from('all_interviewers')
-      .select('*')
-      .eq('recruiter_id', recruiter_id)
-      .eq('is_calendar_connected', true),
-    false,
-  );
+  const { data: assignees } = await db
+    .from('all_interviewers')
+    .select('*')
+    .eq('recruiter_id', recruiter_id)
+    .eq('is_calendar_connected', true);
 
+  if (!assignees) {
+    // eslint-disable-next-line no-console
+    console.info('Not able to fetch assignees');
+  }
   //   console.log(assignees, '✅');
-  const randomAssigneeId =
-    assignees[Math.floor(Math.random() * assignees.length)].user_id;
+  const randomAssigneeId = assignees
+    ? assignees[Math.floor(Math.random() * assignees.length)].user_id
+    : '';
 
   return {
     create_request: {
