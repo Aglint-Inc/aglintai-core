@@ -1,6 +1,7 @@
 /* eslint-disable security/detect-object-injection */
 import {
   type APIOptions,
+  type APIRespFindReplaceMentInts,
   type CandReqSlotsType,
   type ConflictReason,
   type CurrRoundCandidateAvailReq,
@@ -30,13 +31,19 @@ import {
   type IntervsWorkHrsEventType,
   type ScheduleApiDetails,
 } from './types';
-import { cacheCurrPlanCalc } from './utils/cacheCurrPlanCalc';
+import {
+  cacheCurrPlanCalc,
+  type InterviewSessionApiRespTypeFullInts,
+} from './utils/cacheCurrPlanCalc';
 import { calcEachIntsAPIDetails } from './utils/calcEachIntsAPIDetails';
 import { dbFetchScheduleApiDetails } from './utils/dbFetchScheduleApiDetails';
 import { fetchIntsCalEventsDetails } from './utils/fetchIntsCalEventsDetails';
 import { calcIntsCombsForEachSessionRound } from './utils/interviewersCombsForSession';
 import { planCombineSlots } from './utils/planCombine';
-import { slotInterviewerConflicts } from './utils/slotInterviewerConflicts';
+import {
+  getSlotAtttendeeConflicts,
+  slotInterviewerConflicts,
+} from './utils/slotInterviewerConflicts';
 
 export class CandidatesScheduling {
   public db_details: ScheduleApiDetails | null;
@@ -236,31 +243,6 @@ export class CandidatesScheduling {
     }));
     this.db_details.all_inters = this.db_details.all_inters.filter(
       (i) => i.interviewer_type !== 'training',
-    );
-  }
-  public ignoreInterviewers(
-    sesssion_ints: { sesn_id: string; user_id: string }[],
-  ) {
-    if (!this.db_details) {
-      throw new CApiError('SERVER_ERROR', 'DB details not set');
-    }
-    this.db_details.ses_with_ints = this.db_details.ses_with_ints.map((s) => ({
-      ...s,
-      qualifiedIntervs: s.qualifiedIntervs.filter(
-        (i) =>
-          !sesssion_ints.includes({
-            sesn_id: s.session_id,
-            user_id: i.user_id,
-          }),
-      ),
-      trainingIntervs: [],
-    }));
-    this.db_details.all_inters = this.db_details.all_inters.filter(
-      (i) =>
-        !sesssion_ints.includes({
-          sesn_id: i.session_id,
-          user_id: i.user_id,
-        }),
     );
   }
 
@@ -881,9 +863,74 @@ export class CandidatesScheduling {
       return are_conflict_same;
     };
 
-    const alternativeInts = (declined_int_sesn_reln_id: string) => {
-      //
+    return { generateSlotsForCurrDay, verifyCurrDaySlot };
+  };
+
+  public findSlotAlternativeInts = ({
+    curr_day_js,
+    declined_int_user_id,
+    slot_details,
+    curr_day_str,
+    confirmed_int_user_ids,
+  }: {
+    declined_int_user_id: string;
+    slot_details: {
+      start_time: string;
+      end_time: string;
     };
-    return { generateSlotsForCurrDay, verifyCurrDaySlot, alternativeInts };
+    curr_day_js: Dayjs;
+    curr_day_str: string;
+    confirmed_int_user_ids: string[];
+  }) => {
+    if (!this.db_details) {
+      throw new CApiError('SERVER_ERROR', 'DB details not set');
+    }
+    const session_info = this.db_details.ses_with_ints[0];
+    const slot_detail: InterviewSessionApiRespTypeFullInts = {
+      ...session_info,
+      all_training_ints: session_info.trainingIntervs,
+      all_qualified_ints: this.db_details.all_inters.filter(
+        (int) =>
+          !confirmed_int_user_ids.includes(int.user_id) &&
+          int.interviewer_type == 'qualified',
+      ),
+    };
+    const ints_calc_cache = cacheCurrPlanCalc({
+      cand_schedule: this,
+      plan_comb: [{ ...slot_detail }],
+      curr_day_str: curr_day_str,
+      curr_day_js: curr_day_js,
+    });
+    const attendees = this.db_details.all_inters.filter(
+      (int) =>
+        int.session_id === session_info.session_id &&
+        int.user_id !== declined_int_user_id,
+    );
+    const attendees_conflicts: APIRespFindReplaceMentInts = [];
+    for (const attendee of attendees) {
+      const attendeesConflicts = getSlotAtttendeeConflicts({
+        sessn_idx: 0,
+        cand_schedule: this,
+        ints_calc_cache,
+        curr_day_str,
+        sesn_slot: {
+          start_time: slot_details.start_time,
+          end_time: slot_details.end_time,
+          session_id: session_info.session_id,
+        },
+        attendee: attendee,
+      });
+      if (!attendeesConflicts) {
+        throw new CApiError(
+          'SERVER_ERROR',
+          'Error in getting attendees conflicts',
+        );
+      }
+      attendees_conflicts.push({
+        replacement_int: attendee,
+        conflicts: attendeesConflicts,
+      });
+    }
+    return attendees_conflicts;
   };
 }
