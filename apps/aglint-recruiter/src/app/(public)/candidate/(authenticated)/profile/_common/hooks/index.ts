@@ -1,5 +1,5 @@
 import { useRouterPro } from '@/hooks/useRouterPro';
-import type { GetProfile } from '@/routers/candidatePortal/get_profile';
+import type { GetProfile } from '@/routers/candidatePortal/read/get_profile';
 import { api } from '@/trpc/client';
 
 import { dummyDataProfile } from '../../../_common/dummydata';

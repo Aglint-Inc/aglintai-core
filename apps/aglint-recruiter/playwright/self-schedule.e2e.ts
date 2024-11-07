@@ -8,14 +8,14 @@ import {
   getDeclineRequests,
   getMeetingInterviewers,
 } from './utils/dbfetch';
-import { getRequestForAvailabilityE2e } from './utils/getRequest';
+import { getRequestForScheduleE2e } from './utils/getRequest';
 
 test.describe.skip('Test Self Scheduling Flow ', () => {
   let singleDayRequestId: string;
   let multiDayRequestId: string;
   test.beforeAll(async () => {
     const { singleDayRequests, multiDayRequests } =
-      await getRequestForAvailabilityE2e();
+      await getRequestForScheduleE2e();
     singleDayRequestId = singleDayRequests[0].id;
     multiDayRequestId = multiDayRequests[0].id;
   });

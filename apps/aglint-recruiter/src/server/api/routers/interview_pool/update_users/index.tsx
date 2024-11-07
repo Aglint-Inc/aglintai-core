@@ -33,6 +33,7 @@ const schema = z.object({
   }),
 });
 
+// we are not actually removing user we are archiving user so that relational data will not get erased
 const mutation = async ({
   input: { relations, selectedUsers, trainingStatus, pool },
   ctx,

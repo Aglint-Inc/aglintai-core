@@ -3,7 +3,7 @@ import { Card, CardContent } from '@components/ui/card';
 import { UIBadge } from '@components/ui-badge';
 import React from 'react';
 
-import { type getHomePage } from '@/routers/candidatePortal/get_home_page';
+import { type getHomePage } from '@/routers/candidatePortal/read/get_home_page';
 
 interface InterviewProgressCardProps {
   interview: getHomePage['output']['interviewPlan'][number];

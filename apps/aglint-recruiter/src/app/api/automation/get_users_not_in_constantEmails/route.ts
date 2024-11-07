@@ -26,8 +26,6 @@ export async function POST(req: Request) {
       .in('user_id', userIds)
       .not('email', 'in', `(${constantEmails.join(',')})`);
 
-    // console.log();
-
     if (error) {
       throw new Error(error.message);
     }
