@@ -21,9 +21,7 @@ export const createRequestDetailsFixture = (page: Page) => {
     getRequestType: async () => {
       return await page.getByTestId('request-details-type').textContent();
     },
-    getRequestStatus: async () => {
-      return await page.getByTestId('request-details-status').textContent();
-    },
+
     openCandidateAvailabilityDailog: async () => {
       await page.waitForSelector('[data-testid="get-availability-btn"]');
       const getAvailabilityBtn = await page.getByTestId('get-availability-btn');
@@ -37,6 +35,33 @@ export const createRequestDetailsFixture = (page: Page) => {
           req.status() === 200
         );
       });
+    },
+    openSelfSchedulingDialog: async () => {
+      const selfSchedulingBtn = await page.getByTestId('self-schedule-btn');
+      await selfSchedulingBtn.click();
+      await page.waitForResponse((req) => {
+        return (
+          req.url().includes('/api/scheduling/v1/find_availability') &&
+          req.status() === 200
+        );
+      });
+    },
+
+    cancelSchedule: async () => {
+      await page.waitForSelector('[data-testid="cancel-schedule-btn"]');
+      const cancelSchedulingBtn = await page.getByTestId('cancel-schedule-btn');
+      await cancelSchedulingBtn.click();
+      await page.waitForSelector(
+        '[data-testid="request-details-status-completed"]',
+      );
+    },
+    reSchedule: async () => {
+      await page.waitForSelector('[data-testid="cancel-schedule-btn"]');
+      const cancelSchedulingBtn = await page.getByTestId('cancel-schedule-btn');
+      await cancelSchedulingBtn.click();
+      await page.waitForSelector(
+        '[data-testid="request-details-status-completed"]',
+      );
     },
     sendCandidateAvailability: async () => {
       await page.waitForSelector(
@@ -54,16 +79,6 @@ export const createRequestDetailsFixture = (page: Page) => {
       });
       expect(response.status()).toBe(200);
       //
-    },
-    openSelfSchedulingDialog: async () => {
-      const selfSchedulingBtn = await page.getByTestId('self-schedule-btn');
-      await selfSchedulingBtn.click();
-      await page.waitForResponse((req) => {
-        return (
-          req.url().includes('/api/scheduling/v1/find_availability') &&
-          req.status() === 200
-        );
-      });
     },
     selectSelfScheduleDaySlots: async () => {
       await page.getByTestId('schedule-filter-btn').click();
@@ -152,6 +167,7 @@ export const createRequestDetailsFixture = (page: Page) => {
 
       page.close();
     },
+
     multiDaybookSchedule: async () => {
       await page.reload();
       await page.waitForSelector('[data-testid="sched-cand-avail-btn"]');
