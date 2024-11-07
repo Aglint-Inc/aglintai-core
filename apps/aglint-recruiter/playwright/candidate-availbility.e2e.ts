@@ -69,7 +69,7 @@ test('Single day', async ({
   });
 
   await test.step('book Interview', async () => {
-    await requestDetailsPage.bookSchedule();
+    await requestDetailsPage.singleDaybookSchedule();
   });
 });
 test('Multi day', async ({
@@ -132,6 +132,6 @@ test('Multi day', async ({
   });
 
   await test.step('book Interview', async () => {
-    await requestDetailsPage.bookSchedule();
+    await requestDetailsPage.multiDaybookSchedule();
   });
 });

@@ -121,7 +121,38 @@ export const createRequestDetailsFixture = (page: Page) => {
         intervals: [2000, 3000, 5000],
       });
     },
-    bookSchedule: async () => {
+    singleDaybookSchedule: async () => {
+      await page.reload();
+      await page.waitForSelector('[data-testid="sched-cand-avail-btn"]');
+      const schedulInterviewBtn = page.getByTestId('sched-cand-avail-btn');
+      expect(await schedulInterviewBtn.isVisible()).toBeTruthy();
+      await schedulInterviewBtn.click();
+
+      await page.waitForSelector('[data-testid="comfirm-availability-radio"]');
+      const sendAvailBtn = await page
+        .getByTestId('comfirm-availability-radio')
+        .all();
+      await sendAvailBtn[CONFIRM_SLOT].click();
+
+      const comfirmBtn = await page.getByTestId('comfirm-availability-btn');
+      expect(await schedulInterviewBtn.isVisible()).toBeTruthy();
+      await comfirmBtn.click();
+
+      const mail_response = await page.waitForResponse(async (response) => {
+        return (
+          response
+            .url()
+            .includes('/api/mail/confirmInterview_email_applicant') &&
+          response.status() === 200
+        );
+      });
+      expect(mail_response.status()).toBe(200);
+      await comfirmBtn.click();
+      await page.waitForSelector('[data-testid="view-schedule-btn"]');
+
+      page.close();
+    },
+    multiDaybookSchedule: async () => {
       await page.reload();
       await page.waitForSelector('[data-testid="sched-cand-avail-btn"]');
       const schedulInterviewBtn = page.getByTestId('sched-cand-avail-btn');
