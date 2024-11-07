@@ -10,6 +10,7 @@ const schema = z.object({
   isTraining: z.boolean(),
   name: z.string(),
   description: z.string(),
+  department_id: z.number().optional(),
 });
 
 const mutation = async ({ input, ctx }: PrivateProcedure<typeof schema>) => {
@@ -25,6 +26,7 @@ const mutation = async ({ input, ctx }: PrivateProcedure<typeof schema>) => {
       noReverseShadow: 2,
       reqruire_approval: false,
     },
+    department_id: input.department_id,
   };
 
   return (

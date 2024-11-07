@@ -5,7 +5,7 @@ import { testData } from 'playwright/utils/testData/request';
 import { type CreateRequest } from './create_request';
 
 // TODO: Add more test cases
-test('Add new request', async () => {
+test('test case 1: Add new request', async () => {
   const caller1 = await caller();
   const { create_request } = await testData();
 
@@ -14,4 +14,7 @@ test('Add new request', async () => {
   });
 
   expect(requests satisfies CreateRequest['output']).toBeTruthy();
+
+  // eslint-disable-next-line no-console
+  console.info('Created request successfully');
 });
