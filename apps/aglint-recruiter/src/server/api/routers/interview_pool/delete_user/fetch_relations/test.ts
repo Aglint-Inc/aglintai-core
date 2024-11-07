@@ -1,10 +1,9 @@
 /* eslint-disable no-console */
-import test, { expect } from '@playwright/test';
-import { caller } from 'playwright/utils/createCaller';
+import { expect } from '@playwright/test';
+import { privateTestProcedure } from 'playwright/utils/trpc';
 
-test('get user relation to other tables', async () => {
-  const caller1 = await caller();
-  const pools = await caller1.interview_pool.get_all();
+privateTestProcedure('get user relation to other tables', async ({ api }) => {
+  const pools = await api.interview_pool.get_all();
 
   if (pools && pools.length > 0) {
     const limit = Math.min(5, pools.length);
@@ -16,7 +15,7 @@ test('get user relation to other tables', async () => {
 
       if (userId) {
         const userRelation =
-          await caller1.interview_pool.delete_user.fetch_relations({
+          await api.interview_pool.delete_user.fetch_relations({
             module_id: pools[i].id,
             selected_user_id: userId,
           });
