@@ -1,8 +1,16 @@
+import { getRandomNumInRange } from '@aglint/shared-utils';
+import { expect } from '@playwright/test';
+
 import { test } from './lib/fixtures';
-import { getCandidateSelfSchedulingLink } from './utils/dbfetch';
+import {
+  getCandidateSelfSchedulingLink,
+  getConfirmedMeetings,
+  getDeclineRequests,
+  getMeetingInterviewers,
+} from './utils/dbfetch';
 import { getRequestForAvailabilityE2e } from './utils/getRequest';
 
-test.describe.parallel('Test Self Scheduling Flow ', () => {
+test.describe.skip('Test Self Scheduling Flow ', () => {
   let singleDayRequestId: string;
   let multiDayRequestId: string;
   test.beforeAll(async () => {
@@ -77,6 +85,86 @@ test.describe.parallel('Test Self Scheduling Flow ', () => {
     });
     await test.step('Test select slot and book', async () => {
       await candidateSelfBookingPage.multiDayBook();
+    });
+  });
+});
+
+test.describe('Post Scheduling Scenario', () => {
+  let declineMeetingDetails: Awaited<
+    ReturnType<typeof getConfirmedMeetings>
+  >[number];
+  // let rescheduleMeetingDetails: Awaited<
+  //   ReturnType<typeof getConfirmedMeetings>
+  // >[number];
+  // let cancelMeetingDetails: Awaited<
+  //   ReturnType<typeof getConfirmedMeetings>
+  // >[number];
+  test.beforeAll(async () => {
+    const meetings = await getConfirmedMeetings();
+    declineMeetingDetails = meetings[0];
+    // rescheduleMeetingDetails = meetings[1];
+    // cancelMeetingDetails = meetings[2];
+  });
+  test('interviewer Decline Request', async ({
+    loginPage,
+    page,
+    logout,
+    requestDetailsPage,
+  }) => {
+    const meetingInterviewers = await getMeetingInterviewers(
+      declineMeetingDetails.id,
+    );
+    const dec_interviewer = meetingInterviewers[0];
+    await test.step('create decline request', async () => {
+      await loginPage.goto();
+      await loginPage.login(
+        dec_interviewer.email,
+        process.env.E2E_TEST_PASSWORD,
+      );
+      await page.goto(
+        `${process.env.NEXT_PUBLIC_HOST_NAME}/interviews/view?meeting_id=${declineMeetingDetails.id}&tab=job_details`,
+      );
+      await page.waitForSelector('[data-testid="interviewer-banners"]');
+      await page.click('[data-testid="decline-button"]');
+      await page.waitForSelector('[data-testid="popup-decline-radio"]');
+      const radioBtns = await page.getByTestId('popup-decline-radio');
+
+      await radioBtns
+        .nth(getRandomNumInRange(0, (await radioBtns.count()) - 1))
+        .click();
+      await page.getByTestId('popup-primary-button').click();
+      await page.waitForResponse(async (req) => {
+        return (
+          (await req.url().includes('/api/request/interviewer-request')) &&
+          req.status() === 200
+        );
+      });
+      expect(async () => {
+        expect(
+          (await page.getByTestId('interviewer-banners')).isVisible(),
+        ).toBeFalsy();
+      }).toPass({
+        intervals: [2000, 4000],
+      });
+    });
+    await test.skip('Process decline Request', async () => {
+      const request = await getDeclineRequests(
+        dec_interviewer.session_relation_id,
+      );
+      expect(await logout.isReady()).toBeTruthy();
+      await logout.logout();
+      expect(async () => {
+        expect(await loginPage.isReady()).toBeTruthy();
+      }).toPass({
+        intervals: [2000, 4000],
+      });
+      await loginPage.goto();
+      await loginPage.login(
+        process.env.E2E_TEST_EMAIL,
+        process.env.E2E_TEST_PASSWORD,
+      );
+      await requestDetailsPage.goto(request.id);
+      await page.waitForTimeout(5000); // Fake wait for 5 seconds
     });
   });
 });

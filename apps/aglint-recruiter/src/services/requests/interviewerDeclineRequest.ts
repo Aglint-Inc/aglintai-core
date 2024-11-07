@@ -58,6 +58,8 @@ export async function interviewerDeclineRequest(
   let reason = 'interview declined in Slack';
   if (parsed.declined_place === 'calender') {
     reason = 'interview declined in Calender';
+  } else if (parsed.declined_place === 'app') {
+    reason = 'interview declined';
   }
   const decline_request = supabaseWrap(
     await supabaseAdmin

@@ -1,7 +1,10 @@
 import { type InterviewerDeclineMetadata } from '@aglint/shared-types/src/db/tables/application_logs.types';
+import { type createInterviewerRequestSchema } from '@aglint/shared-utils';
 import { useToast } from '@components/hooks/use-toast';
 import { RadioGroup, RadioGroupItem } from '@components/ui/radio-group';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { type z } from 'zod';
 
 import { useTenant } from '@/company/hooks';
 import { UIButton } from '@/components/Common/UIButton';
@@ -43,25 +46,12 @@ function DeclineScheduleDialog() {
     try {
       setIsSaving(true);
       if (sessionRelation?.id) {
-        const { error: errorSelRel } = await supabase
-          .from('interview_session_relation')
-          .update({ accepted_status: 'declined' })
-          .eq('id', sessionRelation.id);
-
-        if (errorSelRel) throw new Error();
-
-        const { error } = await supabase
-          .from('interview_session_cancel')
-          .insert({
-            reason,
-            session_relation_id: sessionRelation.id,
-            type: 'interviewer_request_decline',
-            session_id: schedule.interview_session.id,
-            other_details: {
-              note: notes,
-            },
-          });
-        if (error) throw new Error();
+        const payload: z.infer<typeof createInterviewerRequestSchema> = {
+          declined_place: 'app',
+          session_id: schedule.interview_session.id,
+          session_relation_id: sessionRelation.id,
+        };
+        await axios.post('/api/request/interviewer-request', payload);
 
         const metadata: InterviewerDeclineMetadata = {
           meeting_id: schedule.interview_meeting.id,
@@ -123,6 +113,7 @@ function DeclineScheduleDialog() {
                 if (isSaving) return;
                 onClickConfirm();
               }}
+              data-testid='popup-primary-button'
             >
               Decline
             </UIButton>
@@ -143,6 +134,7 @@ function DeclineScheduleDialog() {
                     onClick={() => {
                       setReason(rea);
                     }}
+                    data-testid={`popup-decline-radio`}
                   >
                     <RadioGroupItem
                       value={rea}
