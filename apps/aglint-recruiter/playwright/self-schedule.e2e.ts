@@ -8,7 +8,7 @@ import {
   getDeclineRequests,
   getMeetingInterviewers,
 } from './utils/dbfetch';
-import { getRequestForAvailabilityE2e } from './utils/getRequest';
+import { getRequestForScheduleE2e } from './utils/getRequest';
 
 test.describe.skip('Test Self Scheduling Flow ', () => {
   let singleDayRequestId: string;
