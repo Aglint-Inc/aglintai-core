@@ -6,14 +6,13 @@ import {
   type PublicProcedure,
   publicProcedure,
 } from '@/server/api/trpc';
-import { createPublicClient } from '@/server/db';
 
 const schema = z.object({
   candidate_request_availability_id: z.string().uuid(),
 });
 
-const query = async ({ input }: PublicProcedure<typeof schema>) => {
-  const db = createPublicClient();
+const query = async ({ input, ctx }: PublicProcedure<typeof schema>) => {
+  const db = ctx.adminDb;
   const data = (
     await db
       .from('candidate_request_availability')
