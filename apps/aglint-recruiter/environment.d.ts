@@ -40,10 +40,11 @@ declare namespace NodeJS {
     PLAYWRIGHT_HEADLESS: string;
     E2E_TEST_EMAIL: string;
     E2E_TEST_PASSWORD: string;
-    E2E_TEST_EMAIL_0: string;
-    E2E_TEST_PASSWORD_0: string;
-    E2E_TEST_EMAIL_1: string;
-    E2E_TEST_PASSWORD_1: string;
+    TRPC_TEST_P1_EMAIL: string;
+    TRPC_TEST_P1_PASSWORD: string;
+    TRPC_TEST_P2_EMAIL: string;
+    TRPC_TEST_P2_PASSWORD: string;
+    TEST_WORKERS: number;
     SEED_DATABASE_APP_URL: string;
   }
 }
