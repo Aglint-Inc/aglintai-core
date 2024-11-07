@@ -9,10 +9,15 @@ import { ResponseCookies } from 'next/dist/compiled/@edge-runtime/cookies';
 import { createCaller } from '@/server/api/root';
 import { createPrivateClient, createPublicClient } from '@/server/db';
 
+export type BaseDependencies = {
+  password: string;
+  email: string;
+};
+
 type PublicDependencies = {
   adminDb: ReturnType<typeof createPublicClient>;
 };
-type PublicWorkerDependecies = {
+type PublicWorkerDependecies = BaseDependencies & {
   cookies: ResponseCookies;
   api: ReturnType<typeof createCaller>;
 };
@@ -21,6 +26,11 @@ export const publicTestProcedure = base.extend<
   PublicDependencies,
   PublicWorkerDependecies
 >({
+  email: [process.env.TRPC_TEST_P1_EMAIL, { scope: 'worker', option: true }],
+  password: [
+    process.env.TRPC_TEST_P1_PASSWORD,
+    { scope: 'worker', option: true },
+  ],
   adminDb: async ({}, use) => await use(createPublicClient()),
   cookies: [
     async ({}, use) => {
@@ -49,39 +59,46 @@ export const privateTestProcedure = publicTestProcedure.extend<
   PrivateDependecies,
   PrivateWorkerDependencies
 >({
-  db: [
-    async ({ cookies }, use) => await use(createPrivateClient(cookies)),
-    { scope: 'worker' },
-  ],
-  user_id: [
-    async ({ db }, use, { workerIndex }) => {
-      console.log(`Signing in WORKER=${workerIndex}`);
-      const { data, error } = await db.auth.signInWithPassword(
-        emailAndPassword(workerIndex),
-      );
-      if (error) throw new Error('Sign in failed');
-      console.log(`Signed in WORKER=${workerIndex} USER=${data.user.id}`);
-      await use(data.user.id);
-      console.log(`Signing out WORKER=${workerIndex} USER=${data.user.id}`);
-      await db.auth.signOut({ scope: 'local' });
-      console.log(`Signed out WORKER=${workerIndex} USER=${data.user.id}`);
-    },
-    { scope: 'worker' },
-  ],
   log: [
-    async ({ user_id }, use, { workerIndex }) => {
+    async ({ email }, use, { parallelIndex }) => {
       const log = (...args: Parameters<PrivateWorkerDependencies['log']>) => {
-        console.log(...args, `WORKER=${workerIndex}`, `USER=${user_id}`);
+        console.log(
+          '\t\b\b\b\b\b',
+          '\x1b[35m',
+          `${parallelIndex}`,
+          '\x1b[0m',
+          '>',
+          '\x1b[32m',
+          `${email}`,
+          '\x1b[0m',
+          '>',
+          '\x1b[33m',
+          ...args,
+        );
       };
       await use(log);
     },
     { scope: 'worker' },
   ],
-  api: [
-    async ({ cookies, user_id: _ }, use) => {
-      await use(createCaller({ cookies }));
-    },
+  db: [
+    async ({ cookies }, use) => await use(createPrivateClient(cookies)),
     { scope: 'worker' },
+  ],
+  user_id: [
+    async ({ db, email, password, log }, use) => {
+      log('Signing in');
+      const { data, error } = await db.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) throw new Error('Sign in failed');
+      log('Signed in');
+      await use(data.user.id);
+      log('Signing out');
+      await db.auth.signOut({ scope: 'local' });
+      log('Signed out');
+    },
+    { scope: 'worker', auto: true },
   ],
   recruiter_id: [
     async ({ db, user_id }, use) => {
@@ -97,21 +114,5 @@ export const privateTestProcedure = publicTestProcedure.extend<
     { scope: 'worker' },
   ],
 });
-
-type Response = { email: string; password: string };
-const emailAndPassword = (workerIndex: number): Response => {
-  switch (workerIndex % 2) {
-    case 1:
-      return {
-        email: process.env.E2E_TEST_EMAIL_1,
-        password: process.env.E2E_TEST_PASSWORD_1,
-      };
-    default:
-      return {
-        email: process.env.E2E_TEST_EMAIL_0,
-        password: process.env.E2E_TEST_PASSWORD_0,
-      };
-  }
-};
 
 type TestProcedure<T> = T extends TestType<infer R, infer S> ? R & S : never;
