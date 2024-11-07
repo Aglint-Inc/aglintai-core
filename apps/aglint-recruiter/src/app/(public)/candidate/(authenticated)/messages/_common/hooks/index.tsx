@@ -1,6 +1,5 @@
-
 import { useRouterPro } from '@/hooks/useRouterPro';
-import type { GetMessages } from '@/routers/candidatePortal/get_messages';
+import type { GetMessages } from '@/routers/candidatePortal/read/get_messages';
 import type { ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 

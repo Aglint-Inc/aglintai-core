@@ -1,8 +1,8 @@
-import { type getHomePage } from '@/routers/candidatePortal/get_home_page';
-import { type GetInterviews } from '@/routers/candidatePortal/get_interviews';
-import { type GetMessages } from '@/routers/candidatePortal/get_messages';
-import { type GetNav } from '@/routers/candidatePortal/get_navbar';
-import { type GetProfile } from '@/routers/candidatePortal/get_profile';
+import { type getHomePage } from '@/routers/candidatePortal/read/get_home_page';
+import { type GetInterviews } from '@/routers/candidatePortal/read/get_interviews/get_interviews';
+import { type GetMessages } from '@/routers/candidatePortal/read/get_messages';
+import { type GetNav } from '@/routers/candidatePortal/read/get_navbar';
+import { type GetProfile } from '@/routers/candidatePortal/read/get_profile';
 
 export const dummyDataNavbar: GetNav['output'] = {
   candidate: {
