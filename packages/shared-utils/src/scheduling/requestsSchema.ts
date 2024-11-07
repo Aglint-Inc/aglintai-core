@@ -1,5 +1,5 @@
-import { interviewSessionCancelRowSchema } from "@aglint/shared-types";
-import { z } from "zod";
+import { interviewSessionCancelRowSchema } from '@aglint/shared-types';
+import { z } from 'zod';
 
 export const createCandidateRequestSchema = z.object({
   session_ids: z.array(z.string()),
@@ -18,5 +18,5 @@ export const createCandidateRequestSchema = z.object({
 export const createInterviewerRequestSchema = z.object({
   session_id: z.string(),
   session_relation_id: z.string(),
-  declined_place: z.enum(["slack", "calender"]),
+  declined_place: z.enum(['slack', 'calender', 'app']),
 });
