@@ -1,5 +1,6 @@
 import test, { expect } from '@playwright/test';
 import { caller } from 'playwright/utils/createCaller';
+
 import { getApplicationIds } from '../test.utils';
 
 test('test case 1: All completed requests', async () => {

@@ -8,7 +8,7 @@ import {
   type ProcedureDefinition,
 } from '@/server/api/trpc';
 
-import { getBanners } from './common/getBanners';
+import { bannerSchema, getBanners } from './common/getBanners';
 
 const query = async ({ ctx }: PrivateProcedure) => {
   const db = ctx.db;
@@ -27,8 +27,14 @@ const query = async ({ ctx }: PrivateProcedure) => {
   return jobs.map((job) => ({ ...job, banner: getBanners(job) }));
 };
 
-const output = z.array(jobViewRowSchema.merge(z.object({ banner: z.any() })));
+type Output = Awaited<ReturnType<typeof query>>;
+
+const output = z.array(
+  jobViewRowSchema.merge(z.object({ banner: bannerSchema })),
+);
 
 export const read = privateProcedure.output(output).query(query);
 
-export type Read = ProcedureDefinition<typeof read>;
+export type Read = Pick<ProcedureDefinition<typeof read>, 'input'> & {
+  output: Output;
+};

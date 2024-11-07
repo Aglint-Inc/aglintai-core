@@ -1,10 +1,11 @@
 import test, { expect } from '@playwright/test';
 import { caller } from 'playwright/utils/createCaller';
+
 import { getNoteId, getRequestId } from '../test.utils';
 
 test('test case 1: Upsert request note', async () => {
-    const caller1 = await caller();
-    const randomRequestId = await getRequestId();
+  const caller1 = await caller();
+  const randomRequestId = await getRequestId();
   const note = await caller1.requests.note.updateNote({
     request_id: randomRequestId,
     note: 'This is a test note',

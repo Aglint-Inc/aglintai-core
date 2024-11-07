@@ -16,6 +16,19 @@ const missingInfoSchema = z.object({
   recruiter: z.string().uuid(),
 }) satisfies ZodSchema<MissingInfo>;
 
+export const bannerSchema = z.object({
+  interview_plan_missing: z.boolean(),
+  scoring_criteria_missing: z.boolean(),
+  scoring_criteria_generating: z.boolean(),
+  scoring_criteria_changed: z.boolean(),
+  missing_info: z.object({
+    job_title: z.boolean(),
+    description: z.boolean(),
+    hiring_manager: z.boolean(),
+    recruiter: z.boolean(),
+  }),
+}) satisfies ZodSchema<Banner>;
+
 export type Banner = {
   interview_plan_missing: boolean;
   scoring_criteria_missing: boolean;
