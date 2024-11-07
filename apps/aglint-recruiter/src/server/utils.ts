@@ -43,9 +43,3 @@ export const authorize = (path: string, permissions: Permissions = []) => {
 };
 
 export type ApiPermissions = NestedPermissions<Procedures>;
-
-export const trpcPublicRoutes = (requestUrl: string) => {
-  if (!requestUrl.startsWith('/api/trpc/')) return false;
-  const path = requestUrl.split('/api/trpc/')[1];
-  return authorize(path);
-};

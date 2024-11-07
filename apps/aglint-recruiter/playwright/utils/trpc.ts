@@ -62,6 +62,9 @@ export const privateTestProcedure = publicTestProcedure.extend<
       if (error) throw new Error('Sign in failed');
       console.log(`Signed in WORKER=${workerIndex} USER=${data.user.id}`);
       await use(data.user.id);
+      console.log(`Signing out WORKER=${workerIndex} USER=${data.user.id}`);
+      await db.auth.signOut({ scope: 'local' });
+      console.log(`Signed out WORKER=${workerIndex} USER=${data.user.id}`);
     },
     { scope: 'worker' },
   ],
@@ -93,14 +96,6 @@ export const privateTestProcedure = publicTestProcedure.extend<
     },
     { scope: 'worker' },
   ],
-});
-
-privateTestProcedure.describe.configure({ mode: 'parallel' });
-
-privateTestProcedure.afterAll('Sign-out', async ({ db, log }) => {
-  log('Signing out');
-  await db.auth.signOut({ scope: 'global' });
-  log('Signed out');
 });
 
 type Response = { email: string; password: string };

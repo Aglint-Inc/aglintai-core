@@ -14,8 +14,9 @@ async function AvailabilityLayout({
   };
 }>) {
   noStore();
+  const { request_id } = await params;
   void api.candidate_availability.getCandidateAvailabilityData.prefetch({
-    candidate_request_availability_id: params.request_id,
+    candidate_request_availability_id: request_id,
   });
   return (
     <HydrateClient>
