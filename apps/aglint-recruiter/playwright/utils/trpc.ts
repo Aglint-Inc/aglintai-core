@@ -2,7 +2,7 @@
 /* eslint-disable no-empty-pattern */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { type DatabaseTable } from '@aglint/shared-types';
-import { test as base } from '@playwright/test';
+import { test as base, type TestType } from '@playwright/test';
 import { type User } from '@supabase/supabase-js';
 import { ResponseCookies } from 'next/dist/compiled/@edge-runtime/cookies';
 
@@ -16,6 +16,7 @@ type PublicWorkerDependecies = {
   cookies: ResponseCookies;
   api: ReturnType<typeof createCaller>;
 };
+export type PublicTestProcedure = TestProcedure<typeof publicTestProcedure>;
 export const publicTestProcedure = base.extend<
   PublicDependencies,
   PublicWorkerDependecies
@@ -43,6 +44,7 @@ type PrivateWorkerDependencies = {
   recruiter_id: DatabaseTable['recruiter']['id'];
   log: (typeof console)['log'];
 };
+export type PrivateTestProcedure = TestProcedure<typeof privateTestProcedure>;
 export const privateTestProcedure = publicTestProcedure.extend<
   PrivateDependecies,
   PrivateWorkerDependencies
@@ -116,3 +118,5 @@ const emailAndPassword = (workerIndex: number): Response => {
       };
   }
 };
+
+type TestProcedure<T> = T extends TestType<infer R, infer S> ? R & S : never;
