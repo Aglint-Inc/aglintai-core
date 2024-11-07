@@ -1,5 +1,7 @@
+/* eslint-disable no-console */
 import test, { expect } from '@playwright/test';
 import { caller } from 'playwright/utils/createCaller';
+
 import { getRequestId } from '../test.utils';
 
 test('test case 1: Get random request notes', async () => {

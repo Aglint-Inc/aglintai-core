@@ -1,3 +1,4 @@
+import { jobViewRowSchema } from '@aglint/shared-types';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
@@ -7,7 +8,7 @@ import {
   type ProcedureDefinition,
 } from '@/server/api/trpc';
 
-import { getBanners } from '../common/getBanners';
+import { bannerSchema, getBanners } from '../common/getBanners';
 
 const schema = z.object({
   id: z.string().uuid(),
@@ -36,6 +37,12 @@ const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
   };
 };
 
-export const read = privateProcedure.input(schema).query(query);
+type Output = Awaited<ReturnType<typeof query>>;
 
-export type Read = ProcedureDefinition<typeof read>;
+const output = jobViewRowSchema.merge(z.object({ banner: bannerSchema }));
+
+export const read = privateProcedure.input(schema).output(output).query(query);
+
+export type Read = Pick<ProcedureDefinition<typeof read>, 'input'> & {
+  output: Output;
+};

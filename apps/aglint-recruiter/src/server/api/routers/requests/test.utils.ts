@@ -1,6 +1,7 @@
-import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 import { supabaseWrap } from '@aglint/shared-utils';
 import { getCompanyDetails } from 'playwright/utils/dbfetch';
+
+import { getSupabaseServer } from '@/utils/supabase/supabaseAdmin';
 
 export const getRequestId = async () => {
   const { recruiter_user } = await getCompanyDetails();

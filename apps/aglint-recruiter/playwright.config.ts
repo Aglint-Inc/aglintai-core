@@ -80,5 +80,15 @@ export default defineConfig({
         timeout: DEFAULT_EXPECT_TIMEOUT,
       },
     },
+    {
+      name: '@aglint/aglint-trpc',
+      testDir: './src/server/api/routers',
+      testMatch: /.*.(test)\.(js|jsx|ts|tsx)$/,
+      use: DEFAULT_CHROMIUM,
+      timeout: DEFAULT_TEST_TIMEOUT,
+      expect: {
+        timeout: DEFAULT_EXPECT_TIMEOUT,
+      },
+    },
   ],
 });

@@ -5,5 +5,5 @@ import { useCurrentJob } from './useCurrentJob';
 
 export const useJobRead = (): Job => {
   const { job_id } = useCurrentJob();
-  return api.jobs.job.read.useSuspenseQuery({ id: job_id })[0];
+  return api.jobs.job.read.useSuspenseQuery({ id: job_id })[0] as Job;
 };
