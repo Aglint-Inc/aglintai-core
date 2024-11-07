@@ -9,7 +9,6 @@ import {
   type InterviewSessionApiRespType,
   type PlanCombinationRespType,
   type SessionCombinationRespType,
-  type SessionInterviewerApiRespType,
   type SessionsCombType,
 } from '@aglint/shared-types';
 import {
@@ -37,15 +36,11 @@ import { dbFetchScheduleApiDetails } from './utils/dbFetchScheduleApiDetails';
 import { fetchIntsCalEventsDetails } from './utils/fetchIntsCalEventsDetails';
 import { calcIntsCombsForEachSessionRound } from './utils/interviewersCombsForSession';
 import { planCombineSlots } from './utils/planCombine';
-import {
-  convertTimeDurStrToDayjsChunk,
-  isTimeChunksEnclosed,
-  isTimeChunksOverLapps,
-} from './utils/time_range_utils';
+import { slotInterviewerConflicts } from './utils/slotInterviewerConflicts';
 
 export class CandidatesScheduling {
   public db_details: ScheduleApiDetails | null;
-  private api_options: APIOptions;
+  public api_options: APIOptions;
   public intervs_details_map: IntervsWorkHrsEventMapType;
   public calendar_events:
     | Awaited<ReturnType<typeof fetchIntsCalEventsDetails>>['ints_events_map']
@@ -592,16 +587,7 @@ export class CandidatesScheduling {
     }
     const curr_day_str = curr_day_js.startOf('day').format();
 
-    const {
-      day_off_ints,
-      holiday_ints,
-      cal_disc_inters,
-      curr_day_paused_inters,
-      indef_paused_inters,
-      load_reached_ints,
-      slot_day_load_density,
-      slot_week_load_density,
-    } = cacheCurrPlanCalc({
+    const ints_calc_cache = cacheCurrPlanCalc({
       cand_schedule: this,
       curr_day_str,
       curr_day_js,
@@ -611,6 +597,14 @@ export class CandidatesScheduling {
         all_training_ints: s.trainingIntervs,
       })),
     });
+    const {
+      cal_disc_inters,
+      curr_day_paused_inters,
+      indef_paused_inters,
+      load_reached_ints,
+      day_off_ints,
+      holiday_ints,
+    } = ints_calc_cache;
 
     /**
      * checking  conflicts
@@ -623,296 +617,6 @@ export class CandidatesScheduling {
      * @param sess_slot
      * @returns null or sesn_slot with conflicts
      */
-    const verifyForConflicts = (
-      sesn_slot: SessionCombinationRespType,
-      sessn_idx: number,
-    ) => {
-      if (!this.db_details) {
-        throw new CApiError('SERVER_ERROR', 'DB details not set');
-      }
-
-      const upd_sess_slot: SessionCombinationRespType = { ...sesn_slot };
-      const curr_sess_cal_dic_ints = cal_disc_inters[sessn_idx].inters;
-      const curr_sess_indef_paused_ints = indef_paused_inters[sessn_idx].inters;
-      const curr_sess_curr_day_paused_ints =
-        curr_day_paused_inters[sessn_idx].inters;
-      // const curr_sess_common_time = session_ints_common_time[sessn_idx];
-      upd_sess_slot.day_load_den = slot_day_load_density;
-      upd_sess_slot.week_load_den = slot_week_load_density;
-      const session_attendees: SessionInterviewerApiRespType[] = [
-        ...upd_sess_slot.qualifiedIntervs,
-        ...upd_sess_slot.trainingIntervs,
-      ];
-
-      for (const attendee of session_attendees) {
-        const attendee_details = this.intervs_details_map.get(attendee.user_id);
-        if (!attendee_details) {
-          throw new CApiError('SERVER_ERROR', 'Interviewer not found');
-        }
-        const int_conflic_reasons: ConflictReason[] = [];
-        // cal disconnected conflict
-        if (
-          curr_sess_cal_dic_ints.find((s) => s.user_id === attendee.user_id)
-        ) {
-          int_conflic_reasons.push({
-            conflict_type: 'calender_diconnected',
-            conflict_event: null,
-            start_time: null,
-            end_time: null,
-          });
-        }
-        const attendee_load = load_reached_ints[sessn_idx].inters.find(
-          (s) => s.user_id === attendee.user_id,
-        );
-        if (attendee_load) {
-          int_conflic_reasons.push({
-            conflict_type: attendee_load.type,
-            conflict_event: null,
-            end_time: null,
-            start_time: null,
-          });
-        }
-
-        // indefenetly paused inters
-        if (
-          curr_sess_indef_paused_ints.some(
-            (s) => s.user_id === attendee.user_id,
-          )
-        ) {
-          int_conflic_reasons.push({
-            conflict_type: 'interviewer_paused',
-            conflict_event: null,
-            start_time: null,
-            end_time: null,
-          });
-        }
-
-        //TEST:
-        const curr_day_paused_inter = curr_sess_curr_day_paused_ints.find(
-          (s) => s.user_id === attendee.user_id,
-        );
-
-        //curr_day paused ints
-        if (curr_day_paused_inter) {
-          const last_paused_date = this.getTimeIntTimeZone(
-            curr_day_paused_inter.pause_json.end_date,
-            upd_sess_slot.session_id,
-            attendee.user_id,
-          );
-          const is_time_overlapps = isTimeChunksOverLapps(
-            {
-              startTime: last_paused_date
-                .startOf('day')
-                .tz(this.db_details.req_user_tz),
-              endTime: last_paused_date
-                .endOf('day')
-                .tz(this.db_details.req_user_tz),
-            },
-            {
-              startTime: this.getTimeInCandTimeZone(upd_sess_slot.start_time),
-              endTime: this.getTimeInCandTimeZone(upd_sess_slot.start_time),
-            },
-          );
-          if (is_time_overlapps) {
-            if (this.api_options.include_conflicting_slots.interviewer_pause) {
-              int_conflic_reasons.push({
-                conflict_type: 'interviewer_paused',
-                conflict_event: null,
-                start_time: curr_day_paused_inter.pause_json.start_date,
-                end_time: curr_day_paused_inter.pause_json.end_date,
-              });
-            } else {
-              return null;
-            }
-          }
-        }
-        let is_slot_day_off = false;
-        attendee_details.day_off[curr_day_str].forEach((t) => {
-          if (!this.db_details) {
-            throw new CApiError('SERVER_ERROR', 'DB details not set');
-          }
-          is_slot_day_off = isTimeChunksOverLapps(
-            convertTimeDurStrToDayjsChunk(t, this.db_details.req_user_tz),
-            {
-              startTime: dayjsLocal(upd_sess_slot.start_time).tz(
-                this.db_details.req_user_tz,
-              ),
-              endTime: dayjsLocal(upd_sess_slot.end_time).tz(
-                this.db_details.req_user_tz,
-              ),
-            },
-          );
-
-          if (is_slot_day_off) {
-            if (this.api_options.include_conflicting_slots.day_off) {
-              int_conflic_reasons.push({
-                conflict_type: 'day_off',
-                conflict_event: 'Day Off',
-                start_time: t.startTime,
-                end_time: t.endTime,
-              });
-            }
-          }
-        });
-        if (
-          is_slot_day_off &&
-          !this.api_options.include_conflicting_slots.day_off
-        ) {
-          return null;
-        }
-
-        let is_slot_holiday = false;
-        attendee_details.holiday[curr_day_str].forEach((t) => {
-          if (!this.db_details) {
-            throw new CApiError('SERVER_ERROR', 'DB details not set');
-          }
-          const flag = isTimeChunksOverLapps(
-            convertTimeDurStrToDayjsChunk(t, this.db_details.req_user_tz),
-            {
-              startTime: dayjsLocal(upd_sess_slot.start_time).tz(
-                this.db_details.req_user_tz,
-              ),
-              endTime: dayjsLocal(upd_sess_slot.end_time).tz(
-                this.db_details.req_user_tz,
-              ),
-            },
-          );
-          if (flag) {
-            is_slot_holiday = true;
-            int_conflic_reasons.push({
-              conflict_type: 'holiday',
-              conflict_event: 'Holiday',
-              start_time: t.startTime,
-              end_time: t.endTime,
-            });
-          }
-        });
-
-        if (
-          is_slot_holiday &&
-          !this.api_options.include_conflicting_slots.holiday
-        ) {
-          return null;
-        }
-
-        const is_slot_out_of_work_hrs = !attendee_details.work_hours[
-          curr_day_str
-        ].some((t) => {
-          if (!this.db_details) {
-            throw new CApiError('SERVER_ERROR', 'DB details not set');
-          }
-          return isTimeChunksEnclosed(
-            convertTimeDurStrToDayjsChunk(t, this.db_details.req_user_tz),
-            {
-              startTime: dayjsLocal(upd_sess_slot.start_time).tz(
-                this.db_details.req_user_tz,
-              ),
-              endTime: dayjsLocal(upd_sess_slot.end_time).tz(
-                this.db_details.req_user_tz,
-              ),
-            },
-          );
-        });
-        if (is_slot_out_of_work_hrs) {
-          if (this.api_options.include_conflicting_slots.out_of_working_hrs) {
-            int_conflic_reasons.push({
-              conflict_type: 'out_of_working_hours',
-              conflict_event: '',
-              end_time: '',
-              start_time: '',
-            });
-          } else {
-            return null;
-          }
-        }
-        const conflicting_events = attendee_details.cal_date_events[
-          curr_day_str
-        ].filter((cal_event) => {
-          if (
-            cal_event.cal_type === 'recruiting_blocks' &&
-            this.api_options.use_recruiting_blocks
-          ) {
-            return false;
-          }
-
-          if (
-            cal_event.cal_type === 'free_time' &&
-            this.api_options.include_free_time
-          ) {
-            return false;
-          }
-          return isTimeChunksOverLapps(
-            {
-              startTime: this.getTimeInCandTimeZone(cal_event.start.dateTime),
-              endTime: this.getTimeInCandTimeZone(cal_event.end.dateTime),
-            },
-            {
-              startTime: this.getTimeInCandTimeZone(upd_sess_slot.start_time),
-              endTime: this.getTimeInCandTimeZone(upd_sess_slot.end_time),
-            },
-          );
-        });
-        //conflicting events
-        for (const conf_event of conflicting_events) {
-          const ev_type = conf_event.cal_type;
-          if (
-            ev_type === 'soft' &&
-            !this.api_options.include_conflicting_slots.show_soft_conflicts
-          ) {
-            return null;
-          }
-          if (
-            ev_type === 'cal_event' &&
-            !this.api_options.include_conflicting_slots.show_conflicts_events
-          ) {
-            return null;
-          }
-          if (
-            ev_type === 'ooo' &&
-            !this.api_options.include_conflicting_slots.out_of_office
-          ) {
-            return null;
-          }
-          int_conflic_reasons.push({
-            conflict_type: ev_type,
-            conflict_event: conf_event.summary,
-            end_time: conf_event.end.dateTime,
-            start_time: conf_event.start.dateTime,
-          });
-        }
-
-        if (int_conflic_reasons.length > 0) {
-          upd_sess_slot.ints_conflicts.push({
-            interviewer: {
-              user_id: attendee.user_id,
-            },
-            conflict_reasons: [...int_conflic_reasons],
-          });
-        }
-      }
-
-      const curr_time = ScheduleUtils.getNearestCurrTime(
-        this.db_details.req_user_tz,
-      );
-      if (
-        curr_time.isSameOrAfter(
-          dayjsLocal(upd_sess_slot.start_time).tz(this.db_details.req_user_tz),
-          'day',
-        )
-      ) {
-        upd_sess_slot.conflict_types.push('day_passed');
-      }
-      const unique_conflicts = new Set<ConflictReason['conflict_type']>();
-      upd_sess_slot.ints_conflicts.forEach((int) => {
-        for (const intr of int.conflict_reasons) {
-          unique_conflicts.add(intr.conflict_type);
-        }
-      });
-      upd_sess_slot.is_conflict = upd_sess_slot.ints_conflicts.length > 0;
-      upd_sess_slot.conflict_types = [...Array.from(unique_conflicts)];
-
-      return upd_sess_slot;
-    };
 
     // this is recursion function
     const getSessionsAvailability = (
@@ -946,7 +650,13 @@ export class CandidatesScheduling {
         conflict_types: [],
       };
 
-      const slot_with_conflicts = verifyForConflicts(session_slot, session_idx);
+      const slot_with_conflicts = slotInterviewerConflicts({
+        sessn_idx: session_idx,
+        cand_schedule: this,
+        ints_calc_cache,
+        curr_day_str,
+        sesn_slot: session_slot,
+      });
       if (!slot_with_conflicts) {
         return [];
       } else {
@@ -1170,6 +880,10 @@ export class CandidatesScheduling {
       }
       return are_conflict_same;
     };
-    return { generateSlotsForCurrDay, verifyCurrDaySlot };
+
+    const alternativeInts = (declined_int_sesn_reln_id: string) => {
+      //
+    };
+    return { generateSlotsForCurrDay, verifyCurrDaySlot, alternativeInts };
   };
 }
