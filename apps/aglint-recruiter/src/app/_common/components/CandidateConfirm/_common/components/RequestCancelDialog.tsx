@@ -58,6 +58,7 @@ function RequestCancelDialog({
           </UIButton>
           <UIButton
             isLoading={isPending}
+            data-testid='request-cancel-btn'
             variant='default'
             onClick={async () =>
               await mutate({
@@ -78,6 +79,7 @@ function RequestCancelDialog({
             <RadioGroup>
               <RadioGroupItem
                 checked={item === reason}
+                data-testid='cancel-reason-radio'
                 value={reason}
                 onClick={() => {
                   setReason(item);
@@ -94,6 +96,7 @@ function RequestCancelDialog({
           <UITextArea
             className='resize-none'
             placeholder='Add additional notes.'
+            data-testid='cancel-reason-text'
             rows={6}
             value={other_details?.note}
             fullWidth

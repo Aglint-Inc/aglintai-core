@@ -105,6 +105,7 @@ function RequestRescheduleDialog({
               <RadioGroup>
                 <RadioGroupItem
                   checked={item === reason}
+                  data-testid='reschedule-reason-radio'
                   value={reason}
                   onClick={() => {
                     setReason(item);
@@ -121,6 +122,8 @@ function RequestRescheduleDialog({
             <UITextArea
               className='resize-none'
               placeholder='Add additional notes.'
+              data-testid='reschedule-reason-text'
+              name='reschedule-reason-text'
               rows={6}
               value={other_details?.note}
               fullWidth
@@ -139,6 +142,7 @@ function RequestRescheduleDialog({
           </UIButton>
           <UIButton
             disabled={isPending}
+            data-testid={isPending ? '' : 'request-reschedule-btn'}
             onClick={() => {
               mutate({
                 reason: reason,
