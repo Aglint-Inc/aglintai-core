@@ -2,7 +2,7 @@ import { dayjsLocal } from '@aglint/shared-utils';
 import { Button } from '@components/ui/button';
 import { Card, CardContent, CardHeader } from '@components/ui/card';
 
-import { type getHomePage } from '@/routers/candidatePortal/get_home_page';
+import { type getHomePage } from '@/routers/candidatePortal/read/get_home_page';
 import { formatSessions } from '@/utils/formatSessions';
 
 function SelfScheduling({

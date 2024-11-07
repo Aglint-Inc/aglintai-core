@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import { useTenant } from '@/company/hooks';
 import { useFlags } from '@/company/hooks/useFlags';
-import { type GetOnboard } from '@/routers/onboarding/getOnboard';
+import { type GetOnboard } from '@/routers/onboarding/read';
 import { type ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 import ROUTES from '@/utils/routing/routes';

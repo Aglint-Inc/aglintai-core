@@ -263,7 +263,11 @@ export default function ViewRequestDetails() {
                   </div>
                 </div>
                 <UIBadge
-                  data-testid='request-details-status'
+                  data-testid={
+                    selectedRequest?.status === 'completed'
+                      ? `request-details-status-completed`
+                      : ''
+                  }
                   variant={
                     selectedRequest?.status === 'to_do'
                       ? 'neutral'

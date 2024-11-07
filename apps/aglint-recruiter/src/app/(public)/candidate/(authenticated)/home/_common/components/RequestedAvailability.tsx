@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from '@components/ui/card';
 import { BriefcaseBusinessIcon } from 'lucide-react';
 import React from 'react';
 
-import { type getHomePage } from '@/routers/candidatePortal/get_home_page';
+import { type getHomePage } from '@/routers/candidatePortal/read/get_home_page';
 
 function RequestedAvailability({
   availabilityData,
