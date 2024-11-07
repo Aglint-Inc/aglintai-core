@@ -93,6 +93,8 @@ export const privateTestProcedure = publicTestProcedure.extend<
   ],
 });
 
+privateTestProcedure.describe.configure({ mode: 'parallel' });
+
 privateTestProcedure.afterAll('Sign-out', async ({ db, log }) => {
   log('Signing out');
   await db.auth.signOut({ scope: 'global' });
@@ -101,7 +103,7 @@ privateTestProcedure.afterAll('Sign-out', async ({ db, log }) => {
 
 type Response = { email: string; password: string };
 const emailAndPassword = (workerIndex: number): Response => {
-  switch (workerIndex) {
+  switch (workerIndex % 2) {
     case 1:
       return {
         email: process.env.E2E_TEST_EMAIL_1,
