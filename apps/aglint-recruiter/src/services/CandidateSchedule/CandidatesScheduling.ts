@@ -1,14 +1,12 @@
 /* eslint-disable security/detect-object-injection */
 import {
   type APIOptions,
-  type CalConflictType,
   type CandReqSlotsType,
   type ConflictReason,
   type CurrRoundCandidateAvailReq,
   type DatabaseTable,
   type DateRangePlansType,
   type InterviewSessionApiRespType,
-  type PauseJson,
   type PlanCombinationRespType,
   type SessionCombinationRespType,
   type SessionInterviewerApiRespType,
@@ -33,11 +31,11 @@ import {
   type IntervsWorkHrsEventType,
   type ScheduleApiDetails,
 } from './types';
+import { cacheCurrPlanCalc } from './utils/cacheCurrPlanCalc';
 import { calcEachIntsAPIDetails } from './utils/calcEachIntsAPIDetails';
 import { dbFetchScheduleApiDetails } from './utils/dbFetchScheduleApiDetails';
 import { fetchIntsCalEventsDetails } from './utils/fetchIntsCalEventsDetails';
 import { calcIntsCombsForEachSessionRound } from './utils/interviewersCombsForSession';
-import { isIntervLoadPassed } from './utils/isInterviewerLoadPassed';
 import { planCombineSlots } from './utils/planCombine';
 import {
   convertTimeDurStrToDayjsChunk,
@@ -550,13 +548,13 @@ export class CandidatesScheduling {
     return { findCurrentDayPlan, findAllDayPlans, findAvailabilitySlots };
   };
 
-  private getTimeInCandTimeZone = (time: string | Dayjs) => {
+  public getTimeInCandTimeZone = (time: string | Dayjs) => {
     if (!this.db_details) {
       throw new CApiError('SERVER_ERROR', 'DB details not set');
     }
     return dayjsLocal(time).tz(this.db_details.req_user_tz);
   };
-  private getTimeIntTimeZone = (
+  public getTimeIntTimeZone = (
     time_str: string,
     session_id: string,
     interview_id: string,
@@ -570,7 +568,7 @@ export class CandidatesScheduling {
       ].scheduling_settings.timeZone.tzCode,
     );
   };
-  private getIntPauseJson(session_id: string, user_id: string) {
+  public getIntPauseJson(session_id: string, user_id: string) {
     if (!this.db_details) {
       throw new CApiError('SERVER_ERROR', 'DB details not set');
     }
@@ -594,239 +592,6 @@ export class CandidatesScheduling {
     }
     const curr_day_str = curr_day_js.startOf('day').format();
 
-    const cacheCurrPlanCalc = () => {
-      if (!this.db_details) {
-        throw new CApiError('SERVER_ERROR', 'DB details not set');
-      }
-      const indef_paused_inters: {
-        session_id: string;
-        inters: (Pick<
-          SessionInterviewerApiRespType,
-          'user_id' | 'first_name' | 'last_name'
-        > & {
-          pause_json: PauseJson;
-        })[];
-      }[] = [];
-      const curr_day_paused_inters: {
-        session_id: string;
-        inters: (Pick<
-          SessionInterviewerApiRespType,
-          'user_id' | 'first_name' | 'last_name'
-        > & {
-          pause_json: PauseJson;
-        })[];
-      }[] = [];
-      const cal_disc_inters: {
-        session_id: string;
-        inters: Pick<
-          SessionInterviewerApiRespType,
-          'user_id' | 'first_name' | 'last_name'
-        >[];
-      }[] = [];
-      const load_reached_ints: {
-        session_id: string;
-        inters: (Pick<
-          SessionInterviewerApiRespType,
-          'user_id' | 'first_name' | 'last_name'
-        > & {
-          type: CalConflictType;
-        })[];
-      }[] = [];
-      const day_off_ints: {
-        session_id: string;
-        inters: Pick<
-          SessionInterviewerApiRespType,
-          'user_id' | 'first_name' | 'last_name'
-        >[];
-      }[] = [];
-
-      const holiday_ints: {
-        session_id: string;
-        inters: Pick<
-          SessionInterviewerApiRespType,
-          'user_id' | 'first_name' | 'last_name'
-        >[];
-      }[] = [];
-
-      let slot_week_load_density = 0;
-      let slot_day_load_density = 0;
-
-      for (let sess_idx = 0; sess_idx < plan_comb.length; ++sess_idx) {
-        const curr_sess = plan_comb[sess_idx];
-        const session_attendees: SessionInterviewerApiRespType[] = [
-          ...curr_sess.qualifiedIntervs,
-          ...curr_sess.trainingIntervs,
-        ];
-        indef_paused_inters.push({
-          session_id: curr_sess.session_id,
-          inters: [],
-        });
-        curr_day_paused_inters.push({
-          session_id: curr_sess.session_id,
-          inters: [],
-        });
-        cal_disc_inters.push({
-          session_id: curr_sess.session_id,
-          inters: [],
-        });
-        load_reached_ints.push({
-          session_id: curr_sess.session_id,
-          inters: [],
-        });
-        day_off_ints.push({
-          session_id: curr_sess.session_id,
-          inters: [],
-        });
-        holiday_ints.push({
-          session_id: curr_sess.session_id,
-          inters: [],
-        });
-
-        let cnt_qualified_ints = 0;
-
-        session_attendees.forEach((attendee) => {
-          if (!this.db_details) {
-            throw new CApiError('SERVER_ERROR', 'DB details not set');
-          }
-          const attendee_details = this.intervs_details_map.get(
-            attendee.user_id,
-          );
-          if (!attendee_details) {
-            throw new CApiError('SERVER_ERROR', 'Interviewer not found');
-          }
-          if (!attendee_details.isCalenderConnected) {
-            cal_disc_inters[sess_idx].inters.push({
-              user_id: attendee.user_id,
-              first_name: attendee.first_name,
-              last_name: attendee.last_name,
-            });
-          }
-          let is_day_off = false;
-          let is_holiday_off = false;
-          attendee_details.holiday[curr_day_str].forEach((t) => {
-            if (
-              t.startTime === curr_day_js.startOf('date').format() &&
-              t.endTime === curr_day_js.endOf('date').format()
-            ) {
-              is_holiday_off = true;
-            }
-          });
-          attendee_details.day_off[curr_day_str].forEach((t) => {
-            if (
-              t.startTime === curr_day_js.startOf('date').format() &&
-              t.endTime === curr_day_js.endOf('date').format()
-            ) {
-              is_day_off = true;
-            }
-          });
-          if (is_day_off) {
-            day_off_ints[sess_idx].inters.push({
-              first_name: attendee.first_name,
-              last_name: attendee.last_name,
-              user_id: attendee.user_id,
-            });
-          }
-          if (is_holiday_off) {
-            holiday_ints[sess_idx].inters.push({
-              first_name: attendee.first_name,
-              last_name: attendee.last_name,
-              user_id: attendee.user_id,
-            });
-          }
-          if (is_day_off || is_holiday_off) {
-            return;
-          }
-          const interviewer_pause_json = this.getIntPauseJson(
-            curr_sess.session_id,
-            attendee.user_id,
-          );
-          if (interviewer_pause_json) {
-            if (interviewer_pause_json.isManual) {
-              indef_paused_inters[sess_idx].inters.push({
-                user_id: attendee.user_id,
-                first_name: attendee.first_name,
-                last_name: attendee.last_name,
-                pause_json: interviewer_pause_json,
-              });
-            } else {
-              const last_paused_date = this.getTimeIntTimeZone(
-                interviewer_pause_json.end_date,
-                curr_sess.session_id,
-                attendee.user_id,
-              );
-              if (
-                isTimeChunksOverLapps(
-                  {
-                    startTime: last_paused_date
-                      .startOf('day')
-                      .tz(this.db_details.req_user_tz),
-                    endTime: last_paused_date
-                      .endOf('day')
-                      .tz(this.db_details.req_user_tz),
-                  },
-                  {
-                    startTime:
-                      this.getTimeInCandTimeZone(curr_day_js).startOf('day'),
-                    endTime: this.getTimeInCandTimeZone(
-                      curr_day_js.endOf('day'),
-                    ),
-                  },
-                )
-              ) {
-                curr_day_paused_inters[sess_idx].inters.push({
-                  user_id: attendee.user_id,
-                  first_name: attendee.first_name,
-                  last_name: attendee.last_name,
-                  pause_json: interviewer_pause_json,
-                });
-              }
-            }
-          }
-
-          if (attendee.training_type === 'qualified') {
-            cnt_qualified_ints++;
-            const trainee_details = this.intervs_details_map.get(
-              attendee.user_id,
-            );
-            if (!trainee_details) {
-              throw new CApiError('SERVER_ERROR', 'Trainee not found');
-            }
-            const { is_passed, type, day_load_density, week_load_density } =
-              isIntervLoadPassed(
-                curr_day_js,
-                this.db_details,
-                attendee.user_id,
-                trainee_details.int_schedule_setting,
-                plan_comb,
-              );
-
-            slot_day_load_density += day_load_density;
-            slot_week_load_density += week_load_density;
-
-            if (!is_passed) {
-              load_reached_ints[sess_idx].inters.push({
-                user_id: attendee.user_id,
-                first_name: attendee.first_name,
-                last_name: attendee.last_name,
-                type,
-              });
-            }
-          }
-        });
-        slot_day_load_density = slot_day_load_density / cnt_qualified_ints;
-        slot_week_load_density = slot_week_load_density / cnt_qualified_ints;
-      }
-      return {
-        holiday_ints,
-        day_off_ints,
-        indef_paused_inters,
-        curr_day_paused_inters,
-        cal_disc_inters,
-        load_reached_ints,
-        slot_day_load_density,
-        slot_week_load_density,
-      };
-    };
     const {
       day_off_ints,
       holiday_ints,
@@ -836,7 +601,16 @@ export class CandidatesScheduling {
       load_reached_ints,
       slot_day_load_density,
       slot_week_load_density,
-    } = cacheCurrPlanCalc();
+    } = cacheCurrPlanCalc({
+      cand_schedule: this,
+      curr_day_str,
+      curr_day_js,
+      plan_comb: plan_comb.map((s) => ({
+        ...s,
+        all_qualified_ints: s.qualifiedIntervs,
+        all_training_ints: s.trainingIntervs,
+      })),
+    });
 
     /**
      * checking  conflicts
