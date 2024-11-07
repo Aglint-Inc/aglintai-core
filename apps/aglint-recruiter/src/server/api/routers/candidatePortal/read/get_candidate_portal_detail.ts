@@ -11,12 +11,11 @@ const query = async ({ ctx: { recruiter_id } }: PrivateProcedure) => {
   const data = (
     await db
       .from('recruiter_preferences')
-      .select('banner_image,company_images,greetings,about')
+      .select('banner_image, company_images, greetings, about')
       .eq('recruiter_id', recruiter_id)
       .single()
       .throwOnError()
   ).data!;
-
   return data!;
 };
 

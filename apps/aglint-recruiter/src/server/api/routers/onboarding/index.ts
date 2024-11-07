@@ -1,5 +1,5 @@
 import { createTRPCRouter } from '../../trpc';
-import { getOnboard } from './getOnboard';
+import { getOnboard } from './read';
 
 export const onboarding = createTRPCRouter({
   getOnboard,

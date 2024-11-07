@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@components/ui/card';
 import React from 'react';
 
-import { type getHomePage } from '@/routers/candidatePortal/get_home_page';
+import { type getHomePage } from '@/routers/candidatePortal/read/get_home_page';
 
 import InterviewProgressCard from './InterviewProgressCard';
 
