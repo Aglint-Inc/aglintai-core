@@ -19,16 +19,6 @@ export type UserInsertType = {
 export const traine_positions: Pick<UserInsertType, 'title'>[] = [];
 export const testUsers: UserInsertType[] = [
   {
-    first_name: 'Raj',
-    last_name: 'Singh',
-    email: 'raj@aglinthq.com',
-    title: 'CEO',
-    role: 'recruiting coordinator',
-    position: 'CEO',
-    employment: 'fulltime',
-    is_oauth_needed: false,
-  },
-  {
     first_name: 'Ravi',
     last_name: 'K',
     email: 'ravi@aglinthq.com',

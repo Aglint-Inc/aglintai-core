@@ -6,11 +6,13 @@ import { createCandidateSelfBookingFixture } from './candidateSelfBooking.fixtur
 import { createJobDetailsPageFixture } from './jobDetails.fixture';
 import { createJobsListPageFixture } from './jobsListPage.fixture';
 import { createLoginFixture } from './login.fixture';
+import { createLogoutFixture } from './logout.fixture';
 import { createRequestDetailsFixture } from './requestDetails.fixture';
 import { createRequestListFixture } from './requestsList.fixture';
 
 type Fixtures = {
   loginPage: ReturnType<typeof createLoginFixture>;
+  logout: ReturnType<typeof createLogoutFixture>;
   jobsListPage: ReturnType<typeof createJobsListPageFixture>;
   requestDetailsPage: ReturnType<typeof createRequestDetailsFixture>;
   candidateAvailabilityPage: ReturnType<
@@ -53,5 +55,9 @@ export const test = base.extend<Fixtures>({
   candidateSelfBookingPage: async ({ page }, use) => {
     const candidateSelfBookingFixture = createCandidateSelfBookingFixture(page);
     await use(candidateSelfBookingFixture);
+  },
+  logout: async ({ page }, use) => {
+    const logoutFixture = createLogoutFixture(page);
+    await use(logoutFixture);
   },
 });
