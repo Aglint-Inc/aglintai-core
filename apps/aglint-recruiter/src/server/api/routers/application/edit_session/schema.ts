@@ -5,7 +5,7 @@ import {
 } from '@aglint/shared-types';
 import { z } from 'zod';
 
-import { type EditInterviewSession } from '@/queries/interview-plans';
+import { type EditInterviewSession } from '@/queries/interview-plans/utils';
 
 export const schemaEditSession = interviewSessionRowSchema
   .pick({
