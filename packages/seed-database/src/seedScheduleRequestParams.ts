@@ -1,8 +1,8 @@
 import { dayjsLocal } from '@aglint/shared-utils';
 
 export const seedScheduleRequestParams = {
-  count_prev_month: 2,
-  past_request_percentage: 0.7,
+  count_prev_month: 0,
+  past_request_percentage: 0,
 } as const;
 
 export const getRequestScheduleDateRange = (
@@ -30,7 +30,7 @@ export const getRequestScheduleDateRange = (
     };
   }
   return {
-    start_date: dayjsLocal().startOf('day').format(),
-    end_date: dayjsLocal().add(7, 'day').startOf('day').format(),
+    start_date: dayjsLocal().add(7, 'day').startOf('day').format(),
+    end_date: dayjsLocal().add(15, 'day').startOf('day').format(),
   };
 };
