@@ -5,8 +5,12 @@ import { flags } from './flags';
 import { invite } from './invite';
 import { cancel_invite } from './invite/cancel_invite';
 import { resend_invite } from './invite/resend';
+import { deleteLocation } from './location/delete';
+import { deleteLocationUsage } from './location/deleteUsage';
+import { insertLocation } from './location/insert';
+import { readLocations } from './location/read';
+import { updateLocation } from './location/update';
 import { members } from './members';
-import { officeLocations } from './officeLocations';
 import { read } from './read';
 import { roles } from './roles';
 import { templates } from './templates';
@@ -20,7 +24,11 @@ export const tenant = createTRPCRouter({
   departmentsUsage,
   updateTenant,
   updateTenantPreference,
-  officeLocations,
+  readLocations,
+  deleteLocation,
+  updateLocation,
+  insertLocation,
+  deleteLocationUsage,
   members,
   flags,
   invite,
