@@ -24,6 +24,8 @@ const fetchSchedule = async (
       .eq('type', type)
       .eq('status', 'to_do')
       .eq('assigner_id', recruiter_user.user_id),
+    // .gte('schedule_start_date', new Date().toISOString())
+    // .gte('schedule_end_date', new Date().toISOString()),
     false,
   );
   if (scheduleRequests.length === 0) {

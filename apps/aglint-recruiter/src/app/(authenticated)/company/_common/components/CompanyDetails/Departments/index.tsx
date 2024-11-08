@@ -19,7 +19,7 @@ import DeleteDepartmentsDialog from './DeleteDepartmentDialog';
 export default function Departments() {
   const { recruiter } = useTenant();
   const { data: departments, refetch } = useAllDepartments();
-
+  const [isAdding, setIsAdding] = React.useState(false);
   const { toast } = useToast();
   const handleRemoveKeyword = (id: string | number | null) => {
     setDeleteDialog({
@@ -43,6 +43,7 @@ export default function Departments() {
     name: string;
   }) => {
     if (department.trim() !== '') {
+      setIsAdding(true);
       await manageDepartments({
         type: 'insert',
         data: [{ recruiter_id: recruiter.id, name: department }],
@@ -54,6 +55,7 @@ export default function Departments() {
           description: '',
         });
       });
+      setIsAdding(false);
       await refetch();
     }
   };
@@ -112,6 +114,7 @@ export default function Departments() {
               id: String(item),
             }))}
             handleAddDepartment={handleAddDepartment}
+            isLoading={isAdding}
             placeholder='Enter new value...'
             btn={
               <Button variant='outline' size='sm' className='rounded-md'>
