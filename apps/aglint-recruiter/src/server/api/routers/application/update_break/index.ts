@@ -21,6 +21,8 @@ const mutation = async ({
     .from('interview_session')
     .update({ break_duration: Number(break_duration) })
     .eq('id', session_id);
+
+  return true;
 };
 
 export const updateBreak = privateProcedure.input(schema).mutation(mutation);

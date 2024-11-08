@@ -20,7 +20,6 @@ const query = async ({ input, ctx }: PrivateProcedure<typeof schema>) => {
       .eq('id', input.location_id)
       .eq('recruiter_id', ctx.recruiter_id)
       .single()
-      .throwOnError()
   ).data!;
 
   if (!location)
@@ -34,7 +33,6 @@ const query = async ({ input, ctx }: PrivateProcedure<typeof schema>) => {
       .from('public_jobs')
       .select('job_title')
       .eq('location_id', input.location_id)
-      .throwOnError()
   ).data!;
 
   const jobUsage = (jobs ?? []).map((job) => job.job_title);

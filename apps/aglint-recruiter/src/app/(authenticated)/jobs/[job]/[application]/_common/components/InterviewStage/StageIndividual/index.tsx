@@ -57,7 +57,10 @@ function StageIndividual({
             {sessions.map((session) => {
               const interview_meeting = session.interview_meeting;
               return (
-                <div key={session.interview_session.id}>
+                <div
+                  key={session.interview_session.id}
+                  className='flex flex-col gap-2'
+                >
                   <ScheduleIndividualCard
                     session={session}
                     isCheckboxVisible={
