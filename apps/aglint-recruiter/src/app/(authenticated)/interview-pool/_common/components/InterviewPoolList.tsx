@@ -16,7 +16,7 @@ import {
   XCircle,
 } from 'lucide-react';
 
-import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
+import { useDepartments } from '@/authenticated/hooks/useDepartments';
 import type { useAllInterviewModulesType } from '@/authenticated/types';
 import { UIButton } from '@/components/Common/UIButton';
 import { useRouterPro } from '@/hooks/useRouterPro';
@@ -27,7 +27,7 @@ export const InterviewPoolList = ({
   interviewType: NonNullable<useAllInterviewModulesType>[number];
 }) => {
   const { superPush } = useRouterPro();
-  const { data: departments } = useAllDepartments();
+  const { data: departments } = useDepartments();
 
   const department = departments.find(
     (dep) => dep.id === interviewType.department_id,

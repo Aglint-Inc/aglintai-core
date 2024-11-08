@@ -5,7 +5,7 @@ import {
   type PrivateProcedure,
   privateProcedure,
   type ProcedureDefinition,
-} from '../../trpc';
+} from '../../../trpc';
 
 const schema = z.object({
   id: z.number(),

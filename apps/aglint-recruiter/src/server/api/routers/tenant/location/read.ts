@@ -15,6 +15,6 @@ const query = async ({ ctx }: PrivateProcedure) => {
   ).data;
 };
 
-export const readLocations = privateProcedure.query(query);
+export const locations = privateProcedure.query(query);
 
-export type ReadLocations = ProcedureDefinition<typeof readLocations>;
+export type ReadLocations = ProcedureDefinition<typeof locations>;

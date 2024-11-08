@@ -15,7 +15,7 @@ import {
 } from '@components/ui/select';
 import { type Dispatch, type SetStateAction } from 'react';
 
-import { type useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
+import { type useDepartments } from '@/authenticated/hooks/useDepartments';
 import { UIButton } from '@/common/UIButton';
 import UITextField from '@/common/UITextField';
 import type {
@@ -35,7 +35,7 @@ type Props = {
   formError: InviteUserFormErrorType;
   setForm: Dispatch<SetStateAction<InviteUserFormType>>;
   locations: ReturnType<typeof useTenantOfficeLocations>['data'];
-  departments: ReturnType<typeof useAllDepartments>['data'];
+  departments: ReturnType<typeof useDepartments>['data'];
   roleOptions: ReturnType<typeof useTenantRoles>['data'];
   memberList: {
     id: string;

@@ -9,6 +9,7 @@ import {
 } from '@components/ui/dialog';
 
 import { Loader } from '@/common/Loader';
+import { UIButton } from '@/common/UIButton';
 import { useDepartmentsUsage } from '@/company/hooks';
 import { capitalizeAll } from '@/utils/text/textUtils';
 
@@ -17,11 +18,13 @@ function DeleteDepartmentsDialog({
   open,
   handleDelete,
   id,
+  isLoading,
 }: {
   handleClose: () => void;
   open: boolean;
   id: number;
   handleDelete: () => void;
+  isLoading: boolean;
 }) {
   const { data: usage, isPending } = useDepartmentsUsage({ id: Number(id) });
   const jobUsageCount = usage?.jobUsage.length || 0;
@@ -89,13 +92,14 @@ function DeleteDepartmentsDialog({
           <Button variant='outline' onClick={handleClose}>
             Close
           </Button>
-          <Button
+          <UIButton
             variant='destructive'
             onClick={handleDelete}
+            isLoading={isLoading}
             disabled={isPending || !isJobEmpty || !isUserEmpty}
           >
             Delete
-          </Button>
+          </UIButton>
         </DialogFooter>
       </DialogContent>
     </Dialog>

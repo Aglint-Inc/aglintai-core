@@ -15,7 +15,7 @@ import {
   type SetStateAction,
 } from 'react';
 
-import { type useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
+import { type useDepartments } from '@/authenticated/hooks/useDepartments';
 import type { useTenantOfficeLocations } from '@/company/hooks';
 import {
   type useTenant,
@@ -37,7 +37,7 @@ type Props = {
   officeLocations: ReturnType<typeof useTenantOfficeLocations>['data'];
   member: ReturnType<typeof useTenantMembers>['allMembers'][number];
   recruiterUser: ReturnType<typeof useTenant>['recruiter_user'];
-  departments: ReturnType<typeof useAllDepartments>['data'];
+  departments: ReturnType<typeof useDepartments>['data'];
   roleOptions: ReturnType<typeof useTenantRoles>['data'];
   memberList: { id: string; name: string }[];
 };

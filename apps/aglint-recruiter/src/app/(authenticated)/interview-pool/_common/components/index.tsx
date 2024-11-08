@@ -11,7 +11,7 @@ import {
 import { LibraryBig } from 'lucide-react';
 
 import { useAllInterviewModules } from '@/authenticated/hooks';
-import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
+import { useDepartments } from '@/authenticated/hooks/useDepartments';
 import UIError from '@/common/UIError';
 import { Loader } from '@/components/Common/Loader';
 
@@ -27,7 +27,7 @@ export default function InterviewTypesPage() {
     isLoading: modulesLoading,
     isError,
   } = useAllInterviewModules();
-  const { isLoading: departmentLoading } = useAllDepartments();
+  const { isLoading: departmentLoading } = useDepartments();
 
   if (modulesLoading || departmentLoading)
     return (
