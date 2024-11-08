@@ -3,14 +3,14 @@ import { expect } from '@playwright/test';
 
 import { test } from './lib/fixtures';
 import {
-  getCandidateSelfSchedulingLink,
   getConfirmedMeetings,
   getDeclineRequests,
   getMeetingInterviewers,
 } from './utils/dbfetch';
+import { getCandidateSelfSchedulingLink } from './utils/dbfetch';
 import { getRequestForScheduleE2e } from './utils/getRequest';
 
-test.describe.skip('Test Self Scheduling Flow ', () => {
+test.describe.parallel('Test Self Scheduling Flow ', () => {
   let singleDayRequestId: string;
   let multiDayRequestId: string;
   test.beforeAll(async () => {
@@ -93,17 +93,10 @@ test.describe('Post Scheduling Scenario', () => {
   let declineMeetingDetails: Awaited<
     ReturnType<typeof getConfirmedMeetings>
   >[number];
-  // let rescheduleMeetingDetails: Awaited<
-  //   ReturnType<typeof getConfirmedMeetings>
-  // >[number];
-  // let cancelMeetingDetails: Awaited<
-  //   ReturnType<typeof getConfirmedMeetings>
-  // >[number];
+
   test.beforeAll(async () => {
     const meetings = await getConfirmedMeetings();
     declineMeetingDetails = meetings[0];
-    // rescheduleMeetingDetails = meetings[1];
-    // cancelMeetingDetails = meetings[2];
   });
   test('interviewer Decline Request', async ({
     loginPage,
@@ -147,24 +140,46 @@ test.describe('Post Scheduling Scenario', () => {
         intervals: [2000, 4000],
       });
     });
-    await test.skip('Process decline Request', async () => {
+    await test.step('Process decline Request', async () => {
       const request = await getDeclineRequests(
         dec_interviewer.session_relation_id,
       );
       expect(await logout.isReady()).toBeTruthy();
       await logout.logout();
       expect(async () => {
+        await loginPage.goto();
         expect(await loginPage.isReady()).toBeTruthy();
       }).toPass({
         intervals: [2000, 4000],
       });
-      await loginPage.goto();
       await loginPage.login(
         process.env.E2E_TEST_EMAIL,
         process.env.E2E_TEST_PASSWORD,
       );
       await requestDetailsPage.goto(request.id);
-      await page.waitForTimeout(5000); // Fake wait for 5 seconds
+      await page.waitForSelector('[data-testid="change-interviewer-button"]');
+      await page.click('[data-testid="change-interviewer-button"]');
+      await page.waitForSelector('[data-testid="interviewer-list-container"]');
+      const alternativeInters = await page.getByTestId(
+        'alternative-interviewer-item',
+      );
+      await alternativeInters
+        .nth(getRandomNumInRange(0, (await alternativeInters.count()) - 1))
+        .click();
+      await page.getByTestId('dialog-primary-button').click();
+      await page.waitForResponse(async (res) => {
+        return (
+          (await res
+            .url()
+            .includes('/api/scheduling/v1/update-meeting-interviewers')) &&
+          res.status() === 200
+        );
+      });
+      await page.reload();
+      await page.waitForSelector(
+        '[data-testid="request-details-status-completed"]',
+      );
+      await page.waitForSelector('[data-testid="request-progress"]');
     });
   });
 });
