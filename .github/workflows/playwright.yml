@@ -22,10 +22,6 @@ jobs:
         run: |
           cd apps/aglint-recruiter
           npm ci
-      - name: Build application
-        run: |
-          cd apps/aglint-recruiter
-          npm run dev:build
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Run Playwright tests
