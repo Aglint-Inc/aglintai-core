@@ -1,4 +1,4 @@
-import type { DepartmentsUsage } from '@/routers/tenant/departmentsUsage';
+import { type DepartmentsUsage } from '@/routers/tenant/department/departmentsUsage';
 import type { ProcedureQuery } from '@/server/api/trpc';
 import { api } from '@/trpc/client';
 
