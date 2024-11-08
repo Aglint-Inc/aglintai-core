@@ -2,7 +2,7 @@ import {
   type PrivateProcedure,
   privateProcedure,
   type ProcedureDefinition,
-} from '../../trpc';
+} from '../../../trpc';
 
 const query = async ({ ctx }: PrivateProcedure) => {
   const db = ctx.db;
@@ -15,6 +15,6 @@ const query = async ({ ctx }: PrivateProcedure) => {
   ).data;
 };
 
-export const officeLocations = privateProcedure.query(query);
+export const readLocations = privateProcedure.query(query);
 
-export type OfficeLocations = ProcedureDefinition<typeof officeLocations>;
+export type ReadLocations = ProcedureDefinition<typeof readLocations>;

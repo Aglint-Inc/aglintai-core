@@ -1,7 +1,6 @@
 import {
   type DatabaseTable,
   type DatabaseTableInsert,
-  type DatabaseTableUpdate,
 } from '@aglint/shared-types';
 
 import ROUTES from '@/utils/routing/routes';
@@ -22,36 +21,6 @@ export const updateJoinedStatus = async (user_id: string) => {
     .update({ status: 'active' })
     .eq('user_id', user_id)
     .throwOnError();
-};
-
-export const manageOfficeLocation = async (
-  payload:
-    | { type: 'insert'; data: DatabaseTableInsert['office_locations'] }
-    | { type: 'delete'; data: number }
-    | { type: 'update'; data: DatabaseTableUpdate['office_locations'] },
-) => {
-  const query = supabase.from('office_locations');
-  switch (payload.type) {
-    case 'insert': {
-      await query.insert(payload.data).single().throwOnError();
-      break;
-    }
-    case 'update': {
-      if (payload.data.id) {
-        await query
-          .update(payload.data)
-          .eq('id', payload.data.id)
-          .single()
-          .throwOnError();
-      }
-      break;
-    }
-    case 'delete': {
-      await query.delete().eq('id', payload.data).throwOnError();
-      break;
-    }
-  }
-  return true;
 };
 
 export const manageDepartments = async (
