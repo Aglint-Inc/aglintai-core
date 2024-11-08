@@ -49,7 +49,7 @@ export default defineConfig<BaseDependencies>({
   /* Retry on CI only */
   retries: process.env.CI === 'true' ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: Number(process.env.TEST_WORKERS),
+  workers: Number(process.env.TEST_WORKERS ?? 1),
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */

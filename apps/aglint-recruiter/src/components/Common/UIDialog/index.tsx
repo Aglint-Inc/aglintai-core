@@ -56,6 +56,7 @@ function UIDialog({
                 variant='secondary'
                 size='sm'
                 onClick={onClickSecondary}
+                data-testid='dialog-secondary-button'
               >
                 Cancel
               </UIButton>
@@ -64,6 +65,7 @@ function UIDialog({
                 size='sm'
                 onClick={onClickPrimary}
                 isLoading={isPrimaryActionLoading}
+                data-testid='dialog-primary-button'
               >
                 Confirm
               </UIButton>
