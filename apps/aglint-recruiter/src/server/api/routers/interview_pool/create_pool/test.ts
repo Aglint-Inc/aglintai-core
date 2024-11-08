@@ -28,7 +28,7 @@ privateTestProcedure(
 privateTestProcedure(
   'interview pool create with department_id',
   async ({ api }) => {
-    const departments = await api.tenant.all_departments();
+    const departments = await api.tenant.departments();
 
     if (departments && departments?.length > 0) {
       const createPoolFalse = await api.interview_pool.create_pool({

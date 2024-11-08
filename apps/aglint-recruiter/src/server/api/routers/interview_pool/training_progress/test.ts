@@ -17,7 +17,6 @@ privateTestProcedure('get training progress', async ({ api }) => {
         trainer_ids,
       });
 
-      console.log(progress);
       expect(Array.isArray(progress)).toBe(true);
     }
   }

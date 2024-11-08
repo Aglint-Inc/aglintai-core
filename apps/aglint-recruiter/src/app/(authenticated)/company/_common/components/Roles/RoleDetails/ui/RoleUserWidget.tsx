@@ -20,7 +20,7 @@ export const RoleUserWidget = ({
           <UserCard member={member} key={member.user_id} />
         ))
       ) : (
-        <Alert variant='default' className='bg-neutral-100'>
+        <Alert variant='default' className='border-border bg-muted'>
           <AlertDescription>No users found with this role</AlertDescription>
         </Alert>
       )}

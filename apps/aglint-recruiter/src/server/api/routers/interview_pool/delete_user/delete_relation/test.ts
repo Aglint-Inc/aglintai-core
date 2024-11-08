@@ -24,7 +24,6 @@ privateTestProcedure(
           await api.interview_pool.delete_user.delete_relation({
             relation_id: poolRelationId,
           });
-        console.log(poolRelationId, poolRelationDelete);
         expect(poolRelationDelete).toBe(true);
       }
     }

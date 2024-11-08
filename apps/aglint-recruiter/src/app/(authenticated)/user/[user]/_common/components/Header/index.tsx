@@ -55,9 +55,9 @@ export const Header = () => {
       <div className='flex flex-row space-x-4'>
         <Avatar className='h-32 w-32 rounded-md'>
           <AvatarImage src={avatar} alt={first_name} />
-          <AvatarFallback className='h-10 w-10 rounded-md bg-muted'>
+          <AvatarFallback className='rounded-md bg-muted'>
             <User
-              className='h-6 w-6 text-muted-foreground'
+              className='text-muted-foreground'
               size={40}
               strokeWidth={1.5}
             />

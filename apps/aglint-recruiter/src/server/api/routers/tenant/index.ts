@@ -1,12 +1,18 @@
 import { createTRPCRouter } from '../../trpc';
-import { allDepartments } from './departments';
-import { departmentsUsage } from './departmentsUsage';
+import { deleteDepartment } from './department/delete';
+import { departmentsUsage } from './department/departmentsUsage';
+import { insertDepartment } from './department/insert';
+import { departments } from './department/read';
 import { flags } from './flags';
 import { invite } from './invite';
 import { cancel_invite } from './invite/cancel_invite';
 import { resend_invite } from './invite/resend';
+import { deleteLocation } from './location/delete';
+import { locationUsage } from './location/deleteUsage';
+import { insertLocation } from './location/insert';
+import { locations } from './location/read';
+import { updateLocation } from './location/update';
 import { members } from './members';
-import { officeLocations } from './officeLocations';
 import { read } from './read';
 import { roles } from './roles';
 import { templates } from './templates';
@@ -17,10 +23,17 @@ import { updateWithRole } from './updateWithRole';
 export const tenant = createTRPCRouter({
   read,
   roles,
+  departments,
+  insertDepartment,
   departmentsUsage,
+  deleteDepartment,
   updateTenant,
   updateTenantPreference,
-  officeLocations,
+  locations,
+  deleteLocation,
+  updateLocation,
+  insertLocation,
+  locationUsage,
   members,
   flags,
   invite,
@@ -28,5 +41,4 @@ export const tenant = createTRPCRouter({
   'resend-invite': resend_invite,
   templates,
   updateWithRole,
-  all_departments: allDepartments,
 });

@@ -13,7 +13,7 @@ import SessionDuration from './DurationDropdown';
 import InterviewModeComp from './InterviewMode';
 import ModuleDropdown from './ModuleDropdown';
 
-function SideDrawerEdit({ refetch }: { refetch: () => void }) {
+function SideDrawerEdit() {
   const { isEditOpen } = useEditSessionDrawerStore((state) => ({
     isEditOpen: state.isEditOpen,
   }));
@@ -26,9 +26,7 @@ function SideDrawerEdit({ refetch }: { refetch: () => void }) {
     }),
   );
 
-  const { handleClose, handleSave } = useEditSession({
-    refetch,
-  });
+  const { handleClose, handleSave } = useEditSession();
 
   return (
     <UIDrawer

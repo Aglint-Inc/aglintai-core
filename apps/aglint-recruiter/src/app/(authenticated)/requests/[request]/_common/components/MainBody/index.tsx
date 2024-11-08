@@ -111,7 +111,7 @@ export default function ViewRequestDetails() {
         <AvailabilityProvider>
           <ConfirmAvailability />
         </AvailabilityProvider>
-        <SideDrawerEdit refetch={refetchMeetings} />
+        <SideDrawerEdit />
 
         <TwoColumnPageLayout
           sidebarWidth={'400px'}

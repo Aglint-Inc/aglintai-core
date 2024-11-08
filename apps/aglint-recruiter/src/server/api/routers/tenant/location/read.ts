@@ -2,19 +2,19 @@ import {
   type PrivateProcedure,
   privateProcedure,
   type ProcedureDefinition,
-} from '../../trpc';
+} from '../../../trpc';
 
 const query = async ({ ctx }: PrivateProcedure) => {
   const db = ctx.db;
   return (
     await db
-      .from('departments')
-      .select()
+      .from('office_locations')
+      .select('*')
       .eq('recruiter_id', ctx.recruiter_id)
       .throwOnError()
   ).data;
 };
 
-export const allDepartments = privateProcedure.query(query);
+export const locations = privateProcedure.query(query);
 
-export type AllDepartments = ProcedureDefinition<typeof allDepartments>;
+export type ReadLocations = ProcedureDefinition<typeof locations>;

@@ -16,7 +16,10 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import TimezonePicker from '@/common/TimezonePicker';
 import { UIButton } from '@/common/UIButton';
 import { useTenant, useTenantOfficeLocations } from '@/company/hooks';
-import { manageOfficeLocation } from '@/context/AuthContext/utils';
+import {
+  useTenantOfficeLocationAdd,
+  useTenantOfficeLocationUpdate,
+} from '@/company/hooks/useTenantOfficeLocations';
 import { api } from '@/trpc/client';
 import timeZone from '@/utils/timeZone';
 
@@ -34,7 +37,7 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
   edit,
 }) => {
   const { recruiter } = useTenant();
-  const { data: office_locations, refetch } = useTenantOfficeLocations();
+  const { data: office_locations } = useTenantOfficeLocations();
   const address1Ref = useRef<HTMLInputElement>(null);
   const address2Ref = useRef<HTMLInputElement>(null);
   const cityRef = useRef<HTMLInputElement>(null);
@@ -42,10 +45,16 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
   const countryRef = useRef<HTMLInputElement>(null);
   const zipRef = useRef<HTMLInputElement>(null);
 
+  const { mutateAsync: mutateAsyncAdd, isPending: isAdding } =
+    useTenantOfficeLocationAdd();
+  const { mutateAsync: mutateAsyncUpdate, isPending: isUpdating } =
+    useTenantOfficeLocationUpdate();
+
+  const loading = isAdding || isUpdating;
+
   const [selectedTimeZone, setSelectedTimeZone] = useState<TimeZoneType | null>(
     null,
   );
-  const [loading, setLoading] = useState(false);
   const [initialValue, setInitialValue] = useState<
     (typeof office_locations)[number] | null
   >(null);
@@ -57,7 +66,6 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
   const [isHeadQ, setHeadQ] = useState(false);
 
   const handleAddLocation = async () => {
-    setLoading(true);
     if (
       !address1Ref.current?.value ||
       !cityRef.current?.value ||
@@ -67,31 +75,29 @@ const AddAndEditLocationDialog: React.FC<LocationProps> = ({
       !selectedTimeZone
     ) {
       toast({ title: 'Please fill in all required fields.' });
-      setLoading(false);
       return;
     }
     const { error } = handleValidate();
     if (!error) {
-      await manageOfficeLocation({
-        type: edit === -1 ? 'insert' : 'update',
-        data: {
-          id: edit !== -1 ? edit : undefined,
-          city: cityRef.current.value,
-          country: countryRef.current.value,
-          is_headquarter: Boolean(isHeadQ),
-          line1: address1Ref.current.value,
-          line2: address2Ref.current?.value || '',
-          region: regionRef.current.value,
-          timezone: selectedTimeZone.tzCode,
-          zipcode: zipRef.current.value,
-          recruiter_id: recruiter.id,
-          name: '',
-        },
-      });
-      refetch();
+      const data = {
+        city: cityRef.current.value,
+        country: countryRef.current.value,
+        is_headquarter: Boolean(isHeadQ),
+        line1: address1Ref.current.value,
+        line2: address2Ref.current?.value || '',
+        region: regionRef.current.value,
+        timezone: selectedTimeZone.tzCode,
+        zipcode: zipRef.current.value,
+        name: '',
+      };
+      if (edit === -1) {
+        await mutateAsyncAdd({ ...data });
+      } else {
+        await mutateAsyncUpdate({ ...data, id: edit });
+      }
+
       handleClose();
     }
-    setLoading(false);
   };
   useEffect(() => {
     if (recruiter && office_locations?.length) {

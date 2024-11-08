@@ -17,8 +17,8 @@ function BreakCard({
   onChange: (_session_id: string, _value: string) => void;
 }) {
   return (
-    <Card className='border border-border p-2'>
-      <div className='bg- flex flex-row items-center gap-8 rounded-md p-2'>
+    <Card className='rounded-md border border-muted bg-background p-2'>
+      <div className='bg- flex flex-row items-center gap-8 p-2'>
         <div className='flex w-[184px] flex-row items-center gap-2'>
           <Coffee size={16} />
           <Typography type='small' fontBold='normal'>

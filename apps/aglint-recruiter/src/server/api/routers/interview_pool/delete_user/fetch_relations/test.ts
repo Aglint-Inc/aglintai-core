@@ -19,7 +19,6 @@ privateTestProcedure('get user relation to other tables', async ({ api }) => {
             module_id: pools[i].id,
             selected_user_id: userId,
           });
-        console.log(userRelation);
         expect(userRelation).toHaveProperty('isOngoingSchedules');
         expect(typeof userRelation.isOngoingSchedules).toBe('boolean');
       } else {
