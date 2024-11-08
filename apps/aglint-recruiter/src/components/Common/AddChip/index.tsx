@@ -24,6 +24,7 @@ interface Props {
   // eslint-disable-next-line no-unused-vars
   handleAddDepartment: (value: { name: string; id: string }) => void;
   placeholder?: string;
+  isLoading?: boolean;
   suggestionsList: {
     name: string;
     id: string;
@@ -44,6 +45,7 @@ const AddChip: React.FC<Props> = ({
   placeholder = 'Enter new value...',
   suggestionsList,
   handleRemoveKeyword,
+  isLoading = false,
 }) => {
   const [inputValue, setInputValue] = useState('');
   return (
@@ -64,50 +66,54 @@ const AddChip: React.FC<Props> = ({
           side='right'
           align='start'
         >
-          <Command>
-            <CommandInput
-              placeholder={placeholder}
-              value={inputValue}
-              onValueChange={setInputValue}
-            />
-            <CommandList>
-              <CommandEmpty>No results found.</CommandEmpty>
-
-              {suggestionsList.length > 0 && !inputValue && (
-                <CommandGroup heading='Suggestions'>
-                  {suggestionsList.map((item) => (
-                    <CommandItem
-                      key={item.name}
-                      value={item.name}
-                      onSelect={() => handleAddDepartment(item)}
-                    >
-                      <Plus className='mr-2 h-4 w-4' />
-                      <span>{item.name}</span>
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              )}
-
-              {inputValue &&
-                !options
-                  .map((item) => item.name.toLowerCase())
-                  .includes(inputValue.toLowerCase()) && (
-                  <CommandGroup heading='Custom'>
-                    <CommandItem
-                      onSelect={() =>
-                        handleAddDepartment({
-                          name: inputValue,
-                          id: uniqueId(),
-                        })
-                      }
-                    >
-                      <Plus className='mr-2 h-4 w-4' />
-                      <span>Add {inputValue}</span>
-                    </CommandItem>
+          {isLoading ? (
+            <div className='p-2 text-gray-500'>
+              {inputValue + ' - '}Adding...{' '}
+            </div>
+          ) : (
+            <Command>
+              <CommandInput
+                placeholder={placeholder}
+                value={inputValue}
+                onValueChange={setInputValue}
+              />
+              <CommandList>
+                <CommandEmpty>No results found.</CommandEmpty>
+                {suggestionsList.length > 0 && !inputValue && (
+                  <CommandGroup heading='Suggestions'>
+                    {suggestionsList.map((item) => (
+                      <CommandItem
+                        key={item.name}
+                        value={item.name}
+                        onSelect={() => handleAddDepartment(item)}
+                      >
+                        <Plus className='mr-2 h-4 w-4' />
+                        <span>{item.name}</span>
+                      </CommandItem>
+                    ))}
                   </CommandGroup>
                 )}
-            </CommandList>
-          </Command>
+                {inputValue &&
+                  !options
+                    .map((item) => item.name.toLowerCase())
+                    .includes(inputValue.toLowerCase()) && (
+                    <CommandGroup heading='Custom'>
+                      <CommandItem
+                        onSelect={() =>
+                          handleAddDepartment({
+                            name: inputValue,
+                            id: uniqueId(),
+                          })
+                        }
+                      >
+                        <Plus className='mr-2 h-4 w-4' />
+                        <span>Add {inputValue}</span>
+                      </CommandItem>
+                    </CommandGroup>
+                  )}
+              </CommandList>
+            </Command>
+          )}
         </PopoverContent>
       </Popover>
     </div>
