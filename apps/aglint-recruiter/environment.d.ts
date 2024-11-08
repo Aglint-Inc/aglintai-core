@@ -46,5 +46,6 @@ declare namespace NodeJS {
     TRPC_TEST_P2_PASSWORD: string;
     TEST_WORKERS: number;
     SEED_DATABASE_APP_URL: string;
+    DEV_DB_SECRETS: string;
   }
 }
