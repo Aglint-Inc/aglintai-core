@@ -1,26 +1,30 @@
 'use client';
 
 import { EmptyState } from '@components/empty-state';
-import { useToast } from '@components/hooks/use-toast';
 import { Button } from '@components/ui/button';
 import { BookOpen, Plus } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import * as React from 'react';
 
-import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
+import {
+  useDepartmentDelete,
+  useDepartmentInsert,
+  useDepartments,
+} from '@/authenticated/hooks/useDepartments';
 import AddChip from '@/common/AddChip';
 import { Indicator } from '@/common/Indicator';
 import UISectionCard from '@/common/UISectionCard';
-import { useTenant } from '@/company/hooks';
-import { manageDepartments } from '@/context/AuthContext/utils';
 
 import DeleteDepartmentsDialog from './DeleteDepartmentDialog';
 
 export default function Departments() {
-  const { recruiter } = useTenant();
-  const { data: departments, refetch } = useAllDepartments();
-  const [isAdding, setIsAdding] = React.useState(false);
-  const { toast } = useToast();
+  const { data: departments, refetch } = useDepartments();
+
+  const { mutateAsync: mutateAsyncDelete, isPending: isDeleteing } =
+    useDepartmentDelete();
+  const { mutateAsync: mutateAsyncInsert, isPending: isAdding } =
+    useDepartmentInsert();
+
   const handleRemoveKeyword = (id: string | number | null) => {
     setDeleteDialog({
       ...deleteDialog,
@@ -43,19 +47,7 @@ export default function Departments() {
     name: string;
   }) => {
     if (department.trim() !== '') {
-      setIsAdding(true);
-      await manageDepartments({
-        type: 'insert',
-        data: [{ recruiter_id: recruiter.id, name: department }],
-      }).catch((err) => {
-        toast({
-          title: String(err).includes('unique_deps')
-            ? `Department is already exists.`
-            : String(err),
-          description: '',
-        });
-      });
-      setIsAdding(false);
+      await mutateAsyncInsert({ name: department });
       await refetch();
     }
   };
@@ -83,16 +75,13 @@ export default function Departments() {
     <>
       {deleteDialog.open && (
         <DeleteDepartmentsDialog
-          handleDelete={() =>
-            deleteDialog.id &&
-            manageDepartments({
-              type: 'delete',
-              data: [deleteDialog.id as number],
-            }).then(() => {
+          handleDelete={async () => {
+            if (deleteDialog.id) {
+              await mutateAsyncDelete({ id: Number(deleteDialog.id) });
               setDeleteDialog({ ...deleteDialog, open: false });
-              refetch();
-            })
-          }
+            }
+          }}
+          isLoading={isDeleteing}
           handleClose={() => setDeleteDialog({ ...deleteDialog, open: false })}
           open={deleteDialog.open}
           id={deleteDialog.id as number}

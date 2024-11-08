@@ -6,7 +6,7 @@ import { useToast } from '@components/hooks/use-toast';
 import { useState } from 'react';
 
 import { useIntegrations } from '@/authenticated/hooks';
-import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
+import { useDepartments } from '@/authenticated/hooks/useDepartments';
 import { UIButton } from '@/common/UIButton';
 import UIDialog from '@/common/UIDialog';
 import {
@@ -68,7 +68,7 @@ const AddMember = ({
   const { mutateAsync: inviteUserApi } = api.tenant.invite.useMutation();
   const { recruiter_user } = useTenant();
   const { data: locations } = useTenantOfficeLocations();
-  const { data: departments } = useAllDepartments();
+  const { data: departments } = useDepartments();
   const { refetch: refetchMembers } = useTenantMembers();
   const initForm: InviteUserFormType = {
     first_name: null,

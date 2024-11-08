@@ -2,7 +2,7 @@ import { useToast } from '@components/hooks/use-toast';
 import { capitalize } from 'lodash';
 import { useState } from 'react';
 
-import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
+import { useDepartments } from '@/authenticated/hooks/useDepartments';
 import UISelectDropDown from '@/common/UISelectDropDown';
 import { UITextArea } from '@/common/UITextArea';
 import UITextField from '@/common/UITextField';
@@ -22,7 +22,7 @@ function EditPoolDailog() {
   const isEditPoolDialogOpen = useModulesStore(
     (state) => state.isEditPoolDialogOpen,
   );
-  const { data: departments } = useAllDepartments();
+  const { data: departments } = useDepartments();
   const { data: editModule } = useModuleAndUsers();
   const { mutateAsync, isPending } = api.interview_pool.update.useMutation({
     onError: (error) => {

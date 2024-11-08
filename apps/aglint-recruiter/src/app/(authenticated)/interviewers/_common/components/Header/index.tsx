@@ -1,14 +1,14 @@
 import { useInterviewerHeaderContext } from '@interviewers/hooks/useInterviewerHeaderContext';
 
 import { useAllInterviewModules } from '@/authenticated/hooks';
-import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
+import { useDepartments } from '@/authenticated/hooks/useDepartments';
 import { useTenantOfficeLocations } from '@/company/hooks';
 import FilterHeader from '@/components/Common/FilterHeader';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
 
 export const Header = () => {
-  const { data: departments } = useAllDepartments();
+  const { data: departments } = useDepartments();
   const { data: locations } = useTenantOfficeLocations();
   const { data: InterivewTypes } = useAllInterviewModules();
 

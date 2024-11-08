@@ -3,7 +3,7 @@ import { toast } from '@components/hooks/use-toast';
 import _ from 'lodash';
 import { useEffect, useRef, useState } from 'react';
 
-import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
+import { useDepartments } from '@/authenticated/hooks/useDepartments';
 import {
   useTenant,
   useTenantMembers,
@@ -29,7 +29,7 @@ const EditAdminDialog = ({
 }) => {
   const { recruiter_user } = useTenant();
   const { data: roleOptions } = useTenantRoles();
-  const { data: departments } = useAllDepartments();
+  const { data: departments } = useDepartments();
   const { data: officeLocations } = useTenantOfficeLocations();
   const [isUpdating, setIsUpdating] = useState(false);
   const imageFile = useRef<File>(null);

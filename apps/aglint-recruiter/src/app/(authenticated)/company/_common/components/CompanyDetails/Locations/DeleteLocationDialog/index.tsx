@@ -99,17 +99,19 @@ const ConnectedUserAndJob = ({
   return (
     <>
       {jobs?.length !== 0 && (
-        <div>
+        <div className='mb-2 rounded-sm bg-muted p-2'>
           <p className='mb-2 font-bold'>
-            Please change the location for this jobs
+            Please change the location for this{' '}
+            {jobs.length > 1 ? 'jobs' : 'job'}
           </p>
           {jobs?.map((job) => <li key={job}>{job}</li>)}
         </div>
       )}
       {users.length !== 0 && (
-        <div>
+        <div className='rounded-sm bg-muted p-2'>
           <p className='mb-2 mt-4 font-bold'>
-            Please change the location for this users
+            Please change the location for this{' '}
+            {users.length > 1 ? 'users' : 'user'}
           </p>
           {users.map((user, i) => (
             <li key={user.first_name + i}>
