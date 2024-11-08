@@ -8,7 +8,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs';
 
 import { useAllInterviewModules } from '@/authenticated/hooks';
-import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
+import { useDepartments } from '@/authenticated/hooks/useDepartments';
 import FilterHeader from '@/components/Common/FilterHeader';
 import { UIButton } from '@/components/Common/UIButton';
 import UITextField from '@/components/Common/UITextField';
@@ -28,7 +28,7 @@ export const InterviewPoolHeader = () => {
     handleTabChange,
     activeTab,
   } = useHeaderProp();
-  const { data: departments } = useAllDepartments();
+  const { data: departments } = useDepartments();
   const { checkPermissions } = useRolesAndPermissions();
 
   const departmentList = departments?.length

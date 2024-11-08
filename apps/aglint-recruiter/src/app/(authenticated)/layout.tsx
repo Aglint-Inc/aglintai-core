@@ -14,8 +14,8 @@ const Layout = async ({ children }: PropsWithChildren) => {
   unstable_noStore();
   void api.tenant.read.prefetch();
   void api.tenant.flags.prefetch();
-  void api.tenant.all_departments.prefetch();
-  void api.tenant.readLocations.prefetch();
+  void api.tenant.departments.prefetch();
+  void api.tenant.locations.prefetch();
   return (
     <ThemeWrapper>
       <HydrateClient>

@@ -12,7 +12,7 @@ import { Label } from '@components/ui/label';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { useAllDepartments } from '@/authenticated/hooks/useAllDepartments';
+import { useDepartments } from '@/authenticated/hooks/useDepartments';
 import { UIButton } from '@/components/Common/UIButton';
 import UISelectDropDown from '@/components/Common/UISelectDropDown';
 import { UITextArea } from '@/components/Common/UITextArea';
@@ -37,7 +37,7 @@ function CreateModuleDialog() {
   const [isTraining, setIsTraining] = useState(false);
   const [nameError, setNameError] = useState(false);
   const [departmentError, setDepartmentError] = useState(false);
-  const { data: departments } = useAllDepartments();
+  const { data: departments } = useDepartments();
   const searchParams = useSearchParams();
   const { replace } = useRouterPro();
 

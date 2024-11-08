@@ -11,7 +11,7 @@ export const useTenantOfficeLocations = () => {
 };
 
 const useProcedure = (): ProcedureQuery<ReadLocations> =>
-  api.tenant.readLocations.useQuery();
+  api.tenant.locations.useQuery();
 
 export const useTenantOfficeLocationDelete = () => {
   return api.tenant.deleteLocation.useMutation();
@@ -22,7 +22,7 @@ export const useTenantOfficeLocationDeleteUsage = ({
 }: {
   location_id: number;
 }) => {
-  const query = api.tenant.deleteLocationUsage.useQuery(
+  const query = api.tenant.locationUsage.useQuery(
     { location_id },
     { enabled: !!location_id },
   );

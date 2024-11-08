@@ -41,6 +41,6 @@ const query = async ({ input, ctx }: PrivateProcedure<typeof schema>) => {
   return { location_id: input.location_id, jobUsage, userUsage };
 };
 
-export const deleteLocationUsage = privateProcedure.input(schema).query(query);
+export const locationUsage = privateProcedure.input(schema).query(query);
 
-export type DeleteLocation = ProcedureDefinition<typeof deleteLocationUsage>;
+export type DeleteLocation = ProcedureDefinition<typeof locationUsage>;
