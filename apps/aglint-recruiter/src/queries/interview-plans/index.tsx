@@ -1,4 +1,4 @@
-import { type DB } from '@aglint/shared-types';
+import { type DatabaseTable, type DB } from '@aglint/shared-types';
 import { useMutation, useMutationState } from '@tanstack/react-query';
 
 import { useTenant } from '@/company/hooks';
@@ -276,10 +276,11 @@ export type EditInterviewSession = Omit<
   DB['public']['Functions']['update_interview_session']['Args'],
   'interview_module_relation_entries'
 > & {
-  interview_module_relation_entries: Pick<
-    InterviewSessionRelationType[number],
-    'id' | 'interviewer_type' | 'training_type'
-  >[];
+  interview_module_relation_entries: {
+    id: string;
+    interviewer_type: DatabaseTable['interview_session_relation']['interviewer_type'];
+    training_type: DatabaseTable['interview_session_relation']['training_type'];
+  }[];
 };
 export const editInterviewSession = async (args: EditInterviewSession) => {
   const { error } = await supabase.rpc('update_interview_session', args);

@@ -1,6 +1,7 @@
 import { createTRPCRouter } from '../../trpc';
 import { applicationActivity } from './activity';
 import { applicationDetails } from './details';
+import { editSession } from './edit_session';
 import { interviewStages } from './interview_stages';
 import { applicationMeta } from './meta';
 import { applicationRequest } from './requests';
@@ -13,4 +14,5 @@ export const application = createTRPCRouter({
   application_request: applicationRequest,
   application_activity: applicationActivity,
   update_break: updateBreak,
+  edit_session: editSession,
 });

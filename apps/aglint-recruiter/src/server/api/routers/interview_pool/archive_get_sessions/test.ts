@@ -14,7 +14,6 @@ privateTestProcedure(
         const rel = await api.interview_pool.archive_get_sessions({
           id: pools[i].id,
         });
-        log(rel.errors, i);
         expect(rel).toHaveProperty('errors');
       }
     }

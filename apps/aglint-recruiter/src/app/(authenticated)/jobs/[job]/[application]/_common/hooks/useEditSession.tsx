@@ -1,12 +1,11 @@
-import { type DatabaseTable } from '@aglint/shared-types';
 import { useEffect } from 'react';
 
 import {
   type EditInterviewSession,
-  editInterviewSession,
   type UpdateDebriefSession,
   updateDebriefSession,
 } from '@/queries/interview-plans';
+import { api } from '@/trpc/client';
 import toast from '@/utils/toast';
 
 import {
@@ -46,6 +45,8 @@ export const useEditSession = ({ refetch }: { refetch: () => void }) => {
     }
   }, [editSession?.interview_session?.id]);
 
+  const { mutateAsync } = api.application.edit_session.useMutation();
+
   const handleSave = async () => {
     try {
       if (validate()) return;
@@ -57,22 +58,27 @@ export const useEditSession = ({ refetch }: { refetch: () => void }) => {
       const isNotDebrief = interview_session.session_type !== 'debrief';
 
       if (isNotDebrief) {
-        const interview_module_relation_entries = [
-          ...selectedInterviewers.map((interviewer) => ({
-            interviewer_type:
-              'qualified' as DatabaseTable['interview_session_relation']['interviewer_type'],
-            id: interviewer.module_relation_id,
-            training_type:
-              'qualified' as DatabaseTable['interview_session_relation']['training_type'],
-          })),
-          ...trainingInterviewers.map((interviewer) => ({
-            interviewer_type:
-              'training' as DatabaseTable['interview_session_relation']['interviewer_type'],
-            id: interviewer.module_relation_id,
-            training_type:
-              null as DatabaseTable['interview_session_relation']['training_type'],
-          })),
-        ];
+        const interview_module_relation_entries: EditInterviewSession['interview_module_relation_entries'] =
+          [
+            ...selectedInterviewers.map((interviewer) => {
+              const int: EditInterviewSession['interview_module_relation_entries'][0] =
+                {
+                  interviewer_type: 'qualified',
+                  id: interviewer.module_relation_id,
+                  training_type: 'qualified',
+                };
+              return int;
+            }),
+            ...trainingInterviewers.map((interviewer) => {
+              const int: EditInterviewSession['interview_module_relation_entries'][0] =
+                {
+                  interviewer_type: 'training',
+                  id: interviewer.module_relation_id,
+                  training_type: null,
+                };
+              return int;
+            }),
+          ];
 
         const {
           name,
@@ -103,7 +109,7 @@ export const useEditSession = ({ refetch }: { refetch: () => void }) => {
           session_order,
         };
 
-        await editInterviewSession(editInterviewSessionParams);
+        mutateAsync(editInterviewSessionParams);
       } else {
         const {
           name,
