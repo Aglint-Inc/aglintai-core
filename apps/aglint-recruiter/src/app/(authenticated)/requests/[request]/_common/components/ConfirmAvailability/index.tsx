@@ -142,7 +142,11 @@ function ConfirmAvailability() {
               {selectedIndex === 0 ? 'Close' : 'Back'}
             </UIButton>
             <UIButton
-              data-testid='comfirm-availability-btn'
+              data-testid={
+                selectedIndex !== availableSlots?.slots.length
+                  ? 'continue-availability-btn'
+                  : 'comfirm-availability-btn'
+              }
               disabled={
                 !selectedDateSlots.find(
                   (ele) => ele.current_round === selectedIndex + 1,

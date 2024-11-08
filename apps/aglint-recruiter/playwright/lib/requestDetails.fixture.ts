@@ -1,4 +1,4 @@
-import { expect, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 
 export const createRequestDetailsFixture = (page: Page) => {
   const requestDetailsPage = page.getByTestId('request-details-page');
@@ -149,8 +149,12 @@ export const createRequestDetailsFixture = (page: Page) => {
         .all();
       await sendAvailBtn[CONFIRM_SLOT].click();
 
+      const continueBtn = await page.getByTestId('continue-availability-btn');
+      expect(await continueBtn.isVisible()).toBeTruthy();
+      await continueBtn.click();
+
       const comfirmBtn = await page.getByTestId('comfirm-availability-btn');
-      expect(await schedulInterviewBtn.isVisible()).toBeTruthy();
+      expect(await comfirmBtn.isVisible()).toBeTruthy();
       await comfirmBtn.click();
 
       const mail_response = await page.waitForResponse(async (response) => {
@@ -162,7 +166,7 @@ export const createRequestDetailsFixture = (page: Page) => {
         );
       });
       expect(mail_response.status()).toBe(200);
-      await comfirmBtn.click();
+
       await page.waitForSelector('[data-testid="view-schedule-btn"]');
 
       page.close();
@@ -175,11 +179,20 @@ export const createRequestDetailsFixture = (page: Page) => {
       expect(await schedulInterviewBtn.isVisible()).toBeTruthy();
       await schedulInterviewBtn.click();
 
-      await page.waitForSelector('[data-testid="comfirm-availability-radio"]');
-      const sendAvailBtn = await page
-        .getByTestId('comfirm-availability-radio')
-        .all();
-      await sendAvailBtn[CONFIRM_SLOT].click();
+      let continueBtn: Locator | null = null;
+      do {
+        await page.waitForSelector(
+          '[data-testid="comfirm-availability-radio"]',
+        );
+        const sendAvailBtn = await page
+          .getByTestId('comfirm-availability-radio')
+          .all();
+        await sendAvailBtn[CONFIRM_SLOT].click();
+
+        continueBtn = await page.getByTestId('continue-availability-btn');
+        expect(await schedulInterviewBtn.isVisible()).toBeTruthy();
+        await continueBtn.click();
+      } while (await continueBtn.isVisible());
 
       const comfirmBtn = await page.getByTestId('comfirm-availability-btn');
       expect(await schedulInterviewBtn.isVisible()).toBeTruthy();
@@ -194,7 +207,7 @@ export const createRequestDetailsFixture = (page: Page) => {
         );
       });
       expect(mail_response.status()).toBe(200);
-      await comfirmBtn.click();
+
       await page.waitForSelector('[data-testid="view-schedule-btn"]');
 
       page.close();
