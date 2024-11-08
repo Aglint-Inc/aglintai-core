@@ -1,8 +1,8 @@
 import { createTRPCRouter } from '../../trpc';
 import { deleteDepartment } from './department/delete';
+import { departmentsUsage } from './department/departmentsUsage';
 import { insertDepartment } from './department/insert';
 import { departments } from './department/read';
-import { departmentsUsage } from './departmentsUsage';
 import { flags } from './flags';
 import { invite } from './invite';
 import { cancel_invite } from './invite/cancel_invite';
