@@ -16,6 +16,7 @@ export default function AutoSave({ saving, show, className }: AutoSaveProps) {
         'z-50 transition-all duration-300 ease-in-out',
         show ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0',
         className,
+        'bg-muted-foreground/10 dark:bg-muted-foreground/20',
       )}
     >
       <div className='flex items-center space-x-2 text-sm'>
