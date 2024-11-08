@@ -1,0 +1,4 @@
+{
+  "adapter": "postgres",
+  "projectDescription": "This project is about a comprehensive recruitment and HR management system. It includes functionalities for job postings, candidate management, interview scheduling, application tracking, team collaboration, workflow automation, user management, permissions, notifications, support ticketing, and more."
+}

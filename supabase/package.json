@@ -8,7 +8,8 @@
     "migration": "npx supabase migration",
     "types:dev": "npx supabase gen types --lang=typescript --project-id ecfwsyxpcuzxlxrkhxjz --schema public > ../packages/shared-types/src/db/schema.types.ts && npm run fix_types",
     "types:local": "npx supabase gen types --lang=typescript --local  --schema public> ../packages/shared-types/src/db/schema.types.ts && npm run fix_types",
-    "seed:local": "npx supabase db dump -f supabase/seed.sql --local --data-only",
+    "seed:local": "supabase db dump -f supabase/seed.sql --local --data-only --exclude auth.audit_log_entries,auth.flow_state,auth.sessions,auth.mfa_amr_claims,auth.one_time_tokens,auth.refresh_tokens,storage.objects,public.rp_token_usage,public.rp_logs,public.interview_meeting_log,public.application_logs,storage.buckets",
+    "seed:remote": "supabase db dump -f supabase/seed.sql --linked --data-only --exclude auth.audit_log_entries,auth.flow_state,auth.sessions,auth.mfa_amr_claims,auth.one_time_tokens,auth.refresh_tokens,storage.objects,public.rp_token_usage,public.rp_logs,public.interview_meeting_log,public.application_logs,storage.buckets",
     "fix_types": "npx tsc ../apps/aglint-recruiter/script/removeJsonType.ts --skipLibCheck && node ../apps/aglint-recruiter/script/removeJsonType.js"
   },
   "devDependencies": {

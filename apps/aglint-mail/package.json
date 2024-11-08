@@ -82,6 +82,6 @@
     "eslint-config-turbo": "^1.10.12",
     "eslint-import-resolver-typescript": "^3.6.1",
     "tsup": "7.2.0",
-    "tsx": "4.9.0"
+    "tsx": "4.19.2"
   }
 }
