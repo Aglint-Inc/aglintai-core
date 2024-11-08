@@ -23,7 +23,7 @@ function InterviewTabContent() {
   const params = useParams();
   const application_id = (params?.application ?? '') as string;
   const job_id = (params?.job ?? '') as string;
-  const { data: stages, isLoading, error, refetch } = useInterviewStages();
+  const { data: stages, isLoading, error } = useInterviewStages();
   const { data: details, isLoading: isLoadingDetails } =
     useApplicationDetails();
   const { isShowFeature } = useFlags();
@@ -128,7 +128,7 @@ function InterviewTabContent() {
 
   return (
     <>
-      <SideDrawerEdit refetch={refetch} />
+      <SideDrawerEdit />
       <InterviewStage
         slotInterviewStage={<StageSessions />}
         slotPipelineTab={<Progress />}

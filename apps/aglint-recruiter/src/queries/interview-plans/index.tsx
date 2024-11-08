@@ -1,4 +1,4 @@
-import { type DatabaseTable, type DB } from '@aglint/shared-types';
+import { type DB } from '@aglint/shared-types';
 import { useMutation, useMutationState } from '@tanstack/react-query';
 
 import { useTenant } from '@/company/hooks';
@@ -11,6 +11,12 @@ import {
   type InterviewSessionRelationType,
   type InterviewSessionUpdate,
 } from './types';
+import {
+  type EditInterviewSession,
+  editInterviewSession,
+  type UpdateDebriefSession,
+  updateDebriefSession,
+} from './utils';
 
 export const useCreateInterviewPlan = () => {
   const { recruiter_id } = useTenant();
@@ -150,7 +156,7 @@ export const useEditInterviewSession = () => {
   const mutation = useMutation({
     mutationKey,
     mutationFn: async (args: EditInterviewSession) => {
-      return await editInterviewSession(args);
+      return await editInterviewSession(args, supabase);
     },
     onError: () => {
       toast.error('Unable to update interview session.');
@@ -176,7 +182,7 @@ export const useEditDebriefSession = () => {
   const mutation = useMutation({
     mutationKey,
     mutationFn: async (args: UpdateDebriefSession) => {
-      await updateDebriefSession(args);
+      await updateDebriefSession(args, supabase);
     },
     onError: () => {
       toast.error('Unable to update debrief session.');
@@ -272,33 +278,10 @@ const createInterviewSession = async (args: CreateInterviewSession) => {
   if (error) throw new Error(error.message);
 };
 
-export type EditInterviewSession = Omit<
-  DB['public']['Functions']['update_interview_session']['Args'],
-  'interview_module_relation_entries'
-> & {
-  interview_module_relation_entries: {
-    id: string;
-    interviewer_type: DatabaseTable['interview_session_relation']['interviewer_type'];
-    training_type: DatabaseTable['interview_session_relation']['training_type'];
-  }[];
-};
-export const editInterviewSession = async (args: EditInterviewSession) => {
-  const { error } = await supabase.rpc('update_interview_session', args);
-  if (error) throw new Error(error.message);
-};
-
 export type CreateDebriefSession =
   DB['public']['Functions']['insert_debrief_session']['Args'];
 
 const createDebriefSession = async (args: CreateDebriefSession) => {
   const { error } = await supabase.rpc('insert_debrief_session', args);
-  if (error) throw new Error(error.message);
-};
-
-export type UpdateDebriefSession =
-  DB['public']['Functions']['update_debrief_session']['Args'];
-
-export const updateDebriefSession = async (args: UpdateDebriefSession) => {
-  const { error } = await supabase.rpc('update_debrief_session', args);
   if (error) throw new Error(error.message);
 };

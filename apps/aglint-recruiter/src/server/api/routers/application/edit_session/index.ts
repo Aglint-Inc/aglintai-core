@@ -1,22 +1,15 @@
 /* eslint-disable no-console */
 
-import {
-  type EditInterviewSession,
-  editInterviewSession,
-} from '@/queries/interview-plans';
+import { editInterviewSession } from '@/queries/interview-plans/utils';
 import { type PrivateProcedure, privateProcedure } from '@/server/api/trpc';
 
 import { schemaEditSession } from './schema';
 
 const mutation = async ({
   input,
+  ctx: { db },
 }: PrivateProcedure<typeof schemaEditSession>) => {
-  const { interview_module_relation_entries, ...rest } = input;
-  const editInterviewSessionParams: EditInterviewSession = {
-    ...rest,
-    interview_module_relation_entries,
-  };
-  await editInterviewSession(editInterviewSessionParams);
+  await editInterviewSession(input, db);
   return true;
 };
 

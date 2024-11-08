@@ -3,8 +3,7 @@ import { useEffect } from 'react';
 import {
   type EditInterviewSession,
   type UpdateDebriefSession,
-  updateDebriefSession,
-} from '@/queries/interview-plans';
+} from '@/queries/interview-plans/utils';
 import { api } from '@/trpc/client';
 import toast from '@/utils/toast';
 
@@ -18,7 +17,7 @@ import {
   useEditSessionDrawerStore,
 } from '../stores/editSessionDrawer';
 
-export const useEditSession = ({ refetch }: { refetch: () => void }) => {
+export const useEditSession = () => {
   const {
     editSession,
     selectedInterviewers,
@@ -45,7 +44,10 @@ export const useEditSession = ({ refetch }: { refetch: () => void }) => {
     }
   }, [editSession?.interview_session?.id]);
 
-  const { mutateAsync } = api.application.edit_session.useMutation();
+  const { mutateAsync: updateSession } =
+    api.application.edit_session.useMutation();
+  const { mutateAsync: updateDebriefSession } =
+    api.application.edit_debrief_session.useMutation();
 
   const handleSave = async () => {
     try {
@@ -109,7 +111,7 @@ export const useEditSession = ({ refetch }: { refetch: () => void }) => {
           session_order,
         };
 
-        mutateAsync(editInterviewSessionParams);
+        await updateSession(editInterviewSessionParams);
       } else {
         const {
           name,
@@ -130,12 +132,11 @@ export const useEditSession = ({ refetch }: { refetch: () => void }) => {
           session_duration,
           session_id: interview_session.id,
           members: debriefMembers.map((member) => ({ id: member.user_id })),
-          members_meta: members_meta as UpdateDebriefSession['members_meta'],
+          members_meta: members_meta,
         };
 
         await updateDebriefSession(updateDebriefParams);
       }
-      refetch();
       handleClose();
     } catch (e) {
       toast.error('Error saving session. Please contact support.');
