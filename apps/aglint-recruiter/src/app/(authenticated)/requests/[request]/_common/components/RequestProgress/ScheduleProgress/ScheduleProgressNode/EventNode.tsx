@@ -14,7 +14,7 @@ const EventNode = ({ groupProgress }: { groupProgress: GroupReqProgress }) => {
   const tense = progressStatusToTense(groupProgress.heading_progress.status);
 
   return (
-    <div className='relative mb-1'>
+    <div className='relative mb-1' data-testid='request-progress'>
       <ScheduleProgressTracker
         status={tense}
         textProgress={workflowCopy[eventType][tense]}

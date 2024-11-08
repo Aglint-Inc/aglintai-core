@@ -8,7 +8,7 @@ import {
 } from '@/server/api/trpc';
 import { createPublicClient } from '@/server/db';
 
-import { type getHomePage } from '../get_home_page';
+import { type getHomePage } from './get_home_page';
 
 const schema = z.object({
   recruiter_id: z.string().uuid(),

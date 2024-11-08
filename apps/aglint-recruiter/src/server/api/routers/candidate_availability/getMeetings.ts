@@ -1,7 +1,5 @@
 import { z } from 'zod';
 
-import { createPublicClient } from '@/server/db';
-
 import {
   type ProcedureDefinition,
   type PublicProcedure,
@@ -12,10 +10,10 @@ const schema = z.object({
   sessions_ids: z.array(z.string().uuid()),
 });
 
-const query = async ({ input }: PublicProcedure<typeof schema>) => {
+const query = async ({ input, ctx }: PublicProcedure<typeof schema>) => {
   const { sessions_ids } = input;
 
-  const db = createPublicClient();
+  const db = ctx.adminDb;
   if (sessions_ids.length) {
     const { data: meetings } = await db
       .from('interview_session')

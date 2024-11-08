@@ -1,4 +1,4 @@
-import { expect, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 
 export const createRequestDetailsFixture = (page: Page) => {
   const requestDetailsPage = page.getByTestId('request-details-page');
@@ -21,9 +21,7 @@ export const createRequestDetailsFixture = (page: Page) => {
     getRequestType: async () => {
       return await page.getByTestId('request-details-type').textContent();
     },
-    getRequestStatus: async () => {
-      return await page.getByTestId('request-details-status').textContent();
-    },
+
     openCandidateAvailabilityDailog: async () => {
       await page.waitForSelector('[data-testid="get-availability-btn"]');
       const getAvailabilityBtn = await page.getByTestId('get-availability-btn');
@@ -37,6 +35,33 @@ export const createRequestDetailsFixture = (page: Page) => {
           req.status() === 200
         );
       });
+    },
+    openSelfSchedulingDialog: async () => {
+      const selfSchedulingBtn = await page.getByTestId('self-schedule-btn');
+      await selfSchedulingBtn.click();
+      await page.waitForResponse((req) => {
+        return (
+          req.url().includes('/api/scheduling/v1/find_availability') &&
+          req.status() === 200
+        );
+      });
+    },
+
+    cancelSchedule: async () => {
+      await page.waitForSelector('[data-testid="cancel-schedule-btn"]');
+      const cancelSchedulingBtn = await page.getByTestId('cancel-schedule-btn');
+      await cancelSchedulingBtn.click();
+      await page.waitForSelector(
+        '[data-testid="request-details-status-completed"]',
+      );
+    },
+    reSchedule: async () => {
+      await page.waitForSelector('[data-testid="cancel-schedule-btn"]');
+      const cancelSchedulingBtn = await page.getByTestId('cancel-schedule-btn');
+      await cancelSchedulingBtn.click();
+      await page.waitForSelector(
+        '[data-testid="request-details-status-completed"]',
+      );
     },
     sendCandidateAvailability: async () => {
       await page.waitForSelector(
@@ -54,16 +79,6 @@ export const createRequestDetailsFixture = (page: Page) => {
       });
       expect(response.status()).toBe(200);
       //
-    },
-    openSelfSchedulingDialog: async () => {
-      const selfSchedulingBtn = await page.getByTestId('self-schedule-btn');
-      await selfSchedulingBtn.click();
-      await page.waitForResponse((req) => {
-        return (
-          req.url().includes('/api/scheduling/v1/find_availability') &&
-          req.status() === 200
-        );
-      });
     },
     selectSelfScheduleDaySlots: async () => {
       await page.getByTestId('schedule-filter-btn').click();
@@ -121,7 +136,7 @@ export const createRequestDetailsFixture = (page: Page) => {
         intervals: [2000, 3000, 5000],
       });
     },
-    bookSchedule: async () => {
+    singleDaybookSchedule: async () => {
       await page.reload();
       await page.waitForSelector('[data-testid="sched-cand-avail-btn"]');
       const schedulInterviewBtn = page.getByTestId('sched-cand-avail-btn');
@@ -133,6 +148,51 @@ export const createRequestDetailsFixture = (page: Page) => {
         .getByTestId('comfirm-availability-radio')
         .all();
       await sendAvailBtn[CONFIRM_SLOT].click();
+
+      const continueBtn = await page.getByTestId('continue-availability-btn');
+      expect(await continueBtn.isVisible()).toBeTruthy();
+      await continueBtn.click();
+
+      const comfirmBtn = await page.getByTestId('comfirm-availability-btn');
+      expect(await comfirmBtn.isVisible()).toBeTruthy();
+      await comfirmBtn.click();
+
+      const mail_response = await page.waitForResponse(async (response) => {
+        return (
+          response
+            .url()
+            .includes('/api/mail/confirmInterview_email_applicant') &&
+          response.status() === 200
+        );
+      });
+      expect(mail_response.status()).toBe(200);
+
+      await page.waitForSelector('[data-testid="view-schedule-btn"]');
+
+      page.close();
+    },
+
+    multiDaybookSchedule: async () => {
+      await page.reload();
+      await page.waitForSelector('[data-testid="sched-cand-avail-btn"]');
+      const schedulInterviewBtn = page.getByTestId('sched-cand-avail-btn');
+      expect(await schedulInterviewBtn.isVisible()).toBeTruthy();
+      await schedulInterviewBtn.click();
+
+      let continueBtn: Locator | null = null;
+      do {
+        await page.waitForSelector(
+          '[data-testid="comfirm-availability-radio"]',
+        );
+        const sendAvailBtn = await page
+          .getByTestId('comfirm-availability-radio')
+          .all();
+        await sendAvailBtn[CONFIRM_SLOT].click();
+
+        continueBtn = await page.getByTestId('continue-availability-btn');
+        expect(await schedulInterviewBtn.isVisible()).toBeTruthy();
+        await continueBtn.click();
+      } while (await continueBtn.isVisible());
 
       const comfirmBtn = await page.getByTestId('comfirm-availability-btn');
       expect(await schedulInterviewBtn.isVisible()).toBeTruthy();
@@ -147,7 +207,7 @@ export const createRequestDetailsFixture = (page: Page) => {
         );
       });
       expect(mail_response.status()).toBe(200);
-      await comfirmBtn.click();
+
       await page.waitForSelector('[data-testid="view-schedule-btn"]');
 
       page.close();

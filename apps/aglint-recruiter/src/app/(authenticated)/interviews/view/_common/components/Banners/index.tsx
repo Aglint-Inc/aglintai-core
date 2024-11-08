@@ -29,7 +29,7 @@ function Banners() {
   const isConfirmed = schedule.interview_meeting.status === 'confirmed';
 
   return (
-    <div className='flex flex-col gap-4'>
+    <div className='flex flex-col gap-4' data-testid='interviewer-banners'>
       <DeclineScheduleDialog />
       {isConfirmed && (isDeclineVisible || isAcceptVisible) && (
         <UIAlert
@@ -47,6 +47,7 @@ function Banners() {
                     setIsDeclineDialogOpen(true);
                   }}
                   className='mr-2 text-black'
+                  data-testid='decline-button'
                 >
                   Decline
                 </UIButton>
@@ -60,7 +61,8 @@ function Banners() {
                     await onClickAccept(sessionRelation.id);
                     refetch();
                   }}
-                   className='mr-2'
+                  data-testid='accept-button'
+                  className='mr-2'
                 >
                   Accept
                 </UIButton>

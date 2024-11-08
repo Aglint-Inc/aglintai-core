@@ -1,12 +1,10 @@
 /* eslint-disable no-console */
 
-import test, { expect } from '@playwright/test';
-import { caller } from 'playwright/utils/createCaller';
+import { expect } from '@playwright/test';
+import { privateTestProcedure } from 'playwright/utils/trpc';
 
-test('get training progress', async () => {
-  const caller1 = await caller();
-
-  const pools = await caller1.interview_pool.get_all();
+privateTestProcedure('get training progress', async ({ api }) => {
+  const pools = await api.interview_pool.get_all();
 
   if (pools && pools.length > 0) {
     const limit = Math.min(5, pools.length);
@@ -15,7 +13,7 @@ test('get training progress', async () => {
       const trainer_ids = pools[i].members.map(
         (member) => member.module_relation_id,
       );
-      const progress = await caller1.interview_pool.training_progress({
+      const progress = await api.interview_pool.training_progress({
         trainer_ids,
       });
 

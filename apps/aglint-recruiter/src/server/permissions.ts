@@ -10,8 +10,9 @@ export const API_PERMISSIONS: ApiPermissions = {
     details: ['scheduling_module'],
     v1: [],
     analytics: ['job_module'],
+    get_members: ['job_module'],
   },
-  integrations: ['integrations_module'],
+  integrations: ['job_module'],
   interviewers: ['job_module'],
   interviews: [],
   interview_pool: {

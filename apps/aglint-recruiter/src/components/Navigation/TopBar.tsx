@@ -139,7 +139,7 @@ const TopBar = () => {
             </DropdownMenuContent>
           </DropdownMenu>
           <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger data-testid='profile-dropdown'>
               <div className='flex flex-row items-center gap-1'>
                 <Avatar className='h-7 w-7 cursor-pointer rounded-sm'>
                   <AvatarImage src={profileImage || ''} alt={userName} />
@@ -165,7 +165,10 @@ const TopBar = () => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem className='cursor-pointer'>
-                <div onClick={() => logout(queryClient)}>
+                <div
+                  onClick={() => logout(queryClient)}
+                  data-testid='logout-btn'
+                >
                   <span className='cursor-pointer'>Logout</span>
                 </div>
               </DropdownMenuItem>

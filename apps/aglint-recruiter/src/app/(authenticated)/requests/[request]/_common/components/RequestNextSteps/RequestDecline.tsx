@@ -125,6 +125,7 @@ const RequestDecline = () => {
           <UIButton
             onClick={handleGetAvailableInterviewers}
             isLoading={isPending}
+            data-testid='change-interviewer-button'
           >
             Change Interviewer
           </UIButton>
@@ -161,7 +162,10 @@ const RequestDecline = () => {
         onClickPrimary={changeInterviewer}
         isPrimaryActionLoading={isInterviewerChanging}
       >
-        <div className='flex flex-col gap-2'>
+        <div
+          className='flex flex-col gap-2'
+          data-testid='interviewer-list-container'
+        >
           {declinedUserDetails && (
             <div className='rounded-mdbg-muted p-2'>
               <MemberRow
@@ -191,7 +195,7 @@ const RequestDecline = () => {
           <div className='flex flex-row justify-center'>
             <ArrowDownUp size={18} />
           </div>
-          <div className='flex flex-col gap-2'>
+          <div className='flex max-h-[400px] w-full flex-col gap-2 overflow-y-auto px-2'>
             {isAlternativeIntsSuccess &&
               alternativeInts.map((item) => {
                 const isSelected =
@@ -200,8 +204,11 @@ const RequestDecline = () => {
                   <div
                     key={item.replacement_int.user_id}
                     className={`rounded-mdbg-muted p-2 ${
-                      isSelected ? 'border-gray-100 outline' : ''
+                      isSelected
+                        ? 'rounded-md border border-gray-100 outline'
+                        : ''
                     }`}
+                    data-testid='alternative-interviewer-item'
                     onClick={() => {
                       setSelectedMember(item.replacement_int.user_id);
                     }}
