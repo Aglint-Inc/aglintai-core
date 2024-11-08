@@ -22,6 +22,11 @@ export const useDepartmentDelete = () => {
     onSuccess: () => {
       refetch();
     },
+    onError: () =>
+      toast({
+        title: 'Unable to delete department',
+        variant: 'destructive',
+      }),
   });
 };
 
