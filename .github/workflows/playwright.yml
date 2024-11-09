@@ -7,6 +7,7 @@ env:
   E2E_TEST_EMAIL: 'chinmai@aglinthq.com'
   E2E_TEST_PASSWORD: 'Welcome@123'
   PLAYWRIGHT_HEADLESS: 'true'
+  DEV_DB_SECRETS: ${{ secrets.DEV_DB_SECRETS }}
   CI: 'true'
 
 jobs:
