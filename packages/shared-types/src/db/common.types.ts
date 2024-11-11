@@ -1,5 +1,5 @@
 import type { Database } from "./schema.types";
-import type { Custom, Type } from "./utils.types";
+import type { Custom } from "./utils.types";
 
 export type CustomMembersMeta = {
   recruiter: boolean;
@@ -95,7 +95,7 @@ export type CustomApplicationStatus =
   | "qualified"
   | "disqualified";
 
-export type CustomInterviewSessionCancelRow = Type<
+export type CustomInterviewSessionCancelRow = Custom<
   Database["public"]["Tables"]["interview_session_cancel"]["Row"],
   {
     other_details: {

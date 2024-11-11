@@ -59,7 +59,7 @@ export const useHandleReschedule = ({
         action: 'waiting',
         type: 'candidate_response_self_schedule',
         reason: reason,
-        other_details: other_details,
+        other_details: other_details!,
         response_type:
           type === 'candidate_request_decline'
             ? 'candidate_request_decline'
@@ -92,7 +92,7 @@ export const useHandleReschedule = ({
           dayjsLocal().add(3, 'day').toISOString(),
       },
       type,
-      other_details,
+      other_details: other_details!,
       reason,
     });
 

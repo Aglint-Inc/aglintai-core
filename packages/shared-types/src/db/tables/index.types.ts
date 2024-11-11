@@ -1,5 +1,5 @@
 import type { Database } from "../schema.types";
-import type { Custom, CustomizableTypes, Type } from "../utils.types";
+import type { Custom, CustomizableTypes } from "../utils.types";
 import type { CustomApplicationLogs } from "./application_logs.types";
 import type { CustomApplications } from "./applications.types";
 import type { CustomCandidateFiles } from "./candidate_files";
@@ -54,8 +54,6 @@ export type TableType<
     }
   >
 >;
-
-// TODO: REMOVE PARTIALS AND TS_EXPECT_ERROR AFTER STRICT NULL CHECK IS TURNED ON
 
 export type Tables = Custom<
   DatabaseTables,

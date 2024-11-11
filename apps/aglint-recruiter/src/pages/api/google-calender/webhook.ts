@@ -169,19 +169,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // update interview session cancel if he first declined and then accepted
     //--------------------------------------------------------------------------------
     //creating new request for the declined interview
-    const cancelSessions: DatabaseTableInsert['interview_session_cancel'][] =
-      updateRelations
-        .filter(
-          (interviewer) => interviewer && interviewer.status === 'declined',
-        )
-        .map(async (interviewer) => {
-          if (!interviewer) return;
-          await interviewerDeclineRequest({
-            declined_place: 'calender',
-            session_relation_id: interviewer.session_relation_id,
-            session_id: interviewer.session_id,
-          });
+    const cancelSessions = updateRelations
+      .filter((interviewer) => interviewer && interviewer.status === 'declined')
+      .map(async (interviewer) => {
+        if (!interviewer) return;
+        await interviewerDeclineRequest({
+          declined_place: 'calender',
+          session_relation_id: interviewer.session_relation_id,
+          session_id: interviewer.session_id,
         });
+      });
 
     await Promise.all(cancelSessions);
 
