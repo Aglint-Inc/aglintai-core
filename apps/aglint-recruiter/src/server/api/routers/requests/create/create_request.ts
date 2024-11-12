@@ -90,19 +90,25 @@ const mutation = async ({
     interview_session.map(({ name }) => name).filter((name) => name !== null),
   );
 
-  await db
-    .rpc('create_session_request', {
-      ...input,
-      request: {
-        ...input.request,
-        assigner_id: ctx.user_id,
-        status: 'to_do',
-        title: `Schedule ${sessions} for ${application.name}`,
-      },
-    })
-    .throwOnError();
-
-  return true;
+  const request_id = (
+    await db
+      .rpc('create_session_request', {
+        ...input,
+        request: {
+          ...input.request,
+          assigner_id: ctx.user_id,
+          status: 'to_do',
+          title: `Schedule ${sessions} for ${application.name}`,
+        },
+      })
+      .throwOnError()
+  ).data;
+  if (!request_id)
+    throw new TRPCError({
+      code: 'INTERNAL_SERVER_ERROR',
+      message: 'Request not created',
+    });
+  return request_id;
 };
 
 export const create_request = privateProcedure

@@ -5,7 +5,8 @@ import { privateTestProcedure } from 'playwright/utils/trpc';
 
 privateTestProcedure(
   'test case 1: Get random request notes',
-  async ({ api, db, user_id }) => {
+  async ({ api, db, user_id, log }) => {
+    log('Start requests.note.read');
     const randomRequestId = await getRequestId({
       db,
       user_id,
@@ -17,5 +18,6 @@ privateTestProcedure(
       });
       expect(!!note).toBeTruthy();
     }
+    log('End requests.note.read');
   },
 );
