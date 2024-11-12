@@ -1,6 +1,6 @@
 import { privateTestProcedure } from 'playwright/utils/trpc';
 
-privateTestProcedure('get Locations', async ({ api, log, recruiter_id }) => {
+privateTestProcedure('get Locations', async ({ api, log }) => {
   log('Start get locations');
 
   const data = {
