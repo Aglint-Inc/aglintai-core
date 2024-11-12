@@ -77,7 +77,9 @@ export default function Departments() {
         <DeleteDepartmentsDialog
           handleDelete={async () => {
             if (deleteDialog.id) {
-              await mutateAsyncDelete({ id: Number(deleteDialog.id) });
+              await mutateAsyncDelete({
+                department_id: Number(deleteDialog.id),
+              });
               setDeleteDialog({ ...deleteDialog, open: false });
             }
           }}

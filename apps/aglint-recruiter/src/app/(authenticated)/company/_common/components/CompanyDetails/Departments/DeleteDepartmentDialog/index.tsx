@@ -26,7 +26,9 @@ function DeleteDepartmentsDialog({
   handleDelete: () => void;
   isLoading: boolean;
 }) {
-  const { data: usage, isPending } = useDepartmentsUsage({ id: Number(id) });
+  const { data: usage, isPending } = useDepartmentsUsage({
+    department_id: Number(id),
+  });
   const jobUsageCount = usage?.jobUsage.length || 0;
   const isJobEmpty = jobUsageCount === 0;
   const userUsageCount = usage?.userUsage.length || 0;
