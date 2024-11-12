@@ -11,5 +11,5 @@ export type CustomCreateSessionRequest = FunctionType<
       request?: Partial<CustomRequestPayload>;
     }
   >,
-  {}
+  string
 >;

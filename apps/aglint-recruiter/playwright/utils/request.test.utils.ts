@@ -77,3 +77,33 @@ export const getApplicationIds = async ({
 
   return randomApplicationIds;
 };
+
+export const getSessionsIds = async ({
+  db,
+  recruiter_id,
+}: Pick<PrivateTestProcedure, 'db' | 'recruiter_id'>) => {
+  const { data: jobs } = await db
+    .from('public_jobs')
+    .select(
+      '*, applications!inner(*), interview_plan!inner(*, interview_session!inner(*))',
+    )
+    .eq('recruiter_id', recruiter_id);
+  if (!jobs) {
+    // eslint-disable-next-line no-console
+    console.info('Not able to fetch jobs');
+  }
+  //   console.log(jobs[0], '✅');
+  const randomJobId = jobs
+    ? jobs[Math.floor(Math.random() * jobs.length)].id
+    : '';
+
+  const job = jobs?.find((job) => job.id === randomJobId);
+
+  const sessionIds =
+    job &&
+    job.interview_plan[0].interview_session
+      .filter((ele) => ele.session_type !== 'debrief')
+      .map((session) => session.id);
+
+  return sessionIds;
+};
