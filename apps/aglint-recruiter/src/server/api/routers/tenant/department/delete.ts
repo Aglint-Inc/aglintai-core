@@ -1,4 +1,4 @@
-import { departmentsUpdateSchema } from '@aglint/shared-types';
+import { z } from 'zod';
 
 import {
   type PrivateProcedure,
@@ -6,21 +6,19 @@ import {
   type ProcedureDefinition,
 } from '../../../trpc';
 
-const mutation = async ({
-  input,
-  ctx,
-}: PrivateProcedure<typeof departmentsUpdateSchema>) => {
+const schema = z.object({ department_id: z.number() });
+const mutation = async ({ input, ctx }: PrivateProcedure<typeof schema>) => {
   const db = ctx.db;
   await db
     .from('departments')
     .delete()
-    .eq('id', input.id as number)
+    .eq('id', input.department_id as number)
     .eq('recruiter_id', ctx.recruiter_id)
     .throwOnError();
 };
 
 export const deleteDepartment = privateProcedure
-  .input(departmentsUpdateSchema)
+  .input(schema)
   .mutation(mutation);
 
 export type DeleteDepartments = ProcedureDefinition<typeof deleteDepartment>;

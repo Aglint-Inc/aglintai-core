@@ -8,7 +8,7 @@ import {
 } from '../../../trpc';
 
 const schema = z.object({
-  id: z.number(),
+  department_id: z.number(),
 });
 
 const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
@@ -17,7 +17,7 @@ const query = async ({ ctx, input }: PrivateProcedure<typeof schema>) => {
     await db
       .from('departments')
       .select('name, recruiter_user(first_name,last_name)')
-      .eq('id', input.id)
+      .eq('id', input.department_id)
       .eq('recruiter_id', ctx.recruiter_id)
       .single()
       .throwOnError()
